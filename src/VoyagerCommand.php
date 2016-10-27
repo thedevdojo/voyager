@@ -60,16 +60,15 @@ class VoyagerCommand extends Command
         $this->info("Migrating the database tables into your application");
         Artisan::call('migrate');
 
+        $this->info("Clearing the application cache");
+        Artisan::call('cache:clear');
+
         $this->info("Dumping the autoloaded files and reloading all new files");
         exec('composer dump-autoload');
 
-        sleep(2);
-        $this->info("Hey... By the way...");
-        sleep(2);
-        $this->info("Thanks for installing Voyager");
-        sleep(2);
-        $this->info("Ok... Moving on...")
-
+        while( !file_exists ( __DIR__ . '/../../../../database/seeds/VoyagerDatabaseSeeder.php' ) ){
+            exec('composer dump-autoload');
+        }
         $this->info("Seeding data into the database");
         Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
 
