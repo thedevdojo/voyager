@@ -67,10 +67,10 @@ class VoyagerCommand extends Command
         
         $process = new Process('composer dump-autoload');
         $process->run();
-        $this->info($process->getOutput());
 
         $this->info("Seeding data into the database");
-        Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
+        $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
+        $process->run();
         
 
         $this->info("Adding the storage symlink to your public folder");
