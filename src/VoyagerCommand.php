@@ -6,6 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Exception;
 
 class VoyagerCommand extends Command
@@ -62,20 +64,13 @@ class VoyagerCommand extends Command
         Artisan::call('migrate');
 
         $this->info("Dumping the autoloaded files and reloading all new files");
-        exec('composer dump-autoload');
+        
+        $process = new Process('composer dump-autoload');
+        $process->run();
+        $this->info($process->getOutput());
 
         $this->info("Seeding data into the database");
-        Artisan::call('db:seed', ['--class'=>'CategoriesTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'DataRowsTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'DataTypesTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'MenuItemsTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'MenusTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'PagesTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'PostsTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'RolesTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'SettingsTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'UserRolesTableSeeder']);
-        Artisan::call('db:seed', ['--class'=>'UsersTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
         
 
         $this->info("Adding the storage symlink to your public folder");
