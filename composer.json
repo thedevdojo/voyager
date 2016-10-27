@@ -15,5 +15,7 @@
         "psr-4": {
             "TCG\\Voyager\\": "/src"
         }
-    }
+    },
+    "minimum-stability": "stable"
+
 }
