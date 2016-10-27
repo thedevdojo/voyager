@@ -66,11 +66,8 @@ class VoyagerCommand extends Command
         $this->info("Dumping the autoloaded files and reloading all new files");
         exec('composer dump-autoload');
 
-        while( !file_exists ( __DIR__ . '/../../../../database/seeds/VoyagerDatabaseSeeder.php' ) ){
-            exec('composer dump-autoload');
-        }
         $this->info("Seeding data into the database");
-        Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
+        @Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
 
         $this->info("Adding the storage symlink to your public folder");
         Artisan::call('storage:link');
