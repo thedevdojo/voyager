@@ -63,8 +63,14 @@ class VoyagerCommand extends Command
         $this->info("Dumping the autoloaded files and reloading all new files");
         exec('composer dump-autoload');
 
-        $this->info("Seeding data into the database");
+        sleep(2);
+        $this->info("Hey... By the way...");
+        sleep(2);
+        $this->info("Thanks for installing Voyager");
+        sleep(2);
+        $this->info("Ok... Moving on...")
 
+        $this->info("Seeding data into the database");
         Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
 
         $this->info("Adding the storage symlink to your public folder");

@@ -79,7 +79,7 @@ class SettingsTableSeeder extends Seeder
             ),
             6 => 
             array (
-                'id' => 9,
+                'id' => 10,
                 'key' => 'google_analytics_client_id',
                 'display_name' => 'Google Analytics Client ID',
                 'value' => '',
