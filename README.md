@@ -26,47 +26,10 @@ TCG\Voyager\VoyagerServiceProvider::class,
 Intervention\Image\ImageServiceProvider::class,
 ```
 
-Then in the `'aliases' => [` array, add the following aliases:
+Lastly, we can install voyager by running
 
 ```
-'Menu' => TCG\Voyager\Models\Menu::class,
-'Voyager' => TCG\Voyager\Voyager::class,
-```
-
-Optionally if you wish to have the front-end authentication scaffolding provided by laravel you can run:
-
-```
-php artisan make:auth
-```
-
-Then, we'll need to publish our voyager files to be loaded into your app
-
-```
-php artisan vendor:publish
-```
-
-Finally, lets run our migrations
-
-```
-php artisan migrate
-```
-
-And before we run the database seed, we need to run the following command:
-
-```
-composer dump-autoload
-```
-
-Now, let's run our database seeds:
-
-```
-php artisan db:seed --class=VoyagerDatabaseSeeder
-```
-
-Next, we need to add our symbolic link so our images will be located inside of our storage directory:
-
-```
-php artisan storage:link
+php artisan voyager:install
 ```
 
 And we're all good to go! 
