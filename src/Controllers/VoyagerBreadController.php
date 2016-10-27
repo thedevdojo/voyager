@@ -212,7 +212,10 @@ class VoyagerBreadController extends Controller
         if(isset($data->{$row->field})){
           $content = $data->{$row->field};
         }
-      }
+        if($row->field == 'password'){
+          $content = $data->{$row->field};
+        }
+      } 
 
       $data->{$row->field} = $content;
     }
@@ -224,7 +227,12 @@ class VoyagerBreadController extends Controller
   public function getContentBasedOnType($request, $slug, $row){
     /********** PASSWORD TYPE **********/
     if($row->type == 'password'){
-      $content = \Hash::make($request->input($row->field));
+      $pass_field = $request->input($row->field);
+      if(isset($pass_field) && !empty($pass_field)){
+        $content = bcrypt($request->input($row->field));
+      } else {
+       $content = NULL;
+     }
 
       /********** CHECKBOX TYPE **********/
     } else if($row->type == 'checkbox'){

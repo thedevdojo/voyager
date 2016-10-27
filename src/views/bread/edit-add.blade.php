@@ -31,6 +31,11 @@
                 
                 @if($row->type == "text")
                   <input type="text" class="form-control" name="{{ $row->field }}" placeholder="{{ $row->display_name }}" value="@if(isset($dataTypeContent->{$row->field})){{ $dataTypeContent->{$row->field} }}@endif">
+                @elseif($row->type == "password")
+                  @if(isset($dataTypeContent->{$row->field}))
+                    <br><small>Leave empty to keep the same</small>
+                  @endif
+                  <input type="password" class="form-control" name="{{ $row->field }}" value="">
                 @elseif($row->type == "text_area")
                   <textarea class="form-control" name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ $dataTypeContent->{$row->field} }}@endif</textarea>
                 @elseif($row->type == "rich_text_box")

@@ -168,7 +168,7 @@
                           <input type="text" class="form-control" name="display_name_plural" placeholder="Display Name (Plural)" value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@endif">
                         </div>
                         <div class="form-group">
-                          <label for="email">Icon (optional) Use fonts from <a href="https://fortawesome.github.io/Font-Awesome/icons/" target="_blank">FontAwesome</a></label>
+                          <label for="email">Icon (optional) Use a <a href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}" target="_blank">Voyager Font Class</a></label>
                           <input type="text" class="form-control" name="icon" placeholder="Icon to use for this Table" value="@if(isset($dataType->icon)){{ $dataType->icon }}@endif">
                         </div>
                         <div class="form-group">

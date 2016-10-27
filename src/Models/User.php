@@ -15,10 +15,6 @@ class User extends LaravelUser
         return ucwords($value);
     }
 
-    public function setPasswordAttribute($value){
-    	$this->attributes['password'] = \Hash::make($value);
-    }
-
     public function getCreatedAtAttribute($value){
     	return \Carbon\Carbon::parse($value)->format('F jS, Y h:i A');
     }
