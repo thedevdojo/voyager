@@ -1,0 +1,385 @@
+@extends('voyager::master')
+
+@section('css')	
+    <style> 
+        .panel-actions .voyager-trash{
+            cursor:pointer;
+        }
+        .panel-actions .voyager-trash:hover{
+            color:#e94542;
+        }
+        .panel hr{
+            margin-bottom:10px;
+        }
+        .panel{
+            padding-bottom:15px;
+        }
+        .sort-icons{
+            font-size:21px;
+            color: #ccc;
+            position:relative;
+            cursor:pointer;
+        }
+        .sort-icons:hover{
+            color:#37474F;
+        }
+        .voyager-sort-desc{
+            margin-right:10px;
+        }
+        .voyager-sort-asc{
+            top: 10px;
+        }
+        .page-title{
+            margin-bottom:0px;
+        }
+        .panel-title code{
+            border-radius: 30px;
+            padding: 5px 10px;
+            font-size: 11px;
+            border: 0px;
+            position: relative;
+            top: -2px;
+        }
+        .new-setting{
+            text-align:center;
+            width:100%;
+            margin-top:20px;
+        }
+        .new-setting .panel-title{
+            margin: 0px auto;
+            display: inline-block;
+            color: #999fac;
+            font-weight: lighter;
+            font-size: 13px;
+            background: #fff;
+            width: auto;
+            height: auto;
+            position: relative;
+            padding-right:15px;
+        }
+        .new-setting hr{
+            margin-bottom: 0px;
+            position: absolute;
+            top: 7px;
+            width: 96%;
+            margin-left: 2%;
+        }
+        .new-setting .panel-title i{
+            position:relative;
+            top:2px;
+        }
+        .new-settings-options{
+            display:none;
+            padding-bottom:10px;
+        }
+        .new-settings-options label{
+            margin-top:13px;
+        }
+        .new-settings-options .alert{
+            margin-bottom:0px;
+        }
+        #toggle_options{
+            clear:both; 
+            float:right; 
+            font-size:12px;
+            position:relative;
+            margin-top:15px;
+            margin-right:5px;
+            margin-bottom:10px;
+            cursor:pointer;
+            z-index:9;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none; 
+            -ms-user-select: none;
+            user-select: none; 
+        }
+        .new-setting-btn{
+            margin-right:15px;
+            position:relative;
+            margin-bottom:0px;
+            top:5px;
+        }
+        .new-setting-btn i{
+            position:relative;
+            top:2px;
+        }
+        .img_settings_container{
+            width:200px; 
+            height:auto; 
+            position:relative;
+        }
+
+        .img_settings_container > a{
+            position:absolute; 
+            right:-10px; 
+            top:-10px; 
+            display:block; 
+            padding:5px; 
+            background:#F94F3B; 
+            color:#fff; 
+            border-radius:13px; 
+            width:25px; 
+            height:25px; 
+            font-size:15px; 
+            line-height:19px;
+        }
+        .img_settings_container > a:hover, .img_settings_container > a:focus, .img_settings_container > a:active{
+            text-decoration:none;
+        }
+        textarea{
+            min-height:120px;
+        }
+    </style>
+@stop
+
+@section('head')
+    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jsonarea/jsonarea.min.js"></script>
+@stop
+
+@section('page_header')
+	<h1 class="page-title">
+		<i class="voyager-settings"></i> Settings
+	</h1>
+@stop
+
+@section('content')
+
+    <div class="container-fluid">
+        <div class="alert alert-info">
+            <strong>How To Use:</strong>
+            <p>You can get the value of each setting anywhere on your site by calling <code>Voyager::setting('key')</code></p>
+        </div>
+    </div>
+
+	<div class="page-content container-fluid">	
+
+        <form action="/admin/settings" method="POST"  enctype="multipart/form-data">
+    		<div class="panel">
+                @foreach($settings as $setting)
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> {{ $setting->display_name }} <code>Voyager::setting('{{ $setting->key }}')</code></h3>
+                        <div class="panel-actions">
+                            <a href="/admin/settings/move_up/{{ $setting->id }}"><i class="sort-icons voyager-sort-asc"></i></a>
+                            <a href="/admin/settings/move_down/{{ $setting->id }}"><i class="sort-icons voyager-sort-desc"></i></a>
+                            <i class="voyager-trash" data-id="{{ $setting->id }}" data-display="{{ $setting->display_name }}"></i>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+
+                        @if($setting->type == "text")
+                            <input type="text" class="form-control" name="{{ $setting->key }}" value="{{ $setting->value }}">
+                        @elseif($setting->type == "text_area")
+                            <textarea class="form-control" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                        @elseif($setting->type == "rich_text_box")
+                            <textarea class="form-control richTextBox" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                        @elseif($setting->type == "image" || $setting->type == "file")
+                            @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::exists(config('voyager.storage.subfolder') . $setting->value))
+                                <div class="img_settings_container">
+                                    <a href="/admin/settings/delete_value/{{ $setting->id }}" class="voyager-x"></a>
+                                    <img src="{{ Storage::url(config('voyager.storage.subfolder') . $setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
+                                </div>
+                            @elseif($setting->type == "file" && isset( $setting->value ))
+                                <div class="fileType">{{ $setting->value }}</div>
+                            @endif
+                            <input type="file" name="{{ $setting->key }}">
+                        @elseif($setting->type == "select_dropdown")
+                          <?php $options = json_decode($setting->details); ?>
+                          <?php $selected_value = (isset($setting->value) && !empty($setting->value)) ? $setting->value : NULL; ?>
+                          <select class="form-control" name="{{ $setting->key }}">
+                            <?php $default = (isset($options->default)) ? $options->default : NULL; ?>
+                            @if(isset($options->options))
+                                @foreach($options->options as $index => $option)
+                                  <option value="{{ $index }}" @if($default == $index && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $index){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                                @endforeach
+                            @endif
+                          </select>
+
+                        @elseif($setting->type == "radio_btn")
+                          <?php $options = json_decode($setting->details); ?>
+                          <?php $selected_value = (isset($setting->value) && !empty($setting->value)) ? $setting->value : NULL; ?>
+                          <?php $default = (isset($options->default)) ? $options->default : NULL; ?>
+                            <ul class="radio">
+                            @if(isset($options->options))
+                                @foreach($options->options as $index => $option)
+                                  <li>
+                                    <input type="radio" id="option-{{ $index }}" name="{{ $setting->key }}" value="{{ $index }}" @if($default == $index && $selected_value === NULL){{ 'checked' }}@endif @if($selected_value == $index){{ 'checked' }}@endif>
+                                    <label for="option-{{ $index }}">{{ $option }}</label>
+                                    <div class="check"></div>
+                                  </li>
+                                @endforeach
+                            @endif
+                          </ul>
+
+                        @elseif($setting->type == "checkbox")
+
+                            <?php $options = json_decode($setting->details); ?>
+                            <?php $checked = (isset($setting->value) && $setting->value == 1) ? true : false; ?>
+                            @if(isset($options->on) && isset($options->off))
+                                <input type="checkbox" name="{{ $setting->key }}" class="toggleswitch" @if($checked) checked @endif data-on="{{ $options->on }}" data-off="{{ $options->off }}">
+                            @else
+                                <input type="checkbox" name="{{ $setting->key }}" @if($checked) checked @endif class="toggleswitch">
+                            @endif
+                            
+
+                        @endif
+
+                    </div>
+                    @if(!$loop->last)
+                        <hr>
+                    @endif
+                @endforeach
+            </div><!-- .panel -->
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-primary pull-right">Save Settings</button>
+        </form>
+
+        <div style="clear:both"></div>
+
+        <div class="panel" style="margin-top:10px;">
+            <div class="panel-heading new-setting">
+                <hr>
+                <h3 class="panel-title"><i class="voyager-plus"></i> New Setting</h3>
+            </div>
+            <div class="panel-body">
+
+                <form action="/admin/settings/create" method="POST">
+
+                    <div class="col-md-4">
+                        <label for="display_name">Name</label>
+                        <input type="text" class="form-control" name="display_name">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="key">Key</label>
+                        <input type="text" class="form-control" name="key">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="asdf">Type</label>
+                        <select name="type" class="form-control">
+                            <option value="text">Text Box</option>
+                            <option value="text_area">Text Area</option>
+                            <option value="rich_text_box">Rich Textbox</option>
+                            <option value="checkbox">Check Box</option>
+                            <option value="radio_btn">Radio Button</option>
+                            <option value="select_dropdown">Select Dropdown</option>
+                            <option value="file">File</option>
+                            <option value="image">Image</option>
+                          </select>
+                    </div>
+                    <div class="col-md-12">
+                        <a id="toggle_options"><i class="voyager-double-down"></i> OPTIONS</a>
+                        <div class="new-settings-options">
+                            <label for="options">Options <small>(optional, only applies to certain types like dropdown box or radio button)</small></label>
+                            <textarea name="details" id="options_textarea" class="form-control"></textarea>
+                            <div id="valid_options" class="alert-success alert" style="display:none">Valid Json</div>
+                            <div id="invalid_options" class="alert-danger alert" style="display:none">Invalid Json</div>
+                        </div>
+                    </div>
+                    <script>
+                          // do the deal
+                          var myJSONArea = JSONArea(document.getElementById('options_textarea'),{
+                            sourceObjects:[] // optional array of objects for JSONArea to inherit from
+                          });
+
+                          valid_json = false;
+
+                          // then here's how you use JSONArea's update event
+                          myJSONArea.getElement().addEventListener('update',function(e){
+                            if(e.target.value != ""){
+                              if(e.detail.isJSON) {
+                                valid_json = true;
+                              } else {
+                                valid_json = false;
+                              }
+                            }
+                          });
+
+                          myJSONArea.getElement().addEventListener('focusout',function(e){
+                            if(valid_json){
+                                $('#valid_options').show();
+                                $('#invalid_options').hide();
+                                var ugly = e.target.value
+                                var obj = JSON.parse(ugly);
+                                var pretty = JSON.stringify(obj, undefined, 4);
+                                document.getElementById('options_textarea').value = pretty;
+                            } else {
+                                $('#valid_options').hide();
+                                $('#invalid_options').show();
+                            }
+                          });
+                    </script>
+                    <script>
+                        $('document').ready(function(){
+                            $('#toggle_options').click(function(){
+                                $('.new-settings-options').toggle();
+                                if($('#toggle_options .voyager-double-down').length){
+                                    $('#toggle_options .voyager-double-down').removeClass('voyager-double-down').addClass('voyager-double-up');
+                                } else {
+                                    $('#toggle_options .voyager-double-up').removeClass('voyager-double-up').addClass('voyager-double-down');
+                                }
+                            });
+                        });
+                    </script>
+
+                    <div style="clear:both"></div>
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-primary pull-right new-setting-btn"><i class="voyager-plus"></i> Add New Setting</button>
+                    <div style="clear:both"></div>
+                </form>
+
+            </div>
+        </div>
+
+	</div>
+
+    <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title"><i class="fa fa-trash-o"></i> Are you sure you want to delete the <span id="delete_setting_title"></span> Setting?</h4>
+          </div>
+          <div class="modal-footer">
+            <form action="/admin/settings/" id="delete_form" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This Setting">
+            </form>
+            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <script>
+        $('document').ready(function(){
+            $('.voyager-trash').click(function(){
+                id = $(this).data('id');
+                display = $(this).data('display');
+                $('#delete_setting_title').text(display);
+                $('#delete_form').attr('action', '/admin/settings/' + id);
+                $('#delete_modal').modal('show');
+            });
+
+            $('.toggleswitch').bootstrapToggle();
+
+        });
+    </script>
+
+@stop
+
+@section('javascript')
+
+    <iframe id="form_target" name="form_target" style="display:none"></iframe>
+    <form id="my_form" action="/admin/upload" target="form_target" method="POST" enctype="multipart/form-data" style="width:0px;height:0;overflow:hidden">
+        <input name="image" id="upload_file" type="file" onchange="$('#my_form').submit();this.value='';">
+        <input type="hidden" name="type_slug" id="type_slug" value="settings">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    </form>
+
+    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+@stop

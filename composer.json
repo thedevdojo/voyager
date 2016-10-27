@@ -1,0 +1,19 @@
+{
+    "name": "tcg/voyager",
+    "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
+    "authors": [
+        {
+            "name": "Tony Lea",
+            "email": "tony.lea@thecontrolgroup.com"
+        }
+    ],
+    "require": {
+        "intervention/image": "^2.3",
+        "doctrine/dbal": "^2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "TCG\\Voyager\\": "/src"
+        }
+    }
+}
