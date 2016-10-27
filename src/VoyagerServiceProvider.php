@@ -12,8 +12,9 @@ class VoyagerServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(\Illuminate\Routing\Router $router, \Illuminate\Contracts\Http\Kernel $kernel)
+    public function boot(\Illuminate\Routing\Router $router)
     {
+        $router->middleware('admin.user', 'TCG\Voyager\Middleware\VoyagerAdminMiddleware');
 
         if( config('voyager.user.add_default_role_on_register') ){
             $app_user = config('voyager.user.namespace');
@@ -23,10 +24,47 @@ class VoyagerServiceProvider extends ServiceProvider
             });
         }
 
-        $router->middleware('admin.user', 'TCG\Voyager\Middleware\VoyagerAdminMiddleware');
-
         $this->loadViewsFrom(__DIR__.'/views', 'voyager');
 
+        include __DIR__.'/routes.php';
+    }
+
+    /**
+     * Register the application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->registerResources();
+
+        $this->app->make('TCG\Voyager\Models\User');
+        $this->app->make('TCG\Voyager\Models\Role');
+        $this->app->make('TCG\Voyager\Models\DataType');
+        $this->app->make('TCG\Voyager\Models\DataRow');
+
+        $this->app->make('TCG\Voyager\Controllers\VoyagerController');
+        $this->app->make('TCG\Voyager\Controllers\VoyagerMediaController');
+        $this->app->make('TCG\Voyager\Controllers\VoyagerBreadController');
+        $this->app->make('TCG\Voyager\Controllers\VoyagerSettingsController');
+
+        $this->app->make('TCG\Voyager\Controllers\VoyagerAuthController');
+        $this->app->make('TCG\Voyager\Controllers\VoyagerDatabaseController');
+
+        $this->app->booting(function() {
+            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+            $loader->alias('Menu', 'TCG\Voyager\Models\Menu');
+            $loader->alias('Voyager', 'TCG\Voyager\Voyager');
+        });
+
+        $this->app['command.voyager'] = $this->app->share(function($app) {
+            return new VoyagerCommand;
+        });
+        $this->commands('command.voyager');
+    }
+
+    protected function registerResources(){
+        
         // Publish the assets to the Public folder
         $this->publishes([
             __DIR__.'/../assets' => public_path('vendor/tcg/voyager/assets'),
@@ -51,33 +89,6 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/voyager.php' => config_path('voyager.php')
         ], 'public');
-
-        //include __DIR__.'/Traits/VoyagerUser.php';
-        include __DIR__.'/routes.php';
-    }
-
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-
-        $this->app->make('TCG\Voyager\Models\User');
-        $this->app->make('TCG\Voyager\Models\Role');
-        $this->app->make('TCG\Voyager\Models\DataType');
-        $this->app->make('TCG\Voyager\Models\DataRow');
-
-        $this->app->make('TCG\Voyager\Controllers\VoyagerController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerMediaController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerBreadController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerSettingsController');
-
-        $this->app->make('TCG\Voyager\Controllers\VoyagerAuthController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerDatabaseController');
-
-       // $this->app->make('TCG\Voyager\Traits\VoyagerUser');
     }
 
 }

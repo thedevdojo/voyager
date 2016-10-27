@@ -22,8 +22,8 @@ DB_PASSWORD=secret
 Add the Voyager service provider as well as the Image Intervention service provider to the config/app.php file in the `'providers' => [` array:
 
 ```
-    TCG\Voyager\VoyagerServiceProvider::class,
-    Intervention\Image\ImageServiceProvider::class,
+TCG\Voyager\VoyagerServiceProvider::class,
+Intervention\Image\ImageServiceProvider::class,
 ```
 
 Then in the `'aliases' => [` array, add the following aliases:
