@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Exception;
 
 class VoyagerCommand extends Command
 {
@@ -63,11 +64,25 @@ class VoyagerCommand extends Command
         $this->info("Clearing the application cache");
         Artisan::call('cache:clear');
 
+        $this->info("Clearing the compiled files");
+        Artisan::call('clear-compiled');
+
         $this->info("Dumping the autoloaded files and reloading all new files");
         exec('composer dump-autoload');
 
-        $this->info("Seeding data into the database");
-        @Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
+        $this->info("Clearing cache created by composer");
+        exec('composer clear-cache');
+
+        try 
+        {
+            $this->info("Seeding data into the database");
+            Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
+        }
+        catch(Exception $e)
+        {
+            $this->info($e->getMessage());
+        } 
+        
 
         $this->info("Adding the storage symlink to your public folder");
         Artisan::call('storage:link');
