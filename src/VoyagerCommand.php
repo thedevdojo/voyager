@@ -61,27 +61,21 @@ class VoyagerCommand extends Command
         $this->info("Migrating the database tables into your application");
         Artisan::call('migrate');
 
-        $this->info("Clearing the application cache");
-        Artisan::call('cache:clear');
-
-        $this->info("Clearing the compiled files");
-        Artisan::call('clear-compiled');
-
         $this->info("Dumping the autoloaded files and reloading all new files");
         exec('composer dump-autoload');
 
-        $this->info("Clearing cache created by composer");
-        exec('composer clear-cache');
-
-        try 
-        {
-            $this->info("Seeding data into the database");
-            Artisan::call('db:seed', ['--class'=>'VoyagerDatabaseSeeder']);
-        }
-        catch(Exception $e)
-        {
-            $this->info($e->getMessage());
-        } 
+        $this->info("Seeding data into the database");
+        Artisan::call('db:seed', ['--class'=>'CategoriesTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'DataRowsTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'DataTypesTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'MenuItemsTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'MenusTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'PagesTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'PostsTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'RolesTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'SettingsTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'UserRolesTableSeeder']);
+        Artisan::call('db:seed', ['--class'=>'UsersTableSeeder']);
         
 
         $this->info("Adding the storage symlink to your public folder");
