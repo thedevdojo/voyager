@@ -1,5 +1,9 @@
 # **V**oyager - The Missing Laravel Admin
 
+![Voyager Screenshot](https://d13yacurqjgara.cloudfront.net/users/33374/screenshots/2728557/attachments/553015/screen_shot_2016-05-20_at_7.18.16_pm.png)
+
+Video Demo Here: https://www.youtube.com/watch?v=_gp4E7tC-Vs
+
 Laravel Admin & BREAD System. (Browse, Read, Edit, Add, & Delete)
 
 ![Voyager Logo](https://s3.amazonaws.com/thecontrolgroup/voyager.png)
