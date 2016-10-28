@@ -1,6 +1,6 @@
 # **V**oyager - The Missing Laravel Admin
 
-![Voyager Screenshot](https://d13yacurqjgara.cloudfront.net/users/33374/screenshots/2728557/laravel-admin.png)
+![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.jpg)
 
 Video Demo Here: https://www.youtube.com/watch?v=_gp4E7tC-Vs
 
