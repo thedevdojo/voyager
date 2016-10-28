@@ -2,7 +2,7 @@
 
 ![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.jpg)
 
-Video Demo Here: https://www.youtube.com/watch?v=_gp4E7tC-Vs
+Video Demo Here: https://devdojo.com/episode/laravel-admin-package-voyager
 
 Laravel Admin & BREAD System. (Browse, Read, Edit, Add, & Delete)
 
