@@ -520,7 +520,7 @@ background: -moz-linear-gradient(45deg,  rgba(53,61,71,1) 0%, rgba(33,41,46,1) 1
 background: -webkit-linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1) 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#353d47', endColorstr='#21292e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
+overflow-x: hidden;
 
 }
 
