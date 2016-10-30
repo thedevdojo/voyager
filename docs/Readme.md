@@ -13,7 +13,7 @@ Y'arrr... Me Wish th' whole documentation were in pirate talk... But it be not..
 Installation
 ---------------
 
-Voyager is super easy to install. First off, you'll need to have all the requirements needed to install a Laravel app. Then, after creating your new Laravel application you can include the Voyager package with the folowing command: 
+Voyager is super easy to install. First off, you'll need to have all the requirements needed to install a Laravel app. Then, after creating your new Laravel application you can include the Voyager package with the following command: 
 
 ```
 composer require tcg/voyager
