@@ -8,7 +8,7 @@ Laravel Admin & BREAD System. (Browse, Read, Edit, Add, & Delete)
 
 ![Voyager Logo](https://s3.amazonaws.com/thecontrolgroup/voyager.png)
 
-After creating your new Laravel application you can include the Voyager package with the folowing command: 
+After creating your new Laravel application you can include the Voyager package with the following command: 
 
 ```
 composer require tcg/voyager
