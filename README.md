@@ -1,6 +1,6 @@
 # **V**oyager - The Missing Laravel Admin
 
-![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.jpg)
+![Voyager Screenshot](https://raw.githubusercontent.com/the-control-group/voyager/gh-pages/images/screenshot.png)
 
 Video Demo Here: https://devdojo.com/episode/laravel-admin-package-voyager
 
