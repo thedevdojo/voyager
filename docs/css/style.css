@@ -1,0 +1,37 @@
+.header{
+	border:1px solid #f3f3f3;
+	background:#ffffff;
+}
+
+.header li a{
+	line-height:45px;
+}
+
+.header h1 + ul{
+	border-left:1px solid #f3f3f3;
+}
+
+.header li{
+	border-right:1px solid #f3f3f3;
+}
+
+.header .right{
+	top:26px;
+}
+
+.menu a, .menu a:visited{
+	color:#22A7F0;
+}
+
+.content p{
+	font-size:14.5px;
+	color:#525252;
+}
+
+.content img[src*="helm"]{
+	float:right;
+	margin-top:20px;
+	max-width:120px;
+	margin-left:20px;
+	opacity:0.2;
+}
