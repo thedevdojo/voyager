@@ -352,7 +352,7 @@ class DataRowsTableSeeder extends Seeder
                 'id' => 32,
                 'data_type_id' => 3,
                 'field' => 'status',
-                'type' => 'text',
+                'type' => 'select_dropdown',
                 'display_name' => 'status',
                 'required' => 1,
                 'browse' => 1,
@@ -360,7 +360,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '',
+                'details' => '{"options":{"ACTIVE":"active","INACTIVE":"inactive"}}',
             ),
             21 => 
             array (
