@@ -68,7 +68,7 @@ class VoyagerServiceProvider extends ServiceProvider
         // Publish the assets to the Public folder
         $this->publishes([
             __DIR__.'/../assets' => public_path('vendor/tcg/voyager/assets'),
-        ], 'public');
+        ], 'voyager_assets');
 
         // Publish the migrations to the migrations folder
         $this->publishes([
