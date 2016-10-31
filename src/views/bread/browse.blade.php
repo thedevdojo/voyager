@@ -22,7 +22,7 @@
 					    <thead>
 					      <tr>
 					      	@foreach($dataType->browseRows as $rows)
-					      		<th>{{ $rows->field }}</th>
+					      		<th>{{ $rows->display_name }}</th>
 					      	@endforeach
 					      	<th class="actions">Actions</th>
 					      </tr>
