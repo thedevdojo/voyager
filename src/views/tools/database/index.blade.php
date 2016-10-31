@@ -36,7 +36,7 @@
 	                	</tr>
                 	</thead>
 
-                <?php $arr = DB::select('SHOW TABLES'); ?>
+                <?php $arr = TCG\Voyager\Facades\DBSchema::tables(); ?>
                 @foreach($arr as $a)
 	            <?php $table = current($a); ?>
                 	<?php $active = in_array($table, $dataTypeNames); 
