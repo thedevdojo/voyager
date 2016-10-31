@@ -150,7 +150,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        @if(isset($dataTypeContent->excerpt))
+                        @if(isset($dataTypeContent->image))
                         <img src="{{ Voyager::image( $dataTypeContent->image ) }}" style="width:100%" />
                         @endif
                         <input type="file" name="image">
