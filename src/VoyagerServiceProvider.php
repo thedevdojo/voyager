@@ -73,22 +73,22 @@ class VoyagerServiceProvider extends ServiceProvider
         // Publish the migrations to the migrations folder
         $this->publishes([
             __DIR__.'/../database/migrations/' => database_path('migrations')
-        ], 'public');
+        ], 'migrations');
 
         // Publish the seeds to the seeds folder
         $this->publishes([
             __DIR__.'/../database/seeds/' => database_path('seeds')
-        ], 'public');
+        ], 'seeds');
 
         // Publish the content/uploads content to the migrations folder
         $this->publishes([
             __DIR__.'/../demo_content/' => storage_path('app/public')
-        ], 'public');
+        ], 'demo_content');
 
         // Publish the content/uploads content to the migrations folder
         $this->publishes([
             __DIR__.'/../config/voyager.php' => config_path('voyager.php')
-        ], 'public');
+        ], 'config');
     }
 
 }

@@ -3,10 +3,9 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\User as LaravelUser;
 use TCG\Voyager\Traits\VoyagerUser;
 
-class User extends LaravelUser
+class User extends Model
 {
     use VoyagerUser;
     //

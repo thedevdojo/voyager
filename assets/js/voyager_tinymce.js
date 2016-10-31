@@ -22,6 +22,7 @@ $(document).ready(function(){
             }
         },
     toolbar: 'styleselect bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image youtube giphy | code',
+    convert_urls: false,
     image_caption: true,
     image_title: true
   });

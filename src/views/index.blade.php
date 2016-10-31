@@ -14,7 +14,7 @@
                     <div class="dimmer"></div>
                     <div class="panel-content">
                         <i class="voyager-group"></i>
-                        <?php $user_count = \App\User::count(); ?>
+                        <?php $user_count = TCG\Voyager\Models\User::count(); ?>
                         <h4>{{ $user_count }} Users</h4>
                         <p>You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your current users.</p>
                     
