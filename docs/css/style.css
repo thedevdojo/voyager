@@ -35,3 +35,33 @@
 	margin-left:20px;
 	opacity:0.2;
 }
+
+@media (max-width: 480px) {
+	.header h1{
+		width:100%;
+		text-align:center;
+		border-bottom:1px solid #f1f1f1;
+		padding-bottom:10px;
+		margin-bottom:10px;
+	}
+	.header h1, .header h1 + ul{
+		float:left;
+	}
+	.header h1 + ul{
+		display:flex;
+		width:100%;
+		border:0px;
+	}
+
+	.header h1 + ul li{
+		flex:1;
+		border:0px;
+	}
+	.header h1 + ul li a{
+		text-align:center;
+	}
+	.header .left{
+		width:100%;
+	}
+	
+}

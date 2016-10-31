@@ -8,9 +8,7 @@ Welcome to the Voyager Documentation. These docs will teach you how to install, 
 
 Hm Hm (cough)... I mean... Arrgg! Ye young scallywag! What say we learn how to steer this ship!
 
-Y'arrr... Me Wish th' whole documentation were in pirate talk... But it be not...
-
-Installation
+Install
 ---------------
 
 Voyager is super easy to install. First off, you'll need to have all the requirements needed to install a Laravel app. Then, after creating your new Laravel application you can include the Voyager package with the following command: 
@@ -50,6 +48,24 @@ Start up a local development server with `php artisan serve` And, visit http://l
 **password:** password
 ```
 
+Upgrade
+---------------
+
+The latest version of Voyager is at 0.9 and will be at 1.0 release soon, but for now to update to the latest version inside of your `composer.json` file make sure to update the version of voyager inside the require declaration inside of your `composer.json` to:
+
+```
+"tcg/voyager": "0.9.*"
+```
+
+And then run `composer update`
+
+Next, you may want to be sure that you have all the latest published assets as long as you have not modified any of them. To re-publish the voyager assets you can run the following command:
+
+```
+php artisan vendor:publish --tag=voyager_assets --force
+```
+
+And now you'll be upgraded to the latest version.
 
 Database Tools
 ---------------
@@ -169,3 +185,6 @@ This is only valid if you have set your image to be resized. If you specify your
 
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
+
+More Stuff
+=======
