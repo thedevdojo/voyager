@@ -58,27 +58,28 @@ class VoyagerCommand extends Command
         }
 
         $this->info("Publishing the Voyager assets, database, and config files");
-        Artisan::call('vendor:publish');
+        Artisan::call('vendor:publish', ['--provider' => 'TCG\Voyager\VoyagerServiceProvider']);
+        Artisan::call('vendor:publish', ['--provider' => 'Intervention\Image\ImageServiceProviderLaravel5']);
 
         $this->info("Migrating the database tables into your application");
         Artisan::call('migrate');
 
         $this->info("Dumping the autoloaded files and reloading all new files");
-        
+
         $process = new Process('composer dump-autoload');
         $process->run();
 
         $this->info("Seeding data into the database");
         $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
         $process->run();
-        
+
 
         $this->info("Adding the storage symlink to your public folder");
         Artisan::call('storage:link');
 
         $this->info("Successfully installed Voyager! Enjoy :)");
         return;
-        
+
     }
 
 }
