@@ -39,7 +39,7 @@
 					      					@endif
 					      				</td>
 					      			@endforeach
-					      			<td class="no-sort no-click"><div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}"><i class="fa fa-trash"></i> Delete</div><a href="/admin/{{ $dataType->slug }}/{{ $data->id }}/edit" class="btn-sm btn-primary pull-right edit"><i class="fa fa-edit"></i> Edit</a> <a href="/{{ str_singular($dataType->slug) }}/{{ $data->slug }}" class="btn-sm btn-warning pull-right"><i class="fa fa-eye"></i> View</a></td>
+					      			<td class="no-sort no-click"><div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}"><i class="fa fa-trash"></i> Delete</div><a href="/admin/{{ $dataType->slug }}/{{ $data->id }}/edit" class="btn-sm btn-primary pull-right edit"><i class="fa fa-edit"></i> Edit</a> <a href="/admin/{{ $dataType->slug }}/{{ $data->id }}" class="btn-sm btn-warning pull-right"><i class="fa fa-eye"></i> View</a></td>
 					      		</tr>
 					      	@endforeach
 					    </tbody>
