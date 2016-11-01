@@ -1,4 +1,5 @@
 # **V**oyager - The Missing Laravel Admin
+Made with ❤️ by The Control Group
 
 ![Voyager Screenshot](https://raw.githubusercontent.com/the-control-group/voyager/gh-pages/images/screenshot.png)
 
