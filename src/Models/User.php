@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use TCG\Voyager\Traits\VoyagerUser;
 
-class User extends Model
+class User extends AuthUser
 {
     use VoyagerUser;
     //
