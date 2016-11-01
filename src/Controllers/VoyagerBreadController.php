@@ -246,6 +246,17 @@ class VoyagerBreadController extends Controller
       /********** FILE TYPE **********/
     } else if($row->type == 'file'){
 
+        $file = $request->file($row->field);
+        $filename = str_random(20);
+
+        $path =  $slug . '/' . date('F') . date('Y') . '/';
+
+        $full_path = $path . $filename . '.' . $file->getClientOriginalExtension();
+
+        Storage::put(config('voyager.storage.subfolder') . $path . $filename . '.' . $file->getClientOriginalExtension(), (string)$file, 'public');
+
+        $content = $full_path;
+
 
       /********** IMAGE TYPE **********/
     } else if($row->type == 'image'){
