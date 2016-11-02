@@ -52,7 +52,7 @@ class VoyagerCommand extends Command
     public function fire()
     {
 
-        if(!$this->option('existing')){
+        if (!$this->option('existing')) {
             $this->info("Generating the default authentication scaffolding");
             Artisan::call('make:auth');
         }
@@ -64,21 +64,21 @@ class VoyagerCommand extends Command
         Artisan::call('migrate');
 
         $this->info("Dumping the autoloaded files and reloading all new files");
-        
+
         $process = new Process('composer dump-autoload');
         $process->run();
 
         $this->info("Seeding data into the database");
         $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
         $process->run();
-        
+
 
         $this->info("Adding the storage symlink to your public folder");
         Artisan::call('storage:link');
 
         $this->info("Successfully installed Voyager! Enjoy :)");
         return;
-        
+
     }
 
 }
