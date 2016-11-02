@@ -41,6 +41,8 @@ class VoyagerCommand extends Command
     {
         return array(
             array('existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null),
+            array('no-migrate', null, InputOption::VALUE_NONE, 'install without running DB migration', null),
+            array('no-seed', null, InputOption::VALUE_NONE, 'install without running DB seeding', null),
         );
     }
 
@@ -60,18 +62,20 @@ class VoyagerCommand extends Command
         $this->info("Publishing the Voyager assets, database, and config files");
         Artisan::call('vendor:publish');
 
-        $this->info("Migrating the database tables into your application");
-        Artisan::call('migrate');
+        if(!$this->option('no-migrate')){
+            $this->info("Migrating the database tables into your application");
+            Artisan::call('migrate');
+        }
 
         $this->info("Dumping the autoloaded files and reloading all new files");
-        
         $process = new Process('composer dump-autoload');
         $process->run();
 
-        $this->info("Seeding data into the database");
-        $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
-        $process->run();
-        
+        if(!$this->option('no-seed')){
+            $this->info("Seeding data into the database");
+            $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
+            $process->run();
+        }
 
         $this->info("Adding the storage symlink to your public folder");
         Artisan::call('storage:link');
