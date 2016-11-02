@@ -43,5 +43,4 @@ class DBSchema
     {
         return DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME) == self::PGSQL;
     }
-
 }
