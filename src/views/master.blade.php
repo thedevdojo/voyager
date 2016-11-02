@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>{{ Voyager::setting('admin_title','Voyager') }} - {{ Voyager::setting('admin_title','The Missing Laravel Admin') }}</title>
+    <title>{{ Voyager::setting('admin_title','Voyager') }} - {{ Voyager::setting('admin_description','The Missing Laravel Admin') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<?= csrf_token() ?>" />
     <!-- Fonts -->
