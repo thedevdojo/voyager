@@ -12,12 +12,12 @@ class DataRowsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('data_rows')->delete();
-        
+
         \DB::table('data_rows')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'data_type_id' => 1,
@@ -32,7 +32,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'data_type_id' => 1,
@@ -47,7 +47,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'data_type_id' => 1,
@@ -62,7 +62,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'data_type_id' => 1,
@@ -77,7 +77,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'data_type_id' => 1,
@@ -92,7 +92,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'data_type_id' => 1,
@@ -131,7 +131,7 @@ class DataRowsTableSeeder extends Seeder
 ]
 }',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'data_type_id' => 1,
@@ -146,7 +146,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
                 'data_type_id' => 1,
@@ -161,7 +161,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 9,
                 'data_type_id' => 1,
@@ -176,7 +176,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 10,
                 'data_type_id' => 1,
@@ -197,7 +197,7 @@ class DataRowsTableSeeder extends Seeder
 }
 }',
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 11,
                 'data_type_id' => 1,
@@ -212,7 +212,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 12,
                 'data_type_id' => 1,
@@ -227,7 +227,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 24,
                 'data_type_id' => 3,
@@ -242,7 +242,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 25,
                 'data_type_id' => 3,
@@ -257,7 +257,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 26,
                 'data_type_id' => 3,
@@ -272,7 +272,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 27,
                 'data_type_id' => 3,
@@ -287,7 +287,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 28,
                 'data_type_id' => 3,
@@ -302,7 +302,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            17 => 
+            17 =>
             array (
                 'id' => 29,
                 'data_type_id' => 3,
@@ -317,7 +317,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            18 => 
+            18 =>
             array (
                 'id' => 30,
                 'data_type_id' => 3,
@@ -332,7 +332,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            19 => 
+            19 =>
             array (
                 'id' => 31,
                 'data_type_id' => 3,
@@ -347,7 +347,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            20 => 
+            20 =>
             array (
                 'id' => 32,
                 'data_type_id' => 3,
@@ -362,7 +362,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            21 => 
+            21 =>
             array (
                 'id' => 33,
                 'data_type_id' => 3,
@@ -377,7 +377,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            22 => 
+            22 =>
             array (
                 'id' => 34,
                 'data_type_id' => 3,
@@ -392,7 +392,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            23 => 
+            23 =>
             array (
                 'id' => 35,
                 'data_type_id' => 3,
@@ -407,7 +407,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            24 => 
+            24 =>
             array (
                 'id' => 36,
                 'data_type_id' => 4,
@@ -422,7 +422,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            25 => 
+            25 =>
             array (
                 'id' => 37,
                 'data_type_id' => 4,
@@ -437,7 +437,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            26 => 
+            26 =>
             array (
                 'id' => 38,
                 'data_type_id' => 4,
@@ -452,7 +452,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            27 => 
+            27 =>
             array (
                 'id' => 39,
                 'data_type_id' => 4,
@@ -467,7 +467,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            28 => 
+            28 =>
             array (
                 'id' => 40,
                 'data_type_id' => 4,
@@ -482,7 +482,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            29 => 
+            29 =>
             array (
                 'id' => 41,
                 'data_type_id' => 4,
@@ -497,7 +497,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            30 => 
+            30 =>
             array (
                 'id' => 42,
                 'data_type_id' => 4,
@@ -512,7 +512,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            31 => 
+            31 =>
             array (
                 'id' => 43,
                 'data_type_id' => 4,
@@ -527,7 +527,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            32 => 
+            32 =>
             array (
                 'id' => 44,
                 'data_type_id' => 6,
@@ -542,7 +542,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            33 => 
+            33 =>
             array (
                 'id' => 45,
                 'data_type_id' => 6,
@@ -557,7 +557,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            34 => 
+            34 =>
             array (
                 'id' => 46,
                 'data_type_id' => 6,
@@ -572,7 +572,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            35 => 
+            35 =>
             array (
                 'id' => 47,
                 'data_type_id' => 6,
@@ -587,7 +587,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            36 => 
+            36 =>
             array (
                 'id' => 48,
                 'data_type_id' => 5,
@@ -602,7 +602,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            37 => 
+            37 =>
             array (
                 'id' => 49,
                 'data_type_id' => 5,
@@ -617,7 +617,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            38 => 
+            38 =>
             array (
                 'id' => 50,
                 'data_type_id' => 5,
@@ -632,7 +632,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            39 => 
+            39 =>
             array (
                 'id' => 51,
                 'data_type_id' => 5,
@@ -647,7 +647,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            40 => 
+            40 =>
             array (
                 'id' => 52,
                 'data_type_id' => 5,
@@ -662,7 +662,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            41 => 
+            41 =>
             array (
                 'id' => 53,
                 'data_type_id' => 5,
@@ -677,7 +677,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            42 => 
+            42 =>
             array (
                 'id' => 54,
                 'data_type_id' => 5,
@@ -692,7 +692,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            43 => 
+            43 =>
             array (
                 'id' => 61,
                 'data_type_id' => 8,
@@ -707,7 +707,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            44 => 
+            44 =>
             array (
                 'id' => 62,
                 'data_type_id' => 8,
@@ -722,7 +722,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            45 => 
+            45 =>
             array (
                 'id' => 63,
                 'data_type_id' => 8,
@@ -737,7 +737,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            46 => 
+            46 =>
             array (
                 'id' => 64,
                 'data_type_id' => 8,
@@ -752,7 +752,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 0,
                 'details' => '',
             ),
-            47 => 
+            47 =>
             array (
                 'id' => 65,
                 'data_type_id' => 8,
@@ -767,7 +767,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            48 => 
+            48 =>
             array (
                 'id' => 66,
                 'data_type_id' => 1,
@@ -782,7 +782,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
-            49 => 
+            49 =>
             array (
                 'id' => 67,
                 'data_type_id' => 1,
@@ -797,8 +797,23 @@ class DataRowsTableSeeder extends Seeder
                 'delete' => 1,
                 'details' => '',
             ),
+            50 =>
+            array (
+                'id' => 68,
+                'data_type_id' => 1,
+                'field' => 'category_id',
+                'type' => 'text',
+                'display_name' => 'Category',
+                'required' => 1,
+                'browse' => 0,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 0,
+                'delete' => 1,
+                'details' => '',
+            ),
         ));
-        
-        
+
+
     }
 }

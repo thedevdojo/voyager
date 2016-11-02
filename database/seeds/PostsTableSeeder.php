@@ -12,15 +12,16 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('posts')->delete();
-        
+
         \DB::table('posts')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 20,
                 'author_id' => 0,
+                'category_id' => 1,
                 'title' => 'Lorem Ipsum Post',
                 'seo_title' => NULL,
                 'excerpt' => 'This is the excerpt for the Lorem Ipsum Post',
@@ -34,10 +35,11 @@ class PostsTableSeeder extends Seeder
                 'created_at' => '2016-02-02 18:24:33',
                 'updated_at' => '2016-01-29 00:03:36',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 21,
                 'author_id' => 0,
+                'category_id' => 2,
                 'title' => 'My Sample Post',
                 'seo_title' => NULL,
                 'excerpt' => 'This is the excerpt for the sample Post',
@@ -53,10 +55,11 @@ class PostsTableSeeder extends Seeder
                 'created_at' => '2016-02-02 18:24:37',
                 'updated_at' => '2016-01-29 00:05:08',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 23,
                 'author_id' => 0,
+                'category_id' => 1,
                 'title' => 'Latest Post',
                 'seo_title' => NULL,
                 'excerpt' => 'This is the excerpt for the latest post',
@@ -70,10 +73,11 @@ class PostsTableSeeder extends Seeder
                 'created_at' => '2016-02-02 18:24:40',
                 'updated_at' => '2016-01-29 14:43:49',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 27,
                 'author_id' => 0,
+                'category_id' => 2,
                 'title' => 'Yarr Post',
                 'seo_title' => NULL,
                 'excerpt' => 'Reef sails nipperkin bring a spring upon her cable coffer jury mast spike marooned Pieces of Eight poop deck pillage. Clipper driver coxswain galleon hempen halter come about pressgang gangplank boatswain swing the lead. Nipperkin yard skysail swab lanyard Blimey bilge water ho quarter Buccaneer.',
@@ -90,7 +94,7 @@ class PostsTableSeeder extends Seeder
                 'updated_at' => '2016-02-03 02:43:50',
             ),
         ));
-        
-        
+
+
     }
 }
