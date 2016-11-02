@@ -34,8 +34,7 @@ class VoyagerBreadController extends Controller
     $dataType = DataType::where('slug', '=', $slug)->first();
 
     // Next Get the actual content from the MODEL that corresponds to the slug DataType
-    eval('$dataTypeContent = ' . $dataType->model_name . '::all();');
-
+    $dataTypeContent = ($dataType->model_name)::all();
 
     if(view()->exists('admin.' . $slug . '.browse')){
       return view('admin.' . $slug . '.browse', array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent)); 
@@ -63,7 +62,7 @@ class VoyagerBreadController extends Controller
   {
     $slug = $request->segment(2);
     $dataType = DataType::where('slug', '=', $slug)->first();
-    eval('$dataTypeContent = ' . $dataType->model_name . '::find(' . $id . ');');
+    $dataTypeContent = ($dataType->model_name)::find($id);
     return view('voyager::bread.read', array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
   }
 
@@ -83,8 +82,7 @@ class VoyagerBreadController extends Controller
   {
     $slug = $request->segment(2);
     $dataType = DataType::where('slug', '=', $slug)->first();
-    eval('$dataTypeContent = ' . $dataType->model_name . '::find(' . $id . ');');
-
+    $dataTypeContent = ($dataType->model_name)::find($id);
 
     if(view()->exists('admin.' . $slug . '.edit-add')){
       return view('admin.' . $slug . '.edit-add', array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
@@ -102,7 +100,7 @@ class VoyagerBreadController extends Controller
   {
     $slug = $request->segment(2);
     $dataType = DataType::where('slug', '=', $slug)->first();
-    eval('$data = ' . $dataType->model_name . '::find(' . $id . ');');
+    $data = ($dataType->model_name)::find($id);
     $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
     return redirect('/admin/' .$dataType->slug)->with(array('message' => 'Successfully Updated ' . $dataType->display_name_singular, 'alert-type' => 'success'));
   }
@@ -145,7 +143,7 @@ class VoyagerBreadController extends Controller
       voyager_add_post($request);
     }
 
-    eval('$data = new ' . $dataType->model_name . ';');
+    $data = new $dataType->model_name;
     $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
     return redirect('/admin/' .$dataType->slug)->with(array('message' => 'Successfully Added New ' . $dataType->display_name_singular, 'alert-type' => 'success'));
   }
@@ -166,8 +164,7 @@ class VoyagerBreadController extends Controller
   {
     $slug = $request->segment(2);
     $dataType = DataType::where('slug', '=', $slug)->first();
-    
-    eval('$data = ' . $dataType->model_name . '::find(' . $id . ');');
+    $data = ($dataType->model_name)::find($id);
 
     foreach($dataType->deleteRows as $row) {
       if($row->type == 'image') {
