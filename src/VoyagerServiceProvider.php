@@ -89,6 +89,11 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/voyager.php' => config_path('voyager.php')
         ], 'config');
+        
+        // Publish the views files to the resources folder for customize use
+        $this->publishes([
+            __DIR__.'/../src/views/' => base_path('resources/views/vendor/voyager')
+        ], 'views');
     }
 
 }
