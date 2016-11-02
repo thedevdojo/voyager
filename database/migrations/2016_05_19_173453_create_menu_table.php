@@ -31,7 +31,7 @@ class CreateMenuTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('menu_items', function(Blueprint $table){
+        Schema::table('menu_items', function (Blueprint $table) {
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
         });
     }
