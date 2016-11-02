@@ -253,7 +253,7 @@ class VoyagerBreadController extends Controller
 
         $full_path = $path . $filename . '.' . $file->getClientOriginalExtension();
 
-        Storage::put(config('voyager.storage.subfolder') . $path . $filename . '.' . $file->getClientOriginalExtension(), (string)$file, 'public');
+        Storage::put(config('voyager.storage.subfolder') . $full_path, (string)$file, 'public');
 
         $content = $full_path;
 
