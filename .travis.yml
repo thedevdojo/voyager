@@ -1,0 +1,29 @@
+language: php
+
+sudo: true
+
+php:
+- 5.6
+- 7.0
+
+before_script:
+  # prevent MySQL went away error
+  - mysql -u root -e 'SET @@GLOBAL.wait_timeout=28800;'
+  
+  # Create a new database and add all priveleges
+  - mysql -u root -e "create database IF NOT EXISTS voyager;"
+  
+  # Add the laravel installer
+  - composer global require "laravel/installer"
+
+  # Move up one directory
+  - cd ../
+
+  # List out DIR and PWD
+  - ls
+  - PWD
+
+  
+
+script:
+  - vendor/bin/phpunit
