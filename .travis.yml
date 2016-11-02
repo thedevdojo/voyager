@@ -21,7 +21,7 @@ before_script:
 
   # List out DIR and PWD
   - ls
-  - PWD
+  - pwd
 
   
 
