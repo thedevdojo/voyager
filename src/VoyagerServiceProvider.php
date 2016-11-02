@@ -24,7 +24,7 @@ class VoyagerServiceProvider extends ServiceProvider
             });
         }
 
-        $this->loadViewsFrom(__DIR__.'/views', 'voyager');
+        $this->loadViewsFrom(resource_path('views/vendor/voyager'), 'voyager');
 
         include __DIR__.'/routes.php';
     }
@@ -89,6 +89,11 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/voyager.php' => config_path('voyager.php')
         ], 'config');
+
+        // Publish the views to the views/vendor folder
+        $this->publishes([
+            __DIR__.'/views/' => resource_path('views/vendor/voyager')
+        ], 'voyager_views');
     }
 
 }
