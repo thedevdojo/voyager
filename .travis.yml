@@ -26,7 +26,7 @@ before_script:
   - composer create-project --prefer-dist laravel/laravel voyager-app
 
   # CD into the new laravel app
-  - voyager-app
+  - cd voyager-app
 
   # Include Voyager Package
   - composer require tcg/voyager
