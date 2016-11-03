@@ -142,9 +142,13 @@ class VoyagerDatabaseController extends Controller
 				//Reorder the rows
 				$field_name = (string)$request->field[$index];
 				if($index > 0){
-					\DB::statement("ALTER TABLE " . (string)$table_name . " MODIFY COLUMN " . $field_name . " " . $table_type_array[$field_name] . $table_default_array[$field_name] . $table_null_array[$field_name] . " AFTER " . $request->field[$index-1]);
+					if($field_name!='id') {
+						\DB::statement("ALTER TABLE " . (string)$table_name . " MODIFY COLUMN " . $field_name . " " . $table_type_array[$field_name] . $table_default_array[$field_name] . $table_null_array[$field_name] . " AFTER " . $request->field[$index - 1]);
+					}
 				} else {
-					\DB::statement("ALTER TABLE " . (string)$table_name . " MODIFY COLUMN " . $field_name . " " . $table_type_array[$field_name] . $table_default_array[$field_name] . $table_null_array[$field_name] . " FIRST");
+					if($field_name!='id'){
+						\DB::statement("ALTER TABLE " . (string)$table_name . " MODIFY COLUMN " . $field_name . " " . $table_type_array[$field_name] . $table_default_array[$field_name] . $table_null_array[$field_name] . " FIRST");
+					}
 				}
 			}
 
