@@ -45,8 +45,8 @@ before_script:
 
   # Add the database credentials
   - sed 's/DB_DATABASE=homestead/DB_DATABASE=voyager/g' .env > environment
-  - sed 's/DB_USERNAME=homestead/DB_USERNAME=${MYSQL_USER}/g' environment > .env
-  - sed 's/DB_PASSWORD=secret/DB_PASSWORD=${MYSQL_PASSWORD}/g' .env > environment
+  - sed 's/DB_USERNAME=homestead/DB_USERNAME=root/g' environment > .env
+  - sed 's/DB_PASSWORD=secret/DB_PASSWORD=/g' .env > environment
   - rm .env
   - mv environment .env
 
