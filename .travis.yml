@@ -6,6 +6,9 @@ php:
 - 5.6
 - 7.0
 
+services:
+  - mysql
+
 before_script:
   # prevent MySQL went away error
   - mysql -u root -e 'SET @@GLOBAL.wait_timeout=28800;'
@@ -16,13 +19,47 @@ before_script:
   # Add the laravel installer
   - composer global require "laravel/installer"
 
+  # Current DIR
+  - pwd
+
   # Move up one directory
   - cd ../
 
-  # List out DIR and PWD
-  - ls
-  - pwd
+  # Create a New Laravel App
+  - laravel new voyager-app
 
+  # CD into the new laravel app
+  - voyager-app
+
+  # Include Voyager Package
+  - composer require tcg/voyager
+
+  # Remove the current version
+  - rm -rf vendor/tcg/voyager
+
+  # Move this build into the voyager folder
+  - mv /home/travis/build/the-control-group/voyager /home/travis/build/the-control-group/voyager-app/vendor/tcg/voyager
+
+  # Move up one folder and rename voyager-app to voyager
+  - cd ../
+  - mv voyager-app voyager
+  - cd voyager
+  - composer dump-autoload
+
+  # Add the database credentials
+  - sed 's/DB_DATABASE=homestead/DB_DATABASE=voyager/g' .env > environment
+  - sed 's/DB_USERNAME=homestead/DB_USERNAME=${MYSQL_USER}/g' environment > .env
+  - sed 's/DB_PASSWORD=secret/DB_PASSWORD=${MYSQL_PASSWORD}/g' .env > environment
+  - rm .env
+  - mv environment .env
+
+  # Add the service providers
+  - sed 's/App\\Providers\\RouteServiceProvider\:\:class,/App\\Providers\\RouteServiceProvider\:\:class, TCG\\Voyager\\VoyagerServiceProvider\:\:class, Intervention\\Image\\ImageServiceProvider\:\:class,/g' config/app.php > config/app-temp.php
+  - rm config/app.php
+  - mv config/app-temp.php config/app.php
+    
+  # Install voyager
+  - php artisan voyager:install
   
 
 script:
