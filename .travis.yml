@@ -16,9 +16,6 @@ before_script:
   # Create a new database and add all priveleges
   - mysql -u root -e "create database IF NOT EXISTS voyager;"
   
-  # Add the laravel installer
-  - composer global require "laravel/installer"
-
   # Current DIR
   - pwd
 
@@ -26,7 +23,7 @@ before_script:
   - cd ../
 
   # Create a New Laravel App
-  - laravel new voyager-app
+  - composer create-project --prefer-dist laravel/laravel voyager-app
 
   # CD into the new laravel app
   - voyager-app
