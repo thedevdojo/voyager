@@ -1,7 +1,5 @@
 <?php 
 
-use Illuminate\Http\Request;
-
 Route::get('admin/login', 'TCG\Voyager\Controllers\VoyagerAuthController@login')->middleware('web');
 Route::post('admin/login', 'TCG\Voyager\Controllers\VoyagerAuthController@postLogin')->middleware('web');
 
@@ -22,58 +20,14 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
 		endforeach;
 	endif;
 
-	Route::get('admin/menus/{id}/builder/', function($id){
-		$menu = Menu::find($id);
-		return view('voyager::menus.builder', array('menu' => $menu) );
-	});
+	// Menu Routes
+	Route::get('admin/menus/{id}/builder/', 'TCG\Voyager\Controllers\VoyagerMenuController@builder');
+	Route::delete('/admin/menu/delete_menu_item/{id}', 'TCG\Voyager\Controllers\VoyagerMenuController@delete_menu');
+	Route::post('/admin/menu/add_item', 'TCG\Voyager\Controllers\VoyagerMenuController@add_item');
+	Route::put('/admin/menu/update_menu_item/', 'TCG\Voyager\Controllers\VoyagerMenuController@update_item');
+	Route::post('/admin/menu/order', 'TCG\Voyager\Controllers\VoyagerMenuController@order_item');
 
-	Route::delete('/admin/menu/delete_menu_item/{id}', function($id){
-		$item = TCG\Voyager\Models\MenuItem::find($id);
-		$menu_id = $item->menu_id;
-		$item->destroy($id);
-		return redirect('/admin/menus/' . $menu_id . '/builder')->with(array('message' => 'Successfully Deleted Menu Item.', 'alert-type' => 'success'));
-	});
-
-	Route::post('/admin/menu/add_item', function(Request $request){
-		$data = $request->all();
-		$highest_order_menu_item = TCG\Voyager\Models\MenuItem::where('parent_id', '=', NULL)->orderBy('order', 'DESC')->first();
-		if(isset($highest_order_menu_item->id)){
-			$data['order'] = intval($highest_order_menu_item->order) + 1;
-		} else {
-			$data['order'] = 1;
-		}
-		TCG\Voyager\Models\MenuItem::create($data);
-		return redirect('/admin/menus/' . $data['menu_id'] . '/builder')->with(array('message' => 'Successfully Created New Menu Item.', 'alert-type' => 'success'));
-	});
-
-	Route::put('/admin/menu/update_menu_item/', function(Request $request){
-		$id = $request->input('id');
-		$data = $request->all();
-		unset($data['id']);
-		$menu_item = TCG\Voyager\Models\MenuItem::find($id);
-		$menu_item->update($data);
-		return redirect('/admin/menus/' . $menu_item->menu_id . '/builder')->with(array('message' => 'Successfully Updated Menu Item.', 'alert-type' => 'success'));
-	});
-
-	Route::post('/admin/menu/order', function(Request $request){
-		$menu_item_order = json_decode($request->input('order'));
-		order_menu($menu_item_order, NULL);
-	});
-
-	function order_menu($menu_items, $parent_id){
-		foreach($menu_items as $index => $menu_item):
-			$item = TCG\Voyager\Models\MenuItem::find($menu_item->id);
-			$item->order = $index + 1;
-			$item->parent_id = $parent_id;
-			$item->save();
-			if(isset($menu_item->children)){
-				order_menu($menu_item->children, $item->id);
-			}
-		endforeach;
-	}
-
-	//Route::resource('admin/roles', 'TCG\Voyager\Controllers\VoyagerRoleController');
-
+	// Settings
 	Route::get('admin/settings', 'TCG\Voyager\Controllers\VoyagerSettingsController@index');
 	Route::post('admin/settings', 'TCG\Voyager\Controllers\VoyagerSettingsController@save');
 	Route::post('admin/settings/create', 'TCG\Voyager\Controllers\VoyagerSettingsController@create');

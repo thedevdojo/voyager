@@ -57,6 +57,10 @@ before_script:
     
   # Install voyager
   - php artisan voyager:install
+
+  # Remove the default phpunit.xml and replace it with voyager phpunit.xml
+  - rm phpunit.xml
+  - cp vendor/tcg/voyager/phpunit.xml phpunit.xml
   
 
 script:

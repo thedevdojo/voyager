@@ -1,11 +1,5 @@
 @extends('voyager::master')
 
-@section('css')
-	<!-- DataTables -->
-  <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/remark/global/vendor/datatables-bootstrap/dataTables.bootstrap.css">
-  <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/remark/global/vendor/datatables-responsive/dataTables.responsive.css">
-@stop
-
 @section('page_header')
 	<h1 class="page-title">
 		<i class="voyager-list-add"></i> {{ $dataType->display_name_plural }} <a href="/admin/{{ $dataType->slug }}/create" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add New</a>
@@ -86,12 +80,6 @@
 @section('javascript')
 	<!-- DataTables -->
     
-
-    <script src="{{ config('voyager.assets_path') }}/remark/global/vendor/datatables/jquery.dataTables.js"></script>
-	<script src="{{ config('voyager.assets_path') }}/remark/global/vendor/datatables-fixedheader/dataTables.fixedHeader.js"></script>
-	<script src="{{ config('voyager.assets_path') }}/remark/global/vendor/datatables-bootstrap/dataTables.bootstrap.js"></script>
-	<script src="{{ config('voyager.assets_path') }}/remark/global/vendor/datatables-responsive/dataTables.responsive.js"></script>
-	<script src="{{ config('voyager.assets_path') }}/remark/global/vendor/datatables-tabletools/dataTables.tableTools.js"></script>
 
     <script>
 
