@@ -45,6 +45,7 @@ class RolesTest extends TestCase
         $this->seePageIs('/admin/roles');
         $this->seeInDatabase('roles', ['name' => 'user']);
 
+        // Get the current super admin role
         $superadmin_role = Role::where('name', '=', 'superadmin')->first();
 
 	    // Deleting a Role
