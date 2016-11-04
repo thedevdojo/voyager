@@ -67,28 +67,33 @@ class VoyagerServiceProvider extends ServiceProvider
         
         // Publish the assets to the Public folder
         $this->publishes([
-            __DIR__.'/../assets' => public_path('vendor/tcg/voyager/assets'),
+            __DIR__.'/../publishable/assets' => public_path('vendor/tcg/voyager/assets'),
         ], 'voyager_assets');
 
         // Publish the migrations to the migrations folder
         $this->publishes([
-            __DIR__.'/../database/migrations/' => database_path('migrations')
+            __DIR__.'/../publishable/database/migrations/' => database_path('migrations')
         ], 'migrations');
 
         // Publish the seeds to the seeds folder
         $this->publishes([
-            __DIR__.'/../database/seeds/' => database_path('seeds')
+            __DIR__.'/../publishable/database/seeds/' => database_path('seeds')
         ], 'seeds');
 
         // Publish the content/uploads content to the migrations folder
         $this->publishes([
-            __DIR__.'/../demo_content/' => storage_path('app/public')
+            __DIR__.'/../publishable/demo_content/' => storage_path('app/public')
         ], 'demo_content');
 
         // Publish the content/uploads content to the migrations folder
         $this->publishes([
-            __DIR__.'/../config/voyager.php' => config_path('voyager.php')
+            __DIR__.'/../publishable/config/voyager.php' => config_path('voyager.php')
         ], 'config');
+
+        // Publish the post view
+        $this->publishes([
+            __DIR__.'/../publishable/views/' => resource_path('views')
+        ], 'views');
     }
 
 }

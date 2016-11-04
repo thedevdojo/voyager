@@ -1,0 +1,14 @@
+table p{
+	margin:0px;
+	padding:5px;
+}
+table p.name{
+	font-weight:bold;
+}
+.table>tfoot>tr>th, .table>thead>tr>th{
+	font-weight:bold;
+	border-bottom:2px solid #ccc;
+}
+form button{
+	border:0px;
+}
