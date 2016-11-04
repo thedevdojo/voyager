@@ -186,5 +186,16 @@ This is only valid if you have set your image to be resized. If you specify your
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
 
+Customization
+---------------
+
+### Overriding Views
+You can override any of the BREAD views by creating a new folder in `resources/views/admin/slug-name` and *slug-name* will be the *slug* that you have assigned for that table. There are 2 files that you will include in each which will be:
+
+ - browse.blade.php
+ - edit-add.blade.php
+
+By default an `admin/posts` view has been published to your `resources/views` folder. So those 2 view files will be located at `resources/views/admin/posts/browse.blade.php` and `resources/views/admin/posts/edit-add.blade.php`. 
+
 More Stuff
 =======
