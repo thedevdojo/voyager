@@ -45,6 +45,19 @@ class VoyagerCommand extends Command
     }
 
     /**
+     * Get the composer command for the environment.
+     *
+     * @return string
+     */
+    protected function findComposer()
+    {
+        if (file_exists(getcwd().'/composer.phar')) {
+            return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
+        }
+        return 'composer';
+    }
+
+    /**
      * Execute the console command.
      *
      * @return void
@@ -65,8 +78,10 @@ class VoyagerCommand extends Command
         Artisan::call('migrate');
 
         $this->info("Dumping the autoloaded files and reloading all new files");
+        
+        $composer = $this->findComposer();
 
-        $process = new Process('composer dump-autoload');
+        $process = new Process($composer . ' dump-autoload');
         $process->run();
 
         $this->info("Seeding data into the database");
