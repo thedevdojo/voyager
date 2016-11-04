@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Voyager - The Missing Laravel Admin</title>
+    <title>{{ Voyager::setting('admin_title','Voyager') }} - {{ Voyager::setting('admin_description','The Missing Laravel Admin') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<?= csrf_token() ?>" />
     <!-- Fonts -->
@@ -130,7 +130,7 @@
                         <div class="navbar-header">
                             <a class="navbar-brand" href="#">
                                 <div class="icon voyager-helm"></div>
-                                <div class="title">Voyager</div>
+                                <div class="title">{{ Voyager::setting('admin_title','Voyager') }}</div>
                             </a>
                             <button type="button" class="navbar-expand-toggle pull-right visible-xs">
                                 <i class="fa fa-times icon"></i>
