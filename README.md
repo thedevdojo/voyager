@@ -1,6 +1,8 @@
 # **V**oyager - The Missing Laravel Admin
 Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
+[![Build Status](https://travis-ci.org/the-control-group/voyager.svg?branch=master)](https://travis-ci.org/the-control-group/voyager)
+
 ![Voyager Screenshot](https://raw.githubusercontent.com/the-control-group/voyager/gh-pages/images/screenshot.png)
 
 Video Demo Here: https://devdojo.com/episode/laravel-admin-package-voyager
