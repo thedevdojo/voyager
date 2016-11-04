@@ -20,6 +20,9 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
 		endforeach;
 	endif;
 
+	// User Routes
+	Route::resource('admin/users', 'TCG\Voyager\Controllers\VoyagerUserController');
+
 	// Menu Routes
 	Route::get('admin/menus/{id}/builder/', 'TCG\Voyager\Controllers\VoyagerMenuController@builder');
 	Route::delete('/admin/menu/delete_menu_item/{id}', 'TCG\Voyager\Controllers\VoyagerMenuController@delete_menu');
