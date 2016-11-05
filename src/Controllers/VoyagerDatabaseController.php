@@ -31,7 +31,7 @@ class VoyagerDatabaseController extends Controller
 		try{
 			Schema::create($table_name, function(Blueprint $table) use ($query_rows){
 				foreach($query_rows as $query){
-					eval('$table->' . $query . ";");
+                    $table->$query;
 				}
 			});
 
@@ -107,9 +107,9 @@ class VoyagerDatabaseController extends Controller
 							if($table_key[(string)$request->field[$index]] == "UNI"){
 								$query = str_replace('->unique()', '', $query);
 							}
-							eval('$table->' . $query . "->change();");
+                            $table->$query->change();
 						} else {
-							eval('$table->' . $query . ";");
+                            $table->$query;
 						}
 						
 					}
