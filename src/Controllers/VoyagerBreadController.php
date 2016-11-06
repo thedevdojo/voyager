@@ -207,7 +207,7 @@ class VoyagerBreadController extends Controller
     $rules = [];
     foreach($rows as $row){
       $options = json_decode($row->details);
-	  if(isset($options->rules)) $rules[$row->field] = $options->rules;
+	  if(isset($options->rule)) $rules[$row->field] = $options->rule;
 
       $content = $this->getContentBasedOnType($request, $slug, $row);
       if($content === NULL){
