@@ -33,7 +33,7 @@ class RouteTest extends TestCase
             "/{$prefix}/posts",
             "/{$prefix}/posts/create",
             "/{$prefix}/posts/23/edit",
-            //"/{$prefix}/posts/23",
+            "/{$prefix}/posts/23",
             "/{$prefix}/pages",
             "/{$prefix}/pages/create",
             "/{$prefix}/pages/1",
