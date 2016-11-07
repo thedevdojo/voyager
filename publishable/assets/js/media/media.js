@@ -18,7 +18,7 @@ var VoyagerMedia = function(o){
 	var options = $.extend(true, defaults, o);
 	this.init = function(){
 		$("#upload").dropzone({
-			url: options.baseurl+"/media/upload",
+			url: options.baseUrl+"/media/upload",
 			previewsContainer: "#uploadPreview",
 			totaluploadprogress: function(uploadProgress, totalBytes, totalBytesSent){
 				$('#uploadProgress .progress-bar').css('width', uploadProgress + '%');
@@ -128,7 +128,7 @@ var VoyagerMedia = function(o){
 
 		$('#new_folder_submit').click(function(){
 			new_folder_path = manager.files.path + '/' + $('#new_folder_name').val();
-			$.post(options.baseurl+'/media/new_folder', { new_folder: new_folder_path, _token: CSRF_TOKEN }, function(data){
+			$.post(options.baseUrl+'/media/new_folder', { new_folder: new_folder_path, _token: CSRF_TOKEN }, function(data){
 				if(data.success == true){
 					toastr.success('successfully created ' + $('#new_folder_name').val(), "Sweet Success!");
 					getFiles(manager.folders);
@@ -152,7 +152,7 @@ var VoyagerMedia = function(o){
 
 		$('#confirm_delete').click(function(){
 
-			$.post(options.baseurl+'/media/delete_file_folder', { folder_location: manager.folders, file_folder: manager.selected_file.name, type: manager.selected_file.type, _token: CSRF_TOKEN }, function(data){
+			$.post(options.baseUrl+'/media/delete_file_folder', { folder_location: manager.folders, file_folder: manager.selected_file.name, type: manager.selected_file.type, _token: CSRF_TOKEN }, function(data){
 				if(data.success == true){
 					toastr.success('successfully deleted ' + manager.selected_file.name, "Sweet Success!");
 					getFiles(manager.folders);
@@ -185,7 +185,7 @@ var VoyagerMedia = function(o){
 			destination = $('#move_folder_dropdown').val() + '/' + manager.selected_file.name;
 			$('#move_file_modal').modal('hide');
 			console.log(destination);
-			$.post(options.baseurl+'/media/move_file', { folder_location: manager.folders, source: source, destination: destination, _token: CSRF_TOKEN }, function(data){
+			$.post(options.baseUrl+'/media/move_file', { folder_location: manager.folders, source: source, destination: destination, _token: CSRF_TOKEN }, function(data){
 				if(data.success == true){
 					toastr.success('Successfully moved file/folder', "Sweet Success!");
 					getFiles(manager.folders);
@@ -201,7 +201,7 @@ var VoyagerMedia = function(o){
 			new_filename = $('#new_filename').val();
 			$('#rename_file_modal').modal('hide');
 			console.log(manager.folders);
-			$.post(options.baseurl+'/media/rename_file', { folder_location: manager.folders, filename: filename, new_filename: new_filename, _token: CSRF_TOKEN }, function(data){
+			$.post(options.baseUrl+'/media/rename_file', { folder_location: manager.folders, filename: filename, new_filename: new_filename, _token: CSRF_TOKEN }, function(data){
 				if(data.success == true){
 					toastr.success('Successfully renamed file/folder', "Sweet Success!");
 					getFiles(manager.folders);
