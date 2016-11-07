@@ -8,7 +8,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
 	// Main Admin and Logout Route
 	Route::get('/', ['uses'=>'VoyagerController@index', 'as'=>'voyager.dashboard']);
 	Route::get('logout', ['uses'=>'VoyagerController@logout', 'as'=>'voyager.logout']);
-	Route::post('upload', 'VoyagerController@upload');
+	Route::post('upload', ['uses'=>'VoyagerController@upload', 'as'=>'voyager.upload']);
 
 	Route::get('profile', ['as'=>'voyager.profile', function(){
 		return view('voyager::profile');

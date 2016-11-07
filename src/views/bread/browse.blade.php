@@ -65,7 +65,7 @@
 	        <h4 class="modal-title"><i class="fa fa-trash-o"></i> Are you sure you want to delete this {{ $dataType->display_name_singular }}?</h4>
 	      </div>
 	      <div class="modal-footer">
-            <form action="{{ route($dataType->slug.'.show') }}" id="delete_form" method="POST">
+            <form action="{{ route($dataType->slug.'.index') }}" id="delete_form" method="POST">
             	<input type="hidden" name="_method" value="DELETE">
             	<input type="hidden" name="_token" value="{{ csrf_token() }}">
             	<input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This {{ $dataType->display_name_singular }}">
