@@ -13,8 +13,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 class VoyagerAuthController extends Controller
 {
 
-    //protected $redirectTo = '/admin';
-
     use AuthenticatesUsers;
    
     public function login(Request $request)

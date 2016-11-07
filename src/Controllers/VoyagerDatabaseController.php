@@ -39,7 +39,7 @@ class VoyagerDatabaseController extends Controller
 				Artisan::call('make:model', ['name' => ucfirst($table_name)]);
 			}
 
-			return redirect('/admin/database/')->with(array('message' => 'Successfully created ' . $table_name . ' table', 'alert-type' => 'success'));
+			return redirect(route('voyager.database'))->with(array('message' => 'Successfully created ' . $table_name . ' table', 'alert-type' => 'success'));
 		} catch(\Exception $e){
 			return back()->with(array('message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error'));
 		}
@@ -152,7 +152,7 @@ class VoyagerDatabaseController extends Controller
 				}
 			}
 
-			return redirect('/admin/database/')->with(array('message' => 'Successfully update ' . $table_name . ' table', 'alert-type' => 'success'));
+			return redirect(route('voyager.database'))->with(array('message' => 'Successfully update ' . $table_name . ' table', 'alert-type' => 'success'));
 		// } catch(\Exception $e){
 		// 	return back()->with(array('message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error'));
 		// }
@@ -241,7 +241,7 @@ class VoyagerDatabaseController extends Controller
 	public function delete($table){
 		try{
 			Schema::drop($table);
-			return redirect('/admin/database/')->with(array('message' => 'Successfully deleted ' . $table . ' table', 'alert-type' => 'success'));
+			return redirect(route('voyager.database'))->with(array('message' => 'Successfully deleted ' . $table . ' table', 'alert-type' => 'success'));
 		} catch(\Exception $e){
 			return back()->with(array('message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error'));
 		}
@@ -262,10 +262,10 @@ class VoyagerDatabaseController extends Controller
         $success = $this->updateDataType($dataType, $requestData);
 
         if($success):
-            return redirect('/admin/database')->with(array('message' => 'Successfully created new BREAD', 'alert-type' => 'success'));
+            return redirect(route('voyager.database'))->with(array('message' => 'Successfully created new BREAD', 'alert-type' => 'success'));
         endif;
 
-        return redirect('/admin/database')->with(array('message' => 'Sorry it appears there may have been a problem creating this bread', 'alert-type' => 'error'));
+        return redirect(route('voyager.database'))->with(array('message' => 'Sorry it appears there may have been a problem creating this bread', 'alert-type' => 'error'));
     }
 
 	public function addEditBread($id)
@@ -280,10 +280,10 @@ class VoyagerDatabaseController extends Controller
         $success = $this->updateDataType($dataType, $requestData);
 
         if($success):
-            return redirect('/admin/database')->with(array('message' => 'Successfully updated the ' . $dataType->name . ' BREAD', 'alert-type' => 'success'));
+            return redirect(route('voyager.database'))->with(array('message' => 'Successfully updated the ' . $dataType->name . ' BREAD', 'alert-type' => 'success'));
         endif;
 
-        return redirect('/admin/database')->with(array('message' => 'Sorry it appears there may have been a problem updating this bread', 'alert-type' => 'error'));
+        return redirect(route('voyager.database'))->with(array('message' => 'Sorry it appears there may have been a problem updating this bread', 'alert-type' => 'error'));
 
     }
 
@@ -338,9 +338,9 @@ class VoyagerDatabaseController extends Controller
         $datatype = DataType::find($id);
         $table_name = $datatype->name;
         if(DataType::destroy($id)){
-            return redirect('/admin/database')->with(array('message' => 'Successfully removed BREAD from ' . $table_name, 'alert-type' => 'success'));
+            return redirect(route('voyager.database'))->with(array('message' => 'Successfully removed BREAD from ' . $table_name, 'alert-type' => 'success'));
         }
 
-        return redirect('/admin/database')->with(array('message' => 'Sorry it appears there was a problem removing this bread', 'alert-type' => 'danger'));
+        return redirect(route('voyager.database'))->with(array('message' => 'Sorry it appears there was a problem removing this bread', 'alert-type' => 'danger'));
     }
 }
