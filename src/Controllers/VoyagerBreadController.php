@@ -204,8 +204,10 @@ class VoyagerBreadController extends Controller
   } // end of destroy()
 
    public function insertUpdateData($request, $slug, $rows, $data){
-
+    $rules = [];
     foreach($rows as $row){
+      $options = json_decode($row->details);
+	  if(isset($options->rule)) $rules[$row->field] = $options->rule;
 
       $content = $this->getContentBasedOnType($request, $slug, $row);
       if($content === NULL){
@@ -215,10 +217,12 @@ class VoyagerBreadController extends Controller
         if($row->field == 'password'){
           $content = $data->{$row->field};
         }
-      } 
+      }
 
       $data->{$row->field} = $content;
     }
+
+    $this->validate($request, $rules);
 
     $data->save();
 

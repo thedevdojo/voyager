@@ -24,22 +24,32 @@
         <!-- form start -->
         <form role="form" action="@if(isset($dataTypeContent->id)){{ '/admin/' . $dataType->slug . '/' . $dataTypeContent->id }}@else{{ '/admin/' . $dataType->slug }}@endif" method="POST" enctype="multipart/form-data">
           <div class="panel-body">
-            
+
+            @if (count($errors) > 0)
+              <div class="alert alert-danger">
+                <ul>
+                  @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                  @endforeach
+                </ul>
+              </div>
+            @endif
+
             @foreach($dataType->addRows as $row)
               <div class="form-group">
                 <label for="name">{{ $row->display_name }}</label>
                 
                 @if($row->type == "text")
-                  <input type="text" class="form-control" name="{{ $row->field }}" placeholder="{{ $row->display_name }}" value="@if(isset($dataTypeContent->{$row->field})){{ $dataTypeContent->{$row->field} }}@endif">
+                  <input type="text" class="form-control" name="{{ $row->field }}" placeholder="{{ $row->display_name }}" value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
                 @elseif($row->type == "password")
                   @if(isset($dataTypeContent->{$row->field}))
                     <br><small>Leave empty to keep the same</small>
                   @endif
                   <input type="password" class="form-control" name="{{ $row->field }}" value="">
                 @elseif($row->type == "text_area")
-                  <textarea class="form-control" name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ $dataTypeContent->{$row->field} }}@endif</textarea>
+                  <textarea class="form-control" name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif</textarea>
                 @elseif($row->type == "rich_text_box")
-                  <textarea class="form-control richTextBox" name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ $dataTypeContent->{$row->field} }}@endif</textarea>
+                  <textarea class="form-control richTextBox" name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif</textarea>
                 @elseif($row->type == "image" || $row->type == "file")
                   @if($row->type == "image" && isset($dataTypeContent->{$row->field}))
                     <img src="{{ Voyager::image( $dataTypeContent->{$row->field} ) }}" style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
@@ -49,7 +59,7 @@
                   <input type="file" name="{{ $row->field }}">
                 @elseif($row->type == "select_dropdown")
                   <?php $options = json_decode($row->details); ?>
-                  <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty($dataTypeContent->{$row->field})) ? $dataTypeContent->{$row->field} : NULL; ?>
+                  <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
                   <select class="form-control" name="{{ $row->field }}">
                     <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
                     @if(isset($options->options))
@@ -61,7 +71,7 @@
 
                 @elseif($row->type == "radio_btn")
                   <?php $options = json_decode($row->details); ?>
-                  <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty($dataTypeContent->{$row->field})) ? $dataTypeContent->{$row->field} : NULL; ?>
+                  <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
                   <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
                     <ul class="radio">
                     @if(isset($options->options))
@@ -79,7 +89,7 @@
 
                   <br>
                   <?php $options = json_decode($row->details); ?>
-                  <?php $checked = (isset($dataTypeContent->{$row->field}) && $dataTypeContent->{$row->field} == 1) ? true : false; ?>
+                  <?php $checked = (isset($dataTypeContent->{$row->field}) && old($row->field, $dataTypeContent->{$row->field}) == 1) ? true : old($row->field); ?>
                   @if(isset($options->on) && isset($options->off))
                       <input type="checkbox" name="{{ $row->field }}" class="toggleswitch" data-on="{{ $options->on }}" @if($checked) checked @endif data-off="{{ $options->off }}">
                   @else
