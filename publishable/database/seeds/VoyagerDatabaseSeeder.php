@@ -14,7 +14,6 @@ class VoyagerDatabaseSeeder extends Seeder
         $this->call('CategoriesTableSeeder');
         $this->call('DataTypesTableSeeder');
         $this->call('DataRowsTableSeeder');
-        $this->call('UsersTableSeeder');
         $this->call('PostsTableSeeder');
         $this->call('PagesTableSeeder');
         $this->call('MenusTableSeeder');
