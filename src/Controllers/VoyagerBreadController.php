@@ -104,7 +104,7 @@ class VoyagerBreadController extends Controller
     $dataType = DataType::where('slug', '=', $slug)->first();
     eval('$data = ' . $dataType->model_name . '::find(' . $id . ');');
     $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-    return redirect('/admin/' .$dataType->slug)->with(array('message' => 'Successfully Updated ' . $dataType->display_name_singular, 'alert-type' => 'success'));
+    return redirect(route($dataType->slug.'.index'))->with(array('message' => 'Successfully Updated ' . $dataType->display_name_singular, 'alert-type' => 'success'));
   }
 
     //***************************************

@@ -22,16 +22,16 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
 
 	// Menu Routes
 	Route::get('menus/{id}/builder/', ['uses'=>'VoyagerMenuController@builder', 'as'=>'voyager.menu.builder']);
-	Route::delete('menu/delete_menu_item/{id}', 'VoyagerMenuController@delete_menu');
-	Route::post('menu/add_item', 'VoyagerMenuController@add_item');
-	Route::put('menu/update_menu_item/', 'VoyagerMenuController@update_item');
-	Route::post('menu/order', 'VoyagerMenuController@order_item');
+	Route::delete('menu/delete_menu_item/{id}', ['uses'=>'VoyagerMenuController@delete_menu', 'as'=>'voyager.menu.delete_menu_item']);
+	Route::post('menu/add_item', ['uses'=>'VoyagerMenuController@add_item', 'as'=>'voyager.menu.add_item']);
+	Route::put('menu/update_menu_item', ['uses'=>'VoyagerMenuController@update_item', 'as'=>'voyager.menu.update_menu_item']);
+	Route::post('menu/order', ['uses'=>'VoyagerMenuController@order_item', 'as'=>'voyager.menu.order_item']);
 
 	// Settings
 	Route::get('settings', ['uses'=>'VoyagerSettingsController@index', 'as'=>'voyager.settings']);
 	Route::post('settings', 'VoyagerSettingsController@save');
-	Route::post('settings/create', 'VoyagerSettingsController@create');
-	Route::delete('settings/{id}', 'VoyagerSettingsController@delete');
+	Route::post('settings/create', ['uses'=>'VoyagerSettingsController@create', 'as'=>'voyager.settings.create']);
+	Route::delete('settings/{id}', ['uses'=>'VoyagerSettingsController@delete', 'as'=>'voyager.settings.delete']);
 	Route::get('settings/move_up/{id}', ['uses'=>'VoyagerSettingsController@move_up', 'as'=>'voyager.settings.move_up']);
 	Route::get('settings/move_down/{id}', ['uses'=>'VoyagerSettingsController@move_down', 'as'=>'voyager.settings.move_down']);
 	Route::get('settings/delete_value/{id}', ['uses'=>'VoyagerSettingsController@delete_value', 'as'=>'voyager.settings.delete_value']);
@@ -44,7 +44,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     Route::post('media/directories', 'VoyagerMediaController@get_all_dirs');
     Route::post('media/move_file', 'VoyagerMediaController@move_file');
     Route::post('media/rename_file', 'VoyagerMediaController@rename_file');
-    Route::post('media/upload', 'VoyagerMediaController@upload');
+    Route::post('media/upload', ['uses'=>'VoyagerMediaController@upload', 'as'=>'voyager.media.upload']);
 
     // Database Routes
     Route::get('database', ['uses'=>'VoyagerDatabaseController@index', 'as'=>'voyager.database']);
@@ -63,10 +63,10 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
 		});
 	});
 
-	Route::post('database/create_bread', 'VoyagerDatabaseController@addBread');
+	Route::post('database/create_bread', ['uses'=>'VoyagerDatabaseController@addBread', 'as' => 'voyager.database.create_bread']);
 	Route::post('database/store_bread', 'VoyagerDatabaseController@storeBread');
 	Route::get('database/{id}/edit-bread', ['uses'=>'VoyagerDatabaseController@addEditBread', 'as' => 'voyager.database.edit_bread']);
 	Route::put('database/{id}/edit-bread', 'VoyagerDatabaseController@updateBread');
-	Route::delete('database/delete_bread/{id}', 'VoyagerDatabaseController@deleteBread');
+	Route::delete('database/delete_bread/{id}', ['uses'=>'VoyagerDatabaseController@deleteBread', 'as' => 'voyager.database.delete_bread']);
 
 });
