@@ -25,8 +25,10 @@ class VoyagerServiceProvider extends ServiceProvider
         }
 
         $this->loadViewsFrom(__DIR__.'/views', 'voyager');
-
-        include __DIR__.'/routes.php';
+        
+        if (!$this->app->routesAreCached()) {
+            require __DIR__.'/routes.php';
+        }
     }
 
     /**
