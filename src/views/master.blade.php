@@ -91,12 +91,12 @@
 
 
                         <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
-                            <i class="fa fa-th icon"></i>
+                            <i class="voyager-list icon"></i>
                         </button>
                     </div>
                     <ul class="nav navbar-nav navbar-right">
                         <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
-                            <i class="fa fa-times icon"></i>
+                            <i class="voyager-x icon"></i>
                         </button>
 
                        
@@ -133,7 +133,7 @@
                                 <div class="title">{{Voyager::setting('admin_title')}}</div>
                             </a>
                             <button type="button" class="navbar-expand-toggle pull-right visible-xs">
-                                <i class="fa fa-times icon"></i>
+                                <i class="voyager-x icon"></i>
                             </button>
                         </div>
 

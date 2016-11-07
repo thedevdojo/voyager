@@ -6,7 +6,7 @@
 
 @section('page_header')
 	<h1 class="page-title">
-		<i class="voyager-list"></i>Menu Builder ({{ $menu->name }}) <div class="btn btn-success add_item"><i class="fa fa-plus-circle"></i> New Menu Item</div>
+		<i class="voyager-list"></i>Menu Builder ({{ $menu->name }}) <div class="btn btn-success add_item"><i class="voyager-plus"></i> New Menu Item</div>
 	</h1>
 
 @stop
@@ -47,7 +47,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title"><i class="fa fa-trash-o"></i> Are you sure you want to delete this menu item?</h4>
+	        <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete this menu item?</h4>
 	      </div>
 	      <div class="modal-footer">
             <form action="/admin/menu/delete_menu_item/" id="delete_form" method="POST">
@@ -67,7 +67,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Create a New Menu Item</h4>
+	        <h4 class="modal-title"><i class="voyager-plus"></i> Create a New Menu Item</h4>
 	      </div>
 	      <form action="/admin/menu/add_item" id="delete_form" method="POST">
             		<div class="modal-body">
@@ -102,7 +102,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title"><i class="fa fa-edit"></i> Edit Menu Item</h4>
+	        <h4 class="modal-title"><i class="voyager-edit"></i> Edit Menu Item</h4>
 	      </div>
 	      <form action="/admin/menu/update_menu_item" id="edit_form" method="POST">
             		<div class="modal-body">

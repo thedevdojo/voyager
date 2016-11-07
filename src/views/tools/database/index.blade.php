@@ -7,7 +7,7 @@
 @section('page_header')
 	<h1 class="page-title">
 		<i class="voyager-data"></i> Database
-		<a href="{{ route('voyager_database_create_table') }}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Create New Table</a>
+		<a href="{{ route('voyager_database_create_table') }}" class="btn btn-success"><i class="voyager-plus"></i> Create New Table</a>
 	</h1>
 @stop
 
@@ -65,7 +65,7 @@
                                     <form action="/admin/database/create_bread" method="POST">
                                         <input type="hidden" value="{{ csrf_token() }}" name="_token">
                                         <input type="hidden" value="{{ $table }}" name="table">
-                                        <button type="submit" class="btn-sm btn-default"><i class="fa fa-plus-circle"></i> Add BREAD to this table</button>
+                                        <button type="submit" class="btn-sm btn-default"><i class="voyager-plus"></i> Add BREAD to this table</button>
                                     </form>
                                 @endif
                             </div>
