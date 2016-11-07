@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 class VoyagerAuthController extends Controller
 {
 
-    protected $redirectTo = '/admin';
+    //protected $redirectTo = '/admin';
 
     use AuthenticatesUsers;
    
@@ -46,6 +46,11 @@ class VoyagerAuthController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    public function redirectPath()
+    {
+        return route('voyager.dashboard') ;
     }
 }
 

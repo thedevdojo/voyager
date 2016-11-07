@@ -22,7 +22,7 @@ class VoyagerController extends Controller
 	public function logout()
 	{
 		Auth::logout();
-		return redirect('/admin/login');
+		return redirect(route('voyager.logout'));
 	}
 
 	public function upload(Request $request){

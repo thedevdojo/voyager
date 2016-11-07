@@ -112,10 +112,10 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="/admin/profile"><i class="voyager-person"></i> Profile</a>
+                                    <a href="{{ route('voyager.profile') }}"><i class="voyager-person"></i> Profile</a>
                                 </li>
                                 <li>
-                                    <a href="/admin/logout"><i class="voyager-power"></i> Logout</a>
+                                    <a href="{{ route('voyager.logout') }}"><i class="voyager-power"></i> Logout</a>
                                 </li>
                             </ul>
                         </li>

@@ -26,7 +26,7 @@ class VoyagerAdminMiddleware
                 return redirect('/');
             }
         }
-        return redirect('/admin/login'); 
+        return redirect(route('voyager.login'));
         
     }
 }
