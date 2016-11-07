@@ -261,7 +261,7 @@ var VoyagerMedia = function(o){
 				var folder_location = '/';
 			}
 			$('#file_loader').fadeIn();
-			$.post(options.baseurl+'/media/files', { folder:folder_location, _token: CSRF_TOKEN, _token: CSRF_TOKEN }, function(data) {
+			$.post(options.baseUrl+'/media/files', { folder:folder_location, _token: CSRF_TOKEN, _token: CSRF_TOKEN }, function(data) {
 				$('#file_loader').hide();
 				manager.files = data;
 				for(var i=0; i < manager.files.items.length; i++){
@@ -273,7 +273,7 @@ var VoyagerMedia = function(o){
 
 			// Add the latest files to the folder dropdown
 			var all_folders = '';
-			$.post(options.baseurl+'/media/directories', { folder_location:manager.folders, _token: CSRF_TOKEN }, function(data){
+			$.post(options.baseUrl+'/media/directories', { folder_location:manager.folders, _token: CSRF_TOKEN }, function(data){
 				console.log(data);
 				manager.directories = data;
 			});
