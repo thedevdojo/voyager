@@ -385,7 +385,7 @@
                                 id="delete_setting_title"></span> Setting?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.settings')) }}" id="delete_form" method="POST">
+                    <form action="{{ route('voyager.settings') }}" id="delete_form" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"

@@ -91,7 +91,7 @@
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form action="@if(isset($table)){{ route('voyager.database.edit_table') }}@else{{ route('voyager.database.create_table') }}@endif"
+                <form action="@if(isset($table)){{ route('voyager.database.edit_table', $table) }}@else{{ route('voyager.database.create_table') }}@endif"
                       method="POST">
                     <div class="panel panel-bordered">
                         <div class="panel-heading">
