@@ -11,7 +11,7 @@ php:
 
 matrix:
   fast_finish: true
- 
+
   allow_failures:
     - php: 7.1
     - php: hhvm
@@ -23,10 +23,10 @@ services:
 before_script:
   # prevent MySQL went away error
   - mysql -u root -e 'SET @@GLOBAL.wait_timeout=28800;'
-  
+
   # Create a new database and add all priveleges
   - mysql -u root -e "create database IF NOT EXISTS voyager;"
-  
+
   # Current DIR
   - pwd
 
@@ -46,7 +46,7 @@ before_script:
   - rm -rf vendor/tcg/voyager
 
   # Move this build into the voyager folder
-  - mv /home/travis/build/the-control-group/voyager /home/travis/build/the-control-group/voyager-app/vendor/tcg/voyager
+  - mv $TRAVIS_BUILD_DIR $TRAVIS_BUILD_DIR/../voyager-app/vendor/tcg/voyager
 
   # Move up one folder and rename voyager-app to voyager
   - cd ../
@@ -65,14 +65,14 @@ before_script:
   - sed 's/App\\Providers\\RouteServiceProvider\:\:class,/App\\Providers\\RouteServiceProvider\:\:class, TCG\\Voyager\\VoyagerServiceProvider\:\:class, Intervention\\Image\\ImageServiceProvider\:\:class,/g' config/app.php > config/app-temp.php
   - rm config/app.php
   - mv config/app-temp.php config/app.php
-    
+
   # Install voyager
   - php artisan voyager:install
 
   # Remove the default phpunit.xml and replace it with voyager phpunit.xml
   - rm phpunit.xml
   - cp vendor/tcg/voyager/phpunit.xml phpunit.xml
-  
+
 
 script:
   # - vendor/bin/phpunit
