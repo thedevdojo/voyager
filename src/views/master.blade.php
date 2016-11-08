@@ -101,10 +101,10 @@
 
                        
                         <li class="dropdown profile">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{{ $user_avatar }}" class="profile-img"> <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><img src="{{ asset($user_avatar) }}" class="profile-img"> <span class="caret"></span></a>
                             <ul class="dropdown-menu dropdown-menu-animated">
                                 <li class="profile-img">
-                                    <img src="{{ $user_avatar }}" class="profile-img">
+                                    <img src="{{ asset($user_avatar) }}" class="profile-img">
                                     <div class="profile-body">
                                         <h5>{{ Auth::user()->name }}</h5>
                                         <h6>{{ Auth::user()->email }}</h6>
@@ -140,7 +140,7 @@
                         <div class="panel widget center bgimage" style="background-image:url({{ asset(Voyager::image( Voyager::setting('admin_bg_image'), config('voyager.assets_path') . '/images/bg.jpg' )) }});">
                             <div class="dimmer"></div>
                             <div class="panel-content">
-                                <img src="{{ $user_avatar }}" class="avatar" alt="{{ Auth::user()->name }} avatar">
+                                <img src="{{ asset($user_avatar) }}" class="avatar" alt="{{ Auth::user()->name }} avatar">
                                 <h4>{{ ucwords(Auth::user()->name) }}</h4>
                                 <p>{{ Auth::user()->email }}</p>
                             
