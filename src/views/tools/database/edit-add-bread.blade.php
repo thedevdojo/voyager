@@ -157,15 +157,15 @@
                         </div>
                         <div class="form-group">
                           <label for="email">URL Slug (must be unique)</label>
-                          <input type="text" class="form-control" name="slug" placeholder="URL slug (ex. posts)" value="@if(isset($dataType->slug)){{ $dataType->slug }}@endif">
+                          <input type="text" class="form-control" name="slug" placeholder="URL slug (ex. posts)" value="@if(isset($dataType->slug)){{ $dataType->slug }}@else{{ $slug }}@endif">
                         </div>
                         <div class="form-group">
                           <label for="email">Display Name (Singular)</label>
-                          <input type="text" class="form-control" name="display_name_singular" placeholder="Display Name (Singular)" value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@endif">
+                          <input type="text" class="form-control" name="display_name_singular" placeholder="Display Name (Singular)" value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
                         </div>
                         <div class="form-group">
                           <label for="email">Display Name (Plural)</label>
-                          <input type="text" class="form-control" name="display_name_plural" placeholder="Display Name (Plural)" value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@endif">
+                          <input type="text" class="form-control" name="display_name_plural" placeholder="Display Name (Plural)" value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
                         </div>
                         <div class="form-group">
                           <label for="email">Icon (optional) Use a <a href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}" target="_blank">Voyager Font Class</a></label>
@@ -173,7 +173,7 @@
                         </div>
                         <div class="form-group">
                           <label for="email">Model Name (ex. \App\User, if left empty will try and use the table name)</label>
-                          <input type="text" class="form-control" name="model_name" placeholder="Model Class Name" value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@endif">
+                          <input type="text" class="form-control" name="model_name" placeholder="Model Class Name" value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
                         </div>
                         <div class="form-group">
                           <label for="email">Description</label>
