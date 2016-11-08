@@ -204,8 +204,10 @@ class VoyagerBreadController extends Controller
   } // end of destroy()
 
    public function insertUpdateData($request, $slug, $rows, $data){
-
+    $rules = [];
     foreach($rows as $row){
+      $options = json_decode($row->details);
+	  if(isset($options->rule)) $rules[$row->field] = $options->rule;
 
       $content = $this->getContentBasedOnType($request, $slug, $row);
       if($content === NULL){
@@ -215,10 +217,12 @@ class VoyagerBreadController extends Controller
         if($row->field == 'password'){
           $content = $data->{$row->field};
         }
-      } 
+      }
 
       $data->{$row->field} = $content;
     }
+
+    $this->validate($request, $rules);
 
     $data->save();
 
@@ -246,6 +250,16 @@ class VoyagerBreadController extends Controller
       /********** FILE TYPE **********/
     } else if($row->type == 'file'){
 
+        $file = $request->file($row->field);
+        $filename = str_random(20);
+
+        $path =  $slug . '/' . date('F') . date('Y') . '/';
+
+        $full_path = $path . $filename . '.' . $file->getClientOriginalExtension();
+
+        Storage::put(config('voyager.storage.subfolder') . $full_path, (string)$file, 'public');
+        
+        $content = $full_path;
 
       /********** IMAGE TYPE **********/
     } else if($row->type == 'image'){

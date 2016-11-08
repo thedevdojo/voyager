@@ -1369,3 +1369,7 @@ input[type=radio]:checked ~ label{
 
 /********** END CUSTOM RADIO BUTTON STYLES **********/
 
+.btn-success i.voyager-plus{
+  position:relative;
+  top:2px;
+}

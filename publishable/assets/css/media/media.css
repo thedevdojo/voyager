@@ -388,25 +388,9 @@
 }
 
 .file_link i.icon:before{
-	font-family: FontAwesome;
-	font-style: normal;
 	font-size:40px;
 }
-.file_link.folder i.icon:before{
-	content:'\f07b';
-}
 
-.file_link.video i.icon:before{
-	content:'\f008';
-}
-
-.file_link.audio i.icon:before{
-	content:'\f001';
-}
-
-.file_link.file i.icon:before{
-	content:'\f15b';
-}
 
 .detail_img{
 	border-bottom:1px solid #f1f1f1;

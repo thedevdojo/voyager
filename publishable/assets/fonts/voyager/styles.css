@@ -578,3 +578,18 @@
 .voyager-edit:before {
   content: "\e010";
 }
+.voyager-angle-down:before {
+  content: "\e038";
+}
+.voyager-angle-left:before {
+  content: "\e039";
+}
+.voyager-angle-right:before {
+  content: "\e046";
+}
+.voyager-angle-up:before {
+  content: "\e047";
+}
+.voyager-home:before {
+  content: "\e048";
+}
