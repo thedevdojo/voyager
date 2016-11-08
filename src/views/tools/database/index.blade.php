@@ -7,7 +7,7 @@
 @section('page_header')
 	<h1 class="page-title">
 		<i class="voyager-data"></i> Database
-		<a href="{{ route('voyager_database_create_table') }}" class="btn btn-success"><i class="voyager-plus"></i> Create New Table</a>
+		<a href="{{ route('voyager.database.create_table') }}" class="btn btn-success"><i class="voyager-plus"></i> Create New Table</a>
 	</h1>
 @stop
 
