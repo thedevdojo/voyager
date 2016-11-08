@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/database.css">
+    <link rel="stylesheet" href="{{ asset(config('voyager.assets_path')) }}/css/database.css">
 @stop
 
 @section('page_header')

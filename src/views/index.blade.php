@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/ga-embed.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset(config('voyager.assets_path')) }}/css/ga-embed.css">
 @stop
 
 @section('content')
@@ -10,7 +10,7 @@
 
         <div class="widgets">
 
-                 <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
+                 <div class="panel widget center bgimage" style="background-image:url({{ asset(config('voyager.assets_path')) }}/images/widget-backgrounds/02.png);">
                     <div class="dimmer"></div>
                     <div class="panel-content">
                         <i class="voyager-group"></i>
@@ -23,7 +23,7 @@
                     
                 </div>
 
-                <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/03.png);">
+                <div class="panel widget center bgimage" style="background-image:url({{ asset(config('voyager.assets_path')) }}/images/widget-backgrounds/03.png);">
                     <div class="dimmer"></div>
                     <div class="panel-content">
                         <i class="voyager-news"></i>
@@ -36,7 +36,7 @@
                     
                 </div>
 
-                <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/04.png);">
+                <div class="panel widget center bgimage" style="background-image:url({{ asset(config('voyager.assets_path')) }}/images/widget-backgrounds/04.png);">
                     <div class="dimmer"></div>
                     <div class="panel-content">
                         <i class="voyager-file-text"></i>
@@ -143,14 +143,14 @@
       }(window,document,'script'));
       </script>
 
-      <script src="{{ config('voyager.assets_path') }}/js/ga-embed/chart.min.js"></script>
-      <script src="{{ config('voyager.assets_path') }}/js/ga-embed/moment.min.js"></script>
+      <script src="{{ asset(config('voyager.assets_path')) }}/js/ga-embed/chart.min.js"></script>
+      <script src="{{ asset(config('voyager.assets_path')) }}/js/ga-embed/moment.min.js"></script>
       <!-- Include the ViewSelector2 component script. -->
-      <script src="{{ config('voyager.assets_path') }}/js/ga-embed/view-selector2.js"></script>
+      <script src="{{ asset(config('voyager.assets_path')) }}/js/ga-embed/view-selector2.js"></script>
       <!-- Include the DateRangeSelector component script. -->
-      <script src="{{ config('voyager.assets_path') }}/js/ga-embed/date-range-selector.js"></script>
+      <script src="{{ asset(config('voyager.assets_path')) }}/js/ga-embed/date-range-selector.js"></script>
       <!-- Include the ActiveUsers component script. -->
-      <script src="{{ config('voyager.assets_path') }}/js/ga-embed/active-users.js"></script>
+      <script src="{{ asset(config('voyager.assets_path')) }}/js/ga-embed/active-users.js"></script>
 
       <script>
 
