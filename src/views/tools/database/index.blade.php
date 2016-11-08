@@ -59,7 +59,7 @@
 
                             <div class="bread_actions">
                                 @if($active)
-                                    <a class="btn-sm btn-default edit" href="/admin/database/{{ $activeDataType->id }}/edit-bread"> Edit BREAD</a>
+                                    <a class="btn-sm btn-default edit" href="{{ route('voyager.database.edit_bread', $activeDataType->id) }}"> Edit BREAD</a>
                                     <div class="btn-sm btn-danger delete" style="display:inline" data-id="{{ $activeDataType->id }}" data-name="{{ $table }}"> Delete BREAD</div>
                                 @else
                                     <form action="{{ route('voyager.database.create_bread') }}" method="POST">
@@ -73,7 +73,7 @@
                         </td>
                         <td class="actions">
                             <a class="btn-danger btn-sm pull-right delete_table @if($active) remove-bread-warning @endif" data-table="{{ $table }}" style="display:inline; cursor:pointer;"><i class="voyager-trash"></i> Delete</a>
-                            <a class="btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;" href="/admin/database/edit-{{ $table }}-table"><i class="voyager-edit"></i> Edit</a>
+                            <a class="btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;" href="{{ route('voyager.database.edit_table', $table) }}"><i class="voyager-edit"></i> Edit</a>
                             <a class="btn-sm btn-warning pull-right desctable" style="display:inline; margin-right:10px;" href="{{ route('voyager.database.browse_table', $table) }}" data-name="{{ $table }}"><i class="voyager-eye"></i> View</a>
                         </td>
                     </tr>
@@ -91,7 +91,7 @@
             <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete the BREAD for the <span id="delete_builder_name"></span> table?</h4>
           </div>
           <div class="modal-footer">
-            <form action="/admin/database/delete_bread" id="delete_builder_form" method="POST">
+            <form action="{{ route('voyager.database') }}/delete_bread" id="delete_builder_form" method="POST">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="submit" class="btn btn-danger" value="Yes, remove the BREAD">
@@ -187,7 +187,7 @@
                 name = $(e.target).data('name');
 
                 $('#delete_builder_name').text(name);
-                $('#delete_builder_form').attr('action', '/admin/database/delete_bread/' + id);
+                $('#delete_builder_form').action += '/' + id;
                 $('#delete_builder_modal').modal('show');
             });
 
