@@ -187,7 +187,7 @@
                 name = $(e.target).data('name');
 
                 $('#delete_builder_name').text(name);
-                $('#delete_builder_form').action += '/' + id;
+                $('#delete_builder_form')[0].action += '/' + id;
                 $('#delete_builder_modal').modal('show');
             });
 
