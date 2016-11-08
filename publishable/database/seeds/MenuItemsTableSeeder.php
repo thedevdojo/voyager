@@ -12,7 +12,8 @@ class MenuItemsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
+        $prefix = config('voyager.routes.prefix', 'admin');
 
         \DB::table('menu_items')->delete();
         
@@ -22,7 +23,7 @@ class MenuItemsTableSeeder extends Seeder
                 'id' => 1,
                 'menu_id' => 2,
                 'title' => 'Dashboard',
-                'url' => '/admin',
+                'url' => "/{$prefix}",
                 'target' => '_self',
                 'icon_class' => 'voyager-boat',
                 'color' => NULL,
@@ -36,7 +37,7 @@ class MenuItemsTableSeeder extends Seeder
                 'id' => 2,
                 'menu_id' => 2,
                 'title' => 'Media',
-                'url' => '/admin/media',
+                'url' => "/{$prefix}/media",
                 'target' => '_self',
                 'icon_class' => 'voyager-images',
                 'color' => NULL,
@@ -50,7 +51,7 @@ class MenuItemsTableSeeder extends Seeder
                 'id' => 3,
                 'menu_id' => 2,
                 'title' => 'Posts',
-                'url' => '/admin/posts',
+                'url' => "/{$prefix}/posts",
                 'target' => '_self',
                 'icon_class' => 'voyager-news',
                 'color' => NULL,
@@ -64,7 +65,7 @@ class MenuItemsTableSeeder extends Seeder
                 'id' => 4,
                 'menu_id' => 2,
                 'title' => 'Users',
-                'url' => '/admin/users',
+                'url' => "/{$prefix}/users",
                 'target' => '_self',
                 'icon_class' => 'voyager-person',
                 'color' => NULL,
@@ -78,7 +79,7 @@ class MenuItemsTableSeeder extends Seeder
                 'id' => 5,
                 'menu_id' => 2,
                 'title' => 'Categories',
-                'url' => '/admin/categories',
+                'url' => "/{$prefix}/categories",
                 'target' => '_self',
                 'icon_class' => 'voyager-categories',
                 'color' => NULL,
@@ -92,7 +93,7 @@ class MenuItemsTableSeeder extends Seeder
                 'id' => 6,
                 'menu_id' => 2,
                 'title' => 'Pages',
-                'url' => '/admin/pages',
+                'url' => "/{$prefix}/pages",
                 'target' => '_self',
                 'icon_class' => 'voyager-file-text',
                 'color' => NULL,
@@ -106,7 +107,7 @@ class MenuItemsTableSeeder extends Seeder
                 'id' => 7,
                 'menu_id' => 2,
                 'title' => 'Roles',
-                'url' => '/admin/roles',
+                'url' => "/{$prefix}/roles",
                 'target' => '_self',
                 'icon_class' => 'voyager-lock',
                 'color' => NULL,
