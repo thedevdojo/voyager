@@ -22,7 +22,7 @@
       </div>
         <!-- /.box-header -->
         <!-- form start -->
-        <form role="form" action="@if(isset($dataTypeContent->id)){{ '/admin/' . $dataType->slug . '/' . $dataTypeContent->id }}@else{{ '/admin/' . $dataType->slug }}@endif" method="POST" enctype="multipart/form-data">
+        <form role="form" action="@if(isset($dataTypeContent->id)){{ route($dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route($dataType->slug.'.store') }}@endif" method="POST" enctype="multipart/form-data">
           <div class="panel-body">
 
             @if (count($errors) > 0)
@@ -117,7 +117,7 @@
         </form>
 
         <iframe id="form_target" name="form_target" style="display:none"></iframe>
-        <form id="my_form" action="/admin/upload" target="form_target" method="post" enctype="multipart/form-data" style="width:0px;height:0;overflow:hidden">
+        <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post" enctype="multipart/form-data" style="width:0px;height:0;overflow:hidden">
             <input name="image" id="upload_file" type="file" onchange="$('#my_form').submit();this.value='';">
             <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

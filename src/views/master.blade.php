@@ -70,13 +70,13 @@
                                   <li class="active"><i class="voyager-boat"></i> Dashboard</li>
                                 @else
                                   <li  class="active">
-                                    <a href="{{ url('admin')}}"><i class="voyager-boat"></i> Dashboard</a>
+                                    <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> Dashboard</a>
                                   </li>
                                 @endif
                                 <?php $breadcrumb_url = ''; ?>
                                 @for($i = 1; $i <= count(Request::segments()); $i++)
                                   <?php $breadcrumb_url .= '/' . Request::segment($i); ?>
-                                  @if(Request::segment($i) != 'admin' && !is_numeric(Request::segment($i)))
+                                  @if(Request::segment($i) != config('voyager.routes.prefix')) && !is_numeric(Request::segment($i)))
 
                                       @if($i < count(Request::segments()) & $i > 0)
                                         <li class="active"><a href="{{ $breadcrumb_url }}">{{ ucwords(str_replace('-', ' ', str_replace('_', ' ', Request::segment($i)))) }}</a></li>
@@ -112,10 +112,10 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="/admin/profile"><i class="voyager-person"></i> Profile</a>
+                                    <a href="{{ route('voyager.profile') }}"><i class="voyager-person"></i> Profile</a>
                                 </li>
                                 <li>
-                                    <a href="/admin/logout"><i class="voyager-power"></i> Logout</a>
+                                    <a href="{{ route('voyager.logout') }}"><i class="voyager-power"></i> Logout</a>
                                 </li>
                             </ul>
                         </li>
@@ -144,7 +144,7 @@
                                 <h4>{{ ucwords(Auth::user()->name) }}</h4>
                                 <p>{{ Auth::user()->email }}</p>
                             
-                                <a href="/admin/profile" class="btn btn-primary">Profile</a>
+                                <a href="{{ route('voyager.profile') }}" class="btn btn-primary">Profile</a>
                                 <div style="clear:both"></div>
                             </div>
                         </div>
@@ -162,13 +162,13 @@
                                 <div class="panel-body">
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="{{ url('/admin/menus') }}">
+                                            <a href="{{ route('menus.index') }}">
                                                 <span class="icon voyager-list"></span>
                                                 <span class="title">Menu Builder</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="animsition-link" href="{{ url('/admin/database') }}">
+                                            <a class="animsition-link" href="{{ route('voyager.database') }}">
                                                 <span class="icon voyager-data"></span>
                                                 <span class="title">Database</span>
                                             </a>
@@ -178,7 +178,7 @@
                             </div>
                         </li>
                         <li>
-                            <a href="{{ url('/admin/settings') }}">
+                            <a href="{{ route('voyager.settings') }}">
                                 <span class="icon voyager-settings"></span>
                                 <span class="title">Settings</span>
                             </a>
