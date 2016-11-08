@@ -171,7 +171,7 @@
 
 		    $('.dd').on('change', function(e) {
 					console.log(JSON.stringify($('.dd').nestable('serialize')));
-	    			$.post('/admin/menu/order', { order : JSON.stringify($('.dd').nestable('serialize')), _token : '{{ csrf_token() }}' }, function(data){
+	    			$.post('/{{ config('voyager.routes.prefix') }}/menu/order', { order : JSON.stringify($('.dd').nestable('serialize')), _token : '{{ csrf_token() }}' }, function(data){
 	  					toastr.success("Successfully updated menu order.");
 	    			});
 

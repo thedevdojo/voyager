@@ -128,7 +128,7 @@
                 <nav class="navbar navbar-default" role="navigation">
                     <div class="side-menu-container">
                         <div class="navbar-header">
-                            <a class="navbar-brand" href="/admin">
+                            <a class="navbar-brand" href="{{ route('voyager.dashboard') }}">
                                 <div class="icon voyager-helm"></div>
                                 <div class="title">{{Voyager::setting('admin_title')}}</div>
                             </a>
