@@ -64,7 +64,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
 	});
 
 	Route::post('database/create_bread', ['uses'=>'VoyagerDatabaseController@addBread', 'as' => 'voyager.database.create_bread']);
-	Route::post('database/store_bread', 'VoyagerDatabaseController@storeBread');
+	Route::post('database/store_bread', ['uses'=>'VoyagerDatabaseController@storeBread', 'as' => 'voyager.database.store_bread']);
 	Route::get('database/{id}/edit-bread', ['uses'=>'VoyagerDatabaseController@addEditBread', 'as' => 'voyager.database.edit_bread']);
 	Route::put('database/{id}/edit-bread', 'VoyagerDatabaseController@updateBread');
 	Route::delete('database/delete_bread/{id}', ['uses'=>'VoyagerDatabaseController@deleteBread', 'as' => 'voyager.database.delete_bread']);
