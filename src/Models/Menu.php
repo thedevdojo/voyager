@@ -45,12 +45,7 @@ class Menu extends Model
 
     static public function buildBootstrapOutput($menu_items, $output, $options, Request $request){
         
-        if(empty($output)){
-            $output = '<ul class="nav navbar-nav">';
-        } else{
-        
-            $output .= '<ul class="dropdown-menu">';
-        }
+        $output .= '<ul class="nav navbar-nav">';
 
         foreach($menu_items as $item):
             
@@ -71,8 +66,8 @@ class Menu extends Model
             }
 
             $icon = '';
-            if(isset($options->icon) && $options->icon == true){
-                $icon = '<i class="' . $item->icon_class . '"></i>';
+            if(isset($item->icon_class)){
+                $icon = '<span class="icon ' . $item->icon_class . '"></span>';
             }
 
             $styles = '';
@@ -85,7 +80,7 @@ class Menu extends Model
                 $styles = ' style="background-color:'.$item->color.'"';
             }
 
-            $output .= '<li' . $li_class . '><a ' . $a_attrs . ' href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span>' . $item->title . '</span></a>';
+            $output .= '<li' . $li_class . '><a ' . $a_attrs . ' href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span class="title">' . $item->title . '</span></a>';
 
             
             
@@ -165,6 +160,7 @@ class Menu extends Model
             
             $li_class = '';
             $a_attrs = '';
+            $collapse_id = '';
             if($request->is( ltrim($item->url, '/') )):
                 $li_class = ' class="active"';
             endif;
@@ -176,15 +172,25 @@ class Menu extends Model
                 } else {
                     $li_class = ' class="dropdown"';
                 }
-                $a_attrs = 'class="dropdown-toggle" ';
+                $collapse_id = str_slug($item->title, "-") . '-dropdown-element';
+                $a_attrs = 'data-toggle="collapse" href="#' . $collapse_id . '"';
+
+            } else {
+                $a_attrs = 'href="' . $item->url . '"';
             }
 
-            $output .= '<li' . $li_class . '><a ' . $a_attrs . ' href="' . $item->url . '" target="' . $item->target . '"><span class="icon ' . $item->icon_class . '"></span><span class="title">' . $item->title . '</span></a>';
+            $output .= '<li' . $li_class . '><a ' . $a_attrs . ' target="' . $item->target . '">'
+                    . '<span class="icon ' . $item->icon_class . '"></span>'
+                    . '<span class="title">' . $item->title . '</span></a>';
 
-            
-            
+
             if(count($children_menu_items) > 0){
+                // Add tag for collapse panel
+                $output .= '<div id="' . $collapse_id . '" class="panel-collapse collapse"><div class="panel-body">';
+
                 $output = self::buildBootstrapOutput($children_menu_items, $output, [], $request);
+
+                $output .= '</div></div>';      // close tag of collapse panel
             }
 
             $output .= '</li>';
