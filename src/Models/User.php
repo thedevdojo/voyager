@@ -4,6 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Foundation\Auth\User as AuthUser;
 use TCG\Voyager\Traits\VoyagerUser;
+use Carbon\Carbon;
 
 class User extends AuthUser
 {
@@ -17,11 +18,11 @@ class User extends AuthUser
 
     public function getCreatedAtAttribute($value)
     {
-        return \Carbon\Carbon::parse($value)->format('F jS, Y h:i A');
+        return Carbon::parse($value)->format('F jS, Y h:i A');
     }
 
     public function setCreatedAtAttribute($value)
     {
-        $this->attributes['created_at'] = \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
+        $this->attributes['created_at'] = Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 }

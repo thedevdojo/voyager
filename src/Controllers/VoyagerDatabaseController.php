@@ -240,13 +240,8 @@ class VoyagerDatabaseController extends Controller
             if ($after == null) {
                 // SET COLUMN TO THE TOP
                 \DB::query("ALTER $table MyTable CHANGE COLUMN $column FIRST");
-                return 1;
-            } else {
-                // SET COLUMN AFTER THE AFTER COLUMN
-                //\DB::query('');
-                return 1;
             }
-            return 0;
+            return 1;
         }
         return 0;
     }

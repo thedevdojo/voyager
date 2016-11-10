@@ -4,6 +4,9 @@ namespace TCG\Voyager;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Router;
+use Illuminate\Foundation\AliasLoader;
+use TCG\Voyager\Models\User;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -12,14 +15,14 @@ class VoyagerServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(\Illuminate\Routing\Router $router)
+    public function boot(Router $router)
     {
         $router->middleware('admin.user', 'TCG\Voyager\Middleware\VoyagerAdminMiddleware');
 
         if (config('voyager.user.add_default_role_on_register')) {
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
-                $voyager_user = \TCG\Voyager\Models\User::find($user->id);
+                $voyager_user = User::find($user->id);
                 $voyager_user->addRole(config('voyager.user.default_role'));
             });
         }
@@ -52,7 +55,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->make('TCG\Voyager\Controllers\VoyagerDatabaseController');
 
         $this->app->booting(function () {
-            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+            $loader = AliasLoader::getInstance();
             $loader->alias('Menu', 'TCG\Voyager\Models\Menu');
             $loader->alias('Voyager', 'TCG\Voyager\Voyager');
         });

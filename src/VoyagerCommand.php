@@ -29,7 +29,6 @@ class VoyagerCommand extends Command
     /**
      * Create a new command instance.
      *
-     * @return \Orangehill\Iseed\IseedCommand
      */
     public function __construct()
     {

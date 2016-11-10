@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\Traits;
 
+use TCG\Voyager\Models\Role;
+
 trait VoyagerUser
 {
     //
@@ -20,7 +22,7 @@ trait VoyagerUser
         // If user does not already have this role
         if (!$this->hasRole($name)) {
             // Look up the role and attach it to the user
-            $role = \TCG\Voyager\Models\Role::where('name', '=', $name)->first();
+            $role = Role::where('name', '=', $name)->first();
             $this->roles()->attach($role->id);
         }
     }
@@ -30,7 +32,7 @@ trait VoyagerUser
         // If user has this role
         if ($this->hasRole($name)) {
             // Lookup the role and detach it from the user
-            $role = \TCG\Voyager\Models\Role::where('name', '=', $name)->first();
+            $role = Role::where('name', '=', $name)->first();
             $this->roles()->detach($role->id);
         }
     }
