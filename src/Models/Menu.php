@@ -131,7 +131,7 @@ class Menu extends Model
                 $styles = ' style="background-color:'.$item->color.'"';
             }
 
-            $output .= '<li><a href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span>' . $item->title . '</span></a>';
+            $output .= '<li' . $li_class . '><a href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span>' . $item->title . '</span></a>';
 
             
             if(count($children_menu_items) > 0){
