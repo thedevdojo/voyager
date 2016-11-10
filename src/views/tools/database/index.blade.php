@@ -29,22 +29,23 @@
                 @endforeach
 
                 <table class="table table-striped database-tables">
-                    <thead>
-                    <tr>
-                        <th>Table Name</th>
-                        <th>BREAD/CRUD Actions</th>
-                        <th style="text-align:right">Table Actions</th>
-                    </tr>
-                    </thead>
+	                <thead>
+	                	<tr>
+	                		<th>Table Name</th>
+                            <th>BREAD/CRUD Actions</th>
+	                		<th style="text-align:right">Table Actions</th>
+	                	</tr>
+                	</thead>
 
-                    <?php $arr = DB::select('SHOW TABLES'); ?>
-                    @foreach($arr as $a)
-                        <?php $table = current($a); ?>
-                        <?php $active = in_array($table, $dataTypeNames);
-                        if ($active) {
+                <?php $arr = TCG\Voyager\Facades\DBSchema::tables(); ?>
+                @foreach($arr as $a)
+	            <?php $table = current($a); ?>
+                	<?php $active = in_array($table, $dataTypeNames); 
+                        if($active){
                             $activeDataType = TCG\Voyager\Models\DataType::where('name', '=', $table)->first();
                         }
-                        ?>
+                    ?>
+
                         <tr>
                             <td>
                                 <p class="name">
