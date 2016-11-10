@@ -29,6 +29,7 @@ class VoyagerCommand extends Command
     /**
      * Create a new command instance.
      *
+     * @return
      */
     public function __construct()
     {
@@ -38,9 +39,22 @@ class VoyagerCommand extends Command
 
     protected function getOptions()
     {
-        return [
-            ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
-        ];
+        return array(
+            array('existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null),
+        );
+    }
+
+    /**
+     * Get the composer command for the environment.
+     *
+     * @return string
+     */
+    protected function findComposer()
+    {
+        if (file_exists(getcwd().'/composer.phar')) {
+            return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
+        }
+        return 'composer';
     }
 
     /**
@@ -51,7 +65,7 @@ class VoyagerCommand extends Command
     public function fire()
     {
 
-        if (!$this->option('existing')) {
+        if(!$this->option('existing')){
             $this->info("Generating the default authentication scaffolding");
             Artisan::call('make:auth');
         }
@@ -64,8 +78,10 @@ class VoyagerCommand extends Command
         Artisan::call('migrate');
 
         $this->info("Dumping the autoloaded files and reloading all new files");
+        
+        $composer = $this->findComposer();
 
-        $process = new Process('composer dump-autoload');
+        $process = new Process($composer . ' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info("Seeding data into the database");

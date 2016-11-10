@@ -13,54 +13,51 @@ class RouteTest extends TestCase
      */
     public function testGetRoutes()
     {
-
-        $this->visit('/admin')->see('Voyager');
-        $this->visit('/admin/login');
-        $this->visit('/admin/login');
+        $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
         $this->press('Login Logging in');
-        $this->seePageIs('/admin');
 
+        $prefix = config('voyager.routes.prefix');
         $urls = [
-            '/admin',
-            '/admin/roles',
-            '/admin/roles/1',
-            '/admin/roles/1/edit',
-            '/admin/roles/create',
-            '/admin/users',
-            '/admin/users/create',
-            '/admin/users/1',
-            '/admin/users/1/edit',
-            '/admin/media',
-            '/admin/posts',
-            '/admin/posts/create',
-            '/admin/posts/23/edit',
-            '/admin/posts/23',
-            '/admin/pages',
-            '/admin/pages/create',
-            '/admin/pages/1',
-            '/admin/pages/1/edit',
-            '/admin/categories',
-            '/admin/categories/create',
-            '/admin/categories/1',
-            '/admin/categories/1/edit',
-            '/admin/menus',
-            '/admin/menus/create',
-            '/admin/menus/2/builder',
-            '/admin/menus/2/edit',
-            '/admin/database',
-            '/admin/database/5/edit-bread',
-            '/admin/database/edit-categories-table',
-            '/admin/database/create-table',
-            '/admin/settings'
+            "/{$prefix}",
+            "/{$prefix}/roles",
+            "/{$prefix}/roles/1",
+            "/{$prefix}/roles/1/edit",
+            "/{$prefix}/roles/create",
+            "/{$prefix}/users",
+            "/{$prefix}/users/create",
+            "/{$prefix}/users/1",
+            "/{$prefix}/users/1/edit",
+            "/{$prefix}/media",
+            "/{$prefix}/posts",
+            "/{$prefix}/posts/create",
+            "/{$prefix}/posts/23/edit",
+            "/{$prefix}/posts/23",
+            "/{$prefix}/pages",
+            "/{$prefix}/pages/create",
+            "/{$prefix}/pages/1",
+            "/{$prefix}/pages/1/edit",
+            "/{$prefix}/categories",
+            "/{$prefix}/categories/create",
+            "/{$prefix}/categories/1",
+            "/{$prefix}/categories/1/edit",
+            "/{$prefix}/menus",
+            "/{$prefix}/menus/create",
+            "/{$prefix}/menus/2/builder",
+            "/{$prefix}/menus/2/edit",
+            "/{$prefix}/database",
+            "/{$prefix}/database/5/edit-bread",
+            "/{$prefix}/database/edit-categories-table",
+            "/{$prefix}/database/create-table",
+            "/{$prefix}/settings"
         ];
 
-        foreach ($urls as $url) {
+        foreach($urls as $url){
             $response = $this->call('GET', $url);
-            $this->assertEquals(200, $response->status(), $url . " did not return a 200");
+            $this->assertEquals(200, $response->status(),  $url . " did not return a 200");
         }
-
+        
     }
 
 }

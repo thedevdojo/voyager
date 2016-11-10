@@ -16,8 +16,8 @@
         .login-page {
             background-image: url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
             background-size: cover;
-            margin: 0;
-            padding: 0;
+            margin: 0px;
+            padding: 0px;
         }
 
         .logo-img {
@@ -42,8 +42,8 @@
             width: 380px;
             height: 100%;
             position: absolute;
-            right: 0;
-            top: 0;
+            right: 0px;
+            top: 0px;
             text-align: center;
             background: #fff;
             z-index: 99;
@@ -53,6 +53,7 @@
             width: auto;
             position: absolute;
             margin-left: 120px;
+            position: absolute;
             top: 50%;
             margin-top: -50px;
         }
@@ -67,12 +68,16 @@
             color: #fff;
             z-index: 9999;
             position: relative;
+            color: #fff;
             text-transform: uppercase;
             font-size: 50px;
             font-weight: 400;
+            margin: 0px;
+            position: relative;
             top: -10px;
             line-height: 45px;
-            margin: 20px 0 0 20px;
+            margin-top: 20px;
+            margin-left: 20px;
         }
 
         #title_section p {
@@ -83,7 +88,7 @@
             position: relative;
             z-index: 99;
             font-weight: 200;
-            margin-top: 0;
+            margin-top: 0px;
             left: 25px;
         }
 
@@ -91,21 +96,23 @@
             text-align: left;
             margin-left: 50px;
             font-weight: 200;
-            margin-bottom: 0;
+            margin-bottom: 0px;
             margin-top: 3px;
             color: #444;
         }
 
         #login_section .btn {
+            padding: 15px 20px;
             background: #62A8EA;
-            border-radius: 0;
+            border-radius: 0px;
             color: #fff;
             width: 380px;
-            margin-left: 0;
+            margin-left: 0px;
             display: block;
             text-align: left;
-            padding: 15px 20px 15px 50px;
-            border-width: 0;
+            padding-left: 50px;
+            border: 0px;
+            border-right: 0px;
         }
 
         .btn-login {
@@ -113,7 +120,7 @@
         }
 
         .btn-login i {
-            border-right: 0;
+            border-right: 0px;
             position: relative;
             top: 2px;
         }
@@ -133,11 +140,11 @@
 
         #login input {
             padding: 20px 50px;
-            border: 0;
+            border: 0px;
             background: #f5f5f5;
-            border-radius: 0;
+            border-radius: 0px;
             float: left;
-            margin-left: 0;
+            margin-left: 0px;
             margin-bottom: 10px;
             width: 278px;
             font-size: 12px;
@@ -155,8 +162,11 @@
         .btn-loading {
             width: 16px;
             height: 16px;
+            margin: 0px auto;
             float: left;
-            margin: 3px 3px 0 -1px;
+            margin-right: 3px;
+            margin-top: 3px;
+            margin-left: -1px;
             -webkit-animation: spin 0.4s linear infinite;
             -moz-animation: spin 0.4s linear infinite;
             animation: spin 0.4s linear infinite;
@@ -206,7 +216,7 @@
         <h2>Sign In</h2>
         <p>Sign in below:</p>
         <div style="clear:both"></div>
-        <form action="/admin/login" method="POST" id="login">
+        <form action="{{ route('voyager.login') }}" method="POST" id="login">
             <input type="text" class="form-control" name="email" placeholder="email address">
             <input type="password" class="form-control" name="password" placeholder="password">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">

@@ -20,11 +20,11 @@
 
                     @foreach($dataType->readRows as $row)
 
-                        <div class="panel-heading" style="border-bottom:0;">
+                        <div class="panel-heading" style="border-bottom:0px;">
                             <h3 class="panel-title">{{ $row->display_name }}</h3>
                         </div>
 
-                        <div class="panel-body" style="padding-top:0;">
+                        <div class="panel-body" style="padding-top:0px;">
                             @if($row->type == "image")
                                 <img style="max-width:640px"
                                      src="<?= Voyager::image($dataTypeContent->{$row->field}) ?>">
@@ -33,7 +33,7 @@
                             @endif
                         </div><!-- panel-body -->
                         @if(!$loop->last)
-                            <hr style="margin:0;">
+                            <hr style="margin:0px;">
                         @endif
                     @endforeach
 

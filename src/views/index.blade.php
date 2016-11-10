@@ -20,7 +20,7 @@
                     <p>You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your
                         current users.</p>
 
-                    <a href="/admin/users" class="btn btn-primary">View All Users</a>
+                    <a href="{{ route('users.index') }}" class="btn btn-primary">View All Users</a>
                 </div>
 
             </div>
@@ -35,7 +35,7 @@
                     <p>You have {{ $post_count }} Posts in your database. Click on 'View All Posts' below to view all
                         posts.</p>
 
-                    <a href="/admin/posts" class="btn btn-primary">View All Posts</a>
+                    <a href="{{ route('posts.index') }}" class="btn btn-primary">View All Posts</a>
                 </div>
 
             </div>
@@ -50,7 +50,7 @@
                     <p>You have {{ $page_count }} Pages in your database. Click on 'View All Pages' below to view all
                         pages.</p>
 
-                    <a href="/admin/pages" class="btn btn-primary">View All Pages</a>
+                    <a href="{{ route('pages.index') }}" class="btn btn-primary">View All Pages</a>
                 </div>
 
             </div>
@@ -67,9 +67,9 @@
             <!-- Google Analytics Embed -->
                 <div id="embed-api-auth-container"></div>
             @else
-                <p style="border-radius:4px; padding:20px; background:#fff; margin:0; color:#999; text-align:center;">To
-                    view analytics you'll need to get a google analytics client id and add it to your settings for the
-                    key <code>google_analytics_client_id</code>. Get your key in your Google developer console: <a
+                <p style="border-radius:4px; padding:20px; background:#fff; margin:0px; color:#999; text-align:center;">
+                    To view analytics you'll need to get a google analytics client id and add it to your settings for
+                    the key <code>google_analytics_client_id</code>. Get your key in your Google developer console: <a
                             href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
                 </p>
             @endif
@@ -231,7 +231,7 @@
                  * element with the id "view-selector-container".
                  */
                 var viewSelector = new gapi.analytics.ext.ViewSelector2({
-                    container: 'view-selector-container'
+                    container: 'view-selector-container',
                 })
                         .execute();
 

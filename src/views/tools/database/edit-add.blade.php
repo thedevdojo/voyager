@@ -91,7 +91,7 @@
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form action="@if(isset($table)){{ '/admin/database/edit-table' }}@else{{ '/admin/database/create-table' }}@endif"
+                <form action="@if(isset($table)){{ route('voyager.database.edit_table', $table) }}@else{{ route('voyager.database.create_table') }}@endif"
                       method="POST">
                     <div class="panel panel-bordered">
                         <div class="panel-heading">
@@ -240,7 +240,7 @@
 
         function newRow(kind, name, type, nullable, key, defaultValue) {
 
-            var unique_id = ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
+            unique_id = ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
             if (kind == 'primary') {
                 $('#tablebody').prepend('<tr id="' + unique_id + '" class="newTableRow">' + $('.tablerow').html() + '</tr>');
             } else {
