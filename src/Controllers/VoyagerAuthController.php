@@ -14,13 +14,14 @@ class VoyagerAuthController extends Controller
 {
 
     use AuthenticatesUsers;
-   
+
     public function login(Request $request)
     {
         return view('voyager::login');
     }
 
-    public function postLogin(Request $request){
+    public function postLogin(Request $request)
+    {
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -48,7 +49,7 @@ class VoyagerAuthController extends Controller
 
     public function redirectPath()
     {
-        return route('voyager.dashboard') ;
+        return route('voyager.dashboard');
     }
 }
 

@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    <div style="background-image:url({{ config('voyager.assets_path') }}/images/bg.jpg); background-size:cover; background-position:center center; position:absolute; top:0px; left:0px; width:100%; height:300px;"></div>
+    <div style="background-size:cover; background: url({{ config('voyager.assets_path') }}/images/bg.jpg) center center;position:absolute; top:0; left:0; width:100%; height:300px;"></div>
     <div style="height:160px; display:block; width:100%"></div>
     <div style="position:relative; z-index:9; text-align:center;">
         <img src="{{ Voyager::image( Auth::user()->avatar ) }}" class="avatar"

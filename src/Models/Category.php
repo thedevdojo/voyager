@@ -8,7 +8,8 @@ class Category extends Model
 {
     protected $table = 'categories';
 
-    public function posts(){
-    	return $this->hasMany('\App\Post')->where('status', '=', 'PUBLISHED')->orderBy('created_at', 'DESC');
+    public function posts()
+    {
+        return $this->hasMany('\App\Post')->where('status', '=', 'PUBLISHED')->orderBy('created_at', 'DESC');
     }
 }
