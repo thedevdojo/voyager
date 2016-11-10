@@ -55,13 +55,6 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
 	Route::get('database/edit-{table}-table', ['uses'=>'VoyagerDatabaseController@edit', 'as' => 'voyager.database.edit_table']);
 	Route::post('database/edit-table', 'VoyagerDatabaseController@update');
 
-    // maiorano84 note: Do not expose test functionality publicly like this
-    // TODO: Move this to a separate command (ie: voyager:test_order)
-	Route::get('test_order', function(){
-		Schema::table('latestbbc', function($table){
-			$table->string('slug')->after('id')->change();
-		});
-	});
 
 	Route::post('database/create_bread', ['uses'=>'VoyagerDatabaseController@addBread', 'as' => 'voyager.database.create_bread']);
 	Route::post('database/store_bread', ['uses'=>'VoyagerDatabaseController@storeBread', 'as' => 'voyager.database.store_bread']);

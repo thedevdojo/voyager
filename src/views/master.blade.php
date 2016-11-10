@@ -185,6 +185,7 @@
                         </li>
                     </ul>
                     <!-- /.navbar-collapse -->
+                    </div>
                 </nav>
             </div>
             <!-- Main Content -->
