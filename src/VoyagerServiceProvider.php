@@ -31,8 +31,11 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/views', 'voyager');
 
         $router->group(['prefix' => config('voyager.routes.prefix', 'admin'), 'namespace'=>$this->routeNamespace], function(){
-            include __DIR__.'/routes.php';
+            if (!$this->app->routesAreCached()) {
+                require __DIR__.'/routes.php';
+            }
         });
+        
     }
 
     /**
