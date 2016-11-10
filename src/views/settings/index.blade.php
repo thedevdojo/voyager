@@ -135,7 +135,7 @@
 @stop
 
 @section('head')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jsonarea/jsonarea.min.js"></script>
+    <script type="text/javascript" src="{{ asset(config('voyager.assets_path')) }}/lib/js/jsonarea/jsonarea.min.js"></script>
 @stop
 
 @section('page_header')
@@ -380,6 +380,6 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
     </form>
 
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ asset(config('voyager.assets_path')) }}/lib/js/tinymce/tinymce.min.js"></script>
+    <script src="{{ asset(config('voyager.assets_path')) }}/js/voyager_tinymce.js"></script>
 @stop

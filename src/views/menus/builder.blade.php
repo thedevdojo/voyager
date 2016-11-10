@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
-	<link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/nestable.css">
+	<link rel="stylesheet" type="text/css" href="{{ asset(config('voyager.assets_path')) }}/css/nestable.css">
 @stop
 
 @section('page_header')
@@ -75,7 +75,7 @@
             			<input type="text" class="form-control" name="title" placeholder="Title"><br>
             			<label for="url">URL for the Menu Item</label>
             			<input type="text" class="form-control" name="url" placeholder="URL"><br>
-            			<label for="icon_class">Font Icon class for the Menu Item (Use a <a href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}" target="_blank">Voyager Font Class</a>)</label>
+            			<label for="icon_class">Font Icon class for the Menu Item (Use a <a href="{{ asset(config('voyager.assets_path') . '/fonts/voyager/icons-reference.html') }}" target="_blank">Voyager Font Class</a>)</label>
             			<input type="text" class="form-control" name="icon_class" placeholder="Icon Class (optional)"><br>
             			<label for="color">Color in RGB or hex (optional)</label>
             			<input type="color" class="form-control" name="color" placeholder="Color (ex. #ffffff or rgb(255, 255, 255)"><br>
@@ -137,7 +137,7 @@
 
 @section('javascript')
 
-	<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/jquery.nestable.js"></script>
+	<script type="text/javascript" src="{{ asset(config('voyager.assets_path')) }}/js/jquery.nestable.js"></script>
 	<script>
 		$(document).ready(function(){
 			$('.dd').nestable({ /* config options */ });

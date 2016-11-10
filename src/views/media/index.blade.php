@@ -1,9 +1,9 @@
 @extends('voyager::master')
 
 @section('css')	
-	<link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/media.css" />
-	<link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/select2/select2.min.css">
-	<link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/dropzone.css" />
+	<link rel="stylesheet" href="{{ asset(config('voyager.assets_path')) }}/css/media/media.css" />
+	<link rel="stylesheet" type="text/css" href="{{ asset(config('voyager.assets_path')) }}/js/select2/select2.min.css">
+	<link rel="stylesheet" href="{{ asset(config('voyager.assets_path')) }}/css/media/dropzone.css" />
 @stop
 
 @section('content')
@@ -302,8 +302,8 @@
 
 
 	<!-- Include our script files -->
-	<script src="{{ config('voyager.assets_path') }}/js/select2/select2.min.js"></script>
-	<script src="{{ config('voyager.assets_path') }}/js/media/dropzone.js"></script>
-	<script src="{{ config('voyager.assets_path') }}/js/media/media.js"></script>
+	<script src="{{ asset(config('voyager.assets_path')) }}/js/select2/select2.min.js"></script>
+	<script src="{{ asset(config('voyager.assets_path')) }}/js/media/dropzone.js"></script>
+	<script src="{{ asset(config('voyager.assets_path')) }}/js/media/media.js"></script>
 
 @stop
