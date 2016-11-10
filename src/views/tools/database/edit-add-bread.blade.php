@@ -154,6 +154,7 @@
                                     // then here's how you use JSONArea's update event
                                     myJSONArea.getElement().addEventListener('update', function (e) {
 
+<<<<<<< HEAD
                                         if (e.target.value != "") {
                                             if (e.detail.isJSON) {
                                                 valid_json["field_details_{{ $data->Field }}"] = true;
@@ -189,6 +190,73 @@
 
                         <div class="panel-heading">
                             <h3 class="panel-title">{{ ucfirst($table) }} BREAD info</h3>
+=======
+                                if(e.target.value != ""){
+                                  if(e.detail.isJSON) {
+                                    valid_json["field_details_{{ $data->Field }}"] = true;
+                                  } else {
+                                    valid_json["field_details_{{ $data->Field }}"] = false;
+                                  }
+                                }
+                              });
+
+                              // then here's how you use JSONArea's update event
+                              myJSONArea.getElement().addEventListener('focusout',function(e){
+                                  if(valid_json['field_details_{{ $data->Field }}']) {
+                                    $('#field_details_{{ $data->Field }}_valid').show();
+                                    $('#field_details_{{ $data->Field }}_invalid').hide();
+                                    var ugly = e.target.value
+                                    var obj = JSON.parse(ugly);
+                                    var pretty = JSON.stringify(obj, undefined, 4);
+                                    document.getElementById('field_details_{{ $data->Field }}').value = pretty;
+                                  } else {
+                                    $('#field_details_{{ $data->Field }}_valid').hide();
+                                    $('#field_details_{{ $data->Field }}_invalid').show();
+                                  }
+                              });
+                            </script>
+
+                          @endforeach
+                        </tbody>
+                    </table>
+
+                </div><!-- .panel -->
+
+                <div class="panel panel-primary panel-bordered">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ ucfirst($table) }} BREAD info</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-group">
+                          <label for="name">Table Name</label>
+                          <input type="text" class="form-control" readonly name="name" placeholder="Name" value="@if(isset($dataType->name)){{ $dataType->name }}@else{{ $table }}@endif">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">URL Slug (must be unique)</label>
+                          <input type="text" class="form-control" name="slug" placeholder="URL slug (ex. posts)" value="@if(isset($dataType->slug)){{ $dataType->slug }}@else{{ $slug }}@endif">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Display Name (Singular)</label>
+                          <input type="text" class="form-control" name="display_name_singular" placeholder="Display Name (Singular)" value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Display Name (Plural)</label>
+                          <input type="text" class="form-control" name="display_name_plural" placeholder="Display Name (Plural)" value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Icon (optional) Use a <a href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}" target="_blank">Voyager Font Class</a></label>
+                          <input type="text" class="form-control" name="icon" placeholder="Icon to use for this Table" value="@if(isset($dataType->icon)){{ $dataType->icon }}@endif">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Model Name (ex. \App\User, if left empty will try and use the table name)</label>
+                          <input type="text" class="form-control" name="model_name" placeholder="Model Class Name" value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
+                        </div>
+                        <div class="form-group">
+                          <label for="email">Description</label>
+                          <textarea class="form-control" name="description" placeholder="Description">@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
+>>>>>>> 7c5171000f9e494991914b3baad28c49a549d09e
                         </div>
 
                         <div class="panel-body">

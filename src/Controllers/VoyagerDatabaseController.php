@@ -235,7 +235,17 @@ class VoyagerDatabaseController extends Controller
 
     public function addBread(Request $request)
     {
-        return view('voyager::tools.database.edit-add-bread', array('table' => $request->input('table')));
+        $table = $request->input('table');
+        return view('voyager::tools.database.edit-add-bread', $this->prepopulateBreadInfo($table));
+    }
+
+    private function prepopulateBreadInfo($table) {
+        $slug = str_slug($table);
+        $display_name = str_singular(join(" ", explode('_', title_case($table))));
+        $display_name_plural = str_plural($display_name);
+        $model_name = '\\App\\' . studly_case(str_singular($table));
+
+        return compact('table', 'slug', 'display_name', 'display_name_plural', 'model_name');
     }
 
     public function storeBread(Request $request)
