@@ -94,7 +94,7 @@
         });
 
         $('td').on('click', '.delete', function (e) {
-            id = $(e.target).data('id');
+            var id = $(e.target).data('id');
 
             $('#delete_form').attr('action', '/admin/' + '{{ $dataType->slug }}' + '/' + id);
 

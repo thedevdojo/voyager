@@ -42,12 +42,12 @@ class VoyagerDatabaseController extends Controller
                 Artisan::call('make:model', ['name' => ucfirst($table_name)]);
             }
 
-            return redirect('/admin/database/')->with(array(
+            return redirect('/admin/database/')->with([
                 'message' => 'Successfully created ' . $table_name . ' table',
                 'alert-type' => 'success'
-            ));
+            ]);
         } catch (\Exception $e) {
-            return back()->with(array('message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error'));
+            return back()->with(['message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error']);
         }
 
     }
@@ -68,7 +68,7 @@ class VoyagerDatabaseController extends Controller
             try {
                 Schema::rename($original_name, $table_name);
             } catch (\Exception $e) {
-                return back()->with(array('message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error'));
+                return back()->with(['message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error']);
             }
 
         }
@@ -160,10 +160,10 @@ class VoyagerDatabaseController extends Controller
             }
         }
 
-        return redirect('/admin/database/')->with(array(
+        return redirect('/admin/database/')->with([
             'message' => 'Successfully update ' . $table_name . ' table',
             'alert-type' => 'success'
-        ));
+        ]);
         // } catch(\Exception $e){
         // 	return back()->with(array('message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error'));
         // }
@@ -173,7 +173,7 @@ class VoyagerDatabaseController extends Controller
 
     public function buildQuery($request)
     {
-        $query_rows = array();
+        $query_rows = [];
         foreach ($request->row as $index => $row) {
             $field = $request->field[$index];
             if (isset($request->type[$index])) {
@@ -255,12 +255,12 @@ class VoyagerDatabaseController extends Controller
     {
         try {
             Schema::drop($table);
-            return redirect('/admin/database/')->with(array(
+            return redirect('/admin/database/')->with([
                 'message' => 'Successfully deleted ' . $table . ' table',
                 'alert-type' => 'success'
-            ));
+            ]);
         } catch (\Exception $e) {
-            return back()->with(array('message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error'));
+            return back()->with(['message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error']);
         }
     }
 
@@ -268,7 +268,7 @@ class VoyagerDatabaseController extends Controller
 
     public function addBread(Request $request)
     {
-        return view('voyager::tools.database.edit-add-bread', array('table' => $request->input('table')));
+        return view('voyager::tools.database.edit-add-bread', ['table' => $request->input('table')]);
     }
 
     public function storeBread(Request $request)
@@ -279,21 +279,21 @@ class VoyagerDatabaseController extends Controller
         $success = $this->updateDataType($dataType, $requestData);
 
         if ($success):
-            return redirect('/admin/database')->with(array(
+            return redirect('/admin/database')->with([
                 'message' => 'Successfully created new BREAD',
                 'alert-type' => 'success'
-            ));
+            ]);
         endif;
 
-        return redirect('/admin/database')->with(array(
+        return redirect('/admin/database')->with([
             'message' => 'Sorry it appears there may have been a problem creating this bread',
             'alert-type' => 'error'
-        ));
+        ]);
     }
 
     public function addEditBread($id)
     {
-        return view('voyager::tools.database.edit-add-bread', array('dataType' => DataType::find($id)));
+        return view('voyager::tools.database.edit-add-bread', ['dataType' => DataType::find($id)]);
     }
 
     public function updateBread(Request $request, $id)
@@ -303,16 +303,16 @@ class VoyagerDatabaseController extends Controller
         $success = $this->updateDataType($dataType, $requestData);
 
         if ($success):
-            return redirect('/admin/database')->with(array(
+            return redirect('/admin/database')->with([
                 'message' => 'Successfully updated the ' . $dataType->name . ' BREAD',
                 'alert-type' => 'success'
-            ));
+            ]);
         endif;
 
-        return redirect('/admin/database')->with(array(
+        return redirect('/admin/database')->with([
             'message' => 'Sorry it appears there may have been a problem updating this bread',
             'alert-type' => 'error'
-        ));
+        ]);
 
     }
 
@@ -339,7 +339,7 @@ class VoyagerDatabaseController extends Controller
 
             $dataRow->required = $requestData['field_required_' . $column];
 
-            $bread_checks = array('browse', 'read', 'edit', 'add', 'delete');
+            $bread_checks = ['browse', 'read', 'edit', 'add', 'delete'];
 
             foreach ($bread_checks as $check) {
                 if (isset($requestData['field_' . $check . '_' . $column])) {
@@ -368,15 +368,15 @@ class VoyagerDatabaseController extends Controller
         $datatype = DataType::find($id);
         $table_name = $datatype->name;
         if (DataType::destroy($id)) {
-            return redirect('/admin/database')->with(array(
+            return redirect('/admin/database')->with([
                 'message' => 'Successfully removed BREAD from ' . $table_name,
                 'alert-type' => 'success'
-            ));
+            ]);
         }
 
-        return redirect('/admin/database')->with(array(
+        return redirect('/admin/database')->with([
             'message' => 'Sorry it appears there was a problem removing this bread',
             'alert-type' => 'danger'
-        ));
+        ]);
     }
 }

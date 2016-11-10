@@ -39,14 +39,14 @@ class VoyagerBreadController extends Controller
 
         if (view()->exists('admin.' . $slug . '.browse')) {
             return view('admin.' . $slug . '.browse',
-                array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
+                ['dataType' => $dataType, 'dataTypeContent' => $dataTypeContent]);
         } else {
             if (view()->exists('voyager::' . $slug . '.browse')) {
                 return view('voyager::' . $slug . '.browse',
-                    array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
+                    ['dataType' => $dataType, 'dataTypeContent' => $dataTypeContent]);
             } else {
                 return view('voyager::bread.browse',
-                    array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
+                    ['dataType' => $dataType, 'dataTypeContent' => $dataTypeContent]);
             }
         }
 
@@ -69,7 +69,7 @@ class VoyagerBreadController extends Controller
         $slug = $request->segment(2);
         $dataType = DataType::where('slug', '=', $slug)->first();
         eval('$dataTypeContent = ' . $dataType->model_name . '::find(' . $id . ');');
-        return view('voyager::bread.read', array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
+        return view('voyager::bread.read', ['dataType' => $dataType, 'dataTypeContent' => $dataTypeContent]);
     }
 
     //***************************************
@@ -93,14 +93,14 @@ class VoyagerBreadController extends Controller
 
         if (view()->exists('admin.' . $slug . '.edit-add')) {
             return view('admin.' . $slug . '.edit-add',
-                array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
+                ['dataType' => $dataType, 'dataTypeContent' => $dataTypeContent]);
         } else {
             if (view()->exists('voyager::' . $slug . '.edit-add')) {
                 return view('voyager::' . $slug . '.edit-add',
-                    array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
+                    ['dataType' => $dataType, 'dataTypeContent' => $dataTypeContent]);
             } else {
                 return view('voyager::bread.edit-add',
-                    array('dataType' => $dataType, 'dataTypeContent' => $dataTypeContent));
+                    ['dataType' => $dataType, 'dataTypeContent' => $dataTypeContent]);
             }
         }
 
@@ -114,10 +114,10 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
         eval('$data = ' . $dataType->model_name . '::find(' . $id . ');');
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-        return redirect('/admin/' . $dataType->slug)->with(array(
+        return redirect('/admin/' . $dataType->slug)->with([
             'message' => 'Successfully Updated ' . $dataType->display_name_singular,
             'alert-type' => 'success'
-        ));
+        ]);
     }
 
     //***************************************
@@ -138,12 +138,12 @@ class VoyagerBreadController extends Controller
         $slug = $request->segment(2);
         $dataType = DataType::where('slug', '=', $slug)->first();
         if (view()->exists('admin.' . $slug . '.edit-add')) {
-            return view('admin.' . $slug . '.edit-add', array('dataType' => $dataType));
+            return view('admin.' . $slug . '.edit-add', ['dataType' => $dataType]);
         } else {
             if (view()->exists('voyager::' . $slug . '.edit-add')) {
-                return view('voyager::' . $slug . '.edit-add', array('dataType' => $dataType));
+                return view('voyager::' . $slug . '.edit-add', ['dataType' => $dataType]);
             } else {
-                return view('voyager::bread.edit-add', array('dataType' => $dataType));
+                return view('voyager::bread.edit-add', ['dataType' => $dataType]);
             }
         }
     }
@@ -162,10 +162,10 @@ class VoyagerBreadController extends Controller
 
         eval('$data = new ' . $dataType->model_name . ';');
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
-        return redirect('/admin/' . $dataType->slug)->with(array(
+        return redirect('/admin/' . $dataType->slug)->with([
             'message' => 'Successfully Added New ' . $dataType->display_name_singular,
             'alert-type' => 'success'
-        ));
+        ]);
     }
 
     //***************************************
@@ -214,16 +214,16 @@ class VoyagerBreadController extends Controller
         } // end foreach
 
         if ($data->destroy($id)) {
-            return redirect('/admin/' . $dataType->slug)->with(array(
+            return redirect('/admin/' . $dataType->slug)->with([
                 'message' => 'Successfully Deleted ' . $dataType->display_name_singular,
                 'alert-type' => 'success'
-            ));
+            ]);
         }
 
-        return redirect('/admin/' . $dataType->display_name_singular)->with(array(
+        return redirect('/admin/' . $dataType->display_name_singular)->with([
             'message' => 'Sorry it appears there was a problem deleting this ' . $dataType->display_name_singular,
             'alert-type' => 'error'
-        ));
+        ]);
 
     } // end of destroy()
 

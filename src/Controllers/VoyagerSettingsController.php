@@ -24,13 +24,13 @@ class VoyagerSettingsController extends Controller
         $request->merge(['order' => $order]);
         $request->merge(['value' => '']);
         Setting::create($request->all());
-        return back()->with(array('message' => 'Successfully Created New Setting', 'alert-type' => 'success'));
+        return back()->with(['message' => 'Successfully Created New Setting', 'alert-type' => 'success']);
     }
 
     public function delete(Request $request, $id)
     {
         Setting::destroy($id);
-        return back()->with(array('message' => 'Successfully Deleted Setting', 'alert-type' => 'success'));
+        return back()->with(['message' => 'Successfully Deleted Setting', 'alert-type' => 'success']);
     }
 
     public function move_up(Request $request, $id)
@@ -46,12 +46,12 @@ class VoyagerSettingsController extends Controller
             $previous_setting->order = $swap_order;
             $previous_setting->save();
 
-            return back()->with(array(
+            return back()->with([
                 'message' => 'Moved ' . $setting->display_name . ' setting order up',
                 'alert-type' => 'success'
-            ));
+            ]);
         } else {
-            return back()->with(array('message' => 'This is already at the top of the list', 'alert-type' => 'error'));
+            return back()->with(['message' => 'This is already at the top of the list', 'alert-type' => 'error']);
         }
     }
 
@@ -68,10 +68,10 @@ class VoyagerSettingsController extends Controller
             $setting->value = '';
             $setting->save();
         }
-        return back()->with(array(
+        return back()->with([
             'message' => 'Successfully removed ' . $setting->display_name . ' value',
             'alert-type' => 'success'
-        ));
+        ]);
     }
 
     public function move_down(Request $request, $id)
@@ -87,15 +87,15 @@ class VoyagerSettingsController extends Controller
             $previous_setting->order = $swap_order;
             $previous_setting->save();
 
-            return back()->with(array(
+            return back()->with([
                 'message' => 'Moved ' . $setting->display_name . ' setting order down',
                 'alert-type' => 'success'
-            ));
+            ]);
         } else {
-            return back()->with(array(
+            return back()->with([
                 'message' => 'This is already at the bottom of the list',
                 'alert-type' => 'error'
-            ));
+            ]);
         }
     }
 
@@ -121,7 +121,7 @@ class VoyagerSettingsController extends Controller
         }
 
 
-        return back()->with(array('message' => 'Successfully Saved Settings', 'alert-type' => 'success'));
+        return back()->with(['message' => 'Successfully Saved Settings', 'alert-type' => 'success']);
 
 
     }

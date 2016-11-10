@@ -155,13 +155,13 @@
         $(document).ready(function () {
             $('.dd').nestable({/* config options */});
             $('.item_actions').on('click', '.delete', function (e) {
-                id = $(e.target).data('id');
+                var id = $(e.target).data('id');
                 $('#delete_form').attr('action', '/admin/menu/delete_menu_item/' + id);
                 $('#delete_modal').modal('show');
             });
 
             $('.item_actions').on('click', '.edit', function (e) {
-                id = $(e.target).data('id');
+                var id = $(e.target).data('id');
                 $('#edit_title').val($(e.target).data('title'));
                 $('#edit_url').val($(e.target).data('url'));
                 $('#edit_icon_class').val($(e.target).data('icon_class'));

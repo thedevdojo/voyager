@@ -22,7 +22,7 @@ class Menu extends Model
         // GET THE MENU
         $menu = $instance->where('name', '=', $menu_name)->first();
 
-        $menu_items = array();
+        $menu_items = [];
         if (isset($menu->id)) {
             // GET THE ROOT MENU ITEMS
             $menu_items = MenuItem::where('menu_id', '=', $menu->id)->where('parent_id', '=', null)->orderBy('order',

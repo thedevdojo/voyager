@@ -38,9 +38,9 @@ class VoyagerCommand extends Command
 
     protected function getOptions()
     {
-        return array(
-            array('existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null),
-        );
+        return [
+            ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
+        ];
     }
 
     /**

@@ -27,7 +27,7 @@ class VoyagerController extends Controller
 
     public function upload(Request $request)
     {
-        $valid_exts = array('jpeg', 'jpg', 'png', 'gif'); // valid extensions
+        $valid_exts = ['jpeg', 'jpg', 'png', 'gif']; // valid extensions
         $full_filename = null;
 
         $slug = $request->input('type_slug');

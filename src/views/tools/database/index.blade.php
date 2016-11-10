@@ -23,7 +23,7 @@
             <div class="col-md-12">
 
                 <?php $dataTypes = TCG\Voyager\Models\DataType::all(); ?>
-                <?php $dataTypeNames = array(); ?>
+                <?php $dataTypeNames = []; ?>
                 @foreach($dataTypes as $type)
                     <?php array_push($dataTypeNames, $type->name); ?>
                 @endforeach
@@ -204,8 +204,8 @@
         $(function () {
 
             $('.bread_actions').on('click', '.delete', function (e) {
-                id = $(e.target).data('id');
-                name = $(e.target).data('name');
+                var id = $(e.target).data('id'),
+                    name = $(e.target).data('name');
 
                 $('#delete_builder_name').text(name);
                 $('#delete_builder_form').attr('action', '/admin/database/delete_bread/' + id);
@@ -215,7 +215,7 @@
 
             $('.database-tables').on('click', '.desctable', function (e) {
                 e.preventDefault();
-                href = $(this).attr('href');
+                var href = $(this).attr('href');
                 table.name = $(this).data('name');
                 table.rows = [];
                 $.get(href, function (data) {

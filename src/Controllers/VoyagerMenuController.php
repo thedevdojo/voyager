@@ -16,7 +16,7 @@ class VoyagerMenuController extends Controller
     public function builder($id)
     {
         $menu = Menu::find($id);
-        return view('voyager::menus.builder', array('menu' => $menu));
+        return view('voyager::menus.builder', ['menu' => $menu]);
     }
 
     public function delete_menu($id)
@@ -24,10 +24,10 @@ class VoyagerMenuController extends Controller
         $item = MenuItem::find($id);
         $menu_id = $item->menu_id;
         $item->destroy($id);
-        return redirect('/admin/menus/' . $menu_id . '/builder')->with(array(
+        return redirect('/admin/menus/' . $menu_id . '/builder')->with([
             'message' => 'Successfully Deleted Menu Item.',
             'alert-type' => 'success'
-        ));
+        ]);
     }
 
     public function add_item(Request $request)
@@ -40,10 +40,10 @@ class VoyagerMenuController extends Controller
             $data['order'] = 1;
         }
         MenuItem::create($data);
-        return redirect('/admin/menus/' . $data['menu_id'] . '/builder')->with(array(
+        return redirect('/admin/menus/' . $data['menu_id'] . '/builder')->with([
             'message' => 'Successfully Created New Menu Item.',
             'alert-type' => 'success'
-        ));
+        ]);
     }
 
     public function update_item(Request $request)
@@ -53,10 +53,10 @@ class VoyagerMenuController extends Controller
         unset($data['id']);
         $menu_item = MenuItem::find($id);
         $menu_item->update($data);
-        return redirect('/admin/menus/' . $menu_item->menu_id . '/builder')->with(array(
+        return redirect('/admin/menus/' . $menu_item->menu_id . '/builder')->with([
             'message' => 'Successfully Updated Menu Item.',
             'alert-type' => 'success'
-        ));
+        ]);
     }
 
     public function order_item(Request $request)

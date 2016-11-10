@@ -37,6 +37,9 @@ class Voyager
 
     /**
      *  End Singleton operators
+     * @param $key
+     * @param null $default
+     * @return null
      */
 
     public static function setting($key, $default = null)

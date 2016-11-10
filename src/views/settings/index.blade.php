@@ -107,7 +107,8 @@
             z-index: 9;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
-            -khtml-user-select: none;
+            /* Nobody uses Konqueror */
+            /* -khtml-user-select: none; */
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
@@ -336,8 +337,7 @@
                                 $('#invalid_options').hide();
                                 var ugly = e.target.value;
                                 var obj = JSON.parse(ugly);
-                                var pretty = JSON.stringify(obj, undefined, 4);
-                                document.getElementById('options_textarea').value = pretty;
+                                document.getElementById('options_textarea').value = JSON.stringify(obj, undefined, 4);
                             } else {
                                 $('#valid_options').hide();
                                 $('#invalid_options').show();
@@ -395,8 +395,8 @@
     <script>
         $('document').ready(function () {
             $('.voyager-trash').click(function () {
-                id = $(this).data('id');
-                display = $(this).data('display');
+                var id = $(this).data('id'),
+                    display = $(this).data('display');
                 $('#delete_setting_title').text(display);
                 $('#delete_form').attr('action', '/admin/settings/' + id);
                 $('#delete_modal').modal('show');

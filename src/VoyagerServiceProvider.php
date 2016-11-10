@@ -13,7 +13,7 @@ class VoyagerServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      *
-     * @return void
+     * @param Router $router
      */
     public function boot(Router $router)
     {

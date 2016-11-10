@@ -70,11 +70,9 @@
             text-transform: uppercase;
             font-size: 50px;
             font-weight: 400;
-            margin: 0;
             top: -10px;
             line-height: 45px;
-            margin-top: 20px;
-            margin-left: 20px;
+            margin: 20px 0 0 20px;
         }
 
         #title_section p {
@@ -99,7 +97,6 @@
         }
 
         #login_section .btn {
-            padding: 15px 20px;
             background: #62A8EA;
             border-radius: 0;
             color: #fff;
@@ -107,9 +104,8 @@
             margin-left: 0;
             display: block;
             text-align: left;
-            padding-left: 50px;
-            border: 0;
-            border-right: 0;
+            padding: 15px 20px 15px 50px;
+            border-width: 0;
         }
 
         .btn-login {
@@ -159,11 +155,8 @@
         .btn-loading {
             width: 16px;
             height: 16px;
-            margin: 0 auto;
             float: left;
-            margin-right: 3px;
-            margin-top: 3px;
-            margin-left: -1px;
+            margin: 3px 3px 0 -1px;
             -webkit-animation: spin 0.4s linear infinite;
             -moz-animation: spin 0.4s linear infinite;
             animation: spin 0.4s linear infinite;

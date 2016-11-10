@@ -240,7 +240,7 @@
 
         function newRow(kind, name, type, nullable, key, defaultValue) {
 
-            unique_id = ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
+            var unique_id = ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
             if (kind == 'primary') {
                 $('#tablebody').prepend('<tr id="' + unique_id + '" class="newTableRow">' + $('.tablerow').html() + '</tr>');
             } else {

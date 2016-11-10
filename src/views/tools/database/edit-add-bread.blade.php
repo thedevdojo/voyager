@@ -167,8 +167,7 @@
                                             $('#field_details_{{ $data->Field }}_invalid').hide();
                                             var ugly = e.target.value;
                                             var obj = JSON.parse(ugly);
-                                            var pretty = JSON.stringify(obj, undefined, 4);
-                                            document.getElementById('field_details_{{ $data->Field }}').value = pretty;
+                                            document.getElementById('field_details_{{ $data->Field }}').value = JSON.stringify(obj, undefined, 4);
                                         } else {
                                             $('#field_details_{{ $data->Field }}_valid').hide();
                                             $('#field_details_{{ $data->Field }}_invalid').show();
@@ -252,8 +251,7 @@
         function prettyPrint() {
             var ugly = document.getElementById('myTextArea').value;
             var obj = JSON.parse(ugly);
-            var pretty = JSON.stringify(obj, undefined, 4);
-            document.getElementById('myTextArea').value = pretty;
+            document.getElementById('myTextArea').value = JSON.stringify(obj, undefined, 4);
         }
     </script>
 

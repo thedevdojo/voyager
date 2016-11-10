@@ -41,20 +41,20 @@ class VoyagerMediaController extends Controller
 
         $response = $this->getFiles($dir);
 
-        return response()->json(array(
+        return response()->json([
             "name" => "files",
             "type" => "folder",
             "path" => $dir,
             "folder" => $folder,
             "items" => $response,
             "last_modified" => 'asdf'
-        ));
+        ]);
     }
 
     private function getFiles($dir)
     {
 
-        $files = array();
+        $files = [];
         $storage_files = Storage::files($dir);
         $storage_folders = Storage::directories($dir);
 
@@ -65,13 +65,13 @@ class VoyagerMediaController extends Controller
             } else {
                 $fname = $file;
             }
-            $files[] = array(
+            $files[] = [
                 "name" => $fname,
                 "type" => Storage::mimeType($file),
                 "path" => Storage::disk(config('filesystem.default'))->url($file),
                 "size" => Storage::size($file),
                 "last_modified" => Storage::lastModified($file)
-            );
+            ];
         }
 
         foreach ($storage_folders as $folder) {
@@ -82,13 +82,13 @@ class VoyagerMediaController extends Controller
                 $fname = $folder;
             }
 
-            $files[] = array(
+            $files[] = [
                 "name" => $fname,
                 "type" => 'folder',
                 "path" => Storage::disk(config('filesystem.default'))->url($folder),
                 "items" => '',
                 "last_modified" => ''
-            );
+            ];
         }
 
         return $files;
@@ -113,7 +113,7 @@ class VoyagerMediaController extends Controller
             }
         }
 
-        return array('success' => $success, 'error' => $error);
+        return ['success' => $success, 'error' => $error];
     }
 
 
@@ -147,7 +147,7 @@ class VoyagerMediaController extends Controller
             }
         }
 
-        return array('success' => $success, 'error' => $error);
+        return ['success' => $success, 'error' => $error];
     }
 
     // GET ALL DIRECTORIES Working with Laravel 5.3
@@ -201,7 +201,7 @@ class VoyagerMediaController extends Controller
             $error = 'Sorry there is already a file/folder with that existing name in that folder.';
         }
 
-        return array('success' => $success, 'error' => $error);
+        return ['success' => $success, 'error' => $error];
     }
 
     // RENAME FILE WORKING with 5.3
@@ -230,7 +230,7 @@ class VoyagerMediaController extends Controller
             $error = 'File or Folder may already exist with that name. Please choose another name or delete the other file.';
         }
 
-        return array('success' => $success, 'error' => $error);
+        return ['success' => $success, 'error' => $error];
     }
 
     // Upload Working with 5.3
@@ -246,7 +246,7 @@ class VoyagerMediaController extends Controller
             $message = $e->getMessage();
         }
 
-        return response()->json(array('success' => $success, 'message' => $message));
+        return response()->json(['success' => $success, 'message' => $message]);
     }
 
 }
