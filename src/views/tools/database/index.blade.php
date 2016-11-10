@@ -205,7 +205,7 @@
 
             $('.bread_actions').on('click', '.delete', function (e) {
                 var id = $(e.target).data('id'),
-                    name = $(e.target).data('name');
+                        name = $(e.target).data('name');
 
                 $('#delete_builder_name').text(name);
                 $('#delete_builder_form').attr('action', '/admin/database/delete_bread/' + id);

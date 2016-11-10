@@ -396,7 +396,7 @@
         $('document').ready(function () {
             $('.voyager-trash').click(function () {
                 var id = $(this).data('id'),
-                    display = $(this).data('display');
+                        display = $(this).data('display');
                 $('#delete_setting_title').text(display);
                 $('#delete_form').attr('action', '/admin/settings/' + id);
                 $('#delete_modal').modal('show');
