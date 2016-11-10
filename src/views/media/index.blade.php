@@ -46,7 +46,7 @@
                     <div id="uploadPreview" style="display:none;"></div>
 
                     <div id="uploadProgress" class="progress active progress-striped">
-                        <div class="progress-bar progress-bar-success" style="width: 0%"></div>
+                        <div class="progress-bar progress-bar-success" style="width: 0"></div>
                     </div>
 
                     <div id="content">
@@ -75,7 +75,7 @@
                                             <div class="link_icon">
                                                 <template v-if="file.type.includes('image')">
                                                     <div class="img_icon"
-                                                         style="background-image:url(@{{ encodeURI(file.path) }}); background-position:center center; background-size: auto 50px; background-repeat:no-repeat; display:inline-block; width:100%; height:100%;"></div>
+                                                         style="background-size: auto 50px; background: url(@{{ encodeURI(file.path) }}) no-repeat center center;display:inline-block; width:100%; height:100%;"></div>
                                                 </template>
                                                 <template v-if="file.type.includes('video')">
                                                     <i class="icon voyager-video"></i>
@@ -337,7 +337,7 @@
         var media = new VoyagerMedia({
             baseUrl: "{{ route('voyager.dashboard') }}"
         });
-        $(function(){
+        $(function () {
             media.init();
         });
     </script>
