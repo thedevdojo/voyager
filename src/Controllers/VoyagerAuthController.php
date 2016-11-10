@@ -49,7 +49,7 @@ class VoyagerAuthController extends Controller
 
     public function redirectPath()
     {
-        return route('voyager.dashboard') ;
+        return route('voyager.dashboard');
     }
 }
 

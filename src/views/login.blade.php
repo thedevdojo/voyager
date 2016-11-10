@@ -16,8 +16,8 @@
         .login-page {
             background-image: url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
             background-size: cover;
-            margin: 0px;
-            padding: 0px;
+            margin: 0;
+            padding: 0;
         }
 
         .logo-img {
@@ -42,8 +42,8 @@
             width: 380px;
             height: 100%;
             position: absolute;
-            right: 0px;
-            top: 0px;
+            right: 0;
+            top: 0;
             text-align: center;
             background: #fff;
             z-index: 99;
@@ -53,7 +53,6 @@
             width: auto;
             position: absolute;
             margin-left: 120px;
-            position: absolute;
             top: 50%;
             margin-top: -50px;
         }
@@ -68,16 +67,12 @@
             color: #fff;
             z-index: 9999;
             position: relative;
-            color: #fff;
             text-transform: uppercase;
             font-size: 50px;
             font-weight: 400;
-            margin: 0px;
-            position: relative;
             top: -10px;
             line-height: 45px;
-            margin-top: 20px;
-            margin-left: 20px;
+            margin: 20px 0 0 20px;
         }
 
         #title_section p {
@@ -88,7 +83,7 @@
             position: relative;
             z-index: 99;
             font-weight: 200;
-            margin-top: 0px;
+            margin-top: 0;
             left: 25px;
         }
 
@@ -96,23 +91,21 @@
             text-align: left;
             margin-left: 50px;
             font-weight: 200;
-            margin-bottom: 0px;
+            margin-bottom: 0;
             margin-top: 3px;
             color: #444;
         }
 
         #login_section .btn {
-            padding: 15px 20px;
             background: #62A8EA;
-            border-radius: 0px;
+            border-radius: 0;
             color: #fff;
             width: 380px;
-            margin-left: 0px;
+            margin-left: 0;
             display: block;
             text-align: left;
-            padding-left: 50px;
-            border: 0px;
-            border-right: 0px;
+            padding: 15px 20px 15px 50px;
+            border-width: 0;
         }
 
         .btn-login {
@@ -120,7 +113,7 @@
         }
 
         .btn-login i {
-            border-right: 0px;
+            border-right: 0;
             position: relative;
             top: 2px;
         }
@@ -140,11 +133,11 @@
 
         #login input {
             padding: 20px 50px;
-            border: 0px;
+            border: 0;
             background: #f5f5f5;
-            border-radius: 0px;
+            border-radius: 0;
             float: left;
-            margin-left: 0px;
+            margin-left: 0;
             margin-bottom: 10px;
             width: 278px;
             font-size: 12px;
@@ -162,11 +155,8 @@
         .btn-loading {
             width: 16px;
             height: 16px;
-            margin: 0px auto;
             float: left;
-            margin-right: 3px;
-            margin-top: 3px;
-            margin-left: -1px;
+            margin: 3px 3px 0 -1px;
             -webkit-animation: spin 0.4s linear infinite;
             -moz-animation: spin 0.4s linear infinite;
             animation: spin 0.4s linear infinite;
