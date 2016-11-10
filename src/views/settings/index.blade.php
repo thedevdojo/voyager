@@ -155,14 +155,14 @@
 
 	<div class="page-content container-fluid">	
 
-        <form action="/admin/settings" method="POST"  enctype="multipart/form-data">
+        <form action="{{ route('voyager.settings') }}" method="POST"  enctype="multipart/form-data">
     		<div class="panel">
                 @foreach($settings as $setting)
                     <div class="panel-heading">
                         <h3 class="panel-title"> {{ $setting->display_name }} <code>Voyager::setting('{{ $setting->key }}')</code></h3>
                         <div class="panel-actions">
-                            <a href="/admin/settings/move_up/{{ $setting->id }}"><i class="sort-icons voyager-sort-asc"></i></a>
-                            <a href="/admin/settings/move_down/{{ $setting->id }}"><i class="sort-icons voyager-sort-desc"></i></a>
+                            <a href="{{ route('voyager.settings.move_up', $setting->id) }}"><i class="sort-icons voyager-sort-asc"></i></a>
+                            <a href="{{ route('voyager.settings.move_down', $setting->id) }}"><i class="sort-icons voyager-sort-desc"></i></a>
                             <i class="voyager-trash" data-id="{{ $setting->id }}" data-display="{{ $setting->display_name }}"></i>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                         @elseif($setting->type == "image" || $setting->type == "file")
                             @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::exists(config('voyager.storage.subfolder') . $setting->value))
                                 <div class="img_settings_container">
-                                    <a href="/admin/settings/delete_value/{{ $setting->id }}" class="voyager-x"></a>
+                                    <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x"></a>
                                     <img src="{{ Storage::url(config('voyager.storage.subfolder') . $setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                 </div>
                             @elseif($setting->type == "file" && isset( $setting->value ))
@@ -244,7 +244,7 @@
             </div>
             <div class="panel-body">
 
-                <form action="/admin/settings/create" method="POST">
+                <form action="{{ route('voyager.settings.create') }}" method="POST">
 
                     <div class="col-md-4">
                         <label for="display_name">Name</label>
@@ -343,7 +343,7 @@
             <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete the <span id="delete_setting_title"></span> Setting?</h4>
           </div>
           <div class="modal-footer">
-            <form action="/admin/settings/" id="delete_form" method="POST">
+            <form action="{{ route('voyager.settings') }}" id="delete_form" method="POST">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This Setting">
@@ -360,7 +360,7 @@
                 id = $(this).data('id');
                 display = $(this).data('display');
                 $('#delete_setting_title').text(display);
-                $('#delete_form').attr('action', '/admin/settings/' + id);
+                $('#delete_form')[0].action += '/' + id;
                 $('#delete_modal').modal('show');
             });
 
@@ -374,7 +374,7 @@
 @section('javascript')
 
     <iframe id="form_target" name="form_target" style="display:none"></iframe>
-    <form id="my_form" action="/admin/upload" target="form_target" method="POST" enctype="multipart/form-data" style="width:0px;height:0;overflow:hidden">
+    <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="POST" enctype="multipart/form-data" style="width:0px;height:0;overflow:hidden">
         <input name="image" id="upload_file" type="file" onchange="$('#my_form').submit();this.value='';">
         <input type="hidden" name="type_slug" id="type_slug" value="settings">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">

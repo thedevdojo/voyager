@@ -4,9 +4,13 @@ namespace TCG\Voyager;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Middleware\VoyagerAdminMiddleware;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
+
+    private $routeNamespace = 'TCG\\Voyager\\Controllers';
+
     /**
      * Bootstrap the application services.
      *
@@ -14,7 +18,7 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function boot(\Illuminate\Routing\Router $router)
     {
-        $router->middleware('admin.user', 'TCG\Voyager\Middleware\VoyagerAdminMiddleware');
+        $router->middleware('admin.user', VoyagerAdminMiddleware::class);
 
         if( config('voyager.user.add_default_role_on_register') ){
             $app_user = config('voyager.user.namespace');
@@ -26,7 +30,9 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/views', 'voyager');
 
-        include __DIR__.'/routes.php';
+        $router->group(['prefix' => config('voyager.routes.prefix', 'admin'), 'namespace'=>$this->routeNamespace], function(){
+            include __DIR__.'/routes.php';
+        });
     }
 
     /**
@@ -38,7 +44,13 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $this->registerResources();
 
-        $this->app->make('TCG\Voyager\Models\User');
+        /*
+         * These calls are not needed.
+         * All Laravel-based classes (ie: Models and Controllers) are bootstrapped by default
+         * Remove these in the next iteration
+         * */
+
+        /*$this->app->make('TCG\Voyager\Models\User');
         $this->app->make('TCG\Voyager\Models\Role');
         $this->app->make('TCG\Voyager\Models\DataType');
         $this->app->make('TCG\Voyager\Models\DataRow');
@@ -49,7 +61,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->make('TCG\Voyager\Controllers\VoyagerSettingsController');
 
         $this->app->make('TCG\Voyager\Controllers\VoyagerAuthController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerDatabaseController');
+        $this->app->make('TCG\Voyager\Controllers\VoyagerDatabaseController');*/
 
         $this->app->booting(function() {
             $loader = \Illuminate\Foundation\AliasLoader::getInstance();

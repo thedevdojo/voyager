@@ -3,7 +3,7 @@
 
 @section('page_header')
 	<h1 class="page-title">
-		<i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }} <a href="/admin/{{ $dataType->slug }}/create" class="btn btn-success"><i class="voyager-plus"></i> Add New</a>
+		<i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }} <a href="{{ route($dataType->slug.'.create') }}" class="btn btn-success"><i class="voyager-plus"></i> Add New</a>
 	</h1>
 @stop
 
@@ -40,7 +40,13 @@
 					      					@endif
 					      				</td>
 					      			@endforeach
-					      			<td class="no-sort no-click"><div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}"><i class="voyager-trash"></i> Delete</div><a href="/admin/{{ $dataType->slug }}/{{ $data->id }}/edit" class="btn-sm btn-primary pull-right edit"><i class="voyager-edit"></i> Edit</a> <a href="/admin/{{ $dataType->slug }}/{{ $data->id }}" class="btn-sm btn-warning pull-right"><i class="voyager-eye"></i> View</a></td>
+					      			<td class="no-sort no-click">
+										<div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+											<i class="voyager-trash"></i> Delete
+										</div>
+										<a href="{{ route($dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit"><i class="voyager-edit"></i> Edit</a>
+										<a href="{{ route($dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right"><i class="voyager-eye"></i> View</a>
+									</td>
 					      		</tr>
 					      	@endforeach
 					    </tbody>
@@ -59,7 +65,7 @@
 	        <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete this {{ $dataType->display_name_singular }}?</h4>
 	      </div>
 	      <div class="modal-footer">
-            <form action="/admin/{{ $dataType->slug }}" id="delete_form" method="POST">
+            <form action="{{ route($dataType->slug.'.index') }}" id="delete_form" method="POST">
             	<input type="hidden" name="_method" value="DELETE">
             	<input type="hidden" name="_token" value="{{ csrf_token() }}">
             	<input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This {{ $dataType->display_name_singular }}">
@@ -83,7 +89,7 @@
       $('td').on('click', '.delete', function(e){
       	id = $(e.target).data('id');
 
-      	$('#delete_form').attr('action', '/admin/' + '{{ $dataType->slug }}' + '/' + id);
+      	$('#delete_form')[0].action += '/' + id;
 
       	$('#delete_modal').modal('show');
       });

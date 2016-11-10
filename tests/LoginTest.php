@@ -13,14 +13,13 @@ class LoginTest extends TestCase
      */
     public function testLogin()
     {
-        $this->visit('/')->see('Laravel');
-        $this->visit('/admin')->see('Voyager');
-        $this->visit('/admin/login');
-        $this->visit('/admin/login');
+        //TODO: Remove this test - Unrelated to Voyager
+        //$this->visit('/')->see('Laravel');
+        $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
         $this->press('Login Logging in');
-        $this->seePageIs('/admin');
+        $this->seePageIs(route('voyager.dashboard'));
     }
 
 }

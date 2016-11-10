@@ -104,7 +104,7 @@ class VoyagerBreadController extends Controller
     $dataType = DataType::where('slug', '=', $slug)->first();
     $data = call_user_func([$dataType->model_name, 'find'], $id);
     $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-    return redirect('/admin/' .$dataType->slug)->with(array('message' => 'Successfully Updated ' . $dataType->display_name_singular, 'alert-type' => 'success'));
+    return redirect(route($dataType->slug.'.index'))->with(array('message' => 'Successfully Updated ' . $dataType->display_name_singular, 'alert-type' => 'success'));
   }
 
     //***************************************
@@ -147,7 +147,7 @@ class VoyagerBreadController extends Controller
 
     $data = new $dataType->model_name;
     $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
-    return redirect('/admin/' .$dataType->slug)->with(array('message' => 'Successfully Added New ' . $dataType->display_name_singular, 'alert-type' => 'success'));
+    return redirect(route($dataType->slug.'.index'))->with(array('message' => 'Successfully Added New ' . $dataType->display_name_singular, 'alert-type' => 'success'));
   }
 
     //***************************************
@@ -196,10 +196,10 @@ class VoyagerBreadController extends Controller
     } // end foreach
 
     if($data->destroy($id)){
-      return redirect('/admin/' . $dataType->slug)->with(array('message' => 'Successfully Deleted ' . $dataType->display_name_singular, 'alert-type' => 'success'));
+      return redirect(route($dataType->slug.'.index'))->with(array('message' => 'Successfully Deleted ' . $dataType->display_name_singular, 'alert-type' => 'success'));
     }
 
-    return redirect('/admin/' . $dataType->display_name_singular)->with(array('message' => 'Sorry it appears there was a problem deleting this ' . $dataType->display_name_singular, 'alert-type' => 'error'));
+    return redirect(route($dataType->slug.'.index'))->with(array('message' => 'Sorry it appears there was a problem deleting this ' . $dataType->display_name_singular, 'alert-type' => 'error'));
 
   } // end of destroy()
 
