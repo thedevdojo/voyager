@@ -38,7 +38,7 @@ class RolesTest extends TestCase
         $this->seePageIs('/admin/roles');
         $this->seeInDatabase('roles', ['name' => 'regular_user']);
 
-	    // Editing a Role
+        // Editing a Role
         $this->visit('/admin/roles/2/edit');
         $this->type('user', 'name');
         $this->press('Submit');
@@ -48,11 +48,11 @@ class RolesTest extends TestCase
         // Get the current super admin role
         $superadmin_role = Role::where('name', '=', 'superadmin')->first();
 
-	    // Deleting a Role
-	    $response = $this->call('DELETE', '/admin/roles/'. $superadmin_role->id, ['_token' => csrf_token()]);
-	    $this->assertEquals(302, $response->getStatusCode());
+        // Deleting a Role
+        $response = $this->call('DELETE', '/admin/roles/' . $superadmin_role->id, ['_token' => csrf_token()]);
+        $this->assertEquals(302, $response->getStatusCode());
         $this->notSeeInDatabase('roles', ['name' => 'superadmin']);
-        
+
     }
 
 }

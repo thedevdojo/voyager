@@ -54,13 +54,13 @@ class RouteTest extends TestCase
             '/admin/database/edit-categories-table',
             '/admin/database/create-table',
             '/admin/settings'
-            ];
+        ];
 
-        foreach($urls as $url){
+        foreach ($urls as $url) {
             $response = $this->call('GET', $url);
-            $this->assertEquals(200, $response->status(),  $url . " did not return a 200");
+            $this->assertEquals(200, $response->status(), $url . " did not return a 200");
         }
-        
+
     }
 
 }

@@ -16,13 +16,14 @@ class VoyagerAuthController extends Controller
     protected $redirectTo = '/admin';
 
     use AuthenticatesUsers;
-   
+
     public function login(Request $request)
     {
         return view('voyager::login');
     }
 
-    public function postLogin(Request $request){
+    public function postLogin(Request $request)
+    {
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle

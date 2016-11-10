@@ -52,7 +52,7 @@ class VoyagerCommand extends Command
     public function fire()
     {
 
-        if(!$this->option('existing')){
+        if (!$this->option('existing')) {
             $this->info("Generating the default authentication scaffolding");
             Artisan::call('make:auth');
         }
