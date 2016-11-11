@@ -30,7 +30,6 @@ Add the Voyager service provider as well as the Image Intervention service provi
 
 ```
 TCG\Voyager\VoyagerServiceProvider::class,
-Intervention\Image\ImageServiceProvider::class,
 ```
 
 Lastly, we can install voyager by running
