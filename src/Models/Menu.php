@@ -53,7 +53,11 @@ class Menu extends Model
     static public function buildBootstrapOutput($menu_items, $output, $options, Request $request)
     {
 
-        $output .= '<ul class="nav navbar-nav">';
+        if(empty($output)){
+            $output = '<ul class="nav navbar-nav">';
+        } else{        
+            $output .= '<ul class="dropdown-menu">';
+        }
 
         foreach ($menu_items as $item):
 
@@ -158,12 +162,7 @@ class Menu extends Model
     static public function buildAdminMenuOutput($menu_items, $output, $options, Request $request)
     {
 
-        if (empty($output)) {
-            $output = '<ul class="nav navbar-nav">';
-        } else {
-
-            $output .= '<ul class="dropdown-menu">';
-        }
+        $output .= '<ul class="nav navbar-nav">';
 
         foreach ($menu_items as $item):
 
@@ -197,7 +196,7 @@ class Menu extends Model
                 // Add tag for collapse panel
                 $output .= '<div id="' . $collapse_id . '" class="panel-collapse collapse"><div class="panel-body">';
 
-                $output = self::buildBootstrapOutput($children_menu_items, $output, [], $request);
+                $output = self::buildAdminMenuOutput($children_menu_items, $output, [], $request);
 
                 $output .= '</div></div>';      // close tag of collapse panel
             }
