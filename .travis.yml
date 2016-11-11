@@ -3,18 +3,16 @@ language: php
 sudo: true
 
 php:
-- 5.6
-- 7.0
-- 7.1
-- hhvm
-- nightly
+  - 5.6
+  - 7.0
+  - 7.1
+  - nightly
 
 matrix:
   fast_finish: true
 
   allow_failures:
     - php: 7.1
-    - php: hhvm
     - php: nightly
 
 services:
@@ -72,7 +70,6 @@ before_script:
   # Remove the default phpunit.xml and replace it with voyager phpunit.xml
   - rm phpunit.xml
   - cp vendor/tcg/voyager/phpunit.xml phpunit.xml
-
 
 script:
   # - vendor/bin/phpunit
