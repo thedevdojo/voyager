@@ -50,24 +50,24 @@ class Menu extends Model
         return $output;
     }
 
-    static public function buildBootstrapOutput($menu_items, $output, $options, Request $request)
-    {
-
+    static public function buildBootstrapOutput($menu_items, $output, $options, Request $request){
+        
         if(empty($output)){
             $output = '<ul class="nav navbar-nav">';
-        } else{        
+        } else{
+        
             $output .= '<ul class="dropdown-menu">';
         }
-
-        foreach ($menu_items as $item):
+        foreach($menu_items as $item):
+            
             $li_class = '';
             $a_attrs = '';
-            if ($request->is(ltrim($item->url, '/')) || $item->url == '/' && $request->is('/')):
+            if($request->is( ltrim($item->url, '/') ) || $item->url == '/' && $request->is( '/' )):
                 $li_class = ' class="active"';
             endif;
             $children_menu_items = MenuItem::where('parent_id', '=', $item->id)->orderBy('order', 'ASC')->get();
-            if (count($children_menu_items) > 0) {
-                if ($li_class != '') {
+            if(count($children_menu_items) > 0){
+                if($li_class != ''){
                     $li_class = rtrim($li_class, '"') . ' dropdown"';
                 } else {
                     $li_class = ' class="dropdown"';
@@ -75,22 +75,25 @@ class Menu extends Model
                 $a_attrs = 'class="dropdown-toggle" ';
             }
             $icon = '';
-            if (isset($item->icon_class)) {
-                $icon = '<span class="icon ' . $item->icon_class . '"></span>';
+            if(isset($options->icon) && $options->icon == true){
+                $icon = '<i class="' . $item->icon_class . '"></i>';
             }
             $styles = '';
-            if (isset($options->color) && $options->color == true) {
-                $styles = ' style="color:' . $item->color . '"';
+            if(isset($options->color) && $options->color == true){
+                $styles = ' style="color:'.$item->color.'"';
             }
             $background = '';
-            if (isset($options->background) && $options->background == true) {
-                $styles = ' style="background-color:' . $item->color . '"';
+            if(isset($options->background) && $options->background == true){
+                $styles = ' style="background-color:'.$item->color.'"';
             }
-            $output .= '<li' . $li_class . '><a ' . $a_attrs . ' href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span class="title">' . $item->title . '</span></a>';
-            if (count($children_menu_items) > 0) {
+            $output .= '<li' . $li_class . '><a ' . $a_attrs . ' href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span>' . $item->title . '</span></a>';
+            
+            
+            if(count($children_menu_items) > 0){
                 $output = self::buildBootstrapOutput($children_menu_items, $output, $options, $request);
             }
             $output .= '</li>';
+            
         endforeach;
         $output .= '</ul>';
         return $output;
