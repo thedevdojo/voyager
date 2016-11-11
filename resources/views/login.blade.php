@@ -167,9 +167,9 @@
         }
 
         .error-login {
-          padding: 1em;
-          text-align: center;
-          color: #DC143C;
+            padding: 1em;
+            text-align: center;
+            color: #DC143C;
         }
 
         @-moz-keyframes spin {
@@ -221,13 +221,11 @@
                                                                                                   src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png"> Logging in</span>
             </button>
         </form>
-
-      @if (count($errors))
-        <div class="error-login">
-          The given credentials don't match with an user registered.
-        </div>
-      @endif
-
+        @if (count($errors))
+            <div class="error-login">
+                The given credentials don't match with an user registered.
+            </div>
+        @endif
     </div>
 </div>
 

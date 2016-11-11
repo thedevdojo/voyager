@@ -1,9 +1,8 @@
 @extends('voyager::master')
 
-
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }} <a
+        <i class="voyager-list-add"></i> {{ $dataType->display_name_plural }} <a
                 href="{{ route($dataType->slug.'.create') }}" class="btn btn-success"><i class="voyager-plus"></i> Add
             New</a>
     </h1>
@@ -14,6 +13,13 @@
 @stop
 
 @section('content')
+
+    <div class="container-fluid">
+        <div class="alert alert-info">
+            <strong>How To Use:</strong>
+            <p>You can output a menu anywhere on your site by calling <code>Menu::display('name')</code></p>
+        </div>
+    </div>
 
     <div class="page-content container-fluid">
         <div class="row">
@@ -44,14 +50,14 @@
                                         </td>
                                     @endforeach
                                     <td class="no-sort no-click">
-                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}"
-                                             id="delete-{{ $data->id }}">
+                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}">
                                             <i class="voyager-trash"></i> Delete
                                         </div>
-                                        <a href="{{ route($dataType->slug.'.edit', $data->id) }}"
+                                        <a href="{{ route('menus.edit', $data->id) }}"
                                            class="btn-sm btn-primary pull-right edit"><i class="voyager-edit"></i> Edit</a>
-                                        <a href="{{ route($dataType->slug.'.show', $data->id) }}"
-                                           class="btn-sm btn-warning pull-right"><i class="voyager-eye"></i> View</a>
+                                        <a href="{{ route('voyager.menu.builder', $data->id) }}"
+                                           class="btn-sm btn-success pull-right"><i class="voyager-list"></i>
+                                            Builder</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -73,7 +79,7 @@
                         this {{ $dataType->display_name_singular }}?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route($dataType->slug.'.index') }}" id="delete_form" method="POST">
+                    <form action="{{ route('menus.index') }}" id="delete_form" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
@@ -88,29 +94,23 @@
 
 @section('javascript')
     <!-- DataTables -->
+
+
     <script>
 
         $(document).ready(function () {
-            $('#dataTable').DataTable({ "order": [] });
+            $('#dataTable').DataTable();
 
         });
 
         $('td').on('click', '.delete', function (e) {
-            var id = $(this).data('id');
-            var form = $('#delete_form')[0];
-            var action = parseActionUrl(form.action, id);
+            id = $(e.target).data('id');
 
-            form.action = action;
+            $('#delete_form')[0].action += '/' + id;
 
             $('#delete_modal').modal('show');
-
         });
 
-        function parseActionUrl(action, id) {
-            if (action.match(/\/[0-9]+$/)) {
-                return action.replace(/([0-9]+$)/, id);
-            }
-            return action + '/' + id;
-        }
+
     </script>
 @stop

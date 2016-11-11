@@ -31,12 +31,12 @@ class VoyagerServiceProvider extends ServiceProvider
             });
         }
 
-        $this->loadViewsFrom(__DIR__ . '/views', 'voyager');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'voyager');
 
         $router->group(['prefix' => config('voyager.routes.prefix', 'admin'), 'namespace' => $this->routeNamespace],
             function () {
                 if (!$this->app->routesAreCached()) {
-                    require __DIR__ . '/routes.php';
+                    require __DIR__ . '/../routes/web.php';
                 }
             });
 

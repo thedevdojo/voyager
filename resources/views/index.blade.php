@@ -5,11 +5,8 @@
 @stop
 
 @section('content')
-
     <div class="page-content">
-
         <div class="widgets">
-
             <div class="panel widget center bgimage"
                  style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
                 <div class="dimmer"></div>
@@ -22,7 +19,6 @@
 
                     <a href="/{{ config('voyager.routes.prefix') }}/users" class="btn btn-primary">View All Users</a>
                 </div>
-
             </div>
 
             <div class="panel widget center bgimage"
