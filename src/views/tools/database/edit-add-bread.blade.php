@@ -25,7 +25,7 @@
             <div class="col-md-12">
 
                 <form role="form"
-                      action="@if(isset($dataType->id)){{ '/admin/database/' . $dataType->id . '/edit-bread' }}@else{{ '/admin/database/store_bread' }}@endif"
+                      action="@if(isset($dataType->id)){{ route('voyager.database.edit_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
                       method="POST">
 
                     <div class="panel panel-primary panel-bordered">
