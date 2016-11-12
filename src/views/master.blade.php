@@ -169,7 +169,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
                                 <div class="panel-body">
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="/{{config('voyager.routes.prefix')}}/menus">
+                                            <a href="/{{config('voyager.routes.prefix', 'admin')}}/menus">
                                                 <span class="icon voyager-list"></span>
                                                 <span class="title">Menu Builder</span>
                                             </a>
