@@ -6,15 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LoginTest extends TestCase
 {
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
-    public function testLogin()
+    public function testSuccessfulLoginWithDefaultCredentials()
     {
-        //TODO: Remove this test - Unrelated to Voyager
-        //$this->visit('/')->see('Laravel');
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
@@ -22,4 +15,13 @@ class LoginTest extends TestCase
         $this->seePageIs(route('voyager.dashboard'));
     }
 
+    public function testShowAnErrorMessageWhenITryToLoginWithWrongCredentials()
+    {
+        $this->visit(route('voyager.login'))
+             ->type('john@Doe.com', 'email')
+             ->type('pass', 'password')
+             ->press('Login Logging in')
+             ->seePageIs(route('voyager.login'))
+             ->see('The given credentials don\'t match with an user registered.');
+    }
 }
