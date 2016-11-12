@@ -39,6 +39,17 @@ Lastly, we can install voyager by running
 php artisan voyager:install
 ```
 
+If you don't have composer installed and use composer.phar instead, do the following:
+
+```
+composer.phar dump-autoload
+```
+
+And then:
+```
+php artisan db:seed
+```
+
 And we're all good to go! 
 
 Start up a local development server with `php artisan serve` And, visit http://localhost:8000/admin and you can login with the following login credentials:

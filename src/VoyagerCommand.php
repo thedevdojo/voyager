@@ -29,7 +29,6 @@ class VoyagerCommand extends Command
     /**
      * Create a new command instance.
      *
-     * @return \Orangehill\Iseed\IseedCommand
      */
     public function __construct()
     {
@@ -39,9 +38,22 @@ class VoyagerCommand extends Command
 
     protected function getOptions()
     {
-        return array(
-            array('existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null),
-        );
+        return [
+            ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
+        ];
+    }
+
+    /**
+     * Get the composer command for the environment.
+     *
+     * @return string
+     */
+    protected function findComposer()
+    {
+        if (file_exists(getcwd() . '/composer.phar')) {
+            return '"' . PHP_BINARY . '" ' . getcwd() . '/composer.phar';
+        }
+        return 'composer';
     }
 
     /**
@@ -52,7 +64,7 @@ class VoyagerCommand extends Command
     public function fire()
     {
 
-        if(!$this->option('existing')){
+        if (!$this->option('existing')) {
             $this->info("Generating the default authentication scaffolding");
             Artisan::call('make:auth');
         }
@@ -66,13 +78,14 @@ class VoyagerCommand extends Command
 
         $this->info("Dumping the autoloaded files and reloading all new files");
 
-        $process = new Process('composer dump-autoload');
-        $process->run();
+        $composer = $this->findComposer();
+
+        $process = new Process($composer . ' dump-autoload');
+        $process->setWorkingDirectory(base_path())->run();
 
         $this->info("Seeding data into the database");
         $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
-        $process->run();
-
+        $process->setWorkingDirectory(base_path())->run();
 
         $this->info("Adding the storage symlink to your public folder");
         Artisan::call('storage:link');

@@ -2,7 +2,7 @@
 
 return [
 
-    
+
     /*
     |--------------------------------------------------------------------------
     | User config
@@ -16,6 +16,19 @@ return [
         'add_default_role_on_register' => true,
         'default_role' => 'user',
         'namespace' => App\User::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Routes config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager route settings
+    |
+    */
+
+    'routes' => [
+        'prefix' => 'admin'
     ],
 
     /*

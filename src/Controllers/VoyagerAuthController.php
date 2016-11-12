@@ -13,16 +13,15 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 class VoyagerAuthController extends Controller
 {
 
-    protected $redirectTo = '/admin';
-
     use AuthenticatesUsers;
-   
+
     public function login(Request $request)
     {
         return view('voyager::login');
     }
 
-    public function postLogin(Request $request){
+    public function postLogin(Request $request)
+    {
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -46,6 +45,11 @@ class VoyagerAuthController extends Controller
         $this->incrementLoginAttempts($request);
 
         return $this->sendFailedLoginResponse($request);
+    }
+
+    public function redirectPath()
+    {
+        return route('voyager.dashboard');
     }
 }
 
