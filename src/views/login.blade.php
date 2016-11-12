@@ -166,6 +166,12 @@
             display: none;
         }
 
+        .error-login {
+          padding: 1em;
+          text-align: center;
+          color: #DC143C;
+        }
+
         @-moz-keyframes spin {
             100% {
                 -moz-transform: rotate(90deg);
@@ -215,6 +221,10 @@
                                                                                                   src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png"> Logging in</span>
             </button>
         </form>
+
+        <div class="error-login">
+          The given credentials don't match with an user registered.
+        </div>
 
     </div>
 </div>
