@@ -55,4 +55,20 @@ return [
         'subfolder' => 'public/', // include trailing slash, like 'my_folder/'
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Menu Config
+    |--------------------------------------------------------------------------
+    |
+    | Some settings for the menu
+    |
+    */
+
+    'menu' => [
+        'default' => 'default', // if no view is defined, this will be used
+        'overwrites' => [ // overwrite some views with others
+            'admin_menu' => 'voyager::menu.admin_menu',
+        ],
+    ],
+
 ];

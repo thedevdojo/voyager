@@ -1,0 +1,1 @@
+<li><a href="{{ $item->url }}" target="{{ $item->target }}" @yield('link-attributes') ><span class="icon {{ $item->icon_class }}"></span><span class="title">{{ $item->title }}</span></a></li>
