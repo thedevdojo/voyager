@@ -222,9 +222,11 @@
             </button>
         </form>
 
+      @if (count($errors))
         <div class="error-login">
           The given credentials don't match with an user registered.
         </div>
+      @endif
 
     </div>
 </div>
