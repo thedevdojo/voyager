@@ -20,7 +20,7 @@
                     <p>You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your
                         current users.</p>
 
-                    <a href="{{ route('users.index') }}" class="btn btn-primary">View All Users</a>
+                    <a href="/{{ config('voyager.routes.prefix') }}/users" class="btn btn-primary">View All Users</a>
                 </div>
 
             </div>
@@ -35,7 +35,7 @@
                     <p>You have {{ $post_count }} Posts in your database. Click on 'View All Posts' below to view all
                         posts.</p>
 
-                    <a href="{{ route('posts.index') }}" class="btn btn-primary">View All Posts</a>
+                    <a href="/{{ config('voyager.routes.prefix') }}/posts" class="btn btn-primary">View All Posts</a>
                 </div>
 
             </div>
@@ -50,7 +50,7 @@
                     <p>You have {{ $page_count }} Pages in your database. Click on 'View All Pages' below to view all
                         pages.</p>
 
-                    <a href="{{ route('pages.index') }}" class="btn btn-primary">View All Pages</a>
+                    <a href="/{{ config('voyager.routes.prefix') }}/pages" class="btn btn-primary">View All Pages</a>
                 </div>
 
             </div>
