@@ -55,6 +55,9 @@ var VoyagerMedia = function(o){
 
 
 		$('#files').on("dblclick", "li .file_link", function(){
+			if (! $(this).children('.details').hasClass('folder')) {
+				return false;
+			}
 			manager.folders.push( $(this).data('folder') );
 			getFiles(manager.folders);
 		});
