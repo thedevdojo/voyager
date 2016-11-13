@@ -184,7 +184,6 @@ var VoyagerMedia = function(o){
 			source = manager.selected_file.name;
 			destination = $('#move_folder_dropdown').val() + '/' + manager.selected_file.name;
 			$('#move_file_modal').modal('hide');
-			console.log(destination);
 			$.post(options.baseUrl+'/media/move_file', { folder_location: manager.folders, source: source, destination: destination, _token: CSRF_TOKEN }, function(data){
 				if(data.success == true){
 					toastr.success('Successfully moved file/folder', "Sweet Success!");
@@ -200,7 +199,6 @@ var VoyagerMedia = function(o){
 			filename = manager.selected_file.name;
 			new_filename = $('#new_filename').val();
 			$('#rename_file_modal').modal('hide');
-			console.log(manager.folders);
 			$.post(options.baseUrl+'/media/rename_file', { folder_location: manager.folders, filename: filename, new_filename: new_filename, _token: CSRF_TOKEN }, function(data){
 				if(data.success == true){
 					toastr.success('Successfully renamed file/folder', "Sweet Success!");
@@ -240,7 +238,6 @@ var VoyagerMedia = function(o){
 		});
 
 		manager.$watch('selected_file', function (newVal, oldVal) {
-			console.log(newVal);
 			if(typeof(newVal) == 'undefined'){
 				$('.right_details').hide();
 				$('.right_none_selected').show();
@@ -274,14 +271,12 @@ var VoyagerMedia = function(o){
 			// Add the latest files to the folder dropdown
 			var all_folders = '';
 			$.post(options.baseUrl+'/media/directories', { folder_location:manager.folders, _token: CSRF_TOKEN }, function(data){
-				console.log(data);
 				manager.directories = data;
 			});
 
 		}
 
 		function setCurrentSelected(cur){
-			console.log(cur);
 			$('#files li .selected').removeClass('selected');
 			$(cur).addClass('selected');
 			manager.selected_file = manager.files.items[$(cur).data('index')];
