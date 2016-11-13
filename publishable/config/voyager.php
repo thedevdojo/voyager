@@ -40,7 +40,7 @@ return [
     |
     */
 
-    'assets_path' => '/vendor/tcg/voyager/assets',
+    'assets_path' => asset('/vendor/tcg/voyager/assets'),
 
     /*
     |--------------------------------------------------------------------------
