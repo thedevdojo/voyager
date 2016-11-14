@@ -58,13 +58,13 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     Route::get('database', ['uses' => 'VoyagerDatabaseController@index', 'as' => 'voyager.database']);
     Route::get('database/create-table',
         ['uses' => 'VoyagerDatabaseController@create', 'as' => 'voyager.database.create_table']);
-    Route::post('database/create-table', 'VoyagerDatabaseController@store');
+    Route::post('database/create-table', 'VoyagerDatabaseController@store')->name('voyager.database.store_table');
     Route::get('database/table/{table}',
         ['uses' => 'VoyagerDatabaseController@table', 'as' => 'voyager.database.browse_table']);
     Route::delete('database/table/delete/{table}', 'VoyagerDatabaseController@delete');
     Route::get('database/edit-{table}-table',
         ['uses' => 'VoyagerDatabaseController@edit', 'as' => 'voyager.database.edit_table']);
-    Route::post('database/edit-table', 'VoyagerDatabaseController@update');
+    Route::post('database/edit-table', 'VoyagerDatabaseController@update')->name('voyager.database.update_table');
 
     Route::post('database/create_bread',
         ['uses' => 'VoyagerDatabaseController@addBread', 'as' => 'voyager.database.create_bread']);

@@ -96,11 +96,10 @@ class VoyagerDatabaseController extends Controller
 
         $query_rows = $this->buildQuery($request);
 
-        //try{
-
         $table_desc = \DB::select('describe ' . (string)$table_name);
         $table_array = [];
         $table_key = [];
+
         foreach ($table_desc as $desc) {
             array_push($table_array, $desc->Field);
             $table_key[$desc->Field] = $desc->Key;
@@ -109,69 +108,30 @@ class VoyagerDatabaseController extends Controller
 
         Schema::table($table_name, function (Blueprint $table) use ($query_rows, $request, $table_array, $table_key) {
             foreach ($query_rows as $index => $query) {
-                //if(strpos($query, 'timestamps()') === false){
-
                 if (in_array((string)$request->field[$index], $table_array)) {
                     $disableUnique = $table_key[(string)$request->field[$index]] == "UNI";
-                    $query($table, $disableUnique)->change();
-                } else {
-                    $query($table);
+
+                    if ($field != 'created_at & updated_at' && $field != 'created_at' && $field != 'updated_at') {
+                        $query($table, $disableUnique)->change();
+                    }
+
+                    continue;
                 }
 
-                //}
-
+                $query($table);
             }
         });
-
-        $table_desc = \DB::select('describe ' . (string)$table_name);
-
-        $table_type_array = [];
-        $table_default_array = [];
-        $table_null_array = [];
-        foreach ($table_desc as $desc) {
-            $table_type_array[$desc->Field] = $desc->Type;
-            $desc_default = "";
-            if (!empty($desc->Default)) {
-                $desc_default = " DEFAULT " . $desc->Default;
-
-            }
-            $table_default_array[$desc->Field] = $desc_default;
-            $null_val = " NULL";
-            if ($desc->Null == "NO") {
-                $null_val = " NOT NULL";
-            }
-            $table_null_array[$desc->Field] = $null_val;
-        }
-
-
-        foreach ($request->row as $index => $row) {
-            //Reorder the rows
-            $field_name = (string)$request->field[$index];
-            if ($index > 0) {
-                if ($field_name != 'id') {
-                    \DB::statement("ALTER TABLE " . (string)$table_name . " MODIFY COLUMN " . $field_name . " " . $table_type_array[$field_name] . $table_default_array[$field_name] . $table_null_array[$field_name] . " AFTER " . $request->field[$index - 1]);
-                }
-            } else {
-                if ($field_name != 'id') {
-                    \DB::statement("ALTER TABLE " . (string)$table_name . " MODIFY COLUMN " . $field_name . " " . $table_type_array[$field_name] . $table_default_array[$field_name] . $table_null_array[$field_name] . " FIRST");
-                }
-            }
-        }
 
         return redirect(route('voyager.database'))->with([
             'message' => 'Successfully update ' . $table_name . ' table',
             'alert-type' => 'success'
         ]);
-        // } catch(\Exception $e){
-        // 	return back()->with(array('message' => 'Exception: ' . $e->getMessage(), 'alert-type' => 'error'));
-        // }
-
-
     }
 
     public function buildQuery($request)
     {
         $query_rows = [];
+
         foreach ($request->row as $index => $row) {
             $field = $request->field[$index];
             $type = isset($request->type[$index]) ? $request->type[$index] : 'string';
@@ -204,14 +164,17 @@ class VoyagerDatabaseController extends Controller
                 }
 
                 if ($key == 'UNI' && $disableUnique === false) {
-                    $result = $result->unique();
+                    $result->unique();
                 }
-                if ($field != 'created_at & updated_at') {
-                    $result = $result->nullable($nullable);
+
+                if ($field != 'created_at & updated_at' && $field != 'created_at' && $field != 'updated_at') {
+                    $result->nullable($nullable);
+
                     if ($default) {
                         $result->default($default);
                     }
                 }
+
                 return $result;
             };
 
@@ -219,8 +182,6 @@ class VoyagerDatabaseController extends Controller
         }
 
         return $query_rows;
-
-
     }
 
     public function reorder_column(Request $request)
