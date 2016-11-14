@@ -96,13 +96,21 @@
         });
 
         $('td').on('click', '.delete', function (e) {
-            id = $(e.target).data('id');
+            var id = $(this).data('id');
+            var form = $('#delete_form')[0];
+            var action = parseActionUrl(form.action, id);
 
-            $('#delete_form')[0].action += '/' + id;
+            form.action = action;
 
             $('#delete_modal').modal('show');
+
         });
 
-
+        function parseActionUrl(action, id) {
+            if (action.match(/\/[0-9]+$/)) {
+                return action.replace(/([0-9]+$)/, id);
+            }
+            return action + '/' + id;
+        }
     </script>
 @stop
