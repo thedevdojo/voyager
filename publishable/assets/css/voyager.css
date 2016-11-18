@@ -207,7 +207,7 @@
 }
 
 .login-box img{
-  width:50px; 
+  width:50px;
   height:50px;
   margin:0px auto;
   display:block;
@@ -216,15 +216,15 @@
 }
 
 .main-header .logo .logo-mini img{
-  width:25px; 
+  width:25px;
   height:25px;
 }
 
 .main-header .logo .logo-lg img{
-  width:25px; 
-  height:25px; 
-  margin-right:5px; 
-  position:relative; 
+  width:25px;
+  height:25px;
+  margin-right:5px;
+  position:relative;
   top:-1px;
 }
 
@@ -408,11 +408,11 @@ table a.btn-sm{
 {
     0% {
       transform: scale(0.7) rotate(0deg);
-      opacity: 0.0;   
+      opacity: 0.0;
     }
     100% {
       transform: scale(1) rotate(270deg);
-      opacity: 1; 
+      opacity: 1;
     }
 }
 
@@ -420,33 +420,33 @@ table a.btn-sm{
 {
     0% {
       -webkit-transform: scale(0.7) rotate(0deg);
-      opacity: 0.0;   
+      opacity: 0.0;
     }
     100% {
       -webkit-transform: scale(1) rotate(270deg);
-      opacity: 1; 
+      opacity: 1;
     }
 }
 @-moz-keyframes spinnerRotate
 {
     0% {
       -moz-transform: scale(0.7) rotate(0deg);
-      opacity: 0.0;   
+      opacity: 0.0;
     }
     100% {
       -moz-transform: scale(1) rotate(270deg);
-      opacity: 1; 
+      opacity: 1;
     }
 }
 @-ms-keyframes spinnerRotate
 {
     0% {
       -ms-transform: scale(0.7) rotate(0deg);
-      opacity: 0.0;   
+      opacity: 0.0;
     }
     100% {
       -ms-transform: scale(1) rotate(270deg);
-      opacity: 1; 
+      opacity: 1;
     }
 }
 
@@ -1071,9 +1071,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 }
 
 .dd .item_actions{
-  z-index:9; 
-  position:relative; 
-  top:10px; 
+  z-index:9;
+  position:relative;
+  top:10px;
   right:10px;
 }
 
@@ -1086,7 +1086,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 }
 
 .dd .dd-handle .url{
-  font-weight:normal; 
+  font-weight:normal;
   margin-left:10px;
 }
 
@@ -1106,7 +1106,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
   margin-top:0px;
   margin-bottom:0px;
   line-height:20px;
-} 
+}
 
 .toggle.btn{
   margin-top:0px;

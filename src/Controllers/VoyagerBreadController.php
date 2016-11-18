@@ -34,7 +34,15 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Next Get the actual content from the MODEL that corresponds to the slug DataType
-        $dataTypeContent = call_user_func([$dataType->model_name, 'all']);
+        if (strlen($dataType->model_name) != 0)
+        {
+            $dataTypeContent = call_user_func([$dataType->model_name, 'all']);
+        }
+        else
+        {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->get();
+        }
 
 
         if (view()->exists('admin.' . $slug . '.browse')) {
@@ -68,7 +76,17 @@ class VoyagerBreadController extends Controller
     {
         $slug = $request->segment(2);
         $dataType = DataType::where('slug', '=', $slug)->first();
-        $dataTypeContent = call_user_func([$dataType->model_name, 'find'], $id);
+        
+        if (strlen($dataType->model_name) != 0)
+        {
+            $dataTypeContent = call_user_func([$dataType->model_name, 'find'], $id);
+        }
+        else
+        {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->where('id',$id)->first();
+        }
+
         return view('voyager::bread.read', ['dataType' => $dataType, 'dataTypeContent' => $dataTypeContent]);
     }
 
@@ -88,7 +106,16 @@ class VoyagerBreadController extends Controller
     {
         $slug = $request->segment(2);
         $dataType = DataType::where('slug', '=', $slug)->first();
-        $dataTypeContent = call_user_func([$dataType->model_name, 'find'], $id);
+        
+        if (strlen($dataType->model_name) != 0)
+        {
+            $dataTypeContent = call_user_func([$dataType->model_name, 'find'], $id);
+        }
+        else
+        {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->where('id',$id)->first();
+        }
 
 
         if (view()->exists('admin.' . $slug . '.edit-add')) {
