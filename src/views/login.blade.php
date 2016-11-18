@@ -166,6 +166,12 @@
             display: none;
         }
 
+        .error-login {
+          padding: 1em;
+          text-align: center;
+          color: #DC143C;
+        }
+
         @-moz-keyframes spin {
             100% {
                 -moz-transform: rotate(90deg);
@@ -207,7 +213,7 @@
         <p>Sign in below:</p>
         <div style="clear:both"></div>
         <form action="{{ route('voyager.login') }}" method="POST" id="login">
-            <input type="text" class="form-control" name="email" placeholder="email address">
+            <input type="text" class="form-control" name="email" placeholder="email address" value="{{ old('email') }}">
             <input type="password" class="form-control" name="password" placeholder="password">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <button class="btn btn-primary btn-login" id="voyager-login-btn"><span class="login_text"><i
@@ -215,6 +221,12 @@
                                                                                                   src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png"> Logging in</span>
             </button>
         </form>
+
+      @if (count($errors))
+        <div class="error-login">
+          The given credentials don't match with an user registered.
+        </div>
+      @endif
 
     </div>
 </div>
