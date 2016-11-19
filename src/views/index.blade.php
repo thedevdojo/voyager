@@ -62,7 +62,7 @@
 
         <div style="padding:15px;">
 
-        <?= $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
+        <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
         @if(isset($google_analytics_client_id) && !empty($google_analytics_client_id))
             <!-- Google Analytics Embed -->
                 <div id="embed-api-auth-container"></div>
