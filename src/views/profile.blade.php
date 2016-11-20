@@ -12,6 +12,7 @@
              style="border-radius:50%; width:150px; height:150px; border:5px solid #fff;"
              alt="{{ Auth::user()->name }} avatar">
         <h4>{{ ucwords(Auth::user()->name) }}</h4>
+        <h4 class="user-email text-muted">{{ ucwords(Auth::user()->email) }}</h4>
         <p>{{ Auth::user()->bio }}</p>
         <a href="{{ route('users.edit', Auth::user()->id) }}" class="btn btn-primary">Edit My Profile</a>
     </div>
