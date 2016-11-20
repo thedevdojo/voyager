@@ -50,4 +50,17 @@ class AdminProfileTest extends TestCase
     }
 
     // We can edit the user password.
+    public function testCanEditAdminPassword()
+    {
+        $this->visit(route('voyager.profile'))
+             ->click('Edit My Profile')
+             ->see('Edit User')
+             ->seePageIs(config('voyager.routes.prefix') . "/users/{$this->user->id}/edit")
+             ->type('new_password', 'password')
+             ->press('Update')
+             ->seePageIs(config('voyager.routes.prefix') . '/users');
+             
+        $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
+        $this->assertTrue(Hash::check('new_password', $updatedPassword));
+    }
 }
