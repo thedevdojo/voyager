@@ -17,7 +17,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
         }
     ]);
 
-    if (env('DB_CONNECTION') !== null && Schema::hasTable('data_types')):
+    if (config('database.default') !== null && Schema::hasTable('data_types')):
         foreach (TCG\Voyager\Models\DataType::all() as $dataTypes):
             Route::resource($dataTypes->slug, 'VoyagerBreadController');
         endforeach;
