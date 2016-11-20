@@ -11,7 +11,7 @@ class AdminProfileTest extends TestCase
         $this->user = Auth::loginUsingId(1);
     }
     // We can visit the profile page and see the user info. eg: name & email.
-    public function testCanSeeTheUserInfoOnUserProfilePage()
+    public function testCanSeeTheAdminInfoOnHisProfilePage()
     {
         $this->visit(route('voyager.profile'))
              ->seeInElement('h4', $this->user->name)
