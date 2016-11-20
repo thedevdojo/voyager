@@ -14,7 +14,7 @@ class AdminProfileTest extends TestCase
 
         $this->user = Auth::loginUsingId(1);
     }
-    // We can visit the profile page and see the user info. eg: name & email.
+
     public function testCanSeeTheAdminInfoOnHisProfilePage()
     {
         $this->visit(route('voyager.profile'))
@@ -23,7 +23,6 @@ class AdminProfileTest extends TestCase
              ->seeLink('Edit My Profile');
     }
 
-    // We can edit the user name.
     public function testCanEditAdminName()
     {
         $this->visit(route('voyager.profile'))
@@ -36,7 +35,6 @@ class AdminProfileTest extends TestCase
              ->seeInDatabase('users', ['name' => 'New Awesome Name']);
     }
 
-    // We can edit the user email.
     public function testCanEditAdminEmail()
     {
         $this->visit(route('voyager.profile'))
@@ -49,7 +47,6 @@ class AdminProfileTest extends TestCase
              ->seeInDatabase('users', ['email' => 'another@email.com']);
     }
 
-    // We can edit the user password.
     public function testCanEditAdminPassword()
     {
         $this->visit(route('voyager.profile'))
@@ -59,7 +56,7 @@ class AdminProfileTest extends TestCase
              ->type('new_password', 'password')
              ->press('Update')
              ->seePageIs(config('voyager.routes.prefix') . '/users');
-             
+
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('new_password', $updatedPassword));
     }
