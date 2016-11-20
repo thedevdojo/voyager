@@ -37,6 +37,17 @@ class AdminProfileTest extends TestCase
     }
 
     // We can edit the user email.
+    public function testCanEditAdminEmail()
+    {
+        $this->visit(route('voyager.profile'))
+             ->click('Edit My Profile')
+             ->see('Edit User')
+             ->seePageIs(config('voyager.routes.prefix') . "/users/{$this->user->id}/edit")
+             ->type('another@email.com', 'email')
+             ->press('Update')
+             ->seePageIs(config('voyager.routes.prefix') . '/users')
+             ->seeInDatabase('users', ['email' => 'another@email.com']);
+    }
 
     // We can edit the user password.
 }
