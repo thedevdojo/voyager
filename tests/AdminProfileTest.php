@@ -60,4 +60,16 @@ class AdminProfileTest extends TestCase
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('new_password', $updatedPassword));
     }
+
+    public function testCanEditAdminAvatar()
+    {
+        $this->visit(route('voyager.profile'))
+             ->click('Edit My Profile')
+             ->see('Edit User')
+             ->seePageIs(config('voyager.routes.prefix') . "/users/{$this->user->id}/edit")
+             ->attach(realpath(__DIR__ . '/temp/new_avatar.png'), 'avatar')
+             ->press('Update')
+             ->seePageIs(config('voyager.routes.prefix') . '/users')
+             ->dontSeeInDatabase('users', ['id' => 1, 'avatar' => 'user/default.png']);
+    }
 }
