@@ -8,11 +8,19 @@ class AdminProfileTest extends TestCase
 
     protected $user;
 
+    protected $editPageForTheCurrentUser;
+
+    protected $listOfUsers;
+
     public function setUp()
     {
         parent::setUp();
 
         $this->user = Auth::loginUsingId(1);
+
+        $this->editPageForTheCurrentUser = config('voyager.routes.prefix') . "/users/{$this->user->id}/edit";
+
+        $this->listOfUsers = config('voyager.routes.prefix') . '/users';
     }
 
     public function testCanSeeTheAdminInfoOnHisProfilePage()
@@ -28,11 +36,14 @@ class AdminProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click('Edit My Profile')
              ->see('Edit User')
-             ->seePageIs(config('voyager.routes.prefix') . "/users/{$this->user->id}/edit")
+             ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
-             ->press('Update')
-             ->seePageIs(config('voyager.routes.prefix') . '/users')
-             ->seeInDatabase('users', ['name' => 'New Awesome Name']);
+             ->press('Submit')
+             ->seePageIs($this->listOfUsers)
+             ->seeInDatabase(
+                 'users',
+                 ['name' => 'New Awesome Name']
+             );
     }
 
     public function testCanEditAdminEmail()
@@ -40,11 +51,14 @@ class AdminProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click('Edit My Profile')
              ->see('Edit User')
-             ->seePageIs(config('voyager.routes.prefix') . "/users/{$this->user->id}/edit")
+             ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
-             ->press('Update')
-             ->seePageIs(config('voyager.routes.prefix') . '/users')
-             ->seeInDatabase('users', ['email' => 'another@email.com']);
+             ->press('Submit')
+             ->seePageIs($this->listOfUsers)
+             ->seeInDatabase(
+                 'users',
+                 ['email' => 'another@email.com']
+             );
     }
 
     public function testCanEditAdminPassword()
@@ -52,10 +66,10 @@ class AdminProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click('Edit My Profile')
              ->see('Edit User')
-             ->seePageIs(config('voyager.routes.prefix') . "/users/{$this->user->id}/edit")
+             ->seePageIs($this->editPageForTheCurrentUser)
              ->type('new_password', 'password')
-             ->press('Update')
-             ->seePageIs(config('voyager.routes.prefix') . '/users');
+             ->press('Submit')
+             ->seePageIs($this->listOfUsers);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('new_password', $updatedPassword));
@@ -66,10 +80,18 @@ class AdminProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click('Edit My Profile')
              ->see('Edit User')
-             ->seePageIs(config('voyager.routes.prefix') . "/users/{$this->user->id}/edit")
-             ->attach(realpath(__DIR__ . '/temp/new_avatar.png'), 'avatar')
-             ->press('Update')
-             ->seePageIs(config('voyager.routes.prefix') . '/users')
-             ->dontSeeInDatabase('users', ['id' => 1, 'avatar' => 'user/default.png']);
+             ->seePageIs($this->editPageForTheCurrentUser)
+             ->attach($this->newImagePath(), 'avatar')
+             ->press('Submit')
+             ->seePageIs($this->listOfUsers)
+             ->dontSeeInDatabase(
+                 'users',
+                 ['id' => 1, 'avatar' => 'user/default.png']
+             );
+    }
+
+    protected function newImagePath()
+    {
+        return realpath(__DIR__ . '/temp/new_avatar.png');
     }
 }
