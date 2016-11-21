@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AdminProfileTest extends TestCase
+class UserProfileTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -23,7 +23,7 @@ class AdminProfileTest extends TestCase
         $this->listOfUsers = config('voyager.routes.prefix') . '/users';
     }
 
-    public function testCanSeeTheAdminInfoOnHisProfilePage()
+    public function testCanSeeTheUserInfoOnHisProfilePage()
     {
         $this->visit(route('voyager.profile'))
              ->seeInElement('h4', $this->user->name)
@@ -31,7 +31,7 @@ class AdminProfileTest extends TestCase
              ->seeLink('Edit My Profile');
     }
 
-    public function testCanEditAdminName()
+    public function testCanEditUserName()
     {
         $this->visit(route('voyager.profile'))
              ->click('Edit My Profile')
@@ -46,7 +46,7 @@ class AdminProfileTest extends TestCase
              );
     }
 
-    public function testCanEditAdminEmail()
+    public function testCanEditUserEmail()
     {
         $this->visit(route('voyager.profile'))
              ->click('Edit My Profile')
@@ -61,21 +61,21 @@ class AdminProfileTest extends TestCase
              );
     }
 
-    public function testCanEditAdminPassword()
+    public function testCanEditUserPassword()
     {
         $this->visit(route('voyager.profile'))
              ->click('Edit My Profile')
              ->see('Edit User')
              ->seePageIs($this->editPageForTheCurrentUser)
-             ->type('new_password', 'password')
+             ->type('voyager-rocks', 'password')
              ->press('Submit')
              ->seePageIs($this->listOfUsers);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
-        $this->assertTrue(Hash::check('new_password', $updatedPassword));
+        $this->assertTrue(Hash::check('voyager-rocks', $updatedPassword));
     }
 
-    public function testCanEditAdminAvatar()
+    public function testCanEditUserAvatar()
     {
         $this->visit(route('voyager.profile'))
              ->click('Edit My Profile')
