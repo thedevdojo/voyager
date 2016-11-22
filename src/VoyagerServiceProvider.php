@@ -15,6 +15,13 @@ class VoyagerServiceProvider extends ServiceProvider
     private $routeNamespace = 'TCG\\Voyager\\Controllers';
 
     /**
+     * Dependency providers to regiser.
+     */
+    private $providers = [
+        \Intervention\Image\ImageServiceProvider::class,
+    ];
+
+    /**
      * Bootstrap the application services.
      *
      * @param Router $router
@@ -50,6 +57,7 @@ class VoyagerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerResources();
+        $this->registerProviders();
 
         /*
          * These calls are not needed.
@@ -114,6 +122,16 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../publishable/views/' => resource_path('views')
         ], 'views');
+    }
+
+    /**
+     * Register dependency service providers
+     */
+    private function registerProviders()
+    {
+        foreach($this->providers as $provider) {
+            $this->app->register($provider);
+        }
     }
 
 }
