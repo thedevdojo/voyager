@@ -272,8 +272,11 @@ class VoyagerBreadController extends Controller
                     $content = $data->{$row->field};
                 }
             }
-
-            $data->{$row->field} = $content;
+            if ($row->type == 'select_multiple') {
+                $data->{$row->field}()->sync($content);
+            } else {
+                $data->{$row->field} = $content;
+            }
         }
 
         $this->validate($request, $rules);

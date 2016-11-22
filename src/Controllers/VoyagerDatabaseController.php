@@ -322,7 +322,6 @@ class VoyagerDatabaseController extends Controller
 
     public function updateDataType($dataType, $requestData)
     {
-
         $dataType->name = $requestData['name'];
         $dataType->slug = $requestData['slug'];
         $dataType->display_name_singular = $requestData['display_name_singular'];
@@ -332,30 +331,30 @@ class VoyagerDatabaseController extends Controller
         $dataType->description = $requestData['description'];
         $success = $dataType->save();
 
-        $columns = Schema::getColumnListing($dataType->name);
+        $fields = $dataType->fields();
 
-        foreach ($columns as $column) {
-            $dataRow = DataRow::where('data_type_id', '=', $dataType->id)->where('field', '=', $column)->first();
+        foreach ($fields as $field) {
+            $dataRow = DataRow::where('data_type_id', '=', $dataType->id)->where('field', '=', $field)->first();
             if (!isset($dataRow->id)) {
                 $dataRow = new DataRow;
             }
             $dataRow->data_type_id = $dataType->id;
 
-            $dataRow->required = $requestData['field_required_' . $column];
+            $dataRow->required = $requestData['field_required_' . $field];
 
             $bread_checks = ['browse', 'read', 'edit', 'add', 'delete'];
 
             foreach ($bread_checks as $check) {
-                if (isset($requestData['field_' . $check . '_' . $column])) {
+                if (isset($requestData['field_' . $check . '_' . $field])) {
                     $dataRow->{$check} = 1;
                 } else {
                     $dataRow->{$check} = 0;
                 }
             }
-            $dataRow->field = $requestData['field_' . $column];
-            $dataRow->type = $requestData['field_input_type_' . $column];
-            $dataRow->details = $requestData['field_details_' . $column];
-            $dataRow->display_name = $requestData['field_display_name_' . $column];
+            $dataRow->field = $requestData['field_' . $field];
+            $dataRow->type = $requestData['field_input_type_' . $field];
+            $dataRow->details = $requestData['field_details_' . $field];
+            $dataRow->display_name = $requestData['field_display_name_' . $field];
             $dataRowSuccess = $dataRow->save();
             // If success has never failed yet, let's add DataRowSuccess to success
             if ($success !== false) {
