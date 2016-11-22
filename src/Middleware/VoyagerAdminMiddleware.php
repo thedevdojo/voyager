@@ -17,10 +17,9 @@ class VoyagerAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::guest()) { // || (!Auth::guest() && empty(Auth::user()->authx_id)) ) {
-            // Get the Voyager User Object
-            $user = User::find(Auth::user()->id);
-            if ($user->hasRole('admin')) {
+        if (!Auth::guest()) {
+            $permission = \Config::get('voyager.permission');
+            if ($permission()) {
                 return $next($request);
             } else {
                 return redirect('/');

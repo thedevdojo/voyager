@@ -20,6 +20,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Permission config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify conditions for accessing the admin panel
+    |
+    */
+
+    'permission' => function()
+    {
+        $user = TCG\Voyager\Models\User::find(Auth::user()->id);
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        return false;
+    },
+    
+    /*
+    |--------------------------------------------------------------------------
     | Routes config
     |--------------------------------------------------------------------------
     |
