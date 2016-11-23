@@ -274,7 +274,7 @@ class VoyagerBreadController extends Controller
 
             }
             if ($row->type == 'select_multiple') {
-                $data->{$row->field}()->sync($content);
+                // do nothing
             } else {
                 $data->{$row->field} = $content;
             }
@@ -283,6 +283,10 @@ class VoyagerBreadController extends Controller
         $this->validate($request, $rules);
 
         $data->save();
+
+        if ($row->type == 'select_multiple') {
+            $data->{$row->field}()->sync($content);
+        }
 
     }
 
