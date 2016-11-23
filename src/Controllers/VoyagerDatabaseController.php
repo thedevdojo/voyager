@@ -191,27 +191,25 @@ class VoyagerDatabaseController extends Controller
             ) {
                 if ($key == 'PRI') {
                     $result = $table->increments($field);
+                } else if ($field == 'created_at & updated_at') {
+                    $result = $table->timestamp($field);
+                } else if ($type == 'enum') {
+                    $result = $table->enum($field, [$request->enum[$index]]);
                 } else {
-                    if ($field == 'created_at & updated_at' || $field == 'created_at' || $field == 'updated_at') {
-                        $result = $table->timestamps();
-                    } else {
-                        if ($type == 'enum') {
-                            $result = $table->enum($field, [$request->enum[$index]]);
-                        } else {
-                            $result = $table->$type($field);
-                        }
-                    }
+                    $result = $table->$type($field);
                 }
 
                 if ($key == 'UNI' && $disableUnique === false) {
                     $result = $result->unique();
                 }
+                
                 if ($field != 'created_at & updated_at') {
                     $result = $result->nullable($nullable);
                     if ($default) {
                         $result->default($default);
                     }
                 }
+
                 return $result;
             };
 
