@@ -271,6 +271,7 @@ class VoyagerBreadController extends Controller
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
                 }
+
             }
             if ($row->type == 'select_multiple') {
                 $data->{$row->field}()->sync($content);
@@ -296,8 +297,17 @@ class VoyagerBreadController extends Controller
                 $content = null;
             }
 
-            /********** CHECKBOX TYPE **********/
-        } else {
+            
+        }
+        /********** SELECT MULTIPLE TYPE **********/
+        elseif ($row->type == 'select_multiple') {
+            $content = $request->input($row->field);
+            if ($content === null) {
+                $content = array();
+            }
+        } 
+        /********** CHECKBOX TYPE **********/
+        else {
             if ($row->type == 'checkbox') {
                 $content = 0;
                 $checkBoxRow = $request->input($row->field);
