@@ -35,6 +35,20 @@ return [
         }
         return false;
     },
+
+    /*
+    |--------------------------------------------------------------------------
+    | Model permission config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify conditions for accessing the specific models by action name
+    |
+    */
+
+    'model_permission' => function($action)
+    {
+        return true;
+    },
     
     /*
     |--------------------------------------------------------------------------

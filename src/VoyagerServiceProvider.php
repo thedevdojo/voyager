@@ -8,6 +8,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Foundation\AliasLoader;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Middleware\VoyagerModelMiddleware;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,7 @@ class VoyagerServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        $router->middleware('admin.model', VoyagerModelMiddleware::class);
 
         if (config('voyager.user.add_default_role_on_register')) {
             $app_user = config('voyager.user.namespace');
