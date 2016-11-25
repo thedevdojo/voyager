@@ -34,10 +34,14 @@
                                 <tr>
                                     @foreach($dataType->browseRows as $row)
                                         <td>
-
+                                            <?php $options = json_decode($row->details); ?>
                                             @if($row->type == 'image')
                                                 <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif"
                                                      style="width:100px">
+                                            @elseif($row->type == 'select_multiple')
+                                                @if ($data->{$row->field} && isset($options->relationship))
+                                                    {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
+                                                @endif
                                             @else
                                                 {{ $data->{$row->field} }}
                                             @endif
