@@ -13,7 +13,7 @@ Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Larav
 
 After creating your new Laravel application you can include the Voyager package with the following command: 
 
-```
+```bash
 composer require tcg/voyager
 ```
 
@@ -26,27 +26,37 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-Add the Voyager service provider as well as the Image Intervention service provider to the config/app.php file in the `'providers' => [` array:
+Add the Voyager service provider to the `config/app.php` file in the `providers` array:
 
-```
-TCG\Voyager\VoyagerServiceProvider::class,
-Intervention\Image\ImageServiceProvider::class,
+```php
+'providers' => [
+    // Laravel Framework Service Providers...
+    //...
+    
+    // Package Service Providers
+    TCG\Voyager\VoyagerServiceProvider::class,
+    // ...
+    
+    // Application Service Providers
+    // ...
+],
 ```
 
 Lastly, we can install voyager by running
 
-```
+```bash
 php artisan voyager:install
 ```
 
 If you don't have composer installed and use composer.phar instead, do the following:
 
-```
+```bash
 composer.phar dump-autoload
 ```
 
 And then:
-```
+
+```bash
 php artisan db:seed
 ```
 
