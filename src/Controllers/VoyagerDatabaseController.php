@@ -192,7 +192,7 @@ class VoyagerDatabaseController extends Controller
                 if ($key == 'PRI') {
                     $result = $table->increments($field);
                 } else if ($field == 'created_at & updated_at') {
-                    $result = $table->timestamp($field);
+                    $result = $table->timestamps($field);
                 } else if ($type == 'enum') {
                     $result = $table->enum($field, [$request->enum[$index]]);
                 } else {
