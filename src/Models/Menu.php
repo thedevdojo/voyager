@@ -15,7 +15,7 @@ class Menu extends Model
         return $this->hasMany('MenuItem');
     }
 
-    static public function display($menu_name, $type = null, $options = [])
+    static public function display($menu_name, $view = null, $options = [])
     {
         $instance = new static;
 
@@ -25,13 +25,33 @@ class Menu extends Model
         $menu_items = [];
         if (isset($menu->id)) {
             // GET THE ROOT MENU ITEMS
-            $menu_items = MenuItem::where('menu_id', '=', $menu->id)->where('parent_id', '=', null)->orderBy('order',
-                'ASC')->get();
+            $menu_items = MenuItem::with('subitems')
+                ->where('menu_id', '=', $menu->id)
+                ->where('parent_id', null)
+                ->orderBy('order', 'ASC')->get();
         }
 
         // Convert options array into object
         $options = (object)$options;
 
+        if (is_null($view)) {
+            $view = config('voyager.menu.default', 'voyager::menu.default');
+        }
+
+        $overwrites = config('voyager.menu.overwrites', []);
+
+        if (isset($overwrites[$view])) {
+            $view = $overwrites[$view];
+        }
+
+        if (view()->exists($view)) {
+            return view($view, [
+                'items' => $menu_items,
+                'options' => $options,
+            ]);
+        }
+
+        $type = $view;
         if ($type == 'admin') {
             $output = self::buildAdminOutput($menu_items, '', $options);
         } else {
