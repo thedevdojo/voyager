@@ -40,8 +40,8 @@ class VoyagerCommand extends Command
     {
         return [
             ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
-            ['no-migrate', null, InputOption::VALUE_NONE, 'install without running DB migration', null],
-            ['no-seed', null, InputOption::VALUE_NONE, 'install without running DB seeding', null],
+            ['no-dummy', null, InputOption::VALUE_NONE, 'install without migrating/seeding dummy data', null],
+            ['no-dummy-seed', null, InputOption::VALUE_NONE, 'install without seeding dummy data', null],
         ];
     }
 
@@ -75,8 +75,11 @@ class VoyagerCommand extends Command
         Artisan::call('vendor:publish', ['--provider' => 'TCG\Voyager\VoyagerServiceProvider']);
         Artisan::call('vendor:publish', ['--provider' => 'Intervention\Image\ImageServiceProviderLaravel5']);
 
-        if(!$this->option('no-migrate')){
-            $this->info("Migrating the database tables into your application");
+        $this->info("Migrating the database tables into your application");
+        if($this->option('no-dummy')) {
+            Artisan::call('migrate', ['--path' => database_path('migrations/2016_01_01_000000_create_data_types_table.php')]);
+        }
+        else {
             Artisan::call('migrate');
         }
 
@@ -87,10 +90,13 @@ class VoyagerCommand extends Command
         $process = new Process($composer . ' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
-        if(!$this->option('no-seed')){
-            $this->info("Seeding data into the database");
-            $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
-            $process->setWorkingDirectory(base_path())->run();
+        $this->info("Seeding data into the database");
+        if($this->option('no-dummy') || $this->option('no-dummy-seed')) {
+            Artisan::call('db:seed', ['--class' => 'DataTypesTableSeeder']);
+            Artisan::call('db:seed', ['--class' => 'DataRowsTableSeeder']);
+        }
+        else {
+            Artisan::call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
         }
 
         $this->info("Adding the storage symlink to your public folder");
