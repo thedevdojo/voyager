@@ -82,7 +82,7 @@
     <script>
 
       $(document).ready(function(){
-        $('#dataTable').DataTable();
+		  $('#dataTable').DataTable({ "order": [] });
       });
 
       $('td').on('click', '.delete', function(e){
