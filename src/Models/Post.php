@@ -7,11 +7,13 @@ use \Auth;
 
 class Post extends Model
 {
-   public function save(array $options = [])
-	{
-		// Add the user id as the Author of the post
-		$this->author_id = Auth::user()->id;
-		parent::save();
-		// after save code
-	}
+    public function save(array $options = [])
+    {
+        // If no author has been assigned, assign the current user's id as the author of the post
+        if (! $this->author_id && Auth::user()) {
+            $this->author_id = Auth::user()->id;
+        }
+
+        parent::save();
+    }
 }

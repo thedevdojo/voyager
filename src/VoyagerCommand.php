@@ -29,7 +29,6 @@ class VoyagerCommand extends Command
     /**
      * Create a new command instance.
      *
-     * @return \Orangehill\Iseed\IseedCommand
      */
     public function __construct()
     {
@@ -39,11 +38,24 @@ class VoyagerCommand extends Command
 
     protected function getOptions()
     {
-        return array(
-            array('existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null),
-            array('no-migrate', null, InputOption::VALUE_NONE, 'install without running DB migration', null),
-            array('no-seed', null, InputOption::VALUE_NONE, 'install without running DB seeding', null),
-        );
+        return [
+            ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
+            ['no-migrate', null, InputOption::VALUE_NONE, 'install without running DB migration', null],
+            ['no-seed', null, InputOption::VALUE_NONE, 'install without running DB seeding', null],
+        ];
+    }
+
+    /**
+     * Get the composer command for the environment.
+     *
+     * @return string
+     */
+    protected function findComposer()
+    {
+        if (file_exists(getcwd() . '/composer.phar')) {
+            return '"' . PHP_BINARY . '" ' . getcwd() . '/composer.phar';
+        }
+        return 'composer';
     }
 
     /**
@@ -54,13 +66,14 @@ class VoyagerCommand extends Command
     public function fire()
     {
 
-        if(!$this->option('existing')){
+        if (!$this->option('existing')) {
             $this->info("Generating the default authentication scaffolding");
             Artisan::call('make:auth');
         }
 
         $this->info("Publishing the Voyager assets, database, and config files");
-        Artisan::call('vendor:publish');
+        Artisan::call('vendor:publish', ['--provider' => 'TCG\Voyager\VoyagerServiceProvider']);
+        Artisan::call('vendor:publish', ['--provider' => 'Intervention\Image\ImageServiceProviderLaravel5']);
 
         if(!$this->option('no-migrate')){
             $this->info("Migrating the database tables into your application");
@@ -68,13 +81,16 @@ class VoyagerCommand extends Command
         }
 
         $this->info("Dumping the autoloaded files and reloading all new files");
-        $process = new Process('composer dump-autoload');
-        $process->run();
+
+        $composer = $this->findComposer();
+
+        $process = new Process($composer . ' dump-autoload');
+        $process->setWorkingDirectory(base_path())->run();
 
         if(!$this->option('no-seed')){
             $this->info("Seeding data into the database");
             $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
-            $process->run();
+            $process->setWorkingDirectory(base_path())->run();
         }
 
         $this->info("Adding the storage symlink to your public folder");
@@ -82,7 +98,7 @@ class VoyagerCommand extends Command
 
         $this->info("Successfully installed Voyager! Enjoy :)");
         return;
-        
+
     }
 
 }

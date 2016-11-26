@@ -1,16 +1,21 @@
 # **V**oyager - The Missing Laravel Admin
+Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
+
+[![Build Status](https://travis-ci.org/the-control-group/voyager.svg?branch=master)](https://travis-ci.org/the-control-group/voyager)
 
 ![Voyager Screenshot](https://raw.githubusercontent.com/the-control-group/voyager/gh-pages/images/screenshot.png)
 
 Video Demo Here: https://devdojo.com/episode/laravel-admin-package-voyager
 
-Laravel Admin & BREAD System. (Browse, Read, Edit, Add, & Delete)
+Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
+
+Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Laravel 5.3.
 
 ![Voyager Logo](https://s3.amazonaws.com/thecontrolgroup/voyager.png)
 
 After creating your new Laravel application you can include the Voyager package with the following command: 
 
-```
+```bash
 composer require tcg/voyager
 ```
 
@@ -23,17 +28,38 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-Add the Voyager service provider as well as the Image Intervention service provider to the config/app.php file in the `'providers' => [` array:
+Add the Voyager service provider to the `config/app.php` file in the `providers` array:
 
-```
-TCG\Voyager\VoyagerServiceProvider::class,
-Intervention\Image\ImageServiceProvider::class,
+```php
+'providers' => [
+    // Laravel Framework Service Providers...
+    //...
+    
+    // Package Service Providers
+    TCG\Voyager\VoyagerServiceProvider::class,
+    // ...
+    
+    // Application Service Providers
+    // ...
+],
 ```
 
 Lastly, we can install voyager by running
 
-```
+```bash
 php artisan voyager:install
+```
+
+If you don't have composer installed and use composer.phar instead, do the following:
+
+```bash
+composer.phar dump-autoload
+```
+
+And then:
+
+```bash
+php artisan db:seed
 ```
 
 And we're all good to go! 
