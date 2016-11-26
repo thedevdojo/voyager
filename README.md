@@ -7,6 +7,8 @@ Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
 Video Demo Here: https://devdojo.com/episode/laravel-admin-package-voyager
 
+Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
+
 Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Laravel 5.3.
 
 ![Voyager Logo](https://s3.amazonaws.com/thecontrolgroup/voyager.png)
