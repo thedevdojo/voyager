@@ -10,8 +10,12 @@ $(function() {
   $(".hamburger").click(function() {
     $(".app-container").toggleClass("expanded");
     $(this).toggleClass("is-active");
+    if ($(this).hasClass("is-active")) {
+      $.cookie("expandedMenu", 1);
+    } else {
+      $.cookie("expandedMenu", 0);
+    }
   });
-  
 });
 
 $(function() {

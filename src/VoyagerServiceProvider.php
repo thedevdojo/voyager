@@ -49,6 +49,7 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
         $this->registerResources();
 
         /*

@@ -190,10 +190,11 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 1,
                 'delete' => 1,
                 'details' => '{
-"dropdown": {
-"PUBLISHED": "published",
-"DRAFT": "draft",
-"PENDING": "pending"
+"default": "DRAFT",
+"options": {
+    "PUBLISHED": "published",
+    "DRAFT": "draft",
+    "PENDING": "pending"
 }
 }',
             ),
@@ -352,7 +353,7 @@ class DataRowsTableSeeder extends Seeder
                 'id' => 32,
                 'data_type_id' => 3,
                 'field' => 'status',
-                'type' => 'text',
+                'type' => 'select_dropdown',
                 'display_name' => 'status',
                 'required' => 1,
                 'browse' => 1,
@@ -360,7 +361,13 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '',
+                'details' => '{
+"default": "INACTIVE",
+"options": {
+    "INACTIVE": "INACTIVE",
+    "ACTIVE": "ACTIVE"
+}
+}',
             ),
             21 => 
             array (
