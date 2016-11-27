@@ -1,7 +1,13 @@
 {
     "name": "tcg/voyager",
     "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
+    "keywords": ["laravel", "admin", "panel"],
     "license": "MIT",
+    "homepage": "https://the-control-group.github.io/voyager/",
+    "support": {
+        "issues": "https://github.com/the-control-group/voyager/issues",
+        "source": "https://github.com/the-control-group/voyager"
+    },
     "authors": [
         {
             "name": "Tony Lea",
@@ -17,6 +23,9 @@
         "psr-4": {
             "TCG\\Voyager\\": "/src"
         }
+    },
+    "suggest": {
+        "marktopper/doctrine-dbal-timestamp-type": "Required for using the database rig for MySQL."
     },
     "minimum-stability": "stable"
 
