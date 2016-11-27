@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddUserAvatar extends Migration
@@ -12,12 +11,9 @@ class AddUserAvatar extends Migration
      */
     public function up()
     {
-
-        Schema::table('users', function($table)
-        {
+        Schema::table('users', function ($table) {
             $table->string('avatar')->default('users/default.png');
         });
-
     }
 
     /**
@@ -27,8 +23,7 @@ class AddUserAvatar extends Migration
      */
     public function down()
     {
-        Schema::table('users', function($table)
-        {
+        Schema::table('users', function ($table) {
             $table->dropColumn('avatar');
         });
     }

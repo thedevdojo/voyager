@@ -5,10 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Exception;
 
 class VoyagerCommand extends Command
 {
@@ -28,13 +25,11 @@ class VoyagerCommand extends Command
 
     /**
      * Create a new command instance.
-     *
      */
     public function __construct()
     {
         parent::__construct();
     }
-
 
     protected function getOptions()
     {
@@ -52,9 +47,10 @@ class VoyagerCommand extends Command
      */
     protected function findComposer()
     {
-        if (file_exists(getcwd() . '/composer.phar')) {
-            return '"' . PHP_BINARY . '" ' . getcwd() . '/composer.phar';
+        if (file_exists(getcwd().'/composer.phar')) {
+            return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
         }
+
         return 'composer';
     }
 
@@ -65,33 +61,27 @@ class VoyagerCommand extends Command
      */
     public function fire()
     {
-
         if (!$this->option('existing')) {
-            $this->info("Generating the default authentication scaffolding");
+            $this->info('Generating the default authentication scaffolding');
             Artisan::call('make:auth');
         }
 
-        $this->info("Publishing the Voyager assets, database, and config files");
-        Artisan::call('vendor:publish', ['--provider' => 'TCG\Voyager\VoyagerServiceProvider']);
-        Artisan::call('vendor:publish', ['--provider' => 'Intervention\Image\ImageServiceProviderLaravel5']);
+        $this->info('Publishing the Voyager assets, database, and config files');
+        Artisan::call('vendor:publish', ['--provider' => \TCG\Voyager\VoyagerServiceProvider::class]);
+        Artisan::call('vendor:publish', ['--provider' => \Intervention\Image\ImageServiceProviderLaravel5::class]);
 
         $this->info("Migrating the database tables into your application");
-        if($this->option('no-dummy')) {
-            Artisan::call('migrate', ['--path' => database_path('migrations/2016_01_01_000000_create_data_types_table.php')]);
-        }
-        else {
-            Artisan::call('migrate');
-        }
+        Artisan::call('migrate');
 
-        $this->info("Dumping the autoloaded files and reloading all new files");
+        $this->info('Dumping the autoloaded files and reloading all new files');
 
         $composer = $this->findComposer();
 
-        $process = new Process($composer . ' dump-autoload');
+        $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info("Seeding data into the database");
-        if($this->option('no-dummy') || $this->option('no-dummy-seed')) {
+        if($this->option('no-dummy-data')) {
             Artisan::call('db:seed', ['--class' => 'DataTypesTableSeeder']);
             Artisan::call('db:seed', ['--class' => 'DataRowsTableSeeder']);
         }
@@ -99,12 +89,9 @@ class VoyagerCommand extends Command
             Artisan::call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
         }
 
-        $this->info("Adding the storage symlink to your public folder");
+        $this->info('Adding the storage symlink to your public folder');
         Artisan::call('storage:link');
 
-        $this->info("Successfully installed Voyager! Enjoy :)");
-        return;
-
+        $this->info('Successfully installed Voyager! Enjoy :)');
     }
-
 }
