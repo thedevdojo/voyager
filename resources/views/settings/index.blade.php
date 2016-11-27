@@ -171,47 +171,48 @@
     <div class="container-fluid">
         <div class="alert alert-info">
             <strong>How To Use:</strong>
-            <p>You can get the value of each setting anywhere on your site by calling
-                <code>Voyager::setting('key')</code></p>
+            <p>You can get the value of each setting anywhere on your site by calling <code>Voyager::setting('key')</code></p>
         </div>
     </div>
 
     <div class="page-content container-fluid">
-
         <form action="{{ route('voyager.settings') }}" method="POST" enctype="multipart/form-data">
+            {{ csrf_field() }}
             <div class="panel">
                 @foreach($settings as $setting)
                     <div class="panel-heading">
-                        <h3 class="panel-title"> {{ $setting->display_name }}<code>Voyager::setting('{{ $setting->key }}
-                                ')</code></h3>
+                        <h3 class="panel-title">
+                            {{ $setting->display_name }}<code>Voyager::setting('{{ $setting->key }}')</code>
+                        </h3>
                         <div class="panel-actions">
-                            <a href="{{ route('voyager.settings.move_up', $setting->id) }}"><i
-                                        class="sort-icons voyager-sort-asc"></i></a>
-                            <a href="{{ route('voyager.settings.move_down', $setting->id) }}"><i
-                                        class="sort-icons voyager-sort-desc"></i></a>
-                            <i class="voyager-trash" data-id="{{ $setting->id }}"
+                            <a href="{{ route('voyager.settings.move_up', $setting->id) }}">
+                                <i class="sort-icons voyager-sort-asc"></i>
+                            </a>
+                            <a href="{{ route('voyager.settings.move_down', $setting->id) }}">
+                                <i class="sort-icons voyager-sort-desc"></i>
+                            </a>
+                            <i class="voyager-trash"
+                               data-id="{{ $setting->id }}"
                                data-display-key="{{ $setting->key }}"
                                data-display-name="{{ $setting->display_name }}"></i>
                         </div>
                     </div>
                     <div class="panel-body">
-
-                        @if($setting->type == "text")
-                            <input type="text" class="form-control" name="{{ $setting->key }}"
-                                   value="{{ $setting->value }}">
+                        @if ($setting->type == "text")
+                            <input type="text" class="form-control" name="{{ $setting->key }}" value="{{ $setting->value }}">
                         @elseif($setting->type == "text_area")
-                            <textarea class="form-control"
-                                      name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                            <textarea class="form-control" name="{{ $setting->key }}">
+                                @if(isset($setting->value)){{ $setting->value }}@endif
+                            </textarea>
                         @elseif($setting->type == "rich_text_box")
-                            <textarea class="form-control richTextBox"
-                                      name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                            <textarea class="form-control richTextBox" name="{{ $setting->key }}">
+                                @if(isset($setting->value)){{ $setting->value }}@endif
+                            </textarea>
                         @elseif($setting->type == "image" || $setting->type == "file")
                             @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::exists(config('voyager.storage.subfolder') . $setting->value))
                                 <div class="img_settings_container">
-                                    <a href="{{ route('voyager.settings.delete_value', $setting->id) }}"
-                                       class="voyager-x"></a>
-                                    <img src="{{ Storage::url(config('voyager.storage.subfolder') . $setting->value) }}"
-                                         style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
+                                    <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x"></a>
+                                    <img src="{{ Storage::url(config('voyager.storage.subfolder') . $setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                 </div>
                             @elseif($setting->type == "file" && isset( $setting->value ))
                                 <div class="fileType">{{ $setting->value }}</div>
@@ -245,21 +246,14 @@
                                     @endforeach
                                 @endif
                             </ul>
-
                         @elseif($setting->type == "checkbox")
-
                             <?php $options = json_decode($setting->details); ?>
                             <?php $checked = (isset($setting->value) && $setting->value == 1) ? true : false; ?>
-                            @if(isset($options->on) && isset($options->off))
-                                <input type="checkbox" name="{{ $setting->key }}" class="toggleswitch"
-                                       @if($checked) checked @endif data-on="{{ $options->on }}"
-                                       data-off="{{ $options->off }}">
+                            @if (isset($options->on) && isset($options->off))
+                                <input type="checkbox" name="{{ $setting->key }}" class="toggleswitch" @if($checked) checked @endif data-on="{{ $options->on }}" data-off="{{ $options->off }}">
                             @else
-                                <input type="checkbox" name="{{ $setting->key }}" @if($checked) checked
-                                       @endif class="toggleswitch">
+                                <input type="checkbox" name="{{ $setting->key }}" @if($checked) checked @endif class="toggleswitch">
                             @endif
-
-
                         @endif
 
                     </div>
@@ -267,8 +261,7 @@
                         <hr>
                     @endif
                 @endforeach
-            </div><!-- .panel -->
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            </div>
             <button type="submit" class="btn btn-primary pull-right">Save Settings</button>
         </form>
 
@@ -280,19 +273,16 @@
                 <h3 class="panel-title"><i class="voyager-plus"></i> New Setting</h3>
             </div>
             <div class="panel-body">
-
                 <form action="{{ route('voyager.settings.create') }}" method="POST">
-
+                    {{ csrf_field() }}
                     <div class="col-md-4">
                         <label for="display_name">Name</label>
                         <input type="text" class="form-control" name="display_name">
                     </div>
-
                     <div class="col-md-4">
                         <label for="key">Key</label>
                         <input type="text" class="form-control" name="key">
                     </div>
-
                     <div class="col-md-4">
                         <label for="asdf">Type</label>
                         <select name="type" class="form-control">
@@ -359,47 +349,44 @@
                             });
                         });
                     </script>
-
                     <div style="clear:both"></div>
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="btn btn-primary pull-right new-setting-btn"><i
-                                class="voyager-plus"></i> Add New Setting
+                    <button type="submit" class="btn btn-primary pull-right new-setting-btn">
+                        <i class="voyager-plus"></i> Add New Setting
                     </button>
                     <div style="clear:both"></div>
                 </form>
-
             </div>
         </div>
-
     </div>
 
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete the Setting
-                     <span id="delete_setting_title"></span>?</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <i class="voyager-trash"></i> Are you sure you want to delete the <span id="delete_setting_title"></span> Setting?
+                    </h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.settings') }}" id="delete_form" method="POST">
+                        {{ csrf_field() }}
                         <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                               value="Yes, Delete This Setting">
+                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This Setting">
                     </form>
                     <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
                 </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            </div>
+        </div>
+    </div>
 
     <script>
         $('document').ready(function () {
             $('.voyager-trash').click(function () {
                 var action = '{{ route('voyager.settings') }}/' + $(this).data('id'),
-                    display = $(this).data('display-name') + "/" + $(this).data('display-key');
+                    display = $(this).data('display-name') + '/' + $(this).data('display-key');
 
                 $('#delete_setting_title').text(display);
                 $('#delete_form')[0].action = action;
@@ -407,20 +394,16 @@
             });
 
             $('.toggleswitch').bootstrapToggle();
-
         });
     </script>
-
 @stop
 
 @section('javascript')
-
     <iframe id="form_target" name="form_target" style="display:none"></iframe>
-    <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="POST"
-          enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
+    <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="POST" enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
+        {{ csrf_field() }}
         <input name="image" id="upload_file" type="file" onchange="$('#my_form').submit();this.value='';">
         <input type="hidden" name="type_slug" id="type_slug" value="settings">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
     </form>
 
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>

@@ -2,27 +2,39 @@
 
 namespace TCG\Voyager;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Routing\Router;
+use Illuminate\Support\ServiceProvider;
+use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\User;
-use TCG\Voyager\Middleware\VoyagerAdminMiddleware;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
+    /**
+     * Register the application services.
+     */
+    public function register()
+    {
+        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
+        $this->app->booting(function () {
+            $loader = AliasLoader::getInstance();
+            $loader->alias('Menu',    \TCG\Voyager\Models\Menu::class);
+            $loader->alias('Voyager', Voyager::class);
+        });
 
-    private $routeNamespace = 'TCG\\Voyager\\Controllers';
+        if ($this->app->runningInConsole()) {
+            $this->registerPublishableResources();
+            $this->registerCommands();
+        }
+    }
 
     /**
      * Bootstrap the application services.
      *
-     * @param Router $router
+     * @param  \Illuminate\Routing\Router  $router
      */
     public function boot(Router $router)
     {
-        $router->middleware('admin.user', VoyagerAdminMiddleware::class);
-
         if (config('voyager.user.add_default_role_on_register')) {
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
@@ -31,90 +43,69 @@ class VoyagerServiceProvider extends ServiceProvider
             });
         }
 
-        $this->loadViewsFrom(__DIR__ . '/views', 'voyager');
-
-        $router->group(['prefix' => config('voyager.routes.prefix', 'admin'), 'namespace' => $this->routeNamespace],
-            function () {
-                if (!$this->app->routesAreCached()) {
-                    require __DIR__ . '/routes.php';
-                }
-            });
-
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'voyager');
+        $this->registerRoutes($router);
     }
 
     /**
-     * Register the application services.
+     * Register the routes.
      *
-     * @return void
+     * @param  \Illuminate\Routing\Router  $router
      */
-    public function register()
+    private function registerRoutes(Router $router)
     {
-        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
-        $this->registerResources();
+        $router->middleware('admin.user', VoyagerAdminMiddleware::class);
 
-        /*
-         * These calls are not needed.
-         * All Laravel-based classes (ie: Models and Controllers) are bootstrapped by default
-         * Remove these in the next iteration
-         * */
+        if ( ! $this->app->routesAreCached()) {
+            $router->group([
+                'prefix' => config('voyager.routes.prefix', 'admin'),
+                'namespace' => 'TCG\\Voyager\\Http\\Controllers'
+            ], function () {
+                require __DIR__ . '/../routes/web.php';
+            });
+        }
+    }
 
-        /*$this->app->make('TCG\Voyager\Models\User');
-        $this->app->make('TCG\Voyager\Models\Role');
-        $this->app->make('TCG\Voyager\Models\DataType');
-        $this->app->make('TCG\Voyager\Models\DataRow');
+    /**
+     * Register the publishable files.
+     */
+    private function registerPublishableResources()
+    {
+        $basePath = dirname(__DIR__);
+        $publishable = [
+            'voyager_assets' => [
+                "$basePath/publishable/assets" => public_path('vendor/tcg/voyager/assets'),
+            ],
+            'migrations' => [
+                "$basePath/publishable/database/migrations/" => database_path('migrations'),
+            ],
+            'seeds' => [
+                "$basePath/publishable/database/seeds/" => database_path('seeds'),
+            ],
+            'demo_content' => [
+                "$basePath/publishable/demo_content/" => storage_path('app/public'),
+            ],
+            'config' => [
+                "$basePath/publishable/config/voyager.php" => config_path('voyager.php'),
+            ],
+            'views' => [
+                "$basePath/publishable/views/" => resource_path('views'),
+            ],
+        ];
 
-        $this->app->make('TCG\Voyager\Controllers\VoyagerController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerMediaController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerBreadController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerSettingsController');
+        foreach ($publishable as $group => $paths) {
+            $this->publishes($paths, $group);
+        }
+    }
 
-        $this->app->make('TCG\Voyager\Controllers\VoyagerAuthController');
-        $this->app->make('TCG\Voyager\Controllers\VoyagerDatabaseController');*/
-
-        $this->app->booting(function () {
-            $loader = AliasLoader::getInstance();
-            $loader->alias('Menu', 'TCG\Voyager\Models\Menu');
-            $loader->alias('Voyager', 'TCG\Voyager\Voyager');
-        });
-
-        $this->app['command.voyager'] = $this->app->share(function ($app) {
+    /**
+     * Register the console commands.
+     */
+    private function registerCommands()
+    {
+        $this->app->singleton('command.voyager', function () {
             return new VoyagerCommand;
         });
         $this->commands('command.voyager');
     }
-
-    protected function registerResources()
-    {
-
-        // Publish the assets to the Public folder
-        $this->publishes([
-            __DIR__ . '/../publishable/assets' => public_path('vendor/tcg/voyager/assets'),
-        ], 'voyager_assets');
-
-        // Publish the migrations to the migrations folder
-        $this->publishes([
-            __DIR__ . '/../publishable/database/migrations/' => database_path('migrations')
-        ], 'migrations');
-
-        // Publish the seeds to the seeds folder
-        $this->publishes([
-            __DIR__ . '/../publishable/database/seeds/' => database_path('seeds')
-        ], 'seeds');
-
-        // Publish the content/uploads content to the migrations folder
-        $this->publishes([
-            __DIR__ . '/../publishable/demo_content/' => storage_path('app/public')
-        ], 'demo_content');
-
-        // Publish the content/uploads content to the migrations folder
-        $this->publishes([
-            __DIR__ . '/../publishable/config/voyager.php' => config_path('voyager.php')
-        ], 'config');
-
-        // Publish the post view
-        $this->publishes([
-            __DIR__ . '/../publishable/views/' => resource_path('views')
-        ], 'views');
-    }
-
 }

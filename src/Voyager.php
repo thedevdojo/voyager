@@ -2,12 +2,11 @@
 
 namespace TCG\Voyager;
 
+use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Models\Setting;
-use \Storage;
 
 class Voyager
 {
-
     /**
      *  Singleton Voyager Class
      */
@@ -59,5 +58,4 @@ class Voyager
 
         return $default;
     }
-
 }

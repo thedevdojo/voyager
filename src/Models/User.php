@@ -10,7 +10,6 @@ class User extends AuthUser
 {
     use VoyagerUser;
 
-    //
     public function getNameAttribute($value)
     {
         return ucwords($value);

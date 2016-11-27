@@ -5,10 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Exception;
 
 class VoyagerCommand extends Command
 {
@@ -63,15 +60,14 @@ class VoyagerCommand extends Command
      */
     public function fire()
     {
-
-        if (!$this->option('existing')) {
+        if ( ! $this->option('existing')) {
             $this->info("Generating the default authentication scaffolding");
             Artisan::call('make:auth');
         }
 
         $this->info("Publishing the Voyager assets, database, and config files");
-        Artisan::call('vendor:publish', ['--provider' => 'TCG\Voyager\VoyagerServiceProvider']);
-        Artisan::call('vendor:publish', ['--provider' => 'Intervention\Image\ImageServiceProviderLaravel5']);
+        Artisan::call('vendor:publish', ['--provider' => \TCG\Voyager\VoyagerServiceProvider::class]);
+        Artisan::call('vendor:publish', ['--provider' => \Intervention\Image\ImageServiceProviderLaravel5::class]);
 
         $this->info("Migrating the database tables into your application");
         Artisan::call('migrate');
@@ -91,8 +87,5 @@ class VoyagerCommand extends Command
         Artisan::call('storage:link');
 
         $this->info("Successfully installed Voyager! Enjoy :)");
-        return;
-
     }
-
 }

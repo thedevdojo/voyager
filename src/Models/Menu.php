@@ -4,8 +4,11 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use TCG\Voyager\Models\MenuItem;
+use Illuminate\Support\Str;
 
+/**
+ * @todo: Refactor this class by using something like MenuBuilder Helper.
+ */
 class Menu extends Model
 {
     protected $table = 'menus';
@@ -15,18 +18,24 @@ class Menu extends Model
         return $this->hasMany('MenuItem');
     }
 
-    static public function display($menu_name, $type = null, $options = [])
+    /**
+     * Display menu.
+     *
+     * @param  string       $menuName
+     * @param  string|null  $type
+     * @param  array        $options
+     *
+     * @return string
+     */
+    public static function display($menuName, $type = null, $options = [])
     {
-        $instance = new static;
-
         // GET THE MENU
-        $menu = $instance->where('name', '=', $menu_name)->first();
-
-        $menu_items = [];
+        $menu = static::where('name', '=', $menuName)->first();
+        $menuItems = [];
 
         if (isset($menu->id)) {
             // GET THE ROOT MENU ITEMS
-            $menu_items = MenuItem::where('menu_id', '=', $menu->id)
+            $menuItems = MenuItem::where('menu_id', '=', $menu->id)
                 ->where('parent_id', '=', null)
                 ->orderBy('order', 'ASC')
                 ->get();
@@ -35,43 +44,50 @@ class Menu extends Model
         // Convert options array into object
         $options = (object) $options;
 
-        if ($type == 'admin') {
-            return self::buildAdminOutput($menu_items, '', $options);
+        switch ($type) {
+            case 'admin':
+                return self::buildAdminOutput($menuItems, '', $options);
+
+            case 'admin_menu':
+                return self::buildAdminMenuOutput($menuItems, '', $options, request());
+
+            case 'bootstrap':
+                return self::buildBootstrapOutput($menuItems, '', $options, request());
         }
 
-        if ($type == 'admin_menu') {
-            return self::buildAdminMenuOutput($menu_items, '', $options, Request());
-        }
-
-        if ($type == 'bootstrap') {
-            return self::buildBootstrapOutput($menu_items, '', $options, Request());
-        }
-
-        if ($type) {
-            return self::buildCustomOutput($menu_items, $type, $options, Request());
-        }
-
-        return self::buildOutput($menu_items, '', $options, Request());
+        return empty($type)
+            ? self::buildOutput($menuItems, '', $options, request())
+            : self::buildCustomOutput($menuItems, $type, $options, request());
     }
 
-    static public function buildBootstrapOutput($menu_items, $output, $options, Request $request){
-
-        if(empty($output)){
+    /**
+     * Create bootstrap menu.
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $output
+     * @param  object                                $options
+     * @param  \Illuminate\Http\Request              $request
+     *
+     * @return string
+     */
+    public static function buildBootstrapOutput($menuItems, $output, $options, Request $request)
+    {
+        if (empty($output)) {
             $output = '<ul class="nav navbar-nav">';
-        } else{
-
+        } else {
             $output .= '<ul class="dropdown-menu">';
         }
-        foreach($menu_items as $item):
 
+        foreach($menuItems as $item) {
             $li_class = '';
             $a_attrs = '';
-            if($request->is( ltrim($item->url, '/') ) || $item->url == '/' && $request->is( '/' )):
+            if ($request->is( ltrim($item->url, '/') ) || $item->url == '/' && $request->is( '/' )) {
                 $li_class = ' class="active"';
-            endif;
+            }
+
             $children_menu_items = MenuItem::where('parent_id', '=', $item->id)->orderBy('order', 'ASC')->get();
-            if(count($children_menu_items) > 0){
-                if($li_class != ''){
+            if (count($children_menu_items) > 0) {
+                if ($li_class != ''){
                     $li_class = rtrim($li_class, '"') . ' dropdown"';
                 } else {
                     $li_class = ' class="dropdown"';
@@ -79,66 +95,71 @@ class Menu extends Model
                 $a_attrs = 'class="dropdown-toggle" ';
             }
             $icon = '';
-            if(isset($options->icon) && $options->icon == true){
+            if (isset($options->icon) && $options->icon == true) {
                 $icon = '<i class="' . $item->icon_class . '"></i>';
             }
             $styles = '';
-            if(isset($options->color) && $options->color == true){
+            if (isset($options->color) && $options->color == true) {
                 $styles = ' style="color:'.$item->color.'"';
             }
-            $background = '';
-            if(isset($options->background) && $options->background == true){
+
+            if (isset($options->background) && $options->background == true) {
                 $styles = ' style="background-color:'.$item->color.'"';
             }
             $output .= '<li' . $li_class . '><a ' . $a_attrs . ' href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span>' . $item->title . '</span></a>';
 
-
-            if(count($children_menu_items) > 0){
+            if (count($children_menu_items) > 0) {
                 $output = self::buildBootstrapOutput($children_menu_items, $output, $options, $request);
             }
             $output .= '</li>';
+        }
 
-        endforeach;
         $output .= '</ul>';
+
         return $output;
     }
 
     /**
      * Create custom menu based on supplied view
      *
-     * @param Collection|array $menu_items
-     * @param string           $view
-     * @param object           $options
-     * @param Request          $request
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $view
+     * @param  object                                $options
+     * @param  \Illuminate\Http\Request              $request
      *
      * @return string
      */
-    static public function buildCustomOutput($menu_items, $view, $options, Request $request)
+    public static function buildCustomOutput($menuItems, $view, $options, Request $request)
     {
-        if (! view()->exists($view)) {
-            return self::buildOutput($menu_items, '', $options, $request);
-        }
-
-        return view($view)->withItems($menu_items);
+        return view()->exists($view)
+            ? view($view)->with('items', $menuItems)->render()
+            : self::buildOutput($menuItems, '', $options, $request);
     }
 
-    static public function buildOutput($menu_items, $output, $options, Request $request)
+    /**
+     * Create default menu.
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $output
+     * @param  object                                $options
+     * @param  \Illuminate\Http\Request              $request
+     *
+     * @return string
+     */
+    public static function buildOutput($menuItems, $output, $options, Request $request)
     {
-
         if (empty($output)) {
             $output = '<ul>';
         } else {
-
             $output .= '<ul>';
         }
 
-        foreach ($menu_items as $item):
-
+        foreach ($menuItems as $item) {
             $li_class = '';
             $a_attrs = '';
-            if ($request->is(ltrim($item->url, '/')) || $item->url == '/' && $request->is('/')):
+            if ($request->is(ltrim($item->url, '/')) || $item->url == '/' && $request->is('/')) {
                 $li_class = ' class="active"';
-            endif;
+            }
 
             $children_menu_items = MenuItem::where('parent_id', '=', $item->id)->orderBy('order', 'ASC')->get();
 
@@ -152,49 +173,55 @@ class Menu extends Model
                 $styles = ' style="color:' . $item->color . '"';
             }
 
-            $background = '';
             if (isset($options->background) && $options->background == true) {
                 $styles = ' style="background-color:' . $item->color . '"';
             }
 
             $output .= '<li' . $li_class . '><a href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span>' . $item->title . '</span></a>';
 
-
             if (count($children_menu_items) > 0) {
                 $output = self::buildOutput($children_menu_items, $output, $options, $request);
             }
 
             $output .= '</li>';
-
-        endforeach;
+        }
 
         $output .= '</ul>';
 
         return $output;
     }
 
-    static public function buildAdminMenuOutput($menu_items, $output, $options, Request $request)
+    /**
+     * Create admin menu.
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $output
+     * @param  object                                $options
+     * @param  \Illuminate\Http\Request              $request
+     *
+     * @return string
+     */
+    public static function buildAdminMenuOutput($menuItems, $output, $options, Request $request)
     {
-
         $output .= '<ul class="nav navbar-nav">';
 
-        foreach ($menu_items as $item):
-
+        foreach ($menuItems as $item) {
             $li_class = '';
             $a_attrs = '';
             $collapse_id = '';
-            if ($request->is(ltrim($item->url, '/'))):
+            if ($request->is(ltrim($item->url, '/'))) {
                 $li_class = ' class="active"';
-            endif;
+            }
 
             $children_menu_items = MenuItem::where('parent_id', '=', $item->id)->orderBy('order', 'ASC')->get();
+
             if (count($children_menu_items) > 0) {
                 if ($li_class != '') {
                     $li_class = rtrim($li_class, '"') . ' dropdown"';
                 } else {
                     $li_class = ' class="dropdown"';
                 }
-                $collapse_id = str_slug($item->title, "-") . '-dropdown-element';
+                $collapse_id = Str::slug($item->title, "-") . '-dropdown-element';
                 $a_attrs = 'data-toggle="collapse" href="#' . $collapse_id . '"';
 
             } else {
@@ -209,25 +236,30 @@ class Menu extends Model
             if (count($children_menu_items) > 0) {
                 // Add tag for collapse panel
                 $output .= '<div id="' . $collapse_id . '" class="panel-collapse collapse"><div class="panel-body">';
-
-                $output = self::buildAdminMenuOutput($children_menu_items, $output, [], $request);
-
+                $output  = self::buildAdminMenuOutput($children_menu_items, $output, [], $request);
                 $output .= '</div></div>';      // close tag of collapse panel
             }
 
             $output .= '</li>';
+        }
 
-        endforeach;
-
-        return $output;
+        return $output; // TODO: Check if is missing a closing ul tag!!
     }
 
-    static public function buildAdminOutput($menu_items, $output, $options)
+    /**
+     * Build admin menu.
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $output
+     * @param  object                                $options
+     *
+     * @return string
+     */
+    public static function buildAdminOutput($menuItems, $output, $options)
     {
-
         $output .= '<ol class="dd-list">';
 
-        foreach ($menu_items as $item):
+        foreach ($menuItems as $item) {
             $output .= '<li class="dd-item" data-id="' . $item->id . '">';
             $output .= '<div class="pull-right item_actions">';
             $output .= '<div class="btn-sm btn-danger pull-right delete" data-id="' . $item->id . '"><i class="voyager-trash"></i> Delete</div>';
@@ -242,8 +274,7 @@ class Menu extends Model
             }
 
             $output .= '</li>';
-
-        endforeach;
+        }
 
         $output .= '</ol>';
 

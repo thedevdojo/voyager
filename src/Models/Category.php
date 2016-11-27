@@ -10,6 +10,8 @@ class Category extends Model
 
     public function posts()
     {
-        return $this->hasMany('\App\Post')->where('status', '=', 'PUBLISHED')->orderBy('created_at', 'DESC');
+        return $this->hasMany(Post::class)
+            ->where('status', '=', 'PUBLISHED')
+            ->orderBy('created_at', 'DESC');
     }
 }

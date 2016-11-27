@@ -5,72 +5,49 @@
 @stop
 
 @section('content')
-
     <div class="page-content">
-
         <div class="widgets">
-
-            <div class="panel widget center bgimage"
-                 style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
+            <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
                 <div class="dimmer"></div>
                 <div class="panel-content">
                     <i class="voyager-group"></i>
                     <?php $user_count = TCG\Voyager\Models\User::count(); ?>
                     <h4>{{ $user_count }} Users</h4>
-                    <p>You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your
-                        current users.</p>
-
+                    <p>You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your current users.</p>
                     <a href="/{{ config('voyager.routes.prefix') }}/users" class="btn btn-primary">View All Users</a>
                 </div>
-
             </div>
-
-            <div class="panel widget center bgimage"
-                 style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/03.png);">
+            <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/03.png);">
                 <div class="dimmer"></div>
                 <div class="panel-content">
                     <i class="voyager-news"></i>
                     <?php $post_count = TCG\Voyager\Models\Post::count(); ?>
                     <h4>{{ $post_count }} Post(s)</h4>
-                    <p>You have {{ $post_count }} Posts in your database. Click on 'View All Posts' below to view all
-                        posts.</p>
-
+                    <p>You have {{ $post_count }} Posts in your database. Click on 'View All Posts' below to view all posts.</p>
                     <a href="/{{ config('voyager.routes.prefix') }}/posts" class="btn btn-primary">View All Posts</a>
                 </div>
-
             </div>
-
-            <div class="panel widget center bgimage"
-                 style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/04.png);">
+            <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/04.png);">
                 <div class="dimmer"></div>
                 <div class="panel-content">
                     <i class="voyager-file-text"></i>
                     <?php $page_count = TCG\Voyager\Models\Page::count(); ?>
                     <h4>{{ $page_count }} Page(s)</h4>
-                    <p>You have {{ $page_count }} Pages in your database. Click on 'View All Pages' below to view all
-                        pages.</p>
-
+                    <p>You have {{ $page_count }} Pages in your database. Click on 'View All Pages' below to view all pages.</p>
                     <a href="/{{ config('voyager.routes.prefix') }}/pages" class="btn btn-primary">View All Pages</a>
                 </div>
-
             </div>
-
         </div>
-
         <div style="clear:both"></div>
-
-
         <div style="padding:15px;">
-
-        <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
-        @if(isset($google_analytics_client_id) && !empty($google_analytics_client_id))
-            <!-- Google Analytics Embed -->
+            <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
+            @if (isset($google_analytics_client_id) && !empty($google_analytics_client_id))
+                {{-- Google Analytics Embed --}}
                 <div id="embed-api-auth-container"></div>
             @else
                 <p style="border-radius:4px; padding:20px; background:#fff; margin:0; color:#999; text-align:center;">
-                    To view analytics you'll need to get a google analytics client id and add it to your settings for
-                    the key <code>google_analytics_client_id</code>. Get your key in your Google developer console: <a
-                            href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
+                    To view analytics you'll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console:
+                    <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
                 </p>
             @endif
 
@@ -133,12 +110,8 @@
                     </li>
                 </ul>
             </div>
-
         </div>
-
     </div>
-
-
 @stop
 
 @section('javascript')
@@ -172,8 +145,6 @@
         <script src="{{ config('voyager.assets_path') }}/js/ga-embed/active-users.js"></script>
 
         <script>
-
-
             // == NOTE ==
             // This code uses ES6 promises. If you want to use this code in a browser
             // that doesn't supporting promises natively, you'll have to include a polyfill.
@@ -231,7 +202,7 @@
                  * element with the id "view-selector-container".
                  */
                 var viewSelector = new gapi.analytics.ext.ViewSelector2({
-                    container: 'view-selector-container',
+                    container: 'view-selector-container'
                 })
                         .execute();
 
