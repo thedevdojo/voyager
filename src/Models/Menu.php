@@ -4,6 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 /**
  * @todo: Refactor this class by using something like MenuBuilder Helper.
@@ -17,19 +18,27 @@ class Menu extends Model
         return $this->hasMany('MenuItem');
     }
 
-    static public function display($menu_name, $type = null, $options = [])
+    /**
+     * Display menu.
+     *
+     * @param  string       $menuName
+     * @param  string|null  $type
+     * @param  array        $options
+     *
+     * @return string
+     */
+    public static function display($menuName, $type = null, $options = [])
     {
-        $instance = new static;
-
         // GET THE MENU
-        $menu = $instance->where('name', '=', $menu_name)->first();
+        $menu = static::where('name', '=', $menuName)->first();
         $menuItems = [];
 
         if (isset($menu->id)) {
             // GET THE ROOT MENU ITEMS
             $menuItems = MenuItem::where('menu_id', '=', $menu->id)
                 ->where('parent_id', '=', null)
-                ->orderBy('order', 'ASC')->get();
+                ->orderBy('order', 'ASC')
+                ->get();
         }
 
         // Convert options array into object
@@ -44,13 +53,24 @@ class Menu extends Model
 
             case 'bootstrap':
                 return self::buildBootstrapOutput($menuItems, '', $options, request());
-
-            default:
-                return self::buildOutput($menuItems, '', $options, request());
         }
+
+        return empty($type)
+            ? self::buildOutput($menuItems, '', $options, request())
+            : self::buildCustomOutput($menuItems, $type, $options, request());
     }
 
-    public static function buildBootstrapOutput($menu_items, $output, $options, Request $request)
+    /**
+     * Create bootstrap menu.
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $output
+     * @param  object                                $options
+     * @param  \Illuminate\Http\Request              $request
+     *
+     * @return string
+     */
+    public static function buildBootstrapOutput($menuItems, $output, $options, Request $request)
     {
         if (empty($output)) {
             $output = '<ul class="nav navbar-nav">';
@@ -58,7 +78,7 @@ class Menu extends Model
             $output .= '<ul class="dropdown-menu">';
         }
 
-        foreach($menu_items as $item) {
+        foreach($menuItems as $item) {
             $li_class = '';
             $a_attrs = '';
             if ($request->is( ltrim($item->url, '/') ) || $item->url == '/' && $request->is( '/' )) {
@@ -99,7 +119,34 @@ class Menu extends Model
         return $output;
     }
 
-    public static function buildOutput($menu_items, $output, $options, Request $request)
+    /**
+     * Create custom menu based on supplied view
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $view
+     * @param  object                                $options
+     * @param  \Illuminate\Http\Request              $request
+     *
+     * @return string
+     */
+    public static function buildCustomOutput($menuItems, $view, $options, Request $request)
+    {
+        return view()->exists($view)
+            ? view($view)->with('items', $menuItems)->render()
+            : self::buildOutput($menuItems, '', $options, $request);
+    }
+
+    /**
+     * Create default menu.
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $output
+     * @param  object                                $options
+     * @param  \Illuminate\Http\Request              $request
+     *
+     * @return string
+     */
+    public static function buildOutput($menuItems, $output, $options, Request $request)
     {
         if (empty($output)) {
             $output = '<ul>';
@@ -107,7 +154,7 @@ class Menu extends Model
             $output .= '<ul>';
         }
 
-        foreach ($menu_items as $item) {
+        foreach ($menuItems as $item) {
             $li_class = '';
             $a_attrs = '';
             if ($request->is(ltrim($item->url, '/')) || $item->url == '/' && $request->is('/')) {
@@ -144,11 +191,21 @@ class Menu extends Model
         return $output;
     }
 
-    static public function buildAdminMenuOutput($menu_items, $output, $options, Request $request)
+    /**
+     * Create admin menu.
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $output
+     * @param  object                                $options
+     * @param  \Illuminate\Http\Request              $request
+     *
+     * @return string
+     */
+    public static function buildAdminMenuOutput($menuItems, $output, $options, Request $request)
     {
         $output .= '<ul class="nav navbar-nav">';
 
-        foreach ($menu_items as $item) {
+        foreach ($menuItems as $item) {
             $li_class = '';
             $a_attrs = '';
             $collapse_id = '';
@@ -164,7 +221,7 @@ class Menu extends Model
                 } else {
                     $li_class = ' class="dropdown"';
                 }
-                $collapse_id = str_slug($item->title, "-") . '-dropdown-element';
+                $collapse_id = Str::slug($item->title, "-") . '-dropdown-element';
                 $a_attrs = 'data-toggle="collapse" href="#' . $collapse_id . '"';
 
             } else {
@@ -189,11 +246,20 @@ class Menu extends Model
         return $output; // TODO: Check if is missing a closing ul tag!!
     }
 
-    static public function buildAdminOutput($menu_items, $output, $options)
+    /**
+     * Build admin menu.
+     *
+     * @param  \Illuminate\Support\Collection|array  $menuItems
+     * @param  string                                $output
+     * @param  object                                $options
+     *
+     * @return string
+     */
+    public static function buildAdminOutput($menuItems, $output, $options)
     {
         $output .= '<ol class="dd-list">';
 
-        foreach ($menu_items as $item) {
+        foreach ($menuItems as $item) {
             $output .= '<li class="dd-item" data-id="' . $item->id . '">';
             $output .= '<div class="pull-right item_actions">';
             $output .= '<div class="btn-sm btn-danger pull-right delete" data-id="' . $item->id . '"><i class="voyager-trash"></i> Delete</div>';
