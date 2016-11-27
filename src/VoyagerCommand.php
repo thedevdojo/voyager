@@ -35,8 +35,7 @@ class VoyagerCommand extends Command
     {
         return [
             ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
-            ['no-dummy', null, InputOption::VALUE_NONE, 'install without migrating/seeding dummy data', null],
-            ['no-dummy-seed', null, InputOption::VALUE_NONE, 'install without seeding dummy data', null],
+            ['no-dummy-data', null, InputOption::VALUE_NONE, 'install without seeding dummy data', null],
         ];
     }
 
