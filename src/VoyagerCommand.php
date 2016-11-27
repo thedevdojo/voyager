@@ -69,7 +69,7 @@ class VoyagerCommand extends Command
         Artisan::call('vendor:publish', ['--provider' => \TCG\Voyager\VoyagerServiceProvider::class]);
         Artisan::call('vendor:publish', ['--provider' => \Intervention\Image\ImageServiceProviderLaravel5::class]);
 
-        $this->info("Migrating the database tables into your application");
+        $this->info('Migrating the database tables into your application');
         Artisan::call('migrate');
 
         $this->info('Dumping the autoloaded files and reloading all new files');
@@ -79,12 +79,11 @@ class VoyagerCommand extends Command
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
-        $this->info("Seeding data into the database");
-        if($this->option('no-dummy-data')) {
+        $this->info('Seeding data into the database');
+        if ($this->option('no-dummy-data')) {
             Artisan::call('db:seed', ['--class' => 'DataTypesTableSeeder']);
             Artisan::call('db:seed', ['--class' => 'DataRowsTableSeeder']);
-        }
-        else {
+        } else {
             Artisan::call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
         }
 
