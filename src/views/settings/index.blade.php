@@ -190,7 +190,8 @@
                             <a href="{{ route('voyager.settings.move_down', $setting->id) }}"><i
                                         class="sort-icons voyager-sort-desc"></i></a>
                             <i class="voyager-trash" data-id="{{ $setting->id }}"
-                               data-display="{{ $setting->display_name }}"></i>
+                               data-display-key="{{ $setting->key }}"
+                               data-display-name="{{ $setting->display_name }}"></i>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -378,8 +379,8 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete the <span
-                                id="delete_setting_title"></span> Setting?</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete the Setting
+                     <span id="delete_setting_title"></span>?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.settings') }}" id="delete_form" method="POST">
@@ -397,10 +398,11 @@
     <script>
         $('document').ready(function () {
             $('.voyager-trash').click(function () {
-                id = $(this).data('id');
-                display = $(this).data('display');
+                var action = '{{ route('voyager.settings') }}/' + $(this).data('id'),
+                    display = $(this).data('display-name') + "/" + $(this).data('display-key');
+
                 $('#delete_setting_title').text(display);
-                $('#delete_form')[0].action += '/' + id;
+                $('#delete_form')[0].action = action;
                 $('#delete_modal').modal('show');
             });
 
