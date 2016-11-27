@@ -54,7 +54,8 @@ class VoyagerDatabaseController extends Controller
 
     public function edit($table)
     {
-        $rows = \DB::select('describe ' . $table);
+        $rows = $this->describeTable($table);
+
         return view('voyager::tools.database.edit-add', compact('table', 'rows'));
     }
 
@@ -98,7 +99,7 @@ class VoyagerDatabaseController extends Controller
 
         //try{
 
-        $table_desc = \DB::select('describe ' . (string)$table_name);
+        $table_desc = $this->describeTable((string) $table_name);
         $table_array = [];
         $table_key = [];
         foreach ($table_desc as $desc) {
@@ -123,7 +124,7 @@ class VoyagerDatabaseController extends Controller
             }
         });
 
-        $table_desc = \DB::select('describe ' . (string)$table_name);
+        $table_desc = $this->describeTable((string) $table_name);
 
         $table_type_array = [];
         $table_default_array = [];
@@ -191,27 +192,25 @@ class VoyagerDatabaseController extends Controller
             ) {
                 if ($key == 'PRI') {
                     $result = $table->increments($field);
+                } else if ($field == 'created_at & updated_at') {
+                    $result = $table->timestamps($field);
+                } else if ($type == 'enum') {
+                    $result = $table->enum($field, [$request->enum[$index]]);
                 } else {
-                    if ($field == 'created_at & updated_at' || $field == 'created_at' || $field == 'updated_at') {
-                        $result = $table->timestamps();
-                    } else {
-                        if ($type == 'enum') {
-                            $result = $table->enum($field, [$request->enum[$index]]);
-                        } else {
-                            $result = $table->$type($field);
-                        }
-                    }
+                    $result = $table->$type($field);
                 }
 
                 if ($key == 'UNI' && $disableUnique === false) {
                     $result = $result->unique();
                 }
+                
                 if ($field != 'created_at & updated_at') {
                     $result = $result->nullable($nullable);
                     if ($default) {
                         $result->default($default);
                     }
                 }
+
                 return $result;
             };
 
@@ -241,7 +240,7 @@ class VoyagerDatabaseController extends Controller
 
     public function table($table)
     {
-        return response()->json(\DB::select('describe ' . $table));
+        return response()->json($this->describeTable($table));
     }
 
     public function delete($table)
@@ -382,5 +381,17 @@ class VoyagerDatabaseController extends Controller
             'message' => 'Sorry it appears there was a problem removing this bread',
             'alert-type' => 'danger'
         ]);
+    }
+
+    protected function describeTable($table)
+    {
+        return \DB::select(\DB::raw("select COLUMN_NAME as Field,
+                                               COLUMN_TYPE as Type,
+                                               IS_NULLABLE as 'Null',
+                                               COLUMN_KEY as 'Key',
+                                               COLUMN_DEFAULT as 'Default',
+                                               EXTRA as Extra
+                                               from INFORMATION_SCHEMA.COLUMNS
+                                               where TABLE_NAME='{$table}'"));
     }
 }
