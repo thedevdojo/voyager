@@ -23,43 +23,47 @@ class Menu extends Model
         $menu = $instance->where('name', '=', $menu_name)->first();
 
         $menu_items = [];
+
         if (isset($menu->id)) {
             // GET THE ROOT MENU ITEMS
-            $menu_items = MenuItem::where('menu_id', '=', $menu->id)->where('parent_id', '=', null)->orderBy('order',
-                'ASC')->get();
+            $menu_items = MenuItem::where('menu_id', '=', $menu->id)
+                ->where('parent_id', '=', null)
+                ->orderBy('order', 'ASC')
+                ->get();
         }
 
         // Convert options array into object
-        $options = (object)$options;
+        $options = (object) $options;
 
         if ($type == 'admin') {
-            $output = self::buildAdminOutput($menu_items, '', $options);
-        } else {
-            if ($type == 'admin_menu') {
-                $output = self::buildAdminMenuOutput($menu_items, '', $options, Request());
-            } else {
-                if ($type == 'bootstrap') {
-                    $output = self::buildBootstrapOutput($menu_items, '', $options, Request());
-                } else {
-                    $output = self::buildOutput($menu_items, '', $options, Request());
-                }
-            }
+            return self::buildAdminOutput($menu_items, '', $options);
         }
 
+        if ($type == 'admin_menu') {
+            return self::buildAdminMenuOutput($menu_items, '', $options, Request());
+        }
 
-        return $output;
+        if ($type == 'bootstrap') {
+            return self::buildBootstrapOutput($menu_items, '', $options, Request());
+        }
+
+        if ($type) {
+            return self::buildCustomOutput($menu_items, $type, $options, Request());
+        }
+
+        return self::buildOutput($menu_items, '', $options, Request());
     }
 
     static public function buildBootstrapOutput($menu_items, $output, $options, Request $request){
-        
+
         if(empty($output)){
             $output = '<ul class="nav navbar-nav">';
         } else{
-        
+
             $output .= '<ul class="dropdown-menu">';
         }
         foreach($menu_items as $item):
-            
+
             $li_class = '';
             $a_attrs = '';
             if($request->is( ltrim($item->url, '/') ) || $item->url == '/' && $request->is( '/' )):
@@ -87,16 +91,35 @@ class Menu extends Model
                 $styles = ' style="background-color:'.$item->color.'"';
             }
             $output .= '<li' . $li_class . '><a ' . $a_attrs . ' href="' . $item->url . '" target="' . $item->target . '"' . $styles . '>' . $icon . '<span>' . $item->title . '</span></a>';
-            
-            
+
+
             if(count($children_menu_items) > 0){
                 $output = self::buildBootstrapOutput($children_menu_items, $output, $options, $request);
             }
             $output .= '</li>';
-            
+
         endforeach;
         $output .= '</ul>';
         return $output;
+    }
+
+    /**
+     * Create custom menu based on supplied view
+     *
+     * @param Collection|array $menu_items
+     * @param string           $view
+     * @param object           $options
+     * @param Request          $request
+     *
+     * @return string
+     */
+    static public function buildCustomOutput($menu_items, $view, $options, Request $request)
+    {
+        if (! view()->exists($view)) {
+            return self::buildOutput($menu_items, '', $options, $request);
+        }
+
+        return view($view)->withItems($menu_items);
     }
 
     static public function buildOutput($menu_items, $output, $options, Request $request)
