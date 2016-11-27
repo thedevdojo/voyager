@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RouteTest extends TestCase
 {
@@ -50,14 +47,12 @@ class RouteTest extends TestCase
             "/{$prefix}/database/5/edit-bread",
             "/{$prefix}/database/edit-categories-table",
             "/{$prefix}/database/create-table",
-            "/{$prefix}/settings"
+            "/{$prefix}/settings",
         ];
 
-        foreach($urls as $url){
+        foreach ($urls as $url) {
             $response = $this->call('GET', $url);
-            $this->assertEquals(200, $response->status(),  $url . " did not return a 200");
+            $this->assertEquals(200, $response->status(), $url.' did not return a 200');
         }
-        
     }
-
 }

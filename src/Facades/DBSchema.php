@@ -6,9 +6,9 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use PDO;
 
-class DBSchema 
+class DBSchema
 {
-    public static function tables() 
+    public static function tables()
     {
         $driver = DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
 
@@ -18,7 +18,7 @@ class DBSchema
                 break;
 
             case 'mysql':
-                $query = "SHOW TABLES";
+                $query = 'SHOW TABLES';
                 break;
 
             case 'pgsql':

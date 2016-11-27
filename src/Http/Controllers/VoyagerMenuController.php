@@ -24,7 +24,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menu.builder', [$menuId])
             ->with([
-                'message' => 'Successfully Deleted Menu Item.',
+                'message'    => 'Successfully Deleted Menu Item.',
                 'alert-type' => 'success',
             ]);
     }
@@ -45,7 +45,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menu.builder', [$data['menu_id']])
             ->with([
-                'message' => 'Successfully Created New Menu Item.',
+                'message'    => 'Successfully Created New Menu Item.',
                 'alert-type' => 'success',
             ]);
     }
@@ -60,7 +60,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menu.builder', [$menuItem->menu_id])
             ->with([
-                'message' => 'Successfully Updated Menu Item.',
+                'message'    => 'Successfully Updated Menu Item.',
                 'alert-type' => 'success',
             ]);
     }

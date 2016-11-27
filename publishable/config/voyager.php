@@ -14,8 +14,8 @@ return [
 
     'user' => [
         'add_default_role_on_register' => true,
-        'default_role' => 'user',
-        'namespace' => App\User::class,
+        'default_role'                 => 'user',
+        'namespace'                    => App\User::class,
     ],
 
     /*
@@ -28,7 +28,7 @@ return [
     */
 
     'routes' => [
-        'prefix' => 'admin'
+        'prefix' => 'admin',
     ],
 
     /*

@@ -38,10 +38,11 @@ class VoyagerBreadController extends Controller
 
         $view = 'voyager::bread.browse';
 
-        if (view()->exists("admin.$slug.browse"))
+        if (view()->exists("admin.$slug.browse")) {
             $view = "admin.$slug.browse";
-        elseif (view()->exists("voyager::$slug.browse"))
+        } elseif (view()->exists("voyager::$slug.browse")) {
             $view = "voyager::$slug.browse";
+        }
 
         return view($view, compact('dataType', 'dataTypeContent'));
     }
@@ -65,7 +66,7 @@ class VoyagerBreadController extends Controller
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'find'], $id)
-            : DB::table($dataType->name)->where('id',$id)->first(); // If Model doest exist, get data from table name
+            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         return view('voyager::bread.read', compact('dataType', 'dataTypeContent'));
     }
@@ -88,14 +89,15 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'find'], $id)
-            : DB::table($dataType->name)->where('id',$id)->first(); // If Model doest exist, get data from table name
+            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         $view = 'voyager::bread.edit-add';
 
-        if (view()->exists("admin.$slug.edit-add"))
+        if (view()->exists("admin.$slug.edit-add")) {
             $view = "admin.$slug.edit-add";
-        elseif (view()->exists("voyager::$slug.edit-add"))
+        } elseif (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
+        }
 
         return view($view, compact('dataType', 'dataTypeContent'));
     }
@@ -103,7 +105,7 @@ class VoyagerBreadController extends Controller
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
-        $slug     = $request->segment(2);
+        $slug = $request->segment(2);
         $dataType = DataType::where('slug', '=', $slug)->first();
         $data = call_user_func([$dataType->model_name, 'find'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
@@ -111,8 +113,8 @@ class VoyagerBreadController extends Controller
         return redirect()
             ->route("{$dataType->slug}.index")
             ->with([
-                'message' => "Successfully Updated {$dataType->display_name_singular}",
-                'alert-type' => 'success'
+                'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                'alert-type' => 'success',
             ]);
     }
 
@@ -136,10 +138,11 @@ class VoyagerBreadController extends Controller
 
         $view = 'voyager::bread.edit-add';
 
-        if (view()->exists("admin.$slug.edit-add"))
+        if (view()->exists("admin.$slug.edit-add")) {
             $view = "admin.$slug.edit-add";
-        elseif (view()->exists("voyager::$slug.edit-add"))
+        } elseif (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
+        }
 
         return view($view, compact('dataType'));
     }
@@ -155,14 +158,14 @@ class VoyagerBreadController extends Controller
             voyager_add_post($request);
         }
 
-        $data = new $dataType->model_name;
+        $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
 
         return redirect()
             ->route("{$dataType->slug}.index")
             ->with([
-                'message' => "Successfully Added New {$dataType->display_name_singular}",
-                'alert-type' => 'success'
+                'message'    => "Successfully Added New {$dataType->display_name_singular}",
+                'alert-type' => 'success',
             ]);
     }
 
@@ -194,7 +197,7 @@ class VoyagerBreadController extends Controller
                 if (isset($options->thumbnails)) {
                     foreach ($options->thumbnails as $thumbnail) {
                         $ext = explode('.', $data->{$row->field});
-                        $extension = '.' . $ext[count($ext) - 1];
+                        $extension = '.'.$ext[count($ext) - 1];
 
                         $path = str_replace($extension, '', $data->{$row->field});
 
@@ -208,12 +211,12 @@ class VoyagerBreadController extends Controller
 
         $data = $data->destroy($id)
             ? [
-                'message' => "Successfully Deleted {$dataType->display_name_singular}",
-                'alert-type' => 'success'
+                'message'    => "Successfully Deleted {$dataType->display_name_singular}",
+                'alert-type' => 'success',
             ]
             : [
-                'message' => "Sorry it appears there was a problem deleting this {$dataType->display_name_singular}",
-                'alert-type' => 'error'
+                'message'    => "Sorry it appears there was a problem deleting this {$dataType->display_name_singular}",
+                'alert-type' => 'error',
             ];
 
         return redirect()->route("{$dataType->slug}.index")->with($data);
@@ -275,11 +278,11 @@ class VoyagerBreadController extends Controller
             case 'file':
                 $file = $request->file($row->field);
                 $filename = Str::random(20);
-                $path = $slug . '/' . date('F') . date('Y') . '/';
+                $path = $slug.'/'.date('F').date('Y').'/';
 
-                $fullPath = $path . $filename . '.' . $file->getClientOriginalExtension();
+                $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                Storage::put(config('voyager.storage.subfolder') . $fullPath, (string) $file, 'public');
+                Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $file, 'public');
 
                 return $fullPath;
                 // no break
@@ -291,8 +294,8 @@ class VoyagerBreadController extends Controller
                     $file = $request->file($row->field);
                     $filename = Str::random(20);
 
-                    $path = $slug . '/' . date('F') . date('Y') . '/';
-                    $fullPath = $path . $filename . '.' . $file->getClientOriginalExtension();
+                    $path = $slug.'/'.date('F').date('Y').'/';
+                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
                     $options = json_decode($row->details);
 
@@ -311,7 +314,7 @@ class VoyagerBreadController extends Controller
                         })
                         ->encode($file->getClientOriginalExtension(), 75);
 
-                    Storage::put(config('voyager.storage.subfolder') . $fullPath, (string) $image, 'public');
+                    Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $image, 'public');
 
                     if (isset($options->thumbnails)) {
                         foreach ($options->thumbnails as $thumbnails) {
@@ -331,8 +334,7 @@ class VoyagerBreadController extends Controller
                                         $constraint->upsize();
                                     })
                                     ->encode($file->getClientOriginalExtension(), 75);
-                            }
-                            elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
+                            } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                 $crop_width = $thumbnails->crop->width;
                                 $crop_height = $thumbnails->crop->height;
                                 $image = Image::make($file)
