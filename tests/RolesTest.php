@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TCG\Voyager\Models\Role;
 
@@ -38,7 +36,7 @@ class RolesTest extends TestCase
         $this->seePageIs(route('roles.index'));
         $this->seeInDatabase('roles', ['name' => 'regular_user']);
 
-	    // Editing a Role
+        // Editing a Role
         $this->visit(route('roles.edit', 2));
         $this->type('user', 'name');
         $this->press('Submit');
@@ -48,11 +46,9 @@ class RolesTest extends TestCase
         // Get the current super admin role
         $superadmin_role = Role::where('name', '=', 'superadmin')->first();
 
-	    // Deleting a Role
-	    $response = $this->call('DELETE', route('roles.destroy', $superadmin_role->id), ['_token' => csrf_token()]);
-	    $this->assertEquals(302, $response->getStatusCode());
+        // Deleting a Role
+        $response = $this->call('DELETE', route('roles.destroy', $superadmin_role->id), ['_token' => csrf_token()]);
+        $this->assertEquals(302, $response->getStatusCode());
         $this->notSeeInDatabase('roles', ['name' => 'superadmin']);
-        
     }
-
 }

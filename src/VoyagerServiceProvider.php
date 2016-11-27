@@ -18,7 +18,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->register(\Intervention\Image\ImageServiceProvider::class);
         $this->app->booting(function () {
             $loader = AliasLoader::getInstance();
-            $loader->alias('Menu',    \TCG\Voyager\Models\Menu::class);
+            $loader->alias('Menu', \TCG\Voyager\Models\Menu::class);
             $loader->alias('Voyager', Voyager::class);
         });
 
@@ -31,7 +31,7 @@ class VoyagerServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param \Illuminate\Routing\Router $router
      */
     public function boot(Router $router)
     {
@@ -43,25 +43,25 @@ class VoyagerServiceProvider extends ServiceProvider
             });
         }
 
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'voyager');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
         $this->registerRoutes($router);
     }
 
     /**
      * Register the routes.
      *
-     * @param  \Illuminate\Routing\Router  $router
+     * @param \Illuminate\Routing\Router $router
      */
     private function registerRoutes(Router $router)
     {
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
 
-        if ( ! $this->app->routesAreCached()) {
+        if (!$this->app->routesAreCached()) {
             $router->group([
-                'prefix' => config('voyager.routes.prefix', 'admin'),
-                'namespace' => 'TCG\\Voyager\\Http\\Controllers'
+                'prefix'    => config('voyager.routes.prefix', 'admin'),
+                'namespace' => 'TCG\\Voyager\\Http\\Controllers',
             ], function () {
-                require __DIR__ . '/../routes/web.php';
+                require __DIR__.'/../routes/web.php';
             });
         }
     }
@@ -104,7 +104,7 @@ class VoyagerServiceProvider extends ServiceProvider
     private function registerCommands()
     {
         $this->app->singleton('command.voyager', function () {
-            return new VoyagerCommand;
+            return new VoyagerCommand();
         });
         $this->commands('command.voyager');
     }

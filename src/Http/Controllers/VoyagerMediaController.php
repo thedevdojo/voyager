@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Storage;
 
 class VoyagerMediaController extends Controller
 {
-    /** @var string  */
+    /** @var string */
     private $filesystem;
 
-    /** @var string  */
+    /** @var string */
     private $directory = '';
 
     public function __construct()
@@ -19,8 +19,7 @@ class VoyagerMediaController extends Controller
         $this->filesystem = config('filesystems.default');
         if ($this->filesystem === 'local') {
             $this->directory = 'public';
-        }
-        elseif ($this->filesystem === 's3') {
+        } elseif ($this->filesystem === 's3') {
             $this->directory = '';
         }
     }
@@ -39,12 +38,12 @@ class VoyagerMediaController extends Controller
         $dir = $this->directory.$folder;
 
         return response()->json([
-            'name' => 'files',
-            'type' => 'folder',
-            'path' => $dir,
-            'folder' => $folder,
-            'items' => $this->getFiles($dir),
-            'last_modified' => 'asdf'
+            'name'          => 'files',
+            'type'          => 'folder',
+            'path'          => $dir,
+            'folder'        => $folder,
+            'items'         => $this->getFiles($dir),
+            'last_modified' => 'asdf',
         ]);
     }
 
@@ -56,21 +55,21 @@ class VoyagerMediaController extends Controller
 
         foreach ($storageFiles as $file) {
             $files[] = [
-                'name' => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
-                'type' => Storage::mimeType($file),
-                'path' => Storage::disk(config('filesystem.default'))->url($file),
-                'size' => Storage::size($file),
-                'last_modified' => Storage::lastModified($file)
+                'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
+                'type'          => Storage::mimeType($file),
+                'path'          => Storage::disk(config('filesystem.default'))->url($file),
+                'size'          => Storage::size($file),
+                'last_modified' => Storage::lastModified($file),
             ];
         }
 
         foreach ($storageFolders as $folder) {
             $files[] = [
-                'name' => strpos($folder, '/') > 1 ? str_replace('/', '', strrchr($folder, '/')) : $folder,
-                'type' => 'folder',
-                'path' => Storage::disk(config('filesystem.default'))->url($folder),
-                'items' => '',
-                'last_modified' => ''
+                'name'          => strpos($folder, '/') > 1 ? str_replace('/', '', strrchr($folder, '/')) : $folder,
+                'type'          => 'folder',
+                'path'          => Storage::disk(config('filesystem.default'))->url($folder),
+                'items'         => '',
+                'last_modified' => '',
             ];
         }
 
@@ -87,19 +86,16 @@ class VoyagerMediaController extends Controller
 
         if (Storage::exists($new_folder)) {
             $error = 'Sorry that folder already exists, please delete that folder if you wish to re-create it';
-        }
-        else {
+        } else {
             if (Storage::makeDirectory($new_folder)) {
                 $success = true;
-            }
-            else {
+            } else {
                 $error = 'Sorry something seems to have gone wrong with creating the directory, please check your permissions';
             }
         }
 
         return compact('success', 'error');
     }
-
 
     // Delete File or Folder with 5.3
 
@@ -112,19 +108,18 @@ class VoyagerMediaController extends Controller
         $error = '';
 
         if (is_array($folderLocation)) {
-            $folderLocation = rtrim(join('/', $folderLocation), '/');
+            $folderLocation = rtrim(implode('/', $folderLocation), '/');
         }
 
         $location = "{$this->directory}/{$folderLocation}";
         $fileFolder = "{$location}/{$fileFolder}";
 
         if ($type == 'folder') {
-            if ( ! Storage::deleteDirectory($fileFolder)) {
+            if (!Storage::deleteDirectory($fileFolder)) {
                 $error = 'Sorry something seems to have gone wrong when deleting this folder, please check your permissions';
                 $success = false;
             }
-        }
-        elseif ( ! Storage::delete($fileFolder)) {
+        } elseif (!Storage::delete($fileFolder)) {
             $error = 'Sorry something seems to have gone wrong deleting this file, please check your permissions';
             $success = false;
         }
@@ -139,7 +134,7 @@ class VoyagerMediaController extends Controller
         $folderLocation = $request->folder_location;
 
         if (is_array($folderLocation)) {
-            $folderLocation = rtrim(join('/', $folderLocation), '/');
+            $folderLocation = rtrim(implode('/', $folderLocation), '/');
         }
 
         $location = "{$this->directory}/{$folderLocation}";
@@ -160,7 +155,7 @@ class VoyagerMediaController extends Controller
         $error = '';
 
         if (is_array($folderLocation)) {
-            $folderLocation = rtrim(join('/', $folderLocation), '/');
+            $folderLocation = rtrim(implode('/', $folderLocation), '/');
         }
 
         $location = "{$this->directory}/{$folderLocation}";
@@ -169,7 +164,7 @@ class VoyagerMediaController extends Controller
             ? $this->directory.'/'.dirname($folderLocation).'/'.str_replace('/../', '', $destination)
             : "{$location}/{$destination}";
 
-        if ( ! file_exists($destination)) {
+        if (!file_exists($destination)) {
             if (Storage::move($source, $destination)) {
                 $success = true;
             } else {
@@ -193,12 +188,12 @@ class VoyagerMediaController extends Controller
         $error = false;
 
         if (is_array($folderLocation)) {
-            $folderLocation = rtrim(join('/', $folderLocation), '/');
+            $folderLocation = rtrim(implode('/', $folderLocation), '/');
         }
 
         $location = "{$this->directory}/{$folderLocation}";
 
-        if ( ! Storage::exists("{$location}/{$newFilename}")) {
+        if (!Storage::exists("{$location}/{$newFilename}")) {
             if (Storage::move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
                 $success = true;
             } else {
@@ -219,8 +214,7 @@ class VoyagerMediaController extends Controller
             $request->file->store($request->upload_path);
             $success = true;
             $message = 'Successfully uploaded new file!';
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
         }

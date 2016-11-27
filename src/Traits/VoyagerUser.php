@@ -23,7 +23,7 @@ trait VoyagerUser
     public function addRole($name)
     {
         // If user does not already have this role
-        if ( ! $this->hasRole($name)) {
+        if (!$this->hasRole($name)) {
             // Look up the role and attach it to the user
             $role = Role::where('name', '=', $name)->first();
             $this->roles()->attach($role->id);

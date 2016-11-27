@@ -35,7 +35,7 @@ class VoyagerDatabaseController extends Controller
                 }
             });
 
-            if (isset($request->create_model) && $request->create_model == "on") {
+            if (isset($request->create_model) && $request->create_model == 'on') {
                 Artisan::call('make:model', [
                     'name' => ucfirst($tableName),
                 ]);
@@ -44,13 +44,12 @@ class VoyagerDatabaseController extends Controller
             return redirect()
                 ->route('voyager.database')
                 ->with([
-                    'message' => "Successfully created $tableName table",
+                    'message'    => "Successfully created $tableName table",
                     'alert-type' => 'success',
                 ]);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return back()->with([
-                'message' => 'Exception: ' . $e->getMessage(),
+                'message'    => 'Exception: '.$e->getMessage(),
                 'alert-type' => 'error',
             ]);
         }
@@ -66,7 +65,7 @@ class VoyagerDatabaseController extends Controller
     /**
      * @todo: Refactor this huge method.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -76,13 +75,12 @@ class VoyagerDatabaseController extends Controller
         $tableName = $request->name;
 
         // If the user has renamed the table then rename it
-        if ( ! empty($originalName) && $originalName != $tableName) {
+        if (!empty($originalName) && $originalName != $tableName) {
             try {
                 Schema::rename($originalName, $tableName);
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 return back()->with([
-                    'message' => 'Exception: ' . $e->getMessage(),
+                    'message'    => 'Exception: '.$e->getMessage(),
                     'alert-type' => 'error',
                 ]);
             }
@@ -93,7 +91,7 @@ class VoyagerDatabaseController extends Controller
             $originalRowName = $request->original_field[$index];
 
             // if the name of the row has changed rename it
-            if ( ! empty($originalRowName) && $rowName != $originalRowName) {
+            if (!empty($originalRowName) && $rowName != $originalRowName) {
                 Schema::table($tableName, function ($table) use ($originalRowName, $rowName) {
                     $table->renameColumn($originalRowName, $rowName);
                 });
@@ -120,11 +118,10 @@ class VoyagerDatabaseController extends Controller
 
         Schema::table($tableName, function (Blueprint $table) use ($queryRows, $request, $tableArray, $tableKey) {
             foreach ($queryRows as $index => $query) {
-                if (in_array((string)$request->field[$index], $tableArray)) {
-                    $disableUnique = $tableKey[(string)$request->field[$index]] == "UNI";
+                if (in_array((string) $request->field[$index], $tableArray)) {
+                    $disableUnique = $tableKey[(string) $request->field[$index]] == 'UNI';
                     $query($table, $disableUnique)->change();
-                }
-                else {
+                } else {
                     $query($table);
                 }
             }
@@ -136,8 +133,8 @@ class VoyagerDatabaseController extends Controller
 
         foreach ($this->describeTable((string) $tableName) as $desc) {
             $tableTypeArray[$desc->Field] = $desc->Type;
-            $tableDefaultArray[$desc->Field] = empty($desc->Default) ? "" : " DEFAULT " . $desc->Default;
-            $tableNullArray[$desc->Field] = $desc->Null == "NO" ? " NOT NULL" : " NULL";
+            $tableDefaultArray[$desc->Field] = empty($desc->Default) ? '' : ' DEFAULT '.$desc->Default;
+            $tableNullArray[$desc->Field] = $desc->null == 'NO' ? ' NOT NULL' : ' NULL';
         }
 
         foreach ($request->row as $index => $row) {
@@ -145,18 +142,17 @@ class VoyagerDatabaseController extends Controller
             $fieldName = (string) $request->field[$index];
             if ($index > 0) {
                 if ($fieldName != 'id') {
-                    DB::statement("ALTER TABLE " . (string) $tableName . " MODIFY COLUMN " . $fieldName . " " . $tableTypeArray[$fieldName] . $tableDefaultArray[$fieldName] . $tableNullArray[$fieldName] . " AFTER " . $request->field[$index - 1]);
+                    DB::statement('ALTER TABLE '.(string) $tableName.' MODIFY COLUMN '.$fieldName.' '.$tableTypeArray[$fieldName].$tableDefaultArray[$fieldName].$tableNullArray[$fieldName].' AFTER '.$request->field[$index - 1]);
                 }
-            }
-            elseif ($fieldName != 'id') {
-                DB::statement("ALTER TABLE " . (string) $tableName . " MODIFY COLUMN " . $fieldName . " " . $tableTypeArray[$fieldName] . $tableDefaultArray[$fieldName] . $tableNullArray[$fieldName] . " FIRST");
+            } elseif ($fieldName != 'id') {
+                DB::statement('ALTER TABLE '.(string) $tableName.' MODIFY COLUMN '.$fieldName.' '.$tableTypeArray[$fieldName].$tableDefaultArray[$fieldName].$tableNullArray[$fieldName].' FIRST');
             }
         }
 
         return redirect()
             ->route('voyager.database')
             ->with([
-                'message' => "Successfully update $tableName table",
+                'message'    => "Successfully update $tableName table",
                 'alert-type' => 'success',
             ]);
     }
@@ -164,7 +160,7 @@ class VoyagerDatabaseController extends Controller
     /**
      * @todo: Refactor this huge method.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
@@ -175,14 +171,12 @@ class VoyagerDatabaseController extends Controller
         foreach ($request->row as $index => $row) {
             $field = $request->field[$index];
             $type = isset($request->type[$index]) ? $request->type[$index] : 'string';
-            $nullable = isset($request->nullable[$index]) && $request->nullable[$index] == "on";
+            $nullable = isset($request->nullable[$index]) && $request->nullable[$index] == 'on';
 
             $key = $request->key[$index];
             $default = $request->default[$index];
 
-            $query = function (Blueprint $table, $disableUnique = false)
-                use ($request, $index, $field, $type, $nullable, $key, $default)
-            {
+            $query = function (Blueprint $table, $disableUnique = false) use ($request, $index, $field, $type, $nullable, $key, $default) {
                 if ($key == 'PRI') {
                     $result = $table->increments($field);
                 } else {
@@ -244,13 +238,12 @@ class VoyagerDatabaseController extends Controller
             return redirect()
                 ->route('voyager.database')
                 ->with([
-                    'message' => "Successfully deleted $table table",
+                    'message'    => "Successfully deleted $table table",
                     'alert-type' => 'success',
                 ]);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return back()->with([
-                'message' => 'Exception: ' . $e->getMessage(),
+                'message'    => 'Exception: '.$e->getMessage(),
                 'alert-type' => 'error',
             ]);
         }
@@ -259,7 +252,7 @@ class VoyagerDatabaseController extends Controller
     /********** BREAD METHODS **********/
 
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -272,26 +265,26 @@ class VoyagerDatabaseController extends Controller
 
     private function prepopulateBreadInfo($table)
     {
-        $displayName = Str::singular(join(" ", explode('_', Str::title($table))));
+        $displayName = Str::singular(implode(' ', explode('_', Str::title($table))));
 
         return [
-            'table' => $table,
-            'slug' => Str::slug($table),
-            'display_name' => $displayName,
+            'table'               => $table,
+            'slug'                => Str::slug($table),
+            'display_name'        => $displayName,
             'display_name_plural' => Str::plural($displayName),
-            'model_name' => '\\App\\' . Str::studly(Str::singular($table)),
+            'model_name'          => '\\App\\'.Str::studly(Str::singular($table)),
         ];
     }
 
     public function storeBread(Request $request)
     {
-        $data = $this->updateDataType(new DataType, $request->all())
+        $data = $this->updateDataType(new DataType(), $request->all())
             ? [
-                'message' => 'Successfully created new BREAD',
+                'message'    => 'Successfully created new BREAD',
                 'alert-type' => 'success',
             ]
             : [
-                'message' => 'Sorry it appears there may have been a problem creating this bread',
+                'message'    => 'Sorry it appears there may have been a problem creating this bread',
                 'alert-type' => 'error',
             ];
 
@@ -311,11 +304,11 @@ class VoyagerDatabaseController extends Controller
         $dataType = DataType::find($id);
         $data = $this->updateDataType($dataType, $request->all())
             ? [
-                'message' => "Successfully updated the {$dataType->name} BREAD",
+                'message'    => "Successfully updated the {$dataType->name} BREAD",
                 'alert-type' => 'success',
             ]
             : [
-                'message' => 'Sorry it appears there may have been a problem updating this bread',
+                'message'    => 'Sorry it appears there may have been a problem updating this bread',
                 'alert-type' => 'error',
             ];
 
@@ -332,26 +325,25 @@ class VoyagerDatabaseController extends Controller
                 ->where('field', '=', $column)
                 ->first();
 
-            if ( ! isset($dataRow->id)) {
-                $dataRow = new DataRow;
+            if (!isset($dataRow->id)) {
+                $dataRow = new DataRow();
             }
 
             $dataRow->data_type_id = $dataType->id;
-            $dataRow->required = $requestData['field_required_' . $column];
+            $dataRow->required = $requestData['field_required_'.$column];
 
             foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
                 if (isset($requestData["field_{$check}_{$column}"])) {
                     $dataRow->{$check} = 1;
-                }
-                else {
+                } else {
                     $dataRow->{$check} = 0;
                 }
             }
 
-            $dataRow->field = $requestData['field_' . $column];
-            $dataRow->type = $requestData['field_input_type_' . $column];
-            $dataRow->details = $requestData['field_details_' . $column];
-            $dataRow->display_name = $requestData['field_display_name_' . $column];
+            $dataRow->field = $requestData['field_'.$column];
+            $dataRow->type = $requestData['field_input_type_'.$column];
+            $dataRow->details = $requestData['field_details_'.$column];
+            $dataRow->display_name = $requestData['field_display_name_'.$column];
             $dataRowSuccess = $dataRow->save();
             // If success has never failed yet, let's add DataRowSuccess to success
             if ($success !== false) {
@@ -368,11 +360,11 @@ class VoyagerDatabaseController extends Controller
         $dataType = DataType::find($id);
         $data = DataType::destroy($id)
             ? [
-                'message' => "Successfully removed BREAD from {$dataType->name}",
+                'message'    => "Successfully removed BREAD from {$dataType->name}",
                 'alert-type' => 'success',
             ]
             : [
-                'message' => 'Sorry it appears there was a problem removing this bread',
+                'message'    => 'Sorry it appears there was a problem removing this bread',
                 'alert-type' => 'danger',
             ];
 

@@ -24,7 +24,7 @@ class VoyagerSettingsController extends Controller
         Setting::create($request->all());
 
         return back()->with([
-            'message' => 'Successfully Created New Setting',
+            'message'    => 'Successfully Created New Setting',
             'alert-type' => 'success',
         ]);
     }
@@ -34,7 +34,7 @@ class VoyagerSettingsController extends Controller
         Setting::destroy($id);
 
         return back()->with([
-            'message' => 'Successfully Deleted Setting',
+            'message'    => 'Successfully Deleted Setting',
             'alert-type' => 'success',
         ]);
     }
@@ -45,7 +45,7 @@ class VoyagerSettingsController extends Controller
         $swapOrder = $setting->order;
         $previousSetting = Setting::where('order', '<', $swapOrder)->orderBy('order', 'DESC')->first();
         $data = [
-            'message' => 'This is already at the top of the list',
+            'message'    => 'This is already at the top of the list',
             'alert-type' => 'error',
         ];
 
@@ -56,7 +56,7 @@ class VoyagerSettingsController extends Controller
             $previousSetting->save();
 
             $data = [
-                'message' => "Moved {$setting->display_name} setting order up",
+                'message'    => "Moved {$setting->display_name} setting order up",
                 'alert-type' => 'success',
             ];
         }
@@ -71,8 +71,8 @@ class VoyagerSettingsController extends Controller
         if (isset($setting->id)) {
             // If the type is an image... Then delete it
             if ($setting->type == 'image') {
-                if (Storage::exists(config('voyager.storage.subfolder') . $setting->value)) {
-                    Storage::delete(config('voyager.storage.subfolder') . $setting->value);
+                if (Storage::exists(config('voyager.storage.subfolder').$setting->value)) {
+                    Storage::delete(config('voyager.storage.subfolder').$setting->value);
                 }
             }
             $setting->value = '';
@@ -80,8 +80,8 @@ class VoyagerSettingsController extends Controller
         }
 
         return back()->with([
-            'message' => "Successfully removed {$setting->display_name} value",
-            'alert-type' => 'success'
+            'message'    => "Successfully removed {$setting->display_name} value",
+            'alert-type' => 'success',
         ]);
     }
 
@@ -92,7 +92,7 @@ class VoyagerSettingsController extends Controller
 
         $previousSetting = Setting::where('order', '>', $swapOrder)->orderBy('order', 'ASC')->first();
         $data = [
-            'message' => 'This is already at the bottom of the list',
+            'message'    => 'This is already at the bottom of the list',
             'alert-type' => 'error',
         ];
 
@@ -103,8 +103,8 @@ class VoyagerSettingsController extends Controller
             $previousSetting->save();
 
             $data = [
-                'message' => "Moved {$setting->display_name} setting order down",
-                'alert-type' => 'success'
+                'message'    => "Moved {$setting->display_name} setting order down",
+                'alert-type' => 'success',
             ];
         }
 
@@ -114,12 +114,12 @@ class VoyagerSettingsController extends Controller
     public function save(Request $request)
     {
         $settings = Setting::all();
-        $breadController = new VoyagerBreadController; // TODO: This is bad!! Extract getContentBasedOnType() as a Helper
+        $breadController = new VoyagerBreadController(); // TODO: This is bad!! Extract getContentBasedOnType() as a Helper
 
         foreach ($settings as $setting) {
             $content = $breadController->getContentBasedOnType($request, 'settings', (object) [
-                'type' => $setting->type,
-                'field' => $setting->key,
+                'type'    => $setting->type,
+                'field'   => $setting->key,
                 'details' => $setting->details,
             ]);
 
@@ -132,7 +132,7 @@ class VoyagerSettingsController extends Controller
         }
 
         return back()->with([
-            'message' => 'Successfully Saved Settings',
+            'message'    => 'Successfully Saved Settings',
             'alert-type' => 'success',
         ]);
     }

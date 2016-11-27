@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class SetUserAvatarNullable extends Migration
@@ -12,12 +11,9 @@ class SetUserAvatarNullable extends Migration
      */
     public function up()
     {
-
-        Schema::table('users', function($table)
-        {
+        Schema::table('users', function ($table) {
             $table->string('avatar')->nullable()->change();
         });
-
     }
 
     /**
@@ -27,8 +23,7 @@ class SetUserAvatarNullable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function($table)
-        {
+        Schema::table('users', function ($table) {
             $table->string('avatar')->nullable(false)->change();
         });
     }

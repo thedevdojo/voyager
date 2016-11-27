@@ -11,8 +11,8 @@ class VoyagerAdminMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure                  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
      *
      * @return mixed
      */
@@ -25,7 +25,7 @@ class VoyagerAdminMiddleware
         /**
          * Get the Voyager User Object.
          *
-         * @var \TCG\Voyager\Models\User $user
+         * @var \TCG\Voyager\Models\User
          */
         $user = User::find(Auth::id());
 

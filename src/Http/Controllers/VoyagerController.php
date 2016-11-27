@@ -48,16 +48,14 @@ class VoyagerController extends Controller
             if (Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $image, 'public')) {
                 $status = 'Image successfully uploaded!';
                 $fullFilename = $fullPath;
-            }
-            else {
+            } else {
                 $status = 'Upload Fail: Unknown error occurred!';
             }
-        }
-        else {
+        } else {
             $status = 'Upload Fail: Unsupported file format or It is too large to upload!';
         }
 
         // echo out script that TinyMCE can handle and update the image in the editor
-        return ("<script> parent.setImageValue('" . Voyager::image($fullFilename) . "'); </script>");
+        return "<script> parent.setImageValue('".Voyager::image($fullFilename)."'); </script>";
     }
 }

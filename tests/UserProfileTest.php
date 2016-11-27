@@ -18,9 +18,9 @@ class UserProfileTest extends TestCase
 
         $this->user = Auth::loginUsingId(1);
 
-        $this->editPageForTheCurrentUser = config('voyager.routes.prefix') . "/users/{$this->user->id}/edit";
+        $this->editPageForTheCurrentUser = config('voyager.routes.prefix')."/users/{$this->user->id}/edit";
 
-        $this->listOfUsers = config('voyager.routes.prefix') . '/users';
+        $this->listOfUsers = config('voyager.routes.prefix').'/users';
     }
 
     public function testCanSeeTheUserInfoOnHisProfilePage()
@@ -92,6 +92,6 @@ class UserProfileTest extends TestCase
 
     protected function newImagePath()
     {
-        return realpath(__DIR__ . '/temp/new_avatar.png');
+        return realpath(__DIR__.'/temp/new_avatar.png');
     }
 }
