@@ -1,6 +1,7 @@
 {
     "name": "tcg/voyager",
     "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
+    "license": "MIT",
     "authors": [
         {
             "name": "Tony Lea",
