@@ -81,10 +81,13 @@ class InstallCommand extends Command
 
         $this->info('Seeding data into the database');
         if ($this->option('no-dummy-data')) {
-            Artisan::call('db:seed', ['--class' => 'DataTypesTableSeeder']);
-            Artisan::call('db:seed', ['--class' => 'DataRowsTableSeeder']);
+            $process = new Process('php artisan db:seed --class=DataTypesTableSeeder');
+            $process->setWorkingDirectory(base_path())->run();
+            $process = new Process('php artisan db:seed --class=DataRowsTableSeeder');
+            $process->setWorkingDirectory(base_path())->run();
         } else {
-            Artisan::call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
+            $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
+            $process->setWorkingDirectory(base_path())->run();
         }
 
         $this->info('Adding the storage symlink to your public folder');
