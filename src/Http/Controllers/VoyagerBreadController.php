@@ -26,7 +26,7 @@ class VoyagerBreadController extends Controller
     public function index(Request $request)
     {
         // GET THE SLUG, ex. 'posts', 'pages', etc.
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
 
         // GET THE DataType based on the slug
         $dataType = DataType::where('slug', '=', $slug)->first();
@@ -61,7 +61,7 @@ class VoyagerBreadController extends Controller
 
     public function show(Request $request, $id)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
@@ -85,7 +85,7 @@ class VoyagerBreadController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
         $dataType = DataType::where('slug', '=', $slug)->first();
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'find'], $id)
@@ -105,7 +105,7 @@ class VoyagerBreadController extends Controller
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
         $dataType = DataType::where('slug', '=', $slug)->first();
         $data = call_user_func([$dataType->model_name, 'find'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
@@ -133,7 +133,7 @@ class VoyagerBreadController extends Controller
 
     public function create(Request $request)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         $view = 'voyager::bread.edit-add';
@@ -150,7 +150,7 @@ class VoyagerBreadController extends Controller
     // POST BRE(A)D
     public function store(Request $request)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         if (function_exists('voyager_add_post')) {
@@ -183,7 +183,7 @@ class VoyagerBreadController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         $data = call_user_func([$dataType->model_name, 'find'], $id);
