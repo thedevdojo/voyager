@@ -169,7 +169,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                                 <div class="panel-body">
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="/{{config('voyager.routes.prefix')}}/menus">
+                                            <a href="{{route('menus.index')}}">
                                                 <span class="icon voyager-list"></span>
                                                 <span class="title">Menu Builder</span>
                                             </a>

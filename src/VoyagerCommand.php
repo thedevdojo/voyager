@@ -61,15 +61,15 @@ class VoyagerCommand extends Command
     {
         if (!$this->option('existing')) {
             $this->info('Generating the default authentication scaffolding');
-            Artisan::call('make:auth');
+            $this->call('make:auth');
         }
 
         $this->info('Publishing the Voyager assets, database, and config files');
-        Artisan::call('vendor:publish', ['--provider' => \TCG\Voyager\VoyagerServiceProvider::class]);
-        Artisan::call('vendor:publish', ['--provider' => \Intervention\Image\ImageServiceProviderLaravel5::class]);
+        $this->call('vendor:publish', ['--provider' => \TCG\Voyager\VoyagerServiceProvider::class]);
+        $this->call('vendor:publish', ['--provider' => \Intervention\Image\ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
-        Artisan::call('migrate');
+        $this->call('migrate');
 
         $this->info('Dumping the autoloaded files and reloading all new files');
 
@@ -83,7 +83,7 @@ class VoyagerCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding the storage symlink to your public folder');
-        Artisan::call('storage:link');
+        $this->call('storage:link');
 
         $this->info('Successfully installed Voyager! Enjoy :)');
     }
