@@ -1,13 +1,13 @@
 <?php
 
-namespace TCG\Voyager;
+namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
 
-class VoyagerCommand extends Command
+class InstallCommand extends Command
 {
     /**
      * The console command name.
@@ -35,6 +35,7 @@ class VoyagerCommand extends Command
     {
         return [
             ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
+            ['no-dummy-data', null, InputOption::VALUE_NONE, 'install without seeding dummy data', null],
         ];
     }
 
@@ -79,8 +80,12 @@ class VoyagerCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Seeding data into the database');
-        $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
-        $process->setWorkingDirectory(base_path())->run();
+        if ($this->option('no-dummy-data')) {
+            Artisan::call('db:seed', ['--class' => 'DataTypesTableSeeder']);
+            Artisan::call('db:seed', ['--class' => 'DataRowsTableSeeder']);
+        } else {
+            Artisan::call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
+        }
 
         $this->info('Adding the storage symlink to your public folder');
         Artisan::call('storage:link');

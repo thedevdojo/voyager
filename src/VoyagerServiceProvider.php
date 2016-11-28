@@ -103,9 +103,6 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     private function registerCommands()
     {
-        $this->app->singleton('command.voyager', function () {
-            return new VoyagerCommand();
-        });
-        $this->commands('command.voyager');
+        $this->commands(Commands\InstallCommand::class);
     }
 }
