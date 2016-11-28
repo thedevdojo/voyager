@@ -9,11 +9,14 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 use TCG\Voyager\Models\DataRow;
 use TCG\Voyager\Models\DataType;
 
 class VoyagerDatabaseController extends Controller
 {
+    use DatabaseUpdate;
+
     public function index()
     {
         return view('voyager::tools.database.index');
@@ -71,20 +74,10 @@ class VoyagerDatabaseController extends Controller
      */
     public function update(Request $request)
     {
-        $originalName = $request->original_name;
         $tableName = $request->name;
 
         // If the user has renamed the table then rename it
-        if (!empty($originalName) && $originalName != $tableName) {
-            try {
-                Schema::rename($originalName, $tableName);
-            } catch (Exception $e) {
-                return back()->with([
-                    'message'    => 'Exception: '.$e->getMessage(),
-                    'alert-type' => 'error',
-                ]);
-            }
-        }
+        $this->renameTable($request->original_name, $tableName);
 
         foreach ($request->row as $index => $row) {
             $rowName = $request->field[$index];
