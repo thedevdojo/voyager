@@ -7,6 +7,7 @@
 @section('content')
     <div class="page-content">
         <div class="widgets">
+            <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\User())->getTable())) { ?>
             <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
                 <div class="dimmer"></div>
                 <div class="panel-content">
@@ -17,6 +18,8 @@
                     <a href="/{{ config('voyager.routes.prefix') }}/users" class="btn btn-primary">View All Users</a>
                 </div>
             </div>
+            <?php } ?>
+            <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\Post())->getTable())) { ?>
             <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/03.png);">
                 <div class="dimmer"></div>
                 <div class="panel-content">
@@ -27,6 +30,8 @@
                     <a href="/{{ config('voyager.routes.prefix') }}/posts" class="btn btn-primary">View All Posts</a>
                 </div>
             </div>
+            <?php } ?>
+            <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\Page())->getTable())) { ?>
             <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/04.png);">
                 <div class="dimmer"></div>
                 <div class="panel-content">
@@ -37,6 +42,7 @@
                     <a href="/{{ config('voyager.routes.prefix') }}/pages" class="btn btn-primary">View All Pages</a>
                 </div>
             </div>
+            <?php } ?>
         </div>
         <div style="clear:both"></div>
         <div style="padding:15px;">
