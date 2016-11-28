@@ -1,11 +1,11 @@
 @extends('voyager::master')
 
-
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }} <a
-                href="{{ route($dataType->slug.'.create') }}" class="btn btn-success"><i class="voyager-plus"></i> Add
-            New</a>
+        <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
+        <a href="{{ route($dataType->slug.'.create') }}" class="btn btn-success">
+            <i class="voyager-plus"></i> Add New
+        </a>
     </h1>
 @stop
 
@@ -14,7 +14,6 @@
 @stop
 
 @section('content')
-
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -22,39 +21,38 @@
                     <div class="panel-body">
                         <table id="dataTable" class="table table-hover">
                             <thead>
-                            <tr>
-                                @foreach($dataType->browseRows as $rows)
+                                <tr>
+                                    @foreach($dataType->browseRows as $rows)
                                     <th>{{ $rows->display_name }}</th>
-                                @endforeach
-                                <th class="actions">Actions</th>
-                            </tr>
+                                    @endforeach
+                                    <th class="actions">Actions</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            @foreach($dataTypeContent as $data)
+                                @foreach($dataTypeContent as $data)
                                 <tr>
                                     @foreach($dataType->browseRows as $row)
-                                        <td>
-
-                                            @if($row->type == 'image')
-                                                <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif"
-                                                     style="width:100px">
-                                            @else
-                                                {{ $data->{$row->field} }}
-                                            @endif
-                                        </td>
+                                    <td>
+                                        @if($row->type == 'image')
+                                            <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                        @else
+                                            {{ $data->{$row->field} }}
+                                        @endif
+                                    </td>
                                     @endforeach
                                     <td class="no-sort no-click">
-                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}"
-                                             id="delete-{{ $data->id }}">
+                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
                                             <i class="voyager-trash"></i> Delete
                                         </div>
-                                        <a href="{{ route($dataType->slug.'.edit', $data->id) }}"
-                                           class="btn-sm btn-primary pull-right edit"><i class="voyager-edit"></i> Edit</a>
-                                        <a href="{{ route($dataType->slug.'.show', $data->id) }}"
-                                           class="btn-sm btn-warning pull-right"><i class="voyager-eye"></i> View</a>
+                                        <a href="{{ route($dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
+                                            <i class="voyager-edit"></i> Edit
+                                        </a>
+                                        <a href="{{ route($dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
+                                            <i class="voyager-eye"></i> View
+                                        </a>
                                     </td>
                                 </tr>
-                            @endforeach
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -62,7 +60,7 @@
             </div>
         </div>
     </div>
-    </div>
+
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -89,28 +87,22 @@
 @section('javascript')
     <!-- DataTables -->
     <script>
-
         $(document).ready(function () {
             $('#dataTable').DataTable({ "order": [] });
-
         });
 
         $('td').on('click', '.delete', function (e) {
-            var id = $(this).data('id');
             var form = $('#delete_form')[0];
-            var action = parseActionUrl(form.action, id);
 
-            form.action = action;
+            form.action = parseActionUrl(form.action, $(this).data('id'));
 
             $('#delete_modal').modal('show');
-
         });
 
         function parseActionUrl(action, id) {
-            if (action.match(/\/[0-9]+$/)) {
-                return action.replace(/([0-9]+$)/, id);
-            }
-            return action + '/' + id;
+            return action.match(/\/[0-9]+$/)
+                ? action.replace(/([0-9]+$)/, id)
+                : action + '/' + id;
         }
     </script>
 @stop

@@ -1,18 +1,12 @@
 <?php
 
-namespace TCG\Voyager\Controllers;
+namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use TCG\Voyager\Models\User as User;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class VoyagerAuthController extends Controller
 {
-
     use AuthenticatesUsers;
 
     public function login(Request $request)
@@ -52,4 +46,3 @@ class VoyagerAuthController extends Controller
         return route('voyager.dashboard');
     }
 }
-

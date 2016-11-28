@@ -7,7 +7,7 @@
     <meta name="description" content="admin login">
     <meta name="author" content="">
     <title>Admin Login</title>
-    <!-- Voyager CSS -->
+    {{-- Voyager CSS --}}
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
     <link href="https://file.myfontastic.com/QLbQY2QVvDNQgGeBRf7fWh/icons.css" rel="stylesheet">
@@ -167,9 +167,9 @@
         }
 
         .error-login {
-          padding: 1em;
-          text-align: center;
-          color: #DC143C;
+            padding: 1em;
+            text-align: center;
+            color: #DC143C;
         }
 
         @-moz-keyframes spin {
@@ -191,55 +191,52 @@
             }
         }
     </style>
-
 </head>
 <body class="login-page">
+    <div id="bgdim"></div>
 
-<div id="bgdim"></div>
-
-<div id="title_section">
-    <img class="logo-img" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Admin Login">
-    <div class="copy">
-        <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
-        <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
-    </div>
-    <div style="clear:both"></div>
-
-</div>
-
-<div id="login_section">
-    <div class="content">
-        <h2>Sign In</h2>
-        <p>Sign in below:</p>
-        <div style="clear:both"></div>
-        <form action="{{ route('voyager.login') }}" method="POST" id="login">
-            <input type="text" class="form-control" name="email" placeholder="email address" value="{{ old('email') }}">
-            <input type="password" class="form-control" name="password" placeholder="password">
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <button class="btn btn-primary btn-login" id="voyager-login-btn"><span class="login_text"><i
-                            class="voyager-lock"></i> Login</span><span class="login_loader"><img class="btn-loading"
-                                                                                                  src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png"> Logging in</span>
-            </button>
-        </form>
-
-      @if (count($errors))
-        <div class="error-login">
-          The given credentials don't match with an user registered.
+    <div id="title_section">
+        <img class="logo-img" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Admin Login">
+        <div class="copy">
+            <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
+            <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
         </div>
-      @endif
-
+        <div style="clear:both"></div>
     </div>
-</div>
 
-<script>
-    login_btn = document.getElementById("voyager-login-btn");
-    login_btn.addEventListener("click", function () {
-        var originalHeight = login_btn.offsetHeight;
-        login_btn.style.height = originalHeight + 'px';
-        document.querySelector('#voyager-login-btn span.login_text').style.display = 'none';
-        document.querySelector('#voyager-login-btn span.login_loader').style.display = 'block';
-    });
-</script>
+    <div id="login_section">
+        <div class="content">
+            <h2>Sign In</h2>
+            <p>Sign in below:</p>
+            <div style="clear:both"></div>
+            <form action="{{ route('voyager.login') }}" method="POST" id="login">
+                {{ csrf_field() }}
+                <input type="text" class="form-control" name="email" placeholder="email address" value="{{ old('email') }}">
+                <input type="password" class="form-control" name="password" placeholder="password">
+                <button class="btn btn-primary btn-login" id="voyager-login-btn">
+                    <span class="login_text"><i class="voyager-lock"></i> Login</span>
+                    <span class="login_loader">
+                        <img class="btn-loading" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png"> Logging in
+                    </span>
+                </button>
+            </form>
+            @if (count($errors))
+                <div class="error-login">
+                    The given credentials don't match with an user registered.
+                </div>
+            @endif
+        </div>
+    </div>
+
+    <script>
+        login_btn = document.getElementById("voyager-login-btn");
+        login_btn.addEventListener("click", function () {
+            var originalHeight = login_btn.offsetHeight;
+            login_btn.style.height = originalHeight + 'px';
+            document.querySelector('#voyager-login-btn span.login_text').style.display = 'none';
+            document.querySelector('#voyager-login-btn span.login_loader').style.display = 'block';
+        });
+    </script>
 
 </body>
 </html>
