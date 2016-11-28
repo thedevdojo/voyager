@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>{{Voyager::setting('admin_title')}} - {{Voyager::setting('admin_description')}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">

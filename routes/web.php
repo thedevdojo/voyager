@@ -14,13 +14,13 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
         'as' => 'voyager.profile',
         function () {
             return view('voyager::profile');
-        }
+        },
     ]);
 
     if (env('DB_CONNECTION') !== null && Schema::hasTable('data_types')):
         foreach (TCG\Voyager\Models\DataType::all() as $dataTypes):
             Route::resource($dataTypes->slug, 'VoyagerBreadController');
-        endforeach;
+    endforeach;
     endif;
 
     // Menu Routes
@@ -75,5 +75,4 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     Route::put('database/{id}/edit-bread', 'VoyagerDatabaseController@updateBread');
     Route::delete('database/delete_bread/{id}',
         ['uses' => 'VoyagerDatabaseController@deleteBread', 'as' => 'voyager.database.delete_bread']);
-
 });

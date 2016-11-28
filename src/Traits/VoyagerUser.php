@@ -2,19 +2,22 @@
 
 namespace TCG\Voyager\Traits;
 
+use Illuminate\Support\Arr;
 use TCG\Voyager\Models\Role;
 
+/**
+ * @property  \Illuminate\Database\Eloquent\Collection  roles
+ */
 trait VoyagerUser
 {
-    //
     public function roles()
     {
-        return $this->belongsToMany('TCG\Voyager\Models\Role', 'user_roles');
+        return $this->belongsToMany(Role::class, 'user_roles');
     }
 
     public function hasRole($name)
     {
-        return in_array($name, array_pluck($this->roles->toArray(), 'name'));
+        return in_array($name, Arr::pluck($this->roles->toArray(), 'name'));
     }
 
     public function addRole($name)
