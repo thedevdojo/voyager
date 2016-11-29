@@ -57,7 +57,7 @@ trait DatabaseUpdate
             $originalColumn = $request->original_field[$index];
 
             // If the name of the column has changed rename it.
-            if ($originalColumn != $column) {
+            if ($originalColumn && $originalColumn != $column) {
                 Schema::table(
                     $tableName,
                     function (Blueprint $table) use ($originalColumn, $column) {
