@@ -14,6 +14,8 @@ use TCG\Voyager\Models\DataType;
 
 class VoyagerDatabaseController extends Controller
 {
+    use \Illuminate\Console\AppNamespaceDetectorTrait;
+
     public function index()
     {
         return view('voyager::tools.database.index');
@@ -272,7 +274,7 @@ class VoyagerDatabaseController extends Controller
             'slug'                => Str::slug($table),
             'display_name'        => $displayName,
             'display_name_plural' => Str::plural($displayName),
-            'model_name'          => '\\App\\'.Str::studly(Str::singular($table)),
+            'model_name'          => $this->getNamespace().'\\'.Str::studly(Str::singular($table)),
         ];
     }
 
