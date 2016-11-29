@@ -229,11 +229,11 @@ class VoyagerBreadController extends Controller
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
-            if(isset($options->validation)) {
+            if (isset($options->validation)) {
                 if (isset($options->validation->rule)) {
                     $rules[$row->field] = $options->validation->rule;
                 }
-                if(isset($options->validation->messages)) {
+                if (isset($options->validation->messages)) {
                     foreach ($options->validation->messages as $key => $msg) {
                         $messages[$row->field.'.'.$key] = $msg;
                     }
