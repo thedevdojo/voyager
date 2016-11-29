@@ -208,7 +208,7 @@ class VoyagerDatabaseController extends Controller
 
     public function updateDataType(DataType $dataType, $requestData)
     {
-        $success = $dataType->update($requestData);
+        $success = $dataType->fill($requestData)->save();
         $columns = Schema::getColumnListing($dataType->name);
 
         foreach ($columns as $column) {
