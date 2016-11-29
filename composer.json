@@ -34,8 +34,5 @@
             "TCG\\Voyager\\Tests\\": "tests/"
       }
     },
-    "suggest": {
-        "marktopper/doctrine-dbal-timestamp-type": "Required for using the database rig for MySQL."
-    },
     "minimum-stability": "stable"
 }
