@@ -39,7 +39,7 @@ trait DatabaseQueryBuilder
     ];
 
     /**
-     * Build the queries necessary for creating/updating tables
+     * Build the queries necessary for creating/updating tables.
      *
      * @param Request    $request
      * @param Collection $existingColumns
@@ -93,7 +93,7 @@ trait DatabaseQueryBuilder
     }
 
     /**
-     * Describe given table
+     * Describe given table.
      *
      * @param string $table
      *
@@ -114,7 +114,7 @@ trait DatabaseQueryBuilder
     }
 
     /**
-     * Build a collection containing each column's info
+     * Build a collection containing each column's info.
      *
      * @param Request $request
      *

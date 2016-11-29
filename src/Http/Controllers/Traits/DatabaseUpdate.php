@@ -20,7 +20,7 @@ trait DatabaseUpdate
     ];
 
     /**
-     * Rename table if new table name given
+     * Rename table if new table name given.
      *
      * @param string $originalName
      * @param string $tableName
@@ -29,19 +29,19 @@ trait DatabaseUpdate
      */
     private function renameTable($originalName, $tableName)
     {
-        if (! empty($originalName) && $originalName != $tableName) {
+        if (!empty($originalName) && $originalName != $tableName) {
             try {
                 Schema::rename($originalName, $tableName);
             } catch (Exception $e) {
                 return back()
-                    ->withMessage('Exception: ' . $e->getMessage())
+                    ->withMessage('Exception: '.$e->getMessage())
                     ->with('alert-type', 'error');
             }
         }
     }
 
     /**
-     * Rename table columns
+     * Rename table columns.
      *
      * @param Request $request
      * @param string  $tableName
@@ -69,7 +69,7 @@ trait DatabaseUpdate
     }
 
     /**
-     * Drop table column
+     * Drop table column.
      *
      * @param Request $request
      * @param string  $tableName
@@ -100,7 +100,7 @@ trait DatabaseUpdate
     private function updateColumns(Request $request, $tableName)
     {
         $existingColumns = $this->describeTable($tableName)->keyBy('field');
-        $columnQueries   = $this->buildQuery($request, $existingColumns);
+        $columnQueries = $this->buildQuery($request, $existingColumns);
 
         Schema::table(
             $tableName,

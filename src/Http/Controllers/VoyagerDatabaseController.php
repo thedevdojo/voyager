@@ -32,11 +32,11 @@ class VoyagerDatabaseController extends Controller
         $tableName = $request->name;
 
         try {
-            Schema::create( $tableName, function (Blueprint $table) use ($request) {
+            Schema::create($tableName, function (Blueprint $table) use ($request) {
                 foreach ($this->buildQuery($request) as $query) {
                     $query($table);
                 }
-            } );
+            });
 
             if (isset($request->create_model) && $request->create_model == 'on') {
                 Artisan::call('make:model', [
@@ -55,7 +55,7 @@ class VoyagerDatabaseController extends Controller
         } catch (Exception $e) {
             return back()->with(
                 [
-                    'message'    => 'Exception: ' . $e->getMessage(),
+                    'message'    => 'Exception: '.$e->getMessage(),
                     'alert-type' => 'error',
                 ]
             );
@@ -70,7 +70,7 @@ class VoyagerDatabaseController extends Controller
     }
 
     /**
-     * Update database table
+     * Update database table.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -94,9 +94,9 @@ class VoyagerDatabaseController extends Controller
     public function reorder_column(Request $request)
     {
         if ($request->ajax()) {
-            $table  = $request->table;
+            $table = $request->table;
             $column = $request->column;
-            $after  = $request->after;
+            $after = $request->after;
             if ($after == null) {
                 // SET COLUMN TO THE TOP
                 DB::query("ALTER $table MyTable CHANGE COLUMN $column FIRST");
@@ -129,7 +129,7 @@ class VoyagerDatabaseController extends Controller
         } catch (Exception $e) {
             return back()->with(
                 [
-                    'message'    => 'Exception: ' . $e->getMessage(),
+                    'message'    => 'Exception: '.$e->getMessage(),
                     'alert-type' => 'error',
                 ]
             );
@@ -159,7 +159,7 @@ class VoyagerDatabaseController extends Controller
             'slug'                => Str::slug($table),
             'display_name'        => $displayName,
             'display_name_plural' => Str::plural($displayName),
-            'model_name'          => '\\App\\' . Str::studly(Str::singular($table)),
+            'model_name'          => '\\App\\'.Str::studly(Str::singular($table)),
         ];
     }
 
@@ -191,7 +191,7 @@ class VoyagerDatabaseController extends Controller
     {
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);
-        $data     = $this->updateDataType($dataType, $request->all())
+        $data = $this->updateDataType($dataType, $request->all())
             ? [
                 'message'    => "Successfully updated the {$dataType->name} BREAD",
                 'alert-type' => 'success',
@@ -214,12 +214,12 @@ class VoyagerDatabaseController extends Controller
                               ->where('field', '=', $column)
                               ->first();
 
-            if (! isset($dataRow->id)) {
+            if (!isset($dataRow->id)) {
                 $dataRow = new DataRow();
             }
 
             $dataRow->data_type_id = $dataType->id;
-            $dataRow->required     = $requestData['field_required_' . $column];
+            $dataRow->required = $requestData['field_required_' . $column];
 
             foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
                 if (isset($requestData["field_{$check}_{$column}"])) {
@@ -229,11 +229,11 @@ class VoyagerDatabaseController extends Controller
                 }
             }
 
-            $dataRow->field        = $requestData['field_' . $column];
-            $dataRow->type         = $requestData['field_input_type_' . $column];
-            $dataRow->details      = $requestData['field_details_' . $column];
+            $dataRow->field = $requestData['field_' . $column];
+            $dataRow->type = $requestData['field_input_type_' . $column];
+            $dataRow->details = $requestData['field_details_' . $column];
             $dataRow->display_name = $requestData['field_display_name_' . $column];
-            $dataRowSuccess        = $dataRow->save();
+            $dataRowSuccess = $dataRow->save();
             // If success has never failed yet, let's add DataRowSuccess to success
             if ($success !== false) {
                 $success = $dataRowSuccess;
@@ -247,7 +247,7 @@ class VoyagerDatabaseController extends Controller
     {
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);
-        $data     = DataType::destroy($id)
+        $data = DataType::destroy($id)
             ? [
                 'message'    => "Successfully removed BREAD from {$dataType->name}",
                 'alert-type' => 'success',
