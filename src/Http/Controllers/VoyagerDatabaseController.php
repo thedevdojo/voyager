@@ -3,18 +3,21 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 use TCG\Voyager\Models\DataRow;
 use TCG\Voyager\Models\DataType;
 
 class VoyagerDatabaseController extends Controller
 {
-    use \Illuminate\Console\AppNamespaceDetectorTrait;
+    use AppNamespaceDetectorTrait;
+    use DatabaseUpdate;
 
     public function index()
     {
@@ -45,15 +48,19 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                 ->route('voyager.database')
-                ->with([
-                    'message'    => "Successfully created $tableName table",
-                    'alert-type' => 'success',
-                ]);
+                ->with(
+                    [
+                        'message'    => "Successfully created $tableName table",
+                        'alert-type' => 'success',
+                    ]
+                );
         } catch (Exception $e) {
-            return back()->with([
-                'message'    => 'Exception: '.$e->getMessage(),
-                'alert-type' => 'error',
-            ]);
+            return back()->with(
+                [
+                    'message'    => 'Exception: '.$e->getMessage(),
+                    'alert-type' => 'error',
+                ]
+            );
         }
     }
 
@@ -65,7 +72,7 @@ class VoyagerDatabaseController extends Controller
     }
 
     /**
-     * @todo: Refactor this huge method.
+     * Update database table.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -73,141 +80,17 @@ class VoyagerDatabaseController extends Controller
      */
     public function update(Request $request)
     {
-        $originalName = $request->original_name;
         $tableName = $request->name;
 
-        // If the user has renamed the table then rename it
-        if (!empty($originalName) && $originalName != $tableName) {
-            try {
-                Schema::rename($originalName, $tableName);
-            } catch (Exception $e) {
-                return back()->with([
-                    'message'    => 'Exception: '.$e->getMessage(),
-                    'alert-type' => 'error',
-                ]);
-            }
-        }
-
-        foreach ($request->row as $index => $row) {
-            $rowName = $request->field[$index];
-            $originalRowName = $request->original_field[$index];
-
-            // if the name of the row has changed rename it
-            if (!empty($originalRowName) && $rowName != $originalRowName) {
-                Schema::table($tableName, function ($table) use ($originalRowName, $rowName) {
-                    $table->renameColumn($originalRowName, $rowName);
-                });
-                $rowName = $originalRowName;
-            }
-
-            // if the row has been deleted, then delete it
-            if ($request->delete_field[$index]) {
-                Schema::table($tableName, function ($table) use ($rowName) {
-                    $table->dropColumn($rowName);
-                });
-            }
-        }
-
-        $queryRows = $this->buildQuery($request);
-
-        $tableArray = [];
-        $tableKey = [];
-
-        foreach ($this->describeTable((string) $tableName) as $desc) {
-            array_push($tableArray, $desc->Field);
-            $tableKey[$desc->Field] = $desc->Key;
-        }
-
-        Schema::table($tableName, function (Blueprint $table) use ($queryRows, $request, $tableArray, $tableKey) {
-            foreach ($queryRows as $index => $query) {
-                if (in_array((string) $request->field[$index], $tableArray)) {
-                    $disableUnique = $tableKey[(string) $request->field[$index]] == 'UNI';
-                    $query($table, $disableUnique)->change();
-                } else {
-                    $query($table);
-                }
-            }
-        });
-
-        $tableTypeArray = [];
-        $tableDefaultArray = [];
-        $tableNullArray = [];
-
-        foreach ($this->describeTable((string) $tableName) as $desc) {
-            $tableTypeArray[$desc->Field] = $desc->Type;
-            $tableDefaultArray[$desc->Field] = empty($desc->Default) ? '' : ' DEFAULT '.$desc->Default;
-            $tableNullArray[$desc->Field] = $desc->null == 'NO' ? ' NOT NULL' : ' NULL';
-        }
-
-        foreach ($request->row as $index => $row) {
-            //Reorder the rows
-            $fieldName = (string) $request->field[$index];
-            if ($index > 0) {
-                if ($fieldName != 'id') {
-                    DB::statement('ALTER TABLE '.(string) $tableName.' MODIFY COLUMN '.$fieldName.' '.$tableTypeArray[$fieldName].$tableDefaultArray[$fieldName].$tableNullArray[$fieldName].' AFTER '.$request->field[$index - 1]);
-                }
-            } elseif ($fieldName != 'id') {
-                DB::statement('ALTER TABLE '.(string) $tableName.' MODIFY COLUMN '.$fieldName.' '.$tableTypeArray[$fieldName].$tableDefaultArray[$fieldName].$tableNullArray[$fieldName].' FIRST');
-            }
-        }
+        $this->renameTable($request->original_name, $tableName);
+        $this->renameColumns($request, $tableName);
+        $this->dropColumns($request, $tableName);
+        $this->updateColumns($request, $tableName);
 
         return redirect()
             ->route('voyager.database')
-            ->with([
-                'message'    => "Successfully update $tableName table",
-                'alert-type' => 'success',
-            ]);
-    }
-
-    /**
-     * @todo: Refactor this huge method.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
-    public function buildQuery(Request $request)
-    {
-        $queryRows = [];
-
-        foreach ($request->row as $index => $row) {
-            $field = $request->field[$index];
-            $type = isset($request->type[$index]) ? $request->type[$index] : 'string';
-            $nullable = isset($request->nullable[$index]) && $request->nullable[$index] == 'on';
-
-            $key = $request->key[$index];
-            $default = $request->default[$index];
-
-            $query = function (Blueprint $table, $disableUnique = false) use ($request, $index, $field, $type, $nullable, $key, $default) {
-                if ($key == 'PRI') {
-                    $result = $table->increments($field);
-                } else {
-                    if ($field == 'created_at & updated_at') {
-                        $result = $table->timestamp($field);
-                    } else {
-                        $result = $type == 'enum'
-                            ? $table->enum($field, [$request->enum[$index]])
-                            : $table->$type($field);
-                    }
-                }
-
-                if ($key == 'UNI' && $disableUnique === false) {
-                    $result = $result->unique();
-                }
-                if ($field != 'created_at & updated_at') {
-                    $result = $result->nullable($nullable);
-                    if ($default) {
-                        $result->default($default);
-                    }
-                }
-
-                return $result;
-            };
-
-            array_push($queryRows, $query);
-        }
-
-        return $queryRows;
+            ->withMessage("Successfully updated {$tableName} table")
+            ->with('alert-type', 'success');
     }
 
     public function reorder_column(Request $request)
@@ -239,15 +122,19 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                 ->route('voyager.database')
-                ->with([
-                    'message'    => "Successfully deleted $table table",
-                    'alert-type' => 'success',
-                ]);
+                ->with(
+                    [
+                        'message'    => "Successfully deleted $table table",
+                        'alert-type' => 'success',
+                    ]
+                );
         } catch (Exception $e) {
-            return back()->with([
-                'message'    => 'Exception: '.$e->getMessage(),
-                'alert-type' => 'error',
-            ]);
+            return back()->with(
+                [
+                    'message'    => 'Exception: '.$e->getMessage(),
+                    'alert-type' => 'error',
+                ]
+            );
         }
     }
 
@@ -295,9 +182,11 @@ class VoyagerDatabaseController extends Controller
 
     public function addEditBread($id)
     {
-        return view('voyager::tools.database.edit-add-bread', [
+        return view(
+            'voyager::tools.database.edit-add-bread', [
             'dataType' => DataType::find($id),
-        ]);
+        ]
+        );
     }
 
     public function updateBread(Request $request, $id)
@@ -324,8 +213,8 @@ class VoyagerDatabaseController extends Controller
 
         foreach ($columns as $column) {
             $dataRow = DataRow::where('data_type_id', '=', $dataType->id)
-                ->where('field', '=', $column)
-                ->first();
+                              ->where('field', '=', $column)
+                              ->first();
 
             if (!isset($dataRow->id)) {
                 $dataRow = new DataRow();
@@ -371,19 +260,5 @@ class VoyagerDatabaseController extends Controller
             ];
 
         return redirect()->route('voyager.database')->with($data);
-    }
-
-    protected function describeTable($table)
-    {
-        $raw = "select COLUMN_NAME as 'Field',
-                       COLUMN_TYPE as 'Type',
-                       IS_NULLABLE as 'Null',
-                       COLUMN_KEY as 'Key',
-                       COLUMN_DEFAULT as 'Default',
-                       EXTRA as 'Extra'
-                from INFORMATION_SCHEMA.COLUMNS
-                where TABLE_NAME='{$table}'";
-
-        return \DB::select(\DB::raw($raw));
     }
 }
