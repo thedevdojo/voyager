@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -15,6 +16,7 @@ use TCG\Voyager\Models\DataType;
 
 class VoyagerDatabaseController extends Controller
 {
+    use AppNamespaceDetectorTrait;
     use DatabaseUpdate;
 
     public function index()
@@ -159,7 +161,7 @@ class VoyagerDatabaseController extends Controller
             'slug'                => Str::slug($table),
             'display_name'        => $displayName,
             'display_name_plural' => Str::plural($displayName),
-            'model_name'          => '\\App\\'.Str::studly(Str::singular($table)),
+            'model_name'          => $this->getNamespace().'\\'.Str::studly(Str::singular($table)),
         ];
     }
 

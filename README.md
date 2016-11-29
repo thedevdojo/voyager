@@ -50,15 +50,10 @@ Lastly, we can install voyager by running
 php artisan voyager:install
 ```
 
-If you don't have composer installed and use composer.phar instead, do the following:
+Note: If you don't have composer installed and use composer.phar instead, run the following 2 commands:
 
 ```bash
 composer.phar dump-autoload
-```
-
-And then:
-
-```bash
 php artisan db:seed
 ```
 
