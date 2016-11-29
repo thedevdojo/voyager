@@ -219,7 +219,7 @@ class VoyagerDatabaseController extends Controller
             }
 
             $dataRow->data_type_id = $dataType->id;
-            $dataRow->required = $requestData['field_required_' . $column];
+            $dataRow->required = $requestData['field_required_'.$column];
 
             foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
                 if (isset($requestData["field_{$check}_{$column}"])) {
@@ -229,10 +229,10 @@ class VoyagerDatabaseController extends Controller
                 }
             }
 
-            $dataRow->field = $requestData['field_' . $column];
-            $dataRow->type = $requestData['field_input_type_' . $column];
-            $dataRow->details = $requestData['field_details_' . $column];
-            $dataRow->display_name = $requestData['field_display_name_' . $column];
+            $dataRow->field = $requestData['field_'.$column];
+            $dataRow->type = $requestData['field_input_type_'.$column];
+            $dataRow->details = $requestData['field_details_'.$column];
+            $dataRow->display_name = $requestData['field_display_name_'.$column];
             $dataRowSuccess = $dataRow->save();
             // If success has never failed yet, let's add DataRowSuccess to success
             if ($success !== false) {

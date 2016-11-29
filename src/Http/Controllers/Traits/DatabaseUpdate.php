@@ -92,7 +92,7 @@ trait DatabaseUpdate
     }
 
     /**
-     * Update or add any new columns
+     * Update or add any new columns.
      *
      * @param Request $request
      * @param string  $tableName
