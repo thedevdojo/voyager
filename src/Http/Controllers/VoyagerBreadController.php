@@ -233,6 +233,15 @@ class VoyagerBreadController extends Controller
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
+
+            if (
+                strtolower($content) === 'null'
+                || (strripos($row->field, '_id') !== false && empty($content))
+            ) {
+                $data->{$row->field} = null;
+                continue;
+            }
+
             if ($content === null) {
                 if (isset($data->{$row->field})) {
                     $content = $data->{$row->field};
