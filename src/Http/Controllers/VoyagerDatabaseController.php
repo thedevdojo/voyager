@@ -261,4 +261,9 @@ class VoyagerDatabaseController extends Controller
 
         return redirect()->route('voyager.database')->with($data);
     }
+
+    public function getNamespace()
+    {
+        return $this->getAppNamespace();
+    }
 }
