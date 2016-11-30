@@ -9,7 +9,7 @@ class DataType extends Model
     protected $table = 'data_types';
 
     protected $fillable = [
-        'name', 'slug', 'display_name_singular', 'display_name_plural', 'icon', 'model_name', 'description',
+        'name', 'slug', 'display_name_singular', 'display_name_plural', 'icon', 'model_name', 'description', 'role',
     ];
 
     public function rows()

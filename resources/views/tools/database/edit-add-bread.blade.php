@@ -226,6 +226,16 @@
                                        value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
                             </div>
                             <div class="form-group">
+                                <label for="name">Role</label>
+                                <select class="form-control" name="role">
+                                    @foreach(TCG\Voyager\Models\Role::all() as $role)
+                                    <option value="{{ $role->name }}"
+                                        @if(isset($dataType->role) && $dataType->role == $role->name){{ 'selected="selected"' }}@endif>{{ $role->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label for="email">Description</label>
                                 <textarea class="form-control" name="description"
                                           placeholder="Description">@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
