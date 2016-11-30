@@ -104,5 +104,6 @@ class VoyagerServiceProvider extends ServiceProvider
     private function registerCommands()
     {
         $this->commands(Commands\InstallCommand::class);
+        $this->commands(Commands\ControllersCommand::class);
     }
 }
