@@ -1367,6 +1367,25 @@ input[type=radio]:checked ~ label{
   color: #535B65;
 }
 
+/********** CUSTOM CHECKBOX BUTTON STYLES **********/
+
+ul.checkbox {
+  padding-left: 20px;
+}
+
+ul.checkbox li {
+  margin-bottom: 20px;
+}
+
+ul.checkbox li ul li {
+  margin-bottom: 0;
+}
+
+
+ul.checkbox label {
+  padding-left: 0;
+}
+
 /********** END CUSTOM RADIO BUTTON STYLES **********/
 
 .btn-success i.voyager-plus{
