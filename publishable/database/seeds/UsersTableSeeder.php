@@ -23,6 +23,7 @@ class UsersTableSeeder extends Seeder
                 'created_at'     => '2016-01-28 11:20:57',
                 'updated_at'     => '2016-10-25 14:32:23',
                 'avatar'         => 'users/default.png',
+                'role_id'        => 1,
             ],
         ]);
     }

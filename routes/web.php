@@ -23,6 +23,9 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     endforeach;
     endif;
 
+    // Role Routes
+    Route::resource('roles', 'VoyagerRoleController');
+
     // Menu Routes
     Route::get('menus/{id}/builder/', ['uses' => 'VoyagerMenuController@builder', 'as' => 'voyager.menu.builder']);
     Route::delete('menu/delete_menu_item/{id}',
