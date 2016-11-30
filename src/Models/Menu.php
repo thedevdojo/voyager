@@ -15,7 +15,7 @@ class Menu extends Model
 
     public function items()
     {
-        return $this->hasMany('MenuItem');
+        return $this->hasMany('TCG\Voyager\Models\MenuItem');
     }
 
     /**
@@ -30,16 +30,9 @@ class Menu extends Model
     public static function display($menuName, $type = null, $options = [])
     {
         // GET THE MENU
-        $menu = static::where('name', '=', $menuName)->first();
-        $menuItems = [];
-
-        if (isset($menu->id)) {
-            // GET THE ROOT MENU ITEMS
-            $menuItems = MenuItem::where('menu_id', '=', $menu->id)
-                ->where('parent_id', '=', null)
-                ->orderBy('order', 'ASC')
-                ->get();
-        }
+        $menuItems = static::where('name', '=', $menuName)
+            ->first()
+            ->items;
 
         // Convert options array into object
         $options = (object) $options;
@@ -70,23 +63,40 @@ class Menu extends Model
      *
      * @return string
      */
-    public static function buildBootstrapOutput($menuItems, $output, $options, Request $request)
+    public static function buildBootstrapOutput($menuItems, $output, $options, Request $request, $child = null)
     {
+
+        if(!$child){
+            $parentItems = $menuItems->filter(function ($value, $key) {
+                return $value->parent_id == null;
+            });
+        }else{
+            $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
+                return $value->parent_id == $child;
+            });
+        }
+
+        $parentItems = $parentItems->sortBy('order');
+
         if (empty($output)) {
             $output = '<ul class="nav navbar-nav">';
         } else {
             $output .= '<ul class="dropdown-menu">';
         }
 
-        foreach ($menuItems as $item) {
+        foreach ($parentItems as $item) {
             $li_class = '';
             $a_attrs = '';
+
             if ($request->is(ltrim($item->url, '/')) || $item->url == '/' && $request->is('/')) {
                 $li_class = ' class="active"';
             }
 
-            $children_menu_items = MenuItem::where('parent_id', '=', $item->id)->orderBy('order', 'ASC')->get();
-            if (count($children_menu_items) > 0) {
+            $children_menu_items = $menuItems->filter(function ($value, $key) use ($item) {
+                return $value->parent_id == $item->id;
+            });
+
+            if ($children_menu_items->count() > 0) {
                 if ($li_class != '') {
                     $li_class = rtrim($li_class, '"').' dropdown"';
                 } else {
@@ -108,8 +118,8 @@ class Menu extends Model
             }
             $output .= '<li'.$li_class.'><a '.$a_attrs.' href="'.$item->url.'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span></a>';
 
-            if (count($children_menu_items) > 0) {
-                $output = self::buildBootstrapOutput($children_menu_items, $output, $options, $request);
+            if ($children_menu_items->count() > 0) {
+                $output = self::buildBootstrapOutput($menuItems, $output, $options, $request, $item->id);
             }
             $output .= '</li>';
         }
@@ -146,22 +156,37 @@ class Menu extends Model
      *
      * @return string
      */
-    public static function buildOutput($menuItems, $output, $options, Request $request)
+    public static function buildOutput($menuItems, $output, $options, Request $request, $child = null)
     {
+        
+        if(!$child){
+            $parentItems = $menuItems->filter(function ($value, $key) {
+                return $value->parent_id == null;
+            });
+        }else{
+            $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
+                return $value->parent_id == $child;
+            });
+        }
+
+        $parentItems = $parentItems->sortBy('order');
+
         if (empty($output)) {
             $output = '<ul>';
         } else {
             $output .= '<ul>';
         }
 
-        foreach ($menuItems as $item) {
+        foreach ($parentItems as $item) {
             $li_class = '';
             $a_attrs = '';
             if ($request->is(ltrim($item->url, '/')) || $item->url == '/' && $request->is('/')) {
                 $li_class = ' class="active"';
             }
 
-            $children_menu_items = MenuItem::where('parent_id', '=', $item->id)->orderBy('order', 'ASC')->get();
+            $children_menu_items = $menuItems->filter(function ($value, $key) use ($item) {
+                return $value->parent_id == $item->id;
+            });
 
             $icon = '';
             if (isset($options->icon) && $options->icon == true) {
@@ -179,8 +204,8 @@ class Menu extends Model
 
             $output .= '<li'.$li_class.'><a href="'.$item->url.'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span></a>';
 
-            if (count($children_menu_items) > 0) {
-                $output = self::buildOutput($children_menu_items, $output, $options, $request);
+            if ($children_menu_items->count() > 0) {
+                $output = self::buildOutput($menuItems, $output, $options, $request, $item->id);
             }
 
             $output .= '</li>';
@@ -201,11 +226,24 @@ class Menu extends Model
      *
      * @return string
      */
-    public static function buildAdminMenuOutput($menuItems, $output, $options, Request $request)
+    public static function buildAdminMenuOutput($menuItems, $output, $options, Request $request, $child = null)
     {
+        
+        if(!$child){
+            $parentItems = $menuItems->filter(function ($value, $key) {
+                return $value->parent_id == null;
+            });
+        }else{
+            $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
+                return $value->parent_id == $child;
+            });
+        }
+
+        $parentItems = $parentItems->sortBy('order');
+
         $output .= '<ul class="nav navbar-nav">';
 
-        foreach ($menuItems as $item) {
+        foreach ($parentItems as $item) {
             $li_class = '';
             $a_attrs = '';
             $collapse_id = '';
@@ -213,9 +251,11 @@ class Menu extends Model
                 $li_class = ' class="active"';
             }
 
-            $children_menu_items = MenuItem::where('parent_id', '=', $item->id)->orderBy('order', 'ASC')->get();
+            $children_menu_items = $menuItems->filter(function ($value, $key) use ($item) {
+                return $value->parent_id == $item->id;
+            });
 
-            if (count($children_menu_items) > 0) {
+            if ($children_menu_items->count() > 0) {
                 if ($li_class != '') {
                     $li_class = rtrim($li_class, '"').' dropdown"';
                 } else {
@@ -232,10 +272,10 @@ class Menu extends Model
                 .'<span class="title">'.$item->title.'</span></a>';
 
 
-            if (count($children_menu_items) > 0) {
+            if ($children_menu_items->count() > 0) {
                 // Add tag for collapse panel
                 $output .= '<div id="'.$collapse_id.'" class="panel-collapse collapse"><div class="panel-body">';
-                $output = self::buildAdminMenuOutput($children_menu_items, $output, [], $request);
+                $output = self::buildAdminMenuOutput($menuItems, $output, [], $request, $item->id);
                 $output .= '</div></div>';      // close tag of collapse panel
             }
 
@@ -254,11 +294,24 @@ class Menu extends Model
      *
      * @return string
      */
-    public static function buildAdminOutput($menuItems, $output, $options)
+    public static function buildAdminOutput($menuItems, $output, $options, $child = null)
     {
+        
+        if(!$child){
+            $parentItems = $menuItems->filter(function ($value, $key) {
+                return $value->parent_id == null;
+            });
+        }else{
+            $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
+                return $value->parent_id == $child;
+            });
+        }
+
+        $parentItems = $parentItems->sortBy('order');
+
         $output .= '<ol class="dd-list">';
 
-        foreach ($menuItems as $item) {
+        foreach ($parentItems as $item) {
             $output .= '<li class="dd-item" data-id="'.$item->id.'">';
             $output .= '<div class="pull-right item_actions">';
             $output .= '<div class="btn-sm btn-danger pull-right delete" data-id="'.$item->id.'"><i class="voyager-trash"></i> Delete</div>';
@@ -266,10 +319,12 @@ class Menu extends Model
             $output .= '</div>';
             $output .= '<div class="dd-handle">'.$item->title.' <small class="url">'.$item->url.'</small></div>';
 
-            $children_menu_items = MenuItem::where('parent_id', '=', $item->id)->orderBy('order', 'ASC')->get();
+            $children_menu_items = $menuItems->filter(function ($value, $key) use ($item) {
+                return $value->parent_id == $item->id;
+            });
 
-            if (count($children_menu_items) > 0) {
-                $output = self::buildAdminOutput($children_menu_items, $output, $options);
+            if ($children_menu_items->count() > 0) {
+                $output = self::buildAdminOutput($menuItems, $output, $options, $item->id);
             }
 
             $output .= '</li>';
@@ -279,4 +334,6 @@ class Menu extends Model
 
         return $output;
     }
+
+
 }
