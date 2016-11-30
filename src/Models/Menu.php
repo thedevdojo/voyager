@@ -65,12 +65,11 @@ class Menu extends Model
      */
     public static function buildBootstrapOutput($menuItems, $output, $options, Request $request, $child = null)
     {
-
-        if(!$child){
+        if (!$child) {
             $parentItems = $menuItems->filter(function ($value, $key) {
                 return $value->parent_id == null;
             });
-        }else{
+        } else {
             $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
                 return $value->parent_id == $child;
             });
@@ -158,12 +157,11 @@ class Menu extends Model
      */
     public static function buildOutput($menuItems, $output, $options, Request $request, $child = null)
     {
-        
-        if(!$child){
+        if (!$child) {
             $parentItems = $menuItems->filter(function ($value, $key) {
                 return $value->parent_id == null;
             });
-        }else{
+        } else {
             $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
                 return $value->parent_id == $child;
             });
@@ -228,12 +226,11 @@ class Menu extends Model
      */
     public static function buildAdminMenuOutput($menuItems, $output, $options, Request $request, $child = null)
     {
-        
-        if(!$child){
+        if (!$child) {
             $parentItems = $menuItems->filter(function ($value, $key) {
                 return $value->parent_id == null;
             });
-        }else{
+        } else {
             $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
                 return $value->parent_id == $child;
             });
@@ -296,12 +293,11 @@ class Menu extends Model
      */
     public static function buildAdminOutput($menuItems, $output, $options, $child = null)
     {
-        
-        if(!$child){
+        if (!$child) {
             $parentItems = $menuItems->filter(function ($value, $key) {
                 return $value->parent_id == null;
             });
-        }else{
+        } else {
             $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
                 return $value->parent_id == $child;
             });
@@ -334,6 +330,4 @@ class Menu extends Model
 
         return $output;
     }
-
-
 }
