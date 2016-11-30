@@ -65,7 +65,7 @@
             </td>
             <td>
                 <input type="checkbox" class="toggleswitch fieldNull" name="nullable_switch[]">
-                <input class="toggleswitchHidden" type="hidden" value="off" name='nullable[]'>
+                <input class="toggleswitchHidden" type="hidden" value="0" name='nullable[]'>
             </td>
             <td>
                 <select name="key[]" class="form-control fieldKey" tabindex="-1">
@@ -182,7 +182,7 @@
             @else
 
               @foreach($rows as $row)
-                newRow('', '{{ $row->Field }}', '{{ $row->Type }}', '{{ $row->Null }}', '{{ $row->Key }}', '{{ $row->Default }}');
+                newRow('', '{{ $row->field }}', '{{ $row->type }}', '{{ $row->null }}', '{{ $row->key }}', '{{ $row->default }}');
             @endforeach
 
           @endif
@@ -230,9 +230,9 @@
 
             $('.toggleswitch').change(function () {
                 if ($(this).prop('checked')) {
-                    $(this).parents('.newTableRow').find('.toggleswitchHidden').val("on");
+                    $(this).parents('.newTableRow').find('.toggleswitchHidden').val(1);
                 } else {
-                    $(this).parents('.newTableRow').find('.toggleswitchHidden').val("off");
+                    $(this).parents('.newTableRow').find('.toggleswitchHidden').val(0);
                 }
             });
 
@@ -273,7 +273,7 @@
                     $('#' + unique_id).find('.fieldKey').val(key);
                     if (nullable == "YES") {
                         $('#' + unique_id).find('.toggleswitch').prop('checked', true).change();
-                        $('#' + unique_id).find('.toggleswitchHidden').val("on");
+                        $('#' + unique_id).find('.toggleswitchHidden').val(1);
                     }
                     $('#' + unique_id).find('.fieldDefault').val(defaultValue);
                 }

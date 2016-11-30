@@ -225,11 +225,19 @@ class VoyagerBreadController extends Controller
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $rules = [];
+        $messages = [];
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
-            if (isset($options->rule)) {
-                $rules[$row->field] = $options->rule;
+            if (isset($options->validation)) {
+                if (isset($options->validation->rule)) {
+                    $rules[$row->field] = $options->validation->rule;
+                }
+                if (isset($options->validation->messages)) {
+                    foreach ($options->validation->messages as $key => $msg) {
+                        $messages[$row->field.'.'.$key] = $msg;
+                    }
+                }
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
@@ -245,7 +253,7 @@ class VoyagerBreadController extends Controller
             $data->{$row->field} = $content;
         }
 
-        $this->validate($request, $rules);
+        $this->validate($request, $rules, $messages);
 
         $data->save();
     }
