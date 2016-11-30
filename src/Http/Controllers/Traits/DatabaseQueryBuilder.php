@@ -41,12 +41,12 @@ trait DatabaseQueryBuilder
     /**
      * Build the queries necessary for creating/updating tables.
      *
-     * @param Request    $request
-     * @param Collection $existingColumns
+     * @param Request         $request
+     * @param Collection|null $existingColumns
      *
      * @return Collection
      */
-    private function buildQuery(Request $request, $existingColumns)
+    private function buildQuery(Request $request, $existingColumns = null)
     {
         return $this->buildColumnsCollection($request)
             ->map(
@@ -54,7 +54,7 @@ trait DatabaseQueryBuilder
                     // We need to check that an existing database table column in now being
                     // updated. If it is, we also need to check that the supplied column
                     // type can actually be update without throwing an annoying error.
-                    if ($existingColumns->has($column['field']) &&
+                    if ($existingColumns && $existingColumns->has($column['field']) &&
                         in_array($column['type'], $this->typeBlacklist)
                     ) {
                         return false;
