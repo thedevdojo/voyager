@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Commands;
 
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 
 class ControllersCommand extends Command
 {
@@ -76,7 +76,7 @@ class ControllersCommand extends Command
 
             $path = base_path("app/{$location}/{$filename}");
 
-            if (!$this->filesystem->exists($path) OR $this->option('force')) {
+            if (!$this->filesystem->exists($path) or $this->option('force')) {
                 $classname = substr($filename, 0, strpos($filename, '.'));
                 $content = $this->generateContent($stub, $classname);
                 $this->filesystem->put($path, $content);
@@ -101,6 +101,7 @@ class ControllersCommand extends Command
      *
      * @param $stub
      * @param $classname
+     *
      * @return mixed
      */
     protected function generateContent($stub, $classname)
