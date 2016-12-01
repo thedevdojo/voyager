@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', 'voyager::master'))
 
 @section('page_header')
     <h1 class="page-title">

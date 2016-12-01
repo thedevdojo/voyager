@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', 'voyager::master'))
 
 @section('css')
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/media.css"/>
