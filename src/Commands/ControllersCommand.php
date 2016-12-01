@@ -3,13 +3,14 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Process\Process;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 
 class ControllersCommand extends Command
 {
+    use AppNamespaceDetectorTrait;
+
     /**
      * The console command name.
      *
@@ -24,8 +25,19 @@ class ControllersCommand extends Command
      */
     protected $description = 'Publish all the controllers from Voyager.';
 
-    protected $stub = 'stubs/controller.stub';
+    /**
+     * The Filesystem instance.
+     *
+     * @var Filesystem
+     */
     protected $filesystem;
+
+    /**
+     * Filename of stub-file.
+     *
+     * @var string
+     */
+    protected $stub = 'controller.stub';
 
     /**
      * Create a new command instance.
@@ -40,20 +52,6 @@ class ControllersCommand extends Command
     }
 
     /**
-     * Get the composer command for the environment.
-     *
-     * @return string
-     */
-    protected function findComposer()
-    {
-        if (file_exists(getcwd().'/composer.phar')) {
-            return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
-        }
-
-        return 'composer';
-    }
-
-    /**
      * Execute the console command.
      *
      * @return void
@@ -61,43 +59,100 @@ class ControllersCommand extends Command
     public function fire()
     {
         $stub = $this->getStub();
+        $files = $this->filesystem->files(base_path('vendor/tcg/voyager/src/Http/Controllers'));
+        $location = $this->option('location');
 
-        $files = $this->filesystem->files(__DIR__.'/../Http/Controllers');
-
-        dd($files);
-
-
-
-        $this->info('Publishing the Voyager assets, database, and config files');
-        Artisan::call('vendor:publish', ['--provider' => \TCG\Voyager\VoyagerServiceProvider::class]);
-        Artisan::call('vendor:publish', ['--provider' => \Intervention\Image\ImageServiceProviderLaravel5::class]);
-
-        $this->info('Migrating the database tables into your application');
-        Artisan::call('migrate');
-
-        $this->info('Dumping the autoloaded files and reloading all new files');
-
-        $composer = $this->findComposer();
-
-        $process = new Process($composer.' dump-autoload');
-        $process->setWorkingDirectory(base_path())->run();
-
-        $this->info('Seeding data into the database');
-        if ($this->option('no-dummy-data')) {
-            Artisan::call('db:seed', ['--class' => 'DataTypesTableSeeder']);
-            Artisan::call('db:seed', ['--class' => 'DataRowsTableSeeder']);
-        } else {
-            Artisan::call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
+        if (!$this->filesystem->isDirectory(base_path("app/{$location}"))) {
+            $this->filesystem->makeDirectory(base_path("app/{$location}"));
         }
 
-        $this->info('Adding the storage symlink to your public folder');
-        Artisan::call('storage:link');
+        foreach ($files as $file) {
+            $parts = explode('/', $file);
+            $filename = end($parts);
 
-        $this->info('Successfully installed Voyager! Enjoy :)');
+            if ($filename == 'Controller.php') {
+                continue;
+            }
+
+            $path = base_path("app/{$location}/{$filename}");
+
+            if (!$this->filesystem->exists($path) OR $this->option('force')) {
+                $classname = substr($filename, 0, strpos($filename, '.'));
+                $content = $this->generateContent($stub, $classname);
+                $this->filesystem->put($path, $content);
+            }
+        }
+
+        $this->info('Published Voyager controllers!');
     }
 
-    protected function getStub()
+    /**
+     * Get stub content.
+     *
+     * @return string
+     */
+    public function getStub()
     {
-        return $this->filesystem->get(__DIR__.'/'.$this->stub);
+        return $this->filesystem->get(base_path('/vendor/tcg/voyager/stubs/'.$this->stub));
+    }
+
+    /**
+     * Generate real content from stub.
+     *
+     * @param $stub
+     * @param $classname
+     * @return mixed
+     */
+    protected function generateContent($stub, $classname)
+    {
+        $content = str_replace(
+            'DummyNamespace',
+            $this->getAppNamespace().$this->getLocationNamespace(),
+            $stub
+        );
+
+        $content = str_replace(
+            'FullBaseDummyClass',
+            'TCG\\Voyager\\Http\\Controllers\\'.$classname,
+            $content
+        );
+
+        $content = str_replace(
+            'BaseDummyClass',
+            'Base'.$classname,
+            $content
+        );
+
+        $content = str_replace(
+            'DummyClass',
+            $classname,
+            $content
+        );
+
+        return $content;
+    }
+
+    /**
+     * Get location based namespace.
+     *
+     * @return string
+     */
+    protected function getLocationNamespace()
+    {
+        return str_replace('/', '\\', $this->option('location'));
+    }
+
+    /**
+     * Get command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            ['location', 'l', InputOption::VALUE_OPTIONAL, 'The application location for controller', 'Http/Controllers/Admin'],
+
+            ['force', 'f', InputOption::VALUE_NONE, 'Overwrite existing controller files'],
+        ];
     }
 }
