@@ -11,7 +11,6 @@ class MenuItemsTableSeeder extends Seeder
      */
     public function run()
     {
-	// remove $prefix from url
         // $prefix = config('voyager.routes.prefix', 'admin');
 
         \DB::table('menu_items')->delete();
@@ -111,4 +110,3 @@ class MenuItemsTableSeeder extends Seeder
         ]);
     }
 }
-
