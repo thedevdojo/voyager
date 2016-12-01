@@ -286,11 +286,10 @@ class VoyagerBreadController extends Controller
             case 'file':
                 if ($file = $request->file($row->field)) {
                     $filename = Str::random(20);
-                    $path     = $slug . '/' . date('F') . date('Y') . '/';
+                    $path = $slug.'/'.date('F').date('Y').'/';
+                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    $fullPath = $path . $filename . '.' . $file->getClientOriginalExtension();
-
-                    Storage::put(config('voyager.storage.subfolder') . $fullPath, (string) $file, 'public');
+                    Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $file, 'public');
 
                     return $fullPath;
                 }
