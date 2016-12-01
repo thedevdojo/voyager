@@ -13,10 +13,11 @@ class VoyagerAdminMiddleware
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
+     * @param string                   $role
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $role)
     {
         if (Auth::guest()) {
             return redirect()->route('voyager.login');
@@ -29,6 +30,6 @@ class VoyagerAdminMiddleware
          */
         $user = User::find(Auth::id());
 
-        return $user->hasRole('admin') ? $next($request) : redirect('/');
+        return $user->hasRole($role) ? $next($request) : redirect('/');
     }
 }

@@ -158,6 +158,13 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
 
                     <?= Menu::display('admin', 'admin_menu'); ?>
 
+                    @if (Auth::user()->hasRole("root"))
+                        <li>
+                            <a href="/{{ config('voyager.routes.prefix') . '/roles' }}">
+                                <span class="icon voyager-lock"></span>
+                                <span class="title">Roles</span>
+                            </a>
+                        </li>
                         <li class="dropdown">
                             <a data-toggle="collapse" href="#tools-dropdown-element">
                                 <span class="icon voyager-tools"></span>
@@ -190,6 +197,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                                 <span class="title">Settings</span>
                             </a>
                         </li>
+                    @endif
                     </ul>
                     <!-- /.navbar-collapse -->
                     </div>

@@ -751,6 +751,20 @@ class DataRowsTableSeeder extends Seeder
                 'delete'       => 1,
                 'details'      => '',
             ],
+            50 => [
+                'id'           => 68,
+                'data_type_id' => 8,
+                'field'        => 'description',
+                'type'         => 'text',
+                'display_name' => 'description',
+                'required'     => 1,
+                'browse'       => 0,
+                'read'         => 1,
+                'edit'         => 1,
+                'add'          => 1,
+                'delete'       => 0,
+                'details'      => '',
+            ],
         ]);
     }
 }

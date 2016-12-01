@@ -3,7 +3,7 @@
 Route::get('login', ['uses' => 'VoyagerAuthController@login', 'as' => 'voyager.login'])->middleware('web');
 Route::post('login', 'VoyagerAuthController@postLogin')->middleware('web');
 
-Route::group(['middleware' => ['web', 'admin.user']], function () {
+Route::group(['middleware' => ['web', 'admin.user:admin']], function () {
 
     // Main Admin and Logout Route
     Route::get('/', ['uses' => 'VoyagerController@index', 'as' => 'voyager.dashboard']);
@@ -19,9 +19,26 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
 
     if (env('DB_CONNECTION') !== null && Schema::hasTable('data_types')):
         foreach (TCG\Voyager\Models\DataType::all() as $dataTypes):
-            Route::resource($dataTypes->slug, 'VoyagerBreadController');
-    endforeach;
+            $slug = $dataTypes->slug;
+            $role = $dataTypes->role;
+            Route::group(['middleware' => ['web', 'admin.user:' . $role]], function() use ($slug) {
+                Route::resource($slug, 'VoyagerBreadController');
+            });
+        endforeach;
     endif;
+
+    // Admin Media
+    Route::get('media', ['uses' => 'VoyagerMediaController@index', 'as' => 'voyager.media']);
+    Route::post('media/files', 'VoyagerMediaController@files');
+    Route::post('media/new_folder', 'VoyagerMediaController@new_folder');
+    Route::post('media/delete_file_folder', 'VoyagerMediaController@delete_file_folder');
+    Route::post('media/directories', 'VoyagerMediaController@get_all_dirs');
+    Route::post('media/move_file', 'VoyagerMediaController@move_file');
+    Route::post('media/rename_file', 'VoyagerMediaController@rename_file');
+    Route::post('media/upload', ['uses' => 'VoyagerMediaController@upload', 'as' => 'voyager.media.upload']);
+});
+
+Route::group(['middleware' => ['web', 'admin.user:root']], function () {
 
     // Menu Routes
     Route::get('menus/{id}/builder/', ['uses' => 'VoyagerMenuController@builder', 'as' => 'voyager.menu.builder']);
@@ -43,16 +60,6 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
         ['uses' => 'VoyagerSettingsController@move_down', 'as' => 'voyager.settings.move_down']);
     Route::get('settings/delete_value/{id}',
         ['uses' => 'VoyagerSettingsController@delete_value', 'as' => 'voyager.settings.delete_value']);
-
-    // Admin Media
-    Route::get('media', ['uses' => 'VoyagerMediaController@index', 'as' => 'voyager.media']);
-    Route::post('media/files', 'VoyagerMediaController@files');
-    Route::post('media/new_folder', 'VoyagerMediaController@new_folder');
-    Route::post('media/delete_file_folder', 'VoyagerMediaController@delete_file_folder');
-    Route::post('media/directories', 'VoyagerMediaController@get_all_dirs');
-    Route::post('media/move_file', 'VoyagerMediaController@move_file');
-    Route::post('media/rename_file', 'VoyagerMediaController@rename_file');
-    Route::post('media/upload', ['uses' => 'VoyagerMediaController@upload', 'as' => 'voyager.media.upload']);
 
     // Database Routes
     Route::get('database', ['uses' => 'VoyagerDatabaseController@index', 'as' => 'voyager.database']);
