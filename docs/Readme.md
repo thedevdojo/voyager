@@ -26,20 +26,33 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-Add the Voyager service provider as well as the Image Intervention service provider to the config/app.php file in the `'providers' => [` array:
+Add the Voyager service provider as well as the Image Intervention service provider to the config/app.php file in the `providers` array:
 
 ```php
-/*
- * Package Service Providers...
- */
-TCG\Voyager\VoyagerServiceProvider::class,
-Intervention\Image\ImageServiceProvider::class,
+'providers' => [
+    // Laravel Framework Service Providers...
+    //...
+
+    // Package Service Providers
+    TCG\Voyager\VoyagerServiceProvider::class,
+    // ...
+
+    // Application Service Providers
+    // ...
+],
 ```
 
 Lastly, we can install voyager by running
 
 ```php
 php artisan voyager:install
+```
+
+Note: If you don't have composer installed and use composer.phar instead, run the following 2 commands:
+
+```php
+composer.phar dump-autoload
+php artisan db:seed
 ```
 
 And we're all good to go! 
