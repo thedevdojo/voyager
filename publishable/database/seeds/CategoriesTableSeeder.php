@@ -16,7 +16,7 @@ class CategoriesTableSeeder extends Seeder
         \DB::table('categories')->insert([
             0 => [
                 'id'         => 1,
-                'parent_id'  => 0,
+                'parent_id'  => null,
                 'order'      => 1,
                 'name'       => 'Category 1',
                 'slug'       => 'category-1',
@@ -25,7 +25,7 @@ class CategoriesTableSeeder extends Seeder
             ],
             1 => [
                 'id'         => 2,
-                'parent_id'  => 0,
+                'parent_id'  => null,
                 'order'      => 1,
                 'name'       => 'Category 2',
                 'slug'       => 'category-2',
