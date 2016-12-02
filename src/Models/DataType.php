@@ -51,6 +51,7 @@ class DataType extends Model
                 $fields[] = $field['Field'];
             }
         }
+
         return $fields;
     }
 
@@ -63,6 +64,7 @@ class DataType extends Model
                 $fieldOptions[] = (object) $field;
             }
         }
+
         return $fieldOptions;
     }
 

@@ -263,7 +263,7 @@ class Menu extends Model
             } else {
                 $a_attrs = 'href="'.$item->url.'"';
             }
-            
+
 
 
             if (self::itemIsVisible($item)) {
@@ -288,21 +288,23 @@ class Menu extends Model
     /**
      * Check item visibility based on permission.
      *
-     * @param \TCG\Voyager\Models\MenuItem         $item
+     * @param \TCG\Voyager\Models\MenuItem $item
      *
      * @return bool
      */
-    static public function itemIsVisible($item) {
+    public static function itemIsVisible($item)
+    {
         $prefix = '/admin/';
         $model = '';
         if (substr($item->url, 0, strlen($prefix)) == $prefix) {
-            $model = '.' . substr($item->url, strlen($prefix));
-        } 
-        $action_name = 'admin' . $model . '.index';
+            $model = '.'.substr($item->url, strlen($prefix));
+        }
+        $action_name = 'admin'.$model.'.index';
         $model_permission = \Config::get('voyager.model_permission');
         if ($model_permission($action_name)) {
             return true;
         }
+
         return false;
     }
 

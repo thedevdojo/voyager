@@ -254,7 +254,6 @@ class VoyagerBreadController extends Controller
             } else {
                 $data->{$row->field} = $content;
             }
-
         }
 
         $this->validate($request, $rules, $messages);
@@ -307,10 +306,11 @@ class VoyagerBreadController extends Controller
             case 'select_multiple':
                 $content = $request->input($row->field);
                 if ($content === null) {
-                    $content = array();
+                    $content = [];
                 }
+
                 return $content;
-                
+
             /********** IMAGE TYPE **********/
             case 'image':
                 if ($request->hasFile($row->field)) {
