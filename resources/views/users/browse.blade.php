@@ -22,29 +22,24 @@
                         <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
-                                    @foreach($dataType->browseRows as $rows)
-                                    <th>{{ $rows->display_name }}</th>
-                                    @endforeach
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Created At</th>
+                                    <th>Avatar</th>
+                                    <th>Role</th>
                                     <th class="actions">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($dataTypeContent as $data)
+                            @foreach($dataTypeContent as $data)
                                 <tr>
-                                    @foreach($dataType->browseRows as $row)
-                                        <td>
-                                            <?php $options = json_decode($row->details); ?>
-                                            @if($row->type == 'image')
-                                                <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
-                                            @elseif($row->type == 'select_multiple')
-                                                @if ($data->{$row->field} && isset($options->relationship))
-                                                    {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
-                                                @endif
-                                            @else
-                                                {{ $data->{$row->field} }}
-                                            @endif
-                                        </td>
-                                    @endforeach
+                                    <td>{{$data->name}}</td>
+                                    <td>{{$data->email}}</td>
+                                    <td>{{$data->created_at}}</td>
+                                    <td>
+                                        <img src="@if( strpos($data->avatar, 'http://') === false && strpos($data->avatar, 'https://') === false){{ Voyager::image( $data->avatar ) }}@else{{ $data->avatar }}@endif" style="width:100px">
+                                    </td>
+                                    <td>{{$data->role->display_name}}</td>
                                     <td class="no-sort no-click">
                                         <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
                                             <i class="voyager-trash"></i> Delete
@@ -57,7 +52,7 @@
                                         </a>
                                     </td>
                                 </tr>
-                                @endforeach
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -106,8 +101,8 @@
 
         function parseActionUrl(action, id) {
             return action.match(/\/[0-9]+$/)
-                ? action.replace(/([0-9]+$)/, id)
-                : action + '/' + id;
+                    ? action.replace(/([0-9]+$)/, id)
+                    : action + '/' + id;
         }
     </script>
 @stop

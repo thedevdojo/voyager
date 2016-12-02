@@ -101,6 +101,7 @@ trait DatabaseQueryBuilder
      */
     private function describeTable($table)
     {
+        $schema_name = DB::connection()->getDatabaseName();
         $raw = "SELECT column_name    AS 'field',
                        column_type    AS 'type',
                        is_nullable    AS 'null',
@@ -108,7 +109,8 @@ trait DatabaseQueryBuilder
                        column_default AS 'default',
                        extra          AS 'extra'
                 FROM   information_schema.columns
-                WHERE  table_name = '{$table}'";
+                WHERE  table_schema = '{$schema_name}'
+                AND    table_name = '{$table}'";
 
         return collect(DB::select(DB::raw($raw)));
     }

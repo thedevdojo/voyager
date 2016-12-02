@@ -3,11 +3,14 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Models\User;
 
 class VoyagerBreadController extends Controller
 {
@@ -27,6 +30,9 @@ class VoyagerBreadController extends Controller
     {
         // GET THE SLUG, ex. 'posts', 'pages', etc.
         $slug = explode('.', $request->route()->getName())[0];
+
+        // Check permission
+        $this->can('browse_'.$slug);
 
         // GET THE DataType based on the slug
         $dataType = DataType::where('slug', '=', $slug)->first();
@@ -62,13 +68,25 @@ class VoyagerBreadController extends Controller
     public function show(Request $request, $id)
     {
         $slug = explode('.', $request->route()->getName())[0];
+
+        // Check permission
+        $this->can('read_'.$slug);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'find'], $id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
-        return view('voyager::bread.read', compact('dataType', 'dataTypeContent'));
+        $view = 'voyager::bread.read';
+
+        if (view()->exists("admin.$slug.read")) {
+            $view = "admin.$slug.read";
+        } elseif (view()->exists("voyager::$slug.read")) {
+            $view = "voyager::$slug.read";
+        }
+
+        return view($view, compact('dataType', 'dataTypeContent'));
     }
 
     //***************************************
@@ -86,6 +104,10 @@ class VoyagerBreadController extends Controller
     public function edit(Request $request, $id)
     {
         $slug = explode('.', $request->route()->getName())[0];
+
+        // Check permission
+        $this->can('edit_'.$slug);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'find'], $id)
@@ -106,6 +128,10 @@ class VoyagerBreadController extends Controller
     public function update(Request $request, $id)
     {
         $slug = explode('.', $request->route()->getName())[0];
+
+        // Check permission
+        $this->can('edit_'.$slug);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
         $data = call_user_func([$dataType->model_name, 'find'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
@@ -134,6 +160,10 @@ class VoyagerBreadController extends Controller
     public function create(Request $request)
     {
         $slug = explode('.', $request->route()->getName())[0];
+
+        // Check permission
+        $this->can('add_'.$slug);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         $view = 'voyager::bread.edit-add';
@@ -151,6 +181,10 @@ class VoyagerBreadController extends Controller
     public function store(Request $request)
     {
         $slug = explode('.', $request->route()->getName())[0];
+
+        // Check permission
+        $this->can('add_'.$slug);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         if (function_exists('voyager_add_post')) {
@@ -184,6 +218,10 @@ class VoyagerBreadController extends Controller
     public function destroy(Request $request, $id)
     {
         $slug = explode('.', $request->route()->getName())[0];
+
+        // Check permission
+        $this->can('delete_'.$slug);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         $data = call_user_func([$dataType->model_name, 'find'], $id);
@@ -225,11 +263,19 @@ class VoyagerBreadController extends Controller
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $rules = [];
+        $messages = [];
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
-            if (isset($options->rule)) {
-                $rules[$row->field] = $options->rule;
+            if (isset($options->validation)) {
+                if (isset($options->validation->rule)) {
+                    $rules[$row->field] = $options->validation->rule;
+                }
+                if (isset($options->validation->messages)) {
+                    foreach ($options->validation->messages as $key => $msg) {
+                        $messages[$row->field.'.'.$key] = $msg;
+                    }
+                }
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
@@ -241,13 +287,20 @@ class VoyagerBreadController extends Controller
                     $content = $data->{$row->field};
                 }
             }
-
-            $data->{$row->field} = $content;
+            if ($row->type == 'select_multiple') {
+                // do nothing
+            } else {
+                $data->{$row->field} = $content;
+            }
         }
 
-        $this->validate($request, $rules);
+        $this->validate($request, $rules, $messages);
 
         $data->save();
+
+        if ($row->type == 'select_multiple') {
+            $data->{$row->field}()->sync($content);
+        }
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
@@ -276,16 +329,25 @@ class VoyagerBreadController extends Controller
 
             /********** FILE TYPE **********/
             case 'file':
-                $file = $request->file($row->field);
-                $filename = Str::random(20);
-                $path = $slug.'/'.date('F').date('Y').'/';
+                if ($file = $request->file($row->field)) {
+                    $filename = Str::random(20);
+                    $path = $slug.'/'.date('F').date('Y').'/';
+                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                    Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $file, 'public');
 
-                Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $file, 'public');
-
-                return $fullPath;
+                    return $fullPath;
+                }
                 // no break
+
+            /********** SELECT MULTIPLE TYPE **********/
+            case 'select_multiple':
+                $content = $request->input($row->field);
+                if ($content === null) {
+                    $content = [];
+                }
+
+                return $content;
 
             /********** IMAGE TYPE **********/
             case 'image':
@@ -369,6 +431,14 @@ class VoyagerBreadController extends Controller
     {
         if (Storage::exists($path)) {
             Storage::delete($path);
+        }
+    }
+
+    public function can($permission)
+    {
+        $user = User::find(Auth::id());
+        if (!$user->hasPermission($permission)) {
+            throw new UnauthorizedHttpException(null);
         }
     }
 }

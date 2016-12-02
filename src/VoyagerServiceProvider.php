@@ -44,7 +44,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
                 $voyager_user = User::find($user->id);
-                $voyager_user->addRole(config('voyager.user.default_role'));
+                $voyager_user->setRole(config('voyager.user.default_role'));
             });
         }
 
@@ -106,5 +106,6 @@ class VoyagerServiceProvider extends ServiceProvider
     private function registerCommands()
     {
         $this->commands(Commands\InstallCommand::class);
+        $this->commands(Commands\ControllersCommand::class);
     }
 }
