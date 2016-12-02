@@ -29,6 +29,7 @@ return [
 
     'routes' => [
         'prefix' => 'admin',
+        'namespace' => 'TCG\\Voyager\\Http\\Controllers',
     ],
 
     /*

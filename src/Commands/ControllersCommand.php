@@ -60,10 +60,18 @@ class ControllersCommand extends Command
     {
         $stub = $this->getStub();
         $files = $this->filesystem->files(base_path('vendor/tcg/voyager/src/Http/Controllers'));
-        $location = $this->option('location');
+        $namespace = config('voyager.routes.namespace', 'TCG\\Voyager\\Http\\Controllers');
 
-        if (!$this->filesystem->isDirectory(base_path("app/{$location}"))) {
-            $this->filesystem->makeDirectory(base_path("app/{$location}"));
+        $appNamespace = $this->getAppNamespace();
+
+        if (!starts_with($namespace, $appNamespace)) {
+            return $this->error("The controllers namespace start must the your application namespace.");
+        }
+
+        $location = str_replace('\\', '/', substr($namespace, strlen($appNamespace)));
+
+        if (!$this->filesystem->isDirectory(app_path($location))) {
+            $this->filesystem->makeDirectory(app_path($location));
         }
 
         foreach ($files as $file) {
@@ -74,11 +82,11 @@ class ControllersCommand extends Command
                 continue;
             }
 
-            $path = base_path("app/{$location}/{$filename}");
+            $path = app_path($location.'/'.$filename);
 
             if (!$this->filesystem->exists($path) OR $this->option('force')) {
-                $classname = substr($filename, 0, strpos($filename, '.'));
-                $content = $this->generateContent($stub, $classname);
+                $class = substr($filename, 0, strpos($filename, '.'));
+                $content = $this->generateContent($stub, $class);
                 $this->filesystem->put($path, $content);
             }
         }
@@ -103,43 +111,35 @@ class ControllersCommand extends Command
      * @param $classname
      * @return mixed
      */
-    protected function generateContent($stub, $classname)
+    protected function generateContent($stub, $class)
     {
+        $namespace = config('voyager.routes.namespace', 'TCG\\Voyager\\Http\\Controllers');
+
         $content = str_replace(
             'DummyNamespace',
-            $this->getAppNamespace().$this->getLocationNamespace(),
+            $this->getAppNamespace().$namespace,
             $stub
         );
 
         $content = str_replace(
             'FullBaseDummyClass',
-            'TCG\\Voyager\\Http\\Controllers\\'.$classname,
+            'TCG\\Voyager\\Http\\Controllers\\'.$class,
             $content
         );
 
         $content = str_replace(
             'BaseDummyClass',
-            'Base'.$classname,
+            'Base'.$class,
             $content
         );
 
         $content = str_replace(
             'DummyClass',
-            $classname,
+            $class,
             $content
         );
 
         return $content;
-    }
-
-    /**
-     * Get location based namespace.
-     *
-     * @return string
-     */
-    protected function getLocationNamespace()
-    {
-        return str_replace('/', '\\', $this->option('location'));
     }
 
     /**
@@ -150,8 +150,6 @@ class ControllersCommand extends Command
     protected function getOptions()
     {
         return [
-            ['location', 'l', InputOption::VALUE_OPTIONAL, 'The application location for controller', 'Http/Controllers/Admin'],
-
             ['force', 'f', InputOption::VALUE_NONE, 'Overwrite existing controller files'],
         ];
     }
