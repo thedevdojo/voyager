@@ -92,6 +92,11 @@ class InstallCommand extends Command
         $this->call('storage:link');
 
         $this->info('Successfully installed Voyager! Enjoy 🎉');
+
+        foreach (['categories', 'data_rows', 'data_types', 'menu_items', 'menus', 'pages', 'permission_role', 'permissions', 'posts', 'roles', 'settings', 'users'] as $table) {
+            $count = \DB::table($table)->count();
+            $this->info("Table [{$table}] have [{$count}] rows.");
+        }
     }
 
     /**
