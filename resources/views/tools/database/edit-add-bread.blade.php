@@ -132,7 +132,7 @@
 
                                     </td>
                                     <td><input type="text" class="form-control"
-                                               value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ $data->Field }}@endif"
+                                               value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ ucwords(str_replace('_', ' ', $data->Field)) }}@endif"
                                                name="field_display_name_{{ $data->Field }}"></td>
                                     <td>
                                         <textarea class="form-control json" name="field_details_{{ $data->Field }}"
