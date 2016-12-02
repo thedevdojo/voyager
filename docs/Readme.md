@@ -26,9 +26,9 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-Add the Voyager service provider as well as the Image Intervention service provider to the config/app.php file in the `providers` array:
+Add the Voyager service provider to the config/app.php file in the `providers` array:
 
-```php
+```
 'providers' => [
     // Laravel Framework Service Providers...
     //...
