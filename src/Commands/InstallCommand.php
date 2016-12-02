@@ -4,8 +4,6 @@ namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
-use TCG\Voyager\Models\Role;
-use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
 use Symfony\Component\Console\Input\InputOption;
 use Intervention\Image\ImageServiceProviderLaravel5;
@@ -84,22 +82,10 @@ class InstallCommand extends Command
 
         $this->info('Seeding data into the database');
 
-        $this->seed([
-            'DataTypesTableSeeder',
-            'DataRowsTableSeeder',
-            'RolesTableSeeder',
-            //'MenusTableSeeder',
-            //'MenuItemsTableSeeder',
-        ]);
+        $this->seed('VoyagerDatabaseSeeder');
 
         if ($this->option('with-dummy')) {
-            $this->seed([
-                'CategoriesTableSeeder',
-                'UsersTableSeeder',
-                'PostsTableSeeder',
-                'PagesTableSeeder',
-                'SettingsTableSeeder',
-            ]);
+            $this->seed('VoyagerDummyDatabaseSeeder');
         }
 
         $this->info('Adding the storage symlink to your public folder');
@@ -113,10 +99,9 @@ class InstallCommand extends Command
      *
      * @param array $seeders
      */
-    protected function seed(array $seeders)
+    protected function seed($class)
     {
-        foreach ($seeders as $seeder) {
-            $this->call('db:seed', ['--class' => $seeder]);
-        }
+        $process = new Process('php artisan db:seed --class='.$class);
+        $process->setWorkingDirectory(base_path())->run();
     }
 }

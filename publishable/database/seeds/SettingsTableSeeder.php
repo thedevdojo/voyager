@@ -12,11 +12,11 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
+        // Site Title
         $setting = Setting::firstOrNew([
             'key' => 'title',
         ]);
-
-        if ($setting->wasRecentlyCreated) {
+        if (!$setting->exists) {
             $setting->fill([
                 'type'         => 'text',
                 'display_name' => 'Site Title',
@@ -26,11 +26,11 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Site Description
         $setting = Setting::firstOrNew([
             'key' => 'description',
         ]);
-
-        if ($setting->wasRecentlyCreated) {
+        if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Description',
                 'value'        => 'Site Description',
@@ -40,11 +40,11 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Site Logo
         $setting = Setting::firstOrNew([
             'key' => 'logo',
         ]);
-
-        if ($setting->wasRecentlyCreated) {
+        if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Logo',
                 'value'        => 'Site Logo',
@@ -54,11 +54,11 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Admin Title
         $setting = Setting::firstOrNew([
             'key' => 'admin_title',
         ]);
-
-        if ($setting->wasRecentlyCreated) {
+        if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Title',
                 'value'        => 'Voyager',
@@ -68,11 +68,11 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Admin Description
         $setting = Setting::firstOrNew([
             'key' => 'admin_description',
         ]);
-
-        if ($setting->wasRecentlyCreated) {
+        if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Description',
                 'value'        => 'Welcome to Voyager. The Missing Admin for Laravel',
@@ -82,11 +82,11 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Admin Background Image
         $setting = Setting::firstOrNew([
             'key' => 'admin_bg_image',
         ]);
-
-        if ($setting->wasRecentlyCreated) {
+        if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Background Image',
                 'value'        => '',
@@ -96,11 +96,11 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
+        // Google Analytics Client ID
         $setting = Setting::firstOrNew([
             'key' => 'google_analytics_client_id',
         ]);
-
-        if ($setting->wasRecentlyCreated) {
+        if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Google Analytics Client ID',
                 'value'        => '',
