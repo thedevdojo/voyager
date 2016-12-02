@@ -6,6 +6,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Http\Middleware\VoyagerModelMiddleware;
 use TCG\Voyager\Models\User;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -55,6 +56,7 @@ class VoyagerServiceProvider extends ServiceProvider
     private function registerRoutes(Router $router)
     {
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        $router->middleware('admin.model', VoyagerModelMiddleware::class);
 
         if (!$this->app->routesAreCached()) {
             $router->group([

@@ -263,11 +263,14 @@ class Menu extends Model
             } else {
                 $a_attrs = 'href="'.$item->url.'"';
             }
+            
 
-            $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'
-                .'<span class="icon '.$item->icon_class.'"></span>'
-                .'<span class="title">'.$item->title.'</span></a>';
 
+            if (self::itemIsVisible($item)) {
+                $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'
+                    .'<span class="icon '.$item->icon_class.'"></span>'
+                    .'<span class="title">'.$item->title.'</span></a>';
+            }
 
             if ($children_menu_items->count() > 0) {
                 // Add tag for collapse panel
@@ -280,6 +283,27 @@ class Menu extends Model
         }
 
         return $output; // TODO: Check if is missing a closing ul tag!!
+    }
+
+    /**
+     * Check item visibility based on permission.
+     *
+     * @param \TCG\Voyager\Models\MenuItem         $item
+     *
+     * @return bool
+     */
+    static public function itemIsVisible($item) {
+        $prefix = '/admin/';
+        $model = '';
+        if (substr($item->url, 0, strlen($prefix)) == $prefix) {
+            $model = '.' . substr($item->url, strlen($prefix));
+        } 
+        $action_name = 'admin' . $model . '.index';
+        $model_permission = \Config::get('voyager.model_permission');
+        if ($model_permission($action_name)) {
+            return true;
+        }
+        return false;
     }
 
     /**

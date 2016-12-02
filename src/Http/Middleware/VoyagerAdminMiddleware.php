@@ -18,17 +18,14 @@ class VoyagerAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::guest()) {
-            return redirect()->route('voyager.login');
+        if (!Auth::guest()) {
+            $permission = \Config::get('voyager.permission');
+            if ($permission()) {
+                return $next($request);
+            } else {
+                return redirect('/');
+            }
         }
-
-        /**
-         * Get the Voyager User Object.
-         *
-         * @var \TCG\Voyager\Models\User
-         */
-        $user = User::find(Auth::id());
-
-        return $user->hasRole('admin') ? $next($request) : redirect('/');
+        return redirect(route('voyager.login'));
     }
 }

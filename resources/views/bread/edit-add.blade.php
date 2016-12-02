@@ -79,6 +79,19 @@
                                             @endif
                                         </select>
 
+                                    @elseif($row->type == "select_multiple")
+                                        <?php $options = json_decode($row->details); ?>
+                                        <select class="form-control select2" name="{{ $row->field }}[]" multiple>
+                                            @if(isset($options->relationship))
+                                                <?php $selected_values = isset($dataTypeContent->{$row->field}) ? $dataTypeContent->{$row->field}->pluck($options->relationship->key)->all() : array(); ?>
+                                                <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
+                                                <?php $relationshipOptions = $relationshipClass::all(); ?>
+                                                @foreach($relationshipOptions as $relationshipOption)
+                                                    <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if(in_array($relationshipOption->{$options->relationship->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+
                                     @elseif($row->type == "radio_btn")
                                         <?php $options = json_decode($row->details); ?>
                                         <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field,

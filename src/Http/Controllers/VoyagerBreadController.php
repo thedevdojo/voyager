@@ -249,13 +249,21 @@ class VoyagerBreadController extends Controller
                     $content = $data->{$row->field};
                 }
             }
+            if ($row->type == 'select_multiple') {
+                // do nothing
+            } else {
+                $data->{$row->field} = $content;
+            }
 
-            $data->{$row->field} = $content;
         }
 
         $this->validate($request, $rules, $messages);
 
         $data->save();
+
+        if ($row->type == 'select_multiple') {
+            $data->{$row->field}()->sync($content);
+        }
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
@@ -295,6 +303,14 @@ class VoyagerBreadController extends Controller
                 return $fullPath;
                 // no break
 
+            /********** SELECT MULTIPLE TYPE **********/
+            case 'select_multiple':
+                $content = $request->input($row->field);
+                if ($content === null) {
+                    $content = array();
+                }
+                return $content;
+                
             /********** IMAGE TYPE **********/
             case 'image':
                 if ($request->hasFile($row->field)) {

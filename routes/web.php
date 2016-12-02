@@ -17,11 +17,13 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
         },
     ]);
 
-    if (env('DB_CONNECTION') !== null && Schema::hasTable('data_types')):
-        foreach (TCG\Voyager\Models\DataType::all() as $dataTypes):
-            Route::resource($dataTypes->slug, 'VoyagerBreadController');
-    endforeach;
-    endif;
+    Route::group(['middleware' => ['admin.model']], function() {
+        if (env('DB_CONNECTION') !== null && Schema::hasTable('data_types')):
+            foreach (TCG\Voyager\Models\DataType::all() as $dataTypes):
+                Route::resource($dataTypes->slug, 'VoyagerBreadController');
+            endforeach;
+        endif;
+    });
 
     // Menu Routes
     Route::get('menus/{id}/builder/', ['uses' => 'VoyagerMenuController@builder', 'as' => 'voyager.menu.builder']);
