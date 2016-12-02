@@ -65,7 +65,7 @@ class ControllersCommand extends Command
         $appNamespace = $this->getAppNamespace();
 
         if (!starts_with($namespace, $appNamespace)) {
-            return $this->error("The controllers namespace start must the your application namespace.");
+            return $this->error('The controllers namespace start must the your application namespace.');
         }
 
         $location = str_replace('\\', '/', substr($namespace, strlen($appNamespace)));
@@ -84,7 +84,7 @@ class ControllersCommand extends Command
 
             $path = app_path($location.'/'.$filename);
 
-            if (!$this->filesystem->exists($path) OR $this->option('force')) {
+            if (!$this->filesystem->exists($path) or $this->option('force')) {
                 $class = substr($filename, 0, strpos($filename, '.'));
                 $content = $this->generateContent($stub, $class);
                 $this->filesystem->put($path, $content);
