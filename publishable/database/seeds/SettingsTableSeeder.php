@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\Setting;
 
 class SettingsTableSeeder extends Seeder
 {
@@ -11,72 +12,102 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('settings')->delete();
+        $setting = Setting::firstOrNew([
+            'key' => 'title',
+        ]);
 
-        \DB::table('settings')->insert([
-            0 => [
-                'id'           => 1,
-                'key'          => 'title',
+        if ($setting->wasRecentlyCreated) {
+            $setting->fill([
+                'type'         => 'text',
                 'display_name' => 'Site Title',
                 'value'        => 'Site Title',
                 'details'      => '',
-                'type'         => 'text',
                 'order'        => 1,
-            ],
-            1 => [
-                'id'           => 2,
-                'key'          => 'description',
+            ])->save();
+        }
+
+        $setting = Setting::firstOrNew([
+            'key' => 'description',
+        ]);
+
+        if ($setting->wasRecentlyCreated) {
+            $setting->fill([
                 'display_name' => 'Site Description',
                 'value'        => 'Site Description',
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 2,
-            ],
-            2 => [
-                'id'           => 3,
-                'key'          => 'logo',
+            ])->save();
+        }
+
+        $setting = Setting::firstOrNew([
+            'key' => 'logo',
+        ]);
+
+        if ($setting->wasRecentlyCreated) {
+            $setting->fill([
                 'display_name' => 'Site Logo',
-                'value'        => '',
+                'value'        => 'Site Logo',
                 'details'      => '',
                 'type'         => 'image',
                 'order'        => 3,
-            ],
-            3 => [
-                'id'           => 7,
-                'key'          => 'admin_bg_image',
-                'display_name' => 'Admin Background Image',
-                'value'        => '',
-                'details'      => '',
-                'type'         => 'image',
-                'order'        => 6,
-            ],
-            4 => [
-                'id'           => 8,
-                'key'          => 'admin_title',
+            ])->save();
+        }
+
+        $setting = Setting::firstOrNew([
+            'key' => 'admin_title',
+        ]);
+
+        if ($setting->wasRecentlyCreated) {
+            $setting->fill([
                 'display_name' => 'Admin Title',
                 'value'        => 'Voyager',
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 4,
-            ],
-            5 => [
-                'id'           => 9,
-                'key'          => 'admin_description',
+            ])->save();
+        }
+
+        $setting = Setting::firstOrNew([
+            'key' => 'admin_description',
+        ]);
+
+        if ($setting->wasRecentlyCreated) {
+            $setting->fill([
                 'display_name' => 'Admin Description',
                 'value'        => 'Welcome to Voyager. The Missing Admin for Laravel',
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 5,
-            ],
-            6 => [
-                'id'           => 10,
-                'key'          => 'google_analytics_client_id',
+            ])->save();
+        }
+
+        $setting = Setting::firstOrNew([
+            'key' => 'admin_bg_image',
+        ]);
+
+        if ($setting->wasRecentlyCreated) {
+            $setting->fill([
+                'display_name' => 'Admin Background Image',
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'image',
+                'order'        => 6,
+            ])->save();
+        }
+
+        $setting = Setting::firstOrNew([
+            'key' => 'google_analytics_client_id',
+        ]);
+
+        if ($setting->wasRecentlyCreated) {
+            $setting->fill([
                 'display_name' => 'Google Analytics Client ID',
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'text',
-                'order'        => 6,
-            ],
-        ]);
+                'order'        => 7,
+            ])->save();
+        }
     }
 }

@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
+use TCG\Voyager\Models\User;
+use TCG\Voyager\Models\Role;
+
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -11,19 +14,20 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('users')->delete();
+        if (User::count() == 0) {
+            $user = User::create([
+                'name' => 'Admin',
+                'email' => 'admin@admin.com',
+                'password' => bcrypt('password'),
+            ]);
+        } else {
+            $user = User::first();
+        }
 
-        \DB::table('users')->insert([
-            0 => [
-                'id'             => 1,
-                'name'           => 'Admin',
-                'email'          => 'admin@admin.com',
-                'password'       => bcrypt('password'),
-                'remember_token' => str_random(60),
-                'created_at'     => '2016-01-28 11:20:57',
-                'updated_at'     => '2016-10-25 14:32:23',
-                'avatar'         => 'users/default.png',
-            ],
-        ]);
+        $roles = Role::whereIn('name', ['admin', 'user'])->get();
+
+        $user->roles()->attach(
+            $roles->pluck('id')->all()
+        );
     }
 }

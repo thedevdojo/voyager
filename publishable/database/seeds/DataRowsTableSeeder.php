@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use TCG\Voyager\Models\DataRow;
+
 class DataRowsTableSeeder extends Seeder
 {
     /**
