@@ -17,7 +17,7 @@
         <?php $table = $dataType->name ?>
     @endif
 
-    <?php $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : DB::select("DESCRIBE ${table}"); ?>
+    <?php $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : DB::select("DESCRIBE `${table}`"); ?>
 
     <div class="page-content container-fluid">
         <div class="row">
