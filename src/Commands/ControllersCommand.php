@@ -60,7 +60,7 @@ class ControllersCommand extends Command
     {
         $stub = $this->getStub();
         $files = $this->filesystem->files(base_path('vendor/tcg/voyager/src/Http/Controllers'));
-        $namespace = config('voyager.routes.namespace', 'TCG\\Voyager\\Http\\Controllers');
+        $namespace = config('voyager.controllers.namespace', 'TCG\\Voyager\\Http\\Controllers');
 
         $appNamespace = $this->getAppNamespace();
 
@@ -114,11 +114,11 @@ class ControllersCommand extends Command
      */
     protected function generateContent($stub, $class)
     {
-        $namespace = config('voyager.routes.namespace', 'TCG\\Voyager\\Http\\Controllers');
+        $namespace = config('voyager.controllers.namespace', 'TCG\\Voyager\\Http\\Controllers');
 
         $content = str_replace(
             'DummyNamespace',
-            $this->getAppNamespace().$namespace,
+            $namespace,
             $stub
         );
 

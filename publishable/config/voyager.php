@@ -29,6 +29,18 @@ return [
 
     'routes' => [
         'prefix' => 'admin',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Controllers config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager controller settings
+    |
+    */
+
+    'controllers' => [
         'namespace' => 'TCG\\Voyager\\Http\\Controllers',
     ],
 
