@@ -235,7 +235,16 @@
                     $(this).parents('.newTableRow').find('.toggleswitchHidden').val(0);
                 }
             });
-
+            $('form').submit(function(){
+                
+                
+                $.each($('.fieldType'), function(){
+                    
+                    $(this).prop('disabled', 'false');
+                    
+                })
+                return true;
+            });
         });
 
         function newRow(kind, name, type, nullable, key, defaultValue) {
@@ -260,7 +269,7 @@
                 $('#' + unique_id).find('.fieldName').val('created_at & updated_at');
                 $('#' + unique_id).find('.fieldName').attr('readonly', 'readonly');
                 $('#' + unique_id).find('.fieldDefault').val('CURRENT_TIMESTAMP').attr('readonly', 'readonly');
-                $('#' + unique_id).find('.fieldType').val('timestamp').attr('readonly', 'readonly').attr('disabled', 'disabled');
+                $('#' + unique_id).find('.fieldType').val('timestamp').attr('readonly', 'readonly').prop('disabled', 'true');
                 $('#' + unique_id).find('.fieldNull').parent().hide();
                 $('#' + unique_id).find('.fieldKey').hide();
             } else {
