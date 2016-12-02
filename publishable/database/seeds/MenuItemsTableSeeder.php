@@ -1,5 +1,6 @@
 <?php
 
+use TCG\Voyager\Models\Menu;
 use Illuminate\Database\Seeder;
 
 class MenuItemsTableSeeder extends Seeder
@@ -13,12 +14,13 @@ class MenuItemsTableSeeder extends Seeder
     {
         $prefix = config('voyager.routes.prefix', 'admin');
 
+        $menu = Menu::where('name', 'admin')->first();
+
         \DB::table('menu_items')->delete();
 
         \DB::table('menu_items')->insert([
             0 => [
-                'id'         => 1,
-                'menu_id'    => 2,
+                'menu_id'    => $menu->id,
                 'title'      => 'Dashboard',
                 'url'        => "/{$prefix}",
                 'target'     => '_self',
@@ -31,7 +33,7 @@ class MenuItemsTableSeeder extends Seeder
             ],
             1 => [
                 'id'         => 2,
-                'menu_id'    => 2,
+                'menu_id'    => $menu->id,
                 'title'      => 'Media',
                 'url'        => "/{$prefix}/media",
                 'target'     => '_self',
@@ -44,7 +46,7 @@ class MenuItemsTableSeeder extends Seeder
             ],
             2 => [
                 'id'         => 3,
-                'menu_id'    => 2,
+                'menu_id'    => $menu->id,
                 'title'      => 'Posts',
                 'url'        => "/{$prefix}/posts",
                 'target'     => '_self',
@@ -57,7 +59,7 @@ class MenuItemsTableSeeder extends Seeder
             ],
             3 => [
                 'id'         => 4,
-                'menu_id'    => 2,
+                'menu_id'    => $menu->id,
                 'title'      => 'Users',
                 'url'        => "/{$prefix}/users",
                 'target'     => '_self',
@@ -70,7 +72,7 @@ class MenuItemsTableSeeder extends Seeder
             ],
             4 => [
                 'id'         => 5,
-                'menu_id'    => 2,
+                'menu_id'    => $menu->id,
                 'title'      => 'Categories',
                 'url'        => "/{$prefix}/categories",
                 'target'     => '_self',
@@ -83,7 +85,7 @@ class MenuItemsTableSeeder extends Seeder
             ],
             5 => [
                 'id'         => 6,
-                'menu_id'    => 2,
+                'menu_id'    => $menu->id,
                 'title'      => 'Pages',
                 'url'        => "/{$prefix}/pages",
                 'target'     => '_self',
@@ -96,7 +98,7 @@ class MenuItemsTableSeeder extends Seeder
             ],
             6 => [
                 'id'         => 7,
-                'menu_id'    => 2,
+                'menu_id'    => $menu->id,
                 'title'      => 'Roles',
                 'url'        => "/{$prefix}/roles",
                 'target'     => '_self',
