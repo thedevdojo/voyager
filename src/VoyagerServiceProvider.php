@@ -50,19 +50,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
-        $this->registerRoutes($router);
-    }
-
-    /**
-     * Register routes.
-     */
-    private function registerRoutes(Router $router)
-    {
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
-
-        if (file_exists(base_path('routes/vendor/voyager.php'))) {
-            $this->loadRoutesFrom(base_path('routes/vendor/voyager.php'));
-        }
     }
 
     /**
@@ -89,9 +77,6 @@ class VoyagerServiceProvider extends ServiceProvider
             ],
             'views' => [
                 "$basePath/publishable/views/" => resource_path('views'),
-            ],
-            'routes' => [
-                "$basePath/publishable/routes/voyager.php" => base_path('routes/vendor/voyager.php'),
             ],
         ];
 

@@ -59,4 +59,9 @@ class Voyager
 
         return $default;
     }
+
+    public static function routes()
+    {
+        require __DIR__.'/../routes/voyager.php';
+    }
 }
