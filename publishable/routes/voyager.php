@@ -33,6 +33,9 @@ Route::group([
             }
         }
 
+        // Role Routes
+        Route::resource('roles', 'VoyagerRoleController');
+
         // Menu Routes
         Route::get('menus/{id}/builder/', ['uses' => 'VoyagerMenuController@builder', 'as' => 'voyager.menu.builder']);
 
