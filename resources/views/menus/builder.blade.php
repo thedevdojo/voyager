@@ -184,7 +184,6 @@
             });
 
             $('.dd').on('change', function (e) {
-                console.log(JSON.stringify($('.dd').nestable('serialize')));
                 $.post('{{ route('voyager.menu.order_item') }}', {
                     order: JSON.stringify($('.dd').nestable('serialize')),
                     _token: '{{ csrf_token() }}'
