@@ -437,7 +437,7 @@ class VoyagerBreadController extends Controller
     public function can($permission)
     {
         $user = User::find(Auth::id());
-        if ( ! $user->hasPermission($permission)) {
+        if (!$user->hasPermission($permission)) {
             throw new UnauthorizedHttpException(null);
         }
     }
