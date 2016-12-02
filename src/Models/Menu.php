@@ -268,7 +268,6 @@ class Menu extends Model
                 .'<span class="icon '.$item->icon_class.'"></span>'
                 .'<span class="title">'.$item->title.'</span></a>';
 
-
             if ($children_menu_items->count() > 0) {
                 // Add tag for collapse panel
                 $output .= '<div id="'.$collapse_id.'" class="panel-collapse collapse"><div class="panel-body">';

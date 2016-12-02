@@ -15,6 +15,7 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
+        'admin_permission'             => 'visit_admin',
         'namespace'                    => App\User::class,
     ],
 
@@ -29,6 +30,19 @@ return [
 
     'routes' => [
         'prefix' => 'admin',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Controllers config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager controller settings
+    |
+    */
+
+    'controllers' => [
+        'namespace' => 'TCG\\Voyager\\Http\\Controllers',
     ],
 
     /*
