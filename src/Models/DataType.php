@@ -48,13 +48,13 @@ class DataType extends Model
         $this->attributes['generate_permissions'] = $value ? 1 : 0;
     }
 
-    public function updateDataType(DataType $dataType, $requestData)
+    public function updateDataType($requestData)
     {
-        $success = $dataType->fill($requestData)->save();
-        $fields = $dataType->fields();
+        $success = $this->fill($requestData)->save();
+        $fields = $this->fields();
 
         foreach ($fields as $field) {
-            $dataRow = DataRow::where('data_type_id', '=', $dataType->id)
+            $dataRow = DataRow::where('data_type_id', '=', $this->id)
                               ->where('field', '=', $field)
                               ->first();
 
@@ -62,7 +62,7 @@ class DataType extends Model
                 $dataRow = new DataRow();
             }
 
-            $dataRow->data_type_id = $dataType->id;
+            $dataRow->data_type_id = $this->id;
             $dataRow->required = $requestData['field_required_'.$field];
 
             foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
