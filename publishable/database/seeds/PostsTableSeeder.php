@@ -15,7 +15,7 @@ class PostsTableSeeder extends Seeder
 
         \DB::table('posts')->insert([
             0 => [
-                'id'               => 20,
+                'id'               => 1,
                 'author_id'        => 0,
                 'title'            => 'Lorem Ipsum Post',
                 'seo_title'        => null,
@@ -31,12 +31,12 @@ class PostsTableSeeder extends Seeder
                 'updated_at'       => '2016-01-29 00:03:36',
             ],
             1 => [
-                'id'        => 21,
-                'author_id' => 0,
-                'title'     => 'My Sample Post',
-                'seo_title' => null,
-                'excerpt'   => 'This is the excerpt for the sample Post',
-                'body'      => '<p>This is the body for the sample post, which includes the body.</p>
+                'id'               => 2,
+                'author_id'        => 0,
+                'title'            => 'My Sample Post',
+                'seo_title'        => null,
+                'excerpt'          => 'This is the excerpt for the sample Post',
+                'body'             => '<p>This is the body for the sample post, which includes the body.</p>
 <h2>We can use all kinds of format!</h2>
 <p>And include a bunch of other stuff.</p>',
                 'image'            => 'posts/7uelXHi85YOfZKsoS6Tq.jpg',
@@ -49,7 +49,7 @@ class PostsTableSeeder extends Seeder
                 'updated_at'       => '2016-01-29 00:05:08',
             ],
             2 => [
-                'id'               => 23,
+                'id'               => 3,
                 'author_id'        => 0,
                 'title'            => 'Latest Post',
                 'seo_title'        => null,
@@ -65,12 +65,12 @@ class PostsTableSeeder extends Seeder
                 'updated_at'       => '2016-01-29 14:43:49',
             ],
             3 => [
-                'id'        => 27,
-                'author_id' => 0,
-                'title'     => 'Yarr Post',
-                'seo_title' => null,
-                'excerpt'   => 'Reef sails nipperkin bring a spring upon her cable coffer jury mast spike marooned Pieces of Eight poop deck pillage. Clipper driver coxswain galleon hempen halter come about pressgang gangplank boatswain swing the lead. Nipperkin yard skysail swab lanyard Blimey bilge water ho quarter Buccaneer.',
-                'body'      => '<p>Swab deadlights Buccaneer fire ship square-rigged dance the hempen jig weigh anchor cackle fruit grog furl. Crack Jennys tea cup chase guns pressgang hearties spirits hogshead Gold Road six pounders fathom measured fer yer chains. Main sheet provost come about trysail barkadeer crimp scuttle mizzenmast brig plunder.</p>
+                'id'               => 4,
+                'author_id'        => 0,
+                'title'            => 'Yarr Post',
+                'seo_title'        => null,
+                'excerpt'          => 'Reef sails nipperkin bring a spring upon her cable coffer jury mast spike marooned Pieces of Eight poop deck pillage. Clipper driver coxswain galleon hempen halter come about pressgang gangplank boatswain swing the lead. Nipperkin yard skysail swab lanyard Blimey bilge water ho quarter Buccaneer.',
+                'body'             => '<p>Swab deadlights Buccaneer fire ship square-rigged dance the hempen jig weigh anchor cackle fruit grog furl. Crack Jennys tea cup chase guns pressgang hearties spirits hogshead Gold Road six pounders fathom measured fer yer chains. Main sheet provost come about trysail barkadeer crimp scuttle mizzenmast brig plunder.</p>
 <p>Mizzen league keelhaul galleon tender cog chase Barbary Coast doubloon crack Jennys tea cup. Blow the man down lugsail fire ship pinnace cackle fruit line warp Admiral of the Black strike colors doubloon. Tackle Jack Ketch come about crimp rum draft scuppers run a shot across the bow haul wind maroon.</p>
 <p>Interloper heave down list driver pressgang holystone scuppers tackle scallywag bilged on her anchor. Jack Tar interloper draught grapple mizzenmast hulk knave cable transom hogshead. Gaff pillage to go on account grog aft chase guns piracy yardarm knave clap of thunder.</p>',
                 'image'            => 'posts/yuk1fBwmKKZdY2qR1ZKM.jpg',

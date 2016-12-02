@@ -29,7 +29,7 @@ class VoyagerBreadController extends Controller
     public function index(Request $request)
     {
         // GET THE SLUG, ex. 'posts', 'pages', etc.
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
 
         // Check permission
         $this->can('browse_'.$slug);
@@ -67,7 +67,7 @@ class VoyagerBreadController extends Controller
 
     public function show(Request $request, $id)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
 
         // Check permission
         $this->can('read_'.$slug);
@@ -103,7 +103,7 @@ class VoyagerBreadController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
 
         // Check permission
         $this->can('edit_'.$slug);
@@ -127,7 +127,7 @@ class VoyagerBreadController extends Controller
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
 
         // Check permission
         $this->can('edit_'.$slug);
@@ -159,7 +159,7 @@ class VoyagerBreadController extends Controller
 
     public function create(Request $request)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
 
         // Check permission
         $this->can('add_'.$slug);
@@ -180,7 +180,7 @@ class VoyagerBreadController extends Controller
     // POST BRE(A)D
     public function store(Request $request)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
 
         // Check permission
         $this->can('add_'.$slug);
@@ -217,7 +217,7 @@ class VoyagerBreadController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $slug = $request->segment(2);
+        $slug = explode('.', $request->route()->getName())[0];
 
         // Check permission
         $this->can('delete_'.$slug);

@@ -60,7 +60,7 @@ before_script:
   - mv environment .env
 
   # Add the service providers
-  - sed 's/App\\Providers\\RouteServiceProvider\:\:class,/App\\Providers\\RouteServiceProvider\:\:class, TCG\\Voyager\\VoyagerServiceProvider\:\:class, Intervention\\Image\\ImageServiceProvider\:\:class,/g' config/app.php > config/app-temp.php
+  - sed 's/App\\Providers\\RouteServiceProvider\:\:class,/App\\Providers\\RouteServiceProvider\:\:class, TCG\\Voyager\\VoyagerServiceProvider\:\:class,/g' config/app.php > config/app-temp.php
   - rm config/app.php
   - mv config/app-temp.php config/app.php
 
