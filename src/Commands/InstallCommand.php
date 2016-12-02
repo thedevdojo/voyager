@@ -108,7 +108,8 @@ class InstallCommand extends Command
     protected function seed(array $seeders)
     {
         foreach ($seeders as $seeder) {
-            $this->call('db:seed', ['--class' => $seeder]);
+            $process = new Process('php artisan db:seed --class='.$seeder);
+            $process->setWorkingDirectory(base_path())->run();
         }
     }
 }
