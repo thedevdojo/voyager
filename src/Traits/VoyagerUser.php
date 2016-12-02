@@ -2,9 +2,7 @@
 
 namespace TCG\Voyager\Traits;
 
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Models\Role;
-use TCG\Voyager\Models\User;
 
 /**
  * @property  \Illuminate\Database\Eloquent\Collection  roles
