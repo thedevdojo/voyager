@@ -59,7 +59,7 @@ class VoyagerServiceProvider extends ServiceProvider
         if (!$this->app->routesAreCached()) {
             $router->group([
                 'prefix'    => config('voyager.routes.prefix', 'admin'),
-                'namespace' => 'TCG\\Voyager\\Http\\Controllers',
+                'namespace' => config('voyager.controllers.namespace', 'TCG\\Voyager\\Http\\Controllers'),
             ], function () {
                 require __DIR__.'/../routes/web.php';
             });
@@ -104,5 +104,6 @@ class VoyagerServiceProvider extends ServiceProvider
     private function registerCommands()
     {
         $this->commands(Commands\InstallCommand::class);
+        $this->commands(Commands\ControllersCommand::class);
     }
 }
