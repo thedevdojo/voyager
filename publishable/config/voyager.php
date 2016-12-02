@@ -15,39 +15,9 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
+        'admin_permission'             => 'visit_admin',
         'namespace'                    => App\User::class,
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Permission config
-    |--------------------------------------------------------------------------
-    |
-    | Here you can specify conditions for accessing the admin panel
-    |
-    */
-
-    'permission' => function () {
-        $user = TCG\Voyager\Models\User::find(Auth::user()->id);
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        return false;
-    },
-
-    /*
-    |--------------------------------------------------------------------------
-    | Model permission config
-    |--------------------------------------------------------------------------
-    |
-    | Here you can specify conditions for accessing the specific models by action name
-    |
-    */
-
-    'model_permission' => function ($action) {
-        return true;
-    },
 
     /*
     |--------------------------------------------------------------------------

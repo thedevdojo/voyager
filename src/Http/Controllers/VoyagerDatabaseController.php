@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
-use TCG\Voyager\Models\DataRow;
 use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Models\Permission;
 
 class VoyagerDatabaseController extends Controller
 {
@@ -157,17 +157,19 @@ class VoyagerDatabaseController extends Controller
         $displayName = Str::singular(implode(' ', explode('_', Str::title($table))));
 
         return [
-            'table'               => $table,
-            'slug'                => Str::slug($table),
-            'display_name'        => $displayName,
-            'display_name_plural' => Str::plural($displayName),
-            'model_name'          => $this->getAppNamespace().'\\'.Str::studly(Str::singular($table)),
+            'table'                 => $table,
+            'slug'                  => Str::slug($table),
+            'display_name'          => $displayName,
+            'display_name_plural'   => Str::plural($displayName),
+            'model_name'            => $this->getAppNamespace().'\\'.Str::studly(Str::singular($table)),
+            'generate_permissions'  => true,
         ];
     }
 
     public function storeBread(Request $request)
     {
-        $data = $this->updateDataType(new DataType(), $request->all())
+        $dataType = new DataType();
+        $data = $dataType->updateDataType($request->all())
             ? [
                 'message'    => 'Successfully created new BREAD',
                 'alert-type' => 'success',
@@ -193,7 +195,7 @@ class VoyagerDatabaseController extends Controller
     {
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);
-        $data = $this->updateDataType($dataType, $request->all())
+        $data = $dataType->updateDataType($request->all())
             ? [
                 'message'    => "Successfully updated the {$dataType->name} BREAD",
                 'alert-type' => 'success',
@@ -204,45 +206,6 @@ class VoyagerDatabaseController extends Controller
             ];
 
         return redirect()->route('voyager.database')->with($data);
-    }
-
-    public function updateDataType(DataType $dataType, $requestData)
-    {
-        $success = $dataType->fill($requestData)->save();
-        $fields = $dataType->fields();
-
-        foreach ($fields as $field) {
-            $dataRow = DataRow::where('data_type_id', '=', $dataType->id)
-                              ->where('field', '=', $field)
-                              ->first();
-
-            if (!isset($dataRow->id)) {
-                $dataRow = new DataRow();
-            }
-
-            $dataRow->data_type_id = $dataType->id;
-            $dataRow->required = $requestData['field_required_'.$field];
-
-            foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
-                if (isset($requestData["field_{$check}_{$field}"])) {
-                    $dataRow->{$check} = 1;
-                } else {
-                    $dataRow->{$check} = 0;
-                }
-            }
-
-            $dataRow->field = $requestData['field_'.$field];
-            $dataRow->type = $requestData['field_input_type_'.$field];
-            $dataRow->details = $requestData['field_details_'.$field];
-            $dataRow->display_name = $requestData['field_display_name_'.$field];
-            $dataRowSuccess = $dataRow->save();
-            // If success has never failed yet, let's add DataRowSuccess to success
-            if ($success !== false) {
-                $success = $dataRowSuccess;
-            }
-        }
-
-        return $success !== false;
     }
 
     public function deleteBread($id)
@@ -258,6 +221,8 @@ class VoyagerDatabaseController extends Controller
                 'message'    => 'Sorry it appears there was a problem removing this bread',
                 'alert-type' => 'danger',
             ];
+
+        Permission::removeFrom($dataType->name);
 
         return redirect()->route('voyager.database')->with($data);
     }

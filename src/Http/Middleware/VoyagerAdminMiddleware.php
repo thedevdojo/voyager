@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Models\User;
 
 class VoyagerAdminMiddleware
 {
@@ -18,12 +19,11 @@ class VoyagerAdminMiddleware
     public function handle($request, Closure $next)
     {
         if (!Auth::guest()) {
-            $permission = \Config::get('voyager.permission');
-            if ($permission()) {
-                return $next($request);
-            } else {
-                return redirect('/');
-            }
+
+            $user = User::find(Auth::id());
+
+            return $user->hasPermission(config('voyager.user.admin_role',
+                'visit_admin')) ? $next($request) : redirect('/');
         }
 
         return redirect(route('voyager.login'));

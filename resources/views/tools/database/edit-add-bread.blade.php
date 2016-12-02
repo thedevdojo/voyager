@@ -229,6 +229,12 @@
                                        value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
                             </div>
                             <div class="form-group">
+                                <label for="email">Generate Permissions</label><br>
+                                <?php $checked = (isset($dataType->generate_permissions) && $dataType->generate_permissions == 1) ? true : (isset($generate_permissions) && $generate_permissions) ? true : false; ?>
+                                <input type="checkbox" name="generate_permissions" class="toggleswitch"
+                                       @if($checked) checked @endif>
+                            </div>
+                            <div class="form-group">
                                 <label for="email">Description</label>
                                 <textarea class="form-control" name="description"
                                           placeholder="Description">@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
@@ -258,6 +264,11 @@
             var pretty = JSON.stringify(obj, undefined, 4);
             document.getElementById('myTextArea').value = pretty;
         }
+    </script>
+    <script>
+        $('document').ready(function () {
+            $('.toggleswitch').bootstrapToggle();
+        });
     </script>
 
 @stop
