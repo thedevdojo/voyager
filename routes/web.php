@@ -17,11 +17,11 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
         },
     ]);
 
-    Route::group(['middleware' => ['admin.model']], function() {
+    Route::group(['middleware' => ['admin.model']], function () {
         if (env('DB_CONNECTION') !== null && Schema::hasTable('data_types')):
             foreach (TCG\Voyager\Models\DataType::all() as $dataTypes):
                 Route::resource($dataTypes->slug, 'VoyagerBreadController');
-            endforeach;
+        endforeach;
         endif;
     });
 

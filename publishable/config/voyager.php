@@ -27,12 +27,12 @@ return [
     |
     */
 
-    'permission' => function()
-    {
+    'permission' => function () {
         $user = TCG\Voyager\Models\User::find(Auth::user()->id);
         if ($user->hasRole('admin')) {
             return true;
         }
+
         return false;
     },
 
@@ -45,11 +45,10 @@ return [
     |
     */
 
-    'model_permission' => function($action)
-    {
+    'model_permission' => function ($action) {
         return true;
     },
-    
+
     /*
     |--------------------------------------------------------------------------
     | Routes config
