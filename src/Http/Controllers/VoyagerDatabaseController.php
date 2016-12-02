@@ -161,7 +161,7 @@ class VoyagerDatabaseController extends Controller
             'slug'                  => Str::slug($table),
             'display_name'          => $displayName,
             'display_name_plural'   => Str::plural($displayName),
-            'model_name'            => stripslashes($this->getAppNamespace().'\\'.Str::studly(Str::singular($table))),
+            'model_name'            => $this->getAppNamespace().Str::studly(Str::singular($table)),
             'generate_permissions'  => true,
         ];
     }
