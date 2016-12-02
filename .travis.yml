@@ -65,7 +65,7 @@ before_script:
   - mv config/app-temp.php config/app.php
 
   # Install voyager
-  - php artisan voyager:install
+  - php artisan voyager:install --with-dummy
 
   # Remove the default phpunit.xml and replace it with voyager phpunit.xml
   - rm phpunit.xml
