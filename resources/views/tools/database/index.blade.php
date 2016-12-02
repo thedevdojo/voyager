@@ -226,12 +226,12 @@
                 $.get(href, function (data) {
                     $.each(data, function (key, val) {
                         table.rows.push({
-                            Field: val.Field,
-                            Type: val.Type,
-                            Null: val.Null,
-                            Key: val.Key,
-                            Default: val.Default,
-                            Extra: val.Extra
+                            Field: val.field,
+                            Type: val.type,
+                            Null: val.null,
+                            Key: val.key,
+                            Default: val.default,
+                            Extra: val.extra
                         });
                         $('#table_info').modal('show');
                     });
