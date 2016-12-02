@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Commands;
 
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 
 class ControllersCommand extends Command
 {
@@ -108,7 +108,8 @@ class ControllersCommand extends Command
      * Generate real content from stub.
      *
      * @param $stub
-     * @param $classname
+     * @param $class
+     *
      * @return mixed
      */
     protected function generateContent($stub, $class)
