@@ -261,7 +261,7 @@ class Menu extends Model
                 $collapse_id = Str::slug($item->title, '-').'-dropdown-element';
                 $a_attrs = 'data-toggle="collapse" href="#'.$collapse_id.'"';
             } else {
-                $a_attrs = 'href="'.$item->url.'"';
+                $a_attrs = 'href="'.url('/').'/'.config('voyager.routes.prefix').$item->url.'"'; // add prefix from url from config/voyager.php
             }
 
             $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'
