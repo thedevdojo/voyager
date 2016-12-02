@@ -17,8 +17,7 @@
         <?php $table = $dataType->name ?>
     @endif
 
-
-    <?php $tableData = DB::select("DESCRIBE ${table}"); ?>
+    <?php $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : DB::select("DESCRIBE ${table}"); ?>
 
     <div class="page-content container-fluid">
         <div class="row">
@@ -46,7 +45,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($tableData as $data)
+                            @foreach($fieldOptions as $data)
                                 @if(isset($dataType->id))
                                     <?php $dataRow = TCG\Voyager\Models\DataRow::where('data_type_id', '=',
                                             $dataType->id)->where('field', '=', $data->Field)->first(); ?>
@@ -117,6 +116,10 @@
                                                 </option>
                                                 <option value="select_dropdown" @if(isset($dataRow->type) && $dataRow->type == 'select_dropdown'){{ 'selected' }}@endif>
                                                     Select Dropdown
+                                                </option>
+                                                </option>
+                                                <option value="select_multiple" @if(isset($dataRow->type) && $dataRow->type == 'select_multiple'){{ 'selected' }}@endif>
+                                                    Multiple Select
                                                 </option>
                                                 <option value="file" @if(isset($dataRow->type) && $dataRow->type == 'file'){{ 'selected' }}@endif>
                                                     File

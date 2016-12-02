@@ -32,13 +32,18 @@
                                 @foreach($dataTypeContent as $data)
                                 <tr>
                                     @foreach($dataType->browseRows as $row)
-                                    <td>
-                                        @if($row->type == 'image')
-                                            <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
-                                        @else
-                                            {{ $data->{$row->field} }}
-                                        @endif
-                                    </td>
+                                        <td>
+                                            <?php $options = json_decode($row->details); ?>
+                                            @if($row->type == 'image')
+                                                <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                            @elseif($row->type == 'select_multiple')
+                                                @if ($data->{$row->field} && isset($options->relationship))
+                                                    {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
+                                                @endif
+                                            @else
+                                                {{ $data->{$row->field} }}
+                                            @endif
+                                        </td>
                                     @endforeach
                                     <td class="no-sort no-click">
                                         <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">

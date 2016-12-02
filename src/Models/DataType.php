@@ -48,35 +48,35 @@ class DataType extends Model
         $this->attributes['generate_permissions'] = $value ? 1 : 0;
     }
 
-    public function updateDataType($requestData)
+    public function updateDataType(DataType $dataType, $requestData)
     {
-        $success = $this->fill($requestData)->save();
-        $columns = Schema::getColumnListing($this->name);
+        $success = $dataType->fill($requestData)->save();
+        $fields = $dataType->fields();
 
-        foreach ($columns as $column) {
-            $dataRow = DataRow::where('data_type_id', '=', $this->id)
-                ->where('field', '=', $column)
-                ->first();
+        foreach ($fields as $field) {
+            $dataRow = DataRow::where('data_type_id', '=', $dataType->id)
+                              ->where('field', '=', $field)
+                              ->first();
 
             if (!isset($dataRow->id)) {
                 $dataRow = new DataRow();
             }
 
-            $dataRow->data_type_id = $this->id;
-            $dataRow->required = $requestData['field_required_'.$column];
+            $dataRow->data_type_id = $dataType->id;
+            $dataRow->required = $requestData['field_required_'.$field];
 
             foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
-                if (isset($requestData["field_{$check}_{$column}"])) {
+                if (isset($requestData["field_{$check}_{$field}"])) {
                     $dataRow->{$check} = 1;
                 } else {
                     $dataRow->{$check} = 0;
                 }
             }
 
-            $dataRow->field = $requestData['field_'.$column];
-            $dataRow->type = $requestData['field_input_type_'.$column];
-            $dataRow->details = $requestData['field_details_'.$column];
-            $dataRow->display_name = $requestData['field_display_name_'.$column];
+            $dataRow->field = $requestData['field_'.$field];
+            $dataRow->type = $requestData['field_input_type_'.$field];
+            $dataRow->details = $requestData['field_details_'.$field];
+            $dataRow->display_name = $requestData['field_display_name_'.$field];
             $dataRowSuccess = $dataRow->save();
             // If success has never failed yet, let's add DataRowSuccess to success
             if ($success !== false) {
@@ -89,5 +89,38 @@ class DataType extends Model
         }
 
         return $success !== false;
+    }
+
+    public function fields()
+    {
+        $fields = Schema::getColumnListing($this->name);
+        if ($extraFields = $this->extraFields()) {
+            foreach ($extraFields as $field) {
+                $fields[] = $field['Field'];
+            }
+        }
+
+        return $fields;
+    }
+
+    public function fieldOptions()
+    {
+        $table = $this->name;
+        $fieldOptions = \DB::select("DESCRIBE ${table}");
+        if ($extraFields = $this->extraFields()) {
+            foreach ($extraFields as $field) {
+                $fieldOptions[] = (object) $field;
+            }
+        }
+
+        return $fieldOptions;
+    }
+
+    public function extraFields()
+    {
+        $model = app($this->model_name);
+        if (method_exists($model, 'adminFields')) {
+            return $model->adminFields();
+        }
     }
 }

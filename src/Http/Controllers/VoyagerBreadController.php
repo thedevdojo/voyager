@@ -287,13 +287,20 @@ class VoyagerBreadController extends Controller
                     $content = $data->{$row->field};
                 }
             }
-
-            $data->{$row->field} = $content;
+            if ($row->type == 'select_multiple') {
+                // do nothing
+            } else {
+                $data->{$row->field} = $content;
+            }
         }
 
         $this->validate($request, $rules, $messages);
 
         $data->save();
+
+        if ($row->type == 'select_multiple') {
+            $data->{$row->field}()->sync($content);
+        }
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
@@ -322,16 +329,25 @@ class VoyagerBreadController extends Controller
 
             /********** FILE TYPE **********/
             case 'file':
-                $file = $request->file($row->field);
-                $filename = Str::random(20);
-                $path = $slug.'/'.date('F').date('Y').'/';
+                if ($file = $request->file($row->field)) {
+                    $filename = Str::random(20);
+                    $path = $slug.'/'.date('F').date('Y').'/';
+                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                    Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $file, 'public');
 
-                Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $file, 'public');
-
-                return $fullPath;
+                    return $fullPath;
+                }
                 // no break
+
+            /********** SELECT MULTIPLE TYPE **********/
+            case 'select_multiple':
+                $content = $request->input($row->field);
+                if ($content === null) {
+                    $content = [];
+                }
+
+                return $content;
 
             /********** IMAGE TYPE **********/
             case 'image':
