@@ -13,8 +13,8 @@ Install
 
 Voyager is super easy to install. First off, you'll need to have all the requirements needed to install a Laravel app. Then, after creating your new Laravel application you can include the Voyager package with the following command: 
 
-```
-composer require tcg/voyager
+```php
+composer require "tcg/voyager"
 ```
 
 Next make sure to create a new database and add your database credentials to your .env file:
@@ -44,8 +44,15 @@ Add the Voyager service provider to the config/app.php file in the `providers` a
 
 Lastly, we can install voyager by running
 
-```
+```php
 php artisan voyager:install
+```
+
+Note: If you don't have composer installed and use composer.phar instead, run the following 2 commands:
+
+```php
+composer.phar dump-autoload
+php artisan db:seed
 ```
 
 And we're all good to go! 
@@ -62,7 +69,7 @@ Upgrade
 
 The latest version of Voyager is at 0.9 and will be at 1.0 release soon, but for now to update to the latest version inside of your `composer.json` file make sure to update the version of voyager inside the require declaration inside of your `composer.json` to:
 
-```
+```php
 "tcg/voyager": "0.9.*"
 ```
 
@@ -70,7 +77,7 @@ And then run `composer update`
 
 Next, you may want to be sure that you have all the latest published assets as long as you have not modified any of them. To re-publish the voyager assets you can run the following command:
 
-```
+```php
 php artisan vendor:publish --tag=voyager_assets --force
 ```
 
@@ -115,7 +122,7 @@ When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box
 Find out how to use these additional details below:
 
 #### Check Box
-```
+```js
 {
     "on" : "On Text",
     "off" : "Off Text",
@@ -126,7 +133,7 @@ Find out how to use these additional details below:
 In Voyager a Check Box is converted into a toggle switch, and as you can see above the `on` key will contain the value when the toggle switch is on, and the `off` will contain the value that is set when the switch is off. If `checked` is set to *true* the checkbox will be toggle on; otherwise by default it will be off.
 
 #### Drop Down
-```
+```js
 {
     "default" : "option1",
     "options" : {
@@ -140,7 +147,7 @@ When specifying that an input type should be a dropdown you will need to specify
 
 
 #### Radio Button
-```
+```js
 {
     "default" : "radio1",
     "options" : {
@@ -153,7 +160,7 @@ When specifying that an input type should be a dropdown you will need to specify
 The Radio button is exactly the same as the dropdown. You can specify a `default` if one has not been set and in the `options` object you will specify the *value* of the option on the **left** and the *text* to be displayed on the **right**.
 
 #### Image
-```
+```js
 {
     "resize": {
         "width": "1000",
