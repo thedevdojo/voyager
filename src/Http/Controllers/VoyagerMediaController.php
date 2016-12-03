@@ -3,9 +3,9 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
-use TCG\Voyager\Voyager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use TCG\Voyager\Voyager;
 
 class VoyagerMediaController extends Controller
 {

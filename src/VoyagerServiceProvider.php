@@ -2,13 +2,13 @@
 
 namespace TCG\Voyager;
 
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\User;
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Models\Menu;
+use TCG\Voyager\Models\User;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
