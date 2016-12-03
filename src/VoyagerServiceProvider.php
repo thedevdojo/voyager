@@ -2,13 +2,15 @@
 
 namespace TCG\Voyager;
 
-use Illuminate\Foundation\AliasLoader;
-use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
-use TCG\Voyager\Facades\Voyager as VoyagerFacade;
-use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\User;
+use Illuminate\Routing\Router;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\ServiceProvider;
+use Intervention\Image\ImageServiceProvider;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Http\Middleware\VoyagerModelMiddleware;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,7 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
+        $this->app->register(ImageServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Menu', Menu::class);
@@ -59,6 +61,7 @@ class VoyagerServiceProvider extends ServiceProvider
     private function registerRoutes(Router $router)
     {
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        $router->middleware('admin.model', VoyagerModelMiddleware::class);
 
         /*
         if (!$this->app->routesAreCached()) {

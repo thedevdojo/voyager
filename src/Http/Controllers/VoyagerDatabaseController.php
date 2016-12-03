@@ -208,6 +208,45 @@ class VoyagerDatabaseController extends Controller
         return redirect()->route('voyager.database')->with($data);
     }
 
+    public function updateDataType(DataType $dataType, $requestData)
+    {
+        $success = $dataType->fill($requestData)->save();
+        $fields = $dataType->fields();
+
+        foreach ($fields as $field) {
+            $dataRow = DataRow::where('data_type_id', '=', $dataType->id)
+                              ->where('field', '=', $field)
+                              ->first();
+
+            if (!isset($dataRow->id)) {
+                $dataRow = new DataRow();
+            }
+
+            $dataRow->data_type_id = $dataType->id;
+            $dataRow->required = $requestData['field_required_'.$field];
+
+            foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
+                if (isset($requestData["field_{$check}_{$field}"])) {
+                    $dataRow->{$check} = 1;
+                } else {
+                    $dataRow->{$check} = 0;
+                }
+            }
+
+            $dataRow->field = $requestData['field_'.$field];
+            $dataRow->type = $requestData['field_input_type_'.$field];
+            $dataRow->details = $requestData['field_details_'.$field];
+            $dataRow->display_name = $requestData['field_display_name_'.$field];
+            $dataRowSuccess = $dataRow->save();
+            // If success has never failed yet, let's add DataRowSuccess to success
+            if ($success !== false) {
+                $success = $dataRowSuccess;
+            }
+        }
+
+        return $success !== false;
+    }
+
     public function deleteBread($id)
     {
         /** @var \TCG\Voyager\Models\DataType $dataType */
