@@ -2,12 +2,8 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
-use Intervention\Image\Constraint;
 use TCG\Voyager\Models\DataType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use TCG\Voyager\Voyager;
 
 class VoyagerBreadController extends Controller
