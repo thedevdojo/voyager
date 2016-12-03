@@ -100,7 +100,7 @@ class VoyagerRoleController extends VoyagerBreadController
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
 
-        if (count($request->input('permissions'))) {
+        if (!empty($request->input('permissions', []))) {
             $data->permissions()->sync($request->input('permissions'));
         }
 
