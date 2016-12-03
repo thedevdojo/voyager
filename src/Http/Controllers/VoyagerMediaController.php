@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use TCG\Voyager\Voyager;
 
 class VoyagerMediaController extends Controller
 {
@@ -26,6 +27,8 @@ class VoyagerMediaController extends Controller
 
     public function index()
     {
+        Voyager::can('visit_media');
+
         return view('voyager::media.index');
     }
 

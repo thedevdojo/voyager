@@ -54,7 +54,7 @@
                         item?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.menus.delete_menu_item') }}" id="delete_form"
+                    <form action="{{ route('voyager.menus.delete_menu_item', null) }}" id="delete_form"
                           method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -184,7 +184,6 @@
             });
 
             $('.dd').on('change', function (e) {
-                console.log(JSON.stringify($('.dd').nestable('serialize')));
                 $.post('{{ route('voyager.menus.order_item') }}', {
                     order: JSON.stringify($('.dd').nestable('serialize')),
                     _token: '{{ csrf_token() }}'
