@@ -37,7 +37,14 @@
                                 </div>
                             @endif
 
-                            @foreach($dataType->addRows as $row)
+                            <!-- If we are editing -->
+                            @if(isset($dataTypeContent->id))
+                                <?php $dataTypeRows = $dataType->editRows; ?>
+                            @else
+                                <?php $dataTypeRows = $dataType->addRows; ?>
+                            @endif
+
+                            @foreach($dataTypeRows as $row)
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
 
@@ -67,17 +74,27 @@
                                         <input type="file" name="{{ $row->field }}">
                                     @elseif($row->type == "select_dropdown")
                                         <?php $options = json_decode($row->details); ?>
-                                        <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field,
-                                                        $dataTypeContent->{$row->field}))) ? old($row->field,
-                                                $dataTypeContent->{$row->field}) : old($row->field); ?>
-                                        <select class="form-control" name="{{ $row->field }}">
-                                            <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
-                                            @if(isset($options->options))
-                                                @foreach($options->options as $key => $option)
-                                                    <option value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                                        @if(isset($options->relationship))
+                                            <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
+                                            
+                                            <select class="form-control select2" name="{{ $row->field }}">
+                                                <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
+                                                <?php $relationshipOptions = $relationshipClass::all(); ?>
+                                                @foreach($relationshipOptions as $key => $relationshipOption)
+                                                    <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($selected_value == $key){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
                                                 @endforeach
-                                            @endif
-                                        </select>
+                                            </select>
+                                        @else
+                                            <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
+                                            <select class="form-control" name="{{ $row->field }}">
+                                                <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
+                                                @if(isset($options->options))
+                                                    @foreach($options->options as $key => $option)
+                                                        <option value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                                                    @endforeach
+                                                @endif
+                                            </select>
+                                        @endif
 
                                     @elseif($row->type == "select_multiple")
                                         <?php $options = json_decode($row->details); ?>
@@ -138,7 +155,7 @@
                         <!-- PUT Method if we are editing -->
                         @if(isset($dataTypeContent->id))
                             <input type="hidden" name="_method" value="PUT">
-                    @endif
+                        @endif
 
                     <!-- CSRF TOKEN -->
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
