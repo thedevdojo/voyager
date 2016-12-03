@@ -3,16 +3,17 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
-use Illuminate\Console\AppNamespaceDetectorTrait;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+use TCG\Voyager\Voyager;
 use Illuminate\Support\Str;
-use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
+use Illuminate\Http\Request;
 use TCG\Voyager\Models\DataType;
+use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Models\Permission;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Console\AppNamespaceDetectorTrait;
+use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 
 class VoyagerDatabaseController extends Controller
 {
@@ -21,16 +22,22 @@ class VoyagerDatabaseController extends Controller
 
     public function index()
     {
+        Voyager::can('visit_database');
+
         return view('voyager::tools.database.index');
     }
 
     public function create()
     {
+        Voyager::can('visit_database');
+
         return view('voyager::tools.database.edit-add');
     }
 
     public function store(Request $request)
     {
+        Voyager::can('visit_database');
+
         $tableName = $request->name;
 
         try {
@@ -66,6 +73,8 @@ class VoyagerDatabaseController extends Controller
 
     public function edit($table)
     {
+        Voyager::can('visit_database');
+
         $rows = $this->describeTable($table);
 
         return view('voyager::tools.database.edit-add', compact('table', 'rows'));
@@ -80,6 +89,8 @@ class VoyagerDatabaseController extends Controller
      */
     public function update(Request $request)
     {
+        Voyager::can('visit_database');
+
         $tableName = $request->name;
 
         $this->renameTable($request->original_name, $tableName);
@@ -95,6 +106,8 @@ class VoyagerDatabaseController extends Controller
 
     public function reorder_column(Request $request)
     {
+        Voyager::can('visit_database');
+
         if ($request->ajax()) {
             $table = $request->table;
             $column = $request->column;
@@ -112,11 +125,15 @@ class VoyagerDatabaseController extends Controller
 
     public function table($table)
     {
+        Voyager::can('visit_database');
+
         return response()->json($this->describeTable($table));
     }
 
     public function delete($table)
     {
+        Voyager::can('visit_database');
+
         try {
             Schema::drop($table);
 
@@ -147,6 +164,8 @@ class VoyagerDatabaseController extends Controller
      */
     public function addBread(Request $request)
     {
+        Voyager::can('visit_database');
+
         $table = $request->input('table');
 
         return view('voyager::tools.database.edit-add-bread', $this->prepopulateBreadInfo($table));
@@ -168,6 +187,8 @@ class VoyagerDatabaseController extends Controller
 
     public function storeBread(Request $request)
     {
+        Voyager::can('visit_database');
+
         $dataType = new DataType();
         $data = $dataType->updateDataType($request->all())
             ? [
@@ -184,6 +205,8 @@ class VoyagerDatabaseController extends Controller
 
     public function addEditBread($id)
     {
+        Voyager::can('visit_database');
+
         return view(
             'voyager::tools.database.edit-add-bread', [
             'dataType' => DataType::find($id),
@@ -193,6 +216,8 @@ class VoyagerDatabaseController extends Controller
 
     public function updateBread(Request $request, $id)
     {
+        Voyager::can('visit_database');
+
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);
         $data = $dataType->updateDataType($request->all())
@@ -210,6 +235,8 @@ class VoyagerDatabaseController extends Controller
 
     public function deleteBread($id)
     {
+        Voyager::can('visit_database');
+
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);
         $data = DataType::destroy($id)

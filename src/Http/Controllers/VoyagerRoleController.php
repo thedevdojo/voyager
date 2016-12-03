@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use TCG\Voyager\Voyager;
 use Illuminate\Http\Request;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
@@ -11,7 +12,12 @@ class VoyagerRoleController extends VoyagerBreadController
     public function edit(Request $request, $id)
     {
         $slug = $request->segment(2);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('edit_'.$dataType->name);
+
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'find'], $id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
@@ -33,7 +39,12 @@ class VoyagerRoleController extends VoyagerBreadController
     public function update(Request $request, $id)
     {
         $slug = $request->segment(2);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('edit_'.$dataType->name);
+
         $data = call_user_func([$dataType->model_name, 'find'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
@@ -52,7 +63,11 @@ class VoyagerRoleController extends VoyagerBreadController
     public function create(Request $request)
     {
         $slug = $request->segment(2);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('add_'.$dataType->name);
 
         $permissions = Permission::all()->groupBy('table_name');
 
@@ -71,7 +86,11 @@ class VoyagerRoleController extends VoyagerBreadController
     public function store(Request $request)
     {
         $slug = $request->segment(2);
+
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('add_'.$dataType->name);
 
         if (function_exists('voyager_add_post')) {
             $url = $request->url();

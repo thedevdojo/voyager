@@ -2,8 +2,12 @@
 
 namespace TCG\Voyager;
 
-use Illuminate\Support\Facades\Storage;
+use TCG\Voyager\Models\User;
 use TCG\Voyager\Models\Setting;
+use TCG\Voyager\Models\Permission;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Voyager
 {
@@ -58,5 +62,18 @@ class Voyager
         }
 
         return $default;
+    }
+
+    public static function can($permission)
+    {
+        // Check if permission exist
+        $exist = Permission::where('key', $permission)->first();
+
+        if ($exist) {
+            $user = User::find(Auth::id());
+            if (!$user->hasPermission($permission)) {
+                throw new UnauthorizedHttpException(null);
+            }
+        }
     }
 }

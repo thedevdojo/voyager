@@ -2,14 +2,18 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use TCG\Voyager\Voyager;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Models\Setting;
+use Illuminate\Support\Facades\Storage;
 
 class VoyagerSettingsController extends Controller
 {
     public function index()
     {
+        // Check permission
+        Voyager::can('visit_settings');
+
         $settings = Setting::orderBy('order', 'ASC')->get();
 
         return view('voyager::settings.index', compact('settings'));
@@ -31,6 +35,9 @@ class VoyagerSettingsController extends Controller
 
     public function delete($id)
     {
+        // Check permission
+        Voyager::can('visit_settings');
+
         Setting::destroy($id);
 
         return back()->with([
@@ -66,6 +73,9 @@ class VoyagerSettingsController extends Controller
 
     public function delete_value($id)
     {
+        // Check permission
+        Voyager::can('visit_settings');
+
         $setting = Setting::find($id);
 
         if (isset($setting->id)) {
@@ -113,11 +123,13 @@ class VoyagerSettingsController extends Controller
 
     public function save(Request $request)
     {
+        // Check permission
+        Voyager::can('visit_settings');
+
         $settings = Setting::all();
-        $breadController = new VoyagerBreadController(); // TODO: This is bad!! Extract getContentBasedOnType() as a Helper
 
         foreach ($settings as $setting) {
-            $content = $breadController->getContentBasedOnType($request, 'settings', (object) [
+            $content = $this->getContentBasedOnType($request, 'settings', (object) [
                 'type'    => $setting->type,
                 'field'   => $setting->key,
                 'details' => $setting->details,
