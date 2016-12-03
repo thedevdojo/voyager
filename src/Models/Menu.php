@@ -4,6 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 /**
@@ -12,6 +13,11 @@ use Illuminate\Support\Str;
 class Menu extends Model
 {
     protected $table = 'menus';
+
+    private static $permissions;
+    private static $user_permissions;
+    private static $dataTypes;
+    private static $prefix;
 
     public function items()
     {
@@ -36,6 +42,15 @@ class Menu extends Model
 
         // Convert options array into object
         $options = (object) $options;
+
+        self::$permissions = Permission::all();
+
+        $user = User::find(Auth::id());
+        self::$user_permissions = $user->role->permissions->pluck('key')->toArray();
+
+        self::$dataTypes = DataType::all();
+
+        self::$prefix = config('voyager.routes.prefix');
 
         switch ($type) {
             case 'admin':
@@ -262,6 +277,29 @@ class Menu extends Model
                 $a_attrs = 'data-toggle="collapse" href="#'.$collapse_id.'"';
             } else {
                 $a_attrs = 'href="'.$item->url.'"';
+            }
+
+            // Permission Checker
+            $slug = str_replace('/', '', preg_replace('/^\/'.self::$prefix.'/', '', $item->url));
+            if($slug != '') {
+                // Get dataType using slug
+                $dataType = self::$dataTypes->first(function ($value) use ($slug) {
+                   return $value->slug == $slug;
+                });
+                if ($dataType) {
+                    // Check if permission exist
+                    $exist = self::$permissions->first(function ($value) use ($dataType) {
+                        return $value->key == 'browse_'.$dataType->name;
+                    });
+
+                    if ($exist) {
+                        // Check if current user has access
+                        if (!in_array($exist->key, self::$user_permissions))
+                        {
+                            continue;
+                        }
+                    }
+                }
             }
 
             $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'
