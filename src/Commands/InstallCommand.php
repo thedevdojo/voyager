@@ -3,9 +3,10 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
+use TCG\Voyager\VoyagerServiceProvider;
+use Symfony\Component\Console\Input\InputOption;
+use Intervention\Image\ImageServiceProviderLaravel5;
 
 class InstallCommand extends Command
 {
@@ -34,8 +35,7 @@ class InstallCommand extends Command
     protected function getOptions()
     {
         return [
-            ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
-            ['no-dummy-data', null, InputOption::VALUE_NONE, 'install without seeding dummy data', null],
+            ['with-dummy', null, InputOption::VALUE_NONE, 'Install with dummy data', null],
         ];
     }
 
@@ -60,14 +60,9 @@ class InstallCommand extends Command
      */
     public function fire()
     {
-        if (!$this->option('existing')) {
-            $this->info('Generating the default authentication scaffolding');
-            $this->call('make:auth');
-        }
-
         $this->info('Publishing the Voyager assets, database, and config files');
-        $this->call('vendor:publish', ['--provider' => \TCG\Voyager\VoyagerServiceProvider::class]);
-        $this->call('vendor:publish', ['--provider' => \Intervention\Image\ImageServiceProviderLaravel5::class]);
+        $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
+        $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
         $this->call('migrate');
@@ -80,19 +75,41 @@ class InstallCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Seeding data into the database');
-        if ($this->option('no-dummy-data')) {
-            $process = new Process('php artisan db:seed --class=DataTypesTableSeeder');
-            $process->setWorkingDirectory(base_path())->run();
-            $process = new Process('php artisan db:seed --class=DataRowsTableSeeder');
-            $process->setWorkingDirectory(base_path())->run();
-        } else {
-            $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
-            $process->setWorkingDirectory(base_path())->run();
+
+        $this->seed([
+            'DataTypesTableSeeder',
+            'DataRowsTableSeeder',
+            'RolesTableSeeder',
+            'MenusTableSeeder',
+            'MenuItemsTableSeeder',
+        ]);
+
+        if ($this->option('with-dummy')) {
+            $this->seed([
+                'CategoriesTableSeeder',
+                'UsersTableSeeder',
+                'PostsTableSeeder',
+                'PagesTableSeeder',
+                'SettingsTableSeeder',
+            ]);
         }
 
         $this->info('Adding the storage symlink to your public folder');
         $this->call('storage:link');
 
-        $this->info('Successfully installed Voyager! Enjoy :)');
+        $this->info('Successfully installed Voyager! Enjoy 🎉');
+    }
+
+    /**
+     * Run database seeders.
+     *
+     * @param array $seeders
+     */
+    protected function seed(array $seeders)
+    {
+        foreach ($seeders as $seeder) {
+            $process = new Process('php artisan db:seed --class='.$seeder);
+            $process->setWorkingDirectory(base_path())->run();
+        }
     }
 }
