@@ -100,9 +100,7 @@ class VoyagerRoleController extends VoyagerBreadController
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
 
-        if (!empty($request->input('permissions', []))) {
-            $data->permissions()->sync($request->input('permissions'));
-        }
+        $data->permissions()->sync($request->input('permissions', []));
 
         return redirect()
             ->route("{$dataType->slug}.index")
