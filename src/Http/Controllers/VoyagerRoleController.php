@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use TCG\Voyager\Voyager;
 use Illuminate\Http\Request;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
+use TCG\Voyager\Voyager;
 
 class VoyagerRoleController extends VoyagerBreadController
 {

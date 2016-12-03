@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class VoyagerAuthController extends Controller
 {

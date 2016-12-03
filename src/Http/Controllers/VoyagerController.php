@@ -2,13 +2,13 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use TCG\Voyager\Voyager;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Intervention\Image\Constraint;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Constraint;
+use Intervention\Image\Facades\Image;
+use TCG\Voyager\Voyager;
 
 class VoyagerController extends Controller
 {
