@@ -110,12 +110,12 @@ class VoyagerDatabaseController extends Controller
         return 0;
     }
 
-    public function table($table)
+    public function show($table)
     {
         return response()->json($this->describeTable($table));
     }
 
-    public function delete($table)
+    public function destroy($table)
     {
         try {
             Schema::drop($table);

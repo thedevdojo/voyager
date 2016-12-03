@@ -51,10 +51,10 @@
                                         <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}">
                                             <i class="voyager-trash"></i> Delete
                                         </div>
-                                        <a href="{{ route('menus.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
+                                        <a href="{{ route('voyager.menus.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
                                             <i class="voyager-edit"></i> Edit
                                         </a>
-                                        <a href="{{ route('voyager.menu.builder', $data->id) }}" class="btn-sm btn-success pull-right">
+                                        <a href="{{ route('voyager.menus.builder', $data->id) }}" class="btn-sm btn-success pull-right">
                                             <i class="voyager-list"></i> Builder
                                         </a>
                                     </td>
@@ -80,7 +80,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('menus.index') }}" id="delete_form" method="POST">
+                    <form action="{{ route('voyager.menus.index') }}" id="delete_form" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This {{ $dataType->display_name_singular }}">

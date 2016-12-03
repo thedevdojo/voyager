@@ -55,7 +55,7 @@
 
 @section('content')
     <div class="page-content container-fluid">
-        <form role="form" action="@if(isset($dataTypeContent->id)){{ route('posts.update', $dataTypeContent->id) }}@else{{ route('posts.store') }}@endif" method="POST" enctype="multipart/form-data">
+        <form role="form" action="@if(isset($dataTypeContent->id)){{ route('voyager.posts.update', $dataTypeContent->id) }}@else{{ route('voyager.posts.store') }}@endif" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="row">
                 <div class="col-md-8">

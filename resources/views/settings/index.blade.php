@@ -176,7 +176,7 @@
     </div>
 
     <div class="page-content container-fluid">
-        <form action="{{ route('voyager.settings') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('voyager.settings.store') }}" method="POST" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="panel">
                 @foreach($settings as $setting)
@@ -371,7 +371,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.settings') }}" id="delete_form" method="POST">
+                    <form action="{{ route('voyager.settings.delete') }}" id="delete_form" method="POST">
                         {{ csrf_field() }}
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This Setting">
@@ -385,7 +385,7 @@
     <script>
         $('document').ready(function () {
             $('.voyager-trash').click(function () {
-                var action = '{{ route('voyager.settings') }}/' + $(this).data('id'),
+                var action = '{{ route('voyager.settings.index') }}/' + $(this).data('id'),
                     display = $(this).data('display-name') + '/' + $(this).data('display-key');
 
                 $('#delete_setting_title').text(display);

@@ -169,13 +169,13 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                                 <div class="panel-body">
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a href="{{route('menus.index')}}">
+                                            <a href="{{route('voyager.menus.index')}}">
                                                 <span class="icon voyager-list"></span>
                                                 <span class="title">Menu Builder</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="animsition-link" href="{{ route('voyager.database') }}">
+                                            <a class="animsition-link" href="{{ route('voyager.database.index') }}">
                                                 <span class="icon voyager-data"></span>
                                                 <span class="title">Database</span>
                                             </a>
@@ -185,7 +185,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                             </div>
                         </li>
                         <li>
-                            <a href="{{ route('voyager.settings') }}">
+                            <a href="{{ route('voyager.settings.index') }}">
                                 <span class="icon voyager-settings"></span>
                                 <span class="title">Settings</span>
                             </a>

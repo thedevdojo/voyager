@@ -54,7 +54,7 @@
                         item?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.menu.delete_menu_item') }}" id="delete_form"
+                    <form action="{{ route('voyager.menus.delete_menu_item') }}" id="delete_form"
                           method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -76,7 +76,7 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-plus"></i> Create a New Menu Item</h4>
                 </div>
-                <form action="{{ route('voyager.menu.add_item') }}" id="delete_form" method="POST">
+                <form action="{{ route('voyager.menus.add_item') }}" id="delete_form" method="POST">
                     <div class="modal-body">
                         <label for="name">Title of the Menu Item</label>
                         <input type="text" class="form-control" name="title" placeholder="Title"><br>
@@ -116,7 +116,7 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-edit"></i> Edit Menu Item</h4>
                 </div>
-                <form action="{{ route('voyager.menu.update_menu_item') }}" id="edit_form" method="POST">
+                <form action="{{ route('voyager.menus.update_menu_item') }}" id="edit_form" method="POST">
                     <div class="modal-body">
                         <label for="name">Title of the Menu Item</label>
                         <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
@@ -185,7 +185,7 @@
 
             $('.dd').on('change', function (e) {
                 console.log(JSON.stringify($('.dd').nestable('serialize')));
-                $.post('{{ route('voyager.menu.order_item') }}', {
+                $.post('{{ route('voyager.menus.order_item') }}', {
                     order: JSON.stringify($('.dd').nestable('serialize')),
                     _token: '{{ csrf_token() }}'
                 }, function (data) {
