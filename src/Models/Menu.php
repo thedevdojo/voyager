@@ -281,10 +281,10 @@ class Menu extends Model
 
             // Permission Checker
             $slug = str_replace('/', '', preg_replace('/^\/'.self::$prefix.'/', '', $item->url));
-            if($slug != '') {
+            if ($slug != '') {
                 // Get dataType using slug
                 $dataType = self::$dataTypes->first(function ($value) use ($slug) {
-                   return $value->slug == $slug;
+                    return $value->slug == $slug;
                 });
                 if ($dataType) {
                     // Check if permission exist
@@ -294,8 +294,7 @@ class Menu extends Model
 
                     if ($exist) {
                         // Check if current user has access
-                        if (!in_array($exist->key, self::$user_permissions))
-                        {
+                        if (!in_array($exist->key, self::$user_permissions)) {
                             continue;
                         }
                     }
