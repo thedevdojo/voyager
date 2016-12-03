@@ -19,6 +19,8 @@ Video Demo Here: https://devdojo.com/episode/laravel-admin-package-voyager
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
+<hr>
+
 Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Laravel 5.3.
 
 After creating your new Laravel application you can include the Voyager package with the following command: 
