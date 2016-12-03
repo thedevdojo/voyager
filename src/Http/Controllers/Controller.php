@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Intervention\Image\Constraint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -182,7 +183,7 @@ abstract class Controller extends BaseController
         //$dataType = DataType::where('slug', '=', $slug)->first();
     }
 
-    private function deleteFileIfExists($path)
+    public function deleteFileIfExists($path)
     {
         if (Storage::exists($path)) {
             Storage::delete($path);
