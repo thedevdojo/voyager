@@ -25,11 +25,11 @@ class VoyagerBreadController extends Controller
         // GET THE SLUG, ex. 'posts', 'pages', etc.
         $slug = explode('.', $request->route()->getName())[0];
 
-        // Check permission
-        Voyager::can('browse_'.$slug);
-
         // GET THE DataType based on the slug
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('browse_'.$dataType->name);
 
         // Next Get the actual content from the MODEL that corresponds to the slug DataType
         $dataTypeContent = (strlen($dataType->model_name) != 0)
@@ -63,10 +63,10 @@ class VoyagerBreadController extends Controller
     {
         $slug = explode('.', $request->route()->getName())[0];
 
-        // Check permission
-        Voyager::can('read_'.$slug);
-
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('read_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'find'], $id)
@@ -99,10 +99,11 @@ class VoyagerBreadController extends Controller
     {
         $slug = explode('.', $request->route()->getName())[0];
 
-        // Check permission
-        Voyager::can('edit_'.$slug);
-
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('edit_'.$dataType->name);
+
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'find'], $id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
@@ -123,10 +124,11 @@ class VoyagerBreadController extends Controller
     {
         $slug = explode('.', $request->route()->getName())[0];
 
-        // Check permission
-        Voyager::can('edit_'.$slug);
-
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('edit_'.$dataType->name);
+
         $data = call_user_func([$dataType->model_name, 'find'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
@@ -155,10 +157,10 @@ class VoyagerBreadController extends Controller
     {
         $slug = explode('.', $request->route()->getName())[0];
 
-        // Check permission
-        Voyager::can('add_'.$slug);
-
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('add_'.$dataType->name);
 
         $view = 'voyager::bread.edit-add';
 
@@ -176,10 +178,10 @@ class VoyagerBreadController extends Controller
     {
         $slug = explode('.', $request->route()->getName())[0];
 
-        // Check permission
-        Voyager::can('add_'.$slug);
-
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('add_'.$dataType->name);
 
         if (function_exists('voyager_add_post')) {
             $url = $request->url();
@@ -213,10 +215,10 @@ class VoyagerBreadController extends Controller
     {
         $slug = explode('.', $request->route()->getName())[0];
 
-        // Check permission
-        Voyager::can('delete_'.$slug);
-
         $dataType = DataType::where('slug', '=', $slug)->first();
+
+        // Check permission
+        Voyager::can('delete_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'find'], $id);
 
