@@ -2,18 +2,18 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
-use Illuminate\Console\AppNamespaceDetectorTrait;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Schema;
+use Exception;
+use TCG\Voyager\Voyager;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use TCG\Voyager\Models\DataType;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Models\DataType;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use TCG\Voyager\Voyager;
-use Exception;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Console\AppNamespaceDetectorTrait;
+use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 
 class VoyagerDatabaseController extends Controller
 {

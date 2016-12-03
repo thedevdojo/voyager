@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
-use TCG\Voyager\Voyager;
 use Exception;
+use TCG\Voyager\Voyager;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VoyagerMediaController extends Controller
 {
