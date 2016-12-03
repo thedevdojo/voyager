@@ -17,7 +17,8 @@ class Post extends Model
         parent::save();
     }
 
-    public function author_id(){
-    	return $this->belongsTo(User::class);
+    public function author_id()
+    {
+        return $this->belongsTo(User::class);
     }
 }
