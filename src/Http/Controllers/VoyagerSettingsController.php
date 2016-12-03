@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
-use TCG\Voyager\Models\Setting;
-use Illuminate\Http\Request;
 use TCG\Voyager\Voyager;
+use Illuminate\Http\Request;
+use TCG\Voyager\Models\Setting;
+use Illuminate\Support\Facades\Storage;
 
 class VoyagerSettingsController extends Controller
 {
