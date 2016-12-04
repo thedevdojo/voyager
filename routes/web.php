@@ -23,6 +23,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
         endforeach;
     } catch (\InvalidArgumentException $e) {
         throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
+    } catch (\Exception $e) {
     }
 
     // Menu Routes
