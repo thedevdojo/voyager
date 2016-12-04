@@ -12,7 +12,7 @@ class VoyagerSettingsController extends Controller
     public function index()
     {
         // Check permission
-        Voyager::can('visit_settings');
+        Voyager::can('browse_settings');
 
         $settings = Setting::orderBy('order', 'ASC')->get();
 
@@ -21,6 +21,8 @@ class VoyagerSettingsController extends Controller
 
     public function create(Request $request)
     {
+        Voyager::can('browse_settings');
+
         $lastSetting = Setting::orderBy('order', 'DESC')->first();
         $order = intval($lastSetting->order) + 1;
         $request->merge(['order' => $order]);
@@ -35,6 +37,8 @@ class VoyagerSettingsController extends Controller
 
     public function delete($id)
     {
+        Voyager::can('browse_settings');
+
         // Check permission
         Voyager::can('visit_settings');
 
@@ -74,7 +78,7 @@ class VoyagerSettingsController extends Controller
     public function delete_value($id)
     {
         // Check permission
-        Voyager::can('visit_settings');
+        Voyager::can('browse_settings');
 
         $setting = Setting::find($id);
 
@@ -124,7 +128,7 @@ class VoyagerSettingsController extends Controller
     public function save(Request $request)
     {
         // Check permission
-        Voyager::can('visit_settings');
+        Voyager::can('browse_settings');
 
         $settings = Setting::all();
 

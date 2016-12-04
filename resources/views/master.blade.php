@@ -158,6 +158,11 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
 
                     <?= Menu::display('admin', 'admin_menu'); ?>
 
+                        <?php
+                            $user = TCG\Voyager\Models\User::find(Auth::id());
+                        ?>
+
+                        @if ($user->hasPermission('browse_menus') || $user->hasPermission('browse_database'))
                         <li class="dropdown">
                             <a data-toggle="collapse" href="#tools-dropdown-element">
                                 <span class="icon voyager-tools"></span>
@@ -168,28 +173,35 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                             <div id="tools-dropdown-element" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <ul class="nav navbar-nav">
+                                        @if ($user->hasPermission('browse_menus'))
                                         <li>
                                             <a href="{{route('menus.index')}}">
                                                 <span class="icon voyager-list"></span>
                                                 <span class="title">Menu Builder</span>
                                             </a>
                                         </li>
+                                        @endif
+                                        @if ($user->hasPermission('browse_database'))
                                         <li>
                                             <a class="animsition-link" href="{{ route('voyager.database') }}">
                                                 <span class="icon voyager-data"></span>
                                                 <span class="title">Database</span>
                                             </a>
                                         </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
                         </li>
+                        @endif
+                        @if ($user->hasPermission('browse_settings'))
                         <li>
                             <a href="{{ route('voyager.settings') }}">
                                 <span class="icon voyager-settings"></span>
                                 <span class="title">Settings</span>
                             </a>
                         </li>
+                        @endif
                     </ul>
                     <!-- /.navbar-collapse -->
                     </div>

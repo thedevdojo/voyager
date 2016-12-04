@@ -10,6 +10,8 @@ class VoyagerMenuController extends Controller
 {
     public function builder($id)
     {
+        Voyager::can('edit_menus');
+
         $menu = Menu::find($id);
 
         return view('voyager::menus.builder', compact('menu'));
@@ -17,6 +19,8 @@ class VoyagerMenuController extends Controller
 
     public function delete_menu($id)
     {
+        Voyager::can('delete_menus');
+
         $item = MenuItem::find($id);
         $menuId = $item->menu_id;
         $item->destroy($id);
@@ -31,6 +35,8 @@ class VoyagerMenuController extends Controller
 
     public function add_item(Request $request)
     {
+        Voyager::can('add_menus');
+
         $data = $request->all();
         $highestOrderMenuItem = MenuItem::where('parent_id', '=', null)
             ->orderBy('order', 'DESC')
@@ -52,6 +58,8 @@ class VoyagerMenuController extends Controller
 
     public function update_item(Request $request)
     {
+        Voyager::can('edit_menus');
+
         $id = $request->input('id');
         $data = $request->except(['id']);
         $menuItem = MenuItem::find($id);
