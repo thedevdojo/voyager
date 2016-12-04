@@ -21,7 +21,7 @@ class VoyagerMenu extends Model
 
     public function items()
     {
-        return $this->hasMany('TCG\Voyager\Models\MenuItem');
+        return $this->hasMany('TCG\Voyager\Models\MenuItem', 'menu_id');
     }
 
     /**

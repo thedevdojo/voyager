@@ -15,7 +15,7 @@ class VoyagerDataType extends Model
 
     public function rows()
     {
-        return $this->hasMany(DataRow::class);
+        return $this->hasMany(DataRow::class, 'data_type_id');
     }
 
     public function browseRows()
