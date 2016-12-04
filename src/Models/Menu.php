@@ -253,8 +253,6 @@ class Menu extends Model
 
         $parentItems = $parentItems->sortBy('order');
 
-        $output .= '<ul class="nav navbar-nav">';
-
         foreach ($parentItems as $item) {
             $li_class = '';
             $a_attrs = '';
@@ -301,21 +299,35 @@ class Menu extends Model
                 }
             }
 
+            $children_output = null;
+
+            if ($children_menu_items->count() > 0) {
+                $children_output = self::buildAdminMenuOutput($menuItems, '', [], $request, $item->id);
+                if ($children_output == '') {
+                    continue;
+                }
+            }
+
             $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'
                 .'<span class="icon '.$item->icon_class.'"></span>'
                 .'<span class="title">'.$item->title.'</span></a>';
 
-            if ($children_menu_items->count() > 0) {
+            if (!is_null($children_output)) {
                 // Add tag for collapse panel
                 $output .= '<div id="'.$collapse_id.'" class="panel-collapse collapse"><div class="panel-body">';
-                $output = self::buildAdminMenuOutput($menuItems, $output, [], $request, $item->id);
+                //$output = self::buildAdminMenuOutput($menuItems, $output, [], $request, $item->id);
+                $output .= $children_output;
                 $output .= '</div></div>';      // close tag of collapse panel
             }
 
             $output .= '</li>';
         }
 
-        return $output; // TODO: Check if is missing a closing ul tag!!
+        if (empty($output)) {
+            return '';
+        }
+
+        return '<ul class="nav navbar-nav">'.$output; // TODO: Check if is missing a closing ul tag!!
     }
 
     /**
