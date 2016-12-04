@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 /**
  * @todo: Refactor this class by using something like MenuBuilder Helper.
  */
-class Menu extends Model
+class VoyagerMenu extends Model
 {
     protected $table = 'menus';
 

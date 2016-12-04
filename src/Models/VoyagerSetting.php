@@ -4,7 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Setting extends Model
+class VoyagerSetting extends Model
 {
     protected $table = 'settings';
 

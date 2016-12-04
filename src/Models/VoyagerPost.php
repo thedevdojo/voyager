@@ -5,8 +5,10 @@ namespace TCG\Voyager\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class Post extends Model
+class VoyagerPost extends Model
 {
+    protected $table = 'posts';
+
     public function save(array $options = [])
     {
         // If no author has been assigned, assign the current user's id as the author of the post

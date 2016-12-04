@@ -5,7 +5,7 @@ namespace TCG\Voyager\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 
-class DataType extends Model
+class VoyagerDataType extends Model
 {
     protected $table = 'data_types';
 

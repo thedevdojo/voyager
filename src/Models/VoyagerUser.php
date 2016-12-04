@@ -4,11 +4,13 @@ namespace TCG\Voyager\Models;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as AuthUser;
-use TCG\Voyager\Traits\VoyagerUser;
+use TCG\Voyager\Traits\VoyagerUser as VoyagerUserTrait;
 
-class User extends AuthUser
+class VoyagerUser extends AuthUser
 {
-    use VoyagerUser;
+    use VoyagerUserTrait;
+
+    protected $table = 'users';
 
     public function getNameAttribute($value)
     {
