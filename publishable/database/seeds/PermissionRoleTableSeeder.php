@@ -1,6 +1,8 @@
 <?php
 
+use TCG\Voyager\Models\Role;
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\Permission;
 
 class PermissionRoleTableSeeder extends Seeder
 {
@@ -11,133 +13,12 @@ class PermissionRoleTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('permission_role')->delete();
+        $role = Role::where('name', 'admin')->firstOrFail();
 
-        \DB::table('permission_role')->insert([
-            0 => [
-                'permission_id' => 1,
-                'role_id'       => 1,
-            ],
-            1 => [
-                'permission_id' => 2,
-                'role_id'       => 1,
-            ],
-            2 => [
-                'permission_id' => 3,
-                'role_id'       => 1,
-            ],
-            3 => [
-                'permission_id' => 4,
-                'role_id'       => 1,
-            ],
-            4 => [
-                'permission_id' => 5,
-                'role_id'       => 1,
-            ],
-            5 => [
-                'permission_id' => 6,
-                'role_id'       => 1,
-            ],
-            6 => [
-                'permission_id' => 7,
-                'role_id'       => 1,
-            ],
-            7 => [
-                'permission_id' => 8,
-                'role_id'       => 1,
-            ],
-            8 => [
-                'permission_id' => 9,
-                'role_id'       => 1,
-            ],
-            9 => [
-                'permission_id' => 10,
-                'role_id'       => 1,
-            ],
-            10 => [
-                'permission_id' => 11,
-                'role_id'       => 1,
-            ],
-            11 => [
-                'permission_id' => 12,
-                'role_id'       => 1,
-            ],
-            12 => [
-                'permission_id' => 13,
-                'role_id'       => 1,
-            ],
-            13 => [
-                'permission_id' => 14,
-                'role_id'       => 1,
-            ],
-            14 => [
-                'permission_id' => 15,
-                'role_id'       => 1,
-            ],
-            15 => [
-                'permission_id' => 16,
-                'role_id'       => 1,
-            ],
-            16 => [
-                'permission_id' => 17,
-                'role_id'       => 1,
-            ],
-            17 => [
-                'permission_id' => 18,
-                'role_id'       => 1,
-            ],
-            18 => [
-                'permission_id' => 19,
-                'role_id'       => 1,
-            ],
-            19 => [
-                'permission_id' => 20,
-                'role_id'       => 1,
-            ],
-            20 => [
-                'permission_id' => 21,
-                'role_id'       => 1,
-            ],
-            21 => [
-                'permission_id' => 22,
-                'role_id'       => 1,
-            ],
-            22 => [
-                'permission_id' => 23,
-                'role_id'       => 1,
-            ],
-            23 => [
-                'permission_id' => 24,
-                'role_id'       => 1,
-            ],
-            24 => [
-                'permission_id' => 25,
-                'role_id'       => 1,
-            ],
-            25 => [
-                'permission_id' => 26,
-                'role_id'       => 1,
-            ],
-            26 => [
-                'permission_id' => 27,
-                'role_id'       => 1,
-            ],
-            27 => [
-                'permission_id' => 28,
-                'role_id'       => 1,
-            ],
-            28 => [
-                'permission_id' => 29,
-                'role_id'       => 1,
-            ],
-            29 => [
-                'permission_id' => 30,
-                'role_id'       => 1,
-            ],
-            30 => [
-                'permission_id' => 31,
-                'role_id'       => 1,
-            ],
-        ]);
+        $permissions = Permission::all();
+
+        $role->permissions()->sync(
+            $permissions->pluck('id')->all()
+        );
     }
 }
