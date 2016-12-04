@@ -25,6 +25,11 @@ class Voyager
         return static::$instance;
     }
 
+    public function getVersion()
+    {
+        return 'v0.10-dev';
+    }
+
     protected function __construct()
     {
     }
