@@ -115,7 +115,7 @@
                                             @if(isset($options->relationship))
                                                 <!-- Check that the method relationship exists -->
                                                 @if( method_exists( $dataType->model_name, $row->field ) )
-                                                    <?php $selected_values = isset($dataTypeContent->{$row->field}) ? $dataTypeContent->{$row->field}()->getRelated()->pluck($options->relationship->key)->all() : array(); ?>
+                                                    <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{$row->field}()->getRelated()->pluck($options->relationship->key)->all() : array(); ?>
                                                     <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
                                                     <?php $relationshipOptions = $relationshipClass::all(); ?>
                                                     @foreach($relationshipOptions as $relationshipOption)
