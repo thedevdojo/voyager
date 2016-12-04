@@ -18,13 +18,11 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     ]);
 
     try {
-
         foreach (TCG\Voyager\Models\DataType::all() as $dataTypes):
             Route::resource($dataTypes->slug, 'VoyagerBreadController');
         endforeach;
-
     } catch (\InvalidArgumentException $e) {
-        throw new \InvalidArgumentException("Custom routes hasn't been configured because: " . $e->getMessage(), 1);
+        throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
     }
 
     // Menu Routes
