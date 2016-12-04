@@ -20,7 +20,6 @@ class RolesTest extends TestCase
         $this->press('Login Logging in');
         $this->seePageIs(route('voyager.dashboard'));
 
-
         // Adding a New Role
         $this->visit(route('roles.index'))->click('Add New')->seePageIs(route('roles.create'));
         $this->type('superadmin', 'name');
