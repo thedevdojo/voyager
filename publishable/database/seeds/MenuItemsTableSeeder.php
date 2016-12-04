@@ -1,5 +1,6 @@
 <?php
 
+use TCG\Voyager\Models\Menu;
 use Illuminate\Database\Seeder;
 
 class MenuItemsTableSeeder extends Seeder
@@ -14,12 +15,12 @@ class MenuItemsTableSeeder extends Seeder
         if (file_exists(base_path('routes/vendor/voyager.php'))) {
             require base_path('routes/vendor/voyager.php');
 
-            \DB::table('menu_items')->delete();
+            $menu = Menu::where('name', 'admin')->firstOrFail();
 
             \DB::table('menu_items')->insert([
                 0 => [
                     'id'         => 1,
-                    'menu_id'    => 2,
+                    'menu_id'    => $menu->id,
                     'title'      => 'Dashboard',
                     'url'        => route('voyager.dashboard', [], false),
                     'target'     => '_self',
@@ -32,7 +33,7 @@ class MenuItemsTableSeeder extends Seeder
                 ],
                 1 => [
                     'id'         => 2,
-                    'menu_id'    => 2,
+                    'menu_id'    => $menu->id,
                     'title'      => 'Media',
                     'url'        => route('voyager.media', [], false),
                     'target'     => '_self',
@@ -45,7 +46,7 @@ class MenuItemsTableSeeder extends Seeder
                 ],
                 2 => [
                     'id'         => 3,
-                    'menu_id'    => 2,
+                    'menu_id'    => $menu->id,
                     'title'      => 'Posts',
                     'url'        => route('posts.index', [], false),
                     'target'     => '_self',
@@ -58,7 +59,7 @@ class MenuItemsTableSeeder extends Seeder
                 ],
                 3 => [
                     'id'         => 4,
-                    'menu_id'    => 2,
+                    'menu_id'    => $menu->id,
                     'title'      => 'Users',
                     'url'        => route('users.index', [], false),
                     'target'     => '_self',
@@ -71,7 +72,7 @@ class MenuItemsTableSeeder extends Seeder
                 ],
                 4 => [
                     'id'         => 5,
-                    'menu_id'    => 2,
+                    'menu_id'    => $menu->id,
                     'title'      => 'Categories',
                     'url'        => route('categories.index', [], false),
                     'target'     => '_self',
@@ -84,7 +85,7 @@ class MenuItemsTableSeeder extends Seeder
                 ],
                 5 => [
                     'id'         => 6,
-                    'menu_id'    => 2,
+                    'menu_id'    => $menu->id,
                     'title'      => 'Pages',
                     'url'        => route('pages.index', [], false),
                     'target'     => '_self',
@@ -97,7 +98,7 @@ class MenuItemsTableSeeder extends Seeder
                 ],
                 6 => [
                     'id'         => 7,
-                    'menu_id'    => 2,
+                    'menu_id'    => $menu->id,
                     'title'      => 'Roles',
                     'url'        => route('roles.index', [], false),
                     'target'     => '_self',
