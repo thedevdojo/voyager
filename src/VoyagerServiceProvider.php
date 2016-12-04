@@ -20,6 +20,12 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->register(\Intervention\Image\ImageServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
+
+        foreach (['User', 'Setting', 'Role', 'Post', 'Permission', 'Page', 'MenuItem', 'Menu', 'DataType', 'DataRow', 'Category'] as $model) {
+            $name = ucfirst(camel_case($model));
+            $loader->alias("TCG\\Voyager\\Models\\{$name}", config("voyager.models.{$model}", "TCG\\Voyager\\Models\\Voyager{$name}"));
+        }
+
         $loader->alias('Menu', Menu::class);
         $loader->alias('Voyager', VoyagerFacade::class);
 

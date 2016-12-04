@@ -4,7 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DataRow extends Model
+class VoyagerDataRow extends Model
 {
     protected $table = 'data_rows';
 

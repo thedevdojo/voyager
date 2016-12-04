@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 /**
  * @todo: Refactor this class by using something like MenuBuilder Helper.
  */
-class Menu extends Model
+class VoyagerMenu extends Model
 {
     protected $table = 'menus';
 
@@ -21,7 +21,7 @@ class Menu extends Model
 
     public function items()
     {
-        return $this->hasMany('TCG\Voyager\Models\MenuItem');
+        return $this->hasMany('TCG\Voyager\Models\MenuItem', 'menu_id');
     }
 
     /**

@@ -5,7 +5,7 @@ namespace TCG\Voyager\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 
-class DataType extends Model
+class VoyagerDataType extends Model
 {
     protected $table = 'data_types';
 
@@ -15,7 +15,7 @@ class DataType extends Model
 
     public function rows()
     {
-        return $this->hasMany(DataRow::class);
+        return $this->hasMany(DataRow::class, 'data_type_id');
     }
 
     public function browseRows()

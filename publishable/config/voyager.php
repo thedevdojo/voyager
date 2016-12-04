@@ -68,4 +68,27 @@ return [
         'subfolder' => 'public/', // include trailing slash, like 'my_folder/'
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Models config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify models related to your Voyager system
+    |
+    */
+
+    'models' => [
+        'user' => \TCG\Voyager\Models\VoyagerUser::class,
+        'menu' => \TCG\Voyager\Models\VoyagerMenu::class,
+        'menu_item' => \TCG\Voyager\Models\VoyagerMenuItem::class,
+        'category' => \TCG\Voyager\Models\VoyagerCategory::class,
+        'page' => \TCG\Voyager\Models\VoyagerPage::class,
+        'post' => \TCG\Voyager\Models\VoyagerPost::class,
+        'data_row' => \TCG\Voyager\Models\VoyagerDataRow::class,
+        'data_type' => \TCG\Voyager\Models\VoyagerDataType::class,
+        'permission' => \TCG\Voyager\Models\VoyagerPermission::class,
+        'role' => \TCG\Voyager\Models\VoyagerRole::class,
+        'setting' => \TCG\Voyager\Models\VoyagerSetting::class,
+    ],
+
 ];
