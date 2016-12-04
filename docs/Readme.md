@@ -3,7 +3,6 @@ Voyager Docs
 
 >> THESE DOCS ARE CURRENTLY STILL IN PROGRESS
 
-![](../images/helm.png)
 Welcome to the Voyager Documentation. These docs will teach you how to install, configure, and use Voyager so that way you can create some kick ass stuff. 
 
 Hm Hm (cough)... I mean... Arrgg! Ye young scallywag! What say we learn how to steer this ship!
@@ -11,7 +10,7 @@ Hm Hm (cough)... I mean... Arrgg! Ye young scallywag! What say we learn how to s
 Install
 ---------------
 
-Voyager is super easy to install. First off, you'll need to have all the requirements needed to install a Laravel app. Then, after creating your new Laravel application you can include the Voyager package with the following command: 
+Voyager is super easy to install. First off, you'll need to have all the requirements needed to install a Laravel app. Then, after creating your new Laravel app you can include the Voyager package with the following command: 
 
 ```php
 composer require "tcg/voyager"
@@ -67,7 +66,7 @@ Start up a local development server with `php artisan serve` And, visit http://l
 Upgrade
 ---------------
 
-The latest version of Voyager is at 0.9 and will be at 1.0 release soon, but for now to update to the latest version inside of your `composer.json` file make sure to update the version of voyager inside the require declaration inside of your `composer.json` to:
+The latest version of Voyager is at 0.9 and will be at 0.10.0 release soon, but for now to update to the latest version inside of your `composer.json` file make sure to update the version of voyager inside the require declaration inside of your `composer.json` to:
 
 ```php
 "tcg/voyager": "0.9.*"
@@ -82,6 +81,9 @@ php artisan vendor:publish --tag=voyager_assets --force
 ```
 
 And now you'll be upgraded to the latest version.
+
+**Version 0.10.0**
+Version 0.10.0 will be available very soon and it will include some awesome new features. Stay tuned to find out how to upgrade to the latest version.
 
 Database Tools
 ---------------
@@ -201,6 +203,77 @@ This is only valid if you have set your image to be resized. If you specify your
 
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
+
+### Relationships (only available in v0.10.0)
+
+Using the bread builder additional options you can add relationships to rows. There are 2 input types that will allow you to implement a relationship with another table.
+
+- Dropdown
+- Multiple Select
+
+#### Dropdown
+
+A dropdown can create a `belongsTo` relationship from the current DataType to another table. Let's say for instance that we had an `author_id` row in the a `pages` table and we wanted to correspond that with an `id` from a `users` table. 
+
+Simple enough, in the `pages` BREAD we could choose a *Select Dropdown* as the input type of the `author_id` row and include the following *Optional Details*:
+
+```
+{
+    "relationship": {
+        "key": "id",
+        "label": "name"
+    }
+}
+```
+
+The **key** above will be the row that we want to use as the value in the select dropddown and the **label** will be the row that we want to display in the dropdown.
+
+Finally, we'll need to create a relationship in the `Page` class. This would look like the following:
+
+```
+public function author_id(){
+    return $this->belongsTo(User::class);
+}
+```
+
+> Note: the method used for this relationship, must match the name of the row from the `pages` table. Which is why we used `author_id` as the method name to tie the relationship.
+
+And that's how we can perform a One-to-One relationship. Next, you'll see how to create a Many-to-Many relationship.
+
+#### Multiple Select
+
+Using a multi select dropdown we can create a `belongsToMany` relationship. This adds a Many-to-Many relationship between 2 tables using a pivot table.
+
+As an example we will say that we have a `categories` table, `pages` table, and the pivot table `category_page`.
+
+Simply enough, inside of the `pages` BREAD we would choose a *Multiple Select* as the input type for a `categories` row (this row can be any type) and include the following *Optional Details* as we did above:
+
+```
+{
+    "relationship": {
+        "key": "id",
+        "label": "name"
+    }
+}
+```
+
+Now, we'll need to create the relationship inside of the `Page` class like so:
+
+```
+public function categories(){
+    return $this->belongsToMany(Category::class);
+}
+```
+
+> Note: if you are using a pivot table that has a different table name then the typical convention, you can specify the name of that pivot table like so:
+
+```
+public function categories(){
+    return $this->belongsToMany(Category::class, 'page_categories');
+}
+```
+
+Now, when you have save the results from your Many-to-Many relationship the ID's of each selected value will be synced and added to your pivot table.
 
 Customization
 ---------------
