@@ -17,7 +17,7 @@ class PermissionRoleTableSeeder extends Seeder
 
         $permissions = Permission::all();
 
-        $role->permissions()->attach(
+        $role->permissions()->sync(
             $permissions->pluck('id')->all()
         );
     }
