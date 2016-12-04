@@ -1,7 +1,7 @@
 <?php
 
-use TCG\Voyager\Models\Setting;
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\Setting;
 
 class SettingsTableSeeder extends Seeder
 {
@@ -13,15 +13,15 @@ class SettingsTableSeeder extends Seeder
     public function run()
     {
         $setting = Setting::firstOrNew([
-            'key'          => 'title'
+            'key'          => 'title',
         ]);
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Title',
-                'value' => 'Site Title',
-                'details' => '',
-                'type' => 'text',
-                'order' => 1,
+                'value'        => 'Site Title',
+                'details'      => '',
+                'type'         => 'text',
+                'order'        => 1,
             ])->save();
         }
 
@@ -31,23 +31,23 @@ class SettingsTableSeeder extends Seeder
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Description',
-                'value' => 'Site Description',
-                'details' => '',
-                'type' => 'text',
-                'order' => 2,
+                'value'        => 'Site Description',
+                'details'      => '',
+                'type'         => 'text',
+                'order'        => 2,
             ])->save();
         }
 
         $setting = Setting::firstOrNew([
-            'key'          => 'logo'
+            'key'          => 'logo',
         ]);
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Logo',
-                'value' => '',
-                'details' => '',
-                'type' => 'image',
-                'order' => 3,
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'image',
+                'order'        => 3,
             ])->save();
         }
 
@@ -57,10 +57,10 @@ class SettingsTableSeeder extends Seeder
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Background Image',
-                'value' => '',
-                'details' => '',
-                'type' => 'image',
-                'order' => 6,
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'image',
+                'order'        => 6,
             ])->save();
         }
 
@@ -70,10 +70,10 @@ class SettingsTableSeeder extends Seeder
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Title',
-                'value' => 'Voyager',
-                'details' => '',
-                'type' => 'text',
-                'order' => 4,
+                'value'        => 'Voyager',
+                'details'      => '',
+                'type'         => 'text',
+                'order'        => 4,
             ])->save();
         }
 
@@ -83,10 +83,10 @@ class SettingsTableSeeder extends Seeder
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Description',
-                'value' => 'Welcome to Voyager. The Missing Admin for Laravel',
-                'details' => '',
-                'type' => 'text',
-                'order' => 5,
+                'value'        => 'Welcome to Voyager. The Missing Admin for Laravel',
+                'details'      => '',
+                'type'         => 'text',
+                'order'        => 5,
             ])->save();
         }
 
@@ -96,10 +96,10 @@ class SettingsTableSeeder extends Seeder
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Google Analytics Client ID',
-                'value' => '',
-                'details' => '',
-                'type' => 'text',
-                'order' => 6,
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'text',
+                'order'        => 6,
             ])->save();
         }
     }

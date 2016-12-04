@@ -3,11 +3,11 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Artisan;
-use TCG\Voyager\VoyagerServiceProvider;
-use Symfony\Component\Console\Input\InputOption;
 use Intervention\Image\ImageServiceProviderLaravel5;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Process\Process;
+use TCG\Voyager\VoyagerServiceProvider;
 
 class InstallCommand extends Command
 {

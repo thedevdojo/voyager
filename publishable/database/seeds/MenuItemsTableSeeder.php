@@ -1,7 +1,7 @@
 <?php
 
-use TCG\Voyager\Models\Menu;
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
 
 class MenuItemsTableSeeder extends Seeder
@@ -25,11 +25,11 @@ class MenuItemsTableSeeder extends Seeder
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
-                    'target' => '_self',
+                    'target'     => '_self',
                     'icon_class' => 'voyager-boat',
-                    'color' => null,
-                    'parent_id' => null,
-                    'order' => 1,
+                    'color'      => null,
+                    'parent_id'  => null,
+                    'order'      => 1,
                 ])->save();
             }
 
@@ -40,11 +40,11 @@ class MenuItemsTableSeeder extends Seeder
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
-                    'target' => '_self',
+                    'target'     => '_self',
                     'icon_class' => 'voyager-images',
-                    'color' => null,
-                    'parent_id' => null,
-                    'order' => 5,
+                    'color'      => null,
+                    'parent_id'  => null,
+                    'order'      => 5,
                 ])->save();
             }
 
@@ -55,11 +55,11 @@ class MenuItemsTableSeeder extends Seeder
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
-                    'target' => '_self',
+                    'target'     => '_self',
                     'icon_class' => 'voyager-news',
-                    'color' => null,
-                    'parent_id' => null,
-                    'order' => 6,
+                    'color'      => null,
+                    'parent_id'  => null,
+                    'order'      => 6,
                 ])->save();
             }
 
@@ -70,11 +70,11 @@ class MenuItemsTableSeeder extends Seeder
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
-                    'target' => '_self',
+                    'target'     => '_self',
                     'icon_class' => 'voyager-person',
-                    'color' => null,
-                    'parent_id' => null,
-                    'order' => 3,
+                    'color'      => null,
+                    'parent_id'  => null,
+                    'order'      => 3,
                 ])->save();
             }
 
@@ -85,11 +85,11 @@ class MenuItemsTableSeeder extends Seeder
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
-                    'target' => '_self',
+                    'target'     => '_self',
                     'icon_class' => 'voyager-categories',
-                    'color' => null,
-                    'parent_id' => null,
-                    'order' => 8,
+                    'color'      => null,
+                    'parent_id'  => null,
+                    'order'      => 8,
                 ])->save();
             }
 
@@ -100,11 +100,11 @@ class MenuItemsTableSeeder extends Seeder
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
-                    'target' => '_self',
+                    'target'     => '_self',
                     'icon_class' => 'voyager-file-text',
-                    'color' => null,
-                    'parent_id' => null,
-                    'order' => 7,
+                    'color'      => null,
+                    'parent_id'  => null,
+                    'order'      => 7,
                 ])->save();
             }
 
@@ -115,11 +115,11 @@ class MenuItemsTableSeeder extends Seeder
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
-                    'target' => '_self',
+                    'target'     => '_self',
                     'icon_class' => 'voyager-lock',
-                    'color' => null,
-                    'parent_id' => null,
-                    'order' => 2,
+                    'color'      => null,
+                    'parent_id'  => null,
+                    'order'      => 2,
                 ])->save();
             }
         }

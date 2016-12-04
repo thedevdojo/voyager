@@ -13,22 +13,22 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         Permission::firstOrCreate([
-            'key' => 'visit_admin',
+            'key'        => 'visit_admin',
             'table_name' => 'admin',
         ]);
 
         Permission::firstOrCreate([
-            'key' => 'visit_database',
+            'key'        => 'visit_database',
             'table_name' => 'admin',
         ]);
 
         Permission::firstOrCreate([
-            'key' => 'visit_media',
+            'key'        => 'visit_media',
             'table_name' => 'admin',
         ]);
 
         Permission::firstOrCreate([
-            'key' => 'visit_settings',
+            'key'        => 'visit_settings',
             'table_name' => 'admin',
         ]);
 
