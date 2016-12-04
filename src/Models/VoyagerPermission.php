@@ -4,7 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+class VoyagerPermission extends Model
 {
     protected $table = 'permissions';
 
