@@ -22,7 +22,7 @@ class VoyagerAdminMiddleware
             $user = User::find(Auth::id());
 
             return $user->hasPermission(config('voyager.user.admin_role',
-                'visit_admin')) ? $next($request) : redirect('/');
+                'browse_admin')) ? $next($request) : redirect('/');
         }
 
         return redirect(route('voyager.login'));
