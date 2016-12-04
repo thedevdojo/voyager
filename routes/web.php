@@ -17,11 +17,14 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
         },
     ]);
 
-    if (env('DB_CONNECTION') !== null && Schema::hasTable('data_types')):
+    try {
         foreach (TCG\Voyager\Models\DataType::all() as $dataTypes):
             Route::resource($dataTypes->slug, 'VoyagerBreadController');
-    endforeach;
-    endif;
+        endforeach;
+    } catch (\InvalidArgumentException $e) {
+        throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
+    } catch (\Exception $e) {
+    }
 
     // Menu Routes
     Route::get('menus/{id}/builder/', ['uses' => 'VoyagerMenuController@builder', 'as' => 'voyager.menu.builder']);
