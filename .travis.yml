@@ -20,11 +20,6 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-env:
-  matrix:
-    - COMPOSER_FLAGS="--prefer-lowest"
-    - COMPOSER_FLAGS=""
-
 services:
   - sqlite
 
