@@ -64,7 +64,8 @@ Note: If you don't have composer installed and use composer.phar instead, run th
 
 ```bash
 composer.phar dump-autoload
-php artisan db:seed
+php artisan migrate
+php artisan db:seed --class=VoyagerDatabaseSeeder
 ```
 
 And we're all good to go! 
