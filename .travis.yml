@@ -16,8 +16,17 @@ matrix:
     - php: 7.2
     - php: nightly
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env:
+  matrix:
+    - COMPOSER_FLAGS="--prefer-lowest"
+    - COMPOSER_FLAGS=""
+
 services:
-  - mysql
+  - sqlite
 
 before_script:
   # prevent MySQL went away error
@@ -71,6 +80,11 @@ before_script:
   # Remove the default phpunit.xml and replace it with voyager phpunit.xml
   - rm phpunit.xml
   - cp vendor/tcg/voyager/phpunit.xml phpunit.xml
+
+
+
+  - travis_retry composer self-update
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
 
 script:
   # - vendor/bin/phpunit

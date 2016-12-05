@@ -1,8 +1,16 @@
 <?php
 
+namespace TCG\Voyager\Tests;
 
 class LoginTest extends TestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->install();
+    }
+
     public function testSuccessfulLoginWithDefaultCredentials()
     {
         $this->visit(route('voyager.login'));

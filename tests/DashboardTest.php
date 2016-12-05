@@ -1,12 +1,29 @@
 <?php
 
+namespace TCG\Voyager\Tests;
+
+use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Models\Category;
+use TCG\Voyager\Models\Role;
+use TCG\Voyager\Tests\Models\User;
+
 class DashboardTest extends TestCase
 {
+    protected $withDummy = true;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->install();
+    }
+
     public function testWeHaveAccessToTheMainSections()
     {
         // We must first login and visit the dashboard page.
         Auth::loginUsingId(1);
         $this->visit(route('voyager.dashboard'));
+
         $this->see('Dashboard');
 
         // We can see number of Users.

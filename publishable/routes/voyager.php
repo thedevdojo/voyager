@@ -27,10 +27,14 @@ Route::group([
 
         Route::get('profile', ['uses' => 'VoyagerController@profile', 'as' => 'voyager.profile']);
 
-        if (env('DB_CONNECTION') !== null && Schema::hasTable('data_types')) {
+        try {
             foreach (\TCG\Voyager\Models\DataType::all() as $dataTypes) {
                 Route::resource($dataTypes->slug, 'VoyagerBreadController');
             }
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
+        } catch (\Exception $e) {
+            // do nothing, might just be because table not yet migrated.
         }
 
         // Role Routes
