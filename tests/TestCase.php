@@ -28,6 +28,7 @@ class TestCase extends OrchestraTestCase
         }
         
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\ShareErrorsFromSession');
     }
 
     protected function getPackageProviders($app)
