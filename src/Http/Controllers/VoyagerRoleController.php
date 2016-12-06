@@ -21,7 +21,7 @@ class VoyagerRoleController extends VoyagerBreadController
         Voyager::can('edit_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'find'], $id)
+            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         $permissions = Permission::all()->groupBy('table_name');
@@ -49,7 +49,7 @@ class VoyagerRoleController extends VoyagerBreadController
         // Check permission
         Voyager::can('edit_'.$dataType->name);
 
-        $data = call_user_func([$dataType->model_name, 'find'], $id);
+        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
         $data->permissions()->sync($request->input('permissions', []));
