@@ -69,7 +69,7 @@ before_script:
   - php artisan voyager:install --with-dummy
 
   # Add routes
-  - echo "Voyager::routes();" > routes/web.php
+  - echo -e "\nRoute::group(['prefix' => 'admin'], function () {\n\tVoyager::routes();\n});" >> routes/web.php
 
   # Remove the default phpunit.xml and replace it with voyager phpunit.xml
   - rm phpunit.xml
