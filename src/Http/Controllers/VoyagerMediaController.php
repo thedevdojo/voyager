@@ -27,7 +27,7 @@ class VoyagerMediaController extends Controller
 
     public function index()
     {
-        Voyager::can('visit_media');
+        Voyager::can('browse_media');
 
         return view('voyager::media.index');
     }

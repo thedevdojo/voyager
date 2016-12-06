@@ -12,7 +12,7 @@ class VoyagerSettingsController extends Controller
     public function index()
     {
         // Check permission
-        Voyager::can('visit_settings');
+        Voyager::can('browse_settings');
 
         $settings = Setting::orderBy('order', 'ASC')->get();
 
@@ -21,22 +21,31 @@ class VoyagerSettingsController extends Controller
 
     public function store(Request $request)
     {
-        $lastSetting = Setting::orderBy('order', 'DESC')->first();
-        if ($lastSetting == null) {
-            $order = 0;
-        } else {
-            $order = intval($lastSetting->order) + 1;
+        // Check permission
+        Voyager::can('browse_settings');
+
+        $settings = Setting::all();
+
+        foreach ($settings as $setting) {
+            $content = $this->getContentBasedOnType($request, 'settings', (object) [
+                'type'    => $setting->type,
+                'field'   => $setting->key,
+                'details' => $setting->details,
+            ]);
+
+            if ($content === null && isset($setting->value)) {
+                $content = $setting->value;
+            }
+
+            $setting->value = $content;
+            $setting->save();
         }
-        $request->merge(['order' => $order]);
-        $request->merge(['value' => '']);
-        Setting::create($request->all());
 
         return back()->with([
-            'message'    => 'Successfully Created New Setting',
+            'message'    => 'Successfully Saved Settings',
             'alert-type' => 'success',
         ]);
     }
-
     public function update(Request $request)
     {
         // Check permission
@@ -67,6 +76,8 @@ class VoyagerSettingsController extends Controller
 
     public function delete($id)
     {
+        Voyager::can('browse_settings');
+
         // Check permission
         Voyager::can('visit_settings');
 
@@ -106,7 +117,7 @@ class VoyagerSettingsController extends Controller
     public function delete_value($id)
     {
         // Check permission
-        Voyager::can('visit_settings');
+        Voyager::can('browse_settings');
 
         $setting = Setting::find($id);
 

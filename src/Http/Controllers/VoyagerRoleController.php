@@ -11,6 +11,8 @@ class VoyagerRoleController extends VoyagerBreadController
 {
     public function edit(Request $request, $id)
     {
+        Voyager::can('edit_roles');
+
         $slug = $request->segment(2);
 
         $dataType = DataType::where('slug', '=', $slug)->first();
@@ -38,6 +40,8 @@ class VoyagerRoleController extends VoyagerBreadController
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
+        Voyager::can('edit_roles');
+
         $slug = $request->segment(2);
 
         $dataType = DataType::where('slug', '=', $slug)->first();
@@ -60,6 +64,8 @@ class VoyagerRoleController extends VoyagerBreadController
 
     public function create(Request $request)
     {
+        Voyager::can('add_roles');
+
         $slug = $request->segment(2);
 
         $dataType = DataType::where('slug', '=', $slug)->first();
@@ -83,6 +89,8 @@ class VoyagerRoleController extends VoyagerBreadController
     // POST BRE(A)D
     public function store(Request $request)
     {
+        Voyager::can('add_roles');
+
         $slug = $request->segment(2);
 
         $dataType = DataType::where('slug', '=', $slug)->first();
