@@ -19,18 +19,57 @@ class VoyagerSettingsController extends Controller
         return view('voyager::settings.index', compact('settings'));
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
+        // Check permission
         Voyager::can('browse_settings');
 
-        $lastSetting = Setting::orderBy('order', 'DESC')->first();
-        $order = intval($lastSetting->order) + 1;
-        $request->merge(['order' => $order]);
-        $request->merge(['value' => '']);
-        Setting::create($request->all());
+        $settings = Setting::all();
+
+        foreach ($settings as $setting) {
+            $content = $this->getContentBasedOnType($request, 'settings', (object) [
+                'type'    => $setting->type,
+                'field'   => $setting->key,
+                'details' => $setting->details,
+            ]);
+
+            if ($content === null && isset($setting->value)) {
+                $content = $setting->value;
+            }
+
+            $setting->value = $content;
+            $setting->save();
+        }
 
         return back()->with([
-            'message'    => 'Successfully Created New Setting',
+            'message'    => 'Successfully Saved Settings',
+            'alert-type' => 'success',
+        ]);
+    }
+    public function update(Request $request)
+    {
+        // Check permission
+        Voyager::can('visit_settings');
+
+        $settings = Setting::all();
+
+        foreach ($settings as $setting) {
+            $content = $this->getContentBasedOnType($request, 'settings', (object) [
+                'type'    => $setting->type,
+                'field'   => $setting->key,
+                'details' => $setting->details,
+            ]);
+
+            if ($content === null && isset($setting->value)) {
+                $content = $setting->value;
+            }
+
+            $setting->value = $content;
+            $setting->save();
+        }
+
+        return back()->with([
+            'message'    => 'Successfully Saved Settings',
             'alert-type' => 'success',
         ]);
     }
@@ -123,33 +162,5 @@ class VoyagerSettingsController extends Controller
         }
 
         return back()->with($data);
-    }
-
-    public function save(Request $request)
-    {
-        // Check permission
-        Voyager::can('browse_settings');
-
-        $settings = Setting::all();
-
-        foreach ($settings as $setting) {
-            $content = $this->getContentBasedOnType($request, 'settings', (object) [
-                'type'    => $setting->type,
-                'field'   => $setting->key,
-                'details' => $setting->details,
-            ]);
-
-            if ($content === null && isset($setting->value)) {
-                $content = $setting->value;
-            }
-
-            $setting->value = $content;
-            $setting->save();
-        }
-
-        return back()->with([
-            'message'    => 'Successfully Saved Settings',
-            'alert-type' => 'success',
-        ]);
     }
 }

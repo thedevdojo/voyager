@@ -175,7 +175,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                                     <ul class="nav navbar-nav">
                                         @if ($user->hasPermission('browse_menus'))
                                         <li>
-                                            <a href="{{route('menus.index')}}">
+                                            <a href="{{route('voyager.menus.index')}}">
                                                 <span class="icon voyager-list"></span>
                                                 <span class="title">Menu Builder</span>
                                             </a>
@@ -183,7 +183,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                                         @endif
                                         @if ($user->hasPermission('browse_database'))
                                         <li>
-                                            <a class="animsition-link" href="{{ route('voyager.database') }}">
+                                            <a class="animsition-link" href="{{ route('voyager.database.index') }}">
                                                 <span class="icon voyager-data"></span>
                                                 <span class="title">Database</span>
                                             </a>
@@ -196,7 +196,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                         @endif
                         @if ($user->hasPermission('browse_settings'))
                         <li>
-                            <a href="{{ route('voyager.settings') }}">
+                            <a href="{{ route('voyager.settings.index') }}">
                                 <span class="icon voyager-settings"></span>
                                 <span class="title">Settings</span>
                             </a>

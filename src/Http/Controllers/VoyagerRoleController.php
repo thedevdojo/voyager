@@ -55,7 +55,7 @@ class VoyagerRoleController extends VoyagerBreadController
         $data->permissions()->sync($request->input('permissions', []));
 
         return redirect()
-            ->route("{$dataType->slug}.index")
+            ->route("voyager.{$dataType->slug}.index")
             ->with([
                 'message'    => "Successfully Updated {$dataType->display_name_singular}",
                 'alert-type' => 'success',
@@ -109,7 +109,7 @@ class VoyagerRoleController extends VoyagerBreadController
         $data->permissions()->sync($request->input('permissions', []));
 
         return redirect()
-            ->route("{$dataType->slug}.index")
+            ->route("voyager.{$dataType->slug}.index")
             ->with([
                 'message'    => "Successfully Added New {$dataType->display_name_singular}",
                 'alert-type' => 'success',

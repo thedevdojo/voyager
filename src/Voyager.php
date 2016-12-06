@@ -64,6 +64,11 @@ class Voyager
         return $default;
     }
 
+    public static function routes()
+    {
+        require __DIR__ . '/../routes/voyager.php';
+    }
+
     public static function can($permission)
     {
         // Check if permission exist

@@ -54,10 +54,10 @@
                         item?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.menu.delete_menu_item', null) }}" id="delete_form"
+                    <form action="{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '__id']) }}" id="delete_form"
                           method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        {{ method_field("DELETE") }}
+                        {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
                                value="Yes, Delete This Menu Item">
                     </form>
@@ -76,7 +76,7 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-plus"></i> Create a New Menu Item</h4>
                 </div>
-                <form action="{{ route('voyager.menu.add_item') }}" id="delete_form" method="POST">
+                <form action="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}" id="delete_form" method="POST">
                     <div class="modal-body">
                         <label for="name">Title of the Menu Item</label>
                         <input type="text" class="form-control" name="title" placeholder="Title"><br>
@@ -97,7 +97,7 @@
                         </select>
                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                     </div>
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    {{ csrf_field() }}
 
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-success pull-right delete-confirm" value="Add New Item">
@@ -116,7 +116,9 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-edit"></i> Edit Menu Item</h4>
                 </div>
-                <form action="{{ route('voyager.menu.update_menu_item') }}" id="edit_form" method="POST">
+                <form action="{{ route('voyager.menus.item.update', ['menu' => $menu->id]) }}" id="edit_form" method="POST">
+                    {{ method_field("PUT") }}
+                    {{ csrf_field() }}
                     <div class="modal-body">
                         <label for="name">Title of the Menu Item</label>
                         <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
@@ -135,8 +137,6 @@
                         </select>
                         <input type="hidden" name="id" id="edit_id" value="">
                     </div>
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="_method" value="PUT">
 
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-success pull-right delete-confirm" value="Update">
@@ -157,7 +157,7 @@
             $('.dd').nestable({/* config options */});
             $('.item_actions').on('click', '.delete', function (e) {
                 id = $(e.target).data('id');
-                $('#delete_form')[0].action += '/' + id;
+                $('#delete_form')[0].action = $('#delete_form')[0].action.replace("__id",id);
                 $('#delete_modal').modal('show');
             });
 
@@ -184,7 +184,7 @@
             });
 
             $('.dd').on('change', function (e) {
-                $.post('{{ route('voyager.menu.order_item') }}', {
+                $.post('{{ route('voyager.menus.order',['menu' => $menu->id]) }}', {
                     order: JSON.stringify($('.dd').nestable('serialize')),
                     _token: '{{ csrf_token() }}'
                 }, function (data) {

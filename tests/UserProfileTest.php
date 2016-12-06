@@ -27,9 +27,9 @@ class UserProfileTest extends TestCase
 
         $this->user = Auth::loginUsingId(1);
 
-        $this->editPageForTheCurrentUser = route('users.edit', ['user' => $this->user->id]);
+        $this->editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $this->user->id]);
 
-        $this->listOfUsers = route('users.index');
+        $this->listOfUsers = route('voyager.users.index');
     }
 
     public function testCanSeeTheUserInfoOnHisProfilePage()

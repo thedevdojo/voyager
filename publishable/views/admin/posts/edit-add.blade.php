@@ -55,8 +55,13 @@
 
 @section('content')
     <div class="page-content container-fluid">
-        <form role="form" action="@if(isset($dataTypeContent->id)){{ route('posts.update', $dataTypeContent->id) }}@else{{ route('posts.store') }}@endif" method="POST" enctype="multipart/form-data">
+        <form role="form" action="@if(isset($dataTypeContent->id)){{ route('voyager.posts.update', $dataTypeContent->id) }}@else{{ route('voyager.posts.store') }}@endif" method="POST" enctype="multipart/form-data">
+            <!-- PUT Method if we are editing -->
+            @if(isset($dataTypeContent->id))
+                {{ method_field("PUT") }}
+            @endif
             {{ csrf_field() }}
+
             <div class="row">
                 <div class="col-md-8">
                     <!-- ### TITLE ### -->
@@ -185,12 +190,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- PUT Method if we are editing -->
-            @if(isset($dataTypeContent->id))
-            <input type="hidden" name="_method" value="PUT">
-            @endif
-            <!-- PUT Method if we are editing -->
 
             <button type="submit" class="btn btn-primary pull-right">
                 @if(isset($dataTypeContent->id)){{ 'Update Post' }}@else<?= '<i class="icon wb-plus-circle"></i> Create New Post'; ?>@endif
