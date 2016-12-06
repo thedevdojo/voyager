@@ -61,9 +61,10 @@ class InstallCommand extends Command
     /**
      * Execute the console command.
      *
+     * @param \Illuminate\Filesystem\Filesystem $filesystem
      * @return void
      */
-    public function fire()
+    public function fire(\Illuminate\Filesystem\Filesystem $filesystem)
     {
         $this->info('Publishing the Voyager assets, database, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
@@ -78,6 +79,10 @@ class InstallCommand extends Command
 
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
+
+        $this->info('Adding Voyager routes to routes/web.php');
+        $filesystem->append(base_path('routes/web.php'),
+            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n");
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
