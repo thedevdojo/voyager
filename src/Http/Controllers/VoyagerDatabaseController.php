@@ -54,7 +54,7 @@ class VoyagerDatabaseController extends Controller
             }
 
             return redirect()
-                ->route('voyager.database')
+                ->route('voyager.database.index')
                 ->with(
                     [
                         'message'    => "Successfully created $tableName table",
@@ -99,7 +99,7 @@ class VoyagerDatabaseController extends Controller
         $this->updateColumns($request, $tableName);
 
         return redirect()
-            ->route('voyager.database')
+            ->route('voyager.database.index')
             ->withMessage("Successfully updated {$tableName} table")
             ->with('alert-type', 'success');
     }
@@ -138,7 +138,7 @@ class VoyagerDatabaseController extends Controller
             Schema::drop($table);
 
             return redirect()
-                ->route('voyager.database')
+                ->route('voyager.database.index')
                 ->with(
                     [
                         'message'    => "Successfully deleted $table table",
@@ -200,7 +200,7 @@ class VoyagerDatabaseController extends Controller
                 'alert-type' => 'error',
             ];
 
-        return redirect()->route('voyager.database')->with($data);
+        return redirect()->route('voyager.database.index')->with($data);
     }
 
     public function addEditBread($id)
@@ -230,7 +230,7 @@ class VoyagerDatabaseController extends Controller
                 'alert-type' => 'error',
             ];
 
-        return redirect()->route('voyager.database')->with($data);
+        return redirect()->route('voyager.database.index')->with($data);
     }
 
     public function deleteBread($id)
@@ -251,6 +251,6 @@ class VoyagerDatabaseController extends Controller
 
         Permission::removeFrom($dataType->name);
 
-        return redirect()->route('voyager.database')->with($data);
+        return redirect()->route('voyager.database.index')->with($data);
     }
 }

@@ -35,15 +35,22 @@ Route::group(['as' => 'voyager.'], function() {
         Route::resource('roles', $namespacePrefix.'VoyagerRoleController');
 
         // Menu Routes
-        Route::group(['as' => 'menus.'], function() use($namespacePrefix) {
-            Route::get('menus/{id}/builder/', ['uses' => $namespacePrefix.'VoyagerMenuController@builder', 'as' => 'builder']);
+        Route::group([
+            'as' => 'menus.',
+            'prefix' => 'menus/{menu}'
+        ], function () use ($namespacePrefix) {
+            Route::get('builder', ['uses' => $namespacePrefix.'VoyagerMenuController@builder', 'as' => 'builder']);
+            Route::post('order',  ['uses' => $namespacePrefix.'VoyagerMenuController@order_item', 'as' => 'order']);
 
-            Route::group(['prefix' => 'menus'], function () use ($namespacePrefix) {
-                Route::delete('item/{id}', ['uses' => $namespacePrefix.'VoyagerMenuController@delete_menu', 'as' => 'delete_menu_item']);
-                Route::post('item',        ['uses' => $namespacePrefix.'VoyagerMenuController@add_item', 'as' => 'add_item']);
-                Route::put('item',         ['uses' => $namespacePrefix.'VoyagerMenuController@update_item', 'as' => 'update_menu_item']);
-                Route::post('order',       ['uses' => $namespacePrefix.'VoyagerMenuController@order_item', 'as' => 'order_item']);
+            Route::group([
+                'as' => 'item.',
+                'prefix' => 'item'
+            ], function () use ($namespacePrefix) {
+                Route::delete('{id}', ['uses' => $namespacePrefix.'VoyagerMenuController@delete_menu', 'as' => 'destroy']);
+                Route::post('/',      ['uses' => $namespacePrefix.'VoyagerMenuController@add_item', 'as' => 'add']);
+                Route::put('/',       ['uses' => $namespacePrefix.'VoyagerMenuController@update_item', 'as' => 'update']);
             });
+
         });
 
         // Settings
@@ -52,8 +59,8 @@ Route::group(['as' => 'voyager.'], function() {
             'prefix' => 'settings'
         ], function() use ($namespacePrefix) {
             Route::get('/',                 ['uses' => $namespacePrefix.'VoyagerSettingsController@index', 'as' => 'index']);
-            Route::post('/',                ['uses' => $namespacePrefix.'VoyagerSettingsController@save', 'as' => 'store']);
-            Route::post('/create',          ['uses' => $namespacePrefix.'VoyagerSettingsController@create', 'as' => 'create']);
+            Route::post('/',                ['uses' => $namespacePrefix.'VoyagerSettingsController@store', 'as' => 'store']);
+            Route::put('/',                 ['uses' => $namespacePrefix.'VoyagerSettingsController@update', 'as' => 'update']);
             Route::delete('{id}',           ['uses' => $namespacePrefix.'VoyagerSettingsController@delete', 'as' => 'delete']);
             Route::get('{id}/move_up',      ['uses' => $namespacePrefix.'VoyagerSettingsController@move_up', 'as' => 'move_up']);
             Route::get('{id}/move_down',    ['uses' => $namespacePrefix.'VoyagerSettingsController@move_down', 'as' => 'move_down']);
@@ -76,7 +83,6 @@ Route::group(['as' => 'voyager.'], function() {
         });
 
         // Database Routes
-        Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');
         Route::group([
             'as' => 'database.',
             'prefix' => 'database'
@@ -95,5 +101,7 @@ Route::group(['as' => 'voyager.'], function() {
             Route::put('bread/{id}',         ['uses' => $namespacePrefix.'VoyagerDatabaseController@updateBread', 'as' => 'update_bread']);
             Route::delete('bread/{id}',      ['uses' => $namespacePrefix.'VoyagerDatabaseController@deleteBread', 'as' => 'delete_bread']);
         });
+
+        Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');
     });
 });

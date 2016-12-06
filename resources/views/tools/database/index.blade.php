@@ -112,7 +112,7 @@
                         the <span id="delete_builder_name"></span> table?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.database') }}/delete_bread" id="delete_builder_form" method="POST">
+                    <form action="{{ route('voyager.database.delete_bread', ['id' => null]) }}" id="delete_builder_form" method="POST">
                         {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger" value="Yes, remove the BREAD">
@@ -133,7 +133,7 @@
                                 id="delete_table_name"></span> table?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.database') }}/table/delete" id="delete_table_form" method="POST">
+                    <form action="{{ route('voyager.database.destroy', ['database' => '__database']) }}" id="delete_table_form" method="POST">
                         {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger pull-right" value="Yes, delete this table">
@@ -244,7 +244,7 @@
                     toastr.warning("Please make sure to remove the BREAD on this table before deleting the table.");
                 } else {
                     $('#delete_table_name').text(table);
-                    $('#delete_table_form')[0].action += '/' + table;
+                    $('#delete_table_form')[0].action = $('#delete_table_form')[0].action.replace('__database', table);
                     $('#delete_modal').modal('show');
                 }
             });

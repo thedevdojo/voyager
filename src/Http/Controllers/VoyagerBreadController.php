@@ -23,7 +23,7 @@ class VoyagerBreadController extends Controller
     public function index(Request $request)
     {
         // GET THE SLUG, ex. 'posts', 'pages', etc.
-        $slug = explode('.', $request->route()->getName())[0];
+        $slug = explode('.', $request->route()->getName())[1];
 
         // GET THE DataType based on the slug
         $dataType = DataType::where('slug', '=', $slug)->first();
@@ -61,7 +61,7 @@ class VoyagerBreadController extends Controller
 
     public function show(Request $request, $id)
     {
-        $slug = explode('.', $request->route()->getName())[0];
+        $slug = explode('.', $request->route()->getName())[1];
 
         $dataType = DataType::where('slug', '=', $slug)->first();
 
@@ -97,7 +97,7 @@ class VoyagerBreadController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $slug = explode('.', $request->route()->getName())[0];
+        $slug = explode('.', $request->route()->getName())[1];
 
         $dataType = DataType::where('slug', '=', $slug)->first();
 
@@ -122,7 +122,7 @@ class VoyagerBreadController extends Controller
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
-        $slug = explode('.', $request->route()->getName())[0];
+        $slug = explode('.', $request->route()->getName())[1];
 
         $dataType = DataType::where('slug', '=', $slug)->first();
 
@@ -133,7 +133,7 @@ class VoyagerBreadController extends Controller
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
         return redirect()
-            ->route("{$dataType->slug}.index")
+            ->route("voyager.{$dataType->slug}.index")
             ->with([
                 'message'    => "Successfully Updated {$dataType->display_name_singular}",
                 'alert-type' => 'success',
@@ -155,7 +155,7 @@ class VoyagerBreadController extends Controller
 
     public function create(Request $request)
     {
-        $slug = explode('.', $request->route()->getName())[0];
+        $slug = explode('.', $request->route()->getName())[1];
 
         $dataType = DataType::where('slug', '=', $slug)->first();
 
@@ -176,7 +176,7 @@ class VoyagerBreadController extends Controller
     // POST BRE(A)D
     public function store(Request $request)
     {
-        $slug = explode('.', $request->route()->getName())[0];
+        $slug = explode('.', $request->route()->getName())[1];
 
         $dataType = DataType::where('slug', '=', $slug)->first();
 
@@ -192,7 +192,7 @@ class VoyagerBreadController extends Controller
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
 
         return redirect()
-            ->route("{$dataType->slug}.index")
+            ->route("voyager.{$dataType->slug}.index")
             ->with([
                 'message'    => "Successfully Added New {$dataType->display_name_singular}",
                 'alert-type' => 'success',
@@ -213,7 +213,7 @@ class VoyagerBreadController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $slug = explode('.', $request->route()->getName())[0];
+        $slug = explode('.', $request->route()->getName())[1];
 
         $dataType = DataType::where('slug', '=', $slug)->first();
 
@@ -253,6 +253,6 @@ class VoyagerBreadController extends Controller
                 'alert-type' => 'error',
             ];
 
-        return redirect()->route("{$dataType->slug}.index")->with($data);
+        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
     }
 }

@@ -26,6 +26,12 @@
                 <form role="form"
                       action="@if(isset($dataType->id)){{ route('voyager.database.edit_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
                       method="POST">
+                    @if(isset($dataType->id))
+                        <input type="hidden" value="{{ $dataType->id }}" name="id">
+                        {{ method_field("PUT") }}
+                    @endif
+                    <!-- CSRF TOKEN -->
+                    {{ csrf_field() }}
 
                     <div class="panel panel-primary panel-bordered">
 
@@ -240,12 +246,6 @@
                                           placeholder="Description">@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
                             </div>
 
-                            @if(isset($dataType->id))
-                                <input type="hidden" value="{{ $dataType->id }}" name="id">
-                                <input type="hidden" value="PUT" name="_method">
-                        @endif
-                        <!-- CSRF TOKEN -->
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
