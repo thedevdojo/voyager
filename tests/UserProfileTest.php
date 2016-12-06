@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Tests;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 

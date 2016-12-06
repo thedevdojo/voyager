@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager\Tests;
 
-use Illuminate\Support\Facades\DB;
-
 class RouteTest extends TestCase
 {
     protected $withDummy = true;

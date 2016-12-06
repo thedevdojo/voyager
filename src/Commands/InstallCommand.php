@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
 use Intervention\Image\ImageServiceProviderLaravel5;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
@@ -14,7 +13,7 @@ class InstallCommand extends Command
 {
     use Seedable;
 
-    protected $seedersPath = __DIR__."/../../publishable/database/seeds/";
+    protected $seedersPath = __DIR__.'/../../publishable/database/seeds/';
 
     /**
      * The console command name.

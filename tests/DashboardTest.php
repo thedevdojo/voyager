@@ -3,9 +3,6 @@
 namespace TCG\Voyager\Tests;
 
 use Illuminate\Support\Facades\Auth;
-use TCG\Voyager\Models\Category;
-use TCG\Voyager\Models\Role;
-use TCG\Voyager\Tests\Models\User;
 
 class DashboardTest extends TestCase
 {

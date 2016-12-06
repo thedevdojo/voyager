@@ -1,7 +1,7 @@
 <?php
 
-use TCG\Voyager\Traits\Seedable;
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Traits\Seedable;
 
 class VoyagerDatabaseSeeder extends Seeder
 {
