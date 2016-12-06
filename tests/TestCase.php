@@ -18,6 +18,14 @@ class TestCase extends OrchestraTestCase
         $this->loadMigrationsFrom([
             '--realpath' => realpath(__DIR__.'/migrations'),
         ]);
+
+        if (!is_dir(base_path('routes'))) {
+            mkdir(base_path('routes'));
+        }
+
+        if (!file_exists(base_path('routes/web.php'))) {
+            file_put_contents(base_path('routes/web.php'), "<?php Route::get('/', function () {return view('welcome');});");
+        }
     }
 
     protected function getPackageProviders($app)
