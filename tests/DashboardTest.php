@@ -31,7 +31,6 @@ class DashboardTest extends TestCase
         $this->click('Dashboard');
         $this->seePageIs(route('voyager.dashboard'));
 
-
         // We can see number of Pages.
         $this->see('1 Page(s)');
 

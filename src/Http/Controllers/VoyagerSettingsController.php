@@ -22,7 +22,11 @@ class VoyagerSettingsController extends Controller
     public function store(Request $request)
     {
         $lastSetting = Setting::orderBy('order', 'DESC')->first();
-        $order = intval($lastSetting->order) + 1;
+        if ($lastSetting == null) {
+            $order = 0;
+        } else {
+            $order = intval($lastSetting->order) + 1;
+        }
         $request->merge(['order' => $order]);
         $request->merge(['value' => '']);
         Setting::create($request->all());
