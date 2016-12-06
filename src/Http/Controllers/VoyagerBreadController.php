@@ -69,7 +69,7 @@ class VoyagerBreadController extends Controller
         Voyager::can('read_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'find'], $id)
+            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         $view = 'voyager::bread.read';
@@ -105,7 +105,7 @@ class VoyagerBreadController extends Controller
         Voyager::can('edit_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'find'], $id)
+            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         $view = 'voyager::bread.edit-add';
@@ -129,7 +129,7 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::can('edit_'.$dataType->name);
 
-        $data = call_user_func([$dataType->model_name, 'find'], $id);
+        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
         return redirect()
@@ -220,7 +220,7 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::can('delete_'.$dataType->name);
 
-        $data = call_user_func([$dataType->model_name, 'find'], $id);
+        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
         foreach ($dataType->deleteRows as $row) {
             if ($row->type == 'image') {
