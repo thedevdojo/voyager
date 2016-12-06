@@ -27,7 +27,7 @@
                           method="POST" enctype="multipart/form-data">
                         <!-- PUT Method if we are editing -->
                         @if(isset($dataTypeContent->id))
-                            <input type="hidden" name="_method" value="PUT">
+                            {{ method_field("PUT") }}
                         @endif
 
                         <!-- CSRF TOKEN -->
