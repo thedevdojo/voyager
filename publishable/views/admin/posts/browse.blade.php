@@ -44,10 +44,10 @@
                                         <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}">
                                             <i class="voyager-trash"></i> Delete
                                         </div>
-                                        <a href="{{ route($dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
+                                        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
                                             <i class="voyager-edit"></i> Edit
                                         </a>
-                                        <a href="{{ route($dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
+                                        <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
                                             <i class="voyager-eye"></i> View
                                         </a>
                                     </td>
@@ -73,7 +73,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route($dataType->slug.'.index') }}" id="delete_form" method="POST">
+                    <form action="{{ route('voyager.'.$dataType->slug.'.destroy', ['id' => '__id']) }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This {{ $dataType->display_name_singular }}">
@@ -93,7 +93,7 @@
         });
 
         $('td').on('click', '.delete', function(e) {
-            $('#delete_form')[0].action += '/' + $(e.target).data('id');
+            $('#delete_form')[0].action = $('#delete_form')[0].action.replace('__id', $(e.target).data('id'));
             $('#delete_modal').modal('show');
         });
     </script>
