@@ -3,7 +3,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-news"></i> {{ $dataType->display_name_plural }}
-        <a href="{{ route($dataType->slug.'.create') }}" class="btn btn-success">
+        <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
             <i class="voyager-plus"></i> Add New
         </a>
     </h1>
