@@ -57,6 +57,8 @@ abstract class Controller extends BaseController
         if ($row->type == 'select_multiple') {
             $data->{$row->field}()->sync($content);
         }
+
+        return $data;
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
