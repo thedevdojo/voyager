@@ -66,7 +66,7 @@ class Voyager
 
     public static function routes()
     {
-        require __DIR__ . '/../routes/voyager.php';
+        require __DIR__.'/../routes/voyager.php';
     }
 
     public static function can($permission)

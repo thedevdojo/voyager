@@ -62,6 +62,7 @@ class InstallCommand extends Command
      * Execute the console command.
      *
      * @param \Illuminate\Filesystem\Filesystem $filesystem
+     *
      * @return void
      */
     public function fire(\Illuminate\Filesystem\Filesystem $filesystem)
