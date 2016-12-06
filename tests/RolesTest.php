@@ -1,11 +1,20 @@
 <?php
 
+namespace TCG\Voyager\Tests;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TCG\Voyager\Models\Role;
 
 class RolesTest extends TestCase
 {
     use DatabaseTransactions;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->install();
+    }
 
     /**
      * A basic functional test example.

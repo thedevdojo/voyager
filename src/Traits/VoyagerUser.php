@@ -22,8 +22,9 @@ trait VoyagerUser
     public function setRole($name)
     {
         $role = Role::where('name', '=', $name)->first();
+
         if ($role) {
-            $this->role()->save($role);
+            //$this->role()->save($role);
         }
     }
 
