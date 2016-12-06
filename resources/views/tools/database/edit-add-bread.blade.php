@@ -18,7 +18,7 @@
     @endif
 
 
-    <?php $tableData = DB::select("DESCRIBE ${table}"); ?>
+    <?php $tableData = DB::select("DESCRIBE `${table}`"); ?>
 
     <div class="page-content container-fluid">
         <div class="row">

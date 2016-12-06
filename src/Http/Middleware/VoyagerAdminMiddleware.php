@@ -22,7 +22,7 @@ class VoyagerAdminMiddleware
             return redirect()->route('voyager.login');
         }
 
-        /**
+        /*
          * Get the Voyager User Object.
          *
          * @var \TCG\Voyager\Models\User
