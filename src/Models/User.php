@@ -10,6 +10,8 @@ class User extends AuthUser
 {
     use VoyagerUser;
 
+    protected $fillable = ['name', 'email', 'password', 'remember_token', 'role_id'];
+
     public function getNameAttribute($value)
     {
         return ucwords($value);

@@ -14,6 +14,8 @@ class Menu extends Model
 {
     protected $table = 'menus';
 
+    protected $fillable = ['name'];
+
     private static $permissions;
     private static $user_permissions;
     private static $dataTypes;

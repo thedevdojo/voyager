@@ -7,10 +7,15 @@ use Illuminate\Support\Facades\Artisan;
 use Intervention\Image\ImageServiceProviderLaravel5;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
+use TCG\Voyager\Traits\Seedable;
 use TCG\Voyager\VoyagerServiceProvider;
 
 class InstallCommand extends Command
 {
+    use Seedable;
+
+    protected $seedersPath = __DIR__."/../../publishable/database/seeds/";
+
     /**
      * The console command name.
      *
@@ -86,16 +91,5 @@ class InstallCommand extends Command
         $this->call('storage:link');
 
         $this->info('Successfully installed Voyager! Enjoy 🎉');
-    }
-
-    /**
-     * Run database seeder.
-     *
-     * @param string $class
-     */
-    protected function seed($class)
-    {
-        $process = new Process('php artisan db:seed --class='.$class);
-        $process->setWorkingDirectory(base_path())->run();
     }
 }
