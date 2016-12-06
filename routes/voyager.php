@@ -91,14 +91,6 @@ Route::group(['as' => 'voyager.'], function() {
             'as' => 'database.',
             'prefix' => 'database'
         ], function() use ($namespacePrefix) {
-            //Route::get('/',                  ['uses' => $namespacePrefix.'VoyagerDatabaseController@index', 'as' => 'index']);
-            //Route::get('table/create',       ['uses' => $namespacePrefix.'VoyagerDatabaseController@create', 'as' => 'create_table']);
-            //Route::post('table',             ['uses' => $namespacePrefix.'VoyagerDatabaseController@store', 'as' => 'store_table']);
-            //Route::get('table/{table}',      ['uses' => $namespacePrefix.'VoyagerDatabaseController@show', 'as' => 'browse_table']);
-            //Route::get('table/{table}/edit', ['uses' => $namespacePrefix.'VoyagerDatabaseController@edit', 'as' => 'edit_table']);
-            //Route::put('table/{table}',      ['uses' => $namespacePrefix.'VoyagerDatabaseController@update', 'as' => 'update_table']);
-            //Route::delete('table/{table}',   ['uses' => $namespacePrefix.'VoyagerDatabaseController@destroy', 'as' => 'destroy_table']);
-
             Route::post('bread/create',      ['uses' => $namespacePrefix.'VoyagerDatabaseController@addBread', 'as' => 'create_bread']);
             Route::post('bread/',            ['uses' => $namespacePrefix.'VoyagerDatabaseController@storeBread', 'as' => 'store_bread']);
             Route::get('bread/{id}/edit',    ['uses' => $namespacePrefix.'VoyagerDatabaseController@addEditBread', 'as' => 'edit_bread']);
