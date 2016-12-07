@@ -91,7 +91,7 @@ If you did go ahead with the dummy data, a user should have been created for you
 >**email:** `admin@admin.com`   
 >**password:** `password`
 
-> NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
+NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
 
 If you did not go with the dummy user, you should make sure that your account has the needed role and permissions.
 This can be done easy by running this command:
