@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width">
+
+  <title>Voyager Documentation</title>
+
+  <!-- Flatdoc -->
+  <script src="../../js/jquery.js"></script>
+  <script src='js/legacy.js'></script>
+  <script src='js/flatdoc.js'></script>
+
+  <!-- Flatdoc theme -->
+  <link  href='css/flat-doc-white-theme.css' rel='stylesheet'>
+  <script src='js/script.js'></script>
+
+  <link  href='css/style.css' rel='stylesheet'>
+
+  <!-- Meta -->
+  <meta content="Voyager" property="og:title">
+  <meta content="Voyager Docs - The Missing Laravel Admin" name="description">
+
+  <!-- Initializer -->
+  <script>
+    Flatdoc.run({
+      fetcher: Flatdoc.file('Readme.md')
+    });
+  </script>
+</head>
+<body role='flatdoc' class="no-literate">
+
+  <div class='header'>
+    <div class='left'>
+      <h1><img src="../../images/logo-dark.png" style="width:auto; height:40px; position:relative; top:3px"></h1>
+      <ul>
+      	<li><a href="https://the-control-group.github.io/voyager/">Home</a></li>
+        <li><a href='https://github.com/the-control-group/voyager'>View on GitHub</a></li>
+        <li><a href='https://github.com/the-control-group/voyager/issues'>Issues</a></li>
+      </ul>
+    </div>
+    <div class='right'>
+      <!-- GitHub buttons: see http://ghbtns.com -->
+      <iframe src="https://ghbtns.com/github-btn.html?user=the-control-group&amp;repo=voyager&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+    </div>
+  </div>
+
+  <div class='content-root'>
+    <div class='menubar'>
+      <div class='menu section' role='flatdoc-menu'></div>
+    </div>
+    <div role='flatdoc-content' class='content'></div>
+  </div>
+
+</body>
+</html>
