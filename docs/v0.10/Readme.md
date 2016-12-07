@@ -2,13 +2,16 @@ Voyager Docs
 =======
 
 > Latest Version `0.10`
+> 
+## Welcome
 
 Welcome to the Voyager Documentation. These docs will teach you how to install, configure, and use Voyager so that way you can create some kick ass stuff. 
 
 Hm Hm (cough)... I mean... Arrgg! Ye young scallywag! What say we learn how to steer this ship!
 
-Install
----------------
+# Install & Upgrade
+
+## Install
 
 Voyager is super easy to install. After creating your new Laravel application you can include the Voyager package with the following command: 
 
@@ -62,34 +65,93 @@ Start up a local development server with `php artisan serve` And, visit http://l
 **password:** password
 ```
 
-Upgrade
----------------
+## Upgrade
 
-The latest version of Voyager is at 0.9 and will be at 0.10.0 release soon, but for now to update to the latest version inside of your `composer.json` file make sure to update the version of voyager inside the require declaration inside of your `composer.json` to:
+The first step you should **always** do, is to take an entire backup of your application together with your database.
 
-```php
-"tcg/voyager": "0.9.*"
+### Version 0.9 to 0.10
+
+#### Estimated upgrade time: 20 minutes - 1 hour
+
+> We attempt to document every possible breaking change.
+
+#### Updating dependencies
+
+Update your `tcg/voytager` dependency to `0.1.*` in your `composer.json` file. After this run a `composer update`.
+> UNTIL RELEASE USE `dev-release/v0.10`.
+
+#### Republish Voyager files
+
+Some of the published files have been changed in the latest version, and you should therefor update them using the following command:
+```bash
+php artisan vendor:publish --provider="TCG\Voyager\VoyagerServiceProvider" --force
 ```
 
-And then run `composer update`
+After this run `composer dumpautoload`.
 
-Next, you may want to be sure that you have all the latest published assets as long as you have not modified any of them. To re-publish the voyager assets you can run the following command:
+#### Migrate database
 
+Some changes have been made to the database, so to catch up run a `php artisan migrate`.
+
+> NOTE: After this, please ensure that you in the `data_types` table have the `generate_permissions` column. If you do not have this, please add that as `TINYINT(1)` with default value of `0`.
+
+#### Set permissions for data types
+
+In your database, open up table `data_types` and update `generate_permissions` to `1` for the rows with the `name` that is in this list:
+- menus
+- pages
+- roles
+- users
+- posts
+- categories
+
+> You may do this for others as well if you wish, but for everyone you do it for that are not listed above, open up `artisan tinker` and run `\TCG\Voyager\Models\Permission::generateFor(‘NAME’);` to generate permissions for them.
+
+#### Add routes
+
+Open your `routes/web.php` file and add the following:
 ```php
-php artisan vendor:publish --tag=voyager_assets --force
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
 ```
 
-And now you'll be upgraded to the latest version.
+#### Update menus
 
-**Version 0.10.0**
-Version 0.10.0 will be available very soon and it will include some awesome new features. Stay tuned to find out how to upgrade to the latest version.
+To ensure that you have the latests menu items in your Voyager panel, run this command:
+```bash
+php artisan db:seed --class=MenuItemsTableSeeder
+```
 
-Database Tools
----------------
+#### Update roles and permissions
+
+To ensure that you have the needed roles and permissions, run the following two commands:
+```bash
+php artisan db:seed --class=PermissionsTableSeeder
+php artisan db:seed --class=PermissionRoleTableSeeder
+```
+
+#### Ensure admin access
+
+Ensure that your account have full admin rights by running:
+```bash
+php artisan voyager:admin your@email.com
+```
+
+#### Cleanup
+
+You may remove `Intervention\Image\ImageServiceProviderLaravel5` from your `providers` array in `config/app.php`.
+
+#### In application changes
+
+Models using the `VoyagerUser` trait does no longer have the `roles` relation. Instead we are using a single role now. So please update you application for usages of that relation.
+Also the method `addRole` and `deleteRole` has been removed and replaced with a `setRole` method.
+
+# Database Tools
 
 Voyager has some awesome database tools which allow you to Add/Edit/Delete or view current database tables. The other cool part of Voyager is that you can add BREAD or (Browse, Read, Edit, Add, & Delete) functionality to any of your tables.
 
-### DATABASE
+## DATABASE
 
 Inside of your admin panel you can visit Tools->Database and you'll be able to view all your current tables in your database. You may also click on 'Create a New Table' to create a new table in your database.
 
@@ -97,7 +159,7 @@ If you click the table name you can view the current schema. Additionally you ca
 
 You may also choose to Add BREAD (Browse, Read, Edit, Add, & Delete) for any of your database tables. Once a table already has BREAD you may choose to edit the current BREAD or Delete the BREAD for that table.
 
-### BREAD
+## BREAD
 
 When adding or editing the current BREAD for a database table you can select where in your views you want to see each of those fields:
 
@@ -111,7 +173,7 @@ You may also choose to specify what form type you want to use for each field. Th
 
 Each field also has additional details or options that can be included. These types are checkbox, dropdown, radio button, and image. Learn more about these options below:
 
-### Additional Field Options
+## Additional Field Options
 
 When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box that allows you to include additional details or options for your datatype. This textarea accepts JSON and it applies to the following types of inputs:
 
@@ -203,7 +265,7 @@ This is only valid if you have set your image to be resized. If you specify your
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
 
-### Relationships
+## Relationships
 
 Using the bread builder additional options you can add relationships to rows. There are 2 input types that will allow you to implement a relationship with another table.
 
@@ -274,16 +336,12 @@ public function categories(){
 
 Now, when you have save the results from your Many-to-Many relationship the ID's of each selected value will be synced and added to your pivot table.
 
-Customization
----------------
+# Customization
 
-### Overriding Views
+## Overriding Views
 You can override any of the BREAD views by creating a new folder in `resources/views/admin/slug-name` and *slug-name* will be the *slug* that you have assigned for that table. There are 2 files that you will include in each which will be:
 
  - browse.blade.php
  - edit-add.blade.php
 
 By default an `admin/posts` view has been published to your `resources/views` folder. So those 2 view files will be located at `resources/views/admin/posts/browse.blade.php` and `resources/views/admin/posts/edit-add.blade.php`. 
-
-More Stuff
-=======
