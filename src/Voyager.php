@@ -28,18 +28,18 @@ class Voyager
 
     public function getVersion()
     {
-        $composer_lock = __DIR__ . '/../../../../composer.lock';
+        $composer_lock = __DIR__.'/../../../../composer.lock';
         $version = null;
 
-        if(File::exists($composer_lock)) {
+        if (File::exists($composer_lock)) {
             // Get the composer.lock file
             $file = json_decode(
                 File::get($composer_lock)
             );
 
             // Loop through all the packages and get the version of voyager
-            foreach($file->packages as $package) {
-                if($package->name == "tcg/voyager") {
+            foreach ($file->packages as $package) {
+                if ($package->name == 'tcg/voyager') {
                     $version = $package->version;
                     break;
                 }
