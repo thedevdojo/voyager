@@ -28,9 +28,7 @@ class VoyagerRoleController extends VoyagerBreadController
 
         $view = 'voyager::bread.edit-add';
 
-        if (view()->exists("admin.$slug.edit-add")) {
-            $view = "admin.$slug.edit-add";
-        } elseif (view()->exists("voyager::$slug.edit-add")) {
+        if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
 
@@ -77,9 +75,7 @@ class VoyagerRoleController extends VoyagerBreadController
 
         $view = 'voyager::bread.edit-add';
 
-        if (view()->exists("admin.$slug.edit-add")) {
-            $view = "admin.$slug.edit-add";
-        } elseif (view()->exists("voyager::$slug.edit-add")) {
+        if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
 
