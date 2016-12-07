@@ -66,7 +66,7 @@
                                 <div class="bread_actions">
                                     @if($active)
                                         <a class="btn-sm btn-default edit"
-                                           href="{{ route('voyager.database.edit', $activeDataType->id) }}"> Edit
+                                           href="{{ route('voyager.database.edit_bread', $activeDataType->id) }}"> Edit
                                             BREAD</a>
                                         <div class="btn-sm btn-danger delete" style="display:inline"
                                              data-id="{{ $activeDataType->id }}" data-name="{{ $table }}"> Delete BREAD
