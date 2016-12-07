@@ -220,7 +220,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
 <footer class="app-footer">
     <div class="site-footer-right">
         Made with <i class="voyager-heart"></i> by <a href="http://thecontrolgroup.com" target="_blank">The Control
-            Group</a>
+            Group</a> - {{ Voyager::getVersion() }}
     </div>
 </footer>
 <!-- Javascript Libs -->
