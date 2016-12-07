@@ -69,23 +69,10 @@ If you prefer installing it with dummy run
 php artisan voyager:install --with-dummy
 ```
 
-Note: If you don't have composer installed and use composer.phar instead, run the following 2 commands:
-
-```bash
-composer.phar dump-autoload
-php artisan migrate
-php artisan db:seed --class=VoyagerDatabaseSeeder
-```
-
-And to include dummy data
-```bash
-php artisan db:seed --class=VoyagerDummyDatabaseSeeder
-```
-
 And we're all good to go! 
 
 Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
- 
+
 If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
 
 >**email:** `admin@admin.com`   
