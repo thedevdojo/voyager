@@ -157,7 +157,7 @@
             $('.dd').nestable({/* config options */});
             $('.item_actions').on('click', '.delete', function (e) {
                 id = $(e.target).data('id');
-                $('#delete_form')[0].action += '/' + id;
+                $('#delete_form')[0].action += id;
                 $('#delete_modal').modal('show');
             });
 
