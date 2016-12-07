@@ -329,7 +329,7 @@ class Menu extends Model
             return '';
         }
 
-        return '<ul class="nav navbar-nav">'.$output; // TODO: Check if is missing a closing ul tag!!
+        return '<ul class="nav navbar-nav">'.$output.'</ul>';
     }
 
     /**
