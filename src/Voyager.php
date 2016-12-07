@@ -3,6 +3,7 @@
 namespace TCG\Voyager;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Models\Permission;
@@ -27,7 +28,25 @@ class Voyager
 
     public function getVersion()
     {
-        return 'v0.10-dev';
+        $composer_lock = __DIR__ . '/../../../../composer.lock';
+        $version = null;
+
+        if(File::exists($composer_lock)) {
+            // Get the composer.lock file
+            $file = json_decode(
+                File::get($composer_lock)
+            );
+
+            // Loop through all the packages and get the version of voyager
+            foreach($file->packages as $package) {
+                if($package->name == "tcg/voyager") {
+                    $version = $package->version;
+                    break;
+                }
+            }
+        }
+
+        return $version;
     }
 
     protected function __construct()
