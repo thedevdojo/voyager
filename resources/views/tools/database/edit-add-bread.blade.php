@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', 'voyager::master'))
 
 @section('head')
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jsonarea/jsonarea.min.js"></script>

@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', 'voyager::master'))
 
 @section('css')
     <style>
