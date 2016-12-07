@@ -24,7 +24,7 @@
             <div class="col-md-12">
 
                 <form role="form"
-                      action="@if(isset($dataType->id)){{ route('voyager.database.edit_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
+                      action="@if(isset($dataType->id)){{ route('voyager.database.update_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
                       method="POST">
                     @if(isset($dataType->id))
                         <input type="hidden" value="{{ $dataType->id }}" name="id">
