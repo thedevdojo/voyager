@@ -16,6 +16,17 @@ abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function getSlug(Request $request)
+    {
+        if (isset($this->slug)) {
+            $slug = $this->slug;
+        } else {
+            $slug = explode('.', $request->route()->getName())[1];
+        }
+
+        return $slug;
+    }
+
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $rules = [];
@@ -57,6 +68,8 @@ abstract class Controller extends BaseController
         if ($row->type == 'select_multiple') {
             $data->{$row->field}()->sync($content);
         }
+
+        return $data;
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
@@ -125,12 +138,11 @@ abstract class Controller extends BaseController
                         $resize_height = null;
                     }
 
-                    $image = Image::make($file)
-                        ->resize($resize_width, $resize_height, function (Constraint $constraint) {
+                    $image = Image::make($file)->resize($resize_width, $resize_height,
+                        function (Constraint $constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })
-                        ->encode($file->getClientOriginalExtension(), 75);
+                        })->encode($file->getClientOriginalExtension(), 75);
 
                     Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $image, 'public');
 
@@ -146,18 +158,16 @@ abstract class Controller extends BaseController
                                 if ($thumb_resize_height != 'null') {
                                     $thumb_resize_height = $thumb_resize_height * $scale;
                                 }
-                                $image = Image::make($file)
-                                    ->resize($thumb_resize_width, $thumb_resize_height, function (Constraint $constraint) {
+                                $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
+                                    function (Constraint $constraint) {
                                         $constraint->aspectRatio();
                                         $constraint->upsize();
-                                    })
-                                    ->encode($file->getClientOriginalExtension(), 75);
+                                    })->encode($file->getClientOriginalExtension(), 75);
                             } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                 $crop_width = $thumbnails->crop->width;
                                 $crop_height = $thumbnails->crop->height;
-                                $image = Image::make($file)
-                                    ->fit($crop_width, $crop_height)
-                                    ->encode($file->getClientOriginalExtension(), 75);
+                                $image = Image::make($file)->fit($crop_width,
+                                    $crop_height)->encode($file->getClientOriginalExtension(), 75);
                             }
 
                             Storage::put(config('voyager.storage.subfolder').$path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),

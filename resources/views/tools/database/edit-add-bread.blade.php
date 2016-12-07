@@ -73,20 +73,25 @@
                                     </td>
                                     <td>
                                         <input type="checkbox"
+                                               id="field_browse_{{ $data->Field }}"
                                                name="field_browse_{{ $data->Field }}" @if(isset($dataRow->browse) && $dataRow->browse){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->browse)){{ 'checked="checked"' }}@endif>
-                                        Browse<br/>
+                                        <label for="field_browse_{{ $data->Field }}">Browse</label><br/>
                                         <input type="checkbox"
+                                               id="field_read_{{ $data->Field }}"
                                                name="field_read_{{ $data->Field }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
-                                        Read<br/>
+                                        <label for="field_read_{{ $data->Field }}">Read</label><br/>
                                         <input type="checkbox"
+                                               id="field_edit_{{ $data->Field }}"
                                                name="field_edit_{{ $data->Field }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
-                                        Edit<br/>
+                                        <label for="field_edit_{{ $data->Field }}">Edit</label><br/>
                                         <input type="checkbox"
+                                               id="field_add_{{ $data->Field }}"
                                                name="field_add_{{ $data->Field }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'created_at')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
-                                        Add<br/>
+                                            <label for="field_add_{{ $data->Field }}">Add</label><br/>
                                         <input type="checkbox"
+                                               id="field_delete_{{ $data->Field }}"
                                                name="field_delete_{{ $data->Field }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
-                                        Delete<br/>
+                                                <label for="field_delete_{{ $data->Field }}">Delete</label><br/>
                                     </td>
                                     <input type="hidden" name="field_{{ $data->Field }}" value="{{ $data->Field }}">
                                     <td>
