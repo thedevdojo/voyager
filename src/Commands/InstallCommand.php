@@ -3,12 +3,18 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
+use Intervention\Image\ImageServiceProviderLaravel5;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
+use TCG\Voyager\Traits\Seedable;
+use TCG\Voyager\VoyagerServiceProvider;
 
 class InstallCommand extends Command
 {
+    use Seedable;
+
+    protected $seedersPath = __DIR__.'/../../publishable/database/seeds/';
+
     /**
      * The console command name.
      *
@@ -34,8 +40,7 @@ class InstallCommand extends Command
     protected function getOptions()
     {
         return [
-            ['existing', null, InputOption::VALUE_NONE, 'install on existing laravel application', null],
-            ['no-dummy-data', null, InputOption::VALUE_NONE, 'install without seeding dummy data', null],
+            ['with-dummy', null, InputOption::VALUE_NONE, 'Install with dummy data', null],
         ];
     }
 
@@ -56,21 +61,18 @@ class InstallCommand extends Command
     /**
      * Execute the console command.
      *
+     * @param \Illuminate\Filesystem\Filesystem $filesystem
+     *
      * @return void
      */
-    public function fire()
+    public function fire(\Illuminate\Filesystem\Filesystem $filesystem)
     {
-        if (!$this->option('existing')) {
-            $this->info('Generating the default authentication scaffolding');
-            Artisan::call('make:auth');
-        }
-
         $this->info('Publishing the Voyager assets, database, and config files');
-        Artisan::call('vendor:publish', ['--provider' => \TCG\Voyager\VoyagerServiceProvider::class]);
-        Artisan::call('vendor:publish', ['--provider' => \Intervention\Image\ImageServiceProviderLaravel5::class]);
+        $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
+        $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
-        Artisan::call('migrate');
+        $this->call('migrate');
 
         $this->info('Dumping the autoloaded files and reloading all new files');
 
@@ -79,20 +81,20 @@ class InstallCommand extends Command
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
+        $this->info('Adding Voyager routes to routes/web.php');
+        $filesystem->append(base_path('routes/web.php'),
+            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n");
+
         $this->info('Seeding data into the database');
-        if ($this->option('no-dummy-data')) {
-            $process = new Process('php artisan db:seed --class=DataTypesTableSeeder');
-            $process->setWorkingDirectory(base_path())->run();
-            $process = new Process('php artisan db:seed --class=DataRowsTableSeeder');
-            $process->setWorkingDirectory(base_path())->run();
-        } else {
-            $process = new Process('php artisan db:seed --class=VoyagerDatabaseSeeder');
-            $process->setWorkingDirectory(base_path())->run();
+        $this->seed('VoyagerDatabaseSeeder');
+
+        if ($this->option('with-dummy')) {
+            $this->seed('VoyagerDummyDatabaseSeeder');
         }
 
         $this->info('Adding the storage symlink to your public folder');
-        Artisan::call('storage:link');
+        $this->call('storage:link');
 
-        $this->info('Successfully installed Voyager! Enjoy :)');
+        $this->info('Successfully installed Voyager! Enjoy 🎉');
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\DataRow;
+use TCG\Voyager\Models\DataType;
 
 class DataRowsTableSeeder extends Seeder
 {
@@ -11,13 +13,19 @@ class DataRowsTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('data_rows')->delete();
+        $postDataType = DataType::where('slug', 'posts')->firstOrFail();
+        $pageDataType = DataType::where('slug', 'pages')->firstOrFail();
+        $userDataType = DataType::where('slug', 'users')->firstOrFail();
+        $categoryDataType = DataType::where('slug', 'categories')->firstOrFail();
+        $menuDataType = DataType::where('slug', 'menus')->firstOrFail();
+        $roleDataType = DataType::where('slug', 'roles')->firstOrFail();
 
-        \DB::table('data_rows')->insert([
-            0 => [
-                'id'           => 1,
-                'data_type_id' => 1,
-                'field'        => 'id',
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'id',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'PRI',
                 'display_name' => 'ID',
                 'required'     => 1,
@@ -27,11 +35,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            1 => [
-                'id'           => 2,
-                'data_type_id' => 1,
-                'field'        => 'author_id',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'author_id',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'Author',
                 'required'     => 1,
@@ -41,11 +53,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            2 => [
-                'id'           => 3,
-                'data_type_id' => 1,
-                'field'        => 'title',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'title',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'Title',
                 'required'     => 1,
@@ -55,11 +71,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            3 => [
-                'id'           => 4,
-                'data_type_id' => 1,
-                'field'        => 'excerpt',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'excerpt',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text_area',
                 'display_name' => 'excerpt',
                 'required'     => 1,
@@ -69,11 +89,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            4 => [
-                'id'           => 5,
-                'data_type_id' => 1,
-                'field'        => 'body',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'body',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'rich_text_box',
                 'display_name' => 'Body',
                 'required'     => 1,
@@ -83,11 +107,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            5 => [
-                'id'           => 6,
-                'data_type_id' => 1,
-                'field'        => 'image',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'image',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'image',
                 'display_name' => 'Post Image',
                 'required'     => 0,
@@ -121,11 +149,15 @@ class DataRowsTableSeeder extends Seeder
 }
 ]
 }',
-            ],
-            6 => [
-                'id'           => 7,
-                'data_type_id' => 1,
-                'field'        => 'slug',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'slug',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'slug',
                 'required'     => 1,
@@ -135,11 +167,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            7 => [
-                'id'           => 8,
-                'data_type_id' => 1,
-                'field'        => 'meta_description',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'meta_description',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text_area',
                 'display_name' => 'meta_description',
                 'required'     => 1,
@@ -149,11 +185,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            8 => [
-                'id'           => 9,
-                'data_type_id' => 1,
-                'field'        => 'meta_keywords',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'meta_keywords',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text_area',
                 'display_name' => 'meta_keywords',
                 'required'     => 1,
@@ -163,11 +203,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            9 => [
-                'id'           => 10,
-                'data_type_id' => 1,
-                'field'        => 'status',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'status',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'select_dropdown',
                 'display_name' => 'status',
                 'required'     => 1,
@@ -179,16 +223,20 @@ class DataRowsTableSeeder extends Seeder
                 'details'      => '{
 "default": "DRAFT",
 "options": {
-    "PUBLISHED": "published",
-    "DRAFT": "draft",
-    "PENDING": "pending"
+"PUBLISHED": "published",
+"DRAFT": "draft",
+"PENDING": "pending"
 }
 }',
-            ],
-            10 => [
-                'id'           => 11,
-                'data_type_id' => 1,
-                'field'        => 'created_at',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'created_at',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'created_at',
                 'required'     => 0,
@@ -198,11 +246,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            11 => [
-                'id'           => 12,
-                'data_type_id' => 1,
-                'field'        => 'updated_at',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'updated_at',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'updated_at',
                 'required'     => 0,
@@ -212,11 +264,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            12 => [
-                'id'           => 24,
-                'data_type_id' => 3,
-                'field'        => 'id',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $pageDataType->id,
+            'field'        => 'id',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'PRI',
                 'display_name' => 'id',
                 'required'     => 1,
@@ -226,11 +282,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            13 => [
-                'id'           => 25,
-                'data_type_id' => 3,
-                'field'        => 'author_id',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $pageDataType->id,
+            'field'        => 'author_id',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'author_id',
                 'required'     => 1,
@@ -240,11 +300,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            14 => [
-                'id'           => 26,
-                'data_type_id' => 3,
-                'field'        => 'title',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstorNew([
+            'data_type_id' => $pageDataType->id,
+            'field'        => 'title',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'title',
                 'required'     => 1,
@@ -254,11 +318,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            15 => [
-                'id'           => 27,
-                'data_type_id' => 3,
-                'field'        => 'excerpt',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $pageDataType->id,
+            'field'        => 'excerpt',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text_area',
                 'display_name' => 'excerpt',
                 'required'     => 1,
@@ -268,11 +336,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            16 => [
-                'id'           => 28,
-                'data_type_id' => 3,
-                'field'        => 'body',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $pageDataType->id,
+            'field'        => 'body',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'rich_text_box',
                 'display_name' => 'body',
                 'required'     => 1,
@@ -282,11 +354,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            17 => [
-                'id'           => 29,
-                'data_type_id' => 3,
-                'field'        => 'slug',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $pageDataType->id,
+                    'field'        => 'slug',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'slug',
                 'required'     => 1,
@@ -296,11 +372,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            18 => [
-                'id'           => 30,
-                'data_type_id' => 3,
-                'field'        => 'meta_description',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $pageDataType->id,
+                    'field'        => 'meta_description',
+                ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'meta_description',
                 'required'     => 1,
@@ -310,11 +390,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            19 => [
-                'id'           => 31,
-                'data_type_id' => 3,
-                'field'        => 'meta_keywords',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $pageDataType->id,
+                    'field'        => 'meta_keywords',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'meta_keywords',
                 'required'     => 1,
@@ -324,11 +408,15 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            20 => [
-                'id'           => 32,
-                'data_type_id' => 3,
-                'field'        => 'status',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $pageDataType->id,
+                    'field'        => 'status',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'select_dropdown',
                 'display_name' => 'status',
                 'required'     => 1,
@@ -340,15 +428,19 @@ class DataRowsTableSeeder extends Seeder
                 'details'      => '{
 "default": "INACTIVE",
 "options": {
-    "INACTIVE": "INACTIVE",
-    "ACTIVE": "ACTIVE"
+"INACTIVE": "INACTIVE",
+"ACTIVE": "ACTIVE"
 }
 }',
-            ],
-            21 => [
-                'id'           => 33,
-                'data_type_id' => 3,
-                'field'        => 'created_at',
+            ])->save();
+        }
+
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $pageDataType->id,
+                    'field'        => 'created_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'created_at',
                 'required'     => 1,
@@ -358,11 +450,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            22 => [
-                'id'           => 34,
-                'data_type_id' => 3,
-                'field'        => 'updated_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $pageDataType->id,
+                    'field'        => 'updated_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'updated_at',
                 'required'     => 1,
@@ -372,11 +467,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            23 => [
-                'id'           => 35,
-                'data_type_id' => 3,
-                'field'        => 'image',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $pageDataType->id,
+                    'field'        => 'image',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'image',
                 'display_name' => 'image',
                 'required'     => 0,
@@ -386,11 +484,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            24 => [
-                'id'           => 36,
-                'data_type_id' => 4,
-                'field'        => 'id',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'id',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'PRI',
                 'display_name' => 'id',
                 'required'     => 1,
@@ -400,11 +501,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            25 => [
-                'id'           => 37,
-                'data_type_id' => 4,
-                'field'        => 'name',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'name',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'name',
                 'required'     => 1,
@@ -414,11 +518,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            26 => [
-                'id'           => 38,
-                'data_type_id' => 4,
-                'field'        => 'email',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'email',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'email',
                 'required'     => 1,
@@ -428,25 +535,31 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            27 => [
-                'id'           => 39,
-                'data_type_id' => 4,
-                'field'        => 'password',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'password',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'password',
                 'display_name' => 'password',
                 'required'     => 1,
                 'browse'       => 0,
-                'read'         => 1,
+                'read'         => 0,
                 'edit'         => 1,
                 'add'          => 1,
-                'delete'       => 1,
+                'delete'       => 0,
                 'details'      => '',
-            ],
-            28 => [
-                'id'           => 40,
-                'data_type_id' => 4,
-                'field'        => 'remember_token',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'remember_token',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'remember_token',
                 'required'     => 0,
@@ -456,53 +569,65 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            29 => [
-                'id'           => 41,
-                'data_type_id' => 4,
-                'field'        => 'created_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'created_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'created_at',
-                'required'     => 1,
+                'required'     => 0,
                 'browse'       => 1,
                 'read'         => 1,
                 'edit'         => 1,
                 'add'          => 0,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            30 => [
-                'id'           => 42,
-                'data_type_id' => 4,
-                'field'        => 'updated_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'updated_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'updated_at',
-                'required'     => 1,
+                'required'     => 0,
                 'browse'       => 0,
                 'read'         => 0,
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            31 => [
-                'id'           => 43,
-                'data_type_id' => 4,
-                'field'        => 'avatar',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'avatar',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'image',
                 'display_name' => 'avatar',
-                'required'     => 1,
+                'required'     => 0,
                 'browse'       => 1,
                 'read'         => 1,
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            32 => [
-                'id'           => 44,
-                'data_type_id' => 6,
-                'field'        => 'id',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $menuDataType->id,
+                    'field'        => 'id',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'PRI',
                 'display_name' => 'id',
                 'required'     => 1,
@@ -512,11 +637,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            33 => [
-                'id'           => 45,
-                'data_type_id' => 6,
-                'field'        => 'name',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $menuDataType->id,
+                    'field'        => 'name',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'name',
                 'required'     => 1,
@@ -526,11 +654,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            34 => [
-                'id'           => 46,
-                'data_type_id' => 6,
-                'field'        => 'created_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $menuDataType->id,
+                    'field'        => 'created_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'created_at',
                 'required'     => 0,
@@ -540,11 +671,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            35 => [
-                'id'           => 47,
-                'data_type_id' => 6,
-                'field'        => 'updated_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $menuDataType->id,
+                    'field'        => 'updated_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'updated_at',
                 'required'     => 0,
@@ -554,11 +688,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            36 => [
-                'id'           => 48,
-                'data_type_id' => 5,
-                'field'        => 'id',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $categoryDataType->id,
+                    'field'        => 'id',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'PRI',
                 'display_name' => 'id',
                 'required'     => 1,
@@ -568,11 +705,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            37 => [
-                'id'           => 49,
-                'data_type_id' => 5,
-                'field'        => 'parent_id',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $categoryDataType->id,
+                    'field'        => 'parent_id',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'parent_id',
                 'required'     => 0,
@@ -582,11 +722,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            38 => [
-                'id'           => 50,
-                'data_type_id' => 5,
-                'field'        => 'order',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $categoryDataType->id,
+                    'field'        => 'order',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'order',
                 'required'     => 1,
@@ -596,11 +739,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            39 => [
-                'id'           => 51,
-                'data_type_id' => 5,
-                'field'        => 'name',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $categoryDataType->id,
+                    'field'        => 'name',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'name',
                 'required'     => 1,
@@ -610,11 +756,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            40 => [
-                'id'           => 52,
-                'data_type_id' => 5,
-                'field'        => 'slug',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $categoryDataType->id,
+                    'field'        => 'slug',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'slug',
                 'required'     => 1,
@@ -624,11 +773,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            41 => [
-                'id'           => 53,
-                'data_type_id' => 5,
-                'field'        => 'created_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $categoryDataType->id,
+                    'field'        => 'created_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'created_at',
                 'required'     => 0,
@@ -638,11 +790,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            42 => [
-                'id'           => 54,
-                'data_type_id' => 5,
-                'field'        => 'updated_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $categoryDataType->id,
+                    'field'        => 'updated_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'updated_at',
                 'required'     => 0,
@@ -652,11 +807,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            43 => [
-                'id'           => 61,
-                'data_type_id' => 8,
-                'field'        => 'id',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $roleDataType->id,
+                    'field'        => 'id',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'PRI',
                 'display_name' => 'id',
                 'required'     => 1,
@@ -666,11 +824,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            44 => [
-                'id'           => 62,
-                'data_type_id' => 8,
-                'field'        => 'name',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $roleDataType->id,
+                    'field'        => 'name',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'Name',
                 'required'     => 1,
@@ -680,11 +841,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            45 => [
-                'id'           => 63,
-                'data_type_id' => 8,
-                'field'        => 'created_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $roleDataType->id,
+                    'field'        => 'created_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'created_at',
                 'required'     => 0,
@@ -694,11 +858,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            46 => [
-                'id'           => 64,
-                'data_type_id' => 8,
-                'field'        => 'updated_at',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $roleDataType->id,
+                    'field'        => 'updated_at',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'timestamp',
                 'display_name' => 'updated_at',
                 'required'     => 0,
@@ -708,11 +875,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-            ],
-            47 => [
-                'id'           => 65,
-                'data_type_id' => 8,
-                'field'        => 'display_name',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $roleDataType->id,
+                    'field'        => 'display_name',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'Display Name',
                 'required'     => 1,
@@ -722,11 +892,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            48 => [
-                'id'           => 66,
-                'data_type_id' => 1,
-                'field'        => 'seo_title',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+            'data_type_id' => $postDataType->id,
+            'field'        => 'seo_title',
+        ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'text',
                 'display_name' => 'seo_title',
                 'required'     => 0,
@@ -736,11 +909,14 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-            49 => [
-                'id'           => 67,
-                'data_type_id' => 1,
-                'field'        => 'featured',
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $postDataType->id,
+                    'field'        => 'featured',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                 'type'         => 'checkbox',
                 'display_name' => 'featured',
                 'required'     => 1,
@@ -750,7 +926,24 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => '',
-            ],
-        ]);
+            ])->save();
+        }
+        $dataRow = DataRow::firstOrNew([
+                    'data_type_id' => $userDataType->id,
+                    'field'        => 'role_id',
+            ]);
+        if (!$dataRow->exists) {
+            $dataRow->fill([
+                'type'         => 'text',
+                'display_name' => 'role_id',
+                'required'     => 1,
+                'browse'       => 0,
+                'read'         => 0,
+                'edit'         => 1,
+                'add'          => 1,
+                'delete'       => 0,
+                'details'      => '',
+            ])->save();
+        }
     }
 }

@@ -1,8 +1,18 @@
 <?php
 
+namespace TCG\Voyager\Tests;
 
 class RouteTest extends TestCase
 {
+    protected $withDummy = true;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->install();
+    }
+
     /**
      * A basic functional test example.
      *
@@ -15,39 +25,38 @@ class RouteTest extends TestCase
         $this->type('password', 'password');
         $this->press('Login Logging in');
 
-        $prefix = config('voyager.routes.prefix');
         $urls = [
-            "/{$prefix}",
-            "/{$prefix}/roles",
-            "/{$prefix}/roles/1",
-            "/{$prefix}/roles/1/edit",
-            "/{$prefix}/roles/create",
-            "/{$prefix}/users",
-            "/{$prefix}/users/create",
-            "/{$prefix}/users/1",
-            "/{$prefix}/users/1/edit",
-            "/{$prefix}/media",
-            "/{$prefix}/posts",
-            "/{$prefix}/posts/create",
-            "/{$prefix}/posts/23/edit",
-            "/{$prefix}/posts/23",
-            "/{$prefix}/pages",
-            "/{$prefix}/pages/create",
-            "/{$prefix}/pages/1",
-            "/{$prefix}/pages/1/edit",
-            "/{$prefix}/categories",
-            "/{$prefix}/categories/create",
-            "/{$prefix}/categories/1",
-            "/{$prefix}/categories/1/edit",
-            "/{$prefix}/menus",
-            "/{$prefix}/menus/create",
-            "/{$prefix}/menus/2/builder",
-            "/{$prefix}/menus/2/edit",
-            "/{$prefix}/database",
-            "/{$prefix}/database/5/edit-bread",
-            "/{$prefix}/database/edit-categories-table",
-            "/{$prefix}/database/create-table",
-            "/{$prefix}/settings",
+            route('voyager.dashboard'),
+            route('voyager.media.index'),
+            route('voyager.settings.index'),
+            route('voyager.roles.index'),
+            route('voyager.roles.create'),
+            route('voyager.roles.show', ['role' => 1]),
+            route('voyager.roles.edit', ['role' => 1]),
+            route('voyager.users.index'),
+            route('voyager.users.create'),
+            route('voyager.users.show', ['user' => 1]),
+            route('voyager.users.edit', ['user' => 1]),
+            route('voyager.posts.index'),
+            route('voyager.posts.create'),
+            route('voyager.posts.show', ['post' => 1]),
+            route('voyager.posts.edit', ['post' => 1]),
+            route('voyager.pages.index'),
+            route('voyager.pages.create'),
+            route('voyager.pages.show', ['page' => 1]),
+            route('voyager.pages.edit', ['page' => 1]),
+            route('voyager.categories.index'),
+            route('voyager.categories.create'),
+            route('voyager.categories.show', ['category' => 1]),
+            route('voyager.categories.edit', ['category' => 1]),
+            route('voyager.menus.index'),
+            route('voyager.menus.create'),
+            route('voyager.menus.show', ['menu' => 1]),
+            route('voyager.menus.edit', ['menu' => 1]),
+            route('voyager.database.index'),
+            //route('voyager.database.edit_bread', ['id' => 5]),
+            //route('voyager.database.edit', ['table' => 'categories']),
+            route('voyager.database.create'),
         ];
 
         foreach ($urls as $url) {

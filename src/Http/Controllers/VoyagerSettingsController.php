@@ -5,18 +5,25 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Models\Setting;
+use TCG\Voyager\Voyager;
 
 class VoyagerSettingsController extends Controller
 {
     public function index()
     {
+        // Check permission
+        Voyager::can('browse_settings');
+
         $settings = Setting::orderBy('order', 'ASC')->get();
 
         return view('voyager::settings.index', compact('settings'));
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
+        // Check permission
+        Voyager::can('browse_settings');
+
         $lastSetting = Setting::orderBy('order', 'DESC')->first();
         if ($lastSetting == null) {
             $order = 0;
@@ -28,13 +35,46 @@ class VoyagerSettingsController extends Controller
         Setting::create($request->all());
 
         return back()->with([
-            'message'    => 'Successfully Created New Setting',
+            'message'    => 'Successfully Created Settings',
+            'alert-type' => 'success',
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        // Check permission
+        Voyager::can('visit_settings');
+
+        $settings = Setting::all();
+
+        foreach ($settings as $setting) {
+            $content = $this->getContentBasedOnType($request, 'settings', (object) [
+                'type'    => $setting->type,
+                'field'   => $setting->key,
+                'details' => $setting->details,
+            ]);
+
+            if ($content === null && isset($setting->value)) {
+                $content = $setting->value;
+            }
+
+            $setting->value = $content;
+            $setting->save();
+        }
+
+        return back()->with([
+            'message'    => 'Successfully Saved Settings',
             'alert-type' => 'success',
         ]);
     }
 
     public function delete($id)
     {
+        Voyager::can('browse_settings');
+
+        // Check permission
+        Voyager::can('visit_settings');
+
         Setting::destroy($id);
 
         return back()->with([
@@ -70,6 +110,9 @@ class VoyagerSettingsController extends Controller
 
     public function delete_value($id)
     {
+        // Check permission
+        Voyager::can('browse_settings');
+
         $setting = Setting::find($id);
 
         if (isset($setting->id)) {
@@ -113,31 +156,5 @@ class VoyagerSettingsController extends Controller
         }
 
         return back()->with($data);
-    }
-
-    public function save(Request $request)
-    {
-        $settings = Setting::all();
-        $breadController = new VoyagerBreadController(); // TODO: This is bad!! Extract getContentBasedOnType() as a Helper
-
-        foreach ($settings as $setting) {
-            $content = $breadController->getContentBasedOnType($request, 'settings', (object) [
-                'type'    => $setting->type,
-                'field'   => $setting->key,
-                'details' => $setting->details,
-            ]);
-
-            if ($content === null && isset($setting->value)) {
-                $content = $setting->value;
-            }
-
-            $setting->value = $content;
-            $setting->save();
-        }
-
-        return back()->with([
-            'message'    => 'Successfully Saved Settings',
-            'alert-type' => 'success',
-        ]);
     }
 }

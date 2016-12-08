@@ -7,7 +7,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-data"></i> Database
-        <a href="{{ route('voyager.database.create_table') }}" class="btn btn-success"><i class="voyager-plus"></i>
+        <a href="{{ route('voyager.database.create') }}" class="btn btn-success"><i class="voyager-plus"></i>
             Create New Table</a>
     </h1>
 @stop
@@ -50,12 +50,12 @@
                             <td>
                                 <p class="name">
                                     @if($active)
-                                        <a href="{{ route('voyager.database.browse_table', $table) }}"
+                                        <a href="{{ route('voyager.database.show', $table) }}"
                                            data-name="{{ $table }}" class="desctable">{{ $table }}</a> <i
                                                 class="voyager-bread"
                                                 style="font-size:25px; position:absolute; margin-left:10px; margin-top:-3px;"></i>
                                     @else
-                                        <a href="{{ route('voyager.database.browse_table', $table) }}"
+                                        <a href="{{ route('voyager.database.show', $table) }}"
                                            data-name="{{ $table }}" class="desctable">{{ $table }}</a>
                                     @endif
                                 </p>
@@ -88,11 +88,11 @@
                                    data-table="{{ $table }}" style="display:inline; cursor:pointer;"><i
                                             class="voyager-trash"></i> Delete</a>
                                 <a class="btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;"
-                                   href="{{ route('voyager.database.edit_table', $table) }}"><i
+                                   href="{{ route('voyager.database.edit', $table) }}"><i
                                             class="voyager-edit"></i> Edit</a>
                                 <a class="btn-sm btn-warning pull-right desctable"
                                    style="display:inline; margin-right:10px;"
-                                   href="{{ route('voyager.database.browse_table', $table) }}" data-name="{{ $table }}"><i
+                                   href="{{ route('voyager.database.show', $table) }}" data-name="{{ $table }}"><i
                                             class="voyager-eye"></i> View</a>
                             </td>
                         </tr>
@@ -112,8 +112,8 @@
                         the <span id="delete_builder_name"></span> table?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.database') }}/delete_bread" id="delete_builder_form" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
+                    <form action="{{ route('voyager.database.delete_bread', ['id' => null]) }}" id="delete_builder_form" method="POST">
+                        {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger" value="Yes, remove the BREAD">
                     </form>
@@ -133,8 +133,8 @@
                                 id="delete_table_name"></span> table?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.database') }}/table/delete" id="delete_table_form" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
+                    <form action="{{ route('voyager.database.destroy', ['database' => '__database']) }}" id="delete_table_form" method="POST">
+                        {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger pull-right" value="Yes, delete this table">
                         <button type="button" class="btn btn-outline pull-right" style="margin-right:10px;"
@@ -226,12 +226,12 @@
                 $.get(href, function (data) {
                     $.each(data, function (key, val) {
                         table.rows.push({
-                            Field: val.Field,
-                            Type: val.Type,
-                            Null: val.Null,
-                            Key: val.Key,
-                            Default: val.Default,
-                            Extra: val.Extra
+                            Field: val.field,
+                            Type: val.type,
+                            Null: val.null,
+                            Key: val.key,
+                            Default: val.default,
+                            Extra: val.extra
                         });
                         $('#table_info').modal('show');
                     });
@@ -244,7 +244,7 @@
                     toastr.warning("Please make sure to remove the BREAD on this table before deleting the table.");
                 } else {
                     $('#delete_table_name').text(table);
-                    $('#delete_table_form')[0].action += '/' + table;
+                    $('#delete_table_form')[0].action = $('#delete_table_form')[0].action.replace('__database', table);
                     $('#delete_modal').modal('show');
                 }
             });

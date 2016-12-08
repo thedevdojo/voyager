@@ -91,8 +91,9 @@
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form action="@if(isset($table)){{ route('voyager.database.edit_table', $table) }}@else{{ route('voyager.database.create_table') }}@endif"
+                <form action="@if(isset($table)){{ route('voyager.database.update', $table) }}@else{{ route('voyager.database.store') }}@endif"
                       method="POST">
+                    @if(isset($table)){{ method_field('PUT') }}@endif
                     <div class="panel panel-bordered">
                         <div class="panel-heading">
                             <h3 class="panel-title">@if(isset($table)){{ 'Edit the ' . $table . ' table below' }}@else{{ 'Create Your New Table Below' }}@endif</h3>

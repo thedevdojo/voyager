@@ -10,6 +10,21 @@ class User extends AuthUser
 {
     use VoyagerUser;
 
+    protected $fillable = ['name', 'email', 'password', 'remember_token', 'role_id'];
+
+    /**
+     * On save make sure to set the default avatar if image is not set.
+     */
+    public function save(array $options = [])
+    {
+        // If no avatar has been set, set it to the default
+        if (!$this->avatar) {
+            $this->avatar = 'users/default.png';
+        }
+
+        parent::save();
+    }
+
     public function getNameAttribute($value)
     {
         return ucwords($value);
