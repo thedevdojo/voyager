@@ -159,6 +159,34 @@ You may remove `Intervention\Image\ImageServiceProviderLaravel5` from your `prov
 Models using the `VoyagerUser` trait does no longer have the `roles` relation. Instead we are using a single role now. So please update you application for usages of that relation.
 Also the method `addRole` and `deleteRole` has been removed and replaced with a `setRole` method.
 
+# Routing
+
+## Voyager Routing
+
+After running the voyager installer you will probably notice a few new routes that have been added to your `routes/web.php` file which look like the following:
+
+```
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
+```
+
+This is where the voyager routes will be rendered. You can also choose to change the `admin` prefix to a more desired name.
+
+When creating a new BREAD type and specifying a slug for that BREAD, you will then be able to visit that route via your admin via the following link:
+
+```
+URL/admin/slug-name
+```
+
+Say for instance that you added BREAD to a `products` table and you speicified the slug in that bread to be `products`. You will now be able to visit a URL in voyager located at:
+
+```
+URL/admin/products
+```
+
+> Note: you may not see a link to your newly created routes or BREAD inside your admin menu. To create a new link in your admin menu visit the documentation for the menu section.
+
 # Database Tools
 
 Voyager has some awesome database tools which allow you to Add/Edit/Delete or view current database tables. The other cool part of Voyager is that you can add BREAD or (Browse, Read, Edit, Add, & Delete) functionality to any of your tables.
