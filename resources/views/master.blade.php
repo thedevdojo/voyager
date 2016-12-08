@@ -27,9 +27,6 @@
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
 
-    <!-- Voyager CSS -->
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
-
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ config('voyager.assets_path') }}/images/logo-icon.png" type="image/x-icon">
 
@@ -41,6 +38,10 @@
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue.min.js"></script>
 
     @yield('css')
+
+    <!-- Voyager CSS -->
+    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
+
     @yield('head')
 
 </head>
