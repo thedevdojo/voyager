@@ -81,7 +81,7 @@ If you did go ahead with the dummy data, a user should have been created for you
 NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
 
 If you did not go with the dummy user, you may wish to assign admin priveleges to an existing user.
-This can be easily done by running this command:
+This can easily be done by running this command:
 
 ```bash
 php artisan voyager:admin your@email.com
