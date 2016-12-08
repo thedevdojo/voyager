@@ -206,6 +206,11 @@
 
             $('#tablebody').on('click', '.delete-row', function () {
                 var clickedRow = $(this).parents('.newTableRow');
+                if (clickedRow.find('.fieldName').val() == "created_at & updated_at") {
+                     $('#newFieldTimestamps').removeAttr('disabled').click(function () {
+                         newRow('timestamps');
+                     });
+                 }
                 if (clickedRow.hasClass('existing_row')) {
                     $(this).parents('.newTableRow').hide();
                     $(this).parents('.newTableRow').find('.deleteField').val(1);
@@ -273,6 +278,7 @@
                 $('#' + unique_id).find('.fieldType').val('timestamp').attr('readonly', 'readonly').prop('disabled', 'true');
                 $('#' + unique_id).find('.fieldNull').parent().hide();
                 $('#' + unique_id).find('.fieldKey').hide();
+                $('#newFieldTimestamps').attr('disabled', 'disabled').off('click');
             } else {
                 if (typeof(name) != 'undefined') {
                     $('#' + unique_id).addClass('existing_row');
