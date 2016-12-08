@@ -24,25 +24,18 @@ class VoyagerSettingsController extends Controller
         // Check permission
         Voyager::can('browse_settings');
 
-        $settings = Setting::all();
-
-        foreach ($settings as $setting) {
-            $content = $this->getContentBasedOnType($request, 'settings', (object) [
-                'type'    => $setting->type,
-                'field'   => $setting->key,
-                'details' => $setting->details,
-            ]);
-
-            if ($content === null && isset($setting->value)) {
-                $content = $setting->value;
-            }
-
-            $setting->value = $content;
-            $setting->save();
+        $lastSetting = Setting::orderBy('order', 'DESC')->first();
+        if ($lastSetting == null) {
+            $order = 0;
+        } else {
+            $order = intval($lastSetting->order) + 1;
         }
+        $request->merge(['order' => $order]);
+        $request->merge(['value' => '']);
+        Setting::create($request->all());
 
         return back()->with([
-            'message'    => 'Successfully Saved Settings',
+            'message'    => 'Successfully Created Settings',
             'alert-type' => 'success',
         ]);
     }
