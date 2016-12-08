@@ -44,25 +44,37 @@ Add the Voyager service provider to the `config/app.php` file in the `providers`
 ],
 ```
 
-Lastly, we can install voyager by running
+Lastly, we can install voyager. You can do this either with or without dummy data.
+The dummy data will include 1 admin account (if no users already exists), 1 demo page, 4 demo posts, 2 categories and 7 settings.
+
+To install Voyager without dummy simply run
 
 ```bash
 php artisan voyager:install
 ```
 
-Note: If you don't have composer installed and use composer.phar instead, run the following 2 commands:
+If you prefer installing it with dummy run
 
 ```bash
-composer.phar dump-autoload
+php artisan voyager:install --with-dummy
 ```
 
 And we're all good to go! 
 
-Start up a local development server with `php artisan serve` And, visit http://localhost:8000/admin and you can login with the following login credentials:
+Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
 
-```
-**email:** admin@admin.com
-**password:** password
+If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
+
+>**email:** `admin@admin.com`   
+>**password:** `password`
+
+NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
+
+If you did not go with the dummy user, you should make sure that your account has the needed role and permissions.
+This can be done easy by running this command:
+
+```bash
+php artisan voyager:admin your@email.com
 ```
 
 ## Upgrade
@@ -151,7 +163,7 @@ Also the method `addRole` and `deleteRole` has been removed and replaced with a 
 
 Voyager has some awesome database tools which allow you to Add/Edit/Delete or view current database tables. The other cool part of Voyager is that you can add BREAD or (Browse, Read, Edit, Add, & Delete) functionality to any of your tables.
 
-## DATABASE
+## Database
 
 Inside of your admin panel you can visit Tools->Database and you'll be able to view all your current tables in your database. You may also click on 'Create a New Table' to create a new table in your database.
 
@@ -173,7 +185,7 @@ You may also choose to specify what form type you want to use for each field. Th
 
 Each field also has additional details or options that can be included. These types are checkbox, dropdown, radio button, and image. Learn more about these options below:
 
-## Additional Field Options
+### Additional Field Options
 
 When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box that allows you to include additional details or options for your datatype. This textarea accepts JSON and it applies to the following types of inputs:
 
@@ -265,7 +277,7 @@ This is only valid if you have set your image to be resized. If you specify your
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
 
-## Relationships
+### Relationships
 
 Using the bread builder additional options you can add relationships to rows. There are 2 input types that will allow you to implement a relationship with another table.
 
