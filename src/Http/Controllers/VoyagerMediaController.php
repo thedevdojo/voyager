@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use TCG\Voyager\Voyager;
 
 class VoyagerMediaController extends Controller
 {
@@ -26,6 +27,8 @@ class VoyagerMediaController extends Controller
 
     public function index()
     {
+        Voyager::can('browse_media');
+
         return view('voyager::media.index');
     }
 
@@ -211,7 +214,7 @@ class VoyagerMediaController extends Controller
     public function upload(Request $request)
     {
         try {
-            $request->file->store($request->upload_path);
+            $path = $request->file->store($request->upload_path);
             $success = true;
             $message = 'Successfully uploaded new file!';
         } catch (Exception $e) {
@@ -219,6 +222,8 @@ class VoyagerMediaController extends Controller
             $message = $e->getMessage();
         }
 
-        return response()->json(compact('success', 'message'));
+        $path = preg_replace('/^public\//', '', $path);
+
+        return response()->json(compact('success', 'message', 'path'));
     }
 }

@@ -17,16 +17,21 @@
         <?php $table = $dataType->name ?>
     @endif
 
-
-    <?php $tableData = DB::select("DESCRIBE `${table}`"); ?>
+    <?php $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : DB::select("DESCRIBE `${table}`"); ?>
 
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
 
                 <form role="form"
-                      action="@if(isset($dataType->id)){{ route('voyager.database.edit_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
+                      action="@if(isset($dataType->id)){{ route('voyager.database.update_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
                       method="POST">
+                    @if(isset($dataType->id))
+                        <input type="hidden" value="{{ $dataType->id }}" name="id">
+                        {{ method_field("PUT") }}
+                    @endif
+                    <!-- CSRF TOKEN -->
+                    {{ csrf_field() }}
 
                     <div class="panel panel-primary panel-bordered">
 
@@ -46,7 +51,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($tableData as $data)
+                            @foreach($fieldOptions as $data)
                                 @if(isset($dataType->id))
                                     <?php $dataRow = TCG\Voyager\Models\DataRow::where('data_type_id', '=',
                                             $dataType->id)->where('field', '=', $data->Field)->first(); ?>
@@ -68,20 +73,25 @@
                                     </td>
                                     <td>
                                         <input type="checkbox"
+                                               id="field_browse_{{ $data->Field }}"
                                                name="field_browse_{{ $data->Field }}" @if(isset($dataRow->browse) && $dataRow->browse){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->browse)){{ 'checked="checked"' }}@endif>
-                                        Browse<br/>
+                                        <label for="field_browse_{{ $data->Field }}">Browse</label><br/>
                                         <input type="checkbox"
+                                               id="field_read_{{ $data->Field }}"
                                                name="field_read_{{ $data->Field }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
-                                        Read<br/>
+                                        <label for="field_read_{{ $data->Field }}">Read</label><br/>
                                         <input type="checkbox"
+                                               id="field_edit_{{ $data->Field }}"
                                                name="field_edit_{{ $data->Field }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
-                                        Edit<br/>
+                                        <label for="field_edit_{{ $data->Field }}">Edit</label><br/>
                                         <input type="checkbox"
+                                               id="field_add_{{ $data->Field }}"
                                                name="field_add_{{ $data->Field }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'created_at')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
-                                        Add<br/>
+                                            <label for="field_add_{{ $data->Field }}">Add</label><br/>
                                         <input type="checkbox"
+                                               id="field_delete_{{ $data->Field }}"
                                                name="field_delete_{{ $data->Field }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data->Key == 'PRI')@elseif($data->Type == 'timestamp' && $data->Field == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
-                                        Delete<br/>
+                                                <label for="field_delete_{{ $data->Field }}">Delete</label><br/>
                                     </td>
                                     <input type="hidden" name="field_{{ $data->Field }}" value="{{ $data->Field }}">
                                     <td>
@@ -118,6 +128,10 @@
                                                 <option value="select_dropdown" @if(isset($dataRow->type) && $dataRow->type == 'select_dropdown'){{ 'selected' }}@endif>
                                                     Select Dropdown
                                                 </option>
+                                                </option>
+                                                <option value="select_multiple" @if(isset($dataRow->type) && $dataRow->type == 'select_multiple'){{ 'selected' }}@endif>
+                                                    Multiple Select
+                                                </option>
                                                 <option value="file" @if(isset($dataRow->type) && $dataRow->type == 'file'){{ 'selected' }}@endif>
                                                     File
                                                 </option>
@@ -129,7 +143,7 @@
 
                                     </td>
                                     <td><input type="text" class="form-control"
-                                               value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ $data->Field }}@endif"
+                                               value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ ucwords(str_replace('_', ' ', $data->Field)) }}@endif"
                                                name="field_display_name_{{ $data->Field }}"></td>
                                     <td>
                                         <textarea class="form-control json" name="field_details_{{ $data->Field }}"
@@ -226,17 +240,17 @@
                                        value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
                             </div>
                             <div class="form-group">
+                                <label for="email">Generate Permissions</label><br>
+                                <?php $checked = (isset($dataType->generate_permissions) && $dataType->generate_permissions == 1) ? true : (isset($generate_permissions) && $generate_permissions) ? true : false; ?>
+                                <input type="checkbox" name="generate_permissions" class="toggleswitch"
+                                       @if($checked) checked @endif>
+                            </div>
+                            <div class="form-group">
                                 <label for="email">Description</label>
                                 <textarea class="form-control" name="description"
                                           placeholder="Description">@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
                             </div>
 
-                            @if(isset($dataType->id))
-                                <input type="hidden" value="{{ $dataType->id }}" name="id">
-                                <input type="hidden" value="PUT" name="_method">
-                        @endif
-                        <!-- CSRF TOKEN -->
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
@@ -255,6 +269,11 @@
             var pretty = JSON.stringify(obj, undefined, 4);
             document.getElementById('myTextArea').value = pretty;
         }
+    </script>
+    <script>
+        $('document').ready(function () {
+            $('.toggleswitch').bootstrapToggle();
+        });
     </script>
 
 @stop

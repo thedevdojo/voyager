@@ -28,6 +28,7 @@
             position: absolute;
             bottom: 0;
             width: 100%;
+            z-index: 200000;
         }
 
         .panel.is-fullscreen .mce-tinymce {
@@ -39,7 +40,7 @@
         .panel.is-fullscreen .mce-edit-area iframe html {
             height: 100%;
             position: absolute;
-            width: 95%;
+            width: 99%;
             overflow-y: scroll;
             overflow-x: hidden;
             min-height: 100%;
@@ -55,8 +56,13 @@
 
 @section('content')
     <div class="page-content container-fluid">
-        <form role="form" action="@if(isset($dataTypeContent->id)){{ route('posts.update', $dataTypeContent->id) }}@else{{ route('posts.store') }}@endif" method="POST" enctype="multipart/form-data">
+        <form role="form" action="@if(isset($dataTypeContent->id)){{ route('voyager.posts.update', $dataTypeContent->id) }}@else{{ route('voyager.posts.store') }}@endif" method="POST" enctype="multipart/form-data">
+            <!-- PUT Method if we are editing -->
+            @if(isset($dataTypeContent->id))
+                {{ method_field("PUT") }}
+            @endif
             {{ csrf_field() }}
+
             <div class="row">
                 <div class="col-md-8">
                     <!-- ### TITLE ### -->
@@ -67,7 +73,7 @@
                                 <span class="panel-desc"> The title for your post</span>
                             </h3>
                             <div class="panel-actions">
-                                <a class="panel-action icon wb-minus" data-toggle="panel-collapse" aria-hidden="true"></a>
+                                <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -80,7 +86,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title"><i class="icon wb-book"></i> Post Content</h3>
                             <div class="panel-actions">
-                                <a class="panel-action icon wb-expand" data-toggle="panel-fullscreen" aria-hidden="true"></a>
+                                <a class="panel-action voyager-resize-full" data-toggle="panel-fullscreen" aria-hidden="true"></a>
                             </div>
                         </div>
                         <textarea class="richTextBox" name="body" style="border:0px;">
@@ -93,14 +99,14 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">Excerpt <small>Small description of this post</small></h3>
                             <div class="panel-actions">
-                                <a class="panel-action icon wb-minus" data-toggle="panel-collapse" aria-hidden="true"></a>
+                                <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
                         </div>
                         <div class="panel-body">
                           <textarea class="form-control" name="excerpt">
                               @if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif
                           </textarea>
-                      </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -109,7 +115,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title"><i class="icon wb-clipboard"></i> Post Details</h3>
                             <div class="panel-actions">
-                                <a class="panel-action icon wb-minus" data-toggle="panel-collapse" aria-hidden="true"></a>
+                                <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -129,7 +135,7 @@
                                 <label for="name">Post Category</label>
                                 <select class="form-control" name="category_id">
                                     @foreach(TCG\Voyager\Models\Category::all() as $category)
-                                    <option value="{{ $category->id }}" @if(isset($dataTypeContent->category_id) && $dataTypeContent->category_id == $category->id){{ 'selected="selected"' }}@endif>{{ $category->name }}</option>
+                                        <option value="{{ $category->id }}" @if(isset($dataTypeContent->category_id) && $dataTypeContent->category_id == $category->id){{ 'selected="selected"' }}@endif>{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -145,12 +151,12 @@
                         <div class="panel-heading">
                             <h3 class="panel-title"><i class="icon wb-image"></i> Post Image</h3>
                             <div class="panel-actions">
-                                <a class="panel-action icon wb-minus" data-toggle="panel-collapse" aria-hidden="true"></a>
+                                <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
                         </div>
                         <div class="panel-body">
                             @if(isset($dataTypeContent->image))
-                            <img src="{{ Voyager::image( $dataTypeContent->image ) }}" style="width:100%" />
+                                <img src="{{ Voyager::image( $dataTypeContent->image ) }}" style="width:100%" />
                             @endif
                             <input type="file" name="image">
                         </div>
@@ -161,7 +167,7 @@
                         <div class="panel-heading">
                             <h3 class="panel-title"><i class="icon wb-search"></i> SEO Content</h3>
                             <div class="panel-actions">
-                                <a class="panel-action icon wb-minus" data-toggle="panel-collapse" aria-hidden="true"></a>
+                                <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -185,12 +191,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- PUT Method if we are editing -->
-            @if(isset($dataTypeContent->id))
-            <input type="hidden" name="_method" value="PUT">
-            @endif
-            <!-- PUT Method if we are editing -->
 
             <button type="submit" class="btn btn-primary pull-right">
                 @if(isset($dataTypeContent->id)){{ 'Update Post' }}@else<?= '<i class="icon wb-plus-circle"></i> Create New Post'; ?>@endif

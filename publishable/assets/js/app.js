@@ -43,3 +43,32 @@ $(function() {
     return $(".side-menu .nav .dropdown .collapse").collapse('hide');
   });
 });
+
+$(document).ready(function () {
+  // Toggle Collapse
+  $(document).on('click', '.panel-heading a.panel-action[data-toggle="panel-collapse"]', function(e){
+    e.preventDefault();
+    var $this = $(this);
+    if(!$this.hasClass('panel-collapsed')) {
+      $this.parents('.panel').find('.panel-body').slideUp();
+      $this.addClass('panel-collapsed');
+      $this.removeClass('voyager-angle-down').addClass('voyager-angle-up');
+    } else {
+      $this.parents('.panel').find('.panel-body').slideDown();
+      $this.removeClass('panel-collapsed');
+      $this.removeClass('voyager-angle-up').addClass('voyager-angle-down');
+    }
+  });
+
+  //Toggle fullscreen
+  $(document).on('click', '.panel-heading a.panel-action[data-toggle="panel-fullscreen"]', function (e) {
+    e.preventDefault();
+    var $this = $(this);
+    if (!$this.hasClass('voyager-resize-full')) {
+      $this.removeClass('voyager-resize-small').addClass('voyager-resize-full');
+    } else {
+      $this.removeClass('voyager-resize-full').addClass('voyager-resize-small');
+    }
+    $this.closest('.panel').toggleClass('is-fullscreen');
+  });
+});

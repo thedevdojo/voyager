@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Traits;
 
-use Illuminate\Support\Arr;
 use TCG\Voyager\Models\Role;
 
 /**
@@ -10,33 +9,27 @@ use TCG\Voyager\Models\Role;
  */
 trait VoyagerUser
 {
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany(Role::class, 'user_roles');
+        return $this->belongsTo(Role::class);
     }
 
     public function hasRole($name)
     {
-        return in_array($name, Arr::pluck($this->roles->toArray(), 'name'));
+        return $this->role->name == $name;
     }
 
-    public function addRole($name)
+    public function setRole($name)
     {
-        // If user does not already have this role
-        if (!$this->hasRole($name)) {
-            // Look up the role and attach it to the user
-            $role = Role::where('name', '=', $name)->first();
-            $this->roles()->attach($role->id);
+        $role = Role::where('name', '=', $name)->first();
+
+        if ($role) {
+            $this->role()->associate($role);
         }
     }
 
-    public function deleteRole($name)
+    public function hasPermission($name)
     {
-        // If user has this role
-        if ($this->hasRole($name)) {
-            // Lookup the role and detach it from the user
-            $role = Role::where('name', '=', $name)->first();
-            $this->roles()->detach($role->id);
-        }
+        return in_array($name, $this->role->permissions->pluck('key')->toArray());
     }
 }

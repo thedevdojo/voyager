@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\Post;
 
 class PostsTableSeeder extends Seeder
 {
@@ -11,13 +12,13 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        \DB::table('posts')->delete();
-
-        \DB::table('posts')->insert([
-            0 => [
-                'id'               => 20,
-                'author_id'        => 0,
+        $post = Post::firstOrNew([
+            'slug' => 'lorem-ipsum-post',
+        ]);
+        if (!$post->exists) {
+            $post->fill([
                 'title'            => 'Lorem Ipsum Post',
+                'author_id'        => 0,
                 'seo_title'        => null,
                 'excerpt'          => 'This is the excerpt for the Lorem Ipsum Post',
                 'body'             => '<p>This is the body of the lorem ipsum post</p>',
@@ -27,31 +28,37 @@ class PostsTableSeeder extends Seeder
                 'meta_keywords'    => 'keyword1, keyword2, keyword3',
                 'status'           => 'PUBLISHED',
                 'featured'         => 0,
-                'created_at'       => '2016-02-02 18:24:33',
-                'updated_at'       => '2016-01-29 00:03:36',
-            ],
-            1 => [
-                'id'        => 21,
-                'author_id' => 0,
+            ])->save();
+        }
+
+        $post = Post::firstOrNew([
+            'slug'             => 'my-sample-post',
+        ]);
+        if (!$post->exists) {
+            $post->fill([
                 'title'     => 'My Sample Post',
+                'author_id' => 0,
                 'seo_title' => null,
                 'excerpt'   => 'This is the excerpt for the sample Post',
                 'body'      => '<p>This is the body for the sample post, which includes the body.</p>
-<h2>We can use all kinds of format!</h2>
-<p>And include a bunch of other stuff.</p>',
+                <h2>We can use all kinds of format!</h2>
+                <p>And include a bunch of other stuff.</p>',
                 'image'            => 'posts/7uelXHi85YOfZKsoS6Tq.jpg',
                 'slug'             => 'my-sample-post',
                 'meta_description' => 'Meta Description for sample post',
                 'meta_keywords'    => 'keyword1, keyword2, keyword3',
                 'status'           => 'PUBLISHED',
                 'featured'         => 0,
-                'created_at'       => '2016-02-02 18:24:37',
-                'updated_at'       => '2016-01-29 00:05:08',
-            ],
-            2 => [
-                'id'               => 23,
-                'author_id'        => 0,
+            ])->save();
+        }
+
+        $post = Post::firstOrNew([
+            'slug'             => 'latest-post',
+        ]);
+        if (!$post->exists) {
+            $post->fill([
                 'title'            => 'Latest Post',
+                'author_id'        => 0,
                 'seo_title'        => null,
                 'excerpt'          => 'This is the excerpt for the latest post',
                 'body'             => '<p>This is the body for the latest post</p>',
@@ -61,13 +68,16 @@ class PostsTableSeeder extends Seeder
                 'meta_keywords'    => 'keyword1, keyword2, keyword3',
                 'status'           => 'PUBLISHED',
                 'featured'         => 0,
-                'created_at'       => '2016-02-02 18:24:40',
-                'updated_at'       => '2016-01-29 14:43:49',
-            ],
-            3 => [
-                'id'        => 27,
-                'author_id' => 0,
+            ])->save();
+        }
+
+        $post = Post::firstOrNew([
+            'slug'             => 'yarr-post',
+        ]);
+        if (!$post->exists) {
+            $post->fill([
                 'title'     => 'Yarr Post',
+                'author_id' => 0,
                 'seo_title' => null,
                 'excerpt'   => 'Reef sails nipperkin bring a spring upon her cable coffer jury mast spike marooned Pieces of Eight poop deck pillage. Clipper driver coxswain galleon hempen halter come about pressgang gangplank boatswain swing the lead. Nipperkin yard skysail swab lanyard Blimey bilge water ho quarter Buccaneer.',
                 'body'      => '<p>Swab deadlights Buccaneer fire ship square-rigged dance the hempen jig weigh anchor cackle fruit grog furl. Crack Jennys tea cup chase guns pressgang hearties spirits hogshead Gold Road six pounders fathom measured fer yer chains. Main sheet provost come about trysail barkadeer crimp scuttle mizzenmast brig plunder.</p>
@@ -79,9 +89,7 @@ class PostsTableSeeder extends Seeder
                 'meta_keywords'    => 'keyword1, keyword2, keyword3',
                 'status'           => 'PUBLISHED',
                 'featured'         => 0,
-                'created_at'       => '2016-02-03 02:43:50',
-                'updated_at'       => '2016-02-03 02:43:50',
-            ],
-        ]);
+            ])->save();
+        }
     }
 }

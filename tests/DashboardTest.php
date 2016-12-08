@@ -1,12 +1,26 @@
 <?php
 
+namespace TCG\Voyager\Tests;
+
+use Illuminate\Support\Facades\Auth;
+
 class DashboardTest extends TestCase
 {
+    protected $withDummy = true;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->install();
+    }
+
     public function testWeHaveAccessToTheMainSections()
     {
         // We must first login and visit the dashboard page.
         Auth::loginUsingId(1);
         $this->visit(route('voyager.dashboard'));
+
         $this->see('Dashboard');
 
         // We can see number of Users.
@@ -14,7 +28,7 @@ class DashboardTest extends TestCase
 
         // list them.
         $this->click('View All Users');
-        $this->seePageIs(route('users.index'));
+        $this->seePageIs(route('voyager.users.index'));
 
         // and return to dashboard from there.
         $this->click('Dashboard');
@@ -25,7 +39,7 @@ class DashboardTest extends TestCase
 
         // list them.
         $this->click('View All Posts');
-        $this->seePageIs(route('posts.index'));
+        $this->seePageIs(route('voyager.posts.index'));
 
         // and return to dashboard from there.
         $this->click('Dashboard');
@@ -36,7 +50,7 @@ class DashboardTest extends TestCase
 
         // list them.
         $this->click('View All Pages');
-        $this->seePageIs(route('pages.index'));
+        $this->seePageIs(route('voyager.pages.index'));
 
         // and return to Dashboard from there.
         $this->click('Dashboard');

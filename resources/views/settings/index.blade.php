@@ -176,7 +176,8 @@
     </div>
 
     <div class="page-content container-fluid">
-        <form action="{{ route('voyager.settings') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('voyager.settings.update') }}" method="POST" enctype="multipart/form-data">
+            {{ method_field("PUT") }}
             {{ csrf_field() }}
             <div class="panel">
                 @foreach($settings as $setting)
@@ -273,7 +274,7 @@
                 <h3 class="panel-title"><i class="voyager-plus"></i> New Setting</h3>
             </div>
             <div class="panel-body">
-                <form action="{{ route('voyager.settings.create') }}" method="POST">
+                <form action="{{ route('voyager.settings.store') }}" method="POST">
                     {{ csrf_field() }}
                     <div class="col-md-4">
                         <label for="display_name">Name</label>
@@ -371,9 +372,9 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.settings') }}" id="delete_form" method="POST">
+                    <form action="{{ route('voyager.settings.delete', ['id' => '__id']) }}" id="delete_form" method="POST">
+                        {{ method_field("DELETE") }}
                         {{ csrf_field() }}
-                        <input type="hidden" name="_method" value="DELETE">
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This Setting">
                     </form>
                     <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
@@ -385,11 +386,10 @@
     <script>
         $('document').ready(function () {
             $('.voyager-trash').click(function () {
-                var action = '{{ route('voyager.settings') }}/' + $(this).data('id'),
-                    display = $(this).data('display-name') + '/' + $(this).data('display-key');
+                var display = $(this).data('display-name') + '/' + $(this).data('display-key');
 
                 $('#delete_setting_title').text(display);
-                $('#delete_form')[0].action = action;
+                $('#delete_form')[0].action = $('#delete_form')[0].action.replace('__id', $(this).data('id'));
                 $('#delete_modal').modal('show');
             });
 

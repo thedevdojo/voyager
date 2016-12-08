@@ -1,6 +1,11 @@
 <?php
 
+namespace TCG\Voyager\Tests;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserProfileTest extends TestCase
 {
@@ -12,15 +17,19 @@ class UserProfileTest extends TestCase
 
     protected $listOfUsers;
 
+    protected $withDummy = true;
+
     public function setUp()
     {
         parent::setUp();
 
+        $this->install();
+
         $this->user = Auth::loginUsingId(1);
 
-        $this->editPageForTheCurrentUser = config('voyager.routes.prefix')."/users/{$this->user->id}/edit";
+        $this->editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $this->user->id]);
 
-        $this->listOfUsers = config('voyager.routes.prefix').'/users';
+        $this->listOfUsers = route('voyager.users.index');
     }
 
     public function testCanSeeTheUserInfoOnHisProfilePage()

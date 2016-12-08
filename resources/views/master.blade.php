@@ -27,9 +27,6 @@
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
 
-    <!-- Voyager CSS -->
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
-
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ config('voyager.assets_path') }}/images/logo-icon.png" type="image/x-icon">
 
@@ -41,6 +38,10 @@
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue.min.js"></script>
 
     @yield('css')
+
+    <!-- Voyager CSS -->
+    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
+
     @yield('head')
 
 </head>
@@ -157,42 +158,6 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                     </div>
 
                     <?= Menu::display('admin', 'admin_menu'); ?>
-
-                        <li class="dropdown">
-                            <a data-toggle="collapse" href="#tools-dropdown-element">
-                                <span class="icon voyager-tools"></span>
-                                <span class="title">Tools</span>
-                                <span class="site-menu-arrow"></span>
-                            </a>
-
-                            <div id="tools-dropdown-element" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <ul class="nav navbar-nav">
-                                        <li>
-                                            <a href="/{{config('voyager.routes.prefix')}}/menus">
-                                                <span class="icon voyager-list"></span>
-                                                <span class="title">Menu Builder</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="animsition-link" href="{{ route('voyager.database') }}">
-                                                <span class="icon voyager-data"></span>
-                                                <span class="title">Database</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <a href="{{ route('voyager.settings') }}">
-                                <span class="icon voyager-settings"></span>
-                                <span class="title">Settings</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.navbar-collapse -->
-                    </div>
                 </nav>
             </div>
             <!-- Main Content -->
@@ -208,7 +173,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
 <footer class="app-footer">
     <div class="site-footer-right">
         Made with <i class="voyager-heart"></i> by <a href="http://thecontrolgroup.com" target="_blank">The Control
-            Group</a>
+            Group</a> - {{ Voyager::getVersion() }}
     </div>
 </footer>
 <!-- Javascript Libs -->

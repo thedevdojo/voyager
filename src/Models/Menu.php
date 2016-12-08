@@ -4,6 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 /**
@@ -12,6 +13,13 @@ use Illuminate\Support\Str;
 class Menu extends Model
 {
     protected $table = 'menus';
+
+    protected $fillable = ['name'];
+
+    private static $permissions;
+    private static $user_permissions;
+    private static $dataTypes;
+    private static $prefix;
 
     public function items()
     {
@@ -30,12 +38,21 @@ class Menu extends Model
     public static function display($menuName, $type = null, $options = [])
     {
         // GET THE MENU
-        $menuItems = static::where('name', '=', $menuName)
-            ->first()
-            ->items;
+        $menuItems = static::where('name', '=', $menuName)->first()->items;
 
         // Convert options array into object
         $options = (object) $options;
+
+        self::$permissions = Permission::all();
+
+        if (!Auth::guest()) {
+            $user = User::find(Auth::id());
+            self::$user_permissions = $user->role->permissions->pluck('key')->toArray();
+        }
+
+        self::$dataTypes = DataType::all();
+
+        self::$prefix = config('voyager.routes.prefix');
 
         switch ($type) {
             case 'admin':
@@ -48,9 +65,8 @@ class Menu extends Model
                 return self::buildBootstrapOutput($menuItems, '', $options, request());
         }
 
-        return empty($type)
-            ? self::buildOutput($menuItems, '', $options, request())
-            : self::buildCustomOutput($menuItems, $type, $options, request());
+        return empty($type) ? self::buildOutput($menuItems, '', $options,
+            request()) : self::buildCustomOutput($menuItems, $type, $options, request());
     }
 
     /**
@@ -140,9 +156,8 @@ class Menu extends Model
      */
     public static function buildCustomOutput($menuItems, $view, $options, Request $request)
     {
-        return view()->exists($view)
-            ? view($view)->with('items', $menuItems)->render()
-            : self::buildOutput($menuItems, '', $options, $request);
+        return view()->exists($view) ? view($view)->with('items', $menuItems)->render() : self::buildOutput($menuItems,
+            '', $options, $request);
     }
 
     /**
@@ -238,8 +253,6 @@ class Menu extends Model
 
         $parentItems = $parentItems->sortBy('order');
 
-        $output .= '<ul class="nav navbar-nav">';
-
         foreach ($parentItems as $item) {
             $li_class = '';
             $a_attrs = '';
@@ -264,21 +277,60 @@ class Menu extends Model
                 $a_attrs = 'href="'.$item->url.'"';
             }
 
-            $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'
-                .'<span class="icon '.$item->icon_class.'"></span>'
-                .'<span class="title">'.$item->title.'</span></a>';
+            // Permission Checker
+            $slug = str_replace('/', '', preg_replace('/^\/'.self::$prefix.'/', '', $item->url));
+            if ($slug != '') {
+                // Get dataType using slug
+                $dataType = self::$dataTypes->first(function ($value) use ($slug) {
+                    return $value->slug == $slug;
+                });
+                if ($dataType) {
+                    // Check if datatype permission exist
+                    $exist = self::$permissions->first(function ($value) use ($dataType) {
+                        return $value->key == 'browse_'.$dataType->name;
+                    });
+                } else {
+                    // Check if admin permission exists
+                    $exist = self::$permissions->first(function ($value) use ($slug) {
+                        return $value->key == 'browse_'.$slug && $value->table_name == 'admin';
+                    });
+                }
+
+                if ($exist) {
+                    // Check if current user has access
+                    if (!in_array($exist->key, self::$user_permissions)) {
+                        continue;
+                    }
+                }
+            }
+
+            $children_output = null;
 
             if ($children_menu_items->count() > 0) {
+                $children_output = self::buildAdminMenuOutput($menuItems, '', [], $request, $item->id);
+                if ($children_output == '') {
+                    continue;
+                }
+            }
+
+            $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'.'<span class="icon '.$item->icon_class.'"></span>'.'<span class="title">'.$item->title.'</span></a>';
+
+            if (!is_null($children_output)) {
                 // Add tag for collapse panel
                 $output .= '<div id="'.$collapse_id.'" class="panel-collapse collapse"><div class="panel-body">';
-                $output = self::buildAdminMenuOutput($menuItems, $output, [], $request, $item->id);
+                //$output = self::buildAdminMenuOutput($menuItems, $output, [], $request, $item->id);
+                $output .= $children_output;
                 $output .= '</div></div>';      // close tag of collapse panel
             }
 
             $output .= '</li>';
         }
 
-        return $output; // TODO: Check if is missing a closing ul tag!!
+        if (empty($output)) {
+            return '';
+        }
+
+        return '<ul class="nav navbar-nav">'.$output.'</ul>';
     }
 
     /**

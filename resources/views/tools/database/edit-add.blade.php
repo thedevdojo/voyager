@@ -91,8 +91,9 @@
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form action="@if(isset($table)){{ route('voyager.database.edit_table', $table) }}@else{{ route('voyager.database.create_table') }}@endif"
+                <form action="@if(isset($table)){{ route('voyager.database.update', $table) }}@else{{ route('voyager.database.store') }}@endif"
                       method="POST">
+                    @if(isset($table)){{ method_field('PUT') }}@endif
                     <div class="panel panel-bordered">
                         <div class="panel-heading">
                             <h3 class="panel-title">@if(isset($table)){{ 'Edit the ' . $table . ' table below' }}@else{{ 'Create Your New Table Below' }}@endif</h3>
@@ -205,6 +206,11 @@
 
             $('#tablebody').on('click', '.delete-row', function () {
                 var clickedRow = $(this).parents('.newTableRow');
+                if (clickedRow.find('.fieldName').val() == "created_at & updated_at") {
+                    $('#newFieldTimestamps').removeAttr('disabled').click(function () {
+                        newRow('timestamps');
+                    });
+                }
                 if (clickedRow.hasClass('existing_row')) {
                     $(this).parents('.newTableRow').hide();
                     $(this).parents('.newTableRow').find('.deleteField').val(1);
@@ -272,6 +278,7 @@
                 $('#' + unique_id).find('.fieldType').val('timestamp').attr('readonly', 'readonly').prop('disabled', 'true');
                 $('#' + unique_id).find('.fieldNull').parent().hide();
                 $('#' + unique_id).find('.fieldKey').hide();
+                $('#newFieldTimestamps').attr('disabled', 'disabled').off('click');
             } else {
                 if (typeof(name) != 'undefined') {
                     $('#' + unique_id).addClass('existing_row');
