@@ -38,17 +38,17 @@ class Menu extends Model
     public static function display($menuName, $type = null, $options = [])
     {
         // GET THE MENU
-        $menuItems = static::where('name', '=', $menuName)
-            ->first()
-            ->items;
+        $menuItems = static::where('name', '=', $menuName)->first()->items;
 
         // Convert options array into object
         $options = (object) $options;
 
         self::$permissions = Permission::all();
 
-        $user = User::find(Auth::id());
-        self::$user_permissions = $user->role->permissions->pluck('key')->toArray();
+        if (!Auth::guest()) {
+            $user = User::find(Auth::id());
+            self::$user_permissions = $user->role->permissions->pluck('key')->toArray();
+        }
 
         self::$dataTypes = DataType::all();
 
@@ -65,9 +65,8 @@ class Menu extends Model
                 return self::buildBootstrapOutput($menuItems, '', $options, request());
         }
 
-        return empty($type)
-            ? self::buildOutput($menuItems, '', $options, request())
-            : self::buildCustomOutput($menuItems, $type, $options, request());
+        return empty($type) ? self::buildOutput($menuItems, '', $options,
+            request()) : self::buildCustomOutput($menuItems, $type, $options, request());
     }
 
     /**
@@ -157,9 +156,8 @@ class Menu extends Model
      */
     public static function buildCustomOutput($menuItems, $view, $options, Request $request)
     {
-        return view()->exists($view)
-            ? view($view)->with('items', $menuItems)->render()
-            : self::buildOutput($menuItems, '', $options, $request);
+        return view()->exists($view) ? view($view)->with('items', $menuItems)->render() : self::buildOutput($menuItems,
+            '', $options, $request);
     }
 
     /**
@@ -315,9 +313,7 @@ class Menu extends Model
                 }
             }
 
-            $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'
-                .'<span class="icon '.$item->icon_class.'"></span>'
-                .'<span class="title">'.$item->title.'</span></a>';
+            $output .= '<li'.$li_class.'><a '.$a_attrs.' target="'.$item->target.'">'.'<span class="icon '.$item->icon_class.'"></span>'.'<span class="title">'.$item->title.'</span></a>';
 
             if (!is_null($children_output)) {
                 // Add tag for collapse panel
