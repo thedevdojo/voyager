@@ -39,7 +39,6 @@ class VoyagerSettingsController extends Controller
             'alert-type' => 'success',
         ]);
     }
-
     public function update(Request $request)
     {
         // Check permission
