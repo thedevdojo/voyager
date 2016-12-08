@@ -134,7 +134,7 @@
                                 <?php
                                     $role_permissions = (isset($dataTypeContent)) ? $dataTypeContent->permissions->pluck('key')->toArray() : [];
                                 ?>
-                                @foreach($permissions as $table => $permission)
+                                @foreach(TCG\Voyager\Models\Permission::all()->groupBy('table_name') as $table => $permission)
                                     <li>
                                         <input type="checkbox" id="{{$table}}" class="permission-group">
                                         <label for="{{$table}}"><strong>{{ucwords($table)}}</strong></label>
