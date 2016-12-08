@@ -75,7 +75,7 @@
                                             <div class="link_icon">
                                                 <template v-if="file.type.includes('image')">
                                                     <div class="img_icon"
-                                                         style="background-size: auto 50px; background: url(@{{ encodeURI(file.path) }}) no-repeat center center;display:inline-block; width:100%; height:100%;"></div>
+                                                         style="background-size: cover; background-image: url(@{{ encodeURI(file.path) }}); background-repeat:no-repeat background-position:center center;display:inline-block; width:100%; height:100%;"></div>
                                                 </template>
                                                 <template v-if="file.type.includes('video')">
                                                     <i class="icon voyager-video"></i>
