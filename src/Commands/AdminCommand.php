@@ -25,7 +25,7 @@ class AdminCommand extends Command
     protected $description = 'Make sure a user have the admin role, and that the role has all permissions.';
 
     /**
-     * Get user options
+     * Get user options.
      */
     protected function getOptions()
     {
@@ -42,12 +42,12 @@ class AdminCommand extends Command
     public function fire()
     {
         $email = $this->argument('email');
-        
+
         // If we need to create a new user go ahead and create it
         if ($this->option('create')) {
             $name = $this->ask('Enter the admin name');
             $password = $this->secret('Enter admin password');
-            $this->info("Creating admin account");
+            $this->info('Creating admin account');
 
             User::create([
               'name'             => $name,
