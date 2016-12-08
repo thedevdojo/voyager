@@ -287,16 +287,21 @@ class Menu extends Model
                     return $value->slug == $slug;
                 });
                 if ($dataType) {
-                    // Check if permission exist
+                    // Check if datatype permission exist
                     $exist = self::$permissions->first(function ($value) use ($dataType) {
                         return $value->key == 'browse_'.$dataType->name;
                     });
+                } else {
+                    // Check if admin permission exists
+                    $exist = self::$permissions->first(function ($value) use ($slug) {
+                        return $value->key == 'browse_'.$slug && $value->table_name == 'admin';
+                    });
+                }
 
-                    if ($exist) {
-                        // Check if current user has access
-                        if (!in_array($exist->key, self::$user_permissions)) {
-                            continue;
-                        }
+                if ($exist) {
+                    // Check if current user has access
+                    if (!in_array($exist->key, self::$user_permissions)) {
+                        continue;
                     }
                 }
             }
