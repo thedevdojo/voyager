@@ -207,10 +207,10 @@
             $('#tablebody').on('click', '.delete-row', function () {
                 var clickedRow = $(this).parents('.newTableRow');
                 if (clickedRow.find('.fieldName').val() == "created_at & updated_at") {
-                     $('#newFieldTimestamps').removeAttr('disabled').click(function () {
-                         newRow('timestamps');
-                     });
-                 }
+                    $('#newFieldTimestamps').removeAttr('disabled').click(function () {
+                        newRow('timestamps');
+                    });
+                }
                 if (clickedRow.hasClass('existing_row')) {
                     $(this).parents('.newTableRow').hide();
                     $(this).parents('.newTableRow').find('.deleteField').val(1);
