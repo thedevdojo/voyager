@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="page-content">
-        <h2>**TEST**</h2>
+        <h2>**TEST WORKING**</h2>
         <div class="widgets">
             <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\User())->getTable())) { ?>
             <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
@@ -15,7 +15,7 @@
                     <i class="voyager-group"></i>
                     <?php $user_count = TCG\Voyager\Models\User::count(); ?>
                     <h4>{{ $user_count }} Users</h4>
-                    <p>**TEST** You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your current users.</p>
+                    <p>You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your current users.</p>
                     <a href="/{{ config('voyager.routes.prefix') }}/users" class="btn btn-primary">View All Users</a>
                 </div>
             </div>
