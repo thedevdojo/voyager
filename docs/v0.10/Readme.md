@@ -186,13 +186,13 @@ Route::group(['prefix' => 'admin'], function () {
 
 This is where the voyager routes will be rendered. You can also choose to change the `admin` prefix to a more desired name.
 
-When creating a new BREAD type and specifying a slug for that BREAD, you will then be able to visit that route via your admin via the following link:
+When creating a new BREAD type and specifying a slug for that BREAD, you can then visit that route from the following link:
 
 ```
 URL/admin/slug-name
 ```
 
-Say for instance that you added BREAD to a `products` table and you speicified the slug in that bread to be `products`. You will now be able to visit a URL in voyager located at:
+As an example, if we have a `products` table and we specified the slug to be `products`. You will now be able to visit the following URL:
 
 ```
 URL/admin/products
