@@ -86,3 +86,11 @@ This can be done easy by running this command:
 ```bash
 php artisan voyager:admin your@email.com
 ```
+
+If you did not install with the dummy data and you need to create a new admin user you can do so by passing the `--create` flag:
+
+```bash
+php artisan voyager:admin your@email.com --create
+```
+
+And you will be prompted for the new admin name and password.
