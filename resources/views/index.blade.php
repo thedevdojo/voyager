@@ -6,7 +6,6 @@
 
 @section('content')
     <div class="page-content">
-        <h2>**TEST #06**</h2>
         <div class="widgets">
             <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\User())->getTable())) { ?>
             <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
