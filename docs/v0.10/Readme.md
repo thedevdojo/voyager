@@ -106,6 +106,11 @@ After this run `composer dumpautoload`.
 Some changes have been made to the database, so to catch up run a `php artisan migrate`.
 
 > NOTE: After this, please ensure that you in the `data_types` table have the `generate_permissions` column. If you do not have this, please add that as `TINYINT(1)` with default value of `0`.
+> Also open up the `pages` table and ensure that the following columns are `nullable`.
+> * excerpt
+> * body
+> * meta_description
+> * meta_keywords
 
 #### Set permissions for data types
 
