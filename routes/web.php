@@ -26,6 +26,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     } catch (\Exception $e) {
     }
 
+
     // Menu Routes
     Route::get('menus/{id}/builder/', ['uses' => 'VoyagerMenuController@builder', 'as' => 'voyager.menu.builder']);
     Route::delete('menu/delete_menu_item/{id}',
@@ -34,6 +35,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     Route::put('menu/update_menu_item',
         ['uses' => 'VoyagerMenuController@update_item', 'as' => 'voyager.menu.update_menu_item']);
     Route::post('menu/order', ['uses' => 'VoyagerMenuController@order_item', 'as' => 'voyager.menu.order_item']);
+
 
     // Settings
     Route::get('settings', ['uses' => 'VoyagerSettingsController@index', 'as' => 'voyager.settings']);
@@ -47,6 +49,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     Route::get('settings/delete_value/{id}',
         ['uses' => 'VoyagerSettingsController@delete_value', 'as' => 'voyager.settings.delete_value']);
 
+
     // Admin Media
     Route::get('media', ['uses' => 'VoyagerMediaController@index', 'as' => 'voyager.media']);
     Route::post('media/files', 'VoyagerMediaController@files');
@@ -56,6 +59,7 @@ Route::group(['middleware' => ['web', 'admin.user']], function () {
     Route::post('media/move_file', 'VoyagerMediaController@move_file');
     Route::post('media/rename_file', 'VoyagerMediaController@rename_file');
     Route::post('media/upload', ['uses' => 'VoyagerMediaController@upload', 'as' => 'voyager.media.upload']);
+
 
     // Database Routes
     Route::get('database', ['uses' => 'VoyagerDatabaseController@index', 'as' => 'voyager.database']);
