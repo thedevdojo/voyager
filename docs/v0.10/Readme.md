@@ -70,12 +70,20 @@ If you did go ahead with the dummy data, a user should have been created for you
 
 NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
 
-If you did not go with the dummy user, you should make sure that your account has the needed role and permissions.
-This can be done easy by running this command:
+If you did not go with the dummy user, you may wish to assign admin priveleges to an existing user.
+This can easily be done by running this command:
 
 ```bash
 php artisan voyager:admin your@email.com
 ```
+
+If you did not install the dummy data and you wish to create a new admin user you can pass the `--create` flag, like so:
+
+```bash
+php artisan voyager:admin your@email.com --create
+```
+
+And you will be prompted for the users name and password.
 
 ## Upgrade
 
