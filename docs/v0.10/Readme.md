@@ -9,9 +9,9 @@ Welcome to the Voyager Documentation. These docs will teach you how to install, 
 
 Hm Hm (cough)... I mean... Arrgg! Ye young scallywag! What say we learn how to steer this ship!
 
-# Install & Upgrade
+# Getting Started
 
-## Install
+## Installation
 
 Voyager is super easy to install. After creating your new Laravel application you can include the Voyager package with the following command: 
 
@@ -85,7 +85,7 @@ php artisan voyager:admin your@email.com --create
 
 And you will be prompted for the users name and password.
 
-## Upgrade
+## Upgrading
 
 The first step you should **always** do, is to take an entire backup of your application together with your database.
 
@@ -113,7 +113,7 @@ After this run `composer dumpautoload`.
 
 Some changes have been made to the database, so to catch up run a `php artisan migrate`.
 
-> NOTE: After this, please ensure that you in the `data_types` table have the `generate_permissions` column. If you do not have this, please add that as `TINYINT(1)` with default value of `0`.
+> NOTE: After this, please ensure that in the `data_types` table you have the `generate_permissions` column. If you do not have this, please add that as `TINYINT(1)` with default value of `0`.
 > Also open up the `pages` table and ensure that the following columns are `nullable`.
 > * excerpt
 > * body
@@ -171,6 +171,69 @@ You may remove `Intervention\Image\ImageServiceProviderLaravel5` from your `prov
 
 Models using the `VoyagerUser` trait does no longer have the `roles` relation. Instead we are using a single role now. So please update you application for usages of that relation.
 Also the method `addRole` and `deleteRole` has been removed and replaced with a `setRole` method.
+
+## Configuration
+
+With a new install of voyager you will have a new configuration file located inside at `config/app.php`. You will find various options on how to change configurations with your voyager install. You can read more about each of the configuration settings below:
+
+#### User config
+
+```
+'user' => [
+    'add_default_role_on_register' => true,
+    'default_role'                 => 'user',
+    'admin_permission'             => 'browse_admin',
+    'namespace'                    => App\User::class,
+],
+```
+
+**add_default_role_on_register**: Specify whether you would like to add the the default role to any new user that is created.
+
+**default_role**: You can also specify what the **default_role** is of the user.
+
+**admin_permission**: The permission needed to view the admin dashboard.
+
+**namespace**: The namespace of your apps User Class.
+
+#### Route config
+
+```
+'routes' => [
+    'prefix' => 'admin',
+],
+```
+
+*This configuration setting is no longer in use.* To set the prefix of the admin section read the *Routing Documentation*.
+
+#### Controller config
+
+```
+'controllers' => [
+    'namespace' => 'TCG\\Voyager\\Http\\Controllers',
+],
+```
+
+You can specify the default `controller` namespace of voyager so if you ever wish to override any of the core functionality of voyager you can do so by duplicating the Voyager Controllers and specifying the location of your custom controllers.
+
+#### Asset config
+
+```
+'assets_path' => '/vendor/tcg/voyager/assets',
+```
+
+You may wish to specify a different asset path. If your site lives in a subfolder you may need to include that directory to the beginning of the path. This may also be used in case you wish to duplicate the published assets and customize your own.
+
+> Note: When upgrading to new version of voyager the assets located in the /vendor/tcg/voyager/assets directory may need to be overwritten, so if you wish to customize any styles you will want to duplicate that directory and specify the new location of your asset_path.
+
+#### Storage config
+
+```
+'storage' => [
+    'subfolder' => 'public/', // include trailing slash, like 'my_folder/'
+],
+```
+
+By default voyager is going to use the storage location and driver that is specified inside of your `config/filesystems.php` configuration. However, if you wish to have all of your assets inside of a specific subfolder in that storage location, you can specify it here.
 
 # Routing
 
