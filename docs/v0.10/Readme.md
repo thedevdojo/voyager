@@ -391,9 +391,9 @@ Now, when you have save the results from your Many-to-Many relationship the ID's
 # Customization
 
 ## Overriding Views
-You can override any of the BREAD views by creating a new folder in `resources/views/admin/slug-name` and *slug-name* will be the *slug* that you have assigned for that table. There are 2 files that you will include in each which will be:
+You can override any of the BREAD views by creating a new folder in `resources/views/vendor/voyager/slug-name` and *slug-name* will be the *slug* that you have assigned for that table. There are 2 files that you will include in each which will be:
 
  - browse.blade.php
  - edit-add.blade.php
 
-By default an `admin/posts` view has been published to your `resources/views` folder. So those 2 view files will be located at `resources/views/admin/posts/browse.blade.php` and `resources/views/vendor/voyager/posts/edit-add.blade.php`. 
+By default a couple `posts` views have been published to your `resources/views/vendor/voyager` folder. So those 2 view files will be located at `resources/views/vendor/voyager/posts/browse.blade.php` and `resources/views/vendor/voyager/posts/edit-add.blade.php`. 
