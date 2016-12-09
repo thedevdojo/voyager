@@ -279,7 +279,7 @@ This will take you to the Menu Builder where you can add, edit, and delete menu 
 After creating and configuring your menu, you can easily implement that menu in your application. Say that we have a menu called `main`. Inside of any view file we could now output the menu by using the following code:
 
 ```
-Menu::display('main')
+Menu::display('main');
 ```
 
 This will output your menu in an unstyled unordered list. If you do use bootstrap to stylize your web app you can pass a second argument to the menu display method telling it that you want to stylize the menu with bootstrap styles like so:
