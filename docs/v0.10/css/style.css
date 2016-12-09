@@ -50,6 +50,10 @@ body {
 	font-size:13px;
 }
 
+img{
+	width:100%;
+}
+
 
 @media (max-width: 480px) {
 	.header h1{

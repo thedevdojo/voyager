@@ -234,9 +234,9 @@ You may wish to specify a different asset path. If your site lives in a subfolde
 
 By default voyager is going to use the storage location and driver that is specified inside of your `config/filesystems.php` configuration. However, if you wish to have all of your assets inside of a specific subfolder in that storage location, you can specify it here.
 
-# Routing
+# Core Concepts
 
-## Voyager Routing
+## Routing
 
 After running the voyager installer you will probably notice a few new routes that have been added to your `routes/web.php` file which look like the following:
 
@@ -262,11 +262,53 @@ URL/admin/products
 
 > Note: you may not see a link to your newly created routes or BREAD inside your admin menu. To create a new link in your admin menu visit the documentation for the menu section.
 
-# Database Tools
+## Menus
+
+With Voyager you can easily create menus for your application. In fact the Voyager admin is using the menu builder for the navigation you use on the left hand side.
+
+You can view your current Menus by clicking on the *Tools->Menu Builder* button. You can add, edit, or delete any current menu. This means that you can create a new menu for the header, sidebar, or footer of your site. Create as many menus as you would like.
+
+When you are ready to add menu items to your menu you can click on the builder button of the corresponding menu:
+
+![Voyager Menus](images/menu-01.jpg)
+
+This will take you to the Menu Builder where you can add, edit, and delete menu items.
+
+![Voyager Menus](images/menu-02.jpg)
+
+After creating and configuring your menu, you can easily implement that menu in your application. Say that we have a menu called `main`. Inside of any view file we could now output the menu by using the following code:
+
+```
+Menu::display('main')
+```
+
+This will output your menu in an unstyled unordered list. If you do use bootstrap to stylize your web app you can pass a second argument to the menu display method telling it that you want to stylize the menu with bootstrap styles like so:
+
+```
+Menu::display('main', 'bootstrap');
+```
+
+Taking it one more step further you can even specify your own view and stylize your menu however you would like. Say for instance that we had a file located at `resources/views/my_menu.blade.php`, which contained the following code:
+
+```
+<ul>
+    @foreach($items as $menu_item)
+        <li><a href="{{ $menu_item->url }}">{{ $menu_item->title }}</a></li>
+    @endforeach
+</ul>
+```
+
+Then anywhere you wanted to display your menu you can now call:
+
+```
+Menu::display('main', 'my_menu');
+```
+
+And your custom menu will now be output.
+
+## Database Tools
 
 Voyager has some awesome database tools which allow you to Add/Edit/Delete or view current database tables. The other cool part of Voyager is that you can add BREAD or (Browse, Read, Edit, Add, & Delete) functionality to any of your tables.
-
-## Database
 
 Inside of your admin panel you can visit Tools->Database and you'll be able to view all your current tables in your database. You may also click on 'Create a New Table' to create a new table in your database.
 
