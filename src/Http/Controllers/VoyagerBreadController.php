@@ -38,7 +38,9 @@ class VoyagerBreadController extends Controller
 
         $view = 'voyager::bread.browse';
 
-        if (view()->exists("voyager::$slug.browse")) {
+        if (view()->exists("voyager.$slug.browse")) {
+            $view = "voyager.$slug.browse";
+        } elseif (view()->exists("voyager::$slug.browse")) {
             $view = "voyager::$slug.browse";
         }
 
@@ -72,7 +74,9 @@ class VoyagerBreadController extends Controller
 
         $view = 'voyager::bread.read';
 
-        if (view()->exists("voyager::$slug.read")) {
+        if (view()->exists("voyager.$slug.read")) {
+            $view = "voyager.$slug.read";
+        } elseif (view()->exists("voyager::$slug.read")) {
             $view = "voyager::$slug.read";
         }
 
@@ -106,7 +110,9 @@ class VoyagerBreadController extends Controller
 
         $view = 'voyager::bread.edit-add';
 
-        if (view()->exists("voyager::$slug.edit-add")) {
+        if (view()->exists("voyager.$slug.edit-add")) {
+            $view = "voyager.$slug.edit-add";
+        } elseif (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
 
@@ -158,7 +164,9 @@ class VoyagerBreadController extends Controller
 
         $view = 'voyager::bread.edit-add';
 
-        if (view()->exists("voyager::$slug.edit-add")) {
+        if (view()->exists("voyager.$slug.edit-add")) {
+            $view = "voyager.$slug.edit-add";
+        } elseif (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
 
