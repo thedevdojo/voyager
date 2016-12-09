@@ -97,17 +97,16 @@ The first step you should **always** do, is to take an entire backup of your app
 
 #### Updating dependencies
 
-Update your `tcg/voytager` dependency to `0.1.*` in your `composer.json` file. After this run a `composer update`.
-> UNTIL RELEASE USE `dev-release/v0.10`.
+Update your `tcg/voyager` dependency to `0.10.*` in your `composer.json` file. After this run a `composer update`.
 
 #### Republish Voyager files
 
-Some of the published files have been changed in the latest version, and you should therefor update them using the following command:
+Some of the published files have been changed in the latest version, and you should therefore update them using the following command:
 ```bash
 php artisan vendor:publish --provider="TCG\Voyager\VoyagerServiceProvider" --force
 ```
 
-After this run `composer dumpautoload`.
+After this run `composer dump-autoload`.
 
 #### Migrate database
 
@@ -130,7 +129,7 @@ In your database, open up table `data_types` and update `generate_permissions` t
 - posts
 - categories
 
-> You may do this for others as well if you wish, but for everyone you do it for that are not listed above, open up `artisan tinker` and run `\TCG\Voyager\Models\Permission::generateFor(‘NAME’);` to generate permissions for them.
+> You may do this for others as well if you wish, but for everyone you do it for that are not listed above, open up `php artisan tinker` and run `\TCG\Voyager\Models\Permission::generateFor(‘NAME’);` to generate permissions for them.
 
 #### Add routes
 
@@ -143,7 +142,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 #### Update menus
 
-To ensure that you have the latests menu items in your Voyager panel, run this command:
+To ensure that you have the latest menu items in your Voyager panel, run this command:
 ```bash
 php artisan db:seed --class=MenuItemsTableSeeder
 ```
@@ -247,7 +246,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 ```
 
-This is where the voyager routes will be rendered. You can also choose to change the `admin` prefix to a more desired name.
+This is where the voyager routes will be rendered. You can change the `admin` prefix if you desire, or set any other route configuration you need, such as `middleware` or `domain`.
 
 When creating a new BREAD type and specifying a slug for that BREAD, you can then visit that route from the following link:
 
@@ -455,9 +454,9 @@ Now, when you have save the results from your Many-to-Many relationship the ID's
 # Customization
 
 ## Overriding Views
-You can override any of the BREAD views by creating a new folder in `resources/views/admin/slug-name` and *slug-name* will be the *slug* that you have assigned for that table. There are 2 files that you will include in each which will be:
+You can override any of the BREAD views by creating a new folder in `resources/views/vendor/voyager/slug-name` and *slug-name* will be the *slug* that you have assigned for that table. There are 2 files that you will include in each which will be:
 
  - browse.blade.php
  - edit-add.blade.php
 
-By default an `admin/posts` view has been published to your `resources/views` folder. So those 2 view files will be located at `resources/views/admin/posts/browse.blade.php` and `resources/views/admin/posts/edit-add.blade.php`. 
+By default a couple `posts` views have been published to your `resources/views/vendor/voyager` folder. So those 2 view files will be located at `resources/views/vendor/voyager/posts/browse.blade.php` and `resources/views/vendor/voyager/posts/edit-add.blade.php`. 
