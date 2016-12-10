@@ -17,7 +17,7 @@ return [
         'admin_permission'             => 'browse_admin',
         'namespace'                    => App\User::class,
     ],
-  
+    
     /*
     |--------------------------------------------------------------------------
     | Controllers config
