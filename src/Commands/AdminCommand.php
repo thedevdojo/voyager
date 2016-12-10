@@ -22,7 +22,7 @@ class AdminCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Make sure a user have the admin role, and that the role has all permissions.';
+    protected $description = 'Make sure there is a user with the admin role that has all of the necessary permissions.';
 
     /**
      * Get user options.
