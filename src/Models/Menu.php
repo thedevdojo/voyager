@@ -52,7 +52,7 @@ class Menu extends Model
 
         self::$dataTypes = DataType::all();
 
-        self::$prefix = config('voyager.routes.prefix');
+        self::$prefix = ltrim(route('voyager.dashboard', [], false), '/');
 
         switch ($type) {
             case 'admin':
