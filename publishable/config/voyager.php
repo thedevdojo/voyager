@@ -17,20 +17,7 @@ return [
         'admin_permission'             => 'browse_admin',
         'namespace'                    => App\User::class,
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Routes config
-    |--------------------------------------------------------------------------
-    |
-    | Here you can specify voyager route settings
-    |
-    */
-
-    'routes' => [
-        'prefix' => 'admin',
-    ],
-
+  
     /*
     |--------------------------------------------------------------------------
     | Controllers config
