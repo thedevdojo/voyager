@@ -40,6 +40,7 @@
                 <?php $arr = TCG\Voyager\Facades\DBSchema::tables(); ?>
                 @foreach($arr as $a)
 	            <?php $table = current($a); ?>
+		    <?php if (in_array($table, config('voyager.database.tables.hidden', []))) continue; ?>
                 	<?php $active = in_array($table, $dataTypeNames); 
                         if($active){
                             $activeDataType = TCG\Voyager\Models\DataType::where('name', '=', $table)->first();
