@@ -38,7 +38,14 @@ class Menu extends Model
     public static function display($menuName, $type = null, $options = [])
     {
         // GET THE MENU
-        $menuItems = static::where('name', '=', $menuName)->first()->items;
+        $menuItems = static::where('name', '=', $menuName)->first();
+
+        // Check for Menu Existence
+        if (!isset($menuItems)) {
+            return false;
+        }
+
+        $menuItems = $menuItems->items->sortBy('order');
 
         // Convert options array into object
         $options = (object) $options;
