@@ -55,4 +55,19 @@ return [
         'subfolder' => 'public/', // include trailing slash, like 'my_folder/'
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Database Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager database settings
+    |
+    */
+
+    'database' => [
+        'tables' => [
+            'hidden' => [], // database tables that are hidden from the admin panel
+        ],
+    ],
+
 ];
