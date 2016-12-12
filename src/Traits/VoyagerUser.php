@@ -17,13 +17,13 @@ trait VoyagerUser
     /**
      * Check if User has a Role(s) associated.
      *
-     * @param  string $name The role, use comma for multiple "admin,user,roleX,..."
+     * @param  string|array $name    The role to check.
      *
      * @return boolean
      */
     public function hasRole($name)
     {
-        return in_array($this->role->name, explode(",", $name));
+        return in_array($this->role->name, (is_array($name) ? $name : [$name]));
     }
 
     public function setRole($name)
