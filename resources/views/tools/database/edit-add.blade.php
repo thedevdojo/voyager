@@ -246,7 +246,7 @@
                 
                 $.each($('.fieldType'), function(){
                     
-                    $(this).prop('disabled', '');
+                    $(this).removeAttr('disabled');
                     
                 });
                 return true;

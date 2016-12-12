@@ -36,6 +36,7 @@ class VoyagerDatabaseController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         Voyager::can('browse_database');
 
         $tableName = $request->name;
