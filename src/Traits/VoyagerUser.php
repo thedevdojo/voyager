@@ -25,7 +25,6 @@ trait VoyagerUser
 
         if ($role) {
             $this->role()->associate($role);
-            $this->save();
         }
     }
 
