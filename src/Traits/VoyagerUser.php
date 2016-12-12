@@ -26,6 +26,8 @@ trait VoyagerUser
         if ($role) {
             $this->role()->associate($role);
         }
+
+        return $this;
     }
 
     public function hasPermission($name)
