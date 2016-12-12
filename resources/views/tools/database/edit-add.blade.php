@@ -246,9 +246,9 @@
                 
                 $.each($('.fieldType'), function(){
                     
-                    $(this).prop('disabled', 'false');
+                    $(this).prop('disabled', '');
                     
-                })
+                });
                 return true;
             });
         });
