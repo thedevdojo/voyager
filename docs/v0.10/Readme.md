@@ -1,7 +1,7 @@
 Voyager Docs
 =======
 
-> Latest Version `0.10`
+> Latest Version `0.10.2`
 > 
 ## Welcome
 
@@ -88,6 +88,24 @@ And you will be prompted for the users name and password.
 ## Upgrading
 
 The first step you should **always** do, is to take an entire backup of your application together with your database.
+
+### Version 0.10
+
+To update to the latest version inside of your composer.json file make sure to update the version of voyager inside the require declaration inside of your composer.json to:
+
+```
+"tcg/voyager": "0.10.*"
+```
+
+And then run composer update
+
+Next, you may want to be sure that you have all the latest published assets. To re-publish the voyager assets you can run the following command:
+
+```
+php artisan vendor:publish --tag=voyager_assets --force
+```
+
+And now you'll be upgraded to the latest version.
 
 ### Version 0.9 to 0.10
 
@@ -193,16 +211,6 @@ With a new install of voyager you will have a new configuration file located ins
 **admin_permission**: The permission needed to view the admin dashboard.
 
 **namespace**: The namespace of your apps User Class.
-
-#### Route config
-
-```
-'routes' => [
-    'prefix' => 'admin',
-],
-```
-
-*This configuration setting is no longer in use.* To set the prefix of the admin section read the *Routing Documentation*.
 
 #### Controller config
 
