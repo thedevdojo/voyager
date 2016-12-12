@@ -2,6 +2,9 @@
 
 namespace TCG\Voyager\Tests;
 
+use Exception;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Facades\Artisan;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
@@ -72,5 +75,17 @@ class TestCase extends OrchestraTestCase
     protected function install()
     {
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
+    }
+
+    public function disableExceptionHandling()
+    {
+        $this->app->instance(ExceptionHandler::class, new class extends Handler {
+            public function __construct(){}
+            public function report(Exception $e) {}
+            public function render($request, Exception $e)
+            {
+                throw $e;
+            }
+        });
     }
 }
