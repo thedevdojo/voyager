@@ -14,9 +14,16 @@ trait VoyagerUser
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * Check if User has a Role(s) associated.
+     *
+     * @param  string $name The role, use comma for multiple "admin,user,roleX,..."
+     *
+     * @return boolean
+     */
     public function hasRole($name)
     {
-        return $this->role->name == $name;
+        return in_array($this->role->name, explode(",", $name));
     }
 
     public function setRole($name)
