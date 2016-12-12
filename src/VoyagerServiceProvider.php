@@ -43,8 +43,10 @@ class VoyagerServiceProvider extends ServiceProvider
         if (config('voyager.user.add_default_role_on_register')) {
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
-                $voyager_user = User::find($user->id);
-                $voyager_user->setRole(config('voyager.user.default_role'));
+                if (is_null($user->role_id)) {
+                    User::findOrFail($user->id)->setRole(config('voyager.user.default_role'))
+                        ->save();
+                }
             });
         }
 
