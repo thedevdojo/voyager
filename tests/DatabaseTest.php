@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseQueryBuilder;
-use TCG\Voyager\Models\Role;
 
 class DatabaseTest extends TestCase
 {
