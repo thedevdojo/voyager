@@ -275,7 +275,7 @@
                 $('#' + unique_id).find('.fieldName').val('created_at & updated_at');
                 $('#' + unique_id).find('.fieldName').attr('readonly', 'readonly');
                 $('#' + unique_id).find('.fieldDefault').val('CURRENT_TIMESTAMP').attr('readonly', 'readonly');
-                $('#' + unique_id).find('.fieldType').val('timestamp').attr('readonly', 'readonly').prop('disabled', 'true');
+                $('#' + unique_id).find('.fieldType').val('timestamp').attr('readonly', 'readonly');
                 $('#' + unique_id).find('.fieldNull').parent().hide();
                 $('#' + unique_id).find('.fieldKey').hide();
                 $('#newFieldTimestamps').attr('disabled', 'disabled').off('click');
