@@ -76,17 +76,16 @@ trait DatabaseUpdate
      */
     private function dropColumns(Request $request, $tableName)
     {
-        foreach ($request->delete_field as $index => $delete) {
-            // If the column is set for destruction, then by all means, destroy it!
-            if ((bool) $delete) {
-                $columnName = $request->field[$index];
+        if(isset($request->delete_field)) {
+            foreach ($request->delete_field as $index => $delete) {
+                // If the column is set for destruction, then by all means, destroy it!
+                if ((bool) $delete) {
+                    $columnName = $request->field[$index];
 
-                Schema::table(
-                    $tableName,
-                    function (Blueprint $table) use ($columnName) {
+                    Schema::table($tableName, function (Blueprint $table) use ($columnName) {
                         $table->dropColumn($columnName);
-                    }
-                );
+                    });
+                }
             }
         }
     }
