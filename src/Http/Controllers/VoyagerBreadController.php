@@ -181,6 +181,14 @@ class VoyagerBreadController extends Controller
         }
 
         $data = new $dataType->model_name();
+        //Make sure the Menu has a unique name
+
+        if($slug == "menus" && $data::where('name', $request->name)->first()){
+            return back()->with([
+                    'message'   => "There is another menu named {$request->name}. Please pick a unique name",
+                    'alert-type'    => 'error',
+                ]);
+        }
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
 
         return redirect()
