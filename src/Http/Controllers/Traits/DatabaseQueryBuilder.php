@@ -101,8 +101,24 @@ trait DatabaseQueryBuilder
      */
     private function describeTable($table)
     {
-        $schema_name = DB::connection()->getDatabaseName();
-        $raw = "SELECT column_name    AS 'field',
+        $connection = config('database.default', 'mysql');
+        $driver = config('database.connections.'.$connection.'.driver', 'mysql');
+
+        if($driver == 'sqlite') {
+            $columns = DB::select(DB::raw("PRAGMA table_info({$table})"));
+            return collect($columns)->map(function($item) {
+                return [
+                    "field" => $item->name,
+                    "type" => $item->type,
+                    "null" => ($item->notnull) ? 'NO' : 'YES',
+                    "key" => ($item->pk) ? 'PRI' : '',
+                    "default" => ($default = preg_replace("/((^')|('$))/", '', $item->dflt_value)) ? $default : null,
+                    "extra" => ($item->pk == 1 && $item->type == 'integer') ? 'auto_increment' : '',
+                ];
+            });
+        } else {
+            $schema_name = DB::connection()->getDatabaseName();
+            $raw = "SELECT column_name    AS 'field',
                        column_type    AS 'type',
                        is_nullable    AS 'null',
                        column_key     AS 'key',
@@ -112,7 +128,8 @@ trait DatabaseQueryBuilder
                 WHERE  table_schema = '{$schema_name}'
                 AND    table_name = '{$table}'";
 
-        return collect(DB::select(DB::raw($raw)));
+            return collect(DB::select(DB::raw($raw)));
+        }
     }
 
     /**
