@@ -143,22 +143,24 @@ trait DatabaseQueryBuilder
     {
         $columns = collect();
 
-        foreach ($request->field as $index => $field) {
-            // If a column has been destroyed, just skip it and move on to the next column.
-            if ((bool) $request->delete_field[$index]) {
-                continue;
-            }
+        if(isset($request->field)) {
+            foreach ($request->field as $index => $field) {
+                // If a column has been destroyed, just skip it and move on to the next column.
+                if ((bool) $request->delete_field[$index]) {
+                    continue;
+                }
 
-            $columns->push(
-                [
-                    'field'    => $field,
-                    'type'     => $request->type[$index],
-                    'enum'     => $request->enum[$index],
-                    'nullable' => (bool) $request->nullable[$index],
-                    'key'      => $request->key[$index],
-                    'default'  => $request->default[$index],
-                ]
-            );
+                $columns->push(
+                    [
+                        'field'    => $field,
+                        'type'     => $request->type[$index],
+                        'enum'     => $request->enum[$index],
+                        'nullable' => (bool) $request->nullable[$index],
+                        'key'      => $request->key[$index],
+                        'default'  => $request->default[$index],
+                    ]
+                );
+            }
         }
 
         return $columns;
