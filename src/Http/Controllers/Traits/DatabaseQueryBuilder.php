@@ -48,48 +48,43 @@ trait DatabaseQueryBuilder
      */
     private function buildQuery(Request $request, $existingColumns = null)
     {
-        return $this->buildColumnsCollection($request)
-            ->map(
-                function ($column) use ($existingColumns) {
-                    // We need to check that an existing database table column in now being
-                    // updated. If it is, we also need to check that the supplied column
-                    // type can actually be update without throwing an annoying error.
-                    if ($existingColumns && $existingColumns->has($column['field']) &&
-                        in_array($column['type'], $this->typeBlacklist)
-                    ) {
-                        return false;
+        return $this->buildColumnsCollection($request)->map(function ($column) use ($existingColumns) {
+                // We need to check that an existing database table column in now being
+                // updated. If it is, we also need to check that the supplied column
+                // type can actually be update without throwing an annoying error.
+                if ($existingColumns && $existingColumns->has($column['field']) && in_array($column['type'],
+                        $this->typeBlacklist)
+                ) {
+                    return false;
+                }
+
+                return function (Blueprint $table) use ($column) {
+                    if ($column['key'] == 'PRI') {
+                        return $table->increments($column['field']);
                     }
 
-                    return function (Blueprint $table) use ($column) {
-                        if ($column['key'] == 'PRI') {
-                            return $table->increments($column['field']);
-                        }
+                    if ($column['field'] == 'created_at & updated_at') {
+                        return $table->timestamps();
+                    }
 
-                        if ($column['field'] == 'created_at & updated_at') {
-                            return $table->timestamps();
-                        }
+                    $type = $column['type'] ?: 'string';
 
-                        $type = $column['type'] ?: 'string';
+                    $result = $type == 'enum' ? $table->enum($column['field'],
+                        [$column['enum']]) : $table->{$type}($column['field']);
 
-                        $result = $type == 'enum'
-                            ? $table->enum($column['field'], [$column['enum']])
-                            : $table->{$type}($column['field']);
+                    if ($column['key'] == 'UNI') {
+                        $result->unique();
+                    }
 
-                        if ($column['key'] == 'UNI') {
-                            $result->unique();
-                        }
+                    $result->nullable($column['nullable']);
 
-                        $result->nullable($column['nullable']);
+                    if ($column['default']) {
+                        $result->default($column['default']);
+                    }
 
-                        if ($column['default']) {
-                            $result->default($column['default']);
-                        }
-
-                        return $result;
-                    };
-                }
-            )
-            ->filter();
+                    return $result;
+                };
+            })->filter();
     }
 
     /**
@@ -104,16 +99,17 @@ trait DatabaseQueryBuilder
         $connection = config('database.default', 'mysql');
         $driver = config('database.connections.'.$connection.'.driver', 'mysql');
 
-        if($driver == 'sqlite') {
+        if ($driver == 'sqlite') {
             $columns = DB::select(DB::raw("PRAGMA table_info({$table})"));
-            return collect($columns)->map(function($item) {
+
+            return collect($columns)->map(function ($item) {
                 return [
-                    "field" => $item->name,
-                    "type" => $item->type,
-                    "null" => ($item->notnull) ? 'NO' : 'YES',
-                    "key" => ($item->pk) ? 'PRI' : '',
+                    "field"   => $item->name,
+                    "type"    => $item->type,
+                    "null"    => ($item->notnull) ? 'NO' : 'YES',
+                    "key"     => ($item->pk) ? 'PRI' : '',
                     "default" => ($default = preg_replace("/((^')|('$))/", '', $item->dflt_value)) ? $default : null,
-                    "extra" => ($item->pk == 1 && $item->type == 'integer') ? 'auto_increment' : '',
+                    "extra"   => ($item->pk == 1 && $item->type == 'integer') ? 'auto_increment' : '',
                 ];
             });
         } else {
@@ -143,23 +139,21 @@ trait DatabaseQueryBuilder
     {
         $columns = collect();
 
-        if(isset($request->field)) {
+        if (isset($request->field)) {
             foreach ($request->field as $index => $field) {
                 // If a column has been destroyed, just skip it and move on to the next column.
                 if ((bool) $request->delete_field[$index]) {
                     continue;
                 }
 
-                $columns->push(
-                    [
+                $columns->push([
                         'field'    => $field,
                         'type'     => $request->type[$index],
                         'enum'     => $request->enum[$index],
                         'nullable' => (bool) $request->nullable[$index],
                         'key'      => $request->key[$index],
                         'default'  => $request->default[$index],
-                    ]
-                );
+                    ]);
             }
         }
 
