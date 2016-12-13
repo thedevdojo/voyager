@@ -15,7 +15,7 @@ Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
 Website & Documentation: https://the-control-group.github.io/voyager/
 
-Video Demo Here: https://devdojo.com/episode/laravel-admin-package-voyager
+Video Demo Here: https://devdojo.com/series/laravel-voyager-010/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
