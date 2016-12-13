@@ -48,22 +48,24 @@ trait DatabaseUpdate
      */
     private function renameColumns(Request $request, $tableName)
     {
-        foreach ($request->field as $index => $column) {
-            // If the column type matches something from the blacklist, then we just need to move on to the next column.
-            if (in_array($request->type[$index], $this->renameBlacklist)) {
-                continue;
-            }
+        if(isset($request->field)) {
+            foreach ($request->field as $index => $column) {
+                // If the column type matches something from the blacklist, then we just need to move on to the next column.
+                if (in_array($request->type[$index], $this->renameBlacklist)) {
+                    continue;
+                }
 
-            $originalColumn = $request->original_field[$index];
+                $originalColumn = $request->original_field[$index];
 
-            // If the name of the column has changed rename it.
-            if ($originalColumn && $originalColumn != $column) {
-                Schema::table(
-                    $tableName,
-                    function (Blueprint $table) use ($originalColumn, $column) {
-                        $table->renameColumn($originalColumn, $column);
-                    }
-                );
+                // If the name of the column has changed rename it.
+                if ($originalColumn && $originalColumn != $column) {
+                    Schema::table(
+                        $tableName,
+                        function (Blueprint $table) use ($originalColumn, $column) {
+                            $table->renameColumn($originalColumn, $column);
+                        }
+                    );
+                }
             }
         }
     }
