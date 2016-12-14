@@ -33,7 +33,6 @@ class VoyagerServiceProvider extends ServiceProvider
         } else {
             $this->registerAppCommands();
         }
-
     }
 
     /**

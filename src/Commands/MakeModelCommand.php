@@ -46,7 +46,8 @@ class MakeModelCommand extends ModelMakeCommand
     /**
      * Build the class with the given name.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return string
      */
     protected function buildClass($name)
@@ -59,7 +60,8 @@ class MakeModelCommand extends ModelMakeCommand
     /**
      * Add SoftDelete to the given stub.
      *
-     * @param  string  $stub
+     * @param string $stub
+     *
      * @return $this
      */
     protected function addSoftDelete(&$stub)
