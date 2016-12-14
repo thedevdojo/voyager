@@ -29,8 +29,11 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
-            $this->registerCommands();
+            $this->registerConsoleCommands();
+        } else {
+            $this->registerAppCommands();
         }
+
     }
 
     /**
@@ -88,12 +91,20 @@ class VoyagerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the console commands.
+     * Register the commands accessible from the Console.
      */
-    private function registerCommands()
+    private function registerConsoleCommands()
     {
         $this->commands(Commands\InstallCommand::class);
         $this->commands(Commands\ControllersCommand::class);
         $this->commands(Commands\AdminCommand::class);
+    }
+
+    /**
+     * Register the commands accessible from the App.
+     */
+    private function registerAppCommands()
+    {
+        $this->commands(Commands\MakeModelCommand::class);
     }
 }

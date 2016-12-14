@@ -48,9 +48,15 @@ class VoyagerDatabaseController extends Controller
             });
 
             if (isset($request->create_model) && $request->create_model == 'on') {
-                Artisan::call('make:model', [
+                $params = [
                     'name' => ucfirst($tableName),
-                ]);
+                ];
+
+                if (in_array('deleted_at', $request->input('field.*'))) {
+                    $params['--softdelete'] = true;
+                }
+
+                Artisan::call('voyager:make:model', $params);
             }
 
             return redirect()

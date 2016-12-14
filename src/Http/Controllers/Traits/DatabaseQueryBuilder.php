@@ -50,13 +50,13 @@ trait DatabaseQueryBuilder
     {
         return $this->buildColumnsCollection($request)->map(function ($column) use ($existingColumns) {
             // We need to check that an existing database table column in now being
-                // updated. If it is, we also need to check that the supplied column
-                // type can actually be update without throwing an annoying error.
-                if ($existingColumns && $existingColumns->has($column['field']) && in_array($column['type'],
-                        $this->typeBlacklist)
-                ) {
-                    return false;
-                }
+            // updated. If it is, we also need to check that the supplied column
+            // type can actually be update without throwing an annoying error.
+            if ($existingColumns && $existingColumns->has($column['field']) &&
+                in_array($column['type'], $this->typeBlacklist)
+            ) {
+                return false;
+            }
 
             return function (Blueprint $table) use ($column) {
                 if ($column['key'] == 'PRI') {
@@ -67,10 +67,15 @@ trait DatabaseQueryBuilder
                     return $table->timestamps();
                 }
 
+                if ($column['field'] == 'deleted_at') {
+                    return $table->softDeletes();
+                }
+
                 $type = $column['type'] ?: 'string';
 
-                $result = $type == 'enum' ? $table->enum($column['field'],
-                        [$column['enum']]) : $table->{$type}($column['field']);
+                $result = $type == 'enum'
+                    ? $table->enum($column['field'], [$column['enum']])
+                    : $table->{$type}($column['field']);
 
                 if ($column['key'] == 'UNI') {
                     $result->unique();
