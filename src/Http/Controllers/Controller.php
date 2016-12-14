@@ -103,7 +103,7 @@ abstract class Controller extends BaseController
                     $path = $slug.'/'.date('F').date('Y').'/';
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    $request->file($row->field)->storeAs(config('voyager.storage.subfolder') . $path, $filename. '.' . $file->getClientOriginalExtension());
+                    $request->file($row->field)->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
 
                     return $fullPath;
                 }
