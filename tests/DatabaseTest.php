@@ -26,144 +26,144 @@ class DatabaseTest extends TestCase
 
         // Create table
         $this->post(route('voyager.database.store'), [
-            "name"     => "voyagertest",
-            "field"    => [
-                "id",
-                "tiny_int_field",
-                "small_int_field",
-                "med_int_field",
-                "integer_field",
-                "big_int_field",
-                "string_field",
-                "text_field",
-                "med_text_field",
-                "long_text_field",
-                "float_field",
-                "double_field",
-                "decimal_field",
-                "boolean_field",
-                "enum_field",
-                "date_field",
-                "date_time_field",
-                "time_field",
-                "time_stamp_field",
-                "binary_field",
-                "created_at & updated_at",
+            'name'     => 'voyagertest',
+            'field'    => [
+                'id',
+                'tiny_int_field',
+                'small_int_field',
+                'med_int_field',
+                'integer_field',
+                'big_int_field',
+                'string_field',
+                'text_field',
+                'med_text_field',
+                'long_text_field',
+                'float_field',
+                'double_field',
+                'decimal_field',
+                'boolean_field',
+                'enum_field',
+                'date_field',
+                'date_time_field',
+                'time_field',
+                'time_stamp_field',
+                'binary_field',
+                'created_at & updated_at',
             ],
-            "type"     => [
-                "integer",
-                "tinyInteger",
-                "smallInteger",
-                "mediumInteger",
-                "integer",
-                "bigInteger",
-                "string",
-                "text",
-                "mediumText",
-                "longText",
-                "float",
-                "double",
-                "decimal",
-                "boolean",
-                "enum",
-                "date",
-                "dateTime",
-                "time",
-                "timestamp",
-                "binary",
-                "timestamp",
+            'type'     => [
+                'integer',
+                'tinyInteger',
+                'smallInteger',
+                'mediumInteger',
+                'integer',
+                'bigInteger',
+                'string',
+                'text',
+                'mediumText',
+                'longText',
+                'float',
+                'double',
+                'decimal',
+                'boolean',
+                'enum',
+                'date',
+                'dateTime',
+                'time',
+                'timestamp',
+                'binary',
+                'timestamp',
             ],
-            "enum"     => [
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "valueA,valueB",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
+            'enum'     => [
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                'valueA,valueB',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
             ],
-            "nullable" => [
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
+            'nullable' => [
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
             ],
-            "key"      => [
-                "PRI",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
+            'key'      => [
+                'PRI',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
             ],
-            "default"  => [
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "",
-                "CURRENT_TIMESTAMP",
+            'default'  => [
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                'CURRENT_TIMESTAMP',
             ],
         ]);
 
@@ -178,29 +178,28 @@ class DatabaseTest extends TestCase
 
         // Test column type
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("integer", $columns[0]->type);
-        $this->assertEquals("integer", $columns[1]->type);
-        $this->assertEquals("integer", $columns[2]->type);
-        $this->assertEquals("integer", $columns[3]->type);
-        $this->assertEquals("integer", $columns[4]->type);
-        $this->assertEquals("integer", $columns[5]->type);
-        $this->assertEquals("varchar", $columns[6]->type);
-        $this->assertEquals("text", $columns[7]->type);
-        $this->assertEquals("text", $columns[8]->type);
-        $this->assertEquals("text", $columns[9]->type);
-        $this->assertEquals("float", $columns[10]->type);
-        $this->assertEquals("float", $columns[11]->type);
-        $this->assertEquals("numeric", $columns[12]->type);
-        $this->assertEquals("tinyint(1)", $columns[13]->type);
-        $this->assertEquals("varchar", $columns[14]->type);
-        $this->assertEquals("date", $columns[15]->type);
-        $this->assertEquals("datetime", $columns[16]->type);
-        $this->assertEquals("time", $columns[17]->type);
-        $this->assertEquals("datetime", $columns[18]->type);
-        $this->assertEquals("blob", $columns[19]->type);
-        $this->assertEquals("datetime", $columns[20]->type);
-        $this->assertEquals("datetime", $columns[21]->type);
-
+        $this->assertEquals('integer', $columns[0]->type);
+        $this->assertEquals('integer', $columns[1]->type);
+        $this->assertEquals('integer', $columns[2]->type);
+        $this->assertEquals('integer', $columns[3]->type);
+        $this->assertEquals('integer', $columns[4]->type);
+        $this->assertEquals('integer', $columns[5]->type);
+        $this->assertEquals('varchar', $columns[6]->type);
+        $this->assertEquals('text', $columns[7]->type);
+        $this->assertEquals('text', $columns[8]->type);
+        $this->assertEquals('text', $columns[9]->type);
+        $this->assertEquals('float', $columns[10]->type);
+        $this->assertEquals('float', $columns[11]->type);
+        $this->assertEquals('numeric', $columns[12]->type);
+        $this->assertEquals('tinyint(1)', $columns[13]->type);
+        $this->assertEquals('varchar', $columns[14]->type);
+        $this->assertEquals('date', $columns[15]->type);
+        $this->assertEquals('datetime', $columns[16]->type);
+        $this->assertEquals('time', $columns[17]->type);
+        $this->assertEquals('datetime', $columns[18]->type);
+        $this->assertEquals('blob', $columns[19]->type);
+        $this->assertEquals('datetime', $columns[20]->type);
+        $this->assertEquals('datetime', $columns[21]->type);
     }
 
     public function test_can_create_nullable_column()
@@ -209,15 +208,15 @@ class DatabaseTest extends TestCase
 
         // Create table
         $this->post(route('voyager.database.store'), [
-            "name"     => "voyagertest",
-            "field"    => [
-                "string_field",
+            'name'     => 'voyagertest',
+            'field'    => [
+                'string_field',
             ],
-            "type"     => [
-                "string",
+            'type'     => [
+                'string',
             ],
-            "nullable" => [
-                "1",
+            'nullable' => [
+                '1',
             ],
         ]);
 
@@ -233,8 +232,7 @@ class DatabaseTest extends TestCase
         // Test column type
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
 
-        $this->assertEquals("0", $columns[0]->notnull); // inverse in sqlite (notnull)
-
+        $this->assertEquals('0', $columns[0]->notnull); // inverse in sqlite (notnull)
     }
 
     public function test_can_create_primary_key_column()
@@ -243,18 +241,18 @@ class DatabaseTest extends TestCase
 
         // Create table
         $this->post(route('voyager.database.store'), [
-            "name"     => "voyagertest",
-            "field"    => [
-                "id",
+            'name'     => 'voyagertest',
+            'field'    => [
+                'id',
             ],
-            "type"     => [
-                "integer",
+            'type'     => [
+                'integer',
             ],
-            "nullable" => [
-                "0",
+            'nullable' => [
+                '0',
             ],
-            "key"      => [
-                "PRI",
+            'key'      => [
+                'PRI',
             ],
         ]);
 
@@ -269,8 +267,7 @@ class DatabaseTest extends TestCase
 
         // Test column type
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("1", $columns[0]->pk);
-
+        $this->assertEquals('1', $columns[0]->pk);
     }
 
     public function test_can_create_unique_key_column()
@@ -279,15 +276,15 @@ class DatabaseTest extends TestCase
 
         // Create table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "name",
+            'name'  => 'voyagertest',
+            'field' => [
+                'name',
             ],
-            "type"  => [
-                "string",
+            'type'  => [
+                'string',
             ],
-            "key"   => [
-                "UNI",
+            'key'   => [
+                'UNI',
             ],
         ]);
 
@@ -303,8 +300,7 @@ class DatabaseTest extends TestCase
         // Test column type
         $columns = DB::select(DB::raw('PRAGMA INDEX_LIST(voyagertest)'));
 
-        $this->assertEquals("1", $columns[0]->unique);
-
+        $this->assertEquals('1', $columns[0]->unique);
     }
 
     public function test_can_create_column_with_default_value()
@@ -313,15 +309,15 @@ class DatabaseTest extends TestCase
 
         // Create table
         $this->post(route('voyager.database.store'), [
-            "name"    => "voyagertest",
-            "field"   => [
-                "name",
+            'name'    => 'voyagertest',
+            'field'   => [
+                'name',
             ],
-            "type"    => [
-                "string",
+            'type'    => [
+                'string',
             ],
-            "default" => [
-                "this-is-a-default-value",
+            'default' => [
+                'this-is-a-default-value',
             ],
         ]);
 
@@ -337,7 +333,6 @@ class DatabaseTest extends TestCase
         // Test column type
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
         $this->assertEquals("'this-is-a-default-value'", $columns[0]->dflt_value);
-
     }
 
     public function test_can_update_table_with_same_fields()
@@ -346,24 +341,24 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "address",
-                "created_at & updated_at",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'address',
+                'created_at & updated_at',
             ],
-            "type"  => [
-                "integer",
-                "string",
-                "text",
-                "timestamp",
+            'type'  => [
+                'integer',
+                'string',
+                'text',
+                'timestamp',
             ],
-            "key"   => [
-                "PRI",
-                "",
-                "",
-                "",
+            'key'   => [
+                'PRI',
+                '',
+                '',
+                '',
             ],
         ]);
 
@@ -372,42 +367,42 @@ class DatabaseTest extends TestCase
 
         // Update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"           => "voyagertest",
-            "original_name"  => "voyagertest",
-            "field"          => [
-                "id",
-                "title",
-                "address",
-                "created_at",
-                "updated_at",
+            'name'           => 'voyagertest',
+            'original_name'  => 'voyagertest',
+            'field'          => [
+                'id',
+                'title',
+                'address',
+                'created_at',
+                'updated_at',
             ],
-            "original_field" => [
-                "id",
-                "title",
-                "address",
-                "created_at",
-                "updated_at",
+            'original_field' => [
+                'id',
+                'title',
+                'address',
+                'created_at',
+                'updated_at',
             ],
-            "delete_field"   => [
-                "0",
-                "0",
-                "0",
-                "0",
-                "0",
+            'delete_field'   => [
+                '0',
+                '0',
+                '0',
+                '0',
+                '0',
             ],
-            "type"           => [
-                "integer",
-                "string",
-                "text",
-                "timestamp",
-                "timestamp",
+            'type'           => [
+                'integer',
+                'string',
+                'text',
+                'timestamp',
+                'timestamp',
             ],
-            "key"            => [
-                "PRI",
-                "",
-                "",
-                "",
-                "",
+            'key'            => [
+                'PRI',
+                '',
+                '',
+                '',
+                '',
             ],
         ]);
 
@@ -421,11 +416,11 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("id", $columns[0]->name);
-        $this->assertEquals("title", $columns[1]->name);
-        $this->assertEquals("address", $columns[2]->name);
-        $this->assertEquals("created_at", $columns[3]->name);
-        $this->assertEquals("updated_at", $columns[4]->name);
+        $this->assertEquals('id', $columns[0]->name);
+        $this->assertEquals('title', $columns[1]->name);
+        $this->assertEquals('address', $columns[2]->name);
+        $this->assertEquals('created_at', $columns[3]->name);
+        $this->assertEquals('updated_at', $columns[4]->name);
     }
 
     public function test_can_change_table_name()
@@ -434,15 +429,15 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
             ],
-            "type"  => [
-                "integer",
+            'type'  => [
+                'integer',
             ],
-            "key"   => [
-                "PRI",
+            'key'   => [
+                'PRI',
             ],
         ]);
 
@@ -451,8 +446,8 @@ class DatabaseTest extends TestCase
 
         // Test update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"          => "voyagerpost",
-            "original_name" => "voyagertest",
+            'name'          => 'voyagerpost',
+            'original_name' => 'voyagertest',
         ]);
 
         // Test redirect to correct page
@@ -471,18 +466,18 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
             ],
-            "type"  => [
-                "integer",
-                "string",
+            'type'  => [
+                'integer',
+                'string',
             ],
-            "key"   => [
-                "PRI",
-                "",
+            'key'   => [
+                'PRI',
+                '',
             ],
         ]);
 
@@ -491,14 +486,14 @@ class DatabaseTest extends TestCase
 
         // Update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"           => "voyagertest",
-            "field"          => [
-                "id",
-                "headline",
+            'name'           => 'voyagertest',
+            'field'          => [
+                'id',
+                'headline',
             ],
-            "original_field" => [
-                "id",
-                "title",
+            'original_field' => [
+                'id',
+                'title',
             ],
         ]);
 
@@ -512,8 +507,8 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("id", $columns[0]->name);
-        $this->assertEquals("headline", $columns[1]->name);
+        $this->assertEquals('id', $columns[0]->name);
+        $this->assertEquals('headline', $columns[1]->name);
     }
 
     public function test_can_change_column_type()
@@ -522,21 +517,21 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "string",
-                "text",
+            'type'  => [
+                'integer',
+                'string',
+                'text',
             ],
-            "key"   => [
-                "PRI",
-                "",
-                "",
+            'key'   => [
+                'PRI',
+                '',
+                '',
             ],
         ]);
 
@@ -545,21 +540,21 @@ class DatabaseTest extends TestCase
 
         // Update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "text",
-                "string",
+            'type'  => [
+                'integer',
+                'text',
+                'string',
             ],
-            "key"   => [
-                "PRI",
-                "",
-                "",
+            'key'   => [
+                'PRI',
+                '',
+                '',
             ],
         ]);
 
@@ -574,9 +569,9 @@ class DatabaseTest extends TestCase
 
         // Test column types. Sqlite using Affinty that will change type name https://www.sqlite.org/datatype3.html
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("INTEGER", $columns[0]->type);
-        $this->assertEquals("CLOB", $columns[1]->type);
-        $this->assertEquals("VARCHAR(255)", $columns[2]->type);
+        $this->assertEquals('INTEGER', $columns[0]->type);
+        $this->assertEquals('CLOB', $columns[1]->type);
+        $this->assertEquals('VARCHAR(255)', $columns[2]->type);
     }
 
     public function test_can_change_nullable()
@@ -585,26 +580,26 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"     => "voyagertest",
-            "field"    => [
-                "id",
-                "title",
-                "content",
+            'name'     => 'voyagertest',
+            'field'    => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"     => [
-                "integer",
-                "string",
-                "text",
+            'type'     => [
+                'integer',
+                'string',
+                'text',
             ],
-            "key"      => [
-                "PRI",
-                "",
-                "",
+            'key'      => [
+                'PRI',
+                '',
+                '',
             ],
-            "nullable" => [
-                "0",
-                "1",
-                "0",
+            'nullable' => [
+                '0',
+                '1',
+                '0',
             ],
         ]);
 
@@ -613,26 +608,26 @@ class DatabaseTest extends TestCase
 
         // Update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"     => "voyagertest",
-            "field"    => [
-                "id",
-                "title",
-                "content",
+            'name'     => 'voyagertest',
+            'field'    => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"     => [
-                "integer",
-                "text",
-                "string",
+            'type'     => [
+                'integer',
+                'text',
+                'string',
             ],
-            "key"      => [
-                "PRI",
-                "",
-                "",
+            'key'      => [
+                'PRI',
+                '',
+                '',
             ],
-            "nullable" => [
-                "0",
-                "0",
-                "1",
+            'nullable' => [
+                '0',
+                '0',
+                '1',
             ],
         ]);
 
@@ -647,9 +642,9 @@ class DatabaseTest extends TestCase
 
         // Test nullable changes
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("1", $columns[0]->notnull);
-        $this->assertEquals("1", $columns[1]->notnull);
-        $this->assertEquals("0", $columns[2]->notnull);
+        $this->assertEquals('1', $columns[0]->notnull);
+        $this->assertEquals('1', $columns[1]->notnull);
+        $this->assertEquals('0', $columns[2]->notnull);
     }
 
     public function test_can_change_key_to_unique()
@@ -658,21 +653,21 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "string",
-                "text",
+            'type'  => [
+                'integer',
+                'string',
+                'text',
             ],
-            "key"   => [
-                "PRI",
-                "",
-                "",
+            'key'   => [
+                'PRI',
+                '',
+                '',
             ],
         ]);
 
@@ -681,21 +676,21 @@ class DatabaseTest extends TestCase
 
         // Update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "text",
-                "string",
+            'type'  => [
+                'integer',
+                'text',
+                'string',
             ],
-            "key"   => [
-                "PRI",
-                "UNI",
-                "",
+            'key'   => [
+                'PRI',
+                'UNI',
+                '',
             ],
         ]);
 
@@ -709,7 +704,7 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         $columns = DB::select(DB::raw('PRAGMA INDEX_LIST(voyagertest)'));
-        $this->assertEquals("1", $columns[0]->unique);
+        $this->assertEquals('1', $columns[0]->unique);
     }
 
     // We can only one PRIMARY key actually.
@@ -719,21 +714,21 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "string",
-                "text",
+            'type'  => [
+                'integer',
+                'string',
+                'text',
             ],
-            "key"   => [
-                "PRI",
-                "",
-                "",
+            'key'   => [
+                'PRI',
+                '',
+                '',
             ],
         ]);
 
@@ -742,21 +737,21 @@ class DatabaseTest extends TestCase
 
         // Update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "text",
-                "string",
+            'type'  => [
+                'integer',
+                'text',
+                'string',
             ],
-            "key"   => [
-                "PRI",
-                "PRI",
-                "",
+            'key'   => [
+                'PRI',
+                'PRI',
+                '',
             ],
         ]);
 
@@ -770,9 +765,9 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("1", $columns[0]->pk);
-        $this->assertEquals("0", $columns[1]->pk);
-        $this->assertEquals("0", $columns[2]->pk);
+        $this->assertEquals('1', $columns[0]->pk);
+        $this->assertEquals('0', $columns[1]->pk);
+        $this->assertEquals('0', $columns[2]->pk);
     }
 
     public function test_can_drop_column()
@@ -781,21 +776,21 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "string",
-                "text",
+            'type'  => [
+                'integer',
+                'string',
+                'text',
             ],
-            "key"   => [
-                "PRI",
-                "",
-                "",
+            'key'   => [
+                'PRI',
+                '',
+                '',
             ],
         ]);
 
@@ -804,21 +799,21 @@ class DatabaseTest extends TestCase
 
         // Update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"           => "voyagertest",
-            "field"          => [
-                "id",
-                "title",
-                "content",
+            'name'           => 'voyagertest',
+            'field'          => [
+                'id',
+                'title',
+                'content',
             ],
-            "original_field" => [
-                "id",
-                "title",
-                "content",
+            'original_field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "delete_field"   => [
-                "0",
-                "0",
-                "1",
+            'delete_field'   => [
+                '0',
+                '0',
+                '1',
             ],
         ]);
 
@@ -842,21 +837,21 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "string",
-                "text",
+            'type'  => [
+                'integer',
+                'string',
+                'text',
             ],
-            "key"   => [
-                "PRI",
-                "",
-                "",
+            'key'   => [
+                'PRI',
+                '',
+                '',
             ],
         ]);
 
@@ -865,16 +860,16 @@ class DatabaseTest extends TestCase
 
         // Update table with same fields
         $this->put(route('voyager.database.update', ['voyagertest']), [
-            "name"    => "voyagertest",
-            "field"   => [
-                "id",
-                "title",
-                "content",
+            'name'    => 'voyagertest',
+            'field'   => [
+                'id',
+                'title',
+                'content',
             ],
-            "default" => [
-                "",
-                "this is a new default value",
-                "another default value",
+            'default' => [
+                '',
+                'this is a new default value',
+                'another default value',
             ],
         ]);
 
@@ -889,7 +884,7 @@ class DatabaseTest extends TestCase
 
         // Test total columns after dropped
         $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("", $columns[0]->dflt_value);
+        $this->assertEquals('', $columns[0]->dflt_value);
         $this->assertEquals("'this is a new default value'", $columns[1]->dflt_value);
         $this->assertEquals("'another default value'", $columns[2]->dflt_value);
     }
@@ -900,21 +895,21 @@ class DatabaseTest extends TestCase
 
         // Setup table
         $this->post(route('voyager.database.store'), [
-            "name"  => "voyagertest",
-            "field" => [
-                "id",
-                "title",
-                "content",
+            'name'  => 'voyagertest',
+            'field' => [
+                'id',
+                'title',
+                'content',
             ],
-            "type"  => [
-                "integer",
-                "string",
-                "text",
+            'type'  => [
+                'integer',
+                'string',
+                'text',
             ],
-            "key"   => [
-                "PRI",
-                "",
-                "",
+            'key'   => [
+                'PRI',
+                '',
+                '',
             ],
         ]);
 
