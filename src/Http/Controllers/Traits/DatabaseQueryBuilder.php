@@ -69,6 +69,10 @@ trait DatabaseQueryBuilder
                             return $table->timestamps();
                         }
 
+                        if ($column['field'] == 'deleted_at') {
+                            return $table->softDeletes();
+                        }
+
                         $type = $column['type'] ?: 'string';
 
                         $result = $type == 'enum'
