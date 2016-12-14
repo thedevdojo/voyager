@@ -49,7 +49,7 @@ trait DatabaseQueryBuilder
     private function buildQuery(Request $request, $existingColumns = null)
     {
         return $this->buildColumnsCollection($request)->map(function ($column) use ($existingColumns) {
-                // We need to check that an existing database table column in now being
+            // We need to check that an existing database table column in now being
                 // updated. If it is, we also need to check that the supplied column
                 // type can actually be update without throwing an annoying error.
                 if ($existingColumns && $existingColumns->has($column['field']) && in_array($column['type'],
@@ -58,33 +58,33 @@ trait DatabaseQueryBuilder
                     return false;
                 }
 
-                return function (Blueprint $table) use ($column) {
-                    if ($column['key'] == 'PRI') {
-                        return $table->increments($column['field']);
-                    }
+            return function (Blueprint $table) use ($column) {
+                if ($column['key'] == 'PRI') {
+                    return $table->increments($column['field']);
+                }
 
-                    if ($column['field'] == 'created_at & updated_at') {
-                        return $table->timestamps();
-                    }
+                if ($column['field'] == 'created_at & updated_at') {
+                    return $table->timestamps();
+                }
 
-                    $type = $column['type'] ?: 'string';
+                $type = $column['type'] ?: 'string';
 
-                    $result = $type == 'enum' ? $table->enum($column['field'],
+                $result = $type == 'enum' ? $table->enum($column['field'],
                         [$column['enum']]) : $table->{$type}($column['field']);
 
-                    if ($column['key'] == 'UNI') {
-                        $result->unique();
-                    }
+                if ($column['key'] == 'UNI') {
+                    $result->unique();
+                }
 
-                    $result->nullable($column['nullable']);
+                $result->nullable($column['nullable']);
 
-                    if ($column['default']) {
-                        $result->default($column['default']);
-                    }
+                if ($column['default']) {
+                    $result->default($column['default']);
+                }
 
-                    return $result;
-                };
-            })->filter();
+                return $result;
+            };
+        })->filter();
     }
 
     /**
@@ -104,12 +104,12 @@ trait DatabaseQueryBuilder
 
             return collect($columns)->map(function ($item) {
                 return [
-                    "field"   => $item->name,
-                    "type"    => $item->type,
-                    "null"    => ($item->notnull) ? 'NO' : 'YES',
-                    "key"     => ($item->pk) ? 'PRI' : '',
-                    "default" => ($default = preg_replace("/((^')|('$))/", '', $item->dflt_value)) ? $default : null,
-                    "extra"   => ($item->pk == 1 && $item->type == 'integer') ? 'auto_increment' : '',
+                    'field'   => $item->name,
+                    'type'    => $item->type,
+                    'null'    => ($item->notnull) ? 'NO' : 'YES',
+                    'key'     => ($item->pk) ? 'PRI' : '',
+                    'default' => ($default = preg_replace("/((^')|('$))/", '', $item->dflt_value)) ? $default : null,
+                    'extra'   => ($item->pk == 1 && $item->type == 'integer') ? 'auto_increment' : '',
                 ];
             });
         } else {
