@@ -2,6 +2,9 @@
 
 namespace TCG\Voyager\Tests;
 
+use Exception;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Support\Facades\Artisan;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
@@ -24,7 +27,8 @@ class TestCase extends OrchestraTestCase
         }
 
         if (!file_exists(base_path('routes/web.php'))) {
-            file_put_contents(base_path('routes/web.php'), "<?php Route::get('/', function () {return view('welcome');});");
+            file_put_contents(base_path('routes/web.php'),
+                "<?php Route::get('/', function () {return view('welcome');});");
         }
 
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
@@ -72,5 +76,26 @@ class TestCase extends OrchestraTestCase
     protected function install()
     {
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
+    }
+
+    public function disableExceptionHandling()
+    {
+        $this->app->instance(ExceptionHandler::class, new DisabledTestException());
+    }
+}
+
+class DisabledTestException extends Handler
+{
+    public function __construct()
+    {
+    }
+
+    public function report(Exception $e)
+    {
+    }
+
+    public function render($request, Exception $e)
+    {
+        throw $e;
     }
 }
