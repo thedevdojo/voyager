@@ -64,13 +64,15 @@ class MakeModelCommand extends ModelMakeCommand
      */
     protected function addSoftDelete(&$stub)
     {
-        $trait = '';
+        $traitIncl = $trait = '';
 
         if ($this->option('softdelete')) {
-            $trait = 'use Illuminate\Database\Eloquent\SoftDeletes;';
+            $traitIncl = 'use Illuminate\Database\Eloquent\SoftDeletes;';
+            $trait = 'use SoftDeletes;';
         }
 
-        $stub = str_replace('DummySDTrait', $trait, $stub);
+        $stub = str_replace('//DummySDTraitInclude', $traitIncl, $stub);
+        $stub = str_replace('//DummySDTrait', $trait, $stub);
 
         return $this;
     }
