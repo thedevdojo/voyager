@@ -22,8 +22,8 @@
                         <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
-                                    @foreach($dataType->browseRows as $rows)
-                                    <th>{{ $rows->field }}</th>
+                                    @foreach($dataType->browseRows as $row)
+                                    <th>{{ $row->dispaly_name }}</th>
                                     @endforeach
                                     <th class="actions">Actions</th>
                                 </tr>
