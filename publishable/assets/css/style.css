@@ -57,7 +57,7 @@ a:hover {
   text-indent: 1em; }
 
 .navbar {
-  z-index: 10001;
+  z-index: 9999;
   padding-left: 60px;
   -webkit-transition: all 0.25s;
   transition: all 0.25s; }
@@ -200,7 +200,7 @@ a:hover {
   margin-left: 0; }
 .app-container .content-container .side-menu {
   overflow-y: auto;
-  z-index: 100000;
+  z-index: 9999;
   position: fixed;
   width: 60px;
   height: 100%;
