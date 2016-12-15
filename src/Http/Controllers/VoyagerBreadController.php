@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Voyager;
+use Illuminate\Support\Facades\DB;
 
 class VoyagerBreadController extends Controller
 {
