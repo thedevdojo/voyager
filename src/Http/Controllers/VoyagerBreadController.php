@@ -33,9 +33,17 @@ class VoyagerBreadController extends Controller
         Voyager::can('browse_'.$dataType->name);
 
         // Next Get the actual content from the MODEL that corresponds to the slug DataType
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->latest()->get()
-            : DB::table($dataType->name)->get(); // If Model doest exist, get data from table name
+        if (strlen($dataType->model_name) != 0) {
+            $model = app($dataType->model_name);
+            if ($model->timestamps) {
+                $dataTypeContent = $model->latest()->get();
+            } else {
+                $dataTypeContent = $model->orderBy('id', 'DESC')->get();
+            }
+        } else {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->get();
+        }
 
         $view = 'voyager::bread.browse';
 

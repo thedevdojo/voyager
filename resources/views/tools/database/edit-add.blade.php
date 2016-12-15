@@ -148,9 +148,8 @@
                                         <div class="btn btn-success" id="newField">+ Add New Field</div>
                                         <div class="btn btn-success" id="newFieldPrimary">+ Add Primary Field</div>
                                         @if(!isset($table))
-                                            <div class="btn btn-success" id="newFieldTimestamps">+ Add Timestamp
-                                                Fields
-                                            </div>
+                                            <div class="btn btn-success" id="newFieldTimestamps">+ Add Timestamp Fields</div>
+                                            <div class="btn btn-success" id="newFieldSoftDelete">+ Add Soft Delete Field</div>
                                         @endif
                                     </div>
                             </div>
@@ -166,9 +165,6 @@
         </div>
     </div>
 
-
-
-
 @stop
 
 @section('javascript')
@@ -178,22 +174,24 @@
         $('document').ready(function () {
 
             @if(!isset($table))
-              newRow('primary');
-            newRow();
+                newRow('primary');
+                newRow();
             @else
+                @foreach($rows as $row)
+                    newRow('', '{{ $row->field }}', '{{ $row->type }}', '{{ $row->null }}', '{{ $row->key }}', '{{ $row->default }}');
+                @endforeach
+            @endif
 
-              @foreach($rows as $row)
-                newRow('', '{{ $row->field }}', '{{ $row->type }}', '{{ $row->null }}', '{{ $row->key }}', '{{ $row->default }}');
-            @endforeach
-
-          @endif
-
-          $('#newField').click(function () {
+            $('#newField').click(function () {
                 newRow();
             });
 
             $('#newFieldTimestamps').click(function () {
                 newRow('timestamps');
+            });
+
+            $('#newFieldSoftDelete').click(function () {
+                newRow('softdelete');
             });
 
             $('#newFieldPrimary').click(function () {
@@ -203,12 +201,15 @@
                 handle: '.voyager-handle'
             });
 
-
             $('#tablebody').on('click', '.delete-row', function () {
                 var clickedRow = $(this).parents('.newTableRow');
                 if (clickedRow.find('.fieldName').val() == "created_at & updated_at") {
                     $('#newFieldTimestamps').removeAttr('disabled').click(function () {
                         newRow('timestamps');
+                    });
+                } else if (clickedRow.find('.fieldName').val() == "deleted_at") {
+                    $('#newFieldSoftDelete').removeAttr('disabled').click(function () {
+                        newRow('softdelete');
                     });
                 }
                 if (clickedRow.hasClass('existing_row')) {
@@ -241,14 +242,11 @@
                     $(this).parents('.newTableRow').find('.toggleswitchHidden').val(0);
                 }
             });
-            $('form').submit(function(){
-                
-                
-                $.each($('.fieldType'), function(){
-                    
+            $('form').submit(function () {
+                $.each($('.fieldType'), function () {
                     $(this).removeAttr('disabled');
-                    
                 });
+
                 return true;
             });
         });
@@ -272,13 +270,20 @@
                 $('#' + unique_id).find('.fieldType').val('integer');
                 $('#' + unique_id).find('.fieldKey').val('PRI');
             } else if (kind == 'timestamps') {
-                $('#' + unique_id).find('.fieldName').val('created_at & updated_at');
-                $('#' + unique_id).find('.fieldName').attr('readonly', 'readonly');
+                $('#' + unique_id).find('.fieldName').val('created_at & updated_at').attr('readonly', 'readonly');
                 $('#' + unique_id).find('.fieldDefault').val('CURRENT_TIMESTAMP').attr('readonly', 'readonly');
                 $('#' + unique_id).find('.fieldType').val('timestamp').attr('readonly', 'readonly').prop('disabled', 'true');
-                $('#' + unique_id).find('.fieldNull').parent().hide();
+                $('#' + unique_id).find('.fieldNull').bootstrapToggle('off').bootstrapToggle('disable');
                 $('#' + unique_id).find('.fieldKey').hide();
                 $('#newFieldTimestamps').attr('disabled', 'disabled').off('click');
+            } else if (kind == 'softdelete') {
+                $('#' + unique_id).find('.fieldName').val('deleted_at').attr('readonly', 'readonly');
+                $('#' + unique_id).find('.fieldDefault').val('NULL').attr('readonly', 'readonly');
+                $('#' + unique_id).find('.fieldType').val('timestamp').attr('readonly', 'readonly').prop('disabled', 'true');
+                $('#' + unique_id).find('.fieldNull').bootstrapToggle('on').bootstrapToggle('disable');
+                $('#' + unique_id).find('.toggleswitchHidden').val(1);
+                $('#' + unique_id).find('.fieldKey').hide();
+                $('#newFieldSoftDelete').attr('disabled', 'disabled').off('click');
             } else {
                 if (typeof(name) != 'undefined') {
                     $('#' + unique_id).addClass('existing_row');

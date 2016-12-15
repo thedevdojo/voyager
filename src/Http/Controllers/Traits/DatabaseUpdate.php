@@ -33,9 +33,7 @@ trait DatabaseUpdate
             try {
                 Schema::rename($originalName, $tableName);
             } catch (Exception $e) {
-                return back()
-                    ->withMessage('Exception: '.$e->getMessage())
-                    ->with('alert-type', 'error');
+                return back()->withMessage('Exception: '.$e->getMessage())->with('alert-type', 'error');
             }
         }
     }
@@ -48,22 +46,21 @@ trait DatabaseUpdate
      */
     private function renameColumns(Request $request, $tableName)
     {
-        foreach ($request->field as $index => $column) {
-            // If the column type matches something from the blacklist, then we just need to move on to the next column.
-            if (in_array($request->type[$index], $this->renameBlacklist)) {
-                continue;
-            }
+        if (isset($request->field)) {
+            foreach ($request->field as $index => $column) {
+                // If the column type matches something from the blacklist, then we just need to move on to the next column.
+                if (in_array($request->type[$index], $this->renameBlacklist)) {
+                    continue;
+                }
 
-            $originalColumn = $request->original_field[$index];
+                $originalColumn = $request->original_field[$index];
 
-            // If the name of the column has changed rename it.
-            if ($originalColumn && $originalColumn != $column) {
-                Schema::table(
-                    $tableName,
-                    function (Blueprint $table) use ($originalColumn, $column) {
+                // If the name of the column has changed rename it.
+                if ($originalColumn && $originalColumn != $column) {
+                    Schema::table($tableName, function (Blueprint $table) use ($originalColumn, $column) {
                         $table->renameColumn($originalColumn, $column);
-                    }
-                );
+                    });
+                }
             }
         }
     }
@@ -76,17 +73,16 @@ trait DatabaseUpdate
      */
     private function dropColumns(Request $request, $tableName)
     {
-        foreach ($request->delete_field as $index => $delete) {
-            // If the column is set for destruction, then by all means, destroy it!
-            if ((bool) $delete) {
-                $columnName = $request->field[$index];
+        if (isset($request->delete_field)) {
+            foreach ($request->delete_field as $index => $delete) {
+                // If the column is set for destruction, then by all means, destroy it!
+                if ((bool) $delete) {
+                    $columnName = $request->field[$index];
 
-                Schema::table(
-                    $tableName,
-                    function (Blueprint $table) use ($columnName) {
+                    Schema::table($tableName, function (Blueprint $table) use ($columnName) {
                         $table->dropColumn($columnName);
-                    }
-                );
+                    });
+                }
             }
         }
     }
@@ -102,22 +98,19 @@ trait DatabaseUpdate
         $existingColumns = $this->describeTable($tableName)->keyBy('field');
         $columnQueries = $this->buildQuery($request, $existingColumns);
 
-        Schema::table(
-            $tableName,
-            function (Blueprint $table) use ($columnQueries, $request, $existingColumns) {
-                foreach ($columnQueries as $index => $query) {
-                    $field = $request->field[$index];
+        Schema::table($tableName, function (Blueprint $table) use ($columnQueries, $request, $existingColumns) {
+            foreach ($columnQueries as $index => $query) {
+                $field = $request->field[$index];
 
-                    if ($existingColumns->has($field)) {
-                        $query($table)->change();
+                if ($existingColumns->has($field)) {
+                    $query($table)->change();
 
-                        continue;
-                    }
-
-                    // If we get here, it means that this is a new table column. So let's create it.
-                    $query($table);
+                    continue;
                 }
+
+                // If we get here, it means that this is a new table column. So let's create it.
+                $query($table);
             }
-        );
+        });
     }
 }
