@@ -14,9 +14,16 @@ trait VoyagerUser
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * Check if User has a Role(s) associated.
+     *
+     * @param  string|array $name    The role to check.
+     *
+     * @return boolean
+     */
     public function hasRole($name)
     {
-        return $this->role->name == $name;
+        return in_array($this->role->name, (is_array($name) ? $name : [$name]));
     }
 
     public function setRole($name)
@@ -25,6 +32,7 @@ trait VoyagerUser
 
         if ($role) {
             $this->role()->associate($role);
+            $this->save();
         }
 
         return $this;
