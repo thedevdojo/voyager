@@ -56,7 +56,17 @@ class VoyagerDatabaseController extends Controller
                     $params['--softdelete'] = true;
                 }
 
+                if (isset($request->create_migration) && $request->create_migration == 'on') {
+                    $params['--migration'] = true;
+                }
+
                 Artisan::call('voyager:make:model', $params);
+            }
+            else if (isset($request->create_migration) && $request->create_migration == 'on') {
+                Artisan::call('make:migration', [
+                    'name' => 'create_'.$tableName.'_table',
+                    '--table' => $tableName,
+                ]);
             }
 
             return redirect()
