@@ -61,10 +61,9 @@ class VoyagerDatabaseController extends Controller
                 }
 
                 Artisan::call('voyager:make:model', $params);
-            }
-            else if (isset($request->create_migration) && $request->create_migration == 'on') {
+            } elseif (isset($request->create_migration) && $request->create_migration == 'on') {
                 Artisan::call('make:migration', [
-                    'name' => 'create_'.$tableName.'_table',
+                    'name'    => 'create_'.$tableName.'_table',
                     '--table' => $tableName,
                 ]);
             }
