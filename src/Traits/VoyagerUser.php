@@ -19,7 +19,7 @@ trait VoyagerUser
      *
      * @param string|array $name    The role to check.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasRole($name)
     {
