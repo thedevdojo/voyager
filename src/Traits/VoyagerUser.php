@@ -17,7 +17,7 @@ trait VoyagerUser
     /**
      * Check if User has a Role(s) associated.
      *
-     * @param string|array $name    The role to check.
+     * @param string|array $name The role to check.
      *
      * @return bool
      */
