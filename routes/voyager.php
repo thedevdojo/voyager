@@ -12,7 +12,7 @@
 
 Route::group(['as' => 'voyager.'], function () {
     event('voyager.routing', app('router'));
-    
+
     $namespacePrefix = '\\TCG\\Voyager\\Http\\Controllers\\';
 
     Route::get('login', ['uses' => $namespacePrefix.'VoyagerAuthController@login', 'as' => 'login']);
