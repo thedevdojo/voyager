@@ -593,3 +593,42 @@
 .voyager-home:before {
   content: "\e048";
 }
+.voyager-pirate-swords:before {
+  content: "\e04b";
+}
+.voyager-pirate:before {
+  content: "\e050";
+}
+.voyager-rum:before {
+  content: "\e051";
+}
+.voyager-cannon:before {
+  content: "\e049";
+}
+.voyager-fishing:before {
+  content: "\e052";
+}
+.voyager-kraken:before {
+  content: "\e05c";
+}
+.voyager-lighthouse:before {
+  content: "\e05d";
+}
+.voyager-pirate-hat:before {
+  content: "\e05f";
+}
+.voyager-rum-1:before {
+  content: "\e060";
+}
+.voyager-ship:before {
+  content: "\e064";
+}
+.voyager-treasure:before {
+  content: "\e065";
+}
+.voyager-treasure-open:before {
+  content: "\e066";
+}
+.voyager-whale:before {
+  content: "\e067";
+}
