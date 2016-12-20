@@ -11,12 +11,15 @@
 */
 
 Route::group(['as' => 'voyager.'], function () {
+    event('voyager.routing', app('router'));
+    
     $namespacePrefix = '\\TCG\\Voyager\\Http\\Controllers\\';
 
     Route::get('login', ['uses' => $namespacePrefix.'VoyagerAuthController@login', 'as' => 'login']);
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
 
     Route::group(['middleware' => ['admin.user']], function () use ($namespacePrefix) {
+        event('voyager.admin.routing', app('router'));
 
         // Main Admin and Logout Route
         Route::get('/', ['uses' => $namespacePrefix.'VoyagerController@index', 'as' => 'dashboard']);
