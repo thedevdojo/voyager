@@ -38,14 +38,14 @@ class Menu extends Model
     public static function display($menuName, $type = null, $options = [])
     {
         // GET THE MENU
-        $menuItems = static::where('name', '=', $menuName)->first();
+        $menu = static::with('items')->where('name', '=', $menuName)->first();
 
         // Check for Menu Existence
-        if (!isset($menuItems)) {
+        if (!isset($menu)) {
             return false;
         }
 
-        $menuItems = $menuItems->items->sortBy('order');
+        event('voyager.menu.display', $menu);
 
         // Convert options array into object
         $options = (object) $options;
@@ -63,17 +63,17 @@ class Menu extends Model
 
         switch ($type) {
             case 'admin':
-                return self::buildAdminOutput($menuItems, '', $options);
+                return self::buildAdminOutput($menu->items, '', $options);
 
             case 'admin_menu':
-                return self::buildAdminMenuOutput($menuItems, '', $options, request());
+                return self::buildAdminMenuOutput($menu->items, '', $options, request());
 
             case 'bootstrap':
-                return self::buildBootstrapOutput($menuItems, '', $options, request());
+                return self::buildBootstrapOutput($menu->items, '', $options, request());
         }
 
-        return empty($type) ? self::buildOutput($menuItems, '', $options,
-            request()) : self::buildCustomOutput($menuItems, $type, $options, request());
+        return empty($type) ? self::buildOutput($menu->items, '', $options,
+            request()) : self::buildCustomOutput($menu->items, $type, $options, request());
     }
 
     /**
