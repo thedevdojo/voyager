@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Commands;
 
-use Illuminate\Foundation\Console\ModelMakeCommand;
 use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Foundation\Console\ModelMakeCommand;
 
 class MakeModelCommand extends ModelMakeCommand
 {
@@ -20,18 +20,6 @@ class MakeModelCommand extends ModelMakeCommand
      * @var string
      */
     protected $description = 'Create a new Voyager model class';
-
-    /**
-     * Execute the console command.
-     *
-     * @return void
-     */
-    public function fire()
-    {
-        if (parent::fire() === false) {
-            return;
-        }
-    }
 
     /**
      * Get the stub file for the generator.
@@ -86,8 +74,10 @@ class MakeModelCommand extends ModelMakeCommand
      */
     protected function getOptions()
     {
-        return array_merge([
+        $options = [
             ['softdelete', 'd', InputOption::VALUE_NONE, 'Add soft-delete field to Model'],
-        ], parent::getOptions());
+        ];
+
+        return array_merge($options, parent::getOptions());
     }
 }

@@ -3,11 +3,12 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
-use Intervention\Image\ImageServiceProviderLaravel5;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Process\Process;
 use TCG\Voyager\Traits\Seedable;
+use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 use TCG\Voyager\VoyagerServiceProvider;
+use Symfony\Component\Console\Input\InputOption;
+use Intervention\Image\ImageServiceProviderLaravel5;
 
 class InstallCommand extends Command
 {
@@ -28,14 +29,6 @@ class InstallCommand extends Command
      * @var string
      */
     protected $description = 'Install the Voyager Admin package';
-
-    /**
-     * Create a new command instance.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     protected function getOptions()
     {
@@ -65,7 +58,7 @@ class InstallCommand extends Command
      *
      * @return void
      */
-    public function fire(\Illuminate\Filesystem\Filesystem $filesystem)
+    public function fire(Filesystem $filesystem)
     {
         $this->info('Publishing the Voyager assets, database, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
@@ -82,8 +75,10 @@ class InstallCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(base_path('routes/web.php'),
-            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n");
+        $filesystem->append(
+            base_path('routes/web.php'),
+            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
+        );
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');

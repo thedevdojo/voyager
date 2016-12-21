@@ -2,11 +2,11 @@
 
 namespace TCG\Voyager\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
-use TCG\Voyager\Models\Permission;
 use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\User;
+use Illuminate\Console\Command;
+use TCG\Voyager\Models\Permission;
+use Symfony\Component\Console\Input\InputOption;
 
 class AdminCommand extends Command
 {
@@ -60,6 +60,7 @@ class AdminCommand extends Command
         $role = Role::firstOrNew([
             'name' => 'admin',
         ]);
+
         if (!$role->exists) {
             $role->fill([
                 'display_name' => 'Administrator',

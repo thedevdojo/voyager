@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Commands;
 
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Console\AppNamespaceDetectorTrait;
 
 class ControllersCommand extends Command
 {
