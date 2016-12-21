@@ -14,7 +14,9 @@ use Intervention\Image\Facades\Image;
 
 abstract class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs,
+        ValidatesRequests,
+        AuthorizesRequests;
 
     public function getSlug(Request $request)
     {
@@ -34,10 +36,12 @@ abstract class Controller extends BaseController
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
+
             if (isset($options->validation)) {
                 if (isset($options->validation->rule)) {
                     $rules[$row->field] = $options->validation->rule;
                 }
+
                 if (isset($options->validation->messages)) {
                     foreach ($options->validation->messages as $key => $msg) {
                         $messages[$row->field.'.'.$key] = $msg;
@@ -46,7 +50,8 @@ abstract class Controller extends BaseController
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
-            if ($content === null) {
+
+            if (is_null($content)) {
                 if (isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
@@ -54,6 +59,7 @@ abstract class Controller extends BaseController
                     $content = $data->{$row->field};
                 }
             }
+
             if ($row->type == 'select_multiple') {
                 // do nothing
             } else {
@@ -83,6 +89,7 @@ abstract class Controller extends BaseController
                 if (isset($pass_field) && !empty($pass_field)) {
                     return bcrypt($request->input($row->field));
                 }
+
                 break;
 
             /********** CHECKBOX TYPE **********/
@@ -94,6 +101,7 @@ abstract class Controller extends BaseController
                 }
 
                 $content = 0;
+
                 break;
 
             /********** FILE TYPE **********/
@@ -112,6 +120,7 @@ abstract class Controller extends BaseController
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
                 $content = $request->input($row->field);
+
                 if ($content === null) {
                     $content = [];
                 }
@@ -121,7 +130,6 @@ abstract class Controller extends BaseController
             /********** IMAGE TYPE **********/
             case 'image':
                 if ($request->hasFile($row->field)) {
-                    $storage_disk = 'local';
                     $file = $request->file($row->field);
                     $filename = Str::random(20);
 
@@ -152,12 +160,15 @@ abstract class Controller extends BaseController
                                 $scale = intval($thumbnails->scale) / 100;
                                 $thumb_resize_width = $resize_width;
                                 $thumb_resize_height = $resize_height;
+
                                 if ($thumb_resize_width != 'null') {
                                     $thumb_resize_width = $thumb_resize_width * $scale;
                                 }
+
                                 if ($thumb_resize_height != 'null') {
                                     $thumb_resize_height = $thumb_resize_height * $scale;
                                 }
+
                                 $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
                                     function (Constraint $constraint) {
                                         $constraint->aspectRatio();
@@ -166,12 +177,15 @@ abstract class Controller extends BaseController
                             } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                 $crop_width = $thumbnails->crop->width;
                                 $crop_height = $thumbnails->crop->height;
-                                $image = Image::make($file)->fit($crop_width,
-                                    $crop_height)->encode($file->getClientOriginalExtension(), 75);
+                                $image = Image::make($file)
+                                    ->fit($crop_width, $crop_height)
+                                    ->encode($file->getClientOriginalExtension(), 75);
                             }
 
-                            Storage::put(config('voyager.storage.subfolder').$path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                (string) $image, 'public');
+                            Storage::put(
+                                config('voyager.storage.subfolder').$path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                                (string) $image, 'public'
+                            );
                         }
                     }
 
@@ -182,15 +196,9 @@ abstract class Controller extends BaseController
             /********** ALL OTHER TEXT TYPE **********/
             default:
                 return $request->input($row->field);
-            // no break
         }
 
         return $content;
-    }
-
-    public function generate_views(Request $request)
-    {
-        //$dataType = DataType::where('slug', '=', $slug)->first();
     }
 
     public function deleteFileIfExists($path)

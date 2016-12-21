@@ -10,7 +10,7 @@ class User extends AuthUser
 {
     use VoyagerUser;
 
-    protected $fillable = ['name', 'email', 'password', 'remember_token', 'role_id'];
+    protected $guarded = [];
 
     /**
      * On save make sure to set the default avatar if image is not set.

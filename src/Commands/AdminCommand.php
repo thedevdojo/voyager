@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Input\InputOption;
 use TCG\Voyager\Models\Permission;
 use TCG\Voyager\Models\Role;
@@ -41,38 +42,23 @@ class AdminCommand extends Command
      */
     public function fire()
     {
-        $email = $this->argument('email');
+        // Get or create user
+        $user = $this->getUser(
+            $this->option('create')
+        );
 
-        // If we need to create a new user go ahead and create it
-        if ($this->option('create')) {
-            $name = $this->ask('Enter the admin name');
-            $password = $this->secret('Enter admin password');
-            $this->info('Creating admin account');
+        // Get or create role
+        $role = $this->getAdministratorRole();
 
-            User::create([
-              'name'             => $name,
-              'email'            => $email,
-              'password'         => \Hash::make($password),
-              'avatar'           => 'users/default.png',
-            ]);
-        }
-
-        $role = Role::firstOrNew([
-            'name' => 'admin',
-        ]);
-        if (!$role->exists) {
-            $role->fill([
-                'display_name' => 'Administrator',
-            ])->save();
-        }
-
+        // Get all permissions
         $permissions = Permission::all();
 
+        // Assign all permissions to the admin role
         $role->permissions()->sync(
             $permissions->pluck('id')->all()
         );
 
-        $user = User::where('email', $email)->firstOrFail();
+        // Ensure that the user is admin
         $user->role_id = $role->id;
         $user->save();
 
@@ -89,5 +75,53 @@ class AdminCommand extends Command
         return [
             ['email', InputOption::VALUE_REQUIRED, 'The email of the user.', null],
         ];
+    }
+
+    /**
+     * Get the administrator role, create it if it does not exists.
+     *
+     * @return mixed
+     */
+    protected function getAdministratorRole()
+    {
+        $role = Role::firstOrNew([
+            'name' => 'admin',
+        ]);
+
+        if (!$role->exists) {
+            $role->fill([
+                'display_name' => 'Administrator',
+            ])->save();
+        }
+
+        return $role;
+    }
+
+    /**
+     * Get or create user.
+     *
+     * @param bool $create
+     *
+     * @return \TCG\Voyager\Models\User
+     */
+    protected function getUser($create = false)
+    {
+        $email = $this->argument('email');
+
+        // If we need to create a new user go ahead and create it
+        if ($create) {
+            $name = $this->ask('Enter the admin name');
+            $password = $this->secret('Enter admin password');
+            $this->info('Creating admin account');
+
+            return User::create([
+                'name'             => $name,
+                'email'            => $email,
+                'password'         => Hash::make($password),
+                'avatar'           => 'users/default.png',
+            ]);
+        }
+
+        return User::where('email', $email)->firstOrFail();
     }
 }

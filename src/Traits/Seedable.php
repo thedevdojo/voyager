@@ -11,8 +11,5 @@ trait Seedable
         }
 
         with(new $class())->run();
-
-        //$process = new Process('php artisan db:seed --class='.$class);
-        //$process->setWorkingDirectory(base_path())->run();
     }
 }

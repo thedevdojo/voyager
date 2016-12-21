@@ -5,6 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\Menu;
@@ -17,14 +18,14 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(\Intervention\Image\ImageServiceProvider::class);
+        $this->app->register(ImageServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Menu', Menu::class);
         $loader->alias('Voyager', VoyagerFacade::class);
 
         $this->app->singleton('voyager', function () {
-            return Voyager::getInstance();
+            return new Voyager();
         });
 
         if ($this->app->runningInConsole()) {
@@ -46,7 +47,8 @@ class VoyagerServiceProvider extends ServiceProvider
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
                 if (is_null($user->role_id)) {
-                    User::findOrFail($user->id)->setRole(config('voyager.user.default_role'))
+                    User::findOrFail($user->id)
+                        ->setRole(config('voyager.user.default_role'))
                         ->save();
                 }
             });

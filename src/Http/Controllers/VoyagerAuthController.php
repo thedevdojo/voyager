@@ -9,7 +9,7 @@ class VoyagerAuthController extends Controller
 {
     use AuthenticatesUsers;
 
-    public function login(Request $request)
+    public function login()
     {
         return view('voyager::login');
     }

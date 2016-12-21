@@ -18,6 +18,7 @@ class VoyagerMediaController extends Controller
     public function __construct()
     {
         $this->filesystem = config('filesystems.default');
+
         if ($this->filesystem === 'local') {
             $this->directory = 'public';
         } elseif ($this->filesystem === 's3') {
@@ -35,9 +36,11 @@ class VoyagerMediaController extends Controller
     public function files(Request $request)
     {
         $folder = $request->folder;
+
         if ($folder == '/') {
             $folder = '';
         }
+
         $dir = $this->directory.$folder;
 
         return response()->json([
@@ -89,12 +92,10 @@ class VoyagerMediaController extends Controller
 
         if (Storage::exists($new_folder)) {
             $error = 'Sorry that folder already exists, please delete that folder if you wish to re-create it';
+        } elseif (Storage::makeDirectory($new_folder)) {
+            $success = true;
         } else {
-            if (Storage::makeDirectory($new_folder)) {
-                $success = true;
-            } else {
-                $error = 'Sorry something seems to have gone wrong with creating the directory, please check your permissions';
-            }
+            $error = 'Sorry something seems to have gone wrong with creating the directory, please check your permissions';
         }
 
         return compact('success', 'error');

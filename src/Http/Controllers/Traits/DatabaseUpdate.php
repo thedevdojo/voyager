@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Http\Controllers\Traits;
 
+use Exception;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;

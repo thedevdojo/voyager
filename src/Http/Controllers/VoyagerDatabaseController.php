@@ -17,8 +17,8 @@ use TCG\Voyager\Voyager;
 
 class VoyagerDatabaseController extends Controller
 {
-    use AppNamespaceDetectorTrait;
     use DatabaseUpdate;
+    use AppNamespaceDetectorTrait;
 
     public function index()
     {
@@ -266,7 +266,9 @@ class VoyagerDatabaseController extends Controller
                 'alert-type' => 'danger',
             ];
 
-        Permission::removeFrom($dataType->name);
+        if (!is_null($dataType)) {
+            Permission::removeFrom($dataType->name);
+        }
 
         return redirect()->route('voyager.database.index')->with($data);
     }

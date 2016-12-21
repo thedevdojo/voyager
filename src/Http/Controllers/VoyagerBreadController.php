@@ -35,6 +35,7 @@ class VoyagerBreadController extends Controller
         // Next Get the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
+
             if ($model->timestamps) {
                 $dataTypeContent = $model->latest()->get();
             } else {
