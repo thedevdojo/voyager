@@ -26,7 +26,7 @@ class Voyager
 
     public static function getInstance()
     {
-        if (null === static::$instance) {
+        if (is_null(static::$instance)) {
             static::$instance = new static();
         }
 
