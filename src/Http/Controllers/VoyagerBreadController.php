@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Voyager;
+use Illuminate\Http\Request;
+use TCG\Voyager\Models\DataType;
+use Illuminate\Support\Facades\DB;
 
 class VoyagerBreadController extends Controller
 {
@@ -35,6 +35,7 @@ class VoyagerBreadController extends Controller
         // Next Get the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
+
             if ($model->timestamps) {
                 $dataTypeContent = $model->latest()->get();
             } else {

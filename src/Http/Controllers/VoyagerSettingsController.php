@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Voyager;
+use Illuminate\Http\Request;
+use TCG\Voyager\Models\Setting;
+use Illuminate\Support\Facades\Storage;
 
 class VoyagerSettingsController extends Controller
 {
@@ -25,13 +25,16 @@ class VoyagerSettingsController extends Controller
         Voyager::can('browse_settings');
 
         $lastSetting = Setting::orderBy('order', 'DESC')->first();
-        if ($lastSetting == null) {
+
+        if (is_null($lastSetting)) {
             $order = 0;
         } else {
             $order = intval($lastSetting->order) + 1;
         }
+
         $request->merge(['order' => $order]);
         $request->merge(['value' => '']);
+
         Setting::create($request->all());
 
         return back()->with([

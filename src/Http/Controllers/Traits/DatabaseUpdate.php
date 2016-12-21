@@ -2,9 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers\Traits;
 
-use Illuminate\Database\Schema\Blueprint;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 
 trait DatabaseUpdate
 {

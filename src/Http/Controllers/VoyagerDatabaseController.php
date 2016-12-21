@@ -3,22 +3,22 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
-use Illuminate\Console\AppNamespaceDetectorTrait;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+use TCG\Voyager\Voyager;
 use Illuminate\Support\Str;
-use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
+use Illuminate\Http\Request;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Voyager;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Console\AppNamespaceDetectorTrait;
+use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 
 class VoyagerDatabaseController extends Controller
 {
-    use AppNamespaceDetectorTrait;
     use DatabaseUpdate;
+    use AppNamespaceDetectorTrait;
 
     public function index()
     {
@@ -266,7 +266,9 @@ class VoyagerDatabaseController extends Controller
                 'alert-type' => 'danger',
             ];
 
-        Permission::removeFrom($dataType->name);
+        if (!is_null($dataType)) {
+            Permission::removeFrom($dataType->name);
+        }
 
         return redirect()->route('voyager.database.index')->with($data);
     }
