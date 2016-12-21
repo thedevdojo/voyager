@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use TCG\Voyager\Voyager;
 use Illuminate\Http\Request;
 use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
+use TCG\Voyager\Voyager;
 
 class VoyagerMenuController extends Controller
 {

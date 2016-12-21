@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Commands;
 
-use Symfony\Component\Console\Input\InputOption;
 use Illuminate\Foundation\Console\ModelMakeCommand;
+use Symfony\Component\Console\Input\InputOption;
 
 class MakeModelCommand extends ModelMakeCommand
 {

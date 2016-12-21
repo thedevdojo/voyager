@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Models;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Page extends Model
 {
