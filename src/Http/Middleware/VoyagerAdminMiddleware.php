@@ -3,8 +3,8 @@
 namespace TCG\Voyager\Http\Middleware;
 
 use Closure;
-use TCG\Voyager\Models\User;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Models\User;
 
 class VoyagerAdminMiddleware
 {
