@@ -2,12 +2,12 @@
 
 namespace TCG\Voyager\Commands;
 
-use TCG\Voyager\Models\Role;
-use TCG\Voyager\Models\User;
 use Illuminate\Console\Command;
-use TCG\Voyager\Models\Permission;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Input\InputOption;
+use TCG\Voyager\Models\Permission;
+use TCG\Voyager\Models\Role;
+use TCG\Voyager\Models\User;
 
 class AdminCommand extends Command
 {
@@ -101,6 +101,7 @@ class AdminCommand extends Command
      * Get or create user.
      *
      * @param bool $create
+     *
      * @return \TCG\Voyager\Models\User
      */
     protected function getUser($create = false)
