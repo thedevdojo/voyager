@@ -2,13 +2,13 @@
 
 namespace TCG\Voyager;
 
-use TCG\Voyager\Models\User;
-use TCG\Voyager\Models\Setting;
-use TCG\Voyager\Models\Permission;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\Models\Permission;
+use TCG\Voyager\Models\Setting;
+use TCG\Voyager\Models\User;
 
 class Voyager
 {
