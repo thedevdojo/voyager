@@ -3,3 +3,4 @@
 vendor
 build
 .lock
+composer.lock

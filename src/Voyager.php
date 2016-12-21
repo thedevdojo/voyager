@@ -2,20 +2,27 @@
 
 namespace TCG\Voyager;
 
+use TCG\Voyager\Models\User;
+use TCG\Voyager\Models\Setting;
+use TCG\Voyager\Models\Permission;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
-use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Models\Setting;
-use TCG\Voyager\Models\User;
 
 class Voyager
 {
-    /**
-     *  Singleton Voyager Class.
-     */
     private static $instance;
+
+    protected $version;
+    protected $filesystem;
+
+    public function __construct()
+    {
+        $this->filesystem = app(Filesystem::class);
+
+        $this->findVersion();
+    }
 
     public static function getInstance()
     {
@@ -26,49 +33,6 @@ class Voyager
         return static::$instance;
     }
 
-    public function getVersion()
-    {
-        $composer_lock = __DIR__.'/../../../../composer.lock';
-        $version = null;
-
-        if (File::exists($composer_lock)) {
-            // Get the composer.lock file
-            $file = json_decode(
-                File::get($composer_lock)
-            );
-
-            // Loop through all the packages and get the version of voyager
-            foreach ($file->packages as $package) {
-                if ($package->name == 'tcg/voyager') {
-                    $version = $package->version;
-                    break;
-                }
-            }
-        }
-
-        return $version;
-    }
-
-    protected function __construct()
-    {
-    }
-
-    private function __clone()
-    {
-    }
-
-    private function __wakeup()
-    {
-    }
-
-    /**
-     *  End Singleton operators.
-     *
-     * @param $key
-     * @param null $default
-     *
-     * @return null
-     */
     public static function setting($key, $default = null)
     {
         $setting = Setting::where('key', '=', $key)->first();
@@ -102,6 +66,33 @@ class Voyager
             $user = User::find(Auth::id());
             if (!$user->hasPermission($permission)) {
                 throw new UnauthorizedHttpException(null);
+            }
+        }
+    }
+
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    protected function findVersion()
+    {
+        if (!is_null($this->version)) {
+            return;
+        }
+
+        if ($this->filesystem->exists(base_path('composer.lock'))) {
+            // Get the composer.lock file
+            $file = json_decode(
+                $this->filesystem->get(base_path('composer.lock'))
+            );
+
+            // Loop through all the packages and get the version of voyager
+            foreach ($file->packages as $package) {
+                if ($package->name == 'tcg/voyager') {
+                    $this->version = $package->version;
+                    break;
+                }
             }
         }
     }
