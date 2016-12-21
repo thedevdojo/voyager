@@ -2,14 +2,15 @@
 
 namespace TCG\Voyager\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Post extends Model
 {
-    protected $fillable = [
-        'slug', 'name', 'title', 'author_id', 'seo_title', 'excerpt', 'body', 'image', 'slug', 'meta_description', 'meta_keywords', 'status', 'featured',
-    ];
+    const PUBLISHED = 'PUBLISHED';
+
+    protected $guarded = [];
 
     public function save(array $options = [])
     {
@@ -24,5 +25,16 @@ class Post extends Model
     public function author_id()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Scope a query to only published scopes.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublished(Builder $query)
+    {
+        return $query->where('status', '=', static::PUBLISHED);
     }
 }

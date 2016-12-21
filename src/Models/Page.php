@@ -2,12 +2,12 @@
 
 namespace TCG\Voyager\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    protected $fillable = ['slug', 'author_id', 'title', 'excerpt', 'body', 'meta_description', 'meta_keywords'];
+    protected $guarded = [];
 
     public function save(array $options = [])
     {
