@@ -2,9 +2,9 @@
 
 namespace TCG\Voyager\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Eloquent\Model;
 
 class DataType extends Model
 {
