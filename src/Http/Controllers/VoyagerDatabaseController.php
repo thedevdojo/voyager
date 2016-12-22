@@ -17,8 +17,8 @@ use TCG\Voyager\Voyager;
 
 class VoyagerDatabaseController extends Controller
 {
-    use AppNamespaceDetectorTrait;
     use DatabaseUpdate;
+    use AppNamespaceDetectorTrait;
 
     public function index()
     {
@@ -56,7 +56,16 @@ class VoyagerDatabaseController extends Controller
                     $params['--softdelete'] = true;
                 }
 
+                if (isset($request->create_migration) && $request->create_migration == 'on') {
+                    $params['--migration'] = true;
+                }
+
                 Artisan::call('voyager:make:model', $params);
+            } elseif (isset($request->create_migration) && $request->create_migration == 'on') {
+                Artisan::call('make:migration', [
+                    'name'    => 'create_'.$tableName.'_table',
+                    '--table' => $tableName,
+                ]);
             }
 
             return redirect()
@@ -257,7 +266,9 @@ class VoyagerDatabaseController extends Controller
                 'alert-type' => 'danger',
             ];
 
-        Permission::removeFrom($dataType->name);
+        if (!is_null($dataType)) {
+            Permission::removeFrom($dataType->name);
+        }
 
         return redirect()->route('voyager.database.index')->with($data);
     }

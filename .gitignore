@@ -2,3 +2,5 @@
 .idea
 vendor
 build
+.lock
+composer.lock

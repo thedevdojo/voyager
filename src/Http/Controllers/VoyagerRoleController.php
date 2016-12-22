@@ -40,7 +40,6 @@ class VoyagerRoleController extends VoyagerBreadController
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         if (function_exists('voyager_add_post')) {
-            $url = $request->url();
             voyager_add_post($request);
         }
 

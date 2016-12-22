@@ -25,13 +25,16 @@ class VoyagerSettingsController extends Controller
         Voyager::can('browse_settings');
 
         $lastSetting = Setting::orderBy('order', 'DESC')->first();
-        if ($lastSetting == null) {
+
+        if (is_null($lastSetting)) {
             $order = 0;
         } else {
             $order = intval($lastSetting->order) + 1;
         }
+
         $request->merge(['order' => $order]);
         $request->merge(['value' => '']);
+
         Setting::create($request->all());
 
         return back()->with([

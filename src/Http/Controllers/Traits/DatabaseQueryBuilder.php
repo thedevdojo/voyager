@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers\Traits;
 
-use DB;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 trait DatabaseQueryBuilder
 {

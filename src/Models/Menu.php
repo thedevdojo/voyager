@@ -14,7 +14,7 @@ class Menu extends Model
 {
     protected $table = 'menus';
 
-    protected $fillable = ['name'];
+    protected $guarded = [];
 
     private static $permissions;
     private static $user_permissions;
@@ -23,7 +23,7 @@ class Menu extends Model
 
     public function items()
     {
-        return $this->hasMany('TCG\Voyager\Models\MenuItem');
+        return $this->hasMany(MenuItem::class);
     }
 
     /**
@@ -38,14 +38,14 @@ class Menu extends Model
     public static function display($menuName, $type = null, $options = [])
     {
         // GET THE MENU
-        $menuItems = static::where('name', '=', $menuName)->first();
+        $menu = static::with('items')->where('name', '=', $menuName)->first();
 
         // Check for Menu Existence
-        if (!isset($menuItems)) {
+        if (!isset($menu)) {
             return false;
         }
 
-        $menuItems = $menuItems->items->sortBy('order');
+        event('voyager.menu.display', $menu);
 
         // Convert options array into object
         $options = (object) $options;
@@ -54,26 +54,27 @@ class Menu extends Model
 
         if (!Auth::guest()) {
             $user = User::find(Auth::id());
+
             self::$user_permissions = $user->role->permissions->pluck('key')->toArray();
         }
 
         self::$dataTypes = DataType::all();
 
-        self::$prefix = ltrim(route('voyager.dashboard', [], false), '/');
+        self::$prefix = trim(route('voyager.dashboard', [], false), '/');
 
         switch ($type) {
             case 'admin':
-                return self::buildAdminOutput($menuItems, '', $options);
+                return self::buildAdminOutput($menu->items, '', $options);
 
             case 'admin_menu':
-                return self::buildAdminMenuOutput($menuItems, '', $options, request());
+                return self::buildAdminMenuOutput($menu->items, '', $options, request());
 
             case 'bootstrap':
-                return self::buildBootstrapOutput($menuItems, '', $options, request());
+                return self::buildBootstrapOutput($menu->items, '', $options, request());
         }
 
-        return empty($type) ? self::buildOutput($menuItems, '', $options,
-            request()) : self::buildCustomOutput($menuItems, $type, $options, request());
+        return empty($type) ? self::buildOutput($menu->items, '', $options,
+            request()) : self::buildCustomOutput($menu->items, $type, $options, request());
     }
 
     /**
@@ -89,11 +90,11 @@ class Menu extends Model
     public static function buildBootstrapOutput($menuItems, $output, $options, Request $request, $child = null)
     {
         if (!$child) {
-            $parentItems = $menuItems->filter(function ($value, $key) {
+            $parentItems = $menuItems->filter(function ($value) {
                 return $value->parent_id == null;
             });
         } else {
-            $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
+            $parentItems = $menuItems->filter(function ($value) use ($child) {
                 return $value->parent_id == $child;
             });
         }
@@ -126,11 +127,15 @@ class Menu extends Model
                 }
                 $a_attrs = 'class="dropdown-toggle" ';
             }
+
             $icon = '';
+
             if (isset($options->icon) && $options->icon == true) {
                 $icon = '<i class="'.$item->icon_class.'"></i>';
             }
+
             $styles = '';
+
             if (isset($options->color) && $options->color == true) {
                 $styles = ' style="color:'.$item->color.'"';
             }
@@ -138,11 +143,13 @@ class Menu extends Model
             if (isset($options->background) && $options->background == true) {
                 $styles = ' style="background-color:'.$item->color.'"';
             }
+
             $output .= '<li'.$li_class.'><a '.$a_attrs.' href="'.$item->url.'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span></a>';
 
             if ($children_menu_items->count() > 0) {
                 $output = self::buildBootstrapOutput($menuItems, $output, $options, $request, $item->id);
             }
+
             $output .= '</li>';
         }
 
@@ -163,8 +170,8 @@ class Menu extends Model
      */
     public static function buildCustomOutput($menuItems, $view, $options, Request $request)
     {
-        return view()->exists($view) ? view($view)->with('items', $menuItems)->render() : self::buildOutput($menuItems,
-            '', $options, $request);
+        return view()->exists($view) ? view($view)
+            ->with('items', $menuItems)->render() : self::buildOutput($menuItems, '', $options, $request);
     }
 
     /**
@@ -180,11 +187,11 @@ class Menu extends Model
     public static function buildOutput($menuItems, $output, $options, Request $request, $child = null)
     {
         if (!$child) {
-            $parentItems = $menuItems->filter(function ($value, $key) {
+            $parentItems = $menuItems->filter(function ($value) {
                 return $value->parent_id == null;
             });
         } else {
-            $parentItems = $menuItems->filter(function ($value, $key) use ($child) {
+            $parentItems = $menuItems->filter(function ($value) use ($child) {
                 return $value->parent_id == $child;
             });
         }
@@ -199,7 +206,7 @@ class Menu extends Model
 
         foreach ($parentItems as $item) {
             $li_class = '';
-            $a_attrs = '';
+
             if ($request->is(ltrim($item->url, '/')) || $item->url == '/' && $request->is('/')) {
                 $li_class = ' class="active"';
             }
@@ -209,11 +216,13 @@ class Menu extends Model
             });
 
             $icon = '';
+
             if (isset($options->icon) && $options->icon == true) {
                 $icon = '<i class="'.$item->icon_class.'"></i>';
             }
 
             $styles = '';
+
             if (isset($options->color) && $options->color == true) {
                 $styles = ' style="color:'.$item->color.'"';
             }
@@ -262,8 +271,8 @@ class Menu extends Model
 
         foreach ($parentItems as $item) {
             $li_class = '';
-            $a_attrs = '';
             $collapse_id = '';
+
             if ($request->is(ltrim($item->url, '/'))) {
                 $li_class = ' class="active"';
             }
@@ -278,6 +287,7 @@ class Menu extends Model
                 } else {
                     $li_class = ' class="dropdown"';
                 }
+
                 $collapse_id = Str::slug($item->title, '-').'-dropdown-element';
                 $a_attrs = 'data-toggle="collapse" href="#'.$collapse_id.'"';
             } else {
@@ -291,6 +301,7 @@ class Menu extends Model
                 $dataType = self::$dataTypes->first(function ($value) use ($slug) {
                     return $value->slug == $slug;
                 });
+
                 if ($dataType) {
                     // Check if datatype permission exist
                     $exist = self::$permissions->first(function ($value) use ($dataType) {
@@ -315,6 +326,7 @@ class Menu extends Model
 
             if ($children_menu_items->count() > 0) {
                 $children_output = self::buildAdminMenuOutput($menuItems, '', [], $request, $item->id);
+
                 if ($children_output == '') {
                     continue;
                 }

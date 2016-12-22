@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Page extends Model
 {
-    protected $fillable = ['slug', 'author_id', 'title', 'excerpt', 'body', 'meta_description', 'meta_keywords'];
+    protected $guarded = [];
 
     public function save(array $options = [])
     {

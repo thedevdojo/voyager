@@ -13,7 +13,7 @@ class VoyagerMenuController extends Controller
     {
         Voyager::can('edit_menus');
 
-        $menu = Menu::find($id);
+        $menu = Menu::findOrFail($id);
 
         return view('voyager::menus.builder', compact('menu'));
     }
@@ -22,8 +22,8 @@ class VoyagerMenuController extends Controller
     {
         Voyager::can('delete_menus');
 
-        $item = MenuItem::find($id);
-        //$menuId = $item->menu_id;
+        $item = MenuItem::findOrFail($id);
+
         $item->destroy($id);
 
         return redirect()
@@ -39,13 +39,15 @@ class VoyagerMenuController extends Controller
         Voyager::can('add_menus');
 
         $data = $request->all();
+        $data['order'] = 1;
+
         $highestOrderMenuItem = MenuItem::where('parent_id', '=', null)
             ->orderBy('order', 'DESC')
             ->first();
 
-        $data['order'] = isset($highestOrderMenuItem->id)
-            ? intval($highestOrderMenuItem->order) + 1
-            : 1;
+        if (!is_null($highestOrderMenuItem)) {
+            $data['order'] = intval($highestOrderMenuItem->order) + 1;
+        }
 
         MenuItem::create($data);
 
@@ -63,7 +65,8 @@ class VoyagerMenuController extends Controller
 
         $id = $request->input('id');
         $data = $request->except(['id']);
-        $menuItem = MenuItem::find($id);
+
+        $menuItem = MenuItem::findOrFail($id);
         $menuItem->update($data);
 
         return redirect()
@@ -84,7 +87,7 @@ class VoyagerMenuController extends Controller
     private function orderMenu(array $menuItems, $parentId)
     {
         foreach ($menuItems as $index => $menuItem) {
-            $item = MenuItem::find($menuItem->id);
+            $item = MenuItem::findOrFail($menuItem->id);
             $item->order = $index + 1;
             $item->parent_id = $parentId;
             $item->save();

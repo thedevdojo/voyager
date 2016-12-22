@@ -164,7 +164,7 @@
 								<p><span class="selected_file_count">@{{ selected_file.items }} item(s)</span><span
                                             class="selected_file_size">@{{selected_file.size}}</span></p></span>
                                             <span><h4>Public URL:</h4>
-								<p><a href="{{ URL::to('/') }}@{{ selected_file.path }}" target="_blank">Click Here</a></p></span>
+								<p><a href="@{{ selected_file.path }}" target="_blank">Click Here</a></p></span>
                                             <span><h4>Last Modified:</h4>
 								<p>@{{selected_file.last_modified}}</p></span>
                                         </template>

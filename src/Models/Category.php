@@ -13,7 +13,7 @@ class Category extends Model
     public function posts()
     {
         return $this->hasMany(Post::class)
-            ->where('status', '=', 'PUBLISHED')
+            ->published()
             ->orderBy('created_at', 'DESC');
     }
 }

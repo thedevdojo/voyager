@@ -117,9 +117,18 @@
                                             </div>
 
                                             @if(!isset($table))
-                                                <div class="col-md-6">
+                                                <div class="col-md-3 col-sm-4 col-xs-6">
                                                     <label for="create_model">Create model for this table?</label><br>
                                                     <input type="checkbox" name="create_model" data-toggle="toggle"
+                                                           data-on="Yes, Please" data-off="No Thanks">
+
+                                                </div>
+                                            @endif
+
+                                            @if(!isset($table))
+                                                <div class="col-md-3 col-sm-4 col-xs-6">
+                                                    <label for="create_migration">Create migration for this table?</label><br>
+                                                    <input type="checkbox" name="create_migration" data-toggle="toggle"
                                                            data-on="Yes, Please" data-off="No Thanks">
 
                                                 </div>

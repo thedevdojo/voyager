@@ -3,15 +3,14 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class DataType extends Model
 {
     protected $table = 'data_types';
 
-    protected $fillable = [
-        'name', 'slug', 'display_name_singular', 'display_name_plural', 'icon', 'model_name', 'generate_permissions', 'description',
-    ];
+    protected $guarded = [];
 
     public function rows()
     {
@@ -78,6 +77,7 @@ class DataType extends Model
             $dataRow->details = $requestData['field_details_'.$field];
             $dataRow->display_name = $requestData['field_display_name_'.$field];
             $dataRowSuccess = $dataRow->save();
+
             // If success has never failed yet, let's add DataRowSuccess to success
             if ($success !== false) {
                 $success = $dataRowSuccess;
@@ -94,6 +94,7 @@ class DataType extends Model
     public function fields()
     {
         $fields = Schema::getColumnListing($this->name);
+
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
                 $fields[] = $field['Field'];
@@ -106,7 +107,9 @@ class DataType extends Model
     public function fieldOptions()
     {
         $table = $this->name;
-        $fieldOptions = \DB::select("DESCRIBE ${table}");
+
+        $fieldOptions = DB::select("DESCRIBE ${table}");
+
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
                 $fieldOptions[] = (object) $field;
@@ -119,6 +122,7 @@ class DataType extends Model
     public function extraFields()
     {
         $model = app($this->model_name);
+
         if (method_exists($model, 'adminFields')) {
             return $model->adminFields();
         }
