@@ -68,7 +68,15 @@ class VoyagerBreadController extends Controller
             ? call_user_func([$dataType->model_name, 'find'], $id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
-        return view('voyager::bread.read', compact('dataType', 'dataTypeContent'));
+        $view = 'voyager::bread.read';
+
+        if (view()->exists("admin.$slug.read")) {
+            $view = "admin.$slug.read";
+        } elseif (view()->exists("voyager::$slug.read")) {
+            $view = "voyager::$slug.read";
+        }
+
+        return view($view, compact('dataType', 'dataTypeContent'));
     }
 
     //***************************************
