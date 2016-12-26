@@ -156,22 +156,23 @@
         $(document).ready(function () {
             $('.dd').nestable({/* config options */});
             $('.item_actions').on('click', '.delete', function (e) {
-                id = $(e.target).data('id');
+                id = $(e.currentTarget).data('id');
                 $('#delete_form')[0].action = $('#delete_form')[0].action.replace("__id",id);
                 $('#delete_modal').modal('show');
             });
 
             $('.item_actions').on('click', '.edit', function (e) {
-                id = $(e.target).data('id');
-                $('#edit_title').val($(e.target).data('title'));
-                $('#edit_url').val($(e.target).data('url'));
-                $('#edit_icon_class').val($(e.target).data('icon_class'));
-                $('#edit_color').val($(e.target).data('color'));
+                id = $(e.currentTarget).data('id');
+                console.log(id);
+                $('#edit_title').val($(e.currentTarget).data('title'));
+                $('#edit_url').val($(e.currentTarget).data('url'));
+                $('#edit_icon_class').val($(e.currentTarget).data('icon_class'));
+                $('#edit_color').val($(e.currentTarget).data('color'));
                 $('#edit_id').val(id);
 
-                if ($(e.target).data('target') == '_self') {
+                if ($(e.currentTarget).data('target') == '_self') {
                     $("#edit_target").val('_self').change();
-                } else if ($(e.target).data('target') == '_blank') {
+                } else if ($(e.currentTarget).data('target') == '_blank') {
                     $("#edit_target option[value='_self']").removeAttr('selected');
                     $("#edit_target option[value='_blank']").attr('selected', 'selected');
                     $("#edit_target").val('_blank');

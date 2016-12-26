@@ -119,13 +119,16 @@ class Menu extends Model
                 return $value->parent_id == $item->id;
             });
 
+            $caret = '';
+
             if ($children_menu_items->count() > 0) {
                 if ($li_class != '') {
                     $li_class = rtrim($li_class, '"').' dropdown"';
                 } else {
                     $li_class = ' class="dropdown"';
                 }
-                $a_attrs = 'class="dropdown-toggle" ';
+                $a_attrs = 'class="dropdown-toggle" data-toggle="dropdown" ';
+                $caret = '<span class="caret"></span>';
             }
 
             $icon = '';
@@ -144,7 +147,7 @@ class Menu extends Model
                 $styles = ' style="background-color:'.$item->color.'"';
             }
 
-            $output .= '<li'.$li_class.'><a '.$a_attrs.' href="'.$item->url.'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span></a>';
+            $output .= '<li'.$li_class.'><a '.$a_attrs.' href="'.$item->url.'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span>'.$caret.'</a>';
 
             if ($children_menu_items->count() > 0) {
                 $output = self::buildBootstrapOutput($menuItems, $output, $options, $request, $item->id);
