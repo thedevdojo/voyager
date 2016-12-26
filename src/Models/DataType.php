@@ -91,7 +91,9 @@ class DataType extends Model
 
         $requestData = array_filter(
             $requestData,
-            function ($value, $key) { return strpos($key, 'field_') !== 0; },
+            function ($value, $key) {
+                return strpos($key, 'field_') !== 0;
+            },
             ARRAY_FILTER_USE_BOTH
         );
         $success = $success && $this->fill($requestData)->save();
