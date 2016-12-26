@@ -239,14 +239,22 @@
                                 <input type="text" class="form-control" name="model_name" placeholder="Model Class Name"
                                        value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
                             </div>
-                            <div class="form-group">
-                                <label for="email">Generate Permissions</label><br>
-                                <?php $checked = (isset($dataType->generate_permissions) && $dataType->generate_permissions == 1) ? true : (isset($generate_permissions) && $generate_permissions) ? true : false; ?>
-                                <input type="checkbox" name="generate_permissions" class="toggleswitch"
-                                       @if($checked) checked @endif>
+                            <div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="generate_permissions">Generate Permissions</label><br>
+                                    <?php $checked = (isset($dataType->generate_permissions) && $dataType->generate_permissions == 1) ? true : (isset($generate_permissions) && $generate_permissions) ? true : false; ?>
+                                    <input type="checkbox" name="generate_permissions" class="toggleswitch"
+                                           @if($checked) checked @endif>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="server_side">Server-side Pagination</label><br>
+                                    <?php $checked = (isset($dataType->server_side) && $dataType->server_side == 1) ? true : (isset($server_side) && $server_side) ? true : false; ?>
+                                    <input type="checkbox" name="server_side" class="toggleswitch"
+                                           @if($checked) checked @endif>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label for="email">Description</label>
+                                <label for="description">Description</label>
                                 <textarea class="form-control" name="description"
                                           placeholder="Description">@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
                             </div>

@@ -47,9 +47,14 @@ class DataType extends Model
         $this->attributes['generate_permissions'] = $value ? 1 : 0;
     }
 
+    public function setServerSideAttribute($value)
+    {
+        $this->attributes['server_side'] = $value ? 1 : 0;
+    }
+
     public function updateDataType($requestData)
     {
-        $success = $this->fill($requestData)->save();
+        $success = true;
         $fields = $this->fields();
 
         foreach ($fields as $field) {
@@ -83,6 +88,13 @@ class DataType extends Model
                 $success = $dataRowSuccess;
             }
         }
+
+        $requestData = array_filter(
+            $requestData,
+            function ($value, $key) { return strpos($key, 'field_') !== 0; },
+            ARRAY_FILTER_USE_BOTH
+        );
+        $success = $success && $this->fill($requestData)->save();
 
         if ($this->generate_permissions) {
             Permission::generateFor($this->name);
