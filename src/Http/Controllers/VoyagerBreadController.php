@@ -9,8 +9,6 @@ use TCG\Voyager\Voyager;
 
 class VoyagerBreadController extends Controller
 {
-    const SERVER_SIDE_PAGINATION = true;
-
     //***************************************
     //               ____
     //              |  _ \
@@ -34,28 +32,23 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::can('browse_'.$dataType->name);
 
-        if (self::SERVER_SIDE_PAGINATION) {
-            $view = 'voyager::bread.browse-paginated';
-            $dataTypeContent = [];
-        }
-        else {
+        $getter = $dataType->server_side ? 'paginate' : 'get';
 
-            // Next Get the actual content from the MODEL that corresponds to the slug DataType
-            if (strlen($dataType->model_name) != 0) {
-                $model = app($dataType->model_name);
+        // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
+        if (strlen($dataType->model_name) != 0) {
+            $model = app($dataType->model_name);
 
-                if ($model->timestamps) {
-                    $dataTypeContent = $model->latest()->get();
-                } else {
-                    $dataTypeContent = $model->orderBy('id', 'DESC')->get();
-                }
+            if ($model->timestamps) {
+                $dataTypeContent = call_user_func([$model->latest(), $getter]);
             } else {
-                // If Model doest exist, get data from table name
-                $dataTypeContent = DB::table($dataType->name)->get();
+                $dataTypeContent = call_user_func([$model->orderBy('id', 'DESC'), $getter]);
             }
-
-            $view = 'voyager::bread.browse';
+        } else {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
         }
+
+        $view = 'voyager::bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
             $view = "voyager::$slug.browse";
