@@ -115,8 +115,8 @@
 	border-radius:0px;
 	padding-left:20px;
 	width: 100%;
-    margin-top: 0px;
-    left: 0px;
+    margin-top: 0;
+    left: 0;
 }
 
 .breadcrumb.filemanager li{
@@ -183,7 +183,7 @@
 }
 
 .breadcrumb-container .toggle span{
-	
+
 	font-size:9px;
 	text-transform: uppercase;
 	float:left;
@@ -259,7 +259,7 @@
 	width: 100%;
     text-align: center;
     font-size: 30px;
-    margin-left: 0px;
+    margin-left: 0;
     padding: 50px;
     display:block;
     background: #f9f9f9;
@@ -286,7 +286,7 @@
 	-khtml-user-select: none;    /* Konqueror */
 	-moz-user-select: none;      /* Firefox */
 	-ms-user-select: none;       /* Internet Explorer/Edge */
-	user-select: none; 
+	user-select: none;
 }
 #files li{
 	flex:1;
@@ -375,8 +375,8 @@
 
 .file_link .link_icon{
 	text-align: center;
-    padding-left: 0px;
-    margin-left: 0px;
+    padding-left: 0;
+    margin-left: 0;
     margin-right: 5px;
 }
 
@@ -408,7 +408,7 @@
 	width: 100%;
     text-align: center;
     font-size: 70px;
-    margin-left: 0px;
+    margin-left: 0;
     padding: 30px;
     background: #f9f9f9;
 }
@@ -448,13 +448,13 @@
 }
 
 .detail_info .selected_file_count, .detail_info .selected_file_size{
-	padding-top:0px;
+	padding-top:0;
 }
 
 .detail_info h4{
 	float:left;
 	color:#bbb;
-	margin:0px;
+	margin:0;
 	font-size:12px;
 	margin-top:3px;
 	margin-right:8px;
@@ -473,8 +473,8 @@
 /********** file upload progress **********/
 
 #filemanager .progress{
-	border-radius:0px;
-	margin-bottom:0px;
+	border-radius:0;
+	margin-bottom:0;
 }
 
 #uploadProgress{
@@ -488,8 +488,8 @@
 	position:absolute;
 	width:100%;
 	height:100%;
-	left:0px;
-	top:0px;
+	left:0;
+	top:0;
 	background: rgba(255, 255, 255, 0.7);
     z-index: 9;
 }
@@ -502,7 +502,7 @@
 	left:50%;
 	margin-left:-30px;
 	margin-top:-30px;
-	
+
 }
 
 #file_loader .icon{
@@ -513,7 +513,7 @@
 	-webkit-animation:spin 1.2s ease-in-out infinite;
 	-moz-animation:spin 1.2s ease-in-out infinite;
 	animation:spin 1.2s ease-in-out infinite;
-	 
+
 }
 
 #file_loader p{

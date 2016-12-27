@@ -10,7 +10,7 @@
     color: #3E4651; }
   .flat-blue .navbar {
     background-color: #3E4651;
-    border-bottom: 0px;
+    border-bottom: 0;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); }
     .flat-blue .navbar > .container-fluid {
       background-color: #3E4651; }
@@ -66,7 +66,7 @@
       width: 100%; }
     .flat-blue .side-menu .navbar {
       background-color: #EAEAEA;
-      border-bottom: 0px;
+      border-bottom: 0;
       -moz-box-shadow: none;
       -webkit-box-shadow: none;
       box-shadow: none; }
@@ -110,7 +110,7 @@
         color: #FFF; }
   .flat-blue .card {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    border: 0px solid #E4E4E4; }
+    border: 0 solid #E4E4E4; }
     .flat-blue .card .card-header {
       border-bottom: 1px solid #E4E4E4; }
       .flat-blue .card .card-header .title {
@@ -479,11 +479,11 @@
   .flat-blue .step .nav-tabs > li.step-success:hover:after {
     border-left: 15px solid #EAEAEA; }
   .flat-blue .step.card-no-padding .nav-tabs > li {
-    border: 0px solid transparent;
+    border: 0 solid transparent;
     border-right: 1px solid #E4E4E4;
     border-bottom: 1px solid #E4E4E4; }
   .flat-blue .step.card-no-padding .nav-tabs > li:last-child {
-    border-right: 0px solid #E4E4E4; }
+    border-right: 0 solid #E4E4E4; }
   .flat-blue .step.tabs-left .nav-tabs > li {
     border: 1px solid #E4E4E4; }
   .flat-blue .step.tabs-left .nav-tabs > li:after {
@@ -503,7 +503,7 @@
   .flat-blue .step.tabs-left .nav-tabs > li:hover:after, .flat-blue .step.tabs-left .nav-tabs > li.active:after {
     border-left: 15px solid #EAEAEA; }
   .flat-blue .step.tabs-left.card-no-padding .nav-tabs > li {
-    border: 0px solid transparent; }
+    border: 0 solid transparent; }
   .flat-blue .pricing-table {
     box-shadow: 0 1px 1px #CCC; }
     .flat-blue .pricing-table .pt-header {

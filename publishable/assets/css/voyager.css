@@ -174,7 +174,7 @@
   }
 
   .page-login-v2 .page-login-main .brand-text{
-    margin-left: 0px;
+    margin-left: 0;
     font-weight: lighter;
     color: #777;
   }
@@ -191,8 +191,8 @@
 
 #login-container{
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 0;
+  top: 0;
   width:420px;
   height:100%;
   background:#fff;
@@ -661,7 +661,7 @@ overflow-x: hidden;
 }
 
 .navbar .dropdown.profile .dropdown-menu h6{
-    margin-top: 0px;
+    margin-top: 0;
     font-weight: 200;
     width:115px;
     text-overflow: ellipsis;
@@ -744,7 +744,7 @@ float: left;
     list-style: none;
     background-color: #ffffff;
     border-radius: 25px;
-    border: 0px;
+    border: 0;
     position: relative;
     left: -10px;
     top: -1px;
@@ -910,7 +910,7 @@ table.dataTable.no-footer{
     width: 100px;
     height: 100px;
     display: block;
-    margin: 0px auto;
+    margin: 0 auto;
     color: #eee;
     line-height: 110px;
 }
@@ -923,7 +923,7 @@ table.dataTable.no-footer{
 }
 
 .panel.widget p{
-  margin:30px 0px;
+  margin:30px 0;
   font-size:20px;
   font-size: 14px;
   line-height: 1.57142857;
@@ -1013,7 +1013,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 }
 
  .side-menu .panel.widget{
-  padding:8px 0px;
+  padding:8px 0;
   padding-bottom:6px;
   margin:0px;
   border-radius:0px;
@@ -1242,9 +1242,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 .flat-blue .alert{
     margin-right: 15px;
     margin-bottom: 5px;
-    border-radius: 0px;
+    border-radius: 0;
     color: #fff;
-    border: 0px;
+    border: 0;
     border-left: 5px solid rgba(0, 0, 0, 0.1);
     border-color:rgba(0, 0, 0, 0.1);
     border-radius:3px;

@@ -1,5 +1,5 @@
 table p{
-	margin:0px;
+	margin:0;
 	padding:5px;
 }
 table p.name{
@@ -10,5 +10,5 @@ table p.name{
 	border-bottom:2px solid #ccc;
 }
 form button{
-	border:0px;
+	border:0;
 }
