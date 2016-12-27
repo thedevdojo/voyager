@@ -64,6 +64,16 @@
                 </div>
             </div>
         </div>
+        @if ($dataType->server_side)
+            <div class="row">
+                <div class="col-sm-5">
+                    <div role="status" aria-live="polite">Showing {{ $dataTypeContent->firstItem() }} to {{ $dataTypeContent->lastItem() }} of {{ $dataTypeContent->total() }} entries</div>
+                </div>
+                <div class="col-sm-7">
+                    {{ $dataTypeContent->links() }}
+                </div>
+            </div>
+        @endif
     </div>
 
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
@@ -92,9 +102,11 @@
 @section('javascript')
     <!-- DataTables -->
     <script>
-        $(document).ready(function () {
-            $('#dataTable').DataTable({ "order": [] });
-        });
+        @if (!$dataType->server_side)
+            $(document).ready(function () {
+                $('#dataTable').DataTable({ "order": [] });
+            });
+        @endif
 
         $('td').on('click', '.delete', function (e) {
             var form = $('#delete_form')[0];

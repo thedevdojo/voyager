@@ -32,18 +32,20 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::can('browse_'.$dataType->name);
 
-        // Next Get the actual content from the MODEL that corresponds to the slug DataType
+        $getter = $dataType->server_side ? 'paginate' : 'get';
+
+        // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
 
             if ($model->timestamps) {
-                $dataTypeContent = $model->latest()->get();
+                $dataTypeContent = call_user_func([$model->latest(), $getter]);
             } else {
-                $dataTypeContent = $model->orderBy('id', 'DESC')->get();
+                $dataTypeContent = call_user_func([$model->orderBy('id', 'DESC'), $getter]);
             }
         } else {
             // If Model doest exist, get data from table name
-            $dataTypeContent = DB::table($dataType->name)->get();
+            $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
         }
 
         $view = 'voyager::bread.browse';
