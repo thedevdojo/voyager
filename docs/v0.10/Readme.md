@@ -105,13 +105,19 @@ Next, you may want to be sure that you have all the latest published assets. To 
 php artisan vendor:publish --tag=voyager_assets --force
 ```
 
-Lastly, there may be a few more settings added to the database schema that need updating in the latest version. To make sure you have the latest database schema, you'll need to visit:
+Next, there may be a few more settings added to the database schema that need updating in the latest version. To make sure you have the latest database schema, you'll need to visit:
 
 ```
 localhost:8000/admin/upgrade
 ```
 
 After visiting the `upgrade` URL, you will be redirected to your dashboard. If a change has been made you'll see a notification specifying that the database schema has been updated. If you do not receive a message this update may not have included any database changes.
+
+Lastly, you may wish to clear your view cache by running the following command:
+
+```
+php artisan view:clear
+```
 
 And now you'll be upgraded to the latest version.
 
