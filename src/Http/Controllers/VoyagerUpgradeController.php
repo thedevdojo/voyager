@@ -21,14 +21,15 @@ class VoyagerUpgradeController extends Controller
 
     private function upgrade_v0_10_6()
     {
-    	if (!Schema::hasColumn('data_types', 'server_side')) {
+        if (!Schema::hasColumn('data_types', 'server_side')) {
             Schema::table('data_types', function (Blueprint $table) {
                 $table->tinyInteger('server_side')->default(0)->after('generate_permissions');
             });
-        	
+
             return true;
         }
-    	return false;
+
+        return false;
     }
 
 }
