@@ -1392,3 +1392,8 @@ ul.checkbox label {
   position:relative;
   top:2px;
 }
+
+.show-res{
+  margin-left: 5px;
+  margin-top: 15px;
+}

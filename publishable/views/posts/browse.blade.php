@@ -55,6 +55,14 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        @if (isset($dataType->server_side) && $dataType->server_side)
+                            <div class="pull-left">
+                                <div role="status" class="show-res" aria-live="polite">Showing {{ $dataTypeContent->firstItem() }} to {{ $dataTypeContent->lastItem() }} of {{ $dataTypeContent->total() }} entries</div>
+                            </div>
+                            <div class="pull-right">
+                                {{ $dataTypeContent->links() }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -88,9 +96,11 @@
 @section('javascript')
     {{-- DataTables --}}
     <script>
-        $(document).ready(function() {
-            $('#dataTable').DataTable({ "order": [] });
-        });
+        @if (!$dataType->server_side)
+            $(document).ready(function () {
+                $('#dataTable').DataTable({ "order": [] });
+            });
+        @endif
 
         $('td').on('click', '.delete', function(e) {
             $('#delete_form')[0].action = $('#delete_form')[0].action.replace('__id', $(e.target).data('id'));

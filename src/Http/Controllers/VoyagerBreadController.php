@@ -44,7 +44,7 @@ class VoyagerBreadController extends Controller
                 $dataTypeContent = call_user_func([$model->orderBy('id', 'DESC'), $getter]);
             }
         } else {
-            // If Model doest exist, get data from table name
+            // If Model doesn't exist, get data from table name
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
         }
 
