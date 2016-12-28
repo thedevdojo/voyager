@@ -60,20 +60,18 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        @if (isset($dataType->server_side) && $dataType->server_side)
+                            <div class="pull-left">
+                                <div role="status" class="show-res" aria-live="polite">Showing {{ $dataTypeContent->firstItem() }} to {{ $dataTypeContent->lastItem() }} of {{ $dataTypeContent->total() }} entries</div>
+                            </div>
+                            <div class="pull-right">
+                                {{ $dataTypeContent->links() }}
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
-        @if ($dataType->server_side)
-            <div class="row">
-                <div class="col-sm-5">
-                    <div role="status" aria-live="polite">Showing {{ $dataTypeContent->firstItem() }} to {{ $dataTypeContent->lastItem() }} of {{ $dataTypeContent->total() }} entries</div>
-                </div>
-                <div class="col-sm-7">
-                    {{ $dataTypeContent->links() }}
-                </div>
-            </div>
-        @endif
     </div>
 
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
