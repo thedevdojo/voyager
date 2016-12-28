@@ -31,5 +31,4 @@ class VoyagerUpgradeController extends Controller
 
         return false;
     }
-
 }
