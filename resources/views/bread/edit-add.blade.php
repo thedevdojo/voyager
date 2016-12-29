@@ -89,19 +89,28 @@
                                             @endif
 
                                             @if( method_exists( $dataType->model_name, $row->field ) )
-                                                <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
+                                                <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
                                                 <select class="form-control select2" name="{{ $row->field }}">
                                                     <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
                                                     <?php $relationshipOptions = $relationshipClass::all(); ?>
                                                     @foreach($relationshipOptions as $relationshipOption)
                                                         <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
                                                     @endforeach
+
+                                                    <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
+                                                
+                                                    @if(isset($options->options))
+                                                        @foreach($options->options as $key => $option)
+                                                            <option value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if((string)$selected_value == (string)$key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                                                        @endforeach
+                                                    @endif
+
                                                 </select>
                                             @else
                                                 <select class="form-control select2" name="{{ $row->field }}"></select>
                                             @endif
                                         @else
-                                            <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
+                                            <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
                                             <select class="form-control select2" name="{{ $row->field }}">
                                                 <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
                                                 @if(isset($options->options))
