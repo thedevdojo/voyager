@@ -108,9 +108,12 @@
                                 </ul>
 
                                 <div id="file_loader">
-                                    <div id="file_loader_inner">
-                                        <div class="icon voyager-helm"></div>
-                                    </div>
+                                    <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
+                                    @if($admin_loader_img == '')
+                                        <img src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+                                    @else
+                                        <img src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
+                                    @endif
                                     <p>LOADING YOUR MEDIA FILES</p>
                                 </div>
 

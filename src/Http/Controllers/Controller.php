@@ -61,7 +61,7 @@ abstract class Controller extends BaseController
             }
 
             if ($row->type == 'select_multiple') {
-                // do nothing
+                $data->{$row->field}()->sync($content);
             } else {
                 $data->{$row->field} = $content;
             }
@@ -70,10 +70,6 @@ abstract class Controller extends BaseController
         $this->validate($request, $rules, $messages);
 
         $data->save();
-
-        if ($row->type == 'select_multiple') {
-            $data->{$row->field}()->sync($content);
-        }
 
         return $data;
     }

@@ -47,7 +47,12 @@
 <body class="flat-blue">
 
 <div id="voyager-loader">
-    <img src="{{ config('voyager.assets_path') }}/images/logo-icon.png" alt="Voyager Loader">
+    <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
+    @if($admin_loader_img == '')
+        <img src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+    @else
+        <img src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
+    @endif
 </div>
 
 <?php
@@ -134,8 +139,15 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
                 <div class="side-menu-container">
                     <div class="navbar-header">
                         <a class="navbar-brand" href="{{ route('voyager.dashboard') }}">
-                            <div class="icon voyager-helm"></div>
-                            <div class="title">{{Voyager::setting('admin_title')}}</div>
+                            <div class="logo-icon-container">
+                                <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
+                                @if($admin_logo_img == '')
+                                    <img src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
+                                @else
+                                    <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
+                                @endif
+                            </div>
+                            <div class="title">{{Voyager::setting('admin_title', 'VOYAGER')}}</div>
                         </a>
                         <button type="button" class="navbar-expand-toggle pull-right visible-xs">
                             <i class="voyager-x icon"></i>

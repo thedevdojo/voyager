@@ -478,10 +478,27 @@ p#the_plugin_name{
     position: relative;
 }
 
+.app-container .content-container .side-menu .navbar-header .navbar-brand .logo-icon-container{
+  width:60px;
+  height:60px;
+  float:left;
+
+  text-align:center;
+}
+
+.app-container .content-container .side-menu .navbar-header .navbar-brand img {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    top:-1px;
+    display:inline-block;
+}
+
 .app-container.expanded .content-container .side-menu .navbar-header .navbar-brand .title{
     position: relative;
-    top: -3px;
-    text-transform: uppercase;
+    top:0px;
+    left:4px;
+    text-transform: none;
 }
 
 .page-content.dashboard{
@@ -491,7 +508,8 @@ p#the_plugin_name{
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title{
   text-transform: uppercase;
   position:relative;
-  top:-3px;
+  top:0px;
+  left:4px;
 }
 
 .app-container .content-container .side-menu .navbar-nav li a .title{
