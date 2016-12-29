@@ -25,9 +25,9 @@
             z-index: 999;
             position: relative;
             float: left;
-            -webkit-animation: spin 1s linear 1;
-            -moz-animation: spin 1s linear 1;
-            animation: spin 1s linear 1;
+            -webkit-animation: zoomFade 1s ease-in-out 1;
+            -moz-animation: zoomFade 1s ease-in-out 1;
+            animation: zoomFade 1s ease-in-out 1;
         }
 
         #bgdim {
@@ -153,14 +153,19 @@
         }
 
         .btn-loading {
-            width: 16px;
-            height: 16px;
-            float: left;
-            margin: 3px 3px 0 -1px;
-            -webkit-animation: spin 0.4s linear infinite;
-            -moz-animation: spin 0.4s linear infinite;
-            animation: spin 0.4s linear infinite;
+            width: 100px;
+            height: 100px;
+            margin:0px auto;
+            margin-top:30px;
+            -webkit-animation: spin_loader 1.3s linear infinite;
+            -moz-animation: spin_loader 1.3s linear infinite;
+            animation: spin_loader 1.3s linear infinite;
+            display:none;
         }
+
+        @-moz-keyframes spin_loader { 100% { -moz-transform: rotate(360deg); } }
+        @-webkit-keyframes spin_loader { 100% { -webkit-transform: rotate(360deg); } }
+        @keyframes spin_loader { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
         .login_loader {
             display: none;
@@ -172,22 +177,30 @@
             color: #DC143C;
         }
 
-        @-moz-keyframes spin {
+        @-moz-keyframes zoomFade {
+            0% {
+                opacity:0;
+            }
             100% {
-                -moz-transform: rotate(90deg);
+                opacity:1;
             }
         }
 
-        @-webkit-keyframes spin {
+        @-webkit-keyframes zoomFade {
+            0% {
+                opacity:0;
+            }
             100% {
-                -webkit-transform: rotate(90deg);
+                opacity:1;
             }
         }
 
-        @keyframes spin {
+        @keyframes zoomFade {
+            0% {
+                opacity:0;
+            }
             100% {
-                -webkit-transform: rotate(90deg);
-                transform: rotate(90deg);
+                opacity:1;
             }
         }
     </style>
@@ -196,7 +209,12 @@
     <div id="bgdim"></div>
 
     <div id="title_section">
-        <img class="logo-img" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Admin Login">
+        <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
+        @if($admin_logo_img == '')
+            <img class="logo-img" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
+        @else
+            <img class="logo-img" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
+        @endif
         <div class="copy">
             <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
             <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
@@ -216,9 +234,15 @@
                 <button class="btn btn-primary btn-login" id="voyager-login-btn">
                     <span class="login_text"><i class="voyager-lock"></i> Login</span>
                     <span class="login_loader">
-                        <img class="btn-loading" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png"> Logging in
+                        <i class="voyager-lock"></i> Logging in...
                     </span>
                 </button>
+                    <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
+                    @if($admin_loader_img == '')
+                        <img class="btn-loading" src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+                    @else
+                        <img class="btn-loading" src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
+                    @endif
             </form>
             @if (count($errors))
                 <div class="error-login">
@@ -235,6 +259,7 @@
             login_btn.style.height = originalHeight + 'px';
             document.querySelector('#voyager-login-btn span.login_text').style.display = 'none';
             document.querySelector('#voyager-login-btn span.login_loader').style.display = 'block';
+            document.querySelector('.btn-loading').style.display = 'block';
         });
     </script>
 

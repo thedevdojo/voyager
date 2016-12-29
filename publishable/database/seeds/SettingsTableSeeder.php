@@ -60,7 +60,7 @@ class SettingsTableSeeder extends Seeder
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'image',
-                'order'        => 6,
+                'order'        => 9,
             ])->save();
         }
 
@@ -91,6 +91,32 @@ class SettingsTableSeeder extends Seeder
         }
 
         $setting = Setting::firstOrNew([
+            'key'          => 'admin_loader',
+        ]);
+        if (!$setting->exists) {
+            $setting->fill([
+                'display_name' => 'Admin Loader',
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'image',
+                'order'        => 6,
+            ])->save();
+        }
+
+        $setting = Setting::firstOrNew([
+            'key'          => 'admin_icon_image',
+        ]);
+        if (!$setting->exists) {
+            $setting->fill([
+                'display_name' => 'Admin Icon Image',
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'image',
+                'order'        => 7,
+            ])->save();
+        }
+
+        $setting = Setting::firstOrNew([
             'key'          => 'google_analytics_client_id',
         ]);
         if (!$setting->exists) {
@@ -99,7 +125,7 @@ class SettingsTableSeeder extends Seeder
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'text',
-                'order'        => 6,
+                'order'        => 9,
             ])->save();
         }
     }
