@@ -63,7 +63,6 @@ abstract class Controller extends BaseController
 
             if ($row->type == 'select_multiple') {
                 array_push($multi_select, ['row' => $row->field, 'content' => $content]);
-                
             } else {
                 $data->{$row->field} = $content;
             }
@@ -73,7 +72,7 @@ abstract class Controller extends BaseController
 
         $data->save();
 
-        foreach($multi_select as $sync_data){
+        foreach ($multi_select as $sync_data) {
             $data->{$sync_data['row']}()->sync($sync_data['content']);
         }
 
