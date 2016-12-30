@@ -205,7 +205,8 @@ Also the method `addRole` and `deleteRole` has been removed and replaced with a 
 
 ## Configuration
 
-With a new install of voyager you will have a new configuration file located inside at `config/app.php`. You will find various options on how to change configurations with your voyager install. You can read more about each of the configuration settings below:
+With the installation of voyager you will have a new configuration file located at `config/voyager.php`
+In this file you can find various options to change the configuration of your voyager installation. Following is a more detailed description of each of the configuration sets:
 
 #### User config
 
