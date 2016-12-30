@@ -445,6 +445,32 @@ This is only valid if you have set your image to be resized. If you specify your
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
 
+### Validation
+
+Inside of the *Optional Details* section for each row in your BREAD you can also specify validation rules with some simple JSON. Here is an example of how to add a validation rule or *required* and *max length of 12*
+
+```
+{
+    "validation": {
+        "rule": "required|max:12"
+    }
+}
+```
+
+Additionally, you may wish to add some custom error messages which can be accomplished like so:
+
+```
+{
+    "validation": {
+        "rule": "required|max:12",
+        "messages": {
+            "required": "This :attribute field is a must.",
+            "max": "This :attribute field maximum :max."
+        }
+    }
+}
+```
+
 ### Relationships
 
 Using the bread builder additional options you can add relationships to rows. There are 2 input types that will allow you to implement a relationship with another table.
