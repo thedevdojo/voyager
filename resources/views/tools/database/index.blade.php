@@ -12,10 +12,6 @@
     </h1>
 @stop
 
-@section('page_header_actions')
-    asdf
-@stop
-
 @section('content')
 
     <div class="page-content container-fluid">
