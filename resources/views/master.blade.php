@@ -206,7 +206,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/app.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/toastr.min.js"></script>
 <script>
-            @if(Session::has('message'))
+    @if(Session::has('message'))
     var type = "{{ Session::get('alert-type', 'info') }}";
     switch (type) {
         case 'info':
