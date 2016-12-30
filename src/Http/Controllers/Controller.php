@@ -33,6 +33,7 @@ abstract class Controller extends BaseController
     {
         $rules = [];
         $messages = [];
+        $multi_select = [];
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
@@ -61,7 +62,7 @@ abstract class Controller extends BaseController
             }
 
             if ($row->type == 'select_multiple') {
-                $data->{$row->field}()->sync($content);
+                array_push($multi_select, ['row' => $row->field, 'content' => $content]);
             } else {
                 $data->{$row->field} = $content;
             }
@@ -70,6 +71,10 @@ abstract class Controller extends BaseController
         $this->validate($request, $rules, $messages);
 
         $data->save();
+
+        foreach ($multi_select as $sync_data) {
+            $data->{$sync_data['row']}()->sync($sync_data['content']);
+        }
 
         return $data;
     }
