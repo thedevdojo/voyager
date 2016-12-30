@@ -26,7 +26,7 @@ class RolesTest extends TestCase
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
-        $this->press('Login Logging in');
+        $this->press('Login');
         $this->seePageIs(route('voyager.dashboard'));
 
         // Adding a New Role
