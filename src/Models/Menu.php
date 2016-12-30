@@ -298,7 +298,8 @@ class Menu extends Model
             }
 
             // Permission Checker
-            $slug = str_replace('/', '', preg_replace('/^\/'.self::$prefix.'/', '', $item->url));
+            $self_prefix = str_replace('/', '\/', self::$prefix);
+            $slug = str_replace('/', '', preg_replace('/^\/'.$self_prefix.'/', '', $item->url));
             if ($slug != '') {
                 // Get dataType using slug
                 $dataType = self::$dataTypes->first(function ($value) use ($slug) {
