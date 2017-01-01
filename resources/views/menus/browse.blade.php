@@ -9,10 +9,6 @@
     </h1>
 @stop
 
-@section('page_header_actions')
-
-@stop
-
 @section('content')
     <div class="container-fluid">
         <div class="alert alert-info">

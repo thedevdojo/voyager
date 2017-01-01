@@ -12,10 +12,6 @@
 
 @stop
 
-@section('page_header_actions')
-
-@stop
-
 @section('content')
 
     <div class="page-content container-fluid">
