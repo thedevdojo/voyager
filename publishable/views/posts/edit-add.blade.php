@@ -209,4 +209,13 @@
 @section('javascript')
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/speakingurl.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('[name="title"]').on('keyup', function() {
+                //console.log( $(this).val() );
+                $('[name="slug"]').val(getSlug($(this).val())) ;
+            });
+        }); 
+    </script>
 @stop
