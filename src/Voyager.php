@@ -64,6 +64,9 @@ class Voyager
 
         if ($exist) {
             $user = User::find(Auth::id());
+            if ($user==null) {
+                throw new UnauthorizedHttpException(null);
+            }
             if (!$user->hasPermission($permission)) {
                 throw new UnauthorizedHttpException(null);
             }
