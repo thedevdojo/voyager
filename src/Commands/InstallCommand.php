@@ -67,7 +67,7 @@ class InstallCommand extends Command
         * Translate migrations
         */
         $this->info('Applying new user namespace table name');
-        $basePath = str_replace('/src/Commands', '', dirname(__DIR__));
+        $basePath = str_replace('/src/Commands', '', dirname(__DIR__.'/..'));
         $migrationsDirectory = scandir($basePath.'/publishable/database/migrations/');
         foreach($migrationsDirectory as $migration){
             $migrationContent = file_get_contents(database_path('migrations').$migration);
