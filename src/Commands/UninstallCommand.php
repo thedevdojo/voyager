@@ -51,7 +51,7 @@ class UninstallCommand extends Command
             $this->info('Deleting VoyagerServiceProvider...');
             // ......
 
-            $this->info('Successfully uninstalled Voyager!');
+            $this->info('Successfully uninstalled Voyager!\n');
         }
     }
 
