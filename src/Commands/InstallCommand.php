@@ -40,14 +40,14 @@ class InstallCommand extends Command
     public static $routes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
 
     /**
-     * Installation options.
+     * Installation options in case there is an existing installation in place.
      *
      * @var array
      */
     protected $installOptions = [
         'cancel' => 'Cancel the installation.',
-        're-install' => 'This will uninstall Voyager and install it again. Please backup your data before doing this.',
-        'uninstall' => 'This will uninstall Voyager. Please backup your data before doing this.'
+        'uninstall' => 'This will uninstall Voyager. Please backup your data before doing this.',
+        're-install' => 'This will uninstall Voyager and install it again. Please backup your data before doing this.'
     ];
 
     /**
@@ -62,6 +62,15 @@ class InstallCommand extends Command
         }
 
         return 'composer';
+    }
+
+    /**
+     * Checks if there is an existing installation of Voyager.
+     *
+     * @return bool
+     */
+    public static function checkExistingInstallation() {
+        return file_exists(config_path('voyager.php'));
     }
 
     /**
@@ -87,6 +96,10 @@ class InstallCommand extends Command
         );
 
         switch ($todo) {
+            case 'uninstall':
+                $this->call('voyager:uninstall');
+                break;
+
             case 're-install':
                 $this->call('voyager:uninstall');
                 
@@ -95,20 +108,7 @@ class InstallCommand extends Command
                     $this->install($filesystem);
                 }
                 break;
-
-            case 'uninstall':
-                $this->call('voyager:uninstall');
-                break;
         }
-    }
-
-    /**
-     * Checks if there is an existing installation of Voyager.
-     *
-     * @return bool
-     */
-    public static function checkExistingInstallation() {
-        return file_exists(config_path('voyager.php'));
     }
 
     /**
