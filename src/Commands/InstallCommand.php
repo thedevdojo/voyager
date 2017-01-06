@@ -70,7 +70,11 @@ class InstallCommand extends Command
         $basePath = str_replace('/src/Commands', '', dirname(__DIR__.'/..'));
         $migrationsDirectory = scandir($basePath.'/publishable/database/migrations/');
         foreach($migrationsDirectory as $migration){
-            $migrationContent = file_get_contents(database_path('migrations').$migration);
+            if($migration === '.' || $migration === '..'){
+                continue;
+            }
+            $migrationPath = database_path('migrations').'/'.$migration;
+            $migrationContent = file_get_contents($migrationPath);
             $migrationContent = str_replace('{*users_table*}', app(config('voyager.user')['namespace'])->getTable(), 
                                             $migrationContent);
             file_put_contents(database_path('migrations').$migration, $migrationContent);
