@@ -68,7 +68,7 @@ class InstallCommand extends Command
         */
         $this->info('Applying new user namespace table name');
         $basePath = dirname(__DIR__);
-        $migrationsDirectory = scandir($basePath . '/publishable/database/migrations/');
+        $migrationsDirectory = scandir('../publishable/database/migrations/');
         foreach($migrationsDirectory as $migration){
             $migrationContent = file_get_contents(database_path('migrations').$migration);
             $migrationContent = str_replace('{*users_table*}', app(config('voyager.user')['namespace'])->getTable(), 
