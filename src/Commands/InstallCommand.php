@@ -38,8 +38,6 @@ class InstallCommand extends Command
         ];
     }
 
-    protected $routesPath = base_path('routes/web.php');
-
     protected $routes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
 
     /**
@@ -128,7 +126,7 @@ class InstallCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append($routesPath, $this->routes);
+        $filesystem->append(base_path('routes/web.php'), $this->routes);
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
@@ -176,7 +174,7 @@ class InstallCommand extends Command
      * @return void
      */
     protected function deleteRoutes() {
-        $this->removeLineFromFile($this->routes, $this->routesPath);
+        $this->removeLineFromFile($this->routes, base_path('routes/web.php'));
     }
 
     /**
