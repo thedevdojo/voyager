@@ -80,8 +80,10 @@ class InstallCommand extends Command
 
         switch ($todo) {
             case 're-install':
-                $this->uninstall();
-                $this->install();
+                if( $this->uninstall() ) {
+                    $this->install();
+                }
+                
                 break;
         }
     }
@@ -144,6 +146,10 @@ class InstallCommand extends Command
         
         if( $this->confirm('This will erase your current data. Are you sure you want to continue?') ) {
             // do the business
+
+            return true;
         }
+
+        return false;
     }
 }
