@@ -11,7 +11,7 @@ class SetUserAvatarNullable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function ($table) {
+        Schema::table({*users_table*}, function ($table) {
             $table->string('avatar')->nullable()->change();
         });
     }
@@ -23,7 +23,7 @@ class SetUserAvatarNullable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function ($table) {
+        Schema::table({*users_table*}, function ($table) {
             $table->string('avatar')->nullable(false)->change();
         });
     }
