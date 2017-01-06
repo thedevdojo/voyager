@@ -44,7 +44,7 @@ class InstallCommand extends Command
      */
     protected $installOptions = [
         'cancel' => 'Cancel the installation',
-        're-Install' => 'This will uninstall it first and then install it'
+        're-install' => 'This will uninstall Voyager and install it again. Please backup your data before doing this'
     ];
 
     /**
