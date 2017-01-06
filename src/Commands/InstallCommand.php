@@ -82,13 +82,13 @@ class InstallCommand extends Command
 
         switch ($todo) {
             case 're-install':
-                if( $this->uninstall() ) {
-                    $this->install();
+                if( $this->uninstall($filesystem) ) {
+                    $this->install($filesystem);
                 }
                 break;
 
             case 'uninstall':
-                $this->uninstall();
+                $this->uninstall($filesystem);
                 break;
         }
     }
@@ -107,7 +107,7 @@ class InstallCommand extends Command
      *
      * @return void
      */
-    protected function install() {
+    protected function install(Filesystem $filesystem) {
         $this->info('Installing Voyager...');
         $this->info('Publishing the Voyager assets, database, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
@@ -148,7 +148,7 @@ class InstallCommand extends Command
      * @param  string  $tag
      * @return mixed
      */
-    protected function deleteAssets() {
+    protected function deleteAssets(Filesystem $filesystem) {
         $voyagerAssets = ServiceProvider::pathsToPublish(VoyagerServiceProvider::class);
 
         // currently, it's only safe to remove the files
@@ -161,7 +161,7 @@ class InstallCommand extends Command
      *
      * @return bool
      */
-    protected function uninstall() {
+    protected function uninstall(Filesystem $filesystem) {
         // todo: move this to its own Command
         // later just call it
         
@@ -170,7 +170,7 @@ class InstallCommand extends Command
             $this->info('Uninstalling Voyager...');
 
             $this->info('Deleting the assets...');
-            $this->deleteAssets();
+            $this->deleteAssets($filesystem);
 
             $this->info('Successfully uninstalled Voyager!');
 
