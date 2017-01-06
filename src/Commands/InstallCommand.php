@@ -39,7 +39,7 @@ class InstallCommand extends Command
 
     public static $voyagerRoutes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
 
-    public static $voyagerServiceProvider = "\nTCG\\Voyager\\VoyagerServiceProvider::class,\n";
+    public static $voyagerServiceProvider = "\n        TCG\\Voyager\\VoyagerServiceProvider::class,\n";
 
     /**
      * Installation options in case there is an existing installation in place.
