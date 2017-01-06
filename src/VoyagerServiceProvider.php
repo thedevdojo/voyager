@@ -97,6 +97,7 @@ class VoyagerServiceProvider extends ServiceProvider
     private function registerConsoleCommands()
     {
         $this->commands(Commands\InstallCommand::class);
+        $this->commands(Commands\UninstallCommand::class);
         $this->commands(Commands\ControllersCommand::class);
         $this->commands(Commands\AdminCommand::class);
     }
