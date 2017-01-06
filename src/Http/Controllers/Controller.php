@@ -203,7 +203,8 @@ abstract class Controller extends BaseController
 
             /********** ALL OTHER TEXT TYPE **********/
             default:
-                return $request->input($row->field);
+                $value = $request->input($row->field);
+                return $value == "__null__" ? null : $value;
         }
 
         return $content;
