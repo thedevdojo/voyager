@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 
 class UninstallCommand extends Command
 {
