@@ -75,7 +75,7 @@ class InstallCommand extends Command
         }
 
         $this->error('Warning: there is already an existing installation of Voyager');
-        $this->choice('What do you want to do?', $this->installOptions, 'Cancel');
+        $this->choice('What do you want to do?', $this->installOptions, 'cancel');
     }
 
     /**
