@@ -71,7 +71,8 @@ class InstallCommand extends Command
         $migrationsDirectory = scandir($basePath . '/publishable/database/migrations/');
         foreach($migrationsDirectory as $migration){
             $migrationContent = file_get_contents(database_path('migrations').$migration);
-            $migrationContent = str_replace('{*users_table*}', app(config('voyager.user')['namespace'])->getTable(), $migrationContent)
+            $migrationContent = str_replace('{*users_table*}', app(config('voyager.user')['namespace'])->getTable(), 
+                                            $migrationContent);
             file_put_contents(database_path('migrations').$migration, $migrationContent);
         }
         $this->info('Migrating the database tables into your application');
