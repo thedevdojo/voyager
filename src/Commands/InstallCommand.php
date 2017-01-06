@@ -73,7 +73,7 @@ class InstallCommand extends Command
      */
     public function fire(Filesystem $filesystem) {
         // if this is the first time to install Voyager, just install it normally
-        if( ! $this->checkExistingInstallation() ) {
+        if( ! static::checkExistingInstallation() ) {
             return $this->install($filesystem);
         }
 
@@ -91,7 +91,7 @@ class InstallCommand extends Command
                 $this->call('voyager:uninstall');
                 
                 // check if Voyager was uninstalled properly
-                if( ! $this->checkExistingInstallation() ) {
+                if( ! static::checkExistingInstallation() ) {
                     $this->install($filesystem);
                 }
                 break;
@@ -107,7 +107,7 @@ class InstallCommand extends Command
      *
      * @return bool
      */
-    protected function checkExistingInstallation() {
+    public static function checkExistingInstallation() {
         return file_exists(config_path('voyager.php'));
     }
 

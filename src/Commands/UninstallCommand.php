@@ -30,7 +30,10 @@ class UninstallCommand extends Command
      * @return void
      */
     public function fire(Filesystem $filesystem) {
-        if( $this->confirm('This will erase your current data. Are you sure you want to continue?') ) {
+        if( InstallCommand::checkExistingInstallation()
+              && 
+            $this->confirm('This will erase your current data. Are you sure you want to continue?')
+            ) {
 
             $this->info('Uninstalling Voyager...');
 
