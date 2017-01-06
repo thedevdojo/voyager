@@ -73,7 +73,7 @@ class InstallCommand extends Command
     public function fire(Filesystem $filesystem) {
         // if this is the first time to install Voyager, just install it normally
         if( ! $this->checkExistingInstallation() ) {
-            return $this->install();
+            return $this->install($filesystem);
         }
 
         // warn user and ask him what to do in case there is an existing installation
