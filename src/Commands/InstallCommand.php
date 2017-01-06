@@ -44,7 +44,8 @@ class InstallCommand extends Command
      */
     protected $installOptions = [
         'cancel' => 'Cancel the installation.',
-        're-install' => 'This will uninstall Voyager and install it again. Please backup your data before doing this.'
+        're-install' => 'This will uninstall Voyager and install it again. Please backup your data before doing this.',
+        'uninstall' => 'This will uninstall Voyager. Please backup your data before doing this.'
     ];
 
     /**
@@ -83,7 +84,10 @@ class InstallCommand extends Command
                 if( $this->uninstall() ) {
                     $this->install();
                 }
-                
+                break;
+
+            case 'uninstall':
+                $this->uninstall();
                 break;
         }
     }
