@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Traits;
 
-use TCG\Voyager\Models\Role;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\Models\Role;
 
 /**
  * @property  \Illuminate\Database\Eloquent\Collection  roles
