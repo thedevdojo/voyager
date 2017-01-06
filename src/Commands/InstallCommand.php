@@ -76,32 +76,6 @@ class InstallCommand extends Command
     }
 
     /**
-     * Checks if there is an existing installation of Voyager.
-     *
-     * @return bool
-     */
-    protected function addVoyagerServiceProvider() {
-        $packageProviders = "/*\n         * Package Service Providers...\n         */";
-
-        $appConfigFile = config_path('app.php');
-        $appConfigContents = file_get_contents($appConfigFile);
-        
-        if( strpos($appConfigContents, $packageProviders) === false )
-        {
-            $this->error("Could not add VoyagerServiceProvider automatically.\nPlease add it manually to /config/app.php providers array in Package Service  Providers:\n" . static::$voyagerServiceProvider . "\n");
-        }
-
-        file_put_contents(
-            $appConfigFile,
-            str_replace(
-                $packageProviders,
-                $packageProviders . static::$voyagerServiceProvider,
-                $appConfigContents
-            )
-        );
-    }
-
-    /**
      * Execute the console command.
      *
      * @param \Illuminate\Filesystem\Filesystem $filesystem
@@ -178,5 +152,31 @@ class InstallCommand extends Command
         $this->addVoyagerServiceProvider();
 
         $this->info('Successfully installed Voyager! Enjoy 🎉');
+    }
+
+    /**
+     * Adds VoyagerServiceProvider to app providers array.
+     *
+     * @return void
+     */
+    protected function addVoyagerServiceProvider() {
+        $packageProviders = "/*\n         * Package Service Providers...\n         */";
+
+        $appConfigFile = config_path('app.php');
+        $appConfigContents = file_get_contents($appConfigFile);
+        
+        if( strpos($appConfigContents, $packageProviders) === false )
+        {
+            $this->error("Could not add VoyagerServiceProvider automatically.\nPlease add it manually to /config/app.php providers array in Package Service  Providers:\n" . static::$voyagerServiceProvider . "\n");
+        }
+
+        file_put_contents(
+            $appConfigFile,
+            str_replace(
+                $packageProviders,
+                $packageProviders . static::$voyagerServiceProvider,
+                $appConfigContents
+            )
+        );
     }
 }
