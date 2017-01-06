@@ -134,6 +134,9 @@ class InstallCommand extends Command
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
+        $this->info('Adding VoyagerServiceProvider...');
+        $this->addVoyagerServiceProvider();
+
         
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
@@ -148,9 +151,7 @@ class InstallCommand extends Command
         $this->info('Adding Voyager routes to routes/web.php');
         $filesystem->append(base_path('routes/web.php'), static::$voyagerRoutes);
 
-        $this->info('Adding VoyagerServiceProvider...');
-        $this->addVoyagerServiceProvider();
-
+        
         $this->info('Successfully installed Voyager! Enjoy 🎉');
     }
 
