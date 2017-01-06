@@ -38,7 +38,7 @@ class InstallCommand extends Command
         ];
     }
 
-    protected $routes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
+    public static $routes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
 
     /**
      * Installation options.
@@ -80,17 +80,25 @@ class InstallCommand extends Command
 
         // warn user and ask him what to do in case there is an existing installation
         $this->error('Warning: there is already an existing installation of Voyager');
-        $todo = $this->choice('What do you want to do?', $this->installOptions, 'cancel');
+        
+        $todo = $this->choice(
+            'What do you want to do?',
+            $this->installOptions,
+            'cancel'
+        );
 
         switch ($todo) {
             case 're-install':
-                if( $this->uninstall($filesystem) ) {
+                $this->call('voyager:uninstall');
+                
+                // check if Voyager was uninstalled properly
+                if( ! $this->checkExistingInstallation() ) {
                     $this->install($filesystem);
                 }
                 break;
 
             case 'uninstall':
-                $this->uninstall($filesystem);
+                $this->call('voyager:uninstall');
                 break;
         }
     }
@@ -126,7 +134,7 @@ class InstallCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(base_path('routes/web.php'), $this->routes);
+        $filesystem->append(base_path('routes/web.php'), static::$routes);
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
@@ -139,71 +147,5 @@ class InstallCommand extends Command
         $this->call('storage:link');
 
         $this->info('Successfully installed Voyager! Enjoy 🎉');
-    }
-
-    /**
-     * Unpublishes the assets for a tag.
-     *
-     * @param  string  $tag
-     * @return mixed
-     */
-    protected function deleteAssets(Filesystem $filesystem) {
-        $voyagerAssets = ServiceProvider::pathsToPublish(VoyagerServiceProvider::class);
-
-        // currently, it's only safe to remove the files
-        // TODO: copy asset directories to a specific voyager path to delete them easily
-        $filesystem->delete($voyagerAssets);
-    }
-
-    /**
-     * Removes a line from a file.
-     *
-     * @return void
-     */
-    protected function removeLineFromFile($line, $file) {
-
-        file_put_contents(
-            $file,
-            str_replace($line, '', file_get_contents($file))
-        );
-    }
-
-    /**
-     * Removes Voyager routes from routes file
-     *
-     * @return void
-     */
-    protected function deleteRoutes() {
-        $this->removeLineFromFile($this->routes, base_path('routes/web.php'));
-    }
-
-    /**
-     * Performs Voyager uninstallation.
-     *
-     * @return bool
-     */
-    protected function uninstall(Filesystem $filesystem) {
-        // todo: move this to its own Command
-        // later just call it
-        
-        if( $this->confirm('This will erase your current data. Are you sure you want to continue?') ) {
-
-            $this->info('Uninstalling Voyager...');
-
-            $this->info('Deleting assets...');
-            $this->deleteAssets($filesystem);
-
-            $this->info('Reset the migrations...');
-            $this->call('migrate:reset');
-
-            $this->info('Deleting routes...');
-            $this->deleteRoutes();
-
-            $this->info('Successfully uninstalled Voyager!');
-
-            return true;
-        }
-
-        return false;
     }
 }
