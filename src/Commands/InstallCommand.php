@@ -187,15 +187,16 @@ class InstallCommand extends Command
         // later just call it
         
         if( $this->confirm('This will erase your current data. Are you sure you want to continue?') ) {
-            // do the business
+
             $this->info('Uninstalling Voyager...');
 
-            $this->info('Deleting the assets...');
+            $this->info('Deleting assets...');
             $this->deleteAssets($filesystem);
 
             $this->info('Reset the migrations...');
+            $this->call('migrate:reset');
 
-            $this->info('Delete routes...');
+            $this->info('Deleting routes...');
             $this->deleteRoutes();
 
             $this->info('Successfully uninstalled Voyager!');
