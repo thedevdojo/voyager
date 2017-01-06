@@ -17,7 +17,8 @@ class Category extends Model
             ->orderBy('created_at', 'DESC');
     }
 
-    public function parent_id() {
-        return $this->belongsTo(Category::class);
-    }    
+    public function parent_id()
+    {
+        return $this->belongsTo(self::class);
+    }
 }
