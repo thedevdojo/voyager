@@ -37,7 +37,9 @@ class InstallCommand extends Command
         ];
     }
 
-    public static $routes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
+    public static $voyagerRoutes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
+
+    public static $voyagerServiceProvider = "\nTCG\\Voyager\\VoyagerServiceProvider::class,\n";
 
     /**
      * Installation options in case there is an existing installation in place.
@@ -71,6 +73,32 @@ class InstallCommand extends Command
      */
     public static function checkExistingInstallation() {
         return file_exists(config_path('voyager.php'));
+    }
+
+    /**
+     * Checks if there is an existing installation of Voyager.
+     *
+     * @return bool
+     */
+    protected function addVoyagerServiceProvider() {
+        $packageProviders = "/*\n         * Package Service Providers...\n         */";
+
+        $appConfigFile = config_path('app.php');
+        $appConfigContents = file_get_contents($appConfigFile);
+        
+        if( strpos($appConfigContents, $packageProviders) === false )
+        {
+            $this->error("Could not add VoyagerServiceProvider automatically.\nPlease add it manually to /config/app.php providers array in Package Service  Providers:\n" . static::$voyagerServiceProvider . "\n");
+        }
+
+        file_put_contents(
+            $appConfigFile,
+            str_replace(
+                $packageProviders,
+                $packageProviders . static::$voyagerServiceProvider,
+                $appConfigContents
+            )
+        );
     }
 
     /**
@@ -132,12 +160,7 @@ class InstallCommand extends Command
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
-        $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(base_path('routes/web.php'), static::$routes);
-
-        $this->info('Adding VoyagerServiceProvider...');
-        // .....
-
+        
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
 
@@ -147,6 +170,12 @@ class InstallCommand extends Command
 
         $this->info('Adding the storage symlink to your public folder');
         $this->call('storage:link');
+
+        $this->info('Adding Voyager routes to routes/web.php');
+        $filesystem->append(base_path('routes/web.php'), static::$voyagerRoutes);
+
+        $this->info('Adding VoyagerServiceProvider...');
+        $this->addVoyagerServiceProvider();
 
         $this->info('Successfully installed Voyager! Enjoy 🎉');
     }

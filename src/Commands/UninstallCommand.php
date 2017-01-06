@@ -79,7 +79,7 @@ class UninstallCommand extends Command
      * @return void
      */
     protected function deleteRoutes() {
-        $this->strReplaceFile(InstallCommand::$routes, '', base_path('routes/web.php'));
+        $this->strReplaceFile(InstallCommand::$voyagerRoutes, '', base_path('routes/web.php'));
     }
 
     /**
