@@ -4,6 +4,7 @@ namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProviderLaravel5;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
@@ -38,9 +39,9 @@ class InstallCommand extends Command
     }
 
     /**
-     * The console command name.
+     * Installation options.
      *
-     * @var string
+     * @var array
      */
     protected $installOptions = [
         'cancel' => 'Cancel the installation.',
@@ -107,6 +108,7 @@ class InstallCommand extends Command
      * @return void
      */
     protected function install() {
+        $this->info('Installing Voyager...');
         $this->info('Publishing the Voyager assets, database, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
@@ -141,17 +143,35 @@ class InstallCommand extends Command
     }
 
     /**
-     * Performs Voyager installation.
+     * Unpublishes the assets for a tag.
      *
-     * @return void
+     * @param  string  $tag
+     * @return mixed
+     */
+    protected function deleteAssets() {
+        $voyagerAssets = ServiceProvider::pathsToPublish(VoyagerServiceProvider::class);
+
+        // currently, it's only safe to remove the files
+        // TODO: move directories to a specific directory for voyager
+        $filesystem->delete($voyagerAssets);
+    }
+
+    /**
+     * Performs Voyager uninstallation.
+     *
+     * @return bool
      */
     protected function uninstall() {
         // todo: move this to its own Command
         // later just call it
-        $this->info('Uninstalling...');
         
         if( $this->confirm('This will erase your current data. Are you sure you want to continue?') ) {
             // do the business
+            $this->info('Uninstalling Voyager...');
+
+            $this->info('Deleting the assets...');
+            $this->deleteAssets();
+
             $this->info('Successfully uninstalled Voyager!');
 
             return true;
