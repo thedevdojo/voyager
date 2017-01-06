@@ -57,18 +57,44 @@ class Voyager
         require __DIR__.'/../routes/voyager.php';
     }
 
+    // TODO: In next breaking change release, this should return a boolean
     public static function can($permission)
+    {
+        static::canOrFail($permission);
+    }
+
+    public static function canOrFail($permission)
     {
         // Check if permission exist
         $exist = Permission::where('key', $permission)->first();
 
         if ($exist) {
             $user = User::find(Auth::id());
+
             if ($user == null) {
                 throw new UnauthorizedHttpException(null);
             }
+
             if (!$user->hasPermission($permission)) {
                 throw new UnauthorizedHttpException(null);
+            }
+        }
+    }
+
+    public static function canOrAbort($permission, $statusCode = 403, $message = '')
+    {
+        // Check if permission exist
+        $exist = Permission::where('key', $permission)->first();
+
+        if ($exist) {
+            $user = User::find(Auth::id());
+
+            if ($user == null) {
+                return abort($statusCode, $message);
+            }
+
+            if (!$user->hasPermission($permission)) {
+                return abort($statusCode, $message);
             }
         }
     }
