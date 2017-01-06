@@ -146,10 +146,13 @@ class InstallCommand extends Command
      * @return void
      */
     protected function uninstall() {
+        // todo: move this to its own Command
+        // later just call it
         $this->info('Uninstalling...');
         
         if( $this->confirm('This will erase your current data. Are you sure you want to continue?') ) {
             // do the business
+            $this->info('Successfully uninstalled Voyager!');
 
             return true;
         }
