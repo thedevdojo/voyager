@@ -38,6 +38,10 @@ class InstallCommand extends Command
         ];
     }
 
+    protected $routesPath = base_path('routes/web.php');
+
+    protected $routes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
+
     /**
      * Installation options.
      *
@@ -124,10 +128,7 @@ class InstallCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(
-            base_path('routes/web.php'),
-            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
-        );
+        $filesystem->append($routesPath, $this->routes);
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
@@ -152,8 +153,30 @@ class InstallCommand extends Command
         $voyagerAssets = ServiceProvider::pathsToPublish(VoyagerServiceProvider::class);
 
         // currently, it's only safe to remove the files
-        // TODO: move directories to a specific directory for voyager
+        // TODO: copy asset directories to a specific voyager path to delete them easily
         $filesystem->delete($voyagerAssets);
+    }
+
+    /**
+     * Removes a line from a file.
+     *
+     * @return void
+     */
+    protected function removeLineFromFile($line, $file) {
+
+        file_put_contents(
+            $file,
+            str_replace($line, '', file_get_contents($file))
+        );
+    }
+
+    /**
+     * Removes Voyager routes from routes file
+     *
+     * @return void
+     */
+    protected function deleteRoutes() {
+        $this->removeLineFromFile($this->routes, $this->routesPath);
     }
 
     /**
@@ -171,6 +194,11 @@ class InstallCommand extends Command
 
             $this->info('Deleting the assets...');
             $this->deleteAssets($filesystem);
+
+            $this->info('Reset the migrations...');
+
+            $this->info('Delete routes...');
+            $this->deleteRoutes();
 
             $this->info('Successfully uninstalled Voyager!');
 
