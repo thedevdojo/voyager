@@ -135,6 +135,9 @@ class InstallCommand extends Command
         $this->info('Adding Voyager routes to routes/web.php');
         $filesystem->append(base_path('routes/web.php'), static::$routes);
 
+        $this->info('Adding VoyagerServiceProvider...');
+        // .....
+
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
 
