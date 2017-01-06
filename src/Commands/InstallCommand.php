@@ -38,6 +38,16 @@ class InstallCommand extends Command
     }
 
     /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $installOptions = [
+        'cancel' => 'Cancel the installation',
+        're-Install' => 'This will uninstall it first and then install it'
+    ];
+
+    /**
      * Get the composer command for the environment.
      *
      * @return string
@@ -58,8 +68,31 @@ class InstallCommand extends Command
      *
      * @return void
      */
-    public function fire(Filesystem $filesystem)
-    {
+    public function fire(Filesystem $filesystem) {
+        // if this is the first time to install Voyager, just install it normally
+        if( ! $this->checkExistingInstallation() ) {
+            return $this->install();
+        }
+
+        $this->error('Warning: there is already an existing installation of Voyager');
+        $this->choice('What do you want to do?', $this->installOptions, 'Cancel');
+    }
+
+    /**
+     * Checks if there is an existing installation of Voyager.
+     *
+     * @return bool
+     */
+    protected function checkExistingInstallation() {
+        return file_exists(config_path('voyager.php'));
+    }
+
+    /**
+     * Performs Voyager installation.
+     *
+     * @return void
+     */
+    protected function install() {
         $this->info('Publishing the Voyager assets, database, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
