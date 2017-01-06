@@ -43,8 +43,8 @@ class InstallCommand extends Command
      * @var string
      */
     protected $installOptions = [
-        'cancel' => 'Cancel the installation',
-        're-install' => 'This will uninstall Voyager and install it again. Please backup your data before doing this'
+        'cancel' => 'Cancel the installation.',
+        're-install' => 'This will uninstall Voyager and install it again. Please backup your data before doing this.'
     ];
 
     /**
@@ -74,8 +74,16 @@ class InstallCommand extends Command
             return $this->install();
         }
 
+        // warn user and ask him what to do in case there is an existing installation
         $this->error('Warning: there is already an existing installation of Voyager');
-        $this->choice('What do you want to do?', $this->installOptions, 'cancel');
+        $todo = $this->choice('What do you want to do?', $this->installOptions, 'cancel');
+
+        switch ($todo) {
+            case 're-install':
+                $this->uninstall();
+                $this->install();
+                break;
+        }
     }
 
     /**
@@ -124,5 +132,18 @@ class InstallCommand extends Command
         $this->call('storage:link');
 
         $this->info('Successfully installed Voyager! Enjoy 🎉');
+    }
+
+    /**
+     * Performs Voyager installation.
+     *
+     * @return void
+     */
+    protected function uninstall() {
+        $this->info('Uninstalling...');
+        
+        if( $this->confirm('This will erase your current data. Are you sure you want to continue?') ) {
+            // do the business
+        }
     }
 }
