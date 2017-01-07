@@ -68,6 +68,7 @@
                                         @endif
                                         <input type="password" class="form-control" name="{{ $row->field }}" value="">
                                     @elseif($row->type == "text_area")
+                                        <?php $options = json_decode($row->details); ?>
                                         <textarea class="form-control"
                                                   name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif</textarea>
                                     @elseif($row->type == "rich_text_box")
