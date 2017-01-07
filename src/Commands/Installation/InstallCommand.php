@@ -93,6 +93,7 @@ class InstallCommand extends Command
      */
     protected function install(Filesystem $filesystem) {
         $this->info('Installing Voyager...');
+        
         $this->info('Publishing the Voyager assets, database, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
