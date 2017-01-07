@@ -31,7 +31,7 @@ class Settings
     /**
      * Path to seeds folder.
      *
-     * @return array
+     * @return string
      */
     public static function seedersPath() {
         return current(ServiceProvider::pathsToPublish(VoyagerServiceProvider::class, 'seeds'));
