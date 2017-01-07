@@ -32,9 +32,9 @@ class Settings
     /**
      * Executes a Composer command.
      *
-     * @param $cmd string
+     * @param string $cmd Composer command to execute.
      *
-     * @return string - command output
+     * @return string Command output.
      */
     public static function composer($cmd) {
         $process = new Process(static::findComposer() . " {$cmd}");
@@ -59,7 +59,11 @@ class Settings
     }
 
     /**
-     * Replaces a string in a file.
+     * Replaces a string within a file.
+     *
+     * @param string $search The string to replace.
+     * @param string $replace The string to replace with.
+     * @param string $file The file to replace its content.
      *
      * @return void
      */

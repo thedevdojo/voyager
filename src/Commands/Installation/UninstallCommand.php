@@ -82,7 +82,7 @@ class UninstallCommand extends Command
     }
 
     /**
-     * Deletes Voyager routes.
+     * Deletes Voyager routes from /routes/web.php.
      *
      * @return void
      */
