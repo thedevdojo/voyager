@@ -738,7 +738,10 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => '{
+"default": 1
+}
+',
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
