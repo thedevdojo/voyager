@@ -57,6 +57,8 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+
+        $this->loadMigrationsFrom(database_path('migrations/voyager'));
     }
 
     /**
@@ -70,7 +72,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 "$basePath/publishable/assets" => public_path('vendor/tcg/voyager/assets'),
             ],
             'migrations' => [
-                "$basePath/publishable/database/migrations/" => database_path('migrations'),
+                "$basePath/publishable/database/migrations/" => database_path('migrations/voyager'),
             ],
             'seeds' => [
                 "$basePath/publishable/database/seeds/" => database_path('seeds'),
