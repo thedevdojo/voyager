@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Commands;
+namespace TCG\Voyager\Commands\Installation;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -47,9 +47,6 @@ class UninstallCommand extends Command
 
             $this->info('Deleting routes...');
             $this->deleteRoutes();
-
-            $this->info('Deleting VoyagerServiceProvider...');
-            // ......
 
             $this->info("Successfully uninstalled Voyager!\n");
         }

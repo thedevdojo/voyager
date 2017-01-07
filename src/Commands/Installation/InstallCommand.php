@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Commands;
+namespace TCG\Voyager\Commands\Installation;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
@@ -38,8 +38,6 @@ class InstallCommand extends Command
     }
 
     public static $voyagerRoutes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
-
-    public static $voyagerServiceProvider = "\n        TCG\\Voyager\\VoyagerServiceProvider::class,\n";
 
     /**
      * Installation options in case there is an existing installation in place.
@@ -133,10 +131,6 @@ class InstallCommand extends Command
 
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
-
-        $this->info('Adding VoyagerServiceProvider...');
-        $this->addVoyagerServiceProvider();
-
         
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
@@ -153,31 +147,5 @@ class InstallCommand extends Command
 
         
         $this->info('Successfully installed Voyager! Enjoy 🎉');
-    }
-
-    /**
-     * Adds VoyagerServiceProvider to app providers array.
-     *
-     * @return void
-     */
-    protected function addVoyagerServiceProvider() {
-        $packageProviders = "/*\n         * Package Service Providers...\n         */";
-
-        $appConfigFile = config_path('app.php');
-        $appConfigContents = file_get_contents($appConfigFile);
-        
-        if( strpos($appConfigContents, $packageProviders) === false )
-        {
-            $this->error("Could not add VoyagerServiceProvider automatically.\nPlease add it manually to /config/app.php providers array in Package Service  Providers:\n" . static::$voyagerServiceProvider . "\n");
-        }
-
-        file_put_contents(
-            $appConfigFile,
-            str_replace(
-                $packageProviders,
-                $packageProviders . static::$voyagerServiceProvider,
-                $appConfigContents
-            )
-        );
     }
 }
