@@ -542,7 +542,7 @@ public function categories(){
 
 Now, when you have save the results from your Many-to-Many relationship the ID's of each selected value will be synced and added to your pivot table.
 
-#### NULL values
+### NULL values
 
 You might wish to save a input field into the database as a `null` value instead of an empty string.
 
