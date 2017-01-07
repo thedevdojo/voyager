@@ -49,20 +49,6 @@ class InstallCommand extends Command
     ];
 
     /**
-     * Get the composer command for the environment.
-     *
-     * @return string
-     */
-    protected function findComposer()
-    {
-        if (file_exists(getcwd().'/composer.phar')) {
-            return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
-        }
-
-        return 'composer';
-    }
-
-    /**
      * Execute the console command.
      *
      * @param \Illuminate\Filesystem\Filesystem $filesystem
@@ -116,7 +102,7 @@ class InstallCommand extends Command
 
         $this->info('Dumping the autoloaded files and reloading all new files');
 
-        $composer = $this->findComposer();
+        $composer = Settings::findComposer();
 
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
@@ -134,7 +120,6 @@ class InstallCommand extends Command
         $this->info('Adding Voyager routes to routes/web.php');
         $filesystem->append(base_path('routes/web.php'), Settings::routes());
 
-        
         $this->info('Successfully installed Voyager! Enjoy 🎉');
     }
 }

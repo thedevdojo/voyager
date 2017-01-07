@@ -42,6 +42,7 @@ class UninstallCommand extends Command
             $this->info('Deleting assets...');
             $this->deleteAssets($filesystem);
 
+            // TODO: find a way to reset only Voyager related migrations and tables
             $this->info('Reset the migrations...');
             $this->call('migrate:reset');
 
@@ -49,6 +50,8 @@ class UninstallCommand extends Command
             $this->deleteRoutes();
 
             $this->info("Successfully uninstalled Voyager!\n");
+            // add instrocutions to completely delete Voyager composer package
+            // and delete VoyagerServiceProvider
         }
     }
 
@@ -63,7 +66,8 @@ class UninstallCommand extends Command
 
         
         // currently, it's only safe to delete single Voyager asset files
-        // this deletes only files. directories like migrations etc... won't be deleted
+        // this deletes only files
+        // directories like migrations etc... won't be deleted
         $filesystem->delete($voyagerAssets);
 
         // TODO:
@@ -76,19 +80,6 @@ class UninstallCommand extends Command
      * @return void
      */
     protected function deleteRoutes() {
-        $this->strReplaceFile(Settings::routes(), '', base_path('routes/web.php'));
-    }
-
-    /**
-     * Helper function: Replaces a string in a file.
-     *
-     * @return void
-     */
-    protected function strReplaceFile($search, $replace, $file) {
-
-        file_put_contents(
-            $file,
-            str_replace($search, $replace, file_get_contents($file))
-        );
+        Settings::strReplaceFile(Settings::routes(), '', base_path('routes/web.php'));
     }
 }
