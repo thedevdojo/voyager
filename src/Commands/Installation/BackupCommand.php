@@ -31,7 +31,7 @@ class BackupCommand extends Command
      * @return void
      */
     public function fire(Filesystem $filesystem) {
-        if( ! InstallCommand::checkExistingInstallation() ) {
+        if( ! Settings::checkExistingInstallation() ) {
             return $this->error('Voyager is not installed!');
         }
     }
