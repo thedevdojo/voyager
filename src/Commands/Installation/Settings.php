@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\Commands\Installation;
 
+use Symfony\Component\Process\Process;
+
 class Settings
 {
 	/* Core installation settings */
@@ -26,6 +28,21 @@ class Settings
     public static function checkExistingInstallation() {
         return file_exists(config_path('voyager.php'));
     }
+
+    /**
+     * Executes a Composer command.
+     *
+     * @param $cmd string
+     *
+     * @return string - command output
+     */
+    public static function composer($cmd) {
+        $process = new Process(static::findComposer() . " {$cmd}");
+        $process->setWorkingDirectory(base_path())->run();
+
+        return $process->getOutput() . $process->getErrorOutput();
+    }
+
 
     /**
      * Get the composer command for the environment.

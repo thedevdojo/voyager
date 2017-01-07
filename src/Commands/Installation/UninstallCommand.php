@@ -58,7 +58,7 @@ class UninstallCommand extends Command
 
             $this->info("To completely remove Voyager, follow these steps:");
             $this->info("1. composer remove tcg/voyager");
-            $this->info("2. remove TCG\\Voyager\\VoyagerServiceProvider::class from config/app.php");
+            $this->info("2. remove TCG\\Voyager\\VoyagerServiceProvider::class from config/app.php\n");
         }
     }
 

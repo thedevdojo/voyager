@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Intervention\Image\ImageServiceProviderLaravel5;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Process\Process;
 use TCG\Voyager\Traits\Seedable;
 use TCG\Voyager\VoyagerServiceProvider;
 
@@ -93,7 +92,7 @@ class InstallCommand extends Command
      */
     protected function install(Filesystem $filesystem) {
         $this->info('Installing Voyager...');
-        
+
         $this->info('Publishing the Voyager assets, database, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
@@ -105,11 +104,7 @@ class InstallCommand extends Command
         $filesystem->append(base_path('routes/web.php'), Settings::routes());
 
         $this->info('Dumping the autoloaded files and reloading all new files');
-
-        $composer = Settings::findComposer();
-
-        $process = new Process($composer.' dump-autoload');
-        $process->setWorkingDirectory(base_path())->run();
+        $this->info(Settings::composer('dump-autoload'));
         
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
