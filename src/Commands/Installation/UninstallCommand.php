@@ -35,7 +35,7 @@ class UninstallCommand extends Command
             return $this->error('Voyager is not installed!');
         }
 
-        if( $this->confirm('This will erase your current data. Are you sure you want to continue?') ) {
+        if( $this->confirm("You are about to uninstall Voyager. This will erase your current data.\nAre you sure you want to continue?") ) {
 
             $this->info('Uninstalling Voyager...');
 

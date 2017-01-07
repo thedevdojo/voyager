@@ -100,6 +100,9 @@ class InstallCommand extends Command
         $this->info('Migrating the database tables into your application');
         $this->call('migrate');
 
+        $this->info('Adding Voyager routes to routes/web.php');
+        $filesystem->append(base_path('routes/web.php'), Settings::routes());
+
         $this->info('Dumping the autoloaded files and reloading all new files');
 
         $composer = Settings::findComposer();
@@ -116,9 +119,6 @@ class InstallCommand extends Command
 
         $this->info('Adding the storage symlink to your public folder');
         $this->call('storage:link');
-
-        $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(base_path('routes/web.php'), Settings::routes());
 
         $this->info('Successfully installed Voyager! Enjoy 🎉');
     }
