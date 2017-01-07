@@ -75,7 +75,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 "$basePath/publishable/database/migrations/" => database_path('migrations/voyager'),
             ],
             'seeds' => [
-                "$basePath/publishable/database/seeds/" => database_path('seeds'),
+                "$basePath/publishable/database/seeds/" => database_path('seeds/voyager'),
             ],
             'demo_content' => [
                 "$basePath/publishable/demo_content/" => storage_path('app/public'),

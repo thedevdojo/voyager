@@ -13,8 +13,6 @@ class InstallCommand extends Command
 {
     use Seedable;
 
-    protected $seedersPath = __DIR__.'/../../../publishable/database/seeds/';
-
     /**
      * The console command name.
      *
@@ -107,6 +105,7 @@ class InstallCommand extends Command
         $this->info(Settings::composer('dump-autoload'));
         
         $this->info('Seeding data into the database');
+        $this->seedersPath = Settings::seedersPath();
         $this->seed('VoyagerDatabaseSeeder');
 
         if ($this->option('with-dummy')) {

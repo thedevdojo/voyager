@@ -4,8 +4,6 @@ namespace TCG\Voyager\Commands\Installation;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\ServiceProvider;
-use TCG\Voyager\VoyagerServiceProvider;
 
 class UninstallCommand extends Command
 {
@@ -69,7 +67,7 @@ class UninstallCommand extends Command
      */
     protected function deleteAssets(Filesystem $filesystem) {
         // get Voyager assets list
-        $voyagerAssets = ServiceProvider::pathsToPublish(VoyagerServiceProvider::class);
+        $voyagerAssets = Settings::assets();
 
         
         // currently, it's only safe to delete single Voyager asset files
