@@ -723,6 +723,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete'       => 1,
                 'details'      => '{
 "default": "__null__",
+"null": "__null__",
 "options": {
 "__null__": "NULL"
 },
