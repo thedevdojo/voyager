@@ -37,8 +37,6 @@ class InstallCommand extends Command
         ];
     }
 
-    public static $voyagerRoutes = "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n";
-
     /**
      * Installation options in case there is an existing installation in place.
      *
@@ -65,15 +63,6 @@ class InstallCommand extends Command
     }
 
     /**
-     * Checks if there is an existing installation of Voyager.
-     *
-     * @return bool
-     */
-    public static function checkExistingInstallation() {
-        return file_exists(config_path('voyager.php'));
-    }
-
-    /**
      * Execute the console command.
      *
      * @param \Illuminate\Filesystem\Filesystem $filesystem
@@ -82,7 +71,7 @@ class InstallCommand extends Command
      */
     public function fire(Filesystem $filesystem) {
         // if this is the first time to install Voyager, just install it normally
-        if( ! static::checkExistingInstallation() ) {
+        if( ! Settings::checkExistingInstallation() ) {
             return $this->install($filesystem);
         }
 
@@ -104,7 +93,7 @@ class InstallCommand extends Command
                 $this->call('voyager:uninstall');
                 
                 // check if Voyager was uninstalled properly
-                if( ! static::checkExistingInstallation() ) {
+                if( ! Settings::checkExistingInstallation() ) {
                     $this->install($filesystem);
                 }
                 break;
@@ -143,7 +132,7 @@ class InstallCommand extends Command
         $this->call('storage:link');
 
         $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(base_path('routes/web.php'), static::$voyagerRoutes);
+        $filesystem->append(base_path('routes/web.php'), Settings::routes());
 
         
         $this->info('Successfully installed Voyager! Enjoy 🎉');

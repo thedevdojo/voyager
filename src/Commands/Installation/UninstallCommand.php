@@ -31,7 +31,7 @@ class UninstallCommand extends Command
      * @return void
      */
     public function fire(Filesystem $filesystem) {
-        if( ! InstallCommand::checkExistingInstallation() ) {
+        if( ! Settings::checkExistingInstallation() ) {
             return $this->error('Voyager is not installed!');
         }
 
@@ -76,7 +76,7 @@ class UninstallCommand extends Command
      * @return void
      */
     protected function deleteRoutes() {
-        $this->strReplaceFile(InstallCommand::$voyagerRoutes, '', base_path('routes/web.php'));
+        $this->strReplaceFile(Settings::routes(), '', base_path('routes/web.php'));
     }
 
     /**
