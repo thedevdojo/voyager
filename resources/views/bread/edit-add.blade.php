@@ -57,9 +57,10 @@
                                     <label for="name">{{ $row->display_name }}</label>
 
                                     @if($row->type == "text")
+                                        <?php $options = json_decode($row->details); ?>
                                         <input type="text" class="form-control" name="{{ $row->field }}"
                                                placeholder="{{ $row->display_name }}"
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
+                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif">
                                     @elseif($row->type == "password")
                                         @if(isset($dataTypeContent->{$row->field}))
                                             <br>
@@ -68,7 +69,7 @@
                                         <input type="password" class="form-control" name="{{ $row->field }}" value="">
                                     @elseif($row->type == "text_area")
                                         <textarea class="form-control"
-                                                  name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif</textarea>
+                                                  name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif</textarea>
                                     @elseif($row->type == "rich_text_box")
                                         <textarea class="form-control richTextBox"
                                                   name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif</textarea>
