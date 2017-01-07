@@ -202,10 +202,13 @@ abstract class Controller extends BaseController
                 break;
 
             /********** ALL OTHER TEXT TYPE **********/
-            default:
+            default:            
                 $value = $request->input($row->field);
-
-                return $value == '__null__' ? null : $value;
+                $options = json_decode($row->details);
+                if (isset($options->null)) {
+                    return $value == $options->null ? null : $value;                    
+                }
+                return $value;
         }
 
         return $content;
