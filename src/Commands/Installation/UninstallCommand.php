@@ -28,7 +28,7 @@ class UninstallCommand extends Command
      *
      * @param \Illuminate\Filesystem\Filesystem $filesystem
      *
-     * @return void
+     * @return bool
      */
     public function fire(Filesystem $filesystem) {
         if( ! Settings::checkExistingInstallation() ) {
@@ -48,6 +48,11 @@ class UninstallCommand extends Command
 
             $this->info('Deleting routes...');
             $this->deleteRoutes();
+
+            // check if Voyager still exists
+            if( Settings::checkExistingInstallation() ) {
+                return $this->error("Error: Voyager was not uninstalled properly");
+            }
 
             $this->info("Successfully uninstalled Voyager!\n");
             // add instrocutions to completely delete Voyager composer package
