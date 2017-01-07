@@ -19,6 +19,8 @@ class Voyager
 
     protected $alerts = [];
 
+    protected $allertsCollected = false;
+
     public function __construct()
     {
         $this->filesystem = app(Filesystem::class);
@@ -87,6 +89,12 @@ class Voyager
 
     public function alerts()
     {
+        if (!$this->allertsCollected) {
+            event('voyager.alerts.collecting');
+
+            $this->allertsCollected = true;
+        }
+
         return $this->alerts;
     }
 

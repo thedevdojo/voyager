@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\View;
@@ -45,7 +46,7 @@ class VoyagerServiceProvider extends ServiceProvider
      *
      * @param \Illuminate\Routing\Router $router
      */
-    public function boot(Router $router)
+    public function boot(Router $router, Dispatcher $event)
     {
         if (config('voyager.user.add_default_role_on_register')) {
             $app_user = config('voyager.user.namespace');
@@ -62,7 +63,9 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
 
-        $this->addStorageSymlinkAlert();
+        $event->listen('voyager.alerts.collecting', function () {
+            $this->addStorageSymlinkAlert();
+        });
     }
 
     /**
@@ -81,14 +84,36 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     protected function addStorageSymlinkAlert()
     {
-        if (!is_link(public_path('storage-off'))) {
+        $currentRouteAction = app('router')->current()->getAction();
+        $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
+
+        if ($routeName == 'voyager.dashboard' && request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
+            $this->fixMissingStorageSymlink();
+        } else if (!file_exists(public_path('storage'))) {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
                 ->title('Missing storage symlink')
                 ->text('We could not find a storage symlink. This could cause problems with loading media files from the browser.')
-                ->button('Fix it', '?fix-missing-storage-symlink');
+                ->button('Fix it', '?fix-missing-storage-symlink=1');
 
             VoyagerFacade::addAlert($alert);
         }
+    }
+
+    protected function fixMissingStorageSymlink()
+    {
+        $result = app('files')->link(storage_path('app/public'), public_path('storage'));
+
+        if ($result) {
+            $alert = (new Alert('fixed-missing-storage-symlink', 'success'))
+                ->title('Missing storage symlink created')
+                ->text('We just created the missing symlink for you.');
+        } else {
+            $alert = (new Alert('failed-fixing-missing-storage-symlink', 'danger'))
+                ->title('Could not create missing storage symlink')
+                ->text('We failed to generate the missing symlink for your application. It seems like your hosting provider does not support it.');
+        }
+
+        VoyagerFacade::addAlert($alert);
     }
 
     /**
