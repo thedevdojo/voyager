@@ -89,7 +89,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if ($routeName == 'voyager.dashboard' && request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
             $this->fixMissingStorageSymlink();
-        } else if (!file_exists(public_path('storage'))) {
+        } elseif (!file_exists(public_path('storage'))) {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
                 ->title('Missing storage symlink')
                 ->text('We could not find a storage symlink. This could cause problems with loading media files from the browser.')
