@@ -147,7 +147,7 @@ class Menu extends Model
                 $styles = ' style="background-color:'.$item->color.'"';
             }
 
-            $output .= '<li'.$li_class.'><a '.$a_attrs.' href="'.$item->url.'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span>'.$caret.'</a>';
+            $output .= '<li'.$li_class.'><a '.$a_attrs.' href="'.url($item->url).'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span>'.$caret.'</a>';
 
             if ($children_menu_items->count() > 0) {
                 $output = self::buildBootstrapOutput($menuItems, $output, $options, $request, $item->id);
@@ -234,7 +234,7 @@ class Menu extends Model
                 $styles = ' style="background-color:'.$item->color.'"';
             }
 
-            $output .= '<li'.$li_class.'><a href="'.$item->url.'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span></a>';
+            $output .= '<li'.$li_class.'><a href="'.url($item->url).'" target="'.$item->target.'"'.$styles.'>'.$icon.'<span>'.$item->title.'</span></a>';
 
             if ($children_menu_items->count() > 0) {
                 $output = self::buildOutput($menuItems, $output, $options, $request, $item->id);
@@ -294,7 +294,7 @@ class Menu extends Model
                 $collapse_id = Str::slug($item->title, '-').'-dropdown-element';
                 $a_attrs = 'data-toggle="collapse" href="#'.$collapse_id.'"';
             } else {
-                $a_attrs = 'href="'.$item->url.'"';
+                $a_attrs = 'href="'.url($item->url).'"';
             }
 
             // Permission Checker
