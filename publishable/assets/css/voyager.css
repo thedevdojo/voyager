@@ -1415,3 +1415,16 @@ ul.checkbox label {
   margin-left: 5px;
   margin-top: 15px;
 }
+
+.alerts {
+  padding: 10px 10px 0px 10px;
+}
+
+.alerts .alert {
+  margin-right: 15px;
+}
+
+.alerts .alert>p,
+.alerts .alert>ul {
+  margin-top: 0;
+}

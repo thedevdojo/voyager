@@ -5,6 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
@@ -27,6 +28,9 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->singleton('voyager', function () {
             return new Voyager();
         });
+
+        $this->registerViewComposers();
+        $this->registerAlertComponents();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
@@ -57,6 +61,48 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+
+        $this->addStorageSymlinkAlert();
+    }
+
+    /**
+     * Register view composers.
+     */
+    protected function registerViewComposers()
+    {
+        // Register alerts
+        View::composer('voyager::index', function ($view) {
+            $view->with('alerts', VoyagerFacade::alerts());
+        });
+    }
+
+    /**
+     * Add storage symlink alert.
+     */
+    protected function addStorageSymlinkAlert()
+    {
+        if (!is_link(public_path('storage-off'))) {
+            $alert = (new Alert('missing-storage-symlink', 'warning'))
+                ->title('Missing storage symlink')
+                ->text('We could not find a storage symlink. This could cause problems with loading media files from the browser.')
+                ->button('Fix it', '?fix-missing-storage-symlink');
+
+            VoyagerFacade::addAlert($alert);
+        }
+    }
+
+    /**
+     * Register alert components.
+     */
+    protected function registerAlertComponents()
+    {
+        $components = ['title', 'text', 'button'];
+
+        foreach ($components as $component) {
+            $class = 'TCG\\Voyager\\Alert\\Components\\'.ucfirst(camel_case($component)).'Component';
+
+            $this->app->bind("voyager.alert.components.{$component}", $class);
+        }
     }
 
     /**
