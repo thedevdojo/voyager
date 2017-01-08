@@ -64,7 +64,7 @@ class UninstallCommand extends Command
     }
 
     /**
-     * Deletes Voyager assets.
+     * Deletes Voyager published resources.
      *
      * @return void
      */
@@ -77,19 +77,26 @@ class UninstallCommand extends Command
             'views',
         ]);
 
+        // delete folders
         foreach ($resourceFolders as $folder) {
             $filesystem->deleteDirectory($folder);
         }
 
-        // resource files to delete
+        // individual resource files to delete
         $resourceFiles = VoyagerServiceProvider::publishedPaths([
             'config',
         ]);
 
-        $filesystem->delete($resourceFiles);
+        // adding demo_content files to delete
+        $demoContentPath = key(VoyagerServiceProvider::publishableResources('demo_content'));
+        $demoContentPublishedPath = VoyagerServiceProvider::publishedPaths('demo_content');
 
-        // only thing left is demo_content
-        // idea: get file names from publishable/demo_content, and delete them from store/app/public
+        foreach ($filesystem->allFiles($demoContentPath) as $file) {
+            $resourceFiles[] = $demoContentPublishedPath . '/' . $file->getRelativePathname();
+        }
+
+        // delete files
+        $filesystem->delete($resourceFiles);
     }
 
     /**
