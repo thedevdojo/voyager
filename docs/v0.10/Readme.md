@@ -542,6 +542,28 @@ public function categories(){
 
 Now, when you have save the results from your Many-to-Many relationship the ID's of each selected value will be synced and added to your pivot table.
 
+### NULL values
+
+You might wish to save a input field into the database as a `null` value instead of an empty string.
+
+Simply enough, inside of the BREAD we would include the following *Optional Details* for the field:
+
+```
+{
+    "null": ""
+}
+```
+
+This will turn a empty string into a `null` value. However you might wish to be able to add both a empty string and a `null` value to the database for that field. However you have to choose a replacement for the `null` value, but it can be anything you wish. Example if you want a field to change a string (ex. `Nothing`) into a `null` value you should include the following *Optional Details* for that field:
+
+```
+{
+    "null": "Nothing"
+}
+```
+
+Now entering `Nothing` into the field will end up as a `null` value in the database.
+
 # Customization
 
 ## Overriding Views
