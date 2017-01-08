@@ -13,7 +13,7 @@
 Route::group(['as' => 'voyager.'], function () {
     event('voyager.routing', app('router'));
 
-    $namespacePrefix = '\\'.config('voyager.controllers.namespace').'\\';
+    $namespacePrefix = '\\'.config('voyager.controllers.namespace', 'TCG\\Voyager\\Http\\Controllers').'\\';
 
     Route::get('login', ['uses' => $namespacePrefix.'VoyagerAuthController@login', 'as' => 'login']);
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
