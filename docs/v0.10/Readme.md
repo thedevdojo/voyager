@@ -544,9 +544,9 @@ Now, when you have save the results from your Many-to-Many relationship the ID's
 
 ### NULL values
 
-You might wish to save a input field into the database as a `null` value instead of an empty string.
+You might want to save an input field into the database as a `null` value instead of an empty string.
 
-Simply enough, inside of the BREAD we would include the following *Optional Details* for the field:
+Simply enough, inside the BREAD you can include the following *Optional Details* for the field:
 
 ```
 {
@@ -554,7 +554,7 @@ Simply enough, inside of the BREAD we would include the following *Optional Deta
 }
 ```
 
-This will turn a empty string into a `null` value. However you might wish to be able to add both a empty string and a `null` value to the database for that field. However you have to choose a replacement for the `null` value, but it can be anything you wish. Example if you want a field to change a string (ex. `Nothing`) into a `null` value you should include the following *Optional Details* for that field:
+This will turn an empty string into a `null` value. However you might want to be able to add both an empty string and a `null` value to the database for that field. However you have to choose a replacement for the `null` value, but it can be anything you wish. For example,  if you want a field to change a string (ex. `Nothing`) into a `null` value you could include the following *Optional Details* for that field:
 
 ```
 {
