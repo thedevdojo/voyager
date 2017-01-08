@@ -36,7 +36,8 @@ class Settings
      * @return bool
      */
     public static function checkExistingInstallation() {
-        return file_exists(config_path('voyager.php'));
+        // check if Voyager config file exists. If yes, it means Voyager is installed.
+        return file_exists(VoyagerServiceProvider::publishedPaths('config'));
     }
 
     /**
