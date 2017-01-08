@@ -373,7 +373,7 @@ Find out how to use these additional details below:
 }
 ```
 
-In Voyager a Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In the JSON above you can specify the `default` value of for the input, if it should not have a default value leave it.
+Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In the JSON above you can specify the `default` value of the input.
 
 #### Check Box
 ```js
