@@ -141,7 +141,6 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->commands(Commands\Installation\InstallCommand::class);
         $this->commands(Commands\Installation\UninstallCommand::class);
-        $this->commands(Commands\Installation\BackupCommand::class);
     }
 
     /**
