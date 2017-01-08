@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Commands\Installation;
 
 use Symfony\Component\Process\Process;
-use Illuminate\Support\ServiceProvider;
 use TCG\Voyager\VoyagerServiceProvider;
 
 class Settings
@@ -20,21 +19,12 @@ class Settings
 	}
 
     /**
-     * Paths to Voyager assets.
-     *
-     * @return array
-     */
-    public static function assets() {
-        return ServiceProvider::pathsToPublish(VoyagerServiceProvider::class);
-    }
-
-    /**
      * Path to seeds folder.
      *
      * @return string
      */
     public static function seedersPath() {
-        return current(ServiceProvider::pathsToPublish(VoyagerServiceProvider::class, 'seeds'));
+        return VoyagerServiceProvider::publishedPaths('seeds');
     }
 
 

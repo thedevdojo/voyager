@@ -4,6 +4,7 @@ namespace TCG\Voyager\Commands\Installation;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use TCG\Voyager\VoyagerServiceProvider;
 
 class UninstallCommand extends Command
 {
@@ -37,12 +38,14 @@ class UninstallCommand extends Command
 
             $this->info('Uninstalling Voyager...');
 
-            $this->info('Deleting assets...');
-            $this->deleteAssets($filesystem);
-
             // TODO: find a way to reset only Voyager related migrations and tables
+            // IDEA: drop voyager related table
+            //       delete from migrations table using a query
             $this->info('Reset the migrations...');
             $this->call('migrate:reset');
+
+            $this->info('Deleting published resources...');
+            $this->deletePublishedResources($filesystem);
 
             $this->info('Deleting routes...');
             $this->deleteRoutes();
@@ -65,18 +68,28 @@ class UninstallCommand extends Command
      *
      * @return void
      */
-    protected function deleteAssets(Filesystem $filesystem) {
-        // get Voyager assets list
-        $voyagerAssets = Settings::assets();
+    protected function deletePublishedResources(Filesystem $filesystem) {
+        // resource folders to delete
+        $resourceFolders = VoyagerServiceProvider::publishedPaths([
+            'voyager_assets',
+            'migrations',
+            'seeds',
+            'views',
+        ]);
 
-        
-        // currently, it's only safe to delete single Voyager asset files
-        // this deletes only files
-        // directories like migrations etc... won't be deleted
-        $filesystem->delete($voyagerAssets);
+        foreach ($resourceFolders as $folder) {
+            $filesystem->deleteDirectory($folder);
+        }
 
-        // TODO:
-        // copy asset directories to a specific voyager path to delete them easily later
+        // resource files to delete
+        $resourceFiles = VoyagerServiceProvider::publishedPaths([
+            'config',
+        ]);
+
+        $filesystem->delete($resourceFiles);
+
+        // only thing left is demo_content
+        // idea: get file names from publishable/demo_content, and delete them from store/app/public
     }
 
     /**
