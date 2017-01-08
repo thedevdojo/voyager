@@ -357,12 +357,23 @@ Each field also has additional details or options that can be included. These ty
 
 When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box that allows you to include additional details or options for your datatype. This textarea accepts JSON and it applies to the following types of inputs:
 
+- Text (Text Box, Text Area, Rich Textbox and Hidden)
 - Check Box
 - Drop Down
 - Radio Button
 - Image
 
 Find out how to use these additional details below:
+
+#### Text (Text Box, Text Area, Rich Textbox and Hidden)
+
+```js
+{
+    "default" : "Default text"
+}
+```
+
+In Voyager a Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In the JSON above you can specify the `default` value of for the input, if it should not have a default value leave it.
 
 #### Check Box
 ```js
