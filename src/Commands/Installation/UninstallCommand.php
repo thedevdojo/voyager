@@ -106,8 +106,8 @@ class UninstallCommand extends Command
      * @return void
      */
     protected function deletePublishedResources(Filesystem $filesystem) {
-        // resource folders to delete
-        $resourceFolders = VoyagerServiceProvider::publishedPaths([
+        // published folders to delete
+        $publishedFolders = VoyagerServiceProvider::publishedPaths([
             'voyager_assets',
             'migrations',
             'seeds',
@@ -115,27 +115,27 @@ class UninstallCommand extends Command
         ]);
 
         // delete folders
-        foreach ($resourceFolders as $folder) {
+        foreach ($publishedFolders as $folder) {
             $filesystem->deleteDirectory($folder);
         }
 
-        // individual resource files to delete
-        $resourceFiles = VoyagerServiceProvider::publishedPaths([
+        // published files to delete
+        $publishedFiles = VoyagerServiceProvider::publishedPaths([
             'config',
         ]);
 
         // adding demo_content files to delete
         // idea: use this method to delete all files individually without worrying about folders?
-        // add a helper method to get all voyager files in published paths?
+        //       add a helper method to get all voyager files in published paths?
         $demoContentPath = key(VoyagerServiceProvider::publishableResources('demo_content'));
         $demoContentPublishedPath = VoyagerServiceProvider::publishedPaths('demo_content');
 
         foreach ($filesystem->allFiles($demoContentPath) as $file) {
-            $resourceFiles[] = $demoContentPublishedPath . '/' . $file->getRelativePathname();
+            $publishedFiles[] = $demoContentPublishedPath . '/' . $file->getRelativePathname();
         }
 
         // delete files
-        $filesystem->delete($resourceFiles);
+        $filesystem->delete($publishedFiles);
     }
 
     /**
