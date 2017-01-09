@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Commands\Installation;
 
+use DB;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use TCG\Voyager\VoyagerServiceProvider;
-use DB;
 
 class UninstallCommand extends Command
 {
@@ -116,7 +116,9 @@ class UninstallCommand extends Command
 
         // delete folders
         foreach ($publishedFolders as $folder) {
-            $filesystem->deleteDirectory($folder);
+            if( ! $filesystem->deleteDirectory($folder) ) {
+                $this->error("Error: could not delete {$folder} folder");
+            }
         }
 
         // published files to delete
@@ -135,7 +137,9 @@ class UninstallCommand extends Command
         }
 
         // delete files
-        $filesystem->delete($publishedFiles);
+        if( ! $filesystem->delete($publishedFiles) ) {
+            $this->error('Error: some files were not deleted successfully');
+        }
     }
 
     /**

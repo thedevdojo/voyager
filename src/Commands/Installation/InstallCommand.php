@@ -99,7 +99,9 @@ class InstallCommand extends Command
         $this->call('migrate');
 
         $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(base_path('routes/web.php'), Settings::routes());
+        if( ! $filesystem->append(base_path('routes/web.php'), Settings::routes()) ) {
+            $this->error('Error: could not add Voyager routes to routes/web.php');
+        }
 
         $this->info('Dumping the autoloaded files and reloading all new files');
         $this->info(Settings::composer('dump-autoload'));
