@@ -58,7 +58,12 @@ trait DatabaseQueryBuilder
                 return false;
             }
 
-            return function (Blueprint $table) use ($column) {
+            return function (Blueprint $table) use ($column, $existingColumns) {
+
+                $oldColumn = $existingColumns->first(function($item, $key) use($column) {
+                    return $key == $column['field'];
+                });
+
                 if ($column['key'] == 'PRI') {
                     return $table->increments($column['field']);
                 }
@@ -77,8 +82,14 @@ trait DatabaseQueryBuilder
                     ? $table->enum($column['field'], [$column['enum']])
                     : $table->{$type}($column['field']);
 
-                if ($column['key'] == 'UNI') {
+                // Add unique key.
+                if ($column['key'] == 'UNI' && $oldColumn->key != 'UNI') {
                     $result->unique();
+                }
+
+                // Remove unique if have previous unique key.
+                if($oldColumn->key == 'UNI' && $column['key'] != 'UNI') {
+                    $table->dropUnique([$column['field']]);
                 }
 
                 $result->nullable($column['nullable']);
