@@ -6,6 +6,15 @@
 
 @section('content')
     <div class="page-content">
+        <div class="alerts">
+            @foreach ($alerts as $alert)
+                <div class="alert alert-{{ $alert->type }} alert-name-{{ $alert->name }}">
+                    @foreach($alert->components as $component)
+                        <?php echo $component->render(); ?>
+                    @endforeach
+                </div>
+            @endforeach
+        </div>
         <div class="widgets">
             <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\User())->getTable())) { ?>
             <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
