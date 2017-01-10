@@ -17,6 +17,10 @@ class Voyager
     protected $version;
     protected $filesystem;
 
+    protected $alerts = [];
+
+    protected $allertsCollected = false;
+
     public function __construct()
     {
         $this->filesystem = app(Filesystem::class);
@@ -76,6 +80,22 @@ class Voyager
     public function getVersion()
     {
         return $this->version;
+    }
+
+    public function addAlert(Alert $alert)
+    {
+        $this->alerts[] = $alert;
+    }
+
+    public function alerts()
+    {
+        if (!$this->allertsCollected) {
+            event('voyager.alerts.collecting');
+
+            $this->allertsCollected = true;
+        }
+
+        return $this->alerts;
     }
 
     protected function findVersion()
