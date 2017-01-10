@@ -101,9 +101,9 @@ class VoyagerServiceProvider extends ServiceProvider
 
     protected function fixMissingStorageSymlink()
     {
-        $result = app('files')->link(storage_path('app/public'), public_path('storage'));
+        app('files')->link(storage_path('app/public'), public_path('storage'));
 
-        if ($result) {
+        if (file_exists(public_path('storage'))) {
             $alert = (new Alert('fixed-missing-storage-symlink', 'success'))
                 ->title('Missing storage symlink created')
                 ->text('We just created the missing symlink for you.');
