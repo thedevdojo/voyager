@@ -58,7 +58,6 @@ trait DatabaseQueryBuilder
             }
 
             return function (Blueprint $table) use ($column, $existingColumns) {
-
                 if ($existingColumns) {
                     $oldColumn = $existingColumns->first(function ($item, $key) use ($column) {
                         return $key == $column['field'];

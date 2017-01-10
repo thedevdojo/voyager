@@ -101,7 +101,7 @@ trait DatabaseUpdate
         });
 
         // Remove columns that will changed to enum
-        $enumColumns = collect($request->type)->map(function ($type, $key) use($request, $existingColumns) {
+        $enumColumns = collect($request->type)->map(function ($type, $key) use ($request, $existingColumns) {
             if ($type == 'enum' && $existingColumns->has($request->field[$key])) {
                 return $request->field[$key];
             }
