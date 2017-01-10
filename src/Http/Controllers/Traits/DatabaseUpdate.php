@@ -91,7 +91,7 @@ trait DatabaseUpdate
         $existingColumns = $this->describeTable($tableName);
 
         $enumColumns = $existingColumns->filter(function ($column) {
-            return preg_match('/enum/', $column->type);
+            return preg_match('/enum/', $column['type']);
         })->pluck('field');
 
         Schema::table($tableName, function (Blueprint $table) use ($enumColumns) {

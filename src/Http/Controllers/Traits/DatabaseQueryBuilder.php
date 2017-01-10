@@ -84,12 +84,12 @@ trait DatabaseQueryBuilder
 
                 if ($existingColumns) {
                     // Add unique key.
-                    if ($column['key'] == 'UNI' && $oldColumn && $oldColumn->key != 'UNI') {
+                    if ($column['key'] == 'UNI' && $oldColumn && $oldColumn['key'] != 'UNI') {
                         $result->unique();
                     }
 
                     // Remove unique if have previous unique key.
-                    if ($column['key'] != 'UNI' && $oldColumn && $oldColumn->key == 'UNI') {
+                    if ($column['key'] != 'UNI' && $oldColumn && $oldColumn['key'] == 'UNI') {
                         $table->dropUnique([$column['field']]);
                     }
                 } else {
