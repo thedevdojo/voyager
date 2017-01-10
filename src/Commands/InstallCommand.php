@@ -63,7 +63,23 @@ class InstallCommand extends Command
         $this->info('Publishing the Voyager assets, database, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
-
+        /*
+        * Translate migrations
+        */
+        $this->info('Applying new user namespace table name');
+        $basePath = str_replace('/src/Commands', '', dirname(__DIR__.'/..'));
+        $migrationsDirectory = scandir($basePath.'/publishable/database/migrations/');
+        
+        foreach($migrationsDirectory as $migration){
+            if($migration !== '.' && $migration !== '..'){
+                $migrationPath = database_path('migrations').'/'.$migration;
+                $migrationContent = file_get_contents($migrationPath);
+                $migrationContent = str_replace('{*users_table*}', "'".app(config('voyager.user')['namespace'])->getTable()."'", 
+                                                $migrationContent);
+                file_put_contents($migrationPath, $migrationContent);
+            }
+        }
+        
         $this->info('Migrating the database tables into your application');
         $this->call('migrate');
 
