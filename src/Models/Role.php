@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
+	protected $table = 'voyager_roles';
+
     protected $guarded = [];
 
     public function users()

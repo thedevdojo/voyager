@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Schema;
 
 class DataType extends Model
 {
-    protected $table = 'data_types';
+    protected $table = 'voyager_data_types';
 
     protected $guarded = [];
 

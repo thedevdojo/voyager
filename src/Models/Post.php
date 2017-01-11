@@ -10,6 +10,8 @@ class Post extends Model
 {
     const PUBLISHED = 'PUBLISHED';
 
+    protected $table = 'voyager_posts';
+
     protected $guarded = [];
 
     public function save(array $options = [])

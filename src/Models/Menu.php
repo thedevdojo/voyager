@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
  */
 class Menu extends Model
 {
-    protected $table = 'menus';
+    protected $table = 'voyager_menus';
 
     protected $guarded = [];
 
