@@ -81,7 +81,7 @@ return [
                 'voyager_permissions',
                 'voyager_roles',
                 'voyager_settings',
-                'voyager_users',
+                'users',
             ],
         ],
     ],
