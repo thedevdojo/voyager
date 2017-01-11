@@ -13,7 +13,7 @@ class CreateCategoriesTable extends Migration
     public function up()
     {
         // Create table for storing roles
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('voyager_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parent_id')->nullable();
             $table->integer('order')->default(1);
@@ -30,6 +30,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('categories');
+        Schema::drop('voyager_categories');
     }
 }
