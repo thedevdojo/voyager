@@ -66,7 +66,23 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => [], // database tables that are hidden from the admin panel
+            'hidden' => [  // database tables that are hidden from the admin panel
+                // Add your tables here
+                // ...
+
+
+                // Voyager tables
+                // these are the core tables that Voyager relies on
+                'voyager_data_rows',
+                'voyager_data_types',
+                'voyager_menu_items',
+                'voyager_menus',
+                'voyager_permission_role',
+                'voyager_permissions',
+                'voyager_roles',
+                'voyager_settings',
+                'voyager_users',
+            ],
         ],
     ],
 
