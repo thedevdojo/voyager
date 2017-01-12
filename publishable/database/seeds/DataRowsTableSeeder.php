@@ -713,7 +713,7 @@ class DataRowsTableSeeder extends Seeder
             ]);
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'text',
+                'type'         => 'select_dropdown',
                 'display_name' => 'parent_id',
                 'required'     => 0,
                 'browse'       => 0,
@@ -721,7 +721,17 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => '{
+"default": "__null__",
+"null": "__null__",
+"options": {
+"__null__": "NULL"
+},
+"relationship": {
+"key": "id",
+"label": "name"
+}
+}',
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
