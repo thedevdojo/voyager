@@ -237,6 +237,11 @@ In this file you can find various options to change the configuration of your vo
 
 You can specify the default `controller` namespace of voyager so if you ever wish to override any of the core functionality of voyager you can do so by duplicating the Voyager Controllers and specifying the location of your custom controllers.
 
+> If you do only wish to overwrite a single controller, you might consider adding the following piece of code in your `AppServiceProvider`'s `register`-method:
+> ```
+$this->app->bind(VoyagerBreadController::class, MyBreadController::class);
+```
+
 #### Asset config
 
 ```
