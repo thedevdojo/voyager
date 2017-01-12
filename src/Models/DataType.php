@@ -55,7 +55,16 @@ class DataType extends Model
     public function updateDataType($requestData)
     {
         $success = true;
-        $fields = $this->fields();
+        $fields = $this->fields(array_get($requestData, 'name'));
+
+        $dataTypeData = array_filter(
+            $requestData,
+            function ($value, $key) {
+                return strpos($key, 'field_') !== 0;
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
+        $success = $success && $this->fill($dataTypeData)->save();
 
         foreach ($fields as $field) {
             $dataRow = DataRow::where('data_type_id', '=', $this->id)
@@ -89,15 +98,6 @@ class DataType extends Model
             }
         }
 
-        $requestData = array_filter(
-            $requestData,
-            function ($value, $key) {
-                return strpos($key, 'field_') !== 0;
-            },
-            ARRAY_FILTER_USE_BOTH
-        );
-        $success = $success && $this->fill($requestData)->save();
-
         if ($this->generate_permissions) {
             Permission::generateFor($this->name);
         }
@@ -105,9 +105,13 @@ class DataType extends Model
         return $success !== false;
     }
 
-    public function fields()
+    public function fields($name = null)
     {
-        $fields = Schema::getColumnListing($this->name);
+        if (is_null($name)) {
+            $name = $this->name;
+        }
+
+        $fields = Schema::getColumnListing($name);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
