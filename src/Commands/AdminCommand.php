@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Input\InputOption;
 use TCG\Voyager\Models\Permission;
 use TCG\Voyager\Models\Role;
-use TCG\Voyager\Models\User;
 
 class AdminCommand extends Command
 {
@@ -102,11 +101,13 @@ class AdminCommand extends Command
      *
      * @param bool $create
      *
-     * @return \TCG\Voyager\Models\User
+     * @return \App\User
      */
     protected function getUser($create = false)
     {
         $email = $this->argument('email');
+
+        $model = config('voyager.user.namespace', 'App\\User');
 
         // If we need to create a new user go ahead and create it
         if ($create) {
@@ -114,7 +115,7 @@ class AdminCommand extends Command
             $password = $this->secret('Enter admin password');
             $this->info('Creating admin account');
 
-            return User::create([
+            return $model::create([
                 'name'             => $name,
                 'email'            => $email,
                 'password'         => Hash::make($password),
@@ -122,6 +123,6 @@ class AdminCommand extends Command
             ]);
         }
 
-        return User::where('email', $email)->firstOrFail();
+        return $model::where('email', $email)->firstOrFail();
     }
 }
