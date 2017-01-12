@@ -242,9 +242,9 @@ class DataRowsTableSeeder extends Seeder
                 'required'     => 0,
                 'browse'       => 1,
                 'read'         => 1,
-                'edit'         => 1,
+                'edit'         => 0,
                 'add'          => 0,
-                'delete'       => 1,
+                'delete'       => 0,
                 'details'      => '',
             ])->save();
         }
@@ -259,10 +259,10 @@ class DataRowsTableSeeder extends Seeder
                 'display_name' => 'updated_at',
                 'required'     => 0,
                 'browse'       => 0,
-                'read'         => 1,
-                'edit'         => 1,
+                'read'         => 0,
+                'edit'         => 0,
                 'add'          => 0,
-                'delete'       => 1,
+                'delete'       => 0,
                 'details'      => '',
             ])->save();
         }
@@ -446,9 +446,9 @@ class DataRowsTableSeeder extends Seeder
                 'required'     => 1,
                 'browse'       => 1,
                 'read'         => 1,
-                'edit'         => 1,
+                'edit'         => 0,
                 'add'          => 0,
-                'delete'       => 1,
+                'delete'       => 0,
                 'details'      => '',
             ])->save();
         }
@@ -582,9 +582,9 @@ class DataRowsTableSeeder extends Seeder
                 'required'     => 0,
                 'browse'       => 1,
                 'read'         => 1,
-                'edit'         => 1,
+                'edit'         => 0,
                 'add'          => 0,
-                'delete'       => 1,
+                'delete'       => 0,
                 'details'      => '',
             ])->save();
         }
@@ -667,9 +667,9 @@ class DataRowsTableSeeder extends Seeder
                 'required'     => 0,
                 'browse'       => 0,
                 'read'         => 0,
-                'edit'         => 1,
+                'edit'         => 0,
                 'add'          => 0,
-                'delete'       => 1,
+                'delete'       => 0,
                 'details'      => '',
             ])->save();
         }
@@ -791,7 +791,7 @@ class DataRowsTableSeeder extends Seeder
                 'read'         => 1,
                 'edit'         => 0,
                 'add'          => 0,
-                'delete'       => 1,
+                'delete'       => 0,
                 'details'      => '',
             ])->save();
         }
