@@ -17,7 +17,7 @@ class DataTypesTableSeeder extends Seeder
         ]);
         if (!$dataType->exists) {
             $dataType->fill([
-                'name'                  => 'posts',
+                'name'                  => 'voyager_posts',
                 'display_name_singular' => 'Post',
                 'display_name_plural'   => 'Posts',
                 'icon'                  => 'voyager-news',
@@ -32,7 +32,7 @@ class DataTypesTableSeeder extends Seeder
         ]);
         if (!$dataType->exists) {
             $dataType->fill([
-                'name'                  => 'pages',
+                'name'                  => 'voyager_pages',
                 'display_name_singular' => 'Page',
                 'display_name_plural'   => 'Pages',
                 'icon'                  => 'voyager-file-text',
@@ -58,7 +58,7 @@ class DataTypesTableSeeder extends Seeder
         }
 
         $dataType = DataType::firstOrNew([
-            'name'                  => 'categories',
+            'name'                  => 'voyager_categories',
         ]);
         if (!$dataType->exists) {
             $dataType->fill([
@@ -77,7 +77,7 @@ class DataTypesTableSeeder extends Seeder
         ]);
         if (!$dataType->exists) {
             $dataType->fill([
-                'name'                  => 'menus',
+                'name'                  => 'voyager_menus',
                 'display_name_singular' => 'Menu',
                 'display_name_plural'   => 'Menus',
                 'icon'                  => 'voyager-list',
@@ -92,7 +92,7 @@ class DataTypesTableSeeder extends Seeder
         ]);
         if (!$dataType->exists) {
             $dataType->fill([
-                'name'                  => 'roles',
+                'name'                  => 'voyager_roles',
                 'display_name_singular' => 'Role',
                 'display_name_plural'   => 'Roles',
                 'icon'                  => 'voyager-lock',

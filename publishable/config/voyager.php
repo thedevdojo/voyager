@@ -69,7 +69,7 @@ return [
             'hidden' => [  // database tables that are hidden from the admin panel
                 // Add your tables here
                 // ...
-
+                'migrations',
 
                 // Voyager tables
                 // these are the core tables that Voyager relies on
