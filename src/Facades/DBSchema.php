@@ -31,4 +31,13 @@ class DBSchema
 
         return DB::select($query);
     }
+
+    /**
+     * Get the table name of a Model.
+     *
+     * @return string
+     */
+    public static function getTable($model) {
+        return (new $model)->getTable();
+    }
 }
