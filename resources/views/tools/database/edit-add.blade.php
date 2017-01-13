@@ -50,7 +50,7 @@
                         <option value="double">DOUBLE</option>
                         <option value="decimal">DECIMAL</option>
                         <option value="boolean">BOOLEAN</option>
-                        <option value="enum">ENUM</option>
+                        @if (config('database.default', 'mysql') == 'mysql')<option value="enum">ENUM</option>@endif
                         <option value="date">DATE</option>
                         <option value="dateTime">DATETIME</option>
                         <option value="time">TIME</option>
