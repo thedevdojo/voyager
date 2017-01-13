@@ -194,9 +194,22 @@ abstract class Controller extends BaseController
                 }
                 break;
 
+            /********** TIMESTAMP TYPE **********/
+            case 'timestamp':
+                if ($request->isMethod('PUT')) {
+                    $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
+                }
+                break;
+
             /********** ALL OTHER TEXT TYPE **********/
             default:
-                return $request->input($row->field);
+                $value = $request->input($row->field);
+                $options = json_decode($row->details);
+                if (isset($options->null)) {
+                    return $value == $options->null ? null : $value;
+                }
+
+                return $value;
         }
 
         return $content;

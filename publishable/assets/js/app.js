@@ -71,4 +71,6 @@ $(document).ready(function () {
     }
     $this.closest('.panel').toggleClass('is-fullscreen');
   });
+
+  $('.datepicker').datetimepicker();
 });
