@@ -125,19 +125,20 @@ class Voyager
 
     /**
      * @param string|Model|Collection $model
-     * @return boolean
+     *
+     * @return bool
      */
     public function translatable($model)
     {
         if (is_string($model)) {
             $model = app($model);
         }
-        
+
         if ($model instanceof Collection) {
             $model = $model->first();
         }
 
-        if (! is_subclass_of($model, Model::class)) {
+        if (!is_subclass_of($model, Model::class)) {
             return false;
         }
 
