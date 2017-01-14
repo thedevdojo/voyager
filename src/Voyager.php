@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Auth;
@@ -123,13 +124,17 @@ class Voyager
     }
 
     /**
-     * @param string|Model $model
+     * @param string|Model|Collection $model
      * @return boolean
      */
     public function translatable($model)
     {
         if (is_string($model)) {
             $model = app($model);
+        }
+
+        if ($model instanceof Collection) {
+            $model = $model->first();
         }
 
         if (! is_subclass_of($model, Model::class)) {
