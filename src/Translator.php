@@ -39,6 +39,8 @@ class Translator implements ArrayAccess
         foreach ($this->model->getTranslatableAttributes() as $attribute) {
             $this->translateAttribute($attribute, $locale, $fallback);
         }
+
+        return $this;
     }
 
     protected function translateAttribute($attribute, $locale = null, $fallback = true)
