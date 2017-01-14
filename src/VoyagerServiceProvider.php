@@ -136,7 +136,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
     protected function bootTranslatorCollectionMacros()
     {
-        Collection::macro('translate', function(){
+        Collection::macro('translate', function () {
             $transtors = [];
 
             foreach ($this->all() as $item) {
