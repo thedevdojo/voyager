@@ -11,7 +11,7 @@ class VoyagerRoleController extends VoyagerBreadController
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
-        Voyager::can('edit_roles');
+        Voyager::canOrFail('edit_roles');
 
         $slug = $this->getSlug($request);
 
@@ -33,7 +33,7 @@ class VoyagerRoleController extends VoyagerBreadController
     // POST BRE(A)D
     public function store(Request $request)
     {
-        Voyager::can('add_roles');
+        Voyager::canOrFail('add_roles');
 
         $slug = $this->getSlug($request);
 

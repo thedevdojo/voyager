@@ -57,13 +57,35 @@ class Voyager
 
         if ($exist) {
             $user = User::find(Auth::id());
+
             if ($user == null) {
-                throw new UnauthorizedHttpException(null);
+                return false;
             }
+
             if (!$user->hasPermission($permission)) {
-                throw new UnauthorizedHttpException(null);
+                return false;
             }
         }
+
+        return true;
+    }
+
+    public function canOrFail($permission)
+    {
+        if (! $this->can($permission)) {
+            throw new UnauthorizedHttpException(null);
+        }
+
+        return true;
+    }
+
+    public function canOrAbort($permission, $statusCode = 403)
+    {
+        if (! $this->can($permission)) {
+            return abort($statusCode);
+        }
+
+        return true;
     }
 
     public function getVersion()
