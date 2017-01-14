@@ -30,15 +30,14 @@ if (!function_exists('isFieldSlugAutoGenerator')) {
      */
     function isFieldSlugAutoGenerator($dataTypeContent, $field)
     {
-        $options = json_decode(
-            ((isset($dataTypeContent->id))
-                ? $dataType->editRows
-                : $dataType->addRows
-            )->filter(function ($val) {
-                return $val->field == 'slug';
-            })->first()->details
-        );
+        $_tmp = (isset($dataTypeContent->id))
+                      ? $dataType->editRows
+                      : $dataType->addRows;
 
-        return isBreadTranslatable($options);
+        $_tmp = $_tmp->filter(function ($val) {
+            return $val->field == $field;
+        })->first()->details;
+
+        return isBreadTranslatable(json_decode($_tmp));
     }
 }
