@@ -23,7 +23,7 @@ class Translator implements ArrayAccess
 
         foreach ($this->model->getAttributes() as $attribute => $value) {
             $attributes[$attribute] = [
-                'value' => $value,
+                'value'  => $value,
                 'locale' => $this->locale,
                 'exists' => true,
             ];
@@ -45,7 +45,7 @@ class Translator implements ArrayAccess
 
     protected function translateAttribute($attribute, $locale = null, $fallback = true)
     {
-        if (! in_array($attribute, $this->model->getTranslatableAttributes())) {
+        if (!in_array($attribute, $this->model->getTranslatableAttributes())) {
             return $this->model->getAttribute($attribute);
         }
 
@@ -70,7 +70,7 @@ class Translator implements ArrayAccess
 
         if ($localeTranslation) {
             $this->attributes[$attribute] = [
-                'value' => $localeTranslation->value,
+                'value'  => $localeTranslation->value,
                 'locale' => $localeTranslation->locale,
                 'exists' => true,
             ];
@@ -89,7 +89,7 @@ class Translator implements ArrayAccess
 
         if ($fallbackTranslation && $fallback !== false) {
             $this->attributes[$attribute] = [
-                'value' => $fallbackTranslation->value,
+                'value'  => $fallbackTranslation->value,
                 'locale' => $fallbackTranslation->locale,
                 'exists' => true,
             ];
@@ -98,7 +98,7 @@ class Translator implements ArrayAccess
         }
 
         $this->attributes[$attribute] = [
-            'value' => null,
+            'value'  => null,
             'locale' => null,
             'exists' => false,
         ];
@@ -109,7 +109,7 @@ class Translator implements ArrayAccess
     protected function translateAttributeToOriginal($attribute)
     {
         $this->attributes[$attribute] = [
-            'value' => $this->model->attributes[$attribute],
+            'value'  => $this->model->attributes[$attribute],
             'locale' => config('voyager.multilingual.default', 'en'),
             'exists' => true,
         ];
