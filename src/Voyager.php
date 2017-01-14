@@ -124,7 +124,8 @@ class Voyager
 
     /**
      * @param string|Model $model
-     * @return boolean
+     *
+     * @return bool
      */
     public function translatable($model)
     {
@@ -132,7 +133,7 @@ class Voyager
             $model = app($model);
         }
 
-        if (! is_subclass_of($model, Model::class)) {
+        if (!is_subclass_of($model, Model::class)) {
             return false;
         }
 
