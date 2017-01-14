@@ -13,6 +13,7 @@
 @stop
 
 @section('content')
+    @include('voyager::menus.partial.notice')
 
     <div class="page-content container-fluid">
         <div class="row">
