@@ -4,8 +4,8 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Models\DataType;
 
 class VoyagerBreadController extends Controller
 {
