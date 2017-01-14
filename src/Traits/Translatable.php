@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Translator;
 
@@ -34,10 +36,73 @@ trait Translatable
     }
 
     /**
+     * This scope eager loads the translations for the default and the fallback locale only.
+     * We can use this as a shortcut to improve performance in our application.
+     *
+     * @param Builder $query
+     * @param string|null $locale
+     * @param string|boolean $fallback
+     */
+    public function scopeWithTranslation(Builder $query, $locale = null, $fallback = true)
+    {
+        if (is_null($locale)) {
+            $locale = app()->getLocale();
+        }
+
+        if ($fallback === true) {
+            $fallback = config('app.fallback_locale', 'en');
+        }
+
+        $query->with(['translations' => function (Relation $query) use ($locale, $fallback) {
+            $query->where('locale', $locale);
+
+            if ($fallback !== false) {
+                $query->orWhere('locale', $fallback);
+            }
+        }]);
+    }
+
+    /**
+     * This scope eager loads the translations for the default and the fallback locale only.
+     * We can use this as a shortcut to improve performance in our application.
+     *
+     * @param Builder $query
+     * @param string|null|array $locales
+     * @param string|boolean $fallback
+     */
+    public function scopeWithTranslations(Builder $query, $locales = null, $fallback = true)
+    {
+        if (is_null($locales)) {
+            $locales = app()->getLocale();
+        }
+
+        if ($fallback === true) {
+            $fallback = config('app.fallback_locale', 'en');
+        }
+
+        $query->with(['translations' => function (Relation $query) use ($locales, $fallback) {
+            if (is_null($locales)) {
+                return;
+            }
+
+            if (is_array($locales)) {
+                $query->whereIn('locale', $locales);
+            } else {
+                $query->where('locale', $locales);
+            }
+
+            if ($fallback !== false) {
+                $query->orWhere('locale', $fallback);
+            }
+        }]);
+    }
+
+    /**
      * Translate the whole model.
      *
-     * @param null $language
-     * @param bool $fallback
+     * @param null|string $language
+     * @param bool[string $fallback
+     * @return Translator
      */
     public function translate($language = null, $fallback = true)
     {
@@ -58,16 +123,23 @@ trait Translatable
      */
     public function getTranslatedAttribute($attribute, $language = null, $fallback = true)
     {
+        list($value) = $this->getTranslatedAttributeMeta($attribute, $language, $fallback);
+
+        return $value;
+    }
+
+    public function getTranslatedAttributeMeta($attribute, $locale = null, $fallback = true)
+    {
         if (! in_array($attribute, $this->getTranslatableAttributes())) {
-            return $this->getAttribute($attribute);
+            return [$this->getAttribute($attribute), config('voyager.multilingual.default'), false];
         }
 
         if ($this->relationLoaded('translations')) {
             $this->load('translations');
         }
 
-        if (is_null($language)) {
-            $language = app()->getLocale();
+        if (is_null($locale)) {
+            $locale = app()->getLocale();
         }
 
         if ($fallback === true) {
@@ -79,27 +151,27 @@ trait Translatable
         $translations = $this->getRelation('translations')
             ->where('column_name', $attribute);
 
-        if ($default == $language) {
-            return $this->getAttribute($attribute);
+        if ($default == $locale) {
+            return [$this->getAttribute($attribute), $default, true];
         }
 
-        $languageTranslation = $translations->where('locale', $language)->first();
+        $localeTranslation = $translations->where('locale', $locale)->first();
 
-        if ($languageTranslation) {
-            return $languageTranslation->value;
+        if ($localeTranslation) {
+            return [$localeTranslation->value, $locale, true];
         }
 
-        if ($fallback == $language) {
-            return $this->getAttribute($attribute);
+        if ($fallback == $locale) {
+            return [$this->getAttribute($attribute), $locale, false];
         }
 
         $fallbackTranslation = $translations->where('locale', $fallback)->first();
 
         if ($fallbackTranslation && $fallback !== false) {
-            return $fallbackTranslation->value;
+            return [$fallbackTranslation->value, $fallback, true];
         }
 
-        return null;
+        return [null, $locale, false];
     }
 
     /**

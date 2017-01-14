@@ -45,62 +45,12 @@ class Translator implements ArrayAccess
 
     protected function translateAttribute($attribute, $locale = null, $fallback = true)
     {
-        if (! in_array($attribute, $this->model->getTranslatableAttributes())) {
-            return $this->model->getAttribute($attribute);
-        }
-
-        if (is_null($locale)) {
-            $locale = app()->getLocale();
-        }
-
-        if ($fallback === true) {
-            $fallback = config('app.fallback_locale', 'en');
-        }
-
-        $default = config('voyager.multilingual.default', 'en');
-
-        if ($default == $locale) {
-            return $this->translateAttributeToOriginal($attribute);
-        }
-
-        $localeTranslation = $this->model->getRelation('translations')
-            ->where('column_name', $attribute)
-            ->where('locale', $locale)
-            ->first();
-
-        if ($localeTranslation) {
-            $this->attributes[$attribute] = [
-                'value' => $localeTranslation->value,
-                'locale' => $localeTranslation->locale,
-                'exists' => true,
-            ];
-
-            return $this;
-        }
-
-        if ($default == $fallback) {
-            return $this->translateAttributeToOriginal($attribute);
-        }
-
-        $fallbackTranslation = $this->model->getRelation('translations')
-            ->where('column_name', $attribute)
-            ->where('locale', $locale)
-            ->first();
-
-        if ($fallbackTranslation && $fallback !== false) {
-            $this->attributes[$attribute] = [
-                'value' => $fallbackTranslation->value,
-                'locale' => $fallbackTranslation->locale,
-                'exists' => true,
-            ];
-
-            return $this;
-        }
+        list($value, $locale, $exists) = $this->model->getTranslatedAttributeMeta($attribute, $locale, $fallback);
 
         $this->attributes[$attribute] = [
-            'value' => null,
-            'locale' => null,
-            'exists' => false,
+            'value' => $value,
+            'locale' => $locale,
+            'exists' => $exists,
         ];
 
         return $this;
