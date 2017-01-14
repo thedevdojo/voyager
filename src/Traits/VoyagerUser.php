@@ -46,7 +46,7 @@ trait VoyagerUser
 
     public function hasPermissionOrFail($name)
     {
-        if (! $this->hasPermission($name)) {
+        if (!$this->hasPermission($name)) {
             throw new UnauthorizedHttpException(null);
         }
 
@@ -55,7 +55,7 @@ trait VoyagerUser
 
     public function hasPermissionOrAbort($name, $statusCode = 403)
     {
-        if (! $this->hasPermission($name)) {
+        if (!$this->hasPermission($name)) {
             return abort($statusCode);
         }
 

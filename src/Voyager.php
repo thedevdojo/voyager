@@ -72,7 +72,7 @@ class Voyager
 
     public function canOrFail($permission)
     {
-        if (! $this->can($permission)) {
+        if (!$this->can($permission)) {
             throw new UnauthorizedHttpException(null);
         }
 
@@ -81,7 +81,7 @@ class Voyager
 
     public function canOrAbort($permission, $statusCode = 403)
     {
-        if (! $this->can($permission)) {
+        if (!$this->can($permission)) {
             return abort($statusCode);
         }
 
