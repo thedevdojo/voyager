@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Voyager;
 
 class VoyagerDatabaseController extends Controller
 {

@@ -4,8 +4,8 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Setting;
-use TCG\Voyager\Voyager;
 
 class VoyagerSettingsController extends Controller
 {

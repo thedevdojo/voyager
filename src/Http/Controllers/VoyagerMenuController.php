@@ -3,9 +3,9 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
-use TCG\Voyager\Voyager;
 
 class VoyagerMenuController extends Controller
 {
