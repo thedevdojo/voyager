@@ -39,10 +39,6 @@ class VoyagerRoleController extends VoyagerBreadController
 
         $dataType = DataType::where('slug', '=', $slug)->first();
 
-        if (function_exists('voyager_add_post')) {
-            voyager_add_post($request);
-        }
-
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
 

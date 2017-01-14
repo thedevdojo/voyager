@@ -187,11 +187,6 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::can('add_'.$dataType->name);
 
-        if (function_exists('voyager_add_post')) {
-            $url = $request->url();
-            voyager_add_post($request);
-        }
-
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
 
