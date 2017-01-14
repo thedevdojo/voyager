@@ -53,6 +53,7 @@ class Translator implements ArrayAccess
     public function save()
     {
         $attributes = $this->getModifiedAttributes();
+        $savings = [];
 
         foreach ($attributes as $key => $attribute) {
             if ($attribute['exists']) {
@@ -77,14 +78,34 @@ class Translator implements ArrayAccess
                 'locale'      => $this->locale,
             ]);
 
-            $translation->save();
+            $savings[] = $translation->save();
 
             $this->attributes[$key]['locale'] = $this->locale;
             $this->attributes[$key]['exists'] = true;
             $this->attributes[$key]['modified'] = false;
         }
 
-        return true;
+        return in_array(false, $savings);
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function getRawAttributes()
+    {
+        return $this->attributes;
+    }
+
+    public function getOriginalAttributes()
+    {
+        return $this->model->getAttributes();
+    }
+
+    public function getOriginalAttribute($key)
+    {
+        return $this->model->getAttribute($key);
     }
 
     public function getTranslationModel($key, $locale = null)
