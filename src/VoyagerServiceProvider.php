@@ -74,8 +74,8 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     protected function loadHelpers()
     {
-        foreach (glob(__DIR__.'/Helpers/*.php') as $filename){
-            require_once($filename);
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
+            require_once $filename;
         }
     }
 
