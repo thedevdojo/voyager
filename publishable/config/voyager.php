@@ -81,17 +81,17 @@ return [
     */
 
     'multilingual' => [
-        /**
+        /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
         'bread' => false,
 
-        /**
+        /*
          * Select default language
          */
         'default' => 'en',
 
-        /**
+        /*
          * Select languages that are supported.
          */
         'locales' => [
