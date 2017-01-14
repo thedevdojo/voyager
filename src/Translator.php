@@ -26,6 +26,7 @@ class Translator implements ArrayAccess
                 'value'  => $value,
                 'locale' => $this->locale,
                 'exists' => true,
+                'modified' => false,
             ];
         }
 
@@ -51,6 +52,7 @@ class Translator implements ArrayAccess
             'value' => $value,
             'locale' => $locale,
             'exists' => $exists,
+            'modified' => false,
         ];
 
         return $this;
@@ -62,6 +64,7 @@ class Translator implements ArrayAccess
             'value'  => $this->model->attributes[$attribute],
             'locale' => config('voyager.multilingual.default', 'en'),
             'exists' => true,
+            'modified' => false,
         ];
 
         return $this;
@@ -75,6 +78,7 @@ class Translator implements ArrayAccess
     public function __set($name, $value)
     {
         $this->attributes[$name]['value'] = $value;
+        $this->attributes[$name]['modified'] = true;
     }
 
     public function offsetGet($offset)
@@ -85,6 +89,7 @@ class Translator implements ArrayAccess
     public function offsetSet($offset, $value)
     {
         $this->attributes[$offset]['value'] = $value;
+        $this->attributes[$offset]['modified'] = true;
     }
 
     public function offsetExists($offset)
