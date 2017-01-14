@@ -3,8 +3,8 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Models\DataType;
 
 class VoyagerRoleController extends VoyagerBreadController
 {
