@@ -30,6 +30,7 @@ class VoyagerServiceProvider extends ServiceProvider
             return new Voyager();
         });
 
+        $this->loadHelpers();
         $this->registerViewComposers();
         $this->registerAlertComponents();
 
@@ -66,6 +67,16 @@ class VoyagerServiceProvider extends ServiceProvider
         $event->listen('voyager.alerts.collecting', function () {
             $this->addStorageSymlinkAlert();
         });
+    }
+
+    /**
+     * Load helpers.
+     */
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename){
+            require_once($filename);
+        }
     }
 
     /**
