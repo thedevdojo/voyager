@@ -86,6 +86,32 @@ trait DatabaseUpdate
                 }
             }
         }
+
+        // Remove enum columns
+        $existingColumns = $this->describeTable($tableName);
+
+        $enumColumns = $existingColumns->filter(function ($column) {
+            return preg_match('/enum/', $column['type']);
+        })->pluck('field');
+
+        Schema::table($tableName, function (Blueprint $table) use ($enumColumns) {
+            foreach ($enumColumns as $column) {
+                $table->dropColumn($column);
+            }
+        });
+
+        // Remove columns that will changed to enum
+        $enumColumns = collect($request->type)->map(function ($type, $key) use($request, $existingColumns) {
+            if ($type == 'enum' && $existingColumns->has($request->field[$key])) {
+                return $request->field[$key];
+            }
+        })->filter();
+
+        Schema::table($tableName, function (Blueprint $table) use ($enumColumns) {
+            foreach ($enumColumns as $column) {
+                $table->dropColumn($column);
+            }
+        });
     }
 
     /**

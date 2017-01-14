@@ -17,7 +17,6 @@ trait DatabaseQueryBuilder
     private $typeBlacklist = [
         'char',
         'double',
-        'enum',
         'ipAddress',
         'json',
         'jsonb',
@@ -52,13 +51,20 @@ trait DatabaseQueryBuilder
             // We need to check that an existing database table column in now being
             // updated. If it is, we also need to check that the supplied column
             // type can actually be update without throwing an annoying error.
-            if ($existingColumns && $existingColumns->has($column['field']) &&
-                in_array($column['type'], $this->typeBlacklist)
+            if ($existingColumns && $existingColumns->has($column['field']) && in_array($column['type'],
+                    $this->typeBlacklist)
             ) {
                 return false;
             }
 
-            return function (Blueprint $table) use ($column) {
+            return function (Blueprint $table) use ($column, $existingColumns) {
+
+                if ($existingColumns) {
+                    $oldColumn = $existingColumns->first(function ($item, $key) use ($column) {
+                        return $key == $column['field'];
+                    });
+                }
+
                 if ($column['key'] == 'PRI') {
                     return $table->increments($column['field']);
                 }
@@ -73,12 +79,23 @@ trait DatabaseQueryBuilder
 
                 $type = $column['type'] ?: 'string';
 
-                $result = $type == 'enum'
-                    ? $table->enum($column['field'], [$column['enum']])
-                    : $table->{$type}($column['field']);
+                $result = $type == 'enum' ? $table->enum($column['field'],
+                    array_map('trim', explode(',', $column['enum']))) : $table->{$type}($column['field']);
 
-                if ($column['key'] == 'UNI') {
-                    $result->unique();
+                if ($existingColumns) {
+                    // Add unique key.
+                    if ($column['key'] == 'UNI' && $oldColumn && $oldColumn['key'] != 'UNI') {
+                        $result->unique();
+                    }
+
+                    // Remove unique if have previous unique key.
+                    if ($column['key'] != 'UNI' && $oldColumn && $oldColumn['key'] == 'UNI') {
+                        $table->dropUnique([$column['field']]);
+                    }
+                } else {
+                    if ($column['key'] == 'UNI') {
+                        $result->unique();
+                    }
                 }
 
                 $result->nullable($column['nullable']);
@@ -152,13 +169,13 @@ trait DatabaseQueryBuilder
                 }
 
                 $columns->push([
-                        'field'    => $field,
-                        'type'     => $request->type[$index],
-                        'enum'     => $request->enum[$index],
-                        'nullable' => (bool) $request->nullable[$index],
-                        'key'      => $request->key[$index],
-                        'default'  => $request->default[$index],
-                    ]);
+                    'field'    => $field,
+                    'type'     => $request->type[$index],
+                    'enum'     => $request->enum[$index],
+                    'nullable' => (bool) $request->nullable[$index],
+                    'key'      => $request->key[$index],
+                    'default'  => $request->default[$index],
+                ]);
             }
         }
 
