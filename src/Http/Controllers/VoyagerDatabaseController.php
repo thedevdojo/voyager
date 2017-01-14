@@ -192,6 +192,9 @@ class VoyagerDatabaseController extends Controller
     {
         $displayName = Str::singular(implode(' ', explode('_', Str::title($table))));
         $modelNamespace = config('voyager.models.namespace', $this->getAppNamespace());
+        if (empty($modelNamespace)) {
+            $modelNamespace = $this->getAppNamespace();
+        }
 
         return [
             'table'                 => $table,

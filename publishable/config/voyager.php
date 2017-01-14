@@ -36,7 +36,8 @@ return [
     | Models config
     |--------------------------------------------------------------------------
     |
-    | Here you can specify default model namespace when creating BREAD
+    | Here you can specify default model namespace when creating BREAD.
+    | If empty, default application namespace App\ will be used.
     |
     */
 
