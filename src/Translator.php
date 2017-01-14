@@ -23,7 +23,7 @@ class Translator implements ArrayAccess
 
         foreach ($this->model->getAttributes() as $attribute => $value) {
             $attributes[$attribute] = [
-                'value' => $value,
+                'value'  => $value,
                 'locale' => $this->locale,
                 'exists' => true,
             ];
@@ -59,7 +59,7 @@ class Translator implements ArrayAccess
     protected function translateAttributeToOriginal($attribute)
     {
         $this->attributes[$attribute] = [
-            'value' => $this->model->attributes[$attribute],
+            'value'  => $this->model->attributes[$attribute],
             'locale' => config('voyager.multilingual.default', 'en'),
             'exists' => true,
         ];

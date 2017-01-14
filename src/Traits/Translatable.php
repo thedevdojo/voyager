@@ -20,7 +20,7 @@ trait Translatable
             return false;
         }
 
-        return ! empty($this->getTranslatableAttributes());
+        return !empty($this->getTranslatableAttributes());
     }
 
     /**
@@ -119,6 +119,7 @@ trait Translatable
      * @param $attribute
      * @param null $language
      * @param bool $fallback
+     *
      * @return null
      */
     public function getTranslatedAttribute($attribute, $language = null, $fallback = true)
