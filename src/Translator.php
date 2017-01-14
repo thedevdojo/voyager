@@ -14,7 +14,7 @@ class Translator implements ArrayAccess
 
     public function __construct(Model $model)
     {
-        if (! $model->relationLoaded('translations')) {
+        if (!$model->relationLoaded('translations')) {
             $model->load('translations');
         }
 
@@ -24,9 +24,9 @@ class Translator implements ArrayAccess
 
         foreach ($this->model->getAttributes() as $attribute => $value) {
             $attributes[$attribute] = [
-                'value'  => $value,
-                'locale' => $this->locale,
-                'exists' => true,
+                'value'    => $value,
+                'locale'   => $this->locale,
+                'exists'   => true,
                 'modified' => false,
             ];
         }
@@ -66,15 +66,15 @@ class Translator implements ArrayAccess
             }
 
             if (is_null($translation)) {
-                $translation = new Translation;
+                $translation = new Translation();
             }
 
             $translation->fill([
-                'table_name' => $this->model->getTable(),
+                'table_name'  => $this->model->getTable(),
                 'column_name' => $key,
                 'foreign_key' => $this->model->getKey(),
-                'value' => $attribute['value'],
-                'locale' => $this->locale,
+                'value'       => $attribute['value'],
+                'locale'      => $this->locale,
             ]);
 
             $translation->save();
@@ -105,9 +105,9 @@ class Translator implements ArrayAccess
         list($value, $locale, $exists) = $this->model->getTranslatedAttributeMeta($attribute, $locale, $fallback);
 
         $this->attributes[$attribute] = [
-            'value'  => $value,
-            'locale' => $locale,
-            'exists' => $exists,
+            'value'    => $value,
+            'locale'   => $locale,
+            'exists'   => $exists,
             'modified' => false,
         ];
 
@@ -117,9 +117,9 @@ class Translator implements ArrayAccess
     protected function translateAttributeToOriginal($attribute)
     {
         $this->attributes[$attribute] = [
-            'value'  => $this->model->attributes[$attribute],
-            'locale' => config('voyager.multilingual.default', 'en'),
-            'exists' => true,
+            'value'    => $this->model->attributes[$attribute],
+            'locale'   => config('voyager.multilingual.default', 'en'),
+            'exists'   => true,
             'modified' => false,
         ];
 
@@ -135,7 +135,7 @@ class Translator implements ArrayAccess
     {
         $this->attributes[$name]['value'] = $value;
 
-        if (! in_array($name, $this->model->getTranslatableAttributes())) {
+        if (!in_array($name, $this->model->getTranslatableAttributes())) {
             return $this->model->$name = $value;
         }
 
@@ -151,7 +151,7 @@ class Translator implements ArrayAccess
     {
         $this->attributes[$offset]['value'] = $value;
 
-        if (! in_array($offset, $this->model->getTranslatableAttributes())) {
+        if (!in_array($offset, $this->model->getTranslatableAttributes())) {
             return $this->model->$offset = $value;
         }
 
