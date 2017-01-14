@@ -28,7 +28,10 @@
     "autoload": {
         "psr-4": {
             "TCG\\Voyager\\": "src/"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
