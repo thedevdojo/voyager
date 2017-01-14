@@ -87,14 +87,14 @@
                                         @if(isset($options->relationship))
                                             {{-- If this is a relationship and the method does not exist, show a warning message --}}
                                             @if( !method_exists( $dataType->model_name, $row->field ) )
-                                                <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>   
+                                                <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
                                             @endif
 
                                             @if( method_exists( $dataType->model_name, $row->field ) )
                                                 <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
                                                 <select class="form-control select2" name="{{ $row->field }}">
                                                     <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
-                                                
+
                                                     @if(isset($options->options))
                                                         <optgroup label="Custom">
                                                         @foreach($options->options as $key => $option)
@@ -130,9 +130,9 @@
                                         <?php $options = json_decode($row->details); ?>
                                         {{-- If this is a relationship and the method does not exist, show a warning message --}}
                                         @if(isset($options->relationship) && !method_exists( $dataType->model_name, $row->field ) )
-                                            <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>   
+                                            <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
                                         @endif
-                                        
+
                                         <select class="form-control select2" name="{{ $row->field }}[]" multiple>
                                             @if(isset($options->relationship))
                                                 <!-- Check that the method relationship exists -->
@@ -183,7 +183,7 @@
                                         @endif
 
                                     @elseif($row->type == "timestamp")
-                                        
+
                                         <input type="datetime" class="form-control datepicker" name="{{ $row->field }}" value="{{ gmdate('m/d/Y g:i A', strtotime($dataTypeContent->{$row->field})) }}">
 
                                     @elseif($row->type == "date")
