@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -9,6 +10,7 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Models\Permission;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\User;
+use TCG\Voyager\Traits\Translatable;
 
 class Voyager
 {
@@ -118,5 +120,24 @@ class Voyager
                 }
             }
         }
+    }
+
+    /**
+     * @param string|Model $model
+     * @return boolean
+     */
+    public function translatable($model)
+    {
+        if (is_string($model)) {
+            $model = app($model);
+        }
+
+        if (! is_subclass_of($model, Model::class)) {
+            return false;
+        }
+
+        $traits = class_uses_recursive(get_class($model));
+
+        return in_array(Translatable::class, $traits);
     }
 }
