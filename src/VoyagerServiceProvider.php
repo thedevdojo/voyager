@@ -69,7 +69,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->addStorageSymlinkAlert();
         });
 
-        $this->bootTranstorCollectionMacros();
+        $this->bootTranslatorCollectionMacros();
     }
 
     /**
