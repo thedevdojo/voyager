@@ -4,11 +4,11 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use TCG\Voyager\Traits\Translateable;
+use TCG\Voyager\Traits\Translatable;
 
 class Page extends Model
 {
-    use Translateable;
+    use Translatable;
 
     protected $translate = ['title', 'body'];
 
