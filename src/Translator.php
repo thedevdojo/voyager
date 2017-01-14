@@ -48,7 +48,7 @@ class Translator implements ArrayAccess
         list($value, $locale, $exists) = $this->model->getTranslatedAttributeMeta($attribute, $locale, $fallback);
 
         $this->attributes[$attribute] = [
-            'value' => $value,
+            'value'  => $value,
             'locale' => $locale,
             'exists' => $exists,
         ];

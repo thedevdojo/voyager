@@ -39,9 +39,9 @@ trait Translatable
      * This scope eager loads the translations for the default and the fallback locale only.
      * We can use this as a shortcut to improve performance in our application.
      *
-     * @param Builder $query
+     * @param Builder     $query
      * @param string|null $locale
-     * @param string|boolean $fallback
+     * @param string|bool $fallback
      */
     public function scopeWithTranslation(Builder $query, $locale = null, $fallback = true)
     {
@@ -66,9 +66,9 @@ trait Translatable
      * This scope eager loads the translations for the default and the fallback locale only.
      * We can use this as a shortcut to improve performance in our application.
      *
-     * @param Builder $query
+     * @param Builder           $query
      * @param string|null|array $locales
-     * @param string|boolean $fallback
+     * @param string|bool       $fallback
      */
     public function scopeWithTranslations(Builder $query, $locales = null, $fallback = true)
     {
@@ -102,6 +102,7 @@ trait Translatable
      *
      * @param null|string $language
      * @param bool[string $fallback
+     *
      * @return Translator
      */
     public function translate($language = null, $fallback = true)
@@ -131,7 +132,7 @@ trait Translatable
 
     public function getTranslatedAttributeMeta($attribute, $locale = null, $fallback = true)
     {
-        if (! in_array($attribute, $this->getTranslatableAttributes())) {
+        if (!in_array($attribute, $this->getTranslatableAttributes())) {
             return [$this->getAttribute($attribute), config('voyager.multilingual.default'), false];
         }
 
