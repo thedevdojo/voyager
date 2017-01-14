@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Voyager;
+use TCG\Voyager\Facades\Voyager;
 
 class VoyagerDatabaseController extends Controller
 {

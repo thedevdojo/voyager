@@ -5,7 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
-use TCG\Voyager\Voyager;
+use TCG\Voyager\Facades\Voyager;
 
 class VoyagerMenuController extends Controller
 {

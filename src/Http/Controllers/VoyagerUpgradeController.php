@@ -3,8 +3,7 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Database\Schema\Blueprint;
-use Schema;
-use TCG\Voyager\Voyager;
+use Illuminate\Support\Facades\Schema;
 
 class VoyagerUpgradeController extends Controller
 {
