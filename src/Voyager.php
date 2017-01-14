@@ -132,7 +132,7 @@ class Voyager
         if (is_string($model)) {
             $model = app($model);
         }
-
+        
         if ($model instanceof Collection) {
             $model = $model->first();
         }
