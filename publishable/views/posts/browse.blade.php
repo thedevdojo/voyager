@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title','All '.$dataType->display_name_plural)
+
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-news"></i> {{ $dataType->display_name_plural }}
