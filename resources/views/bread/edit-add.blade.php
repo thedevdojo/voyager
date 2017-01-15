@@ -4,6 +4,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
+@if(isset($dataTypeContent->id))
+    @section('page_title','Edit '.$dataType->display_name_singular)
+@else
+    @section('page_title','Add '.$dataType->display_name_singular)
+@endif
+
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
