@@ -110,9 +110,12 @@
                                                     $relationshipOptions = $relationshipClass::all();
 
                                                     // Try to get default value for the relationship
-                                                    $defaultRelationshipMethod = 'default_'.$row->field;
-                                                    if (method_exists($dataType->model_name, $defaultRelationshipMethod)) {
-                                                        $default = call_user_func([$dataType->model_name, $defaultRelationshipMethod]);
+                                                    // when default is a callable function (ClassName@methodName)
+                                                    if ($default != NULL) {
+                                                        $comps = explode('@', $default);
+                                                        if (count($comps) == 2 && method_exists($comps[0], $comps[1])) {
+                                                            $default = call_user_func([$comps[0], $comps[1]]);
+                                                        }
                                                     }
                                                     ?>
                                                     <optgroup label="Relationship">
