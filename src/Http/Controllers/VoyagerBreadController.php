@@ -169,7 +169,7 @@ class VoyagerBreadController extends Controller
         Voyager::can('add_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-                            ? new $dataType->model_name
+                            ? new $dataType->model_name()
                             : false;
 
         $view = 'voyager::bread.edit-add';
