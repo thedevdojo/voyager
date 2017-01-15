@@ -1,7 +1,7 @@
 Voyager Docs
 =======
 
-> Latest Version `0.10.9`
+> Latest Version `0.10.10`
 > 
 ## Welcome
 
