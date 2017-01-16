@@ -26,7 +26,7 @@ class VoyagerDatabaseController extends Controller
 
         $dataTypes = DataType::select('id', 'name')->get()->pluck('id', 'name')->toArray();
 
-        $tables = array_map(function($table) use ($dataTypes) {
+        $tables = array_map(function ($table) use ($dataTypes) {
             $table = [
                 'name'       => $table->Tables_in_voyager,
                 'dataTypeId' => isset($dataTypes[$table->Tables_in_voyager]) ? $dataTypes[$table->Tables_in_voyager] : null,
