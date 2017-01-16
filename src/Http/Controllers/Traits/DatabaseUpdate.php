@@ -17,7 +17,7 @@ trait DatabaseUpdate
      * @var array
      */
     private $renameBlacklist = [
-        'enum',
+        //'enum',
     ];
 
     /**

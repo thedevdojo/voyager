@@ -17,7 +17,7 @@ trait DatabaseQueryBuilder
     private $typeBlacklist = [
         'char',
         'double',
-        'enum',
+        //'enum',
         'ipAddress',
         'json',
         'jsonb',
@@ -73,9 +73,10 @@ trait DatabaseQueryBuilder
 
                 $type = $column['type'] ?: 'string';
 
-                $result = $type == 'enum'
-                    ? $table->enum($column['field'], [$column['enum']])
-                    : $table->{$type}($column['field']);
+                $result = $type == 'enum' ? $table->enum(
+                    $column['field'],
+                    array_map('trim', explode(',', $column['enum']))
+                ) : $table->{$type}($column['field']);
 
                 if ($column['key'] == 'UNI') {
                     $result->unique();

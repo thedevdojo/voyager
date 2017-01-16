@@ -4,6 +4,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
+@if(isset($dataTypeContent->id))
+    @section('page_title','Edit '.$dataType->display_name_singular)
+@else
+    @section('page_title','Add '.$dataType->display_name_singular)
+@endif
+
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
@@ -104,11 +110,23 @@
                                                         </optgroup>
                                                     @endif
 
-                                                    <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
-                                                    <?php $relationshipOptions = $relationshipClass::all(); ?>
+                                                    {{-- Populate all options from relationship --}}
+                                                    <?php
+                                                    $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated());
+                                                    $relationshipOptions = $relationshipClass::all();
+
+                                                    // Try to get default value for the relationship
+                                                    // when default is a callable function (ClassName@methodName)
+                                                    if ($default != NULL) {
+                                                        $comps = explode('@', $default);
+                                                        if (count($comps) == 2 && method_exists($comps[0], $comps[1])) {
+                                                            $default = call_user_func([$comps[0], $comps[1]]);
+                                                        }
+                                                    }
+                                                    ?>
                                                     <optgroup label="Relationship">
                                                     @foreach($relationshipOptions as $relationshipOption)
-                                                        <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
+                                                        <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
                                                     @endforeach
                                                     </optgroup>
                                                 </select>
@@ -136,7 +154,7 @@
 
                                         <select class="form-control select2" name="{{ $row->field }}[]" multiple>
                                             @if(isset($options->relationship))
-                                                <!-- Check that the method relationship exists -->
+                                                {{-- Check that the method relationship exists --}}
                                                 @if( method_exists( $dataType->model_name, $row->field ) )
                                                     <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{$row->field}()->pluck($options->relationship->key)->all() : array(); ?>
                                                     <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
