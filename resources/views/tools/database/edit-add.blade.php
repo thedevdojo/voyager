@@ -50,7 +50,7 @@
                         <option value="double">DOUBLE</option>
                         <option value="decimal">DECIMAL</option>
                         <option value="boolean">BOOLEAN</option>
-                        <option value="enum">ENUM</option>
+                        @if (config('database.default', 'mysql') == 'mysql')<option value="enum">ENUM</option>@endif
                         <option value="date">DATE</option>
                         <option value="dateTime">DATETIME</option>
                         <option value="time">TIME</option>
@@ -206,6 +206,7 @@
             $('#newFieldPrimary').click(function () {
                 newRow('primary');
             });
+
             $("#tablebody").sortable({
                 handle: '.voyager-handle'
             });
@@ -298,8 +299,14 @@
                     $('#' + unique_id).addClass('existing_row');
                     $('#' + unique_id).find('.fieldName').val(name);
                     $('#' + unique_id).find('.originalfieldName').val(name);
-                    type = getCorrectType(type);
-                    $('#' + unique_id).find('.fieldType').val(type);
+                    var correct_type = getCorrectType(type);
+                    if (correct_type == 'enum') {
+                        $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val .enum').val(str_replace(['enum(', ')', '&#039;'], '', type));
+                        $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val').show();
+                    } else {
+                        $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val').hide();
+                    }
+                    $('#' + unique_id).find('.fieldType').val(correct_type);
                     $('#' + unique_id).find('.fieldKey').val(key);
                     if (nullable == "YES") {
                         $('#' + unique_id).find('.toggleswitch').prop('checked', true).change();
@@ -312,9 +319,16 @@
 
         }
 
+        function str_replace($f, $r, $s){
+            return $s.replace(new RegExp("(" + (typeof($f) == "string" ? $f.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&") : $f.map(function(i){return i.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&")}).join("|")) + ")", "g"), typeof($r) == "string" ? $r : typeof($f) == "string" ? $r[0] : function(i){ return $r[$f.indexOf(i)]});
+        }
+
         function getCorrectType(type) {
             if (type.substring(0, 3) == 'int') {
                 return 'integer';
+            }
+            if (type.substring(0, 4) == 'enum') {
+                return 'enum';
             }
             if (type.substring(0, 7) == 'varchar') {
                 return 'string';

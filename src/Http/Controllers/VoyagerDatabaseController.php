@@ -49,7 +49,7 @@ class VoyagerDatabaseController extends Controller
 
             if (isset($request->create_model) && $request->create_model == 'on') {
                 $params = [
-                    'name' => ucfirst($tableName),
+                    'name' => ucfirst(Str::singular($tableName)),
                 ];
 
                 if (in_array('deleted_at', $request->input('field.*'))) {

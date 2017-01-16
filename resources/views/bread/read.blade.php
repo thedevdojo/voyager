@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title','View '.$dataType->display_name_singular)
+
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> Viewing {{ ucfirst($dataType->display_name_singular) }}
