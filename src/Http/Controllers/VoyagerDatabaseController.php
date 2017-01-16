@@ -3,18 +3,18 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
-use TCG\Voyager\Voyager;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Facades\DBSchema;
-use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Models\Permission;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
+use TCG\Voyager\Facades\DBSchema;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
+use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Models\Permission;
+use TCG\Voyager\Voyager;
 
 class VoyagerDatabaseController extends Controller
 {
@@ -26,10 +26,10 @@ class VoyagerDatabaseController extends Controller
 
         $dataTypes = DataType::select('id', 'name')->get()->pluck('id', 'name')->toArray();
 
-        $tables = array_map(function($table) use ($dataTypes){
+        $tables = array_map(function($table) use ($dataTypes) {
             $table = [
-                'name' => $table->Tables_in_voyager,
-                'dataTypeId' => isset( $dataTypes[$table->Tables_in_voyager] ) ? $dataTypes[$table->Tables_in_voyager] : null,
+                'name'       => $table->Tables_in_voyager,
+                'dataTypeId' => isset($dataTypes[$table->Tables_in_voyager]) ? $dataTypes[$table->Tables_in_voyager] : null,
             ];
             return (object) $table;
         }, DBSchema::tables());
@@ -49,7 +49,6 @@ class VoyagerDatabaseController extends Controller
         Voyager::can('browse_database');
 
         // alpha_dash validation is needed to avoid URL problems, tables named like "on/off/table"
-        // 
         /*$this->validate($request, [
             'name' => 'bail|required|alpha_dash'
         ]);*/
