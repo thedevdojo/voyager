@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use TCG\Voyager\Facades\DBSchema;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
@@ -17,14 +18,24 @@ use TCG\Voyager\Voyager;
 
 class VoyagerDatabaseController extends Controller
 {
-    use DatabaseUpdate;
-    use AppNamespaceDetectorTrait;
+    use DatabaseUpdate, AppNamespaceDetectorTrait;
 
     public function index()
     {
         Voyager::can('browse_database');
 
-        return view('voyager::tools.database.index');
+        $dataTypes = DataType::select('id', 'name')->get()->pluck('id', 'name')->toArray();
+
+        $tables = array_map(function ($table) use ($dataTypes) {
+            $table = [
+                'name'          => $table->Tables_in_voyager,
+                'dataTypeId'    => isset($dataTypes[$table->Tables_in_voyager]) ? $dataTypes[$table->Tables_in_voyager] : null,
+            ];
+
+            return (object) $table;
+        }, DBSchema::tables());
+
+        return view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
     }
 
     public function create()

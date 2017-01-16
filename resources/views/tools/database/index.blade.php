@@ -18,42 +18,30 @@
         <div class="row">
             <div class="col-md-12">
 
-                <?php $dataTypes = TCG\Voyager\Models\DataType::all(); ?>
-                <?php $dataTypeNames = []; ?>
-                @foreach($dataTypes as $type)
-                    <?php array_push($dataTypeNames, $type->name); ?>
-                @endforeach
-
                 <table class="table table-striped database-tables">
-	                <thead>
-	                	<tr>
-	                		<th>Table Name</th>
+                    <thead>
+                        <tr>
+                            <th>Table Name</th>
                             <th>BREAD/CRUD Actions</th>
-	                		<th style="text-align:right">Table Actions</th>
-	                	</tr>
-                	</thead>
+                            <th style="text-align:right">Table Actions</th>
+                        </tr>
+                    </thead>
 
-                <?php $arr = TCG\Voyager\Facades\DBSchema::tables(); ?>
-                @foreach($arr as $a)
-	            <?php $table = current($a); ?>
-		    <?php if (in_array($table, config('voyager.database.tables.hidden', []))) continue; ?>
-                	<?php $active = in_array($table, $dataTypeNames); 
-                        if($active){
-                            $activeDataType = TCG\Voyager\Models\DataType::where('name', '=', $table)->first();
-                        }
-                    ?>
-
+                @foreach($tables as $table)
+                        @if( in_array($table, config('voyager.database.tables.hidden', [])) )
+                            @continue
+                        @endif
                         <tr>
                             <td>
                                 <p class="name">
-                                    @if($active)
-                                        <a href="{{ route('voyager.database.show', $table) }}"
-                                           data-name="{{ $table }}" class="desctable">{{ $table }}</a> <i
+                                    @if($table->dataTypeId)
+                                        <a href="{{ route('voyager.database.show', $table->name) }}"
+                                           data-name="{{ $table->name }}" class="desctable">{{ $table->name }}</a> <i
                                                 class="voyager-bread"
                                                 style="font-size:25px; position:absolute; margin-left:10px; margin-top:-3px;"></i>
                                     @else
-                                        <a href="{{ route('voyager.database.show', $table) }}"
-                                           data-name="{{ $table }}" class="desctable">{{ $table }}</a>
+                                        <a href="{{ route('voyager.database.show', $table->name) }}"
+                                           data-name="{{ $table->name }}" class="desctable">{{ $table->name }}</a>
                                     @endif
                                 </p>
                             </td>
@@ -61,17 +49,17 @@
                             <td>
 
                                 <div class="bread_actions">
-                                    @if($active)
+                                    @if($table->dataTypeId)
                                         <a class="btn-sm btn-default edit"
-                                           href="{{ route('voyager.database.edit_bread', $activeDataType->id) }}"> Edit
+                                           href="{{ route('voyager.database.edit_bread', $table->dataTypeId) }}"> Edit
                                             BREAD</a>
                                         <div class="btn-sm btn-danger delete" style="display:inline"
-                                             data-id="{{ $activeDataType->id }}" data-name="{{ $table }}"> Delete BREAD
+                                             data-id="{{ $table->dataTypeId }}" data-name="{{ $table->name }}"> Delete BREAD
                                         </div>
                                     @else
                                         <form action="{{ route('voyager.database.create_bread') }}" method="POST">
                                             <input type="hidden" value="{{ csrf_token() }}" name="_token">
-                                            <input type="hidden" value="{{ $table }}" name="table">
+                                            <input type="hidden" value="{{ $table->name }}" name="table">
                                             <button type="submit" class="btn-sm btn-default"><i
                                                         class="voyager-plus"></i> Add BREAD to this table
                                             </button>
@@ -81,15 +69,15 @@
 
                             </td>
                             <td class="actions">
-                                <a class="btn-danger btn-sm pull-right delete_table @if($active) remove-bread-warning @endif"
-                                   data-table="{{ $table }}" style="display:inline; cursor:pointer;"><i
+                                <a class="btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
+                                   data-table="{{ $table->name }}" style="display:inline; cursor:pointer;"><i
                                             class="voyager-trash"></i> Delete</a>
                                 <a class="btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;"
-                                   href="{{ route('voyager.database.edit', $table) }}"><i
+                                   href="{{ route('voyager.database.edit', $table->name) }}"><i
                                             class="voyager-edit"></i> Edit</a>
                                 <a class="btn-sm btn-warning pull-right desctable"
                                    style="display:inline; margin-right:10px;"
-                                   href="{{ route('voyager.database.show', $table) }}" data-name="{{ $table }}"><i
+                                   href="{{ route('voyager.database.show', $table->name) }}" data-name="{{ $table->name }}"><i
                                             class="voyager-eye"></i> View</a>
                             </td>
                         </tr>
