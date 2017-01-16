@@ -30,13 +30,13 @@ if (!function_exists('isFieldSlugAutoGenerator')) {
      */
     function isFieldSlugAutoGenerator($dataTypeContent, $field)
     {
-        $_tmp = (isset($dataTypeContent->id))
-                      ? $dataType->editRows
-                      : $dataType->addRows;
-
         if (! isset($dataType)) {
             return;
         }
+
+        $_tmp = (isset($dataTypeContent->id))
+                      ? $dataType->editRows
+                      : $dataType->addRows;
 
         $_tmp = $_tmp->filter(function ($val) {
             return $val->field == $field;
