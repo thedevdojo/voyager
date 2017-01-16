@@ -31,6 +31,7 @@ class VoyagerDatabaseController extends Controller
                 'name'       => $table->Tables_in_voyager,
                 'dataTypeId' => isset($dataTypes[$table->Tables_in_voyager]) ? $dataTypes[$table->Tables_in_voyager] : null,
             ];
+            
             return (object) $table;
         }, DBSchema::tables());
 
