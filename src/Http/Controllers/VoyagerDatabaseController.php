@@ -28,8 +28,8 @@ class VoyagerDatabaseController extends Controller
 
         $tables = array_map(function ($table) use ($dataTypes) {
             $table = [
-                'name'          => $table->Tables_in_voyager,
-                'dataTypeId'    => isset($dataTypes[$table->Tables_in_voyager]) ? $dataTypes[$table->Tables_in_voyager] : null,
+                'name'          => $table,
+                'dataTypeId'    => isset($dataTypes[$table]) ? $dataTypes[$table] : null,
             ];
 
             return (object) $table;
