@@ -34,6 +34,10 @@ if (!function_exists('isFieldSlugAutoGenerator')) {
                       ? $dataType->editRows
                       : $dataType->addRows;
 
+        if (! isset($dataType)) {
+            return;
+        }
+
         $_tmp = $_tmp->filter(function ($val) {
             return $val->field == $field;
         })->first()->details;
