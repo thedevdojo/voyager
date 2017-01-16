@@ -34,6 +34,6 @@ class DBSchema
 
             return reset( $table );
 
-        }, DB::select($query));;
+        }, DB::select($query));
     }
 }
