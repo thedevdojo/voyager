@@ -33,7 +33,6 @@ class DBSchema
             $table = get_object_vars($table);
 
             return reset($table);
-
         }, DB::select($query));
     }
 }
