@@ -30,7 +30,7 @@ if (!function_exists('isFieldSlugAutoGenerator')) {
      */
     function isFieldSlugAutoGenerator($dataTypeContent, $field)
     {
-        if (! isset($dataType)) {
+        if (!isset($dataType)) {
             return;
         }
 
