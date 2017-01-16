@@ -3,28 +3,38 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
-use Illuminate\Console\AppNamespaceDetectorTrait;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
-use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Permission;
 use TCG\Voyager\Voyager;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Facades\DBSchema;
+use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Models\Permission;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Console\AppNamespaceDetectorTrait;
+use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 
 class VoyagerDatabaseController extends Controller
 {
-    use DatabaseUpdate;
-    use AppNamespaceDetectorTrait;
+    use DatabaseUpdate, AppNamespaceDetectorTrait;
 
     public function index()
     {
         Voyager::can('browse_database');
 
-        return view('voyager::tools.database.index');
+        $dataTypes = DataType::select('id', 'name')->get()->pluck('id', 'name')->toArray();
+
+        $tables = array_map(function($table) use ($dataTypes){
+            $table = [
+                'name' => $table->Tables_in_voyager,
+                'dataTypeId' => isset( $dataTypes[$table->Tables_in_voyager] ) ? $dataTypes[$table->Tables_in_voyager] : null,
+            ];
+            return (object) $table;
+        }, DBSchema::tables());
+
+        return view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
     }
 
     public function create()
@@ -37,6 +47,12 @@ class VoyagerDatabaseController extends Controller
     public function store(Request $request)
     {
         Voyager::can('browse_database');
+
+        // alpha_dash validation is needed to avoid URL problems, tables named like "on/off/table"
+        // 
+        /*$this->validate($request, [
+            'name' => 'bail|required|alpha_dash'
+        ]);*/
 
         $tableName = $request->name;
 
