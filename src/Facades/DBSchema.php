@@ -29,6 +29,11 @@ class DBSchema
                 throw new Exception("Voyager: Database driver [$driver] is not supported");
         }
 
-        return DB::select($query);
+        return array_map(function ($table) {
+            $table = get_object_vars($table);
+
+            return reset( $table );
+
+        }, DB::select($query));;
     }
 }
