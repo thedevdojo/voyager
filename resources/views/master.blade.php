@@ -231,8 +231,6 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
     }
     @endif
 </script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/speakingurl.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/slugit.js"></script>
 @yield('javascript')
 </body>
 </html>

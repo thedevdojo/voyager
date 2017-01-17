@@ -168,13 +168,17 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::can('add_'.$dataType->name);
 
+        $dataTypeContent = (strlen($dataType->model_name) != 0)
+                            ? new $dataType->model_name()
+                            : false;
+
         $view = 'voyager::bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType'));
+        return view($view, compact('dataType', 'dataTypeContent'));
     }
 
     // POST BRE(A)D

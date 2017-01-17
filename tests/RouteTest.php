@@ -20,6 +20,8 @@ class RouteTest extends TestCase
      */
     public function testGetRoutes()
     {
+        $this->disableExceptionHandling();
+
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');

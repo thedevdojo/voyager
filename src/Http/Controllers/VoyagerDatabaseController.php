@@ -101,7 +101,7 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        $rows = $this->describeTable($table);
+        $rows = DBSchema::describeTable($table);
 
         return view('voyager::tools.database.edit-add', compact('table', 'rows'));
     }
@@ -155,7 +155,7 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        return response()->json($this->describeTable($table));
+        return response()->json(DBSchema::describeTable($table));
     }
 
     public function destroy($table)
