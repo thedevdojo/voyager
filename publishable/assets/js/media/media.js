@@ -114,16 +114,15 @@ var VoyagerMedia = function(o){
 			if ( isBrowsingFiles ) {
 				return false;
 			}
-			var curSelected = $('#files li .selected'),
-			curSelectedIndex = curSelected.data('index');
+			var curSelected = $('#files li .selected').data('index');
 			// left key
-			if( (e.which == 37 || e.which == 38) && parseInt(curSelectedIndex)) {
-				newSelected = parseInt(curSelectedIndex)-1;
+			if( (e.which == 37 || e.which == 38) && parseInt(curSelected)) {
+				newSelected = parseInt(curSelected)-1;
 				setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
 			}
 			// right key
-			if( (e.which == 39 || e.which == 40) && parseInt(curSelectedIndex) < manager.files.items.length-1 ) {
-				newSelected = parseInt(curSelectedIndex)+1;
+			if( (e.which == 39 || e.which == 40) && parseInt(curSelected) < manager.files.items.length-1 ) {
+				newSelected = parseInt(curSelected)+1;
 				setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
 			}
 			// enter key
