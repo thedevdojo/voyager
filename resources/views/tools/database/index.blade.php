@@ -28,7 +28,7 @@
                     </thead>
 
                 @foreach($tables as $table)
-                        @if( in_array($table, config('voyager.database.tables.hidden', [])) )
+                        @if( in_array($table->name, config('voyager.database.tables.hidden', [])) )
                             @continue
                         @endif
                         <tr>
