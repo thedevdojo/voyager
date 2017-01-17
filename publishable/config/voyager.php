@@ -16,6 +16,7 @@ return [
         'default_role'                 => 'user',
         'admin_permission'             => 'browse_admin',
         'namespace'                    => App\User::class,
+        'default_avatar'               => 'users/default.png',
     ],
 
     /*
