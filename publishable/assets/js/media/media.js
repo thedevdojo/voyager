@@ -111,7 +111,7 @@ var VoyagerMedia = function(o){
 		});
 
 		$(document).keydown(function(e) {
-			if ( isBrowsingFiles ) {
+			if (! isBrowsingFiles ) {
 				return false;
 			}
 			var curSelected = $('#files li .selected').data('index');
