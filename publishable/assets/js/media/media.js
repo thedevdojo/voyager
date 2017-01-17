@@ -53,6 +53,21 @@ var VoyagerMedia = function(o){
 
         getFiles('/');
 
+        /**
+         * Save in memory, so we can avoid triggering keyboard events
+         * when the Modal is open.
+         */
+        var $modalIsOpen = false;
+
+        /**
+         * Setup BS Modal Events
+         */
+        $('div.modal').on('show.bs.modal', function() {
+            $modalIsOpen = true;
+        });
+        $('div.modal').on('hidden.bs.modal', function() {
+            $modalIsOpen = false;
+        });
 
         $('#files').on("dblclick", "li .file_link", function(){
             if (! $(this).children('.details').hasClass('folder')) {
@@ -87,22 +102,22 @@ var VoyagerMedia = function(o){
         $(document).keydown(function(e) {
             var curSelected = $('#files li .selected').data('index');
             // left key
-            if( (e.which == 37 || e.which == 38) && parseInt(curSelected)) {
+            if ((e.which == 37 || e.which == 38) && parseInt(curSelected) && !$modalIsOpen) {
                 newSelected = parseInt(curSelected)-1;
                 setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
             }
             // right key
-            if( (e.which == 39 || e.which == 40) && parseInt(curSelected) < manager.files.items.length-1 ) {
-                newSelected = parseInt(curSelected)+1;
+            if ((e.which == 39 || e.which == 40) && parseInt(curSelected) < manager.files.items.length - 1 && !$modalIsOpen) {
+                newSelected = parseInt(curSelected) + 1;
                 setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
             }
             // enter key
-            if(e.which == 13) {
-                if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
+            if (e.which == 13) {
+                if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible')) {
                     manager.folders.push( $('#files li .selected').data('folder') );
                     getFiles(manager.folders);
                 }
-                if($('#confirm_delete_modal').is(':visible')){
+                if ($('#confirm_delete_modal').is(':visible')){
                     $('#confirm_delete').trigger('click');
                 }
             }
