@@ -37,12 +37,13 @@ return [
     |--------------------------------------------------------------------------
     |
     | Here you can specify default model namespace when creating BREAD.
-    | If empty, default application namespace App\ will be used.
+    | Must include trailing backslashes. If not defined the default application
+    | namespace will be used.
     |
     */
 
     'models' => [
-        'namespace' => 'App\\', // include trailing backslashes
+        //'namespace' => 'App\\',
     ],
 
     /*
