@@ -1,5 +1,11 @@
 @extends('voyager::master')
 
+@if(isset($dataTypeContent->id))
+    @section('page_title','Edit '.$dataType->display_name_singular)
+@else
+    @section('page_title','Add '.$dataType->display_name_singular)
+@endif
+
 @section('css')
     <style>
         .panel .mce-panel {
