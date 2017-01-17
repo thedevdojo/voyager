@@ -87,18 +87,18 @@ var VoyagerMedia = function(o){
 		
 		//********** Add Keypress Functionality **********//
 		var isBrowsingFiles = null,
-			fileBrowserActive = function(el){
-				el = el instanceof jQuery ? el : $(el);
-				if ($.contains(files.parent()[0], el[0])) {
-					return true;
-				} else {
-					$(document).off('click');
-					return false;
-				}
-			},
-			handleFileBrowserStatus = function (target) {
-				isBrowsingFiles = fileBrowserActive(target);
-			};
+		fileBrowserActive = function(el){
+			el = el instanceof jQuery ? el : $(el);
+			if ($.contains(files.parent()[0], el[0])) {
+				return true;
+			} else {
+				$(document).off('click');
+				return false;
+			}
+		},
+		handleFileBrowserStatus = function (target) {
+			isBrowsingFiles = fileBrowserActive(target);
+		};
 
 		files.on('click', function (event) {
 			if (! isBrowsingFiles) {
@@ -112,27 +112,28 @@ var VoyagerMedia = function(o){
 
 		$(document).keydown(function(e) {
 			if ( isBrowsingFiles ) {
-				var curSelected = $('#files li .selected'),
-				curSelectedIndex = curSelected.data('index');
-				// left key
-				if( (e.which == 37 || e.which == 38) && parseInt(curSelectedIndex)) {
-					newSelected = parseInt(curSelectedIndex)-1;
-					setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
+				return false;
+			}
+			var curSelected = $('#files li .selected'),
+			curSelectedIndex = curSelected.data('index');
+			// left key
+			if( (e.which == 37 || e.which == 38) && parseInt(curSelectedIndex)) {
+				newSelected = parseInt(curSelectedIndex)-1;
+				setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
+			}
+			// right key
+			if( (e.which == 39 || e.which == 40) && parseInt(curSelectedIndex) < manager.files.items.length-1 ) {
+				newSelected = parseInt(curSelectedIndex)+1;
+				setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
+			}
+			// enter key
+			if(e.which == 13) {
+				if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
+					manager.folders.push( $('#files li .selected').data('folder') );
+					getFiles(manager.folders);
 				}
-				// right key
-				if( (e.which == 39 || e.which == 40) && parseInt(curSelectedIndex) < manager.files.items.length-1 ) {
-					newSelected = parseInt(curSelectedIndex)+1;
-					setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
-				}
-				// enter key
-				if(e.which == 13) {
-					if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
-						manager.folders.push( $('#files li .selected').data('folder') );
-						getFiles(manager.folders);
-					}
-					if($('#confirm_delete_modal').is(':visible')){
-						$('#confirm_delete').trigger('click');
-					}
+				if($('#confirm_delete_modal').is(':visible')){
+					$('#confirm_delete').trigger('click');
 				}
 			}
 		});
