@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use TCG\Voyager\Facades\DBSchema;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
@@ -90,7 +91,7 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        $rows = $this->describeTable($table);
+        $rows = DBSchema::describeTable($table);
 
         return view('voyager::tools.database.edit-add', compact('table', 'rows'));
     }
@@ -144,7 +145,7 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        return response()->json($this->describeTable($table));
+        return response()->json(DBSchema::describeTable($table));
     }
 
     public function destroy($table)

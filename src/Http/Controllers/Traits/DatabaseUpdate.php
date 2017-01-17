@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use TCG\Voyager\Facades\DBSchema;
 
 trait DatabaseUpdate
 {
@@ -96,7 +97,7 @@ trait DatabaseUpdate
      */
     private function updateColumns(Request $request, $tableName)
     {
-        $existingColumns = $this->describeTable($tableName)->keyBy('field');
+        $existingColumns = DBSchema::describeTable($tableName)->keyBy('field');
         $columnQueries = $this->buildQuery($request, $existingColumns);
 
         Schema::table($tableName, function (Blueprint $table) use ($columnQueries, $request, $existingColumns) {

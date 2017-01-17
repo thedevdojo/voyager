@@ -187,7 +187,7 @@
                 newRow();
             @else
                 @foreach($rows as $row)
-                    newRow('', '{{ $row->field }}', '{{ $row->type }}', '{{ $row->null }}', '{{ $row->key }}', '{{ $row->default }}');
+                    newRow('', '{{ $row['field'] }}', '{{ $row['type'] }}', '{{ $row['null'] }}', '{{ $row['key'] }}', '{{ $row['default'] }}');
                 @endforeach
             @endif
 
