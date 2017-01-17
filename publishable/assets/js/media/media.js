@@ -111,9 +111,10 @@ var VoyagerMedia = function(o){
 		});
 
 		$(document).keydown(function(e) {
-			if (! isBrowsingFiles ) {
+			var isKeyControl = e.which >= 37 && e.which <= 40;
+			if (! isBrowsingFiles && isKeyControl) {
 				return false;
-			} else {
+			} else if (isKeyControl && isBrowsingFiles) {
 				e.preventDefault();
 			}
 			var curSelected = $('#files li .selected').data('index');
