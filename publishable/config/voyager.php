@@ -33,6 +33,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Models config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify default model namespace when creating BREAD.
+    | Must include trailing backslashes. If not defined the default application
+    | namespace will be used.
+    |
+    */
+
+    'models' => [
+        //'namespace' => 'App\\',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Path to the Voyager Assets
     |--------------------------------------------------------------------------
     |
