@@ -53,9 +53,11 @@ abstract class Controller extends BaseController
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
             // Set the content back to the previous value when there is really now input for this field
-            if (is_null($content) && is_null($request->input($row->field))) {
-                if (isset($data->{$row->field})) {
-                    $content = $data->{$row->field};
+            if (is_null($content)) {
+                if (is_null($request->input($row->field))) {
+                    if (isset($data->{$row->field})) {
+                        $content = $data->{$row->field};
+                    }
                 }
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
