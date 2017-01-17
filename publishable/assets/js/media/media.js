@@ -111,9 +111,9 @@ var VoyagerMedia = function(o){
 		});
 
 		$(document).keydown(function(e) {
-			var curSelected = $('#files li .selected');
 			if ( isBrowsingFiles ) {
-				var curSelectedIndex = curSelected.data('index');
+				var curSelected = $('#files li .selected'),
+				curSelectedIndex = curSelected.data('index');
 				// left key
 				if( (e.which == 37 || e.which == 38) && parseInt(curSelectedIndex)) {
 					newSelected = parseInt(curSelectedIndex)-1;
