@@ -113,6 +113,8 @@ var VoyagerMedia = function(o){
 		$(document).keydown(function(e) {
 			if (! isBrowsingFiles ) {
 				return false;
+			} else {
+				e.preventDefault();
 			}
 			var curSelected = $('#files li .selected').data('index');
 			// left key
