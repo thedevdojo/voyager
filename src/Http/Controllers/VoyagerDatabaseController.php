@@ -22,21 +22,21 @@ class VoyagerDatabaseController extends Controller
 
     public function index()
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         return view('voyager::tools.database.index');
     }
 
     public function create()
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         return view('voyager::tools.database.edit-add');
     }
 
     public function store(Request $request)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         $tableName = $request->name;
 
@@ -88,7 +88,7 @@ class VoyagerDatabaseController extends Controller
 
     public function edit($table)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         $rows = $this->describeTable($table);
 
@@ -104,7 +104,7 @@ class VoyagerDatabaseController extends Controller
      */
     public function update(Request $request)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         $this->renameTable($request->original_name, $request->name);
         $this->renameColumns($request, $request->name);
@@ -123,7 +123,7 @@ class VoyagerDatabaseController extends Controller
 
     public function reorder_column(Request $request)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         if ($request->ajax()) {
             $table = $request->table;
@@ -142,14 +142,14 @@ class VoyagerDatabaseController extends Controller
 
     public function show($table)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         return response()->json($this->describeTable($table));
     }
 
     public function destroy($table)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         try {
             Schema::drop($table);
@@ -181,7 +181,7 @@ class VoyagerDatabaseController extends Controller
      */
     public function addBread(Request $request)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         $table = $request->input('table');
 
@@ -205,7 +205,7 @@ class VoyagerDatabaseController extends Controller
 
     public function storeBread(Request $request)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         $dataType = new DataType();
         $data = $dataType->updateDataType($request->all())
@@ -223,7 +223,7 @@ class VoyagerDatabaseController extends Controller
 
     public function addEditBread($id)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         return view(
             'voyager::tools.database.edit-add-bread', [
@@ -234,7 +234,7 @@ class VoyagerDatabaseController extends Controller
 
     public function updateBread(Request $request, $id)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);
@@ -253,7 +253,7 @@ class VoyagerDatabaseController extends Controller
 
     public function deleteBread($id)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);

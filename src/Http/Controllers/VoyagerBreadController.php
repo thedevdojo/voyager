@@ -30,7 +30,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('browse_'.$dataType->name);
+        Voyager::canOrFail('browse_'.$dataType->name);
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
@@ -76,7 +76,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('read_'.$dataType->name);
+        Voyager::canOrFail('read_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
@@ -110,7 +110,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
@@ -133,7 +133,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
@@ -166,7 +166,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('add_'.$dataType->name);
+        Voyager::canOrFail('add_'.$dataType->name);
 
         $view = 'voyager::bread.edit-add';
 
@@ -185,7 +185,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('add_'.$dataType->name);
+        Voyager::canOrFail('add_'.$dataType->name);
 
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
@@ -217,7 +217,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('delete_'.$dataType->name);
+        Voyager::canOrFail('delete_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 

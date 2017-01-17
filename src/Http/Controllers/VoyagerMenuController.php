@@ -11,7 +11,7 @@ class VoyagerMenuController extends Controller
 {
     public function builder($id)
     {
-        Voyager::can('edit_menus');
+        Voyager::canOrFail('edit_menus');
 
         $menu = Menu::findOrFail($id);
 
@@ -20,7 +20,7 @@ class VoyagerMenuController extends Controller
 
     public function delete_menu($menu, $id)
     {
-        Voyager::can('delete_menus');
+        Voyager::canOrFail('delete_menus');
 
         $item = MenuItem::findOrFail($id);
 
@@ -36,7 +36,7 @@ class VoyagerMenuController extends Controller
 
     public function add_item(Request $request)
     {
-        Voyager::can('add_menus');
+        Voyager::canOrFail('add_menus');
 
         $data = $request->all();
         $data['order'] = 1;
@@ -61,7 +61,7 @@ class VoyagerMenuController extends Controller
 
     public function update_item(Request $request)
     {
-        Voyager::can('edit_menus');
+        Voyager::canOrFail('edit_menus');
 
         $id = $request->input('id');
         $data = $request->except(['id']);
