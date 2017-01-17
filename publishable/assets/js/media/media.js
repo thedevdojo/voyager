@@ -12,6 +12,7 @@ var manager = new Vue({
 CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
 var VoyagerMedia = function(o){
+	var files = $('#files');
 	var defaults = {
 		baseUrl: "/admin"
 	};
@@ -54,7 +55,7 @@ var VoyagerMedia = function(o){
 		getFiles('/');
 
 
-		$('#files').on("dblclick", "li .file_link", function(){
+		files.on("dblclick", "li .file_link", function(){
 			if (! $(this).children('.details').hasClass('folder')) {
 				return false;
 			}
@@ -62,7 +63,7 @@ var VoyagerMedia = function(o){
 			getFiles(manager.folders);
 		});
 
-		$('#files').on("click", "li", function(e){
+		files.on("click", "li", function(e){
 			var clicked = e.target;
 			if(!$(clicked).hasClass('file_link')){
 				clicked = $(e.target).closest('.file_link');
@@ -83,27 +84,55 @@ var VoyagerMedia = function(o){
 			$('.breadcrumb-container .toggle .icon').toggleClass('fa-toggle-right').toggleClass('fa-toggle-left');
 		});
 
+		
 		//********** Add Keypress Functionality **********//
-		$(document).keydown(function(e) {
-			var curSelected = $('#files li .selected').data('index');
-			// left key
-			if( (e.which == 37 || e.which == 38) && parseInt(curSelected)) {
-				newSelected = parseInt(curSelected)-1;
-				setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
-			}
-			// right key
-			if( (e.which == 39 || e.which == 40) && parseInt(curSelected) < manager.files.items.length-1 ) {
-				newSelected = parseInt(curSelected)+1;
-				setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
-			}
-			// enter key
-			if(e.which == 13) {
-				if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
-					manager.folders.push( $('#files li .selected').data('folder') );
-					getFiles(manager.folders);
+		var isBrowsingFiles = null,
+			fileBrowserActive = function(el){
+				el = el instanceof jQuery ? el : $(el);
+				if ($.contains(files.parent()[0], el[0])) {
+					return true;
+				} else {
+					$(document).off('click');
+					return false;
 				}
-				if($('#confirm_delete_modal').is(':visible')){
-					$('#confirm_delete').trigger('click');
+			},
+			handleFileBrowserStatus = function (target) {
+				isBrowsingFiles = fileBrowserActive(target);
+			};
+
+		files.on('click', function (event) {
+			if (! isBrowsingFiles) {
+				$(document).on('click', function (e) {
+					handleFileBrowserStatus(e.target);
+				});
+			} else {
+				handleFileBrowserStatus(event.target);
+			}
+		});
+
+		$(document).keydown(function(e) {
+			var curSelected = $('#files li .selected');
+			if ( isBrowsingFiles ) {
+				var curSelectedIndex = curSelected.data('index');
+				// left key
+				if( (e.which == 37 || e.which == 38) && parseInt(curSelectedIndex)) {
+					newSelected = parseInt(curSelectedIndex)-1;
+					setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
+				}
+				// right key
+				if( (e.which == 39 || e.which == 40) && parseInt(curSelectedIndex) < manager.files.items.length-1 ) {
+					newSelected = parseInt(curSelectedIndex)+1;
+					setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
+				}
+				// enter key
+				if(e.which == 13) {
+					if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
+						manager.folders.push( $('#files li .selected').data('folder') );
+						getFiles(manager.folders);
+					}
+					if($('#confirm_delete_modal').is(':visible')){
+						$('#confirm_delete').trigger('click');
+					}
 				}
 			}
 		});
@@ -264,6 +293,7 @@ var VoyagerMedia = function(o){
 			$.post(options.baseUrl+'/media/files', { folder:folder_location, _token: CSRF_TOKEN, _token: CSRF_TOKEN }, function(data) {
 				$('#file_loader').hide();
 				manager.files = data;
+				files.trigger('click');
 				for(var i=0; i < manager.files.items.length; i++){
 					if(typeof(manager.files.items[i].size) != undefined){
 						manager.files.items[i].size = bytesToSize(manager.files.items[i].size);
