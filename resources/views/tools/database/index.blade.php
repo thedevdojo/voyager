@@ -206,8 +206,8 @@
         $(function () {
 
             $('.bread_actions').on('click', '.delete', function (e) {
-                id = $(e.target).data('id');
-                name = $(e.target).data('name');
+                id = $(this).data('id');
+                name = $(this).data('name');
 
                 $('#delete_builder_name').text(name);
                 $('#delete_builder_form')[0].action += '/' + id;
@@ -236,8 +236,8 @@
             });
 
             $('td.actions').on('click', '.delete_table', function (e) {
-                table = $(e.target).data('table');
-                if ($(e.target).hasClass('remove-bread-warning')) {
+                table = $(this).data('table');
+                if ($(this).hasClass('remove-bread-warning')) {
                     toastr.warning("Please make sure to remove the BREAD on this table before deleting the table.");
                 } else {
                     $('#delete_table_name').text(table);
