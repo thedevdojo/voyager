@@ -122,14 +122,12 @@ class VoyagerDatabaseController extends Controller
         $this->dropColumns($request, $request->name);
         $this->updateColumns($request, $request->name);
 
-        return redirect()
-            ->route('voyager.database.index')
-            ->with(
+        return back()->with(
                 [
                     'message'    => "Successfully updated $request->name table",
                     'alert-type' => 'success',
                 ]
-            );
+        );
     }
 
     public function reorder_column(Request $request)
