@@ -47,13 +47,15 @@ trait DatabaseQueryBuilder
      */
     private function buildQuery(Request $request, $existingColumns = null)
     {
+        $existingColumns = isset($existingColumns) ? $existingColumns : collect([]);
+
         return $this->buildColumnsCollection($request)->map(function ($column) use ($existingColumns) {
             // We need to check that an existing database table column in now being
             // updated. If it is, we also need to check that the supplied column
             // type can actually be update without throwing an annoying error.
-            if ($existingColumns && $existingColumns->has($column['field']) &&
-                in_array($column['type'], $this->typeBlacklist)
-            ) {
+            $column['exists'] = $existingColumns->has($column['field']);
+
+            if ($column['exists'] && in_array($column['type'], $this->typeBlacklist)) {
                 return false;
             }
 
@@ -77,7 +79,7 @@ trait DatabaseQueryBuilder
                     array_map('trim', explode(',', $column['enum']))
                 ) : $table->{$type}($column['field']);
 
-                if ($column['key'] == 'UNI') {
+                if (($column['key'] == 'UNI') && (!$column['exists'])) {
                     $result->unique();
                 }
 
