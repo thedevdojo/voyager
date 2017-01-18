@@ -13,7 +13,7 @@ class CreateCategoriesTable extends Migration
     public function up()
     {
         // Create table for storing categories
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('voyager_categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parent_id')->unsigned()->nullable()->default(null);
             $table->foreign('parent_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
@@ -31,6 +31,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('categories');
+        Schema::drop('voyager_categories');
     }
 }

@@ -15,7 +15,7 @@ return [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
         'admin_permission'             => 'browse_admin',
-        'namespace'                    => App\User::class,
+        'namespace'                    => TCG\Voyager\Models\User::class,
     ],
 
     /*
@@ -81,7 +81,23 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => [], // database tables that are hidden from the admin panel
+            'hidden' => [  // database tables that are hidden from the admin panel
+                // Add your tables here
+                // ...
+                'migrations',
+
+                // Voyager tables
+                // these are the core tables that Voyager relies on
+                'voyager_data_rows',
+                'voyager_data_types',
+                'voyager_menu_items',
+                'voyager_menus',
+                'voyager_permission_role',
+                'voyager_permissions',
+                'voyager_roles',
+                'voyager_settings',
+                'users',
+            ],
         ],
     ],
 

@@ -101,13 +101,13 @@ class AdminCommand extends Command
      *
      * @param bool $create
      *
-     * @return \App\User
+     * @return \TCG\Voyager\Models\User
      */
     protected function getUser($create = false)
     {
         $email = $this->argument('email');
 
-        $model = config('voyager.user.namespace', 'App\\User');
+        $model = config('voyager.user.namespace', 'TCG\\Voyager\\Models\\User');
 
         // If we need to create a new user go ahead and create it
         if ($create) {

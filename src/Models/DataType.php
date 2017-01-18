@@ -8,7 +8,7 @@ use TCG\Voyager\Facades\DBSchema;
 
 class DataType extends Model
 {
-    protected $table = 'data_types';
+    protected $table = 'voyager_data_types';
 
     protected $guarded = [];
 

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Page extends Model
 {
+	protected $table = 'voyager_pages';
+
     protected $guarded = [];
 
     public function save(array $options = [])
