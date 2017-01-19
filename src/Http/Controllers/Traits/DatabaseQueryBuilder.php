@@ -45,7 +45,7 @@ trait DatabaseQueryBuilder
      *
      * @return Collection
      */
-    private function buildQuery(Request $request, $existingColumns = null)
+    private function buildQuery(Request $request, Collection $existingColumns = null)
     {
         $existingColumns = isset($existingColumns) ? $existingColumns : collect([]);
 
@@ -79,9 +79,19 @@ trait DatabaseQueryBuilder
                     array_map('trim', explode(',', $column['enum']))
                 ) : $table->{$type}($column['field']);
 
-                if (($column['key'] == 'UNI') && (!$column['exists'])) {
-                    $result->unique();
+                if (($column['key'] == 'UNI')) {
+                    // Only add a unique index if:
+                    //  this is a new column
+                    //  or an existing column that doesn't already have a unique index !('UNI' || 'PRI')
+                    if((!$column['exists']) ||
+                        (($originalKey = $column['original']->key) != 'UNI') && ($originalKey != 'PRI')) {
+                        $result->unique();
+                    }
                 }
+
+                // TODO: handle columns that change their index
+                // dropUniqe() and dropPrimary()
+                // Add handling fot other types of Indexes
 
                 $result->nullable($column['nullable']);
 
@@ -119,7 +129,8 @@ trait DatabaseQueryBuilder
                         'nullable' => (bool) $request->nullable[$index],
                         'key'      => $request->key[$index],
                         'default'  => $request->default[$index],
-                    ]);
+                        'original' => $request->original_row[$index]
+                ]);
             }
         }
 

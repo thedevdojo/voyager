@@ -55,7 +55,8 @@ trait DatabaseUpdate
                     continue;
                 }
 
-                $originalColumn = $request->original_field[$index];
+                $originalRow    = $request->original_row[$index];
+                $originalColumn = isset($originalRow) ? $originalRow->field : '';
 
                 // If the name of the column has changed rename it.
                 if ($originalColumn && $originalColumn != $column) {

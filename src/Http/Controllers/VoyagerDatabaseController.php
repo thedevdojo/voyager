@@ -117,6 +117,11 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
+        // Decode original rows JSON to objects
+        $request->original_row = array_map(function($jsonRow) {
+            return json_decode($jsonRow);
+        }, $request->original_row);
+
         $this->renameTable($request->original_name, $request->name);
         $this->renameColumns($request, $request->name);
         $this->dropColumns($request, $request->name);
