@@ -40,21 +40,16 @@ trait DatabaseQueryBuilder
     /**
      * Build the queries necessary for creating/updating tables.
      *
-     * @param Request         $request
-     * @param Collection|null $existingColumns
+     * @param Collection $columns
      *
      * @return Collection
      */
-    private function buildQuery(Request $request, Collection $existingColumns = null)
+    private function buildQuery(Collection $columns)
     {
-        $existingColumns = isset($existingColumns) ? $existingColumns : collect([]);
-
-        return $this->buildColumnsCollection($request)->map(function ($column) use ($existingColumns) {
+        return $columns->map(function ($column) {
             // We need to check that an existing database table column in now being
             // updated. If it is, we also need to check that the supplied column
             // type can actually be update without throwing an annoying error.
-            $column['exists'] = $existingColumns->has($column['field']);
-
             if ($column['exists'] && in_array($column['type'], $this->typeBlacklist)) {
                 return false;
             }
@@ -102,38 +97,5 @@ trait DatabaseQueryBuilder
                 return $result;
             };
         })->filter();
-    }
-
-    /**
-     * Build a collection containing each column's info.
-     *
-     * @param Request $request
-     *
-     * @return Collection
-     */
-    private function buildColumnsCollection(Request $request)
-    {
-        $columns = collect();
-
-        if (isset($request->field)) {
-            foreach ($request->field as $index => $field) {
-                // If a column has been destroyed, just skip it and move on to the next column.
-                if ((bool) $request->delete_field[$index]) {
-                    continue;
-                }
-
-                $columns->push([
-                        'field'    => $field,
-                        'type'     => $request->type[$index],
-                        'enum'     => $request->enum[$index],
-                        'nullable' => (bool) $request->nullable[$index],
-                        'key'      => $request->key[$index],
-                        'default'  => $request->default[$index],
-                        'original' => $request->original_row[$index]
-                ]);
-            }
-        }
-
-        return $columns;
     }
 }
