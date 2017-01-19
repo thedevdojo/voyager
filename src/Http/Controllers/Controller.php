@@ -52,6 +52,16 @@ abstract class Controller extends BaseController
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
+            /**
+             * merge ex_pics and upload pics
+             */
+            if ($row->type == 'multiple_pics' && !is_null($content)) {
+                if (isset($data->{$row->field})) {
+                    $ex_files = json_decode($data->{$row->field});
+                    $content = json_encode(array_merge($ex_files, json_decode($content)));
+                }
+            }
+
             if (is_null($content)) {
                 if (isset($data->{$row->field})) {
                     $content = $data->{$row->field};
@@ -117,6 +127,24 @@ abstract class Controller extends BaseController
                     return $fullPath;
                 }
             // no break
+
+            /********** MULTIPLE PICS TYPE **********/
+            case 'multiple_pics':
+                if ($files = $request->file($row->field)) {
+                    /**
+                     * upload files
+                     */
+                    $filesPath = array();
+                    foreach($files as $key => $file) {
+                        $filename = Str::random(20);
+                        $path = $slug.'/'.date('F').date('Y').'/';
+                        array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
+                        $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                        $request->file($row->field)[$key]->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
+                    }
+                    return json_encode($filesPath);
+                }
+                break;
 
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
