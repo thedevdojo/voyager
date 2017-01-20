@@ -183,6 +183,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->commands(Commands\InstallCommand::class);
         $this->commands(Commands\ControllersCommand::class);
         $this->commands(Commands\AdminCommand::class);
+        $this->commands(Commands\InstallRoutesCommand::class);
     }
 
     /**
