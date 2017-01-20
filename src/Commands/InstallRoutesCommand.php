@@ -4,7 +4,6 @@ namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Symfony\Component\Console\Input\InputOption;
 
 class InstallRoutesCommand extends Command
 {
@@ -45,6 +44,7 @@ class InstallRoutesCommand extends Command
 
     /**
      * @param string $contents - String contents of routes file
+     *
      * @return bool
      */
     private function routesAlreadyInstalled($contents)
