@@ -50,12 +50,7 @@ class InstallRoutesCommand extends Command
      */
     private function routesAlreadyInstalled($contents)
     {
-        foreach (explode("\n", $contents) as $line) {
-            if (strpos($line, 'Voyager::routes()') !== false) {
-                return true;
-            }
-        }
-        return false;
+        return (bool) preg_match('/Voyager::routes/m', $contents);
     }
 
 }
