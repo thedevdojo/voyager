@@ -34,8 +34,7 @@ class InstallRoutesCommand extends Command
         $filepath = base_path('routes/web.php');
         $contents = $filesystem->get($filepath);
 
-        if (!$this->routesAlreadyInstalled($contents))
-        {
+        if (!$this->routesAlreadyInstalled($contents)) {
             $this->info('Adding Voyager routes to routes/web.php');
             $filesystem->append(
                 $filepath,
@@ -46,7 +45,7 @@ class InstallRoutesCommand extends Command
 
     /**
      * @param string $contents - String contents of routes file
-     * @return boolean
+     * @return bool
      */
     private function routesAlreadyInstalled($contents)
     {
