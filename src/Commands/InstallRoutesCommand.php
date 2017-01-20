@@ -51,5 +51,4 @@ class InstallRoutesCommand extends Command
     {
         return (bool) preg_match('/Voyager::routes/m', $contents);
     }
-
 }
