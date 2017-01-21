@@ -151,7 +151,12 @@
                                         @if(isset($options->relationship) && !method_exists( $dataType->model_name, $row->field ) )
                                             <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
                                         @endif
+<?php
+// Get list of field from pivot table
+\Debugbar::error($dataTypeRows);
+?>
 
+@if(!isset($dataTypeContent->id) || (isset($options->relationship) && empty($options->relationship->editablePivotFields)) )
                                         <select class="form-control select2" name="{{ $row->field }}[]" multiple>
                                             @if(isset($options->relationship))
                                                 {{-- Check that the method relationship exists --}}
@@ -165,6 +170,44 @@
                                                 @endif
                                             @endif
                                         </select>
+@else
+
+<?php
+?>
+
+    @if(isset($options->relationship))
+        {{-- Check that the method relationship exists --}}
+        @if( method_exists( $dataType->model_name, $row->field ) )
+            <?php
+                $selected_values = isset($dataTypeContent) ? $dataTypeContent->{$row->field}()->pluck($options->relationship->key)->all() : array(); ?>
+                $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
+                $relationshipOptions = $relationshipClass::all();
+            ?>
+
+            <table class="table table-bordered relationship-container">
+            <tr>
+                <td>
+                    <select class="form-control select2" name="pivot_{{ $row->field }}[]" style="width: 100%">
+                        @foreach($relationshipOptions as $relationshipOption)
+                            <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if(in_array($relationshipOption->{$options->relationship->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
+                        @endforeach
+                    </select>
+                </td>
+                @foreach ($options->relationship->editablePivotFields as $pivotField)
+                    <td><input type="text" name="pivot_{{$pivotField}}" class="form-control" placeholder="{{$pivotField}}"></td>
+                @endforeach
+                <td class="danger">
+                    <a href="#" onclick="javascript: return false;" class="btn-save-bread-relationship">save</a>
+                    <a href="#" onclick="javascript: return false;" class="btn-remove-bread-relationship">delete</a>
+                </td>
+            </tr>
+            </table>
+            <a class="btn-add-bread-relationship" href="#" onclick="return false;">add a new row</a>
+
+            @include('voyager::bread.partials.relationship-edit-add')
+        @endif
+    @endif
+@endif
 
                                     @elseif($row->type == "radio_btn")
                                         <?php $options = json_decode($row->details); ?>
@@ -245,15 +288,56 @@
 
 @section('javascript')
     <script>
+        function guid() {
+            function s4() {
+                return Math.floor((1 + Math.random()) * 0x10000)
+                    .toString(16)
+                    .substring(1);
+            }
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        }
+
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
 
             $('.side-body input[data-slug-origin]').each(function(i, el) {
                 $(el).slugify();
             });
+
+            $(document).on('click', '.btn-add-bread-relationship', function(e) {
+                var source = $('#realtionship-edit-add').html();
+                var template = Handlebars.compile(source);
+                var id = guid();
+                var html = template({id: id});
+                $('.relationship-container>tbody').append(html);
+                $('#select2-'+id).select2();
+            });
+
+            $(document).on('click', '.btn-remove-bread-relationship', function(e) {
+                //var el = $(this).closest('tr');
+                //el.remove();
+                $.ajax({
+                    url: "test.html",
+                    context: document.body
+                }).done(function() {
+                    $( this ).addClass( "done" );
+                });
+            });
+
+            $(document).on('click', '.btn-save-bread-relationship', function(e) {
+                var el = $(this).closest('tr');
+            });
+        });
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
     </script>
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/lib/js/handlebars.min.js"></script>
+
 @stop
