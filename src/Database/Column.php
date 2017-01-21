@@ -86,11 +86,7 @@ class Column
 
 	public function setKey($key)
 	{
-		if($this->table) {
-			$this->table->changeKey($this, $this->key, $key);
-		} else {
-			throw new \Exception("Cannot set key: the column {$this->name} doesn't have an associated table");
-		}
+		$this->table->changeKey($this->name, $key);
 	}
 
 	public function setName($name)
@@ -122,11 +118,12 @@ class Column
 
 	public function getKey()
 	{
-		if($this->table) {
-			return $this->table->getColumnKey($this->originalName);
-		}
+		return $this->table->keys[$this->originalName];
+	}
 
-		throw new \Exception("Cannot get key: the column {$this->originalName} doesn't have an associated table");
+	public function getOriginalKey()
+	{
+		return $this->table->originalKeys[$this->originalName];
 	}
 
 	public function getDefault()
@@ -148,11 +145,9 @@ class Column
 
 	public function getOriginal()
 	{
-		if($this->table) {
+		if(isset($this->table->originalColumns[$this->originalName])) {
 			return $this->table->originalColumns[$this->originalName];
 		}
-		
-		return null;
 	}
 
 	public function isNew()
@@ -181,6 +176,9 @@ class Column
 			'key',
 			'autoincrement',
 		];
+
+		// NOTE: try to figure out how key is compared since $this->key will get updated keys and not original ones...
+		// test it
 
 		$diff = [];
 

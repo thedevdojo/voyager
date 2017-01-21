@@ -9,9 +9,12 @@ use Doctrine\DBAL\Schema\SchemaException;
 class Table
 {
 	protected $table;
-	protected $keys;
+	protected $originalKeys;
 	protected $columns;
 	protected $originalColumns;
+
+	// todo: improve checking for existing columns
+	//        improve adding new columns to the table. how can that be done?
 
 	public function __construct($table)
 	{
@@ -27,9 +30,9 @@ class Table
 			throw SchemaException::tableDoesNotExist($this->name);
 		}
 		
-		$this->keys = $this->setupKeys();
 		$this->columns = $this->setupColumns();
 		$this->originalColumns = $this->setupColumns(true);
+		$this->originalKeys = $this->setupKeys();
 	}
 
 	public function __get($property)
@@ -71,29 +74,83 @@ class Table
 
 	public function getKeys()
 	{
-		return $this->keys;
+		return $this->setupKeys();
 	}
 
-	public function changeKey(Column $column, $fromKey, $toKey)
+	public function getOriginalKeys()
 	{
-		// TODO: learn more about Indexes
-		// implement this
-		if($fromKey == $toKey) {
+		return $this->originalKeys;
+	}
+
+	protected function validateKey($key)
+	{
+		$availableKeys = [
+			'',
+			'PRI',
+			'UNI',
+			'MUL',
+		];
+
+		$key = strtoupper(trim($key));
+
+		return in_array($key, $availableKeys) ? $key : false;
+	}
+
+	public function changeKey($column, $key)
+	{
+		// TODO: Add Foreign keys support?
+			// hasForeignKey , getForeignKey , getForeignKeys , addForeignKeyConstraint , removeForeignKey
+
+		if(($newKey = $this->validateKey($key)) === false) {
+			throw new \InvalidArgumentException("Key {$key} is invalid");
+		}
+
+		$currentKey = $this->keys[$column];
+
+		// if the key already exists
+		if($currentKey && ($currentKey->type == $newKey)) {
 			return;
 		}
 
-		$this->dropKey($column, $fromKey);
-		$this->addKey($column, $toKey);
+		// Drop current key
+		$this->dropKey($currentKey);
+
+		// Create new key
+		$this->addKey($column, $newKey);
 	}
 
-	public function dropKey(Column $column, $key)
+	protected function dropKey($key)
 	{
+		switch ($key->type) {
+			case 'PRI':
+				$this->table->dropPrimaryKey();
+				break;
 
+			case 'UNI':
+			case 'MUL':
+				$this->table->dropIndex($key->name);
+				break;
+		}
 	}
 
-	public function addKey(Column $column, $key)
+	protected function addKey($column, $key)
 	{
+		// NOTE: Composite keys are not supported for now
+		$column = [$column];
 
+		switch ($key) {
+			case 'PRI':
+				$this->table->setPrimaryKey($column);
+				break;
+
+			case 'UNI':
+				$this->table->addUniqueIndex($column);
+				break;
+
+			case 'MUL':
+				$this->table->addIndex($column);
+				break;
+		}
 	}
 
 	public function getDoctrineColumn($column)
@@ -104,27 +161,6 @@ class Table
 	public function hasColumn($column)
 	{
 		return $this->table->hasColumn($column);
-	}
-
-	public function getColumnKey($column)
-	{
-		if(! $this->hasColumn($column)) {
-            throw SchemaException::columnDoesNotExist($column, $this->name);
-		}
-
-		if( in_array($column, $this->keys['PRI']) ) {
-			return 'PRI';
-		}
-
-		if( in_array($column, $this->keys['UNI']) ) {
-			return 'UNI';
-		}
-
-		if( in_array($column, $this->keys['MUL']) ) {
-			return 'MUL';
-		}
-
-		return null;
 	}
 
 	protected function setupColumns($clone = false)
@@ -153,20 +189,28 @@ class Table
 
 	protected function setupKeys()
 	{
-		$keys = [
-			'PRI' => [],
-			'UNI' => [],
-			'MUL' => []
-		];
-		
-		foreach ($this->table->getIndexes() as $name => $index) {
-			$columns = $index->getColumns();
+		// Note: this currently doesn't support Composite Keys
 
-			if(count($columns) == 1) {
-				$columns = $columns[0];
-			}
+		if(! $this->columns) {
+			return [];
+		}
 
-			$keys[$this->getIndexType($index)][$name] = $columns;
+		$keys = [];
+
+		foreach ($this->columns as $column) {
+			$keys[$column->name] = null;
+		}
+
+		foreach ($this->table->getIndexes() as $indexName => $index) {
+			// Get only the first column
+			// This won't work for composite keys
+			// For now, let's keep things simple
+			$columnName = $index->getColumns()[0];
+
+			$keys[$columnName] = (object) [
+				'type' => $this->getIndexType($index),
+				'name' => $indexName
+			];
 		}
 
 		return $keys;
