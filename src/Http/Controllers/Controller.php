@@ -134,7 +134,7 @@ abstract class Controller extends BaseController
                             if (!isset($pivotContent[$pivotField])) {
                                 $pivotContent[$pivotField] = [];
                             }
-                            $pivotContent[$pivotField] = $request->input("pivot_".$pivotField);
+                            $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
                         }
 
                         // Create a new content array for updating pivot table
