@@ -118,7 +118,7 @@ class VoyagerDatabaseController extends Controller
         Voyager::can('browse_database');
 
         // Decode original rows JSON to objects
-        $request->original_row = array_map(function($jsonRow) {
+        $request->original_row = array_map(function ($jsonRow) {
             return json_decode($jsonRow);
         }, $request->original_row);
 
