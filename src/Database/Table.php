@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Database;
 
 use Doctrine\DBAL\Schema\Table as DoctrineTable;
-use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\SchemaException;
 
 class Table
@@ -82,44 +81,33 @@ class Table
 		return $this->originalKeys;
 	}
 
-	protected function validateKey($key)
-	{
-		$availableKeys = [
-			'',
-			'PRI',
-			'UNI',
-			'MUL',
-		];
-
-		$key = strtoupper(trim($key));
-
-		return in_array($key, $availableKeys) ? $key : false;
-	}
-
 	public function changeKey($column, $key)
 	{
 		// TODO: Add Foreign keys support?
 			// hasForeignKey , getForeignKey , getForeignKeys , addForeignKeyConstraint , removeForeignKey
 
-		if(($newKey = $this->validateKey($key)) === false) {
-			throw new \InvalidArgumentException("Key {$key} is invalid");
+		if (($newKey = Key::validate($key)) === false) {
+			throw new \InvalidArgumentException("Key type {$key} is invalid");
 		}
 
-		$currentKey = $this->keys[$column];
-
-		// if the key already exists
-		if($currentKey && ($currentKey->type == $newKey)) {
-			return;
+		// get the current key
+		if ($currentKey = $this->keys[$column]) {
+			// if the key already exists, no need to re-create it
+			if ($currentKey->type == $newKey) {
+				return;
+			}
+			
+			// Drop the current key
+			$this->dropKey($currentKey);
 		}
 
-		// Drop current key
-		$this->dropKey($currentKey);
-
-		// Create new key
-		$this->addKey($column, $newKey);
+		if ($newKey) {
+			// Create the new key
+			$this->addKey($column, $newKey);
+		}
 	}
 
-	protected function dropKey($key)
+	protected function dropKey(Key $key)
 	{
 		switch ($key->type) {
 			case 'PRI':
@@ -150,6 +138,9 @@ class Table
 			case 'MUL':
 				$this->table->addIndex($column);
 				break;
+
+			default:
+				throw new \InvalidArgumentException("The key you want to add ({$key}) is invalid");
 		}
 	}
 
@@ -189,9 +180,7 @@ class Table
 
 	protected function setupKeys()
 	{
-		// Note: this currently doesn't support Composite Keys
-
-		if(! $this->columns) {
+		if (! $this->columns) {
 			return [];
 		}
 
@@ -201,29 +190,14 @@ class Table
 			$keys[$column->name] = null;
 		}
 
-		foreach ($this->table->getIndexes() as $indexName => $index) {
-			// Get only the first column
-			// This won't work for composite keys
-			// For now, let's keep things simple
-			$columnName = $index->getColumns()[0];
+		foreach ($this->table->getIndexes() as $index) {
+			$key = new Key($index);
 
-			$keys[$columnName] = (object) [
-				'type' => $this->getIndexType($index),
-				'name' => $indexName
-			];
+			foreach ($key->columns as $column) {
+				$keys[$column] = $key;
+			}
 		}
 
 		return $keys;
-	}
-
-	protected function getIndexType(Index $index)
-	{
-		if($index->isPrimary()) {
-			return 'PRI';
-		} else if($index->isUnique()) {
-			return 'UNI';
-		} else {
-			return 'MUL';
-		}
 	}
 }
