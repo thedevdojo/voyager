@@ -92,7 +92,7 @@ trait DatabaseUpdate
                     continue;
                 }
 
-                $originalRow    = $request->original_row[$index];
+                $originalRow = $request->original_row[$index];
                 $originalColumn = isset($originalRow) ? $originalRow->field : '';
 
                 // If the name of the column has changed rename it.
@@ -162,7 +162,8 @@ trait DatabaseUpdate
      *
      * @return array What needs to be updated.
      */
-    private function whatToUpdate($column) {
+    private function whatToUpdate($column)
+    {
         // implement this
     }
 }

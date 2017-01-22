@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Controllers\Traits;
 
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 trait DatabaseQueryBuilder
@@ -78,7 +77,7 @@ trait DatabaseQueryBuilder
                     // Only add a unique index if:
                     //  this is a new column
                     //  or an existing column that doesn't already have a unique index !('UNI' || 'PRI')
-                    if((!$column['exists']) ||
+                    if ((!$column['exists']) ||
                         (($originalKey = $column['original']->key) != 'UNI') && ($originalKey != 'PRI')) {
                         $result->unique();
                     }

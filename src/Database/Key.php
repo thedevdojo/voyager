@@ -24,9 +24,9 @@ class Key
 
     public function __get($property)
     {
-        $getter = 'get' . ucfirst($property);
+        $getter = 'get'.ucfirst($property);
 
-        if(! method_exists($this, $getter)) {
+        if (!method_exists($this, $getter)) {
             throw new \Exception("Property {$property} doesn't exist or is unavailable");
         }
 
@@ -69,9 +69,9 @@ class Key
 
     protected function setType()
     {
-        if($this->index->isPrimary()) {
+        if ($this->index->isPrimary()) {
             $this->type = 'PRI';
-        } else if($this->index->isUnique()) {
+        } elseif ($this->index->isUnique()) {
             $this->type = 'UNI';
         } else {
             $this->type = 'MUL';
