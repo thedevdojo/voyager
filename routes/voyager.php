@@ -39,16 +39,6 @@ Route::group(['as' => 'voyager.'], function () {
             // do nothing, might just be because table not yet migrated.
         }
 
-        // Relationship Routes
-        Route::group([
-            'as'     => 'relationship.',
-            'prefix' => 'relationship',
-        ], function () use ($namespacePrefix) {
-            Route::post('/', ['uses' => $namespacePrefix.'VoyagerBreadRelationshipController@store', 'as' => 'store']);
-            Route::put('/', ['uses' => $namespacePrefix.'VoyagerBreadRelationshipController@update', 'as' => 'update']);
-            Route::delete('/', ['uses' => $namespacePrefix.'VoyagerBreadRelationshipController@delete', 'as' => 'destroy']);
-        });
-
         // Role Routes
         Route::resource('roles', $namespacePrefix.'VoyagerRoleController');
 
