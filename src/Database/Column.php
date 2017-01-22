@@ -154,18 +154,18 @@ class Column
         return !$this->table->hasColumn($this->originalName);
     }
 
-    public function diffOriginal()
+    public function diffOriginal(array $ignoreProperties = [])
     {
         if ($this->isNew()) {
-            throw new \Exception("Column {$this->name} is a new column");
+            throw new \Exception("Column {$this->name} is a new column. It doesn't have an original.");
         }
 
-        return $this->diff($this->getOriginal());
+        return $this->diff($this->getOriginal(), $ignoreProperties);
     }
 
-    public function diff(Column $column)
+    public function diff(Column $compareColumn, array $ignoreProperties = [])
     {
-        // return diff between this and column
+        // return diff between this and compareColumn
         // so only perform necessary actions based on what changed
         $properties = [
             'name',
@@ -176,16 +176,18 @@ class Column
             'autoincrement',
         ];
 
+        $properties = array_diff($properties, $ignoreProperties);
+
         // NOTE: try to figure out how key is compared since $this->key will get updated keys and not original ones...
-        // test it
+        // Bug: original columns will have non original keys
 
         $diff = [];
 
         foreach ($properties as $property) {
-            if ($this->$property != $column->$property) {
+            if ($this->$property != $compareColumn->$property) {
                 $diff[$property] = [
-                    'current' => $this->$property,
-                    'compare' => $column->$property,
+                    'this'    => $this->$property,
+                    'compare' => $compareColumn->$property,
                 ];
             }
         }
