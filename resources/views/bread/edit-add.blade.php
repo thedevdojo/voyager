@@ -58,8 +58,6 @@
                                 <?php $dataTypeRows = $dataType->addRows; ?>
                             @endif
 
-                            <?php $relationshipRows = [] ?>
-
                             @foreach($dataTypeRows as $row)
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
