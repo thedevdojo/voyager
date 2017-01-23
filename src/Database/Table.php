@@ -99,7 +99,8 @@ class Table
         return $keys;
     }
 
-    public function getColumnKey($column, $refreshKey = false) {
+    public function getColumnKey($column, $refreshKey = false)
+    {
         // Note: this doesn't support composite keys for now
         if (is_array($column)) {
             $column = $column[0];
@@ -152,12 +153,12 @@ class Table
     protected function dropKey(Key $key)
     {
         switch ($key->type) {
-            case 'PRI':
+            case Key::PRIMARY:
                 $this->table->dropPrimaryKey();
                 break;
 
-            case 'UNI':
-            case 'MUL':
+            case Key::UNIQUE:
+            case Key::INDEX:
                 $this->table->dropIndex($key->name);
                 break;
         }
@@ -171,15 +172,15 @@ class Table
         }
 
         switch ($key) {
-            case 'PRI':
+            case Key::PRIMARY:
                 $this->table->setPrimaryKey($column);
                 break;
 
-            case 'UNI':
+            case Key::UNIQUE:
                 $this->table->addUniqueIndex($column);
                 break;
 
-            case 'MUL':
+            case Key::INDEX:
                 $this->table->addIndex($column);
                 break;
 

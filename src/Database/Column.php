@@ -33,6 +33,7 @@ class Column
             $name = $column['name'];
             $originalName = isset($column['originalName']) ? $column['originalName'] : $name;
             $type = Type::getType($column['type']);
+            $key = isset($column['key']) ? Key::validate($column['key']) : null;
             $extra = $column['extra'];
             $options = [
                 'notnull'       => !$column['null'],
@@ -51,8 +52,11 @@ class Column
             $this->newName = $this->name;
         }
 
-        // TODO: figure out if you should use $this->name or $this->originalName to get the key
-        $this->key = $this->table->getColumnKey($this->name);
+        if (isset($key)) {
+            $this->setKey($key);
+        } else {
+            $this->key = $this->table->getColumnKey($this->originalName);
+        }
     }
 
     public function __get($property)
@@ -89,7 +93,7 @@ class Column
 
     public function setKey($key)
     {
-        $this->key = $this->table->changeKey($this->name, $key);
+        $this->key = $this->table->changeKey($this->originalName, $key);
     }
 
     public function setName($name)
@@ -148,14 +152,14 @@ class Column
         }
     }
 
-    public function isNew()
+    public function getIsNew()
     {
         return !$this->table->hasColumn($this->originalName);
     }
 
     public function diffOriginal(array $ignoreProperties = [])
     {
-        if ($this->isNew()) {
+        if ($this->isNew) {
             throw new \Exception("Column {$this->name} is a new column. It doesn't have an original.");
         }
 

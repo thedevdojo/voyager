@@ -13,6 +13,12 @@ class Key
     protected $columns;
     protected $isComposite;
 
+    // Available key types
+    const PRIMARY = 'PRIMARY';
+    const UNIQUE  = 'UNIQUE';
+    const INDEX   = 'INDEX';
+    const NONE    = '';
+
     public function __construct(Index $index)
     {
         $this->index = $index;
@@ -56,10 +62,10 @@ class Key
     public static function validate($key)
     {
         $availableKeys = [
-            '',
-            'PRI',
-            'UNI',
-            'MUL',
+            static::PRIMARY,
+            static::UNIQUE,
+            static::INDEX,
+            static::NONE
         ];
 
         $key = strtoupper(trim($key));
@@ -70,11 +76,11 @@ class Key
     protected function setType()
     {
         if ($this->index->isPrimary()) {
-            $this->type = 'PRI';
+            $this->type = static::PRIMARY;
         } elseif ($this->index->isUnique()) {
-            $this->type = 'UNI';
+            $this->type = static::UNIQUE;
         } else {
-            $this->type = 'MUL';
+            $this->type = static::INDEX;
         }
     }
 }
