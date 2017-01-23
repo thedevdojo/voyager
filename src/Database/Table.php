@@ -8,7 +8,6 @@ use Doctrine\DBAL\Schema\Table as DoctrineTable;
 class Table
 {
     protected $table;
-    protected $originalKeys;
     protected $columns;
     protected $originalColumns;
 
@@ -31,7 +30,6 @@ class Table
 
         $this->columns = $this->setupColumns();
         $this->originalColumns = $this->setupColumns(true);
-        $this->originalKeys = $this->setupKeys();
     }
 
     public function __get($property)
@@ -73,12 +71,52 @@ class Table
 
     public function getKeys()
     {
-        return $this->setupKeys();
+        $keys = [];
+
+        foreach ($this->columns as $column) {
+            if ($key = $column->key) {
+                foreach ($key->columns as $keyColumn) {
+                    $keys[$keyColumn] = $key;
+                }
+            }
+        }
+
+        return $keys;
     }
 
     public function getOriginalKeys()
     {
-        return $this->originalKeys;
+        $keys = [];
+
+        foreach ($this->originalColumns as $column) {
+            if ($key = $column->key) {
+                foreach ($key->columns as $keyColumn) {
+                    $keys[$keyColumn] = $key;
+                }
+            }
+        }
+
+        return $keys;
+    }
+
+    public function getColumnKey($column, $refreshKey = false) {
+        // Note: this doesn't support composite keys for now
+        if (is_array($column)) {
+            $column = $column[0];
+        }
+
+        // If the column already has a key setup, just return it
+        if (!$refreshKey && $this->columns && ($key = $this->columns[$column]->key)) {
+            return $key;
+        }
+
+        // Try to setup or refresh a key
+        if ($index = $this->getColumnIndex($column)) {
+            return new Key($index);
+        }
+
+        // If we reach here, it means the column has no key
+        return null;
     }
 
     public function changeKey($column, $key)
@@ -91,10 +129,10 @@ class Table
         }
 
         // get the current key
-        if ($currentKey = $this->keys[$column]) {
+        if ($currentKey = $this->getColumnKey($column)) {
             // if the key already exists, no need to re-create it
             if ($currentKey->type == $newKey) {
-                return;
+                return $currentKey;
             }
 
             // Drop the current key
@@ -103,8 +141,12 @@ class Table
 
         if ($newKey) {
             // Create the new key
-            $this->addKey($column, $newKey);
+            return $this->addKey($column, $newKey);
         }
+
+        // if no new key is specified, return null
+        // this means the user wants to only drop the key
+        return null;
     }
 
     protected function dropKey(Key $key)
@@ -124,7 +166,9 @@ class Table
     protected function addKey($column, $key)
     {
         // NOTE: Composite keys are not supported for now
-        $column = [$column];
+        if(! is_array($column)) {
+            $column = [$column];
+        }
 
         switch ($key) {
             case 'PRI':
@@ -142,6 +186,8 @@ class Table
             default:
                 throw new \InvalidArgumentException("The key you want to add ({$key}) is invalid");
         }
+
+        return $this->getColumnKey($column, true);
     }
 
     public function getDoctrineColumn($column)
@@ -178,26 +224,17 @@ class Table
         return $cloned;
     }
 
-    protected function setupKeys()
+    protected function getColumnIndex($column)
     {
-        if (!$this->columns) {
-            return [];
+        // this currently doesn't support Composite keys
+        if(! is_array($column)) {
+            $column = [$column];
         }
-
-        $keys = [];
-
-        foreach ($this->columns as $column) {
-            $keys[$column->name] = null;
-        }
-
+        
         foreach ($this->table->getIndexes() as $index) {
-            $key = new Key($index);
-
-            foreach ($key->columns as $column) {
-                $keys[$column] = $key;
+            if ($column == $index->getColumns()) {
+                return $index;
             }
         }
-
-        return $keys;
     }
 }

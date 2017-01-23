@@ -10,6 +10,7 @@ class Column
     protected $column;
     protected $originalName;
     protected $newName;
+    protected $key;
 
     protected $table;
 
@@ -49,6 +50,9 @@ class Column
         if ($this->name != $this->originalName) {
             $this->newName = $this->name;
         }
+
+        // TODO: figure out if you should use $this->name or $this->originalName to get the key
+        $this->key = $this->table->getColumnKey($this->name);
     }
 
     public function __get($property)
@@ -85,7 +89,7 @@ class Column
 
     public function setKey($key)
     {
-        $this->table->changeKey($this->name, $key);
+        $this->key = $this->table->changeKey($this->name, $key);
     }
 
     public function setName($name)
@@ -117,12 +121,7 @@ class Column
 
     public function getKey()
     {
-        return $this->table->keys[$this->originalName];
-    }
-
-    public function getOriginalKey()
-    {
-        return $this->table->originalKeys[$this->originalName];
+        return $this->key;
     }
 
     public function getDefault()
@@ -177,9 +176,6 @@ class Column
         ];
 
         $properties = array_diff($properties, $ignoreProperties);
-
-        // NOTE: try to figure out how key is compared since $this->key will get updated keys and not original ones...
-        // Bug: original columns will have non original keys
 
         $diff = [];
 
