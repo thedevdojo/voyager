@@ -86,4 +86,24 @@ return [
         ],
     ],
 
+        /*
+    |--------------------------------------------------------------------------
+    | Administration Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager administration settings
+    |
+    */
+
+    'admin' => [
+        /*
+        'product' => [
+            'name' => 'Product',
+            'model' => '\App\Product', 
+            'route' => 'admin.products',
+            'image' => '/images/widget-backgrounds/01.png'
+        ],
+        */
+    ],
+    
 ];
