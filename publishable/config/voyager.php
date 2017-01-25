@@ -99,11 +99,11 @@ return [
         /*
         'product' => [
             'name' => 'Product',
-            'model' => '\App\Product', 
+            'model' => '\App\Product',
             'route' => 'admin.products',
             'image' => '/images/widget-backgrounds/01.png'
         ],
         */
     ],
-    
+
 ];
