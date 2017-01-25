@@ -5,8 +5,7 @@ namespace TCG\Voyager\Tests;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler;
-use Illuminate\Support\Facades\Artisan;
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
 
@@ -27,8 +26,10 @@ class TestCase extends OrchestraTestCase
         }
 
         if (!file_exists(base_path('routes/web.php'))) {
-            file_put_contents(base_path('routes/web.php'),
-                "<?php Route::get('/', function () {return view('welcome');});");
+            file_put_contents(
+                base_path('routes/web.php'),
+                "<?php Route::get('/', function () {return view('welcome');});"
+            );
         }
 
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
@@ -93,10 +94,30 @@ class TestCase extends OrchestraTestCase
     public function visit($uri)
     {
         if (is_callable('parent::visit')) {
-            parent::visit($uri);
+            return parent::visit($uri);
         }
 
         return $this->get($uri);
+    }
+
+    /**
+     * Assert that a given string is seen on the current HTML.
+     *
+     * @param  string  $text
+     * @param  bool  $negate
+     * @return $this
+     */
+    public function see($text, $negate = false)
+    {
+        if (is_callable('parent::see')) {
+            return parent::see($text);
+        }
+
+        if ($negate) {
+            return $this->assertDontSee($text);
+        }
+
+        return $this->assertSee($text);
     }
 }
 
