@@ -64,7 +64,11 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
-        $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        if (app()->version() >= 5.4) {
+            $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
+        } else {
+            $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        }
 
         $event->listen('voyager.alerts.collecting', function () {
             $this->addStorageSymlinkAlert();
