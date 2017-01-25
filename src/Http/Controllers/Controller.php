@@ -53,7 +53,8 @@ abstract class Controller extends BaseController
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
             if (is_null($content)) {
-                if (isset($data->{$row->field})) {
+                // Only set the content back to the previous value when there is really now input for this field
+                if (is_null($request->input($row->field)) && isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
                 if ($row->field == 'password') {
@@ -121,9 +122,31 @@ abstract class Controller extends BaseController
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
                 $content = $request->input($row->field);
-
                 if ($content === null) {
                     $content = [];
+                } else {
+                    // Check if we need to parse the editablePivotFields to update fields in the corresponding pivot table
+                    $options = json_decode($row->details);
+                    if (isset($options->relationship) && !empty($options->relationship->editablePivotFields)) {
+                        $pivotContent = [];
+                        // Read all values for fields in pivot tables from the request
+                        foreach ($options->relationship->editablePivotFields as $pivotField) {
+                            if (!isset($pivotContent[$pivotField])) {
+                                $pivotContent[$pivotField] = [];
+                            }
+                            $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
+                        }
+
+                        // Create a new content array for updating pivot table
+                        $newContent = [];
+                        foreach ($content as $contentIndex => $contentValue) {
+                            $newContent[$contentValue] = [];
+                            foreach ($pivotContent as $pivotContentKey => $value) {
+                                $newContent[$contentValue][$pivotContentKey] = $value[$contentIndex];
+                            }
+                        }
+                        $content = $newContent;
+                    }
                 }
 
                 return $content;
