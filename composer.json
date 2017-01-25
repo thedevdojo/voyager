@@ -15,16 +15,16 @@
         }
     ],
     "require": {
-        "illuminate/support": "5.3.*",
+        "illuminate/support": "5.3.*|5.4.*",
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
-        "larapack/doctrine-support": "^0.1.0"
+        "larapack/doctrine-support": "~0.1.0"
     },
     "require-dev": {
         "phpunit/phpcov": "~3.0",
         "phpunit/phpunit": "~5.0",
-        "laravel/framework": "~5.3.8",
-        "orchestra/testbench": "~3.3.0"
+        "laravel/framework": "~5.3.8|5.4.*",
+        "orchestra/testbench": "~3.4"
     },
     "autoload": {
         "psr-4": {
