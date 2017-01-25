@@ -103,8 +103,9 @@ class TestCase extends OrchestraTestCase
     /**
      * Assert that a given string is seen on the current HTML.
      *
-     * @param  string  $text
-     * @param  bool  $negate
+     * @param string $text
+     * @param bool   $negate
+     *
      * @return $this
      */
     public function see($text, $negate = false)
