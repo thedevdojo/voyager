@@ -24,8 +24,8 @@
         "phpunit/phpcov": "~3.0",
         "phpunit/phpunit": "~5.0",
         "laravel/framework": "~5.3.8|5.4.*",
-        "orchestra/testbench": "3.4.x-dev",
-        "orchestra/database": "3.4.x-dev"
+        "orchestra/testbench": "3.3.*|3.4.x-dev",
+        "orchestra/database": "3.3.*|3.4.x-dev"
     },
     "autoload": {
         "psr-4": {
