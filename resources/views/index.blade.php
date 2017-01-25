@@ -52,7 +52,7 @@
                     </div>
                 </div>
             @endif
-            @foreach(config('voyager.admin') as $element)
+            @foreach(config('voyager.admin', []) as $element)
                 <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') . $element['image']}});">
                     <div class="dimmer"></div>
                     <div class="panel-content">
