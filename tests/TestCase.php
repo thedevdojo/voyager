@@ -82,11 +82,12 @@ class TestCase extends OrchestraTestCase
     {
         $this->app->instance(ExceptionHandler::class, new DisabledTestException());
     }
-    
+
     /**
      * Visit the given URI with a GET request.
      *
-     * @param  string  $uri
+     * @param string $uri
+     *
      * @return $this
      */
     public function visit($uri)
@@ -94,7 +95,7 @@ class TestCase extends OrchestraTestCase
         if (is_callable('parent::visit')) {
             parent::visit($uri);
         }
-        
+
         return $this->get($uri);
     }
 }
