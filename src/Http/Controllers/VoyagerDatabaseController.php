@@ -42,7 +42,9 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        return view('voyager::tools.database.edit-add');
+        $formAction = route('voyager.database.store');
+
+        return view('voyager::tools.database.edit-add', compact('formAction'));
     }
 
     public function store(Request $request)
@@ -102,8 +104,9 @@ class VoyagerDatabaseController extends Controller
         Voyager::can('browse_database');
 
         $rows = DBSchema::describeTable($table);
+        $formAction = route('voyager.database.update', $table);
 
-        return view('voyager::tools.database.edit-add', compact('table', 'rows'));
+        return view('voyager::tools.database.edit-add', compact('table', 'rows', 'formAction'));
     }
 
     /**
