@@ -262,6 +262,23 @@ You may wish to specify a different asset path. If your site lives in a subfolde
 
 By default voyager is going to use the storage location and driver that is specified inside of your `config/filesystems.php` configuration. However, if you wish to have all of your assets inside of a specific subfolder in that storage location, you can specify it here.
 
+#### Administration config
+
+```
+'admin' => [
+    /*
+    'product' => [
+        'name' => 'Product',
+        'model' => '\App\Product',
+        'route' => 'admin.products',
+        'image' => '/images/widget-backgrounds/01.png'
+    ],
+    */
+],
+```
+
+By default on dashboard you have only 3 entities : Users, Posts and Pages. If you create new entities, as Products for example, and you want to get it on your dashboard, you can specify it in this config section. There is a commented example of elements needed.
+
 # Core Concepts
 
 ## Routing
