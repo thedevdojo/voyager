@@ -170,7 +170,6 @@
                                     });
 
                                     valid_json["field_details_{{ $data['field'] }}"] = false;
-                                    console.log(valid_json);
 
                                     // then here's how you use JSONArea's update event
                                     myJSONArea.getElement().addEventListener('update', function (e) {
