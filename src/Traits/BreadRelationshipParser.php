@@ -10,14 +10,16 @@ trait BreadRelationshipParser
 {
     /**
      * Build the relationships array for the model's eager load.
+     *
      * @param  DataType $dataType 
-     * @return Array
+     *
+     * @return array
      */
     protected function getRelationships(DataType $dataType)
     {
-        $relationships = array();
+        $relationships = [];
         $dataType->browseRows->each(function ($item) use (&$relationships) {
-            $details = json_decode( $item->details );
+            $details = json_decode($item->details);
             if (isset($details->relationship) && isset($item->field)) {
                 $relation = $details->relationship;
                 $relationships[$item->field] = function ($query) use ($relation) {
@@ -32,8 +34,10 @@ trait BreadRelationshipParser
 
     /**
      * Replace relationships' keys for labels and create READ links if a slug is provided.
+     *
      * @param  $dataTypeContent     Can be either an eloquent Model, Collection or LengthAwarePaginator instance.
-     * @param  DataType $dataType
+     * @param DataType $dataType
+     *
      * @return $dataTypeContent
      */
     protected function resolveRelations($dataTypeContent, DataType $dataType)
@@ -43,9 +47,9 @@ trait BreadRelationshipParser
             $dataTypeCollection = $dataTypeContent->getCollection();
         }
         // If it's a model just make the changes directly on it
-        else if ($dataTypeContent instanceof Model) {
+        elseif ($dataTypeContent instanceof Model) {
             $relations = $dataTypeContent->getRelations();
-            if (! empty($relations)) {
+            if (!empty($relations)) {
                 foreach ($relations as $field => $value) {
                     $dataTypeContent = $this->relationToLink($dataTypeContent, $field, $value, $dataType);
                 }
@@ -60,7 +64,7 @@ trait BreadRelationshipParser
 
         $dataTypeCollection->transform(function ($item) use ($dataType) {
             $relations = $item->getRelations();
-            if (! empty($relations)) {
+            if (!empty($relations)) {
                 foreach ($relations as $field => $value) {
                     $item = $this->relationToLink($item, $field, $value, $dataType);
                 }
@@ -73,12 +77,14 @@ trait BreadRelationshipParser
     }
 
     /**
-     * Create the URL for relationship's anchors in BROWSE and READ views
-     * @param  Model    $item       Object to modify
-     * @param  String   $field      Relation field to modify (must match the relationship's method)
-     * @param  Model    $relation   Relation model
-     * @param  DataType $dataType   
-     * @return Model    $item
+     * Create the URL for relationship's anchors in BROWSE and READ views.
+     *
+     * @param Model    $item     Object to modify
+     * @param string   $field    Relation field to modify (must match the relationship's method)
+     * @param Model    $relation Relation model
+     * @param DataType $dataType
+     *
+     * @return Model $item
      */
     protected function relationToLink(Model $item, $field, Model $relation, DataType $dataType)
     {
@@ -87,7 +93,7 @@ trait BreadRelationshipParser
         $id = $item[$field];
         $item[$field] = $relation[$relationData->label];
         if (isset($relationData->page_slug)) {
-            $item[$field . '_page_slug'] = url($relationData->page_slug, $id);
+            $item[$field.'_page_slug'] = url($relationData->page_slug, $id);
         }
 
         return $item;
