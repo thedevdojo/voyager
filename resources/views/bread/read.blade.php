@@ -29,9 +29,11 @@
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
                                 <img style="max-width:640px"
-                                     src="<?= Voyager::image($dataTypeContent->{$row->field}) ?>">
+                                     src="{{ Voyager::image($dataTypeContent->{$row->field}) }}">
+                            @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
+                                <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
                             @else
-                                <p><?= $dataTypeContent->{$row->field} ?></p>
+                                <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
                         @if(!$loop->last)
