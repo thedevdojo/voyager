@@ -11,7 +11,7 @@ trait BreadRelationshipParser
     /**
      * Build the relationships array for the model's eager load.
      *
-     * @param  DataType $dataType 
+     * @param DataType $dataType
      *
      * @return array
      */
