@@ -4,6 +4,7 @@ namespace TCG\Voyager\Database\Schema;
 
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
+use Doctrine\DBAL\Schema\Index as DoctrineIndex;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\DB;
@@ -61,6 +62,32 @@ class SchemaManager
         $options = array_diff_key($column, ['name' => $name, 'type' => $type]);
 
         return new DoctrineColumn($name, $type, $options);
+    }
+
+    public static function getDoctrineIndexFromArray(array $index)
+    {
+        $type = Index::validateType($index['type']);
+
+        $columns = $index['columns'];
+        if (!is_array($columns)) {
+            $columns = [$columns];
+        }
+
+        $isPrimary = ($type == Index::PRIMARY);
+        $isUnique = $isPrimary || ($type == Index::UNIQUE);
+
+        // Set the name
+        if (isset($index['name'])) {
+            $name = $index['name'];
+        } else {
+            $table = isset($index['table']) ? $index['table'] : null;
+            $name = Index::createName($columns, $type, $table);
+        }
+
+        $flags = isset($index['flags']) ? $index['flags'] : [];
+        $options = isset($index['options']) ? $index['options'] : [];
+        
+        return new DoctrineIndex($name, $columns, $isUnique, $isPrimary, $flags, $options);
     }
 
     public static function listTables()

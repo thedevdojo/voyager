@@ -53,23 +53,7 @@ class Index
 
     public static function buildFromArray(array $index)
     {
-        $type = static::validateType($index['type']);
-        $columns = $index['columns'];
-        $columns = is_array($columns) ? $columns : [$columns];
-        $isPrimary = ($type == static::PRIMARY);
-        $isUnique = $isPrimary || ($type == static::UNIQUE);
-
-        // set the name
-        if (isset($index['name'])) {
-            $name = $index['name'];
-        } else {
-            $table = isset($index['table']) ? $index['table'] : null;
-            $name = static::createName($columns, $type, $table);
-        }
-        
-        return new self(
-            new DoctrineIndex($name, $columns, $isUnique, $isPrimary)
-        );
+        return new self(SchemaManager::getDoctrineIndexFromArray($index));
     }
 
     public static function buildFromJson($jsonIndex)
