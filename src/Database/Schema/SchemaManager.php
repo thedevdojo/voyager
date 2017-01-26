@@ -5,12 +5,14 @@ namespace TCG\Voyager\Database\Schema;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Schema\Column as DoctrineColumn;
 use Doctrine\DBAL\Schema\Index as DoctrineIndex;
+use Doctrine\DBAL\Schema\ForeignKeyConstraint as DoctrineForeignKey;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\DB;
 
 class SchemaManager
 {
+    // todo: trim parameters
     public static function manager()
     {
         return DB::connection()->getDoctrineSchemaManager();
@@ -37,6 +39,8 @@ class SchemaManager
 
     public static function getDoctrineTable($table)
     {
+        $table = trim($table);
+
         if (!static::tableExists($table)) {
             throw SchemaException::tableDoesNotExist($table);
         }
@@ -77,9 +81,8 @@ class SchemaManager
         $isUnique = $isPrimary || ($type == Index::UNIQUE);
 
         // Set the name
-        if (isset($index['name'])) {
-            $name = $index['name'];
-        } else {
+        $name = isset($index['name']) ? trim($index['name']) : '';
+        if (empty($name)) {
             $table = isset($index['table']) ? $index['table'] : null;
             $name = Index::createName($columns, $type, $table);
         }
@@ -88,6 +91,37 @@ class SchemaManager
         $options = isset($index['options']) ? $index['options'] : [];
         
         return new DoctrineIndex($name, $columns, $isUnique, $isPrimary, $flags, $options);
+    }
+
+    public static function getDoctrineForeignKeyFromArray(array $foreignKey)
+    {
+        // Set the local table
+        $localTable = null;
+        if (isset($foreignKey['localTable'])) {
+            $localTable = static::getDoctrineTable($foreignKey['localTable']);
+        }
+
+        $localColumns = $foreignKey['localColumns'];
+        $foreignTable = $foreignKey['foreignTable'];
+        $foreignColumns = $foreignKey['foreignColumns'];
+        $options = isset($foreignKey['options']) ? $foreignKey['options'] : [];
+
+        // Set the name
+        $name = isset($foreignKey['name']) ? trim($foreignKey['name']) : '';
+        if (empty($name)) {
+            $table = isset($localTable) ? $localTable->getName() : null;
+            $name = Index::createName($localColumns, 'foreign', $table);
+        }
+
+        $doctrineForeignKey = new DoctrineForeignKey(
+            $localColumns, $foreignTable, $foreignColumns, $name, $options
+        );
+
+        if (isset($localTable)) {
+            $doctrineForeignKey->setLocalTable($localTable);
+        }
+
+        return $doctrineForeignKey;
     }
 
     public static function listTables()

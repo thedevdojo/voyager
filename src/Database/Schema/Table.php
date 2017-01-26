@@ -11,6 +11,7 @@ class Table
     protected $doctrineTable;
     protected $columns;
     protected $indexes;
+    protected $foreignKeys;
 
     public function __construct($table)
     {
@@ -21,6 +22,7 @@ class Table
         $this->doctrineTable = $table;
         $this->setupColumns();
         $this->setupIndexes();
+        $this->setupForeignKeys();
     }
 
     public static function buildFromArray(array $table)
@@ -28,7 +30,7 @@ class Table
         $name = $table['name'];
         $doctrineColumns = static::getDoctrineColumnsFromArray($table['columns']);
         $doctrineIndexes = static::getDoctrineIndexesFromArray($table['indexes']);
-        $foreignKeys = []; // todo: deal with this
+        $foreignKeys = static::getDoctrineForeignKeysFromArray($table['foreignKeys']);
 
         return new self(
             new DoctrineTable($name, $doctrineColumns, $doctrineIndexes, $foreignKeys, false, [])
@@ -71,6 +73,8 @@ class Table
         $this->setupColumns();
         $this->indexes = [];
         $this->setupIndexes();
+        $this->foreignKeys = [];
+        $this->setupForeignKeys();
     }
 
     public function getDoctrineTable()
@@ -111,11 +115,17 @@ class Table
         return $this;
     }
 
-    public function diff(Table $compareTable)
+    public function diff($compareTable)
     {
+        if ($compareTable instanceof self) {
+            $compareTable = $compareTable->doctrineTable;
+        } elseif (!($compareTable instanceof DoctrineTable)) {
+            $compareTable = SchemaManager::getDoctrineTable($compareTable);
+        }
+
         return (new Comparator)->diffTable(
             $this->doctrineTable,
-            $compareTable->doctrineTable
+            $compareTable
         );
     }
 
@@ -187,6 +197,12 @@ class Table
         unset($this->indexes[$index->name]);
     }
 
+    public function addForeignKey()
+    {
+        // TODO
+        // set the name to foreign index
+    }
+
     public function isNew()
     {
         return !SchemaManager::tableExists($this->name);
@@ -195,9 +211,10 @@ class Table
     public function toArray()
     {
         return [
-            'name'    => $this->name,
-            'columns' => $this->exportColumnsToArray(),
-            'indexes' => $this->exportIndexesToArray(),
+            'name'        => $this->name,
+            'columns'     => $this->exportColumnsToArray(),
+            'indexes'     => $this->exportIndexesToArray(),
+            'foreignKeys' => $this->exportForeignKeysToArray(),
         ];
     }
 
@@ -206,30 +223,41 @@ class Table
         return json_encode($this->toArray());
     }
 
+    protected function exportColumnsToArray()
+    {
+        $columns = [];
+
+        foreach ($this->columns as $name => $column) {
+            $columnArray = $column->toArray();
+            $columnArray['type'] = $columnArray['type']->getName();
+            $columns[$name] = $columnArray;
+        }
+
+        return $columns;
+    }
+
     protected function exportIndexesToArray()
     {
         $indexes = [];
 
-        foreach ($this->indexes as $index) {
+        foreach ($this->indexes as $name => $index) {
             $indexArray = $index->toArray();
             $indexArray['table'] = $this->name;
-            $indexes[$indexArray['name']] = $indexArray;
+            $indexes[$name] = $indexArray;
         }
 
         return $indexes;
     }
 
-    protected function exportColumnsToArray()
+    protected function exportForeignKeysToArray()
     {
-        $columns = [];
+        $foreignKeys = [];
 
-        foreach ($this->columns as $column) {
-            $columnArray = $column->toArray();
-            $columnArray['type'] = $columnArray['type']->getName();
-            $columns[$columnArray['name']] = $columnArray;
+        foreach ($this->foreignKeys as $name => $foreignKey) {
+            $foreignKeys[$name] = $foreignKey->toArray();
         }
 
-        return $columns;
+        return $foreignKeys;
     }
 
     protected function setupColumns()
@@ -243,6 +271,13 @@ class Table
     {
         foreach ($this->doctrineTable->getIndexes() as $name => $index) {
             $this->indexes[$name] = new Index($index);
+        }
+    }
+
+    protected function setupForeignKeys()
+    {
+        foreach ($this->doctrineTable->getForeignKeys() as $name => $foreignKey) {
+            $this->foreignKeys[$name] = new ForeignKey($foreignKey);
         }
     }
 
@@ -268,5 +303,17 @@ class Table
         }
 
         return $doctrineIndexes;
+    }
+
+    protected static function getDoctrineForeignKeysFromArray(array $foreignKeys)
+    {
+        $doctrineForeignKeys = [];
+
+        foreach ($foreignKeys as $foreignKey) {
+            $doctrineForeignKey = SchemaManager::getDoctrineForeignKeyFromArray($foreignKey);
+            $doctrineForeignKeys[$doctrineForeignKey->getName()] = $doctrineForeignKey;
+        }
+
+        return $doctrineForeignKeys;
     }
 }

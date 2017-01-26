@@ -98,8 +98,8 @@ class Index
      */
     public static function createName(array $columns, $type, $table = null)
     {
-        $type = static::validateType($type);
-        $table = isset($table) ? "{$table}_" : '';
+        $table = isset($table) ? trim($table).'_' : '';
+        $type = trim($type);
         $name = strtolower($table.implode('_', $columns).'_'.$type);
 
         return str_replace(['-', '.'], '_', $name);
