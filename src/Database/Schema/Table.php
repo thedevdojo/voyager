@@ -13,8 +13,12 @@ class Table
     protected $columns;
     protected $keys;
 
-    public function __construct(DoctrineTable $table)
+    public function __construct($table)
     {
+        if (!($table instanceof DoctrineTable)) {
+            $table = SchemaManager::getDoctrineTable($table);
+        }
+
         $this->doctrineTable = $table;
         $this->setupColumns();
         $this->setupKeys();
@@ -213,6 +217,7 @@ class Table
 
         foreach ($this->keys as $key) {
             $keyArray = $key->toArray();
+            $keyArray['table'] = $this->name;
             $keys[$keyArray['name']] = $keyArray;
         }
 
