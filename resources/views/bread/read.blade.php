@@ -6,7 +6,7 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> Viewing {{ ucfirst($dataType->display_name_singular) }} &nbsp;
 
-        <a href="{{route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->id)}}" class="btn btn-info">
+        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
             Edit
         </a>
@@ -41,12 +41,14 @@
                             @elseif($row->type == 'date')
                                 {{ property_exists($rowDetails, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($rowDetails->format) : $dataTypeContent->{$row->field} }}
                             @elseif($row->type == 'checkbox')
-                                @if(property_exists($rowDetails, 'on') && property_exists($rowDetails, 'off'))
+                                @if($rowDetails && property_exists($rowDetails, 'on') && property_exists($rowDetails, 'off'))
                                     @if($dataTypeContent->{$row->field})
                                     <span class="label label-info">{{ $rowDetails->on }}</span>
                                     @else
                                     <span class="label label-primary">{{ $rowDetails->off }}</span>
                                     @endif
+                                @else
+                                {{ $dataTypeContent->{$row->field} }}
                                 @endif
                             @else
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
