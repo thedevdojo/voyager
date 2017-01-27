@@ -4,7 +4,12 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> Viewing {{ ucfirst($dataType->display_name_singular) }}
+        <i class="{{ $dataType->icon }}"></i> Viewing {{ ucfirst($dataType->display_name_singular) }} &nbsp;
+
+        <a href="{{route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->id)}}" class="btn btn-info">
+            <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+            Edit
+        </a>
     </h1>
 @stop
 
@@ -22,7 +27,7 @@
 
                     @foreach($dataType->readRows as $row)
                         @php $rowDetails = json_decode($row->details); @endphp
-                        
+
                         <div class="panel-heading" style="border-bottom:0;">
                             <h3 class="panel-title">{{ $row->display_name }}</h3>
                         </div>
@@ -35,6 +40,14 @@
                                 <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
                             @elseif($row->type == 'date')
                                 {{ property_exists($rowDetails, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($rowDetails->format) : $dataTypeContent->{$row->field} }}
+                            @elseif($row->type == 'checkbox')
+                                @if(property_exists($rowDetails, 'on') && property_exists($rowDetails, 'off'))
+                                    @if($dataTypeContent->{$row->field})
+                                    <span class="label label-info">{{ $rowDetails->on }}</span>
+                                    @else
+                                    <span class="label label-primary">{{ $rowDetails->off }}</span>
+                                    @endif
+                                @endif
                             @else
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
