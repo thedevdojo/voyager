@@ -487,6 +487,21 @@ Additionally, you may wish to add some custom error messages which can be accomp
 }
 ```
 
+### Generating Slugs
+
+Using the bread builder you may wish to automatically generate slugs of a cetain input. Lets say you have some posts, which have a title and a slug. If you want to automatically generate the slug from the title attribute, you may include the following *Optional Details*:
+
+```
+{
+    "slugify": {
+        "origin": "title", 
+        "forceUpdate": true
+    }
+}
+```
+
+This will automatically generate the slug from the input of the `title` field. If a slug does already exists, it will only be updated if `forceUpdate` is set enabled, by default this is dissabled.
+
 ### Relationships
 
 Using the bread builder additional options you can add relationships to rows. There are 2 input types that will allow you to implement a relationship with another table.
