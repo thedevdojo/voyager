@@ -41,7 +41,7 @@ trait BreadRelationshipParser
      *
      * @return $dataTypeContent
      */
-    protected function resolveRelations($dataTypeContent, DataType $dataType, bool $isModel = false)
+    protected function resolveRelations($dataTypeContent, DataType $dataType)
     {
         // In case of using server-side pagination, we need to work on the Collection (BROWSE)
         if ($dataTypeContent instanceof LengthAwarePaginator) {
