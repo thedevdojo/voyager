@@ -10,14 +10,14 @@ trait BreadRelationshipParser
 {
     /**
      * Build the relationships array for the model's eager load.
-     * 
-     * @param  DataType $dataType 
-     * 
-     * @return Array
+     *
+     * @param DataType $dataType
+     *
+     * @return array
      */
     protected function getRelationships(DataType $dataType)
     {
-        $relationships = array();
+        $relationships = [];
 
         $dataType->browseRows->each(function ($item) use (&$relationships) {
             $details = json_decode($item->details);
@@ -35,10 +35,10 @@ trait BreadRelationshipParser
 
     /**
      * Replace relationships' keys for labels and create READ links if a slug is provided.
-     * 
+     *
      * @param  $dataTypeContent     Can be either an eloquent Model, Collection or LengthAwarePaginator instance.
-     * @param  DataType $dataType
-     * 
+     * @param DataType $dataType
+     *
      * @return $dataTypeContent
      */
     protected function resolveRelations($dataTypeContent, DataType $dataType, bool $isModel = false)
@@ -48,7 +48,7 @@ trait BreadRelationshipParser
             $dataTypeCollection = $dataTypeContent->getCollection();
         }
         // If it's a model just make the changes directly on it (READ / EDIT)
-        else if ($dataTypeContent instanceof Model) {
+        elseif ($dataTypeContent instanceof Model) {
 
             return $this->relationToLink($dataTypeContent, $dataType);
         }
@@ -65,18 +65,18 @@ trait BreadRelationshipParser
     }
 
     /**
-     * Create the URL for relationship's anchors in BROWSE and READ views
-     * 
-     * @param  Model    $item       Object to modify
-     * @param  DataType $dataType  
-     *  
-     * @return Model    $item
+     * Create the URL for relationship's anchors in BROWSE and READ views.
+     *
+     * @param Model    $item     Object to modify
+     * @param DataType $dataType
+     *
+     * @return Model $item
      */
     protected function relationToLink(Model $item, DataType $dataType)
     {
         $relations = $item->getRelations();
         // If there are not-null relations
-        if (! empty($relations) && array_filter($relations)) {
+        if (!empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
                 $field = snake_case($field);
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
@@ -90,7 +90,6 @@ trait BreadRelationshipParser
             }
         }
 
-        return $item;
-        
+        return $item;        
     }
 }
