@@ -42,7 +42,7 @@ class VoyagerBreadController extends Controller
 
             $relationships = $this->getRelationships($dataType);
             if ($model->timestamps) {
-                $dataTypeContent = call_user_func([$model->with(['service_id', 'user_id'])->latest(), $getter]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
             } else {
                 $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
