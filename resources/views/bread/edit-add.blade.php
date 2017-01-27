@@ -208,14 +208,13 @@
                                         @endif
 
                                     @elseif($row->type == "timestamp")
-
                                         <input type="datetime" class="form-control datepicker" name="{{ $row->field }}"
                                                 value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('m/d/Y g:i A', strtotime(old($row->field, $dataTypeContent->{$row->field})))  }}@else{{old($row->field)}}@endif">
 
                                     @elseif($row->type == "date")
                                         <input type="date" class="form-control" name="{{ $row->field }}"
                                                placeholder="{{ $row->display_name }}"
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
+                                               value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('Y-m-d', strtotime(old($row->field, $dataTypeContent->{$row->field}))) }}@else{{old($row->field)}}@endif">
 
                                     @elseif($row->type == "number")
                                         <input type="number" class="form-control" name="{{ $row->field }}"
