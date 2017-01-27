@@ -41,6 +41,7 @@ class VoyagerBreadController extends Controller
             $model = app($dataType->model_name);
 
             $relationships = $this->getRelationships($dataType);
+
             if ($model->timestamps) {
                 $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
             } else {
@@ -126,8 +127,10 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::can('edit_'.$dataType->name);
 
+        $relationships = $this->getRelationships($dataType);
+
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
+            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         $view = 'voyager::bread.edit-add';
