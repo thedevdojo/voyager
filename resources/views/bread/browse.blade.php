@@ -38,8 +38,10 @@
                                                 @if ($data->{$row->field} && isset($options->relationship))
                                                     {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
                                                 @endif
-                                           @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
+                                            @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
                                                 <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field}  }}</a>
+                                            @elseif($row->type == 'date')
+                                            {{ property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $dataTypeContent->{$row->field} }}
                                             @else
                                                 {{ $data->{$row->field} }}
                                             @endif
