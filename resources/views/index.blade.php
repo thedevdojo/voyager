@@ -16,51 +16,15 @@
             @endforeach
         </div>
         <div class="widgets">
-            @if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\User())->getTable())) 
-                <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
-                    <div class="dimmer"></div>
-                    <div class="panel-content">
-                        <i class="voyager-group"></i>
-                        {{ $user_count = TCG\Voyager\Models\User::count() }}
-                        <h4>{{ $user_count }} Users</h4>
-                        <p>You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your current users.</p>
-                        <a href="{{ route('voyager.users.index') }}" class="btn btn-primary">View All Users</a>
-                    </div>
-                </div>
-            @endif
-            @if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\Post())->getTable()))
-                <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/03.png);">
-                    <div class="dimmer"></div>
-                    <div class="panel-content">
-                        <i class="voyager-news"></i>
-                        {{ $post_count = TCG\Voyager\Models\Post::count() }}
-                        <h4>{{ $post_count }} Post(s)</h4>
-                        <p>You have {{ $post_count }} Posts in your database. Click on 'View All Posts' below to view all posts.</p>
-                        <a href="{{ route('voyager.posts.index') }}" class="btn btn-primary">View All Posts</a>
-                    </div>
-                </div>
-            @endif
-            @if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\Page())->getTable()))
-                <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/04.png);">
-                    <div class="dimmer"></div>
-                    <div class="panel-content">
-                        <i class="voyager-file-text"></i>
-                        {{ $page_count = TCG\Voyager\Models\Page::count() }}
-                        <h4>{{ $page_count }} Page(s)</h4>
-                        <p>You have {{ $page_count }} Pages in your database. Click on 'View All Pages' below to view all pages.</p>
-                        <a href="{{ route('voyager.pages.index') }}" class="btn btn-primary">View All Pages</a>
-                    </div>
-                </div>
-            @endif
-            @foreach(config('voyager.admin', []) as $element)
+            @foreach(config('voyager.widgets', []) as $element)
                 <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') . $element['image']}});">
                     <div class="dimmer"></div>
                     <div class="panel-content">
-                        <i class="voyager-file-text"></i>
+                        <i class={{ $element['icon'] }}></i>
                         {{ $count = $element['model']::count() }}
                         <h4>{{ $count . ' ' .  $element['name'] }}(s)</h4>
-                        <p>You have {{ $count . ' ' .  $element['name'] }}(s) in your database. Click on 'View All {{ $element['name'] }}s' below to view all {{ lcfirst($element['name']) }}s.</p>
-                        <a href="{{ $element['route'] }}" class="btn btn-primary">View All {{ $element['name'] }}s</a>
+                        <p>You have {{ $count . ' ' .  $element['name'] }}(s) in your database. Click on button below to view all {{ lcfirst($element['name']) }}s.</p>
+                        <a href="{{ $element['url'] }}" class="btn btn-primary">View All {{ $element['name'] }}s</a>
                     </div>
                 </div>
             @endforeach
