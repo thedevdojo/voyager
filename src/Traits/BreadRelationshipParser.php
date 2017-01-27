@@ -90,6 +90,6 @@ trait BreadRelationshipParser
             }
         }
 
-        return $item;        
+        return $item;
     }
 }
