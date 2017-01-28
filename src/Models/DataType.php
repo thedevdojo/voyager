@@ -62,10 +62,10 @@ class DataType extends Model
         $this->attributes['server_side'] = $value ? 1 : 0;
     }
 
-    public function updateDataType($requestData)
+    public function updateDataType($requestData, $throw = false)
     {
-        \DB::beginTransaction();
         try {
+            \DB::beginTransaction();
 
             if($this->fill($requestData)->save()) {
 
@@ -97,7 +97,9 @@ class DataType extends Model
 
         } catch (\Exception $e) {
             \DB::rollBack();
+            if($throw) throw $e;
         }
+
         return false;
     }
 
@@ -135,8 +137,10 @@ class DataType extends Model
 
     public function extraFields()
     {
-        $model = app($this->model_name);
+        if(empty(trim($this->model_name)))
+            return [];
 
+        $model = app($this->model_name);
         if (method_exists($model, 'adminFields')) {
             return $model->adminFields();
         }
