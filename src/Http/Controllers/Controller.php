@@ -53,12 +53,14 @@ abstract class Controller extends BaseController
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
             /**
-             * merge ex_pics and upload pics
+             * merge ex_images and upload images
              */
-            if ($row->type == 'multiple_pics' && !is_null($content)) {
+            if ($row->type == 'multiple_images' && !is_null($content)) {
                 if (isset($data->{$row->field})) {
-                    $ex_files = json_decode($data->{$row->field});
-                    $content = json_encode(array_merge($ex_files, json_decode($content)));
+                    $ex_files = json_decode($data->{$row->field}, true);
+                    if (!is_null($ex_files)) {
+                        $content = json_encode(array_merge($ex_files, json_decode($content)));
+                    }
                 }
             }
 
@@ -128,14 +130,14 @@ abstract class Controller extends BaseController
                 }
             // no break
 
-            /********** MULTIPLE PICS TYPE **********/
-            case 'multiple_pics':
+            /********** MULTIPLE IMAGES TYPE **********/
+            case 'multiple_images':
                 if ($files = $request->file($row->field)) {
                     /**
                      * upload files
                      */
                     $filesPath = array();
-                    foreach($files as $key => $file) {
+                    foreach ($files as $key => $file) {
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('F').date('Y').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
