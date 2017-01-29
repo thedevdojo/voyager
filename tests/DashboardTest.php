@@ -24,7 +24,7 @@ class DashboardTest extends TestCase
         $this->see('Dashboard');
 
         // We can see number of Users.
-        $this->see('1 Users');
+        $this->see('1 User(s)');
 
         // list them.
         $this->click('View All Users');
