@@ -4,6 +4,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
+@if(isset($dataTypeContent->id))
+    @section('page_title','Edit '.$dataType->display_name_singular)
+@else
+    @section('page_title','Add '.$dataType->display_name_singular)
+@endif
+
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
@@ -60,6 +66,7 @@
                                         <?php $options = json_decode($row->details); ?>
                                         <input type="text" class="form-control" name="{{ $row->field }}"
                                                placeholder="{{ $row->display_name }}"
+                                               {!! isBreadSlugAutoGenerator($options) !!}
                                                value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif">
                                     @elseif($row->type == "password")
                                         @if(isset($dataTypeContent->{$row->field}))
@@ -83,18 +90,24 @@
                                         @endif
                                         <input type="file" name="{{ $row->field }}">
                                     @elseif($row->type == "select_dropdown")
-                                        <?php $options = json_decode($row->details); ?>
+                                        <?php $options = json_decode($row->details); $row->field = camel_case($row->field); ?>
                                         @if(isset($options->relationship))
+
                                             {{-- If this is a relationship and the method does not exist, show a warning message --}}
                                             @if( !method_exists( $dataType->model_name, $row->field ) )
-                                                <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>   
+                                                <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
                                             @endif
 
                                             @if( method_exists( $dataType->model_name, $row->field ) )
-                                                <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
-                                                <select class="form-control select2" name="{{ $row->field }}">
+                                                @if(isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field})))
+                                                    <?php $selected_value = old($row->field, $dataTypeContent->{$row->field}->{$options->relationship->key}); ?>
+                                                @else
+                                                    <?php $selected_value = old($row->field); ?>
+                                                @endif
+
+                                                <select class="form-control select2" name="{{ snake_case($row->field) }}">
                                                     <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
-                                                
+
                                                     @if(isset($options->options))
                                                         <optgroup label="Custom">
                                                         @foreach($options->options as $key => $option)
@@ -102,12 +115,24 @@
                                                         @endforeach
                                                         </optgroup>
                                                     @endif
+                                                    {{-- Populate all options from relationship --}}
+                                                    <?php
+                                                    $relationshipClass = $dataTypeContent->{$row->field}()->getRelated();
+                                                    $relationshipOptions = $relationshipClass::all();
 
-                                                    <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
-                                                    <?php $relationshipOptions = $relationshipClass::all(); ?>
+                                                    // Try to get default value for the relationship
+                                                    // when default is a callable function (ClassName@methodName)
+                                                    if ($default != NULL) {
+                                                        $comps = explode('@', $default);
+                                                        if (count($comps) == 2 && method_exists($comps[0], $comps[1])) {
+                                                            $default = call_user_func([$comps[0], $comps[1]]);
+                                                        }
+                                                    }
+                                                    ?>
+
                                                     <optgroup label="Relationship">
                                                     @foreach($relationshipOptions as $relationshipOption)
-                                                        <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
+                                                        <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
                                                     @endforeach
                                                     </optgroup>
                                                 </select>
@@ -130,12 +155,12 @@
                                         <?php $options = json_decode($row->details); ?>
                                         {{-- If this is a relationship and the method does not exist, show a warning message --}}
                                         @if(isset($options->relationship) && !method_exists( $dataType->model_name, $row->field ) )
-                                            <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>   
+                                            <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
                                         @endif
-                                        
+
                                         <select class="form-control select2" name="{{ $row->field }}[]" multiple>
                                             @if(isset($options->relationship))
-                                                <!-- Check that the method relationship exists -->
+                                                {{-- Check that the method relationship exists --}}
                                                 @if( method_exists( $dataType->model_name, $row->field ) )
                                                     <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{$row->field}()->pluck($options->relationship->key)->all() : array(); ?>
                                                     <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
@@ -183,13 +208,13 @@
                                         @endif
 
                                     @elseif($row->type == "timestamp")
-                                        
-                                        <input type="datetime" class="form-control datepicker" name="{{ $row->field }}" value="{{ gmdate('m/d/Y g:i A', strtotime($dataTypeContent->{$row->field})) }}">
+                                        <input type="datetime" class="form-control datepicker" name="{{ $row->field }}"
+                                                value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('m/d/Y g:i A', strtotime(old($row->field, $dataTypeContent->{$row->field})))  }}@else{{old($row->field)}}@endif">
 
                                     @elseif($row->type == "date")
                                         <input type="date" class="form-control" name="{{ $row->field }}"
                                                placeholder="{{ $row->display_name }}"
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
+                                               value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('Y-m-d', strtotime(old($row->field, $dataTypeContent->{$row->field}))) }}@else{{old($row->field)}}@endif">
 
                                     @elseif($row->type == "number")
                                         <input type="number" class="form-control" name="{{ $row->field }}"
@@ -227,8 +252,13 @@
     <script>
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
+
+            $('.side-body input[data-slug-origin]').each(function(i, el) {
+                $(el).slugify();
+            });
         });
     </script>
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
 @stop

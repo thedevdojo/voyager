@@ -189,6 +189,10 @@ class DataRowsTableSeeder extends Seeder
                     'validation' => [
                         'rule' => 'required',
                     ],
+                    'slugify' => [
+                        'origin': 'title',
+                        'forceUpdate': true
+                    ],
                 ]),
             ])->save();
         }
@@ -402,6 +406,9 @@ class DataRowsTableSeeder extends Seeder
                     'validation' => [
                         'rule' => 'required',
                     ],
+                    'slugify' => [
+                        'origin': 'title',
+                    ]
                 ]),
             ])->save();
         }

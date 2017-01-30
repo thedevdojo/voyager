@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{Voyager::setting('admin_title')}} - {{Voyager::setting('admin_description')}}</title>
+    {{-- <title>{{Voyager::setting('admin_title')}} - {{Voyager::setting('admin_description')}}</title> --}}
+    <title>@yield('page_title',Voyager::setting('admin_title') . " - " . Voyager::setting('admin_description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="<?= csrf_token() ?>"/>
     <!-- Fonts -->
@@ -230,8 +231,6 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
     }
     @endif
 </script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/speakingurl.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/slugit.js"></script>
 @yield('javascript')
 </body>
 </html>

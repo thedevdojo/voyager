@@ -16,6 +16,7 @@ return [
         'default_role'                 => 'user',
         'admin_permission'             => 'browse_admin',
         'namespace'                    => App\User::class,
+        'default_avatar'               => 'users/default.png',
     ],
 
     /*
@@ -29,6 +30,21 @@ return [
 
     'controllers' => [
         'namespace' => 'TCG\\Voyager\\Http\\Controllers',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Models config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify default model namespace when creating BREAD.
+    | Must include trailing backslashes. If not defined the default application
+    | namespace will be used.
+    |
+    */
+
+    'models' => [
+        //'namespace' => 'App\\',
     ],
 
     /*
@@ -68,6 +84,26 @@ return [
         'tables' => [
             'hidden' => [], // database tables that are hidden from the admin panel
         ],
+    ],
+
+        /*
+    |--------------------------------------------------------------------------
+    | Administration Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager administration settings
+    |
+    */
+
+    'admin' => [
+        /*
+        'product' => [
+            'name' => 'Product',
+            'model' => '\App\Product',
+            'route' => 'admin.products',
+            'image' => '/images/widget-backgrounds/01.png'
+        ],
+        */
     ],
 
 ];

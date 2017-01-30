@@ -1,5 +1,11 @@
 @extends('voyager::master')
 
+@if(isset($dataTypeContent->id))
+    @section('page_title','Edit '.$dataType->display_name_singular)
+@else
+    @section('page_title','Add '.$dataType->display_name_singular)
+@endif
+
 @section('css')
     <style>
         .panel .mce-panel {
@@ -121,7 +127,10 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label for="name">URL slug</label>
-                                <input type="text" class="form-control" name="slug" placeholder="slug" value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
+                                <input type="text" class="form-control" id="slug" name="slug"
+                                    placeholder="slug"
+                                    @if(isset($dataTypeContent)){!! isFieldSlugAutoGenerator($dataTypeContent, "slug") !!}@endif
+                                    value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">
                                 <label for="name">Post Status</label>
@@ -207,6 +216,12 @@
 @stop
 
 @section('javascript')
+    <script>
+        $('document').ready(function () {
+            $('#slug').slugify();
+        });
+    </script>
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
 @stop
