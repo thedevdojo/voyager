@@ -177,14 +177,12 @@ class VoyagerDatabaseController extends Controller
                     ]
                 );
         } catch (Exception $e) {
-
             return back()->with(
                 [
                     'message'    => 'Exception: '.$e->getMessage(),
                     'alert-type' => 'error',
                 ]
             );
-
         }
     }
 
@@ -231,9 +229,8 @@ class VoyagerDatabaseController extends Controller
         Voyager::can('browse_database');
 
         try {
-
             $dataType = new DataType();
-            $data = $dataType->updateDataType($request->all() , true)
+            $data = $dataType->updateDataType($request->all(), true)
                 ? [
                     'message'    => 'Successfully created new BREAD',
                     'alert-type' => 'success',
@@ -244,14 +241,11 @@ class VoyagerDatabaseController extends Controller
                 ];
 
             return redirect()->route('voyager.database.index')->with($data);
-
         } catch (\Exception $e) {
-
             return redirect()->route('voyager.database.index')->with([
-                'message'    => "Saving Failed! " . $e->getMessage(),
+                'message'    => 'Saving Failed! '.$e->getMessage(),
                 'alert-type' => 'error',
             ]);
-
         }
     }
 
@@ -263,7 +257,7 @@ class VoyagerDatabaseController extends Controller
 
         try {
             $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : \TCG\Voyager\Facades\DBSchema::describeTable($dataType->name);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $fieldOptions = \TCG\Voyager\Facades\DBSchema::describeTable($dataType->name);
         }
 
@@ -278,7 +272,7 @@ class VoyagerDatabaseController extends Controller
     public function updateBread(Request $request, $id)
     {
         Voyager::can('browse_database');
-        /** @var \TCG\Voyager\Models\DataType $dataType */
+        /* @var \TCG\Voyager\Models\DataType $dataType */
         try {
             $dataType = DataType::find($id);
 
@@ -293,16 +287,12 @@ class VoyagerDatabaseController extends Controller
                 ];
 
             return redirect()->route('voyager.database.index')->with($data);
-
         } catch (\Exception $e) {
-
-            return back()->with ([
-                'message'    => "Update Failed! " . $e->getMessage(),
+            return back()->with([
+                'message'    => 'Update Failed! '.$e->getMessage(),
                 'alert-type' => 'error',
             ]);
-
         }
-
     }
 
     public function deleteBread($id)
