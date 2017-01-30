@@ -177,12 +177,14 @@ class VoyagerDatabaseController extends Controller
                     ]
                 );
         } catch (Exception $e) {
+
             return back()->with(
                 [
                     'message'    => 'Exception: '.$e->getMessage(),
                     'alert-type' => 'error',
                 ]
             );
+
         }
     }
 
@@ -199,7 +201,10 @@ class VoyagerDatabaseController extends Controller
 
         $table = $request->input('table');
 
-        return view('voyager::tools.database.edit-add-bread', $this->prepopulateBreadInfo($table));
+        $data = $this->prepopulateBreadInfo($table);
+        $data['fieldOptions'] = \TCG\Voyager\Facades\DBSchema::describeTable($table);
+
+        return view('voyager::tools.database.edit-add-bread', $data);
     }
 
     private function prepopulateBreadInfo($table)
@@ -225,48 +230,79 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        $dataType = new DataType();
-        $data = $dataType->updateDataType($request->all())
-            ? [
-                'message'    => 'Successfully created new BREAD',
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => 'Sorry it appears there may have been a problem creating this bread',
-                'alert-type' => 'error',
-            ];
+        try {
 
-        return redirect()->route('voyager.database.index')->with($data);
+            $dataType = new DataType();
+            $data = $dataType->updateDataType($request->all() , true)
+                ? [
+                    'message'    => 'Successfully created new BREAD',
+                    'alert-type' => 'success',
+                ]
+                : [
+                    'message'    => 'Sorry it appears there may have been a problem creating this bread',
+                    'alert-type' => 'error',
+                ];
+
+            return redirect()->route('voyager.database.index')->with($data);
+
+        } catch (\Exception $e) {
+
+            return redirect()->route('voyager.database.index')->with([
+                'message'    => "Saving Failed! " . $e->getMessage(),
+                'alert-type' => 'error',
+            ]);
+
+        }
     }
 
     public function addEditBread($id)
     {
         Voyager::can('browse_database');
 
+        $dataType = DataType::find($id);
+
+        try {
+            $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : \TCG\Voyager\Facades\DBSchema::describeTable($dataType->name);
+        } catch(\Exception $e) {
+            $fieldOptions = \TCG\Voyager\Facades\DBSchema::describeTable($dataType->name);
+        }
+
         return view(
             'voyager::tools.database.edit-add-bread', [
-            'dataType' => DataType::find($id),
-        ]
+                'dataType'     => $dataType,
+                'fieldOptions' => $fieldOptions,
+            ]
         );
     }
 
     public function updateBread(Request $request, $id)
     {
         Voyager::can('browse_database');
-
         /** @var \TCG\Voyager\Models\DataType $dataType */
-        $dataType = DataType::find($id);
-        $data = $dataType->updateDataType($request->all())
-            ? [
-                'message'    => "Successfully updated the {$dataType->name} BREAD",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => 'Sorry it appears there may have been a problem updating this bread',
-                'alert-type' => 'error',
-            ];
+        try {
+            $dataType = DataType::find($id);
 
-        return redirect()->route('voyager.database.index')->with($data);
+            $data = $dataType->updateDataType($request->all(), true)
+                ? [
+                    'message'    => "Successfully updated the {$dataType->name} BREAD",
+                    'alert-type' => 'success',
+                ]
+                : [
+                    'message'    => 'Sorry it appears there may have been a problem updating this bread',
+                    'alert-type' => 'error',
+                ];
+
+            return redirect()->route('voyager.database.index')->with($data);
+
+        } catch (\Exception $e) {
+
+            return back()->with ([
+                'message'    => "Update Failed! " . $e->getMessage(),
+                'alert-type' => 'error',
+            ]);
+
+        }
+
     }
 
     public function deleteBread($id)

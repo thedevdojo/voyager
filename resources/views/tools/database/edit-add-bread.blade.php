@@ -17,8 +17,6 @@
         <?php $table = $dataType->name ?>
     @endif
 
-    <?php $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : \TCG\Voyager\Facades\DBSchema::describeTable($table); ?>
-
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -52,6 +50,7 @@
                             </thead>
                             <tbody>
                             @foreach($fieldOptions as $data)
+
                                 @if(isset($dataType->id))
                                     <?php $dataRow = TCG\Voyager\Models\DataRow::where('data_type_id', '=',
                                             $dataType->id)->where('field', '=', $data['field'])->first(); ?>
