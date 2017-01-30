@@ -190,8 +190,8 @@ class DataRowsTableSeeder extends Seeder
                         'rule' => 'required',
                     ],
                     'slugify' => [
-                        'origin': 'title',
-                        'forceUpdate': true
+                        'origin' => 'title',
+                        'forceUpdate' => true
                     ],
                 ]),
             ])->save();
