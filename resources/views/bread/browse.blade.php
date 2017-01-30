@@ -38,6 +38,20 @@
                                                 @if ($data->{$row->field} && isset($options->relationship))
                                                     {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
                                                 @endif
+                                            @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
+                                                <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field}  }}</a>
+                                            @elseif($row->type == 'date')
+                                            {{ property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $dataTypeContent->{$row->field} }}
+                                            @elseif($row->type == 'checkbox')
+                                                @if($options && property_exists($options, 'on') && property_exists($options, 'off'))
+                                                    @if($data->{$row->field})
+                                                    <span class="label label-info">{{ $options->on }}</span>
+                                                    @else
+                                                    <span class="label label-primary">{{ $options->off }}</span>
+                                                    @endif
+                                                @else
+                                                {{ $data->{$row->field} }}
+                                                @endif
                                             @else
                                                 {{ $data->{$row->field} }}
                                             @endif
