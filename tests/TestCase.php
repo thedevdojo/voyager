@@ -27,8 +27,10 @@ class TestCase extends OrchestraTestCase
         }
 
         if (!file_exists(base_path('routes/web.php'))) {
-            file_put_contents(base_path('routes/web.php'),
-                "<?php Route::get('/', function () {return view('welcome');});");
+            file_put_contents(
+                base_path('routes/web.php'),
+                "<?php Route::get('/', function () {return view('welcome');});"
+            );
         }
 
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
@@ -76,6 +78,11 @@ class TestCase extends OrchestraTestCase
     protected function install()
     {
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
+
+        config()->set(
+            'voyager',
+            require __DIR__.'/../publishable/config/voyager.php'
+        );
     }
 
     public function disableExceptionHandling()

@@ -99,7 +99,7 @@ return [
         [
             'name'  => 'User',
             'icon'  => 'voyager-group',
-            'model' => \TCG\Voyager\Models\User::class, 
+            'model' => TCG\Voyager\Models\User::class,
             'url'   => 'admin/users',
             'image' => '/images/widget-backgrounds/02.png'
         ],
