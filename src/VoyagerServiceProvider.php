@@ -33,7 +33,7 @@ class VoyagerServiceProvider extends ServiceProvider
         });
 
         $this->loadHelpers();
-        $this->registerViewComposers();
+
         $this->registerAlertComponents();
 
         if ($this->app->runningInConsole()) {
@@ -65,6 +65,8 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+
+        $this->registerViewComposers();
 
         $event->listen('voyager.alerts.collecting', function () {
             $this->addStorageSymlinkAlert();
