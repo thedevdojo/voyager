@@ -52,7 +52,7 @@ abstract class Controller extends BaseController
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
-            /**
+            /*
              * merge ex_images and upload images
              */
             if ($row->type == 'multiple_images' && !is_null($content)) {
@@ -134,9 +134,9 @@ abstract class Controller extends BaseController
             case 'multiple_images':
                 if ($files = $request->file($row->field)) {
                     /**
-                     * upload files
+                     * upload files.
                      */
-                    $filesPath = array();
+                    $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('F').date('Y').'/';
@@ -144,6 +144,7 @@ abstract class Controller extends BaseController
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
                         $request->file($row->field)[$key]->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
                     }
+
                     return json_encode($filesPath);
                 }
                 break;
