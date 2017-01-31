@@ -60,8 +60,21 @@ class TestCase extends OrchestraTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        dd(env('DB_DRIVER', 'test'));
-        
+        $driver = env('DB_DRIVER', 'sqlite');
+        $method = camel_case("append_database_{$driver}_environment");
+
+        // Setup default database
+        $this->$method($app);
+
+        // Setup Voyager configuration
+        $app['config']->set('voyager.user.namespace', User::class);
+
+        // Setup Authentication configuration
+        $app['config']->set('auth.providers.users.model', User::class);
+    }
+
+    protected function appendDatabaseSqliteEnvironment(&$app)
+    {
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
@@ -69,12 +82,28 @@ class TestCase extends OrchestraTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+    }
 
-        // Setup Voyager configuration
-        $app['config']->set('voyager.user.namespace', User::class);
+    protected function appendDatabaseMysqlEnvironment(&$app)
+    {
+        // Setup default database to use sqlite :memory:
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
+            'driver'   => 'mysql',
+            'database' => 'voyager',
+            'prefix'   => '',
+        ]);
+    }
 
-        // Setup Authentication configuration
-        $app['config']->set('auth.providers.users.model', User::class);
+    protected function appendDatabasePostgresEnvironment(&$app)
+    {
+        // Setup default database to use sqlite :memory:
+        $app['config']->set('database.default', 'testbench');
+        $app['config']->set('database.connections.testbench', [
+            'driver'   => 'postgres',
+            'database' => 'voyager',
+            'prefix'   => '',
+        ]);
     }
 
     protected function install()
