@@ -5,7 +5,6 @@ namespace TCG\Voyager\Tests;
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Exceptions\Handler;
-use Illuminate\Support\Facades\Artisan;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
