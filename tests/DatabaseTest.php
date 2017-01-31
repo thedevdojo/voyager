@@ -178,29 +178,29 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         // Test column type
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals('integer', $columns[0]->type);
-        $this->assertEquals('integer', $columns[1]->type);
-        $this->assertEquals('integer', $columns[2]->type);
-        $this->assertEquals('integer', $columns[3]->type);
-        $this->assertEquals('integer', $columns[4]->type);
-        $this->assertEquals('integer', $columns[5]->type);
-        $this->assertEquals('varchar', $columns[6]->type);
-        $this->assertEquals('text', $columns[7]->type);
-        $this->assertEquals('text', $columns[8]->type);
-        $this->assertEquals('text', $columns[9]->type);
-        $this->assertEquals('float', $columns[10]->type);
-        $this->assertEquals('float', $columns[11]->type);
-        $this->assertEquals('numeric', $columns[12]->type);
-        $this->assertEquals('tinyint(1)', $columns[13]->type);
-        $this->assertEquals('varchar', $columns[14]->type);
-        $this->assertEquals('date', $columns[15]->type);
-        $this->assertEquals('datetime', $columns[16]->type);
-        $this->assertEquals('time', $columns[17]->type);
-        $this->assertEquals('datetime', $columns[18]->type);
-        $this->assertEquals('blob', $columns[19]->type);
-        $this->assertEquals('datetime', $columns[20]->type);
-        $this->assertEquals('datetime', $columns[21]->type);
+        $columns = DBSchema::describeTable('voyagertest');
+        $this->assertEquals('integer', $columns[0]['type']);
+        $this->assertEquals('integer', $columns[1]['type']);
+        $this->assertEquals('integer', $columns[2]['type']);
+        $this->assertEquals('integer', $columns[3]['type']);
+        $this->assertEquals('integer', $columns[4]['type']);
+        $this->assertEquals('integer', $columns[5]['type']);
+        $this->assertEquals('varchar', $columns[6]['type']);
+        $this->assertEquals('text', $columns[7]['type']);
+        $this->assertEquals('text', $columns[8]['type']);
+        $this->assertEquals('text', $columns[9]['type']);
+        $this->assertEquals('float', $columns[10]['type']);
+        $this->assertEquals('float', $columns[11]['type']);
+        $this->assertEquals('numeric', $columns[12]['type']);
+        $this->assertEquals('tinyint(1)', $columns[13]['type']);
+        $this->assertEquals('varchar', $columns[14]['type']);
+        $this->assertEquals('date', $columns[15]['type']);
+        $this->assertEquals('datetime', $columns[16]['type']);
+        $this->assertEquals('time', $columns[17]['type']);
+        $this->assertEquals('datetime', $columns[18]['type']);
+        $this->assertEquals('blob', $columns[19]['type']);
+        $this->assertEquals('datetime', $columns[20]['type']);
+        $this->assertEquals('datetime', $columns[21]['type']);
     }
 
     public function test_can_create_nullable_column()
