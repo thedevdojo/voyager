@@ -22,6 +22,8 @@ cache:
 
 services:
   - sqlite
+  - mysql
+  - postgres
 
 before_script:
   - composer install
