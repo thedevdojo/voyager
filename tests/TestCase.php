@@ -89,7 +89,8 @@ class TestCase extends OrchestraTestCase
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
             'driver'   => 'mysql',
-            'host'     => 'localhost',
+            'host' => 'localhost',
+            'username' => 'root',
             'database' => 'voyager',
             'prefix'   => '',
         ]);
@@ -101,7 +102,7 @@ class TestCase extends OrchestraTestCase
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
             'driver'   => 'postgres',
-            'host'     => 'localhost',
+            'host' => 'localhost',
             'database' => 'voyager',
             'prefix'   => '',
         ]);
