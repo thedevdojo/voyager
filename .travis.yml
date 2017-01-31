@@ -29,6 +29,8 @@ before_script:
   - composer install
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
+  - psql -c 'create database test;' -U postgres
 
 script:
   # - vendor/bin/phpunit
