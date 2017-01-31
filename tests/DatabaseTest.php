@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use TCG\Voyager\Facades\DBSchema;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseQueryBuilder;
 
 class DatabaseTest extends TestCase
@@ -230,9 +231,9 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         // Test column type
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
+        $columns = DBSchema::describeTable('voyagertest');
 
-        $this->assertEquals('0', $columns[0]->notnull); // inverse in sqlite (notnull)
+        $this->assertEquals('YES', $columns[0]['null']);
     }
 
     public function test_can_create_primary_key_column()
@@ -266,8 +267,9 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         // Test column type
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals('1', $columns[0]->pk);
+        $columns = DBSchema::describeTable('voyagertest');
+
+        $this->assertEquals('PRI', $columns[0]['key']);
     }
 
     public function test_can_create_unique_key_column()
