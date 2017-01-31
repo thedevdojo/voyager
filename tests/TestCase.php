@@ -88,11 +88,17 @@ class TestCase extends OrchestraTestCase
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'mysql',
+            'driver' => 'mysql',
             'host' => 'localhost',
+            'port' => '3306',
+            'database' => 'test',
             'username' => 'root',
-            'database' => 'voyager',
-            'prefix'   => '',
+            'password' => '',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
         ]);
     }
 
@@ -101,10 +107,16 @@ class TestCase extends OrchestraTestCase
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'postgres',
+            'driver' => 'pgsql',
             'host' => 'localhost',
-            'database' => 'voyager',
-            'prefix'   => '',
+            'port' => '5432',
+            'database' => 'test',
+            'username' => 'postgres',
+            'password' => '',
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
         ]);
     }
 
