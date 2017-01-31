@@ -32,3 +32,8 @@ before_script:
 
 script:
   # - vendor/bin/phpunit
+
+env:
+  - DB_DRIVER=sqlite
+  - DB_DRIVER=mysql
+  - DB_DRIVER=postgres
