@@ -333,8 +333,8 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         // Test column type
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals("'this-is-a-default-value'", $columns[0]->dflt_value);
+        $columns = DBSchema::describeTable('voyagertest');
+        $this->assertEquals('this-is-a-default-value', $columns[0]['default']);
     }
 
     public function test_can_update_table_with_same_fields()
@@ -417,12 +417,12 @@ class DatabaseTest extends TestCase
         // Test table exist
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals('id', $columns[0]->name);
-        $this->assertEquals('title', $columns[1]->name);
-        $this->assertEquals('address', $columns[2]->name);
-        $this->assertEquals('created_at', $columns[3]->name);
-        $this->assertEquals('updated_at', $columns[4]->name);
+        $columns = DBSchema::describeTable('voyagertest');
+        $this->assertEquals('id', $columns[0]['field']);
+        $this->assertEquals('title', $columns[1]['field']);
+        $this->assertEquals('address', $columns[2]['field']);
+        $this->assertEquals('created_at', $columns[3]['field']);
+        $this->assertEquals('updated_at', $columns[4]['field']);
     }
 
     public function test_can_change_table_name()
@@ -508,9 +508,9 @@ class DatabaseTest extends TestCase
         // Test table exist
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals('id', $columns[0]->name);
-        $this->assertEquals('headline', $columns[1]->name);
+        $columns = DBSchema::describeTable('voyagertest');
+        $this->assertEquals('id', $columns[0]['field']);
+        $this->assertEquals('headline', $columns[1]['field']);
     }
 
     public function test_can_change_column_type()
@@ -570,10 +570,10 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         // Test column types. Sqlite using Affinty that will change type name https://www.sqlite.org/datatype3.html
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals('INTEGER', $columns[0]->type);
-        $this->assertEquals('CLOB', $columns[1]->type);
-        $this->assertEquals('VARCHAR(255)', $columns[2]->type);
+        $columns = DBSchema::describeTable('voyagertest');
+        $this->assertEquals('INTEGER', $columns[0]['type']);
+        $this->assertEquals('CLOB', $columns[1]['type']);
+        $this->assertEquals('VARCHAR(255)', $columns[2]['type']);
     }
 
     public function test_can_change_nullable()
@@ -643,10 +643,10 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         // Test nullable changes
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals('1', $columns[0]->notnull);
-        $this->assertEquals('1', $columns[1]->notnull);
-        $this->assertEquals('0', $columns[2]->notnull);
+        $columns = DBSchema::describeTable('voyagertest');
+        $this->assertEquals('NO', $columns[0]['null']);
+        $this->assertEquals('NO', $columns[1]['null']);
+        $this->assertEquals('YES', $columns[2]['null']);
     }
 
     public function test_can_change_key_to_unique()
@@ -766,10 +766,10 @@ class DatabaseTest extends TestCase
         // Test table exist
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals('1', $columns[0]->pk);
-        $this->assertEquals('0', $columns[1]->pk);
-        $this->assertEquals('0', $columns[2]->pk);
+        $columns = DBSchema::describeTable('voyagertest');
+        $this->assertEquals('PRI', $columns[0]['key']);
+        $this->assertEquals('', $columns[1]['key']);
+        $this->assertEquals('', $columns[2]['key']);
     }
 
     public function test_can_drop_column()
@@ -829,7 +829,7 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         // Test total columns after dropped
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
+        $columns = DBSchema::describeTable('voyagertest');
         $this->assertEquals(2, collect($columns)->count());
     }
 
@@ -885,10 +885,10 @@ class DatabaseTest extends TestCase
         $this->assertTrue(Schema::hasTable('voyagertest'));
 
         // Test total columns after dropped
-        $columns = DB::select(DB::raw('PRAGMA table_info(voyagertest)'));
-        $this->assertEquals('', $columns[0]->dflt_value);
-        $this->assertEquals("'this is a new default value'", $columns[1]->dflt_value);
-        $this->assertEquals("'another default value'", $columns[2]->dflt_value);
+        $columns = DBSchema::describeTable('voyagertest');
+        $this->assertEquals('', $columns[0]['default']);
+        $this->assertEquals('this is a new default value', $columns[1]['default']);
+        $this->assertEquals('another default value', $columns[2]['default']);
     }
 
     public function test_can_delete_table()
