@@ -182,15 +182,13 @@ class DatabaseTest extends TestCase
 
         switch (env('DB_DRIVER', 'sqlite')) {
 
-            // TODO: Ensure that the method outputs the same in future.
-
             case 'mysql':
-                $this->assertStringStartsWith('int(', $columns[0]['type']);
-                $this->assertStringStartsWith('int(', $columns[1]['type']);
-                $this->assertStringStartsWith('int(', $columns[2]['type']);
-                $this->assertStringStartsWith('int(', $columns[3]['type']);
-                $this->assertStringStartsWith('int(', $columns[4]['type']);
-                $this->assertStringStartsWith('int(', $columns[5]['type']);
+                $this->assertEquals('int(10)', $columns[0]['type']);
+                $this->assertEquals('tinyint(4)', $columns[1]['type']);
+                $this->assertEquals('int(10)', $columns[2]['type']);
+                $this->assertEquals('int(10)', $columns[3]['type']);
+                $this->assertEquals('int(10)', $columns[4]['type']);
+                $this->assertEquals('int(10)', $columns[5]['type']);
                 $this->assertEquals('varchar', $columns[6]['type']);
                 $this->assertEquals('text', $columns[7]['type']);
                 $this->assertEquals('text', $columns[8]['type']);
