@@ -114,9 +114,9 @@ class DBSchema
                     "/*
                         AND n.nspname = '{$schema_name}'
                         AND c.relname = '{$table}'
-                    */."
+                    */.'
                         AND f.attnum > 0 ORDER BY number
-                ";
+                ';
 
                 dd(DB::select(DB::raw($raw)));
 
