@@ -111,8 +111,10 @@ class DBSchema
                         LEFT JOIN pg_constraint p ON p.conrelid = c.oid AND f.attnum = ANY (p.conkey)  
                         LEFT JOIN pg_class AS g ON p.confrelid = g.oid  
                     WHERE c.relkind = 'r'::char  
+                    "/*
                         AND n.nspname = '{$schema_name}'
                         AND c.relname = '{$table}'
+                    */."
                         AND f.attnum > 0 ORDER BY number
                 ";
 
