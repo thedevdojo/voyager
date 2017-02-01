@@ -186,7 +186,7 @@ class DatabaseTest extends TestCase
                 $this->assertEquals('int(10) unsigned', $columns[0]['type']);
                 $this->assertEquals('tinyint(4)', $columns[1]['type']);
                 $this->assertEquals('smallint(6)', $columns[2]['type']);
-                $this->assertEquals('mediumint(10)', $columns[3]['type']);
+                $this->assertEquals('mediumint(9)', $columns[3]['type']);
                 $this->assertEquals('int(10) unsigned', $columns[4]['type']);
                 $this->assertEquals('int(10) unsigned', $columns[5]['type']);
                 $this->assertEquals('varchar', $columns[6]['type']);
