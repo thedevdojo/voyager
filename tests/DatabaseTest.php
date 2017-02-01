@@ -27,7 +27,7 @@ class DatabaseTest extends TestCase
 
         // Create table
         $this->post(route('voyager.database.store'), [
-            'name' => 'voyagertest',
+            'name'  => 'voyagertest',
             'field' => [
                 'id',
                 'tiny_int_field',
@@ -170,7 +170,7 @@ class DatabaseTest extends TestCase
 
         // Test redirect to correct page
         $this->assertRedirectedToRoute('voyager.database.index', [], [
-            'message' => 'Successfully created voyagertest table',
+            'message'    => 'Successfully created voyagertest table',
             'alert-type' => 'success',
         ]);
 
