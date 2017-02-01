@@ -183,12 +183,12 @@ class DatabaseTest extends TestCase
         switch (env('DB_DRIVER', 'sqlite')) {
 
             case 'mysql':
-                $this->assertEquals('int(10)', $columns[0]['type']);
+                $this->assertEquals('int(10) unsigned', $columns[0]['type']);
                 $this->assertEquals('tinyint(4)', $columns[1]['type']);
-                $this->assertEquals('int(10)', $columns[2]['type']);
-                $this->assertEquals('int(10)', $columns[3]['type']);
-                $this->assertEquals('int(10)', $columns[4]['type']);
-                $this->assertEquals('int(10)', $columns[5]['type']);
+                $this->assertEquals('int(10) unsigned', $columns[2]['type']);
+                $this->assertEquals('int(10) unsigned', $columns[3]['type']);
+                $this->assertEquals('int(10) unsigned', $columns[4]['type']);
+                $this->assertEquals('int(10) unsigned', $columns[5]['type']);
                 $this->assertEquals('varchar', $columns[6]['type']);
                 $this->assertEquals('text', $columns[7]['type']);
                 $this->assertEquals('text', $columns[8]['type']);
@@ -205,6 +205,7 @@ class DatabaseTest extends TestCase
                 $this->assertEquals('blob', $columns[19]['type']);
                 $this->assertEquals('datetime', $columns[20]['type']);
                 $this->assertEquals('datetime', $columns[21]['type']);
+                break;
 
             default:
                 $this->assertEquals('integer', $columns[0]['type']);
@@ -601,9 +602,21 @@ class DatabaseTest extends TestCase
 
         // Test column types. Sqlite using Affinty that will change type name https://www.sqlite.org/datatype3.html
         $columns = DBSchema::describeTable('voyagertest');
-        $this->assertEquals('INTEGER', $columns[0]['type']);
-        $this->assertEquals('CLOB', $columns[1]['type']);
-        $this->assertEquals('VARCHAR(255)', $columns[2]['type']);
+
+        switch (env('DB_DRIVER', 'sqlite')) {
+
+            case 'mysql':
+                $this->assertEquals('int(10) unsigned', $columns[0]['type']);
+                $this->assertEquals('CLOB', $columns[1]['type']);
+                $this->assertEquals('VARCHAR(255)', $columns[2]['type']);
+                break;
+
+            default:
+                $this->assertEquals('INTEGER', $columns[0]['type']);
+                $this->assertEquals('CLOB', $columns[1]['type']);
+                $this->assertEquals('VARCHAR(255)', $columns[2]['type']);
+                break;
+        }
     }
 
     public function test_can_change_nullable()
