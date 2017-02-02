@@ -49,7 +49,6 @@ trait BreadRelationshipParser
         }
         // If it's a model just make the changes directly on it (READ / EDIT)
         elseif ($dataTypeContent instanceof Model) {
-
             return $this->relationToLink($dataTypeContent, $dataType);
         }
         // Or we assume it's a Collection
@@ -86,7 +85,6 @@ trait BreadRelationshipParser
                 if (isset($relationData->page_slug)) {
                     $item[$field.'_page_slug'] = url($relationData->page_slug, $id);
                 }
-
             }
         }
 
