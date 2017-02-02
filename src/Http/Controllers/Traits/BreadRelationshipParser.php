@@ -17,7 +17,7 @@ trait BreadRelationshipParser
      */
     protected function getRelationships(DataType $dataType)
     {
-        $relationships = array();
+        $relationships = [];
 
         $dataType->browseRows->each(function ($item) use (&$relationships) {
             $details = json_decode($item->details);
