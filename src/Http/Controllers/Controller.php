@@ -69,7 +69,6 @@ abstract class Controller extends BaseController
             if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
                 // Only if select_multiple is working with a relationship
                 $multi_select[] = ['row' => $row->field, 'content' => $content];
-
             } else {
                 $data->{$row->field} = $content;
             }
