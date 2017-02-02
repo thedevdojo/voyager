@@ -153,6 +153,7 @@ class VoyagerBreadController extends Controller
         Voyager::can('edit_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
         return redirect()

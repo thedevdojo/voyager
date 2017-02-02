@@ -2,6 +2,8 @@ $(document).ready(function(){
 
   $('#voyager-loader').fadeOut();
   $('.readmore').readmore({
+    collapsedHeight: 60,
+    embedCSS: true,
     lessLink: '<a href="#" class="readm-link">Read Less</a>',
     moreLink: '<a href="#" class="readm-link">Read More</a>',
   });
@@ -66,4 +68,5 @@ $(document).ready(function(){
   $('.navbar-right-expand-toggle').on('click', function(){
     $('ul.navbar-right').toggleClass('expanded');
   }); 
+  
 });

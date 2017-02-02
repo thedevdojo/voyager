@@ -59,11 +59,11 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
+                                <?php $options = json_decode($row->details); $checked = false; ?>
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
 
                                     @if($row->type == "text")
-                                        <?php $options = json_decode($row->details); ?>
                                         <input type="text" class="form-control" name="{{ $row->field }}"
                                                placeholder="{{ $row->display_name }}"
                                                {!! isBreadSlugAutoGenerator($options) !!}
@@ -75,7 +75,6 @@
                                         @endif
                                         <input type="password" class="form-control" name="{{ $row->field }}" value="">
                                     @elseif($row->type == "text_area")
-                                        <?php $options = json_decode($row->details); ?>
                                         <textarea class="form-control"
                                                   name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif</textarea>
                                     @elseif($row->type == "rich_text_box")
@@ -90,7 +89,7 @@
                                         @endif
                                         <input type="file" name="{{ $row->field }}">
                                     @elseif($row->type == "select_dropdown")
-                                        <?php $options = json_decode($row->details); $row->field = camel_case($row->field); ?>
+                                        <?php $row->field = camel_case($row->field); ?>
                                         @if(isset($options->relationship))
 
                                             {{-- If this is a relationship and the method does not exist, show a warning message --}}
@@ -152,7 +151,6 @@
                                         @endif
 
                                     @elseif($row->type == "select_multiple")
-                                        <?php $options = json_decode($row->details); ?>
                                         {{-- If this is a relationship and the method does not exist, show a warning message --}}
                                         @if(isset($options->relationship) && !method_exists( $dataType->model_name, $row->field ) )
                                             <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
@@ -169,11 +167,20 @@
                                                         <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if(in_array($relationshipOption->{$options->relationship->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
                                                     @endforeach
                                                 @endif
+                                            @elseif(isset($options->options))
+                                                @foreach($options->options as $key => $label)
+                                                        <?php $selected = ''; ?>
+                                                    @if(is_array($dataTypeContent->{$row->field}) && in_array($key, $dataTypeContent->{$row->field}))
+                                                        <?php $selected = 'selected="selected"'; ?>
+                                                    @endif
+                                                    <option value="{{ $key }}" {!! $selected !!}>
+                                                        {{ $label }}
+                                                    </option>
+                                                @endforeach
                                             @endif
                                         </select>
 
                                     @elseif($row->type == "radio_btn")
-                                        <?php $options = json_decode($row->details); ?>
                                         <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field,
                                                         $dataTypeContent->{$row->field}))) ? old($row->field,
                                                 $dataTypeContent->{$row->field}) : old($row->field); ?>
@@ -193,15 +200,18 @@
                                         </ul>
 
                                     @elseif($row->type == "checkbox")
-
                                         <br>
-                                        <?php $options = json_decode($row->details); ?>
-                                        <?php $checked = (isset($dataTypeContent->{$row->field}) && old($row->field,
-                                                        $dataTypeContent->{$row->field}) == 1) ? true : old($row->field); ?>
+                                        <?php $checked = false; ?>
+                                        @if(isset($dataTypeContent->{$row->field}) || old($row->field))
+                                         <?php $checked = old($row->field, $dataTypeContent->{$row->field}); ?>
+                                        @else
+                                         <?php $checked = isset($options->checked) && $options->checked ? true : false; ?>
+                                        @endif
+
                                         @if(isset($options->on) && isset($options->off))
                                             <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
-                                                   data-on="{{ $options->on }}" @if($checked) checked
-                                                   @endif data-off="{{ $options->off }}">
+                                                   data-on="{{ $options->on }}" {!! $checked ? 'checked="checked"' : '' !!}
+                                                   data-off="{{ $options->off }}">
                                         @else
                                             <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
                                                    @if($checked) checked @endif>
@@ -222,7 +232,10 @@
                                                value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
 
                                     @endif
-
+                                    
+                                    @if(isset($options->description))
+                                    <i class="help-block"><span class="voyager-info-circled"></span> {{$options->description}}</i>
+                                    @endif
                                 </div>
                             @endforeach
 
