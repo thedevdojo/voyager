@@ -48,7 +48,7 @@ trait BreadRelationshipParser
             $dataTypeCollection = $dataTypeContent->getCollection();
         }
         // If it's a model just make the changes directly on it (READ / EDIT)
-        else if ($dataTypeContent instanceof Model) {
+        elseif ($dataTypeContent instanceof Model) {
 
             return $this->relationToLink($dataTypeContent, $dataType);
         }
@@ -90,7 +90,6 @@ trait BreadRelationshipParser
             }
         }
 
-        return $item;
-        
+        return $item;        
     }
 }
