@@ -10,10 +10,10 @@ trait BreadRelationshipParser
 {
     /**
      * Build the relationships array for the model's eager load.
-     * 
-     * @param  DataType $dataType 
-     * 
-     * @return Array
+     *
+     * @param DataType $dataType
+     *
+     * @return array
      */
     protected function getRelationships(DataType $dataType)
     {
@@ -35,10 +35,10 @@ trait BreadRelationshipParser
 
     /**
      * Replace relationships' keys for labels and create READ links if a slug is provided.
-     * 
+     *
      * @param  $dataTypeContent     Can be either an eloquent Model, Collection or LengthAwarePaginator instance.
-     * @param  DataType $dataType
-     * 
+     * @param DataType $dataType
+     *
      * @return $dataTypeContent
      */
     protected function resolveRelations($dataTypeContent, DataType $dataType)
@@ -65,18 +65,18 @@ trait BreadRelationshipParser
     }
 
     /**
-     * Create the URL for relationship's anchors in BROWSE and READ views
-     * 
-     * @param  Model    $item       Object to modify
-     * @param  DataType $dataType  
-     *  
-     * @return Model    $item
+     * Create the URL for relationship's anchors in BROWSE and READ views.
+     *
+     * @param Model    $item     Object to modify
+     * @param DataType $dataType
+     *
+     * @return Model $item
      */
     protected function relationToLink(Model $item, DataType $dataType)
     {
         $relations = $item->getRelations();
         // If there are not-null relations
-        if (! empty($relations) && array_filter($relations)) {
+        if (!empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
                 $field = snake_case($field);
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
