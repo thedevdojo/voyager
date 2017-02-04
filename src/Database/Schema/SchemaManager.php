@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\DB;
 abstract class SchemaManager
 {
     // todo: trim parameters
-    public static function manager()
-    {
-        return DB::connection()->getDoctrineSchemaManager();
-    }
 
     public static function __callStatic($method, $args)
     {
         return static::manager()->$method(...$args);
+    }
+
+    public static function manager()
+    {
+        return DB::connection()->getDoctrineSchemaManager();
     }
 
     public static function tableExists($table)
@@ -86,5 +87,13 @@ abstract class SchemaManager
     public static function getDoctrineColumn($table, $column)
     {
         return static::getDoctrineTable($table)->getColumn($column);
+    }
+
+    public static function getDatabasePlatformTypes()
+    {
+        // Get type names for the current database platform
+        // The problem is that platform type names are stored in a protected property
+        // so we need a way to get them...
+        return ((array) static::manager()->getDatabasePlatform())[chr(0).'*'.chr(0).'doctrineTypeMapping'];
     }
 }

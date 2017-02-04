@@ -17,14 +17,32 @@ abstract class Index
             $columns = [$columns];
         }
 
-        $isPrimary = $index['isPrimary'];
-        $isUnique = $index['isUnique'];
+        if (isset($index['type'])) {
+            $type = $index['type'];
+
+            $isPrimary = ($type == static::PRIMARY);
+            $isUnique = $isPrimary || ($type == static::UNIQUE);
+        } else {
+            $isPrimary = $index['isPrimary'];
+            $isUnique = $index['isUnique'];
+            
+            // Set the type
+            if ($isPrimary) {
+                $type = static::PRIMARY;
+            } elseif ($isUnique) {
+                $type = static::UNIQUE;
+            } else {
+                $type = static::INDEX;
+            }
+        }
 
         // Set the name
         $name = isset($index['name']) ? trim($index['name']) : '';
         if (empty($name)) {
             $table = isset($index['table']) ? $index['table'] : null;
             $name = static::createName($columns, $type, $table);
+        } else {
+            $name = Identifier::validate($name, 'Index');
         }
 
         $flags = isset($index['flags']) ? $index['flags'] : [];
@@ -38,15 +56,19 @@ abstract class Index
      */
     public static function toArray(DoctrineIndex $index)
     {
+        $name = $index->getName();
+        $columns = $index->getColumns();
+
         return [
-            'name'      => $index->getName(),
-            'oldName'   => $index->getName(),
-            'columns'   => $index->getColumns(),
-            'type'      => static::getType($index),
-            'isPrimary' => $index->isPrimary(),
-            'isUnique'  => $index->isUnique(),
-            'flags'     => $index->getFlags(),
-            'options'   => $index->getOptions(),
+            'name'        => $name,
+            'oldName'     => $name,
+            'columns'     => $columns,
+            'type'        => static::getType($index),
+            'isPrimary'   => $index->isPrimary(),
+            'isUnique'    => $index->isUnique(),
+            'isComposite' => count($columns) > 1,
+            'flags'       => $index->getFlags(),
+            'options'     => $index->getOptions(),
         ];
     }
 

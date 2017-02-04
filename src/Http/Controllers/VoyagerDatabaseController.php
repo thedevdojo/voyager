@@ -11,14 +11,18 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\DBSchema;
-use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
 use TCG\Voyager\Voyager;
+use TCG\Voyager\Database\DatabaseUpdater;
+use TCG\Voyager\Database\Schema\SchemaManager;
+use TCG\Voyager\Database\Schema\Table;
+use TCG\Voyager\Database\Schema\Column;
+use TCG\Voyager\Database\Schema\Identifier;
 
 class VoyagerDatabaseController extends Controller
 {
-    use DatabaseUpdate, AppNamespaceDetectorTrait;
+    use AppNamespaceDetectorTrait;
 
     public function index()
     {
@@ -43,8 +47,10 @@ class VoyagerDatabaseController extends Controller
         Voyager::can('browse_database');
 
         $formAction = route('voyager.database.store');
+        $columnTypes = Column::getTypes();
+        $tableObj = new Table('New Table'); // need  way to denote that this ia a new table
 
-        return view('voyager::tools.database.edit-add', compact('formAction'));
+        return view('voyager::tools.database.edit-add', compact('formAction', 'columnTypes', 'tableObj'));
     }
 
     public function store(Request $request)
@@ -103,10 +109,26 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        $rows = DBSchema::describeTable($table);
-        $formAction = route('voyager.database.update', $table);
+        if (!SchemaManager::tableExists($table)) {
+            return redirect()
+                ->route('voyager.database.index')
+                ->with(
+                    [
+                        'message'    => "The table you want to edit doesn't exist",
+                        'alert-type' => 'error',
+                    ]
+                );
+        }
 
-        return view('voyager::tools.database.edit-add', compact('table', 'rows', 'formAction'));
+        $table = SchemaManager::listTableDetails($table);
+        $table->columnTypes = Column::getTypes();
+        $table->identifierRegex = Identifier::REGEX;
+        $formAction = route('voyager.database.update', $table->name);
+
+        return view(
+            'voyager::tools.database.edit-add',
+            compact('table', 'formAction')
+        );
     }
 
     /**
@@ -120,16 +142,24 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        $this->renameTable($request->original_name, $request->name);
-        $this->renameColumns($request, $request->name);
-        $this->dropColumns($request, $request->name);
-        $this->updateColumns($request, $request->name);
+        $table = json_decode($request->table, true);
+
+        try {
+            DatabaseUpdater::update($table);
+        } catch (Exception $e) {
+            return back()->with(
+                [
+                    'message'    => 'Exception: '.$e->getMessage(),
+                    'alert-type' => 'error',
+                ]
+            );
+        }
 
         return redirect()
-            ->route('voyager.database.index')
-            ->with(
+               ->route('voyager.database.edit', $table['name'])
+               ->with(
                 [
-                    'message'    => "Successfully updated $request->name table",
+                    'message'    => "Successfully updated {$table['name']} table",
                     'alert-type' => 'success',
                 ]
             );

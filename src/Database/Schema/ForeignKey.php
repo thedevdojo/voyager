@@ -24,6 +24,8 @@ abstract class ForeignKey
         if (empty($name)) {
             $table = isset($localTable) ? $localTable->getName() : null;
             $name = Index::createName($localColumns, 'foreign', $table);
+        } else {
+            $name = Identifier::validate($name, 'Foreign Key');
         }
 
         $doctrineForeignKey = new DoctrineForeignKey(

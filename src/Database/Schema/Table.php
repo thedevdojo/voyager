@@ -13,7 +13,7 @@ class Table extends DoctrineTable
             $table = json_decode($table, true);
         }
 
-        $name = $table['name'];
+        $name = Identifier::validate($table['name'], 'Table');
        
         $columns = [];
         foreach ($table['columns'] as $columnArr) {
@@ -80,7 +80,7 @@ class Table extends DoctrineTable
         $exportedColumns = [];
 
         foreach ($this->getColumns() as $name => $column) {
-            $exportedColumns[$name] = Column::toArray($column);
+            $exportedColumns[] = Column::toArray($column);
         }
 
         return $exportedColumns;
@@ -94,7 +94,9 @@ class Table extends DoctrineTable
         $exportedIndexes = [];
 
         foreach ($this->getIndexes() as $name => $index) {
-            $exportedIndexes[$name] = Index::toArray($index);
+            $indexArr = Index::toArray($index);
+            $indexArr['table'] = $this->_name;
+            $exportedIndexes[] = $indexArr;
         }
 
         return $exportedIndexes;
@@ -112,5 +114,16 @@ class Table extends DoctrineTable
         }
 
         return $exportedForeignKeys;
+    }
+
+    public function __get($property)
+    {
+        $getter = 'get'.ucfirst($property);
+
+        if (!method_exists($this, $getter)) {
+            throw new \Exception("Property {$property} doesn't exist or is unavailable");
+        }
+
+        return $this->$getter();
     }
 }
