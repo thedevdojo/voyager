@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "illuminate/support": "~5.3.0",
+        "illuminate/support": "~5.3.0|~5.4.0",
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
         "larapack/doctrine-support": "~0.1.0",
