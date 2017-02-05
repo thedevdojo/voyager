@@ -38,6 +38,22 @@
                                      src="{{ Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
                                 <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
+                            @elseif($row->type == 'select_multiple')
+                                @if(property_exists($rowDetails, 'relationship'))
+
+                                    @foreach($dataTypeContent->{$row->field} as $item)
+                                        @if($item->{$row->field . '_page_slug'})
+                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
+                                        @else
+                                        {{ $item->{$row->field}  }}
+                                        @endif
+                                    @endforeach
+
+                                @elseif(property_exists($rowDetails, 'options'))
+                                    @foreach($dataTypeContent->{$row->field} as $item)
+                                     {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                    @endforeach
+                                @endif
                             @elseif($row->type == 'date')
                                 {{ $rowDetails && property_exists($rowDetails, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($rowDetails->format) : $dataTypeContent->{$row->field} }}
                             @elseif($row->type == 'checkbox')

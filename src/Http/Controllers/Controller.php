@@ -40,7 +40,11 @@ abstract class Controller extends BaseController
 
             if (isset($options->validation)) {
                 if (isset($options->validation->rule)) {
-                    $rules[$row->field] = $options->validation->rule;
+                    if (!is_array($options->validation->rule)) {
+                        $rules[$row->field] = explode('|', $options->validation->rule);
+                    } else {
+                        $rules[$row->field] = $options->validation->rule;
+                    }
                 }
 
                 if (isset($options->validation->messages)) {
@@ -62,8 +66,9 @@ abstract class Controller extends BaseController
                 }
             }
 
-            if ($row->type == 'select_multiple') {
-                array_push($multi_select, ['row' => $row->field, 'content' => $content]);
+            if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
+                // Only if select_multiple is working with a relationship
+                $multi_select[] = ['row' => $row->field, 'content' => $content];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -122,6 +127,7 @@ abstract class Controller extends BaseController
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
                 $content = $request->input($row->field);
+
                 if ($content === null) {
                     $content = [];
                 } else {
@@ -136,7 +142,6 @@ abstract class Controller extends BaseController
                             }
                             $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
                         }
-
                         // Create a new content array for updating pivot table
                         $newContent = [];
                         foreach ($content as $contentIndex => $contentValue) {
