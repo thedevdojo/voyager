@@ -487,6 +487,18 @@ Additionally, you may wish to add some custom error messages which can be accomp
 }
 ```
 
+Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
+```
+{
+    "validation": {
+        "rules": [
+            "required",
+            "max:12"
+        ]
+    }
+}
+```
+
 ### Generating Slugs
 
 Using the bread builder you may wish to automatically generate slugs of a cetain input. Lets say you have some posts, which have a title and a slug. If you want to automatically generate the slug from the title attribute, you may include the following *Optional Details*:
