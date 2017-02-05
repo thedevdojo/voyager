@@ -68,7 +68,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
 
             if (config('app.env') == 'testing') {
-                $this->loadMigrationsFrom(realpath(__DIR__ . '/migrations'));
+                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
             }
         } else {
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
