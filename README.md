@@ -19,6 +19,8 @@ Video Demo Here: https://devdojo.com/series/laravel-voyager-010/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
+View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
+
 <hr>
 
 Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Laravel 5.3.
