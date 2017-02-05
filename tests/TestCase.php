@@ -7,7 +7,6 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Foundation\Exceptions\Handler;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
-use TCG\Voyager\Facades\DBSchema;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
 
@@ -21,7 +20,7 @@ class TestCase extends OrchestraTestCase
 
         if (app()->version() < 5.4) {
             $this->loadMigrationsFrom([
-                '--realpath' => realpath(__DIR__ . '/migrations'),
+                '--realpath' => realpath(__DIR__.'/migrations'),
             ]);
         }
 
@@ -83,7 +82,7 @@ class TestCase extends OrchestraTestCase
         if (app()->version() >= 5.4) {
             $migrator = app('migrator');
 
-            if (! $migrator->repositoryExists()) {
+            if (!$migrator->repositoryExists()) {
                 $this->artisan('migrate:install');
             }
 
