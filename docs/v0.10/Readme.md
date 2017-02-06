@@ -470,7 +470,7 @@ Thumbnails takes an array of objects. Each object is a new thumbnail that is cre
 }
 ```
 
-The date input field is where you can input a date. In the JSON above you can specify the `format` value of the output of the date.
+The date input field is where you can input a date. In the JSON above you can specify the `format` value of the output of the date. It allows you to display a formatted `date` in browse and read views, using Carbon's `formatLocalized()` method
 
 ### Description
 
@@ -567,7 +567,7 @@ public function authorId(){
 }
 ```
 
-> Note: the method used for this relationship, must match the name of the row from the `pages` table. Which is why we used `authorId` as the method name to tie the relationship.
+> Note: the method used for this relationship, must match the camelCase version of the row from the `pages` table. Which is why we used `authorId` as the method name to tie the relationship.
 
 You can optionally add a new page_slug property to the relationships object in the BREAD details in order to display proper links to relationship records. i.e.:
 
@@ -620,7 +620,7 @@ public function categories(){
 
 Now, when you have save the results from your Many-to-Many relationship the ID's of each selected value will be synced and added to your pivot table.
 
-> Please note that this can also be configured as a normal `Select Dropdown`.
+> Please note that this can also be configured as a normal `Select Dropdown` in case you need a simple multiple selection with fixed `options` instead of `relationship`.
 
 You can optionally add a new page_slug property to the relationships object in the BREAD details in order to display proper links to relationship records. i.e.:
 
