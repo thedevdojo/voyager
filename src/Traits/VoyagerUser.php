@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Traits;
 
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Models\Role;
 
 /**
@@ -41,5 +42,23 @@ trait VoyagerUser
     public function hasPermission($name)
     {
         return in_array($name, $this->role->permissions->pluck('key')->toArray());
+    }
+
+    public function hasPermissionOrFail($name)
+    {
+        if (!$this->hasPermission($name)) {
+            throw new UnauthorizedHttpException(null);
+        }
+
+        return true;
+    }
+
+    public function hasPermissionOrAbort($name, $statusCode = 403)
+    {
+        if (!$this->hasPermission($name)) {
+            return abort($statusCode);
+        }
+
+        return true;
     }
 }

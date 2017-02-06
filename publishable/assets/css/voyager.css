@@ -900,6 +900,7 @@ table.dataTable.no-footer{
   display:flex;
   flex-direction:row;
   padding:0px;
+  flex-wrap:wrap;
 }
 
 .panel.widget{
@@ -948,7 +949,6 @@ table.dataTable.no-footer{
   color: #DDD;
   display:block;
   max-height:65px;
-  margin-bottom:0px;
 }
 
 .panel.widget .readm-link{

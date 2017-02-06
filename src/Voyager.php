@@ -15,14 +15,12 @@ use TCG\Voyager\Traits\Translatable;
 
 class Voyager
 {
-    private static $instance;
-
     protected $version;
     protected $filesystem;
 
     protected $alerts = [];
 
-    protected $allertsCollected = false;
+    protected $alertsCollected = false;
 
     public function __construct()
     {
@@ -31,16 +29,7 @@ class Voyager
         $this->findVersion();
     }
 
-    public static function getInstance()
-    {
-        if (is_null(static::$instance)) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-    }
-
-    public static function setting($key, $default = null)
+    public function setting($key, $default = null)
     {
         $setting = Setting::where('key', '=', $key)->first();
         if (isset($setting->id)) {
@@ -50,7 +39,7 @@ class Voyager
         return $default;
     }
 
-    public static function image($file, $default = '')
+    public function image($file, $default = '')
     {
         if (!empty($file) && Storage::exists(config('voyager.storage.subfolder').$file)) {
             return Storage::url(config('voyager.storage.subfolder').$file);
@@ -59,25 +48,47 @@ class Voyager
         return $default;
     }
 
-    public static function routes()
+    public function routes()
     {
         require __DIR__.'/../routes/voyager.php';
     }
 
-    public static function can($permission)
+    public function can($permission)
     {
         // Check if permission exist
         $exist = Permission::where('key', $permission)->first();
 
         if ($exist) {
             $user = User::find(Auth::id());
+
             if ($user == null) {
-                throw new UnauthorizedHttpException(null);
+                return false;
             }
+
             if (!$user->hasPermission($permission)) {
-                throw new UnauthorizedHttpException(null);
+                return false;
             }
         }
+
+        return true;
+    }
+
+    public function canOrFail($permission)
+    {
+        if (!$this->can($permission)) {
+            throw new UnauthorizedHttpException(null);
+        }
+
+        return true;
+    }
+
+    public function canOrAbort($permission, $statusCode = 403)
+    {
+        if (!$this->can($permission)) {
+            return abort($statusCode);
+        }
+
+        return true;
     }
 
     public function getVersion()
@@ -92,10 +103,10 @@ class Voyager
 
     public function alerts()
     {
-        if (!$this->allertsCollected) {
+        if (!$this->alertsCollected) {
             event('voyager.alerts.collecting');
 
-            $this->allertsCollected = true;
+            $this->alertsCollected = true;
         }
 
         return $this->alerts;

@@ -9,6 +9,7 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
+use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\Menu;
@@ -23,6 +24,7 @@ class VoyagerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(ImageServiceProvider::class);
+        $this->app->register(DoctrineSupportServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Menu', Menu::class);
@@ -32,8 +34,11 @@ class VoyagerServiceProvider extends ServiceProvider
             return new Voyager();
         });
 
-        $this->registerViewComposers();
+        $this->loadHelpers();
+
         $this->registerAlertComponents();
+
+        $this->registerConfigs();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
@@ -65,11 +70,23 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
 
+        $this->registerViewComposers();
+
         $event->listen('voyager.alerts.collecting', function () {
             $this->addStorageSymlinkAlert();
         });
 
         $this->bootTranslatorCollectionMacros();
+    }
+
+    /**
+     * Load helpers.
+     */
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
+            require_once $filename;
+        }
     }
 
     /**
@@ -177,6 +194,13 @@ class VoyagerServiceProvider extends ServiceProvider
         foreach ($publishable as $group => $paths) {
             $this->publishes($paths, $group);
         }
+    }
+
+    public function registerConfigs()
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
+        );
     }
 
     /**

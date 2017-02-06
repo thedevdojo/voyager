@@ -13,6 +13,7 @@
 @stop
 
 @section('content')
+    @include('voyager::menus.partial.notice')
 
     <div class="page-content container-fluid">
         <div class="row">
@@ -120,7 +121,9 @@
                         <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
                         <label for="url">URL for the Menu Item</label>
                         <input type="text" class="form-control" id="edit_url" name="url" placeholder="URL"><br>
-                        <label for="icon_class">Font Icon class for the Menu Item</label>
+                        <label for="icon_class">Font Icon class for the Menu Item (Use a <a
+                                    href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}"
+                                    target="_blank">Voyager Font Class</a>)</label>
                         <input type="text" class="form-control" id="edit_icon_class" name="icon_class"
                                placeholder="Icon Class (optional)"><br>
                         <label for="color">Color in RGB or hex (optional)</label>

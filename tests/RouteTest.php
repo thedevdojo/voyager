@@ -20,6 +20,8 @@ class RouteTest extends TestCase
      */
     public function testGetRoutes()
     {
+        $this->disableExceptionHandling();
+
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
@@ -54,8 +56,8 @@ class RouteTest extends TestCase
             route('voyager.menus.show', ['menu' => 1]),
             route('voyager.menus.edit', ['menu' => 1]),
             route('voyager.database.index'),
-            //route('voyager.database.edit_bread', ['id' => 5]),
-            //route('voyager.database.edit', ['table' => 'categories']),
+            route('voyager.database.edit_bread', ['id' => 5]),
+            route('voyager.database.edit', ['table' => 'categories']),
             route('voyager.database.create'),
         ];
 

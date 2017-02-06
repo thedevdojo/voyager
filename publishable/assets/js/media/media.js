@@ -12,6 +12,7 @@ var manager = new Vue({
 CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
 var VoyagerMedia = function(o){
+	var files = $('#files');
 	var defaults = {
 		baseUrl: "/admin"
 	};
@@ -54,7 +55,7 @@ var VoyagerMedia = function(o){
 		getFiles('/');
 
 
-		$('#files').on("dblclick", "li .file_link", function(){
+		files.on("dblclick", "li .file_link", function(){
 			if (! $(this).children('.details').hasClass('folder')) {
 				return false;
 			}
@@ -62,7 +63,7 @@ var VoyagerMedia = function(o){
 			getFiles(manager.folders);
 		});
 
-		$('#files').on("click", "li", function(e){
+		files.on("click", "li", function(e){
 			var clicked = e.target;
 			if(!$(clicked).hasClass('file_link')){
 				clicked = $(e.target).closest('.file_link');
@@ -83,8 +84,39 @@ var VoyagerMedia = function(o){
 			$('.breadcrumb-container .toggle .icon').toggleClass('fa-toggle-right').toggleClass('fa-toggle-left');
 		});
 
+		
 		//********** Add Keypress Functionality **********//
+		var isBrowsingFiles = null,
+		fileBrowserActive = function(el){
+			el = el instanceof jQuery ? el : $(el);
+			if ($.contains(files.parent()[0], el[0])) {
+				return true;
+			} else {
+				$(document).off('click');
+				return false;
+			}
+		},
+		handleFileBrowserStatus = function (target) {
+			isBrowsingFiles = fileBrowserActive(target);
+		};
+
+		files.on('click', function (event) {
+			if (! isBrowsingFiles) {
+				$(document).on('click', function (e) {
+					handleFileBrowserStatus(e.target);
+				});
+			} else {
+				handleFileBrowserStatus(event.target);
+			}
+		});
+
 		$(document).keydown(function(e) {
+			var isKeyControl = e.which >= 37 && e.which <= 40;
+			if (! isBrowsingFiles && isKeyControl) {
+				return false;
+			} else if (isKeyControl && isBrowsingFiles) {
+				e.preventDefault();
+			}
 			var curSelected = $('#files li .selected').data('index');
 			// left key
 			if( (e.which == 37 || e.which == 38) && parseInt(curSelected)) {
@@ -264,6 +296,7 @@ var VoyagerMedia = function(o){
 			$.post(options.baseUrl+'/media/files', { folder:folder_location, _token: CSRF_TOKEN, _token: CSRF_TOKEN }, function(data) {
 				$('#file_loader').hide();
 				manager.files = data;
+				files.trigger('click');
 				for(var i=0; i < manager.files.items.length; i++){
 					if(typeof(manager.files.items[i].size) != undefined){
 						manager.files.items[i].size = bytesToSize(manager.files.items[i].size);
