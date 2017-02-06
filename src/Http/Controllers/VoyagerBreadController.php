@@ -5,10 +5,12 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 use TCG\Voyager\Models\DataType;
 
 class VoyagerBreadController extends Controller
 {
+    use BreadRelationshipParser;
     //***************************************
     //               ____
     //              |  _ \
@@ -38,11 +40,16 @@ class VoyagerBreadController extends Controller
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
 
+            $relationships = $this->getRelationships($dataType);
+
             if ($model->timestamps) {
-                $dataTypeContent = call_user_func([$model->latest(), $getter]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
             } else {
-                $dataTypeContent = call_user_func([$model->orderBy('id', 'DESC'), $getter]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
+
+            //Replace relationships' keys for labels and create READ links if a slug is provided.
+            $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
         } else {
             // If Model doesn't exist, get data from table name
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
@@ -78,9 +85,17 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::canOrFail('read_'.$dataType->name);
 
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
-            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+        $relationships = $this->getRelationships($dataType);
+        if (strlen($dataType->model_name) != 0) {
+            $model = app($dataType->model_name);
+            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+        } else {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
+        }
+
+        //Replace relationships' keys for labels and create READ links if a slug is provided.
+        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
         $view = 'voyager::bread.read';
 
@@ -112,8 +127,10 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::canOrFail('edit_'.$dataType->name);
 
+        $relationships = $this->getRelationships($dataType);
+
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
+            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         $view = 'voyager::bread.edit-add';
@@ -136,6 +153,7 @@ class VoyagerBreadController extends Controller
         Voyager::canOrFail('edit_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
         return redirect()
@@ -168,13 +186,17 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::canOrFail('add_'.$dataType->name);
 
+        $dataTypeContent = (strlen($dataType->model_name) != 0)
+                            ? new $dataType->model_name()
+                            : false;
+
         $view = 'voyager::bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType'));
+        return view($view, compact('dataType', 'dataTypeContent'));
     }
 
     // POST BRE(A)D

@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title','All '.$dataType->display_name_plural)
+
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
@@ -33,9 +35,45 @@
                                             @if($row->type == 'image')
                                                 <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                             @elseif($row->type == 'select_multiple')
+                                                @if(property_exists($options, 'relationship'))
+
+                                                    @foreach($data->{$row->field} as $item)
+                                                        @if($item->{$row->field . '_page_slug'})
+                                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
+                                                        @else
+                                                        {{ $item->{$row->field}  }}
+                                                        @endif
+                                                    @endforeach
+
+                                                    {{-- $data->{$row->field}->implode($options->relationship->label, ', ') --}}
+                                                @elseif(property_exists($options, 'options'))
+                                                    @foreach($data->{$row->field} as $item)
+                                                     {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                                    @endforeach
+                                                @endif
                                                 @if ($data->{$row->field} && isset($options->relationship))
                                                     {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
                                                 @endif
+                                            @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
+                                                <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field}  }}</a>
+                                            @elseif($row->type == 'date')
+                                            {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $dataTypeContent->{$row->field} }}
+                                            @elseif($row->type == 'checkbox')
+                                                @if($options && property_exists($options, 'on') && property_exists($options, 'off'))
+                                                    @if($data->{$row->field})
+                                                    <span class="label label-info">{{ $options->on }}</span>
+                                                    @else
+                                                    <span class="label label-primary">{{ $options->off }}</span>
+                                                    @endif
+                                                @else
+                                                {{ $data->{$row->field} }}
+                                                @endif
+                                            @elseif($row->type == 'text')
+                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            @elseif($row->type == 'text_area')
+                                            <div class="readmore">{{ $data->{$row->field} }}</div>                                            
+                                            @elseif($row->type == 'rich_text_box')
+                                            <div class="readmore">{{ $data->{$row->field} }}</div>
                                             @else
                                                 {{ $data->{$row->field} }}
                                             @endif

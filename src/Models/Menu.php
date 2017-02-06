@@ -174,7 +174,7 @@ class Menu extends Model
     public static function buildCustomOutput($menuItems, $view, $options, Request $request)
     {
         return view()->exists($view) ? view($view)
-            ->with('items', $menuItems)->render() : self::buildOutput($menuItems, '', $options, $request);
+            ->with('items', $menuItems->sortBy('order'))->render() : self::buildOutput($menuItems, '', $options, $request);
     }
 
     /**

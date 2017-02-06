@@ -32,8 +32,11 @@ class VoyagerServiceProvider extends ServiceProvider
             return new Voyager();
         });
 
-        $this->registerViewComposers();
+        $this->loadHelpers();
+
         $this->registerAlertComponents();
+
+        $this->registerConfigs();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
@@ -65,9 +68,21 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
 
+        $this->registerViewComposers();
+
         $event->listen('voyager.alerts.collecting', function () {
             $this->addStorageSymlinkAlert();
         });
+    }
+
+    /**
+     * Load helpers.
+     */
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
+            require_once $filename;
+        }
     }
 
     /**
@@ -162,6 +177,13 @@ class VoyagerServiceProvider extends ServiceProvider
         foreach ($publishable as $group => $paths) {
             $this->publishes($paths, $group);
         }
+    }
+
+    public function registerConfigs()
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
+        );
     }
 
     /**

@@ -2,6 +2,6 @@
     @if(isset($dataTypeContent->{$row->field}))
         {{ old($row->field, $dataTypeContent->{$row->field}) }}
     @else
-        {{ old($row->field) }}
+        {{old($row->field)}}
     @endif
 </textarea>

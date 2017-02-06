@@ -19,12 +19,13 @@ class DashboardTest extends TestCase
     {
         // We must first login and visit the dashboard page.
         Auth::loginUsingId(1);
+
         $this->visit(route('voyager.dashboard'));
 
         $this->see('Dashboard');
 
         // We can see number of Users.
-        $this->see('1 Users');
+        $this->see('1 User(s)');
 
         // list them.
         $this->click('View All Users');
