@@ -50,7 +50,7 @@ class VoyagerSettingsController extends Controller
 
         $settings = Setting::all();
 
-        foreach ($settings as $setting) {
+        foreach ($settings->whereIn('key', array_keys($request->all())) as $setting) {
             $content = $this->getContentBasedOnType($request, 'settings', (object) [
                 'type'    => $setting->type,
                 'field'   => $setting->key,
