@@ -569,6 +569,20 @@ public function authorId(){
 
 > Note: the method used for this relationship, must match the name of the row from the `pages` table. Which is why we used `authorId` as the method name to tie the relationship.
 
+You can optionally add a new page_slug property to the relationships object in the BREAD details in order to display proper links to relationship records. i.e.:
+
+```
+{
+    "relationship": {
+        "key": "id",
+        "label": "name",
+        "page_slug": "admin/users"
+    }
+}
+```
+
+> If no page_slug is provided, then the real "text" (`relationship.label`) is still being "resolved", but no anchor link is created.
+
 And that's how we can perform a One-to-One relationship. Next, you'll see how to create a Many-to-Many relationship.
 
 #### Multiple Select
@@ -607,6 +621,20 @@ public function categories(){
 Now, when you have save the results from your Many-to-Many relationship the ID's of each selected value will be synced and added to your pivot table.
 
 > Please note that this can also be configured as a normal `Select Dropdown`.
+
+You can optionally add a new page_slug property to the relationships object in the BREAD details in order to display proper links to relationship records. i.e.:
+
+```
+{
+    "relationship": {
+        "key": "id",
+        "label": "name",
+        "page_slug": "admin/users"
+    }
+}
+```
+
+> If no page_slug is provided, then the real "text" (`relationship.label`) is still being "resolved", but no anchor link is created.
 
 ### NULL values
 
