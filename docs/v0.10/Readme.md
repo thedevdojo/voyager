@@ -551,12 +551,12 @@ The **key** above will be the row that we want to use as the value in the select
 Finally, we'll need to create a relationship in the `Page` class. This would look like the following:
 
 ```
-public function author_id(){
+public function authorId(){
     return $this->belongsTo(User::class);
 }
 ```
 
-> Note: the method used for this relationship, must match the name of the row from the `pages` table. Which is why we used `author_id` as the method name to tie the relationship.
+> Note: the method used for this relationship, must match the name of the row from the `pages` table. Which is why we used `authorId` as the method name to tie the relationship.
 
 And that's how we can perform a One-to-One relationship. Next, you'll see how to create a Many-to-Many relationship.
 
