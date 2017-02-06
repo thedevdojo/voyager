@@ -367,6 +367,7 @@ When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box
 - Drop Down
 - Radio Button
 - Image
+- Date
 
 Find out how to use these additional details below:
 
@@ -460,6 +461,16 @@ This is only valid if you have set your image to be resized. If you specify your
 
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
+
+#### Date
+
+```js
+{
+    "format" : "Y-m-d"
+}
+```
+
+The date input field is where you can input a date. In the JSON above you can specify the `format` value of the output of the date.
 
 ### Description
 
