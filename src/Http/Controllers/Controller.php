@@ -40,7 +40,11 @@ abstract class Controller extends BaseController
 
             if (isset($options->validation)) {
                 if (isset($options->validation->rule)) {
-                    $rules[$row->field] = $options->validation->rule;
+                    if (!is_array($options->validation->rule)) {
+                        $rules[$row->field] = explode('|', $options->validation->rule);
+                    } else {
+                        $rules[$row->field] = $options->validation->rule;
+                    }
                 }
 
                 if (isset($options->validation->messages)) {
@@ -52,8 +56,21 @@ abstract class Controller extends BaseController
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
-            if (is_null($content)) {
+            /*
+             * merge ex_images and upload images
+             */
+            if ($row->type == 'multiple_images' && !is_null($content)) {
                 if (isset($data->{$row->field})) {
+                    $ex_files = json_decode($data->{$row->field}, true);
+                    if (!is_null($ex_files)) {
+                        $content = json_encode(array_merge($ex_files, json_decode($content)));
+                    }
+                }
+            }
+
+            if (is_null($content)) {
+                // Only set the content back to the previous value when there is really now input for this field
+                if (is_null($request->input($row->field)) && isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
                 if ($row->field == 'password') {
@@ -61,8 +78,9 @@ abstract class Controller extends BaseController
                 }
             }
 
-            if ($row->type == 'select_multiple') {
-                array_push($multi_select, ['row' => $row->field, 'content' => $content]);
+            if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
+                // Only if select_multiple is working with a relationship
+                $multi_select[] = ['row' => $row->field, 'content' => $content];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -118,12 +136,53 @@ abstract class Controller extends BaseController
                 }
             // no break
 
+            /********** MULTIPLE IMAGES TYPE **********/
+            case 'multiple_images':
+                if ($files = $request->file($row->field)) {
+                    /**
+                     * upload files.
+                     */
+                    $filesPath = [];
+                    foreach ($files as $key => $file) {
+                        $filename = Str::random(20);
+                        $path = $slug.'/'.date('F').date('Y').'/';
+                        array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
+                        $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                        $request->file($row->field)[$key]->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
+                    }
+
+                    return json_encode($filesPath);
+                }
+                break;
+
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
                 $content = $request->input($row->field);
 
                 if ($content === null) {
                     $content = [];
+                } else {
+                    // Check if we need to parse the editablePivotFields to update fields in the corresponding pivot table
+                    $options = json_decode($row->details);
+                    if (isset($options->relationship) && !empty($options->relationship->editablePivotFields)) {
+                        $pivotContent = [];
+                        // Read all values for fields in pivot tables from the request
+                        foreach ($options->relationship->editablePivotFields as $pivotField) {
+                            if (!isset($pivotContent[$pivotField])) {
+                                $pivotContent[$pivotField] = [];
+                            }
+                            $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
+                        }
+                        // Create a new content array for updating pivot table
+                        $newContent = [];
+                        foreach ($content as $contentIndex => $contentValue) {
+                            $newContent[$contentValue] = [];
+                            foreach ($pivotContent as $pivotContentKey => $value) {
+                                $newContent[$contentValue][$pivotContentKey] = $value[$contentIndex];
+                            }
+                        }
+                        $content = $newContent;
+                    }
                 }
 
                 return $content;

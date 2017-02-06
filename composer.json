@@ -17,7 +17,8 @@
     "require": {
         "illuminate/support": "5.3.*",
         "intervention/image": "^2.3",
-        "doctrine/dbal": "^2.5"
+        "doctrine/dbal": "^2.5",
+        "larapack/doctrine-support": "^0.1.0"
     },
     "require-dev": {
         "phpunit/phpcov": "~3.0",
@@ -28,7 +29,10 @@
     "autoload": {
         "psr-4": {
             "TCG\\Voyager\\": "src/"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

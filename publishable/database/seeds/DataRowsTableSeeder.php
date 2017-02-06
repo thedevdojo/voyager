@@ -166,7 +166,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => '{"slugify": {"origin": "title", "forceUpdate": true}}',
             ])->save();
         }
 
@@ -371,7 +371,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => '{"slugify": {"origin": "title"}}',
             ])->save();
         }
 

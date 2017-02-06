@@ -4,6 +4,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
+@if(isset($dataTypeContent->id))
+    @section('page_title','Edit '.$dataType->display_name_singular)
+@else
+    @section('page_title','Add '.$dataType->display_name_singular)
+@endif
+
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
@@ -53,11 +59,15 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
+                                <?php $options = json_decode($row->details); $checked = false; ?>
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
 
                                     @includeIf("voyager::formfields.$row->type")
 
+                                    @if(isset($options->description))
+                                        <i class="help-block"><span class="voyager-info-circled"></span> {{$options->description}}</i>
+                                    @endif
                                 </div>
                             @endforeach
 
@@ -87,8 +97,13 @@
     <script>
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
+
+            $('.side-body input[data-slug-origin]').each(function(i, el) {
+                $(el).slugify();
+            });
         });
     </script>
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
 @stop

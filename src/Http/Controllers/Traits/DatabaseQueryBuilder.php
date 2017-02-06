@@ -5,7 +5,6 @@ namespace TCG\Voyager\Http\Controllers\Traits;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 trait DatabaseQueryBuilder
 {
@@ -17,7 +16,7 @@ trait DatabaseQueryBuilder
     private $typeBlacklist = [
         'char',
         'double',
-        'enum',
+        //'enum',
         'ipAddress',
         'json',
         'jsonb',
@@ -73,9 +72,10 @@ trait DatabaseQueryBuilder
 
                 $type = $column['type'] ?: 'string';
 
-                $result = $type == 'enum'
-                    ? $table->enum($column['field'], [$column['enum']])
-                    : $table->{$type}($column['field']);
+                $result = $type == 'enum' ? $table->enum(
+                    $column['field'],
+                    array_map('trim', explode(',', $column['enum']))
+                ) : $table->{$type}($column['field']);
 
                 if ($column['key'] == 'UNI') {
                     $result->unique();
@@ -90,47 +90,6 @@ trait DatabaseQueryBuilder
                 return $result;
             };
         })->filter();
-    }
-
-    /**
-     * Describe given table.
-     *
-     * @param string $table
-     *
-     * @return Collection
-     */
-    private function describeTable($table)
-    {
-        $connection = config('database.default', 'mysql');
-        $driver = config('database.connections.'.$connection.'.driver', 'mysql');
-
-        if ($driver == 'sqlite') {
-            $columns = DB::select(DB::raw("PRAGMA table_info({$table})"));
-
-            return collect($columns)->map(function ($item) {
-                return [
-                    'field'   => $item->name,
-                    'type'    => $item->type,
-                    'null'    => ($item->notnull) ? 'NO' : 'YES',
-                    'key'     => ($item->pk) ? 'PRI' : '',
-                    'default' => ($default = preg_replace("/((^')|('$))/", '', $item->dflt_value)) ? $default : null,
-                    'extra'   => ($item->pk == 1 && $item->type == 'integer') ? 'auto_increment' : '',
-                ];
-            });
-        } else {
-            $schema_name = DB::connection()->getDatabaseName();
-            $raw = "SELECT column_name    AS 'field',
-                       column_type    AS 'type',
-                       is_nullable    AS 'null',
-                       column_key     AS 'key',
-                       column_default AS 'default',
-                       extra          AS 'extra'
-                FROM   information_schema.columns
-                WHERE  table_schema = '{$schema_name}'
-                AND    table_name = '{$table}'";
-
-            return collect(DB::select(DB::raw($raw)));
-        }
     }
 
     /**

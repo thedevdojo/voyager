@@ -1,10 +1,7 @@
-<?php
-$options = json_decode($row->details);
-$selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field, $dataTypeContent->{$row->field})))
-    ? old($row->field, $dataTypeContent->{$row->field})
-    : old($row->field);
-$default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL;
-?>
+<?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field,
+                $dataTypeContent->{$row->field}))) ? old($row->field,
+        $dataTypeContent->{$row->field}) : old($row->field); ?>
+                                        <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
 <ul class="radio">
     @if(isset($options->options))
         @foreach($options->options as $key => $option)

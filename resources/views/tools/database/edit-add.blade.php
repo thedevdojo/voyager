@@ -2,7 +2,12 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-data"></i> @if(isset($table)){{ 'Editing ' . $table . ' table' }}@else{{ 'New Table' }}@endif
+        <i class="voyager-data"></i>
+        @if(isset($table))
+            {{ "Editing $table table" }}
+        @else
+            {{ 'New Table' }}
+        @endif
     </h1>
 @stop
 
@@ -50,7 +55,7 @@
                         <option value="double">DOUBLE</option>
                         <option value="decimal">DECIMAL</option>
                         <option value="boolean">BOOLEAN</option>
-                        <option value="enum">ENUM</option>
+                        @if (config('database.default', 'mysql') == 'mysql')<option value="enum">ENUM</option>@endif
                         <option value="date">DATE</option>
                         <option value="dateTime">DATETIME</option>
                         <option value="time">TIME</option>
@@ -91,84 +96,79 @@
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <form action="@if(isset($table)){{ route('voyager.database.update', $table) }}@else{{ route('voyager.database.store') }}@endif"
-                      method="POST">
+                <form action="{{ $formAction }}" method="POST">
                     @if(isset($table)){{ method_field('PUT') }}@endif
                     <div class="panel panel-bordered">
                         <div class="panel-heading">
-                            <h3 class="panel-title">@if(isset($table)){{ 'Edit the ' . $table . ' table below' }}@else{{ 'Create Your New Table Below' }}@endif</h3>
+                            <h3 class="panel-title">@if(isset($table)){{ "Edit the $table table below" }}@else{{ 'Create Your New Table Below' }}@endif</h3>
                         </div>
+
                         <div class="panel-body">
-
                             <div class="row">
+                            @if(isset($table))
+                                <div class="col-md-12">
+                            @else
+                                <div class="col-md-6">
+                            @endif
+                                    <label for="name">Table Name</label><br>
+                                    <input type="text" name="name" class="form-control"
+                                           placeholder="Table Name"
+                                           value="{{ $table or '' }}">
+                                    @if(isset($table))
+                                        <input type="hidden" name="original_name" class="form-control" value="{{ $table }}">
+                                    @endif
+                                </div>
+
                                 @if(!isset($table))
-                                    <div class="col-md-6">
-                                        @else
-                                            <div class="col-md-12">
-                                                @endif
-                                                <label for="name">Table Name</label><br>
-                                                <input type="text" name="name" class="form-control"
-                                                       placeholder="Table Name"
-                                                       value="@if(isset($table)){{ $table }}@endif">
-                                                @if(isset($table))
-                                                    <input type="hidden" name="original_name" class="form-control"
-                                                           value="{{ $table }}">
-                                                @endif
-                                            </div>
-
-                                            @if(!isset($table))
-                                                <div class="col-md-3 col-sm-4 col-xs-6">
-                                                    <label for="create_model">Create model for this table?</label><br>
-                                                    <input type="checkbox" name="create_model" data-toggle="toggle"
-                                                           data-on="Yes, Please" data-off="No Thanks">
-
-                                                </div>
-                                            @endif
-
-                                            @if(!isset($table))
-                                                <div class="col-md-3 col-sm-4 col-xs-6">
-                                                    <label for="create_migration">Create migration for this table?</label><br>
-                                                    <input type="checkbox" name="create_migration" data-toggle="toggle"
-                                                           data-on="Yes, Please" data-off="No Thanks">
-
-                                                </div>
-                                            @endif
+                                    <div class="col-md-3 col-sm-4 col-xs-6">
+                                        <label for="create_model">Create model for this table?</label><br>
+                                        <input type="checkbox" name="create_model" data-toggle="toggle"
+                                               data-on="Yes, Please" data-off="No Thanks">
                                     </div>
-                                    <p>Table Fields</p>
 
-                                    <table class="table table-bordered" style="width:100%;">
-                                        <thead>
-                                        <tr>
-                                            <th></th>
-                                            <th>Field Name</th>
-                                            <th>DB Type</th>
-                                            <th>Allow Null?</th>
-                                            <th>Key</th>
-                                            <th>Default Value</th>
-                                            <th></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="tablebody">
-
-                                        </tbody>
-                                    </table>
-
-                                    <div style="text-align:center">
-                                        <div class="btn btn-success" id="newField">+ Add New Field</div>
-                                        <div class="btn btn-success" id="newFieldPrimary">+ Add Primary Field</div>
-                                        @if(!isset($table))
-                                            <div class="btn btn-success" id="newFieldTimestamps">+ Add Timestamp Fields</div>
-                                            <div class="btn btn-success" id="newFieldSoftDelete">+ Add Soft Delete Field</div>
-                                        @endif
+                                    <div class="col-md-3 col-sm-4 col-xs-6">
+                                        <label for="create_migration">Create migration for this table?</label><br>
+                                        <input type="checkbox" name="create_migration" data-toggle="toggle"
+                                               data-on="Yes, Please" data-off="No Thanks">
                                     </div>
+                                @endif
+                            </div><!-- .panel-body .row -->
+                            <p>Table Fields</p>
+
+                            <table class="table table-bordered" style="width:100%;">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Field Name</th>
+                                    <th>DB Type</th>
+                                    <th>Allow Null?</th>
+                                    <th>Key</th>
+                                    <th>Default Value</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody id="tablebody">
+
+                                </tbody>
+                            </table>
+
+                            <div style="text-align:center">
+                                <div class="btn btn-success" id="newField">+ Add New Field</div>
+                                <div class="btn btn-success" id="newFieldPrimary">+ Add Primary Field</div>
+                                @if(!isset($table))
+                                    <div class="btn btn-success" id="newFieldTimestamps">+ Add Timestamp Fields</div>
+                                    <div class="btn btn-success" id="newFieldSoftDelete">+ Add Soft Delete Field</div>
+                                @endif
                             </div>
-                            <div class="panel-footer">
-                                <input type="submit" class="btn btn-primary pull-right"
-                                       value="@if(isset($table)){{ 'Update Table' }}@else{{ 'Create New Table' }}@endif">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <div style="clear:both"></div>
-                            </div>
-                        </div><!-- .panel -->
+                        </div><!-- .panel-body -->
+
+                        <div class="panel-footer">
+                            <input type="submit" class="btn btn-primary pull-right"
+                                   value="@if(isset($table)){{ 'Update Table' }}@else{{ 'Create New Table' }}@endif">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <div style="clear:both"></div>
+                        </div>
+                    </div><!-- .panel -->
                 </form>
             </div>
         </div>
@@ -187,7 +187,7 @@
                 newRow();
             @else
                 @foreach($rows as $row)
-                    newRow('', '{{ $row->field }}', '{{ $row->type }}', '{{ $row->null }}', '{{ $row->key }}', '{{ $row->default }}');
+                    newRow('', '{{ $row['field'] }}', '{{ $row['type'] }}', '{{ $row['null'] }}', '{{ $row['key'] }}', '{{ $row['default'] }}');
                 @endforeach
             @endif
 
@@ -206,6 +206,7 @@
             $('#newFieldPrimary').click(function () {
                 newRow('primary');
             });
+
             $("#tablebody").sortable({
                 handle: '.voyager-handle'
             });
@@ -298,8 +299,14 @@
                     $('#' + unique_id).addClass('existing_row');
                     $('#' + unique_id).find('.fieldName').val(name);
                     $('#' + unique_id).find('.originalfieldName').val(name);
-                    type = getCorrectType(type);
-                    $('#' + unique_id).find('.fieldType').val(type);
+                    var correct_type = getCorrectType(type);
+                    if (correct_type == 'enum') {
+                        $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val .enum').val(str_replace(['enum(', ')', '&#039;'], '', type));
+                        $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val').show();
+                    } else {
+                        $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val').hide();
+                    }
+                    $('#' + unique_id).find('.fieldType').val(correct_type);
                     $('#' + unique_id).find('.fieldKey').val(key);
                     if (nullable == "YES") {
                         $('#' + unique_id).find('.toggleswitch').prop('checked', true).change();
@@ -312,9 +319,16 @@
 
         }
 
+        function str_replace($f, $r, $s){
+            return $s.replace(new RegExp("(" + (typeof($f) == "string" ? $f.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&") : $f.map(function(i){return i.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&")}).join("|")) + ")", "g"), typeof($r) == "string" ? $r : typeof($f) == "string" ? $r[0] : function(i){ return $r[$f.indexOf(i)]});
+        }
+
         function getCorrectType(type) {
             if (type.substring(0, 3) == 'int') {
                 return 'integer';
+            }
+            if (type.substring(0, 4) == 'enum') {
+                return 'enum';
             }
             if (type.substring(0, 7) == 'varchar') {
                 return 'string';
