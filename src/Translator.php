@@ -149,11 +149,11 @@ class Translator implements ArrayAccess
 
     public function __get($name)
     {
-        if (! isset($this->attributes[$name])) {
-            return null;
+        if (!isset($this->attributes[$name])) {
+            return;
         }
 
-        if (! $this->attributes[$name]['exists'] && ! $this->attributes[$name]['modified']) {
+        if (!$this->attributes[$name]['exists'] && !$this->attributes[$name]['modified']) {
             return $this->getOriginalAttribute($name);
         }
 
@@ -204,7 +204,7 @@ class Translator implements ArrayAccess
 
     public function translationAttributeExists($name)
     {
-        if (! isset($this->attributes[$name])) {
+        if (!isset($this->attributes[$name])) {
             return false;
         }
 
@@ -213,7 +213,7 @@ class Translator implements ArrayAccess
 
     public function translationAttributeModified($name)
     {
-        if (! isset($this->attributes[$name])) {
+        if (!isset($this->attributes[$name])) {
             return false;
         }
 
@@ -222,11 +222,11 @@ class Translator implements ArrayAccess
 
     public function createTranslation($key, $value)
     {
-        if (! isset($this->attributes[$key])) {
+        if (!isset($this->attributes[$key])) {
             return false;
         }
 
-        if (! in_array($key, $this->model->getTranslatableAttributes())) {
+        if (!in_array($key, $this->model->getTranslatableAttributes())) {
             return false;
         }
 
@@ -260,11 +260,11 @@ class Translator implements ArrayAccess
 
     public function deleteTranslation($key)
     {
-        if (! isset($this->attributes[$key])) {
+        if (!isset($this->attributes[$key])) {
             return false;
         }
 
-        if (! $this->attributes[$key]['exists']) {
+        if (!$this->attributes[$key]['exists']) {
             return false;
         }
 
@@ -288,7 +288,8 @@ class Translator implements ArrayAccess
         return true;
     }
 
-    public function deleteTranslations(array $keys) {
+    public function deleteTranslations(array $keys)
+    {
         foreach ($keys as $key) {
             $this->deleteTranslation($key);
         }
