@@ -183,6 +183,6 @@ trait Translatable
      */
     public function getTranslatableAttributes()
     {
-        return isset($this->translate) ? $this->translate : [];
+        return property_exists($this, 'translatable') ? $this->translatable : [];
     }
 }

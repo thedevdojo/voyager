@@ -149,6 +149,14 @@ class Translator implements ArrayAccess
 
     public function __get($name)
     {
+        if (! isset($this->attributes[$name])) {
+            return null;
+        }
+
+        if (! $this->attributes[$name]['exists'] && ! $this->attributes[$name]['modified']) {
+            return $this->getOriginalAttribute($name);
+        }
+
         return $this->attributes[$name]['value'];
     }
 
@@ -187,5 +195,102 @@ class Translator implements ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->attributes[$offset]);
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    public function translationAttributeExists($name)
+    {
+        if (! isset($this->attributes[$name])) {
+            return false;
+        }
+
+        return $this->attributes[$name]['exists'];
+    }
+
+    public function translationAttributeModified($name)
+    {
+        if (! isset($this->attributes[$name])) {
+            return false;
+        }
+
+        return $this->attributes[$name]['modified'];
+    }
+
+    public function createTranslation($key, $value)
+    {
+        if (! isset($this->attributes[$key])) {
+            return false;
+        }
+
+        if (! in_array($key, $this->model->getTranslatableAttributes())) {
+            return false;
+        }
+
+        $translation = new Translation();
+        $translation->fill([
+            'table_name'  => $this->model->getTable(),
+            'column_name' => $key,
+            'foreign_key' => $this->model->getKey(),
+            'value'       => $value,
+            'locale'      => $this->locale,
+        ]);
+        $translation->save();
+
+        $this->model->getRelation('translations')->add($translation);
+
+        $this->attributes[$key]['exists'] = true;
+        $this->attributes[$key]['value'] = $value;
+
+        return $this->model->getRelation('translations')
+            ->where('key', $key)
+            ->where('locale', $this->locale)
+            ->first();
+    }
+
+    public function createTranslations(array $translations)
+    {
+        foreach ($translations as $key => $value) {
+            $this->createTranslation($key, $value);
+        }
+    }
+
+    public function deleteTranslation($key)
+    {
+        if (! isset($this->attributes[$key])) {
+            return false;
+        }
+
+        if (! $this->attributes[$key]['exists']) {
+            return false;
+        }
+
+        $translations = $this->model->getRelation('translations');
+        $locale = $this->locale;
+
+        Translation::where('table_name', $this->model->getTable())
+            ->where('column_name', $key)
+            ->where('foreign_key', $this->model->getKey())
+            ->where('locale', $locale)
+            ->delete();
+
+        $this->model->setRelation('translations', $translations->filter(function ($translation) use ($key, $locale) {
+            return $translation->column_name != $key && $translation->locale != $locale;
+        }));
+
+        $this->attributes[$key]['value'] = null;
+        $this->attributes[$key]['exists'] = false;
+        $this->attributes[$key]['modified'] = false;
+
+        return true;
+    }
+
+    public function deleteTranslations(array $keys) {
+        foreach ($keys as $key) {
+            $this->deleteTranslation($key);
+        }
     }
 }
