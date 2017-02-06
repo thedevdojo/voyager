@@ -461,6 +461,16 @@ This is only valid if you have set your image to be resized. If you specify your
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
 
+### Description
+
+All types can include a description in order to help your future self or other users using your Voyager admin panel to understand exactly what a specific BREAD input field is for, this can be defined in the `Optional Details` JSON input field:
+
+```
+{
+    "description": "A helpful description text here for your future self."
+}
+```
+
 ### Validation
 
 Inside of the *Optional Details* section for each row in your BREAD you can also specify validation rules with some simple JSON. Here is an example of how to add a validation rule or *required* and *max length of 12*
