@@ -66,6 +66,8 @@
                                 @else
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
+                            @elseif($row->type == 'rich_text_box')
+                                <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @else
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif

@@ -73,7 +73,7 @@
                                             @elseif($row->type == 'text_area')
                                             <div class="readmore">{{ $data->{$row->field} }}</div>                                            
                                             @elseif($row->type == 'rich_text_box')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            <div class="readmore">{{ strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                             @else
                                                 {{ $data->{$row->field} }}
                                             @endif
