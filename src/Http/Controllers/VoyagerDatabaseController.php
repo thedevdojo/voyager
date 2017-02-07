@@ -193,7 +193,7 @@ class VoyagerDatabaseController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function addBread(Request $request,$table)
+    public function addBread(Request $request, $table)
     {
         Voyager::can('browse_database');
 
