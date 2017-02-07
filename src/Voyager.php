@@ -67,7 +67,7 @@ class Voyager
         $exist = Permission::where('key', $permission)->first();
 
         if ($exist) {
-            $user = Auth::user();
+            $user = User::find(Auth::id());
             if ($user == null || !$user->hasPermission($permission)) {
                 throw new UnauthorizedHttpException(null);
             }
@@ -80,7 +80,7 @@ class Voyager
         $exist = Permission::where('key', $permission)->first();
 
         if ($exist) {
-            $user = Auth::user();
+            $user = User::find(Auth::id());
             if ($user == null || !$user->hasPermission($permission)) {
                 return false;
             }
