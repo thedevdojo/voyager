@@ -139,11 +139,15 @@ class VoyagerDatabaseController extends Controller
     public function cleanOldAndCreateNew($originalName, $tableName)
     {
         if (!empty($originalName) && $originalName != $tableName) {
-            $dt = DB::table('data_types')->where('name',$originalName);
-            if ($dt->get()) $dt->delete();
+            $dt = DB::table('data_types')->where('name', $originalName);
+            if ($dt->get()) {
+                $dt->delete();
+            }
 
-            $perm = DB::table('permissions')->where('table_name',$originalName);
-            if ($perm->get()) $perm->delete();
+            $perm = DB::table('permissions')->where('table_name', $originalName);
+            if ($perm->get()) {
+                $perm->delete();
+            }
 
             $params = ['name' => Str::studly(Str::singular($tableName))];
             Artisan::call('voyager:make:model', $params);
@@ -208,7 +212,7 @@ class VoyagerDatabaseController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function addBread(Request $request,$table)
+    public function addBread(Request $request, $table)
     {
         Voyager::can('browse_database');
 
