@@ -67,24 +67,21 @@ class Voyager
         $exist = Permission::where('key', $permission)->first();
 
         if ($exist) {
-            $user = User::find(Auth::id());
-            if ($user == null) {
-                throw new UnauthorizedHttpException(null);
-            }
-            if (!$user->hasPermission($permission)) {
+            $user = Auth::user();
+            if ($user == null || ! $user->hasPermission($permission)) {
                 throw new UnauthorizedHttpException(null);
             }
         }
     }
 
-    public static function for($permission)
+    public static function have($permission)
     {
         // Check if permission exist
         $exist = Permission::where('key', $permission)->first();
 
         if ($exist) {
-            $user = User::find(Auth::id());
-            if ($user == null || !$user->hasPermission($permission)) {
+            $user = Auth::user();
+            if ($user == null || ! $user->hasPermission($permission)) {
                 return false;
             }
 

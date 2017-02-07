@@ -3,7 +3,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
-        @if (Voyager::for('add_'.$dataType->name))
+        @if (Voyager::have('add_'.$dataType->name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
                 <i class="voyager-plus"></i> Add New
             </a>
@@ -39,17 +39,17 @@
                                     </td>
                                     <td>{{ $data->role ? $data->role->display_name : '' }}</td>
                                     <td class="no-sort no-click">
-                                        @if (Voyager::for('delete_'.$dataType->name))
+                                        @if (Voyager::have('delete_'.$dataType->name))
                                             <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
                                                 <i class="voyager-trash"></i> Delete
                                             </div>
                                         @endif
-                                        @if (Voyager::for('edit_'.$dataType->name))
+                                        @if (Voyager::have('edit_'.$dataType->name))
                                             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> Edit
                                             </a>
                                         @endif
-                                        @if (Voyager::for('read_'.$dataType->name))
+                                        @if (Voyager::have('read_'.$dataType->name))
                                             <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
                                                 <i class="voyager-eye"></i> View
                                             </a>
