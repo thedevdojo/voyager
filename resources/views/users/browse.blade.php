@@ -3,9 +3,11 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
-        <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
-            <i class="voyager-plus"></i> Add New
-        </a>
+        @if (Voyager::for('add_'.$dataType->name))
+            <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
+                <i class="voyager-plus"></i> Add New
+            </a>
+        @endif
     </h1>
 @stop
 
@@ -29,23 +31,29 @@
                             <tbody>
                             @foreach($dataTypeContent as $data)
                                 <tr>
-                                    <td>{{$data->name}}</td>
-                                    <td>{{$data->email}}</td>
-                                    <td>{{$data->created_at}}</td>
+                                    <td>{{ $data->name }}</td>
+                                    <td>{{ $data->email }}</td>
+                                    <td>{{ $data->created_at }}</td>
                                     <td>
                                         <img src="@if( strpos($data->avatar, 'http://') === false && strpos($data->avatar, 'https://') === false){{ Voyager::image( $data->avatar ) }}@else{{ $data->avatar }}@endif" style="width:100px">
                                     </td>
                                     <td>{{ $data->role ? $data->role->display_name : '' }}</td>
                                     <td class="no-sort no-click">
-                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
-                                            <i class="voyager-trash"></i> Delete
-                                        </div>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> Edit
-                                        </a>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
-                                            <i class="voyager-eye"></i> View
-                                        </a>
+                                        @if (Voyager::for('delete_'.$dataType->name))
+                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+                                                <i class="voyager-trash"></i> Delete
+                                            </div>
+                                        @endif
+                                        @if (Voyager::for('edit_'.$dataType->name))
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
+                                                <i class="voyager-edit"></i> Edit
+                                            </a>
+                                        @endif
+                                        @if (Voyager::for('read_'.$dataType->name))
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
+                                                <i class="voyager-eye"></i> View
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -79,7 +87,7 @@
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                               value="Yes, Delete This {{ $dataType->display_name_singular }}">
+                                 value="Yes, Delete This {{ $dataType->display_name_singular }}">
                     </form>
                     <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
                 </div>

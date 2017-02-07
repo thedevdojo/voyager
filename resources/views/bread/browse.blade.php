@@ -5,9 +5,11 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
-        <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
-            <i class="voyager-plus"></i> Add New
-        </a>
+        @if (Voyager::for('add_'.$dataType->name))
+            <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
+                <i class="voyager-plus"></i> Add New
+            </a>
+        @endif
     </h1>
 @stop
 
@@ -39,9 +41,9 @@
 
                                                     @foreach($data->{$row->field} as $item)
                                                         @if($item->{$row->field . '_page_slug'})
-                                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
+                                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{!! $item->{$row->field} !!}</a>@if(!$loop->last), @endif
                                                         @else
-                                                        {{ $item->{$row->field}  }}
+                                                        {!! $item->{$row->field} !!}
                                                         @endif
                                                     @endforeach
 
@@ -55,7 +57,7 @@
                                                     {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
                                                 @endif
                                             @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
-                                                <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field}  }}</a>
+                                                <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $data->{$row->field} !!}</a>
                                             @elseif($row->type == 'date')
                                             {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $dataTypeContent->{$row->field} }}
                                             @elseif($row->type == 'checkbox')
@@ -66,29 +68,35 @@
                                                     <span class="label label-primary">{{ $options->off }}</span>
                                                     @endif
                                                 @else
-                                                {{ $data->{$row->field} }}
+                                                {!! $data->{$row->field} !!}
                                                 @endif
                                             @elseif($row->type == 'text')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            <div class="readmore">{!! $data->{$row->field} !!}</div>
                                             @elseif($row->type == 'text_area')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            <div class="readmore">{!! $data->{$row->field} !!}</div>
                                             @elseif($row->type == 'rich_text_box')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            <div class="readmore">{!! $data->{$row->field} !!}</div>
                                             @else
-                                                {{ $data->{$row->field} }}
+                                                {!! $data->{$row->field} !!}
                                             @endif
                                         </td>
                                     @endforeach
                                     <td class="no-sort no-click">
-                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
-                                            <i class="voyager-trash"></i> Delete
-                                        </div>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> Edit
-                                        </a>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
-                                            <i class="voyager-eye"></i> View
-                                        </a>
+                                        @if (Voyager::for('delete_'.$dataType->name))
+                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+                                                <i class="voyager-trash"></i> Delete
+                                            </div>
+                                        @endif
+                                        @if (Voyager::for('edit_'.$dataType->name))
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
+                                                <i class="voyager-edit"></i> Edit
+                                            </a>
+                                        @endif
+                                        @if (Voyager::for('read_'.$dataType->name))
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
+                                                <i class="voyager-eye"></i> View
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

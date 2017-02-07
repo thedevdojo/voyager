@@ -77,6 +77,21 @@ class Voyager
         }
     }
 
+    public static function for($permission)
+    {
+        // Check if permission exist
+        $exist = Permission::where('key', $permission)->first();
+
+        if ($exist) {
+            $user = User::find(Auth::id());
+            if ($user == null || !$user->hasPermission($permission)) {
+                return false;
+            }
+
+            return true;
+        }
+    }
+
     public function getVersion()
     {
         return $this->version;
