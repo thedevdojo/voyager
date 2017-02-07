@@ -143,4 +143,9 @@ return [
         ],
     ],
 
+    'login' => [
+        'gradient_a' => '#4cb5ff',
+        'gradient_b' => '#e9721e',
+    ],
+
 ];
