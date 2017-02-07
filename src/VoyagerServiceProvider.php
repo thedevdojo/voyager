@@ -43,7 +43,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->registerConsoleCommands();
         }
 
-        if (! $this->app->runningInConsole() || config('app.env') == 'testing') {
+        if (!$this->app->runningInConsole() || config('app.env') == 'testing') {
             $this->registerAppCommands();
         }
     }
