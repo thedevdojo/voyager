@@ -27,7 +27,7 @@ class LoginTest extends TestCase
              ->type('pass', 'password')
              ->press('Login')
              ->seePageIs(route('voyager.login'))
-             ->see(trans('auth.fail'))
+             ->see(trans('auth.failed'))
              ->seeInField('email', 'john@Doe.com');
     }
 }
