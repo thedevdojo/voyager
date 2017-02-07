@@ -68,7 +68,7 @@ class Voyager
 
         if ($exist) {
             $user = Auth::user();
-            if ($user == null || ! $user->hasPermission($permission)) {
+            if ($user == null || !$user->hasPermission($permission)) {
                 throw new UnauthorizedHttpException(null);
             }
         }
@@ -81,7 +81,7 @@ class Voyager
 
         if ($exist) {
             $user = Auth::user();
-            if ($user == null || ! $user->hasPermission($permission)) {
+            if ($user == null || !$user->hasPermission($permission)) {
                 return false;
             }
 
