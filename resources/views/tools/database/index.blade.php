@@ -36,12 +36,12 @@
                                 <p class="name">
                                     @if($table->dataTypeId)
                                         <a href="{{ route('voyager.database.show', $table->name) }}"
-                                           data-name="{{ $table->name }}" class="desctable">{{ $table->name }}</a> <i
+                                             data-name="{{ $table->name }}" class="desctable">{{ $table->name }}</a> <i
                                                 class="voyager-bread"
                                                 style="font-size:25px; position:absolute; margin-left:10px; margin-top:-3px;"></i>
                                     @else
                                         <a href="{{ route('voyager.database.show', $table->name) }}"
-                                           data-name="{{ $table->name }}" class="desctable">{{ $table->name }}</a>
+                                             data-name="{{ $table->name }}" class="desctable">{{ $table->name }}</a>
                                     @endif
                                 </p>
                             </td>
@@ -51,17 +51,14 @@
                                 <div class="bread_actions">
                                     @if($table->dataTypeId)
                                         <a class="btn-sm btn-default edit"
-                                           href="{{ route('voyager.database.edit_bread', $table->dataTypeId) }}"> Edit
+                                             href="{{ route('voyager.database.edit_bread', $table->name) }}"> Edit
                                             BREAD</a>
-                                        <div class="btn-sm btn-danger delete" style="display:inline"
-                                             data-id="{{ $table->dataTypeId }}" data-name="{{ $table->name }}"> Delete BREAD
-                                        </div>
+                                        <div class="btn-sm btn-danger delete" style="display:inline" data-id="{{ $table->dataTypeId }}" data-name="{{ $table->name }}"> Delete BREAD</div>
                                     @else
-                                        <form action="{{ route('voyager.database.create_bread') }}" method="POST">
+                                        <form action="{{ route('voyager.database.create_bread',['name'=>$table->name]) }}" method="POST">
                                             <input type="hidden" value="{{ csrf_token() }}" name="_token">
-                                            <input type="hidden" value="{{ $table->name }}" name="table">
-                                            <button type="submit" class="btn-sm btn-default"><i
-                                                        class="voyager-plus"></i> Add BREAD to this table
+                                            <button type="submit" class="btn-sm btn-default">
+                                                <i class="voyager-plus"></i> Add BREAD to this table
                                             </button>
                                         </form>
                                     @endif
@@ -70,14 +67,14 @@
                             </td>
                             <td class="actions">
                                 <a class="btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
-                                   data-table="{{ $table->name }}" style="display:inline; cursor:pointer;"><i
+                                     data-table="{{ $table->name }}" style="display:inline; cursor:pointer;"><i
                                             class="voyager-trash"></i> Delete</a>
                                 <a class="btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;"
-                                   href="{{ route('voyager.database.edit', $table->name) }}"><i
+                                     href="{{ route('voyager.database.edit', $table->name) }}"><i
                                             class="voyager-edit"></i> Edit</a>
                                 <a class="btn-sm btn-warning pull-right desctable"
-                                   style="display:inline; margin-right:10px;"
-                                   href="{{ route('voyager.database.show', $table->name) }}" data-name="{{ $table->name }}"><i
+                                     style="display:inline; margin-right:10px;"
+                                     href="{{ route('voyager.database.show', $table->name) }}" data-name="{{ $table->name }}"><i
                                             class="voyager-eye"></i> View</a>
                             </td>
                         </tr>
@@ -177,7 +174,6 @@
 
     <script>
 
-
         var table = {
             name: '',
             rows: []
@@ -190,7 +186,6 @@
             },
         });
 
-
         $(function () {
 
             $('.bread_actions').on('click', '.delete', function (e) {
@@ -201,7 +196,6 @@
                 $('#delete_builder_form')[0].action += '/' + id;
                 $('#delete_builder_modal').modal('show');
             });
-
 
             $('.database-tables').on('click', '.desctable', function (e) {
                 e.preventDefault();
@@ -233,7 +227,6 @@
                     $('#delete_modal').modal('show');
                 }
             });
-
 
         });
     </script>

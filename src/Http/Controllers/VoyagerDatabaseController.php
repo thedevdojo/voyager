@@ -193,11 +193,9 @@ class VoyagerDatabaseController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function addBread(Request $request)
+    public function addBread(Request $request,$table)
     {
         Voyager::can('browse_database');
-
-        $table = $request->input('table');
 
         $data = $this->prepopulateBreadInfo($table);
         $data['fieldOptions'] = \TCG\Voyager\Facades\DBSchema::describeTable($table);
@@ -249,11 +247,11 @@ class VoyagerDatabaseController extends Controller
         }
     }
 
-    public function addEditBread($id)
+    public function addEditBread($table)
     {
         Voyager::can('browse_database');
 
-        $dataType = DataType::find($id);
+        $dataType = DataType::whereName($table)->first();
 
         try {
             $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : \TCG\Voyager\Facades\DBSchema::describeTable($dataType->name);
