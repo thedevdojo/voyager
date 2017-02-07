@@ -39,9 +39,9 @@
 
                                                     @foreach($data->{$row->field} as $item)
                                                         @if($item->{$row->field . '_page_slug'})
-                                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
+                                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{!! $item->{$row->field} !!}</a>@if(!$loop->last), @endif
                                                         @else
-                                                        {{ $item->{$row->field}  }}
+                                                        {!! $item->{$row->field} !!}
                                                         @endif
                                                     @endforeach
 
@@ -55,7 +55,7 @@
                                                     {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
                                                 @endif
                                             @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
-                                                <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field}  }}</a>
+                                                <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $data->{$row->field} !!}</a>
                                             @elseif($row->type == 'date')
                                             {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $dataTypeContent->{$row->field} }}
                                             @elseif($row->type == 'checkbox')
@@ -66,16 +66,16 @@
                                                     <span class="label label-primary">{{ $options->off }}</span>
                                                     @endif
                                                 @else
-                                                {{ $data->{$row->field} }}
+                                                {!! $data->{$row->field} !!}
                                                 @endif
                                             @elseif($row->type == 'text')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            <div class="readmore">{!! $data->{$row->field} !!}</div>
                                             @elseif($row->type == 'text_area')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>                                            
+                                            <div class="readmore">{!! $data->{$row->field} !!}</div>
                                             @elseif($row->type == 'rich_text_box')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            <div class="readmore">{!! $data->{$row->field} !!}</div>
                                             @else
-                                                {{ $data->{$row->field} }}
+                                                {!! $data->{$row->field} !!}
                                             @endif
                                         </td>
                                     @endforeach
@@ -122,7 +122,7 @@
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                               value="Yes, Delete This {{ $dataType->display_name_singular }}">
+                                 value="Yes, Delete This {{ $dataType->display_name_singular }}">
                     </form>
                     <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
                 </div>

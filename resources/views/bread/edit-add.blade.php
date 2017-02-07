@@ -29,8 +29,8 @@
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form role="form"
-                          action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
-                          method="POST" enctype="multipart/form-data">
+                            action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
+                            method="POST" enctype="multipart/form-data">
                         <!-- PUT Method if we are editing -->
                         @if(isset($dataTypeContent->id))
                             {{ method_field("PUT") }}
@@ -65,9 +65,9 @@
 
                                     @if($row->type == "text")
                                         <input type="text" class="form-control" name="{{ $row->field }}"
-                                               placeholder="{{ $row->display_name }}"
-                                               {!! isBreadSlugAutoGenerator($options) !!}
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif">
+                                                 placeholder="{{ $row->display_name }}"
+                                                 {!! isBreadSlugAutoGenerator($options) !!}
+                                                 value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif">
                                     @elseif($row->type == "password")
                                         @if(isset($dataTypeContent->{$row->field}))
                                             <br>
@@ -76,16 +76,16 @@
                                         <input type="password" class="form-control" name="{{ $row->field }}" value="">
                                     @elseif($row->type == "text_area")
                                         <textarea class="form-control"
-                                                  name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif</textarea>
+                                                    name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif</textarea>
                                     @elseif($row->type == "rich_text_box")
                                         <textarea class="form-control richTextBox"
-                                                  name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif</textarea>
+                                                    name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{ old($row->field) }}@endif</textarea>
                                     @elseif($row->type == "image" || $row->type == "file")
                                         @if($row->type == "image" && isset($dataTypeContent->{$row->field}))
                                             <img src="{{ Voyager::image( $dataTypeContent->{$row->field} ) }}"
                                                  style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                         @elseif($row->type == "file" && isset($dataTypeContent->{$row->field}))
-                                            <div class="fileType">{{ $dataTypeContent->{$row->field} }}</div>
+                                            <div class="fileType">{!! $dataTypeContent->{$row->field} !!}</div>
                                         @endif
                                         <input type="file" name="{{ $row->field }}">
                                     @elseif($row->type == "select_dropdown")
@@ -190,8 +190,8 @@
                                                 @foreach($options->options as $key => $option)
                                                     <li>
                                                         <input type="radio" id="option-{{ $key }}"
-                                                               name="{{ $row->field }}"
-                                                               value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'checked' }}@endif @if($selected_value == $key){{ 'checked' }}@endif>
+                                                                 name="{{ $row->field }}"
+                                                                 value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'checked' }}@endif @if($selected_value == $key){{ 'checked' }}@endif>
                                                         <label for="option-{{ $key }}">{{ $option }}</label>
                                                         <div class="check"></div>
                                                     </li>
@@ -210,31 +210,31 @@
 
                                         @if(isset($options->on) && isset($options->off))
                                             <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
-                                                   data-on="{{ $options->on }}" {!! $checked ? 'checked="checked"' : '' !!}
-                                                   data-off="{{ $options->off }}">
+                                                     data-on="{{ $options->on }}" {!! $checked ? 'checked="checked"' : '' !!}
+                                                     data-off="{{ $options->off }}">
                                         @else
                                             <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
-                                                   @if($checked) checked @endif>
+                                                     @if($checked) checked @endif>
                                         @endif
 
                                     @elseif($row->type == "timestamp")
                                         <input type="datetime" class="form-control datepicker" name="{{ $row->field }}"
-                                                value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('m/d/Y g:i A', strtotime(old($row->field, $dataTypeContent->{$row->field})))  }}@else{{old($row->field)}}@endif">
+                                                value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('m/d/Y g:i A', strtotime(old($row->field, $dataTypeContent->{$row->field})))  }}@else{{ old($row->field) }}@endif">
 
                                     @elseif($row->type == "date")
                                         <input type="date" class="form-control" name="{{ $row->field }}"
-                                               placeholder="{{ $row->display_name }}"
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('Y-m-d', strtotime(old($row->field, $dataTypeContent->{$row->field}))) }}@else{{old($row->field)}}@endif">
+                                                 placeholder="{{ $row->display_name }}"
+                                                 value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('Y-m-d', strtotime(old($row->field, $dataTypeContent->{$row->field}))) }}@else{{ old($row->field) }}@endif">
 
                                     @elseif($row->type == "number")
                                         <input type="number" class="form-control" name="{{ $row->field }}"
-                                               placeholder="{{ $row->display_name }}"
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
+                                                 placeholder="{{ $row->display_name }}"
+                                                 value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{ old($row->field) }}@endif">
 
                                     @endif
-                                    
+
                                     @if(isset($options->description))
-                                    <i class="help-block"><span class="voyager-info-circled"></span> {{$options->description}}</i>
+                                    <i class="help-block"><span class="voyager-info-circled"></span> {{ $options->description }}</i>
                                     @endif
                                 </div>
                             @endforeach
@@ -248,9 +248,9 @@
 
                     <iframe id="form_target" name="form_target" style="display:none"></iframe>
                     <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post"
-                          enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
+                            enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
                         <input name="image" id="upload_file" type="file"
-                               onchange="$('#my_form').submit();this.value='';">
+                                 onchange="$('#my_form').submit();this.value='';">
                         <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
                         {{ csrf_field() }}
                     </form>
