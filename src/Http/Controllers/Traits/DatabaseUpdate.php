@@ -104,14 +104,13 @@ trait DatabaseUpdate
             foreach ($columnQueries as $index => $query) {
                 $field = $request->field[$index];
 
-                if ($existingColumns->has($field)) {
-                    $query($table)->change();
-
-                    continue;
+                // if we have a new table column. then let's create it.
+                if (!$existingColumns->has($field)) {
+                    $query($table);
                 }
 
-                // If we get here, it means that this is a new table column. So let's create it.
-                $query($table);
+                // change/update the current
+                $query($table)->change();
             }
         });
     }
