@@ -30,7 +30,7 @@
             <div class="clearfix">
                 <div class="hidden-xs" style="margin-top:200px"></div>
                 <div class="col-sm-12 col-md-10 col-md-offset-2">
-                    <?php $admin_logo_img = Voyager::setting('logoa', ''); ?>
+                    <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
                     @if($admin_logo_img == '')
                     <img class="img-responsive pull-left logo hidden-xs" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
                     @else
@@ -47,7 +47,7 @@
         <div class="col-xs-12 col-sm-4 col-md-3 login-sidebar">
 
             <div class="logo-container">    
-                <?php $admin_logo_img = Voyager::setting('logoa', ''); ?>
+                <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
                 @if($admin_logo_img == '')
                     <img class="img-responsive logo" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
                 @else
