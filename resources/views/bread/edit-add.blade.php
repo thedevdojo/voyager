@@ -85,7 +85,7 @@
                                             <img src="{{ Voyager::image( $dataTypeContent->{$row->field} ) }}"
                                                  style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                         @elseif($row->type == "file" && isset($dataTypeContent->{$row->field}))
-                                            <div class="fileType">{!! $dataTypeContent->{$row->field} !!}</div>
+                                            <div class="fileType">{{ $dataTypeContent->{$row->field} }}</div>
                                         @endif
                                         <input type="file" name="{{ $row->field }}">
                                     @elseif($row->type == "select_dropdown")

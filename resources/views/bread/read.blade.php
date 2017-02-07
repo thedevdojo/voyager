@@ -35,15 +35,15 @@
                                 <img style="max-width:640px"
                                      src="{{ Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
-                                <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{!! $dataTypeContent->{$row->field} !!}</a>
+                                <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
                             @elseif($row->type == 'select_multiple')
                                 @if(property_exists($rowDetails, 'relationship'))
 
                                     @foreach($dataTypeContent->{$row->field} as $item)
                                         @if($item->{$row->field . '_page_slug'})
-                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{!! $item->{$row->field} !!}</a>@if(!$loop->last), @endif
+                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
                                         @else
-                                        {!! $item->{$row->field} !!}
+                                        {{ $item->{$row->field}  }}
                                         @endif
                                     @endforeach
 
@@ -62,10 +62,10 @@
                                     <span class="label label-primary">{{ $rowDetails->off }}</span>
                                     @endif
                                 @else
-                                {!! $dataTypeContent->{$row->field} !!}
+                                {{ $dataTypeContent->{$row->field} }}
                                 @endif
                             @else
-                                {!! $dataTypeContent->{$row->field} !!}
+                                <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
                         @if(!$loop->last)
