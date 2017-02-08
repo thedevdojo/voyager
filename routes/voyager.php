@@ -1,5 +1,7 @@
 <?php
 
+use TCG\Voyager\Models\DataType;
+
 /*
 |--------------------------------------------------------------------------
 | Voyager Routes
@@ -13,12 +15,12 @@
 Route::group(['as' => 'voyager.'], function () {
     event('voyager.routing', app('router'));
 
-    $namespacePrefix = '\\'.config('voyager.controllers.namespace', 'TCG\\Voyager\\Http\\Controllers').'\\';
+    $namespacePrefix = '\\'.config('voyager.controllers.namespace').'\\';
 
     Route::get('login', ['uses' => $namespacePrefix.'VoyagerAuthController@login', 'as' => 'login']);
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
 
-    Route::group(['middleware' => ['admin.user']], function () use ($namespacePrefix) {
+    Route::group(['middleware' => 'admin.user'], function () use ($namespacePrefix) {
         event('voyager.admin.routing', app('router'));
 
         // Main Admin and Logout Route
@@ -30,7 +32,7 @@ Route::group(['as' => 'voyager.'], function () {
         Route::get('profile', ['uses' => $namespacePrefix.'VoyagerController@profile', 'as' => 'profile']);
 
         try {
-            foreach (\TCG\Voyager\Models\DataType::all() as $dataTypes) {
+            foreach (DataType::all() as $dataTypes) {
                 Route::resource($dataTypes->slug, $namespacePrefix.'VoyagerBreadController');
             }
         } catch (\InvalidArgumentException $e) {

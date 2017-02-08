@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | User config
@@ -14,7 +13,6 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'admin_permission'             => 'browse_admin',
         'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
     ],
@@ -68,6 +66,7 @@ return [
     */
 
     'storage' => [
+        'disk'      => 'public',
         'subfolder' => 'public/', // include trailing slash, like 'my_folder/'
     ],
 
@@ -82,7 +81,7 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => [], // database tables that are hidden from the admin panel
+            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings'],
         ],
     ],
 
@@ -136,11 +135,11 @@ return [
                 'classes'       => 'class-full-of-rum',
                 'icon_class'    => 'voyager-person',
             ],
-            'Visit site' => [
-                'route'         => '/home',
+            'Home' => [
+                'route'         => '/',
+                'icon_class'    => 'voyager-home',
                 'target_blank'  => true,
             ],
         ],
     ],
-
 ];
