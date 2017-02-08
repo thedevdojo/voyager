@@ -95,9 +95,7 @@
                                 <a class="panel-action voyager-resize-full" data-toggle="panel-fullscreen" aria-hidden="true"></a>
                             </div>
                         </div>
-                        <textarea class="richTextBox" name="body" style="border:0px;">
-                            @if(isset($dataTypeContent->body)){{ $dataTypeContent->body }}@endif
-                        </textarea>
+                        <textarea class="richTextBox" name="body" style="border:0px;">@if(isset($dataTypeContent->body)){{ $dataTypeContent->body }}@endif</textarea>
                     </div><!-- .panel -->
 
                     <!-- ### EXCERPT ### -->
@@ -109,9 +107,7 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                          <textarea class="form-control" name="excerpt">
-                              @if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif
-                          </textarea>
+                          <textarea class="form-control" name="excerpt">@if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif</textarea>
                         </div>
                     </div>
                 </div>
@@ -182,15 +178,11 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label for="name">Meta Description</label>
-                                <textarea class="form-control" name="meta_description">
-                                    @if(isset($dataTypeContent->meta_description)){{ $dataTypeContent->meta_description }}@endif
-                                </textarea>
+                                <textarea class="form-control" name="meta_description">@if(isset($dataTypeContent->meta_description)){{ $dataTypeContent->meta_description }}@endif</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="name">Meta Keywords</label>
-                                <textarea class="form-control" name="meta_keywords">
-                                    @if(isset($dataTypeContent->meta_keywords)){{ $dataTypeContent->meta_keywords }}@endif
-                                </textarea>
+                                <textarea class="form-control" name="meta_keywords">@if(isset($dataTypeContent->meta_keywords)){{ $dataTypeContent->meta_keywords }}@endif</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="name">SEO Title</label>
