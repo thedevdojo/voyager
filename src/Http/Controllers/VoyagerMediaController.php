@@ -18,10 +18,6 @@ class VoyagerMediaController extends Controller
     public function __construct()
     {
         $this->filesystem = config('voyager.storage.disk');
-
-        if ($this->filesystem == 'locale') {
-            $this->directory = 'public';
-        }
     }
 
     public function index()
@@ -178,7 +174,7 @@ class VoyagerMediaController extends Controller
     public function upload(Request $request)
     {
         try {
-            $path = $request->file->store($request->upload_path);
+            $path = $request->file->store($request->upload_path, $this->filesystem);
             $success = true;
             $message = 'Successfully uploaded new file!';
         } catch (Exception $e) {

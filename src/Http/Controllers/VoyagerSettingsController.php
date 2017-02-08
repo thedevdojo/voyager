@@ -121,8 +121,8 @@ class VoyagerSettingsController extends Controller
         if (isset($setting->id)) {
             // If the type is an image... Then delete it
             if ($setting->type == 'image') {
-                if (Storage::exists(config('voyager.storage.subfolder').$setting->value)) {
-                    Storage::delete(config('voyager.storage.subfolder').$setting->value);
+                if (Storage::disk(config('voyager.storage.disk'))->exists($setting->value)) {
+                    Storage::disk(config('voyager.storage.disk'))->delete($setting->value);
                 }
             }
             $setting->value = '';
