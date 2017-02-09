@@ -25,6 +25,11 @@ abstract class SchemaManager
         return DB::connection()->getDoctrineSchemaManager();
     }
 
+    public static function getDatabaseConnection()
+    {
+        return DB::connection()->getDoctrineConnection();
+    }
+
     public static function tableExists($table)
     {
         if (!is_array($table)) {
@@ -64,6 +69,34 @@ abstract class SchemaManager
         return new Table($tableName, $columns, $indexes, $foreignKeys, false, []);
     }
 
+    public static function listTableColumns($table, $database = null)
+    {
+        $platform = static::manager()->getDatabasePlatform();
+        $conn = static::getDatabaseConnection();
+
+        if (!$database) {
+            $database = $conn->getDatabase();
+        }
+
+        $sql = $platform->getListTableColumnsSQL($table, $database);
+
+        $tableColumns = $conn->fetchAll($sql);
+
+        $list = [];
+
+        $manager = static::manager();
+        $getPortableTableColumnDefinition = get_reflection_method($manager, '_getPortableTableColumnDefinition');
+
+        foreach ($tableColumns as $tableColumn) {
+            $column = $getPortableTableColumnDefinition->invoke($manager, $tableColumn);
+
+            $name = strtolower($column->getQuotedName($platform));
+            $list[$name] = $column;
+        }
+
+        return $list;
+    }
+
     public static function createTable($table)
     {
         if (!($table instanceof DoctrineTable)) {
@@ -87,13 +120,5 @@ abstract class SchemaManager
     public static function getDoctrineColumn($table, $column)
     {
         return static::getDoctrineTable($table)->getColumn($column);
-    }
-
-    public static function getDatabasePlatformTypes()
-    {
-        // Get type names for the current database platform
-        // The problem is that platform type names are stored in a protected property
-        // so we need a way to get them...
-        return ((array) static::manager()->getDatabasePlatform())[chr(0).'*'.chr(0).'doctrineTypeMapping'];
     }
 }

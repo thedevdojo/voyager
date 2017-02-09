@@ -8,7 +8,8 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
-use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
+// use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
+use TCG\Voyager\Database\Types\Type;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\Menu;
@@ -22,7 +23,7 @@ class VoyagerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(ImageServiceProvider::class);
-        $this->app->register(DoctrineSupportServiceProvider::class);
+        // $this->app->register(DoctrineSupportServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Menu', Menu::class);
@@ -42,6 +43,8 @@ class VoyagerServiceProvider extends ServiceProvider
         } else {
             $this->registerAppCommands();
         }
+
+        Type::registerCustomPlatformTypes();
     }
 
     /**

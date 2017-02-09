@@ -19,6 +19,7 @@ use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Schema\Column;
 use TCG\Voyager\Database\Schema\Identifier;
+use TCG\Voyager\Database\Types\Type;
 
 class VoyagerDatabaseController extends Controller
 {
@@ -47,7 +48,7 @@ class VoyagerDatabaseController extends Controller
         Voyager::can('browse_database');
 
         $formAction = route('voyager.database.store');
-        $columnTypes = Column::getTypes();
+        $columnTypes = Type::getPlatformTypes();
         $tableObj = new Table('New Table'); // need  way to denote that this ia a new table
 
         return view('voyager::tools.database.edit-add', compact('formAction', 'columnTypes', 'tableObj'));
@@ -120,14 +121,21 @@ class VoyagerDatabaseController extends Controller
                 );
         }
 
-        $table = SchemaManager::listTableDetails($table);
-        $table->columnTypes = Column::getTypes();
-        $table->identifierRegex = Identifier::REGEX;
+        // todo: create a function that prepares the table and db types etc....
+        //     use it in create()
+        $database = new \stdClass();
+        $database->types = Type::getPlatformTypes();
+        $database->table = SchemaManager::listTableDetails($table);
+        // todo: use $database->table instead in the views...
+        $table = $database->table;
+        $database->identifierRegex = Identifier::REGEX;
+        $database->platform = SchemaManager::getDatabasePlatform()->getName();
+
         $formAction = route('voyager.database.update', $table->name);
 
         return view(
             'voyager::tools.database.edit-add',
-            compact('table', 'formAction')
+            compact('database', 'table', 'formAction')
         );
     }
 

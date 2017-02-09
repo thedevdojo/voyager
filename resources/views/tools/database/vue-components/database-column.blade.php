@@ -2,23 +2,14 @@
 
 <tr class="newTableRow">
     <td>
-        <input v-model.trim="column.name" @input="onColumnNameInput" type="text" class="form-control" required pattern="{{ $table->identifierRegex }}">
+        <input v-model.trim="column.name" @input="onColumnNameInput" type="text" class="form-control" required pattern="{{ $database->identifierRegex }}">
     </td>
 
     <td>
-        <select :value="column.type" @change="onColumnTypeChange" class="form-control" tabindex="-1">
-        @foreach($table->columnTypes as $category => $types)
-            <optgroup label="{{ $category }}">
-            @foreach($types as $type)
-                <option value="{{ $type }}">{{ strtoupper($type) }}</option>
-            @endforeach
-            </optgroup>
-        @endforeach
-        </select>
-        <div v-if="column.type=='enum'">
-            <small>Enter Values (comma separated)</small>
-            <input type="text" class="form-control" name="enum[]">
-        </div>
+        <database-types
+            :column="column"
+            @typeChanged="onColumnTypeChange">
+        </database-types>
     </td>
 
     <td>
@@ -38,7 +29,9 @@
     </td>
 
     <td>
-        <select :value="index.type" @change="onIndexTypeChange" :disabled="indexNotSupported" class="form-control" tabindex="-1">
+        <select :value="index.type" @change="onIndexTypeChange"
+                :disabled="column.type.notSupportIndex"
+                class="form-control" tabindex="-1">
             <option value=""></option>
             <option value="INDEX">INDEX</option>
             <option value="UNIQUE">UNIQUE</option>
@@ -57,6 +50,8 @@
 </tr>
 
 @endsection
+
+@include('voyager::tools.database.vue-components.database-types')
 
 <script>
     Vue.component('database-column', {
@@ -78,16 +73,14 @@
                 // todo: add an UNDO button or something in case the user mistakenly deletes the column
             },
             onColumnNameInput(event) {
-                var newName = event.target.value;
+                let newName = event.target.value;
 
                 // update corresponding index
                 this.index.columns = [newName];
             },
-            onColumnTypeChange(event) {
-                var type = event.target.value;
-
-                if (!this.columnTypeSupportsIndex(type) && this.index.type) {
-                    return toastr.error("Type " + type + " doesn't support indexes");
+            onColumnTypeChange(type) {
+                if (type.notSupportIndex && this.index.type) {
+                    this.$emit('indexDeleted', this.index);
                 }
 
                 this.column.type = type;
@@ -112,22 +105,6 @@
 
                 // just update the type
                 this.$emit('indexUpdated', index);
-            },
-            columnTypeSupportsIndex(columnType) {
-                switch (columnType) {
-                    case 'text':
-                    case 'blob':
-                    case 'simple_array':
-                        return false;
-
-                    default:
-                        return true;
-                }
-            }
-        },
-        computed: {
-            indexNotSupported() {
-                return !this.columnTypeSupportsIndex(this.column.type);
             }
         }
     });
