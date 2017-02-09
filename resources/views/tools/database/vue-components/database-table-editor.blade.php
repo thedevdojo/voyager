@@ -13,7 +13,7 @@
             <div class="col-md-6">
         @endif
                 <label for="name">Table Name</label><br>
-                <input v-model.trim="table.name" type="text" name="name" class="form-control" placeholder="Table Name" required pattern="{{ $table->identifierRegex }}">
+                <input v-model.trim="table.name" type="text" name="name" class="form-control" placeholder="Table Name" required pattern="{{ $database->identifierRegex }}">
             </div>
 
         @if(!isset($table))
@@ -52,6 +52,7 @@
                     <database-column
                         v-for="column in table.columns"
                         :column="column"
+                        {{-- :columnTypes="columnTypes" --}}
                         :index="getColumnsIndex(column.name)"
                         @columnDeleted="deleteColumn"
                         @indexAdded="addIndex"
@@ -97,11 +98,13 @@
                     oldName: '',
                     type: 'integer',
                     length: null,
+                    fixed: false,
                     unsigned: false,
                     autoincrement: false,
                     notnull: false,
-                    default: ''
-                }
+                    default: null
+                },
+                // columnTypes: 
             };
         },
         template: `@yield('database-table-editor-template')`,
@@ -119,7 +122,8 @@
                 
                 if (columnPos !== -1) {
                     this.table.columns.splice(columnPos, 1);
-                    // also delete the associated index
+                    // todo: also delete the associated index
+                    //   or maybe the dbms automatically deletes index. research this...
                 }
             },
             getColumnsIndex(columns) {
@@ -139,10 +143,7 @@
                     index = {
                         type: '',
                         name: '',
-                        columns: [columns], // won't work for composite indexes
-                        options: {
-                            length: null
-                        }
+                        columns: [columns] // won't work for composite indexes
                     };
                 }
 
