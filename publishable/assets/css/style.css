@@ -371,7 +371,6 @@ a:hover {
 
 .app-container.expanded .side-body {
   margin-left: 235px; }
-
 /* small screen */
 @media (max-width: 768px) {
   .navbar {
@@ -1261,3 +1260,12 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     font-weight: 500;
     text-decoration: none;
 }
+/* Fix navbar responsiveness */
+.navbar-nav.navbar-right {
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+  background: none !important;
+}
+.navbar-nav.navbar-right li.dropdown.open .dropdown-menu {display: block}

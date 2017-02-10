@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body">
-                        <table id="dataTable" class="table table-hover">
+                        <table id="dataTable" class="row table table-hover">
                             <thead>
                                 <tr>
                                     @foreach($dataType->browseRows as $rows)
@@ -136,7 +136,8 @@
     <script>
         @if (!$dataType->server_side)
             $(document).ready(function () {
-                $('#dataTable').DataTable({ "order": [] });
+                var table = $('#dataTable').DataTable({ "order": [] });
+                $( table.table().container() ).addClass( 'table-responsive' );
             });
         @endif
 
