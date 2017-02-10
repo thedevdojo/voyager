@@ -58,7 +58,7 @@
                     @endforeach
                     @endif
                     <li>
-                        <a href="{{ route('voyager.logout') }}"><i class="voyager-power"></i> Cerrar sesión</a>
+                        <a href="{{ route('voyager.logout') }}"><i class="voyager-power"></i> Logout</a>
                     </li>
                 </ul>
             </li>
