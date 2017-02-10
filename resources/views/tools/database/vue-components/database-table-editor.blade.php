@@ -53,10 +53,12 @@
                         v-for="column in table.columns"
                         :column="column"
                         :index="getColumnsIndex(column.name)"
+                        @columnNameUpdated="renameColumn"
                         @columnDeleted="deleteColumn"
                         @indexAdded="addIndex"
                         @indexDeleted="deleteIndex"
                         @indexUpdated="updateIndex"
+                        @indexChanged="onIndexChange"
                     ></database-column>
                 </tbody>
             </table>
@@ -102,6 +104,10 @@
                     autoincrement: false,
                     notnull: false,
                     default: null
+                },
+                emptyIndex: {
+                    type: '',
+                    name: ''
                 }
             };
         },
@@ -115,45 +121,76 @@
             addColumn() {
                 this.table.columns.push(Object.assign({}, this.newColumnTemplate));
             },
+            renameColumn(column) {
+                let newName = column.newName.trim();
+                let compareName = newName.toLowerCase();
+                column = column.column;
+
+                let alreadyExists = !!this.table.columns.find(function(tableColumn) {
+                    return (column !== tableColumn) && (compareName == tableColumn.name.toLowerCase());
+                });
+
+                if (alreadyExists) {
+                    return toastr.error("Column " + newName + " already exists");
+                }
+
+                let index = this.getColumnsIndex(column.name);
+                if (index !== this.emptyIndex) {
+                    index.columns = [newName];
+                }
+
+                column.name = newName;
+            },
             deleteColumn(column) {
                 var columnPos = this.table.columns.indexOf(column);
                 
                 if (columnPos !== -1) {
                     this.table.columns.splice(columnPos, 1);
                     
-                    // Delete assocated index (won't work for composite indexes)
+                    // Delete assocated index
                     this.deleteIndex(this.getColumnsIndex(column.name));
                 }
             },
             getColumnsIndex(columns) {
                 // todo: detect if a column has a composite index
                 //  if so, maybe disable its Index input, and tell the user to go to special Index form (advanced view)?
-                if (Array.isArray(columns)) {
-                    columns = columns.toString();
+                if (!Array.isArray(columns)) {
+                    columns = [columns];
                 }
 
-                var index = this.table.indexes.find(function(index) {
-                    // note: comparison this way doesn't work for same columns but different order
-                    //   find a better way to compare...
-                    return columns == index.columns.toString();
-                });
+                let index = null;
+
+                for (i in this.table.indexes) {
+                    // if there is no difference between columns
+                    if (!($(this.table.indexes[i].columns).not(columns).get().length)) {
+                        index = this.table.indexes[i];
+                        break;
+                    }
+                }
 
                 if (!index) {
-                    index = {
-                        type: '',
-                        name: '',
-                        columns: [columns] // won't work for composite indexes
-                    };
+                    index = this.emptyIndex;
                 }
 
                 index.table = this.table.name;
                 return index;
             },
-            addIndex(index) {
-                var newType = index.newType;
-                index = index.index;
+            onIndexChange(index) {
+                if (index.old === this.emptyIndex) {
+                    return this.addIndex({
+                        columns: index.columns,
+                        type: index.newType
+                    });
+                }
 
-                if (newType == 'PRIMARY') {
+                if (index.newType == '') {
+                    return this.deleteIndex(index.old);
+                }
+
+                return this.updateIndex(index.old, index.newType);
+            },
+            addIndex(index) {
+                if (index.type == 'PRIMARY') {
                     if (this.table.primaryKeyName) {
                         return toastr.error("The table already has a primary index.");
                     }
@@ -161,7 +198,6 @@
                     this.table.primaryKeyName = 'primary';
                 }
 
-                index.type = newType;
                 this.setIndexName(index);
                 this.table.indexes.push(index);
             },
@@ -173,15 +209,10 @@
                         this.table.primaryKeyName = false;
                     }
 
-                    index.type = '';
-                    index.name = '';
                     this.table.indexes.splice(indexPos, 1);
                 }
             },
-            updateIndex(index) {
-                var newType = index.newType;
-                index = index.index;
-
+            updateIndex(index, newType) {
                 if (index.type == 'PRIMARY') {
                     this.table.primaryKeyName = false;
                 } else if (newType == 'PRIMARY') {

@@ -2,7 +2,7 @@
 
 <tr class="newTableRow">
     <td>
-        <input v-model.trim="column.name" @input="onColumnNameInput" type="text" class="form-control" required pattern="{{ $database->identifierRegex }}">
+        <input :value="column.name" @input="onColumnNameInput" type="text" class="form-control" required pattern="{{ $database->identifierRegex }}">
     </td>
 
     <td>
@@ -75,8 +75,10 @@
             onColumnNameInput(event) {
                 let newName = event.target.value;
 
-                // update corresponding index
-                this.index.columns = [newName];
+                this.$emit('columnNameUpdated', {
+                    column: this.column,
+                    newName: newName
+                });
             },
             onColumnTypeChange(type) {
                 if (type.notSupportIndex && this.index.type) {
@@ -86,25 +88,15 @@
                 this.column.type = type;
             },
             onIndexTypeChange(event) {
-                var newType = event.target.value;
-
-                // if newType is empty, it means the user wants to delete the index
-                if (newType == '') {
-                    return this.$emit('indexDeleted', this.index);
+                if (this.column.name == '') {
+                    return toastr.error("Please name the column before adding an index");
                 }
 
-                var index = {
-                    index: this.index,
-                    newType: newType
-                };
-
-                // if the current type is empty, it means the user wants to add a new index
-                if (this.index.type == '') {
-                    return this.$emit('indexAdded', index);
-                }
-
-                // just update the type
-                this.$emit('indexUpdated', index);
+                return this.$emit('indexChanged', {
+                    columns: [this.column.name],
+                    old: this.index,
+                    newType: event.target.value
+                });
             }
         }
     });
