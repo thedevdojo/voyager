@@ -141,9 +141,9 @@ return [
                 'target_blank'  => true,
             ],
             'Logout' => [
-                'route' => 'voyager.logout',
+                'route'      => 'voyager.logout',
                 'icon_class' => 'voyager-power',
-            ]
+            ],
         ],
     ],
 
