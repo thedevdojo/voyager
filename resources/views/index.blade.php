@@ -22,8 +22,9 @@
                     <div class="dimmer"></div>
                     <div class="panel-content">
                         <i class={{ $element['icon'] }}></i>
-                        <h4>{{ $loop->count . ' ' .  $element['name'] }}(s)</h4>
-                        <p>You have {{ $loop->count . ' ' .  $element['name'] }}(s) in your database. Click on button below to view all {{ lcfirst($element['name']) }}s.</p>
+                        <?php $count = $element['model']::count(); ?>
+                        <h4>{{ $count . ' ' .  $element['name'] }}(s)</h4>
+                        <p>You have {{ $count . ' ' .  $element['name'] }}(s) in your database. Click on button below to view all {{ lcfirst($element['name']) }}s.</p>
                         <a href="{{ $element['url'] }}" class="btn btn-primary">View All {{ $element['name'] }}s</a>
                     </div>
                 </div>
