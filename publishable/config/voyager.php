@@ -140,6 +140,10 @@ return [
                 'route'         => '/home',
                 'target_blank'  => true,
             ],
+            'Logout' => [
+                'route' => 'voyager.logout',
+                'icon_class' => 'voyager-power',
+            ]
         ],
     ],
 
