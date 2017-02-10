@@ -11,12 +11,12 @@ class DataRowsTableSeeder extends Seeder
      */
     public function run()
     {
-        $postDataType     = DataType::where('slug', 'posts')->firstOrFail();
-        $pageDataType     = DataType::where('slug', 'pages')->firstOrFail();
-        $userDataType     = DataType::where('slug', 'users')->firstOrFail();
+        $postDataType = DataType::where('slug', 'posts')->firstOrFail();
+        $pageDataType = DataType::where('slug', 'pages')->firstOrFail();
+        $userDataType = DataType::where('slug', 'users')->firstOrFail();
         $categoryDataType = DataType::where('slug', 'categories')->firstOrFail();
-        $menuDataType     = DataType::where('slug', 'menus')->firstOrFail();
-        $roleDataType     = DataType::where('slug', 'roles')->firstOrFail();
+        $menuDataType = DataType::where('slug', 'menus')->firstOrFail();
+        $roleDataType = DataType::where('slug', 'roles')->firstOrFail();
 
         $dataRow = $this->dataRow($postDataType, 'id');
         if (!$dataRow->exists) {
