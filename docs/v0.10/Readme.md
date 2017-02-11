@@ -107,6 +107,8 @@ php artisan vendor:publish --tag=voyager_assets --force
 
 Next, there may be a few more settings added to the database schema that need updating in the latest version. To make sure you have the latest database schema, you'll need to visit:
 
+> Currently only needed if you are upgrading and not currently on v0.10.6+
+
 ```
 localhost:8000/admin/upgrade
 ```
