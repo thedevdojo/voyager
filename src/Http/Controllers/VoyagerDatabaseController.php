@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
-use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -18,7 +17,7 @@ use TCG\Voyager\Models\Permission;
 
 class VoyagerDatabaseController extends Controller
 {
-    use DatabaseUpdate, AppNamespaceDetectorTrait;
+    use DatabaseUpdate;
 
     public function index()
     {
@@ -208,9 +207,9 @@ class VoyagerDatabaseController extends Controller
     private function prepopulateBreadInfo($table)
     {
         $displayName = Str::singular(implode(' ', explode('_', Str::title($table))));
-        $modelNamespace = config('voyager.models.namespace', $this->getAppNamespace());
+        $modelNamespace = config('voyager.models.namespace', app()->getNamespace());
         if (empty($modelNamespace)) {
-            $modelNamespace = $this->getAppNamespace();
+            $modelNamespace = app()->getNamespace();
         }
 
         return [
