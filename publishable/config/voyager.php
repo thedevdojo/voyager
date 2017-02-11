@@ -145,6 +145,9 @@ return [
                 'icon_class' => 'voyager-power',
             ],
         ],
+        'data_tables' => [
+            'responsive' => true, // Use responsive extension for jQuery dataTables that are not server-side paginated
+        ],
     ],
 
     'login' => [

@@ -13,10 +13,11 @@ $(document).ready(function(){
     var outside = $('.fadetoblack');
     var hamburger = $('.hamburger');
 
-      appContainer.toggleClass("expanded");
       if ($(this).is('button')) {
+        appContainer.toggleClass("expanded");
         $(this).toggleClass('is-active');
       } else {
+        appContainer.removeClass("expanded");
         hamburger.toggleClass('is-active');
       }
 

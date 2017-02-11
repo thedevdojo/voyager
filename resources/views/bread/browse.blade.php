@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-bordered">
-                    <div class="panel-body">
+                    <div class="panel-body table-responsive">
                         <table id="dataTable" class="row table table-hover">
                             <thead>
                                 <tr>
@@ -69,25 +69,25 @@
                                                 {{ $data->{$row->field} }}
                                                 @endif
                                             @elseif($row->type == 'text')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                             @elseif($row->type == 'text_area')
-                                            <div class="readmore">{{ $data->{$row->field} }}</div>                                            
+                                            <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>                                            
                                             @elseif($row->type == 'rich_text_box')
-                                            <div class="readmore">{{ strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
+                                            <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                             @else
                                                 {{ $data->{$row->field} }}
                                             @endif
                                         </td>
                                     @endforeach
-                                    <td class="no-sort no-click">
-                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
-                                            <i class="voyager-trash"></i> Delete
-                                        </div>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> Edit
+                                    <td class="no-sort no-click" id="bread-actions">
+                                        <a href="javascript:;" title="Delete" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+                                            <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Delete</span>
                                         </a>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
-                                            <i class="voyager-eye"></i> View
+                                        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" title="Edit" class="btn btn-sm btn-primary pull-right edit">
+                                            <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">Edit</span>
+                                        </a>
+                                        <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" title="View" class="btn btn-sm btn-warning pull-right">
+                                            <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">View</span>
                                         </a>
                                     </td>
                                 </tr>
@@ -131,13 +131,24 @@
     </div><!-- /.modal -->
 @stop
 
+@section('css')
+@if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
+<link rel="stylesheet" href="{{ config('voyager.assets_path') }}/lib/css/responsive.dataTables.min.css">
+@endif
+@stop
+
 @section('javascript')
-    <!-- DataTables -->
+    <!-- DataTables -->    
+    @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
+    <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
+    @endif
     <script>
         @if (!$dataType->server_side)
             $(document).ready(function () {
-                var table = $('#dataTable').DataTable({ "order": [] });
-                $( table.table().container() ).addClass( 'table-responsive' );
+                var table = $('#dataTable').DataTable({
+                    "order": []
+                    @if(config('dashboard.data_tables.responsive')), responsive: true @endif
+                });
             });
         @endif
 
