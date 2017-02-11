@@ -37,6 +37,7 @@
             <option value="UNIQUE">UNIQUE</option>
             <option value="PRIMARY">PRIMARY</option>
         </select>
+        <small v-if="column.composite" v-once>Warning: this column is part of a composite index</small>
     </td>
 
     <td>

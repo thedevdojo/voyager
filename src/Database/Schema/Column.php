@@ -27,6 +27,7 @@ abstract class Column
         $columnArray = $column->toArray();
         $columnArray['type'] = Type::toArray($columnArray['type']);
         $columnArray['oldName'] = $columnArray['name'];
+        $columnArray['composite'] = false;
 
         return $columnArray;
     }

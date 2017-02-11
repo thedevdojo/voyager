@@ -30,6 +30,10 @@
             </div>
         @endif
         </div><!-- .panel-body .row -->
+        
+        <div v-if="compositeIndexes.length" v-once class="alert alert-danger">
+            <p>This table has composite indexes. Please note that they are not supported at the moment. Be careful when trying to add/remove indexes.</p>
+        </div>
 
         <template v-if="tableHasColumns">
             <p>Table Columns</p>
@@ -108,10 +112,20 @@
                 emptyIndex: {
                     type: '',
                     name: ''
-                }
+                },
+                compositeIndexes: []
             };
         },
         template: `@yield('database-table-editor-template')`,
+        mounted() {
+            // Add warning to columns that are part of a composite index
+            this.compositeIndexes = this.getCompositeIndexes();
+            let compositeColumns = this.getIndexesColumns(this.compositeIndexes);
+            
+            for (col in compositeColumns) {
+                this.getColumn(compositeColumns[col]).composite = true;
+            }
+        },
         computed: {
             tableHasColumns() {
                 return this.table.columns.length;
@@ -120,6 +134,13 @@
         methods: {
             addColumn() {
                 this.table.columns.push(Object.assign({}, this.newColumnTemplate));
+            },
+            getColumn(name) {
+                name = name.toLowerCase();
+
+                return this.table.columns.find(function (column) {
+                    return name == column.name.toLowerCase();
+                });
             },
             renameColumn(column) {
                 let newName = column.newName.trim();
@@ -233,6 +254,28 @@
                     // the name will be set on the server by PHP
                     index.name = '';
                 }
+            },
+            getCompositeIndexes() {
+                let composite = [];
+
+                for (i in this.table.indexes) {
+                    if (this.table.indexes[i].isComposite) {
+                        composite.push(this.table.indexes[i]);
+                    }
+                }
+
+                return composite;
+            },
+            getIndexesColumns(indexes) {
+                let columns = [];
+
+                for (i in indexes) {
+                    for (col in indexes[i].columns) {
+                        columns.push(indexes[i].columns[col]);
+                    }
+                }
+
+                return [...new Set(columns)];
             }
         }
     });
