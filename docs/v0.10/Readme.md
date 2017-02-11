@@ -399,6 +399,7 @@ When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box
 - Drop Down
 - Radio Button
 - Image
+- Date
 
 Find out how to use these additional details below:
 
@@ -493,6 +494,26 @@ This is only valid if you have set your image to be resized. If you specify your
 **thumbnails**
 Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image (as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the *resize* width and height if specified.
 
+#### Date
+
+```js
+{
+    "format" : "Y-m-d"
+}
+```
+
+The date input field is where you can input a date. In the JSON above you can specify the `format` value of the output of the date. It allows you to display a formatted `date` in browse and read views, using Carbon's `formatLocalized()` method
+
+### Description
+
+All types can include a description in order to help your future self or other users using your Voyager admin panel to understand exactly what a specific BREAD input field is for, this can be defined in the `Optional Details` JSON input field:
+
+```
+{
+    "description": "A helpful description text here for your future self."
+}
+```
+
 ### Validation
 
 Inside of the *Optional Details* section for each row in your BREAD you can also specify validation rules with some simple JSON. Here is an example of how to add a validation rule or *required* and *max length of 12*
@@ -515,6 +536,18 @@ Additionally, you may wish to add some custom error messages which can be accomp
             "required": "This :attribute field is a must.",
             "max": "This :attribute field maximum :max."
         }
+    }
+}
+```
+
+Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
+```
+{
+    "validation": {
+        "rules": [
+            "required",
+            "max:12"
+        ]
     }
 }
 ```
@@ -561,12 +594,26 @@ The **key** above will be the row that we want to use as the value in the select
 Finally, we'll need to create a relationship in the `Page` class. This would look like the following:
 
 ```
-public function author_id(){
+public function authorId(){
     return $this->belongsTo(User::class);
 }
 ```
 
-> Note: the method used for this relationship, must match the name of the row from the `pages` table. Which is why we used `author_id` as the method name to tie the relationship.
+> Note: the method used for this relationship, must match the camelCase version of the row from the `pages` table. Which is why we used `authorId` as the method name to tie the relationship.
+
+You can optionally add a new page_slug property to the relationships object in the BREAD details in order to display proper links to relationship records. i.e.:
+
+```
+{
+    "relationship": {
+        "key": "id",
+        "label": "name",
+        "page_slug": "admin/users"
+    }
+}
+```
+
+> If no page_slug is provided, then the real "text" (`relationship.label`) is still being "resolved", but no anchor link is created.
 
 And that's how we can perform a One-to-One relationship. Next, you'll see how to create a Many-to-Many relationship.
 
@@ -604,6 +651,22 @@ public function categories(){
 ```
 
 Now, when you have save the results from your Many-to-Many relationship the ID's of each selected value will be synced and added to your pivot table.
+
+> Please note that this can also be configured as a normal `Select Dropdown` in case you need a simple multiple selection with fixed `options` instead of `relationship`.
+
+You can optionally add a new page_slug property to the relationships object in the BREAD details in order to display proper links to relationship records. i.e.:
+
+```
+{
+    "relationship": {
+        "key": "id",
+        "label": "name",
+        "page_slug": "admin/users"
+    }
+}
+```
+
+> If no page_slug is provided, then the real "text" (`relationship.label`) is still being "resolved", but no anchor link is created.
 
 ### NULL values
 
