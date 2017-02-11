@@ -12,14 +12,12 @@ use TCG\Voyager\Models\User;
 
 class Voyager
 {
-    private static $instance;
-
     protected $version;
     protected $filesystem;
 
     protected $alerts = [];
 
-    protected $allertsCollected = false;
+    protected $alertsCollected = false;
 
     public function __construct()
     {
@@ -28,16 +26,7 @@ class Voyager
         $this->findVersion();
     }
 
-    public static function getInstance()
-    {
-        if (is_null(static::$instance)) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-    }
-
-    public static function setting($key, $default = null)
+    public function setting($key, $default = null)
     {
         $setting = Setting::where('key', '=', $key)->first();
         if (isset($setting->id)) {
@@ -47,7 +36,7 @@ class Voyager
         return $default;
     }
 
-    public static function image($file, $default = '')
+    public function image($file, $default = '')
     {
         if (!empty($file) && Storage::disk(config('voyager.storage.disk'))->exists($file)) {
             return Storage::disk(config('voyager.storage.disk'))->url($file);
@@ -56,12 +45,12 @@ class Voyager
         return $default;
     }
 
-    public static function routes()
+    public function routes()
     {
         require __DIR__.'/../routes/voyager.php';
     }
 
-    public static function can($permission)
+    public function can($permission)
     {
         // Check if permission exist
         $exist = Permission::where('key', $permission)->first();
@@ -87,6 +76,26 @@ class Voyager
 
             return true;
         }
+
+        return true;
+    }
+
+    public function canOrFail($permission)
+    {
+        if (!$this->can($permission)) {
+            throw new UnauthorizedHttpException(null);
+        }
+
+        return true;
+    }
+
+    public function canOrAbort($permission, $statusCode = 403)
+    {
+        if (!$this->can($permission)) {
+            return abort($statusCode);
+        }
+
+        return true;
     }
 
     public function getVersion()
@@ -101,10 +110,10 @@ class Voyager
 
     public function alerts()
     {
-        if (!$this->allertsCollected) {
+        if (!$this->alertsCollected) {
             event('voyager.alerts.collecting');
 
-            $this->allertsCollected = true;
+            $this->alertsCollected = true;
         }
 
         return $this->alerts;

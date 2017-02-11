@@ -35,7 +35,7 @@ class Menu extends Model
      *
      * @return string
      */
-    public static function display($menuName, $type = null, $options = [])
+    public static function display($menuName, $type = null, array $options = [])
     {
         // GET THE MENU
         $menu = static::with('items')->where('name', '=', $menuName)->first();

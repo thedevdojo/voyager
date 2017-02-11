@@ -68,7 +68,15 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
-        $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        if (app()->version() >= 5.4) {
+            $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
+
+            if (config('app.env') == 'testing') {
+                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
+            }
+        } else {
+            $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        }
 
         $this->registerViewComposers();
 

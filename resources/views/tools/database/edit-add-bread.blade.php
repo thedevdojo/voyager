@@ -143,6 +143,9 @@
                                                 <option value="number" @if(isset($dataRow->type) && $dataRow->type == 'number'){{ 'selected' }}@endif>
                                                     Number
                                                 </option>
+                                                <option value="multiple_images" @if(isset($dataRow->type) && $dataRow->type == 'multiple_images'){{ 'selected' }}@endif>
+                                                    Multiple Images
+                                                </option>
                                             </select>
                                         @endif
 
