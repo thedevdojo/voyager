@@ -4,7 +4,7 @@
     {{-- <title>{{Voyager::setting('admin_title')}} - {{Voyager::setting('admin_description')}}</title> --}}
     <title>@yield('page_title',Voyager::setting('admin_title') . " - " . Voyager::setting('admin_description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="<?= csrf_token() ?>"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <!-- Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400|Lato:300,400,700,900' rel='stylesheet'
           type='text/css'>
@@ -62,10 +62,10 @@ $user_avatar = Voyager::image(Auth::user()->avatar);
 if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->avatar, 0, 8) == 'https://')) {
     $user_avatar = Auth::user()->avatar;
 }
-$menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1;
 ?>
 
-<div class="app-container @if ($menuExpanded) expanded @endif ">
+<div class="app-container">
+    <div class="fadetoblack visible-xs"></div>
     <div class="row content-container">
         @include('voyager::dashboard.navbar')
         @include('voyager::dashboard.sidebar')
