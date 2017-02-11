@@ -336,6 +336,36 @@ Menu::display('main', 'my_menu');
 
 And your custom menu will now be output.
 
+## Permissions
+
+Voyager comes with roles and permissions out of the box. Each user can be asigned to a role and each role can have a set of permissions. You can check for a certain permission on the user object the following way:
+
+```
+$canVisitAdmin = $user->hasPermission('browse_admin');
+$canVisitAdmin = auth()->user()->hasPermission('browse_admin');
+```
+
+The `hasPermission` method returns a boolean whether or not the user have a cetain permission. However you might wish to throw a forbidden exception if the user does not have a certain permission. This can be done using the `Voyager` facade:
+
+```
+Voyager::can('browse_admin');
+```
+
+This will either return true or throw a exception.
+
+> Please note that this behavoir will change in `v0.11`, so that `Voyager::can` will return a boolean, but instead you can then use the `Voyager::canOrFail` method to throw a exception.
+
+Out of the box there are some permissions you can use by default:
+- `browse_admin`: Whether or not the user may browse the Voyager admin panel.
+- `browse_database`: Whether or not the user may browse the Voyager database menu section.
+- `browse_media`: Whether or not the user may browse the Voyager media section.
+- `browse_settings`: Whether or not the user may browse the Voyager settings section.
+- `browse_menu`: Whether or not the user may browse the Voyager menu section.
+
+Then whenever you create some BREAD for a table, you can define to `Generate permissions`. This will create the `browse`, `read`, `edit`, `add` and `delete` permission. Example for the `menus` BREAD, those permission keys will be `browse_menus`, `read_menus`, `edit_menus`, `add_menus` and `delete_menus`.
+
+> Please note that if a menu item goes to any kind of BREAD, then it will check for the `browse` permission, for example for the `Menu` BREAD menu item, it will check for the `browse_menus` permission. If the user does not have the required permission, that menu item will be hidden.
+
 ## Database Tools
 
 Voyager has some awesome database tools which allow you to Add/Edit/Delete or view current database tables. The other cool part of Voyager is that you can add BREAD or (Browse, Read, Edit, Add, & Delete) functionality to any of your tables.
