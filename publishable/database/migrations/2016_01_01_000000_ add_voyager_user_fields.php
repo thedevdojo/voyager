@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class AddUserAvatar extends Migration
+class AddVoyagerUserFields extends Migration
 {
     /**
      * Run the migrations.
