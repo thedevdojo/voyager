@@ -9,6 +9,7 @@ use TCG\Voyager\Models\DataType;
 trait BreadRelationshipParser
 {
     protected $patchId;
+    
     /**
      * Build the relationships array for the model's eager load.
      *
@@ -88,7 +89,6 @@ trait BreadRelationshipParser
     protected function relationToLink(Model $item, DataType $dataType)
     {
         $relations = $item->getRelations();
- 
 
         if (!empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
@@ -98,11 +98,8 @@ trait BreadRelationshipParser
                     $field = snake_case($field);
                 }
 
-
-
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
                 $relationData = json_decode($bread_data->details)->relationship;
-
 
                 if (!is_object($item[$field])) {
                     $item[$field] = $relation[$relationData->label];
