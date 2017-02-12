@@ -98,14 +98,14 @@
                                             @endif
 
                                             @if( method_exists( $dataType->model_name, $row->field ) )
-                                                @if(isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field})))
-                                                    <?php $selected_value = old($row->field, $dataTypeContent->{$row->field}->{$options->relationship->key}); ?>
+                                                @if(isset($dataTypeContent->{snake_case($row->field)}) && !is_null(old($row->field, $dataTypeContent->{snake_case($row->field)})))
+                                                    <?php $selected_value = old($row->field, $dataTypeContent->{snake_case($row->field)}); ?>
                                                 @else
                                                     <?php $selected_value = old($row->field); ?>
                                                 @endif
 
                                                 <select class="form-control select2" name="{{ snake_case($row->field) }}">
-                                                    <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
+                                                    <?php $default = (isset($options->default) && !isset($dataTypeContent->{snake_case($row->field)})) ? $options->default : NULL; ?>
 
                                                     @if(isset($options->options))
                                                         <optgroup label="Custom">
