@@ -9,7 +9,7 @@ use TCG\Voyager\Models\DataType;
 trait BreadRelationshipParser
 {
     protected $patchId;
-    
+
     /**
      * Build the relationships array for the model's eager load.
      *
