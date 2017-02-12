@@ -89,22 +89,32 @@
                                         @endif
                                         <input type="file" name="{{ $row->field }}">
                                     @elseif($row->type == "select_dropdown")
-                                        <?php $row->field = camel_case($row->field); ?>
+                                        <?php 
+                                            if(strpos($row->field, '_id')){
+                                                $row->field = str_replace('_id', '', $row->field); 
+                                                $hasId = true;
+                                            }else{
+                                                $row->field = snake_case($row->field);
+                                                $hasId = false;
+                                            }
+                                        ?>
+                                        <?php //$row->field = camel_case($row->field); ?>
                                         @if(isset($options->relationship))
 
-                                            {{-- If this is a relationship and the method does not exist, show a warning message --}}
+
                                             @if( !method_exists( $dataType->model_name, $row->field ) )
                                                 <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
                                             @endif
 
                                             @if( method_exists( $dataType->model_name, $row->field ) )
+
                                                 @if(isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field})))
                                                     <?php $selected_value = old($row->field, $dataTypeContent->{$row->field}->{$options->relationship->key}); ?>
                                                 @else
                                                     <?php $selected_value = old($row->field); ?>
                                                 @endif
 
-                                                <select class="form-control select2" name="{{ snake_case($row->field) }}">
+                                                <select class="form-control select2" name="{{ ($hasId) ? snake_case($row->field).'_id' : snake_case($row->field) }}">
                                                     <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
 
                                                     @if(isset($options->options))
@@ -164,7 +174,18 @@
                                                     <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
                                                     <?php $relationshipOptions = $relationshipClass::all(); ?>
                                                     @foreach($relationshipOptions as $relationshipOption)
-                                                        <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if(in_array($relationshipOption->{$options->relationship->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
+
+                                                    <?php 
+                                                        if(strpos($options->relationship->key, '.'))
+                                                        {
+                                                            list(,$key) = explode('.', $options->relationship->key);
+                                                        }else{
+                                                            $key = $options->relationship->key;
+                                                        }
+
+                                                    ?>
+                                                    {{-- {{logger(json_encode($relationshipOption->{$key}))}} --}}
+                                                        <option value="{{ $relationshipOption->{$key} }}" @if(in_array($relationshipOption->{$key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
                                                     @endforeach
                                                 @endif
                                             @elseif(isset($options->options))
