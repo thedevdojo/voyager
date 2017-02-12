@@ -89,23 +89,22 @@
                                         @endif
                                         <input type="file" name="{{ $row->field }}">
                                     @elseif($row->type == "select_dropdown")
-                                        <?php $row->field = camel_case($row->field); ?>
                                         @if(isset($options->relationship))
 
                                             {{-- If this is a relationship and the method does not exist, show a warning message --}}
-                                            @if( !method_exists( $dataType->model_name, $row->field ) )
-                                                <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
+                                            @if( !method_exists( $dataType->model_name, camel_case($row->field) ) )
+                                                <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ camel_case($row->field) . '()' }} method of the {{ $dataType->model_name }} class.</p>
                                             @endif
 
-                                            @if( method_exists( $dataType->model_name, $row->field ) )
-                                                @if(isset($dataTypeContent->{snake_case($row->field)}) && !is_null(old($row->field, $dataTypeContent->{snake_case($row->field)})))
-                                                    <?php $selected_value = old($row->field, $dataTypeContent->{snake_case($row->field)}); ?>
+                                            @if( method_exists( $dataType->model_name, camel_case($row->field) ) )
+                                                @if(isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field})))
+                                                    <?php $selected_value = old($row->field, $dataTypeContent->{$row->field}); ?>
                                                 @else
                                                     <?php $selected_value = old($row->field); ?>
                                                 @endif
 
-                                                <select class="form-control select2" name="{{ snake_case($row->field) }}">
-                                                    <?php $default = (isset($options->default) && !isset($dataTypeContent->{snake_case($row->field)})) ? $options->default : NULL; ?>
+                                                <select class="form-control select2" name="{{ $row->field }}">
+                                                    <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
 
                                                     @if(isset($options->options))
                                                         <optgroup label="Custom">
@@ -116,7 +115,7 @@
                                                     @endif
                                                     {{-- Populate all options from relationship --}}
                                                     <?php
-                                                    $relationshipClass = $dataTypeContent->{$row->field}()->getRelated();
+                                                    $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
                                                     $relationshipOptions = $relationshipClass::all();
 
                                                     // Try to get default value for the relationship
@@ -152,16 +151,16 @@
 
                                     @elseif($row->type == "select_multiple")
                                         {{-- If this is a relationship and the method does not exist, show a warning message --}}
-                                        @if(isset($options->relationship) && !method_exists( $dataType->model_name, $row->field ) )
-                                            <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
+                                        @if(isset($options->relationship) && !method_exists( $dataType->model_name, camel_case($row->field) ) )
+                                            <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ camel_case($row->field) . '()' }} method of the {{ $dataType->model_name }} class.</p>
                                         @endif
 
                                         <select class="form-control select2" name="{{ $row->field }}[]" multiple>
                                             @if(isset($options->relationship))
                                                 {{-- Check that the method relationship exists --}}
-                                                @if( method_exists( $dataType->model_name, $row->field ) )
-                                                    <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{$row->field}()->pluck($options->relationship->key)->all() : array(); ?>
-                                                    <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
+                                                @if( method_exists( $dataType->model_name, camel_case($row->field) ) )
+                                                    <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{camel_case($row->field)}()->pluck($options->relationship->key)->all() : array(); ?>
+                                                    <?php $relationshipClass = get_class(app($dataType->model_name)->{camel_case($row->field)}()->getRelated()); ?>
                                                     <?php $relationshipOptions = $relationshipClass::all(); ?>
                                                     @foreach($relationshipOptions as $relationshipOption)
                                                         <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if(in_array($relationshipOption->{$options->relationship->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
@@ -171,6 +170,8 @@
                                                 @foreach($options->options as $key => $label)
                                                         <?php $selected = ''; ?>
                                                     @if(is_array($dataTypeContent->{$row->field}) && in_array($key, $dataTypeContent->{$row->field}))
+                                                        <?php $selected = 'selected="selected"'; ?>
+                                                    @elseif(!is_null(old($row->field)) && in_array($key, old($row->field)))
                                                         <?php $selected = 'selected="selected"'; ?>
                                                     @endif
                                                     <option value="{{ $key }}" {!! $selected !!}>
