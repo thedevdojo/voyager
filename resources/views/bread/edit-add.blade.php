@@ -98,7 +98,7 @@
                                                 $hasId = false;
                                             }
                                         ?>
-                                        <?php //$row->field = camel_case($row->field); ?>
+
                                         @if(isset($options->relationship))
 
 
@@ -184,7 +184,6 @@
                                                         }
 
                                                     ?>
-                                                    {{-- {{logger(json_encode($relationshipOption->{$key}))}} --}}
                                                         <option value="{{ $relationshipOption->{$key} }}" @if(in_array($relationshipOption->{$key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
                                                     @endforeach
                                                 @endif

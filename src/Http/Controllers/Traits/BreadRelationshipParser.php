@@ -25,7 +25,6 @@ trait BreadRelationshipParser
             $details = json_decode($item->details);
             if (isset($details->relationship) && isset($item->field)) {
                 $relation = $details->relationship;
-                // logger($item->field);
             if (isset($relation->method)) {
                 $method = $relation->method;
                 $this->patchId[$method] = true;
