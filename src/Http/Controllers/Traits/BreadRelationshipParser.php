@@ -25,13 +25,13 @@ trait BreadRelationshipParser
             $details = json_decode($item->details);
             if (isset($details->relationship) && isset($item->field)) {
                 $relation = $details->relationship;
-            if (isset($relation->method)) {
-                $method = $relation->method;
-                $this->patchId[$method] = true;
-            } else {
-                $method = camel_case($item->field);
-                $this->patchId[$method] = false;
-            }
+                if (isset($relation->method)) {
+                    $method = $relation->method;
+                    $this->patchId[$method] = true;
+                } else {
+                    $method = camel_case($item->field);
+                    $this->patchId[$method] = false;
+                }
 
                 if (strpos($relation->key, '.') > 0) {
                     $this->patchId[$method] = false;
