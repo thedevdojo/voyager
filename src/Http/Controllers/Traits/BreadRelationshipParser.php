@@ -8,7 +8,6 @@ use TCG\Voyager\Models\DataType;
 
 trait BreadRelationshipParser
 {
-
     protected $patchId;
     /**
      * Build the relationships array for the model's eager load.
@@ -26,18 +25,17 @@ trait BreadRelationshipParser
             if (isset($details->relationship) && isset($item->field)) {
                 $relation = $details->relationship;
                 // logger($item->field);
-            if(isset($relation->method)){
+            if (isset($relation->method)) {
                 $method = $relation->method;
                 $this->patchId[$method] = true;
-            }else{
+            } else {
                 $method = camel_case($item->field);
                 $this->patchId[$method] = false;
             }
 
-            if(strpos($relation->key, '.') > 0)
-            {
-                $this->patchId[$method] = false;
-            }
+                if (strpos($relation->key, '.') > 0) {
+                    $this->patchId[$method] = false;
+                }
 
                 $relationships[$method] = function ($query) use ($relation) {
                     // select only what we need
@@ -90,20 +88,13 @@ trait BreadRelationshipParser
     protected function relationToLink(Model $item, DataType $dataType)
     {
         $relations = $item->getRelations();
-        
-        // $relations = array_reverse($item->getRelations());
-
-        // $relations = array_slice($relations, 1, 1);
-
-        // If there are not-null relations
+ 
 
         if (!empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
-
-                if($this->patchId[$field])
-                {
+                if ($this->patchId[$field]) {
                     $field = snake_case($field).'_id';
-                }else{
+                } else {
                     $field = snake_case($field);
                 }
 
@@ -113,13 +104,11 @@ trait BreadRelationshipParser
                 $relationData = json_decode($bread_data->details)->relationship;
 
 
-                if(!is_object($item[$field])){
+                if (!is_object($item[$field])) {
                     $item[$field] = $relation[$relationData->label];
-                }else{
+                } else {
                     $tmp = $item[$field];
                     $item[$field] = $tmp;
-                    // $item[$field] = join(',',array_pluck($relation->toArray(), $relationData->label));
-
                 }
                 if (isset($relationData->page_slug)) {
                     $id = $relation->id;
