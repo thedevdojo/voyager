@@ -2,7 +2,7 @@
 
 <tr class="newTableRow">
     <td>
-        <input :value="column.name" @input="onColumnNameInput" type="text" class="form-control" required pattern="{{ $database->identifierRegex }}">
+        <input :value="column.name" @input="onColumnNameInput" type="text" class="form-control" required pattern="{{ $db->identifierRegex }}">
     </td>
 
     <td>

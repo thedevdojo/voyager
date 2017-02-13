@@ -47,34 +47,27 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
-        $formAction = route('voyager.database.store');
-        $columnTypes = Type::getPlatformTypes();
-        $tableObj = new Table('New Table'); // need  way to denote that this ia a new table
+        $db = $this->prepareDbManager('create');
 
-        return view('voyager::tools.database.edit-add', compact('formAction', 'columnTypes', 'tableObj'));
+        return view('voyager::tools.database.edit-add', compact('db'));
     }
 
     public function store(Request $request)
     {
         Voyager::can('browse_database');
 
-        $tableName = $request->name;
-
         try {
-            Schema::create($tableName, function (Blueprint $table) use ($request) {
-                foreach ($this->buildQuery($request) as $query) {
-                    $query($table);
-                }
-            });
+            $table = Table::make($request->table);
+            SchemaManager::createTable($table);
 
             if (isset($request->create_model) && $request->create_model == 'on') {
                 $params = [
-                    'name' => Str::studly(Str::singular($tableName)),
+                    'name' => Str::studly(Str::singular($table->name)),
                 ];
 
-                if (in_array('deleted_at', $request->input('field.*'))) {
-                    $params['--softdelete'] = true;
-                }
+                // if (in_array('deleted_at', $request->input('field.*'))) {
+                //     $params['--softdelete'] = true;
+                // }
 
                 if (isset($request->create_migration) && $request->create_migration == 'on') {
                     $params['--migration'] = true;
@@ -83,19 +76,19 @@ class VoyagerDatabaseController extends Controller
                 Artisan::call('voyager:make:model', $params);
             } elseif (isset($request->create_migration) && $request->create_migration == 'on') {
                 Artisan::call('make:migration', [
-                    'name'    => 'create_'.$tableName.'_table',
-                    '--table' => $tableName,
+                    'name'    => 'create_'.$table->name.'_table',
+                    '--table' => $table->name,
                 ]);
             }
 
             return redirect()
-                ->route('voyager.database.index')
-                ->with(
-                    [
-                        'message'    => "Successfully created $tableName table",
-                        'alert-type' => 'success',
-                    ]
-                );
+               ->route('voyager.database.edit', $table->name)
+               ->with(
+                [
+                    'message'    => "Successfully created {$table->name} table",
+                    'alert-type' => 'success',
+                ]
+            );
         } catch (Exception $e) {
             return back()->with(
                 [
@@ -121,22 +114,9 @@ class VoyagerDatabaseController extends Controller
                 );
         }
 
-        // todo: create a function that prepares the table and db types etc....
-        //     use it in create()
-        $database = new \stdClass();
-        $database->types = Type::getPlatformTypes();
-        $database->table = SchemaManager::listTableDetails($table);
-        // todo: use $database->table instead in the views...
-        $table = $database->table;
-        $database->identifierRegex = Identifier::REGEX;
-        $database->platform = SchemaManager::getDatabasePlatform()->getName();
+        $db = $this->prepareDbManager('update', $table);
 
-        $formAction = route('voyager.database.update', $table->name);
-
-        return view(
-            'voyager::tools.database.edit-add',
-            compact('database', 'table', 'formAction')
-        );
+        return view('voyager::tools.database.edit-add', compact('db'));
     }
 
     /**
@@ -171,6 +151,26 @@ class VoyagerDatabaseController extends Controller
                     'alert-type' => 'success',
                 ]
             );
+    }
+
+    protected function prepareDbManager($action, $table = '')
+    {
+        $db = new \stdClass();
+
+        if ($action == 'update') {
+            $db->table = SchemaManager::listTableDetails($table);
+            $db->formAction = route('voyager.database.update', $table);
+        } else {
+            $db->table = new Table('New Table');
+            $db->formAction = route('voyager.database.store');
+        }
+
+        $db->types = Type::getPlatformTypes();
+        $db->action = $action;
+        $db->identifierRegex = Identifier::REGEX;
+        $db->platform = SchemaManager::getDatabasePlatform()->getName();
+
+        return $db;
     }
 
     public function reorder_column(Request $request)

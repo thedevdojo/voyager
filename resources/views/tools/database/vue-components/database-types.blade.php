@@ -3,7 +3,7 @@
 <div>
     <select :value="column.type.name" @change="onTypeChange" class="form-control" tabindex="-1" required>
         <optgroup v-for="(types, category) in dbTypes" :label="category">
-            <option v-for="type in types" :value="type.name">
+            <option v-for="type in types" :value="type.name" :disabled="type.notSupported">
                 @{{ type.name.toUpperCase() }}
             </option>
         </optgroup>
@@ -17,7 +17,7 @@
 @endsection
 
 <script>
-    let databaseTypes = {!! json_encode($database->types) !!};
+    let databaseTypes = {!! json_encode($db->types) !!};
 
     Vue.component('database-types', {
         props: {

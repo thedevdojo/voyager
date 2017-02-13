@@ -3,8 +3,8 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-data"></i>
-        @if(isset($table))
-            {{ "Editing $table->name table" }}
+        @if($db->action == 'update')
+            {{ "Editing {$db->table->name} table" }}
         @else
             {{ 'New Table' }}
         @endif
@@ -15,9 +15,9 @@
 
     <div class="page-content container-fluid">
         <div class="row">
-            <div id="tableEditor" class="col-md-12">
-                <form @submit="stringifyTable" action="{{ $formAction }}" method="POST">
-                    @if(isset($table)){{ method_field('PUT') }}@endif
+            <div id="dbManager" class="col-md-12">
+                <form @submit="stringifyTable" @keydown.enter.prevent action="{{ $db->formAction }}" method="POST">
+                    @if($db->action == 'update'){{ method_field('PUT') }}@endif
 
                     <database-table-editor :table="table"></database-table-editor>
 
@@ -36,9 +36,9 @@
 
     <script>
         new Vue({
-            el: '#tableEditor',
+            el: '#dbManager',
             data: {
-                table: {!! $table->toJson() !!},
+                table: {!! $db->table->toJson() !!},
                 tableJson: ''
                 // originalTable: {} // to do comparison later?
             },

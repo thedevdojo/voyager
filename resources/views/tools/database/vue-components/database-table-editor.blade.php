@@ -2,21 +2,21 @@
 
 <div class="panel panel-bordered">
     <div class="panel-heading">
-        <h3 class="panel-title">@if(isset($table)){{ "Edit the $table->name table below" }}@else{{ 'Create Your New Table Below' }}@endif</h3>
+        <h3 class="panel-title">@if($db->action == 'update'){{ "Edit the {$db->table->name} table below" }}@else{{ 'Create Your New Table Below' }}@endif</h3>
     </div>
 
     <div class="panel-body">
         <div class="row">
-        @if(isset($table))
+        @if($db->action == 'update')
             <div class="col-md-12">
         @else
             <div class="col-md-6">
         @endif
                 <label for="name">Table Name</label><br>
-                <input v-model.trim="table.name" type="text" name="name" class="form-control" placeholder="Table Name" required pattern="{{ $database->identifierRegex }}">
+                <input v-model.trim="table.name" type="text" class="form-control" placeholder="Table Name" required pattern="{{ $db->identifierRegex }}">
             </div>
 
-        @if(!isset($table))
+        @if($db->action == 'create')
             <div class="col-md-3 col-sm-4 col-xs-6">
                 <label for="create_model">Create model for this table?</label><br>
                 <input type="checkbox" name="create_model" data-toggle="toggle"
@@ -78,7 +78,8 @@
 
     <div class="panel-footer">
         <input type="submit" class="btn btn-primary pull-right"
-               value="@if(isset($table)){{ 'Update Table' }}@else{{ 'Create New Table' }}@endif">
+               value="@if($db->action == 'update'){{ 'Update Table' }}@else{{ 'Create New Table' }}@endif"
+               :disabled="!tableHasColumns">
         <div style="clear:both"></div>
     </div>
 </div><!-- .panel -->
