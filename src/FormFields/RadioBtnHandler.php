@@ -10,9 +10,9 @@ class RadioBtnHandler extends AbstractHandler
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
         return view('voyager::formfields.radio_btn', [
-            'row' => $row,
-            'options' => $options,
-            'dataType' => $dataType,
+            'row'             => $row,
+            'options'         => $options,
+            'dataType'        => $dataType,
             'dataTypeContent' => $dataTypeContent,
         ]);
     }
