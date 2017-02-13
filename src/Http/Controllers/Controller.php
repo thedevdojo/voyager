@@ -227,8 +227,7 @@ abstract class Controller extends BaseController
                 if ($request->isMethod('PUT')) {
                     if (null === $request->input($row->field)) {
                         $content = null;
-                    }
-                    else {
+                    } else {
                         $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
                     }
                 }
