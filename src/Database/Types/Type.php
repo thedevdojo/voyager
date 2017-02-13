@@ -3,9 +3,9 @@
 namespace TCG\Voyager\Database\Types;
 
 use TCG\Voyager\Database\Schema\SchemaManager;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
 use Doctrine\DBAL\Types\Type as DoctrineType;
-use Illuminate\Support\Collection;
+use TCG\Voyager\Database\Platforms\Platform;
 
 abstract class Type extends DoctrineType
 {
@@ -20,6 +20,8 @@ abstract class Type extends DoctrineType
     const NOT_SUPPORTED = 'notSupported';
     const NOT_SUPPORT_INDEX = 'notSupportIndex';
 
+    // todo: make sure this is not overwrting DoctrineType properties
+
     // todo: go through laravel supported types in grammars
     // add ones that are missing from doctrine
     //    the dbtype name must match doctrine type name
@@ -28,8 +30,6 @@ abstract class Type extends DoctrineType
     // make sure all types are correct.. test..
     // Next: sql server > postgres > sqlite
 
-    // TODO: maybe create Platforms: move specific methods (such as options) to the platform
-    //  to clean Type.php?
     public function getName()
     {
         return static::NAME;
@@ -55,10 +55,11 @@ abstract class Type extends DoctrineType
         }
         
         $platform = SchemaManager::getDatabasePlatform();
-        $platformName = ucfirst($platform->getName());
-        $getPlatformTypes = "get{$platformName}Types";
 
-        static::$platformTypes = static::$getPlatformTypes(static::getPlatformTypeMapping($platform));
+        static::$platformTypes = Platform::getPlatformTypes(
+            $platform->getName(),
+            static::getPlatformTypeMapping($platform)
+        );
 
         static::$platformTypes = static::$platformTypes->map(function($type) {
             return static::toArray(static::getType($type));
@@ -67,7 +68,7 @@ abstract class Type extends DoctrineType
         return static::$platformTypes;
     }
 
-    public static function getPlatformTypeMapping(AbstractPlatform $platform)
+    public static function getPlatformTypeMapping(DoctrineAbstractPlatform $platform)
     {
         if (static::$platformTypeMapping) {
             return static::$platformTypeMapping;
@@ -78,29 +79,6 @@ abstract class Type extends DoctrineType
         );
 
         return static::$platformTypeMapping;
-    }
-
-    protected static function getMysqlTypes(Collection $typeMapping)
-    {
-        $typeMapping->forget([
-            'real',    // same as double
-            'int',     // same as integer
-            'string',  // same as varchar
-            'numeric', // same as decimal
-        ]);
-
-        return $typeMapping;
-    }
-
-    protected static function registerMysqlCustomTypeOptions()
-    {
-        static::registerCustomOption(static::NOT_SUPPORTED, true, [
-            'enum',
-            'set',
-        ]);
-
-        static::registerCustomOption(static::NOT_SUPPORT_INDEX, true, '*text');
-        static::registerCustomOption(static::NOT_SUPPORT_INDEX, true, '*blob');
     }
 
     public static function registerCustomPlatformTypes()
@@ -128,19 +106,16 @@ abstract class Type extends DoctrineType
             $platform->registerDoctrineTypeMapping($name, $name);
         }
 
-        static::registerCustomTypeOptions($platformName);
+        static::addCustomTypeOptions($platformName);
 
         static::$customTypesRegistered = true;
     }
 
-    protected static function registerCustomTypeOptions($platformName)
+    protected static function addCustomTypeOptions($platformName)
     {
         static::registerCommonCustomTypeOptions();
 
-        $registerPlatformCustomTypeOptions = "register{$platformName}CustomTypeOptions";
-        if (method_exists(static::class, $registerPlatformCustomTypeOptions)) {
-            static::$registerPlatformCustomTypeOptions();
-        }
+        Platform::registerPlatformCustomTypeOptions($platformName);
         
         // Add the custom options to the types
         foreach (static::$customTypeOptions as $option) {
@@ -168,7 +143,7 @@ abstract class Type extends DoctrineType
         return $types;
     }
 
-    protected static function registerCustomOption($name, $value, $types)
+    public static function registerCustomOption($name, $value, $types)
     {
         if (is_string($types)) {
             $types = trim($types);
@@ -245,7 +220,7 @@ abstract class Type extends DoctrineType
         static::registerCustomOption('category', 'Objects', $types['objects']);
     }
 
-    protected static function getAllTypes()
+    public static function getAllTypes()
     {
         if (static::$allTypes) {
             return static::$allTypes;
@@ -256,7 +231,7 @@ abstract class Type extends DoctrineType
         return static::$allTypes;
     }
 
-    protected static function getTypeCategories()
+    public static function getTypeCategories()
     {
         if (static::$typeCategories) {
             return static::$typeCategories;
