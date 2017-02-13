@@ -385,7 +385,7 @@ class Menu extends Model
             $output .= '<li class="dd-item" data-id="'.$item->id.'">';
             $output .= '<div class="pull-right item_actions">';
             $output .= '<div class="btn-sm btn-danger pull-right delete" data-id="'.$item->id.'"><i class="voyager-trash"></i> Delete</div>';
-            $output .= '<div class="btn-sm btn-primary pull-right edit" data-id="'.$item->id.'" data-title="'.$item->title.'" data-url="'.$item->url.'" data-target="'.$item->target.'" data-icon_class="'.$item->icon_class.'" data-color="'.$item->color.'"><i class="voyager-edit"></i> Edit</div>';
+            $output .= '<div class="btn-sm btn-primary pull-right edit" data-id="'.$item->id.'" data-title="'.$item->title.'" data-url="'.$item->url.'" data-target="'.$item->target.'" data-icon_class="'.$item->icon_class.'" data-color="'.$item->color.'" data-route="'.$item->route.'" data-parameters="'.htmlspecialchars(json_encode($item->parameters)).'"><i class="voyager-edit"></i> Edit</div>';
             $output .= '</div>';
             $output .= '<div class="dd-handle">'.$item->title.' <small class="url">'.$item->url.'</small></div>';
 

@@ -38,7 +38,10 @@ class VoyagerMenuController extends Controller
     {
         Voyager::canOrFail('add_menus');
 
-        $data = $request->all();
+        $data = $this->prepareParameters(
+            $request->all()
+        );
+
         $data['order'] = 1;
 
         $highestOrderMenuItem = MenuItem::where('parent_id', '=', null)
@@ -64,7 +67,9 @@ class VoyagerMenuController extends Controller
         Voyager::canOrFail('edit_menus');
 
         $id = $request->input('id');
-        $data = $request->except(['id']);
+        $data = $this->prepareParameters(
+            $request->except(['id'])
+        );
 
         $menuItem = MenuItem::findOrFail($id);
         $menuItem->update($data);
@@ -96,5 +101,22 @@ class VoyagerMenuController extends Controller
                 $this->orderMenu($menuItem->children, $item->id);
             }
         }
+    }
+
+    protected function prepareParameters($parameters)
+    {
+        switch ($parameters['type']) {
+            case 'route':
+                $data['url'] = null;
+                break;
+            case 'url':
+                $data['route'] = null;
+                $data['parameters'] = null;
+                break;
+        }
+
+        unset($parameters['type']);
+
+        return $parameters;
     }
 }
