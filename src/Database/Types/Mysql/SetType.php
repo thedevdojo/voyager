@@ -2,18 +2,13 @@
 
 namespace TCG\Voyager\Database\Types\Mysql;
 
-use Doctrine\DBAL\Types\Type as DoctrineType;
+use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Illuminate\Support\Facades\DB;
 
-class SetType extends DoctrineType
+class SetType extends Type
 {
     const NAME = 'set';
-
-    public function getName()
-    {
-        return static::NAME;
-    }
 
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {

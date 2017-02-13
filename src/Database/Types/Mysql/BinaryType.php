@@ -2,17 +2,12 @@
 
 namespace TCG\Voyager\Database\Types\Mysql;
 
-use Doctrine\DBAL\Types\Type as DoctrineType;
+use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class BinaryType extends DoctrineType
+class BinaryType extends Type
 {
     const NAME = 'binary';
-
-    public function getName()
-    {
-        return static::NAME;
-    }
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

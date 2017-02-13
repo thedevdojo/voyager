@@ -7,7 +7,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use Illuminate\Support\Collection;
 
-abstract class Type
+abstract class Type extends DoctrineType
 {
     protected static $customTypesRegistered = false;
     protected static $platformTypeMapping = [];
@@ -16,6 +16,7 @@ abstract class Type
     protected static $customTypeOptions = [];
     protected static $typeCategories = [];
 
+    const NAME = 'UNDEFINED_TYPE_NAME';
     const NOT_SUPPORTED = 'notSupported';
     const NOT_SUPPORT_INDEX = 'notSupportIndex';
 
@@ -29,6 +30,11 @@ abstract class Type
 
     // TODO: maybe create Platforms: move specific methods (such as options) to the platform
     //  to clean Type.php?
+    public function getName()
+    {
+        return static::NAME;
+    }
+
     public static function toArray(DoctrineType $type)
     {
         $customTypeOptions = isset($type->customOptions) ? $type->customOptions : [];
@@ -55,7 +61,7 @@ abstract class Type
         static::$platformTypes = static::$getPlatformTypes(static::getPlatformTypeMapping($platform));
 
         static::$platformTypes = static::$platformTypes->map(function($type) {
-            return static::toArray(DoctrineType::getType($type));
+            return static::toArray(static::getType($type));
         })->groupBy('category');
 
         return static::$platformTypes;
@@ -113,10 +119,10 @@ abstract class Type
             $class = $namespace.$type;
             $name = $class::NAME;
 
-            if (DoctrineType::hasType($name)) {
-                DoctrineType::overrideType($name, $class);
+            if (static::hasType($name)) {
+                static::overrideType($name, $class);
             } else {
-                DoctrineType::addType($name, $class);
+                static::addType($name, $class);
             }
 
             $platform->registerDoctrineTypeMapping($name, $name);
@@ -139,8 +145,8 @@ abstract class Type
         // Add the custom options to the types
         foreach (static::$customTypeOptions as $option) {
             foreach ($option['types'] as $type) {
-                if (DoctrineType::hasType($type)) {
-                    DoctrineType::getType($type)->customOptions[$option['name']] = $option['value'];
+                if (static::hasType($type)) {
+                    static::getType($type)->customOptions[$option['name']] = $option['value'];
                 }
             }
         }

@@ -2,19 +2,13 @@
 
 namespace TCG\Voyager\Database\Types\Mysql;
 
-use Doctrine\DBAL\Types\Type as DoctrineType;
-use Doctrine\DBAL\Schema\Column as DoctrineColumn;
+use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Illuminate\Support\Facades\DB;
 
-class EnumType extends DoctrineType
+class EnumType extends Type
 {
     const NAME = 'enum';
-
-    public function getName()
-    {
-        return static::NAME;
-    }
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

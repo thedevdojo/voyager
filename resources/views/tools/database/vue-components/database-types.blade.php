@@ -9,7 +9,7 @@
         </optgroup>
     </select>
     <div v-if="column.type.notSupported">
-        <small>Warning: This type is not supported</small>
+        <small>This type is not supported</small>
     </div>
 </div>
 

@@ -2,24 +2,15 @@
 
 namespace TCG\Voyager\Database\Types\Mysql;
 
-use Doctrine\DBAL\Types\Type as DoctrineType;
+use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class TimestampType extends DoctrineType
+class TimestampType extends Type
 {
     const NAME = 'timestamp';
 
-    public function getName()
-    {
-        return static::NAME;
-    }
-
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
-        // if ($column->useCurrent) {
-        //     return 'timestamp default CURRENT_TIMESTAMP';
-        // }
-
         return 'timestamp';
     }
 }

@@ -169,7 +169,7 @@
                 if (columnPos !== -1) {
                     this.table.columns.splice(columnPos, 1);
                     
-                    // Delete assocated index
+                    // Delete associated index
                     this.deleteIndex(this.getColumnsIndex(column.name));
                 }
             },
