@@ -225,7 +225,12 @@ abstract class Controller extends BaseController
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 if ($request->isMethod('PUT')) {
-                    $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
+                    if (null === $request->input($row->field)) {
+                        $content = null;
+                    }
+                    else {
+                        $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
+                    }
                 }
                 break;
 
