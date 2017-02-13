@@ -63,11 +63,11 @@
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
 
-                                    @includeIf("voyager::formfields.$row->type")
+                                    {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
-                                    @if(isset($options->description))
-                                        <i class="help-block"><span class="voyager-info-circled"></span> {{$options->description}}</i>
-                                    @endif
+                                    @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
+                                        {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                                    @endforeach
                                 </div>
                             @endforeach
 
