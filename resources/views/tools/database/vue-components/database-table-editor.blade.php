@@ -101,7 +101,7 @@
                 newColumnTemplate: {
                     name: '',
                     oldName: '',
-                    type: {},
+                    type: databaseTypes.Numbers[0],
                     length: null,
                     fixed: false,
                     unsigned: false,

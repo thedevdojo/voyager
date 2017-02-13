@@ -11,8 +11,10 @@ abstract class Type
 {
     protected static $customTypesRegistered = false;
     protected static $platformTypeMapping = [];
+    protected static $allTypes = [];
     protected static $platformTypes = [];
     protected static $customTypeOptions = [];
+    protected static $typeCategories = [];
 
     const NOT_SUPPORTED = 'notSupported';
     const NOT_SUPPORT_INDEX = 'notSupportIndex';
@@ -24,6 +26,9 @@ abstract class Type
 
     // make sure all types are correct.. test..
     // Next: sql server > postgres > sqlite
+
+    // TODO: maybe create Platforms: move specific methods (such as options) to the platform
+    //  to clean Type.php?
     public static function toArray(DoctrineType $type)
     {
         $customTypeOptions = isset($type->customOptions) ? $type->customOptions : [];
@@ -73,10 +78,9 @@ abstract class Type
     {
         $typeMapping->forget([
             'real',    // same as double
-            'float',   // same as double
             'int',     // same as integer
             'string',  // same as varchar
-            'decimal', // same as numeric
+            'numeric', // same as decimal
         ]);
 
         return $typeMapping;
@@ -89,16 +93,8 @@ abstract class Type
             'set',
         ]);
 
-        static::registerCustomOption(static::NOT_SUPPORT_INDEX, true, [
-            'tinytext',
-            'text',
-            'mediumtext',
-            'longtext',
-            'tinyblob',
-            'blob',
-            'mediumblob',
-            'longblob',
-        ]);
+        static::registerCustomOption(static::NOT_SUPPORT_INDEX, true, '*text');
+        static::registerCustomOption(static::NOT_SUPPORT_INDEX, true, '*blob');
     }
 
     public static function registerCustomPlatformTypes()
@@ -110,6 +106,8 @@ abstract class Type
         $platform = SchemaManager::getDatabasePlatform();
         $platformName = ucfirst($platform->getName());
         $namespace = __NAMESPACE__.'\\'.$platformName.'\\';
+
+        // Todo: register common types first
 
         foreach (static::getPlatformCustomTypes($platformName) as $type) {
             $class = $namespace.$type;
@@ -166,7 +164,20 @@ abstract class Type
 
     protected static function registerCustomOption($name, $value, $types)
     {
-        $types = is_array($types) ? $types : [$types];
+        if (is_string($types)) {
+            $types = trim($types);
+
+            if ($types == '*') {
+                $types = static::getAllTypes()->toArray();
+            } else if (strpos($types, '*') !== false) {
+                $searchType = str_replace('*', '', $types);
+                $types = static::getAllTypes()->filter(function($type) use ($searchType) {
+                    return strpos($type, $searchType) !== false;
+                })->toArray();
+            } else {
+                $types = [$types];
+            }
+        }
 
         static::$customTypeOptions[] = [
             'name'  => $name,
@@ -178,11 +189,74 @@ abstract class Type
     protected static function registerCommonCustomTypeOptions()
     {
         static::registerTypeCategories();
+        static::registerTypeDefaultOptions();
+    }
+
+    protected static function registerTypeDefaultOptions()
+    {
+        $types = static::getTypeCategories();
+
+        // Numbers
+        static::registerCustomOption('default', [
+            'type' => 'number',
+            'step' => 'any',
+        ], $types['numbers']);
+
+        // Date and Time
+        static::registerCustomOption('default', [
+            'type' => 'date',
+        ], 'date');
+        static::registerCustomOption('default', [
+            'type' => 'time',
+            'step' => '1',
+        ], 'time');
+        static::registerCustomOption('default', [
+            'type' => 'number',
+            'min'  => '0',
+        ], 'year');
+
+        // Disable Default for unsupported types
+        static::registerCustomOption('default', [
+            'disabled' => true,
+        ], '*text');
+        static::registerCustomOption('default', [
+            'disabled' => true,
+        ], '*blob');
+        static::registerCustomOption('default', [
+            'disabled' => true,
+        ], 'json');
     }
 
     protected static function registerTypeCategories()
     {
-        static::registerCustomOption('category', 'Numbers', [
+        $types = static::getTypeCategories();
+
+        static::registerCustomOption('category', 'Numbers', $types['numbers']);
+        static::registerCustomOption('category', 'Strings', $types['strings']);
+        static::registerCustomOption('category', 'Date and Time', $types['datetime']);
+        static::registerCustomOption('category', 'Lists', $types['lists']);
+        static::registerCustomOption('category', 'Binary', $types['binary']);
+        static::registerCustomOption('category', 'Objects', $types['objects']);
+    }
+
+    protected static function getAllTypes()
+    {
+        if (static::$allTypes) {
+            return static::$allTypes;
+        }
+
+        static::$allTypes = collect(static::getTypeCategories())->flatten();
+
+        return static::$allTypes;
+    }
+
+    protected static function getTypeCategories()
+    {
+        if (static::$typeCategories) {
+            return static::$typeCategories;
+        }
+
+        $numbers = [
             'boolean',
             'tinyint',
             'smallint',
@@ -194,9 +268,9 @@ abstract class Type
             'numeric',
             'float',
             'double',
-        ]);
+        ];
 
-        static::registerCustomOption('category', 'Strings', [
+        $strings = [
             'char',
             'varchar',
             'string',
@@ -205,9 +279,9 @@ abstract class Type
             'text',
             'mediumtext',
             'longtext',
-        ]);
+        ];
 
-        static::registerCustomOption('category', 'Date and Time', [
+        $datetime = [
             'date',
             'datetime',
             'year',
@@ -215,28 +289,40 @@ abstract class Type
             'timestamp',
             'datetimetz',
             'dateinterval',
-        ]);
+        ];
 
-        static::registerCustomOption('category', 'Lists', [
+        $lists = [
             'enum',
             'set',
             'simple_array',
             'array',
             'json',
             'json_array',
-        ]);
+        ];
 
-        static::registerCustomOption('category', 'Binary', [
+        $binary = [
+            'bit',
             'binary',
             'varbinary',
             'tinyblob',
             'blob',
             'mediumblob',
             'longblob',
-        ]);
+        ];
 
-        static::registerCustomOption('category', 'Objects', [
+        $objects = [
             'object',
-        ]);
+        ];
+
+        static::$typeCategories = [
+            'numbers'  => $numbers,
+            'strings'  => $strings,
+            'datetime' => $datetime,
+            'lists'    => $lists,
+            'binary'   => $binary,
+            'objects'  => $objects
+        ];
+
+        return static::$typeCategories;
     }
 }

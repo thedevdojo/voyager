@@ -41,7 +41,7 @@
     </td>
 
     <td>
-        <input v-model.trim="column.default" type="text" class="form-control">
+        <database-column-default :column="column"></database-column-default>
     </td>
 
     <td>
@@ -53,6 +53,7 @@
 @endsection
 
 @include('voyager::tools.database.vue-components.database-types')
+@include('voyager::tools.database.vue-components.database-column-default')
 
 <script>
     Vue.component('database-column', {
@@ -85,6 +86,9 @@
                 if (type.notSupportIndex && this.index.type) {
                     this.$emit('indexDeleted', this.index);
                 }
+
+                // Reset default value
+                this.column.default = null;
 
                 this.column.type = type;
             },
