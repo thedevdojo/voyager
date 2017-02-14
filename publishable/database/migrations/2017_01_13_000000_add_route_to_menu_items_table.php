@@ -15,7 +15,7 @@ class AddRouteToMenuItemsTable extends Migration
     {
         Schema::table('menu_items', function (Blueprint $table) {
             $table->string('route')->nullable()->default(null);
-            $table->text('parameters');
+            $table->text('parameters')->nullable()->default(null);
         });
     }
 
