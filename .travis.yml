@@ -9,6 +9,11 @@ php:
   - 7.2
   - nightly
 
+env:
+  matrix:
+    - COMPOSER_FLAGS="--prefer-lowest"
+    - COMPOSER_FLAGS=""
+
 matrix:
   fast_finish: true
 
