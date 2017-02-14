@@ -20,10 +20,11 @@ use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Schema\Column;
 use TCG\Voyager\Database\Schema\Identifier;
 use TCG\Voyager\Database\Types\Type;
+use TCG\Voyager\Traits\AlertsMessages;
 
 class VoyagerDatabaseController extends Controller
 {
-    use AppNamespaceDetectorTrait;
+    use AppNamespaceDetectorTrait, AlertsMessages;
 
     public function index()
     {
@@ -83,19 +84,9 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                ->route('voyager.database.edit', $table->name)
-               ->with(
-                [
-                    'message'    => "Successfully created {$table->name} table",
-                    'alert-type' => 'success',
-                ]
-            );
+               ->with($this->alertSuccess("Successfully created {$table->name} table"));
         } catch (Exception $e) {
-            return back()->with(
-                [
-                    'message'    => 'Exception: '.$e->getMessage(),
-                    'alert-type' => 'error',
-                ]
-            );
+            return back()->with($this->alertException($e));
         }
     }
 
@@ -106,12 +97,7 @@ class VoyagerDatabaseController extends Controller
         if (!SchemaManager::tableExists($table)) {
             return redirect()
                 ->route('voyager.database.index')
-                ->with(
-                    [
-                        'message'    => "The table you want to edit doesn't exist",
-                        'alert-type' => 'error',
-                    ]
-                );
+                ->with($this->alertError("The table you want to edit doesn't exist"));
         }
 
         $db = $this->prepareDbManager('update', $table);
@@ -135,22 +121,12 @@ class VoyagerDatabaseController extends Controller
         try {
             DatabaseUpdater::update($table);
         } catch (Exception $e) {
-            return back()->with(
-                [
-                    'message'    => 'Exception: '.$e->getMessage(),
-                    'alert-type' => 'error',
-                ]
-            );
+            return back()->with($this->alertException($e));
         }
 
         return redirect()
                ->route('voyager.database.edit', $table['name'])
-               ->with(
-                [
-                    'message'    => "Successfully updated {$table['name']} table",
-                    'alert-type' => 'success',
-                ]
-            );
+               ->with($this->alertSuccess("Successfully updated {$table['name']} table"));
     }
 
     protected function prepareDbManager($action, $table = '')
@@ -208,19 +184,9 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                 ->route('voyager.database.index')
-                ->with(
-                    [
-                        'message'    => "Successfully deleted $table table",
-                        'alert-type' => 'success',
-                    ]
-                );
+                ->with($this->alertSuccess("Successfully deleted $table table"));
         } catch (Exception $e) {
-            return back()->with(
-                [
-                    'message'    => 'Exception: '.$e->getMessage(),
-                    'alert-type' => 'error',
-                ]
-            );
+            return back()->with($this->alertException($e));
         }
     }
 
@@ -265,14 +231,8 @@ class VoyagerDatabaseController extends Controller
 
         $dataType = new DataType();
         $data = $dataType->updateDataType($request->all())
-            ? [
-                'message'    => 'Successfully created new BREAD',
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => 'Sorry it appears there may have been a problem creating this bread',
-                'alert-type' => 'error',
-            ];
+            ? $this->alertSuccess('Successfully created new BREAD')
+            : $this->alertError('Sorry it appears there may have been a problem creating this BREAD');
 
         return redirect()->route('voyager.database.index')->with($data);
     }
@@ -295,14 +255,8 @@ class VoyagerDatabaseController extends Controller
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);
         $data = $dataType->updateDataType($request->all())
-            ? [
-                'message'    => "Successfully updated the {$dataType->name} BREAD",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => 'Sorry it appears there may have been a problem updating this bread',
-                'alert-type' => 'error',
-            ];
+            ? $this->alertSuccess("Successfully updated the {$dataType->name} BREAD")
+            : $this->alertError('Sorry it appears there may have been a problem updating this BREAD');
 
         return redirect()->route('voyager.database.index')->with($data);
     }
@@ -314,14 +268,8 @@ class VoyagerDatabaseController extends Controller
         /** @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = DataType::find($id);
         $data = DataType::destroy($id)
-            ? [
-                'message'    => "Successfully removed BREAD from {$dataType->name}",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => 'Sorry it appears there was a problem removing this bread',
-                'alert-type' => 'danger',
-            ];
+            ? $this->alertSuccess("Successfully removed BREAD from {$dataType->name}")
+            : $this->alertError('Sorry it appears there was a problem removing this BREAD');
 
         if (!is_null($dataType)) {
             Permission::removeFrom($dataType->name);

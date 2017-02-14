@@ -210,8 +210,15 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/app.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/toastr.min.js"></script>
 <script>
-    @if(Session::has('message'))
+    @if(Session::has('alerts'))
+        let alerts = {!! json_encode(Session::get('alerts')) !!};
 
+        displayAlerts(alerts, toastr);
+    @endif
+
+    @if(Session::has('message'))
+    
+    // TODO: change Controllers to use AlertsMessages trait... then remove this
     var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
     var alertMessage = {!! json_encode(Session::get('message')) !!};
     var alerter = toastr[alertType];
