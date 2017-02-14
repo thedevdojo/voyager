@@ -224,7 +224,7 @@
 
     <div id="login_section">
         <div class="content">
-            <h2>Sign In</h2>
+            <h2>{{ trans('voyager.Sign In') }}</h2>
             <p>Sign in below:</p>
             <div style="clear:both"></div>
             <form action="{{ route('voyager.login') }}" method="POST" id="login">
