@@ -32,6 +32,7 @@ before_script:
   - composer install
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - composer show laravel/framework
 
 script:
   # - vendor/bin/phpunit
