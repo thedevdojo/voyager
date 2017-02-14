@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Route;
 
 class MenuItem extends Model
 {
@@ -13,7 +14,13 @@ class MenuItem extends Model
     public function link($absolute = false)
     {
         if (! is_null($this->route)) {
-            return route($this->route, $this->getParametersAttribute(), $absolute);
+            if (! Route::has($this->route)) {
+                return '#';
+            }
+
+            $parameters = (array) $this->getParametersAttribute();
+
+            return route($this->route, $parameters, $absolute);
         }
 
         if ($absolute) {
@@ -33,7 +40,7 @@ class MenuItem extends Model
         if (is_array($value)) {
             $value = json_encode($value);
         }
-        
+
         $this->attributes['parameters'] = $value;
     }
 }

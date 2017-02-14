@@ -107,11 +107,11 @@ class VoyagerMenuController extends Controller
     {
         switch ($parameters['type']) {
             case 'route':
-                $data['url'] = null;
+                $parameters['url'] = null;
                 break;
             case 'url':
-                $data['route'] = null;
-                $data['parameters'] = null;
+                $parameters['route'] = null;
+                $parameters['parameters'] = '';
                 break;
         }
 
