@@ -13,8 +13,8 @@ class MenuItem extends Model
 
     public function link($absolute = false)
     {
-        if (! is_null($this->route)) {
-            if (! Route::has($this->route)) {
+        if (!is_null($this->route)) {
+            if (!Route::has($this->route)) {
                 return '#';
             }
 
