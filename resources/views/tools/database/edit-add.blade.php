@@ -38,9 +38,19 @@
         new Vue({
             el: '#dbManager',
             data: {
-                table: {!! $db->table->toJson() !!},
+                table: {},
+                originalTable: {!! $db->table->toJson() !!}, // to do comparison later?
+                oldTable: {!! $db->oldTable !!},
                 tableJson: ''
-                // originalTable: {} // to do comparison later?
+                
+            },
+            created() {
+                // If old table is set, use it to repopulate the form
+                if (this.oldTable) {
+                    this.table = this.oldTable;
+                } else {
+                    this.table = JSON.parse(JSON.stringify(this.originalTable));
+                }
             },
             methods: {
                 stringifyTable() {

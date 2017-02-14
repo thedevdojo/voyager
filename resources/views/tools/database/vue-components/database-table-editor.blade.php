@@ -134,7 +134,9 @@
         },
         methods: {
             addColumn() {
-                this.table.columns.push(Object.assign({}, this.newColumnTemplate));
+                this.table.columns.push(
+                    JSON.parse(JSON.stringify(this.newColumnTemplate))
+                );
             },
             getColumn(name) {
                 name = name.toLowerCase();

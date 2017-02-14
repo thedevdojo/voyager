@@ -20,11 +20,10 @@ use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Schema\Column;
 use TCG\Voyager\Database\Schema\Identifier;
 use TCG\Voyager\Database\Types\Type;
-use TCG\Voyager\Traits\AlertsMessages;
 
 class VoyagerDatabaseController extends Controller
 {
-    use AppNamespaceDetectorTrait, AlertsMessages;
+    use AppNamespaceDetectorTrait;
 
     public function index()
     {
@@ -86,7 +85,7 @@ class VoyagerDatabaseController extends Controller
                ->route('voyager.database.edit', $table->name)
                ->with($this->alertSuccess("Successfully created {$table->name} table"));
         } catch (Exception $e) {
-            return back()->with($this->alertException($e));
+            return back()->with($this->alertException($e))->withInput();
         }
     }
 
@@ -121,7 +120,7 @@ class VoyagerDatabaseController extends Controller
         try {
             DatabaseUpdater::update($table);
         } catch (Exception $e) {
-            return back()->with($this->alertException($e));
+            return back()->with($this->alertException($e))->withInput();
         }
 
         return redirect()
@@ -141,6 +140,8 @@ class VoyagerDatabaseController extends Controller
             $db->formAction = route('voyager.database.store');
         }
 
+        $oldTable = old('table');
+        $db->oldTable = $oldTable ? $oldTable : json_encode(null);
         $db->types = Type::getPlatformTypes();
         $db->action = $action;
         $db->identifierRegex = Identifier::REGEX;

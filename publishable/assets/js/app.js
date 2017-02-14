@@ -76,8 +76,6 @@ $(document).ready(function () {
 });
 
 function displayAlerts(alerts, alerter, type) {
-    let alert, alertMethod;
-
     if (type) {
         // Only display alerts of this type...
         alerts = alerts.filter(function(alert) {
@@ -85,6 +83,8 @@ function displayAlerts(alerts, alerter, type) {
         });
     }
 
+    let alert, alertMethod;
+    
     for (a in alerts) {
         alert = alerts[a];
         alertMethod = alerter[alert.type];
