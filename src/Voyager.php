@@ -18,11 +18,15 @@ class Voyager
     protected $filesystem;
 
     protected $alerts = [];
-
     protected $alertsCollected = false;
 
     protected $formFields = [];
     protected $afterFormFields = [];
+
+    protected $permissionsLoaded = false;
+    protected $permissions = [];
+
+    protected $users = [];
 
     public function __construct()
     {
@@ -100,13 +104,15 @@ class Voyager
         require __DIR__.'/../routes/voyager.php';
     }
 
-    public static function can($permission)
+    public function can($permission)
     {
+        $this->loadPermissions();
+
         // Check if permission exist
-        $exist = Permission::where('key', $permission)->first();
+        $exist = $this->permissions->where('key', $permission)->first();
 
         if ($exist) {
-            $user = User::find(Auth::id());
+            $user = $this->getUser();
             if ($user == null || !$user->hasPermission($permission)) {
                 return false;
             }
@@ -176,5 +182,31 @@ class Voyager
                 }
             }
         }
+    }
+
+    protected function loadPermissions()
+    {
+        if (!$this->permissionsLoaded) {
+            $this->permissionsLoaded = true;
+
+            $this->permissions = Permission::all();
+        }
+    }
+
+    protected function getUser($id = null)
+    {
+        if (is_null($id)) {
+            $id = auth()->check() ? auth()->user()->id : null;
+        }
+
+        if (is_null($id)) {
+            return;
+        }
+
+        if (!isset($this->users[$id])) {
+            $this->users[$id] = User::find($id);
+        }
+
+        return $this->users[$id];
     }
 }
