@@ -169,6 +169,7 @@
 @section('content')
 
     <div class="container-fluid">
+        @include('voyager::alerts')
         <div class="alert alert-info">
             <strong>How To Use:</strong>
             <p>You can get the value of each setting anywhere on your site by calling <code>Voyager::setting('key')</code></p>
