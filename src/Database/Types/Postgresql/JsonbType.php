@@ -1,16 +1,16 @@
 <?php
 
-namespace TCG\Voyager\Database\Types\Mysql;
+namespace TCG\Voyager\Database\Types\Postgresql;
 
 use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class JsonType extends Type
+class JsonbType extends Type
 {
-    const NAME = 'json';
+    const NAME = 'jsonb';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
-        return 'json';
+        return 'jsonb';
     }
 }

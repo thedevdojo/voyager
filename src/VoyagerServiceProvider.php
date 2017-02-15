@@ -184,9 +184,6 @@ class VoyagerServiceProvider extends ServiceProvider
             'config' => [
                 "$basePath/publishable/config/voyager.php" => config_path('voyager.php'),
             ],
-            'views' => [
-                "$basePath/publishable/views/" => resource_path('views/vendor/voyager'),
-            ],
         ];
 
         foreach ($publishable as $group => $paths) {

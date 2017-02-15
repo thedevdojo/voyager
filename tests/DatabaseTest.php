@@ -6,12 +6,10 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use TCG\Voyager\Http\Controllers\Traits\DatabaseQueryBuilder;
 
 class DatabaseTest extends TestCase
 {
     use DatabaseTransactions;
-    use DatabaseQueryBuilder;
 
     public function setUp()
     {

@@ -89,18 +89,19 @@ abstract class Type extends DoctrineType
 
         $platform = SchemaManager::getDatabasePlatform();
         $platformName = ucfirst($platform->getName());
-        $namespace = __NAMESPACE__.'\\'.$platformName.'\\';
 
-        // Todo: register common types first
+        $customTypes = array_merge(
+            static::getPlatformCustomTypes('Common'),
+            static::getPlatformCustomTypes($platformName)
+        );
 
-        foreach (static::getPlatformCustomTypes($platformName) as $type) {
-            $class = $namespace.$type;
-            $name = $class::NAME;
+        foreach ($customTypes as $type) {
+            $name = $type::NAME;
 
             if (static::hasType($name)) {
-                static::overrideType($name, $class);
+                static::overrideType($name, $type);
             } else {
-                static::addType($name, $class);
+                static::addType($name, $type);
             }
 
             $platform->registerDoctrineTypeMapping($name, $name);
@@ -130,10 +131,11 @@ abstract class Type extends DoctrineType
     protected static function getPlatformCustomTypes($platformName)
     {
         $typesPath = __DIR__.DIRECTORY_SEPARATOR.$platformName.DIRECTORY_SEPARATOR;
+        $namespace = __NAMESPACE__.'\\'.$platformName.'\\';
         $types = [];
         
         foreach (glob($typesPath.'*.php') as $classFile) {
-             $types[] = str_replace(
+             $types[] = $namespace.str_replace(
                 '.php',
                 '',
                 str_replace($typesPath, '', $classFile)
@@ -278,6 +280,7 @@ abstract class Type extends DoctrineType
             'simple_array',
             'array',
             'json',
+            'jsonb',
             'json_array',
         ];
 

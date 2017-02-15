@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Database\Types\Mysql;
+namespace TCG\Voyager\Database\Types\Common;
 
 use Doctrine\DBAL\Types\FloatType as DoctrineFloatType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
