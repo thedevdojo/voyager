@@ -59,7 +59,6 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <?php $options = json_decode($row->details); ?>
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
