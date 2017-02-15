@@ -27,7 +27,7 @@ trait VoyagerUser
         if (!$this->relationLoaded('role')) {
             $this->load('role');
         }
-        
+
         return in_array($this->role->name, (is_array($name) ? $name : [$name]));
     }
 
