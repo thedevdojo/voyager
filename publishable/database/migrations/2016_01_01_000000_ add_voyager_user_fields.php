@@ -2,29 +2,27 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class AddUserAvatar extends Migration
+class AddVoyagerUserFields extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         Schema::table('users', function ($table) {
-            $table->string('avatar')->default('users/default.png');
+            $table->string('avatar')->nullable()->after('email');
+            $table->integer('role_id')->nullable()->after('id');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
         Schema::table('users', function ($table) {
             $table->dropColumn('avatar');
+            $table->dropColumn('role_id');
         });
     }
 }

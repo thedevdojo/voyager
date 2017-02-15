@@ -88,8 +88,8 @@ class Voyager
 
     public function image($file, $default = '')
     {
-        if (!empty($file) && Storage::exists(config('voyager.storage.subfolder').$file)) {
-            return Storage::url(config('voyager.storage.subfolder').$file);
+        if (!empty($file) && Storage::disk(config('voyager.storage.disk'))->exists($file)) {
+            return Storage::disk(config('voyager.storage.disk'))->url($file);
         }
 
         return $default;
@@ -100,21 +100,18 @@ class Voyager
         require __DIR__.'/../routes/voyager.php';
     }
 
-    public function can($permission)
+    public static function can($permission)
     {
         // Check if permission exist
         $exist = Permission::where('key', $permission)->first();
 
         if ($exist) {
             $user = User::find(Auth::id());
-
-            if ($user == null) {
+            if ($user == null || !$user->hasPermission($permission)) {
                 return false;
             }
 
-            if (!$user->hasPermission($permission)) {
-                return false;
-            }
+            return true;
         }
 
         return true;

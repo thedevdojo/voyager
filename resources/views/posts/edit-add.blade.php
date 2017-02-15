@@ -109,9 +109,7 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                          <textarea class="form-control" name="excerpt">
-                              @if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif
-                          </textarea>
+                          <textarea class="form-control" name="excerpt">@if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif</textarea>
                         </div>
                     </div>
                 </div>

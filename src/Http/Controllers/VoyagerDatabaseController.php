@@ -120,6 +120,7 @@ class VoyagerDatabaseController extends Controller
         Voyager::canOrFail('browse_database');
 
         $this->renameTable($request->original_name, $request->name);
+        $this->cleanOldAndCreateNew($request->original_name, $request->name);
         $this->renameColumns($request, $request->name);
         $this->dropColumns($request, $request->name);
         $this->updateColumns($request, $request->name);
@@ -132,6 +133,24 @@ class VoyagerDatabaseController extends Controller
                     'alert-type' => 'success',
                 ]
             );
+    }
+
+    public function cleanOldAndCreateNew($originalName, $tableName)
+    {
+        if (!empty($originalName) && $originalName != $tableName) {
+            $dt = DB::table('data_types')->where('name', $originalName);
+            if ($dt->get()) {
+                $dt->delete();
+            }
+
+            $perm = DB::table('permissions')->where('table_name', $originalName);
+            if ($perm->get()) {
+                $perm->delete();
+            }
+
+            $params = ['name' => Str::studly(Str::singular($tableName))];
+            Artisan::call('voyager:make:model', $params);
+        }
     }
 
     public function reorder_column(Request $request)
@@ -192,11 +211,9 @@ class VoyagerDatabaseController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function addBread(Request $request)
+    public function addBread(Request $request, $table)
     {
         Voyager::canOrFail('browse_database');
-
-        $table = $request->input('table');
 
         $data = $this->prepopulateBreadInfo($table);
         $data['fieldOptions'] = \TCG\Voyager\Facades\DBSchema::describeTable($table);
@@ -248,11 +265,11 @@ class VoyagerDatabaseController extends Controller
         }
     }
 
-    public function addEditBread($id)
+    public function addEditBread($table)
     {
         Voyager::canOrFail('browse_database');
 
-        $dataType = DataType::find($id);
+        $dataType = DataType::whereName($table)->first();
 
         try {
             $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : \TCG\Voyager\Facades\DBSchema::describeTable($dataType->name);

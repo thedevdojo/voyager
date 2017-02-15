@@ -29,8 +29,8 @@
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form role="form"
-                          action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
-                          method="POST" enctype="multipart/form-data">
+                            action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
+                            method="POST" enctype="multipart/form-data">
                         <!-- PUT Method if we are editing -->
                         @if(isset($dataTypeContent->id))
                             {{ method_field("PUT") }}
@@ -80,9 +80,9 @@
 
                     <iframe id="form_target" name="form_target" style="display:none"></iframe>
                     <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post"
-                          enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
+                            enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
                         <input name="image" id="upload_file" type="file"
-                               onchange="$('#my_form').submit();this.value='';">
+                                 onchange="$('#my_form').submit();this.value='';">
                         <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
                         {{ csrf_field() }}
                     </form>

@@ -425,6 +425,8 @@ class DatabaseTest extends TestCase
 
     public function test_can_change_table_name()
     {
+        $this->disableExceptionHandling();
+
         Auth::loginUsingId(1);
 
         // Setup table

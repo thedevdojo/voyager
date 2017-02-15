@@ -130,7 +130,7 @@ abstract class Controller extends BaseController
                     $path = $slug.'/'.date('F').date('Y').'/';
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    $request->file($row->field)->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
+                    $request->file($row->field)->storeAs(config('voyager.storage.disk').$path, $filename.'.'.$file->getClientOriginalExtension());
 
                     return $fullPath;
                 }
@@ -212,7 +212,7 @@ abstract class Controller extends BaseController
                             $constraint->upsize();
                         })->encode($file->getClientOriginalExtension(), 75);
 
-                    Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $image, 'public');
+                    Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
 
                     if (isset($options->thumbnails)) {
                         foreach ($options->thumbnails as $thumbnails) {
@@ -242,8 +242,7 @@ abstract class Controller extends BaseController
                                     ->encode($file->getClientOriginalExtension(), 75);
                             }
 
-                            Storage::put(
-                                config('voyager.storage.subfolder').$path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                            Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
                                 (string) $image, 'public'
                             );
                         }
@@ -276,8 +275,8 @@ abstract class Controller extends BaseController
 
     public function deleteFileIfExists($path)
     {
-        if (Storage::exists($path)) {
-            Storage::delete($path);
+        if (Storage::disk(config('voyager.storage.disk'))->exists($path)) {
+            Storage::disk(config('voyager.storage.disk'))->delete($path);
         }
     }
 }
