@@ -32,18 +32,18 @@
     "Field" : "Field",
     "Field Info" : "Field Info",
     "Generate Permissions" : "Generate Permissions",
-    "How To Use" : "How To Use"
+    "How To Use" : "How To Use",
     "Icon (optional) Use a" : "Icon (optional) Use a",
-    "Icon to use for this Table" : "Icon to use for this Table":
+    "Icon to use for this Table" : "Icon to use for this Table",
     "Input Type" : "Input Type",
     "Key" : "Key",
     "Media" : "Media",
     "Media Library" : "Media Library",
     "Menu Builder" : "Menu Builder",
     "Model Class Name" : "Model Class Name",
-    "Model Name (ex. \App\User, if left empty will try and use the table name)" : "Model Name (ex. \App\User, if left empty will try and use the table name)",
+    "Model Name (ex. \\App\\User, if left empty will try and use the table name)" : "Model Name (ex. \\App\\User, if left empty will try and use the table name)",
     "Move" : "Move",
-    "Move File/Folder" : "Move File/Folder"
+    "Move File/Folder" : "Move File/Folder",
     "Name" : "Name",
     "New" : "New",
     "New Folder Name" : "New Folder Name",
@@ -53,11 +53,11 @@
     "No files here" : "No files here",
     "No files in this folder" : "No files in this folder",
     "No File or Folder Selected" : "No File or Folder Selected",
-    "Last Modified" : "Last Modified"
+    "Last Modified" : "Last Modified",
     "Leave empty to keep the same" : "Leave empty to keep the same",
     "LOADING YOUR MEDIA FILES" : "LOADING YOUR MEDIA FILES",
     "Login" : "Login",
-    "Logging in" : "Logging in"
+    "Logging in" : "Logging in",
     "Logout" : "Logout",
     "Optional Details" : "Optional Details",
     "optional, only applies to certain types like dropdown box or radio button" : "optional, only applies to certain types like dropdown box or radio button",
@@ -75,7 +75,7 @@
     "Save Settings" : "Save Settings",
     "Select All" : "Select All",
     "Select a View" : "Select a View",
-    "Server-side Pagination" : "Server-side Pagination"
+    "Server-side Pagination" : "Server-side Pagination",
     "Settings" : "Settings",
     "Size" : "Size",
     "Sign In": "Sign In",
@@ -84,14 +84,14 @@
     "Table Name" : "Table Name",
     "The given credentials don't match with an user registered" : "The given credentials don't match with an user registered",
     "To view analytics you'll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console" : "To view analytics you'll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console",
-    "This Week vs Last Week" : "This Week vs Last Week"
+    "This Week vs Last Week" : "This Week vs Last Week",
     "This Year vs Last Year" : "This Year vs Last Year",
     "Title" : "Title",
     "Top Browsers" : "Top Browsers",
     "Top Countries" : "Top Countries",
     "Upload" : "Upload",
     "User Role" : "User Role",
-    "Various visualizations" , "Various visualizations"
+    "Various visualizations" : "Various visualizations",
     "View" : "View",
     "Viewing" : "Viewing",
     "Visibility" : "Visibility",
