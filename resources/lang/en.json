@@ -65,7 +65,7 @@
     "password" : "password",
     "Password" : "Password",
     "Primary Key" : "Primary Key",
-    "Profile" : "Profile"
+    "Profile" : "Profile",
     "Please make sure to remove the BREAD on this table before deleting the table" : "Please make sure to remove the BREAD on this table before deleting the table",
     "Public URL" : "Public URL",
     "Read" : "Read",
@@ -97,7 +97,7 @@
     "Visibility" : "Visibility",
     "Yes" : "Yes",
     "Yes, Delete This :name" : "Yes, Delete This :name",
-    "Yes, Delete This Setting" : "Yes, Delete This Setting"
+    "Yes, Delete This Setting" : "Yes, Delete This Setting",
     "You can get the value of each setting anywhere on your site by calling" : "You can get the value of each setting anywhere on your site by calling",
     "You have :count :name(s) in your database. Click on button below to view all :name" : "You have :count :name(s) in your database. Click on button below to view all :name",
     "Your browser does not support the audio element" : "Your browser does not support the audio element",
