@@ -50,20 +50,7 @@ class Voyager
         require __DIR__.'/../routes/voyager.php';
     }
 
-    public function can($permission)
-    {
-        // Check if permission exist
-        $exist = Permission::where('key', $permission)->first();
-
-        if ($exist) {
-            $user = User::find(Auth::id());
-            if ($user == null || !$user->hasPermission($permission)) {
-                throw new UnauthorizedHttpException(null);
-            }
-        }
-    }
-
-    public static function have($permission)
+    public static function can($permission)
     {
         // Check if permission exist
         $exist = Permission::where('key', $permission)->first();
