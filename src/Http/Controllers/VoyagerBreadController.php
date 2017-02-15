@@ -4,9 +4,9 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Voyager;
 
 class VoyagerBreadController extends Controller
 {
@@ -32,7 +32,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('browse_'.$dataType->name);
+        Voyager::canOrFail('browse_'.$dataType->name);
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
@@ -83,7 +83,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('read_'.$dataType->name);
+        Voyager::canOrFail('read_'.$dataType->name);
 
         $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
@@ -125,7 +125,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_'.$dataType->name);
 
         $relationships = $this->getRelationships($dataType);
 
@@ -150,7 +150,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
@@ -184,7 +184,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('add_'.$dataType->name);
+        Voyager::canOrFail('add_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
@@ -207,12 +207,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('add_'.$dataType->name);
-
-        if (function_exists('voyager_add_post')) {
-            $url = $request->url();
-            voyager_add_post($request);
-        }
+        Voyager::canOrFail('add_'.$dataType->name);
 
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
@@ -244,7 +239,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('delete_'.$dataType->name);
+        Voyager::canOrFail('delete_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 

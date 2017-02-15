@@ -20,10 +20,8 @@
 
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
 
-
                     <!-- /.box-header -->
                     <!-- form start -->
-
 
                     @foreach($dataType->readRows as $row)
                         @php $rowDetails = json_decode($row->details); @endphp
@@ -76,7 +74,6 @@
                             <hr style="margin:0;">
                         @endif
                     @endforeach
-
 
                 </div>
             </div>

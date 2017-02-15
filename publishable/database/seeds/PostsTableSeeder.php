@@ -7,14 +7,10 @@ class PostsTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
     public function run()
     {
-        $post = Post::firstOrNew([
-            'slug' => 'lorem-ipsum-post',
-        ]);
+        $post = $this->findPost('lorem-ipsum-post');
         if (!$post->exists) {
             $post->fill([
                 'title'            => 'Lorem Ipsum Post',
@@ -31,9 +27,7 @@ class PostsTableSeeder extends Seeder
             ])->save();
         }
 
-        $post = Post::firstOrNew([
-            'slug'             => 'my-sample-post',
-        ]);
+        $post = $this->findPost('my-sample-post');
         if (!$post->exists) {
             $post->fill([
                 'title'     => 'My Sample Post',
@@ -52,9 +46,7 @@ class PostsTableSeeder extends Seeder
             ])->save();
         }
 
-        $post = Post::firstOrNew([
-            'slug'             => 'latest-post',
-        ]);
+        $post = $this->findPost('latest-post');
         if (!$post->exists) {
             $post->fill([
                 'title'            => 'Latest Post',
@@ -71,9 +63,7 @@ class PostsTableSeeder extends Seeder
             ])->save();
         }
 
-        $post = Post::firstOrNew([
-            'slug'             => 'yarr-post',
-        ]);
+        $post = $this->findPost('yarr-post');
         if (!$post->exists) {
             $post->fill([
                 'title'     => 'Yarr Post',
@@ -91,5 +81,17 @@ class PostsTableSeeder extends Seeder
                 'featured'         => 0,
             ])->save();
         }
+    }
+
+    /**
+     * [post description].
+     *
+     * @param [type] $slug [description]
+     *
+     * @return [type] [description]
+     */
+    protected function findPost($slug)
+    {
+        return Post::firstOrNew(['slug' => $slug]);
     }
 }

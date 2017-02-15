@@ -6,15 +6,7 @@
 
 @section('content')
     <div class="page-content">
-        <div class="alerts">
-            @foreach ($alerts as $alert)
-                <div class="alert alert-{{ $alert->type }} alert-name-{{ $alert->name }}">
-                    @foreach($alert->components as $component)
-                        <?php echo $component->render(); ?>
-                    @endforeach
-                </div>
-            @endforeach
-        </div>
+        @include('voyager::alerts')
         <div class="clearfix container-fluid row">
             @foreach(config('voyager.widgets', []) as $element) {{-- there should be a limit of widgets (4?) --}}
             <div class="col-xs-12 col-sm-6 col-md-4"> <!-- cols stack should be dynamically built depending on number of widgets -->
