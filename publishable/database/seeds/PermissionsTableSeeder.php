@@ -20,7 +20,7 @@ class PermissionsTableSeeder extends Seeder
         foreach ($keys as $key) {
             Permission::firstOrCreate([
                 'key'        => $key,
-                'table_name' => 'admin',
+                'table_name' => null,
             ]);
         }
 

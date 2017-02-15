@@ -314,7 +314,7 @@ class Menu extends Model
                 } else {
                     // Check if admin permission exists
                     $exist = self::$permissions->first(function ($value) use ($slug) {
-                        return $value->key == 'browse_'.$slug && $value->table_name == 'admin';
+                        return $value->key == 'browse_'.$slug && is_null($value->table_name);
                     });
                 }
 
