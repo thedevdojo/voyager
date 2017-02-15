@@ -14,14 +14,14 @@ $(document).ready(function(){
     menubar: false,
     selector:'textarea.richTextBox',
     skin: 'voyager',
-    plugins: 'link, image, code, youtube, giphy',
+    plugins: 'link, image, code, youtube, giphy, table',
     extended_valid_elements : 'input[onclick|value|style|type]',
     file_browser_callback: function(field_name, url, type, win) {
             if(type =='image'){
               $('#upload_file').trigger('click');
             }
         },
-    toolbar: 'styleselect bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image youtube giphy | code',
+    toolbar: 'styleselect bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image table youtube giphy | code',
     convert_urls: false,
     image_caption: true,
     image_title: true

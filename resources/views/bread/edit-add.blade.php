@@ -107,7 +107,6 @@
                                             @endif
 
                                             @if( method_exists( $dataType->model_name, $row->field ) )
-
                                                 @if(isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field})))
                                                     <?php $selected_value = old($row->field, $dataTypeContent->{$row->field}->{$options->relationship->key}); ?>
                                                 @else
