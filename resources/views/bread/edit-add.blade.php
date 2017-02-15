@@ -245,6 +245,11 @@
                                                placeholder="{{ $row->display_name }}"
                                                value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('Y-m-d', strtotime(old($row->field, $dataTypeContent->{$row->field}))) }}@else{{old($row->field)}}@endif">
 
+                                    @elseif($row->type == "date-time")
+                                        <input type="datetime-local" class="form-control" name="{{ $row->field }}"
+                                               placeholder="{{ $row->display_name }}"
+                                               value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('Y-m-d\TH:i:s', strtotime(old($row->field, $dataTypeContent->{$row->field}))) }}@else{{old($row->field)}}@endif">
+
                                     @elseif($row->type == "number")
                                         <input type="number" class="form-control" name="{{ $row->field }}"
                                                placeholder="{{ $row->display_name }}"

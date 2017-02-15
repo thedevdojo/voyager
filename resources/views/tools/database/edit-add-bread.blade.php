@@ -140,6 +140,9 @@
                                                 <option value="date" @if(isset($dataRow->type) && $dataRow->type == 'date'){{ 'selected' }}@endif>
                                                     Date
                                                 </option>
+                                                <option value="date-time" @if(isset($dataRow->type) && $dataRow->type == 'date-time'){{ 'selected' }}@endif>
+                                                    Date Time
+                                                </option>
                                                 <option value="number" @if(isset($dataRow->type) && $dataRow->type == 'number'){{ 'selected' }}@endif>
                                                     Number
                                                 </option>
