@@ -18,7 +18,8 @@
         "illuminate/support": "5.3.*",
         "intervention/image": "^2.3",
         "doctrine/dbal": "^2.5",
-        "larapack/doctrine-support": "^0.1.0"
+        "larapack/doctrine-support": "^0.1.0",
+        "league/flysystem": "~1.0.35"
     },
     "require-dev": {
         "phpunit/phpcov": "~3.0",
