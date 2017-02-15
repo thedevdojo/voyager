@@ -13,7 +13,6 @@
 
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
 
-
                     <!-- /.box-header -->
                     <!-- form start -->
 
@@ -27,9 +26,9 @@
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
                                 <img style="max-width:640px"
-                                     src="<?= Voyager::image($dataTypeContent->{$row->field}) ?>">
+                                     src="<?php echo Voyager::image($dataTypeContent->{$row->field}) ?>">
                             @else
-                                <p><?= $dataTypeContent->{$row->field} ?></p>
+                                <p><?php echo $dataTypeContent->{$row->field} ?></p>
                             @endif
                         </div><!-- panel-body -->
                         @if(!$loop->last)
