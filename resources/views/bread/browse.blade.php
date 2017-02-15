@@ -5,9 +5,11 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
-        <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
-            <i class="voyager-plus"></i> Add New
-        </a>
+        @if (Voyager::can('add_'.$dataType->name))
+            <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
+                <i class="voyager-plus"></i> Add New
+            </a>
+        @endif
     </h1>
 @stop
 
@@ -35,24 +37,66 @@
                                             @if($row->type == 'image')
                                                 <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                             @elseif($row->type == 'select_multiple')
+                                                @if(property_exists($options, 'relationship'))
+
+                                                    @foreach($data->{$row->field} as $item)
+                                                        @if($item->{$row->field . '_page_slug'})
+                                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
+                                                        @else
+                                                        {{ $item->{$row->field} }}
+                                                        @endif
+                                                    @endforeach
+
+                                                    {{-- $data->{$row->field}->implode($options->relationship->label, ', ') --}}
+                                                @elseif(property_exists($options, 'options'))
+                                                    @foreach($data->{$row->field} as $item)
+                                                     {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                                    @endforeach
+                                                @endif
                                                 @if ($data->{$row->field} && isset($options->relationship))
                                                     {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
                                                 @endif
+                                            @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
+                                                <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
+                                            @elseif($row->type == 'date')
+                                            {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $dataTypeContent->{$row->field} }}
+                                            @elseif($row->type == 'checkbox')
+                                                @if($options && property_exists($options, 'on') && property_exists($options, 'off'))
+                                                    @if($data->{$row->field})
+                                                    <span class="label label-info">{{ $options->on }}</span>
+                                                    @else
+                                                    <span class="label label-primary">{{ $options->off }}</span>
+                                                    @endif
+                                                @else
+                                                {{ $data->{$row->field} }}
+                                                @endif
+                                            @elseif($row->type == 'text')
+                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            @elseif($row->type == 'text_area')
+                                            <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            @elseif($row->type == 'rich_text_box')
+                                            <div class="readmore">{{ $data->{$row->field} }}</div>
                                             @else
                                                 {{ $data->{$row->field} }}
                                             @endif
                                         </td>
                                     @endforeach
                                     <td class="no-sort no-click">
-                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
-                                            <i class="voyager-trash"></i> Delete
-                                        </div>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> Edit
-                                        </a>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
-                                            <i class="voyager-eye"></i> View
-                                        </a>
+                                        @if (Voyager::can('delete_'.$dataType->name))
+                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+                                                <i class="voyager-trash"></i> Delete
+                                            </div>
+                                        @endif
+                                        @if (Voyager::can('edit_'.$dataType->name))
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
+                                                <i class="voyager-edit"></i> Edit
+                                            </a>
+                                        @endif
+                                        @if (Voyager::can('read_'.$dataType->name))
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
+                                                <i class="voyager-eye"></i> View
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -86,7 +130,7 @@
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                               value="Yes, Delete This {{ $dataType->display_name_singular }}">
+                                 value="Yes, Delete This {{ $dataType->display_name_singular }}">
                     </form>
                     <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
                 </div>

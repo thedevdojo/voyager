@@ -10,7 +10,17 @@ class DataType extends Model
 {
     protected $table = 'data_types';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'slug',
+        'display_name_singular',
+        'display_name_plural',
+        'icon',
+        'model_name',
+        'description',
+        'generate_permissions',
+        'server_side',
+    ];
 
     public function rows()
     {
@@ -19,27 +29,27 @@ class DataType extends Model
 
     public function browseRows()
     {
-        return $this->rows()->where('browse', '=', 1);
+        return $this->rows()->where('browse', 1);
     }
 
     public function readRows()
     {
-        return $this->rows()->where('read', '=', 1);
+        return $this->rows()->where('read', 1);
     }
 
     public function editRows()
     {
-        return $this->rows()->where('edit', '=', 1);
+        return $this->rows()->where('edit', 1);
     }
 
     public function addRows()
     {
-        return $this->rows()->where('add', '=', 1);
+        return $this->rows()->where('add', 1);
     }
 
     public function deleteRows()
     {
-        return $this->rows()->where('delete', '=', 1);
+        return $this->rows()->where('delete', 1);
     }
 
     public function setGeneratePermissionsAttribute($value)
@@ -52,57 +62,49 @@ class DataType extends Model
         $this->attributes['server_side'] = $value ? 1 : 0;
     }
 
-    public function updateDataType($requestData)
+    public function updateDataType($requestData, $throw = false)
     {
-        $success = true;
-        $fields = $this->fields(array_get($requestData, 'name'));
+        try {
+            \DB::beginTransaction();
 
-        $dataTypeData = array_filter(
-            $requestData,
-            function ($value, $key) {
-                return strpos($key, 'field_') !== 0;
-            },
-            ARRAY_FILTER_USE_BOTH
-        );
-        $success = $success && $this->fill($dataTypeData)->save();
+            if ($this->fill($requestData)->save()) {
+                $fields = $this->fields(array_get($requestData, 'name'));
 
-        foreach ($fields as $field) {
-            $dataRow = DataRow::where('data_type_id', '=', $this->id)
-                              ->where('field', '=', $field)
-                              ->first();
+                foreach ($fields as $field) {
+                    $dataRow = $this->rows()->firstOrNew(['field' => $field]);
 
-            if (!isset($dataRow->id)) {
-                $dataRow = new DataRow();
-            }
+                    foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
+                        $dataRow->{$check} = isset($requestData["field_{$check}_{$field}"]);
+                    }
 
-            $dataRow->data_type_id = $this->id;
-            $dataRow->required = $requestData['field_required_'.$field];
+                    $dataRow->required = $requestData['field_required_'.$field];
+                    $dataRow->field = $requestData['field_'.$field];
+                    $dataRow->type = $requestData['field_input_type_'.$field];
+                    $dataRow->details = $requestData['field_details_'.$field];
+                    $dataRow->display_name = $requestData['field_display_name_'.$field];
 
-            foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
-                if (isset($requestData["field_{$check}_{$field}"])) {
-                    $dataRow->{$check} = 1;
-                } else {
-                    $dataRow->{$check} = 0;
+                    if (!$dataRow->save()) {
+                        throw new \Exception('Failed to save field '.$field.", we're rolling back!");
+                    }
                 }
+
+                // It seems everything was fine. Let's check if we need to generate permissions
+                if ($this->generate_permissions) {
+                    Permission::generateFor($this->name);
+                }
+
+                \DB::commit();
+
+                return true;
             }
-
-            $dataRow->field = $requestData['field_'.$field];
-            $dataRow->type = $requestData['field_input_type_'.$field];
-            $dataRow->details = $requestData['field_details_'.$field];
-            $dataRow->display_name = $requestData['field_display_name_'.$field];
-            $dataRowSuccess = $dataRow->save();
-
-            // If success has never failed yet, let's add DataRowSuccess to success
-            if ($success !== false) {
-                $success = $dataRowSuccess;
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            if ($throw) {
+                throw $e;
             }
         }
 
-        if ($this->generate_permissions) {
-            Permission::generateFor($this->name);
-        }
-
-        return $success !== false;
+        return false;
     }
 
     public function fields($name = null)
@@ -139,8 +141,11 @@ class DataType extends Model
 
     public function extraFields()
     {
-        $model = app($this->model_name);
+        if (empty(trim($this->model_name))) {
+            return [];
+        }
 
+        $model = app($this->model_name);
         if (method_exists($model, 'adminFields')) {
             return $model->adminFields();
         }

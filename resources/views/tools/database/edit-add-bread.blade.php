@@ -17,8 +17,6 @@
         <?php $table = $dataType->name ?>
     @endif
 
-    <?php $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : \TCG\Voyager\Facades\DBSchema::describeTable($table); ?>
-
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -52,6 +50,7 @@
                             </thead>
                             <tbody>
                             @foreach($fieldOptions as $data)
+
                                 @if(isset($dataType->id))
                                     <?php $dataRow = TCG\Voyager\Models\DataRow::where('data_type_id', '=',
                                             $dataType->id)->where('field', '=', $data['field'])->first(); ?>
@@ -104,46 +103,11 @@
                                                    name="field_input_type_{{ $data['field'] }}">
                                         @else
                                             <select name="field_input_type_{{ $data['field'] }}">
-                                                <option value="text" @if(isset($dataRow->type) && $dataRow->type == 'text'){{ 'selected' }}@endif>
-                                                    Text Box
-                                                </option>
-                                                <option value="text_area" @if(isset($dataRow->type) && $dataRow->type == 'text_area'){{ 'selected' }}@endif>
-                                                    Text Area
-                                                </option>
-                                                <option value="rich_text_box" @if(isset($dataRow->type) && $dataRow->type == 'rich_text_box'){{ 'selected' }}@endif>
-                                                    Rich Textbox
-                                                </option>
-                                                <option value="password" @if(isset($dataRow->type) && $dataRow->type == 'password'){{ 'selected' }}@endif>
-                                                    Password
-                                                </option>
-                                                <option value="hidden" @if(isset($dataRow->type) && $dataRow->type == 'hidden'){{ 'selected' }}@endif>
-                                                    Hidden
-                                                </option>
-                                                <option value="checkbox" @if(isset($dataRow->type) && $dataRow->type == 'checkbox'){{ 'selected' }}@endif>
-                                                    Check Box
-                                                </option>
-                                                <option value="radio_btn" @if(isset($dataRow->type) && $dataRow->type == 'radio_btn'){{ 'selected' }}@endif>
-                                                    Radio Button
-                                                </option>
-                                                <option value="select_dropdown" @if(isset($dataRow->type) && $dataRow->type == 'select_dropdown'){{ 'selected' }}@endif>
-                                                    Select Dropdown
-                                                </option>
-                                                </option>
-                                                <option value="select_multiple" @if(isset($dataRow->type) && $dataRow->type == 'select_multiple'){{ 'selected' }}@endif>
-                                                    Multiple Select
-                                                </option>
-                                                <option value="file" @if(isset($dataRow->type) && $dataRow->type == 'file'){{ 'selected' }}@endif>
-                                                    File
-                                                </option>
-                                                <option value="image" @if(isset($dataRow->type) && $dataRow->type == 'image'){{ 'selected' }}@endif>
-                                                    Image
-                                                </option>
-                                                <option value="date" @if(isset($dataRow->type) && $dataRow->type == 'date'){{ 'selected' }}@endif>
-                                                    Date
-                                                </option>
-                                                <option value="number" @if(isset($dataRow->type) && $dataRow->type == 'number'){{ 'selected' }}@endif>
-                                                    Number
-                                                </option>
+                                                @foreach (Voyager::formFields() as $formField)
+                                                    <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
+                                                        {{ $formField->getName() }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         @endif
 

@@ -4,11 +4,13 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Voyager;
 
 class VoyagerBreadController extends Controller
 {
+    use BreadRelationshipParser;
     //***************************************
     //               ____
     //              |  _ \
@@ -30,7 +32,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('browse_'.$dataType->name);
+        Voyager::canOrFail('browse_'.$dataType->name);
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
@@ -38,11 +40,16 @@ class VoyagerBreadController extends Controller
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
 
+            $relationships = $this->getRelationships($dataType);
+
             if ($model->timestamps) {
-                $dataTypeContent = call_user_func([$model->latest(), $getter]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
             } else {
-                $dataTypeContent = call_user_func([$model->orderBy('id', 'DESC'), $getter]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
+
+            //Replace relationships' keys for labels and create READ links if a slug is provided.
+            $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
         } else {
             // If Model doesn't exist, get data from table name
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
@@ -76,11 +83,19 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('read_'.$dataType->name);
+        Voyager::canOrFail('read_'.$dataType->name);
 
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
-            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+        $relationships = $this->getRelationships($dataType);
+        if (strlen($dataType->model_name) != 0) {
+            $model = app($dataType->model_name);
+            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+        } else {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
+        }
+
+        //Replace relationships' keys for labels and create READ links if a slug is provided.
+        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
         $view = 'voyager::bread.read';
 
@@ -110,10 +125,12 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_'.$dataType->name);
+
+        $relationships = $this->getRelationships($dataType);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
+            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         $view = 'voyager::bread.edit-add';
@@ -133,9 +150,10 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
         return redirect()
@@ -166,7 +184,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('add_'.$dataType->name);
+        Voyager::canOrFail('add_'.$dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
@@ -189,12 +207,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('add_'.$dataType->name);
-
-        if (function_exists('voyager_add_post')) {
-            $url = $request->url();
-            voyager_add_post($request);
-        }
+        Voyager::canOrFail('add_'.$dataType->name);
 
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
@@ -226,7 +239,7 @@ class VoyagerBreadController extends Controller
         $dataType = DataType::where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('delete_'.$dataType->name);
+        Voyager::canOrFail('delete_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 

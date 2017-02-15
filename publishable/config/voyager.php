@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | User config
@@ -14,7 +13,6 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'admin_permission'             => 'browse_admin',
         'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
     ],
@@ -68,7 +66,7 @@ return [
     */
 
     'storage' => [
-        'subfolder' => 'public/', // include trailing slash, like 'my_folder/'
+        'disk' => 'public',
     ],
 
     /*
@@ -82,28 +80,65 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => [], // database tables that are hidden from the admin panel
+            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings'],
         ],
     ],
 
-        /*
+    /*
     |--------------------------------------------------------------------------
-    | Administration Config
+    | Widgets Config
     |--------------------------------------------------------------------------
     |
     | Here you can specify voyager administration settings
     |
     */
 
-    'admin' => [
-        /*
-        'product' => [
-            'name' => 'Product',
-            'model' => '\App\Product',
-            'route' => 'admin.products',
-            'image' => '/images/widget-backgrounds/01.png'
+    'widgets' => [
+        [
+            'name'  => 'User',
+            'icon'  => 'voyager-group',
+            'model' => TCG\Voyager\Models\User::class,
+            'url'   => 'admin/users',
+            'image' => '/images/widget-backgrounds/02.png',
         ],
-        */
+        [
+            'name'  => 'Post',
+            'icon'  => 'voyager-news',
+            'model' => TCG\Voyager\Models\Post::class,
+            'url'   => 'admin/posts',
+            'image' => '/images/widget-backgrounds/03.png',
+        ],
+        [
+            'name'  => 'Page',
+            'icon'  => 'voyager-file-text',
+            'model' => TCG\Voyager\Models\Page::class,
+            'url'   => 'admin/pages',
+            'image' => '/images/widget-backgrounds/04.png',
+        ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can modify some aspects of your dashboard
+    |
+    */
+
+    'dashboard' => [
+        // Add custom list items to navbar's dropdown
+        'navbar_items' => [
+            'Profile' => [
+                'route'         => 'voyager.profile',
+                'classes'       => 'class-full-of-rum',
+                'icon_class'    => 'voyager-person',
+            ],
+            'Home' => [
+                'route'         => '/',
+                'icon_class'    => 'voyager-home',
+                'target_blank'  => true,
+            ],
+        ],
+    ],
 ];

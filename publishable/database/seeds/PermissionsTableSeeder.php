@@ -7,30 +7,22 @@ class PermissionsTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
     public function run()
     {
-        Permission::firstOrCreate([
-            'key'        => 'browse_admin',
-            'table_name' => 'admin',
-        ]);
+        $keys = [
+            'browse_admin',
+            'browse_database',
+            'browse_media',
+            'browse_settings',
+        ];
 
-        Permission::firstOrCreate([
-            'key'        => 'browse_database',
-            'table_name' => 'admin',
-        ]);
-
-        Permission::firstOrCreate([
-            'key'        => 'browse_media',
-            'table_name' => 'admin',
-        ]);
-
-        Permission::firstOrCreate([
-            'key'        => 'browse_settings',
-            'table_name' => 'admin',
-        ]);
+        foreach ($keys as $key) {
+            Permission::firstOrCreate([
+                'key'        => $key,
+                'table_name' => 'admin',
+            ]);
+        }
 
         Permission::generateFor('menus');
 

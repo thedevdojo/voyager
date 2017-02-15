@@ -51,8 +51,8 @@ trait AlertsMessages
         return $this->alert($message, 'error');
     }
 
-    protected function alertException(\Exception $e)
+    protected function alertException(\Exception $e, $prefixMessage = '')
     {
-        return $this->alertError("Exception: {$e->getMessage()}");
+        return $this->alertError("{$prefixMessage} Exception: {$e->getMessage()}");
     }
 }

@@ -3,15 +3,15 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
-use TCG\Voyager\Voyager;
 
 class VoyagerMenuController extends Controller
 {
     public function builder($id)
     {
-        Voyager::can('edit_menus');
+        Voyager::canOrFail('edit_menus');
 
         $menu = Menu::findOrFail($id);
 
@@ -20,7 +20,7 @@ class VoyagerMenuController extends Controller
 
     public function delete_menu($menu, $id)
     {
-        Voyager::can('delete_menus');
+        Voyager::canOrFail('delete_menus');
 
         $item = MenuItem::findOrFail($id);
 
@@ -36,9 +36,12 @@ class VoyagerMenuController extends Controller
 
     public function add_item(Request $request)
     {
-        Voyager::can('add_menus');
+        Voyager::canOrFail('add_menus');
 
-        $data = $request->all();
+        $data = $this->prepareParameters(
+            $request->all()
+        );
+
         $data['order'] = 1;
 
         $highestOrderMenuItem = MenuItem::where('parent_id', '=', null)
@@ -61,10 +64,12 @@ class VoyagerMenuController extends Controller
 
     public function update_item(Request $request)
     {
-        Voyager::can('edit_menus');
+        Voyager::canOrFail('edit_menus');
 
         $id = $request->input('id');
-        $data = $request->except(['id']);
+        $data = $this->prepareParameters(
+            $request->except(['id'])
+        );
 
         $menuItem = MenuItem::findOrFail($id);
         $menuItem->update($data);
@@ -96,5 +101,22 @@ class VoyagerMenuController extends Controller
                 $this->orderMenu($menuItem->children, $item->id);
             }
         }
+    }
+
+    protected function prepareParameters($parameters)
+    {
+        switch ($parameters['type']) {
+            case 'route':
+                $parameters['url'] = null;
+                break;
+            case 'url':
+                $parameters['route'] = null;
+                $parameters['parameters'] = '';
+                break;
+        }
+
+        unset($parameters['type']);
+
+        return $parameters;
     }
 }
