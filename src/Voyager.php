@@ -186,7 +186,7 @@ class Voyager
 
     protected function loadPermissions()
     {
-        if (! $this->permissionsLoaded) {
+        if (!$this->permissionsLoaded) {
             $this->permissionsLoaded = true;
 
             $this->permissions = Permission::all();
@@ -200,7 +200,7 @@ class Voyager
         }
 
         if (is_null($id)) {
-            return null;
+            return;
         }
 
         if (!isset($this->users[$id])) {
