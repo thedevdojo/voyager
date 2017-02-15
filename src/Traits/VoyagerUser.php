@@ -24,6 +24,10 @@ trait VoyagerUser
      */
     public function hasRole($name)
     {
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
+        }
+        
         return in_array($this->role->name, (is_array($name) ? $name : [$name]));
     }
 
@@ -41,6 +45,14 @@ trait VoyagerUser
 
     public function hasPermission($name)
     {
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
+        }
+
+        if (!$this->role->relationLoaded('permissions')) {
+            $this->role->load('permissions');
+        }
+
         return in_array($name, $this->role->permissions->pluck('key')->toArray());
     }
 
