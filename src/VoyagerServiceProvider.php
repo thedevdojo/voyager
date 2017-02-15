@@ -103,7 +103,7 @@ class VoyagerServiceProvider extends ServiceProvider
     protected function registerViewComposers()
     {
         // Register alerts
-        View::composer('voyager::index', function ($view) {
+        View::composer('voyager::*', function ($view) {
             $view->with('alerts', VoyagerFacade::alerts());
         });
     }
@@ -116,7 +116,11 @@ class VoyagerServiceProvider extends ServiceProvider
         $currentRouteAction = app('router')->current()->getAction();
         $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
 
-        if ($routeName == 'voyager.dashboard' && request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
+        if ($routeName != 'voyager.dashboard') {
+            return;
+        }
+
+        if (request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
             $this->fixMissingStorageSymlink();
         } elseif (!file_exists(public_path('storage'))) {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
