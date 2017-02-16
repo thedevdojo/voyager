@@ -246,7 +246,7 @@
             </form>
             @if (count($errors))
                 <div class="error-login">
-                    The given credentials don't match with an user registered.
+                    The given credentials do not match a registered user.
                 </div>
             @endif
         </div>
