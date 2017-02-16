@@ -13,7 +13,7 @@ class MenuItem extends Model
 
     public function children()
     {
-        return $this->hasMany('TCG\Voyager\Models\MenuItem','parent_id')
+        return $this->hasMany('TCG\Voyager\Models\MenuItem', 'parent_id')
             ->with('children');
     }
 

@@ -52,8 +52,7 @@ class Menu extends Model
         $options = (object) $options;
 
         // Set static vars values for admin menus
-        if(in_array($type, ["admin","admin_menu"])){
-
+        if (in_array($type, ['admin', 'admin_menu'])) {
             $permissions = Permission::all();
             $dataTypes = DataType::all();
             $prefix = trim(route('voyager.dashboard', [], false), '/');
@@ -64,15 +63,14 @@ class Menu extends Model
                 $user_permissions = $user->role->permissions->pluck('key')->toArray();
             }
 
-            $options->user = (object) compact('permissions','dataTypes','prefix','user_permissions');
+            $options->user = (object) compact('permissions', 'dataTypes', 'prefix', 'user_permissions');
 
             // change type to blade template name - TODO funky names, should clean up later
-            $type = 'voyager::menu.' . $type;
-
-        }else{
-            if(is_null($type)){
+            $type = 'voyager::menu.'.$type;
+        } else {
+            if (is_null($type)) {
                 $type = 'voyager::menu.default';
-            }else if($type == 'bootstrap' && !view()->exists($type)){
+            } elseif ($type == 'bootstrap' && !view()->exists($type)) {
                 $type = 'voyager::menu.bootstrap';
             }
         }
@@ -81,5 +79,4 @@ class Menu extends Model
             \Illuminate\Support\Facades\View::make($type, ['items' => $menu->parent_items, 'options' => $options])->render()
         );
     }
-
 }
