@@ -29,7 +29,7 @@
                     <div class="panel-body" style="padding:30px;">
 
                         <div class="dd">
-                            <?php echo Menu::display($menu->name, 'admin'); ?>
+                            {!! Menu::display($menu->name, 'admin') !!}
                         </div>
 
                     </div>
