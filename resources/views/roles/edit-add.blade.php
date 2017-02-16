@@ -51,7 +51,7 @@
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
 
-                                    @includeIf("voyager::formfields.$row->type")
+                                    {!! Voyager::formField($row, $dataType, $dataTypeContent) !!}
 
                                 </div>
                             @endforeach
