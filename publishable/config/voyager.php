@@ -139,6 +139,17 @@ return [
                 'icon_class'    => 'voyager-home',
                 'target_blank'  => true,
             ],
+            'Logout' => [
+                'route'      => 'voyager.logout',
+                'icon_class' => 'voyager-power',
+            ],
         ],
+        'data_tables' => [
+            'responsive' => true, // Use responsive extension for jQuery dataTables that are not server-side paginated
+        ],
+    ],
+    'login' => [
+        'gradient_a' => '#4cb5ff',
+        'gradient_b' => '#e9721e',
     ],
 ];

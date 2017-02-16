@@ -22,7 +22,7 @@ class Post extends Model
         parent::save();
     }
 
-    public function author_id()
+    public function authorId()
     {
         return $this->belongsTo(User::class);
     }

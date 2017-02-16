@@ -7,9 +7,10 @@
 @section('content')
     <div class="page-content">
         @include('voyager::alerts')
-        <div class="widgets">
-            @foreach(config('voyager.widgets', []) as $element)
-                <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') . $element['image']}});">
+        <div class="clearfix container-fluid row">
+            @foreach(config('voyager.widgets', []) as $element) {{-- there should be a limit of widgets (4?) --}}
+            <div class="col-xs-12 col-sm-6 col-md-4"> <!-- cols stack should be dynamically built depending on number of widgets -->
+                <div class="panel widget center bgimage" style="margin-bottom:0;overflow:hidden;background-image:url({{ config('voyager.assets_path') . $element['image']}});">
                     <div class="dimmer"></div>
                     <div class="panel-content">
                         <i class={{ $element['icon'] }}></i>
@@ -19,9 +20,9 @@
                         <a href="{{ $element['url'] }}" class="btn btn-primary">View All {{ $element['name'] }}s</a>
                     </div>
                 </div>
+            </div>
             @endforeach
         </div>
-        <div style="clear:both"></div>
         <div style="padding:15px;">
             <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
             @if (isset($google_analytics_client_id) && !empty($google_analytics_client_id))
