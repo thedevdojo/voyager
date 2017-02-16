@@ -11,6 +11,12 @@ class MenuItem extends Model
 
     protected $guarded = [];
 
+    public function children()
+    {
+        return $this->hasMany('TCG\Voyager\Models\MenuItem','parent_id')
+            ->with('children');
+    }
+
     public function link($absolute = false)
     {
         if (!is_null($this->route)) {
