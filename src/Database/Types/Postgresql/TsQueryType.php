@@ -5,13 +5,12 @@ namespace TCG\Voyager\Database\Types\Postgresql;
 use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class RealType extends Type
+class TsQueryType extends Type
 {
-    const NAME = 'real';
-    const DBTYPE = 'float4';
+    const NAME = 'tsquery';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
-        return 'real';
+        return 'tsquery';
     }
 }

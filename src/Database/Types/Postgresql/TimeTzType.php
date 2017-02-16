@@ -5,13 +5,12 @@ namespace TCG\Voyager\Database\Types\Postgresql;
 use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-class RealType extends Type
+class TimeTzType extends Type
 {
-    const NAME = 'real';
-    const DBTYPE = 'float4';
+    const NAME = 'timetz';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
-        return 'real';
+        return 'time(0) with time zone';
     }
 }

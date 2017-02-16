@@ -104,7 +104,9 @@ abstract class Type extends DoctrineType
                 static::addType($name, $type);
             }
 
-            $platform->registerDoctrineTypeMapping($name, $name);
+            $dbType = defined("{$type}::DBTYPE") ? $type::DBTYPE : $name;
+
+            $platform->registerDoctrineTypeMapping($dbType, $name);
         }
 
         static::addCustomTypeOptions($platformName);
@@ -219,6 +221,7 @@ abstract class Type extends DoctrineType
         static::registerCustomOption('category', 'Date and Time', $types['datetime']);
         static::registerCustomOption('category', 'Lists', $types['lists']);
         static::registerCustomOption('category', 'Binary', $types['binary']);
+        static::registerCustomOption('category', 'Network', $types['network']);
         static::registerCustomOption('category', 'Objects', $types['objects']);
     }
 
@@ -249,19 +252,28 @@ abstract class Type extends DoctrineType
             'bigint',
             'decimal',
             'numeric',
+            'money',
             'float',
+            'real',
             'double',
+            'double precision',
         ];
 
         $strings = [
             'char',
+            'character',
             'varchar',
+            'character varying',
             'string',
             'guid',
+            'uuid',
             'tinytext',
             'text',
             'mediumtext',
             'longtext',
+            'tsquery',
+            'tsvector',
+            'xml',
         ];
 
         $datetime = [
@@ -269,9 +281,12 @@ abstract class Type extends DoctrineType
             'datetime',
             'year',
             'time',
+            'timetz',
             'timestamp',
+            'timestamptz',
             'datetimetz',
             'dateinterval',
+            'interval',
         ];
 
         $lists = [
@@ -286,12 +301,21 @@ abstract class Type extends DoctrineType
 
         $binary = [
             'bit',
+            'bit varying',
             'binary',
             'varbinary',
             'tinyblob',
             'blob',
             'mediumblob',
             'longblob',
+            'bytea',
+        ];
+
+        $network = [
+            'cidr',
+            'inet',
+            'macaddr',
+            'txid_snapshot',
         ];
 
         $objects = [
@@ -304,7 +328,8 @@ abstract class Type extends DoctrineType
             'datetime' => $datetime,
             'lists'    => $lists,
             'binary'   => $binary,
-            'objects'  => $objects
+            'network'  => $network,
+            'objects'  => $objects,
         ];
 
         return static::$typeCategories;
