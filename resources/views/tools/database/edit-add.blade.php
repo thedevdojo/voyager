@@ -20,7 +20,7 @@
     <div class="page-content container-fluid">
         <div class="row">
             <div id="dbManager" class="col-md-12">
-                <form @submit="stringifyTable" @keydown.enter.prevent action="{{ $db->formAction }}" method="POST">
+                <form ref="form" @submit.prevent="stringifyTable" @keydown.enter.prevent action="{{ $db->formAction }}" method="POST">
                     @if($db->action == 'update'){{ method_field('PUT') }}@endif
 
                     <database-table-editor :table="table"></database-table-editor>
@@ -59,6 +59,8 @@
             methods: {
                 stringifyTable() {
                     this.tableJson = JSON.stringify(this.table);
+                    
+                    this.$nextTick(() => this.$refs.form.submit());
                 }
             }
         });
