@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Traits;
 
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Role;
 
 /**
@@ -12,7 +13,7 @@ trait VoyagerUser
 {
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Voyager::modelClass('Role'));
     }
 
     /**
@@ -33,7 +34,7 @@ trait VoyagerUser
 
     public function setRole($name)
     {
-        $role = Role::where('name', '=', $name)->first();
+        $role = Voyager::model('Role')->where('name', '=', $name)->first();
 
         if ($role) {
             $this->role()->associate($role);
