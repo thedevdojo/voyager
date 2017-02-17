@@ -54,6 +54,8 @@ class VoyagerDatabaseController extends Controller
         Voyager::canOrFail('browse_database');
 
         try {
+            Type::registerCustomPlatformTypes();
+
             $table = Table::make($request->table);
             SchemaManager::createTable($table);
 
@@ -131,6 +133,9 @@ class VoyagerDatabaseController extends Controller
     {
         $db = new \stdClass();
 
+        // Need to get the types first to register custom types
+        $db->types = Type::getPlatformTypes();
+
         if ($action == 'update') {
             $db->table = SchemaManager::listTableDetails($table);
             $db->formAction = route('voyager.database.update', $table);
@@ -141,7 +146,6 @@ class VoyagerDatabaseController extends Controller
 
         $oldTable = old('table');
         $db->oldTable = $oldTable ? $oldTable : json_encode(null);
-        $db->types = Type::getPlatformTypes();
         $db->action = $action;
         $db->identifierRegex = Identifier::REGEX;
         $db->platform = SchemaManager::getDatabasePlatform()->getName();

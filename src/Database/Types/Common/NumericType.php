@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Database\Types\Postgresql;
+namespace TCG\Voyager\Database\Types\Common;
 
 use Doctrine\DBAL\Types\DecimalType as DoctrineDecimalType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

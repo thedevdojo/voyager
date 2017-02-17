@@ -199,17 +199,6 @@ abstract class Type extends DoctrineType
             'type' => 'number',
             'min'  => '0',
         ], 'year');
-
-        // Disable Default for unsupported types
-        static::registerCustomOption('default', [
-            'disabled' => true,
-        ], '*text');
-        static::registerCustomOption('default', [
-            'disabled' => true,
-        ], '*blob');
-        static::registerCustomOption('default', [
-            'disabled' => true,
-        ], 'json');
     }
 
     protected static function registerTypeCategories()

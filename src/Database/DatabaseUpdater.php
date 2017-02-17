@@ -7,6 +7,7 @@ use Doctrine\DBAL\Schema\TableDiff;
 use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use Doctrine\DBAL\Schema\SchemaException;
+use TCG\Voyager\Database\Types\Type;
 
 class DatabaseUpdater
 {
@@ -16,6 +17,8 @@ class DatabaseUpdater
 
     public function __construct(array $tableArr)
     {
+        Type::registerCustomPlatformTypes();
+
         $this->table = Table::make($tableArr);
         $this->tableArr = $tableArr;
         $this->originalTable = SchemaManager::listTableDetails($tableArr['oldName']);
