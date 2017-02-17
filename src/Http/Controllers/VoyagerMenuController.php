@@ -105,17 +105,19 @@ class VoyagerMenuController extends Controller
 
     protected function prepareParameters($parameters)
     {
-        switch ($parameters['type']) {
+        switch (array_get($parameters, 'type')) {
             case 'route':
                 $parameters['url'] = null;
                 break;
-            case 'url':
+            default:
                 $parameters['route'] = null;
                 $parameters['parameters'] = '';
                 break;
         }
 
-        unset($parameters['type']);
+        if (isset($parameters['type'])) {
+            unset($parameters['type']);
+        }
 
         return $parameters;
     }
