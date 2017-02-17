@@ -25,6 +25,7 @@
         "phpunit/phpunit": "~5.0",
         "laravel/framework": "~5.3.8",
         "orchestra/testbench": "~3.3.0"
+        "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
         "psr-4": {
