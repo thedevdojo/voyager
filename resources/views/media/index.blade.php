@@ -1,6 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
+    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue1.min.js"></script>
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/media.css"/>
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/select2/select2.min.css">
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/dropzone.css"/>
