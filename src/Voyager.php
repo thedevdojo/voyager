@@ -36,17 +36,17 @@ class Voyager
     protected $users = [];
 
     protected $models = [
-        'Category' => Category::class,
-        'DataRow' => DataRow::class,
-        'DataType' => DataType::class,
-        'Menu' => Menu::class,
-        'MenuItem' => MenuItem::class,
-        'Page' => Page::class,
+        'Category'   => Category::class,
+        'DataRow'    => DataRow::class,
+        'DataType'   => DataType::class,
+        'Menu'       => Menu::class,
+        'MenuItem'   => MenuItem::class,
+        'Page'       => Page::class,
         'Permission' => Permission::class,
-        'Post' => Post::class,
-        'Role' => Role::class,
-        'Setting' => Setting::class,
-        'User' => User::class,
+        'Post'       => Post::class,
+        'Role'       => Role::class,
+        'Setting'    => Setting::class,
+        'User'       => User::class,
     ];
 
     public function __construct()
