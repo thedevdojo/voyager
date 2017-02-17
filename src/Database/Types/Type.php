@@ -22,13 +22,7 @@ abstract class Type extends DoctrineType
 
     // todo: make sure this is not overwrting DoctrineType properties
 
-    // todo: go through laravel supported types in grammars
-    // add ones that are missing from doctrine
-    //    the dbtype name must match doctrine type name
     // Note: length, precision and scale need default values manually
-
-    // make sure all types are correct.. test..
-    // Next: sql server > postgres > sqlite
 
     public function getName()
     {
@@ -210,6 +204,7 @@ abstract class Type extends DoctrineType
         static::registerCustomOption('category', 'Date and Time', $types['datetime']);
         static::registerCustomOption('category', 'Lists', $types['lists']);
         static::registerCustomOption('category', 'Binary', $types['binary']);
+        static::registerCustomOption('category', 'Geometry', $types['geometry']);
         static::registerCustomOption('category', 'Network', $types['network']);
         static::registerCustomOption('category', 'Objects', $types['objects']);
     }
@@ -307,6 +302,17 @@ abstract class Type extends DoctrineType
             'txid_snapshot',
         ];
 
+        $geometry = [
+            'geometry',
+            'point',
+            'linestring',
+            'polygon',
+            'multipoint',
+            'multilinestring',
+            'multipolygon',
+            'geometrycollection',
+        ];
+
         $objects = [
             'object',
         ];
@@ -318,6 +324,7 @@ abstract class Type extends DoctrineType
             'lists'    => $lists,
             'binary'   => $binary,
             'network'  => $network,
+            'geometry' => $geometry,
             'objects'  => $objects,
         ];
 

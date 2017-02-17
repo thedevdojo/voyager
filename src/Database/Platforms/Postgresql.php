@@ -11,7 +11,6 @@ abstract class Postgresql extends Platform
     {
         // todo: need to create
             // box, circle, line, lseg, path, pg_lsn, point, polygon
-        // todo: add a Geometry category (also add Mysql types)
 
         $typeMapping->forget([
             'smallint',

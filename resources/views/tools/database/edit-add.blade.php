@@ -46,7 +46,6 @@
                 originalTable: {!! $db->table->toJson() !!}, // to do comparison later?
                 oldTable: {!! $db->oldTable !!},
                 tableJson: ''
-                
             },
             created() {
                 // If old table is set, use it to repopulate the form
