@@ -52,7 +52,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 0,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -70,7 +74,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -88,7 +96,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -106,7 +118,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -124,31 +140,34 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '{
-"resize": {
-"width": "1000",
-"height": "null"
-},
-"quality": "70%",
-"upsize": true,
-"thumbnails": [
-{
-"name": "medium",
-"scale": "50%"
-},
-{
-"name": "small",
-"scale": "25%"
-},
-{
-"name": "cropped",
-"crop": {
-"width": "300",
-"height": "250"
-}
-}
-]
-}',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                    'resize' => [
+                        'width'  => '1000',
+                        'height' => 'null',
+                    ],
+                    'quality'    => '70%',
+                    'upsize'     => true,
+                    'thumbnails' => [
+                        [
+                            'name'  => 'medium',
+                            'scale' => '50%',
+                        ],
+                        [
+                            'name'  => 'small',
+                            'scale' => '25%',
+                        ],
+                        [
+                            'name' => 'cropped',
+                            'crop' => [
+                                'with'   => '300',
+                                'height' => '250',
+                            ],
+                        ],
+                    ],
+                ]),
             ])->save();
         }
 
@@ -166,7 +185,15 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '{"slugify": {"origin": "title", "forceUpdate": true}}',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                    'slugify' => [
+                        'origin' => 'title',
+                        'forceUpdate' => true
+                    ],
+                ]),
             ])->save();
         }
 
@@ -220,14 +247,14 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '{
-"default": "DRAFT",
-"options": {
-"PUBLISHED": "published",
-"DRAFT": "draft",
-"PENDING": "pending"
-}
-}',
+                'details'      => json_encode([
+                    'default' => 'DRAFT',
+                    'options' => [
+                        'PUBLISHED' => 'published',
+                        'DRAFT'     => 'draft',
+                        'PENDING'   => 'pending',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -317,7 +344,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -371,7 +402,14 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '{"slugify": {"origin": "title"}}',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                    'slugify' => [
+                        'origin': 'title',
+                    ]
+                ]),
             ])->save();
         }
 
@@ -425,13 +463,13 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '{
-"default": "INACTIVE",
-"options": {
-"INACTIVE": "INACTIVE",
-"ACTIVE": "ACTIVE"
-}
-}',
+                'details'      => json_encode([
+                    'default' => 'INACTIVE',
+                    'options' => [
+                        'INACTIVE' => 'INACTIVE',
+                        'ACTIVE'   => 'ACTIVE',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -517,7 +555,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
@@ -534,7 +576,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
@@ -653,7 +699,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
@@ -721,17 +771,17 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '{
-"default": "__null__",
-"null": "__null__",
-"options": {
-"__null__": "NULL"
-},
-"relationship": {
-"key": "id",
-"label": "name"
-}
-}',
+                'details'      => json_encode([
+                    'default' => '',
+                    'null'    => '',
+                    'options' => [
+                        '' => 'NULL',
+                    ],
+                    'relationship' => [
+                        'key'   => 'id',
+                        'label' => 'name',
+                    ],
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
@@ -748,10 +798,9 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '{
-"default": 1
-}
-',
+                'details'      => json_encode([
+                    'default' => 1,
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
@@ -768,7 +817,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
@@ -785,7 +838,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
@@ -853,7 +910,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
@@ -904,7 +965,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'validation' => [
+                        'rule' => 'required',
+                    ],
+                ]),
             ])->save();
         }
         $dataRow = DataRow::firstOrNew([
