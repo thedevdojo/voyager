@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Database\Platforms;
 
-use TCG\Voyager\Database\Types\Type;
 use Illuminate\Support\Collection;
+use TCG\Voyager\Database\Types\Type;
 
 abstract class Mysql extends Platform
 {

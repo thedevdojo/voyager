@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Database\Platforms;
 
-use TCG\Voyager\Database\Types\Type;
 use Illuminate\Support\Collection;
 
 abstract class Sqlite extends Platform
@@ -19,6 +18,5 @@ abstract class Sqlite extends Platform
 
     public static function registerCustomTypeOptions()
     {
-        
     }
 }

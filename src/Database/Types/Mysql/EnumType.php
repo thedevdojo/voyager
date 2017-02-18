@@ -2,9 +2,9 @@
 
 namespace TCG\Voyager\Database\Types\Mysql;
 
-use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Database\Types\Type;
 
 class EnumType extends Type
 {
@@ -19,10 +19,10 @@ class EnumType extends Type
         $pdo = DB::connection()->getPdo();
 
         // trim the values
-        $allowed = array_map(function($value) use ($pdo) {
+        $allowed = array_map(function ($value) use ($pdo) {
             return $pdo->quote(trim($value));
         }, $allowed);
 
-        return "enum(".implode(", ", $allowed).")";
+        return 'enum('.implode(', ', $allowed).')';
     }
 }

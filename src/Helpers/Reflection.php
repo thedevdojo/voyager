@@ -5,6 +5,7 @@ if (!function_exists('get_reflection_method')) {
     {
         $reflectionMethod = new \ReflectionMethod($object, $method);
         $reflectionMethod->setAccessible(true);
+
         return $reflectionMethod;
     }
 }
@@ -21,6 +22,7 @@ if (!function_exists('get_reflection_property')) {
     {
         $reflectionProperty = new \ReflectionProperty($object, $property);
         $reflectionProperty->setAccessible(true);
+
         return $reflectionProperty;
     }
 }

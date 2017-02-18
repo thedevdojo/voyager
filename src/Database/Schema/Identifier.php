@@ -14,7 +14,7 @@ abstract class Identifier
         $identifier = trim($identifier);
 
         $validator = Validator::make(['identifier' => $identifier], [
-            'identifier' => 'required|regex:'.'/'.static::REGEX.'/'
+            'identifier' => 'required|regex:'.'/'.static::REGEX.'/',
         ]);
 
         if ($validator->fails()) {

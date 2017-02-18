@@ -3,10 +3,10 @@
 namespace TCG\Voyager\Database;
 
 use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Schema\TableDiff;
-use TCG\Voyager\Database\Schema\Table;
-use TCG\Voyager\Database\Schema\SchemaManager;
 use Doctrine\DBAL\Schema\SchemaException;
+use Doctrine\DBAL\Schema\TableDiff;
+use TCG\Voyager\Database\Schema\SchemaManager;
+use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Types\Type;
 
 class DatabaseUpdater
@@ -40,7 +40,7 @@ class DatabaseUpdater
         }
 
         $updater = new self($table);
-        
+
         $updater->updateTable();
     }
 

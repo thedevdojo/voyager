@@ -2,13 +2,8 @@
 
 namespace TCG\Voyager\Database\Schema;
 
-use Doctrine\DBAL\Schema\TableDiff;
-use Doctrine\DBAL\Schema\Table as DoctrineTable;
-use Doctrine\DBAL\Schema\Column as DoctrineColumn;
-use Doctrine\DBAL\Schema\Index as DoctrineIndex;
-use Doctrine\DBAL\Schema\ForeignKeyConstraint as DoctrineForeignKey;
 use Doctrine\DBAL\Schema\SchemaException;
-use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Schema\Table as DoctrineTable;
 use Illuminate\Support\Facades\DB;
 
 abstract class SchemaManager
@@ -63,7 +58,7 @@ abstract class SchemaManager
         if (static::manager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
             $foreignKeys = static::manager()->listTableForeignKeys($tableName);
         }
-        
+
         $indexes = static::manager()->listTableIndexes($tableName);
 
         return new Table($tableName, $columns, $indexes, $foreignKeys, false, []);
