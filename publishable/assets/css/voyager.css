@@ -827,11 +827,11 @@ table.dataTable.no-footer{
     color: #fff;
     background-color: #62a8ea;
     border-color: #62a8ea;
+    opacity:0.9;
 }
 
-.btn-primary.focus, .btn-primary:focus, .btn-primary:hover {
-    background-color: #89bceb;
-    border-color: #89bceb;
+.btn-primary.focus, .btn-primary:focus, .btn-primary:hover, .btn-primary:active {
+    opacity:1;
 }
 
 .btn-danger {
@@ -919,17 +919,6 @@ table.dataTable.no-footer{
     -o-transition: border .2s linear,color .2s linear,width .2s linear,background-color .2s linear;
     transition: border .2s linear,color .2s linear,width .2s linear,background-color .2s linear;
     -webkit-font-smoothing: subpixel-antialiased;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #62a8ea;
-    border-color: #62a8ea;
-}
-
-.btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
-    background-color: #4e97d9;
-    border-color: #4e97d9;
 }
 
 .panel.widget.bgimage{

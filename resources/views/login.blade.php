@@ -13,10 +13,14 @@
         body {
             background-image:url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
         }
-        .login-sidebar:after, .gradient-button {
-            background: linear-gradient(-135deg, {{config('voyager.login.gradient_a','#3f51b5')}}, {{config('voyager.login.gradient_b','#e91e63')}});
-            background: -webkit-linear-gradient(-135deg, {{config('voyager.login.gradient_a','#3f51b5')}}, {{config('voyager.login.gradient_b','#e91e63')}});
+        .login-sidebar:after {
+            background: linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});
+            background: -webkit-linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});
         }
+        .login-button, .bar:before, .bar:after{
+            background:{{ config('voyager.primary_color','#22A7F0') }};
+        }
+
     </style>
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
@@ -28,65 +32,63 @@
         <div class="faded-bg"></div>
         <div class="hidden-xs col-sm-8 col-md-9">
             <div class="clearfix">
-                <div class="hidden-xs" style="margin-top:200px"></div>
                 <div class="col-sm-12 col-md-10 col-md-offset-2">
-                    <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
-                    @if($admin_logo_img == '')
-                    <img class="img-responsive pull-left logo hidden-xs" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
-                    @else
-                    <img class="img-responsive pull-left logo hidden-xs" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
-                    @endif
-                    <div class="copy">
-                        <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
-                        <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
-                    </div>
+                    <div class="logo-title-container">
+                        <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
+                        @if($admin_logo_img == '')
+                        <img class="img-responsive pull-left logo hidden-xs" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
+                        @else
+                        <img class="img-responsive pull-left logo hidden-xs" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
+                        @endif
+                        <div class="copy">
+                            <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
+                            <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
+                        </div>
+                    </div> <!-- .logo-title-container -->
                 </div>
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-4 col-md-3 login-sidebar">
 
-            <div class="logo-container">    
-                <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
-                @if($admin_logo_img == '')
-                    <img class="img-responsive logo" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
-                @else
-                    <img class="img-responsive logo" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
-                @endif
-            </div>
+            <div class="login-container">
 
-            <form action="{{ route('voyager.login') }}" method="POST">
-            {{ csrf_field() }}
-            <div class="group">      
-              <input type="text" name="email" value="{{ old('email') }}" required>
-              <span class="highlight"></span>
-              <span class="bar"></span>
-              <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> E-mail</span></label>
-            </div>
+                <h2>Sign In Below:</h2>
 
-            <div class="group">      
-              <input type="password" name="password" required>
-              <span class="highlight"></span>
-              <span class="bar"></span>
-              <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> Password</span></label>
-            </div>
+                <form action="{{ route('voyager.login') }}" method="POST">
+                {{ csrf_field() }}
+                <div class="group">      
+                  <input type="text" name="email" value="{{ old('email') }}" required>
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> E-mail</span></label>
+                </div>
 
-            <button type="submit" class="btn btn-block gradient-button">
-                <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
-                <span class="signin">Login</span>
-            </button>
-           
-          </form>
+                <div class="group">      
+                  <input type="password" name="password" required>
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> Password</span></label>
+                </div>
 
-          @if(!$errors->isEmpty())
-          <div class="alert alert-black">
-            <ul class="list-unstyled">
-                @foreach($errors->all() as $err)
-                <li>{{ $err }}</li>
-                @endforeach                
-            </ul>
-          </div>            
-          @endif
+                <button type="submit" class="btn btn-block login-button">
+                    <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
+                    <span class="signin">Login</span>
+                </button>
+               
+              </form>
+
+              @if(!$errors->isEmpty())
+              <div class="alert alert-black">
+                <ul class="list-unstyled">
+                    @foreach($errors->all() as $err)
+                    <li>{{ $err }}</li>
+                    @endforeach                
+                </ul>
+              </div>            
+              @endif
+
+            </div> <!-- .login-container -->
             
         </div> <!-- .login-sidebar -->
     </div> <!-- .row -->
