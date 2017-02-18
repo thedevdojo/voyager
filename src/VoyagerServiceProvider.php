@@ -17,6 +17,66 @@ use TCG\Voyager\Models\User;
 class VoyagerServiceProvider extends ServiceProvider
 {
     /**
+     * List of Voyager publishable resources.
+     *
+     * @return array
+     */
+    public static function publishableResources($group = null) {
+        $publishablePath = dirname(__DIR__) . '/publishable';
+
+        $publishable = [
+            'voyager_assets' => [
+                "$publishablePath/assets" => public_path('vendor/tcg/voyager/assets'),
+            ],
+            'migrations' => [
+                "$publishablePath/database/migrations/" => database_path('migrations/voyager'),
+            ],
+            'seeds' => [
+                "$publishablePath/database/seeds/" => database_path('seeds/voyager'),
+            ],
+            'demo_content' => [
+                "$publishablePath/demo_content/" => storage_path('app/public'),
+            ],
+            'config' => [
+                "$publishablePath/config/voyager.php" => config_path('voyager.php'),
+            ],
+            'views' => [
+                "$publishablePath/views/" => resource_path('views/vendor/voyager'),
+            ],
+        ];
+
+        if( is_null($group) ) {
+            return $publishable;
+        }
+
+        return $publishable[$group];
+    }
+
+    /**
+     * The paths of published resources.
+     *   (if resource group has many paths, only the first one is returned).
+     *
+     * @param mixed $groups Resource groups
+     *
+     * @return string | array
+     */
+    public static function publishedPaths($groups) {
+        $publishable = static::publishableResources();
+        
+        if( is_array($groups) ) {
+            $paths = [];
+
+            foreach ($groups as $group) {
+                $paths[$group] = current($publishable[$group]);
+            }
+
+            return $paths;
+        }
+
+        return current($publishable[$groups]);
+    }
+
+    /**
      * Register the application services.
      */
     public function register()
@@ -65,6 +125,8 @@ class VoyagerServiceProvider extends ServiceProvider
         }
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
+
+        $this->loadMigrationsFrom(static::publishedPaths('migrations'));
 
         $router->middleware('admin.user', VoyagerAdminMiddleware::class);
 
@@ -152,29 +214,7 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     private function registerPublishableResources()
     {
-        $basePath = dirname(__DIR__);
-        $publishable = [
-            'voyager_assets' => [
-                "$basePath/publishable/assets" => public_path('vendor/tcg/voyager/assets'),
-            ],
-            'migrations' => [
-                "$basePath/publishable/database/migrations/" => database_path('migrations'),
-            ],
-            'seeds' => [
-                "$basePath/publishable/database/seeds/" => database_path('seeds'),
-            ],
-            'demo_content' => [
-                "$basePath/publishable/demo_content/" => storage_path('app/public'),
-            ],
-            'config' => [
-                "$basePath/publishable/config/voyager.php" => config_path('voyager.php'),
-            ],
-            'views' => [
-                "$basePath/publishable/views/" => resource_path('views/vendor/voyager'),
-            ],
-        ];
-
-        foreach ($publishable as $group => $paths) {
+        foreach (static::publishableResources() as $group => $paths) {
             $this->publishes($paths, $group);
         }
     }
@@ -191,9 +231,11 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     private function registerConsoleCommands()
     {
-        $this->commands(Commands\InstallCommand::class);
         $this->commands(Commands\ControllersCommand::class);
         $this->commands(Commands\AdminCommand::class);
+
+        $this->commands(Commands\Installation\InstallCommand::class);
+        $this->commands(Commands\Installation\UninstallCommand::class);
     }
 
     /**
