@@ -6,9 +6,9 @@ use Illuminate\Support\Collection;
 
 abstract class Platform
 {
-    abstract public static function getTypes(Collection $typeMapping);
+    // abstract public function getTypes(Collection $typeMapping);
 
-    abstract public static function registerCustomTypeOptions();
+    // abstract public function registerCustomTypeOptions();
 
     public static function getPlatform($platformName)
     {
