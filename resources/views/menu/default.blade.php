@@ -17,7 +17,7 @@
         }
 
         // Check if link is current
-        if(url($item->url) == url()->current()){
+        if(url($item->link()) == url()->current()){
             $isActive = 'active';
         }
 
@@ -29,7 +29,7 @@
     @endphp
 
     <li class="{{ $isActive }}">
-        <a href="{{ url($item->url) }}" target="{{ $item->target }}" style="{{ $styles }}">
+        <a href="{{ url($item->link()) }}" target="{{ $item->target }}" style="{{ $styles }}">
             {!! $icon !!}
             <span>{{ $item->title }}</span>
         </a>
