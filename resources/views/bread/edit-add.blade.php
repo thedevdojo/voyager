@@ -84,10 +84,16 @@
                                         @if($row->type == "image" && isset($dataTypeContent->{$row->field}))
                                             <img src="{{ Voyager::image( $dataTypeContent->{$row->field} ) }}"
                                                  style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
+                                        @if($row->type == "multiple_image" && is_array($dataTypeContent->{$row->field}))
+                                                @foreach($dataTypeContent->{$row->field} as $image)
+                                                    <img src="{{ Voyager::image( $image ) }}"
+                                                         style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
+                                                @endforeach
                                         @elseif($row->type == "file" && isset($dataTypeContent->{$row->field}))
                                             <div class="fileType">{{ $dataTypeContent->{$row->field} }}</div>
                                         @endif
-                                        <input type="file" name="{{ $row->field }}">
+                                        <input type="file" name="{{ $row->field }}" {{$row->type == "multiple_image"?'multiple':''}}>
+
                                     @elseif($row->type == "select_dropdown")
                                         <?php 
                                             if(strpos($row->field, '_id')){
@@ -252,6 +258,11 @@
 
                                     @elseif($row->type == "number")
                                         <input type="number" class="form-control" name="{{ $row->field }}"
+                                               placeholder="{{ $row->display_name }}"
+                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
+
+                                    @elseif($row->type == "url")
+                                        <input type="text" class="form-control" name="{{ $row->field }}"
                                                placeholder="{{ $row->display_name }}"
                                                value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
 
