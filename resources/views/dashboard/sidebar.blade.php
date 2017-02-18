@@ -4,7 +4,7 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="{{ route('voyager.dashboard') }}">
                     <div class="logo-icon-container">
-                        <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
+                        <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
                         @if($admin_logo_img == '')
                             <img src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
                         @else
