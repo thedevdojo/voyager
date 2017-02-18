@@ -26,7 +26,7 @@
             $linkAttributes =  'class="dropdown-toggle" data-toggle="dropdown"';
             $caret = '<span class="caret"></span>';
 
-            if(url($item->url) == url()->current()){
+            if(url($item->link()) == url()->current()){
                 $listItemClass = 'dropdown active';
             }else{
                 $listItemClass = 'dropdown';
@@ -41,7 +41,7 @@
     @endphp
 
     <li class="{{ $listItemClass }}">
-        <a href="{{ url($item->url) }}" target="{{ $item->target }}" style="{{ $styles }}" {!! $linkAttributes or '' !!}>
+        <a href="{{ url($item->link()) }}" target="{{ $item->target }}" style="{{ $styles }}" {!! $linkAttributes or '' !!}>
             {!! $icon !!}
             <span>{{ $item->title }}</span>
             {!! $caret !!}
