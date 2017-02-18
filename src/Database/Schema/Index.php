@@ -4,11 +4,11 @@ namespace TCG\Voyager\Database\Schema;
 
 use Doctrine\DBAL\Schema\Index as DoctrineIndex;
 
-abstract class Index 
+abstract class Index
 {
     const PRIMARY = 'PRIMARY';
-    const UNIQUE  = 'UNIQUE';
-    const INDEX   = 'INDEX';
+    const UNIQUE = 'UNIQUE';
+    const INDEX = 'INDEX';
 
     public static function make(array $index)
     {
@@ -25,7 +25,7 @@ abstract class Index
         } else {
             $isPrimary = $index['isPrimary'];
             $isUnique = $index['isUnique'];
-            
+
             // Set the type
             if ($isPrimary) {
                 $type = static::PRIMARY;
@@ -47,7 +47,7 @@ abstract class Index
 
         $flags = isset($index['flags']) ? $index['flags'] : [];
         $options = isset($index['options']) ? $index['options'] : [];
-        
+
         return new DoctrineIndex($name, $columns, $isUnique, $isPrimary, $flags, $options);
     }
 
@@ -86,9 +86,9 @@ abstract class Index
     /**
      * Create a default index name.
      *
-     * @param  array  $columns
-     * @param  string  $type
-     * @param  string  $table
+     * @param array  $columns
+     * @param string $type
+     * @param string $table
      *
      * @return string
      */
@@ -106,7 +106,7 @@ abstract class Index
         return [
             static::PRIMARY,
             static::UNIQUE,
-            static::INDEX
+            static::INDEX,
         ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Database\Types\Postgresql;
 
-use TCG\Voyager\Database\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use TCG\Voyager\Database\Types\Type;
 
 class BitType extends Type
 {

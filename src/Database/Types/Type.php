@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Database\Types;
 
-use TCG\Voyager\Database\Schema\SchemaManager;
 use Doctrine\DBAL\Platforms\AbstractPlatform as DoctrineAbstractPlatform;
 use Doctrine\DBAL\Types\Type as DoctrineType;
 use TCG\Voyager\Database\Platforms\Platform;
+use TCG\Voyager\Database\Schema\SchemaManager;
 
 abstract class Type extends DoctrineType
 {
@@ -47,7 +47,7 @@ abstract class Type extends DoctrineType
         if (!static::$customTypesRegistered) {
             static::registerCustomPlatformTypes();
         }
-        
+
         $platform = SchemaManager::getDatabasePlatform();
 
         static::$platformTypes = Platform::getPlatformTypes(
@@ -55,7 +55,7 @@ abstract class Type extends DoctrineType
             static::getPlatformTypeMapping($platform)
         );
 
-        static::$platformTypes = static::$platformTypes->map(function($type) {
+        static::$platformTypes = static::$platformTypes->map(function ($type) {
             return static::toArray(static::getType($type));
         })->groupBy('category');
 
@@ -113,7 +113,7 @@ abstract class Type extends DoctrineType
         static::registerCommonCustomTypeOptions();
 
         Platform::registerPlatformCustomTypeOptions($platformName);
-        
+
         // Add the custom options to the types
         foreach (static::$customTypeOptions as $option) {
             foreach ($option['types'] as $type) {
@@ -129,9 +129,9 @@ abstract class Type extends DoctrineType
         $typesPath = __DIR__.DIRECTORY_SEPARATOR.$platformName.DIRECTORY_SEPARATOR;
         $namespace = __NAMESPACE__.'\\'.$platformName.'\\';
         $types = [];
-        
+
         foreach (glob($typesPath.'*.php') as $classFile) {
-             $types[] = $namespace.str_replace(
+            $types[] = $namespace.str_replace(
                 '.php',
                 '',
                 str_replace($typesPath, '', $classFile)
@@ -148,9 +148,9 @@ abstract class Type extends DoctrineType
 
             if ($types == '*') {
                 $types = static::getAllTypes()->toArray();
-            } else if (strpos($types, '*') !== false) {
+            } elseif (strpos($types, '*') !== false) {
                 $searchType = str_replace('*', '', $types);
-                $types = static::getAllTypes()->filter(function($type) use ($searchType) {
+                $types = static::getAllTypes()->filter(function ($type) use ($searchType) {
                     return strpos($type, $searchType) !== false;
                 })->toArray();
             } else {

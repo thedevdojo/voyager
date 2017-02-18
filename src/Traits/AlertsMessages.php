@@ -17,7 +17,7 @@ trait AlertsMessages
 
             return $alerts;
         }
-        
+
         return [];
     }
 
@@ -25,7 +25,7 @@ trait AlertsMessages
     {
         $this->alerts['alerts'][] = [
             'type'    => $type,
-            'message' => $message
+            'message' => $message,
         ];
 
         return $this->alerts;

@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Database\Schema;
 
-use Doctrine\DBAL\Schema\Table as DoctrineTable;
 use Doctrine\DBAL\Schema\Comparator;
+use Doctrine\DBAL\Schema\Table as DoctrineTable;
 
 class Table extends DoctrineTable
 {
@@ -14,7 +14,7 @@ class Table extends DoctrineTable
         }
 
         $name = Identifier::validate($table['name'], 'Table');
-       
+
         $columns = [];
         foreach ($table['columns'] as $columnArr) {
             $column = Column::make($columnArr);
