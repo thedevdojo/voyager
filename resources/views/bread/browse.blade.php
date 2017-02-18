@@ -34,6 +34,15 @@
                                             <?php $options = json_decode($row->details); ?>
                                             @if($row->type == 'image')
                                                 <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                            @if($row->type == 'multiple_image' && is_array($data->{$row->field}))
+                                                @foreach($data->{$row->field} as $image)
+                                                <img src="
+                                                @if( strpos($image, 'http://') === false && strpos($image, 'https://') === false)
+                                                    {{ Voyager::image( $image ) }}
+                                                @else
+                                                    {{ $image }}
+                                                @endif" style="width:50px">
+                                                @endforeach
                                             @elseif($row->type == 'select_multiple')
                                                 @if(property_exists($options, 'relationship'))
 
