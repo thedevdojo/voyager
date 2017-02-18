@@ -4,6 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Facades\Voyager;
 
 /**
  * @todo: Refactor this class by using something like MenuBuilder Helper.
@@ -16,12 +17,12 @@ class Menu extends Model
 
     public function items()
     {
-        return $this->hasMany(MenuItem::class);
+        return $this->hasMany(Voyager::modelClass('MenuItem'));
     }
 
     public function parent_items()
     {
-        return $this->hasMany(MenuItem::class)
+        return $this->hasMany(Voyager::modelClass('MenuItem'))
             ->whereNull('parent_id');
     }
 
@@ -53,13 +54,13 @@ class Menu extends Model
 
         // Set static vars values for admin menus
         if (in_array($type, ['admin', 'admin_menu'])) {
-            $permissions = Permission::all();
-            $dataTypes = DataType::all();
+            $permissions = Voyager::model('Permission')->all();
+            $dataTypes = Voyager::model('DataType')->all();
             $prefix = trim(route('voyager.dashboard', [], false), '/');
             $user_permissions = null;
 
             if (!Auth::guest()) {
-                $user = User::find(Auth::id());
+                $user = Voyager::model('User')->find(Auth::id());
                 $user_permissions = $user->role->permissions->pluck('key')->toArray();
             }
 

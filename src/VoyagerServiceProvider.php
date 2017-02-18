@@ -12,8 +12,6 @@ use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\User;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -26,7 +24,6 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->register(DoctrineSupportServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
-        $loader->alias('Menu', Menu::class);
         $loader->alias('Voyager', VoyagerFacade::class);
 
         $this->app->singleton('voyager', function () {
@@ -61,7 +58,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
                 if (is_null($user->role_id)) {
-                    User::findOrFail($user->id)
+                    VoyagerFacade::model('User')->findOrFail($user->id)
                         ->setRole(config('voyager.user.default_role'))
                         ->save();
                 }

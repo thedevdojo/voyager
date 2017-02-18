@@ -12,8 +12,6 @@ use Illuminate\Support\Str;
 use TCG\Voyager\Facades\DBSchema;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Permission;
 
 class VoyagerDatabaseController extends Controller
 {
@@ -23,7 +21,7 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::canOrFail('browse_database');
 
-        $dataTypes = DataType::select('id', 'name')->get()->pluck('id', 'name')->toArray();
+        $dataTypes = Voyager::model('DataType')->select('id', 'name')->get()->pluck('id', 'name')->toArray();
 
         $tables = array_map(function ($table) use ($dataTypes) {
             $table = [
@@ -245,7 +243,7 @@ class VoyagerDatabaseController extends Controller
         Voyager::canOrFail('browse_database');
 
         try {
-            $dataType = new DataType();
+            $dataType = Voyager::model('DataType');
             $data = $dataType->updateDataType($request->all(), true)
                 ? [
                     'message'    => 'Successfully created new BREAD',
@@ -269,7 +267,7 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::canOrFail('browse_database');
 
-        $dataType = DataType::whereName($table)->first();
+        $dataType = Voyager::model('DataType')->whereName($table)->first();
 
         try {
             $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : \TCG\Voyager\Facades\DBSchema::describeTable($dataType->name);
@@ -291,7 +289,7 @@ class VoyagerDatabaseController extends Controller
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         try {
-            $dataType = DataType::find($id);
+            $dataType = Voyager::model('DataType')->find($id);
 
             $data = $dataType->updateDataType($request->all(), true)
                 ? [
@@ -317,8 +315,8 @@ class VoyagerDatabaseController extends Controller
         Voyager::canOrFail('browse_database');
 
         /** @var \TCG\Voyager\Models\DataType $dataType */
-        $dataType = DataType::find($id);
-        $data = DataType::destroy($id)
+        $dataType = Voyager::model('DataType')->find($id);
+        $data = Voyager::model('DataType')->destroy($id)
             ? [
                 'message'    => "Successfully removed BREAD from {$dataType->name}",
                 'alert-type' => 'success',
@@ -329,7 +327,7 @@ class VoyagerDatabaseController extends Controller
             ];
 
         if (!is_null($dataType)) {
-            Permission::removeFrom($dataType->name);
+            Voyager::model('Permission')->removeFrom($dataType->name);
         }
 
         return redirect()->route('voyager.database.index')->with($data);
