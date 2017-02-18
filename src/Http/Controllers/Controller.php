@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use TCG\Voyager\Traits\AlertsMessages;
 
 abstract class Controller extends BaseController
 {
     use DispatchesJobs,
         ValidatesRequests,
-        AuthorizesRequests;
+        AuthorizesRequests,
+        AlertsMessages;
 
     public function getSlug(Request $request)
     {

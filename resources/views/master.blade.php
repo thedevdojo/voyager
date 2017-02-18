@@ -35,7 +35,6 @@
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue.min.js"></script>
 
     @yield('css')
 
@@ -104,27 +103,28 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/readmore.min.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/app.js"></script>
+<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/helpers.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/toastr.min.js"></script>
 <script>
+    @if(Session::has('alerts'))
+        let alerts = {!! json_encode(Session::get('alerts')) !!};
+
+        displayAlerts(alerts, toastr);
+    @endif
+
     @if(Session::has('message'))
-    var type = "{{ Session::get('alert-type', 'info') }}";
-    switch (type) {
-        case 'info':
-            toastr.info("{{ Session::get('message') }}");
-            break;
+    
+    // TODO: change Controllers to use AlertsMessages trait... then remove this
+    var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
+    var alertMessage = {!! json_encode(Session::get('message')) !!};
+    var alerter = toastr[alertType];
 
-        case 'warning':
-            toastr.warning("{{ Session::get('message') }}");
-            break;
-
-        case 'success':
-            toastr.success("{{ Session::get('message') }}");
-            break;
-
-        case 'error':
-            toastr.error("{{ Session::get('message') }}");
-            break;
+    if (alerter) {
+        alerter(alertMessage);
+    } else {
+        toastr.error("toastr alert-type " + alertType + " is unknown");
     }
+
     @endif
 </script>
 @yield('javascript')
