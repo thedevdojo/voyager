@@ -120,19 +120,22 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::can('browse_database');
 
+        // Decode original rows JSON to objects
+        $request->original_row = array_map(function ($jsonRow) {
+            return json_decode($jsonRow);
+        }, $request->original_row);
+
         $this->renameTable($request->original_name, $request->name);
         $this->renameColumns($request, $request->name);
         $this->dropColumns($request, $request->name);
         $this->updateColumns($request, $request->name);
 
-        return redirect()
-            ->route('voyager.database.index')
-            ->with(
+        return back()->with(
                 [
                     'message'    => "Successfully updated $request->name table",
                     'alert-type' => 'success',
                 ]
-            );
+        );
     }
 
     public function reorder_column(Request $request)

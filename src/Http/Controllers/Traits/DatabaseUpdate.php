@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers\Traits;
 use Exception;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use TCG\Voyager\Facades\DBSchema;
 
@@ -20,6 +21,42 @@ trait DatabaseUpdate
     private $renameBlacklist = [
         //'enum',
     ];
+
+    /**
+     * Build a collection containing each column's info.
+     *
+     * @param Request $request
+     *
+     * @return Collection
+     */
+    private function buildColumnsCollection(Request $request, Collection $existingColumns = null)
+    {
+        $existingColumns = isset($existingColumns) ? $existingColumns : collect();
+
+        $columns = collect();
+
+        if (isset($request->field)) {
+            foreach ($request->field as $index => $field) {
+                // If a column has been destroyed, just skip it and move on to the next column.
+                if ((bool) $request->delete_field[$index]) {
+                    continue;
+                }
+
+                $columns->push([
+                        'field'    => $field,
+                        'type'     => $request->type[$index],
+                        'enum'     => $request->enum[$index],
+                        'nullable' => (bool) $request->nullable[$index],
+                        'key'      => $request->key[$index],
+                        'default'  => $request->default[$index],
+                        'exists'   => $existingColumns->has($field),
+                        'original' => (object) $existingColumns->get($field),
+                ]);
+            }
+        }
+
+        return $columns;
+    }
 
     /**
      * Rename table if new table name given.
@@ -55,7 +92,8 @@ trait DatabaseUpdate
                     continue;
                 }
 
-                $originalColumn = $request->original_field[$index];
+                $originalRow = $request->original_row[$index];
+                $originalColumn = isset($originalRow) ? $originalRow->field : '';
 
                 // If the name of the column has changed rename it.
                 if ($originalColumn && $originalColumn != $column) {
@@ -98,7 +136,8 @@ trait DatabaseUpdate
     private function updateColumns(Request $request, $tableName)
     {
         $existingColumns = DBSchema::describeTable($tableName)->keyBy('field');
-        $columnQueries = $this->buildQuery($request, $existingColumns);
+        $columnsCollection = $this->buildColumnsCollection($request, $existingColumns);
+        $columnQueries = $this->buildQuery($columnsCollection);
 
         Schema::table($tableName, function (Blueprint $table) use ($columnQueries, $request, $existingColumns) {
             foreach ($columnQueries as $index => $query) {
@@ -114,5 +153,17 @@ trait DatabaseUpdate
                 $query($table);
             }
         });
+    }
+
+    /**
+     * Check if column needs to be updated.
+     *
+     * @param array $column
+     *
+     * @return array What needs to be updated.
+     */
+    private function whatToUpdate($column)
+    {
+        // implement this
     }
 }

@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Controllers\Traits;
 
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 trait DatabaseQueryBuilder
@@ -40,20 +39,17 @@ trait DatabaseQueryBuilder
     /**
      * Build the queries necessary for creating/updating tables.
      *
-     * @param Request         $request
-     * @param Collection|null $existingColumns
+     * @param Collection $columns
      *
      * @return Collection
      */
-    private function buildQuery(Request $request, $existingColumns = null)
+    private function buildQuery(Collection $columns)
     {
-        return $this->buildColumnsCollection($request)->map(function ($column) use ($existingColumns) {
+        return $columns->map(function ($column) {
             // We need to check that an existing database table column in now being
             // updated. If it is, we also need to check that the supplied column
             // type can actually be update without throwing an annoying error.
-            if ($existingColumns && $existingColumns->has($column['field']) &&
-                in_array($column['type'], $this->typeBlacklist)
-            ) {
+            if ($column['exists'] && in_array($column['type'], $this->typeBlacklist)) {
                 return false;
             }
 
@@ -77,9 +73,19 @@ trait DatabaseQueryBuilder
                     array_map('trim', explode(',', $column['enum']))
                 ) : $table->{$type}($column['field']);
 
-                if ($column['key'] == 'UNI') {
-                    $result->unique();
+                if (($column['key'] == 'UNI')) {
+                    // Only add a unique index if:
+                    //  this is a new column
+                    //  or an existing column that doesn't already have a unique index !('UNI' || 'PRI')
+                    if ((!$column['exists']) ||
+                        (($originalKey = $column['original']->key) != 'UNI') && ($originalKey != 'PRI')) {
+                        $result->unique();
+                    }
                 }
+
+                // TODO: handle columns that change their index
+                // dropUniqe() and dropPrimary()
+                // Add handling fot other types of Indexes
 
                 $result->nullable($column['nullable']);
 
@@ -90,37 +96,5 @@ trait DatabaseQueryBuilder
                 return $result;
             };
         })->filter();
-    }
-
-    /**
-     * Build a collection containing each column's info.
-     *
-     * @param Request $request
-     *
-     * @return Collection
-     */
-    private function buildColumnsCollection(Request $request)
-    {
-        $columns = collect();
-
-        if (isset($request->field)) {
-            foreach ($request->field as $index => $field) {
-                // If a column has been destroyed, just skip it and move on to the next column.
-                if ((bool) $request->delete_field[$index]) {
-                    continue;
-                }
-
-                $columns->push([
-                        'field'    => $field,
-                        'type'     => $request->type[$index],
-                        'enum'     => $request->enum[$index],
-                        'nullable' => (bool) $request->nullable[$index],
-                        'key'      => $request->key[$index],
-                        'default'  => $request->default[$index],
-                    ]);
-            }
-        }
-
-        return $columns;
     }
 }

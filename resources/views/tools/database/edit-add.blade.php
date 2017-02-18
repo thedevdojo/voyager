@@ -35,7 +35,7 @@
             <td>
                 <input type="text" class="form-control fieldName" name="field[]">
                 @if(isset($table))
-                    <input type="hidden" class="form-control originalfieldName" name="original_field[]">
+                    <input type="hidden" class="form-control originalRow" name="original_row[]">
                     <input type="hidden" class="form-control deleteField" name="delete_field[]" value="0">
                 @endif
             </td>
@@ -187,7 +187,7 @@
                 newRow();
             @else
                 @foreach($rows as $row)
-                    newRow('', '{{ $row['field'] }}', '{{ $row['type'] }}', '{{ $row['null'] }}', '{{ $row['key'] }}', '{{ $row['default'] }}');
+                    newRow('', {!! json_encode($row) !!});
                 @endforeach
             @endif
 
@@ -261,7 +261,7 @@
             });
         });
 
-        function newRow(kind, name, type, nullable, key, defaultValue) {
+        function newRow(kind, row) {
 
             unique_id = ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
             if (kind == 'primary') {
@@ -295,24 +295,24 @@
                 $('#' + unique_id).find('.fieldKey').hide();
                 $('#newFieldSoftDelete').attr('disabled', 'disabled').off('click');
             } else {
-                if (typeof(name) != 'undefined') {
+                if (typeof(row) != 'undefined') {
                     $('#' + unique_id).addClass('existing_row');
-                    $('#' + unique_id).find('.fieldName').val(name);
-                    $('#' + unique_id).find('.originalfieldName').val(name);
-                    var correct_type = getCorrectType(type);
+                    $('#' + unique_id).find('.fieldName').val(row.field);
+                    $('#' + unique_id).find('.originalRow').val(JSON.stringify(row));
+                    var correct_type = getCorrectType(row.type);
                     if (correct_type == 'enum') {
-                        $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val .enum').val(str_replace(['enum(', ')', '&#039;'], '', type));
+                        $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val .enum').val(str_replace(['enum(', ')', '&#039;'], '', row.type));
                         $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val').show();
                     } else {
                         $('#' + unique_id).find('.fieldType').parents('.newTableRow').find('.enum_val').hide();
                     }
                     $('#' + unique_id).find('.fieldType').val(correct_type);
-                    $('#' + unique_id).find('.fieldKey').val(key);
-                    if (nullable == "YES") {
+                    $('#' + unique_id).find('.fieldKey').val(row.key);
+                    if (row.null == "YES") {
                         $('#' + unique_id).find('.toggleswitch').prop('checked', true).change();
                         $('#' + unique_id).find('.toggleswitchHidden').val(1);
                     }
-                    $('#' + unique_id).find('.fieldDefault').val(defaultValue);
+                    $('#' + unique_id).find('.fieldDefault').val(row.default);
                 }
             }
 
