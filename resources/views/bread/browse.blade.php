@@ -83,6 +83,8 @@
                                             <div class="readmore">{{ $data->{$row->field} }}</div>                                            
                                             @elseif($row->type == 'rich_text_box')
                                             <div class="readmore">{{ $data->{$row->field} }}</div>
+                                            @elseif($row->type == 'url' && $data->{$row->field} != null)
+                                            <a href="{{ $data->{$row->field} }}">show</a>
                                             @else
                                                 {{ $data->{$row->field} }}
                                             @endif

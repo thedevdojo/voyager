@@ -146,6 +146,9 @@
                                                 <option value="number" @if(isset($dataRow->type) && $dataRow->type == 'number'){{ 'selected' }}@endif>
                                                     Number
                                                 </option>
+                                                <option value="url" @if(isset($dataRow->type) && $dataRow->type == 'url'){{ 'selected' }}@endif>
+                                                    URL
+                                                </option>
                                             </select>
                                         @endif
 
