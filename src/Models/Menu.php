@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use TCG\Voyager\Facades\Voyager;
 
 /**
  * @todo: Refactor this class by using something like MenuBuilder Helper.
@@ -23,7 +24,7 @@ class Menu extends Model
 
     public function items()
     {
-        return $this->hasMany(MenuItem::class);
+        return $this->hasMany(Voyager::modelClass('MenuItem'));
     }
 
     /**
@@ -50,15 +51,15 @@ class Menu extends Model
         // Convert options array into object
         $options = (object) $options;
 
-        self::$permissions = Permission::all();
+        self::$permissions = Voyager::model('Permission')->all();
 
         if (!Auth::guest()) {
-            $user = User::find(Auth::id());
+            $user = Voyager::model('User')->find(Auth::id());
 
             self::$user_permissions = $user->role->permissions->pluck('key')->toArray();
         }
 
-        self::$dataTypes = DataType::all();
+        self::$dataTypes = Voyager::model('DataType')->all();
 
         self::$prefix = trim(route('voyager.dashboard', [], false), '/');
 
@@ -314,7 +315,7 @@ class Menu extends Model
                 } else {
                     // Check if admin permission exists
                     $exist = self::$permissions->first(function ($value) use ($slug) {
-                        return $value->key == 'browse_'.$slug && $value->table_name == 'admin';
+                        return $value->key == 'browse_'.$slug && is_null($value->table_name);
                     });
                 }
 

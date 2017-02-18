@@ -11,8 +11,6 @@ use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\User;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -24,7 +22,6 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->register(ImageServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
-        $loader->alias('Menu', Menu::class);
         $loader->alias('Voyager', VoyagerFacade::class);
 
         $this->app->singleton('voyager', function () {
@@ -59,7 +56,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
                 if (is_null($user->role_id)) {
-                    User::findOrFail($user->id)
+                    VoyagerFacade::model('User')->findOrFail($user->id)
                         ->setRole(config('voyager.user.default_role'))
                         ->save();
                 }
@@ -101,7 +98,7 @@ class VoyagerServiceProvider extends ServiceProvider
     protected function registerViewComposers()
     {
         // Register alerts
-        View::composer('voyager::index', function ($view) {
+        View::composer('voyager::*', function ($view) {
             $view->with('alerts', VoyagerFacade::alerts());
         });
     }
@@ -114,7 +111,11 @@ class VoyagerServiceProvider extends ServiceProvider
         $currentRouteAction = app('router')->current()->getAction();
         $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
 
-        if ($routeName == 'voyager.dashboard' && request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
+        if ($routeName != 'voyager.dashboard') {
+            return;
+        }
+
+        if (request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
             $this->fixMissingStorageSymlink();
         } elseif (!file_exists(public_path('storage'))) {
             $alert = (new Alert('missing-storage-symlink', 'warning'))

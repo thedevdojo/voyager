@@ -32,7 +32,7 @@
 
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
-                                <img style="max-width:640px"
+                                <img class="img-responsive"
                                      src="{{ Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
                                 <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
@@ -64,6 +64,8 @@
                                 @else
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
+                            @elseif($row->type == 'rich_text_box')
+                                <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @else
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif

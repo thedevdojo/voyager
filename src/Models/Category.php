@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use TCG\Voyager\Facades\Voyager;
 
 class Category extends Model
 {
@@ -12,12 +13,12 @@ class Category extends Model
 
     public function posts()
     {
-        return $this->hasMany(Post::class)
+        return $this->hasMany(Voyager::modelClass('Post'))
             ->published()
             ->orderBy('created_at', 'DESC');
     }
 
-    public function parent_id()
+    public function parentId()
     {
         return $this->belongsTo(self::class);
     }

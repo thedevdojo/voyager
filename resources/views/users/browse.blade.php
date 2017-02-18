@@ -31,9 +31,9 @@
                             <tbody>
                             @foreach($dataTypeContent as $data)
                                 <tr>
-                                    <td>{{ $data->name }}</td>
-                                    <td>{{ $data->email }}</td>
-                                    <td>{{ $data->created_at }}</td>
+                                    <td>{{ucwords($data->name)}}</td>
+                                    <td>{{$data->email}}</td>
+                                    <td>{{ \Carbon\Carbon::parse($data->created_at)->format('F jS, Y h:i A') }}</td> 
                                     <td>
                                         <img src="@if( strpos($data->avatar, 'http://') === false && strpos($data->avatar, 'https://') === false){{ Voyager::image( $data->avatar ) }}@else{{ $data->avatar }}@endif" style="width:100px">
                                     </td>

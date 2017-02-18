@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    var appContainer = $(".app-container");
 
   $('#voyager-loader').fadeOut();
   $('.readmore').readmore({
@@ -9,12 +10,36 @@ $(document).ready(function(){
   });
 
   $(".hamburger, .navbar-expand-toggle").on('click', function() {
-    $(".app-container").toggleClass("expanded");
+    var outside = $('.fadetoblack');
+    var hamburger = $('.hamburger');
+
+      if ($(this).is('button')) {
+        appContainer.toggleClass("expanded");
+        $(this).toggleClass('is-active');
+      } else {
+        appContainer.removeClass("expanded");
+        hamburger.toggleClass('is-active');
+      }
+
+      outside.on('click', function(){
+        console.debug('clicked');
+        outside.off('click');
+        if (appContainer.hasClass('expanded')) {
+            appContainer.removeClass('expanded');
+            hamburger.removeClass('is-active');
+            outside.off('click');
+        }
+      });
+  });
+
+  $('#sidebar-sticker').on('click', function(){
     $(this).toggleClass("is-active");
     if ($(this).hasClass("is-active")) {
       $.cookie("expandedMenu", 1);
+      appContainer.toggleClass("expanded");
     } else {
       $.cookie("expandedMenu", 0);
+      appContainer.toggleClass("expanded");
     }
   });
 
@@ -68,28 +93,4 @@ $(document).ready(function(){
   $('.navbar-right-expand-toggle').on('click', function(){
     $('ul.navbar-right').toggleClass('expanded');
   }); 
-  
 });
-
-function displayAlerts(alerts, alerter, type) {
-    if (type) {
-        // Only display alerts of this type...
-        alerts = alerts.filter(function(alert) {
-            return type == alert.type;
-        });
-    }
-
-    let alert, alertMethod;
-    
-    for (a in alerts) {
-        alert = alerts[a];
-        alertMethod = alerter[alert.type];
-
-        if (alertMethod) {
-            alertMethod(alert.message);
-            continue;
-        }
-        
-        alerter.error("No alert method found for alert type: " + alert.type);
-    }
-}

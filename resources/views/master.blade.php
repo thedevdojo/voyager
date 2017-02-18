@@ -61,10 +61,10 @@ $user_avatar = Voyager::image(Auth::user()->avatar);
 if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->avatar, 0, 8) == 'https://')) {
     $user_avatar = Auth::user()->avatar;
 }
-$menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1;
 ?>
 
-<div class="app-container @if ($menuExpanded) expanded @endif ">
+<div class="app-container">
+    <div class="fadetoblack visible-xs"></div>
     <div class="row content-container">
         @include('voyager::dashboard.navbar')
         @include('voyager::dashboard.sidebar')
@@ -103,6 +103,7 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
 
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/readmore.min.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/app.js"></script>
+<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/helpers.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/toastr.min.js"></script>
 <script>
     @if(Session::has('alerts'))
