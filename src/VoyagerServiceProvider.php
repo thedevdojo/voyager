@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager;
 
+use Arrilot\Widgets\Facade as Widget;
+use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
@@ -19,7 +21,10 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        require_once __DIR__.'/../helpers.php';
+
         $this->app->register(ImageServiceProvider::class);
+        $this->app->register(WidgetServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
@@ -32,6 +37,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->registerAlertComponents();
         $this->registerFormFields();
+        $this->registerWidgets();
 
         $this->registerConfigs();
 
@@ -155,6 +161,20 @@ class VoyagerServiceProvider extends ServiceProvider
             $class = 'TCG\\Voyager\\Alert\\Components\\'.ucfirst(camel_case($component)).'Component';
 
             $this->app->bind("voyager.alert.components.{$component}", $class);
+        }
+    }
+
+    /**
+     * Register widget.
+     */
+    protected function registerWidgets()
+    {
+        $widgets = ['UserDimmer', 'PostDimmer', 'PageDimmer'];
+
+        foreach ($widgets as $widget) {
+            $class = 'TCG\\Voyager\\Widgets\\'.studly_case($widget);
+
+            Widget::group('voyager::dimmers')->addWidget($class);
         }
     }
 
