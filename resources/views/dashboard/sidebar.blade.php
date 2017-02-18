@@ -33,6 +33,6 @@
 
         </div>
 
-        <?= Menu::display('admin', 'admin_menu'); ?>
+        {!! Menu::display('admin', 'admin_menu') !!}
     </nav>
 </div>
