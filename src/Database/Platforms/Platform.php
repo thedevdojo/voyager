@@ -6,9 +6,9 @@ use Illuminate\Support\Collection;
 
 abstract class Platform
 {
-    // abstract public function getTypes(Collection $typeMapping);
+    // abstract public static function getTypes(Collection $typeMapping);
 
-    // abstract public function registerCustomTypeOptions();
+    // abstract public static function registerCustomTypeOptions();
 
     public static function getPlatform($platformName)
     {
@@ -23,11 +23,15 @@ abstract class Platform
 
     public static function getPlatformTypes($platformName, Collection $typeMapping)
     {
-        return static::getPlatform($platformName)::getTypes($typeMapping);
+        $platform = static::getPlatform($platformName);
+
+        return $platform::getTypes($typeMapping);
     }
 
     public static function registerPlatformCustomTypeOptions($platformName)
     {
-        return static::getPlatform($platformName)::registerCustomTypeOptions();
+        $platform = static::getPlatform($platformName);
+
+        return $platform::registerCustomTypeOptions();
     }
 }
