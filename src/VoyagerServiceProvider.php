@@ -21,8 +21,6 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        require_once __DIR__.'/../helpers.php';
-
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(WidgetServiceProvider::class);
 
