@@ -3,23 +3,51 @@
 namespace TCG\Voyager;
 
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
+use TCG\Voyager\FormFields\HandlerInterface;
+use TCG\Voyager\Models\Category;
+use TCG\Voyager\Models\DataRow;
+use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Models\Menu;
+use TCG\Voyager\Models\MenuItem;
+use TCG\Voyager\Models\Page;
 use TCG\Voyager\Models\Permission;
+use TCG\Voyager\Models\Post;
+use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\User;
 
 class Voyager
 {
-    private static $instance;
-
     protected $version;
     protected $filesystem;
 
     protected $alerts = [];
+    protected $alertsCollected = false;
 
-    protected $allertsCollected = false;
+    protected $formFields = [];
+    protected $afterFormFields = [];
+
+    protected $permissionsLoaded = false;
+    protected $permissions = [];
+
+    protected $users = [];
+
+    protected $models = [
+        'Category'   => Category::class,
+        'DataRow'    => DataRow::class,
+        'DataType'   => DataType::class,
+        'Menu'       => Menu::class,
+        'MenuItem'   => MenuItem::class,
+        'Page'       => Page::class,
+        'Permission' => Permission::class,
+        'Post'       => Post::class,
+        'Role'       => Role::class,
+        'Setting'    => Setting::class,
+        'User'       => User::class,
+    ];
 
     public function __construct()
     {
@@ -28,18 +56,79 @@ class Voyager
         $this->findVersion();
     }
 
-    public static function getInstance()
+    public function model($name)
     {
-        if (is_null(static::$instance)) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
+        return app($this->models[studly_case($name)]);
     }
 
-    public static function setting($key, $default = null)
+    public function modelClass($name)
+    {
+        return $this->models[$name];
+    }
+
+    public function useModel($name, $object)
+    {
+        if (is_string($object)) {
+            $object = app($object);
+        }
+
+        $class = get_class($object);
+
+        if (isset($this->models[studly_case($name)]) && !$object instanceof $this->models[studly_case($name)]) {
+            throw new \Exception("[{$class}] must be instance of [{$this->models[studly_case($name)]}].");
+        }
+
+        $this->models[studly_case($name)] = $class;
+    }
+
+    public function formField($row, $dateType, $dataTypeContent)
+    {
+        $formField = $this->formFields[$row->type];
+
+        return $formField->handle($row, $dateType, $dataTypeContent);
+    }
+
+    public function afterFormFields($row, $dataType, $dataTypeContent)
+    {
+        $options = json_decode($row->details);
+
+        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent, $options) {
+            return $after->visible($row, $dataType, $dataTypeContent, $options);
+        });
+    }
+
+    public function addFormField($handler)
+    {
+        if (!$handler instanceof HandlerInterface) {
+            $handler = app($handler);
+        }
+
+        $this->formFields[$handler->getCodename()] = $handler;
+    }
+
+    public function addAfterFormField($handler)
+    {
+        if (!$handler instanceof AfterHandlerInterface) {
+            $handler = app($handler);
+        }
+
+        $this->afterFormFields[$handler->getCodename()] = $handler;
+    }
+
+    public function formFields()
+    {
+        $connection = config('database.default');
+        $driver = config("database.connections.{$connection}.driver", 'mysql');
+
+        return collect($this->formFields)->filter(function ($after) use ($driver) {
+            return $after->supports($driver);
+        });
+    }
+
+    public function setting($key, $default = null)
     {
         $setting = Setting::where('key', '=', $key)->first();
+
         if (isset($setting->id)) {
             return $setting->value;
         }
@@ -47,34 +136,55 @@ class Voyager
         return $default;
     }
 
-    public static function image($file, $default = '')
+    public function image($file, $default = '')
     {
-        if (!empty($file) && Storage::exists(config('voyager.storage.subfolder').$file)) {
-            return Storage::url(config('voyager.storage.subfolder').$file);
+        if (!empty($file) && Storage::disk(config('voyager.storage.disk'))->exists($file)) {
+            return Storage::disk(config('voyager.storage.disk'))->url($file);
         }
 
         return $default;
     }
 
-    public static function routes()
+    public function routes()
     {
         require __DIR__.'/../routes/voyager.php';
     }
 
-    public static function can($permission)
+    public function can($permission)
     {
+        $this->loadPermissions();
+
         // Check if permission exist
-        $exist = Permission::where('key', $permission)->first();
+        $exist = $this->permissions->where('key', $permission)->first();
 
         if ($exist) {
-            $user = User::find(Auth::id());
-            if ($user == null) {
-                throw new UnauthorizedHttpException(null);
+            $user = $this->getUser();
+            if ($user == null || !$user->hasPermission($permission)) {
+                return false;
             }
-            if (!$user->hasPermission($permission)) {
-                throw new UnauthorizedHttpException(null);
-            }
+
+            return true;
         }
+
+        return true;
+    }
+
+    public function canOrFail($permission)
+    {
+        if (!$this->can($permission)) {
+            throw new UnauthorizedHttpException(null);
+        }
+
+        return true;
+    }
+
+    public function canOrAbort($permission, $statusCode = 403)
+    {
+        if (!$this->can($permission)) {
+            return abort($statusCode);
+        }
+
+        return true;
     }
 
     public function getVersion()
@@ -89,10 +199,10 @@ class Voyager
 
     public function alerts()
     {
-        if (!$this->allertsCollected) {
+        if (!$this->alertsCollected) {
             event('voyager.alerts.collecting');
 
-            $this->allertsCollected = true;
+            $this->alertsCollected = true;
         }
 
         return $this->alerts;
@@ -118,5 +228,31 @@ class Voyager
                 }
             }
         }
+    }
+
+    protected function loadPermissions()
+    {
+        if (!$this->permissionsLoaded) {
+            $this->permissionsLoaded = true;
+
+            $this->permissions = Permission::all();
+        }
+    }
+
+    protected function getUser($id = null)
+    {
+        if (is_null($id)) {
+            $id = auth()->check() ? auth()->user()->id : null;
+        }
+
+        if (is_null($id)) {
+            return;
+        }
+
+        if (!isset($this->users[$id])) {
+            $this->users[$id] = User::find($id);
+        }
+
+        return $this->users[$id];
     }
 }

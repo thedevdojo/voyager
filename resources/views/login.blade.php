@@ -1,267 +1,107 @@
 <!DOCTYPE html>
-<html class="no-js css-menubar" lang="en">
+<html lang="{{ config('app.locale') }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="none" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="admin login">
-    <meta name="author" content="">
-    <title>Admin Login</title>
-    {{-- Voyager CSS --}}
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
-    <link href="https://file.myfontastic.com/QLbQY2QVvDNQgGeBRf7fWh/icons.css" rel="stylesheet">
-
+    <title>Admin. - {{ Voyager::setting("title") }}</title>
+    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/login.css">
     <style>
-        .login-page {
-            background-image: url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
-            background-size: cover;
-            margin: 0;
-            padding: 0;
+        body {
+            background-image:url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
         }
-
-        .logo-img {
-            width: 100px;
-            z-index: 999;
-            position: relative;
-            float: left;
-            -webkit-animation: zoomFade 1s ease-in-out 1;
-            -moz-animation: zoomFade 1s ease-in-out 1;
-            animation: zoomFade 1s ease-in-out 1;
-        }
-
-        #bgdim {
-            background: rgba(38, 50, 56, .6);
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        #login_section {
-            width: 380px;
-            height: 100%;
-            position: absolute;
-            right: 0;
-            top: 0;
-            text-align: center;
-            background: #fff;
-            z-index: 99;
-        }
-
-        #title_section {
-            width: auto;
-            position: absolute;
-            margin-left: 120px;
-            top: 50%;
-            margin-top: -50px;
-        }
-
-        #title_section .copy {
-            float: left;
-        }
-
-        #title_section h1 {
-            display: inline-block;
-            vertical-align: middle;
-            color: #fff;
-            z-index: 9999;
-            position: relative;
-            text-transform: uppercase;
-            font-size: 50px;
-            font-weight: 400;
-            top: -10px;
-            line-height: 45px;
-            margin: 20px 0 0 20px;
-        }
-
-        #title_section p {
-            color: #fff;
-            font-size: 20px;
-            max-width: 650px;
-            opacity: .6;
-            position: relative;
-            z-index: 99;
-            font-weight: 200;
-            margin-top: 0;
-            left: 25px;
-        }
-
-        #login_section h2 {
-            text-align: left;
-            margin-left: 50px;
-            font-weight: 200;
-            margin-bottom: 0;
-            margin-top: 3px;
-            color: #444;
-        }
-
-        #login_section .btn {
-            background: #62A8EA;
-            border-radius: 0;
-            color: #fff;
-            width: 380px;
-            margin-left: 0;
-            display: block;
-            text-align: left;
-            padding: 15px 20px 15px 50px;
-            border-width: 0;
-        }
-
-        .btn-login {
-            text-decoration: none;
-        }
-
-        .btn-login i {
-            border-right: 0;
-            position: relative;
-            top: 2px;
-        }
-
-        #login_section p {
-            font-weight: 100;
-            margin-top: 10px;
-            float: left;
-            margin-left: 50px;
-        }
-
-        #login_section .content {
-            position: absolute;
-            top: 50%;
-            margin-top: -132px;
-        }
-
-        #login input {
-            padding: 20px 50px;
-            border: 0;
-            background: #f5f5f5;
-            border-radius: 0;
-            float: left;
-            margin-left: 0;
-            margin-bottom: 10px;
-            width: 278px;
-            font-size: 12px;
-            font-weight: 200;
-        }
-
-        textarea, input, button {
-            outline: none;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        .btn-loading {
-            width: 100px;
-            height: 100px;
-            margin:0px auto;
-            margin-top:30px;
-            -webkit-animation: spin_loader 1.3s linear infinite;
-            -moz-animation: spin_loader 1.3s linear infinite;
-            animation: spin_loader 1.3s linear infinite;
-            display:none;
-        }
-
-        @-moz-keyframes spin_loader { 100% { -moz-transform: rotate(360deg); } }
-        @-webkit-keyframes spin_loader { 100% { -webkit-transform: rotate(360deg); } }
-        @keyframes spin_loader { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-
-        .login_loader {
-            display: none;
-        }
-
-        .error-login {
-            padding: 1em;
-            text-align: center;
-            color: #DC143C;
-        }
-
-        @-moz-keyframes zoomFade {
-            0% {
-                opacity:0;
-            }
-            100% {
-                opacity:1;
-            }
-        }
-
-        @-webkit-keyframes zoomFade {
-            0% {
-                opacity:0;
-            }
-            100% {
-                opacity:1;
-            }
-        }
-
-        @keyframes zoomFade {
-            0% {
-                opacity:0;
-            }
-            100% {
-                opacity:1;
-            }
+        .login-sidebar:after, .gradient-button {
+            background: linear-gradient(-135deg, {{config('voyager.login.gradient_a','#3f51b5')}}, {{config('voyager.login.gradient_b','#e91e63')}});
+            background: -webkit-linear-gradient(-135deg, {{config('voyager.login.gradient_a','#3f51b5')}}, {{config('voyager.login.gradient_b','#e91e63')}});
         }
     </style>
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
 </head>
-<body class="login-page">
-    <div id="bgdim"></div>
-
-    <div id="title_section">
-        <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
-        @if($admin_logo_img == '')
-            <img class="logo-img" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
-        @else
-            <img class="logo-img" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
-        @endif
-        <div class="copy">
-            <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
-            <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
-        </div>
-        <div style="clear:both"></div>
-    </div>
-
-    <div id="login_section">
-        <div class="content">
-            <h2>Sign In</h2>
-            <p>Sign in below:</p>
-            <div style="clear:both"></div>
-            <form action="{{ route('voyager.login') }}" method="POST" id="login">
-                {{ csrf_field() }}
-                <input type="text" class="form-control" name="email" placeholder="email address" value="{{ old('email') }}">
-                <input type="password" class="form-control" name="password" placeholder="password">
-                <button class="btn btn-primary btn-login" id="voyager-login-btn">
-                    <span class="login_text"><i class="voyager-lock"></i> Login</span>
-                    <span class="login_loader">
-                        <i class="voyager-lock"></i> Logging in...
-                    </span>
-                </button>
-                    <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
-                    @if($admin_loader_img == '')
-                        <img class="btn-loading" src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+<body>
+<!-- Designed with ♥ by Frondor -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="faded-bg"></div>
+        <div class="hidden-xs col-sm-8 col-md-9">
+            <div class="clearfix">
+                <div class="hidden-xs" style="margin-top:200px"></div>
+                <div class="col-sm-12 col-md-10 col-md-offset-2">
+                    <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
+                    @if($admin_logo_img == '')
+                    <img class="img-responsive pull-left logo hidden-xs" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
                     @else
-                        <img class="btn-loading" src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
+                    <img class="img-responsive pull-left logo hidden-xs" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
                     @endif
-            </form>
-            @if (count($errors))
-                <div class="error-login">
-                    The given credentials don't match with an user registered.
+                    <div class="copy">
+                        <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
+                        <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
+                    </div>
                 </div>
-            @endif
+            </div>
         </div>
-    </div>
 
-    <script>
-        login_btn = document.getElementById("voyager-login-btn");
-        login_btn.addEventListener("click", function () {
-            var originalHeight = login_btn.offsetHeight;
-            login_btn.style.height = originalHeight + 'px';
-            document.querySelector('#voyager-login-btn span.login_text').style.display = 'none';
-            document.querySelector('#voyager-login-btn span.login_loader').style.display = 'block';
-            document.querySelector('.btn-loading').style.display = 'block';
-        });
-    </script>
+        <div class="col-xs-12 col-sm-4 col-md-3 login-sidebar">
 
+            <div class="logo-container">    
+                <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
+                @if($admin_logo_img == '')
+                    <img class="img-responsive logo" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
+                @else
+                    <img class="img-responsive logo" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
+                @endif
+            </div>
+
+            <form action="{{ route('voyager.login') }}" method="POST">
+            {{ csrf_field() }}
+            <div class="group">      
+              <input type="text" name="email" value="{{ old('email') }}" required>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> E-mail</span></label>
+            </div>
+
+            <div class="group">      
+              <input type="password" name="password" required>
+              <span class="highlight"></span>
+              <span class="bar"></span>
+              <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> Password</span></label>
+            </div>
+
+            <button type="submit" class="btn btn-block gradient-button">
+                <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
+                <span class="signin">Login</span>
+            </button>
+           
+          </form>
+
+          @if(!$errors->isEmpty())
+          <div class="alert alert-black">
+            <ul class="list-unstyled">
+                @foreach($errors->all() as $err)
+                <li>{{ $err }}</li>
+                @endforeach                
+            </ul>
+          </div>            
+          @endif
+            
+        </div> <!-- .login-sidebar -->
+    </div> <!-- .row -->
+</div> <!-- .container-fluid -->
+<script>
+    var btn = document.querySelector('button[type="submit"]');
+    var form = document.forms[0];
+    btn.addEventListener('click', function(ev){
+        if (form.checkValidity()) {
+            btn.querySelector('.signingin').className = 'signingin';
+            btn.querySelector('.signin').className = 'signin hidden';
+        } else {
+            ev.preventDefault();
+        }
+    });
+</script>
 </body>
 </html>

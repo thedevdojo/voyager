@@ -26,9 +26,11 @@
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
                                 <img style="max-width:640px"
-                                     src="<?php echo Voyager::image($dataTypeContent->{$row->field}) ?>">
+                                     src="{!! Voyager::image($dataTypeContent->{$row->field}) !!}">
+                            @elseif($row->type == 'date')
+                            {{ \Carbon\Carbon::parse($dataTypeContent->{$row->field})->format('F jS, Y h:i A') }}
                             @else
-                                <p><?php echo $dataTypeContent->{$row->field} ?></p>
+                                <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
                         @if(!$loop->last)

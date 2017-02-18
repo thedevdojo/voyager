@@ -3,8 +3,10 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use TCG\Voyager\Facades\DBSchema;
+use TCG\Voyager\Facades\Voyager;
 
 class DataType extends Model
 {
@@ -24,7 +26,7 @@ class DataType extends Model
 
     public function rows()
     {
-        return $this->hasMany(DataRow::class);
+        return $this->hasMany(Voyager::modelClass('DataRow'));
     }
 
     public function browseRows()
@@ -65,7 +67,7 @@ class DataType extends Model
     public function updateDataType($requestData, $throw = false)
     {
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
 
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields(array_get($requestData, 'name'));
@@ -90,15 +92,16 @@ class DataType extends Model
 
                 // It seems everything was fine. Let's check if we need to generate permissions
                 if ($this->generate_permissions) {
-                    Permission::generateFor($this->name);
+                    Voyager::model('Permission')->generateFor($this->name);
                 }
 
-                \DB::commit();
+                DB::commit();
 
                 return true;
             }
         } catch (\Exception $e) {
-            \DB::rollBack();
+            DB::rollBack();
+
             if ($throw) {
                 throw $e;
             }

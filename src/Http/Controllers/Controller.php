@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use TCG\Voyager\Traits\AlertsMessages;
 
 abstract class Controller extends BaseController
 {
     use DispatchesJobs,
         ValidatesRequests,
-        AuthorizesRequests;
+        AuthorizesRequests,
+        AlertsMessages;
 
     public function getSlug(Request $request)
     {
@@ -55,6 +57,18 @@ abstract class Controller extends BaseController
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
+
+            /*
+             * merge ex_images and upload images
+             */
+            if ($row->type == 'multiple_images' && !is_null($content)) {
+                if (isset($data->{$row->field})) {
+                    $ex_files = json_decode($data->{$row->field}, true);
+                    if (!is_null($ex_files)) {
+                        $content = json_encode(array_merge($ex_files, json_decode($content)));
+                    }
+                }
+            }
 
             if (is_null($content)) {
                 // Only set the content back to the previous value when there is really now input for this field
@@ -118,11 +132,30 @@ abstract class Controller extends BaseController
                     $path = $slug.'/'.date('F').date('Y').'/';
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    $request->file($row->field)->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
+                    $request->file($row->field)->storeAs(config('voyager.storage.disk').$path, $filename.'.'.$file->getClientOriginalExtension());
 
                     return $fullPath;
                 }
             // no break
+
+            /********** MULTIPLE IMAGES TYPE **********/
+            case 'multiple_images':
+                if ($files = $request->file($row->field)) {
+                    /**
+                     * upload files.
+                     */
+                    $filesPath = [];
+                    foreach ($files as $key => $file) {
+                        $filename = Str::random(20);
+                        $path = $slug.'/'.date('F').date('Y').'/';
+                        array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
+                        $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                        $request->file($row->field)[$key]->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
+                    }
+
+                    return json_encode($filesPath);
+                }
+                break;
 
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
@@ -181,7 +214,7 @@ abstract class Controller extends BaseController
                             $constraint->upsize();
                         })->encode($file->getClientOriginalExtension(), 75);
 
-                    Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $image, 'public');
+                    Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
 
                     if (isset($options->thumbnails)) {
                         foreach ($options->thumbnails as $thumbnails) {
@@ -211,8 +244,7 @@ abstract class Controller extends BaseController
                                     ->encode($file->getClientOriginalExtension(), 75);
                             }
 
-                            Storage::put(
-                                config('voyager.storage.subfolder').$path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                            Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
                                 (string) $image, 'public'
                             );
                         }
@@ -249,8 +281,8 @@ abstract class Controller extends BaseController
 
     public function deleteFileIfExists($path)
     {
-        if (Storage::exists($path)) {
-            Storage::delete($path);
+        if (Storage::disk(config('voyager.storage.disk'))->exists($path)) {
+            Storage::disk(config('voyager.storage.disk'))->delete($path);
         }
     }
 }

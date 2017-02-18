@@ -1,10 +1,5 @@
 @extends('voyager::master')
 
-@section('head')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jsonarea/jsonarea.min.js"></script>
-    <script>var valid_json = [];</script>
-@stop
-
 @section('page_header')
     <div class="page-title">
         <i class="voyager-data"></i> @if(isset($dataType->id)){{ 'Edit BREAD for ' . $dataType->name . ' table' }}@elseif(isset($table)){{ 'Create BREAD for ' . $table . ' table' }}@endif
@@ -103,49 +98,11 @@
                                                    name="field_input_type_{{ $data['field'] }}">
                                         @else
                                             <select name="field_input_type_{{ $data['field'] }}">
-                                                <option value="text" @if(isset($dataRow->type) && $dataRow->type == 'text'){{ 'selected' }}@endif>
-                                                    Text Box
-                                                </option>
-                                                <option value="text_area" @if(isset($dataRow->type) && $dataRow->type == 'text_area'){{ 'selected' }}@endif>
-                                                    Text Area
-                                                </option>
-                                                <option value="rich_text_box" @if(isset($dataRow->type) && $dataRow->type == 'rich_text_box'){{ 'selected' }}@endif>
-                                                    Rich Textbox
-                                                </option>
-                                                <option value="password" @if(isset($dataRow->type) && $dataRow->type == 'password'){{ 'selected' }}@endif>
-                                                    Password
-                                                </option>
-                                                <option value="hidden" @if(isset($dataRow->type) && $dataRow->type == 'hidden'){{ 'selected' }}@endif>
-                                                    Hidden
-                                                </option>
-                                                <option value="checkbox" @if(isset($dataRow->type) && $dataRow->type == 'checkbox'){{ 'selected' }}@endif>
-                                                    Check Box
-                                                </option>
-                                                <option value="radio_btn" @if(isset($dataRow->type) && $dataRow->type == 'radio_btn'){{ 'selected' }}@endif>
-                                                    Radio Button
-                                                </option>
-                                                <option value="select_dropdown" @if(isset($dataRow->type) && $dataRow->type == 'select_dropdown'){{ 'selected' }}@endif>
-                                                    Select Dropdown
-                                                </option>
-                                                </option>
-                                                <option value="select_multiple" @if(isset($dataRow->type) && $dataRow->type == 'select_multiple'){{ 'selected' }}@endif>
-                                                    Multiple Select
-                                                </option>
-                                                <option value="file" @if(isset($dataRow->type) && $dataRow->type == 'file'){{ 'selected' }}@endif>
-                                                    File
-                                                </option>
-                                                <option value="image" @if(isset($dataRow->type) && $dataRow->type == 'image'){{ 'selected' }}@endif>
-                                                    Image
-                                                </option>
-                                                <option value="date" @if(isset($dataRow->type) && $dataRow->type == 'date'){{ 'selected' }}@endif>
-                                                    Date
-                                                </option>
-                                                <option value="date-time" @if(isset($dataRow->type) && $dataRow->type == 'date-time'){{ 'selected' }}@endif>
-                                                    Date Time
-                                                </option>
-                                                <option value="number" @if(isset($dataRow->type) && $dataRow->type == 'number'){{ 'selected' }}@endif>
-                                                    Number
-                                                </option>
+                                                @foreach (Voyager::formFields() as $formField)
+                                                    <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
+                                                        {{ $formField->getName() }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         @endif
 
@@ -154,48 +111,12 @@
                                                value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ ucwords(str_replace('_', ' ', $data['field'])) }}@endif"
                                                name="field_display_name_{{ $data['field'] }}"></td>
                                     <td>
-                                        <textarea class="form-control json" name="field_details_{{ $data['field'] }}"
-                                                  id="field_details_{{ $data['field'] }}">@if(isset($dataRow->details)){{ $dataRow->details }}@endif</textarea>
-                                        <div id="field_details_{{ $data['field'] }}_valid" class="alert-success alert"
-                                             style="display:none">Valid Json
+                                        <div class="alert alert-danger validation-error">
+                                            Invalid JSON
                                         </div>
-                                        <div id="field_details_{{ $data['field'] }}_invalid" class="alert-danger alert"
-                                             style="display:none">Invalid Json
-                                        </div>
+                                        <textarea id="json-input-{{ $data['field'] }}" class="resizable-editor" data-editor="json" name="field_details_{{ $data['field'] }}">@if(isset($dataRow->details)){{ $dataRow->details }}@endif</textarea>
                                     </td>
                                 </tr>
-
-                                <script>
-                                    // do the deal
-                                    var myJSONArea = JSONArea(document.getElementById('field_details_{{ $data['field'] }}'), {
-                                        sourceObjects: [] // optional array of objects for JSONArea to inherit from
-                                    });
-
-                                    valid_json["field_details_{{ $data['field'] }}"] = false;
-
-                                    // then here's how you use JSONArea's update event
-                                    myJSONArea.getElement().addEventListener('update', function (e) {
-
-                                        if (e.target.value != "") {
-                                            valid_json["field_details_{{ $data['field'] }}"] = e.detail.isJSON;
-                                        }
-                                    });
-
-                                    // then here's how you use JSONArea's update event
-                                    myJSONArea.getElement().addEventListener('focusout', function (e) {
-                                        if (valid_json['field_details_{{ $data['field'] }}']) {
-                                            $('#field_details_{{ $data['field'] }}_valid').show();
-                                            $('#field_details_{{ $data['field'] }}_invalid').hide();
-                                            var ugly = e.target.value;
-                                            var obj = JSON.parse(ugly);
-                                            var pretty = JSON.stringify(obj, undefined, 4);
-                                            document.getElementById('field_details_{{ $data['field'] }}').value = pretty;
-                                        } else {
-                                            $('#field_details_{{ $data['field'] }}_valid').hide();
-                                            $('#field_details_{{ $data['field'] }}_invalid').show();
-                                        }
-                                    });
-                                </script>
 
                             @endforeach
                             </tbody>
@@ -277,18 +198,95 @@
         </div><!-- .row -->
     </div><!-- .page-content -->
 
+
+
+@stop
+
+@section('javascript')
+    <script src="{{ config('voyager.assets_path') }}/lib/js/ace/ace.js"></script>
     <script>
-        function prettyPrint() {
-            var ugly = document.getElementById('myTextArea').value;
-            var obj = JSON.parse(ugly);
-            var pretty = JSON.stringify(obj, undefined, 4);
-            document.getElementById('myTextArea').value = pretty;
-        }
-    </script>
-    <script>
-        $('document').ready(function () {
+        window.invalidEditors = [];
+        var validationAlerts = $('.validation-error');
+        validationAlerts.hide();
+        $(function () {
+            $('textarea[data-editor]').each(function () {
+                var textarea = $(this),
+                mode = textarea.data('editor'),
+                editDiv = $('<div>', {
+                    position: 'absolute',
+                    width: 250,
+                    resize: 'vertical',
+                    class: textarea.attr('class')
+                }).insertBefore(textarea),
+                editor = ace.edit(editDiv[0]),
+                _session = editor.getSession(),
+                valid = false;
+                textarea.hide();
+
+                // Validate JSON
+                _session.on("changeAnnotation", function(){
+                    valid = _session.getAnnotations().length ? false : true;
+                    if (!valid) {
+                        if (window.invalidEditors.indexOf(textarea.attr('id')) < 0) {
+                            window.invalidEditors.push(textarea.attr('id'));
+                        }
+                    } else {
+                        for(var i = window.invalidEditors.length - 1; i >= 0; i--) {
+                            if(window.invalidEditors[i] == textarea.attr('id')) {
+                               window.invalidEditors.splice(i, 1);
+                            }
+                        }
+                    }
+                });
+
+                // Use workers only when needed
+                editor.on('focus', function () {
+                    _session.setUseWorker(true);
+                });
+                editor.on('blur', function () {
+                    if (valid) {
+                        textarea.siblings('.validation-error').hide();
+                        _session.setUseWorker(false);
+                    } else {
+                        textarea.siblings('.validation-error').show();
+                    }
+                });
+
+                _session.setUseWorker(false);
+
+                editor.setAutoScrollEditorIntoView(true);
+                editor.$blockScrolling = Infinity;
+                editor.setOption("maxLines", 30);
+                editor.setOption("minLines", 4);
+                editor.setOption("showLineNumbers", false);
+                editor.setTheme("ace/theme/github");
+                _session.setMode("ace/mode/json");
+                if (textarea.val()) {
+                    _session.setValue(JSON.stringify(JSON.parse(textarea.val()), null, 4));  
+                }
+                
+                _session.setMode("ace/mode/" + mode);
+                
+                // copy back to textarea on form submit...
+                textarea.closest('form').on('submit', function (ev) {
+                    if (window.invalidEditors.length) {
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        validationAlerts.hide();
+                        for (var i = window.invalidEditors.length - 1; i >= 0; i--) {
+                            $('#'+window.invalidEditors[i]).siblings('.validation-error').show();
+                        }
+                        toastr.error('Seems like you introduced some invalid JSON.', 'Validation errors', {"preventDuplicates": true, "preventOpenDuplicates": true});
+                    } else {
+                        if (_session.getValue()) {
+                            // uglify JSON object and update textarea for submit purposes
+                            textarea.val(JSON.stringify(JSON.parse(_session.getValue())));
+                        }
+                    }
+                });
+            });
+
             $('.toggleswitch').bootstrapToggle();
         });
     </script>
-
 @stop

@@ -4,7 +4,7 @@
     {{-- <title>{{Voyager::setting('admin_title')}} - {{Voyager::setting('admin_description')}}</title> --}}
     <title>@yield('page_title',Voyager::setting('admin_title') . " - " . Voyager::setting('admin_description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <!-- Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400|Lato:300,400,700,900' rel='stylesheet'
           type='text/css'>
@@ -35,7 +35,6 @@
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue.min.js"></script>
 
     @yield('css')
 
@@ -62,10 +61,10 @@ $user_avatar = Voyager::image(Auth::user()->avatar);
 if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->avatar, 0, 8) == 'https://')) {
     $user_avatar = Auth::user()->avatar;
 }
-$menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1;
 ?>
 
-<div class="app-container @if ($menuExpanded) expanded @endif ">
+<div class="app-container">
+    <div class="fadetoblack visible-xs"></div>
     <div class="row content-container">
         @include('voyager::dashboard.navbar')
         @include('voyager::dashboard.sidebar')
@@ -104,27 +103,28 @@ $menuExpanded = isset($_COOKIE['expandedMenu']) && $_COOKIE['expandedMenu'] == 1
 
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/readmore.min.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/app.js"></script>
+<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/helpers.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/toastr.min.js"></script>
 <script>
+    @if(Session::has('alerts'))
+        let alerts = {!! json_encode(Session::get('alerts')) !!};
+
+        displayAlerts(alerts, toastr);
+    @endif
+
     @if(Session::has('message'))
-    var type = "{{ Session::get('alert-type', 'info') }}";
-    switch (type) {
-        case 'info':
-            toastr.info("{{ Session::get('message') }}");
-            break;
+    
+    // TODO: change Controllers to use AlertsMessages trait... then remove this
+    var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
+    var alertMessage = {!! json_encode(Session::get('message')) !!};
+    var alerter = toastr[alertType];
 
-        case 'warning':
-            toastr.warning("{{ Session::get('message') }}");
-            break;
-
-        case 'success':
-            toastr.success("{{ Session::get('message') }}");
-            break;
-
-        case 'error':
-            toastr.error("{{ Session::get('message') }}");
-            break;
+    if (alerter) {
+        alerter(alertMessage);
+    } else {
+        toastr.error("toastr alert-type " + alertType + " is unknown");
     }
+
     @endif
 </script>
 @yield('javascript')

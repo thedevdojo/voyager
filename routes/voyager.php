@@ -1,5 +1,7 @@
 <?php
 
+use TCG\Voyager\Models\DataType;
+
 /*
 |--------------------------------------------------------------------------
 | Voyager Routes
@@ -13,24 +15,23 @@
 Route::group(['as' => 'voyager.'], function () {
     event('voyager.routing', app('router'));
 
-    $namespacePrefix = '\\'.config('voyager.controllers.namespace', 'TCG\\Voyager\\Http\\Controllers').'\\';
+    $namespacePrefix = '\\'.config('voyager.controllers.namespace').'\\';
 
     Route::get('login', ['uses' => $namespacePrefix.'VoyagerAuthController@login', 'as' => 'login']);
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
 
-    Route::group(['middleware' => ['admin.user']], function () use ($namespacePrefix) {
+    Route::group(['middleware' => 'admin.user'], function () use ($namespacePrefix) {
         event('voyager.admin.routing', app('router'));
 
         // Main Admin and Logout Route
         Route::get('/', ['uses' => $namespacePrefix.'VoyagerController@index', 'as' => 'dashboard']);
-        Route::get('logout', ['uses' => $namespacePrefix.'VoyagerController@logout', 'as' => 'logout']);
+        Route::post('logout', ['uses' => $namespacePrefix.'VoyagerController@logout', 'as' => 'logout']);
         Route::post('upload', ['uses' => $namespacePrefix.'VoyagerController@upload', 'as' => 'upload']);
-        Route::get('upgrade', ['uses' => $namespacePrefix.'VoyagerUpgradeController@index', 'as' => 'upgrade']);
 
         Route::get('profile', ['uses' => $namespacePrefix.'VoyagerController@profile', 'as' => 'profile']);
 
         try {
-            foreach (\TCG\Voyager\Models\DataType::all() as $dataTypes) {
+            foreach (DataType::all() as $dataTypes) {
                 Route::resource($dataTypes->slug, $namespacePrefix.'VoyagerBreadController');
             }
         } catch (\InvalidArgumentException $e) {
@@ -94,9 +95,9 @@ Route::group(['as' => 'voyager.'], function () {
             'as'     => 'database.',
             'prefix' => 'database',
         ], function () use ($namespacePrefix) {
-            Route::post('bread/create', ['uses' => $namespacePrefix.'VoyagerDatabaseController@addBread', 'as' => 'create_bread']);
+            Route::post('bread/{table}/create', ['uses' => $namespacePrefix.'VoyagerDatabaseController@addBread', 'as' => 'create_bread']);
             Route::post('bread/', ['uses' => $namespacePrefix.'VoyagerDatabaseController@storeBread', 'as' => 'store_bread']);
-            Route::get('bread/{id}/edit', ['uses' => $namespacePrefix.'VoyagerDatabaseController@addEditBread', 'as' => 'edit_bread']);
+            Route::get('bread/{table}/edit', ['uses' => $namespacePrefix.'VoyagerDatabaseController@addEditBread', 'as' => 'edit_bread']);
             Route::put('bread/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@updateBread', 'as' => 'update_bread']);
             Route::delete('bread/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@deleteBread', 'as' => 'delete_bread']);
         });
