@@ -8,7 +8,7 @@
         $styles = null;
         $linkAttributes = null;
 
-        if(url($item->url) == url()->current()){
+        if(url($item->link()) == url()->current()){
             array_push($listItemClass,'active');
         }
 
@@ -17,14 +17,14 @@
             $linkAttributes =  'href="#' . str_slug($item->title, '-') .'-dropdown-element" data-toggle="collapse"';
             array_push($listItemClass,'dropdown');
         }else{
-            $linkAttributes =  'href="' . url($item->url) .'"';
+            $linkAttributes =  'href="' . url($item->link()) .'"';
         }
 
         $listItemClass = implode(" ",$listItemClass);
 
         // Permission Checker
         $self_prefix = str_replace('/', '\/', $options->user->prefix);
-        $slug = str_replace('/', '', preg_replace('/^\/'.$self_prefix.'/', '', $item->url));
+        $slug = str_replace('/', '', preg_replace('/^\/'.$self_prefix.'/', '', $item->link()));
 
         if ($slug != '') {
             // Get dataType using slug
