@@ -31,7 +31,7 @@
         </div>
 
         <div class="navbar-expand-toggle">
-        {!! Menu::display('admin', 'admin_menu') !!}
+        {!! menu('admin', 'admin_menu') !!}
         </div>
     </nav>
 </div>

@@ -4,8 +4,6 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\MenuItem;
 
 class VoyagerMenuController extends Controller
 {
@@ -13,7 +11,7 @@ class VoyagerMenuController extends Controller
     {
         Voyager::canOrFail('edit_menus');
 
-        $menu = Menu::findOrFail($id);
+        $menu = Voyager::model('Menu')->findOrFail($id);
 
         return view('voyager::menus.builder', compact('menu'));
     }
@@ -22,7 +20,7 @@ class VoyagerMenuController extends Controller
     {
         Voyager::canOrFail('delete_menus');
 
-        $item = MenuItem::findOrFail($id);
+        $item = Voyager::model('MenuItem')->findOrFail($id);
 
         $item->destroy($id);
 
@@ -44,7 +42,7 @@ class VoyagerMenuController extends Controller
 
         $data['order'] = 1;
 
-        $highestOrderMenuItem = MenuItem::where('parent_id', '=', null)
+        $highestOrderMenuItem = Voyager::model('MenuItem')->where('parent_id', '=', null)
             ->orderBy('order', 'DESC')
             ->first();
 
@@ -52,7 +50,7 @@ class VoyagerMenuController extends Controller
             $data['order'] = intval($highestOrderMenuItem->order) + 1;
         }
 
-        MenuItem::create($data);
+        Voyager::model('MenuItem')->create($data);
 
         return redirect()
             ->route('voyager.menus.builder', [$data['menu_id']])
@@ -71,7 +69,7 @@ class VoyagerMenuController extends Controller
             $request->except(['id'])
         );
 
-        $menuItem = MenuItem::findOrFail($id);
+        $menuItem = Voyager::model('MenuItem')->findOrFail($id);
         $menuItem->update($data);
 
         return redirect()
@@ -92,7 +90,7 @@ class VoyagerMenuController extends Controller
     private function orderMenu(array $menuItems, $parentId)
     {
         foreach ($menuItems as $index => $menuItem) {
-            $item = MenuItem::findOrFail($menuItem->id);
+            $item = Voyager::model('MenuItem')->findOrFail($menuItem->id);
             $item->order = $index + 1;
             $item->parent_id = $parentId;
             $item->save();

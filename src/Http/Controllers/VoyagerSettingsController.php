@@ -5,7 +5,6 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\Setting;
 
 class VoyagerSettingsController extends Controller
 {
@@ -14,7 +13,7 @@ class VoyagerSettingsController extends Controller
         // Check permission
         Voyager::canOrFail('browse_settings');
 
-        $settings = Setting::orderBy('order', 'ASC')->get();
+        $settings = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
 
         return view('voyager::settings.index', compact('settings'));
     }
@@ -24,7 +23,7 @@ class VoyagerSettingsController extends Controller
         // Check permission
         Voyager::canOrFail('browse_settings');
 
-        $lastSetting = Setting::orderBy('order', 'DESC')->first();
+        $lastSetting = Voyager::model('Setting')->orderBy('order', 'DESC')->first();
 
         if (is_null($lastSetting)) {
             $order = 0;
@@ -35,7 +34,7 @@ class VoyagerSettingsController extends Controller
         $request->merge(['order' => $order]);
         $request->merge(['value' => '']);
 
-        Setting::create($request->all());
+        Voyager::model('Setting')->create($request->all());
 
         return back()->with([
             'message'    => 'Successfully Created Settings',
@@ -48,7 +47,7 @@ class VoyagerSettingsController extends Controller
         // Check permission
         Voyager::canOrFail('visit_settings');
 
-        $settings = Setting::all();
+        $settings = Voyager::model('Setting')->all();
 
         foreach ($settings as $setting) {
             $content = $this->getContentBasedOnType($request, 'settings', (object) [
@@ -78,7 +77,7 @@ class VoyagerSettingsController extends Controller
         // Check permission
         Voyager::canOrFail('visit_settings');
 
-        Setting::destroy($id);
+        Voyager::model('Setting')->destroy($id);
 
         return back()->with([
             'message'    => 'Successfully Deleted Setting',
@@ -88,9 +87,9 @@ class VoyagerSettingsController extends Controller
 
     public function move_up($id)
     {
-        $setting = Setting::find($id);
+        $setting = Voyager::model('Setting')->find($id);
         $swapOrder = $setting->order;
-        $previousSetting = Setting::where('order', '<', $swapOrder)->orderBy('order', 'DESC')->first();
+        $previousSetting = Voyager::model('Setting')->where('order', '<', $swapOrder)->orderBy('order', 'DESC')->first();
         $data = [
             'message'    => 'This is already at the top of the list',
             'alert-type' => 'error',
@@ -116,7 +115,7 @@ class VoyagerSettingsController extends Controller
         // Check permission
         Voyager::canOrFail('browse_settings');
 
-        $setting = Setting::find($id);
+        $setting = Voyager::model('Setting')->find($id);
 
         if (isset($setting->id)) {
             // If the type is an image... Then delete it
@@ -137,10 +136,10 @@ class VoyagerSettingsController extends Controller
 
     public function move_down($id)
     {
-        $setting = Setting::find($id);
+        $setting = Voyager::model('Setting')->find($id);
         $swapOrder = $setting->order;
 
-        $previousSetting = Setting::where('order', '>', $swapOrder)->orderBy('order', 'ASC')->first();
+        $previousSetting = Voyager::model('Setting')->where('order', '>', $swapOrder)->orderBy('order', 'ASC')->first();
         $data = [
             'message'    => 'This is already at the bottom of the list',
             'alert-type' => 'error',
