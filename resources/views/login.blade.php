@@ -34,7 +34,7 @@
             <div class="clearfix">
                 <div class="col-sm-12 col-md-10 col-md-offset-2">
                     <div class="logo-title-container">
-                        <?php $admin_logo_img = Voyager::setting('logo', ''); ?>
+                        <?php $admin_logo_img = Voyager::setting('admin_logo_img', ''); ?>
                         @if($admin_logo_img == '')
                         <img class="img-responsive pull-left logo hidden-xs" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
                         @else
