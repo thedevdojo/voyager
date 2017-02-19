@@ -43,7 +43,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Type</th>
-                    <th>Length</th>
+                    <th width="100px">Length</th>
                     <th>Not Null?</th>
                     <th>Unsigned?</th>
                     <th>AI?</th>

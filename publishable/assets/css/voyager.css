@@ -240,6 +240,7 @@
 
 .form-control{
   border-radius:3px;
+  padding: 6px 5px;
 }
 
 .form-control.json{
