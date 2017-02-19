@@ -97,7 +97,7 @@
                                             <input type="hidden" value="timestamp"
                                                    name="field_input_type_{{ $data['field'] }}">
                                         @else
-                                            <select name="field_input_type_{{ $data['field'] }}">
+                                            <select name="field_input_type_{{ $data['field'] }}" class="form-control">
                                                 @foreach (Voyager::formFields() as $formField)
                                                     <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
                                                         {{ $formField->getName() }}
@@ -198,8 +198,6 @@
         </div><!-- .row -->
     </div><!-- .page-content -->
 
-
-
 @stop
 
 @section('javascript')
@@ -262,11 +260,11 @@
                 editor.setTheme("ace/theme/github");
                 _session.setMode("ace/mode/json");
                 if (textarea.val()) {
-                    _session.setValue(JSON.stringify(JSON.parse(textarea.val()), null, 4));  
+                    _session.setValue(JSON.stringify(JSON.parse(textarea.val()), null, 4));
                 }
-                
+
                 _session.setMode("ace/mode/" + mode);
-                
+
                 // copy back to textarea on form submit...
                 textarea.closest('form').on('submit', function (ev) {
                     if (window.invalidEditors.length) {

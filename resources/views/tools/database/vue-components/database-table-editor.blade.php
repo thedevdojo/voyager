@@ -46,7 +46,7 @@
                     <th>Length</th>
                     <th>Not Null</th>
                     <th>Unsigned</th>
-                    <th>AI</th>
+                    <th>AutoIncrement</th>
                     <th>Index</th>
                     <th>Default Value</th>
                     <th></th>
