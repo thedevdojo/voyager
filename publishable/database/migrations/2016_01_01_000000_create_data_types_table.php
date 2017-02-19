@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateDataTypesTable extends Migration
 {
@@ -19,9 +19,10 @@ class CreateDataTypesTable extends Migration
             $table->string('slug')->unique();
             $table->string('display_name_singular');
             $table->string('display_name_plural');
-            $table->string('icon');
+            $table->string('icon')->nullable();
             $table->string('model_name')->nullable();
             $table->string('description')->nullable();
+            $table->boolean('generate_permissions')->default(false);
             $table->timestamps();
         });
 
@@ -39,12 +40,10 @@ class CreateDataTypesTable extends Migration
             $table->boolean('add')->default(true);
             $table->boolean('delete')->default(true);
             $table->text('details')->nullable();
-            
+
             $table->foreign('data_type_id')->references('id')->on('data_types')
                 ->onUpdate('cascade')->onDelete('cascade');
         });
-
-
     }
 
     /**

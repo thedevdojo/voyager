@@ -12,6 +12,7 @@ var manager = new Vue({
 CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
 var VoyagerMedia = function(o){
+	var files = $('#files');
 	var defaults = {
 		baseUrl: "/admin"
 	};
@@ -54,12 +55,15 @@ var VoyagerMedia = function(o){
 		getFiles('/');
 
 
-		$('#files').on("dblclick", "li .file_link", function(){
+		files.on("dblclick", "li .file_link", function(){
+			if (! $(this).children('.details').hasClass('folder')) {
+				return false;
+			}
 			manager.folders.push( $(this).data('folder') );
 			getFiles(manager.folders);
 		});
 
-		$('#files').on("click", "li", function(e){
+		files.on("click", "li", function(e){
 			var clicked = e.target;
 			if(!$(clicked).hasClass('file_link')){
 				clicked = $(e.target).closest('.file_link');
@@ -80,8 +84,39 @@ var VoyagerMedia = function(o){
 			$('.breadcrumb-container .toggle .icon').toggleClass('fa-toggle-right').toggleClass('fa-toggle-left');
 		});
 
+		
 		//********** Add Keypress Functionality **********//
+		var isBrowsingFiles = null,
+		fileBrowserActive = function(el){
+			el = el instanceof jQuery ? el : $(el);
+			if ($.contains(files.parent()[0], el[0])) {
+				return true;
+			} else {
+				$(document).off('click');
+				return false;
+			}
+		},
+		handleFileBrowserStatus = function (target) {
+			isBrowsingFiles = fileBrowserActive(target);
+		};
+
+		files.on('click', function (event) {
+			if (! isBrowsingFiles) {
+				$(document).on('click', function (e) {
+					handleFileBrowserStatus(e.target);
+				});
+			} else {
+				handleFileBrowserStatus(event.target);
+			}
+		});
+
 		$(document).keydown(function(e) {
+			var isKeyControl = e.which >= 37 && e.which <= 40;
+			if (! isBrowsingFiles && isKeyControl) {
+				return false;
+			} else if (isKeyControl && isBrowsingFiles) {
+				e.preventDefault();
+			}
 			var curSelected = $('#files li .selected').data('index');
 			// left key
 			if( (e.which == 37 || e.which == 38) && parseInt(curSelected)) {
@@ -184,7 +219,6 @@ var VoyagerMedia = function(o){
 			source = manager.selected_file.name;
 			destination = $('#move_folder_dropdown').val() + '/' + manager.selected_file.name;
 			$('#move_file_modal').modal('hide');
-			console.log(destination);
 			$.post(options.baseUrl+'/media/move_file', { folder_location: manager.folders, source: source, destination: destination, _token: CSRF_TOKEN }, function(data){
 				if(data.success == true){
 					toastr.success('Successfully moved file/folder', "Sweet Success!");
@@ -200,7 +234,6 @@ var VoyagerMedia = function(o){
 			filename = manager.selected_file.name;
 			new_filename = $('#new_filename').val();
 			$('#rename_file_modal').modal('hide');
-			console.log(manager.folders);
 			$.post(options.baseUrl+'/media/rename_file', { folder_location: manager.folders, filename: filename, new_filename: new_filename, _token: CSRF_TOKEN }, function(data){
 				if(data.success == true){
 					toastr.success('Successfully renamed file/folder', "Sweet Success!");
@@ -240,7 +273,6 @@ var VoyagerMedia = function(o){
 		});
 
 		manager.$watch('selected_file', function (newVal, oldVal) {
-			console.log(newVal);
 			if(typeof(newVal) == 'undefined'){
 				$('.right_details').hide();
 				$('.right_none_selected').show();
@@ -264,6 +296,7 @@ var VoyagerMedia = function(o){
 			$.post(options.baseUrl+'/media/files', { folder:folder_location, _token: CSRF_TOKEN, _token: CSRF_TOKEN }, function(data) {
 				$('#file_loader').hide();
 				manager.files = data;
+				files.trigger('click');
 				for(var i=0; i < manager.files.items.length; i++){
 					if(typeof(manager.files.items[i].size) != undefined){
 						manager.files.items[i].size = bytesToSize(manager.files.items[i].size);
@@ -274,14 +307,12 @@ var VoyagerMedia = function(o){
 			// Add the latest files to the folder dropdown
 			var all_folders = '';
 			$.post(options.baseUrl+'/media/directories', { folder_location:manager.folders, _token: CSRF_TOKEN }, function(data){
-				console.log(data);
 				manager.directories = data;
 			});
 
 		}
 
 		function setCurrentSelected(cur){
-			console.log(cur);
 			$('#files li .selected').removeClass('selected');
 			$(cur).addClass('selected');
 			manager.selected_file = manager.files.items[$(cur).data('index')];
