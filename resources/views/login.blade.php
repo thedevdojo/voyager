@@ -6,7 +6,7 @@
     <meta name="robots" content="none" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="admin login">
-    <title>Admin. - {{ Voyager::setting("title") }}</title>
+    <title>Admin - {{ Voyager::setting("title") }}</title>
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/login.css">
     <style>
@@ -34,7 +34,7 @@
             <div class="clearfix">
                 <div class="col-sm-12 col-md-10 col-md-offset-2">
                     <div class="logo-title-container">
-                        <?php $admin_logo_img = Voyager::setting('admin_logo_img', ''); ?>
+                        <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
                         @if($admin_logo_img == '')
                         <img class="img-responsive pull-left logo hidden-xs" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
                         @else
