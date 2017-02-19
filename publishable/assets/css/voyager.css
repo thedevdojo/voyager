@@ -312,6 +312,10 @@ table a.btn-sm{
   font-size:12px;
 }
 
+.btn i{
+  vertical-align: middle;
+}
+
 #dashboard_bg{
   width:100%;
   height:100px;
