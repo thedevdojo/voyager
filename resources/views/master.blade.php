@@ -68,9 +68,9 @@
 </div>
 
 <?php
-$user_avatar = Voyager::image(Auth::user()->avatar);
-if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->avatar, 0, 8) == 'https://')) {
-    $user_avatar = Auth::user()->avatar;
+$user_avatar = Voyager::image(auth()->user()->avatar);
+if ((substr(auth()->user()->avatar, 0, 7) == 'http://') || (substr(auth()->user()->avatar, 0, 8) == 'https://')) {
+    $user_avatar = auth()->user()->avatar;
 }
 ?>
 
@@ -124,7 +124,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     @endif
 
     @if(Session::has('message'))
-    
+
     // TODO: change Controllers to use AlertsMessages trait... then remove this
     var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
     var alertMessage = {!! json_encode(Session::get('message')) !!};
