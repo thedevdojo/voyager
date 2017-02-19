@@ -20,7 +20,7 @@ class PostDimmer extends AbstractWidget
      */
     public function run()
     {
-        $count  = Voyager::model('Post')->count();
+        $count = Voyager::model('Post')->count();
         $string = $count == 1 ? 'post' : 'posts';
 
         return view('voyager::dimmer', array_merge($this->config, [

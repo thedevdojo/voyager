@@ -20,7 +20,7 @@ class UserDimmer extends AbstractWidget
      */
     public function run()
     {
-        $count  = Voyager::model('User')->count();
+        $count = Voyager::model('User')->count();
         $string = $count == 1 ? 'user' : 'users';
 
         return view('voyager::dimmer', array_merge($this->config, [

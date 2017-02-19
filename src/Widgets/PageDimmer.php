@@ -20,7 +20,7 @@ class PageDimmer extends AbstractWidget
      */
     public function run()
     {
-        $count  = Voyager::model('Page')->count();
+        $count = Voyager::model('Page')->count();
         $string = $count == 1 ? 'page' : 'pages';
 
         return view('voyager::dimmer', array_merge($this->config, [
