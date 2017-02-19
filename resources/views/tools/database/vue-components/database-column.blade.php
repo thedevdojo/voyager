@@ -17,15 +17,15 @@
     </td>
 
     <td class="text-center">
-        <input v-model="column.notnull" type="checkbox">
+        <input v-model="column.notnull" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">
     </td>
 
     <td class="text-center">
-        <input v-model="column.unsigned" type="checkbox">
+        <input v-model="column.unsigned" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">
     </td>
 
     <td class="text-center">
-        <input v-model="column.autoincrement" type="checkbox">
+        <input v-model="column.autoincrement" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">
     </td>
 
     <td>
