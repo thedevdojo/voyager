@@ -66,7 +66,8 @@ return [
     */
 
     'storage' => [
-        'disk' => 'public',
+        'disk'  => 'public',
+        'ignore'=> '^\..*',
     ],
 
     /*
