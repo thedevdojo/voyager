@@ -13,7 +13,7 @@
     </td>
 
     <td>
-        <input v-model.number="column.length" type="number" min="0">
+        <input v-model.number="column.length" class="form-control" type="number" min="0">
     </td>
 
     <td>

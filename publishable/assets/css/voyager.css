@@ -257,7 +257,7 @@
 
 .app-container .side-body{
   margin-left: 45px;
-  margin-right: -15px;
+  margin-right: 0px;
 }
 
 .navbar .navbar-nav > li > a{
