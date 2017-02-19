@@ -10,8 +10,9 @@ class AddVoyagerUserFields extends Migration
     public function up()
     {
         Schema::table('users', function ($table) {
-            $table->string('avatar')->nullable()->after('email');
             $table->integer('role_id')->nullable()->after('id');
+            $table->string('avatar')->nullable()->after('email');
+            $table->mediumText('bio')->nullable()->after('avatar');
         });
     }
 
@@ -21,8 +22,9 @@ class AddVoyagerUserFields extends Migration
     public function down()
     {
         Schema::table('users', function ($table) {
-            $table->dropColumn('avatar');
             $table->dropColumn('role_id');
+            $table->dropColumn('avatar');
+            $table->dropColumn('bio');
         });
     }
 }
