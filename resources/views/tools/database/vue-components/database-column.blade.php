@@ -16,15 +16,15 @@
         <input v-model.number="column.length" class="form-control" type="number" min="0">
     </td>
 
-    <td>
+    <td class="text-center">
         <input v-model="column.notnull" type="checkbox">
     </td>
 
-    <td>
+    <td class="text-center">
         <input v-model="column.unsigned" type="checkbox">
     </td>
 
-    <td>
+    <td class="text-center">
         <input v-model="column.autoincrement" type="checkbox">
     </td>
 
