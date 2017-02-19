@@ -137,6 +137,7 @@
                 this.table.columns.push(
                     JSON.parse(JSON.stringify(this.newColumnTemplate))
                 );
+                this.$nextTick(function(){$("input[type=checkbox][data-toggle^=toggle]").bootstrapToggle();});
             },
             getColumn(name) {
                 name = name.toLowerCase();
