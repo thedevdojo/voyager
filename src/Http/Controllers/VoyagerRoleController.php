@@ -4,7 +4,6 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\DataType;
 
 class VoyagerRoleController extends VoyagerBreadController
 {
@@ -15,7 +14,7 @@ class VoyagerRoleController extends VoyagerBreadController
 
         $slug = $this->getSlug($request);
 
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
@@ -37,7 +36,7 @@ class VoyagerRoleController extends VoyagerBreadController
 
         $slug = $this->getSlug($request);
 
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);

@@ -41,7 +41,7 @@
         $.extend( Plugin.prototype, {
             init: function() {
                 this.input = this.settings.input
-                             || $(this.element).closest('form').find('input[name="title"]');
+                             || $(this.element).closest('form').find('input[name="' + this.element.attr("data-slug-origin") + '"]');
 
                 this.forceUpdate = (this.element.data('slug-forceupdate')) ? true : false;
                 this.input.on('keyup change', $.proxy(this.onChange, this));

@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use TCG\Voyager\Traits\AlertsMessages;
 
 abstract class Controller extends BaseController
 {
     use DispatchesJobs,
         ValidatesRequests,
-        AuthorizesRequests;
+        AuthorizesRequests,
+        AlertsMessages;
 
     public function getSlug(Request $request)
     {
@@ -255,7 +257,11 @@ abstract class Controller extends BaseController
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 if ($request->isMethod('PUT')) {
-                    $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
+                    if (empty($request->input($row->field))) {
+                        $content = null;
+                    } else {
+                        $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
+                    }
                 }
                 break;
 

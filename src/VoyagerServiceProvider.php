@@ -2,17 +2,17 @@
 
 namespace TCG\Voyager;
 
+use Arrilot\Widgets\Facade as Widget;
+use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
-use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\User;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -22,10 +22,9 @@ class VoyagerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(ImageServiceProvider::class);
-        $this->app->register(DoctrineSupportServiceProvider::class);
+        $this->app->register(WidgetServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
-        $loader->alias('Menu', Menu::class);
         $loader->alias('Voyager', VoyagerFacade::class);
 
         $this->app->singleton('voyager', function () {
@@ -35,6 +34,8 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadHelpers();
 
         $this->registerAlertComponents();
+        $this->registerFormFields();
+        $this->registerWidgets();
 
         $this->registerConfigs();
 
@@ -59,7 +60,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
                 if (is_null($user->role_id)) {
-                    User::findOrFail($user->id)
+                    VoyagerFacade::model('User')->findOrFail($user->id)
                         ->setRole(config('voyager.user.default_role'))
                         ->save();
                 }
@@ -101,7 +102,7 @@ class VoyagerServiceProvider extends ServiceProvider
     protected function registerViewComposers()
     {
         // Register alerts
-        View::composer('voyager::index', function ($view) {
+        View::composer('voyager::*', function ($view) {
             $view->with('alerts', VoyagerFacade::alerts());
         });
     }
@@ -114,7 +115,11 @@ class VoyagerServiceProvider extends ServiceProvider
         $currentRouteAction = app('router')->current()->getAction();
         $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
 
-        if ($routeName == 'voyager.dashboard' && request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
+        if ($routeName != 'voyager.dashboard') {
+            return;
+        }
+
+        if (request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
             $this->fixMissingStorageSymlink();
         } elseif (!file_exists(public_path('storage'))) {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
@@ -158,6 +163,20 @@ class VoyagerServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register widget.
+     */
+    protected function registerWidgets()
+    {
+        $widgets = ['UserDimmer', 'PostDimmer', 'PageDimmer'];
+
+        foreach ($widgets as $widget) {
+            $class = 'TCG\\Voyager\\Widgets\\'.studly_case($widget);
+
+            Widget::group('voyager::dimmers')->addWidget($class);
+        }
+    }
+
+    /**
      * Register the publishable files.
      */
     private function registerPublishableResources()
@@ -179,9 +198,6 @@ class VoyagerServiceProvider extends ServiceProvider
             'config' => [
                 "$basePath/publishable/config/voyager.php" => config_path('voyager.php'),
             ],
-            'views' => [
-                "$basePath/publishable/views/" => resource_path('views/vendor/voyager'),
-            ],
         ];
 
         foreach ($publishable as $group => $paths) {
@@ -194,6 +210,36 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
         );
+    }
+
+    protected function registerFormFields()
+    {
+        $formFields = [
+            'checkbox',
+            'date',
+            'file',
+            'image',
+            'multiple_images',
+            'number',
+            'password',
+            'radio_btn',
+            'rich_text_box',
+            'select_dropdown',
+            'select_multiple',
+            'text',
+            'text_area',
+            'timestamp',
+        ];
+
+        foreach ($formFields as $formField) {
+            $class = studly_case("{$formField}_handler");
+
+            VoyagerFacade::addFormField("TCG\\Voyager\\FormFields\\{$class}");
+        }
+
+        VoyagerFacade::addAfterFormField(DescriptionHandler::class);
+
+        event('voyager.form-fields.registered');
     }
 
     /**

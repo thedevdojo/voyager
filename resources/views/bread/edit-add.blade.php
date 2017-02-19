@@ -59,15 +59,13 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <?php $options = json_decode($row->details); $checked = false; ?>
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
+                                    {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
-                                    @includeIf("voyager::formfields.$row->type")
-
-                                    @if(isset($options->description))
-                                        <i class="help-block"><span class="voyager-info-circled"></span> {{$options->description}}</i>
-                                    @endif
+                                    @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
+                                        {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                                    @endforeach
                                 </div>
                             @endforeach
 

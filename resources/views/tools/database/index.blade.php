@@ -1,6 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
+    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue21.min.js"></script>
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/database.css">
 @stop
 
@@ -15,6 +16,7 @@
 @section('content')
 
     <div class="page-content container-fluid">
+        @include('voyager::alerts')
         <div class="row">
             <div class="col-md-12">
 
