@@ -79,6 +79,8 @@ class Voyager
         }
 
         $this->models[studly_case($name)] = $class;
+
+        return $this;
     }
 
     public function formField($row, $dateType, $dataTypeContent)
@@ -104,6 +106,8 @@ class Voyager
         }
 
         $this->formFields[$handler->getCodename()] = $handler;
+
+        return $this;
     }
 
     public function addAfterFormField($handler)
@@ -113,6 +117,8 @@ class Voyager
         }
 
         $this->afterFormFields[$handler->getCodename()] = $handler;
+
+        return $this;
     }
 
     public function formFields()
