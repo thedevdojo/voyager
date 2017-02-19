@@ -36,6 +36,11 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 
+    @if(VoyageR::isRtl())
+        <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/rtl.css">
+    @endif
+
+
     @yield('css')
 
     <!-- Voyager CSS -->
@@ -56,7 +61,7 @@
 
 </head>
 
-<body class="flat-blue">
+<body class="flat-blue "@if (Voyager::isRtl()) dir="rtl" @endif>
 
 <div id="voyager-loader">
     <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>

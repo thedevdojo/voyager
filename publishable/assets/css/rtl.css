@@ -1,0 +1,17 @@
+/*
+ * Right-To-Left (RTL) Support
+ * ----------
+ */
+
+[dir="rtl"] .navbar {
+  padding-left: 0px;
+  padding-right: 60px;}
+
+[dir="rtl"] .app-container .side-body{
+  margin-left: -15px;
+  margin-right: 45px;
+}
+
+[dir="rtl"].flat-blue .app-footer {
+  text-align: left;
+}
