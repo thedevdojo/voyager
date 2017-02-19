@@ -167,12 +167,11 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     protected function registerWidgets()
     {
-        $widgets = ['UserDimmer', 'PostDimmer', 'PageDimmer'];
+        $default_widgets = ['TCG\\Voyager\\Widgets\\UserDimmer', 'TCG\\Voyager\\Widgets\\PostDimmer', 'TCG\\Voyager\\Widgets\\PageDimmer'];
+        $widgets = config('voyager.dashboard.widgets', $default_widgets);
 
         foreach ($widgets as $widget) {
-            $class = 'TCG\\Voyager\\Widgets\\'.studly_case($widget);
-
-            Widget::group('voyager::dimmers')->addWidget($class);
+            Widget::group('voyager::dimmers')->addWidget($widget);
         }
     }
 
