@@ -45,10 +45,6 @@ $(document).ready(function(){
 
   $('select.select2').select2();
 
-  $('.toggle-checkbox').bootstrapSwitch({
-    size: "small"
-  });
-
   $('.match-height').matchHeight();
 
   $('.datatable').DataTable({
