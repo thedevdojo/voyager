@@ -94,21 +94,19 @@ return [
     */
 
     'widgets' => [
-        [
-            'name'  => 'User',
+        'user' => [
             'icon'  => 'voyager-group',
             'model' => TCG\Voyager\Models\User::class,
             'url'   => 'admin/users',
             'image' => '/images/widget-backgrounds/02.png',
         ],
-        [
-            'name'  => 'Post',
+        'post' => [
             'icon'  => 'voyager-news',
             'model' => TCG\Voyager\Models\Post::class,
             'url'   => 'admin/posts',
             'image' => '/images/widget-backgrounds/03.png',
         ],
-        [
+        'page' => [
             'name'  => 'Page',
             'icon'  => 'voyager-file-text',
             'model' => TCG\Voyager\Models\Page::class,
@@ -148,6 +146,7 @@ return [
             'responsive' => true, // Use responsive extension for jQuery dataTables that are not server-side paginated
         ],
     ],
+
     'login' => [
         'gradient_a' => '#ffffff',
         'gradient_b' => '#ffffff',
