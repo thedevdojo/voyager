@@ -13,19 +13,19 @@
     </td>
 
     <td>
-        <input v-model.number="column.length" type="number" min="0">
+        <input v-model.number="column.length" class="form-control" type="number" min="0">
     </td>
 
-    <td>
-        <input v-model="column.notnull" type="checkbox">
+    <td class="text-center">
+        <input v-model="column.notnull" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">
     </td>
 
-    <td>
-        <input v-model="column.unsigned" type="checkbox">
+    <td class="text-center">
+        <input v-model="column.unsigned" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">
     </td>
 
-    <td>
-        <input v-model="column.autoincrement" type="checkbox">
+    <td class="text-center">
+        <input v-model="column.autoincrement" type="checkbox" data-toggle="toggle" data-on="Yes" data-off="No">
     </td>
 
     <td>
