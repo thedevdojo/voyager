@@ -152,4 +152,5 @@ return [
         'gradient_a' => '#ffffff',
         'gradient_b' => '#ffffff',
     ],
+    'primary_color' => '#22A7F0',
 ];
