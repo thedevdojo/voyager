@@ -14,7 +14,7 @@
     <div style="background-size:cover; background: url({{ Voyager::image( Voyager::setting('admin_bg_image'), config('voyager.assets_path') . '/images/bg.jpg') }}) center center;position:absolute; top:0; left:0; width:100%; height:300px;"></div>
     <div style="height:160px; display:block; width:100%"></div>
     <div style="position:relative; z-index:9; text-align:center;">
-        <img src="@if( strpos(auth()->user()->avatar, 'http://') === false && strpos(auth()->user()->avatar, 'https://') === false){{ Voyager::image( auth()->user()->avatar ) }}@else{{ auth()->user()->avatar }}@endif" class="avatar"
+        <img src="{{ filter_var(auth()->user()->avatar, FILTER_VALIDATE_URL) === FALSE ? Voyager::image(auth()->user()->avatar) : auth()->user()->avatar }}" class="avatar"
              style="border-radius:50%; width:150px; height:150px; border:5px solid #fff;"
              alt="{{ auth()->user()->name }} avatar">
         <h4>{{ ucwords(auth()->user()->name) }}</h4>

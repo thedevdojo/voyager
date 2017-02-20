@@ -130,9 +130,9 @@
                                     <p>No File or Folder Selected</p>
                                 </div>
                                 <div class="right_details">
-                                    <div class="detail_img @{{ selected_file.type }}">
+                                    <div class="detail_img @{{selected_file.type}}">
                                         <template v-if="selected_file.type.includes('image')">
-                                            <img src="@{{ selected_file.path }}"/>
+                                            <img src="@{{selected_file.path}}"/>
                                         </template>
                                         <template v-if="selected_file.type.includes('video')">
                                             <video width="100%" height="auto" controls>
@@ -165,10 +165,10 @@
                             <p>@{{selected_file.type}}</p></span>
                                         <template v-if="selected_file.type != 'folder'">
                                 <span><h4>Size:</h4>
-                                <p><span class="selected_file_count">@{{ selected_file.items }} item(s)</span><span
+                                <p><span class="selected_file_count">@{{selected_file.items}} item(s)</span><span
                                             class="selected_file_size">@{{selected_file.size}}</span></p></span>
                                             <span><h4>Public URL:</h4>
-                                <p><a href="@{{ selected_file.path }}" target="_blank">Click Here</a></p></span>
+                                <p><a href="@{{selected_file.path}}" target="_blank">Click Here</a></p></span>
                                             <span><h4>Last Modified:</h4>
                                 <p>@{{selected_file.last_modified}}</p></span>
                                         </template>

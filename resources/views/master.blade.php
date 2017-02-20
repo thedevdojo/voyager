@@ -68,10 +68,7 @@
 </div>
 
 <?php
-$user_avatar = Voyager::image(auth()->user()->avatar);
-if ((substr(auth()->user()->avatar, 0, 7) == 'http://') || (substr(auth()->user()->avatar, 0, 8) == 'https://')) {
-    $user_avatar = auth()->user()->avatar;
-}
+$user_avatar = filter_var(auth()->user()->avatar, FILTER_VALIDATE_URL) === FALSE ? Voyager::image(auth()->user()->avatar) : auth()->user()->avatar;
 ?>
 
 <div class="app-container">

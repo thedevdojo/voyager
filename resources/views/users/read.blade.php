@@ -16,7 +16,6 @@
                     <!-- /.box-header -->
                     <!-- form start -->
 
-
                     @foreach($dataType->readRows as $row)
 
                         <div class="panel-heading" style="border-bottom:0;">
@@ -25,8 +24,7 @@
 
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
-                                <img style="max-width:640px"
-                                     src="{!! Voyager::image($dataTypeContent->{$row->field}) !!}">
+                                <img src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) === FALSE ? Voyager::image($dataTypeContent->{$row->field}) : $dataTypeContent->{$row->field} }}" style="max-width:256px">
                             @elseif($row->type == 'date')
                             {{ \Carbon\Carbon::parse($dataTypeContent->{$row->field})->format('F jS, Y h:i A') }}
                             @else
@@ -45,7 +43,6 @@
                     <div class="panel-body" style="padding-top:0;">
                         <p>{{$dataTypeContent->role->display_name}}</p>
                     </div>
-
 
                 </div>
             </div>

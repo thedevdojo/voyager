@@ -73,8 +73,8 @@
                             <div class="form-group">
                                 <label for="password">Avatar</label>
                                 @if(isset($dataTypeContent->avatar))
-                                    <img src="{{ Voyager::image( $dataTypeContent->avatar ) }}"
-                                         style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
+                                    <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) === FALSE ? Voyager::image($dataTypeContent->avatar) : $dataTypeContent->avatar }}"
+                                        style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                 @endif
                                 <input type="file" name="avatar">
                             </div>
@@ -88,8 +88,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
-
 
                         </div><!-- panel-body -->
 
