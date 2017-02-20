@@ -5,12 +5,16 @@ namespace TCG\Voyager\Database\Types\Mysql;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use TCG\Voyager\Database\Types\Type;
 
-class TimestampType extends Type
+class TimeStampType extends Type
 {
     const NAME = 'timestamp';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
-        return 'timestamp';
+        if (isset($field['default'])) {
+            return 'timestamp';
+        }
+
+        return 'timestamp null';
     }
 }
