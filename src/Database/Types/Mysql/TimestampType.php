@@ -11,6 +11,8 @@ class TimestampType extends Type
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
-        return 'timestamp';
+        $null = isset($field['default']) ? '' : ' null';
+
+        return 'timestamp'.$null;
     }
 }
