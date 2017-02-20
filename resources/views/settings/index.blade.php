@@ -162,7 +162,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-settings"></i> Settings
+        <i class="voyager-settings"></i> {{ __('voyager::admin.Settings') }}
     </h1>
 @stop
 
@@ -170,8 +170,8 @@
 
     <div class="container-fluid">
         <div class="alert alert-info">
-            <strong>How To Use:</strong>
-            <p>You can get the value of each setting anywhere on your site by calling <code>Voyager::setting('key')</code></p>
+            <strong>{{ __('voyager::admin.How to use')}}:</strong>
+            <p>{{ __('voyager::admin.You can get the value of each setting anywhere on your site by calling') }} <code>Voyager::setting('key')</code></p>
         </div>
     </div>
 
@@ -263,7 +263,7 @@
                     @endif
                 @endforeach
             </div>
-            <button type="submit" class="btn btn-primary pull-right">Save Settings</button>
+            <button type="submit" class="btn btn-primary pull-right">{{ __('voyager::admin.Save settings') }}</button>
         </form>
 
         <div style="clear:both"></div>
@@ -352,7 +352,7 @@
                     </script>
                     <div style="clear:both"></div>
                     <button type="submit" class="btn btn-primary pull-right new-setting-btn">
-                        <i class="voyager-plus"></i> Add New Setting
+                        <i class="voyager-plus"></i> {{ __('voyager::admin.Add new setting') }}
                     </button>
                     <div style="clear:both"></div>
                 </form>
@@ -368,16 +368,16 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">
-                        <i class="voyager-trash"></i> Are you sure you want to delete the <span id="delete_setting_title"></span> Setting?
+                        <i class="voyager-trash"></i> {{ __('voyager::admin.Are you sure you want to delete the <span id="delete_setting_title"></span> Setting?') }}
                     </h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.settings.delete', ['id' => '__id']) }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
-                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="Yes, Delete This Setting">
+                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager::admin.Yes, delete this setting') }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::admin.Cancel') }}</button>
                 </div>
             </div>
         </div>
