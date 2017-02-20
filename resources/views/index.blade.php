@@ -23,7 +23,7 @@
                         <i class={{ $element['icon'] }}></i>
                         <?php $count = $element['model']::count(); ?>
                         <h4>{{ $count . ' ' .  $element['name'] }}(s)</h4>
-                        <p>{{ __('voyager::admin.You have :count :name(s) in your database. Click on button below to view all :name s', ['count' => $count, 'name' => lcfirst($element['name']]) }}.</p>
+                        <p>{{ __('voyager::admin.You have :count :name(s) in your database. Click on button below to view all :name s', ['count' => $count, 'name' => lcfirst($element['name'])]) }}.</p>
                         <a href="{{ $element['url'] }}" class="btn btn-primary">{{ __('voyager::admin.View all :name',['name' => $element['name']]) }}</a>
                     </div>
                 </div>
