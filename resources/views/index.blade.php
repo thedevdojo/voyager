@@ -23,8 +23,8 @@
                         <i class={{ $element['icon'] }}></i>
                         <?php $count = $element['model']::count(); ?>
                         <h4>{{ $count . ' ' .  $element['name'] }}(s)</h4>
-                        <p>{{ __('voyager.You have :count :name(s) in your database. Click on button below to view all :name s', ['count' => $count, 'name' => lcfirst($element['name']]) }}.</p>
-                        <a href="{{ $element['url'] }}" class="btn btn-primary">{{ __('voyager.View all :name',['name' => $element['name']]) }}</a>
+                        <p>{{ __('voyager::admin.You have :count :name(s) in your database. Click on button below to view all :name s', ['count' => $count, 'name' => lcfirst($element['name']]) }}.</p>
+                        <a href="{{ $element['url'] }}" class="btn btn-primary">{{ __('voyager::admin.View all :name',['name' => $element['name']]) }}</a>
                     </div>
                 </div>
             @endforeach
@@ -37,7 +37,7 @@
                 <div id="embed-api-auth-container"></div>
             @else
                 <p style="border-radius:4px; padding:20px; background:#fff; margin:0; color:#999; text-align:center;">
-                    {{ __('voyager.To view analytics you'll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console') }}:
+                    {{ __('voyager::admin.To view analytics you'll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console') }}:
                     <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
                 </p>
             @endif
@@ -48,7 +48,7 @@
                         <li class="FlexGrid-item">
                             <div class="Titles">
                                 <h1 class="Titles-main" id="view-name">Select a View</h1>
-                                <div class="Titles-sub">{{ __('voyager.Various visualizations') }}</div>
+                                <div class="Titles-sub">{{ __('voyager::admin.Various visualizations') }}</div>
                             </div>
                         </li>
                         <li class="FlexGrid-item FlexGrid-item--fixed">
@@ -72,8 +72,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">{{ __('voyager.This year vs last year') }}</h1>
-                                <div class="Titles-sub">{{ __('voyager.By users') }}</div>
+                                <h1 class="Titles-main">{{ __('voyager::admin.This year vs last year') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager::admin.By users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-2-container"></figure>
                             <ol class="Chartjs-legend" id="legend-2-container"></ol>
@@ -82,8 +82,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">{{ __('Top browsers') }}</h1>
-                                <div class="Titles-sub">{{ __('By pageview') }}</div>
+                                <h1 class="Titles-main">{{ __('voyager::admin.Top browsers') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager::admin.By pageview') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-3-container"></figure>
                             <ol class="Chartjs-legend" id="legend-3-container"></ol>
@@ -92,8 +92,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">{{ __('Top countries') }}</h1>
-                                <div class="Titles-sub">{{ __('By sessions') }}</div>
+                                <h1 class="Titles-main">{{ __('voyager::admin.Top countries') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager::admin.By sessions') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-4-container"></figure>
                             <ol class="Chartjs-legend" id="legend-4-container"></ol>
