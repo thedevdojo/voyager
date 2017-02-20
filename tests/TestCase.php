@@ -106,3 +106,11 @@ class DisabledTestException extends Handler
         throw $e;
     }
 }
+
+/**
+ * Mock translate function, return original text
+ */
+function __($key) 
+{
+    return str_replace('voyager::admin.','',$key);
+}
