@@ -271,21 +271,21 @@
         <div class="panel" style="margin-top:10px;">
             <div class="panel-heading new-setting">
                 <hr>
-                <h3 class="panel-title"><i class="voyager-plus"></i> New Setting</h3>
+                <h3 class="panel-title"><i class="voyager-plus"></i> {{ __('voyager::admin.New Setting') }}</h3>
             </div>
             <div class="panel-body">
                 <form action="{{ route('voyager.settings.store') }}" method="POST">
                     {{ csrf_field() }}
                     <div class="col-md-4">
-                        <label for="display_name">Name</label>
+                        <label for="display_name">{{ __('voyager::admin.Name') }}</label>
                         <input type="text" class="form-control" name="display_name">
                     </div>
                     <div class="col-md-4">
-                        <label for="key">Key</label>
+                        <label for="key">{{ __('voyager::admin.Key') }}</label>
                         <input type="text" class="form-control" name="key">
                     </div>
                     <div class="col-md-4">
-                        <label for="asdf">Type</label>
+                        <label for="asdf">{{ __('voyager::admin.Type') }}</label>
                         <select name="type" class="form-control">
                             <option value="text">Text Box</option>
                             <option value="text_area">Text Area</option>
