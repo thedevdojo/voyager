@@ -128,8 +128,8 @@
                                 </div>
                             @endforeach
 
-                            <label for="permission">Permissions</label><br>
-                            <a href="#" class="permission-select-all">Select All</a> / <a href="#"  class="permission-deselect-all">Deselect All</a>
+                            <label for="permission">{{ __('voyager::admin.Permissions') }}</label><br>
+                            <a href="#" class="permission-select-all">{{ __('voyager::admin.Select all') }}</a> / <a href="#" class="permission-deselect-all">{{ __('voyager::admin.Deselect all') }}</a>
                             <ul class="permissions checkbox">
                                 <?php
                                     $role_permissions = (isset($dataTypeContent)) ? $dataTypeContent->permissions->pluck('key')->toArray() : [];
@@ -151,7 +151,7 @@
                             </ul>
                         </div><!-- panel-body -->
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">{{ __('voyager::admin.Submit') }}</button>
                         </div>
                     </form>
 
