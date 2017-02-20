@@ -271,7 +271,7 @@
         <div class="panel" style="margin-top:10px;">
             <div class="panel-heading new-setting">
                 <hr>
-                <h3 class="panel-title"><i class="voyager-plus"></i> {{ __('voyager::admin.New Setting') }}</h3>
+                <h3 class="panel-title"><i class="voyager-plus"></i> {{ __('voyager::admin.New setting') }}</h3>
             </div>
             <div class="panel-body">
                 <form action="{{ route('voyager.settings.store') }}" method="POST">
