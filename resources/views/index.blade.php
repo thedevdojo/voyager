@@ -62,8 +62,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">{{ __('voyager.This week vs last week') }}</h1>
-                                <div class="Titles-sub">{{ __('voyager.By users') }}</div>
+                                <h1 class="Titles-main">{{ __('voyager::admin.This week vs last week') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager::admin.By users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-1-container"></figure>
                             <ol class="Chartjs-legend" id="legend-1-container"></ol>
@@ -149,7 +149,7 @@
                  */
                 gapi.analytics.auth.authorize({
                     container: 'embed-api-auth-container',
-                    clientid: '<?= $google_analytics_client_id; ?>'
+                    clientid: '<?php echo $google_analytics_client_id; ?>'
                 });
 
                 /**
