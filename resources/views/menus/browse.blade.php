@@ -40,13 +40,13 @@
                                     @endforeach
                                     <td class="no-sort no-click">
                                         <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}">
-                                            <i class="voyager-trash"></i> Delete
+                                            <i class="voyager-trash"></i> {{ __('voyager::admin.Delete') }}
                                         </div>
                                         <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> Edit
+                                            <i class="voyager-edit"></i> {{ __('voyager::admin.Edit') }}
                                         </a>
                                         <a href="{{ route('voyager.'.$dataType->slug.'.builder', $data->id) }}" class="btn-sm btn-success pull-right">
-                                            <i class="voyager-list"></i> Builder
+                                            <i class="voyager-list"></i> {{ __('voyager::admin.Builder') }}
                                         </a>
                                     </td>
                                 </tr>
