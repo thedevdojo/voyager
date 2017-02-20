@@ -46,9 +46,9 @@
                             @endif
 
                             <div class="form-group">
-                                <label for="name">Name</label>
+                                <label for="name">{{ __('voyager::admin.Name') }}</label>
                                 <input type="text" class="form-control" name="name"
-                                    placeholder="Name" id="name"
+                                    placeholder="{{ __('voyager::admin.Name') }}" id="name"
                                     value="@if(isset($dataTypeContent->name)){{ old('name', $dataTypeContent->name) }}@else{{old('name')}}@endif">
                             </div>
 
@@ -63,10 +63,10 @@
                                 <label for="password">Password</label>
                                 @if(isset($dataTypeContent->password))
                                     <br>
-                                    <small>Leave empty to keep the same</small>
+                                    <small>{{ __('voyager::admin.Leave empty to keep the same') }}</small>
                                 @endif
                                 <input type="password" class="form-control" name="password"
-                                       placeholder="Password" id="password"
+                                       placeholder="{{ __('voyager::admin.Password') }}" id="password"
                                        value="">
                             </div>
 
@@ -80,7 +80,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="role">User Role</label>
+                                <label for="role">{{ __('voyager::admin.User role') }}</label>
                                 <select name="role_id" id="role" class="form-control">
                                     <?php $roles = TCG\Voyager\Models\Role::all(); ?>
                                     @foreach($roles as $role)
@@ -94,7 +94,7 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">{{ __('voyager::admin.Submit') }}</button>
                         </div>
                     </form>
 
