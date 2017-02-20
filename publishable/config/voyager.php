@@ -108,7 +108,6 @@ return [
             'image' => '/images/widget-backgrounds/03.png',
         ],
         'page' => [
-            'name'  => 'Page',
             'icon'  => 'voyager-file-text',
             'model' => TCG\Voyager\Models\Page::class,
             'url'   => 'admin/pages',
