@@ -13,15 +13,6 @@ class User extends AuthUser
     protected $guarded = [];
 
     /**
-     * un comment if you are going to use Uuid instead of inc id or
-     * use searching in view wont work.
-     */
-    // public function getIncrementing()
-    // {
-    //     return false;
-    // }
-
-    /**
      * On save make sure to set the default avatar if image is not set.
      */
     public function save(array $options = [])
