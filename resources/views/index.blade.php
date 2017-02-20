@@ -45,9 +45,9 @@
             <div class="Dashboard Dashboard--full" id="analytics-dashboard">
                 <header class="Dashboard-header">
                     <ul class="FlexGrid">
-                        <li class="FlexGrid-item">
+                        <li class="FlexGrid-item">F
                             <div class="Titles">
-                                <h1 class="Titles-main" id="view-name">Select a View</h1>
+                                <h1 class="Titles-main" id="view-name">{{ __('voyager::admin.Select a View') }}</h1>
                                 <div class="Titles-sub">{{ __('voyager::admin.Various visualizations') }}</div>
                             </div>
                         </li>
