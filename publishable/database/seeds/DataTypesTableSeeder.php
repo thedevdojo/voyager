@@ -7,14 +7,10 @@ class DataTypesTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
     public function run()
     {
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'posts',
-        ]);
+        $dataType = $this->dataType('slug', 'posts');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'posts',
@@ -27,9 +23,7 @@ class DataTypesTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'pages',
-        ]);
+        $dataType = $this->dataType('slug', 'pages');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'pages',
@@ -42,9 +36,7 @@ class DataTypesTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'users',
-        ]);
+        $dataType = $this->dataType('slug', 'users');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'users',
@@ -57,9 +49,7 @@ class DataTypesTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'name'                  => 'categories',
-        ]);
+        $dataType = $this->dataType('name', 'categories');
         if (!$dataType->exists) {
             $dataType->fill([
                 'slug'                  => 'categories',
@@ -72,9 +62,7 @@ class DataTypesTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'menus',
-        ]);
+        $dataType = $this->dataType('slug', 'menus');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'menus',
@@ -87,9 +75,7 @@ class DataTypesTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'roles',
-        ]);
+        $dataType = $this->dataType('slug', 'roles');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'roles',
@@ -101,5 +87,18 @@ class DataTypesTableSeeder extends Seeder
                 'description'           => '',
             ])->save();
         }
+    }
+
+    /**
+     * [dataType description].
+     *
+     * @param [type] $field [description]
+     * @param [type] $for   [description]
+     *
+     * @return [type] [description]
+     */
+    protected function dataType($field, $for)
+    {
+        return DataType::firstOrNew([$field => $for]);
     }
 }

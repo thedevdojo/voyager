@@ -6,30 +6,8 @@
 
 @section('content')
     <div class="page-content">
-        <div class="alerts">
-            @foreach ($alerts as $alert)
-                <div class="alert alert-{{ $alert->type }} alert-name-{{ $alert->name }}">
-                    @foreach($alert->components as $component)
-                        <?php echo $component->render(); ?>
-                    @endforeach
-                </div>
-            @endforeach
-        </div>
-        <div class="widgets">
-            @foreach(config('voyager.widgets', []) as $element)
-                <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') . $element['image']}});">
-                    <div class="dimmer"></div>
-                    <div class="panel-content">
-                        <i class={{ $element['icon'] }}></i>
-                        <?php $count = $element['model']::count(); ?>
-                        <h4>{{ $count . ' ' .  $element['name'] }}(s)</h4>
-                        <p>You have {{ $count . ' ' .  $element['name'] }}(s) in your database. Click on button below to view all {{ lcfirst($element['name']) }}s.</p>
-                        <a href="{{ $element['url'] }}" class="btn btn-primary">View All {{ $element['name'] }}s</a>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-        <div style="clear:both"></div>
+        @include('voyager::alerts')
+        @include('voyager::dimmers')
         <div style="padding:15px;">
             <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
             @if (isset($google_analytics_client_id) && !empty($google_analytics_client_id))

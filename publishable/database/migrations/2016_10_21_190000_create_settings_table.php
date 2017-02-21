@@ -18,7 +18,7 @@ class CreateSettingsTable extends Migration
             $table->string('key')->unique();
             $table->string('display_name');
             $table->text('value');
-            $table->text('details');
+            $table->text('details')->nullable()->default(null);
             $table->string('type');
             $table->integer('order')->default('1');
         });
