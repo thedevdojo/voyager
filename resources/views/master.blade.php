@@ -88,16 +88,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
         </div>
     </div>
 </div>
-<footer class="app-footer">
-    <div class="site-footer-right">
-        @if (rand(1,100) == 100)
-            <i class="voyager-rum-1"></i> Made with rum and even more rum
-        @else
-            Made with <i class="voyager-heart"></i> by <a href="http://thecontrolgroup.com" target="_blank">The Control Group</a>
-        @endif
-        - {{ Voyager::getVersion() }}
-    </div>
-</footer>
+@include('voyager::partials.app-footer')
 <!-- Javascript Libs -->
 
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/bootstrap.min.js"></script>
