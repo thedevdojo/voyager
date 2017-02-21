@@ -29,7 +29,8 @@
         "orchestra/testbench": "3.3.*|3.4.x-dev",
         "orchestra/database": "3.3.*|3.4.x-dev",
         "laravel/browser-kit-testing": "~1.0.0",
-        "orchestra/testbench-browser-kit": "~3.3.0|~3.4.0"
+        "orchestra/testbench-browser-kit": "~3.3.0|~3.4.0",
+        "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
         "psr-4": {
