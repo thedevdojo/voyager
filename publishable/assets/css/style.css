@@ -86,7 +86,8 @@ a:hover {
   opacity: 0.75; }
 .navbar > .container .navbar-expand-toggle .icon, .navbar > .container-fluid .navbar-expand-toggle .icon {
   font-size: 1.4em; }
-.navbar > .container .navbar-right-expand-toggle, .navbar > .container-fluid .navbar-right-expand-toggle {
+.navbar > .container .navbar-right-expand-toggle, .navbar > .container-fluid .navbar-right-expand-toggle,
+.navbar > .container .navbar-left-expand-toggle, .navbar > .container-fluid .navbar-left-expand-toggle {
   width: 60px;
   height: 60px;
   background-color: transparent;
@@ -97,7 +98,8 @@ a:hover {
   -webkit-transition: all 0.25s linear;
   transition: all 0.25s linear;
   opacity: 0.75; }
-.navbar > .container .navbar-right-expand-toggle .icon, .navbar > .container-fluid .navbar-right-expand-toggle .icon {
+.navbar > .container .navbar-right-expand-toggle .icon, .navbar > .container-fluid .navbar-right-expand-toggle .icon,
+.navbar > .container .navbar-left-expand-toggle .icon, .navbar > .container-fluid .navbar-left-expand-toggle .icon {
   font-size: 1.4em; }
 .navbar .navbar-breadcrumb {
   margin-left: 0;
@@ -383,7 +385,8 @@ a:hover {
     margin: 0; }
   .navbar .navbar-nav > li {
     display: inline-block; }
-  .navbar .navbar-right {
+  .navbar .navbar-right,
+  .navbar .navbar-left {
     position: absolute;
     top: 0;
     right: -100%;
@@ -392,9 +395,11 @@ a:hover {
     -moz-transition: all 0.25s linear;
     -webkit-transition: all 0.25s linear;
     transition: all 0.25s linear; }
-  .navbar .navbar-right .open .dropdown-menu {
+  .navbar .navbar-right .open .dropdown-menu,
+  .navbar .navbar-left .open .dropdown-menu {
     position: absolute; }
-  .navbar .navbar-right.expanded {
+  .navbar .navbar-right.expanded,
+  .navbar .navbar-left.expanded {
     right: 0; }
   .app-container .navbar-top {
     min-width: 300px; }
@@ -1116,6 +1121,7 @@ body.login-page .login-footer {
   padding-left: 0;
   background-color: transparent;
   box-shadow: none; }
+.landing-page .navbar .navbar-left,
 .landing-page .navbar .navbar-right {
   position: relative;
   right: 0; }
@@ -1265,11 +1271,13 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     font-size: 12px;
 }
 /* Fix navbar responsiveness */
-.navbar-nav.navbar-right {
+.navbar-nav.navbar-right,
+.navbar-nav.navbar-left {
   top: 0;
   right: 0;
   height: 100%;
   width: auto;
   background: none !important;
 }
-.navbar-nav.navbar-right li.dropdown.open .dropdown-menu {display: block}
+.navbar-nav.navbar-right li.dropdown.open .dropdown-menu,
+.navbar-nav.navbar-left li.dropdown.open .dropdown-menu {display: block}

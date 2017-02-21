@@ -14,4 +14,22 @@
 
 [dir="rtl"].flat-blue .app-footer {
   text-align: left;
+  padding-left: 20px;
+}
+
+[dir="rtl"] .navbar-header {
+  float: right;
+}
+
+[dir="rtl"] .app-container.expanded .content-container .navbar-top {
+  padding-left: 0px;
+  padding-right: 250px;
+}
+
+[dir="rtl"] .app-container .content-container .navbar-top .hamburger {
+  float: right;
+}
+
+[dir="rtl"] .app-container .content-container .side-menu .navbar {
+  padding-right: 0px;
 }

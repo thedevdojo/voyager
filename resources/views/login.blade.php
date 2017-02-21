@@ -9,6 +9,9 @@
     <title>Admin. - {{ Voyager::setting("title") }}</title>
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/login.css">
+    @if (Voyager::isRtl())
+        <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/login-rtl.css">
+    @endif
     <style>
         body {
             background-image:url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
@@ -27,7 +30,7 @@
 </head>
 <body>
 <!-- Designed with ♥ by Frondor -->
-<div class="container-fluid">
+<div class="container-fluid" @if (Voyager::isRtl()) dir="rtl" @endif>
     <div class="row">
         <div class="faded-bg"></div>
         <div class="hidden-xs col-sm-8 col-md-9">
