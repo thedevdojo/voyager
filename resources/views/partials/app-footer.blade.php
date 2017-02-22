@@ -5,7 +5,7 @@
         @else
             Made with <i class="voyager-heart"></i> by <a href="http://thecontrolgroup.com" target="_blank">The Control Group</a>
         @endif
-        @php $version = Voyager::getVersion(); @endif
+        @php $version = Voyager::getVersion(); @endphp
         @if (!empty($version))
             - {{ $version }}
         @endif
