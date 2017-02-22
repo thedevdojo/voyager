@@ -38,8 +38,7 @@ script:
   # - vendor/bin/phpunit
   
 addons:
- code_climate:
-   repo_token: <token>
+ code_climate
 
 after_success:
   - vendor/bin/test-reporter
