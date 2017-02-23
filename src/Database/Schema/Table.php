@@ -52,9 +52,9 @@ class Table extends DoctrineTable
             }
         }
 
-        if ($sort) {
+        if (count($matched) > 1 && $sort) {
             // Sort indexes based on priority: PRI > UNI > IND
-            uasort($matched, function($index1, $index2) {
+            uasort($matched, function ($index1, $index2) {
                 $index1_type = Index::getType($index1);
                 $index2_type = Index::getType($index2);
 
