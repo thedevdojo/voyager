@@ -82,13 +82,12 @@ abstract class SchemaManager
             $columnArr = Column::toArray($column);
 
             $columnArr['field'] = $columnArr['name'];
-
-            $columnArr['type']  = $columnArr['type']['name'];
+            $columnArr['type'] = $columnArr['type']['name'];
 
             // Set the indexes and key
             $columnArr['indexes'] = [];
             $columnArr['key'] = null;
-            if ($columnArr['indexes'] = $table->getColumnsIndexes($columnArr['name'])) {
+            if ($columnArr['indexes'] = $table->getColumnsIndexes($columnArr['name'], true)) {
                 // Convert indexes to Array
                 foreach ($columnArr['indexes'] as $name => $index) {
                     $columnArr['indexes'][$name] = Index::toArray($index);
