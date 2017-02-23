@@ -9,20 +9,19 @@
 @section('content')
 
     @if(isset($dataType->name))
-        <?php $table = $dataType->name ?>
+        <?php $table = $dataType->name; ?>
     @endif
 
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
 
-                <form role="form"
-                      action="@if(isset($dataType->id)){{ route('voyager.database.update_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
-                      method="POST">
-                    @if(isset($dataType->id))
-                        <input type="hidden" value="{{ $dataType->id }}" name="id">
-                        {{ method_field("PUT") }}
-                    @endif
+                <form action="@if(isset($dataType->id)){{ route('voyager.database.update_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
+                      method="POST" role="form">
+                @if(isset($dataType->id))
+                    <input type="hidden" value="{{ $dataType->id }}" name="id">
+                    {{ method_field("PUT") }}
+                @endif
                     <!-- CSRF TOKEN -->
                     {{ csrf_field() }}
 
@@ -34,14 +33,14 @@
 
                         <table id="users" class="table table-hover">
                             <thead>
-                            <tr>
-                                <th>Field</th>
-                                <th>Field Info</th>
-                                <th>Visibility</th>
-                                <th>Input Type</th>
-                                <th>Display Name</th>
-                                <th>Optional Details</th>
-                            </tr>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Field Info</th>
+                                    <th>Visibility</th>
+                                    <th>Input Type</th>
+                                    <th>Display Name</th>
+                                    <th>Optional Details</th>
+                                </tr>
                             </thead>
                             <tbody>
                             @foreach($fieldOptions as $data)
@@ -68,23 +67,30 @@
                                     <td>
                                         <input type="checkbox"
                                                id="field_browse_{{ $data['field'] }}"
-                                               name="field_browse_{{ $data['field'] }}" @if(isset($dataRow->browse) && $dataRow->browse){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->browse)){{ 'checked="checked"' }}@endif>
+                                               name="field_browse_{{ $data['field'] }}"
+                                               @if(isset($dataRow->browse) && $dataRow->browse)
+                                                    {{ 'checked="checked"' }}
+                                               @elseif($data['key'] == 'PRI')
+                                               @elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')
+                                               @elseif(!isset($dataRow->browse))
+                                                    {{ 'checked="checked"' }}
+                                               @endif>
                                         <label for="field_browse_{{ $data['field'] }}">Browse</label><br/>
                                         <input type="checkbox"
                                                id="field_read_{{ $data['field'] }}"
-                                               name="field_read_{{ $data['field'] }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['key'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
+                                               name="field_read_{{ $data['field'] }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
                                         <label for="field_read_{{ $data['field'] }}">Read</label><br/>
                                         <input type="checkbox"
                                                id="field_edit_{{ $data['field'] }}"
-                                               name="field_edit_{{ $data['field'] }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['key'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
+                                               name="field_edit_{{ $data['field'] }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
                                         <label for="field_edit_{{ $data['field'] }}">Edit</label><br/>
                                         <input type="checkbox"
                                                id="field_add_{{ $data['field'] }}"
-                                               name="field_add_{{ $data['field'] }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['key'] == 'timestamp' && $data['field'] == 'created_at')@elseif($data['key'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
+                                               name="field_add_{{ $data['field'] }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'created_at')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
                                             <label for="field_add_{{ $data['field'] }}">Add</label><br/>
                                         <input type="checkbox"
                                                id="field_delete_{{ $data['field'] }}"
-                                               name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['key'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
+                                               name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
                                                 <label for="field_delete_{{ $data['field'] }}">Delete</label><br/>
                                     </td>
                                     <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">
@@ -92,7 +98,7 @@
                                         @if($data['key'] == 'PRI')
                                             <p>Primary Key</p>
                                             <input type="hidden" value="PRI" name="field_input_type_{{ $data['field'] }}">
-                                        @elseif($data['key'] == 'timestamp')
+                                        @elseif($data['type'] == 'timestamp')
                                             <p>Timestamp</p>
                                             <input type="hidden" value="timestamp"
                                                    name="field_input_type_{{ $data['field'] }}">

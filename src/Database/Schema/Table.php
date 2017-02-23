@@ -38,6 +38,25 @@ class Table extends DoctrineTable
         return new self($name, $columns, $indexes, $foreignKeys, false, $options);
     }
 
+    public function getColumnsIndexes($columns)
+    {
+        if (!is_array($columns)) {
+            $columns = [$columns];
+        }
+
+        $matched = [];
+
+        foreach ($this->_indexes as $index) {
+            if ($index->spansColumns($columns)) {
+                $matched[$index->getName()] = $index;
+            }
+        }
+
+        // TODO: sort indexes based on priority: PRI > UNI > IND.
+
+        return $matched;
+    }
+
     public function diff(DoctrineTable $compareTable)
     {
         return (new Comparator())->diffTable($this, $compareTable);
