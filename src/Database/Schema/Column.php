@@ -24,11 +24,26 @@ abstract class Column
      */
     public static function toArray(DoctrineColumn $column)
     {
-        $columnArray = $column->toArray();
-        $columnArray['type'] = Type::toArray($columnArray['type']);
-        $columnArray['oldName'] = $columnArray['name'];
-        $columnArray['composite'] = false;
+        $columnArr = $column->toArray();
+        $columnArr['type'] = Type::toArray($columnArr['type']);
+        $columnArr['oldName'] = $columnArr['name'];
+        $columnArr['null'] = $columnArr['notnull'] ? 'NO' : 'YES';
+        $columnArr['extra'] = static::getExtra($column);
+        $columnArr['composite'] = false;
 
-        return $columnArray;
+        return $columnArr;
+    }
+
+    /**
+     * @return string
+     */
+    protected static function getExtra(DoctrineColumn $column)
+    {
+        $extra = '';
+
+        $extra .= $column->getAutoincrement() ? 'auto_increment' : '';
+        // todo: Add Extra stuff like mysql 'onUpdate' etc...
+
+        return $extra;
     }
 }
