@@ -95,10 +95,7 @@
                                     </td>
                                     <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">
                                     <td>
-                                        @if($data['key'] == 'PRI')
-                                            <p>Primary Key</p>
-                                            <input type="hidden" value="PRI" name="field_input_type_{{ $data['field'] }}">
-                                        @elseif($data['type'] == 'timestamp')
+                                        @if($data['type'] == 'timestamp')
                                             <p>Timestamp</p>
                                             <input type="hidden" value="timestamp"
                                                    name="field_input_type_{{ $data['field'] }}">

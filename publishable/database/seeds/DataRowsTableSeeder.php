@@ -21,7 +21,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($postDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'ID',
                 'required'     => 1,
                 'browse'       => 0,
@@ -240,7 +240,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($pageDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -432,7 +432,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($userDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -552,7 +552,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($menuDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -612,7 +612,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($categoryDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -731,7 +731,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($roleDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
