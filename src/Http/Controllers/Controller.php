@@ -131,8 +131,11 @@ abstract class Controller extends BaseController
                     $filename = Str::random(20);
                     $path = $slug.'/'.date('F').date('Y').'/';
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
-
-                    $request->file($row->field)->storeAs(config('voyager.storage.disk').$path, $filename.'.'.$file->getClientOriginalExtension());
+                    $request->file($row->field)->storeAs(
+                        $path,
+                        $filename.'.'.$file->getClientOriginalExtension(),
+                        config('voyager.storage.disk', 'public')
+                    );
 
                     return $fullPath;
                 }
@@ -150,7 +153,11 @@ abstract class Controller extends BaseController
                         $path = $slug.'/'.date('F').date('Y').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
-                        $request->file($row->field)[$key]->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
+                        $request->file($row->field)[$key]->storeAs(
+                            $path,
+                            $filename.'.'.$file->getClientOriginalExtension(),
+                            config('voyager.storage.disk', 'public')
+                        );
                     }
 
                     return json_encode($filesPath);
