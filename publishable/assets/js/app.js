@@ -1,5 +1,7 @@
 $(document).ready(function(){
-    var appContainer = $(".app-container");
+  var appContainer = $(".app-container");
+
+  $('.side-menu').perfectScrollbar();
 
   $('#voyager-loader').fadeOut();
   $('.readmore').readmore({
