@@ -16,9 +16,6 @@ $(document).ready(function(){
       if ($(this).is('button')) {
         appContainer.toggleClass("expanded");
         $(this).toggleClass('is-active');
-      } else {
-        appContainer.removeClass("expanded");
-        hamburger.toggleClass('is-active');
       }
 
       outside.on('click', function(){
@@ -44,10 +41,6 @@ $(document).ready(function(){
   });
 
   $('select.select2').select2();
-
-  $('.toggle-checkbox').bootstrapSwitch({
-    size: "small"
-  });
 
   $('.match-height').matchHeight();
 
