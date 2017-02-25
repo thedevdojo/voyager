@@ -402,7 +402,7 @@ a:hover {
     margin-left: -250px;
     width: 0; }
   .app-container .content-container .side-body {
-    margin-left: 0px; }
+    margin-left: 0; }
   .app-container.expanded .navbar-top {
     min-width: 480px;
     padding-left: 0; }
