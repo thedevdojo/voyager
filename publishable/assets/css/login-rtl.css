@@ -3,6 +3,10 @@
  * ----------
  */
 
+body {
+	height: 100vh;
+}
+
 [dir="rtl"] .login-container h2 {
   text-align: right;
 }
