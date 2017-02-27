@@ -1227,6 +1227,18 @@ body.login-page .login-footer {
   line-height: 1;
   letter-spacing: -1px; }
 
+
+/* Multi Languages / Translations
+-------------------------------------------------- */
+.language-selector {
+  float: right !important;
+  padding: 28px 15px 0 0;
+}
+.modal-body .language-selector {
+  float: right !important;
+  padding: 0;
+}
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 @media (min-width: 768px) {
