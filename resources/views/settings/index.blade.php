@@ -169,6 +169,7 @@
 @section('content')
 
     <div class="container-fluid">
+        @include('voyager::alerts')
         <div class="alert alert-info">
             <strong>How To Use:</strong>
             <p>You can get the value of each setting anywhere on your site by calling <code>Voyager::setting('key')</code></p>
@@ -210,10 +211,10 @@
                                 @if(isset($setting->value)){{ $setting->value }}@endif
                             </textarea>
                         @elseif($setting->type == "image" || $setting->type == "file")
-                            @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::exists(config('voyager.storage.subfolder') . $setting->value))
+                            @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::disk(config('voyager.storage.disk'))->exists($setting->value))
                                 <div class="img_settings_container">
                                     <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x"></a>
-                                    <img src="{{ Storage::url(config('voyager.storage.subfolder') . $setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
+                                    <img src="{{ Storage::disk(config('voyager.storage.disk'))->url($setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                 </div>
                             @elseif($setting->type == "file" && isset( $setting->value ))
                                 <div class="fileType">{{ $setting->value }}</div>

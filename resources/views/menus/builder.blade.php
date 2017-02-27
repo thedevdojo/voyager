@@ -29,7 +29,7 @@
                     <div class="panel-body" style="padding:30px;">
 
                         <div class="dd">
-                            <?= Menu::display($menu->name, 'admin'); ?>
+                            {!! menu($menu->name, 'admin') !!}
                         </div>
 
                     </div>
@@ -119,8 +119,21 @@
                     <div class="modal-body">
                         <label for="name">Title of the Menu Item</label>
                         <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
-                        <label for="url">URL for the Menu Item</label>
-                        <input type="text" class="form-control" id="edit_url" name="url" placeholder="URL"><br>
+                        <label for="type">Link type</label>
+                        <select id="edit_type" class="form-control" name="type">
+                            <option value="url" selected="selected">Static URL</option>
+                            <option value="route">Dynamic Route</option>
+                        </select><br>
+                        <div id="url_type">
+                            <label for="url">URL for the Menu Item</label>
+                            <input type="text" class="form-control" id="edit_url" name="url" placeholder="URL"><br>
+                        </div>
+                        <div id="route_type">
+                            <label for="route">Route for the menu item</label>
+                            <input type="text" class="form-control" id="edit_route" name="route" placeholder="Route"><br>
+                            <label for="parameters">Route parameters (if any)</label>
+                            <textarea rows="3" class="form-control" id="edit_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
+                        </div>
                         <label for="icon_class">Font Icon class for the Menu Item (Use a <a
                                     href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}"
                                     target="_blank">Voyager Font Class</a>)</label>
@@ -167,6 +180,8 @@
                 $('#edit_url').val($(e.currentTarget).data('url'));
                 $('#edit_icon_class').val($(e.currentTarget).data('icon_class'));
                 $('#edit_color').val($(e.currentTarget).data('color'));
+                $('#edit_route').val($(e.currentTarget).data('route'));
+                $('#edit_parameters').val(JSON.stringify($(e.currentTarget).data('parameters')));
                 $('#edit_id').val(id);
 
                 if ($(e.currentTarget).data('target') == '_self') {
@@ -176,6 +191,14 @@
                     $("#edit_target option[value='_blank']").attr('selected', 'selected');
                     $("#edit_target").val('_blank');
                 }
+
+                if ($(e.currentTarget).data('route') != "") {
+                    $("#edit_type").val('route').change();
+                    $("#url_type").hide();
+                } else {
+                    $("#route_type").hide();
+                }
+
                 $('#edit_modal').modal('show');
             });
 
@@ -191,6 +214,16 @@
                     toastr.success("Successfully updated menu order.");
                 });
 
+            });
+
+            $('#edit_type').on('change', function (e) {
+                if ($("#edit_type").val() == 'route') {
+                    $("#url_type").hide();
+                    $("#route_type").show();
+                } else {
+                    $("#routel_type").hide();
+                    $("#url_type").show();
+                }
             });
 
         });
