@@ -4,47 +4,47 @@
  */
 
 [dir="rtl"] .navbar {
-  padding-left: 0px;
-  padding-right: 60px;}
+    padding-left: 0px;
+    padding-right: 60px;}
 
 [dir="rtl"] .app-container .side-body{
-  margin-left: -15px;
-  margin-right: 45px;
+    margin-left: -15px;
+    margin-right: 45px;
 }
 
 [dir="rtl"].flat-blue .app-footer {
-  text-align: left;
-  padding-left: 20px;
+    text-align: left;
+    padding-left: 20px;
 }
 
 [dir="rtl"] .navbar-header {
-  float: right;
+    float: right;
 }
 
 [dir="rtl"] .app-container.expanded .content-container .navbar-top {
-  padding-left: 0px;
-  padding-right: 250px;
+    padding-left: 0px;
+    padding-right: 250px;
 }
 
 [dir="rtl"] .app-container .content-container .navbar-top .hamburger {
-  float: right;
+    float: right;
 }
 
 [dir="rtl"] .app-container .content-container .side-menu .navbar, .nav.navbar-nav {
-  padding-right: 0px;
+    padding-right: 0px;
 }
 
 [dir="rtl"] table th{
-  text-align: right;
+    text-align: right;
 }
 
 [dir="rtl"] table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after{
-  right: unset;
-  left: 4px;
+    right: unset;
+    left: 4px;
 }
 
 [dir="rtl"] .dataTables_length {
-  float: left
+    float: left
 }
 
 [dir="rtl"] .app-container .content-container .side-menu {
@@ -69,7 +69,7 @@
 }
 
 [dir="rtl"] .breadcrumb > li + li:before {
-  display: none;
+    display: none;
 }
 
 [dir="rtl"] .breadcrumb li+li:after {
@@ -84,10 +84,14 @@
 }
 
 [dir="rtl"] .dropdown-toggle.text-right {
-  float: left;
+  /*float: left;*/
 }
 
 [dir="rtl"] .dropdown-menu.dropdown-menu-animated {
-  margin-top: 100px
+    position: absolute !important;
 }
 
+[dir="rtl"] .navbar-nav.navbar-right, .navbar-nav.navbar-left {
+    right: unset;
+    left: 10px;
+}
