@@ -36,16 +36,17 @@
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 
-    @if(VoyageR::isRtl())
-        <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/rtl.css">
-    @endif
+
 
 
     @yield('css')
 
     <!-- Voyager CSS -->
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
-
+    
+    @if(VoyageR::isRtl())
+        <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/rtl.css">
+    @endif
     <!-- Few Dynamic Styles -->
     <style type="text/css">
         .flat-blue .side-menu .navbar-header, .widget .btn-primary, .widget .btn-primary:focus, .widget .btn-primary:hover, .widget .btn-primary:active, .widget .btn-primary.active, .widget .btn-primary:active:focus{
