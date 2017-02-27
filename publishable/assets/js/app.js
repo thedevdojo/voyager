@@ -1,5 +1,7 @@
 $(document).ready(function(){
-    var appContainer = $(".app-container");
+  var appContainer = $(".app-container");
+
+  $('.side-menu').perfectScrollbar();
 
   $('#voyager-loader').fadeOut();
   $('.readmore').readmore({
@@ -16,9 +18,6 @@ $(document).ready(function(){
       if ($(this).is('button')) {
         appContainer.toggleClass("expanded");
         $(this).toggleClass('is-active');
-      } else {
-        appContainer.removeClass("expanded");
-        hamburger.toggleClass('is-active');
       }
 
       outside.on('click', function(){
@@ -44,10 +43,6 @@ $(document).ready(function(){
   });
 
   $('select.select2').select2();
-
-  $('.toggle-checkbox').bootstrapSwitch({
-    size: "small"
-  });
 
   $('.match-height').matchHeight();
 
