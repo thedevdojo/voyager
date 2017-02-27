@@ -1,7 +1,7 @@
 @section('database-types-template')
 
 <div>
-    <select :value="column.type.name" @change="onTypeChange" class="form-control" tabindex="-1" required>
+    <select :value="column.type.name" @change="onTypeChange" class="form-control" tabindex="-1">
         <optgroup v-for="(types, category) in dbTypes" :label="category">
             <option v-for="type in types" :value="type.name" :disabled="type.notSupported">
                 @{{ type.name.toUpperCase() }}

@@ -6,7 +6,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use TCG\Voyager\Database\DatabaseUpdater;
 use TCG\Voyager\Database\Schema\Column;
@@ -200,7 +199,7 @@ class VoyagerDatabaseController extends Controller
         Voyager::canOrFail('browse_database');
 
         try {
-            Schema::drop($table);
+            SchemaManager::dropTable($table);
 
             return redirect()
                 ->route('voyager.database.index')
