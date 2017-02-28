@@ -6,8 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400|Lato:300,400,700,900' rel='stylesheet'
+    <?php $admin_master_font1_url = Voyager::setting('admin_master_font1_url', ''); ?>
+    @if ($admin_master_font1_url == '')
+        <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400|Lato:300,400,700,900' rel='stylesheet'
           type='text/css'>
+    @else
+        <link href='{{ $admin_master_font1_url }}' rel='stylesheet'
+          type='text/css'>
+    @endif
 
     <!-- CSS Libs -->
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap.min.css">
@@ -26,7 +32,13 @@
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/style.css">
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/themes/flat-blue.css">
 
+    <?php $admin_master_font2_url = Voyager::setting('admin_master_font2_url', ''); ?>
+    @if ($admin_master_font2_url == '')
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
+    @else
+        <link href='{{ $admin_master_font1_url }}' rel='stylesheet'
+          type='text/css'>
+    @endif
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ config('voyager.assets_path') }}/images/logo-icon.png" type="image/x-icon">
@@ -34,8 +46,18 @@
     <!-- CSS Fonts -->
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/fonts/voyager/styles.css">
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.min.js"></script>
+    <?php $admin_jquery_ui_css_url = Voyager::setting('admin_jquery_ui_css_url', ''); ?>
+    @if ($admin_jquery_ui_css_url == '')
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+    @else
+    <link rel="stylesheet" href="{{ $admin_jquery_ui_css_url }}">
+    @endif
+    <?php $admin_jquery_ui_js_url = Voyager::setting('admin_jquery_ui_js_url', ''); ?>
+    @if ($admin_jquery_ui_js_url == '')
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    @else
+    <link rel="stylesheet" href="{{ $admin_jquery_ui_js_url }}">
+    @endif
 
     @yield('css')
 
