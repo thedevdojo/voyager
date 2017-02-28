@@ -71,7 +71,8 @@
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
                             @elseif($row->type == 'rich_text_box')
-                                <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
+                                @include('voyager::multilingual.input-hidden-bread')
+                                <p class="{{ $row->type }}">{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @else
                                 @include('voyager::multilingual.input-hidden-bread')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
@@ -89,5 +90,10 @@
 @stop
 
 @section('javascript')
-
+    <script>
+        $(document).ready(function () {
+            $('.side-body').multilingual();
+        });
+    </script>
+    <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
 @stop

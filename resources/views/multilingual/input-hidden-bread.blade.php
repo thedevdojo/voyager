@@ -1,6 +1,6 @@
 @if (isFieldTranslatable($dataTypeContent, $row))
     <input type="hidden"
-           data-i18n="true"
+           data-multilingual="true"
            name="{{ $row->field }}_lg"
            id="{{ $row->field }}_lg"
            value="{{ getFieldTranslations($dataTypeContent, $row) }}">

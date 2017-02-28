@@ -82,14 +82,17 @@
                                                 {{ $data->{$row->field} }}
                                                 @endif
                                             @elseif($row->type == 'text')
-                                            <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
+                                                <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                             @elseif($row->type == 'text_area')
-                                            <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
+                                                <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                             @elseif($row->type == 'rich_text_box')
-                                            <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
+                                                <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                             @else
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
-                                                {{ $data->{$row->field} }}
+                                                <span>{{ $data->{$row->field} }}</span>
                                             @endif
                                         </td>
                                     @endforeach
@@ -172,6 +175,11 @@
             });
         @endif
 
+        $(document).ready(function () {
+            $('.side-body').multilingual();
+        });
+
+
         var deleteFormAction;
         $('td').on('click', '.delete', function (e) {
             var form = $('#delete_form')[0];
@@ -188,4 +196,5 @@
             $('#delete_modal').modal('show');
         });
     </script>
+    <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
 @stop

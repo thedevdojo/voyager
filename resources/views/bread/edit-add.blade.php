@@ -97,6 +97,8 @@
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
 
+            $('.side-body').multilingual({"editing": true});
+
             $('.side-body input[data-slug-origin]').each(function(i, el) {
                 $(el).slugify();
             });
@@ -104,5 +106,6 @@
     </script>
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
 @stop
