@@ -14,6 +14,7 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
     </h1>
+    @include('voyager::multilingual.languages-switch')
 @stop
 
 @section('content')

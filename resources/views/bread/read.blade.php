@@ -11,6 +11,7 @@
             Edit
         </a>
     </h1>
+    @include('voyager::multilingual.languages-switch')
 @stop
 
 @section('content')

@@ -11,6 +11,7 @@
             </a>
         @endif
     </h1>
+    @include('voyager::multilingual.languages-switch')
 @stop
 
 @section('content')
@@ -64,7 +65,7 @@
                                                 @else
                                                     {!! $options->options->{$data->{$row->field}} !!}
                                                 @endif
-    
+
 
                                             @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
                                                 <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
@@ -87,6 +88,7 @@
                                             @elseif($row->type == 'rich_text_box')
                                             <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                             @else
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
                                                 {{ $data->{$row->field} }}
                                             @endif
                                         </td>
@@ -156,7 +158,7 @@
 @stop
 
 @section('javascript')
-    <!-- DataTables -->    
+    <!-- DataTables -->
     @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
     <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
     @endif

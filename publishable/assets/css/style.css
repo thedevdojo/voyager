@@ -323,6 +323,7 @@ a:hover {
   margin-right: -15px; }
 
 .page-title {
+  display: inline-block;
   height: auto;
   padding-left: 25px;
   font-size: 18px;
