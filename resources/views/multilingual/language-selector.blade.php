@@ -2,7 +2,7 @@
     <div class="language-selector">
         <div class="btn-group btn-group-sm" role="group" data-toggle="buttons">
             @foreach(config('voyager.multilingual.locales') as $lang)
-                <label class="btn btn-primary{{ ($lang === config('voyager.multilingual.default')) ? " active" : "" }}">
+                <label class="btn btn-primary{{ ($lang == config('voyager.multilingual.default')) ? " active" : "" }}">
                     <input type="radio" name="options" id="{{$lang}}" autocomplete="off" checked> {{ strtoupper($lang) }}
                 </label>
             @endforeach

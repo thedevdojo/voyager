@@ -11,7 +11,7 @@
             </a>
         @endif
     </h1>
-    @include('voyager::multilingual.languages-switch')
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
