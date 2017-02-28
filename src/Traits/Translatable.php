@@ -146,6 +146,8 @@ trait Translatable
 
     public function getTranslatedAttributeMeta($attribute, $locale = null, $fallback = true)
     {
+        // Attribute is translatable
+        //
         if (!in_array($attribute, $this->getTranslatableAttributes())) {
             return [$this->getAttribute($attribute), config('voyager.multilingual.default'), false];
         }
@@ -182,13 +184,13 @@ trait Translatable
         }
 
         if ($fallback == $default) {
-            return [$this->getAttribute($attribute), $locale, false];
+            return [$this->getAttribute($attribute), $fallback, false];
         }
 
         $fallbackTranslation = $translations->where('locale', $fallback)->first();
 
         if ($fallbackTranslation && $fallback !== false) {
-            return [$fallbackTranslation->value, $locale, true];
+            return [$fallbackTranslation->value, $fallback, true];
         }
 
         return [null, $locale, false];
