@@ -130,13 +130,27 @@ trait Translatable
         return $value;
     }
 
+    public function getTranslationsOf($attribute, array $languages = null, $fallback = true)
+    {
+        if (is_null($languages)) {
+            $languages = config('voyager.multilingual.locales', [config('voyager.multilingual.default')]);
+        }
+
+        $response = [];
+        foreach ($languages as $language) {
+            $response[$language] = $this->getTranslatedAttribute($attribute, $language, $fallback);
+        }
+
+        return $response;
+    }
+
     public function getTranslatedAttributeMeta($attribute, $locale = null, $fallback = true)
     {
         if (!in_array($attribute, $this->getTranslatableAttributes())) {
             return [$this->getAttribute($attribute), config('voyager.multilingual.default'), false];
         }
 
-        if ($this->relationLoaded('translations')) {
+        if (! $this->relationLoaded('translations')) {
             $this->load('translations');
         }
 
@@ -165,6 +179,10 @@ trait Translatable
 
         if ($fallback == $locale) {
             return [$this->getAttribute($attribute), $locale, false];
+        }
+
+        if ($fallback == $default) {
+            return [$this->getAttribute($attribute), $fallback, false];
         }
 
         $fallbackTranslation = $translations->where('locale', $fallback)->first();
