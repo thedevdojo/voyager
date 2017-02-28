@@ -182,13 +182,13 @@ trait Translatable
         }
 
         if ($fallback == $default) {
-            return [$this->getAttribute($attribute), $fallback, false];
+            return [$this->getAttribute($attribute), $locale, false];
         }
 
         $fallbackTranslation = $translations->where('locale', $fallback)->first();
 
         if ($fallbackTranslation && $fallback !== false) {
-            return [$fallbackTranslation->value, $fallback, true];
+            return [$fallbackTranslation->value, $locale, true];
         }
 
         return [null, $locale, false];
