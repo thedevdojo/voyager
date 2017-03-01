@@ -146,6 +146,8 @@ trait Translatable
 
     public function getTranslatedAttributeMeta($attribute, $locale = null, $fallback = true)
     {
+        // Attribute is translatable
+        //
         if (!in_array($attribute, $this->getTranslatableAttributes())) {
             return [$this->getAttribute($attribute), config('voyager.multilingual.default'), false];
         }

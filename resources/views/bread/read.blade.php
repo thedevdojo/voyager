@@ -11,7 +11,7 @@
             Edit
         </a>
     </h1>
-    @include('voyager::multilingual.languages-switch')
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -72,7 +72,7 @@
                                 @endif
                             @elseif($row->type == 'rich_text_box')
                                 @include('voyager::multilingual.input-hidden-bread')
-                                <p class="{{ $row->type }}">{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
+                                <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @else
                                 @include('voyager::multilingual.input-hidden-bread')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>

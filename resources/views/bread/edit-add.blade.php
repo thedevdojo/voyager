@@ -14,7 +14,7 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
     </h1>
-    @include('voyager::multilingual.languages-switch')
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -62,6 +62,7 @@
                             @foreach($dataTypeRows as $row)
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
+                                    @include('voyager::multilingual.input-hidden-bread')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
                                     @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)

@@ -2,13 +2,15 @@
  *  Multilingual System
  *
  *  Version Alpha
- *  Date 18 Dec 2016
+ *  First version: 18 Dec 2016
  *  Author Bruno Torrinha
  *
- *  Provides a mechanism for easily manage multi languages on a single page,
- *  it was created for the BREAD system of Voyager, but can be implemented
+ *  MIT License
+ *
+ *  Provides a mechanism for easily manage multi languages on a single page.
+ *  It was created for the BREAD system of Voyager, but can be implemented
  *  with any html structure.
- *  For each translatable field, the system required an hidden input containing
+ *  For each translatable field, the system requires an hidden input containing
  *  all translations.
  *  This is an alpha version and the final version may change, there are a few
  *  considerations to take from here.
@@ -23,18 +25,15 @@
  *    - locale (default system locale);
  *    - languages (array with available languages);
  *    - translatable (array modules with multi language system);
- *  * Language Selector, triggering the content update. It will be hide, in
- *    case BREAD doesn't have any translatable field.
+ *  * Language Selector, triggering the content update. It will be hidden, case
+ *    model is not translatable.
  *  * Blade views created and included in: browse.blade and edit-add.blade.
  *
  *  TO-DO
- *  * **Urgent** After setting up fields, we need to convert any existing data
- *    to JSON format, this will be fixed on PHP.
  *  * Google Translator, triggered by a link placed on the top right of the input.
  *  * Option for showing the original version of the field, under the input.
  *  * Global page administrator, listing all the translated fields on the system.
  *
- *  MIT License
  */
 ;( function( $, window, document, undefined ) {
 
@@ -231,12 +230,7 @@
                         var $_mce = tinymce.get('richtext'+inpUsr.prop('name'));
                         $_mce.setContent(_val);
                     } else {
-                        inpUsr.val(_val)
-                            .animate({
-                                backgroundColor: '#eee'
-                            }, 500, function(){
-                                $(this).css('background-color', '#fff');
-                            });
+                        inpUsr.val(_val);
                     }
                 }
             }

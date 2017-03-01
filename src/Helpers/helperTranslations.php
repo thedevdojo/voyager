@@ -16,22 +16,6 @@ if (!function_exists('isFieldTranslatable')) {
 }
 
 
-if (!function_exists('newTranslatableField')) {
-    /**
-     * Create a new translatable array, with all available locales at voyager config.
-     *
-     * @return array    '["en": "", "es": "", "pt": "",...]'
-     */
-    function newTranslatableField()
-    {
-        return array_combine(
-            config('voyager.multilingual.locales'),
-            array_fill(1, sizeof(config('voyager.multilingual.locales')), "")
-        );
-    }
-}
-
-
 if (!function_exists('getFieldTranslations')) {
     /**
      * Return all field translations
@@ -41,11 +25,13 @@ if (!function_exists('getFieldTranslations')) {
      */
     function getFieldTranslations($model, $row)
     {
-        // $_out = (sizeof($model->getTranslations($row->field)) > 0)
-        //                 ? $model->getTranslations($row->field)
-        //                 : newTranslatableField();
-
         $_out = $model->getTranslationsOf($row->field);
+
+        if ($row->type == 'rich_text_box') {
+            foreach ($_out as $language => $value) {
+                $_out[$language] = strip_tags($_out[$language], '<b><i><u>');
+            }
+        }
 
         return htmlentities(json_encode($_out));
     }
