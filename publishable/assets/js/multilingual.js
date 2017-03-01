@@ -230,12 +230,7 @@
                         var $_mce = tinymce.get('richtext'+inpUsr.prop('name'));
                         $_mce.setContent(_val);
                     } else {
-                        inpUsr.val(_val)
-                            .animate({
-                                backgroundColor: '#eee'
-                            }, 500, function(){
-                                $(this).css('background-color', '#fff');
-                            });
+                        inpUsr.val(_val);
                     }
                 }
             }
