@@ -27,6 +27,12 @@ if (!function_exists('getFieldTranslations')) {
     {
         $_out = $model->getTranslationsOf($row->field);
 
+        if ($row->type == 'rich_text_box') {
+            foreach ($_out as $language => $value) {
+                $_out[$language] = strip_tags($_out[$language], '<b><i><u>');
+            }
+        }
+
         return htmlentities(json_encode($_out));
     }
 }

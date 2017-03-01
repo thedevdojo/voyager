@@ -103,7 +103,7 @@ return [
         /*
          * Select default language
          */
-        'default' => 'pt',
+        'default' => 'en',
 
         /*
          * Select languages that are supported.
