@@ -2,7 +2,7 @@
  *  Multilingual System
  *
  *  Version Alpha
- *  First version: 18 Dec 2016
+ *  Last version: 02 Mar 2017
  *  Author Bruno Torrinha
  *
  *  MIT License
@@ -68,7 +68,8 @@
             setup: function() {
                 var _this = this;
 
-                this.locale = this.returnLocale();
+                this.localeDefaultBtn = this.returnLocale();
+                this.locale = this.localeDefaultBtn.prop('id');
 
                 /**
                  * Setup language selector
@@ -106,9 +107,9 @@
                 if (this.settings.editing) {
                     $(this.form).on('submit', function(e) {
                         e.preventDefault();
-                        _this.updateCache();
-console.log($(_this.form)[0].serialize());
-                        // $(_this.form)[0].submit();
+                        _this.localeDefaultBtn.click();
+                        _this.prepareData();
+                        $(_this.form)[0].submit();
                     });
                 }
             },
@@ -128,10 +129,9 @@ console.log($(_this.form)[0].serialize());
              * @return string The locale.
              */
             returnLocale: function() {
-                var btn = this.langSelectors.filter(function() {
+                return this.langSelectors.filter(function() {
                     return $(this).parent().hasClass('active');
                 });
-                return btn.prop('id');
             },
 
             selectLanguage: function(e) {
@@ -149,9 +149,9 @@ console.log($(_this.form)[0].serialize());
             },
 
             /**
-             * Update Cache for all inputs
+             * Update cache for all inputs, and prepare form data for submit
              */
-            updateCache: function() {
+            prepareData: function() {
                 var _this = this;
                 this.transInputs.each(function(i, inp) {
                     _this.updateInputCache($(inp));
