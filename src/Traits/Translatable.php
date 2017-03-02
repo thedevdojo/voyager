@@ -205,4 +205,29 @@ trait Translatable
     {
         return property_exists($this, 'translatable') ? $this->translatable : [];
     }
+
+    public function setAttributeTranslations($attribute, array $translations)
+    {
+        if (! $this->relationLoaded('translations')) {
+            $this->load('translations');
+        }
+
+        $default = config('voyager.multilingual.default', 'en');
+        $locales = config('voyager.multilingual.locales', [$default]);
+
+        foreach ($locales as $locale) {
+            if (!isset($translations[$locale])) {
+                continue;
+            }
+
+            if ($locale == $default) {
+                $this->$attribute = $translations[$locale];
+                continue;
+            }
+
+            $tranlator = $this->translate($locale, false);
+            $tranlator->$attribute = $translations[$locale];
+            $tranlator->save();
+        }
+    }
 }

@@ -88,7 +88,7 @@ abstract class Controller extends BaseController
             } elseif (isFieldTranslatable($data, $row)) {
                 // Translatable field, Save all translations in one go
                 //
-                $data->setTranslations(
+                $data->setAttributeTranslations(
                     $row->field,
                     json_decode($request->input($row->field.'_i18n'), true)
                 );
