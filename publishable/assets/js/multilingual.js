@@ -1,4 +1,4 @@
-/*
+/**
  *  Multilingual System
  *
  *  Version Alpha
@@ -21,17 +21,14 @@
  *  Features
  *  * For setting up fields it's easy, go to the BREAD Edit, and add to the
  *    Options Details: {"translate":true}
- *  * Configuration options available:
- *    - locale (default system locale);
- *    - languages (array with available languages);
- *    - translatable (array modules with multi language system);
  *  * Language Selector, triggering the content update. It will be hidden, case
  *    model is not translatable.
- *  * Blade views created and included in: browse.blade and edit-add.blade.
+ *  * Blade partial views created and included in: [browse, read, edit-add].blade.
  *
  *  TO-DO
  *  * Google Translator, triggered by a link placed on the top right of the input.
- *  * Option for showing the original version of the field, under the input.
+ *  * Option for showing the fall-back version of the field, under the input.
+ *    This would apply to text input only.
  *  * Global page administrator, listing all the translated fields on the system.
  *
  */
@@ -41,44 +38,66 @@
 
         var pluginName = "multilingual",
             defaults = {
-                form:           '.form-edit-add',
-                langInputs:     'input[data-multilingual=true]',
-                langSelector:   '> .language-selector input',
-                locale:         '',    // Selected Locale, starts with the active language on button selector.
-                editing:        false, // Editing or View
-                copyFromLocale: true   // Duplicate default locate on empty fields, if false
+                editing:       false,                       // Editing or View
+                form:          '.form-edit-add',
+                transInputs:   'input[data-i18n = true]',   // Hidden inputs holding translations
+                langSelectors: '> .language-selector input' // Language selector inputs
             };
 
         function Plugin ( element, options ) {
-            this.element = $(element);
-
-            this.settings = $.extend( {}, defaults, options );
+            this.element   = $(element);
+            this.settings  = $.extend( {}, defaults, options );
             this._defaults = defaults;
-            this._name = pluginName;
+            this._name     = pluginName;
             this.init();
         }
 
-        // Avoid Plugin.prototype conflicts
         $.extend( Plugin.prototype, {
             init: function() {
-                this.form         = this.element.find(this.settings.form);
-                this.langInputs   = $(this.settings.langInputs);
-                this.langSelector = this.element.find(this.settings.langSelector);
-                if (this.langInputs.length === 0 || this.langSelector === 0) {
+                this.form          = this.element.find(this.settings.form);
+                this.transInputs   = $(this.settings.transInputs);
+                this.langSelectors = this.element.find(this.settings.langSelectors);
+
+                if (this.transInputs.length === 0 || this.langSelectors === 0) {
                     return false;
                 }
-                this.locale = this.returnLocale();
                 this.setup();
-                this.refresh();
             },
+
 
             setup: function() {
                 var _this = this;
+
+                this.locale = this.returnLocale();
+
                 /**
-                 * Setup Language Selector
+                 * Setup language selector
                  */
-                this.langSelector.each(function(i, btn) {
+                this.langSelectors.each(function(i, btn) {
                     $(btn).change($.proxy(_this.selectLanguage, _this));
+                });
+
+                /**
+                 * Setup translatable inputs
+                 */
+                this.transInputs.each(function(i, inp) {
+                    var _inp   = $(inp),
+                        inpUsr = _inp.next(_this.settings.editing ? '.form-control' : '');
+
+                    inpUsr.data("inp", _inp);
+                    _inp.data("inpUsr", inpUsr);
+
+                    // Load and Save data in hidden input
+                    var $_data = (_this.isJsonValid(_inp.val())) ? JSON.parse(_inp.val()) : {};
+
+                    if (_this.settings.editing) {
+                        _inp.val(JSON.stringify($_data));
+                    }
+
+                    // Save each language in a different key
+                    _this.langSelectors.each(function(i, btn) {
+                        _inp.data(btn.id, $_data[btn.id]);
+                    });
                 });
 
                 /**
@@ -87,78 +106,11 @@
                 if (this.settings.editing) {
                     $(this.form).on('submit', function(e) {
                         e.preventDefault();
-                        _this.updateFieldsCache();
-                        $(_this.form)[0].submit();
+                        _this.updateCache();
+console.log($(_this.form)[0].serialize());
+                        // $(_this.form)[0].submit();
                     });
                 }
-            },
-
-            /**
-             * Refresh plugin data, available for dynamic calls or AJAX
-             */
-            refresh: function() {
-                var _this   = this;
-                this.locale = this.returnLocale();
-                /**
-                 * Setup the Translated Inputs
-                 */
-                this.langInputs.each(function(i, inp) {
-                    var _inp   = $(inp),     // Input hidden
-                        inpUsr = _inp.next(_this.settings.editing ? '.form-control' : '');
-
-                    inpUsr.data("inp", _inp);
-                    _inp.data("inpUsr", inpUsr);
-
-                    // Save data in input hidden
-                    var $_data = _this.loadJsonField(_inp.val());
-                    if (_this.settings.editing) {
-                        _inp.val( JSON.stringify($_data));
-                    }
-
-                    // Save each language in a different memory key
-                    _this.langSelector.each(function(i, btn) {
-                        _inp.data(btn.id, $_data[btn.id]);
-                    });
-                });
-
-                // console.log(this.form);
-                // console.log(this.langSelector);
-                // console.log(this.langInputs);
-            },
-
-
-            loadJsonField: function(str) {
-                var $_data = {};
-                if (this.isJsonValid(str)) {
-                    return JSON.parse(str);
-                }
-                /**
-                 * JSON is invalid, we have to create a new object for this field.
-                 * This happens after a field is defined has translatable, at the BREAD manager.
-                 * This should be moved to php, and always load a JSON type.
-                 */
-                else {
-                    var _this = this,
-                        _str  = str;
-                    this.langSelector.each(function(i, btn) {  // loop languages
-                        $_data[btn.id] = (_this.locale == btn.id || _this.settings.copyFromLocale)
-                                         ? _str
-                                         : '';
-                    });
-                }
-                return $_data;
-            },
-
-            /**
-             * Return Locale for a given Button Group Selector
-             *
-             * @return string    The locale.
-             */
-            returnLocale: function() {
-                var btn = this.langSelector.filter(function() {
-                    return $(this).parent().hasClass('active');
-                });
-                return btn.prop('id');
             },
 
             isJsonValid: function(str) {
@@ -170,33 +122,46 @@
                 return true;
             },
 
+            /**
+             * Return Locale for a given Button Group Selector
+             *
+             * @return string The locale.
+             */
+            returnLocale: function() {
+                var btn = this.langSelectors.filter(function() {
+                    return $(this).parent().hasClass('active');
+                });
+                return btn.prop('id');
+            },
+
             selectLanguage: function(e) {
                 var _this = this,
                     lang  = e.target.id;
 
-                this.langInputs.each(function(i, inp) {
+                this.transInputs.each(function(i, inp) {
                     if (_this.settings.editing) {
-                        _this.updateFieldCache($(inp));
+                        _this.updateInputCache($(inp));
                     }
                     _this.loadLang($(inp), lang);
                 });
+
                 this.locale = lang;
             },
 
             /**
-             * Update Cache for All Inputs
+             * Update Cache for all inputs
              */
-            updateFieldsCache: function() {
+            updateCache: function() {
                 var _this = this;
-                this.langInputs.each(function(i, inp) {
-                    _this.updateFieldCache($(inp));
+                this.transInputs.each(function(i, inp) {
+                    _this.updateInputCache($(inp));
                 });
             },
 
             /**
-             * Update Cache for a Single Input
+             * Update cache for a single input
              */
-            updateFieldCache: function(inp) {
+            updateInputCache: function(inp) {
                 var _this  = this,
                     inpUsr = inp.data('inpUsr'),
                     $_val  = $(inpUsr).val(),
@@ -207,7 +172,7 @@
                     $_val = $_mce.getContent();
                 }
 
-                this.langSelector.each(function(i, btn) {
+                this.langSelectors.each(function(i, btn) {
                     var lang = btn.id;
                     $_data[lang] = (_this.locale == lang) ? $_val : inp.data(lang);
                 });

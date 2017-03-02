@@ -9,7 +9,6 @@
         <i class="voyager-list"></i>Menu Builder ({{ $menu->name }})
         <div class="btn btn-success add_item"><i class="voyager-plus"></i> New Menu Item</div>
     </h1>
-
 @stop
 
 @section('content')

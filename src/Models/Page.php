@@ -10,7 +10,7 @@ class Page extends Model
 {
     use Translatable;
 
-    protected $translatable = ['title', 'body'];
+    protected $translatable = ['title', 'slug', 'body'];
 
     protected $guarded = [];
 
