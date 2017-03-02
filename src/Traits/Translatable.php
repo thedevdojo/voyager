@@ -208,6 +208,8 @@ trait Translatable
 
     public function setAttributeTranslations($attribute, array $translations)
     {
+        $response = [];
+
         if (! $this->relationLoaded('translations')) {
             $this->load('translations');
         }
@@ -227,7 +229,10 @@ trait Translatable
 
             $tranlator = $this->translate($locale, false);
             $tranlator->$attribute = $translations[$locale];
-            $tranlator->save();
+
+            $response[] = $tranlator;
         }
+
+        return $response;
     }
 }

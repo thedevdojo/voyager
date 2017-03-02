@@ -36,6 +36,7 @@ abstract class Controller extends BaseController
         $rules = [];
         $messages = [];
         $multi_select = [];
+        $translations = [];
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
@@ -88,7 +89,7 @@ abstract class Controller extends BaseController
             } elseif (isFieldTranslatable($data, $row)) {
                 // Translatable field, Save all translations in one go
                 //
-                $data->setAttributeTranslations(
+                $translations[$row->field] = $data->setAttributeTranslations(
                     $row->field,
                     json_decode($request->input($row->field.'_i18n'), true)
                 );
@@ -98,9 +99,13 @@ abstract class Controller extends BaseController
             }
         }
 
-        $this->validate($request, $rules, $messages);
-
         $data->save();
+
+        foreach ($translations as $field => $locales) {
+            foreach ($locales as $locale => $translation) {
+                $translation->save();
+            }
+        }
 
         foreach ($multi_select as $sync_data) {
             $data->{$sync_data['row']}()->sync($sync_data['content']);

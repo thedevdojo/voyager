@@ -252,11 +252,11 @@ class MultilingualTest extends TestCase
 
         $model = TranslatableModel::first()->translate('da');
 
-        $this->assertEquals(1, DB::table('translations')->count());
+        $this->assertEquals(7, DB::table('translations')->count());
 
         $model->deleteTranslation('title');
 
-        $this->assertEquals(0, DB::table('translations')->count());
+        $this->assertEquals(6, DB::table('translations')->count());
     }
 }
 
