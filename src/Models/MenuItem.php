@@ -49,4 +49,13 @@ class MenuItem extends Model
 
         $this->attributes['parameters'] = $value;
     }
+
+    public function setUrlAttribute($value)
+    {
+        if (is_null($value)) {
+            $value = '';
+        }
+
+        $this->attributes['url'] = $value;
+    }
 }
