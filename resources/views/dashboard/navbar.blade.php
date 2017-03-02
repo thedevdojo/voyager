@@ -4,6 +4,10 @@
             <button class="hamburger btn-link">
                 <span class="hamburger-inner"></span>
             </button>
+            <a id="sidebar-anchor" class="voyager-anchor btn-link navbar-link hidden-xs" 
+                title="Yarr! Drop the anchors! (and keep the sidebar open)" 
+                data-unstick="Unstick the sidebar" 
+            data-toggle="tooltip" data-placement="bottom"></a>
 
             <ol class="breadcrumb">
                 @if(count(Request::segments()) == 1)
