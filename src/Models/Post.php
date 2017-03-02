@@ -39,4 +39,12 @@ class Post extends Model
     {
         return $query->where('status', '=', static::PUBLISHED);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function category()
+    {
+        return $this->hasOne(Voyager::modelClass('Category'), 'id', 'category_id');
+    }
 }
