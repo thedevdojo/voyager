@@ -87,5 +87,14 @@ $(document).ready(function(){
   // Right navbar toggle
   $('.navbar-right-expand-toggle').on('click', function(){
     $('ul.navbar-right').toggleClass('expanded');
-  }); 
+  });
+
+  // Save shortcut
+  $(document).keydown(function (e){
+    if ((e.metaKey || e.ctrlKey) && e.keyCode == 83) { /*ctrl+s or command+s*/
+      $(".btn.save").click();
+      e.preventDefault();
+      return false;
+    }
+  });
 });
