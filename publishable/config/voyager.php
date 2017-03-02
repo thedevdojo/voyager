@@ -111,7 +111,6 @@ return [
         'locales' => [
             'en',
             'pt',
-            //'language-code',
         ],
     ],
 

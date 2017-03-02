@@ -83,6 +83,16 @@ abstract class Controller extends BaseController
             if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
                 // Only if select_multiple is working with a relationship
                 $multi_select[] = ['row' => $row->field, 'content' => $content];
+
+
+            } elseif (isFieldTranslatable($data, $row)) {
+                // Translatable field, Save all translations in one go
+                //
+                $data->setTranslations(
+                    $row->field,
+                    json_decode($request->input($row->field.'_i18n'), true)
+                );
+
             } else {
                 $data->{$row->field} = $content;
             }
