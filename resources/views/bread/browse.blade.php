@@ -166,16 +166,14 @@
     <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
     @endif
     <script>
-        @if (!$dataType->server_side)
-            $(document).ready(function () {
+        $(document).ready(function () {
+            @if (!$dataType->server_side)
                 var table = $('#dataTable').DataTable({
                     "order": []
                     @if(config('dashboard.data_tables.responsive')), responsive: true @endif
                 });
-            });
-        @endif
+            @endif
 
-        $(document).ready(function () {
             $('.side-body').multilingual();
         });
 
