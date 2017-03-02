@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/dataTables.bootstrap.css">
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/select2.min.css">
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/perfect-scrollbar.min.css">
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/bootstrap-toggle.min.css">
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/icheck/icheck.css">
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/datetimepicker/bootstrap-datetimepicker.min.css">
@@ -121,6 +122,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/toastr.min.js"></script>
+<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/perfect-scrollbar.jquery.min.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/select2/select2.min.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/bootstrap-toggle.min.js"></script>
 <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/jquery.cookie.js"></script>

@@ -4,6 +4,8 @@ $(document).ready(function(){
         fadedOverlay = $('.fadetoblack'),
         hamburger = $('.hamburger');
 
+  $('.side-menu').perfectScrollbar();
+
   $('#voyager-loader').fadeOut();
   $('.readmore').readmore({
     collapsedHeight: 60,
@@ -60,10 +62,6 @@ $(document).ready(function(){
 
   $('select.select2').select2();
 
-  $('.toggle-checkbox').bootstrapSwitch({
-    size: "small"
-  });
-
   $('.match-height').matchHeight();
 
   $('.datatable').DataTable({
@@ -108,4 +106,13 @@ $(document).ready(function(){
   $('.navbar-right-expand-toggle').on('click', function(){
     $('ul.navbar-right').toggleClass('expanded');
   }); 
+
+  // Save shortcut   
+  $(document).keydown(function (e){    
+    if ((e.metaKey || e.ctrlKey) && e.keyCode == 83) { /*ctrl+s or command+s*/   
+      $(".btn.save").click();    
+      e.preventDefault();    
+      return false;    
+    }    
+  });
 });
