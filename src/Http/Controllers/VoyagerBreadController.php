@@ -55,7 +55,7 @@ class VoyagerBreadController extends Controller
         }
 
         // Check if BREAD is Translatable
-        $isModelTranslatable = isBreadTranslatable($model);
+        $isModelTranslatable = Voyager::translatable($model);
 
         $view = 'voyager::bread.browse';
 
@@ -100,7 +100,7 @@ class VoyagerBreadController extends Controller
         $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
         // Check if BREAD is Translatable
-        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
+        $isModelTranslatable = Voyager::translatable($dataTypeContent);
 
         $view = 'voyager::bread.read';
 
@@ -139,7 +139,7 @@ class VoyagerBreadController extends Controller
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         // Check if BREAD is Translatable
-        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
+        $isModelTranslatable = Voyager::translatable($dataTypeContent);
 
         $view = 'voyager::bread.edit-add';
 
@@ -199,7 +199,7 @@ class VoyagerBreadController extends Controller
                             : false;
 
         // Check if BREAD is Translatable
-        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
+        $isModelTranslatable = Voyager::translatable($dataTypeContent);
 
         $view = 'voyager::bread.edit-add';
 

@@ -13,7 +13,9 @@ class VoyagerMenuController extends Controller
 
         $menu = Voyager::model('Menu')->findOrFail($id);
 
-        return view('voyager::menus.builder', compact('menu'));
+        $isModelTranslatable = Voyager::translatable(Voyager::model('MenuItem'));
+
+        return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
     }
 
     public function delete_menu($menu, $id)
@@ -49,6 +51,10 @@ class VoyagerMenuController extends Controller
         if (!is_null($highestOrderMenuItem)) {
             $data['order'] = intval($highestOrderMenuItem->order) + 1;
         }
+
+        // Set any Translatable Data and Validate
+        $isModelTranslatable = Voyager::translatable(Voyager::model('MenuItem'));
+        $data = self::validateMenuData($data, 'add', $isTranslatable);
 
         Voyager::model('MenuItem')->create($data);
 
@@ -118,5 +124,33 @@ class VoyagerMenuController extends Controller
         }
 
         return $parameters;
+    }
+
+
+
+    /**
+     * Prepare menu translations
+     *
+     * @param array   $data           menu data
+     * @param string  $action         add or edit action
+     * @param boolean $isTranslatable if menu is translatable
+     *
+     * @return array                  menu data validated
+     */
+    protected function prepareTranslations(array $data, string $action, $isTranslatable)
+    {
+        if ($isTranslatable) {
+            if (!isset($data[$action.'_title_i18n']) || $data['title'] == '') {
+                return false;
+            }
+            $data['title'] = json_decode($data[$action.'_title_i18n'], true);
+            unset($data[$action.'_title_i18n']);
+        } else {
+            if ($data['title'] == '') {
+                return false;
+            }
+        }
+
+        return $data;
     }
 }

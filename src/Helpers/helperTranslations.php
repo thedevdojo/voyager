@@ -49,16 +49,3 @@ if (!function_exists('isBreadTranslatable')) {
         return isset($model, $model['translatable']);
     }
 }
-
-
-if (!function_exists('getTranslatedField')) {
-    /**
-     * Get the translated field value
-     */
-    function getTranslatedField($model, $field, $lang = false)
-    {
-        $lang = (!$lang) ? config('voyager.locale') : $lang;
-
-        return $model->getTranslatedAttribute($field, $lang);
-    }
-}

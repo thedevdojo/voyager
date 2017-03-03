@@ -15,7 +15,7 @@ class TranslationsTableSeeder extends Seeder
     public function run()
     {
         $this->pagesTranslations();
-        // $this->menusTranslations();
+        $this->menusTranslations();
     }
 
 
@@ -28,57 +28,19 @@ class TranslationsTableSeeder extends Seeder
     {
         $page = Page::where('slug', 'hello-world')->firstOrFail();
         if ($page->exists) {
-            $_row = ['table_name' => 'pages', 'column_name' => 'title', 'foreign_key' => $page->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $page->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Hello World',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $page->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Olá Mundo',
-                ]))->save();
-            }
+            $_arr = $this->_arr('pages', 'title', $page->id);
+            $this->_trans('en', $_arr, 'Hello World');
+            $this->_trans('pt', $_arr, 'Olá Mundo');
 
+            $_arr = $this->_arr('pages', 'slug', $page->id);
+            $this->_trans('en', $_arr, 'hello-world');
+            $this->_trans('pt', $_arr, 'ola-mundo');
 
-            $_row = ['table_name' => 'pages', 'column_name' => 'slug', 'foreign_key' => $page->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'slug', 'foreign_key' => $page->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'hello-world',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'slug', 'foreign_key' => $page->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'ola-mundo',
-                ]))->save();
-            }
-
-
-            $_row = ['table_name' => 'pages', 'column_name' => 'body', 'foreign_key' => $page->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'body', 'foreign_key' => $page->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => '<p>Hello World. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>
-<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'body', 'foreign_key' => $page->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => '<p>Olá Mundo. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>
-<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>',
-                ]))->save();
-            }
+            $_arr = $this->_arr('pages', 'body', $page->id);
+            $this->_trans('en', $_arr, '<p>Hello World. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
+                                        ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
+            $this->_trans('pt', $_arr, '<p>Olá Mundo. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
+                                        ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
         }
     }
 
@@ -90,213 +52,109 @@ class TranslationsTableSeeder extends Seeder
      */
     private function menusTranslations()
     {
-        $menuItem = MenuItem::where('title', 'Dashboard')->firstOrFail();
+        $menuItem = $this->_menuItem('Dashboard');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Dashboard',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Painel de Controle',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Dashboard');
+            $this->_trans('pt', $_arr, 'Painel de Controle');
         }
 
-        $menuItem = MenuItem::where('title', 'Media')->firstOrFail();
+        $menuItem = $this->_menuItem('Media');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Media',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Media',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Media');
+            $this->_trans('pt', $_arr, 'Media');
         }
 
-        $menuItem = MenuItem::where('title', 'Posts')->firstOrFail();
+        $menuItem = $this->_menuItem('Posts');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Posts',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Publicações',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Posts');
+            $this->_trans('pt', $_arr, 'Publicações');
         }
 
-        $menuItem = MenuItem::where('title', 'Users')->firstOrFail();
+        $menuItem = $this->_menuItem('Users');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Users',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Utilizadores',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Users');
+            $this->_trans('pt', $_arr, 'Utilizadores');
         }
 
-        $menuItem = MenuItem::where('title', 'Categories')->firstOrFail();
+        $menuItem = $this->_menuItem('Categories');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Categories',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Categorias',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Categories');
+            $this->_trans('pt', $_arr, 'Categorias');
         }
 
-        $menuItem = MenuItem::where('title', 'Pages')->firstOrFail();
+        $menuItem = $this->_menuItem('Pages');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Pages',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Páginas',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Pages');
+            $this->_trans('pt', $_arr, 'Páginas');
         }
 
-        $menuItem = MenuItem::where('title', 'Roles')->firstOrFail();
+        $menuItem = $this->_menuItem('Roles');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Roles',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Funções',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Roles');
+            $this->_trans('pt', $_arr, 'Funções');
         }
 
-        $menuItem = MenuItem::where('title', 'Tools')->firstOrFail();
+        $menuItem = $this->_menuItem('Tools');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Tools',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Ferramentas',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Tools');
+            $this->_trans('pt', $_arr, 'Ferramentas');
         }
 
-        $menuItem = MenuItem::where('title', 'Menu Builder')->firstOrFail();
+        $menuItem = $this->_menuItem('Menu Builder');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Menu Builder',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Menus',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Menu Builder');
+            $this->_trans('pt', $_arr, 'Menus');
         }
 
-        $menuItem = MenuItem::where('title', 'Database')->firstOrFail();
+        $menuItem = $this->_menuItem('Database');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Database',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Base de dados',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Database');
+            $this->_trans('pt', $_arr, 'Base de dados');
         }
 
-        $menuItem = MenuItem::where('title', 'Settings')->firstOrFail();
+        $menuItem = $this->_menuItem('Settings');
         if ($menuItem->exists) {
-            $_row = ['table_name' => 'menu_items', 'column_name' => 'title', 'foreign_key' => $menuItem->id];
-            $_trs = Translation::firstOrNew(['locale' => 'en', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'en',
-                    'value'  => 'Settings',
-                ]))->save();
-            }
-            $_trs = Translation::firstOrNew(['locale' => 'pt', 'column_name' => 'title', 'foreign_key' => $menuItem->id,]);
-            if (!$_trs->exists) {
-                $_trs->fill(array_merge($_row, [
-                    'locale' => 'pt',
-                    'value'  => 'Configurações',
-                ]))->save();
-            }
+            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
+            $this->_trans('en', $_arr, 'Settings');
+            $this->_trans('pt', $_arr, 'Configurações');
+        }
+    }
+
+    protected function _menuItem($title)
+    {
+        return MenuItem::where('title', $title)->firstOrFail();
+    }
+
+    protected function _arr($table, $key, $id)
+    {
+        return [
+            'table_name'  => $table,
+            'column_name' => $key,
+            'foreign_key' => $id
+        ];
+    }
+
+    protected function _trans($lang, $keys, $value)
+    {
+        $_t = Translation::firstOrNew(array_merge($keys, [
+            'locale' => $lang
+        ]));
+
+        if (!$_t->exists) {
+            $_t->fill(array_merge(
+                $keys,
+                ['value' => $value]
+            ))->save();
         }
     }
 }
