@@ -376,8 +376,8 @@ class DataRowsTableSeeder extends Seeder
                     'default' => 'INACTIVE',
                     'options' => [
                         'INACTIVE' => 'INACTIVE',
-                        'ACTIVE' => 'ACTIVE',
-                    ]
+                        'ACTIVE'   => 'ACTIVE',
+                    ],
                 ]),
             ])->save();
         }
@@ -634,13 +634,13 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => json_encode([
-                    'default' => '',
-                    'null' => '',
+                    'default'  => '',
+                    'null'     => '',
                     'optiions' => [
                         '' => '-- None --',
                     ],
                     'relationship' => [
-                        'key' => 'id',
+                        'key'   => 'id',
                         'label' => 'name',
                     ],
                 ]),
