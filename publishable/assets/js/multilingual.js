@@ -2,7 +2,7 @@
  *  Multilingual System
  *
  *  Version Alpha
- *  Last version: 02 Mar 2017
+ *  First version: 18 Dec 2016
  *  Author Bruno Torrinha
  *
  *  MIT License
@@ -62,6 +62,7 @@
                     return false;
                 }
                 this.setup();
+                this.refresh();
             },
 
 
@@ -77,6 +78,25 @@
                 this.langSelectors.each(function(i, btn) {
                     $(btn).change($.proxy(_this.selectLanguage, _this));
                 });
+
+                /**
+                 * Save data before submit
+                 */
+                if (this.settings.editing) {
+                    $(this.form).on('submit', function(e) {
+                        e.preventDefault();
+                        _this.localeDefaultBtn.click();
+                        _this.prepareData();
+                        $(_this.form)[0].submit();
+                    });
+                }
+            },
+
+            /**
+             * Refresh plugin data, required for dynamic calls (ex menu)
+             */
+            refresh: function() {
+                var _this = this;
 
                 /**
                  * Setup translatable inputs
@@ -100,18 +120,7 @@
                         _inp.data(btn.id, $_data[btn.id]);
                     });
                 });
-
-                /**
-                 * Save data before submit
-                 */
-                if (this.settings.editing) {
-                    $(this.form).on('submit', function(e) {
-                        e.preventDefault();
-                        _this.localeDefaultBtn.click();
-                        _this.prepareData();
-                        $(_this.form)[0].submit();
-                    });
-                }
+                console.log('multilingual refreshed');
             },
 
             isJsonValid: function(str) {
