@@ -59,7 +59,7 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <div class="form-group">
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif">
                                     <label for="name">{{ $row->display_name }}</label>
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
