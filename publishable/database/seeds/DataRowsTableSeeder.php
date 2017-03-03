@@ -636,7 +636,7 @@ class DataRowsTableSeeder extends Seeder
                 'details'      => json_encode([
                     'default'  => '',
                     'null'     => '',
-                    'options' => [
+                    'options'  => [
                         '' => '-- None --',
                     ],
                     'relationship' => [
