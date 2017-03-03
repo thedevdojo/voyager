@@ -248,6 +248,14 @@
                     $("#route_type").hide();
                 }
 
+                if ($("#edit_type").val() == 'route') {
+                    $("#url_type").hide();
+                    $("#route_type").show();
+                } else {
+                    $("#routel_type").hide();
+                    $("#url_type").show();
+                }
+
                 $('#edit_modal').modal('show');
             });
 
