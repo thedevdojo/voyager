@@ -73,11 +73,9 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-plus"></i> Create a New Menu Item</h4>
                 </div>
-                <form action="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}" id="delete_form" method="POST">
+                <form action="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}" id="add_form" method="POST">
                     <div class="modal-body">
-                        @if ($isModelTranslatable)
-                            @include('voyager::multilingual.language-selector')
-                        @endif
+                        @include('voyager::multilingual.language-selector')
                         <label for="name">Title of the Menu Item</label>
                         @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'add_title', '_field_trans' => ''])
                         <input type="text" class="form-control" id="add_title" name="title" placeholder="Title"><br>
@@ -121,9 +119,7 @@
                     {{ method_field("PUT") }}
                     {{ csrf_field() }}
                     <div class="modal-body">
-                        @if ($isModelTranslatable)
-                            @include('voyager::multilingual.language-selector')
-                        @endif
+                        @include('voyager::multilingual.language-selector')
                         <label for="name">Title of the Menu Item</label>
                         @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'edit_title', '_field_trans' => ''])
                         <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
@@ -180,21 +176,23 @@
              * Multilingual setup for main page
              */
             $('.side-body').multilingual({
-                "langInputs": '.page-content input[data-i18n=true]'
+                "transInputs": '.dd-list input[data-i18n=true]'
             });
-            // Multilingual setup for Add Menu
-            //
+            /**
+             * Multilingual setup for Add Menu
+             */
             $('#add_modal').multilingual({
                 "form":         'form',
-                "langInputs":   '#add_modal input[data-i18n=true]',
+                "transInputs":   '#add_modal input[data-i18n=true]',
                 "langSelector": '.language-selector input',
                 "editing":      true
             });
-            // Multilingual setup for Edit Menu
-            //
+            /**
+             * Multilingual setup for Edit Menu
+             */
             $('#edit_modal').multilingual({
                 "form":         'form',
-                "langInputs":   '#edit_modal input[data-i18n=true]',
+                "transInputs":   '#edit_modal input[data-i18n=true]',
                 "langSelector": '.language-selector input',
                 "editing":      true
             }).data('multilingual');
@@ -228,8 +226,7 @@
 
                 // Load Translatable fields
                 if(translatable){
-                    $("#edit_title_i18n").val( $("#edit_title" + id + "_i18n").val() );
-                    // $("#edit_title_i18n").val( $("#title" + id + "_i18n").val() );
+                    $("#edit_title_i18n").val( $("#title" + id + "_i18n").val() );
                     translatable.refresh();
                 }
 
