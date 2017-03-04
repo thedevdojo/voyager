@@ -55,6 +55,6 @@ class Page extends Model
      */
     public static function display(string $slug = null, string $id = null, array $page_author = null)
     {
-        return Post::display($slug, $id, $page_author, self());
+        return Post::display($slug, $id, $page_author, new self());
     }
 }
