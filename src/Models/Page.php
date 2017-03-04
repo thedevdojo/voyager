@@ -55,14 +55,6 @@ class Page extends Model
      */
     public static function display(string $slug = null, string $id = null, array $page_author = null)
     {
-        $data = static::where($slug ? 'slug' : 'id', $slug ? $slug : $id)->get()->first();
-        $data->author = $page_author;
-        if ($data->author) {
-            $data->author = User::find($data->author_id, $page_author)->toArray();
-        }
-
-        return new \Illuminate\Support\HtmlString(
-            \Illuminate\Support\Facades\View::make('voyager::posts.show', $data)->render()
-        );
+        return Post::display($slug, $id, $page_author, new Page());
     }
 }
