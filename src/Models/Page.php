@@ -53,12 +53,12 @@ class Page extends Model
      *
      * @author Dusan Perisic
      */
-    public static function display(string $slug = null, string $id = null, array $author = null)
+    public static function display(string $slug = null, string $id = null, array $page_author = null)
     {
         $data = static::where($slug ? 'slug' : 'id', $slug ? $slug : $id)->get()->first();
-        $data->author = $author;
+        $data->author = $page_author;
         if ($data->author) {
-            $data->author = User::find($data->author_id, $author)->toArray();
+            $data->author = User::find($data->author_id, $page_author)->toArray();
         }
 
         return new \Illuminate\Support\HtmlString(
