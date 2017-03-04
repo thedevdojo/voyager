@@ -109,19 +109,38 @@
                     _inp.data("inpUsr", inpUsr);
 
                     // Load and Save data in hidden input
-                    var $_data = (_this.isJsonValid(_inp.val())) ? JSON.parse(_inp.val()) : {};
-
+                    var $_data = _this.loadJsonField(_inp.val());
                     if (_this.settings.editing) {
                         _inp.val(JSON.stringify($_data));
                     }
 
-                    // Save each language in a different key
                     _this.langSelectors.each(function(i, btn) {
-                        _inp.data(btn.id, $_data[btn.id]);
+                        _inp.data(btn.id, $_data[btn.id]);  // Save translation in mem
+                        if (btn.id == _this.locale) {
+                            _this.loadLang(_inp, btn.id)    // Load active locale
+                        }
                     });
                 });
-                console.log('multilingual refreshed');
             },
+
+
+            reset: function() {
+                this.langSelectors.each(function(i, btn) {
+                    $(btn).parent().removeClass('active');
+                });
+                this.localeDefaultBtn.click();
+            },
+
+
+            loadJsonField: function(str) {
+                var $_data = {};
+                if (this.isJsonValid(str)) {
+                    return JSON.parse(str);
+                }
+
+                return $_data;
+            },
+
 
             isJsonValid: function(str) {
                 try {
@@ -191,7 +210,7 @@
             },
 
             /**
-             * Load input field
+             * Load input translation
              */
             loadLang: function(inp, lang) {
                 var inpUsr = inp.data("inpUsr"),

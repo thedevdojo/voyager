@@ -90,10 +90,12 @@
 @stop
 
 @section('javascript')
+    @if ($isModelTranslatable)
     <script>
         $(document).ready(function () {
             $('.side-body').multilingual();
         });
     </script>
     <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @endif
 @stop

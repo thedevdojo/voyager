@@ -171,31 +171,32 @@
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
     <script>
         $(document).ready(function () {
-
-            /**
-             * Multilingual setup for main page
-             */
-            $('.side-body').multilingual({
-                "transInputs": '.dd-list input[data-i18n=true]'
-            });
-            /**
-             * Multilingual setup for Add Menu
-             */
-            $('#add_modal').multilingual({
-                "form":         'form',
-                "transInputs":   '#add_modal input[data-i18n=true]',
-                "langSelector": '.language-selector input',
-                "editing":      true
-            });
-            /**
-             * Multilingual setup for Edit Menu
-             */
-            $('#edit_modal').multilingual({
-                "form":         'form',
-                "transInputs":   '#edit_modal input[data-i18n=true]',
-                "langSelector": '.language-selector input',
-                "editing":      true
-            }).data('multilingual');
+            @if ($isModelTranslatable)
+                /**
+                 * Multilingual setup for main page
+                 */
+                $('.side-body').multilingual({
+                    "transInputs": '.dd-list input[data-i18n=true]'
+                });
+                /**
+                 * Multilingual setup for Add Menu
+                 */
+                $('#add_modal .modal-body').multilingual({
+                    "form":         'form',
+                    "transInputs":  '#add_modal input[data-i18n=true]',
+                    "langSelector": '.language-selector input',
+                    "editing":      true
+                });
+                /**
+                 * Multilingual setup for Edit Menu
+                 */
+                $('#edit_modal .modal-body').multilingual({
+                    "form":         'form',
+                    "transInputs":  '#edit_modal input[data-i18n=true]',
+                    "langSelector": '.language-selector input',
+                    "editing":      true
+                });
+            @endif
 
 
             $('.dd').nestable({/* config options */});
@@ -214,7 +215,7 @@
              */
             $('.item_actions').on('click', '.edit', function (e) {
                 var id           = $(e.currentTarget).data('id'),
-                    translatable = $('#edit_modal').data('multilingual');
+                    translatable = $('#edit_modal .modal-body').data('multilingual');
 
                 $('#edit_title').val($(e.currentTarget).data('title'));
                 $('#edit_url').val($(e.currentTarget).data('url'));
@@ -224,9 +225,9 @@
                 $('#edit_parameters').val(JSON.stringify($(e.currentTarget).data('parameters')));
                 $('#edit_id').val(id);
 
-                // Load Translatable fields
+                // Refresh translatable fields
                 if(translatable){
-                    $("#edit_title_i18n").val( $("#title" + id + "_i18n").val() );
+                    $('#edit_title_i18n').val( $("#title" + id + "_i18n").val() );
                     translatable.refresh();
                 }
 
@@ -256,7 +257,15 @@
                 $('#edit_modal').modal('show');
             });
 
+
             $('.add_item').click(function () {
+                var translatable = $('#add_modal .modal-body').data('multilingual');
+
+                // Refresh translatable fields
+                if (translatable) {
+                    translatable.refresh();
+                }
+
                 $('#add_modal').modal('show');
             });
 

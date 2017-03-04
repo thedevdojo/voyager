@@ -13,7 +13,7 @@ class VoyagerMenuController extends Controller
 
         $menu = Voyager::model('Menu')->findOrFail($id);
 
-        $isModelTranslatable = Voyager::translatable(Voyager::model('MenuItem'));
+        $isModelTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
 
         return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
     }
@@ -52,9 +52,8 @@ class VoyagerMenuController extends Controller
             $data['order'] = intval($highestOrderMenuItem->order) + 1;
         }
 
-        // Set any Translatable Data and Validate
-        $isModelTranslatable = Voyager::translatable(Voyager::model('MenuItem'));
-        $data = self::validateMenuData($data, 'add', $isTranslatable);
+        // Save menu translations if available
+        $data = $this->saveMenuTranslations($menuItem, $data, 'add');
 
         Voyager::model('MenuItem')->create($data);
 
@@ -76,6 +75,10 @@ class VoyagerMenuController extends Controller
         );
 
         $menuItem = Voyager::model('MenuItem')->findOrFail($id);
+
+        // Save menu translations if available
+        $data = $this->saveMenuTranslations($menuItem, $data, 'edit');
+
         $menuItem->update($data);
 
         return redirect()
@@ -127,28 +130,27 @@ class VoyagerMenuController extends Controller
     }
 
 
-
     /**
-     * Prepare menu translations
+     * Save menu translations
      *
-     * @param array   $data           menu data
-     * @param string  $action         add or edit action
-     * @param boolean $isTranslatable if menu is translatable
+     * @param object $_menuItem
+     * @param array  $data     menu data
+     * @param string $action   add or edit action
      *
-     * @return array                  menu data validated
+     * @return JSON            translated item
      */
-    protected function prepareTranslations(array $data, string $action, $isTranslatable)
+    protected function saveMenuTranslations($_menuItem, array $data, string $action)
     {
-        if ($isTranslatable) {
-            if (!isset($data[$action.'_title_i18n']) || $data['title'] == '') {
-                return false;
-            }
-            $data['title'] = json_decode($data[$action.'_title_i18n'], true);
-            unset($data[$action.'_title_i18n']);
-        } else {
-            if ($data['title'] == '') {
-                return false;
-            }
+        if (isBreadTranslatable($_menuItem)) {
+            $key = $action.'_title_i18n';
+            $val = json_decode($data[$key], true);
+
+            unset($data[$key]);
+            unset($data['i18n_selector']);
+
+            $_menuItem->setAttributeTranslations(
+                'title', $val
+            );
         }
 
         return $data;

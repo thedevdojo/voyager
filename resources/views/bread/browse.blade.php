@@ -163,7 +163,10 @@
 @section('javascript')
     <!-- DataTables -->
     @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-    <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
+        <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
+    @endif
+    @if($isModelTranslatable)
+        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
     @endif
     <script>
         $(document).ready(function () {
@@ -174,7 +177,9 @@
                 });
             @endif
 
-            $('.side-body').multilingual();
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual();
+            @endif
         });
 
 
@@ -194,5 +199,4 @@
             $('#delete_modal').modal('show');
         });
     </script>
-    <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
 @stop

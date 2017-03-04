@@ -46,6 +46,7 @@ if (!function_exists('isBreadTranslatable')) {
      */
     function isBreadTranslatable($model)
     {
-        return isset($model, $model['translatable']);
+        return config('voyager.multilingual.bread')
+                && isset($model, $model['translatable']);
     }
 }

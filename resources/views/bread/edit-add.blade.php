@@ -99,15 +99,19 @@
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
 
-            $('.side-body').multilingual({"editing": true});
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual({"editing": true});
+            @endif
 
             $('.side-body input[data-slug-origin]').each(function(i, el) {
                 $(el).slugify();
             });
         });
     </script>
+    @if($isModelTranslatable)
+        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @endif
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
 @stop
