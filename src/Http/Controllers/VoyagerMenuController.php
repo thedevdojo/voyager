@@ -149,7 +149,7 @@ class VoyagerMenuController extends Controller
             unset($data['i18n_selector']);
 
             $_menuItem->setAttributeTranslations(
-                'title', $val
+                'title', $val, true
             );
         }
 

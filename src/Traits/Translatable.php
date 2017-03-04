@@ -206,7 +206,7 @@ trait Translatable
         return property_exists($this, 'translatable') ? $this->translatable : [];
     }
 
-    public function setAttributeTranslations($attribute, array $translations)
+    public function setAttributeTranslations($attribute, array $translations, $save = false)
     {
         $response = [];
 
@@ -229,6 +229,10 @@ trait Translatable
 
             $tranlator = $this->translate($locale, false);
             $tranlator->$attribute = $translations[$locale];
+
+            if ($save) {
+                $tranlator->save();
+            }
 
             $response[] = $tranlator;
         }
