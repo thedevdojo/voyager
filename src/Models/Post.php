@@ -57,12 +57,12 @@ class Post extends Model
      *
      * @author Dusan Perisic
      */
-    public static function display(string $slug = null, string $id = null, array $post_author = null, $model = self::class)
+    public static function display(string $slug = null, string $id = null, array $author = null, $model = self::class)
     {
         $data = $model::where($slug ? 'slug' : 'id', $slug ? $slug : $id)->get()->first();
-        $data->author = $post_author;
+        $data->author = $author;
         if ($data->author) {
-            $data->author = User::find($data->author_id, $post_author)->toArray();
+            $data->author = User::find($data->author_id, $author)->toArray();
         }
 
         return new \Illuminate\Support\HtmlString(
