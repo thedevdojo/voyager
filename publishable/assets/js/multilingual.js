@@ -219,9 +219,9 @@
                 if (!this.settings.editing) {
                     inpUsr.text(_val);
                 } else {
-                    if (inpUsr.hasClass('richTextBox')) {
-                        var $_mce = tinymce.get('richtext'+inpUsr.prop('name'));
-                        $_mce.setContent(_val);
+                    var $richtext = 'richtext'+inpUsr.prop('name');
+                    if (inpUsr.hasClass('richTextBox') && tinymce.get($richtext)) {
+                        tinymce.get($richtext).setContent(_val);
                     } else {
                         inpUsr.val(_val);
                     }
