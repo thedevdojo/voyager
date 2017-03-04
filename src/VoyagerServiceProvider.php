@@ -228,6 +228,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'text',
             'text_area',
             'timestamp',
+            'hidden',
         ];
 
         foreach ($formFields as $formField) {
