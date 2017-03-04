@@ -239,4 +239,22 @@ trait Translatable
 
         return $response;
     }
+
+    public function hasTranslatorMethod($name)
+    {
+        if (!isset($this->translatorMethods)) {
+            return false;
+        }
+
+        return isset($this->translatorMethods[$name]);
+    }
+
+    public function getTranslatorMethod($name)
+    {
+        if (!$this->hasTranslatorMethod($name)) {
+            return null;
+        }
+
+        return $this->translatorMethods[$name];
+    }
 }

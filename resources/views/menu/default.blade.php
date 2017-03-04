@@ -1,8 +1,21 @@
 <ul>
 
+@php
+
+    if (Voyager::translatable($items)) {
+        $items = $items->load('translations');
+    }
+
+@endphp
+
 @foreach ($items->sortBy('order') as $item)
-    
+
     @php
+    
+        $originalItem = $item;
+        if (Voyager::translatable($item)) {
+            $item = $item->translate($options->locale);
+        }
 
         $isActive = null;
         $styles = null;
@@ -25,7 +38,7 @@
         if(isset($options->icon) && $options->icon == true){
             $icon = '<i class="' . $item->icon_class . '"></i>';
         }
-        
+
     @endphp
 
     <li class="{{ $isActive }}">
@@ -33,8 +46,8 @@
             {!! $icon !!}
             <span>{{ $item->title }}</span>
         </a>
-        @if(!$item->children->isEmpty())
-        @include('voyager::menu.default', ['items' => $item->children, 'options' => $options])
+        @if(!$originalItem->children->isEmpty())
+            @include('voyager::menu.default', ['items' => $originalItem->children, 'options' => $options])
         @endif
     </li>
 @endforeach
