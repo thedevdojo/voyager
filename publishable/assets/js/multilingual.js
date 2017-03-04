@@ -69,8 +69,7 @@
             setup: function() {
                 var _this = this;
 
-                this.localeDefaultBtn = this.returnLocale();
-                this.locale = this.localeDefaultBtn.prop('id');
+                this.locale = this.returnLocale();
 
                 /**
                  * Setup language selector
@@ -85,7 +84,6 @@
                 if (this.settings.editing) {
                     $(this.form).on('submit', function(e) {
                         e.preventDefault();
-                        _this.localeDefaultBtn.click();
                         _this.prepareData();
                         $(_this.form)[0].submit();
                     });
@@ -123,15 +121,6 @@
                 });
             },
 
-
-            reset: function() {
-                this.langSelectors.each(function(i, btn) {
-                    $(btn).parent().removeClass('active');
-                });
-                this.localeDefaultBtn.click();
-            },
-
-
             loadJsonField: function(str) {
                 var $_data = {};
                 if (this.isJsonValid(str)) {
@@ -159,7 +148,7 @@
             returnLocale: function() {
                 return this.langSelectors.filter(function() {
                     return $(this).parent().hasClass('active');
-                });
+                }).prop('id');
             },
 
             selectLanguage: function(e) {

@@ -86,13 +86,14 @@ abstract class Controller extends BaseController
                 $multi_select[] = ['row' => $row->field, 'content' => $content];
 
 
+            // Translation support
+            //
             } elseif (isFieldTranslatable($data, $row)) {
-                // Translatable field, Save all translations in one go
-                //
-                $translations[$row->field] = $data->setAttributeTranslations(
-                    $row->field,
-                    json_decode($request->input($row->field.'_i18n'), true)
-                );
+                $this->prepareTranslations($translations, $data, $row->field, $request);
+                // $translations[$row->field] = $data->setAttributeTranslations(
+                //     $row->field,
+                //     json_decode($request->input($row->field.'_i18n'), true)
+                // );
 
             } else {
                 $data->{$row->field} = $content;
@@ -306,5 +307,28 @@ abstract class Controller extends BaseController
         if (Storage::disk(config('voyager.storage.disk'))->exists($path)) {
             Storage::disk(config('voyager.storage.disk'))->delete($path);
         }
+    }
+
+    /**
+     * Prepare translations
+     *
+     * @param object &$translations
+     * @param object &$data
+     * @param object $row
+     * @param object $request
+     *
+     * @return void
+     */
+    protected function prepareTranslations(&$translations, &$data, $row, $request)
+    {
+        $trans = json_decode($request->input($row->field.'_i18n'), true);
+
+        // Set field value with the default locale
+        $data[$row->field] = $trans[config('voyager.multilingual.default', 'en')];
+
+        $translations[$row->field] = $data->setAttributeTranslations(
+            $row->field,
+            $trans
+        );
     }
 }
