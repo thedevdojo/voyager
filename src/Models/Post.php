@@ -57,7 +57,7 @@ class Post extends Model
      *
      * @author Dusan Perisic
      */
-    public static function display(string $slug = null, string $id = null, array $post_author = null, $model = Post::class)
+    public static function display(string $slug = null, string $id = null, array $post_author = null, $model = self::class)
     {
         $data = $model::where($slug ? 'slug' : 'id', $slug ? $slug : $id)->get()->first();
         $data->author = $post_author;
