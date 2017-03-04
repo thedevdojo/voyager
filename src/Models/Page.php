@@ -60,6 +60,7 @@ class Page extends Model
         if ($data->author) {
             $data->author = User::find($data->author_id, $author)->toArray();
         }
+
         return new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make('voyager::posts.show', $data)->render()
         );
