@@ -90,10 +90,6 @@ abstract class Controller extends BaseController
             //
             } elseif (isFieldTranslatable($data, $row)) {
                 $this->prepareTranslations($translations, $data, $row->field, $request);
-                // $translations[$row->field] = $data->setAttributeTranslations(
-                //     $row->field,
-                //     json_decode($request->input($row->field.'_i18n'), true)
-                // );
 
             } else {
                 $data->{$row->field} = $content;
@@ -319,15 +315,15 @@ abstract class Controller extends BaseController
      *
      * @return void
      */
-    protected function prepareTranslations(&$translations, &$data, $row, $request)
+    protected function prepareTranslations(&$translations, &$data, $field, $request)
     {
-        $trans = json_decode($request->input($row->field.'_i18n'), true);
+        $trans = json_decode($request->input($field.'_i18n'), true);
 
         // Set field value with the default locale
-        $data[$row->field] = $trans[config('voyager.multilingual.default', 'en')];
+        $data[$field] = $trans[config('voyager.multilingual.default', 'en')];
 
-        $translations[$row->field] = $data->setAttributeTranslations(
-            $row->field,
+        $translations[$field] = $data->setAttributeTranslations(
+            $field,
             $trans
         );
     }

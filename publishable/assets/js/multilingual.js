@@ -1,35 +1,26 @@
 /**
  *  Multilingual System
  *
- *  Version Alpha
- *  First version: 18 Dec 2016
- *  Author Bruno Torrinha
+ *  Last version: 05 Mar 2017
+ *  Author: Bruno Torrinha <http://www.torrinha.com>
  *
  *  MIT License
  *
  *  Provides a mechanism for easily manage multi languages on a single page.
  *  It was created for the BREAD system of Voyager, but can be implemented
  *  with any html structure.
- *  For each translatable field, the system requires an hidden input containing
- *  all translations.
- *  This is an alpha version and the final version may change, there are a few
- *  considerations to take from here.
- *  Every time a translatable model is opened, all languages are being pulled,
- *  while this may work well on websites with just a few languages, in case
- *  of 20+, it may gets odd, it requires testing.
+ *  For each translatable field, the page requires an hidden input containing
+ *  all translations in JSON format.
  *
- *  Features
- *  * For setting up fields it's easy, go to the BREAD Edit, and add to the
- *    Options Details: {"translate":true}
- *  * Language Selector, triggering the content update. It will be hidden, case
- *    model is not translatable.
- *  * Blade partial views created and included in: [browse, read, edit-add].blade.
+ *  Some considerations:
+ *  Every time a translatable model is opened, all languages are being loaded.
+ *  This may work well with few languages, but in case of 20+, it may require
+ *  another approach, like using AJAX.
  *
  *  TO-DO
- *  * Google Translator, triggered by a link placed on the top right of the input.
- *  * Option for showing the fall-back version of the field, under the input.
+ *  * Google Translator, triggered by a subtle link placed somewhere near the input.
+ *  * Option for showing a fall-back version of the field, under the input.
  *    This would apply to text input only.
- *  * Global page administrator, listing all the translated fields on the system.
  *
  */
 ;( function( $, window, document, undefined ) {

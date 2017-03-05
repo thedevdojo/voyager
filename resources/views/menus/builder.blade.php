@@ -168,7 +168,9 @@
 @section('javascript')
 
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/jquery.nestable.js"></script>
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @if($isModelTranslatable)
+        <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @endif
     <script>
         $(document).ready(function () {
             @if ($isModelTranslatable)
@@ -181,20 +183,20 @@
                 /**
                  * Multilingual setup for Add Menu
                  */
-                $('#add_modal .modal-body').multilingual({
-                    "form":         'form',
-                    "transInputs":  '#add_modal input[data-i18n=true]',
-                    "langSelector": '.language-selector input',
-                    "editing":      true
+                $('#add_modal').multilingual({
+                    "form":          'form',
+                    "transInputs":   '#add_modal input[data-i18n=true]',
+                    "langSelectors": '.language-selector input',
+                    "editing":       true
                 });
                 /**
                  * Multilingual setup for Edit Menu
                  */
-                $('#edit_modal .modal-body').multilingual({
-                    "form":         'form',
-                    "transInputs":  '#edit_modal input[data-i18n=true]',
-                    "langSelector": '.language-selector input',
-                    "editing":      true
+                $('#edit_modal').multilingual({
+                    "form":          'form',
+                    "transInputs":   '#edit_modal input[data-i18n=true]',
+                    "langSelectors": '.language-selector input',
+                    "editing":       true
                 });
             @endif
 
@@ -215,7 +217,7 @@
              */
             $('.item_actions').on('click', '.edit', function (e) {
                 var id           = $(e.currentTarget).data('id'),
-                    translatable = $('#edit_modal .modal-body').data('multilingual');
+                    translatable = $('#edit_modal').data('multilingual');
 
                 $('#edit_title').val($(e.currentTarget).data('title'));
                 $('#edit_url').val($(e.currentTarget).data('url'));
@@ -259,9 +261,8 @@
 
 
             $('.add_item').click(function () {
-                var translatable = $('#add_modal .modal-body').data('multilingual');
+                var translatable = $('#add_modal').data('multilingual');
 
-                // Refresh translatable fields
                 if (translatable) {
                     translatable.refresh();
                 }
