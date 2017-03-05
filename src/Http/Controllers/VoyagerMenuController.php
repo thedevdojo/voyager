@@ -129,7 +129,6 @@ class VoyagerMenuController extends Controller
         return $parameters;
     }
 
-
     /**
      * Save menu translations.
      *

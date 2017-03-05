@@ -1,4 +1,5 @@
 <?php
+
 if (!function_exists('isFieldTranslatable')) {
     /**
      * Check if a Field is translatable.
@@ -12,7 +13,6 @@ if (!function_exists('isFieldTranslatable')) {
             in_array($row->field, $model['translatable']);
     }
 }
-
 
 if (!function_exists('getFieldTranslations')) {
     /**
@@ -34,7 +34,6 @@ if (!function_exists('getFieldTranslations')) {
         return htmlentities(json_encode($_out));
     }
 }
-
 
 if (!function_exists('isBreadTranslatable')) {
     /**

@@ -85,9 +85,9 @@ abstract class Controller extends BaseController
                 // Only if select_multiple is working with a relationship
                 $multi_select[] = ['row' => $row->field, 'content' => $content];
 
-
-            // Translation support
-            //
+            /*
+             * Translation support
+             */
             } elseif (isFieldTranslatable($data, $row)) {
                 $this->prepareTranslations($translations, $data, $row->field, $request);
 
