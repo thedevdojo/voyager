@@ -239,25 +239,6 @@ class MultilingualTest extends TestCase
         $this->assertFalse($model->getRawAttributes()['title']['modified']);
         $this->assertEquals('da', $model->getRawAttributes()['title']['locale']);
     }
-
-    public function testDeletingTranslation()
-    {
-        DB::table('translations')->insert([
-            'table_name'  => 'posts',
-            'column_name' => 'title',
-            'foreign_key' => 1,
-            'locale'      => 'da',
-            'value'       => 'Title',
-        ]);
-
-        $model = TranslatableModel::first()->translate('da');
-
-        $this->assertEquals(7, DB::table('translations')->count());
-
-        $model->deleteTranslation('title');
-
-        $this->assertEquals(6, DB::table('translations')->count());
-    }
 }
 
 class TranslatableModel extends Model

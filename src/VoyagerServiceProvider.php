@@ -14,7 +14,6 @@ use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
