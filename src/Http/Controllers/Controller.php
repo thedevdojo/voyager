@@ -306,7 +306,7 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * Prepare translations
+     * Prepare translations.
      *
      * @param object &$translations
      * @param object &$data

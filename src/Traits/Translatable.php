@@ -152,7 +152,7 @@ trait Translatable
             return [$this->getAttribute($attribute), config('voyager.multilingual.default'), false];
         }
 
-        if (! $this->relationLoaded('translations')) {
+        if (!$this->relationLoaded('translations')) {
             $this->load('translations');
         }
 
@@ -210,7 +210,7 @@ trait Translatable
     {
         $response = [];
 
-        if (! $this->relationLoaded('translations')) {
+        if (!$this->relationLoaded('translations')) {
             $this->load('translations');
         }
 

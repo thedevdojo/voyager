@@ -140,14 +140,14 @@ class TranslationsTableSeeder extends Seeder
         return [
             'table_name'  => $table,
             'column_name' => $key,
-            'foreign_key' => $id
+            'foreign_key' => $id,
         ];
     }
 
     protected function _trans($lang, $keys, $value)
     {
         $_t = Translation::firstOrNew(array_merge($keys, [
-            'locale' => $lang
+            'locale' => $lang,
         ]));
 
         if (!$_t->exists) {

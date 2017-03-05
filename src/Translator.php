@@ -150,8 +150,7 @@ class Translator implements ArrayAccess
     public function __get($name)
     {
         if (!isset($this->attributes[$name])) {
-            if (isset($this->model->$name))
-            {
+            if (isset($this->model->$name)) {
                 return $this->model->$name;
             }
 
@@ -302,7 +301,7 @@ class Translator implements ArrayAccess
 
     public function __call($method, array $arguments)
     {
-        if (! $this->model->hasTranslatorMethod($method)) {
+        if (!$this->model->hasTranslatorMethod($method)) {
             throw new \Exception('Call to undefined method TCG\Voyager\Translator::'.$method.'()');
         }
 
@@ -314,6 +313,7 @@ class Translator implements ArrayAccess
         array_unshift($arguments, $this);
 
         $method = $this->model->getTranslatorMethod($method);
+
         return call_user_func_array([$this->model, $method], $arguments);
     }
 }

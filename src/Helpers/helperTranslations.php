@@ -1,24 +1,22 @@
 <?php
 if (!function_exists('isFieldTranslatable')) {
     /**
-     * Check if a Field is translatable
+     * Check if a Field is translatable.
      *
      * @param Illuminate\Database\Eloquent\Model      $model
      * @param Illuminate\Database\Eloquent\Collection $row
      */
     function isFieldTranslatable($model, $row)
     {
-        return (
-            isset($model['translatable']) &&
-            in_array($row->field, $model['translatable'])
-        );
+        return isset($model['translatable']) &&
+            in_array($row->field, $model['translatable']);
     }
 }
 
 
 if (!function_exists('getFieldTranslations')) {
     /**
-     * Return all field translations
+     * Return all field translations.
      *
      * @param Illuminate\Database\Eloquent\Model      $model
      * @param Illuminate\Database\Eloquent\Collection $row
@@ -42,11 +40,11 @@ if (!function_exists('isBreadTranslatable')) {
     /**
      * Check if BREAD is translatable.
      *
-     * @param Illuminate\Database\Eloquent\Model      $model
+     * @param Illuminate\Database\Eloquent\Model $model
      */
     function isBreadTranslatable($model)
     {
         return config('voyager.multilingual.bread')
-                && isset($model, $model['translatable']);
+            && isset($model, $model['translatable']);
     }
 }

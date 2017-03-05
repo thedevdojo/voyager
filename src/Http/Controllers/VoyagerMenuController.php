@@ -131,18 +131,18 @@ class VoyagerMenuController extends Controller
 
 
     /**
-     * Save menu translations
+     * Save menu translations.
      *
      * @param object $_menuItem
-     * @param array  $data     menu data
-     * @param string $action   add or edit action
+     * @param array  $data      menu data
+     * @param string $action    add or edit action
      *
-     * @return JSON            translated item
+     * @return JSON translated item
      */
     protected function saveMenuTranslations($_menuItem, &$data, $action)
     {
         if (isBreadTranslatable($_menuItem)) {
-            $key   = $action.'_title_i18n';
+            $key = $action.'_title_i18n';
             $trans = json_decode($data[$key], true);
 
             // Set field value with the default locale
