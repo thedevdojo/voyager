@@ -18,7 +18,6 @@ class TranslationsTableSeeder extends Seeder
         $this->menusTranslations();
     }
 
-
     /**
      * Auto generate Pages Translations.
      *
@@ -43,7 +42,6 @@ class TranslationsTableSeeder extends Seeder
                                         ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
         }
     }
-
 
     /**
      * Auto generate Menus Translations.

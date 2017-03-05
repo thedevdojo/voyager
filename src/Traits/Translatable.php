@@ -252,7 +252,7 @@ trait Translatable
     public function getTranslatorMethod($name)
     {
         if (!$this->hasTranslatorMethod($name)) {
-            return null;
+            return;
         }
 
         return $this->translatorMethods[$name];

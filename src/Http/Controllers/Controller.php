@@ -90,7 +90,6 @@ abstract class Controller extends BaseController
              */
             } elseif (isFieldTranslatable($data, $row)) {
                 $this->prepareTranslations($translations, $data, $row->field, $request);
-
             } else {
                 $data->{$row->field} = $content;
             }
