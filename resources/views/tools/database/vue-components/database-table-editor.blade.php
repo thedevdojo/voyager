@@ -35,6 +35,8 @@
             <p>This table has composite indexes. Please note that they are not supported at the moment. Be careful when trying to add/remove indexes.</p>
         </div>
 
+        <div id="alertsContainer"></div>
+
         <template v-if="tableHasColumns">
             <p>Table Columns</p>
 
@@ -126,6 +128,11 @@
             for (col in compositeColumns) {
                 this.getColumn(compositeColumns[col]).composite = true;
             }
+
+            // Display errors
+            @if(Session::has('alerts'))
+                displayAlerts(alerts, bootstrapAlerter({dismissible: true}), 'error');
+            @endif
         },
         computed: {
             tableHasColumns() {

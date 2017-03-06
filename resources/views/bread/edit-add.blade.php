@@ -61,7 +61,7 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <div class="form-group">
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif">
                                     <label for="name">{{ $row->display_name }}</label>
                                     @include('voyager::multilingual.input-hidden-bread')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
@@ -75,7 +75,7 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary save">Save</button>
                         </div>
                     </form>
 
