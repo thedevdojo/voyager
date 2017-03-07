@@ -31,9 +31,14 @@ Route::group(['as' => 'voyager.'], function () {
         Route::get('profile', ['uses' => $namespacePrefix.'VoyagerController@profile', 'as' => 'profile']);
 
         try {
-            foreach (DataType::all() as $dataTypes) {
-                Route::resource($dataTypes->slug, $namespacePrefix.'VoyagerBreadController');
+            foreach (DataType::all() as $dataType) {
+                $breadController = $dataType->controller
+                                 ? $dataType->controller
+                                 : $namespacePrefix.'VoyagerBreadController';
+
+                Route::resource($dataType->slug, $breadController);
             }
+
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
         } catch (\Exception $e) {
