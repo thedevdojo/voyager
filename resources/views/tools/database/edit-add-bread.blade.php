@@ -134,46 +134,63 @@
                         </div>
 
                         <div class="panel-body">
-                            <div class="form-group">
-                                <label for="name">Table Name</label>
-                                <input type="text" class="form-control" readonly name="name" placeholder="Name"
-                                       value="@if(isset($dataType->name)){{ $dataType->name }}@else{{ $table }}@endif">
+                            <div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="name">Table Name</label>
+                                    <input type="text" class="form-control" readonly name="name" placeholder="Name"
+                                           value="@if(isset($dataType->name)){{ $dataType->name }}@else{{ $table }}@endif">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="email">URL Slug (must be unique)</label>
-                                <input type="text" class="form-control" name="slug" placeholder="URL slug (ex. posts)"
-                                       value="@if(isset($dataType->slug)){{ $dataType->slug }}@else{{ $slug }}@endif">
+                            <div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="email">URL Slug (must be unique)</label>
+                                    <input type="text" class="form-control" name="slug" placeholder="URL slug (ex. posts)"
+                                           value="@if(isset($dataType->slug)){{ $dataType->slug }}@else{{ $slug }}@endif">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="email">Icon (optional) Use a <a
+                                                href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}"
+                                                target="_blank">Voyager Font Class</a></label>
+                                    <input type="text" class="form-control" name="icon"
+                                           placeholder="Icon to use for this Table"
+                                           value="@if(isset($dataType->icon)){{ $dataType->icon }}@endif">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Display Name (Singular)</label>
-                                <input type="text" class="form-control" name="display_name_singular"
-                                       placeholder="Display Name (Singular)"
-                                       value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
+                            <div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="email">Display Name (Singular)</label>
+                                    <input type="text" class="form-control" name="display_name_singular"
+                                           placeholder="Display Name (Singular)"
+                                           value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="email">Display Name (Plural)</label>
+                                    <input type="text" class="form-control" name="display_name_plural"
+                                           placeholder="Display Name (Plural)"
+                                           value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Display Name (Plural)</label>
-                                <input type="text" class="form-control" name="display_name_plural"
-                                       placeholder="Display Name (Plural)"
-                                       value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Icon (optional) Use a <a
-                                            href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}"
-                                            target="_blank">Voyager Font Class</a></label>
-                                <input type="text" class="form-control" name="icon"
-                                       placeholder="Icon to use for this Table"
-                                       value="@if(isset($dataType->icon)){{ $dataType->icon }}@endif">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Model Name (ex. \App\User, if left empty will try and use the table
-                                    name)</label>
-                                <input type="text" class="form-control" name="model_name" placeholder="Model Class Name"
-                                       value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
-                            </div>
-                            <div class="form-group">
-                                <label for="email">Controller Name (ex. \App\Page, if empty will use the BREAD)</label>
-                                <input type="text" class="form-control" name="controller" placeholder="Controller Name"
-                                       value="@if(isset($dataType->controller)){{ $dataType->controller }}@else{{ $controller }}@endif">
+                            <div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="email">Model Name</label>
+                                    <span class="glyphicon glyphicon-question-sign"
+                                        aria-hidden="true"
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title="ex. \App\User, if left empty will try and use the table name"></span>
+                                    <input type="text" class="form-control" name="model_name" placeholder="Model Class Name"
+                                           value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="email">Controller Name</label>
+                                    <span class="glyphicon glyphicon-question-sign"
+                                        aria-hidden="true"
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title="ex. PageController, if left empty will use the BREAD Controller"></span>
+                                    <input type="text" class="form-control" name="controller" placeholder="Controller Name"
+                                           value="@if(isset($dataType->controller)){{ $dataType->controller }}@endif">
+                                </div>
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
@@ -293,6 +310,8 @@
                     }
                 });
             });
+
+            $('[data-toggle="tooltip"]').tooltip();
 
             $('.toggleswitch').bootstrapToggle();
         });
