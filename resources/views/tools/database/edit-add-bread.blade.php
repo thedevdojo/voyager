@@ -170,6 +170,11 @@
                                 <input type="text" class="form-control" name="model_name" placeholder="Model Class Name"
                                        value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
                             </div>
+                            <div class="form-group">
+                                <label for="email">Controller Name (ex. \App\Page, if empty will use the BREAD)</label>
+                                <input type="text" class="form-control" name="controller_name" placeholder="Controller Class Name"
+                                       value="@if(isset($dataType->controller_name)){{ $dataType->controller_name }}@else{{ $controller_name }}@endif">
+                            </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
                                     <label for="generate_permissions">Generate Permissions</label><br>
@@ -265,11 +270,11 @@
                 editor.setTheme("ace/theme/github");
                 _session.setMode("ace/mode/json");
                 if (textarea.val()) {
-                    _session.setValue(JSON.stringify(JSON.parse(textarea.val()), null, 4));  
+                    _session.setValue(JSON.stringify(JSON.parse(textarea.val()), null, 4));
                 }
-                
+
                 _session.setMode("ace/mode/" + mode);
-                
+
                 // copy back to textarea on form submit...
                 textarea.closest('form').on('submit', function (ev) {
                     if (window.invalidEditors.length) {
