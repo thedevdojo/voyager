@@ -172,8 +172,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">Controller Name (ex. \App\Page, if empty will use the BREAD)</label>
-                                <input type="text" class="form-control" name="controller_name" placeholder="Controller Class Name"
-                                       value="@if(isset($dataType->controller_name)){{ $dataType->controller_name }}@else{{ $controller_name }}@endif">
+                                <input type="text" class="form-control" name="controller" placeholder="Controller Name"
+                                       value="@if(isset($dataType->controller)){{ $dataType->controller }}@else{{ $controller }}@endif">
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">

@@ -19,7 +19,7 @@ class DataType extends Model
         'display_name_plural',
         'icon',
         'model_name',
-        'controller_name',
+        'controller',
         'description',
         'generate_permissions',
         'server_side',

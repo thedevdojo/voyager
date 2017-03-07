@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddControllerNameDataTypes extends Migration
+class AddControllerToDataTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddControllerNameDataTypes extends Migration
     public function up()
     {
         Schema::table('data_types', function (Blueprint $table) {
-            $table->string('controller_name')->nullable()->after('model_name');
+            $table->string('controller')->nullable()->after('model_name');
         });
     }
 
@@ -26,7 +26,7 @@ class AddControllerNameDataTypes extends Migration
     public function down()
     {
         Schema::table('data_types', function (Blueprint $table) {
-            $table->dropColumn('controller_name');
+            $table->dropColumn('controller');
         });
     }
 }
