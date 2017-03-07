@@ -323,12 +323,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "slugify": {
-        "origin": "title"
-    }
-}',
+                'details'      => json_encode([
+                    'slugify' => [
+                        'origin' => 'title',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -373,14 +372,13 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "default": "INACTIVE",
-    "options": {
-        "INACTIVE": "INACTIVE",
-        "ACTIVE": "ACTIVE"
-    }
-}',
+                'details'      => json_encode([
+                    'default' => 'INACTIVE',
+                    'options' => [
+                        'INACTIVE' => 'INACTIVE',
+                        'ACTIVE'   => 'ACTIVE',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -635,18 +633,17 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "default": "__null__",
-    "null": "__null__",
-    "options": {
-        "__null__": "NULL"
-    },
-    "relationship": {
-        "key": "id",
-        "label": "name"
-    }
-}',
+                'details'      => json_encode([
+                    'default'  => '',
+                    'null'     => '',
+                    'options'  => [
+                        '' => '-- None --',
+                    ],
+                    'relationship' => [
+                        'key'   => 'id',
+                        'label' => 'name',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -661,10 +658,9 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "default": 1
-}',
+                'details'      => json_encode([
+                    'default' => 1,
+                ]),
             ])->save();
         }
 
