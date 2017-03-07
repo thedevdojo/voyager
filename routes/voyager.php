@@ -38,7 +38,6 @@ Route::group(['as' => 'voyager.'], function () {
 
                 Route::resource($dataType->slug, $breadController);
             }
-
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
         } catch (\Exception $e) {
