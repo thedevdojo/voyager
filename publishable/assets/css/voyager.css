@@ -1038,9 +1038,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 .app-container.expanded .panel.widget h4 {
   opacity:1;
 }
-.app-container.expanded .breadcrumb {
-  display: none
-}
 
 .app-container .side-menu:hover .panel.widget h4 {
   opacity:1;
