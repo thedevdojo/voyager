@@ -93,14 +93,17 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     (function(){
             var appContainer = document.querySelector('.app-container'),
                 sidebar = appContainer.querySelector('.side-menu'),
+                navbar = appContainer.querySelector('nav.navbar.navbar-top'),
                 loader = document.getElementById('voyager-loader'),
                 anchor = document.getElementById('sidebar-anchor'),
                 hamburgerMenu = document.querySelector('.hamburger'),
                 sidebarTransition = sidebar.style.transition,
+                navbarTransition = navbar.style.transition,
                 containerTransition = appContainer.style.transition;
 
             sidebar.style.WebkitTransition = sidebar.style.MozTransition = sidebar.style.transition =
-            appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition = 'none';
+            appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition = 
+            navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = 'none';
             
             if (window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
                 appContainer.className += ' expanded';
@@ -111,6 +114,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
                 hamburgerMenu.className += ' is-active';
             }
 
+            navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = navbarTransition;
             sidebar.style.WebkitTransition = sidebar.style.MozTransition = sidebar.style.transition = sidebarTransition;
             appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition = containerTransition;
     })();

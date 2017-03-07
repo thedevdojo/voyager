@@ -9,7 +9,7 @@
                 data-unstick="Unstick the sidebar" 
             data-toggle="tooltip" data-placement="bottom"></a>
 
-            <ol class="breadcrumb">
+            <ol class="breadcrumb hidden-xs">
                 @if(count(Request::segments()) == 1)
                     <li class="active"><i class="voyager-boat"></i> Dashboard</li>
                 @else
