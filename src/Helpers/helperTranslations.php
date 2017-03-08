@@ -12,7 +12,7 @@ if (!function_exists('isFieldTranslatable')) {
         if (!isBreadTranslatable($model)) {
             return;
         }
-        
+
         return isset($model['translatable']) &&
             in_array($row->field, $model['translatable']);
     }
