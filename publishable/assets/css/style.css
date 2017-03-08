@@ -947,6 +947,10 @@ body.login-page .login-footer {
   display: block;
 }
 
+.modal-open span.select2-container {
+  z-index: auto !important;
+}
+
 @media (max-width: 768px) {
   .step .nav-tabs > li:after {
     display: none; }
