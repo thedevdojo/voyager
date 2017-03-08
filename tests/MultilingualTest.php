@@ -21,6 +21,9 @@ class MultilingualTest extends TestCase
 
         // Add another language
         config()->set('voyager.multilingual.locales', ['en', 'da']);
+
+        // Turn on multilingual
+        config()->set('voyager.multilingual.bread', true);
     }
 
     public function testCheckingModelIsTranslatable()
