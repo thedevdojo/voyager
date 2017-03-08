@@ -36,7 +36,7 @@ class MenuItem extends Model
         return $this->prepareLink($absolute, $translator->route, $translator->parameters, $translator->url);
     }
 
-    protected function prepareLink($absolute = false, $route = null, $parameters = [], $url)
+    protected function prepareLink($absolute, $route, $parameters, $url)
     {
         if (is_null($parameters)) {
             $parameters = [];
