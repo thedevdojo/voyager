@@ -947,7 +947,7 @@ body.login-page .login-footer {
   display: block;
 }
 
-.modal-open span.select2-container {
+.modal-open .select2-container {
   z-index: auto;
 }
 
