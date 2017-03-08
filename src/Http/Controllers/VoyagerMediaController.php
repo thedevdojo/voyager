@@ -279,7 +279,7 @@ class VoyagerMediaController extends Controller
 
         } catch (Exception $e) {
             $code = 500;
-            $message = "Internal error";
+            $message = 'Internal error';
 
             if ($e->getCode()) {
                 $code = $e->getCode();
