@@ -14,6 +14,7 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -29,6 +30,7 @@
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form role="form"
+                            class="form-edit-add"
                             action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
                             method="POST" enctype="multipart/form-data">
                         <!-- PUT Method if we are editing -->
@@ -61,6 +63,7 @@
                             @foreach($dataTypeRows as $row)
                                 <div class="form-group @if($row->type == 'hidden') hidden @endif">
                                     <label for="name">{{ $row->display_name }}</label>
+                                    @include('voyager::multilingual.input-hidden-bread')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
                                     @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
@@ -96,11 +99,18 @@
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
 
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual({"editing": true});
+            @endif
+
             $('.side-body input[data-slug-origin]').each(function(i, el) {
                 $(el).slugify();
             });
         });
     </script>
+    @if($isModelTranslatable)
+        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @endif
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>

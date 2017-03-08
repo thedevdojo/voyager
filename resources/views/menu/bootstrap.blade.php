@@ -4,9 +4,22 @@
 <ul class="dropdown-menu">
 @endif
 
+@php
+
+    if (Voyager::translatable($items)) {
+        $items = $items->load('translations');
+    }
+
+@endphp
+
 @foreach ($items->sortBy('order') as $item)
     
     @php
+    
+        $originalItem = $item;
+        if (Voyager::translatable($item)) {
+            $item = $item->translate($options->locale);
+        }
 
         $listItemClass = null;
         $styles = null;
@@ -22,7 +35,7 @@
         }
 
         // With Children Attributes
-        if(!$item->children->isEmpty()) {
+        if(!$originalItem->children->isEmpty()) {
             $linkAttributes =  'class="dropdown-toggle" data-toggle="dropdown"';
             $caret = '<span class="caret"></span>';
 
@@ -46,8 +59,8 @@
             <span>{{ $item->title }}</span>
             {!! $caret !!}
         </a>
-        @if(!$item->children->isEmpty())
-        @include('voyager::menu.bootstrap', ['items' => $item->children, 'options' => $options, 'innerLoop' => true])
+        @if(!$originalItem->children->isEmpty())
+        @include('voyager::menu.bootstrap', ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
         @endif
     </li>
 @endforeach

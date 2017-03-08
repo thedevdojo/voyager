@@ -9,7 +9,7 @@
         <i class="voyager-list"></i>Menu Builder ({{ $menu->name }})
         <div class="btn btn-success add_item"><i class="voyager-plus"></i> New Menu Item</div>
     </h1>
-
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -29,7 +29,7 @@
                     <div class="panel-body" style="padding:30px;">
 
                         <div class="dd">
-                            {!! menu($menu->name, 'admin') !!}
+                            {!! menu($menu->name, 'admin', ['isModelTranslatable' => $isModelTranslatable]) !!}
                         </div>
 
                     </div>
@@ -73,10 +73,12 @@
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-plus"></i> Create a New Menu Item</h4>
                 </div>
-                <form action="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}" id="delete_form" method="POST">
+                <form action="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}" id="add_form" method="POST">
                     <div class="modal-body">
+                        @include('voyager::multilingual.language-selector')
                         <label for="name">Title of the Menu Item</label>
-                        <input type="text" class="form-control" name="title" placeholder="Title"><br>
+                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'add_title', '_field_trans' => ''])
+                        <input type="text" class="form-control" id="add_title" name="title" placeholder="Title"><br>
                         <label for="url">URL for the Menu Item</label>
                         <input type="text" class="form-control" name="url" placeholder="URL"><br>
                         <label for="icon_class">Font Icon class for the Menu Item (Use a <a
@@ -117,7 +119,9 @@
                     {{ method_field("PUT") }}
                     {{ csrf_field() }}
                     <div class="modal-body">
+                        @include('voyager::multilingual.language-selector')
                         <label for="name">Title of the Menu Item</label>
+                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'edit_title', '_field_trans' => ''])
                         <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
                         <label for="type">Link type</label>
                         <select id="edit_type" class="form-control" name="type">
@@ -164,18 +168,57 @@
 @section('javascript')
 
     <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/jquery.nestable.js"></script>
+    @if($isModelTranslatable)
+        <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @endif
     <script>
         $(document).ready(function () {
+            @if ($isModelTranslatable)
+                /**
+                 * Multilingual setup for main page
+                 */
+                $('.side-body').multilingual({
+                    "transInputs": '.dd-list input[data-i18n=true]'
+                });
+                /**
+                 * Multilingual setup for Add Menu
+                 */
+                $('#add_modal').multilingual({
+                    "form":          'form',
+                    "transInputs":   '#add_modal input[data-i18n=true]',
+                    "langSelectors": '.language-selector input',
+                    "editing":       true
+                });
+                /**
+                 * Multilingual setup for Edit Menu
+                 */
+                $('#edit_modal').multilingual({
+                    "form":          'form',
+                    "transInputs":   '#edit_modal input[data-i18n=true]',
+                    "langSelectors": '.language-selector input',
+                    "editing":       true
+                });
+            @endif
+
+
             $('.dd').nestable({/* config options */});
+
+            /**
+             * Delete menu item
+             */
             $('.item_actions').on('click', '.delete', function (e) {
                 id = $(e.currentTarget).data('id');
                 $('#delete_form')[0].action = $('#delete_form')[0].action.replace("__id",id);
                 $('#delete_modal').modal('show');
             });
 
+            /**
+             * Edit menu item
+             */
             $('.item_actions').on('click', '.edit', function (e) {
-                id = $(e.currentTarget).data('id');
-                console.log(id);
+                var id           = $(e.currentTarget).data('id'),
+                    translatable = $('#edit_modal').data('multilingual');
+
                 $('#edit_title').val($(e.currentTarget).data('title'));
                 $('#edit_url').val($(e.currentTarget).data('url'));
                 $('#edit_icon_class').val($(e.currentTarget).data('icon_class'));
@@ -183,6 +226,12 @@
                 $('#edit_route').val($(e.currentTarget).data('route'));
                 $('#edit_parameters').val(JSON.stringify($(e.currentTarget).data('parameters')));
                 $('#edit_id').val(id);
+
+                // Refresh translatable fields
+                if(translatable){
+                    $('#edit_title_i18n').val( $("#title" + id + "_i18n").val() );
+                    translatable.refresh();
+                }
 
                 if ($(e.currentTarget).data('target') == '_self') {
                     $("#edit_target").val('_self').change();
@@ -199,13 +248,31 @@
                     $("#route_type").hide();
                 }
 
+                if ($("#edit_type").val() == 'route') {
+                    $("#url_type").hide();
+                    $("#route_type").show();
+                } else {
+                    $("#routel_type").hide();
+                    $("#url_type").show();
+                }
+
                 $('#edit_modal').modal('show');
             });
 
+
             $('.add_item').click(function () {
+                var translatable = $('#add_modal').data('multilingual');
+
+                if (translatable) {
+                    translatable.refresh();
+                }
+
                 $('#add_modal').modal('show');
             });
 
+            /**
+             * Reorder items
+             */
             $('.dd').on('change', function (e) {
                 $.post('{{ route('voyager.menus.order',['menu' => $menu->id]) }}', {
                     order: JSON.stringify($('.dd').nestable('serialize')),

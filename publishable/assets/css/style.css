@@ -323,6 +323,7 @@ a:hover {
   margin-right: -15px; }
 
 .page-title {
+  display: inline-block;
   height: auto;
   padding-left: 25px;
   font-size: 18px;
@@ -1226,6 +1227,18 @@ body.login-page .login-footer {
   font-weight: 300;
   line-height: 1;
   letter-spacing: -1px; }
+
+
+/* Multi Languages / Translations
+-------------------------------------------------- */
+.language-selector {
+  float: right !important;
+  padding: 28px 15px 0 0;
+}
+.modal-body .language-selector {
+  float: right !important;
+  padding: 0;
+}
 
 /* RESPONSIVE CSS
 -------------------------------------------------- */

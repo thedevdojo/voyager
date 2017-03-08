@@ -11,6 +11,7 @@
             Edit
         </a>
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -70,8 +71,10 @@
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
                             @elseif($row->type == 'rich_text_box')
+                                @include('voyager::multilingual.input-hidden-bread')
                                 <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @else
+                                @include('voyager::multilingual.input-hidden-bread')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
@@ -87,5 +90,12 @@
 @stop
 
 @section('javascript')
-
+    @if ($isModelTranslatable)
+    <script>
+        $(document).ready(function () {
+            $('.side-body').multilingual();
+        });
+    </script>
+    <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @endif
 @stop
