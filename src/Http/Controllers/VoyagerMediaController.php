@@ -244,12 +244,12 @@ class VoyagerMediaController extends Controller
 
             // Check if field exists
             if (!isset($data->{$field})) {
-                throw new Exception("Field does not exist", 400);
+                throw new Exception('Field does not exist', 400);
             }
 
             // Check if valid json
             if (is_null(@json_decode($data->{$field}))) {
-                throw new Exception("Invalid json", 500);
+                throw new Exception('Invalid json', 500);
             }
 
             // Decode field value
@@ -260,7 +260,7 @@ class VoyagerMediaController extends Controller
 
             // Check if image exists in array
             if (!array_key_exists($image, $fieldData)) {
-                throw new Exception("Image does not exist", 400);
+                throw new Exception('Image does not exist', 400);
             }
 
             // Remove image from array
