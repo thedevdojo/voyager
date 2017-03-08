@@ -276,7 +276,6 @@ class VoyagerMediaController extends Controller
                    'message'    => 'Image removed',
                ],
             ]);
-
         } catch (Exception $e) {
             $code = 500;
             $message = 'Internal error';
