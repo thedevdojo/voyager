@@ -2,13 +2,16 @@
 
 namespace TCG\Voyager\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
+use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Traits\Translatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Post extends Model
 {
+    use Translatable;
+
     const PUBLISHED = 'PUBLISHED';
 
     protected $guarded = [];

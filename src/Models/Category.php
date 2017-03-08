@@ -2,11 +2,14 @@
 
 namespace TCG\Voyager\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\Translatable;
+use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    use Translatable;
+
     protected $table = 'categories';
 
     protected $fillable = ['slug', 'name'];
