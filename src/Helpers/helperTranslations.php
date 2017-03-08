@@ -26,7 +26,7 @@ if (!function_exists('getFieldTranslations')) {
         if (!isBreadTranslatable($model)) {
             return;
         }
-        
+
         $_out = $model->getTranslationsOf($row->field);
 
         if ($row->type == 'rich_text_box') {
