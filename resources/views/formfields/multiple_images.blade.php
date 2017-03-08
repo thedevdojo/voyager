@@ -3,7 +3,12 @@
     <?php $images = json_decode($dataTypeContent->{$row->field}); ?>
     @if($images != null)
         @foreach($images as $image)
-            <img src="{{ Voyager::image( $image ) }}" style="width:200px; height:auto; clear:both; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+            <div class="image-tool-box">
+                <img src="{{ Voyager::image( $image ) }}" />
+                <div class="image-tools">
+                    <i class="glyphicon glyphicon-remove remove-multi-image" title="Remove image"></i>
+                </div>
+            </div>
         @endforeach
     @endif
 @endif
