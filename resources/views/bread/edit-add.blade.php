@@ -118,6 +118,7 @@
 @section('javascript')
     <script>
         var params = {}
+        var $image
 
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
@@ -127,7 +128,7 @@
             });
 
             $('.form-group').on('click', '.remove-multi-image', function (e) {
-                var $image = $(this).parent().siblings('img');
+                $image = $(this).parent().siblings('img');
 
                 params = {
                     slug:   '{{ $dataTypeContent->getTable() }}',
@@ -139,24 +140,23 @@
 
                 $('.confirm_delete_name').text($image.data('image'));
                 $('#confirm_delete_modal').modal('show');
+            });
 
-                $('#confirm_delete').on('click', function(){
-                    $.post('{{ route('voyager.media.remove') }}', params, function (response) {
-                        if ( response
-                            && response.data
-                            && response.data.status
-                            && response.data.status == 200 ) {
+            $('#confirm_delete').on('click', function(){
+                $.post('{{ route('voyager.media.remove') }}', params, function (response) {
+                    if ( response
+                        && response.data
+                        && response.data.status
+                        && response.data.status == 200 ) {
 
-                            toastr.success(response.data.message);
-                            $image.parent().fadeOut(300, function() { $(this).remove(); })
-                        } else {
-                            toastr.error("Error removing image.");
-                        }
-                    });
-
-                    $('#confirm_delete_modal').modal('hide');
+                        toastr.success(response.data.message);
+                        $image.parent().fadeOut(300, function() { $(this).remove(); })
+                    } else {
+                        toastr.error("Error removing image.");
+                    }
                 });
 
+                $('#confirm_delete_modal').modal('hide');
             });
         });
     </script>
