@@ -948,7 +948,7 @@ body.login-page .login-footer {
 }
 
 .modal-open span.select2-container {
-  z-index: auto !important;
+  z-index: auto;
 }
 
 @media (max-width: 768px) {
