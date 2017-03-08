@@ -10,6 +10,8 @@ class Category extends Model
 {
     use Translatable;
 
+    protected $translatable = ['name'];
+
     protected $table = 'categories';
 
     protected $fillable = ['slug', 'name'];

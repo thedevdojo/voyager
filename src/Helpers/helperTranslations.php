@@ -9,6 +9,10 @@ if (!function_exists('isFieldTranslatable')) {
      */
     function isFieldTranslatable($model, $row)
     {
+        if (!isBreadTranslatable($model)) {
+            return;
+        }
+        
         return isset($model['translatable']) &&
             in_array($row->field, $model['translatable']);
     }
