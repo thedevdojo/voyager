@@ -243,10 +243,14 @@ class VoyagerMediaController extends Controller
             $data = $model::find([$id])->first();
 
             // Check if field exists
-            if(!isset($data->{$field})) throw new Exception("Field does not exist", 400);
+            if (!isset($data->{$field})) {
+                throw new Exception("Field does not exist", 400);
+            }
 
             // Check if valid json
-            if(is_null(@json_decode($data->{$field}))) throw new Exception("Invalid json", 500);
+            if (is_null(@json_decode($data->{$field}))) {
+                throw new Exception("Invalid json", 500);
+            }
 
             // Decode field value
             $fieldData = @json_decode($data->{$field}, true);
@@ -255,7 +259,9 @@ class VoyagerMediaController extends Controller
             $fieldData = array_flip($fieldData);
 
             // Check if image exists in array
-            if(!array_key_exists($image, $fieldData)) throw new Exception("Image does not exist", 400);
+            if (!array_key_exists($image, $fieldData)) {
+                throw new Exception("Image does not exist", 400);
+            }
 
             // Remove image from array
             unset($fieldData[$image]);
@@ -268,18 +274,18 @@ class VoyagerMediaController extends Controller
                'data' => [
                    'status'     => 200,
                    'message'    => 'Image removed',
-               ]
+               ],
             ]);
 
         } catch (Exception $e) {
             $code = 500;
             $message = "Internal error";
 
-            if($e->getCode()) {
+            if ($e->getCode()) {
                 $code = $e->getCode();
             }
 
-            if($e->getMessage()) {
+            if ($e->getMessage()) {
                 $message = $e->getMessage();
             }
 
@@ -287,7 +293,7 @@ class VoyagerMediaController extends Controller
                 'data' => [
                     'status'    => $code,
                     'message'   => $message,
-                ]
+                ],
             ], $code);
         }
     }
