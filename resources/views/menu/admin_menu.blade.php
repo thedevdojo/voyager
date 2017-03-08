@@ -1,7 +1,6 @@
 <ul class="nav navbar-nav">
 
 @php
-
     if (Voyager::translatable($items)) {
         $items = $items->load('translations');
     }

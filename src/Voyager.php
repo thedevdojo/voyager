@@ -246,6 +246,10 @@ class Voyager
      */
     public function translatable($model)
     {
+        if (! config('voyager.multilingual.bread')) {
+            return false;
+        }
+        
         if (is_string($model)) {
             $model = app($model);
         }
