@@ -27,7 +27,7 @@ class LoginTest extends TestCase
              ->type('pass', 'password')
              ->press('Login')
              ->seePageIs(route('voyager.login'))
-             ->see('The given credentials don\'t match with an user registered.')
+             ->see(trans('auth.failed'))
              ->seeInField('email', 'john@Doe.com');
     }
 }

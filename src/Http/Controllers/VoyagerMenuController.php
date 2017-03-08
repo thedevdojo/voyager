@@ -4,8 +4,6 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\MenuItem;
 
 class VoyagerMenuController extends Controller
 {
@@ -13,16 +11,18 @@ class VoyagerMenuController extends Controller
     {
         Voyager::canOrFail('edit_menus');
 
-        $menu = Menu::findOrFail($id);
+        $menu = Voyager::model('Menu')->findOrFail($id);
 
-        return view('voyager::menus.builder', compact('menu'));
+        $isModelTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
+
+        return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
     }
 
     public function delete_menu($menu, $id)
     {
         Voyager::canOrFail('delete_menus');
 
-        $item = MenuItem::findOrFail($id);
+        $item = Voyager::model('MenuItem')->findOrFail($id);
 
         $item->destroy($id);
 
@@ -38,10 +38,13 @@ class VoyagerMenuController extends Controller
     {
         Voyager::canOrFail('add_menus');
 
-        $data = $request->all();
+        $data = $this->prepareParameters(
+            $request->all()
+        );
+
         $data['order'] = 1;
 
-        $highestOrderMenuItem = MenuItem::where('parent_id', '=', null)
+        $highestOrderMenuItem = Voyager::model('MenuItem')->where('parent_id', '=', null)
             ->orderBy('order', 'DESC')
             ->first();
 
@@ -49,7 +52,10 @@ class VoyagerMenuController extends Controller
             $data['order'] = intval($highestOrderMenuItem->order) + 1;
         }
 
-        MenuItem::create($data);
+        // Save menu translations if available
+        $this->saveMenuTranslations($menuItem, $data, 'add');
+
+        Voyager::model('MenuItem')->create($data);
 
         return redirect()
             ->route('voyager.menus.builder', [$data['menu_id']])
@@ -64,9 +70,15 @@ class VoyagerMenuController extends Controller
         Voyager::canOrFail('edit_menus');
 
         $id = $request->input('id');
-        $data = $request->except(['id']);
+        $data = $this->prepareParameters(
+            $request->except(['id'])
+        );
 
-        $menuItem = MenuItem::findOrFail($id);
+        $menuItem = Voyager::model('MenuItem')->findOrFail($id);
+
+        // Save menu translations if available
+        $this->saveMenuTranslations($menuItem, $data, 'edit');
+
         $menuItem->update($data);
 
         return redirect()
@@ -87,7 +99,7 @@ class VoyagerMenuController extends Controller
     private function orderMenu(array $menuItems, $parentId)
     {
         foreach ($menuItems as $index => $menuItem) {
-            $item = MenuItem::findOrFail($menuItem->id);
+            $item = Voyager::model('MenuItem')->findOrFail($menuItem->id);
             $item->order = $index + 1;
             $item->parent_id = $parentId;
             $item->save();
@@ -95,6 +107,52 @@ class VoyagerMenuController extends Controller
             if (isset($menuItem->children)) {
                 $this->orderMenu($menuItem->children, $item->id);
             }
+        }
+    }
+
+    protected function prepareParameters($parameters)
+    {
+        switch (array_get($parameters, 'type')) {
+            case 'route':
+                $parameters['url'] = null;
+                break;
+            default:
+                $parameters['route'] = null;
+                $parameters['parameters'] = '';
+                break;
+        }
+
+        if (isset($parameters['type'])) {
+            unset($parameters['type']);
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * Save menu translations.
+     *
+     * @param object $_menuItem
+     * @param array  $data      menu data
+     * @param string $action    add or edit action
+     *
+     * @return JSON translated item
+     */
+    protected function saveMenuTranslations($_menuItem, &$data, $action)
+    {
+        if (isBreadTranslatable($_menuItem)) {
+            $key = $action.'_title_i18n';
+            $trans = json_decode($data[$key], true);
+
+            // Set field value with the default locale
+            $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
+
+            unset($data[$key]);             // Remove hidden input holding translations
+            unset($data['i18n_selector']);  // Remove language selector input radio
+
+            $_menuItem->setAttributeTranslations(
+                'title', $trans, true
+            );
         }
     }
 }

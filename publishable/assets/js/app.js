@@ -1,4 +1,10 @@
 $(document).ready(function(){
+    var appContainer = $(".app-container"),
+        sidebarAnchor = $('#sidebar-anchor'),
+        fadedOverlay = $('.fadetoblack'),
+        hamburger = $('.hamburger');
+
+  $('.side-menu').perfectScrollbar();
 
   $('#voyager-loader').fadeOut();
   $('.readmore').readmore({
@@ -8,21 +14,53 @@ $(document).ready(function(){
     moreLink: '<a href="#" class="readm-link">Read More</a>',
   });
 
-  $(".hamburger, .navbar-expand-toggle").on('click', function() {
-    $(".app-container").toggleClass("expanded");
-    $(this).toggleClass("is-active");
-    if ($(this).hasClass("is-active")) {
-      $.cookie("expandedMenu", 1);
-    } else {
-      $.cookie("expandedMenu", 0);
+  $(".hamburger, .navbar-expand-toggle, .side-menu .navbar-nav li:not(.dropdown)").on('click', function() {
+      if ($(this).is('button')) {
+        appContainer.toggleClass("expanded");
+        $(this).toggleClass('is-active');
+      } else {
+        if (!sidebarAnchor.hasClass('active')) {
+          appContainer.removeClass("expanded");
+          hamburger.toggleClass('is-active');
+        }
+      }
+  });
+
+  fadedOverlay.on('click', function(){
+    appContainer.removeClass('expanded');
+    hamburger.removeClass('is-active');
+  });
+
+  sidebarAnchor.on('click', function(){
+    if (appContainer.hasClass('expanded')) {
+      if ($(this).hasClass('active')) {
+        appContainer.removeClass("expanded");
+        $(this).removeClass('active');
+        window.localStorage.removeItem('voyager.stickySidebar');
+        toastr.success("Sidebar isn't sticky anymore.");
+
+        sidebarAnchor[0].title = sidebarAnchor.data('sticky');
+      }
+      else {
+        $(this).addClass('active');
+        window.localStorage.setItem('voyager.stickySidebar', true);
+        toastr.success("Sidebar is now sticky");
+
+        sidebarAnchor.data('sticky', sidebarAnchor[0].title);
+        sidebarAnchor[0].title = sidebarAnchor.data('unstick');
+      }
+    }
+    else {
+      appContainer.addClass("expanded");
+      $(this).removeClass('active');
+      window.localStorage.removeItem('voyager.stickySidebar');
+      toastr.success("Sidebar isn't sticky anymore.");
+
+      sidebarAnchor[0].title = sidebarAnchor.data('sticky');
     }
   });
 
   $('select.select2').select2();
-
-  $('.toggle-checkbox').bootstrapSwitch({
-    size: "small"
-  });
 
   $('.match-height').matchHeight();
 
@@ -67,6 +105,14 @@ $(document).ready(function(){
   // Right navbar toggle
   $('.navbar-right-expand-toggle').on('click', function(){
     $('ul.navbar-right').toggleClass('expanded');
-  }); 
-  
+  });
+
+  // Save shortcut
+  $(document).keydown(function (e){
+    if ((e.metaKey || e.ctrlKey) && e.keyCode == 83) { /*ctrl+s or command+s*/
+      $(".btn.save").click();
+      e.preventDefault();
+      return false;
+    }
+  });
 });

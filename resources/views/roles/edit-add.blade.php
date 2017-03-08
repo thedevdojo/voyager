@@ -12,6 +12,7 @@
 
 @section('content')
     <div class="page-content container-fluid">
+        @include('voyager::alerts')
         <div class="row">
             <div class="col-md-12">
 
@@ -50,7 +51,7 @@
                                 <div class="form-group">
                                     <label for="name">{{ $row->display_name }}</label>
 
-                                    @includeIf("voyager::formfields.$row->type")
+                                    {!! Voyager::formField($row, $dataType, $dataTypeContent) !!}
 
                                 </div>
                             @endforeach

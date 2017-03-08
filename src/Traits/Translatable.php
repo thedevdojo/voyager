@@ -130,13 +130,29 @@ trait Translatable
         return $value;
     }
 
+    public function getTranslationsOf($attribute, array $languages = null, $fallback = true)
+    {
+        if (is_null($languages)) {
+            $languages = config('voyager.multilingual.locales', [config('voyager.multilingual.default')]);
+        }
+
+        $response = [];
+        foreach ($languages as $language) {
+            $response[$language] = $this->getTranslatedAttribute($attribute, $language, $fallback);
+        }
+
+        return $response;
+    }
+
     public function getTranslatedAttributeMeta($attribute, $locale = null, $fallback = true)
     {
+        // Attribute is translatable
+        //
         if (!in_array($attribute, $this->getTranslatableAttributes())) {
             return [$this->getAttribute($attribute), config('voyager.multilingual.default'), false];
         }
 
-        if ($this->relationLoaded('translations')) {
+        if (!$this->relationLoaded('translations')) {
             $this->load('translations');
         }
 
@@ -167,10 +183,14 @@ trait Translatable
             return [$this->getAttribute($attribute), $locale, false];
         }
 
+        if ($fallback == $default) {
+            return [$this->getAttribute($attribute), $locale, false];
+        }
+
         $fallbackTranslation = $translations->where('locale', $fallback)->first();
 
         if ($fallbackTranslation && $fallback !== false) {
-            return [$fallbackTranslation->value, $fallback, true];
+            return [$fallbackTranslation->value, $locale, true];
         }
 
         return [null, $locale, false];
@@ -184,5 +204,57 @@ trait Translatable
     public function getTranslatableAttributes()
     {
         return property_exists($this, 'translatable') ? $this->translatable : [];
+    }
+
+    public function setAttributeTranslations($attribute, array $translations, $save = false)
+    {
+        $response = [];
+
+        if (!$this->relationLoaded('translations')) {
+            $this->load('translations');
+        }
+
+        $default = config('voyager.multilingual.default', 'en');
+        $locales = config('voyager.multilingual.locales', [$default]);
+
+        foreach ($locales as $locale) {
+            if (!isset($translations[$locale])) {
+                continue;
+            }
+
+            if ($locale == $default) {
+                $this->$attribute = $translations[$locale];
+                continue;
+            }
+
+            $tranlator = $this->translate($locale, false);
+            $tranlator->$attribute = $translations[$locale];
+
+            if ($save) {
+                $tranlator->save();
+            }
+
+            $response[] = $tranlator;
+        }
+
+        return $response;
+    }
+
+    public function hasTranslatorMethod($name)
+    {
+        if (!isset($this->translatorMethods)) {
+            return false;
+        }
+
+        return isset($this->translatorMethods[$name]);
+    }
+
+    public function getTranslatorMethod($name)
+    {
+        if (!$this->hasTranslatorMethod($name)) {
+            return;
+        }
+
+        return $this->translatorMethods[$name];
     }
 }

@@ -14,6 +14,7 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -29,8 +30,9 @@
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form role="form"
-                          action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
-                          method="POST" enctype="multipart/form-data">
+                            class="form-edit-add"
+                            action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
+                            method="POST" enctype="multipart/form-data">
                         <!-- PUT Method if we are editing -->
                         @if(isset($dataTypeContent->id))
                             {{ method_field("PUT") }}
@@ -59,30 +61,29 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <?php $options = json_decode($row->details); $checked = false; ?>
-                                <div class="form-group">
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif">
                                     <label for="name">{{ $row->display_name }}</label>
+                                    @include('voyager::multilingual.input-hidden-bread')
+                                    {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
-                                    @includeIf("voyager::formfields.$row->type")
-
-                                    @if(isset($options->description))
-                                        <i class="help-block"><span class="voyager-info-circled"></span> {{$options->description}}</i>
-                                    @endif
+                                    @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
+                                        {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                                    @endforeach
                                 </div>
                             @endforeach
 
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary save">Save</button>
                         </div>
                     </form>
 
                     <iframe id="form_target" name="form_target" style="display:none"></iframe>
                     <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post"
-                          enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
+                            enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
                         <input name="image" id="upload_file" type="file"
-                               onchange="$('#my_form').submit();this.value='';">
+                                 onchange="$('#my_form').submit();this.value='';">
                         <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
                         {{ csrf_field() }}
                     </form>
@@ -98,11 +99,18 @@
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
 
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual({"editing": true});
+            @endif
+
             $('.side-body input[data-slug-origin]').each(function(i, el) {
                 $(el).slugify();
             });
         });
     </script>
+    @if($isModelTranslatable)
+        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @endif
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>

@@ -11,6 +11,7 @@
             Edit
         </a>
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -20,10 +21,8 @@
 
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
 
-
                     <!-- /.box-header -->
                     <!-- form start -->
-
 
                     @foreach($dataType->readRows as $row)
                         @php $rowDetails = json_decode($row->details); @endphp
@@ -34,8 +33,13 @@
 
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
-                                <img style="max-width:640px"
+                                <img class="img-responsive"
                                      src="{{ Voyager::image($dataTypeContent->{$row->field}) }}">
+                            @elseif($row->type == 'select_dropdown' && property_exists($rowDetails, 'options') &&
+                                    !empty($rowDetails->options->{$dataTypeContent->{$row->field}})
+                            )
+
+                                <?php echo $rowDetails->options->{$dataTypeContent->{$row->field}};?>
                             @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
                                 <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
                             @elseif($row->type == 'select_multiple')
@@ -66,7 +70,11 @@
                                 @else
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
+                            @elseif($row->type == 'rich_text_box')
+                                @include('voyager::multilingual.input-hidden-bread')
+                                <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @else
+                                @include('voyager::multilingual.input-hidden-bread')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
@@ -75,7 +83,6 @@
                         @endif
                     @endforeach
 
-
                 </div>
             </div>
         </div>
@@ -83,5 +90,12 @@
 @stop
 
 @section('javascript')
-
+    @if ($isModelTranslatable)
+    <script>
+        $(document).ready(function () {
+            $('.side-body').multilingual();
+        });
+    </script>
+    <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    @endif
 @stop

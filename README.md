@@ -6,6 +6,7 @@
 <a href="https://packagist.org/packages/tcg/voyager"><img src="https://poser.pugx.org/tcg/voyager/downloads.svg?format=flat" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/tcg/voyager"><img src="https://poser.pugx.org/tcg/voyager/v/stable.svg?format=flat" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/tcg/voyager"><img src="https://poser.pugx.org/tcg/voyager/license.svg?format=flat" alt="License"></a>
+<a href="https://github.com/larapack/awesome-voyager"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="Awesome Voyager"></a>
 </p>
 
 # **V**oyager - The Missing Laravel Admin
@@ -18,6 +19,8 @@ Website & Documentation: https://the-control-group.github.io/voyager/
 Video Demo Here: https://devdojo.com/series/laravel-voyager-010/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
+
+View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 <hr>
 
@@ -69,9 +72,11 @@ If you prefer installing it with dummy run
 php artisan voyager:install --with-dummy
 ```
 
-And we're all good to go! 
+And we're all good to go!
 
 Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
+
+However if your site have problems loading the avatar and other storage files, please ensure that you have set the `APP_URL` environment (including port).
 
 If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
 

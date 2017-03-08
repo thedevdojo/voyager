@@ -1,4 +1,3 @@
-<?php $options = json_decode($row->details); $checked = false; ?>
 <input type="text" class="form-control" name="{{ $row->field }}"
        placeholder="{{ $row->display_name }}"
        {!! isBreadSlugAutoGenerator($options) !!}

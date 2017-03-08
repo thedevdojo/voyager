@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | User config
@@ -14,7 +13,6 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'admin_permission'             => 'browse_admin',
         'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
     ],
@@ -68,7 +66,7 @@ return [
     */
 
     'storage' => [
-        'subfolder' => 'public/', // include trailing slash, like 'my_folder/'
+        'disk' => 'public',
     ],
 
     /*
@@ -82,7 +80,7 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => [], // database tables that are hidden from the admin panel
+            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings'],
         ],
     ],
 
@@ -100,7 +98,7 @@ return [
         /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
-        'bread' => false,
+        'bread' => true,
 
         /*
          * Select default language
@@ -112,7 +110,7 @@ return [
          */
         'locales' => [
             'en',
-            //'language-code',
+            'pt',
         ],
     ],
 
@@ -166,11 +164,30 @@ return [
                 'classes'       => 'class-full-of-rum',
                 'icon_class'    => 'voyager-person',
             ],
-            'Visit site' => [
-                'route'         => '/home',
+            'Home' => [
+                'route'         => '/',
+                'icon_class'    => 'voyager-home',
                 'target_blank'  => true,
             ],
+            'Logout' => [
+                'route'      => 'voyager.logout',
+                'icon_class' => 'voyager-power',
+            ],
+        ],
+        'data_tables' => [
+            'responsive' => true, // Use responsive extension for jQuery dataTables that are not server-side paginated
+        ],
+        'widgets' => [
+            'TCG\\Voyager\\Widgets\\UserDimmer',
+            'TCG\\Voyager\\Widgets\\PostDimmer',
+            'TCG\\Voyager\\Widgets\\PageDimmer',
         ],
     ],
 
+    'login' => [
+        'gradient_a' => '#ffffff',
+        'gradient_b' => '#ffffff',
+    ],
+
+    'primary_color' => '#22A7F0',
 ];

@@ -13,9 +13,6 @@
                     </div>
                     <div class="title">{{Voyager::setting('admin_title', 'VOYAGER')}}</div>
                 </a>
-                <button type="button" class="navbar-expand-toggle pull-right visible-xs">
-                    <i class="voyager-x icon"></i>
-                </button>
             </div><!-- .navbar-header -->
 
             <div class="panel widget center bgimage"
@@ -33,6 +30,6 @@
 
         </div>
 
-        <?= Menu::display('admin', 'admin_menu'); ?>
+        {!! menu('admin', 'admin_menu') !!}
     </nav>
 </div>
