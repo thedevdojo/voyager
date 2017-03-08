@@ -901,6 +901,52 @@ body.login-page .login-footer {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px; }
 
+/* Multiple images */
+
+.image-tool-box {
+  display: inline-block;
+  clear: both;
+  padding: 2px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.image-tool-box img {
+  width: 200px;
+  height: auto;
+}
+
+.image-tool-box .image-tools {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.image-tool-box .image-tools .glyphicon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  display: none;
+  cursor: pointer;
+}
+
+.image-tool-box:hover .image-tools {
+  background:rgba(0,0,0,0.8);
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.image-tool-box:hover .image-tools .glyphicon {
+  display: block;
+}
+
 @media (max-width: 768px) {
   .step .nav-tabs > li:after {
     display: none; }
