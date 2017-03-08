@@ -62,7 +62,7 @@ class ControllersCommand extends Command
         $appNamespace = app()->getNamespace();
 
         if (!starts_with($namespace, $appNamespace)) {
-            return $this->error('The controllers namespace must start with your application namespace: ' . $appNamespace);
+            return $this->error('The controllers namespace must start with your application namespace: '.$appNamespace);
         }
 
         $location = str_replace('\\', '/', substr($namespace, strlen($appNamespace)));
