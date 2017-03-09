@@ -51,7 +51,7 @@ class VoyagerMenuController extends Controller
         if (!is_null($highestOrderMenuItem)) {
             $data['order'] = intval($highestOrderMenuItem->order) + 1;
         }
-        
+
         Voyager::model('MenuItem')->create($data);
 
         return redirect()
