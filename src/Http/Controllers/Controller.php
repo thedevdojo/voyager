@@ -232,7 +232,7 @@ abstract class Controller extends BaseController
                             $constraint->upsize();
                         })->encode($file->getClientOriginalExtension(), 75);
 
-                    Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, config('voyager.storage.disk'));
+                    Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
 
                     if (isset($options->thumbnails)) {
                         foreach ($options->thumbnails as $thumbnails) {
