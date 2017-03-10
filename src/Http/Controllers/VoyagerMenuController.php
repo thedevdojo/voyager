@@ -52,9 +52,6 @@ class VoyagerMenuController extends Controller
             $data['order'] = intval($highestOrderMenuItem->order) + 1;
         }
 
-        // Save menu translations if available
-        $this->saveMenuTranslations($menuItem, $data, 'add');
-
         Voyager::model('MenuItem')->create($data);
 
         return redirect()
