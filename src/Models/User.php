@@ -27,4 +27,12 @@ class User extends AuthUser
     {
         $this->attributes['created_at'] = Carbon::parse($value)->format('Y-m-d H:i:s');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts()
+    {
+        return $this->hasMany(Voyager::modelClass('Post'), 'author_id', 'id');
+    }
 }
