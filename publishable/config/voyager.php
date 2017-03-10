@@ -87,6 +87,36 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Multilingual configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify if you want Voyager to ship with support for
+    | multilingual and what locales are enabled.
+    |
+    */
+
+    'multilingual' => [
+        /*
+         * Set whether or not the multilingual is supported by the BREAD input.
+         */
+        'bread' => false,
+
+        /*
+         * Select default language
+         */
+        'default' => 'en',
+
+        /*
+         * Select languages that are supported.
+         */
+        'locales' => [
+            'en',
+            //'pt',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Widgets Config
     |--------------------------------------------------------------------------
     |
@@ -145,11 +175,17 @@ return [
         'data_tables' => [
             'responsive' => true, // Use responsive extension for jQuery dataTables that are not server-side paginated
         ],
+        'widgets' => [
+            'TCG\\Voyager\\Widgets\\UserDimmer',
+            'TCG\\Voyager\\Widgets\\PostDimmer',
+            'TCG\\Voyager\\Widgets\\PageDimmer',
+        ],
     ],
 
     'login' => [
         'gradient_a' => '#ffffff',
         'gradient_b' => '#ffffff',
     ],
+
     'primary_color' => '#22A7F0',
 ];

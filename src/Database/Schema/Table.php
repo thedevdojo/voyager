@@ -38,6 +38,50 @@ class Table extends DoctrineTable
         return new self($name, $columns, $indexes, $foreignKeys, false, $options);
     }
 
+    public function getColumnsIndexes($columns, $sort = false)
+    {
+        if (!is_array($columns)) {
+            $columns = [$columns];
+        }
+
+        $matched = [];
+
+        foreach ($this->_indexes as $index) {
+            if ($index->spansColumns($columns)) {
+                $matched[$index->getName()] = $index;
+            }
+        }
+
+        if (count($matched) > 1 && $sort) {
+            // Sort indexes based on priority: PRI > UNI > IND
+            uasort($matched, function ($index1, $index2) {
+                $index1_type = Index::getType($index1);
+                $index2_type = Index::getType($index2);
+
+                if ($index1_type == $index2_type) {
+                    return 0;
+                }
+
+                if ($index1_type == Index::PRIMARY) {
+                    return -1;
+                }
+
+                if ($index2_type == Index::PRIMARY) {
+                    return 1;
+                }
+
+                if ($index1_type == Index::UNIQUE) {
+                    return -1;
+                }
+
+                // If we reach here, it means: $index1=INDEX && $index2=UNIQUE
+                return 1;
+            });
+        }
+
+        return $matched;
+    }
+
     public function diff(DoctrineTable $compareTable)
     {
         return (new Comparator())->diffTable($this, $compareTable);

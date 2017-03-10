@@ -30,8 +30,6 @@
 
         </div>
 
-        <div class="navbar-expand-toggle">
         {!! menu('admin', 'admin_menu') !!}
-        </div>
     </nav>
 </div>

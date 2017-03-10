@@ -21,7 +21,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($postDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'ID',
                 'required'     => 1,
                 'browse'       => 0,
@@ -240,7 +240,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($pageDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -323,12 +323,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "slugify": {
-        "origin": "title"
-    }
-}',
+                'details'      => json_encode([
+                    'slugify' => [
+                        'origin' => 'title',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -373,14 +372,13 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "default": "INACTIVE",
-    "options": {
-        "INACTIVE": "INACTIVE",
-        "ACTIVE": "ACTIVE"
-    }
-}',
+                'details'      => json_encode([
+                    'default' => 'INACTIVE',
+                    'options' => [
+                        'INACTIVE' => 'INACTIVE',
+                        'ACTIVE'   => 'ACTIVE',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -432,7 +430,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($userDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -552,7 +550,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($menuDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -612,7 +610,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($categoryDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -635,18 +633,17 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "default": "__null__",
-    "null": "__null__",
-    "options": {
-        "__null__": "NULL"
-    },
-    "relationship": {
-        "key": "id",
-        "label": "name"
-    }
-}',
+                'details'      => json_encode([
+                    'default'  => '',
+                    'null'     => '',
+                    'options'  => [
+                        '' => '-- None --',
+                    ],
+                    'relationship' => [
+                        'key'   => 'id',
+                        'label' => 'name',
+                    ],
+                ]),
             ])->save();
         }
 
@@ -661,10 +658,9 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "default": 1
-}',
+                'details'      => json_encode([
+                    'default' => 1,
+                ]),
             ])->save();
         }
 
@@ -731,7 +727,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($roleDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'PRI',
+                'type'         => 'number',
                 'display_name' => 'id',
                 'required'     => 1,
                 'browse'       => 0,
@@ -839,11 +835,11 @@ class DataRowsTableSeeder extends Seeder
                 'type'         => 'text',
                 'display_name' => 'role_id',
                 'required'     => 1,
-                'browse'       => 0,
-                'read'         => 0,
-                'edit'         => 0,
-                'add'          => 0,
-                'delete'       => 0,
+                'browse'       => 1,
+                'read'         => 1,
+                'edit'         => 1,
+                'add'          => 1,
+                'delete'       => 1,
                 'details'      => '',
             ])->save();
         }

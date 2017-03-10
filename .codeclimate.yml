@@ -1,0 +1,18 @@
+engines:
+ duplication:
+   enabled: true
+   config:
+     languages:
+     - php
+ phpcodesniffer:
+   enabled: true
+   config:
+    standard: "PSR1,PSR2"
+ csslint:
+   enabled: true
+
+ratings:
+ paths:
+ - "**.php"
+
+exclude_paths:

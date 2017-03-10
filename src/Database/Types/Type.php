@@ -75,9 +75,9 @@ abstract class Type extends DoctrineType
         return static::$platformTypeMapping;
     }
 
-    public static function registerCustomPlatformTypes()
+    public static function registerCustomPlatformTypes($force = false)
     {
-        if (static::$customTypesRegistered) {
+        if (static::$customTypesRegistered && !$force) {
             return;
         }
 

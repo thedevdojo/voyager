@@ -75,6 +75,7 @@ class DatabaseUpdater
         if ($newName) {
             if (!$tableDiff) {
                 $tableDiff = new TableDiff($this->tableArr['oldName']);
+                $tableDiff->fromTable = $this->originalTable;
             }
 
             $tableDiff->newName = $newName;
@@ -100,6 +101,7 @@ class DatabaseUpdater
         }
 
         $renamedColumnsDiff = new TableDiff($this->tableArr['oldName']);
+        $renamedColumnsDiff->fromTable = $this->originalTable;
 
         foreach ($renamedColumns as $oldName => $newName) {
             $renamedColumnsDiff->renamedColumns[$oldName] = $this->table->getColumn($newName);
@@ -123,6 +125,7 @@ class DatabaseUpdater
         }
 
         $renamedDiff = new TableDiff($this->tableArr['oldName']);
+        $renamedDiff->fromTable = $this->originalTable;
 
         foreach ($renamedColumns as $oldName => $newName) {
             $renamedDiff->renamedColumns[$oldName] = $this->table->getColumn($newName);

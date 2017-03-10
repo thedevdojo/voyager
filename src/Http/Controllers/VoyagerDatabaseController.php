@@ -6,7 +6,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use TCG\Voyager\Database\DatabaseUpdater;
 use TCG\Voyager\Database\Schema\Column;
@@ -14,7 +13,6 @@ use TCG\Voyager\Database\Schema\Identifier;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Types\Type;
-use TCG\Voyager\Facades\DBSchema;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
@@ -34,7 +32,7 @@ class VoyagerDatabaseController extends Controller
             ];
 
             return (object) $table;
-        }, DBSchema::tables());
+        }, SchemaManager::listTableNames());
 
         return view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
     }
@@ -193,7 +191,7 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::canOrFail('browse_database');
 
-        return response()->json(DBSchema::describeTable($table));
+        return response()->json(SchemaManager::describeTable($table));
     }
 
     public function destroy($table)
@@ -201,7 +199,7 @@ class VoyagerDatabaseController extends Controller
         Voyager::canOrFail('browse_database');
 
         try {
-            Schema::drop($table);
+            SchemaManager::dropTable($table);
 
             return redirect()
                 ->route('voyager.database.index')
@@ -223,7 +221,7 @@ class VoyagerDatabaseController extends Controller
         Voyager::canOrFail('browse_database');
 
         $data = $this->prepopulateBreadInfo($table);
-        $data['fieldOptions'] = DBSchema::describeTable($table);
+        $data['fieldOptions'] = SchemaManager::describeTable($table);
 
         return view('voyager::tools.database.edit-add-bread', $data);
     }
@@ -270,9 +268,9 @@ class VoyagerDatabaseController extends Controller
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
         try {
-            $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : DBSchema::describeTable($dataType->name);
+            $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : SchemaManager::describeTable($dataType->name);
         } catch (Exception $e) {
-            $fieldOptions = DBSchema::describeTable($dataType->name);
+            $fieldOptions = SchemaManager::describeTable($dataType->name);
         }
 
         return view(

@@ -5,7 +5,7 @@ namespace TCG\Voyager\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use TCG\Voyager\Facades\DBSchema;
+use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
 
 class DataType extends Model
@@ -19,6 +19,7 @@ class DataType extends Model
         'display_name_plural',
         'icon',
         'model_name',
+        'controller',
         'description',
         'generate_permissions',
         'server_side',
@@ -90,6 +91,11 @@ class DataType extends Model
                     }
                 }
 
+                // Clean data_rows that don't have an associated field
+                // TODO: need a way to identify deleted and renamed fields.
+                //   maybe warn the user and let him decide to either rename or delete?
+                $this->rows()->whereNotIn('field', $fields)->delete();
+
                 // It seems everything was fine. Let's check if we need to generate permissions
                 if ($this->generate_permissions) {
                     Voyager::model('Permission')->generateFor($this->name);
@@ -131,7 +137,7 @@ class DataType extends Model
     {
         $table = $this->name;
 
-        $fieldOptions = DBSchema::describeTable($table);
+        $fieldOptions = SchemaManager::describeTable($table);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
