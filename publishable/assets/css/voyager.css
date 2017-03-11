@@ -581,9 +581,11 @@ overflow-x: hidden;
   color: #76838f !important;
 }
 .expanded #sidebar-anchor {
-  position: relative;
-  top: 0;
-  transition: top .3s ease, color .2s;
+    position: relative;
+    top: 0px;
+    transition: top .3s ease, color .2s;
+    left: -10px;
+    text-decoration: none;
 }
 
 #voyager-loader{
