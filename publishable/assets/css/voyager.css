@@ -1080,7 +1080,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 }
 
 .modal-open .select2-container{
-  z-index:999999 !important;
+  z-index: 10 !important;
   width:100% !important;
 }
 
