@@ -79,7 +79,7 @@
                                 <input type="file" name="avatar">
                             </div>
 
-                            @if (Auth::user()->role_id == "1")
+                            @if (Auth::user()->role_id == 1)
                             <div class="form-group">
                                 <label for="role">User Role</label>
                                 <select name="role_id" id="role" class="form-control">
