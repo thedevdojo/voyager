@@ -43,8 +43,6 @@
             $linkAttributes =  'href="' . url($item->link()) .'"';
         }
 
-        //$listItemClass = implode(" ", $listItemClass);
-
         // Permission Checker
         $self_prefix = str_replace('/', '\/', $options->user->prefix);
         $slug = str_replace('/', '', preg_replace('/^\/'.$self_prefix.'/', '', $item->link()));
