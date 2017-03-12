@@ -756,7 +756,7 @@ float: left;
 }
 
 table.dataTable.no-footer{
-  border-bottom:0px;
+  border: 1px solid #EAEAEA;
 }
 
 .site-footer-right{
