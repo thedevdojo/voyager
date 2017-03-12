@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerUserController extends VoyagerBreadController
@@ -23,8 +23,7 @@ class VoyagerUserController extends VoyagerBreadController
             ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
-        if (Auth::user()->role_id == 2 && $dataTypeContent->role_id == 1)
-        {
+        if (Auth::user()->role_id == 2 && $dataTypeContent->role_id == 1) {
             return redirect()
             ->route("voyager.{$dataType->slug}.index")
             ->with([
@@ -55,8 +54,7 @@ class VoyagerUserController extends VoyagerBreadController
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
-        if (Auth::user()->role_id == 2 && empty($data->role_id))
-        {
+        if (Auth::user()->role_id == 2 && empty($data->role_id)) {
             $data->role_id = 2;
         }
 
@@ -81,8 +79,7 @@ class VoyagerUserController extends VoyagerBreadController
 
         $data = new $dataType->model_name();
 
-        if (Auth::user()->role_id == 2 && empty($data->role_id))
-        {
+        if (Auth::user()->role_id == 2 && empty($data->role_id)) {
             $data->role_id = 2;
         }
 
