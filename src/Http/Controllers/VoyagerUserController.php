@@ -25,11 +25,8 @@ class VoyagerUserController extends VoyagerBreadController
 
         if (Auth::user()->role_id == 2 && $dataTypeContent->role_id == 1) {
             return redirect()
-            ->route("voyager.{$dataType->slug}.index")
-            ->with([
-                'message'    => "You cannot edit administrator user.",
-                'alert-type' => 'error',
-            ]);
+                ->route('voyager.users.index')
+                ->with($this->alertError("You cannot edit administrator user."));
         }
 
         // Check if BREAD is Translatable
@@ -54,13 +51,10 @@ class VoyagerUserController extends VoyagerBreadController
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
-        if (Auth::user()->role_id == 2 && $data->role_id == 1) {
+        if (Auth::user()->role_id == 2 && $dataTypeContent->role_id == 1) {
             return redirect()
-            ->route("voyager.{$dataType->slug}.index")
-            ->with([
-                'message'    => "You cannot edit administrator user.",
-                'alert-type' => 'error',
-            ]);
+                ->route('voyager.users.index')
+                ->with($this->alertError("You cannot edit administrator user."));
         }
 
         if (Auth::user()->role_id == 2 && empty($data->role_id)) {
