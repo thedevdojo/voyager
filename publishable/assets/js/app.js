@@ -60,7 +60,7 @@ $(document).ready(function(){
     }
   });
 
-  $('select.select2').select2();
+  $('select.select2').select2({ width: '100%' });
 
   $('.match-height').matchHeight();
 
