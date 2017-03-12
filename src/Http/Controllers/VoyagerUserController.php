@@ -83,7 +83,7 @@ class VoyagerUserController extends VoyagerBreadController
 
         $data = new $dataType->model_name();
 
-        if (Auth::user()->role_id == Role::where('name', '=', 'user')->first()->id && empty($data->role_id)) {
+        if (Auth::user()->role_id != Role::where('name', '=', 'admin')->first()->id && empty($data->role_id)) {
             $data->role_id = Role::where('name', '=', 'user')->first()->id;
         }
 
