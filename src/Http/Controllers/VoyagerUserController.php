@@ -24,7 +24,7 @@ class VoyagerUserController extends VoyagerBreadController
             ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
-        if (Auth::user()->role_id == Role::where('name', '=', 'user')->first()->id && $dataTypeContent->role_id == Role::where('name', '=', 'admin')->first()->id) {
+        if (Auth::user()->role_id != Role::where('name', '=', 'admin')->first()->id && $dataTypeContent->role_id == Role::where('name', '=', 'admin')->first()->id) {
             return redirect()
                 ->route('voyager.users.index')
                 ->with($this->alertError("You cannot edit administrator user."));
@@ -52,13 +52,13 @@ class VoyagerUserController extends VoyagerBreadController
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
-        if (Auth::user()->role_id == Role::where('name', '=', 'user')->first()->id && $data->role_id == Role::where('name', '=', 'admin')->first()->id) {
+        if (Auth::user()->role_id != Role::where('name', '=', 'admin')->first()->id && $data->role_id == Role::where('name', '=', 'admin')->first()->id) {
             return redirect()
                 ->route('voyager.users.index')
                 ->with($this->alertError("You cannot edit administrator user."));
         }
 
-        if (Auth::user()->role_id == Role::where('name', '=', 'user')->first()->id && empty($data->role_id)) {
+        if (Auth::user()->role_id != Role::where('name', '=', 'admin')->first()->id && empty($data->role_id)) {
             $data->role_id = Role::where('name', '=', 'user')->first()->id;
         }
 
