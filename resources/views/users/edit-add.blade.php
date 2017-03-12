@@ -79,7 +79,7 @@
                                 <input type="file" name="avatar">
                             </div>
 
-                            @if (Auth::user()->role_id == 1)
+                            @if (Auth::user()->role_id == TCG\Voyager\Models\Role::where('name', '=', 'admin')->first()->id)
                             <div class="form-group">
                                 <label for="role">User Role</label>
                                 <select name="role_id" id="role" class="form-control">
@@ -111,4 +111,14 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('javascript')
+    <script>
+        $('document').ready(function () {
+            $('.toggleswitch').bootstrapToggle();
+        });
+    </script>
+    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
 @stop
