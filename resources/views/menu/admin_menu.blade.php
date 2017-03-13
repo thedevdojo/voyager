@@ -20,19 +20,28 @@
         $styles = null;
         $linkAttributes = null;
 
-        if(url($item->link()) == url()->current()){
+        if(url($item->link()) == url()->current())
+        {
             array_push($listItemClass,'active');
         }
 
         // With Children Attributes
-        if(!$originalItem->children->isEmpty()) {
-            $linkAttributes =  'href="#' . str_slug($item->title, '-') .'-dropdown-element" data-toggle="collapse"';
-            array_push($listItemClass,'dropdown');
-        }else{
+        if(!$originalItem->children->isEmpty())
+        {
+            foreach($originalItem->children as $children)
+            {
+                if(url($children->link()) == url()->current())
+                {
+                    array_push($listItemClass,'active');
+                }
+            }
+            $linkAttributes =  'href="#' . str_slug($item->title, '-') .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
+            array_push($listItemClass, 'dropdown');
+        }
+        else
+        {
             $linkAttributes =  'href="' . url($item->link()) .'"';
         }
-
-        $listItemClass = implode(" ",$listItemClass);
 
         // Permission Checker
         $self_prefix = str_replace('/', '\/', $options->user->prefix);
@@ -66,13 +75,13 @@
         
     @endphp
 
-    <li class="{{ $listItemClass }}">
+    <li class="{{ implode(" ", $listItemClass) }}">
         <a {!! $linkAttributes !!} target="{{ $item->target }}">
             <span class="icon {{ $item->icon_class }}"></span>
             <span class="title">{{ $item->title }}</span>
         </a>
         @if(!$originalItem->children->isEmpty())
-        <div id="{{ str_slug($originalItem->title, '-') }}-dropdown-element" class="panel-collapse collapse">
+        <div id="{{ str_slug($originalItem->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
             <div class="panel-body">
                 @include('voyager::menu.admin_menu', ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
             </div>
