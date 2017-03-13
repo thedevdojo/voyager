@@ -54,7 +54,7 @@ class VoyagerMenuController extends Controller
 
         $menuItem = Voyager::model('MenuItem')->create(
             collect($data)->filter(function ($item, $key) {
-                return !ends_with($key, '_i18n') AND $key !== 'i18n_selector';
+                return !ends_with($key, '_i18n') and $key !== 'i18n_selector';
             })->all()
         );
 
