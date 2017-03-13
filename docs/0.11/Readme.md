@@ -216,7 +216,7 @@ Thanks :)
 
 ### Version 0.9 to 0.11
 
-To upgrade from 0.9 to 0.11, please first upgrade to 0.10: [Voyager Upgrade from 0.9 to 0.10](/docs/0.10/#getting-started-upgrading-version-09-to-010)
+To upgrade from 0.9 to 0.11, please first upgrade to 0.10: [Voyager Upgrade from 0.9 to 0.10](/voyager/docs/0.10/#getting-started-upgrading-version-09-to-010)
 
 Then come back here to follow the steps to upgrade from version 0.10 to 0.11 :)
 
