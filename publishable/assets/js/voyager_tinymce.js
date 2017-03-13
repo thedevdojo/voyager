@@ -14,6 +14,8 @@ $(document).ready(function(){
     menubar: false,
     selector:'textarea.richTextBox',
     skin: 'voyager',
+    min_height: 600,
+    resize: 'vertical',
     plugins: 'link, image, code, youtube, giphy, table, textcolor',
     extended_valid_elements : 'input[id|name|value|type|class|style|required|placeholder|autocomplete|onclick]',
     file_browser_callback: function(field_name, url, type, win) {
