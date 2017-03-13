@@ -53,7 +53,6 @@
 
                     <div id="content">
 
-
                         <div class="breadcrumb-container">
                             <ol class="breadcrumb filemanager">
                                 <li data-folder="/" data-index="0"><span class="arrow"></span><strong>Media
@@ -112,7 +111,7 @@
                                 <div id="file_loader">
                                     <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
                                     @if($admin_loader_img == '')
-                                        <img src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+                                        <img src="{{ config('voyager.assets_path') . '/images/logo-dark.svg' }}" alt="Voyager Loader">
                                     @else
                                         <img src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
                                     @endif
@@ -131,9 +130,9 @@
                                     <p>No File or Folder Selected</p>
                                 </div>
                                 <div class="right_details">
-                                    <div class="detail_img @{{ selected_file.type }}">
+                                    <div class="detail_img @{{selected_file.type}}">
                                         <template v-if="selected_file.type.includes('image')">
-                                            <img src="@{{ selected_file.path }}"/>
+                                            <img src="@{{selected_file.path}}"/>
                                         </template>
                                         <template v-if="selected_file.type.includes('video')">
                                             <video width="100%" height="auto" controls>
@@ -160,18 +159,18 @@
 
                                     </div>
                                     <div class="detail_info @{{selected_file.type}}">
-							<span><h4>Title:</h4>
-							<p>@{{selected_file.name}}</p></span>
+                            <span><h4>Title:</h4>
+                            <p>@{{selected_file.name}}</p></span>
                                         <span><h4>Type:</h4>
-							<p>@{{selected_file.type}}</p></span>
+                            <p>@{{selected_file.type}}</p></span>
                                         <template v-if="selected_file.type != 'folder'">
-								<span><h4>Size:</h4>
-								<p><span class="selected_file_count">@{{ selected_file.items }} item(s)</span><span
+                                <span><h4>Size:</h4>
+                                <p><span class="selected_file_count">@{{selected_file.items}} item(s)</span><span
                                             class="selected_file_size">@{{selected_file.size}}</span></p></span>
                                             <span><h4>Public URL:</h4>
-								<p><a href="@{{ selected_file.path }}" target="_blank">Click Here</a></p></span>
+                                <p><a href="@{{selected_file.path}}" target="_blank">Click Here</a></p></span>
                                             <span><h4>Last Modified:</h4>
-								<p>@{{selected_file.last_modified}}</p></span>
+                                <p>@{{selected_file.last_modified}}</p></span>
                                         </template>
                                     </div>
                                 </div>
@@ -325,24 +324,22 @@
                 </div>
                 <!-- End Delete File Modal -->
 
-
             </div><!-- .row -->
         </div><!-- .col-md-12 -->
     </div><!-- .page-content container-fluid -->
 
-
     <input type="hidden" id="storage_path" value="{{ storage_path() }}">
 
-@section('javascript')
-<script src="{{ config('voyager.assets_path') }}/js/media/dropzone.js"></script>
-<script src="{{ config('voyager.assets_path') }}/js/media/media.js"></script>
-<script type="text/javascript">
-    var media = new VoyagerMedia({
-        baseUrl: "{{ route('voyager.dashboard') }}"
-    });
-    $(function () {
-        media.init();
-    });
-</script>
-@endsection
+    <!-- Include our script files -->
+    <script src="{{ config('voyager.assets_path') }}/js/select2/select2.min.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/media/dropzone.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/media/media.js"></script>
+    <script type="text/javascript">
+        var media = new VoyagerMedia({
+            baseUrl: "{{ route('voyager.dashboard') }}"
+        });
+        $(function () {
+            media.init();
+        });
+    </script>
 @stop

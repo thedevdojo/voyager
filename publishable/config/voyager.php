@@ -66,7 +66,8 @@ return [
     */
 
     'storage' => [
-        'disk' => 'public',
+        'disk'  => 'public',
+        'ignore'=> '^\..*',
     ],
 
     /*
@@ -80,7 +81,7 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings'],
+            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings', 'permission_groups', 'failed_jobs'],
         ],
     ],
 
@@ -124,22 +125,19 @@ return [
     */
 
     'widgets' => [
-        [
-            'name'  => 'User',
+        'user' => [
             'icon'  => 'voyager-group',
             'model' => TCG\Voyager\Models\User::class,
             'url'   => 'admin/users',
             'image' => '/images/widget-backgrounds/02.png',
         ],
-        [
-            'name'  => 'Post',
+        'post' => [
             'icon'  => 'voyager-news',
             'model' => TCG\Voyager\Models\Post::class,
             'url'   => 'admin/posts',
             'image' => '/images/widget-backgrounds/03.png',
         ],
-        [
-            'name'  => 'Page',
+        'page' => [
             'icon'  => 'voyager-file-text',
             'model' => TCG\Voyager\Models\Page::class,
             'url'   => 'admin/pages',

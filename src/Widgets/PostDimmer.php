@@ -24,14 +24,14 @@ class PostDimmer extends AbstractWidget
         $string = $count == 1 ? 'post' : 'posts';
 
         return view('voyager::dimmer', array_merge($this->config, [
-            'icon'   => 'voyager-group',
+            'icon'   => config('voyager.widgets.post.icon'),
             'title'  => "{$count} {$string}",
             'text'   => "You have {$count} {$string} in your database. Click on button below to view all posts.",
             'button' => [
                 'text' => 'View all posts',
                 'link' => route('voyager.posts.index'),
             ],
-            'image' => url(config('voyager.assets_path').'/images/widget-backgrounds/03.png'),
+            'image' => url(config('voyager.assets_path').config('voyager.widgets.post.image')),
         ]));
     }
 }

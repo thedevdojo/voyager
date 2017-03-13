@@ -13,7 +13,7 @@
     </td>
 
     <td>
-        <input v-model.number="column.length" type="number" min="0">
+        <input v-model.number="column.length" type="number" min="0" class="form-control">
     </td>
 
     <td>
@@ -71,7 +71,7 @@
         methods: {
             deleteColumn() {
                 this.$emit('columnDeleted', this.column);
-                
+
                 // todo: add an UNDO button or something in case the user mistakenly deletes the column
             },
             onColumnNameInput(event) {

@@ -30,7 +30,7 @@
             </div>
         @endif
         </div><!-- .panel-body .row -->
-        
+
         <div v-if="compositeIndexes.length" v-once class="alert alert-danger">
             <p>This table has composite indexes. Please note that they are not supported at the moment. Be careful when trying to add/remove indexes.</p>
         </div>
@@ -46,9 +46,9 @@
                     <th>Name</th>
                     <th>Type</th>
                     <th>Length</th>
-                    <th>Not Null?</th>
-                    <th>Unsigned?</th>
-                    <th>AI?</th>
+                    <th>Not Null</th>
+                    <th>Unsigned</th>
+                    <th>AutoIncrement</th>
                     <th>Index</th>
                     <th>Default Value</th>
                     <th></th>
@@ -85,7 +85,6 @@
         <div style="clear:both"></div>
     </div>
 </div><!-- .panel -->
-
 
 @endsection
 
@@ -124,7 +123,7 @@
             // Add warning to columns that are part of a composite index
             this.compositeIndexes = this.getCompositeIndexes();
             let compositeColumns = this.getIndexesColumns(this.compositeIndexes);
-            
+
             for (col in compositeColumns) {
                 this.getColumn(compositeColumns[col]).composite = true;
             }
@@ -174,10 +173,10 @@
             },
             deleteColumn(column) {
                 var columnPos = this.table.columns.indexOf(column);
-                
+
                 if (columnPos !== -1) {
                     this.table.columns.splice(columnPos, 1);
-                    
+
                     // Delete associated index
                     this.deleteIndex(this.getColumnsIndex(column.name));
                 }
@@ -234,7 +233,7 @@
             },
             deleteIndex(index) {
                 var indexPos = this.table.indexes.indexOf(index);
-                
+
                 if (indexPos !== -1) {
                     if (index.type == 'PRIMARY') {
                         this.table.primaryKeyName = false;

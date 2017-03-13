@@ -100,7 +100,7 @@
                                             <input type="hidden" value="timestamp"
                                                    name="field_input_type_{{ $data['field'] }}">
                                         @else
-                                            <select name="field_input_type_{{ $data['field'] }}">
+                                            <select name="field_input_type_{{ $data['field'] }}" class="form-control">
                                                 @foreach (Voyager::formFields() as $formField)
                                                     <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
                                                         {{ $formField->getName() }}
@@ -222,8 +222,6 @@
             </div><!-- .col-md-12 -->
         </div><!-- .row -->
     </div><!-- .page-content -->
-
-
 
 @stop
 

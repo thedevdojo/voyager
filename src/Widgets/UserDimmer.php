@@ -24,14 +24,14 @@ class UserDimmer extends AbstractWidget
         $string = $count == 1 ? 'user' : 'users';
 
         return view('voyager::dimmer', array_merge($this->config, [
-            'icon'   => 'voyager-group',
+            'icon'   => config('voyager.widgets.user.icon'),
             'title'  => "{$count} {$string}",
             'text'   => "You have {$count} {$string} in your database. Click on button below to view all users.",
             'button' => [
                 'text' => 'View all users',
                 'link' => route('voyager.users.index'),
             ],
-            'image' => url(config('voyager.assets_path').'/images/widget-backgrounds/02.png'),
+            'image' => url(config('voyager.assets_path').config('voyager.widgets.user.image')),
         ]));
     }
 }

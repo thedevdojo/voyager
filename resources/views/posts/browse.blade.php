@@ -33,7 +33,7 @@
                                     @foreach($dataType->browseRows as $row)
                                     <td>
                                         @if($row->type == 'image')
-                                            <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                            <img src="{{ filter_var($data->{$row->field}, FILTER_VALIDATE_URL) === FALSE ? Voyager::image($data->{$row->field}) : $data->{$row->field} }}" style="width:100px">
                                         @else
                                             {{ $data->{$row->field} }}
                                         @endif

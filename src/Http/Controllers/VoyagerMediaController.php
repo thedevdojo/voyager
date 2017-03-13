@@ -11,6 +11,7 @@ class VoyagerMediaController extends Controller
 {
     /** @var string */
     private $filesystem;
+    private $ignoreFiles;
 
     /** @var string */
     private $directory = '';
@@ -18,6 +19,7 @@ class VoyagerMediaController extends Controller
     public function __construct()
     {
         $this->filesystem = config('voyager.storage.disk');
+        $this->ignoreFiles = config('voyager.storage.ignore');
     }
 
     public function index()
@@ -194,23 +196,29 @@ class VoyagerMediaController extends Controller
         $storageFolders = Storage::disk($this->filesystem)->directories($dir);
 
         foreach ($storageFiles as $file) {
-            $files[] = [
-                'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
-                'type'          => Storage::disk($this->filesystem)->mimeType($file),
-                'path'          => Storage::disk($this->filesystem)->url($file),
-                'size'          => Storage::disk($this->filesystem)->size($file),
-                'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
-            ];
+            $pattern = "/$this->ignoreFiles/";
+            if (!preg_grep($pattern, [$file])) {
+                $files[] = [
+                    'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
+                    'type'          => Storage::disk($this->filesystem)->mimeType($file),
+                    'path'          => Storage::disk($this->filesystem)->url($file),
+                    'size'          => Storage::disk($this->filesystem)->size($file),
+                    'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
+                ];
+            }
         }
 
         foreach ($storageFolders as $folder) {
-            $files[] = [
-                'name'          => strpos($folder, '/') > 1 ? str_replace('/', '', strrchr($folder, '/')) : $folder,
-                'type'          => 'folder',
-                'path'          => Storage::disk($this->filesystem)->url($folder),
-                'items'         => '',
-                'last_modified' => '',
-            ];
+            $pattern = "/$this->ignoreFiles/";
+            if (!preg_grep($pattern, [$folder])) {
+                $files[] = [
+                    'name'          => strpos($folder, '/') > 1 ? str_replace('/', '', strrchr($folder, '/')) : $folder,
+                    'type'          => 'folder',
+                    'path'          => Storage::disk($this->filesystem)->url($folder),
+                    'items'         => '',
+                    'last_modified' => '',
+                ];
+            }
         }
 
         return $files;

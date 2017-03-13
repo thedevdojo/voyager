@@ -37,7 +37,7 @@
                                         <td>
                                             <?php $options = json_decode($row->details); ?>
                                             @if($row->type == 'image')
-                                                <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                                <img src="{{ filter_var($data->{$row->field}, FILTER_VALIDATE_URL) === FALSE ? Voyager::image($data->{$row->field}) : $data->{$row->field} }}" style="width:100px">
                                             @elseif($row->type == 'select_multiple')
                                                 @if(property_exists($options, 'relationship'))
 
@@ -65,7 +65,6 @@
                                                 @else
                                                     {!! $options->options->{$data->{$row->field}} !!}
                                                 @endif
-
 
                                             @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
                                                 <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>

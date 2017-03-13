@@ -36,7 +36,7 @@
                     <div class="logo-title-container">
                         <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
                         @if($admin_logo_img == '')
-                        <img class="img-responsive pull-left logo hidden-xs" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
+                        <img class="img-responsive pull-left logo hidden-xs" src="{{ config('voyager.assets_path') }}/images/logo-light.svg" alt="Logo Icon">
                         @else
                         <img class="img-responsive pull-left logo hidden-xs" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
                         @endif
@@ -57,14 +57,14 @@
 
                 <form action="{{ route('voyager.login') }}" method="POST">
                 {{ csrf_field() }}
-                <div class="group">      
+                <div class="group">
                   <input type="text" name="email" value="{{ old('email') }}" required>
                   <span class="highlight"></span>
                   <span class="bar"></span>
                   <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> E-mail</span></label>
                 </div>
 
-                <div class="group">      
+                <div class="group">
                   <input type="password" name="password" required>
                   <span class="highlight"></span>
                   <span class="bar"></span>
@@ -75,7 +75,7 @@
                     <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
                     <span class="signin">Login</span>
                 </button>
-               
+
               </form>
 
               @if(!$errors->isEmpty())
@@ -83,13 +83,13 @@
                 <ul class="list-unstyled">
                     @foreach($errors->all() as $err)
                     <li>{{ $err }}</li>
-                    @endforeach                
+                    @endforeach
                 </ul>
-              </div>            
+              </div>
               @endif
 
             </div> <!-- .login-container -->
-            
+
         </div> <!-- .login-sidebar -->
     </div> <!-- .row -->
 </div> <!-- .container-fluid -->

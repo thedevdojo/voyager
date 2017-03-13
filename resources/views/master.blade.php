@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ config('voyager.assets_path') }}/images/logo-icon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ config('voyager.assets_path') }}/images/logo-dark.svg" type="image/x-icon">
 
     <!-- CSS Fonts -->
     <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/fonts/voyager/styles.css">
@@ -61,17 +61,14 @@
 <div id="voyager-loader">
     <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
     @if($admin_loader_img == '')
-        <img src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+        <img src="{{ config('voyager.assets_path') . '/images/logo-dark.svg' }}" alt="Voyager Loader">
     @else
         <img src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
     @endif
 </div>
 
 <?php
-$user_avatar = Voyager::image(Auth::user()->avatar);
-if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->avatar, 0, 8) == 'https://')) {
-    $user_avatar = Auth::user()->avatar;
-}
+$user_avatar = filter_var(auth()->user()->avatar, FILTER_VALIDATE_URL) === FALSE ? Voyager::image(auth()->user()->avatar) : auth()->user()->avatar;
 ?>
 
 <div class="app-container">
@@ -144,7 +141,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     @endif
 
     @if(Session::has('message'))
-    
+
     // TODO: change Controllers to use AlertsMessages trait... then remove this
     var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
     var alertMessage = {!! json_encode(Session::get('message')) !!};
