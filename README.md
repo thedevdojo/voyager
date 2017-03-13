@@ -41,6 +41,12 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
+You will also want to update your website URL inside of the `APP_URL` variable inside the .env file:
+
+```
+APP_URL=localhost:8000
+```
+
 Add the Voyager service provider to the `config/app.php` file in the `providers` array:
 
 ```php
@@ -72,11 +78,11 @@ If you prefer installing it with dummy run
 php artisan voyager:install --with-dummy
 ```
 
+> Troubleshooting: **Specified key was too long error**. If you see this error message you have an outdated version of MySQL, use the following solution: https://laravel-news.com/laravel-5-4-key-too-long-error
+
 And we're all good to go!
 
 Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
-
-However if your site have problems loading the avatar and other storage files, please ensure that you have set the `APP_URL` environment (including port).
 
 If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
 
