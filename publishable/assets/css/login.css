@@ -8,6 +8,7 @@ body {
     -wenkit-background-size:cover;
     background-position:center center;
     background-repeat:no-repeat;
+    overflow:hidden;
 }
 
 .login-sidebar {
@@ -201,8 +202,8 @@ body {
     color:#eee;
     font-family:Roboto,Source Sans Pro,sans-serif;
     font-weight:100;
-    padding:10px;
-    border-radius:3px;
+    padding:15px 10px;
+    border-radius:1px;
     outline:none !important;
     opacity:0.8;
     border:0px;
