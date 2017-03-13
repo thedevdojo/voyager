@@ -54,13 +54,16 @@ class VoyagerBreadController extends Controller
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
         }
 
+        // Check if BREAD is Translatable
+        $isModelTranslatable = isBreadTranslatable($model);
+
         $view = 'voyager::bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
             $view = "voyager::$slug.browse";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     //***************************************
@@ -96,13 +99,16 @@ class VoyagerBreadController extends Controller
         //Replace relationships' keys for labels and create READ links if a slug is provided.
         $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
+        // Check if BREAD is Translatable
+        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
+
         $view = 'voyager::bread.read';
 
         if (view()->exists("voyager::$slug.read")) {
             $view = "voyager::$slug.read";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     //***************************************
@@ -132,13 +138,16 @@ class VoyagerBreadController extends Controller
             ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
+        // Check if BREAD is Translatable
+        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
+
         $view = 'voyager::bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     // POST BR(E)AD
@@ -189,13 +198,16 @@ class VoyagerBreadController extends Controller
                             ? new $dataType->model_name()
                             : false;
 
+        // Check if BREAD is Translatable
+        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
+
         $view = 'voyager::bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     // POST BRE(A)D

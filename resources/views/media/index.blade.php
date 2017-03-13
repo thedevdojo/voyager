@@ -333,17 +333,16 @@
 
     <input type="hidden" id="storage_path" value="{{ storage_path() }}">
 
-
-    <!-- Include our script files -->
-    <script src="{{ config('voyager.assets_path') }}/js/select2/select2.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/media/dropzone.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/media/media.js"></script>
-    <script type="text/javascript">
-        var media = new VoyagerMedia({
-            baseUrl: "{{ route('voyager.dashboard') }}"
-        });
-        $(function () {
-            media.init();
-        });
-    </script>
+@section('javascript')
+<script src="{{ config('voyager.assets_path') }}/js/media/dropzone.js"></script>
+<script src="{{ config('voyager.assets_path') }}/js/media/media.js"></script>
+<script type="text/javascript">
+    var media = new VoyagerMedia({
+        baseUrl: "{{ route('voyager.dashboard') }}"
+    });
+    $(function () {
+        media.init();
+    });
+</script>
+@endsection
 @stop

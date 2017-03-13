@@ -86,6 +86,69 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Multilingual configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify if you want Voyager to ship with support for
+    | multilingual and what locales are enabled.
+    |
+    */
+
+    'multilingual' => [
+        /*
+         * Set whether or not the multilingual is supported by the BREAD input.
+         */
+        'bread' => false,
+
+        /*
+         * Select default language
+         */
+        'default' => 'en',
+
+        /*
+         * Select languages that are supported.
+         */
+        'locales' => [
+            'en',
+            //'pt',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Widgets Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager administration settings
+    |
+    */
+
+    'widgets' => [
+        [
+            'name'  => 'User',
+            'icon'  => 'voyager-group',
+            'model' => TCG\Voyager\Models\User::class,
+            'url'   => 'admin/users',
+            'image' => '/images/widget-backgrounds/02.png',
+        ],
+        [
+            'name'  => 'Post',
+            'icon'  => 'voyager-news',
+            'model' => TCG\Voyager\Models\Post::class,
+            'url'   => 'admin/posts',
+            'image' => '/images/widget-backgrounds/03.png',
+        ],
+        [
+            'name'  => 'Page',
+            'icon'  => 'voyager-file-text',
+            'model' => TCG\Voyager\Models\Page::class,
+            'url'   => 'admin/pages',
+            'image' => '/images/widget-backgrounds/04.png',
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Dashboard config
     |--------------------------------------------------------------------------
     |

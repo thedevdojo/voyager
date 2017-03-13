@@ -18,6 +18,7 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Posts',
                 'icon'                  => 'voyager-news',
                 'model_name'            => 'TCG\\Voyager\\Models\\Post',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
@@ -31,6 +32,7 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Pages',
                 'icon'                  => 'voyager-file-text',
                 'model_name'            => 'TCG\\Voyager\\Models\\Page',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
@@ -44,6 +46,7 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Users',
                 'icon'                  => 'voyager-person',
                 'model_name'            => 'TCG\\Voyager\\Models\\User',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
@@ -57,6 +60,7 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Categories',
                 'icon'                  => 'voyager-categories',
                 'model_name'            => 'TCG\\Voyager\\Models\\Category',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
@@ -70,6 +74,7 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Menus',
                 'icon'                  => 'voyager-list',
                 'model_name'            => 'TCG\\Voyager\\Models\\Menu',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
@@ -83,6 +88,7 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Roles',
                 'icon'                  => 'voyager-lock',
                 'model_name'            => 'TCG\\Voyager\\Models\\Role',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();

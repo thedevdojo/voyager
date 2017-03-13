@@ -11,6 +11,7 @@
             </a>
         @endif
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -64,7 +65,7 @@
                                                 @else
                                                     {!! $options->options->{$data->{$row->field}} !!}
                                                 @endif
-    
+
 
                                             @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
                                                 <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
@@ -81,13 +82,17 @@
                                                 {{ $data->{$row->field} }}
                                                 @endif
                                             @elseif($row->type == 'text')
-                                            <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
+                                                <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                             @elseif($row->type == 'text_area')
-                                            <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
+                                                <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                             @elseif($row->type == 'rich_text_box')
-                                            <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
+                                                <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                             @else
-                                                {{ $data->{$row->field} }}
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
+                                                <span>{{ $data->{$row->field} }}</span>
                                             @endif
                                         </td>
                                     @endforeach
@@ -156,19 +161,27 @@
 @stop
 
 @section('javascript')
-    <!-- DataTables -->    
+    <!-- DataTables -->
     @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-    <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
+        <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
+    @endif
+    @if($isModelTranslatable)
+        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
     @endif
     <script>
-        @if (!$dataType->server_side)
-            $(document).ready(function () {
+        $(document).ready(function () {
+            @if (!$dataType->server_side)
                 var table = $('#dataTable').DataTable({
                     "order": []
                     @if(config('dashboard.data_tables.responsive')), responsive: true @endif
                 });
-            });
-        @endif
+            @endif
+
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual();
+            @endif
+        });
+
 
         var deleteFormAction;
         $('td').on('click', '.delete', function (e) {

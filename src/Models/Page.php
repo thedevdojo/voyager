@@ -4,17 +4,22 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Traits\Translatable;
 
 class Page extends Model
 {
+    use Translatable;
+
+    protected $translatable = ['title', 'slug', 'body'];
+
     /**
-     * Statuses
+     * Statuses.
      */
     const STATUS_ACTIVE = 'ACTIVE';
     const STATUS_INACTIVE = 'INACTIVE';
 
     /**
-     * List of statuses
+     * List of statuses.
      *
      * @var array
      */
@@ -33,9 +38,10 @@ class Page extends Model
     }
 
     /**
-     * Scope a query to only include active pages
+     * Scope a query to only include active pages.
      *
      * @param  $query  \Illuminate\Database\Eloquent\Builder
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeActive($query)

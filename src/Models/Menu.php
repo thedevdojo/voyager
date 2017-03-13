@@ -76,6 +76,10 @@ class Menu extends Model
             }
         }
 
+        if (!isset($options->locale)) {
+            $options->locale = app()->getLocale();
+        }
+
         return new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, ['items' => $menu->parent_items, 'options' => $options])->render()
         );

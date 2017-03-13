@@ -57,7 +57,7 @@ a:hover {
   text-indent: 1em; }
 
 .navbar {
-  z-index: 9999;
+  z-index: 800;
   padding-left: 60px;
   -webkit-transition: all 0.25s;
   transition: all 0.25s; }
@@ -204,8 +204,8 @@ a:hover {
   position: fixed;
   width: 60px;
   height: 100%;
-  -webkit-transition: all 0.25s;
-  transition: all 0.25s; }
+  -webkit-transition: width 0.25s;
+  transition: width 0.25s; }
 .app-container .content-container .side-menu .navbar-header {
   width: 100%;
   border-bottom: 0 solid #e7e7e7; }
@@ -323,6 +323,7 @@ a:hover {
   margin-right: -15px; }
 
 .page-title {
+  display: inline-block;
   height: auto;
   padding-left: 25px;
   font-size: 18px;
@@ -901,6 +902,56 @@ body.login-page .login-footer {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px; }
 
+/* Multiple images */
+
+.image-tool-box {
+  display: inline-block;
+  clear: both;
+  padding: 2px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.image-tool-box img {
+  width: 200px;
+  height: auto;
+}
+
+.image-tool-box .image-tools {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.image-tool-box .image-tools .glyphicon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #fff;
+  display: none;
+  cursor: pointer;
+}
+
+.image-tool-box:hover .image-tools {
+  background:rgba(0,0,0,0.8);
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+}
+
+.image-tool-box:hover .image-tools .glyphicon {
+  display: block;
+}
+
+.modal-open .select2-container {
+  z-index: auto;
+}
+
 @media (max-width: 768px) {
   .step .nav-tabs > li:after {
     display: none; }
@@ -1226,6 +1277,18 @@ body.login-page .login-footer {
   font-weight: 300;
   line-height: 1;
   letter-spacing: -1px; }
+
+
+/* Multi Languages / Translations
+-------------------------------------------------- */
+.language-selector {
+  float: right !important;
+  padding: 28px 15px 0 0;
+}
+.modal-body .language-selector {
+  float: right !important;
+  padding: 0;
+}
 
 /* RESPONSIVE CSS
 -------------------------------------------------- */

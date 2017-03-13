@@ -13,7 +13,9 @@ class VoyagerMenuController extends Controller
 
         $menu = Voyager::model('Menu')->findOrFail($id);
 
-        return view('voyager::menus.builder', compact('menu'));
+        $isModelTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
+
+        return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
     }
 
     public function delete_menu($menu, $id)
@@ -70,6 +72,10 @@ class VoyagerMenuController extends Controller
         );
 
         $menuItem = Voyager::model('MenuItem')->findOrFail($id);
+
+        // Save menu translations if available
+        $this->saveMenuTranslations($menuItem, $data, 'edit');
+
         $menuItem->update($data);
 
         return redirect()
@@ -118,5 +124,32 @@ class VoyagerMenuController extends Controller
         }
 
         return $parameters;
+    }
+
+    /**
+     * Save menu translations.
+     *
+     * @param object $_menuItem
+     * @param array  $data      menu data
+     * @param string $action    add or edit action
+     *
+     * @return JSON translated item
+     */
+    protected function saveMenuTranslations($_menuItem, &$data, $action)
+    {
+        if (isBreadTranslatable($_menuItem)) {
+            $key = $action.'_title_i18n';
+            $trans = json_decode($data[$key], true);
+
+            // Set field value with the default locale
+            $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
+
+            unset($data[$key]);             // Remove hidden input holding translations
+            unset($data['i18n_selector']);  // Remove language selector input radio
+
+            $_menuItem->setAttributeTranslations(
+                'title', $trans, true
+            );
+        }
     }
 }
