@@ -1,8 +1,10 @@
 Voyager Docs
 =======
 
-> Latest Version `0.10.13`
-> 
+Voyager Documentation for Version `0.11`
+
+<a href="https://packagist.org/packages/tcg/voyager"><img src="https://poser.pugx.org/tcg/voyager/v/stable.svg?format=flat" alt="Latest Stable Version"></a>
+
 ## Welcome
 
 Welcome to the Voyager Documentation. These docs will teach you how to install, configure, and use Voyager so that way you can create some kick ass stuff. 
@@ -28,7 +30,13 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-Add the Voyager service provider to the `config/app.php` file in the `providers` array:
+You will also want to update your website URL inside of the `APP_URL` variable inside the .env file:
+
+```
+APP_URL=localhost:8000
+```
+
+Next, add the Voyager service provider to the `config/app.php` file in the `providers` array:
 
 ```php
 'providers' => [
@@ -44,31 +52,34 @@ Add the Voyager service provider to the `config/app.php` file in the `providers`
 ],
 ```
 
-Lastly, we can install voyager. You can do this either with or without dummy data.
-The dummy data will include 1 admin account (if no users already exists), 1 demo page, 4 demo posts, 2 categories and 7 settings.
+Finally, we can install Voyager. You can choose to install Voyager with dummy data or without the dummy data. The dummy data will include 1 admin account (if no users already exist), 1 demo page, 4 demo posts, 2 categories and 7 settings.
 
-To install Voyager without dummy simply run
+To install Voyager without dummy data simply run
 
 ```bash
 php artisan voyager:install
 ```
 
-If you prefer installing it with dummy run
+If you prefer installing it with the dummy data run
 
 ```bash
 php artisan voyager:install --with-dummy
 ```
 
-And we're all good to go! 
+> Troubleshooting: **Specified key was too long error**. If you see this error message you have an outdated version of MySQL, use the following solution: https://laravel-news.com/laravel-5-4-key-too-long-error
+
+And we're all good to go!
 
 Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
 
-If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
+If you installed with the dummy data, a user has been created for you with the following login credentials:
 
 >**email:** `admin@admin.com`   
 >**password:** `password`
 
 NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
+
+https://laravel-news.com/laravel-5-4-key-too-long-error
 
 If you did not go with the dummy user, you may wish to assign admin priveleges to an existing user.
 This can easily be done by running this command:
@@ -77,7 +88,7 @@ This can easily be done by running this command:
 php artisan voyager:admin your@email.com
 ```
 
-If you did not install the dummy data and you wish to create a new admin user you can pass the `--create` flag, like so:
+If you wish to create a new admin user you can pass the `--create` flag, like so:
 
 ```bash
 php artisan voyager:admin your@email.com --create
@@ -89,12 +100,12 @@ And you will be prompted for the users name and password.
 
 The first step you should **always** do, is to take an entire backup of your application together with your database.
 
-### Version 0.10
+### Version 0.11
 
 To update to the latest version inside of your composer.json file make sure to update the version of voyager inside the require declaration inside of your composer.json to:
 
 ```
-"tcg/voyager": "0.10.*"
+"tcg/voyager": "0.11.*"
 ```
 
 And then run composer update
@@ -105,15 +116,31 @@ Next, you may want to be sure that you have all the latest published assets. To 
 php artisan vendor:publish --tag=voyager_assets --force
 ```
 
-Next, there may be a few more settings added to the database schema that need updating in the latest version. To make sure you have the latest database schema, you'll need to visit:
-
-> Currently only needed if you are upgrading and not currently on v0.10.6+
+Lastly, you may wish to clear your view cache by running the following command:
 
 ```
-localhost:8000/admin/upgrade
+php artisan view:clear
 ```
 
-After visiting the `upgrade` URL, you will be redirected to your dashboard. If a change has been made you'll see a notification specifying that the database schema has been updated. If you do not receive a message this update may not have included any database changes.
+And now you'll be upgraded to the latest version.
+
+### Version 0.10 to 0.11
+
+> Quick Note: The upgrade from 0.10 to 0.11 has been documented as well as we could. If you notice a missing step, please feel free to open an issue. Thanks.
+
+To update from version 0.10 to 0.11 make sure to update the version of voyager inside the require declaration inside of your composer.json to:
+
+```
+"tcg/voyager": "0.11.*"
+```
+
+And then run composer update
+
+Next, you will update all the latest published assets. To re-publish the voyager assets you can run the following command:
+
+```
+php artisan vendor:publish --tag=voyager_assets --force
+```
 
 Lastly, you may wish to clear your view cache by running the following command:
 
@@ -123,87 +150,75 @@ php artisan view:clear
 
 And now you'll be upgraded to the latest version.
 
-### Version 0.9 to 0.10
+#### Migrations and Database Changes
 
-#### Estimated upgrade time: 20 minutes - 1 hour
+If you are still sticking to Laravel conventions and using migrations you can simply get up-to-date with the latest database changes by running:
 
-> We attempt to document every possible breaking change.
-
-#### Updating dependencies
-
-Update your `tcg/voyager` dependency to `0.10.*` in your `composer.json` file. After this run a `composer update`.
-
-#### Republish Voyager files
-
-Some of the published files have been changed in the latest version, and you should therefore update them using the following command:
-```bash
-php artisan vendor:publish --provider="TCG\Voyager\VoyagerServiceProvider" --force
+```
+php artisan migrate
 ```
 
-After this run `composer dump-autoload`.
+Alternatively, if you with to add the new tables manually, below are links to the new migrations that have been added since version 0.10:
 
-#### Migrate database
+ - [2017_01_13_000000_add_route_to_menu_items_table.php](https://github.com/the-control-group/voyager/blob/master/publishable/database/migrations/2017_01_13_000000_add_route_to_menu_items_table.php)
+ - [2017_01_14_005015_create_translations_table.php](https://github.com/the-control-group/voyager/blob/master/publishable/database/migrations/2017_01_14_005015_create_translations_table.php)
+ - [2017_01_15_000000_add_permission_group_id_to_permissions_table.php](https://github.com/the-control-group/voyager/blob/master/publishable/database/migrations/2017_01_15_000000_add_permission_group_id_to_permissions_table.php)
+ - [2017_01_15_000000_create_permission_groups_table.php](https://github.com/the-control-group/voyager/blob/master/publishable/database/migrations/2017_01_15_000000_create_permission_groups_table.php)
+ - [2017_01_15_000000_make_table_name_nullable_in_permissions_table.php](https://github.com/the-control-group/voyager/blob/master/publishable/database/migrations/2017_01_15_000000_make_table_name_nullable_in_permissions_table.php)
+ - [2017_03_06_000000_add_controller_to_data_types_table.php](https://github.com/the-control-group/voyager/blob/master/publishable/database/migrations/2017_03_06_000000_add_controller_to_data_types_table.php)
 
-Some changes have been made to the database, so to catch up run a `php artisan migrate`.
 
-> NOTE: After this, please ensure that in the `data_types` table you have the `generate_permissions` column. If you do not have this, please add that as `TINYINT(1)` with default value of `0`.
-> Also open up the `pages` table and ensure that the following columns are `nullable`.
-> * excerpt
-> * body
-> * meta_description
-> * meta_keywords
+#### Possible updates to code in your custom controllers and views
 
-#### Set permissions for data types
+**Voyager Settings**
 
-In your database, open up table `data_types` and update `generate_permissions` to `1` for the rows with the `name` that is in this list:
-- menus
-- pages
-- roles
-- users
-- posts
-- categories
+In version 0.10 you may have called a voyager setting like the following:
 
-> You may do this for others as well if you wish, but for everyone you do it for that are not listed above, open up `php artisan tinker` and run `\TCG\Voyager\Models\Permission::generateFor(‘NAME’);` to generate permissions for them.
-
-#### Add routes
-
-Open your `routes/web.php` file and add the following:
-```php
-Route::group(['prefix' => 'admin'], function () {
-    Voyager::routes();
-});
+```
+Voyager::setting('setting_key')
 ```
 
-#### Update menus
+Now, it's even simpler to display settings, you can now use the shorthand function and call it like so:
 
-To ensure that you have the latest menu items in your Voyager panel, run this command:
-```bash
-php artisan db:seed --class=MenuItemsTableSeeder
+```
+setting('setting_key')
 ```
 
-#### Update roles and permissions
+**Voyager Menu**
 
-To ensure that you have the needed roles and permissions, run the following two commands:
-```bash
-php artisan db:seed --class=PermissionsTableSeeder
-php artisan db:seed --class=PermissionRoleTableSeeder
+In version 0.10 you may have called a voyager menu like the following:
+
+```
+Menu::display('main')
 ```
 
-#### Ensure admin access
+Now it's even simpler and you can call it like so:
 
-Ensure that your account have full admin rights by running:
-```bash
-php artisan voyager:admin your@email.com
+```
+menu('main')
 ```
 
-#### Cleanup
+**Images**
 
-You may remove `Intervention\Image\ImageServiceProviderLaravel5` from your `providers` array in `config/app.php`.
+In version 0.10 the images and the storage were called using a relative URL; however, now they are using the base `APP_URL` so if you see that your storage or images are no longer working you will need to set `APP_URL` inside of your `.env` file:
 
-#### In application changes
+```
+APP_URL=localhost:8000
+```
 
-Models using the `VoyagerUser` trait does no longer have the `roles` relation. Instead we are using a single role now. So please update you application for usages of that relation.
-Also the method `addRole` and `deleteRole` has been removed and replaced with a `setRole` method.
+> In older versions of Laravel you may need to set the `'url' => 'localhost:8000',` config inside of `config/app.php`.
+
+#### Further troubleshooting
+
+If you are still having issues with your upgrade make sure to join our Slack Channel. Another good way to check the upgrade is to install a version of 0.10 and compare the database and settings with your new version 0.11.
+
+Thanks :)
+
+### Version 0.9 to 0.11
+
+To upgrade from 0.9 to 0.11, please first upgrade to 0.10: [Voyager Upgrade from 0.9 to 0.10](/docs/0.10/#getting-started-upgrading-version-09-to-010)
+
+Then come back here to follow the steps to upgrade from version 0.10 to 0.11 :)
 
 ## Configuration
 
@@ -300,11 +315,11 @@ You can view your current Menus by clicking on the *Tools->Menu Builder* button.
 
 When you are ready to add menu items to your menu you can click on the builder button of the corresponding menu:
 
-![Voyager Menus](images/menu-01.jpg)
+![Voyager Menus](/docs/0.10/images/menu-01.jpg)
 
 This will take you to the Menu Builder where you can add, edit, and delete menu items.
 
-![Voyager Menus](images/menu-02.jpg)
+![Voyager Menus](/docs/0.10/images/menu-02.jpg)
 
 After creating and configuring your menu, you can easily implement that menu in your application. Say that we have a menu called `main`. Inside of any view file we could now output the menu by using the following code:
 

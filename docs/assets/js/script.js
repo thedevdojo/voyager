@@ -241,3 +241,27 @@
     }
   };
 })(jQuery);
+
+// **************************************************
+// Add the version numbers to the top right MENU
+// **************************************************
+
+$('document').ready(function(){
+
+  var current_url = window.location.href;
+  var versions = ['0.11', '0.10'];
+  var versions_dropdown = '';
+  var root_url = 'http://voyagerdocs.dev';
+  for(var i = 0; i < versions.length; i++){
+    if(current_url.indexOf(versions[i]) >= 0){
+      versions_dropdown = '<li class="active">' + versions[i] + '<span>&#9662</span></li>' + versions_dropdown;
+      active_a = ' class="active"';
+    } else {
+      active_a = '';
+    }
+
+    versions_dropdown += '<li><a' + active_a + ' href="' + root_url + '/docs/' + versions[i] + '/">' + versions[i] + '</a></li>';
+  }
+  var version_dropdown = '<ul><li>'
+  $('.right').append('<ul>' + versions_dropdown + '</ul>');
+});
