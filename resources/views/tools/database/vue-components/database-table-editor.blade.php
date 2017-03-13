@@ -46,11 +46,11 @@
                     <th>Name</th>
                     <th>Type</th>
                     <th>Length</th>
-                    <th>Not Null?</th>
-                    <th>Unsigned?</th>
-                    <th>AI?</th>
+                    <th>Not Null</th>
+                    <th>Unsigned</th>
+                    <th>Auto Increment</th>
                     <th>Index</th>
-                    <th>Default Value</th>
+                    <th>Default</th>
                     <th></th>
                 </tr>
                 </thead>
