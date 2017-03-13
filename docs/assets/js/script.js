@@ -251,7 +251,7 @@ $('document').ready(function(){
   var current_url = window.location.href;
   var versions = ['0.11', '0.10'];
   var versions_dropdown = '';
-  var root_url = 'http://voyagerdocs.dev';
+  var root_url = '/voyager/';
   for(var i = 0; i < versions.length; i++){
     if(current_url.indexOf(versions[i]) >= 0){
       versions_dropdown = '<li class="active">' + versions[i] + '<span>&#9662</span></li>' + versions_dropdown;

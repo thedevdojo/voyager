@@ -315,11 +315,11 @@ You can view your current Menus by clicking on the *Tools->Menu Builder* button.
 
 When you are ready to add menu items to your menu you can click on the builder button of the corresponding menu:
 
-![Voyager Menus](/docs/0.10/images/menu-01.jpg)
+![Voyager Menus](/voyager/docs/0.10/images/menu-01.jpg)
 
 This will take you to the Menu Builder where you can add, edit, and delete menu items.
 
-![Voyager Menus](/docs/0.10/images/menu-02.jpg)
+![Voyager Menus](/voyager/docs/0.10/images/menu-02.jpg)
 
 After creating and configuring your menu, you can easily implement that menu in your application. Say that we have a menu called `main`. Inside of any view file we could now output the menu by using the following code:
 
