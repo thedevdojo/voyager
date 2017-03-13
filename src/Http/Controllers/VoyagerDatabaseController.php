@@ -138,6 +138,16 @@ class VoyagerDatabaseController extends Controller
             $db->formAction = route('voyager.database.update', $table);
         } else {
             $db->table = new Table('New Table');
+
+            // Add prefilled columns
+            $db->table->addColumn('id', 'integer', [
+                'unsigned'      => true,
+                'notnull'       => true,
+                'autoincrement' => true,
+            ]);
+
+            $db->table->setPrimaryKey(['id'], 'primary');
+
             $db->formAction = route('voyager.database.store');
         }
 
