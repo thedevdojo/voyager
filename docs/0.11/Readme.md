@@ -714,3 +714,15 @@ You can override any of the BREAD views by creating a new folder in `resources/v
  - edit-add.blade.php
 
 By default a couple `posts` views have been published to your `resources/views/vendor/voyager` folder. So those 2 view files will be located at `resources/views/vendor/voyager/posts/browse.blade.php` and `resources/views/vendor/voyager/posts/edit-add.blade.php`. 
+
+## Overriding Routes
+You can override any Voyager routes by writing the routes you want to overwrite below ('Voyager::routes()'). For example if you want to override your post LoginController:
+
+```
+Route::group(['prefix' => 'admin'], function () {
+   Voyager::routes();
+
+   // Your overwrites here
+   Route::post('login', ['uses' => 'MyAuthController@postLogin', 'as' => 'postlogin']);
+});
+```
