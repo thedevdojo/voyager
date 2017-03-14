@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600,600i,700,700i');
+
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+.header{
+	border:1px solid #f3f3f3;
+	background:#ffffff;
+}
+
+.header li a{
+	line-height:45px;
+}
+
+.header h1 + ul{
+	border-left:1px solid #f3f3f3;
+}
+
+.header li{
+	border-right:1px solid #f3f3f3;
+}
+
+.menu a, .menu a:visited{
+	color:#22A7F0;
+}
+
+.menubar {
+	font-size: 14px;
+}
+
+.content p{
+	font-size:14.5px;
+	color:#525252;
+}
+
+.content img[src*="helm"]{
+	float:right;
+	margin-top:20px;
+	max-width:120px;
+	margin-left:20px;
+	opacity:0.2;
+}
+
+.content pre > code {
+	font-size:13px;
+}
+
+img{
+	max-width:100%;
+}
+
+.header .right{
+	top:17px;
+}
+
+.right iframe{
+	position:relative;
+	top:10px;
+	margin-left:20px;
+}
+
+.right ul{
+	position: relative;
+    z-index: 9;
+    cursor:pointer;
+    float:right;
+    margin-left:5px;
+    margin-right:10px;
+}
+
+.right ul li{
+	display:none;
+	float:none;
+}
+
+.right ul:hover{
+	background:#fff;
+	
+}
+
+.right ul:hover li{
+	display:block;
+}
+
+.right ul li.active{
+	display:block;
+}
+
+.right ul li.active span{
+	position:relative;
+	left:5px;
+}
+
+.right ul li a{
+	font-size:16px;
+	padding-right:26px;
+	border-left:1px solid #f1f1f1;
+	border-right:1px solid #f1f1f1;
+}
+
+.right ul li a:hover{
+	background:#f7f7f7;
+}
+
+.right ul:hover li.active{
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.right ul:hover{
+	border-bottom:1px solid #f1f1f1;
+}
+
+.right ul li a.active{
+	color:#22A7F0;
+	font-weight:bold;
+}
+
+.right ul li.active{
+	background: #22A7F0;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 6px;
+    padding-right: 15px;
+    padding-left: 18px;
+    margin-top: 5px;
+    border: 1px solid #22A7F0;
+}
+
+.content blockquote{
+	background: #22A7F0;
+    display: block;
+    padding: 10px;
+    border-left: 5px solid #3498db;
+    border-radius: 3px;
+}
+
+.content blockquote p{
+	color:#fff;
+	text-shadow:0px 0px 0px;
+}
+
+.content blockquote a{
+	color:#f1f1ff;
+	text-decoration:underline;
+}
+
+.content blockquote em{
+	color:#f1f1ff;
+}
+
+.content blockquote code{
+	background:#2488CB;
+}
+
+.content hr{
+	border:0px;
+	border-bottom:1px solid #e1e1e5;
+}
+
+
+@media (max-width: 480px) {
+	.header h1{
+		width:100%;
+		text-align:center;
+		border-bottom:1px solid #f1f1f1;
+		padding-bottom:10px;
+		margin-bottom:10px;
+	}
+	.header h1, .header h1 + ul{
+		float:left;
+	}
+	.header h1 + ul{
+		display:flex;
+		width:100%;
+		border:0px;
+	}
+
+	.header h1 + ul li{
+		flex:1;
+		border:0px;
+	}
+	.header h1 + ul li a{
+		text-align:center;
+	}
+	.header .left{
+		width:100%;
+	}
+	
+}
