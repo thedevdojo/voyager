@@ -19,6 +19,28 @@
 <script>
     let databaseTypes = {!! json_encode($db->types) !!};
 
+    databaseTypes.getType = function (name) {
+        let type;
+        name = name.toLowerCase().trim();
+
+        for (category in databaseTypes) {
+            if (Array.isArray(databaseTypes[category])) {
+                type = databaseTypes[category].find(function(type) {
+                    return name == type.name.toLowerCase();
+                });
+
+                if (type) {
+                    return type;
+                }
+            }
+        }
+
+        toastr.error("Unknown type: " + name);
+
+        // fallback to a default type
+        return databaseTypes.Numbers[0];
+    };
+
     Vue.component('database-types', {
         props: {
             column: {
@@ -37,17 +59,7 @@
                 this.$emit('typeChanged', this.getType(event.target.value));
             },
             getType(name) {
-                let type;
-
-                for (category in this.dbTypes) {
-                    type = this.dbTypes[category].find(function(type) {
-                        return name == type.name;
-                    });
-
-                    if (type) {
-                        return type;
-                    }
-                }
+                return this.dbTypes.getType(name);
             }
         }
     });
