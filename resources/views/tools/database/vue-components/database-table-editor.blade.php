@@ -74,7 +74,9 @@
         </div>
 
         <div style="text-align:center">
-            <div class="btn btn-success" @click="addColumn">+ Add New Column</div>
+            <database-table-helper-buttons
+                @columnAdded="addColumn"
+            ></database-table-helper-buttons>
         </div>
     </div><!-- .panel-body -->
 
@@ -90,6 +92,7 @@
 @endsection
 
 @include('voyager::tools.database.vue-components.database-column')
+@include('voyager::tools.database.vue-components.database-table-helper-buttons')
 
 <script>
     Vue.component('database-table-editor', {
@@ -101,17 +104,6 @@
         },
         data() {
             return {
-                newColumnTemplate: {
-                    name: '',
-                    oldName: '',
-                    type: databaseTypes.Numbers[0],
-                    length: null,
-                    fixed: false,
-                    unsigned: false,
-                    autoincrement: false,
-                    notnull: false,
-                    default: null
-                },
                 emptyIndex: {
                     type: '',
                     name: ''
@@ -140,28 +132,33 @@
             }
         },
         methods: {
-            addColumn() {
+            addColumn(column) {
+                column.name = column.name.trim();
+
+                if (column.name && this.hasColumn(column.name)) {
+                    return toastr.error("Column " + column.name + " already exists");
+                }
+
                 this.table.columns.push(
-                    JSON.parse(JSON.stringify(this.newColumnTemplate))
+                    JSON.parse(JSON.stringify(column))
                 );
             },
             getColumn(name) {
-                name = name.toLowerCase();
+                name = name.toLowerCase().trim();
 
                 return this.table.columns.find(function (column) {
                     return name == column.name.toLowerCase();
                 });
             },
+            hasColumn(name) {
+                return !!this.getColumn(name);
+            },
             renameColumn(column) {
                 let newName = column.newName.trim();
-                let compareName = newName.toLowerCase();
                 column = column.column;
 
-                let alreadyExists = !!this.table.columns.find(function(tableColumn) {
-                    return (column !== tableColumn) && (compareName == tableColumn.name.toLowerCase());
-                });
-
-                if (alreadyExists) {
+                let existingColumn;
+                if ((existingColumn = this.getColumn(newName)) && (existingColumn !== column)) {
                     return toastr.error("Column " + newName + " already exists");
                 }
 
