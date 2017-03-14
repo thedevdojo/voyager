@@ -21,6 +21,21 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body table-responsive">
+                        @if (isset($dataType->server_side) && $dataType->server_side)
+                        <h4>Search</h4>
+                        <form method="get">
+                        <div id="search-input">
+                            <div class="input-group col-md-12">
+                                <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search }}">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info btn-lg" type="submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        </form>
+                        @endif
                         <table id="dataTable" class="row table table-hover">
                             <thead>
                                 <tr>
@@ -122,7 +137,7 @@
                                 <div role="status" class="show-res" aria-live="polite">Showing {{ $dataTypeContent->firstItem() }} to {{ $dataTypeContent->lastItem() }} of {{ $dataTypeContent->total() }} entries</div>
                             </div>
                             <div class="pull-right">
-                                {{ $dataTypeContent->links() }}
+                                {{ $dataTypeContent->appends(['s' => $search])->links() }}
                             </div>
                         @endif
                     </div>
