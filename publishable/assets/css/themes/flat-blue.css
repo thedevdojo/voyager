@@ -469,6 +469,8 @@
     border-bottom: 2px solid #EAEAEA; background: #F6F8FA; }
   .flat-blue .table.table-striped > tbody > tr:nth-of-type(odd), .dataTable > tbody > tr:nth-of-type(odd) {
     background-color: #FDFDFD; }
+  .dataTable > tbody > tr:nth-of-type(even) {
+    background-color: #F9F9F9; }
   .flat-blue .login-box .login-form .login-header {
     color: #FFF; }
   .flat-blue .login-box .login-form .login-body {
