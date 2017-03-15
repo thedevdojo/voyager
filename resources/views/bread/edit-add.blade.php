@@ -168,9 +168,9 @@
         });
     </script>
     @if($isModelTranslatable)
-        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+        <script src="{{ url('/vendor/tcg/voyager/assets') }}/js/multilingual.js"></script>
     @endif
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
+    <script src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/tinymce/tinymce.min.js"></script>
+    <script src="{{ url('/vendor/tcg/voyager/assets') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ url('/vendor/tcg/voyager/assets') }}/js/slugify.js"></script>
 @stop

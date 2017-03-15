@@ -96,6 +96,6 @@
             $('.side-body').multilingual();
         });
     </script>
-    <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+    <script src="{{ url('/vendor/tcg/voyager/assets') }}/js/multilingual.js"></script>
     @endif
 @stop

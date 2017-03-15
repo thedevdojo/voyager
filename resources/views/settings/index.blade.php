@@ -157,7 +157,7 @@
 @stop
 
 @section('head')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jsonarea/jsonarea.min.js"></script>
+    <script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/jsonarea/jsonarea.min.js"></script>
 @stop
 
 @section('page_header')
@@ -203,9 +203,13 @@
                         @if ($setting->type == "text")
                             <input type="text" class="form-control" name="{{ $setting->key }}" value="{{ $setting->value }}">
                         @elseif($setting->type == "text_area")
-                            <textarea class="form-control" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                            <textarea class="form-control" name="{{ $setting->key }}">
+                                @if(isset($setting->value)){{ $setting->value }}@endif
+                            </textarea>
                         @elseif($setting->type == "rich_text_box")
-                            <textarea class="form-control richTextBox" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                            <textarea class="form-control richTextBox" name="{{ $setting->key }}">
+                                @if(isset($setting->value)){{ $setting->value }}@endif
+                            </textarea>
                         @elseif($setting->type == "image" || $setting->type == "file")
                             @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::disk(config('voyager.storage.disk'))->exists($setting->value))
                                 <div class="img_settings_container">
@@ -403,6 +407,6 @@
         <input type="hidden" name="type_slug" id="type_slug" value="settings">
     </form>
 
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/tinymce/tinymce.min.js"></script>
+    <script src="{{ url('/vendor/tcg/voyager/assets') }}/js/voyager_tinymce.js"></script>
 @stop
