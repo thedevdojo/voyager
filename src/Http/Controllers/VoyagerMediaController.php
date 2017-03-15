@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Facades\Voyager;
 
+use Intervention\Image\ImageManagerStatic as Image;
+
 class VoyagerMediaController extends Controller
 {
     /** @var string */
@@ -181,6 +183,9 @@ class VoyagerMediaController extends Controller
             $success = false;
             $message = $e->getMessage();
         }
+
+        $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix() . $path;
+        Image::make($realPath)->orientate()->save();
 
         $path = preg_replace('/^public\//', '', $path);
 
