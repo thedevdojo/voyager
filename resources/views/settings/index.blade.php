@@ -153,6 +153,9 @@
         textarea {
             min-height: 120px;
         }
+        textarea.hidden{
+            display:none;
+        }
     </style>
 @stop
 
@@ -206,6 +209,10 @@
                             <textarea class="form-control" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
                         @elseif($setting->type == "rich_text_box")
                             <textarea class="form-control richTextBox" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                        @elseif($setting->type == "code_editor")
+                            <?php $options = json_decode($setting->details); ?>
+                            <div id="{{ $setting->key }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_400" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</div>
+                            <textarea name="{{ $setting->key }}" id="{{ $setting->key }}_textarea" class="hidden">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
                         @elseif($setting->type == "image" || $setting->type == "file")
                             @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::disk(config('voyager.storage.disk'))->exists($setting->value))
                                 <div class="img_settings_container">
@@ -287,6 +294,7 @@
                             <option value="text">Text Box</option>
                             <option value="text_area">Text Area</option>
                             <option value="rich_text_box">Rich Textbox</option>
+                            <option value="code_editor">Code Editor</option>
                             <option value="checkbox">Check Box</option>
                             <option value="radio_btn">Radio Button</option>
                             <option value="select_dropdown">Select Dropdown</option>
@@ -301,40 +309,12 @@
                                 <small>(optional, only applies to certain types like dropdown box or radio button)
                                 </small>
                             </label>
-                            <textarea name="details" id="options_textarea" class="form-control"></textarea>
+                            <div id="options_editor" class="form-control ace_editor min_height_200" data-language="json"></div>
+                            <textarea id="options_textarea" name="details" class="hidden"></textarea>
                             <div id="valid_options" class="alert-success alert" style="display:none">Valid Json</div>
                             <div id="invalid_options" class="alert-danger alert" style="display:none">Invalid Json</div>
                         </div>
                     </div>
-                    <script>
-                        // do the deal
-                        var myJSONArea = JSONArea(document.getElementById('options_textarea'), {
-                            sourceObjects: [] // optional array of objects for JSONArea to inherit from
-                        });
-
-                        valid_json = false;
-
-                        // then here's how you use JSONArea's update event
-                        myJSONArea.getElement().addEventListener('update', function (e) {
-                            if (e.target.value != "") {
-                                valid_json = e.detail.isJSON;
-                            }
-                        });
-
-                        myJSONArea.getElement().addEventListener('focusout', function (e) {
-                            if (valid_json) {
-                                $('#valid_options').show();
-                                $('#invalid_options').hide();
-                                var ugly = e.target.value;
-                                var obj = JSON.parse(ugly);
-                                var pretty = JSON.stringify(obj, undefined, 4);
-                                document.getElementById('options_textarea').value = pretty;
-                            } else {
-                                $('#valid_options').hide();
-                                $('#invalid_options').show();
-                            }
-                        });
-                    </script>
                     <script>
                         $('document').ready(function () {
                             $('#toggle_options').click(function () {
@@ -405,4 +385,16 @@
 
     <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
     <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/lib/js/ace/ace.js"></script>
+    <script src="{{ config('voyager.assets_path') }}/js/voyager_ace_editor.js"></script>
+    <script>
+        var options_editor = ace.edit('options_editor');
+        options_editor.getSession().setMode("ace/mode/json");
+
+        var options_textarea = document.getElementById('options_textarea');
+        options_editor.getSession().on('change', function() {
+            console.log(options_editor.getValue());
+            options_textarea.value = options_editor.getValue();
+        });
+    </script>
 @stop
