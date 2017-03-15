@@ -156,17 +156,17 @@
 
 @section('css')
 @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-<link rel="stylesheet" href="{{ config('voyager.assets_path') }}/lib/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/responsive.dataTables.min.css">
 @endif
 @stop
 
 @section('javascript')
     <!-- DataTables -->
     @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-        <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
+        <script src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/dataTables.responsive.min.js"></script>
     @endif
     @if($isModelTranslatable)
-        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+        <script src="{{ url('/vendor/tcg/voyager/assets') }}/js/multilingual.js"></script>
     @endif
     <script>
         $(document).ready(function () {

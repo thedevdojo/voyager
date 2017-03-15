@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/nestable.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/css/nestable.css">
 @stop
 
 @section('page_header')
@@ -82,7 +82,7 @@
                         <label for="url">URL for the Menu Item</label>
                         <input type="text" class="form-control" name="url" placeholder="URL"><br>
                         <label for="icon_class">Font Icon class for the Menu Item (Use a <a
-                                    href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}"
+                                    href="{{ url('/vendor/tcg/voyager/assets') . '/fonts/voyager/icons-reference.html' }}"
                                     target="_blank">Voyager Font Class</a>)</label>
                         <input type="text" class="form-control" name="icon_class"
                                placeholder="Icon Class (optional)"><br>
@@ -139,7 +139,7 @@
                             <textarea rows="3" class="form-control" id="edit_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
                         </div>
                         <label for="icon_class">Font Icon class for the Menu Item (Use a <a
-                                    href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}"
+                                    href="{{ url('/vendor/tcg/voyager/assets') . '/fonts/voyager/icons-reference.html' }}"
                                     target="_blank">Voyager Font Class</a>)</label>
                         <input type="text" class="form-control" id="edit_icon_class" name="icon_class"
                                placeholder="Icon Class (optional)"><br>
@@ -167,9 +167,9 @@
 
 @section('javascript')
 
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/jquery.nestable.js"></script>
+    <script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/jquery.nestable.js"></script>
     @if($isModelTranslatable)
-        <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+        <script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/multilingual.js"></script>
     @endif
     <script>
         $(document).ready(function () {

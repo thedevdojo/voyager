@@ -1,10 +1,10 @@
 @extends('voyager::master')
 
 @section('css')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue1.min.js"></script>
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/media.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/select2/select2.min.css">
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/dropzone.css"/>
+    <script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/vue1.min.js"></script>
+    <link rel="stylesheet" href="{{ url('/vendor/tcg/voyager/assets') }}/css/media/media.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/js/select2/select2.min.css">
+    <link rel="stylesheet" href="{{ url('/vendor/tcg/voyager/assets') }}/css/media/dropzone.css"/>
 @stop
 
 @section('content')
@@ -112,7 +112,7 @@
                                 <div id="file_loader">
                                     <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
                                     @if($admin_loader_img == '')
-                                        <img src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+                                        <img src="{{ url('/vendor/tcg/voyager/assets') . '/images/logo-icon.png' }}" alt="Voyager Loader">
                                     @else
                                         <img src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
                                     @endif
@@ -334,8 +334,8 @@
     <input type="hidden" id="storage_path" value="{{ storage_path() }}">
 
 @section('javascript')
-<script src="{{ config('voyager.assets_path') }}/js/media/dropzone.js"></script>
-<script src="{{ config('voyager.assets_path') }}/js/media/media.js"></script>
+<script src="{{ url('/vendor/tcg/voyager/assets') }}/js/media/dropzone.js"></script>
+<script src="{{ url('/vendor/tcg/voyager/assets') }}/js/media/media.js"></script>
 <script type="text/javascript">
     var media = new VoyagerMedia({
         baseUrl: "{{ route('voyager.dashboard') }}"

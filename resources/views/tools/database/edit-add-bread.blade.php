@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">Icon (optional) Use a <a
-                                                href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}"
+                                                href="{{ url('/vendor/tcg/voyager/assets') . '/fonts/voyager/icons-reference.html' }}"
                                                 target="_blank">Voyager Font Class</a></label>
                                     <input type="text" class="form-control" name="icon"
                                            placeholder="Icon to use for this Table"
@@ -228,7 +228,7 @@
 @stop
 
 @section('javascript')
-    <script src="{{ config('voyager.assets_path') }}/lib/js/ace/ace.js"></script>
+    <script src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/ace/ace.js"></script>
     <script>
         window.invalidEditors = [];
         var validationAlerts = $('.validation-error');

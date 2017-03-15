@@ -10,37 +10,37 @@
           type='text/css'>
 
     <!-- CSS Libs -->
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap-switch.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/checkbox3.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/dataTables.bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/toastr.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/bootstrap-toggle.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/icheck/icheck.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/datetimepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/lib/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/css/bootstrap-toggle.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/js/icheck/icheck.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/js/datetimepicker/bootstrap-datetimepicker.min.css">
     <!-- CSS App -->
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/style.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/themes/flat-blue.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('/vendor/tcg/voyager/assets') }}/css/themes/flat-blue.css">
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ config('voyager.assets_path') }}/images/logo-icon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url('/vendor/tcg/voyager/assets') }}/images/logo-icon.png" type="image/x-icon">
 
     <!-- CSS Fonts -->
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/fonts/voyager/styles.css">
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url('/vendor/tcg/voyager/assets') }}/fonts/voyager/styles.css">
+    <script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
 
     @yield('css')
 
     <!-- Voyager CSS -->
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
+    <link rel="stylesheet" href="{{ url('/vendor/tcg/voyager/assets') }}/css/voyager.css">
 
     <!-- Few Dynamic Styles -->
     <style type="text/css">
@@ -61,7 +61,7 @@
 <div id="voyager-loader">
     <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
     @if($admin_loader_img == '')
-        <img src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+	<img src="{{ url('/vendor/tcg/voyager/assets') . '/images/logo-icon.png' }}" alt="Voyager Loader">
     @else
         <img src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
     @endif
@@ -120,23 +120,22 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     })();
 </script>
 <!-- Javascript Libs -->
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/bootstrap-switch.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.matchHeight-min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/toastr.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/perfect-scrollbar.jquery.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/select2/select2.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/bootstrap-toggle.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/moment-with-locales.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/bootstrap-switch.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/jquery.matchHeight-min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/toastr.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/lib/js/perfect-scrollbar.jquery.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/select2/select2.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/bootstrap-toggle.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 <!-- Javascript -->
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/readmore.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/app.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/helpers.js"></script>
-<script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/readmore.min.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/app.js"></script>
+<script type="text/javascript" src="{{ url('/vendor/tcg/voyager/assets') }}/js/helpers.js"></script>
     @if(Session::has('alerts'))
         let alerts = {!! json_encode(Session::get('alerts')) !!};
 

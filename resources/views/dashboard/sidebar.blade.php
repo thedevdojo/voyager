@@ -6,7 +6,7 @@
                     <div class="logo-icon-container">
                         <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
                         @if($admin_logo_img == '')
-                            <img src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
+                            <img src="{{ url('/vendor/tcg/voyager/assets') }}/images/logo-icon-light.png" alt="Logo Icon">
                         @else
                             <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
                         @endif
@@ -16,7 +16,7 @@
             </div><!-- .navbar-header -->
 
             <div class="panel widget center bgimage"
-                 style="background-image:url({{ Voyager::image( Voyager::setting('admin_bg_image'), config('voyager.assets_path') . '/images/bg.jpg' ) }});">
+                 style="background-image:url({{ Voyager::image( Voyager::setting('admin_bg_image'), url('/vendor/tcg/voyager/assets') . '/images/bg.jpg' ) }});">
                 <div class="dimmer"></div>
                 <div class="panel-content">
                     <img src="{{ $user_avatar }}" class="avatar" alt="{{ Auth::user()->name }} avatar">
