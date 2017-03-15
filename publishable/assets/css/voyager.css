@@ -757,10 +757,6 @@ float: left;
   font-weight:400;
 }
 
-table.dataTable.no-footer{
-  border: 1px solid #EAEAEA;
-}
-
 .site-footer-right{
   padding-right:20px;
 }
@@ -1378,6 +1374,20 @@ ul.checkbox label {
 }
 
 /********** END CUSTOM RADIO BUTTON STYLES **********/
+
+/********** ACE editor defaults **********/
+
+.ace_editor.min_height_400{
+    min-height:400px;
+    width:100%;
+}
+
+.ace_editor.min_height_200{
+  min-height:200px;
+  width:100%;
+}
+
+/********** End ACE editor defaults **********/
 
 .btn-success i.voyager-plus{
   position:relative;
