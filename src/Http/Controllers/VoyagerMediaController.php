@@ -5,9 +5,9 @@ namespace TCG\Voyager\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 use TCG\Voyager\Facades\Voyager;
 
-use Intervention\Image\ImageManagerStatic as Image;
 
 class VoyagerMediaController extends Controller
 {
@@ -184,7 +184,7 @@ class VoyagerMediaController extends Controller
             $message = $e->getMessage();
         }
 
-        $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix() . $path;
+        $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix().$path;
         Image::make($realPath)->orientate()->save();
 
         $path = preg_replace('/^public\//', '', $path);
