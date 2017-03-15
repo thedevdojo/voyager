@@ -309,7 +309,7 @@
                                 <small>(optional, only applies to certain types like dropdown box or radio button)
                                 </small>
                             </label>
-                            <div id="options_editor" class="form-control ace_editor min_height_200" data-language="json"></div>
+                            <div id="options_editor" class="form-control min_height_200" data-language="json"></div>
                             <textarea id="options_textarea" name="details" class="hidden"></textarea>
                             <div id="valid_options" class="alert-success alert" style="display:none">Valid Json</div>
                             <div id="invalid_options" class="alert-danger alert" style="display:none">Invalid Json</div>
