@@ -15,4 +15,5 @@ class CodeEditorHandler extends AbstractHandler
             'dataTypeContent' => $dataTypeContent,
         ]);
     }
+    
 }
