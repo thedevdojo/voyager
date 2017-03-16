@@ -39,7 +39,7 @@ class DashboardTest extends TestCase
         $this->see('4 Post(s)');
 
         // list them.
-        $this->click('View All Posts');
+        $this->click('View all posts');
         $this->seePageIs(route('voyager.posts.index'));
 
         // and return to dashboard from there.
