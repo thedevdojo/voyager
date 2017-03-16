@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
     <meta name="description" content="admin login">
     <meta name="author" content="">
     <title>Admin Login</title>
@@ -224,17 +226,17 @@
 
     <div id="login_section">
         <div class="content">
-            <h2>Sign In</h2>
-            <p>Sign in below:</p>
+            <h2>{{ __('voyager::admin.Sign in') }}</h2>
+            <p>{{ __('voyager::admin.Sign in below') }}:</p>
             <div style="clear:both"></div>
             <form action="{{ route('voyager.login') }}" method="POST" id="login">
                 {{ csrf_field() }}
-                <input type="text" class="form-control" name="email" placeholder="email address" value="{{ old('email') }}">
-                <input type="password" class="form-control" name="password" placeholder="password">
+                <input type="text" class="form-control" name="email" placeholder="{{ __('voyager::admin.email address') }}" value="{{ old('email') }}">
+                <input type="password" class="form-control" name="password" placeholder="{{ __('voyager::admin.password') }}">
                 <button class="btn btn-primary btn-login" id="voyager-login-btn">
-                    <span class="login_text"><i class="voyager-lock"></i> Login</span>
+                    <span class="login_text"><i class="voyager-lock"></i> {{ __('voyager::admin.Login') }}</span>
                     <span class="login_loader">
-                        <i class="voyager-lock"></i> Logging in...
+                        <i class="voyager-lock"></i> {{ __('voyager::admin.Logging in') }}...
                     </span>
                 </button>
                     <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
@@ -246,7 +248,7 @@
             </form>
             @if (count($errors))
                 <div class="error-login">
-                    The given credentials don't match with an user registered.
+                    {{ __('voyager::admin.The given credentials don\'t match with an user registered') }}.
                 </div>
             @endif
         </div>

@@ -28,7 +28,7 @@ class DashboardTest extends TestCase
         $this->see('1 User(s)');
 
         // list them.
-        $this->click('View All Users');
+        $this->click('View all users');
         $this->seePageIs(route('voyager.users.index'));
 
         // and return to dashboard from there.
@@ -39,7 +39,7 @@ class DashboardTest extends TestCase
         $this->see('4 Post(s)');
 
         // list them.
-        $this->click('View All Posts');
+        $this->click('View all posts');
         $this->seePageIs(route('voyager.posts.index'));
 
         // and return to dashboard from there.
@@ -50,7 +50,7 @@ class DashboardTest extends TestCase
         $this->see('1 Page(s)');
 
         // list them.
-        $this->click('View All Pages');
+        $this->click('View all pages');
         $this->seePageIs(route('voyager.pages.index'));
 
         // and return to Dashboard from there.

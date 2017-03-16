@@ -4,7 +4,7 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
         <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
-            <i class="voyager-plus"></i> Add New
+            <i class="voyager-plus"></i> {{ __('voyager::admin.Add new') }}
         </a>
     </h1>
 @stop
@@ -18,12 +18,12 @@
                         <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th>{{ __('voyager::admin.Name') }}</th>
                                     <th>Email</th>
-                                    <th>Created At</th>
+                                    <th>{{ __('voyager::admin.Created At') }}</th>
                                     <th>Avatar</th>
-                                    <th>Role</th>
-                                    <th class="actions">Actions</th>
+                                    <th>{{ __('voyager::admin.Role') }}</th>
+                                    <th class="actions">{{ __('voyager::admin.Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,13 +38,13 @@
                                     <td>{{ $data->role ? $data->role->display_name : '' }}</td>
                                     <td class="no-sort no-click">
                                         <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
-                                            <i class="voyager-trash"></i> Delete
+                                            <i class="voyager-trash"></i> {{ __('voyager::admin.Delete') }}
                                         </div>
                                         <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> Edit
+                                            <i class="voyager-edit"></i> {{ __('voyager::admin.Edit') }}
                                         </a>
                                         <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
-                                            <i class="voyager-eye"></i> View
+                                            <i class="voyager-eye"></i> {{ __('voyager::admin.View') }}
                                         </a>
                                     </td>
                                 </tr>
@@ -69,10 +69,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::admin.Close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete
-                        this {{ $dataType->display_name_singular }}?</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager::admin.Are you sure you want to delete this') }}
+                        {{ $dataType->display_name_singular }}?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.'.$dataType->slug.'.index') }}" id="delete_form" method="POST">
@@ -81,7 +81,7 @@
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
                                value="Yes, Delete This {{ $dataType->display_name_singular }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::admin.Cancel') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
