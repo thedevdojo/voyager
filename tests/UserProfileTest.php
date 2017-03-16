@@ -37,7 +37,7 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->seeInElement('h4', $this->user->name)
              ->seeInElement('.user-email', $this->user->email)
-             ->seeLink('Edit My Profile');
+             ->seeLink('Edit my profile');
     }
 
     public function testCanEditUserName()
@@ -58,8 +58,8 @@ class UserProfileTest extends TestCase
     public function testCanEditUserEmail()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click('Edit my profile')
+             ->see('Edit user')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press('Submit')
@@ -73,8 +73,8 @@ class UserProfileTest extends TestCase
     public function testCanEditUserPassword()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click('Edit my profile')
+             ->see('Edit user')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
              ->press('Submit')
@@ -87,8 +87,8 @@ class UserProfileTest extends TestCase
     public function testCanEditUserAvatar()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click('Edit my profile')
+             ->see('Edit user')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
              ->press('Submit')
