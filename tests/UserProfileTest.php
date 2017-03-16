@@ -43,7 +43,7 @@ class UserProfileTest extends TestCase
     public function testCanEditUserName()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
+             ->click('Edit my profile')
              ->see('Edit User')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
