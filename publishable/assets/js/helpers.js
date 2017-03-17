@@ -47,7 +47,7 @@ function bootstrapAlerter(customOptions) {
                     '</div>';
 
         $(options.alertsContainer).append(alert);
-    };
+    }
 
     return {
         success(message) {
