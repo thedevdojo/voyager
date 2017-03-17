@@ -17,7 +17,7 @@
                 return $.extend({
                     name: '',
                     oldName: '',
-                    type: databaseTypes.getType('integer'),
+                    type: getDbType('integer'),
                     length: null,
                     fixed: false,
                     unsigned: false,
@@ -32,18 +32,18 @@
             addTimestamps() {
                 this.addColumn(this.makeColumn({
                     name: 'created_at',
-                    type: databaseTypes.getType('timestamp')
+                    type: getDbType('timestamp')
                 }));
 
                 this.addColumn(this.makeColumn({
                     name: 'updated_at',
-                    type: databaseTypes.getType('timestamp')
+                    type: getDbType('timestamp')
                 }));
             },
             addSoftDeletes() {
                 this.addColumn(this.makeColumn({
                     name: 'deleted_at',
-                    type: databaseTypes.getType('timestamp')
+                    type: getDbType('timestamp')
                 }));
             }
         }
