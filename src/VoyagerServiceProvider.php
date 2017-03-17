@@ -117,7 +117,11 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     protected function addStorageSymlinkAlert()
     {
-        $currentRouteAction = app('router')->current()->getAction();
+        if (app('router')->current() !== null) {
+            $currentRouteAction = app('router')->current()->getAction();
+        } else  {
+            $currentRouteAction = null;
+        }
         $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
 
         if ($routeName != 'voyager.dashboard') {
