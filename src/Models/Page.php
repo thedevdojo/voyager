@@ -13,9 +13,9 @@ class Page extends Model
     /**
      * Statuses.
      */
-    const STATUS_ACTIVE = 'active';
+    const STATUS_ACTIVE = 'ACTIVE';
 
-    const STATUS_INACTIVE = 'passive';
+    const STATUS_INACTIVE = 'INACTIVE';
 
     public static $statuses = [
         self::STATUS_ACTIVE,
