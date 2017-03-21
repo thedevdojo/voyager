@@ -190,4 +190,107 @@ return [
     ],
 
     'primary_color' => '#22A7F0',
+    /*
+ |--------------------------------------------------------------------------
+ | Views config
+ |--------------------------------------------------------------------------
+ |
+ | Here you can modify where the application views point to
+ |
+ */
+
+    'views' => [
+        'bread' => [
+            'browse'        => 'bread.browse',
+            'edit'          => 'bread.edit-add',
+            'read'          => 'bread.read',
+            'partials'      => [
+                'relationship'    => 'bread.partials.relationship-edit-add',
+            ],
+        ],
+        'dashboard' => [
+            'navbar'         => 'dashboard.navbar',
+            'sidebar'        => 'dashboard.sidebar',
+        ],
+        'formfields' => [
+            'checkbox'          => 'formfields.profile',
+            'code_editor'       => 'formfields.code_editor',
+            'date'              => 'formfields.date',
+            'file'              => 'formfields.file',
+            'hidden'            => 'formfields.hidden',
+            'image'             => 'formfields.image',
+            'timestamp'         => 'formfields.timestamp',
+            'text'              => 'formfields.text',
+            'number'            => 'formfields.number',
+            'password'          => 'formfields.password',
+            'radio'             => 'formfields.radio_btn',
+            'rich_text'         => 'formfields.rich_text_box',
+            'select_dropdown'   => 'formfields.select_dropdown',
+            'select_multiple'   => 'formfields.select_multiple',
+            'multiple_images'   => 'formfields.multiple_images',
+            'text_area'         => 'formfields.text_area',
+        ],
+        'media' => [
+                'index'         => 'media.index',
+        ],
+        'menu' => [
+            'admin'           => 'menu.admin',
+            'admin_menu'      => 'menu.admin_menu',
+            'bootstrap'       => 'menu.bootstrap',
+            'default'         => 'menu.default',
+        ],
+        'menus' => [
+            'browse'          => 'menus.admin',
+            'builder'         => 'menus.builder',
+            'partial'         => [
+                'notice'      => 'menus.partial.notice',
+            ],
+        ],
+        'multilingual' => [
+                'bread'         => 'multilingual.input-hidden-bread',
+                'browse'        => 'multilingual.input-hidden-bread-browse',
+                'menu'          => 'multilingual.input-hidden-menu',
+                'selector'      => 'multilingual.language-selector',
+        ],
+        'partials' => [
+                'footer'         => 'partials.app-footer',
+        ],
+        'posts' => [
+                'browse'         => 'posts.browse',
+                'edit_add'       => 'posts.edit-add',
+        ],
+        'roles' => [
+                'edit_add'       => 'roles.edit-add',
+        ],
+        'settings' => [
+                'index'          => 'settings.index',
+        ],
+        'tools' => [
+                'database'      => [
+                    'edit_add'  => 'tools.database.edit-add',
+                    'bread'     => 'tools.database.edit-add-bread',
+                    'index'     => 'tools.database.index',
+                    'vue'       => [
+                        'database_column'            => 'tools.database.vue-components.database-column',
+                        'database_column_default'    => 'tools.database.vue-components.database-column-default',
+                        'database_table_editor'      => 'tools.database.vue-components.database-table-editor',
+                        'database_table_helper'      => 'tools.database.vue-components.database-table-helper-buttons',
+                        'database_types'             => 'tools.database.vue-components.database-types',
+                    ],
+                ],
+        ],
+        'users' => [
+                'browse'        => 'users.profile',
+                'edit_add'      => 'users.edit-add',
+                'read'          => 'users.read',
+        ],
+        'alerts' => 'alerts',
+        'dimmer' => 'dimmer',
+        'dimmers' => 'dimmers',
+        'index' => 'index',
+        'login' => 'login',
+        'master' => 'master',
+        'profile' => 'profile',
+
+  ]
 ];
