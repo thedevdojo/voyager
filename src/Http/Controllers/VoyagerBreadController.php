@@ -49,6 +49,23 @@ class VoyagerBreadController extends Controller
 
             //Replace relationships' keys for labels and create READ links if a slug is provided.
             $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
+
+            // Get thre relationshiop values from the relational Class
+            $dataTypeContent->transform(function ($item) use ($dataType) {
+                foreach($dataType->browseRows as $row) {
+                    if ($row->type == 'select_dropdown') {
+                        $options = json_decode($row->details);
+                        $relationshipClass = $item->{camel_case($row->field)}()->getRelated();
+                        $relationshipOption = $relationshipClass::where($options->relationship->key, $item->{$row->field})->first();
+                        if ($relationshipOption) {
+                            $item->{$row->field} = $relationshipOption->{$options->relationship->label};
+                        } else {
+                            $item->{$row->field} = "";
+                        }
+                    }
+                }
+                return $item;
+            });
         } else {
             // If Model doesn't exist, get data from table name
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);

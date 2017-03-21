@@ -58,7 +58,7 @@
                                                 @if ($data->{$row->field} && isset($options->relationship))
                                                     {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
                                                 @endif
-                                            @elseif($row->type == 'select_dropdown' && property_exists($options, 'options'))
+                                                @elseif($row->type == 'select_dropdown' && property_exists($options, 'options') && property_exists($options->options, $data->{$row->field}))
 
                                                 @if($data->{$row->field . '_page_slug'})
                                                     <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $options->options->{$data->{$row->field}} !!}</a>
