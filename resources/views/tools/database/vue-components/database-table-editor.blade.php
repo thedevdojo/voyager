@@ -25,7 +25,7 @@
 
             <div class="col-md-3 col-sm-4 col-xs-6">
                 <label for="create_migration">Create migration for this table?</label><br>
-                <input type="checkbox" name="create_migration" data-toggle="toggle"
+                <input disabled type="checkbox" name="create_migration" data-toggle="toggle"
                        data-on="Yes, Please" data-off="No Thanks">
             </div>
         @endif
