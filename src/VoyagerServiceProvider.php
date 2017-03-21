@@ -119,7 +119,7 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         if (app('router')->current() !== null) {
             $currentRouteAction = app('router')->current()->getAction();
-        } else  {
+        } else {
             $currentRouteAction = null;
         }
         $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
