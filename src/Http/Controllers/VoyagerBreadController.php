@@ -10,6 +10,7 @@ use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 class VoyagerBreadController extends Controller
 {
     use BreadRelationshipParser;
+
     //***************************************
     //               ____
     //              |  _ \
@@ -31,7 +32,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('browse_'.$dataType->name);
+        Voyager::canOrFail('browse_' . $dataType->name);
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
@@ -52,11 +53,12 @@ class VoyagerBreadController extends Controller
 
             // Get thre relationshiop values from the relational Class
             $dataTypeContent->transform(function ($item) use ($dataType) {
-                foreach($dataType->browseRows as $row) {
+                foreach ($dataType->browseRows as $row) {
                     if ($row->type == 'select_dropdown') {
                         $options = json_decode($row->details);
                         $relationshipClass = $item->{camel_case($row->field)}()->getRelated();
-                        $relationshipOption = $relationshipClass::where($options->relationship->key, $item->{$row->field})->first();
+                        $relationshipOption = $relationshipClass::where($options->relationship->key,
+                            $item->{$row->field})->first();
                         if ($relationshipOption) {
                             $item->{$row->field} = $relationshipOption->{$options->relationship->label};
                         } else {
@@ -102,7 +104,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('read_'.$dataType->name);
+        Voyager::canOrFail('read_' . $dataType->name);
 
         $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
@@ -147,7 +149,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_' . $dataType->name);
 
         $relationships = $this->getRelationships($dataType);
 
@@ -175,7 +177,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_' . $dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
@@ -184,7 +186,7 @@ class VoyagerBreadController extends Controller
         return redirect()
             ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
             ->with([
-                'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                'message' => "Successfully Updated {$dataType->display_name_singular}",
                 'alert-type' => 'success',
             ]);
     }
@@ -209,11 +211,11 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
+        Voyager::canOrFail('add_' . $dataType->name);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-                            ? new $dataType->model_name()
-                            : false;
+            ? new $dataType->model_name()
+            : false;
 
         // Check if BREAD is Translatable
         $isModelTranslatable = isBreadTranslatable($dataTypeContent);
@@ -235,14 +237,14 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
+        Voyager::canOrFail('add_' . $dataType->name);
 
         $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
         return redirect()
             ->route("voyager.{$dataType->slug}.edit", ['id' => $data->id])
             ->with([
-                'message'    => "Successfully Added New {$dataType->display_name_singular}",
+                'message' => "Successfully Added New {$dataType->display_name_singular}",
                 'alert-type' => 'success',
             ]);
     }
@@ -266,26 +268,26 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('delete_'.$dataType->name);
+        Voyager::canOrFail('delete_' . $dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
         foreach ($dataType->deleteRows as $row) {
             if ($row->type == 'image') {
-                $this->deleteFileIfExists('/uploads/'.$data->{$row->field});
+                $this->deleteFileIfExists('/uploads/' . $data->{$row->field});
 
                 $options = json_decode($row->details);
 
                 if (isset($options->thumbnails)) {
                     foreach ($options->thumbnails as $thumbnail) {
                         $ext = explode('.', $data->{$row->field});
-                        $extension = '.'.$ext[count($ext) - 1];
+                        $extension = '.' . $ext[count($ext) - 1];
 
                         $path = str_replace($extension, '', $data->{$row->field});
 
                         $thumb_name = $thumbnail->name;
 
-                        $this->deleteFileIfExists('/uploads/'.$path.'-'.$thumb_name.$extension);
+                        $this->deleteFileIfExists('/uploads/' . $path . '-' . $thumb_name . $extension);
                     }
                 }
             }
@@ -293,11 +295,11 @@ class VoyagerBreadController extends Controller
 
         $data = $data->destroy($id)
             ? [
-                'message'    => "Successfully Deleted {$dataType->display_name_singular}",
+                'message' => "Successfully Deleted {$dataType->display_name_singular}",
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => "Sorry it appears there was a problem deleting this {$dataType->display_name_singular}",
+                'message' => "Sorry it appears there was a problem deleting this {$dataType->display_name_singular}",
                 'alert-type' => 'error',
             ];
 
