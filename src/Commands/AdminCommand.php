@@ -112,6 +112,12 @@ class AdminCommand extends Command
         if ($create) {
             $name = $this->ask('Enter the admin name');
             $password = $this->secret('Enter admin password');
+
+            // Ask for email if there wasnt set one
+            if (!$email) {
+                $email = $this->ask('Enter the admin email');
+            }
+
             $this->info('Creating admin account');
 
             return $model::create([
