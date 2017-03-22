@@ -190,4 +190,5 @@ return [
     ],
 
     'primary_color' => '#22A7F0',
+    'use_theme' => false,
 ];

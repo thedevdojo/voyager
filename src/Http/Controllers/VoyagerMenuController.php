@@ -15,7 +15,7 @@ class VoyagerMenuController extends Controller
 
         $isModelTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
 
-        return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
+        return Voyager::view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
     }
 
     public function delete_menu($menu, $id)

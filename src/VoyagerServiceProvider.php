@@ -4,6 +4,8 @@ namespace TCG\Voyager;
 
 use Arrilot\Widgets\Facade as Widget;
 use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
+use Caffeinated\Themes\Facades\Theme as Theme;
+use Caffeinated\Themes\ThemesServiceProvider as ThemeServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
@@ -26,9 +28,12 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(WidgetServiceProvider::class);
+        $this->app->register(ThemeServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
+        $loader->alias('Theme', Theme::class);
+
 
         $this->app->singleton('voyager', function () {
             return new Voyager();

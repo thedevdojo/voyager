@@ -14,7 +14,7 @@ class VoyagerController extends Controller
 {
     public function index()
     {
-        return view('voyager::index');
+        return Voyager::view('voyager::index');
     }
 
     public function logout()
@@ -61,6 +61,6 @@ class VoyagerController extends Controller
 
     public function profile()
     {
-        return view('voyager::profile');
+        return Voyager::view('voyager::profile');
     }
 }

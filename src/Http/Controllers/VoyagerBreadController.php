@@ -63,7 +63,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.browse";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     //***************************************
@@ -108,7 +108,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.read";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     //***************************************
@@ -147,7 +147,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     // POST BR(E)AD
@@ -207,7 +207,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     // POST BRE(A)D

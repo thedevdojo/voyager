@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Caffeinated\Themes\Facades\Theme;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
 use TCG\Voyager\FormFields\HandlerInterface;
 use TCG\Voyager\Models\Category;
@@ -57,6 +58,23 @@ class Voyager
         $this->filesystem = app(Filesystem::class);
 
         $this->findVersion();
+    }
+    public function view($name, $data = null)
+    {
+        if(config('voyager.use_theme') === true){
+            $name_fragment = explode("::", $name);
+            // package-namespace --> $name_fragment[0]
+            // view location --> $name_fragment[1] ;
+            if(isset($data)){
+                return Theme::view($name_fragment[1], $data);
+            }
+            return Theme::view($name_fragment[1]);
+        }
+        //run this if use of theme has not been switched on
+        if(isset($data)){
+            return view($name, $data);
+        }
+        return view($name);
     }
 
     public function model($name)

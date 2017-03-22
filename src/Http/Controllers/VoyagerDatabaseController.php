@@ -34,7 +34,7 @@ class VoyagerDatabaseController extends Controller
             return (object) $table;
         }, SchemaManager::listTableNames());
 
-        return view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
+        return Voyager::view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
     }
 
     public function create()
@@ -43,7 +43,7 @@ class VoyagerDatabaseController extends Controller
 
         $db = $this->prepareDbManager('create');
 
-        return view('voyager::tools.database.edit-add', compact('db'));
+        return Voyager::view('voyager::tools.database.edit-add', compact('db'));
     }
 
     public function store(Request $request)
@@ -97,7 +97,7 @@ class VoyagerDatabaseController extends Controller
 
         $db = $this->prepareDbManager('update', $table);
 
-        return view('voyager::tools.database.edit-add', compact('db'));
+        return Voyager::view('voyager::tools.database.edit-add', compact('db'));
     }
 
     /**
@@ -233,7 +233,7 @@ class VoyagerDatabaseController extends Controller
         $data = $this->prepopulateBreadInfo($table);
         $data['fieldOptions'] = SchemaManager::describeTable($table);
 
-        return view('voyager::tools.database.edit-add-bread', $data);
+        return Voyager::view('voyager::tools.database.edit-add-bread', $data);
     }
 
     private function prepopulateBreadInfo($table)
@@ -283,7 +283,7 @@ class VoyagerDatabaseController extends Controller
             $fieldOptions = SchemaManager::describeTable($dataType->name);
         }
 
-        return view(
+        return Voyager::view(
             'voyager::tools.database.edit-add-bread', [
                 'dataType'     => $dataType,
                 'fieldOptions' => $fieldOptions,
