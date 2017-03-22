@@ -83,7 +83,7 @@
         @if(!$originalItem->children->isEmpty())
         <div id="{{ str_slug($originalItem->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
             <div class="panel-body">
-                @include('voyager::menu.admin_menu', ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
+                @include(config('voyager.views.menu.admin_menu', false), ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
             </div>
         </div>
         @endif

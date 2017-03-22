@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -14,7 +14,7 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
     </h1>
-    @include('voyager::multilingual.language-selector')
+    @include(config('voyager.views.multilingual.selector', false))
 @stop
 
 @section('content')
@@ -63,7 +63,7 @@
                             @foreach($dataTypeRows as $row)
                                 <div class="form-group @if($row->type == 'hidden') hidden @endif">
                                     <label for="name">{{ $row->display_name }}</label>
-                                    @include('voyager::multilingual.input-hidden-bread')
+                                    @include(config('voyager.views.multilingual.bread', false))
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
                                     @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)

@@ -22,7 +22,7 @@
         </div>
         <div class="dd-handle">
             @if($options->isModelTranslatable)
-                @include('voyager::multilingual.input-hidden-menu', [
+                @include(config('voyager.views.multilingual.menu', false), [
                     'isModelTranslatable' => true,
                     '_field_name'         => 'title'.$item->id,
                     '_field_trans'        => htmlspecialchars(json_encode($item->getTranslationsOf('title')))
@@ -31,7 +31,7 @@
             <span>{{ $item->title }}</span> <small class="url">{{ $item->link() }}</small>
         </div>
         @if(!$item->children->isEmpty())
-            @include('voyager::menu.admin', ['items' => $item->children])
+            @include(config('voyager.views.menu.admin', false), ['items' => $item->children])
         @endif
     </li>
 

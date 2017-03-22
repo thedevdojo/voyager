@@ -8,7 +8,7 @@ class TextHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('voyager::formfields.text', [
+        return view(config('voyager.views.formfields.text', false), [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,

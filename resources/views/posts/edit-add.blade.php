@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @if(isset($dataTypeContent->id))
     @section('page_title','Edit '.$dataType->display_name_singular)

@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">

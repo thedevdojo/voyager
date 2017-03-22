@@ -8,7 +8,7 @@ class TextAreaHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('voyager::formfields.text_area', [
+        return view(config('voyager.views.formfields.text_area', false), [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,

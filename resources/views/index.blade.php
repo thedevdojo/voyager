@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/ga-embed.css">
@@ -6,8 +6,8 @@
 
 @section('content')
     <div class="page-content">
-        @include('voyager::alerts')
-        @include('voyager::dimmers')
+        @include(config('voyager.views.alerts', false))
+        @include(config('voyager.views.dimmers', false))
         <div style="padding:15px;">
             <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
             @if (isset($google_analytics_client_id) && !empty($google_analytics_client_id))

@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/nestable.css">
@@ -9,11 +9,11 @@
         <i class="voyager-list"></i>Menu Builder ({{ $menu->name }})
         <div class="btn btn-success add_item"><i class="voyager-plus"></i> New Menu Item</div>
     </h1>
-    @include('voyager::multilingual.language-selector')
+    @include(config('voyager.views.multilingual.selector', false))
 @stop
 
 @section('content')
-    @include('voyager::menus.partial.notice')
+    @include(config('voyager.views.menus.partial.notice', false))
 
     <div class="page-content container-fluid">
         <div class="row">
@@ -75,9 +75,9 @@
                 </div>
                 <form action="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}" id="add_form" method="POST">
                     <div class="modal-body">
-                        @include('voyager::multilingual.language-selector')
+                        @include(config('voyager.views.multilingual.selector', false))
                         <label for="name">Title of the Menu Item</label>
-                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'add_title', '_field_trans' => ''])
+                        @include(config('voyager.views.multilingual.menu', false), ['_field_name' => 'add_title', '_field_trans' => ''])
                         <input type="text" class="form-control" id="add_title" name="title" placeholder="Title"><br>
                         <label for="url">URL for the Menu Item</label>
                         <input type="text" class="form-control" name="url" placeholder="URL"><br>
@@ -119,9 +119,9 @@
                     {{ method_field("PUT") }}
                     {{ csrf_field() }}
                     <div class="modal-body">
-                        @include('voyager::multilingual.language-selector')
+                        @include(config('voyager.views.multilingual.selector', false))
                         <label for="name">Title of the Menu Item</label>
-                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'edit_title', '_field_trans' => ''])
+                        @include(config('voyager.views.multilingual.menu', false), ['_field_name' => 'edit_title', '_field_trans' => ''])
                         <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
                         <label for="type">Link type</label>
                         <select id="edit_type" class="form-control" name="type">

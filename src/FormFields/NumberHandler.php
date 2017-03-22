@@ -8,7 +8,7 @@ class NumberHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('voyager::formfields.number', [
+        return view(config('voyager.views.formfields.number', false), [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,
