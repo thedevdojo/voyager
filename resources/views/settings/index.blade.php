@@ -286,7 +286,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="key">Key</label>
-                        <input type="text" class="form-control" name="key" placeholder="Setting value ex: admin_title" required="required">
+                        <input type="text" class="form-control" name="key" placeholder="Setting key ex: admin_title" required="required">
                     </div>
                     <div class="col-md-4">
                         <label for="asdf">Type</label>
