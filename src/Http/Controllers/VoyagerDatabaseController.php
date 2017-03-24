@@ -57,8 +57,9 @@ class VoyagerDatabaseController extends Controller
             SchemaManager::createTable($table);
 
             if (isset($request->create_model) && $request->create_model == 'on') {
+                $modelNamespace = config('voyager.models.namespace', app()->getNamespace());
                 $params = [
-                    'name' => Str::studly(Str::singular($table->name)),
+                    'name' => $modelNamespace.Str::studly(Str::singular($table->name)),
                 ];
 
                 // if (in_array('deleted_at', $request->input('field.*'))) {
