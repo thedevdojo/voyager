@@ -20,6 +20,11 @@ Route::group(['as' => 'voyager.'], function () {
     Route::get('login', ['uses' => $namespacePrefix.'VoyagerAuthController@login', 'as' => 'login']);
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
 
+    Route::post('password/email', ['uses' => $namespacePrefix.'VoyagerForgotPasswordController@sendResetLinkEmail', 'as' => 'password_email']);
+    Route::post('password/reset', ['uses' => $namespacePrefix.'VoyagerResetPasswordController@reset', 'as' => 'password_reset']);
+    Route::get('password/reset', ['uses' => $namespacePrefix.'VoyagerForgotPasswordController@showLinkRequestForm', 'as' => 'password_request_form']);
+    Route::get('password/reset/{token}', ['uses' => $namespacePrefix.'VoyagerResetPasswordController@showResetForm', 'as' => 'password_reset_form']);
+
     Route::group(['middleware' => 'admin.user'], function () use ($namespacePrefix) {
         event('voyager.admin.routing', app('router'));
 
