@@ -282,15 +282,16 @@
                     {{ csrf_field() }}
                     <div class="col-md-4">
                         <label for="display_name">Name</label>
-                        <input type="text" class="form-control" name="display_name">
+                        <input type="text" class="form-control" name="display_name" placeholder="Setting name ex: Admin Title" required="required">
                     </div>
                     <div class="col-md-4">
                         <label for="key">Key</label>
-                        <input type="text" class="form-control" name="key">
+                        <input type="text" class="form-control" name="key" placeholder="Setting key ex: admin_title" required="required">
                     </div>
                     <div class="col-md-4">
                         <label for="asdf">Type</label>
-                        <select name="type" class="form-control">
+                        <select name="type" class="form-control" required="required">
+                            <option value="">Choose type</option>
                             <option value="text">Text Box</option>
                             <option value="text_area">Text Area</option>
                             <option value="rich_text_box">Rich Textbox</option>
