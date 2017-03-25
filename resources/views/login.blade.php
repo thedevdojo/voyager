@@ -24,7 +24,12 @@
 
     </style>
 
+    <?php $admin_login_font_url = Voyager::setting('admin_login_font_url', ''); ?>
+    @if ($admin_login_font_url== '')
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    @else
+        <link href='{{ $admin_login_font_url }}' rel='stylesheet' type='text/css'>
+    @endif
 </head>
 <body>
 <!-- Designed with ♥ by Frondor -->
