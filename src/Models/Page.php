@@ -48,4 +48,18 @@ class Page extends Model
     {
         return $query->where('status', static::STATUS_ACTIVE);
     }
+
+    /**
+     * @param null $slug
+     * @param null $id
+     * @param bool $author
+     *
+     * @return \Illuminate\Support\HtmlString
+     *
+     * @author Dusan Perisic
+     */
+    public static function display(string $slug = null, string $id = null, array $page_author = null)
+    {
+        return Post::display($slug, $id, $page_author, new self());
+    }
 }

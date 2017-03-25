@@ -52,4 +52,26 @@ class Post extends Model
     {
         return $this->hasOne(Voyager::modelClass('Category'), 'id', 'category_id');
     }
+
+    /**
+     * @param null $slug
+     * @param null $id
+     * @param bool $author
+     *
+     * @return \Illuminate\Support\HtmlString
+     *
+     * @author Dusan Perisic
+     */
+    public static function display(string $slug = null, string $id = null, array $author = null, $model = self::class)
+    {
+        $data = $model::where($slug ? 'slug' : 'id', $slug ? $slug : $id)->get()->first();
+        $data->author = $author;
+        if ($data->author) {
+            $data->author = User::find($data->author_id, $author)->toArray();
+        }
+
+        return new \Illuminate\Support\HtmlString(
+            \Illuminate\Support\Facades\View::make('voyager::posts.show', $data)->render()
+        );
+    }
 }
