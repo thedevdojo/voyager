@@ -160,7 +160,7 @@
 @stop
 
 @section('head')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jsonarea/jsonarea.min.js"></script>
+    <script type="text/javascript" src="{{ voyager_asset('lib/js/jsonarea/jsonarea.min.js') }}"></script>
 @stop
 
 @section('page_header')
@@ -383,10 +383,10 @@
         <input type="hidden" name="type_slug" id="type_slug" value="settings">
     </form>
 
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/lib/js/ace/ace.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_ace_editor.js"></script>
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
+    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
     <script>
         var options_editor = ace.edit('options_editor');
         options_editor.getSession().setMode("ace/mode/json");

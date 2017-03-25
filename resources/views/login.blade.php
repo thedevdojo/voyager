@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="admin login">
     <title>Admin - {{ Voyager::setting("title") }}</title>
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/animate.min.css">
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/login.css">
+    <link rel="stylesheet" href="{{ voyager_asset('lib/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ voyager_asset('css/animate.min.css') }}">
+    <link rel="stylesheet" href="{{ voyager_asset('css/login.css') }}">
     <style>
         body {
             background-image:url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
@@ -37,7 +37,7 @@
                     <div class="logo-title-container">
                         <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
                         @if($admin_logo_img == '')
-                        <img class="img-responsive pull-left logo hidden-xs animated fadeIn" src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
+                        <img class="img-responsive pull-left logo hidden-xs animated fadeIn" src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
                         @else
                         <img class="img-responsive pull-left logo hidden-xs animated fadeIn" src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
                         @endif
