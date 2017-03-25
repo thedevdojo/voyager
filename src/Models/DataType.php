@@ -122,7 +122,7 @@ class DataType extends Model
             $name = $this->name;
         }
 
-        $fields = Schema::getColumnListing($name);
+        $fields = SchemaManager::listTableColumnNames($name);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
