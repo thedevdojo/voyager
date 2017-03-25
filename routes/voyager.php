@@ -47,6 +47,9 @@ Route::group(['as' => 'voyager.'], function () {
         // Role Routes
         Route::resource('roles', $namespacePrefix.'VoyagerRoleController');
 
+        // User Routes
+        Route::resource('users', $namespacePrefix.'VoyagerUserController');
+
         // Menu Routes
         Route::group([
             'as'     => 'menus.',
