@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/ga-embed.css">
+    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/ga-embed.css') }}">
 @stop
 
 @section('content')
@@ -104,14 +104,14 @@
             }(window, document, 'script'));
         </script>
 
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/chart.min.js"></script>
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/moment.min.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/chart.min.js') }}"></script>
+        <script src="{{ voyager_asset('js/ga-embed/moment.min.js') }}"></script>
         <!-- Include the ViewSelector2 component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/view-selector2.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/view-selector2.js') }}"></script>
         <!-- Include the DateRangeSelector component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/date-range-selector.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/date-range-selector.js') }}"></script>
         <!-- Include the ActiveUsers component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/active-users.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/active-users.js') }}"></script>
 
         <script>
             // == NOTE ==

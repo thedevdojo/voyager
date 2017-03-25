@@ -31,7 +31,7 @@ class UserDimmer extends AbstractWidget
                 'text' => 'View all users',
                 'link' => route('voyager.users.index'),
             ],
-            'image' => url(config('voyager.assets_path').'/images/widget-backgrounds/02.png'),
+            'image' => voyager_asset('images/widget-backgrounds/02.png'),
         ]));
     }
 }

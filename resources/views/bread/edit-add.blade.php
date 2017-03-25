@@ -168,11 +168,11 @@
         });
     </script>
     @if($isModelTranslatable)
-        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
     @endif
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/lib/js/ace/ace.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_ace_editor.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
+    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
+    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
 @stop

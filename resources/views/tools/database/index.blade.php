@@ -1,8 +1,8 @@
 @extends('voyager::master')
 
 @section('css')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue21.min.js"></script>
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/database.css">
+    <script type="text/javascript" src="{{ voyager_asset('js/vue21.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ voyager_asset('css/database.css') }}">
 @stop
 
 @section('page_header')
