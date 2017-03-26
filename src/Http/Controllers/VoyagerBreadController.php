@@ -253,6 +253,11 @@ class VoyagerBreadController extends Controller
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
+        // Delete Translations, if present
+        if (isBreadTranslatable($data)) {
+            $data->deleteTranslations( $data->getTranslatableAttributes() );
+        }
+
         foreach ($dataType->deleteRows as $row) {
             if ($row->type == 'image') {
                 $this->deleteFileIfExists('/uploads/'.$data->{$row->field});
@@ -273,6 +278,7 @@ class VoyagerBreadController extends Controller
                 }
             }
         }
+
 
         $data = $data->destroy($id)
             ? [
