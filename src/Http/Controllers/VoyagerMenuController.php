@@ -52,14 +52,19 @@ class VoyagerMenuController extends Controller
             $data['order'] = intval($highestOrderMenuItem->order) + 1;
         }
 
-        $menuItem = Voyager::model('MenuItem')->create(
-            collect($data)->filter(function ($item, $key) {
-                return !ends_with($key, '_i18n') and $key !== 'i18n_selector';
-            })->all()
-        );
+        // Check if is translatable
+        $_isTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
+        if ($_isTranslatable) {
+            // Prepare data before saving the menu
+            $trans = $this->prepareMenuTranslations($data, 'add');
+        }
 
-        // Save menu translations if available
-        $this->saveMenuTranslations($menuItem, $data, 'add');
+        $menuItem = Voyager::model('MenuItem')->create($data);
+
+        // Save menu translations
+        if ($_isTranslatable) {
+            $menuItem->setAttributeTranslations('title', $trans, true);
+        }
 
         return redirect()
             ->route('voyager.menus.builder', [$data['menu_id']])
@@ -80,8 +85,12 @@ class VoyagerMenuController extends Controller
 
         $menuItem = Voyager::model('MenuItem')->findOrFail($id);
 
-        // Save menu translations if available
-        $this->saveMenuTranslations($menuItem, $data, 'edit');
+        if (isBreadTranslatable($menuItem)) {
+            $trans = $this->prepareMenuTranslations($data, 'edit');
+
+            // Save menu translations
+            $menuItem->setAttributeTranslations('title', $trans, true);
+        }
 
         $menuItem->update($data);
 
@@ -134,29 +143,24 @@ class VoyagerMenuController extends Controller
     }
 
     /**
-     * Save menu translations.
+     * Prepare menu translations.
      *
-     * @param object $_menuItem
      * @param array  $data      menu data
      * @param string $action    add or edit action
      *
      * @return JSON translated item
      */
-    protected function saveMenuTranslations($_menuItem, &$data, $action)
+    protected function prepareMenuTranslations(&$data, $action)
     {
-        if (isBreadTranslatable($_menuItem)) {
-            $key = $action.'_title_i18n';
-            $trans = json_decode($data[$key], true);
+        $key = $action.'_title_i18n';
+        $trans = json_decode($data[$key], true);
 
-            // Set field value with the default locale
-            $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
+        // Set field value with the default locale
+        $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
 
-            unset($data[$key]);             // Remove hidden input holding translations
-            unset($data['i18n_selector']);  // Remove language selector input radio
+        unset($data[$key]);             // Remove hidden input holding translations
+        unset($data['i18n_selector']);  // Remove language selector input radio
 
-            $_menuItem->setAttributeTranslations(
-                'title', $trans, true
-            );
-        }
+        return $trans;
     }
 }
