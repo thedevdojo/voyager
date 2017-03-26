@@ -145,8 +145,8 @@ class VoyagerMenuController extends Controller
     /**
      * Prepare menu translations.
      *
-     * @param array  $data      menu data
-     * @param string $action    add or edit action
+     * @param array  $data   menu data
+     * @param string $action add or edit action
      *
      * @return JSON translated item
      */
