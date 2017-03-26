@@ -30,14 +30,13 @@ class TranslationsTableSeeder extends Seeder
             $_arr = $this->_arr('pages', 'title', $page->id);
             $this->_trans('pt', $_arr, 'Olá Mundo');
             /**
-             * For configuring more languages use like:
+             * For configuring more languages use it like this example.
              *
              * ```
              *   $this->_trans('es', $_arr, 'hola-mundo');
              *   $this->_trans('de', $_arr, 'hallo-welt');
              * ```
              */
-
             $_arr = $this->_arr('pages', 'slug', $page->id);
             $this->_trans('pt', $_arr, 'ola-mundo');
 
