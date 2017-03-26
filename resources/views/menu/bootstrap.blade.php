@@ -60,7 +60,7 @@
             {!! $caret !!}
         </a>
         @if(!$originalItem->children->isEmpty())
-        @include('voyager::menu.bootstrap', ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
+        @include(config('voyager.views.menu.bootstrap', false), ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
         @endif
     </li>
 @endforeach

@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -12,7 +12,7 @@
 
 @section('content')
     <div class="page-content container-fluid">
-        @include('voyager::alerts')
+        @include(config('voyager.views.alerts', false))
         <div class="row">
             <div class="col-md-12">
 

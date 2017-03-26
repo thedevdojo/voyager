@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
@@ -89,6 +90,7 @@ class VoyagerServiceProvider extends ServiceProvider
         });
 
         $this->bootTranslatorCollectionMacros();
+        Config::set('voyager.package',Config::get('voyager.package'));
     }
 
     /**

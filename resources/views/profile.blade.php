@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @section('css')
     <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/ga-embed.css') }}">

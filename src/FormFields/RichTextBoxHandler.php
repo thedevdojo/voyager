@@ -8,7 +8,7 @@ class RichTextBoxHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('voyager::formfields.rich_text_box', [
+        return view(config('voyager.views.formfields.rich_text', false), [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,

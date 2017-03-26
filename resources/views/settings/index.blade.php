@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @section('css')
     <style>
@@ -172,7 +172,7 @@
 @section('content')
 
     <div class="container-fluid">
-        @include('voyager::alerts')
+        @include(config('voyager.views.alerts', false))
         <div class="alert alert-info">
             <strong>How To Use:</strong>
             <p>You can get the value of each setting anywhere on your site by calling <code>Voyager::setting('key')</code></p>

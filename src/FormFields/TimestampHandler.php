@@ -8,7 +8,7 @@ class TimestampHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('voyager::formfields.timestamp', [
+        return view(config('voyager.views.formfields.timestamp', false), [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,

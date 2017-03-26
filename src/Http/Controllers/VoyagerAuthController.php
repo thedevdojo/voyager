@@ -11,7 +11,7 @@ class VoyagerAuthController extends Controller
 
     public function login()
     {
-        return view('voyager::login');
+        return view(config('voyager.views.login', false));
     }
 
     public function postLogin(Request $request)

@@ -8,7 +8,7 @@ class HiddenHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('voyager::formfields.hidden', [
+        return view(config('voyager.views.formfields.hidden', false), [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,

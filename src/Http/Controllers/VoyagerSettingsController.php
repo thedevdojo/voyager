@@ -15,7 +15,7 @@ class VoyagerSettingsController extends Controller
 
         $settings = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
 
-        return view('voyager::settings.index', compact('settings'));
+        return view(config('voyager.views.settings.index', false), compact('settings'));
     }
 
     public function store(Request $request)

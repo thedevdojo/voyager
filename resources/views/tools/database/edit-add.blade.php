@@ -1,4 +1,4 @@
-@extends('voyager::master')
+@extends(config('voyager.views.master', false))
 
 @section('css')
     <script type="text/javascript" src="{{ voyager_asset('js/vue21.min.js') }}"></script>
@@ -36,7 +36,7 @@
 @stop
 
 @section('javascript')
-    @include('voyager::tools.database.vue-components.database-table-editor')
+    @include(config('voyager.views.tools.database.vue.database_table_editor', false))
 
     <script>
         new Vue({

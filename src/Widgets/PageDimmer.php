@@ -23,7 +23,7 @@ class PageDimmer extends AbstractWidget
         $count = Voyager::model('Page')->count();
         $string = $count == 1 ? 'page' : 'pages';
 
-        return view('voyager::dimmer', array_merge($this->config, [
+        return view(config('voyager.views.dimmer', false), array_merge($this->config, [
             'icon'   => 'voyager-group',
             'title'  => "{$count} {$string}",
             'text'   => "You have {$count} {$string} in your database. Click on button below to view all pages.",

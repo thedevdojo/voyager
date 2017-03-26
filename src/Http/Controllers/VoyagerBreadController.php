@@ -57,10 +57,10 @@ class VoyagerBreadController extends Controller
         // Check if BREAD is Translatable
         $isModelTranslatable = isBreadTranslatable($model);
 
-        $view = 'voyager::bread.browse';
+        $view = config('voyager.views.bread.browse', false);
 
-        if (view()->exists("voyager::$slug.browse")) {
-            $view = "voyager::$slug.browse";
+        if (view()->exists("$slug.browse")) {
+            $view = "$slug.browse";
         }
 
         return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
@@ -102,10 +102,10 @@ class VoyagerBreadController extends Controller
         // Check if BREAD is Translatable
         $isModelTranslatable = isBreadTranslatable($dataTypeContent);
 
-        $view = 'voyager::bread.read';
+        $view = config('voyager.views.bread.read', false);
 
-        if (view()->exists("voyager::$slug.read")) {
-            $view = "voyager::$slug.read";
+        if (view()->exists("$slug.read")) {
+            $view = "$slug.read";
         }
 
         return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
@@ -141,10 +141,10 @@ class VoyagerBreadController extends Controller
         // Check if BREAD is Translatable
         $isModelTranslatable = isBreadTranslatable($dataTypeContent);
 
-        $view = 'voyager::bread.edit-add';
+        $view = config('voyager.views.bread.edit_read', false);
 
-        if (view()->exists("voyager::$slug.edit-add")) {
-            $view = "voyager::$slug.edit-add";
+        if (view()->exists("$slug.edit-add")) {
+            $view = "$slug.edit-add";
         }
 
         return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
@@ -201,10 +201,10 @@ class VoyagerBreadController extends Controller
         // Check if BREAD is Translatable
         $isModelTranslatable = isBreadTranslatable($dataTypeContent);
 
-        $view = 'voyager::bread.edit-add';
+        $view = config('voyager.views.bread.edit_read', false);
 
-        if (view()->exists("voyager::$slug.edit-add")) {
-            $view = "voyager::$slug.edit-add";
+        if (view()->exists("$slug.edit-add")) {
+            $view = "$slug.edit-add";
         }
 
         return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));

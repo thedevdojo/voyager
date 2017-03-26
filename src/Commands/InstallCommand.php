@@ -79,6 +79,11 @@ class InstallCommand extends Command
             base_path('routes/web.php'),
             "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
         );
+        $this->info('Adding Voyager package name to .env file');
+        $filesystem->append(
+            base_path('.env'),
+            "\n\nVOYAGER = 'voyager::'\n"
+        );
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');

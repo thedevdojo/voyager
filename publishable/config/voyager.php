@@ -190,4 +190,107 @@ return [
     ],
 
     'primary_color' => '#22A7F0',
+    /*
+ |--------------------------------------------------------------------------
+ | Views config
+ |--------------------------------------------------------------------------
+ |
+ | Here you can modify where the application views point to
+ |
+ */
+
+    'views' => [
+        'bread' => [
+            'browse'        => env('VOYAGER').'bread.browse',
+            'edit_read'          => env('VOYAGER').'bread.edit-add',
+            'read'          => env('VOYAGER').'bread.read',
+            'partials'      => [
+                'relationship'    => env('VOYAGER').'bread.partials.relationship-edit-add',
+            ],
+        ],
+        'dashboard' => [
+            'navbar'         => env('VOYAGER').'dashboard.navbar',
+            'sidebar'        => env('VOYAGER').'dashboard.sidebar',
+        ],
+        'formfields' => [
+            'checkbox'          => env('VOYAGER').'formfields.checkbox',
+            'code_editor'       => env('VOYAGER').'formfields.code_editor',
+            'date'              => env('VOYAGER').'formfields.date',
+            'file'              => env('VOYAGER').'formfields.file',
+            'hidden'            => env('VOYAGER').'formfields.hidden',
+            'image'             => env('VOYAGER').'formfields.image',
+            'timestamp'         => env('VOYAGER').'formfields.timestamp',
+            'text'              => env('VOYAGER').'formfields.text',
+            'number'            => env('VOYAGER').'formfields.number',
+            'password'          => env('VOYAGER').'formfields.password',
+            'radio'             => env('VOYAGER').'formfields.radio_btn',
+            'rich_text'         => env('VOYAGER').'formfields.rich_text_box',
+            'select_dropdown'   => env('VOYAGER').'formfields.select_dropdown',
+            'select_multiple'   => env('VOYAGER').'formfields.select_multiple',
+            'multiple_images'   => env('VOYAGER').'formfields.multiple_images',
+            'text_area'         => env('VOYAGER').'formfields.text_area',
+        ],
+        'media' => [
+                'index'         => env('VOYAGER').'media.index',
+        ],
+        'menu' => [
+            'admin'           => env('VOYAGER').'menu.admin',
+            'admin_menu'      => env('VOYAGER').'menu.admin_menu',
+            'bootstrap'       => env('VOYAGER').'menu.bootstrap',
+            'default'         => env('VOYAGER').'menu.default',
+        ],
+        'menus' => [
+            'browse'          => env('VOYAGER').'menus.admin',
+            'builder'         => env('VOYAGER').'menus.builder',
+            'partial'         => [
+                'notice'      => env('VOYAGER').'menus.partial.notice',
+            ],
+        ],
+        'multilingual' => [
+                'bread'         => env('VOYAGER').'multilingual.input-hidden-bread',
+                'browse'        => env('VOYAGER').'multilingual.input-hidden-bread-browse',
+                'menu'          => env('VOYAGER').'multilingual.input-hidden-menu',
+                'selector'      => env('VOYAGER').'multilingual.language-selector',
+        ],
+        'partials' => [
+                'footer'         => env('VOYAGER').'partials.app-footer',
+        ],
+        'posts' => [
+                'browse'         => env('VOYAGER').'posts.browse',
+                'edit_add'       => env('VOYAGER').'posts.edit-add',
+        ],
+        'roles' => [
+                'edit_add'       => env('VOYAGER').'roles.edit-add',
+        ],
+        'settings' => [
+                'index'          => env('VOYAGER').'settings.index',
+        ],
+        'tools' => [
+                'database'      => [
+                    'edit_add'  => env('VOYAGER').'tools.database.edit-add',
+                    'bread'     => env('VOYAGER').'tools.database.edit-add-bread',
+                    'index'     => env('VOYAGER').'tools.database.index',
+                    'vue'       => [
+                        'database_column'            => env('VOYAGER').'tools.database.vue-components.database-column',
+                        'database_column_default'    => env('VOYAGER').'tools.database.vue-components.database-column-default',
+                        'database_table_editor'      => env('VOYAGER').'tools.database.vue-components.database-table-editor',
+                        'database_table_helper'      => env('VOYAGER').'tools.database.vue-components.database-table-helper-buttons',
+                        'database_types'             => env('VOYAGER').'tools.database.vue-components.database-types',
+                    ],
+                ],
+        ],
+        'users' => [
+                'browse'        => env('VOYAGER').'users.profile',
+                'edit_add'      => env('VOYAGER').'users.edit-add',
+                'read'          => env('VOYAGER').'users.read',
+        ],
+        'alerts'    => env('VOYAGER').'alerts',
+        'dimmer'    => env('VOYAGER').'dimmer',
+        'dimmers'   => env('VOYAGER').'dimmers',
+        'index'     => env('VOYAGER').'index',
+        'login'     => env('VOYAGER').'login',
+        'master'    => env('VOYAGER').'master',
+        'profile'   => env('VOYAGER').'profile',
+        'fragment'  => env('VOYAGER').'browse'
+  ]
 ];
