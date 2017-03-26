@@ -28,16 +28,20 @@ class TranslationsTableSeeder extends Seeder
         $page = Page::where('slug', 'hello-world')->firstOrFail();
         if ($page->exists) {
             $_arr = $this->_arr('pages', 'title', $page->id);
-            $this->_trans('en', $_arr, 'Hello World');
             $this->_trans('pt', $_arr, 'Olá Mundo');
+            /**
+             * For configuring more languages use like:
+             *
+             * ```
+             *   $this->_trans('es', $_arr, 'hola-mundo');
+             *   $this->_trans('de', $_arr, 'hallo-welt');
+             * ```
+             */
 
             $_arr = $this->_arr('pages', 'slug', $page->id);
-            $this->_trans('en', $_arr, 'hello-world');
             $this->_trans('pt', $_arr, 'ola-mundo');
 
             $_arr = $this->_arr('pages', 'body', $page->id);
-            $this->_trans('en', $_arr, '<p>Hello World. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
-                                        ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
             $this->_trans('pt', $_arr, '<p>Olá Mundo. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
                                         ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
         }
@@ -53,77 +57,66 @@ class TranslationsTableSeeder extends Seeder
         $menuItem = $this->_menuItem('Dashboard');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Dashboard');
             $this->_trans('pt', $_arr, 'Painel de Controle');
         }
 
         $menuItem = $this->_menuItem('Media');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Media');
             $this->_trans('pt', $_arr, 'Media');
         }
 
         $menuItem = $this->_menuItem('Posts');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Posts');
             $this->_trans('pt', $_arr, 'Publicações');
         }
 
         $menuItem = $this->_menuItem('Users');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Users');
             $this->_trans('pt', $_arr, 'Utilizadores');
         }
 
         $menuItem = $this->_menuItem('Categories');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Categories');
             $this->_trans('pt', $_arr, 'Categorias');
         }
 
         $menuItem = $this->_menuItem('Pages');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Pages');
             $this->_trans('pt', $_arr, 'Páginas');
         }
 
         $menuItem = $this->_menuItem('Roles');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Roles');
             $this->_trans('pt', $_arr, 'Funções');
         }
 
         $menuItem = $this->_menuItem('Tools');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Tools');
             $this->_trans('pt', $_arr, 'Ferramentas');
         }
 
         $menuItem = $this->_menuItem('Menu Builder');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Menu Builder');
             $this->_trans('pt', $_arr, 'Menus');
         }
 
         $menuItem = $this->_menuItem('Database');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Database');
             $this->_trans('pt', $_arr, 'Base de dados');
         }
 
         $menuItem = $this->_menuItem('Settings');
         if ($menuItem->exists) {
             $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Settings');
             $this->_trans('pt', $_arr, 'Configurações');
         }
     }
