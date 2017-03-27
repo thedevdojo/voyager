@@ -255,7 +255,7 @@ class VoyagerBreadController extends Controller
 
         // Delete Translations, if present
         if (isBreadTranslatable($data)) {
-            $data->deleteAttributeTranslations( $data->getTranslatableAttributes() );
+            $data->deleteAttributeTranslations($data->getTranslatableAttributes());
         }
 
         foreach ($dataType->deleteRows as $row) {
