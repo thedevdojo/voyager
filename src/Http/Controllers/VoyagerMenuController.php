@@ -24,7 +24,7 @@ class VoyagerMenuController extends Controller
 
         $item = Voyager::model('MenuItem')->findOrFail($id);
 
-        $item->deleteTranslation('title');
+        $item->deleteAttributeTranslation('title');
 
         $item->destroy($id);
 
