@@ -71,10 +71,10 @@
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
                             @elseif($row->type == 'rich_text_box')
-                                @include('voyager::multilingual.input-hidden-bread')
+                                @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @else
-                                @include('voyager::multilingual.input-hidden-bread')
+                                @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
