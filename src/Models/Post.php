@@ -52,4 +52,12 @@ class Post extends Model
     {
         return $this->hasOne(Voyager::modelClass('Category'), 'id', 'category_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Voyager::modelClass('Tag'));
+    }
 }

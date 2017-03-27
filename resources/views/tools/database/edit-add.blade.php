@@ -58,7 +58,7 @@
             methods: {
                 stringifyTable() {
                     this.tableJson = JSON.stringify(this.table);
-                    
+
                     this.$nextTick(() => this.$refs.form.submit());
                 }
             }

@@ -309,6 +309,36 @@ class VoyagerDatabaseController extends Controller
         }
     }
 
+    public function addBreadRelationship(Request $request, $id)
+    {
+        Voyager::canOrFail('browse_database');
+
+        $validator = Validator::make($request->all(), [
+            'details' => [
+                'required',
+                'json',
+                'regex:/^.*(?=.*\brelationship\b)(?=.*\bkey\b)(?=.*\blabel\b)(?=.*\bmethod\b).*$/'
+            ],
+            'type' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with($this->alertException($validator->errors(), 'Update Failed'));
+        }
+
+        try {
+            $dataType = Voyager::model('DataType')->find($id);
+
+            $data = $dataType->addRelationshipRow($request->all())
+                ? $this->alertSuccess("Successfully updated the {$dataType->name} BREAD")
+                : $this->alertError('Sorry it appears there may have been a problem updating this BREAD');
+
+            return redirect()->route('voyager.database.index')->with($data);
+        } catch (Exception $e) {
+            return back()->with($this->alertException($e, 'Update Failed'));
+        }
+    }
+
     public function deleteBread($id)
     {
         Voyager::canOrFail('browse_database');

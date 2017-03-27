@@ -105,6 +105,8 @@ Route::group(['as' => 'voyager.'], function () {
             Route::get('bread/{table}/edit', ['uses' => $namespacePrefix.'VoyagerDatabaseController@addEditBread', 'as' => 'edit_bread']);
             Route::put('bread/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@updateBread', 'as' => 'update_bread']);
             Route::delete('bread/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@deleteBread', 'as' => 'delete_bread']);
+
+            Route::post('bread/{id}/relationship', ['uses' => $namespacePrefix.'VoyagerDatabaseController@addBreadRelationship', 'as' => 'add_bread_relationship']);
         });
 
         Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');

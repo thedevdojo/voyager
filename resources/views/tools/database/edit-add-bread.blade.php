@@ -3,6 +3,12 @@
 @section('page_header')
     <div class="page-title">
         <i class="voyager-data"></i> @if(isset($dataType->id)){{ 'Edit BREAD for ' . $dataType->name . ' table' }}@elseif(isset($table)){{ 'Create BREAD for ' . $table . ' table' }}@endif
+
+        @if(isset($dataType->id))
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#additional_column">
+              Add Relational Column
+            </button>
+        @endif
     </div>
 @stop
 
@@ -223,7 +229,9 @@
         </div><!-- .row -->
     </div><!-- .page-content -->
 
-
+    @if(isset($dataType->id))
+        @include('voyager::tools.database.add-relationship')
+    @endif
 
 @stop
 
