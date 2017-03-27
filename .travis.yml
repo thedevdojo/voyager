@@ -3,65 +3,42 @@ language: php
 sudo: true
 
 php:
-- 5.6
-- 7.0
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - nightly
+
+env:
+  matrix:
+    - COMPOSER_FLAGS="--prefer-lowest"
+    - COMPOSER_FLAGS=""
+
+matrix:
+  fast_finish: true
+
+  allow_failures:
+    - php: 7.2
+    - php: nightly
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 services:
-  - mysql
+  - sqlite
 
 before_script:
-  # prevent MySQL went away error
-  - mysql -u root -e 'SET @@GLOBAL.wait_timeout=28800;'
-  
-  # Create a new database and add all priveleges
-  - mysql -u root -e "create database IF NOT EXISTS voyager;"
-  
-  # Current DIR
-  - pwd
-
-  # Move up one directory
-  - cd ../
-
-  # Create a New Laravel App
-  - composer create-project --prefer-dist laravel/laravel voyager-app
-
-  # CD into the new laravel app
-  - cd voyager-app
-
-  # Include Voyager Package
-  - composer require tcg/voyager
-
-  # Remove the current version
-  - rm -rf vendor/tcg/voyager
-
-  # Move this build into the voyager folder
-  - mv /home/travis/build/the-control-group/voyager /home/travis/build/the-control-group/voyager-app/vendor/tcg/voyager
-
-  # Move up one folder and rename voyager-app to voyager
-  - cd ../
-  - mv voyager-app voyager
-  - cd voyager
-  - composer dump-autoload
-
-  # Add the database credentials
-  - sed 's/DB_DATABASE=homestead/DB_DATABASE=voyager/g' .env > environment
-  - sed 's/DB_USERNAME=homestead/DB_USERNAME=root/g' environment > .env
-  - sed 's/DB_PASSWORD=secret/DB_PASSWORD=/g' .env > environment
-  - rm .env
-  - mv environment .env
-
-  # Add the service providers
-  - sed 's/App\\Providers\\RouteServiceProvider\:\:class,/App\\Providers\\RouteServiceProvider\:\:class, TCG\\Voyager\\VoyagerServiceProvider\:\:class, Intervention\\Image\\ImageServiceProvider\:\:class,/g' config/app.php > config/app-temp.php
-  - rm config/app.php
-  - mv config/app-temp.php config/app.php
-    
-  # Install voyager
-  - php artisan voyager:install
-
-  # Remove the default phpunit.xml and replace it with voyager phpunit.xml
-  - rm phpunit.xml
-  - cp vendor/tcg/voyager/phpunit.xml phpunit.xml
-  
+  - composer install
+  - travis_retry composer self-update
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - composer show laravel/framework
 
 script:
-  # - vendor/bin/phpunit
+  - vendor/bin/phpunit
+  
+addons:
+ code_climate
+
+after_success:
+  - vendor/bin/test-reporter

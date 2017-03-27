@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateSettingsTable extends Migration
 {
@@ -18,7 +18,7 @@ class CreateSettingsTable extends Migration
             $table->string('key')->unique();
             $table->string('display_name');
             $table->text('value');
-            $table->text('details');
+            $table->text('details')->nullable()->default(null);
             $table->string('type');
             $table->integer('order')->default('1');
         });

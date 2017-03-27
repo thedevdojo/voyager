@@ -1,102 +1,110 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\DataType;
 
 class DataTypesTableSeeder extends Seeder
 {
-
     /**
-     * Auto generated seed file
-     *
-     * @return void
+     * Auto generated seed file.
      */
     public function run()
     {
-        
-
-        \DB::table('data_types')->delete();
-        
-        \DB::table('data_types')->insert(array (
-            0 => 
-            array (
-                'id' => 1,
-                'name' => 'posts',
-                'slug' => 'posts',
+        $dataType = $this->dataType('slug', 'posts');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'posts',
                 'display_name_singular' => 'Post',
-                'display_name_plural' => 'Posts',
-                'icon' => 'voyager-news',
-                'model_name' => 'TCG\\Voyager\\Models\\Post',
-                'description' => '',
-                'created_at' => '2016-01-27 19:45:51',
-                'updated_at' => '2016-01-28 03:45:51',
-            ),
-            1 => 
-            array (
-                'id' => 3,
-                'name' => 'pages',
-                'slug' => 'pages',
+                'display_name_plural'   => 'Posts',
+                'icon'                  => 'voyager-news',
+                'model_name'            => 'TCG\\Voyager\\Models\\Post',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'pages');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'pages',
                 'display_name_singular' => 'Page',
-                'display_name_plural' => 'Pages',
-                'icon' => 'voyager-file-text',
-                'model_name' => 'TCG\\Voyager\\Models\\Page',
-                'description' => '',
-                'created_at' => '2016-02-02 02:37:02',
-                'updated_at' => '2016-02-02 02:37:02',
-            ),
-            2 => 
-            array (
-                'id' => 4,
-                'name' => 'users',
-                'slug' => 'users',
+                'display_name_plural'   => 'Pages',
+                'icon'                  => 'voyager-file-text',
+                'model_name'            => 'TCG\\Voyager\\Models\\Page',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'users');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'users',
                 'display_name_singular' => 'User',
-                'display_name_plural' => 'Users',
-                'icon' => 'voyager-person',
-                'model_name' => 'TCG\\Voyager\\Models\\User',
-                'description' => '',
-                'created_at' => '2016-01-27 19:43:51',
-                'updated_at' => '2016-02-03 02:07:20',
-            ),
-            3 => 
-            array (
-                'id' => 5,
-                'name' => 'categories',
-                'slug' => 'categories',
+                'display_name_plural'   => 'Users',
+                'icon'                  => 'voyager-person',
+                'model_name'            => 'TCG\\Voyager\\Models\\User',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('name', 'categories');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'slug'                  => 'categories',
                 'display_name_singular' => 'Category',
-                'display_name_plural' => 'Categories',
-                'icon' => 'voyager-categories',
-                'model_name' => 'TCG\\Voyager\\Models\\Category',
-                'description' => '',
-                'created_at' => NULL,
-                'updated_at' => '2016-06-29 00:18:42',
-            ),
-            4 => 
-            array (
-                'id' => 6,
-                'name' => 'menus',
-                'slug' => 'menus',
+                'display_name_plural'   => 'Categories',
+                'icon'                  => 'voyager-categories',
+                'model_name'            => 'TCG\\Voyager\\Models\\Category',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'menus');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'menus',
                 'display_name_singular' => 'Menu',
-                'display_name_plural' => 'Menus',
-                'icon' => 'voyager-list',
-                'model_name' => 'TCG\\Voyager\\Models\\Menu',
-                'description' => '',
-                'created_at' => NULL,
-                'updated_at' => '2016-06-29 00:09:35',
-            ),
-            5 => 
-            array (
-                'id' => 8,
-                'name' => 'roles',
-                'slug' => 'roles',
+                'display_name_plural'   => 'Menus',
+                'icon'                  => 'voyager-list',
+                'model_name'            => 'TCG\\Voyager\\Models\\Menu',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'roles');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'roles',
                 'display_name_singular' => 'Role',
-                'display_name_plural' => 'Roles',
-                'icon' => 'voyager-lock',
-                'model_name' => 'TCG\\Voyager\\Models\\Role',
-                'description' => '',
-                'created_at' => '2016-10-21 22:09:45',
-                'updated_at' => '2016-10-21 22:09:45',
-            ),
-        ));
-        
-        
+                'display_name_plural'   => 'Roles',
+                'icon'                  => 'voyager-lock',
+                'model_name'            => 'TCG\\Voyager\\Models\\Role',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+    }
+
+    /**
+     * [dataType description].
+     *
+     * @param [type] $field [description]
+     * @param [type] $for   [description]
+     *
+     * @return [type] [description]
+     */
+    protected function dataType($field, $for)
+    {
+        return DataType::firstOrNew([$field => $for]);
     }
 }

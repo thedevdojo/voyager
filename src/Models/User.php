@@ -2,23 +2,29 @@
 
 namespace TCG\Voyager\Models;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as AuthUser;
 use TCG\Voyager\Traits\VoyagerUser;
 
 class User extends AuthUser
 {
     use VoyagerUser;
-    //
-    public function getNameAttribute($value)
+
+    protected $guarded = [];
+
+    /**
+     * On save make sure to set the default avatar if image is not set.
+     */
+    public function save(array $options = [])
     {
-        return ucwords($value);
+        // If no avatar has been set, set it to the default
+        $this->avatar = $this->avatar ?: config('voyager.user.default_avatar', 'users/default.png');
+
+        parent::save();
     }
 
-    public function getCreatedAtAttribute($value){
-    	return \Carbon\Carbon::parse($value)->format('F jS, Y h:i A');
-    }
-
-    public function setCreatedAtAttribute($value){
-    	 $this->attributes['created_at'] = \Carbon\Carbon::parse($value)->format('Y-m-d H:i:s');
+    public function setCreatedAtAttribute($value)
+    {
+        $this->attributes['created_at'] = Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 }

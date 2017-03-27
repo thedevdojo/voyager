@@ -2,32 +2,76 @@
 
 namespace TCG\Voyager\Traits;
 
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Models\Role;
+
+/**
+ * @property  \Illuminate\Database\Eloquent\Collection  roles
+ */
 trait VoyagerUser
 {
-    //
-    public function roles(){
-        return $this->belongsToMany('TCG\Voyager\Models\Role', 'user_roles');
+    public function role()
+    {
+        return $this->belongsTo(Voyager::modelClass('Role'));
     }
 
-    public function hasRole($name){
-        return in_array($name, array_pluck($this->roles->toArray(), 'name'));
-    }
-
-    public function addRole($name){
-        // If user does not already have this role
-        if(!$this->hasRole($name)){
-            // Look up the role and attach it to the user
-            $role = \TCG\Voyager\Models\Role::where('name', '=', $name)->first();
-            $this->roles()->attach($role->id);
+    /**
+     * Check if User has a Role(s) associated.
+     *
+     * @param string|array $name The role to check.
+     *
+     * @return bool
+     */
+    public function hasRole($name)
+    {
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
         }
+
+        return in_array($this->role->name, (is_array($name) ? $name : [$name]));
     }
 
-    public function deleteRole($name){
-        // If user has this role
-        if($this->hasRole($name)){
-            // Lookup the role and detach it from the user
-            $role = \TCG\Voyager\Models\Role::where('name', '=', $name)->first();
-            $this->roles()->detach($role->id);
+    public function setRole($name)
+    {
+        $role = Voyager::model('Role')->where('name', '=', $name)->first();
+
+        if ($role) {
+            $this->role()->associate($role);
+            $this->save();
         }
+
+        return $this;
+    }
+
+    public function hasPermission($name)
+    {
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
+        }
+
+        if (!$this->role->relationLoaded('permissions')) {
+            $this->role->load('permissions');
+        }
+
+        return in_array($name, $this->role->permissions->pluck('key')->toArray());
+    }
+
+    public function hasPermissionOrFail($name)
+    {
+        if (!$this->hasPermission($name)) {
+            throw new UnauthorizedHttpException(null);
+        }
+
+        return true;
+    }
+
+    public function hasPermissionOrAbort($name, $statusCode = 403)
+    {
+        if (!$this->hasPermission($name)) {
+            return abort($statusCode);
+        }
+
+        return true;
     }
 }

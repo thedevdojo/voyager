@@ -1,26 +1,33 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+namespace TCG\Voyager\Tests;
 
 class LoginTest extends TestCase
 {
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
-    public function testLogin()
+    public function setUp()
     {
-        $this->visit('/')->see('Laravel');
-        $this->visit('/admin')->see('Voyager');
-        $this->visit('/admin/login');
-        $this->visit('/admin/login');
-        $this->type('admin@admin.com', 'email');
-        $this->type('password', 'password');
-        $this->press('Login Logging in');
-        $this->seePageIs('/admin');
+        parent::setUp();
+
+        $this->install();
     }
 
+    public function testSuccessfulLoginWithDefaultCredentials()
+    {
+        $this->visit(route('voyager.login'));
+        $this->type('admin@admin.com', 'email');
+        $this->type('password', 'password');
+        $this->press('Login');
+        $this->seePageIs(route('voyager.dashboard'));
+    }
+
+    public function testShowAnErrorMessageWhenITryToLoginWithWrongCredentials()
+    {
+        $this->visit(route('voyager.login'))
+             ->type('john@Doe.com', 'email')
+             ->type('pass', 'password')
+             ->press('Login')
+             ->seePageIs(route('voyager.login'))
+             ->see(trans('auth.failed'))
+             ->seeInField('email', 'john@Doe.com');
+    }
 }

@@ -1,0 +1,11 @@
+<?php
+
+namespace DummyNamespace;
+
+use Illuminate\Database\Eloquent\Model;
+//DummySDTraitInclude
+
+class DummyClass extends Model
+{
+    //DummySDTrait
+}
