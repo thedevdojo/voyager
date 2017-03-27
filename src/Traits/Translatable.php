@@ -257,4 +257,28 @@ trait Translatable
 
         return $this->translatorMethods[$name];
     }
+
+    public function deleteAttributeTranslations(array $attributes, $locales = null)
+    {
+        $this->translations()
+            ->whereIn('column_name', $attributes)
+            ->when(!is_null($locales), function ($query) use ($locales) {
+                $method = is_array($locales) ? 'whereIn' : 'where';
+
+                return $query->$method('locale', $locales);
+            })
+            ->delete();
+    }
+
+    public function deleteAttributeTranslation($attribute, $locales = null)
+    {
+        $this->translations()
+            ->where('column_name', $attribute)
+            ->when(!is_null($locales), function ($query) use ($locales) {
+                $method = is_array($locales) ? 'whereIn' : 'where';
+
+                return $query->$method('locale', $locales);
+            })
+            ->delete();
+    }
 }
