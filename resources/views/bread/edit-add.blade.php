@@ -63,7 +63,7 @@
                             @foreach($dataTypeRows as $row)
                                 <div class="form-group @if($row->type == 'hidden') hidden @endif">
                                     <label for="name">{{ $row->display_name }}</label>
-                                    @include('voyager::multilingual.input-hidden-bread')
+                                    @include('voyager::multilingual.input-hidden-bread-edit-add')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
                                     @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
