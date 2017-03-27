@@ -198,13 +198,15 @@ class VoyagerMediaController extends Controller
         $storageFolders = Storage::disk($this->filesystem)->directories($dir);
 
         foreach ($storageFiles as $file) {
-            $files[] = [
-                'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
-                'type'          => Storage::disk($this->filesystem)->mimeType($file),
-                'path'          => Storage::disk($this->filesystem)->url($file),
-                'size'          => Storage::disk($this->filesystem)->size($file),
-                'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
-            ];
+            if (!empty(pathinfo($file, PATHINFO_FILENAME))) {
+                $files[] = [
+                    'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
+                    'type'          => Storage::disk($this->filesystem)->mimeType($file),
+                    'path'          => Storage::disk($this->filesystem)->url($file),
+                    'size'          => Storage::disk($this->filesystem)->size($file),
+                    'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
+                ];
+            }
         }
 
         foreach ($storageFolders as $folder) {
