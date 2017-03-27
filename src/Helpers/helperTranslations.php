@@ -24,7 +24,7 @@ if (!function_exists('getFieldTranslations')) {
      *
      * @param Illuminate\Database\Eloquent\Model      $model
      * @param Illuminate\Database\Eloquent\Collection $row
-     * @param boolean                                 $stripHtmlTags
+     * @param bool                                    $stripHtmlTags
      */
     function getFieldTranslations($model, $row, $stripHtmlTags = false)
     {
