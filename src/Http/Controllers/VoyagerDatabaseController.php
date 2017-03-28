@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Validator;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -323,13 +324,18 @@ class VoyagerDatabaseController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return back()->with($this->alertException($validator->errors(), 'Update Failed'));
+            $exception = new \Exception($validator->errors()->first());
+
+            return back()->with($this->alertException($exception, 'Update Failed'));
         }
 
+        /* @var \TCG\Voyager\Models\DataType $dataType */
         try {
+            $dataRow = Voyager::model('DataRow');
+
             $dataType = Voyager::model('DataType')->find($id);
 
-            $data = $dataType->addRelationshipRow($request->all())
+            $data = $dataRow->addRelationshipRow($dataType, $request->all())
                 ? $this->alertSuccess("Successfully updated the {$dataType->name} BREAD")
                 : $this->alertError('Sorry it appears there may have been a problem updating this BREAD');
 
