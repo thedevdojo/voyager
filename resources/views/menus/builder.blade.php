@@ -77,7 +77,7 @@
                     <div class="modal-body">
                         @include('voyager::multilingual.language-selector')
                         <label for="name">Title of the Menu Item</label>
-                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'add_title', '_field_trans' => ''])
+                        @include('voyager::multilingual.input-hidden', ['_field_name' => 'add_title', '_field_trans' => ''])
                         <input type="text" class="form-control" id="add_title" name="title" placeholder="Title"><br>
                         <label for="url">URL for the Menu Item</label>
                         <input type="text" class="form-control" name="url" placeholder="URL"><br>
@@ -121,7 +121,7 @@
                     <div class="modal-body">
                         @include('voyager::multilingual.language-selector')
                         <label for="name">Title of the Menu Item</label>
-                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'edit_title', '_field_trans' => ''])
+                        @include('voyager::multilingual.input-hidden', ['_field_name' => 'edit_title', '_field_trans' => ''])
                         <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
                         <label for="type">Link type</label>
                         <select id="edit_type" class="form-control" name="type">

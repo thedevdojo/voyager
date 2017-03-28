@@ -127,7 +127,7 @@
 
                     </div><!-- .panel -->
 
-                    <div class="panel panel-primary panel-bordered">
+                    <div class="panel panel-primary panel-bordered" id="bread-info-panel">
 
                         <div class="panel-heading">
                             <h3 class="panel-title">{{ ucfirst($table) }} BREAD info</h3>
@@ -139,6 +139,35 @@
                                     <label for="name">Table Name</label>
                                     <input type="text" class="form-control" readonly name="name" placeholder="Name"
                                            value="@if(isset($dataType->name)){{ $dataType->name }}@else{{ $table }}@endif">
+                                </div>
+                                <div class="col-md-6 text-right">@include('voyager::multilingual.language-selector')</div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="email">Display Name (Singular)</label>
+                                    @if($isModelTranslatable)
+                                        @include('voyager::multilingual.input-hidden', [
+                                            'isModelTranslatable' => true,
+                                            '_field_name'         => 'display_name_singular',
+                                            '_field_trans'        => json_encode($dataType->getTranslationsOf('display_name_singular'))
+                                        ])
+                                    @endif
+                                    <input type="text" class="form-control" name="display_name_singular" id="display_name_singular"
+                                           placeholder="Display Name (Singular)"
+                                           value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="email">Display Name (Plural)</label>
+                                    @if($isModelTranslatable)
+                                        @include('voyager::multilingual.input-hidden', [
+                                            'isModelTranslatable' => true,
+                                            '_field_name'         => 'display_name_plural',
+                                            '_field_trans'        => json_encode($dataType->getTranslationsOf('display_name_plural'))
+                                        ])
+                                    @endif
+                                    <input type="text" class="form-control" name="display_name_plural" id="display_name_plural"
+                                           placeholder="Display Name (Plural)"
+                                           value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
                                 </div>
                             </div>
                             <div class="row clearfix">
@@ -154,20 +183,6 @@
                                     <input type="text" class="form-control" name="icon"
                                            placeholder="Icon to use for this Table"
                                            value="@if(isset($dataType->icon)){{ $dataType->icon }}@endif">
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-6 form-group">
-                                    <label for="email">Display Name (Singular)</label>
-                                    <input type="text" class="form-control" name="display_name_singular"
-                                           placeholder="Display Name (Singular)"
-                                           value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label for="email">Display Name (Plural)</label>
-                                    <input type="text" class="form-control" name="display_name_plural"
-                                           placeholder="Display Name (Plural)"
-                                           value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
                                 </div>
                             </div>
                             <div class="row clearfix">
@@ -229,11 +244,26 @@
 
 @section('javascript')
     <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+    @if($isModelTranslatable)
+        <script type="text/javascript" src="{{ voyager_asset('js/multilingual.js') }}"></script>
+    @endif
     <script>
         window.invalidEditors = [];
         var validationAlerts = $('.validation-error');
         validationAlerts.hide();
         $(function () {
+            @if ($isModelTranslatable)
+                /**
+                 * Multilingual setup
+                 */
+                $('#bread-info-panel').multilingual({
+                    "form":          'form',
+                    "transInputs":   '.panel-body input[data-i18n=true]',
+                    "langSelectors": '.language-selector input',
+                    "editing":       true
+                });
+            @endif
+
             $('textarea[data-editor]').each(function () {
                 var textarea = $(this),
                 mode = textarea.data('editor'),

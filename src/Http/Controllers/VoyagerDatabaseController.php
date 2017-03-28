@@ -284,12 +284,9 @@ class VoyagerDatabaseController extends Controller
             $fieldOptions = SchemaManager::describeTable($dataType->name);
         }
 
-        return view(
-            'voyager::tools.database.edit-add-bread', [
-                'dataType'     => $dataType,
-                'fieldOptions' => $fieldOptions,
-            ]
-        );
+        $isModelTranslatable = isBreadTranslatable($dataType);
+
+        return view('voyager::tools.database.edit-add-bread', compact('dataType', 'fieldOptions', 'isModelTranslatable'));
     }
 
     public function updateBread(Request $request, $id)
