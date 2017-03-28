@@ -46,10 +46,10 @@ class Post extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category()
     {
-        return $this->hasOne(Voyager::modelClass('Category'), 'id', 'category_id');
+        return $this->belongsTo(Voyager::modelClass('Category'));
     }
 }
