@@ -127,7 +127,7 @@
                  */
                 gapi.analytics.auth.authorize({
                     container: 'embed-api-auth-container',
-                    clientid: '{{ $google_analytics_client_id; }}'
+                    clientid: '{{ $google_analytics_client_id }}'
                 });
 
 
