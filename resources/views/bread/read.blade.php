@@ -6,10 +6,16 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> Viewing {{ ucfirst($dataType->display_name_singular) }} &nbsp;
 
+        @if (Voyager::can('edit_'.$dataType->name))
         <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
             Edit
         </a>
+        @endif
+        <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
+            <span class="glyphicon glyphicon-list"></span>&nbsp;
+            Return to List
+        </a>        
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
