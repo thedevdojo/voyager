@@ -18,40 +18,33 @@
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
-
                 <div class="panel panel-bordered">
-
                     <div class="panel-heading">
-                        <p class="panel-title" style="color:#777">Drag and drop the menu Items below to re-arrange
-                            them.</p>
+                        <p class="panel-title" style="color:#777">Drag and drop the menu Items below to re-arrange them.</p>
                     </div>
 
                     <div class="panel-body" style="padding:30px;">
-
                         <div class="dd">
                             {!! menu($menu->name, 'admin', ['isModelTranslatable' => $isModelTranslatable]) !!}
                         </div>
-
                     </div>
-
                 </div>
-
-
             </div>
         </div>
     </div>
+
 
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete this menu
-                        item?</h4>
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete this menu item?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '__id']) }}" id="delete_form"
+                    <form action="{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '__id']) }}"
+                          id="delete_form"
                           method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
@@ -65,103 +58,68 @@
     </div><!-- /.modal -->
 
 
-    <div class="modal modal-success fade" tabindex="-1" id="add_modal" role="dialog">
+    <div class="modal modal-info fade" tabindex="-1" id="menu_item_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-plus"></i> Create a New Menu Item</h4>
+                    <h4 id="m_hd_add" class="modal-title hidden"><i class="voyager-plus"></i> Create a New Menu Item</h4>
+                    <h4 id="m_hd_edit" class="modal-title hidden"><i class="voyager-edit"></i> Edit Menu Item</h4>
                 </div>
-                <form action="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}" id="add_form" method="POST">
-                    <div class="modal-body">
-                        @include('voyager::multilingual.language-selector')
-                        <label for="name">Title of the Menu Item</label>
-                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'add_title', '_field_trans' => ''])
-                        <input type="text" class="form-control" id="add_title" name="title" placeholder="Title"><br>
-                        <label for="url">URL for the Menu Item</label>
-                        <input type="text" class="form-control" name="url" placeholder="URL"><br>
-                        <label for="icon_class">Font Icon class for the Menu Item (Use a <a
-                                    href="{{ voyager_asset('fonts/voyager/icons-reference.html') }}"
-                                    target="_blank">Voyager Font Class</a>)</label>
-                        <input type="text" class="form-control" name="icon_class"
-                               placeholder="Icon Class (optional)"><br>
-                        <label for="color">Color in RGB or hex (optional)</label>
-                        <input type="color" class="form-control" name="color"
-                               placeholder="Color (ex. #ffffff or rgb(255, 255, 255)"><br>
-                        <label for="target">Open In</label>
-                        <select id="edit_target" class="form-control" name="target">
-                            <option value="_self">Same Tab/Window</option>
-                            <option value="_blank">New Tab/Window</option>
-                        </select>
-                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                    </div>
-                    {{ csrf_field() }}
+                <form action="" id="m_form" method="POST"
+                      data-action-add="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}"
+                      data-action-update="{{ route('voyager.menus.item.update', ['menu' => $menu->id]) }}">
 
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-success pull-right delete-confirm" value="Add New Item">
-                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
-    <div class="modal modal-info fade" tabindex="-1" id="edit_modal" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-edit"></i> Edit Menu Item</h4>
-                </div>
-                <form action="{{ route('voyager.menus.item.update', ['menu' => $menu->id]) }}" id="edit_form" method="POST">
-                    {{ method_field("PUT") }}
+                    <input id="m_form_method" type="hidden" name="_method" value="POST">
                     {{ csrf_field() }}
                     <div class="modal-body">
                         @include('voyager::multilingual.language-selector')
                         <label for="name">Title of the Menu Item</label>
-                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'edit_title', '_field_trans' => ''])
-                        <input type="text" class="form-control" id="edit_title" name="title" placeholder="Title"><br>
+                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'm_title', '_field_trans' => ''])
+                        <input type="text" class="form-control" id="m_title" name="title" placeholder="Title"><br>
                         <label for="type">Link type</label>
-                        <select id="edit_type" class="form-control" name="type">
+                        <select id="m_link_type" class="form-control" name="type">
                             <option value="url" selected="selected">Static URL</option>
                             <option value="route">Dynamic Route</option>
                         </select><br>
-                        <div id="url_type">
+                        <div id="m_url_type">
                             <label for="url">URL for the Menu Item</label>
-                            <input type="text" class="form-control" id="edit_url" name="url" placeholder="URL"><br>
+                            <input type="text" class="form-control" id="m_url" name="url" placeholder="URL"><br>
                         </div>
-                        <div id="route_type">
+                        <div id="m_route_type">
                             <label for="route">Route for the menu item</label>
-                            <input type="text" class="form-control" id="edit_route" name="route" placeholder="Route"><br>
+                            <input type="text" class="form-control" id="m_route" name="route" placeholder="Route"><br>
                             <label for="parameters">Route parameters (if any)</label>
-                            <textarea rows="3" class="form-control" id="edit_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
+                            <textarea rows="3" class="form-control" id="m_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
                         </div>
                         <label for="icon_class">Font Icon class for the Menu Item (Use a <a
                                     href="{{ voyager_asset('fonts/voyager/icons-reference.html') }}"
                                     target="_blank">Voyager Font Class</a>)</label>
-                        <input type="text" class="form-control" id="edit_icon_class" name="icon_class"
+                        <input type="text" class="form-control" id="m_icon_class" name="icon_class"
                                placeholder="Icon Class (optional)"><br>
                         <label for="color">Color in RGB or hex (optional)</label>
-                        <input type="color" class="form-control" id="edit_color" name="color"
+                        <input type="color" class="form-control" id="m_color" name="color"
                                placeholder="Color (ex. #ffffff or rgb(255, 255, 255)"><br>
                         <label for="target">Open In</label>
-                        <select id="edit_target" class="form-control" name="target">
+                        <select id="m_target" class="form-control" name="target">
                             <option value="_self" selected="selected">Same Tab/Window</option>
                             <option value="_blank">New Tab/Window</option>
                         </select>
-                        <input type="hidden" name="id" id="edit_id" value="">
+                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                        <input type="hidden" name="id" id="m_id" value="">
                     </div>
-
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-success pull-right delete-confirm" value="Update">
+                        <input type="submit" class="btn btn-success pull-right delete-confirm__" value="Update">
                         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+
+
+
 
 @stop
 
@@ -180,21 +138,13 @@
                 $('.side-body').multilingual({
                     "transInputs": '.dd-list input[data-i18n=true]'
                 });
+
                 /**
-                 * Multilingual setup for Add Menu
+                 * Multilingual for Add/Edit Menu
                  */
-                $('#add_modal').multilingual({
+                $('#menu_item_modal').multilingual({
                     "form":          'form',
-                    "transInputs":   '#add_modal input[data-i18n=true]',
-                    "langSelectors": '.language-selector input',
-                    "editing":       true
-                });
-                /**
-                 * Multilingual setup for Edit Menu
-                 */
-                $('#edit_modal').multilingual({
-                    "form":          'form',
-                    "transInputs":   '#edit_modal input[data-i18n=true]',
+                    "transInputs":   '#menu_item_modal input[data-i18n=true]',
                     "langSelectors": '.language-selector input',
                     "editing":       true
                 });
@@ -202,6 +152,125 @@
 
 
             $('.dd').nestable({/* config options */});
+
+
+            /**
+             * Set Variables
+             */
+            var $m_modal       = $('#menu_item_modal'),
+                $m_hd_add      = $('#m_hd_add').hide().removeClass('hidden'),
+                $m_hd_edit     = $('#m_hd_edit').hide().removeClass('hidden'),
+                $m_form        = $('#m_form'),
+                $m_form_method = $('#m_form_method'),
+                $m_title       = $('#m_title'),
+                $m_i18n_title  = $('#m_title_i18n'),
+                $m_url_type    = $('#m_url_type'),
+                $m_url         = $('#m_url'),
+                $m_link_type   = $('#m_link_type'),
+                $m_route_type  = $('#m_route_type'),
+                $m_route       = $('#m_route'),
+                $m_parameters  = $('#m_parameters'),
+                $m_icon_class  = $('#m_icon_class'),
+                $m_color       = $('#m_color'),
+                $m_target      = $('#m_target'),
+                $m_id          = $('#m_id');
+
+            /**
+             * Add Menu
+             */
+            $('.add_item').click(function() {
+                $m_modal.modal('show', {data: null});
+            });
+
+            /**
+             * Edit Menu
+             */
+            $('.item_actions').on('click', '.edit', function (e) {
+                $m_modal.modal('show', {data: $(e.currentTarget)});
+            });
+
+            /**
+             * Menu Modal is Open
+             */
+            $m_modal.on('show.bs.modal', function(e, data) {
+                var _adding      = e.relatedTarget.data ? false : true,
+                    translatable = $m_modal.data('multilingual'),
+                    $_str_i18n   = '';
+
+                if (_adding) {
+                    $m_form.attr('action', $m_form.data('action-add'));
+                    $m_form_method.val('POST');
+                    $m_hd_add.show();
+                    $m_hd_edit.hide();
+                    $m_target.val('_self').change();
+                    $m_link_type.val('url').change();
+                    $m_url.val('');
+                    $m_icon_class.val('');
+
+                } else {
+                    $m_form.attr('action', $m_form.data('action-update'));
+                    $m_form_method.val('PUT');
+                    $m_hd_add.hide();
+                    $m_hd_edit.show();
+
+                    var _src = e.relatedTarget.data, // the source
+                        id   = _src.data('id');
+
+                    $m_title.val(_src.data('title'));
+                    $m_url.val(_src.data('url'));
+                    $m_route.val(_src.data('route'));
+                    $m_parameters.val(JSON.stringify(_src.data('parameters')));
+                    $m_icon_class.val(_src.data('icon_class'));
+                    $m_color.val(_src.data('color'));
+                    $m_id.val(id);
+
+                    if(translatable){
+                        $_str_i18n = $("#title" + id + "_i18n").val();
+                    }
+
+                    if (_src.data('target') == '_self') {
+                        $m_target.val('_self').change();
+                    } else if (_src.data('target') == '_blank') {
+                        $m_target.find("option[value='_self']").removeAttr('selected');
+                        $m_target.find("option[value='_blank']").attr('selected', 'selected');
+                        $m_target.val('_blank');
+                    }
+                    if (_src.data('route') != "") {
+                        $m_link_type.val('route').change();
+                        $m_url_type.hide();
+                    } else {
+                        $m_link_type.val('url').change();
+                        $m_route_type.hide();
+                    }
+                    if ($m_link_type.val() == 'route') {
+                        $m_url_type.hide();
+                        $m_route_type.show();
+                    } else {
+                        $m_route_type.hide();
+                        $m_url_type.show();
+                    }
+                }
+
+                if (translatable) {
+                    $m_i18n_title.val( $_str_i18n );
+                    translatable.refresh();
+                }
+            });
+
+
+            /**
+             * Toggle Form Menu Type
+             */
+            $m_link_type.on('change', function (e) {
+                if ($m_link_type.val() == 'route') {
+                    $m_url_type.hide();
+                    $m_route_type.show();
+                } else {
+                    $m_url_type.show();
+                    $m_route_type.hide();
+                }
+            });
+
 
             /**
              * Delete menu item
@@ -212,63 +281,6 @@
                 $('#delete_modal').modal('show');
             });
 
-            /**
-             * Edit menu item
-             */
-            $('.item_actions').on('click', '.edit', function (e) {
-                var id           = $(e.currentTarget).data('id'),
-                    translatable = $('#edit_modal').data('multilingual');
-
-                $('#edit_title').val($(e.currentTarget).data('title'));
-                $('#edit_url').val($(e.currentTarget).data('url'));
-                $('#edit_icon_class').val($(e.currentTarget).data('icon_class'));
-                $('#edit_color').val($(e.currentTarget).data('color'));
-                $('#edit_route').val($(e.currentTarget).data('route'));
-                $('#edit_parameters').val(JSON.stringify($(e.currentTarget).data('parameters')));
-                $('#edit_id').val(id);
-
-                // Refresh translatable fields
-                if(translatable){
-                    $('#edit_title_i18n').val( $("#title" + id + "_i18n").val() );
-                    translatable.refresh();
-                }
-
-                if ($(e.currentTarget).data('target') == '_self') {
-                    $("#edit_target").val('_self').change();
-                } else if ($(e.currentTarget).data('target') == '_blank') {
-                    $("#edit_target option[value='_self']").removeAttr('selected');
-                    $("#edit_target option[value='_blank']").attr('selected', 'selected');
-                    $("#edit_target").val('_blank');
-                }
-
-                if ($(e.currentTarget).data('route') != "") {
-                    $("#edit_type").val('route').change();
-                    $("#url_type").hide();
-                } else {
-                    $("#route_type").hide();
-                }
-
-                if ($("#edit_type").val() == 'route') {
-                    $("#url_type").hide();
-                    $("#route_type").show();
-                } else {
-                    $("#routel_type").hide();
-                    $("#url_type").show();
-                }
-
-                $('#edit_modal').modal('show');
-            });
-
-
-            $('.add_item').click(function () {
-                var translatable = $('#add_modal').data('multilingual');
-
-                if (translatable) {
-                    translatable.refresh();
-                }
-
-                $('#add_modal').modal('show');
-            });
 
             /**
              * Reorder items
@@ -280,19 +292,7 @@
                 }, function (data) {
                     toastr.success("Successfully updated menu order.");
                 });
-
             });
-
-            $('#edit_type').on('change', function (e) {
-                if ($("#edit_type").val() == 'route') {
-                    $("#url_type").hide();
-                    $("#route_type").show();
-                } else {
-                    $("#routel_type").hide();
-                    $("#url_type").show();
-                }
-            });
-
         });
     </script>
 @stop
