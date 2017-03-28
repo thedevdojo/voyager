@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Http\Controllers\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Pagination\LengthAwarePaginator;
 use TCG\Voyager\Models\DataType;
 
@@ -93,8 +94,9 @@ trait BreadRelationshipParser
 
         if (!empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
+                if (is_null($relation) || ($relation instanceof Collection && $relation->isEmpty())) continue;
+
                 if ($this->patchId[$field]) {
-                    // $field = snake_case($field).'_id';
                     $field = $this->getField($item, $field);
                 } else {
                     $field = snake_case($field);
@@ -103,12 +105,15 @@ trait BreadRelationshipParser
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
                 $relationData = json_decode($bread_data->details)->relationship;
 
-                if (!is_object($item[$field])) {
+                if (!is_object($item[$field]) && isset($item[$field])) {
                     $item[$field] = $relation[$relationData->label];
-                } else {
+                } elseif (isset($item[$field])) {
                     $tmp = $item[$field];
                     $item[$field] = $tmp;
+                } else {
+                    $item[$field] = $item[$relationData->method];
                 }
+
                 if (isset($relationData->page_slug)) {
                     $id = $relation->id;
                     $item[$field.'_page_slug'] = url($relationData->page_slug, $id);
@@ -126,8 +131,10 @@ trait BreadRelationshipParser
         // original field named was used so we'll return that
         if ($relationBuilder instanceof BelongsTo) return $relationBuilder->getForeignKey();
 
+        $relatedModel = $relationBuilder->getRelated();
+
         // While adding the relationship we used getRelationName() as field name,
         // so we'll return that now too.
-        if ($relationBuilder instanceof BelongsToMany) return $relationBuilder->getRelationName();
+        return $relatedModel->getTable() . "_" . $relatedModel->getKeyName();
     }
 }
