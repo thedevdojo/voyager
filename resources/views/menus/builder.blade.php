@@ -163,7 +163,7 @@
                 $m_form        = $('#m_form'),
                 $m_form_method = $('#m_form_method'),
                 $m_title       = $('#m_title'),
-                $m_i18n_title  = $('#m_title_i18n'),
+                $m_title_i18n  = $('#title_i18n'),
                 $m_url_type    = $('#m_url_type'),
                 $m_url         = $('#m_url'),
                 $m_link_type   = $('#m_link_type'),
@@ -252,7 +252,7 @@
                 }
 
                 if (translatable) {
-                    $m_i18n_title.val( $_str_i18n );
+                    $m_title_i18n.val($_str_i18n);
                     translatable.refresh();
                 }
             });
