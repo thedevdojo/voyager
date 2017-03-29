@@ -246,13 +246,13 @@ class VoyagerDatabaseController extends Controller
         }
 
         return [
-            'table'                 => $table,
-            'slug'                  => Str::slug($table),
-            'display_name'          => $displayName,
-            'display_name_plural'   => Str::plural($displayName),
-            'model_name'            => $modelNamespace.Str::studly(Str::singular($table)),
-            'generate_permissions'  => true,
-            'server_side'           => false,
+            'table'                => $table,
+            'slug'                 => Str::slug($table),
+            'display_name'         => $displayName,
+            'display_name_plural'  => Str::plural($displayName),
+            'model_name'           => $modelNamespace.Str::studly(Str::singular($table)),
+            'generate_permissions' => true,
+            'server_side'          => false,
         ];
     }
 
@@ -284,12 +284,9 @@ class VoyagerDatabaseController extends Controller
             $fieldOptions = SchemaManager::describeTable($dataType->name);
         }
 
-        return view(
-            'voyager::tools.database.edit-add-bread', [
-                'dataType'     => $dataType,
-                'fieldOptions' => $fieldOptions,
-            ]
-        );
+        $isModelTranslatable = isBreadTranslatable($dataType);
+
+        return view('voyager::tools.database.edit-add-bread', compact('dataType', 'fieldOptions', 'isModelTranslatable'));
     }
 
     public function updateBread(Request $request, $id)
@@ -299,6 +296,10 @@ class VoyagerDatabaseController extends Controller
         /* @var \TCG\Voyager\Models\DataType $dataType */
         try {
             $dataType = Voyager::model('DataType')->find($id);
+
+            if ($dataType->translatable()) {
+                $dataTrans = $this->prepareMenuTranslations($data, 'add');
+            }
 
             $data = $dataType->updateDataType($request->all(), true)
                 ? $this->alertSuccess("Successfully updated the {$dataType->name} BREAD")
@@ -325,5 +326,38 @@ class VoyagerDatabaseController extends Controller
         }
 
         return redirect()->route('voyager.database.index')->with($data);
+    }
+
+    /**
+     * Prepare Database translations.
+     *
+     * @param array  $data
+     *
+     * @return JSON translated item
+     */
+    protected function prepareDatabaseTranslations(&$data)
+    {
+        // --------------- TODO -----------------
+        //
+        // 1. loop available locales
+        // 2. charge default locale
+        // 3. clear i18n inputs
+        // 4. return revised data
+        //
+        //
+        $key_sing = 'display_name_singular_i18n';
+        $key_plur = 'display_name_plural_i18n';
+        $trans_sing = json_decode($data[$key_sing], true);
+        $trans_plur = json_decode($data[$key_plur], true);
+
+        // Set field value with the default locale
+        $data['display_name_singular'] = $trans_sing[config('voyager.multilingual.default', 'en')];
+        $data['display_name_plural']   = $trans_plur[config('voyager.multilingual.default', 'en')];
+
+        unset($data[$key_sing]);       // Remove hidden input holding translations
+        unset($data[$key_plur]);       // Remove hidden input holding translations
+        unset($data['i18n_selector']); // Remove language selector input radio
+
+        return $data;
     }
 }
