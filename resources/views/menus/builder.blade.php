@@ -76,7 +76,7 @@
                     <div class="modal-body">
                         @include('voyager::multilingual.language-selector')
                         <label for="name">Title of the Menu Item</label>
-                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'm_title', '_field_trans' => ''])
+                        @include('voyager::multilingual.input-hidden-menu', ['_field_name' => 'title', '_field_trans' => ''])
                         <input type="text" class="form-control" id="m_title" name="title" placeholder="Title"><br>
                         <label for="type">Link type</label>
                         <select id="m_link_type" class="form-control" name="type">
