@@ -44,6 +44,7 @@ class VoyagerMenuController extends Controller
             $request->all()
         );
 
+        unset($data['id']);
         $data['order'] = 1;
 
         $highestOrderMenuItem = Voyager::model('MenuItem')->where('parent_id', '=', null)
@@ -58,7 +59,7 @@ class VoyagerMenuController extends Controller
         $_isTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
         if ($_isTranslatable) {
             // Prepare data before saving the menu
-            $trans = $this->prepareMenuTranslations($data, 'add');
+            $trans = $this->prepareMenuTranslations($data);
         }
 
         $menuItem = Voyager::model('MenuItem')->create($data);
@@ -88,7 +89,7 @@ class VoyagerMenuController extends Controller
         $menuItem = Voyager::model('MenuItem')->findOrFail($id);
 
         if (isBreadTranslatable($menuItem)) {
-            $trans = $this->prepareMenuTranslations($data, 'edit');
+            $trans = $this->prepareMenuTranslations($data);
 
             // Save menu translations
             $menuItem->setAttributeTranslations('title', $trans, true);
@@ -147,20 +148,18 @@ class VoyagerMenuController extends Controller
     /**
      * Prepare menu translations.
      *
-     * @param array  $data   menu data
-     * @param string $action add or edit action
+     * @param array $data menu data
      *
      * @return JSON translated item
      */
-    protected function prepareMenuTranslations(&$data, $action)
+    protected function prepareMenuTranslations(&$data)
     {
-        $key = $action.'_title_i18n';
-        $trans = json_decode($data[$key], true);
+        $trans = json_decode($data['title_i18n'], true);
 
         // Set field value with the default locale
         $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
 
-        unset($data[$key]);             // Remove hidden input holding translations
+        unset($data['title_i18n']);     // Remove hidden input holding translations
         unset($data['i18n_selector']);  // Remove language selector input radio
 
         return $trans;
