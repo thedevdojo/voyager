@@ -44,7 +44,7 @@ DB_PASSWORD=secret
 You will also want to update your website URL inside of the `APP_URL` variable inside the .env file:
 
 ```
-APP_URL=localhost:8000
+APP_URL=http://localhost:8000
 ```
 
 Add the Voyager service provider to the `config/app.php` file in the `providers` array:
