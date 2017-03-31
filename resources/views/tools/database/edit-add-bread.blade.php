@@ -7,15 +7,14 @@
     @include('voyager::multilingual.language-selector')
 @stop
 
-@php
-    // echo dd($isModelTranslatable);
-@endphp
 
 @section('content')
-
-    @if(isset($dataType->name))
-        <?php $table = $dataType->name; ?>
-    @endif
+    @php
+        // $isModelTranslatable = isset($isModelTranslatable) ? $isModelTranslatable : false;
+        if (isset($dataType->name)) {
+            $table = $dataType->name;
+        }
+    @endphp
 
     <div class="page-content container-fluid">
         <div class="row">

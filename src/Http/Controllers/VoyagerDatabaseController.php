@@ -234,11 +234,9 @@ class VoyagerDatabaseController extends Controller
         $data = $this->prepopulateBreadInfo($table);
         $data['fieldOptions'] = SchemaManager::describeTable($table);
 
-        // $isModelTranslatable = config('voyager.multilingual.bread');
-        $isModelTranslatable = true;
-
+        // $isModelTranslatable = config('voyager.multilingual.bread');  // will return true/false
+        // return view('voyager::tools.database.edit-add-bread', compact($data, $isModelTranslatable));
         return view('voyager::tools.database.edit-add-bread', $data);
-        // return view('voyager::tools.database.edit-add-bread', $data)->with(['isModelTranslatable' => true]);
     }
 
     private function prepopulateBreadInfo($table)
