@@ -55,9 +55,7 @@
                                                      {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
                                                     @endforeach
                                                 @endif
-                                                @if ($data->{$row->field} && isset($options->relationship))
-                                                    {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
-                                                @endif
+
                                             @elseif($row->type == 'select_dropdown' && property_exists($options, 'options'))
 
                                                 @if($data->{$row->field . '_page_slug'})
