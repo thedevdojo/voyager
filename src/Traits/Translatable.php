@@ -332,5 +332,4 @@ trait Translatable
             }
         }
     }
-
 }

@@ -302,5 +302,4 @@ abstract class Controller extends BaseController
             Storage::disk(config('voyager.storage.disk'))->delete($path);
         }
     }
-
 }

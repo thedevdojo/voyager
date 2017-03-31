@@ -31,7 +31,7 @@ class TranslationsTableSeeder extends Seeder
         //
         $_fld = 'display_name_singular';
         $_tpl = ['data_types', $_fld];
-        $dtp  = DataType::where($_fld, 'Post')->firstOrFail();
+        $dtp = DataType::where($_fld, 'Post')->firstOrFail();
         if ($dtp->exists) {
             $this->_trans('pt', $this->_arr($_tpl, $dtp->id), 'Post');
         }
@@ -60,7 +60,7 @@ class TranslationsTableSeeder extends Seeder
         //
         $_fld = 'display_name_plural';
         $_tpl = ['data_types', $_fld];
-        $dtp  = DataType::where($_fld, 'Posts')->firstOrFail();
+        $dtp = DataType::where($_fld, 'Posts')->firstOrFail();
         if ($dtp->exists) {
             $this->_trans('pt', $this->_arr($_tpl, $dtp->id), 'Posts');
         }
@@ -121,7 +121,7 @@ class TranslationsTableSeeder extends Seeder
      */
     private function menusTranslations()
     {
-        $_tpl     = ['menu_items', 'title'];
+        $_tpl = ['menu_items', 'title'];
         $mItem = $this->_menuItem('Dashboard');
         if ($mItem->exists) {
             $this->_trans('pt', $this->_arr($_tpl, $mItem->id), 'Painel de Controle');

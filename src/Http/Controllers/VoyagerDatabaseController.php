@@ -338,5 +338,4 @@ class VoyagerDatabaseController extends Controller
 
         return redirect()->route('voyager.database.index')->with($data);
     }
-
 }
