@@ -246,13 +246,14 @@ class VoyagerDatabaseController extends Controller
         }
 
         return [
-            'table'                 => $table,
-            'slug'                  => Str::slug($table),
-            'display_name'          => $displayName,
-            'display_name_plural'   => Str::plural($displayName),
-            'model_name'            => $modelNamespace.Str::studly(Str::singular($table)),
-            'generate_permissions'  => true,
-            'server_side'           => false,
+            'isModelTranslatable'  => true,
+            'table'                => $table,
+            'slug'                 => Str::slug($table),
+            'display_name'         => $displayName,
+            'display_name_plural'  => Str::plural($displayName),
+            'model_name'           => $modelNamespace.Str::studly(Str::singular($table)),
+            'generate_permissions' => true,
+            'server_side'          => false,
         ];
     }
 
@@ -284,12 +285,9 @@ class VoyagerDatabaseController extends Controller
             $fieldOptions = SchemaManager::describeTable($dataType->name);
         }
 
-        return view(
-            'voyager::tools.database.edit-add-bread', [
-                'dataType'     => $dataType,
-                'fieldOptions' => $fieldOptions,
-            ]
-        );
+        $isModelTranslatable = isBreadTranslatable($dataType);
+
+        return view('voyager::tools.database.edit-add-bread', compact('dataType', 'fieldOptions', 'isModelTranslatable'));
     }
 
     public function updateBread(Request $request, $id)
@@ -300,9 +298,17 @@ class VoyagerDatabaseController extends Controller
         try {
             $dataType = Voyager::model('DataType')->find($id);
 
+            // Prepare Translations and Transform data
+            $translations = isBreadTranslatable($dataType)
+                ? $dataType->prepareTranslations($request)
+                : [];
+
             $data = $dataType->updateDataType($request->all(), true)
                 ? $this->alertSuccess("Successfully updated the {$dataType->name} BREAD")
                 : $this->alertError('Sorry it appears there may have been a problem updating this BREAD');
+
+            // Save translations if applied
+            $dataType->saveTranslations($translations);
 
             return redirect()->route('voyager.database.index')->with($data);
         } catch (Exception $e) {
@@ -316,6 +322,12 @@ class VoyagerDatabaseController extends Controller
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = Voyager::model('DataType')->find($id);
+
+        // Delete Translations, if present
+        if (isBreadTranslatable($dataType)) {
+            $dataType->deleteAttributeTranslations($dataType->getTranslatableAttributes());
+        }
+
         $data = Voyager::model('DataType')->destroy($id)
             ? $this->alertSuccess("Successfully removed BREAD from {$dataType->name}")
             : $this->alertError('Sorry it appears there was a problem removing this BREAD');
