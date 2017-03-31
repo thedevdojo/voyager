@@ -107,7 +107,13 @@ abstract class SchemaManager
     {
         Type::registerCustomPlatformTypes();
 
-        return array_keys(static::manager()->listTableColumns($tableName));
+        $columnNames = [];
+
+        foreach (static::manager()->listTableColumns($tableName) as $column) {
+            $columnNames[] = $column->getName();
+        }
+
+        return $columnNames;
     }
 
     public static function createTable($table)
