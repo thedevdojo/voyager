@@ -99,8 +99,10 @@ abstract class Controller extends BaseController
 
         $data->save();
 
-        // Save translations if applied
-        $data->saveTranslations($translations);
+        // Save translations
+        if (count($translations) > 0) {
+            $data->saveTranslations($translations);
+        }
 
         foreach ($multi_select as $sync_data) {
             $data->{$sync_data['row']}()->sync($sync_data['content']);
