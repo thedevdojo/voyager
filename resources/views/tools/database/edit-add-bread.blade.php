@@ -5,7 +5,7 @@
         <i class="voyager-data"></i> @if(isset($dataType->id)){{ 'Edit BREAD for ' . $dataType->name . ' table' }}@elseif(isset($table)){{ 'Create BREAD for ' . $table . ' table' }}@endif
     </div>
     @php
-        $isModelTranslatable = (isset($isModelTranslatable) && isset($dataType)) ? $isModelTranslatable : false;
+        $isModelTranslatable = (!isset($isModelTranslatable) || !isset($dataType)) ? false : $isModelTranslatable;
         if (isset($dataType->name)) {
             $table = $dataType->name;
         }
@@ -49,12 +49,17 @@
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
                                             '_field_name'         => 'display_name_singular',
-                                            '_field_trans'        => json_encode($dataType->getTranslationsOf('display_name_singular'))
+                                            '_field_trans' => getFieldTranslations($dataType, 'display_name_singular')
                                         ])
                                     @endif
-                                    <input type="text" class="form-control" name="display_name_singular" id="display_name_singular"
+                                    <input type="text" class="form-control"
+                                           name="display_name_singular"
+                                           id="display_name_singular"
                                            placeholder="Display Name (Singular)"
-                                           value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
+                                           value="@if(isset($dataType->display_name_singular))
+                                                    {{ $dataType->display_name_singular }}
+                                                    @else{{ $display_name }}
+                                                    @endif">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">Display Name (Plural)</label>
@@ -62,12 +67,17 @@
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
                                             '_field_name'         => 'display_name_plural',
-                                            '_field_trans'        => json_encode($dataType->getTranslationsOf('display_name_plural'))
+                                            '_field_trans' => getFieldTranslations($dataType, 'display_name_plural')
                                         ])
                                     @endif
-                                    <input type="text" class="form-control" name="display_name_plural" id="display_name_plural"
+                                    <input type="text" class="form-control"
+                                           name="display_name_plural"
+                                           id="display_name_plural"
                                            placeholder="Display Name (Plural)"
-                                           value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
+                                           value="@if(isset($dataType->display_name_plural))
+                                                    {{ $dataType->display_name_plural }}
+                                                    @else{{ $display_name_plural }}
+                                                    @endif">
                                 </div>
                             </div>
                             <div class="row clearfix">
@@ -124,7 +134,8 @@
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea class="form-control" name="description"
-                                          placeholder="Description">@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
+                                          placeholder="Description"
+                                    >@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
                             </div>
                         </div><!-- .panel-body -->
                     </div><!-- .panel -->

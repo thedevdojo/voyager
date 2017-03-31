@@ -22,13 +22,14 @@ if (!function_exists('getFieldTranslations')) {
     /**
      * Return all field translations.
      *
-     * @param Illuminate\Database\Eloquent\Model      $model
-     * @param Illuminate\Database\Eloquent\Collection $row
-     * @param bool                                    $stripHtmlTags
+     * @param Illuminate\Database\Eloquent\Model $model
+     * @param string                             $field
+     * @param string                             $rowType
+     * @param bool                               $stripHtmlTags
      */
-    function getFieldTranslations($model, $row, $stripHtmlTags = false)
+    function getFieldTranslations($model, $field, $rowType = '', $stripHtmlTags = false)
     {
-        $_out = $model->getTranslationsOf($row->field);
+        $_out = $model->getTranslationsOf($field);
 
         if ($stripHtmlTags && $row->type == 'rich_text_box') {
             foreach ($_out as $language => $value) {
