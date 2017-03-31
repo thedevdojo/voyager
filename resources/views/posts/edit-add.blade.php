@@ -59,7 +59,9 @@
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
     </h1>
 @stop
-
+@php
+    // echo dd($dataType->addRows->where('field', 'slug')->first, $dataTypeContent);
+@endphp
 @section('content')
     <div class="page-content container-fluid">
         <form role="form" action="@if(isset($dataTypeContent->id)){{ route('voyager.posts.update', $dataTypeContent->id) }}@else{{ route('voyager.posts.store') }}@endif" method="POST" enctype="multipart/form-data">
@@ -125,7 +127,7 @@
                                 <label for="name">URL slug</label>
                                 <input type="text" class="form-control" id="slug" name="slug"
                                     placeholder="slug"
-                                    @if(isset($dataTypeContent)){!! isFieldSlugAutoGenerator($dataTypeContent, "slug") !!}@endif
+                                    {{!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}}
                                     value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">
