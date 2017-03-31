@@ -101,9 +101,9 @@
 
                 str = _slug
                     .replace(/^\s+|\s+$/g, '')      // Trim
-                    .replace(/[^a-z0-9 -]/g, '')    // Remove invalid chars
-                    .replace(/\s+/g, this.settings.separator)    // Replace spaces with separator
-                    .replace(/\-\-+/g, this.settings.separator); // Replace multiple separators with single
+                    .replace(/[^-\u0600-۾\w\d\$\*\(\)\'\!\_]/g, _sep)   // Remove invalid chars
+                    .replace(/\s+/g, _sep)          // Replace spaces with separator
+                    .replace(/\-\-+/g, _sep);       // Replace multiple separators with single
 
                 return str;
             },
