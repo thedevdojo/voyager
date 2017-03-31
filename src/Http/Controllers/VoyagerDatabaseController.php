@@ -234,8 +234,6 @@ class VoyagerDatabaseController extends Controller
         $data = $this->prepopulateBreadInfo($table);
         $data['fieldOptions'] = SchemaManager::describeTable($table);
 
-        // $isModelTranslatable = config('voyager.multilingual.bread');  // will return true/false
-        // return view('voyager::tools.database.edit-add-bread', compact($data, $isModelTranslatable));
         return view('voyager::tools.database.edit-add-bread', $data);
     }
 
@@ -324,6 +322,12 @@ class VoyagerDatabaseController extends Controller
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = Voyager::model('DataType')->find($id);
+
+        // Delete Translations, if present
+        if (isBreadTranslatable($dataType)) {
+            $dataType->deleteAttributeTranslations($dataType->getTranslatableAttributes());
+        }
+
         $data = Voyager::model('DataType')->destroy($id)
             ? $this->alertSuccess("Successfully removed BREAD from {$dataType->name}")
             : $this->alertError('Sorry it appears there was a problem removing this BREAD');

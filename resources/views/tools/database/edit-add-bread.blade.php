@@ -4,18 +4,17 @@
     <div class="page-title">
         <i class="voyager-data"></i> @if(isset($dataType->id)){{ 'Edit BREAD for ' . $dataType->name . ' table' }}@elseif(isset($table)){{ 'Create BREAD for ' . $table . ' table' }}@endif
     </div>
+    @php
+        $isModelTranslatable = (isset($isModelTranslatable) && isset($dataType)) ? $isModelTranslatable : false;
+        if (isset($dataType->name)) {
+            $table = $dataType->name;
+        }
+    @endphp
     @include('voyager::multilingual.language-selector')
 @stop
 
 
 @section('content')
-    @php
-        // $isModelTranslatable = isset($isModelTranslatable) ? $isModelTranslatable : false;
-        if (isset($dataType->name)) {
-            $table = $dataType->name;
-        }
-    @endphp
-
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
