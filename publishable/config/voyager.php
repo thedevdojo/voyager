@@ -174,15 +174,29 @@ return [
                 'icon_class' => 'voyager-power',
             ],
         ],
+
         'data_tables' => [
             'responsive' => true, // Use responsive extension for jQuery dataTables that are not server-side paginated
         ],
+
         'widgets' => [
             'TCG\\Voyager\\Widgets\\UserDimmer',
             'TCG\\Voyager\\Widgets\\PostDimmer',
             'TCG\\Voyager\\Widgets\\PageDimmer',
         ],
+
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | UI Generic Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you change some of the Voyager UI settings.
+    |
+    | TODO: Move style properties to assets/css
+    |
+    */
 
     'login' => [
         'gradient_a' => '#ffffff',
@@ -190,4 +204,7 @@ return [
     ],
 
     'primary_color' => '#22A7F0',
+
+    'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
+
 ];

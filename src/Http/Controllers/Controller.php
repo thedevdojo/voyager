@@ -36,7 +36,13 @@ abstract class Controller extends BaseController
         $rules = [];
         $messages = [];
         $multi_select = [];
-        $translations = [];
+
+        /*
+         * Prepare Translations and Transform data
+         */
+        $translations = isBreadTranslatable($data)
+                        ? $data->prepareTranslations($request)
+                        : [];
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
@@ -84,12 +90,6 @@ abstract class Controller extends BaseController
             if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
                 // Only if select_multiple is working with a relationship
                 $multi_select[] = ['row' => $row->field, 'content' => $content];
-
-            /*
-             * Translation support
-             */
-            } elseif (isFieldTranslatable($data, $row)) {
-                $this->prepareTranslations($translations, $data, $row->field, $request);
             } else {
                 $data->{$row->field} = $content;
             }
@@ -99,10 +99,9 @@ abstract class Controller extends BaseController
 
         $data->save();
 
-        foreach ($translations as $field => $locales) {
-            foreach ($locales as $locale => $translation) {
-                $translation->save();
-            }
+        // Save translations
+        if (count($translations) > 0) {
+            $data->saveTranslations($translations);
         }
 
         foreach ($multi_select as $sync_data) {
@@ -304,28 +303,5 @@ abstract class Controller extends BaseController
         if (Storage::disk(config('voyager.storage.disk'))->exists($path)) {
             Storage::disk(config('voyager.storage.disk'))->delete($path);
         }
-    }
-
-    /**
-     * Prepare translations.
-     *
-     * @param object &$translations
-     * @param object &$data
-     * @param object $row
-     * @param object $request
-     *
-     * @return void
-     */
-    protected function prepareTranslations(&$translations, &$data, $field, $request)
-    {
-        $trans = json_decode($request->input($field.'_i18n'), true);
-
-        // Set field value with the default locale
-        $data[$field] = $trans[config('voyager.multilingual.default', 'en')];
-
-        $translations[$field] = $data->setAttributeTranslations(
-            $field,
-            $trans
-        );
     }
 }

@@ -1,7 +1,8 @@
 /**
  *  Multilingual System
  *
- *  Last version: 05 Mar 2017
+ *  Last Update: 28 Mar 2017
+ *  First version: 05 Mar 2017
  *  Author: Bruno Torrinha <http://www.torrinha.com>
  *
  *  MIT License
@@ -114,9 +115,26 @@
 
             loadJsonField: function(str) {
                 var $_data = {};
+
                 if (this.isJsonValid(str)) {
-                    return JSON.parse(str);
+                    $_data = JSON.parse(str);
+
+                    /**
+                     * Convert nulls to ''.
+                     */
+                    this.langSelectors.each(function(i, btn) {  // loop languages
+                        $_data[btn.id] = $_data[btn.id] || '';
+                    });
+
+                    return $_data;
                 }
+
+                /**
+                 * For the sake of validation, this looks ugly, but it will work
+                 */
+                this.langSelectors.each(function(i, btn) {
+                    $_data[btn.id] = '';
+                });
 
                 return $_data;
             },

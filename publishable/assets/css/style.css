@@ -1283,6 +1283,9 @@ body.login-page .login-footer {
 -------------------------------------------------- */
 .language-selector {
   float: right !important;
+  padding: 0 10px 0 0;
+}
+.side-body > .language-selector {
   padding: 28px 15px 0 0;
 }
 .modal-body .language-selector {
