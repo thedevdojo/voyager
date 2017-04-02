@@ -2,16 +2,20 @@
 
 namespace TCG\Voyager;
 
+use Arrilot\Widgets\Facade as Widget;
+use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\User;
+use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -21,22 +25,29 @@ class VoyagerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(ImageServiceProvider::class);
+        $this->app->register(WidgetServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
-        $loader->alias('Menu', Menu::class);
         $loader->alias('Voyager', VoyagerFacade::class);
 
         $this->app->singleton('voyager', function () {
             return new Voyager();
         });
 
-        $this->registerViewComposers();
+        $this->loadHelpers();
+
         $this->registerAlertComponents();
+        $this->registerFormFields();
+        $this->registerWidgets();
+
+        $this->registerConfigs();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
             $this->registerConsoleCommands();
-        } else {
+        }
+
+        if (!$this->app->runningInConsole() || config('app.env') == 'testing') {
             $this->registerAppCommands();
         }
     }
@@ -52,7 +63,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $app_user = config('voyager.user.namespace');
             $app_user::created(function ($user) {
                 if (is_null($user->role_id)) {
-                    User::findOrFail($user->id)
+                    VoyagerFacade::model('User')->findOrFail($user->id)
                         ->setRole(config('voyager.user.default_role'))
                         ->save();
                 }
@@ -61,11 +72,33 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
-        $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        if (app()->version() >= 5.4) {
+            $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
+
+            if (config('app.env') == 'testing') {
+                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
+            }
+        } else {
+            $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        }
+
+        $this->registerViewComposers();
 
         $event->listen('voyager.alerts.collecting', function () {
             $this->addStorageSymlinkAlert();
         });
+
+        $this->bootTranslatorCollectionMacros();
+    }
+
+    /**
+     * Load helpers.
+     */
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
+            require_once $filename;
+        }
     }
 
     /**
@@ -74,7 +107,7 @@ class VoyagerServiceProvider extends ServiceProvider
     protected function registerViewComposers()
     {
         // Register alerts
-        View::composer('voyager::index', function ($view) {
+        View::composer('voyager::*', function ($view) {
             $view->with('alerts', VoyagerFacade::alerts());
         });
     }
@@ -84,10 +117,18 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     protected function addStorageSymlinkAlert()
     {
-        $currentRouteAction = app('router')->current()->getAction();
+        if (app('router')->current() !== null) {
+            $currentRouteAction = app('router')->current()->getAction();
+        } else {
+            $currentRouteAction = null;
+        }
         $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
 
-        if ($routeName == 'voyager.dashboard' && request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
+        if ($routeName != 'voyager.dashboard') {
+            return;
+        }
+
+        if (request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
             $this->fixMissingStorageSymlink();
         } elseif (!file_exists(public_path('storage'))) {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
@@ -130,36 +171,99 @@ class VoyagerServiceProvider extends ServiceProvider
         }
     }
 
+    protected function bootTranslatorCollectionMacros()
+    {
+        Collection::macro('translate', function () {
+            $transtors = [];
+
+            foreach ($this->all() as $item) {
+                $transtors[] = call_user_func_array([$item, 'translate'], func_get_args());
+            }
+
+            return new TranslatorCollection($transtors);
+        });
+    }
+
+    /**
+     * Register widget.
+     */
+    protected function registerWidgets()
+    {
+        $default_widgets = ['TCG\\Voyager\\Widgets\\UserDimmer', 'TCG\\Voyager\\Widgets\\PostDimmer', 'TCG\\Voyager\\Widgets\\PageDimmer'];
+        $widgets = config('voyager.dashboard.widgets', $default_widgets);
+
+        foreach ($widgets as $widget) {
+            Widget::group('voyager::dimmers')->addWidget($widget);
+        }
+    }
+
     /**
      * Register the publishable files.
      */
     private function registerPublishableResources()
     {
-        $basePath = dirname(__DIR__);
+        $publishablePath = dirname(__DIR__).'/publishable';
+
         $publishable = [
             'voyager_assets' => [
-                "$basePath/publishable/assets" => public_path('vendor/tcg/voyager/assets'),
+                "{$publishablePath}/assets/" => public_path(config('voyager.assets_path')),
             ],
             'migrations' => [
-                "$basePath/publishable/database/migrations/" => database_path('migrations'),
+                "{$publishablePath}/database/migrations/" => database_path('migrations'),
             ],
             'seeds' => [
-                "$basePath/publishable/database/seeds/" => database_path('seeds'),
+                "{$publishablePath}/database/seeds/" => database_path('seeds'),
             ],
             'demo_content' => [
-                "$basePath/publishable/demo_content/" => storage_path('app/public'),
+                "{$publishablePath}/demo_content/" => storage_path('app/public'),
             ],
             'config' => [
-                "$basePath/publishable/config/voyager.php" => config_path('voyager.php'),
-            ],
-            'views' => [
-                "$basePath/publishable/views/" => resource_path('views/vendor/voyager'),
+                "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
         ];
 
         foreach ($publishable as $group => $paths) {
             $this->publishes($paths, $group);
         }
+    }
+
+    public function registerConfigs()
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
+        );
+    }
+
+    protected function registerFormFields()
+    {
+        $formFields = [
+            'checkbox',
+            'date',
+            'file',
+            'image',
+            'multiple_images',
+            'number',
+            'password',
+            'radio_btn',
+            'rich_text_box',
+            'select_dropdown',
+            'select_multiple',
+            'text',
+            'text_area',
+            'timestamp',
+            'hidden',
+            'code_editor',
+        ];
+
+        foreach ($formFields as $formField) {
+            $class = studly_case("{$formField}_handler");
+
+            VoyagerFacade::addFormField("TCG\\Voyager\\FormFields\\{$class}");
+        }
+
+        VoyagerFacade::addAfterFormField(DescriptionHandler::class);
+
+        event('voyager.form-fields.registered');
     }
 
     /**

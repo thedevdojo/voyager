@@ -1,14 +1,16 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/media.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/select2/select2.min.css">
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/media/dropzone.css"/>
+    <script type="text/javascript" src="{{ voyager_asset('js/vue1.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ voyager_asset('css/media/media.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('js/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ voyager_asset('css/media/dropzone.css') }}"/>
 @stop
 
 @section('content')
 
     <div class="page-content container-fluid">
+        @include('voyager::alerts')
         <div class="row">
             <div class="col-md-12">
 
@@ -110,7 +112,7 @@
                                 <div id="file_loader">
                                     <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
                                     @if($admin_loader_img == '')
-                                        <img src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+                                        <img src="{{ voyager_asset('images/logo-icon.png') }}" alt="Voyager Loader">
                                     @else
                                         <img src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
                                     @endif
@@ -331,17 +333,16 @@
 
     <input type="hidden" id="storage_path" value="{{ storage_path() }}">
 
-
-    <!-- Include our script files -->
-    <script src="{{ config('voyager.assets_path') }}/js/select2/select2.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/media/dropzone.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/media/media.js"></script>
-    <script type="text/javascript">
-        var media = new VoyagerMedia({
-            baseUrl: "{{ route('voyager.dashboard') }}"
-        });
-        $(function () {
-            media.init();
-        });
-    </script>
+@section('javascript')
+<script src="{{ voyager_asset('js/media/dropzone.js') }}"></script>
+<script src="{{ voyager_asset('js/media/media.js') }}"></script>
+<script type="text/javascript">
+    var media = new VoyagerMedia({
+        baseUrl: "{{ route('voyager.dashboard') }}"
+    });
+    $(function () {
+        media.init();
+    });
+</script>
+@endsection
 @stop

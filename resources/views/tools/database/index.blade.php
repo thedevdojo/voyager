@@ -1,7 +1,8 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/database.css">
+    <script type="text/javascript" src="{{ voyager_asset('js/vue21.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ voyager_asset('css/database.css') }}">
 @stop
 
 @section('page_header')
@@ -15,85 +16,72 @@
 @section('content')
 
     <div class="page-content container-fluid">
+        @include('voyager::alerts')
         <div class="row">
             <div class="col-md-12">
 
-                <?php $dataTypes = TCG\Voyager\Models\DataType::all(); ?>
-                <?php $dataTypeNames = []; ?>
-                @foreach($dataTypes as $type)
-                    <?php array_push($dataTypeNames, $type->name); ?>
-                @endforeach
-
                 <table class="table table-striped database-tables">
-	                <thead>
-	                	<tr>
-	                		<th>Table Name</th>
-                            <th>BREAD/CRUD Actions</th>
-	                		<th style="text-align:right">Table Actions</th>
-	                	</tr>
-                	</thead>
-
-                <?php $arr = TCG\Voyager\Facades\DBSchema::tables(); ?>
-                @foreach($arr as $a)
-	            <?php $table = current($a); ?>
-		    <?php if (in_array($table, config('voyager.database.tables.hidden', []))) continue; ?>
-                	<?php $active = in_array($table, $dataTypeNames); 
-                        if($active){
-                            $activeDataType = TCG\Voyager\Models\DataType::where('name', '=', $table)->first();
-                        }
-                    ?>
-
+                    <thead>
                         <tr>
-                            <td>
-                                <p class="name">
-                                    @if($active)
-                                        <a href="{{ route('voyager.database.show', $table) }}"
-                                           data-name="{{ $table }}" class="desctable">{{ $table }}</a> <i
-                                                class="voyager-bread"
-                                                style="font-size:25px; position:absolute; margin-left:10px; margin-top:-3px;"></i>
-                                    @else
-                                        <a href="{{ route('voyager.database.show', $table) }}"
-                                           data-name="{{ $table }}" class="desctable">{{ $table }}</a>
-                                    @endif
-                                </p>
-                            </td>
-
-                            <td>
-
-                                <div class="bread_actions">
-                                    @if($active)
-                                        <a class="btn-sm btn-default edit"
-                                           href="{{ route('voyager.database.edit_bread', $activeDataType->id) }}"> Edit
-                                            BREAD</a>
-                                        <div class="btn-sm btn-danger delete" style="display:inline"
-                                             data-id="{{ $activeDataType->id }}" data-name="{{ $table }}"> Delete BREAD
-                                        </div>
-                                    @else
-                                        <form action="{{ route('voyager.database.create_bread') }}" method="POST">
-                                            <input type="hidden" value="{{ csrf_token() }}" name="_token">
-                                            <input type="hidden" value="{{ $table }}" name="table">
-                                            <button type="submit" class="btn-sm btn-default"><i
-                                                        class="voyager-plus"></i> Add BREAD to this table
-                                            </button>
-                                        </form>
-                                    @endif
-                                </div>
-
-                            </td>
-                            <td class="actions">
-                                <a class="btn-danger btn-sm pull-right delete_table @if($active) remove-bread-warning @endif"
-                                   data-table="{{ $table }}" style="display:inline; cursor:pointer;"><i
-                                            class="voyager-trash"></i> Delete</a>
-                                <a class="btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;"
-                                   href="{{ route('voyager.database.edit', $table) }}"><i
-                                            class="voyager-edit"></i> Edit</a>
-                                <a class="btn-sm btn-warning pull-right desctable"
-                                   style="display:inline; margin-right:10px;"
-                                   href="{{ route('voyager.database.show', $table) }}" data-name="{{ $table }}"><i
-                                            class="voyager-eye"></i> View</a>
-                            </td>
+                            <th>Table Name</th>
+                            <th>BREAD/CRUD Actions</th>
+                            <th style="text-align:right">Table Actions</th>
                         </tr>
-                    @endforeach
+                    </thead>
+
+            @foreach($tables as $table)
+                    @continue(in_array($table->name, config('voyager.database.tables.hidden', [])))
+                    <tr>
+                        <td>
+                            <p class="name">
+                                <a href="{{ route('voyager.database.show', $table->name) }}"
+                                   data-name="{{ $table->name }}" class="desctable">
+                                   {{ $table->name }}
+                                </a>
+                            @if($table->dataTypeId)
+                                <i class="voyager-bread"
+                                   style="font-size:25px; position:absolute; margin-left:10px; margin-top:-3px;"></i>
+                            @endif
+                            </p>
+                        </td>
+
+                        <td>
+                            <div class="bread_actions">
+                            @if($table->dataTypeId)
+                                <a href="{{ route('voyager.database.edit_bread', $table->name) }}"
+                                   class="btn-sm btn-default edit">
+                                   Edit BREAD
+                                </a>
+                                <div data-id="{{ $table->dataTypeId }}" data-name="{{ $table->name }}"
+                                     class="btn-sm btn-danger delete" style="display:inline">
+                                     Delete BREAD
+                                </div>
+                            @else
+                                <a href="{{ route('voyager.database.create_bread', ['name' => $table->name]) }}"
+                                   class="btn-sm btn-default">
+                                    <i class="voyager-plus"></i> Add BREAD to this table
+                                </a>
+                            @endif
+                            </div>
+                        </td>
+
+                        <td class="actions">
+                            <a class="btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
+                               data-table="{{ $table->name }}" style="display:inline; cursor:pointer;">
+                               <i class="voyager-trash"></i> Delete
+                            </a>
+                            <a href="{{ route('voyager.database.edit', $table->name) }}"
+                               class="btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;">
+                               <i class="voyager-edit"></i> Edit
+                            </a>
+                            <a href="{{ route('voyager.database.show', $table->name) }}"
+                               data-name="{{ $table->name }}"
+                               class="btn-sm btn-warning pull-right desctable" style="display:inline; margin-right:10px;">
+                               <i class="voyager-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
                 </table>
             </div>
         </div>
@@ -189,7 +177,6 @@
 
     <script>
 
-
         var table = {
             name: '',
             rows: []
@@ -202,18 +189,16 @@
             },
         });
 
-
         $(function () {
 
             $('.bread_actions').on('click', '.delete', function (e) {
-                id = $(e.target).data('id');
-                name = $(e.target).data('name');
+                id = $(this).data('id');
+                name = $(this).data('name');
 
                 $('#delete_builder_name').text(name);
                 $('#delete_builder_form')[0].action += '/' + id;
                 $('#delete_builder_modal').modal('show');
             });
-
 
             $('.database-tables').on('click', '.desctable', function (e) {
                 e.preventDefault();
@@ -236,8 +221,8 @@
             });
 
             $('td.actions').on('click', '.delete_table', function (e) {
-                table = $(e.target).data('table');
-                if ($(e.target).hasClass('remove-bread-warning')) {
+                table = $(this).data('table');
+                if ($(this).hasClass('remove-bread-warning')) {
                     toastr.warning("Please make sure to remove the BREAD on this table before deleting the table.");
                 } else {
                     $('#delete_table_name').text(table);
@@ -245,7 +230,6 @@
                     $('#delete_modal').modal('show');
                 }
             });
-
 
         });
     </script>

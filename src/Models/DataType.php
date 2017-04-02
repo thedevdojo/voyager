@@ -4,42 +4,59 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+use TCG\Voyager\Database\Schema\SchemaManager;
+use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\Translatable;
 
 class DataType extends Model
 {
+    use Translatable;
+
+    protected $translatable = ['display_name_singular', 'display_name_plural'];
+
     protected $table = 'data_types';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'slug',
+        'display_name_singular',
+        'display_name_plural',
+        'icon',
+        'model_name',
+        'controller',
+        'description',
+        'generate_permissions',
+        'server_side',
+    ];
 
     public function rows()
     {
-        return $this->hasMany(DataRow::class);
+        return $this->hasMany(Voyager::modelClass('DataRow'));
     }
 
     public function browseRows()
     {
-        return $this->rows()->where('browse', '=', 1);
+        return $this->rows()->where('browse', 1);
     }
 
     public function readRows()
     {
-        return $this->rows()->where('read', '=', 1);
+        return $this->rows()->where('read', 1);
     }
 
     public function editRows()
     {
-        return $this->rows()->where('edit', '=', 1);
+        return $this->rows()->where('edit', 1);
     }
 
     public function addRows()
     {
-        return $this->rows()->where('add', '=', 1);
+        return $this->rows()->where('add', 1);
     }
 
     public function deleteRows()
     {
-        return $this->rows()->where('delete', '=', 1);
+        return $this->rows()->where('delete', 1);
     }
 
     public function setGeneratePermissionsAttribute($value)
@@ -52,62 +69,64 @@ class DataType extends Model
         $this->attributes['server_side'] = $value ? 1 : 0;
     }
 
-    public function updateDataType($requestData)
+    public function updateDataType($requestData, $throw = false)
     {
-        $success = true;
-        $fields = $this->fields();
+        try {
+            DB::beginTransaction();
 
-        foreach ($fields as $field) {
-            $dataRow = DataRow::where('data_type_id', '=', $this->id)
-                              ->where('field', '=', $field)
-                              ->first();
+            if ($this->fill($requestData)->save()) {
+                $fields = $this->fields(array_get($requestData, 'name'));
 
-            if (!isset($dataRow->id)) {
-                $dataRow = new DataRow();
-            }
+                foreach ($fields as $field) {
+                    $dataRow = $this->rows()->firstOrNew(['field' => $field]);
 
-            $dataRow->data_type_id = $this->id;
-            $dataRow->required = $requestData['field_required_'.$field];
+                    foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
+                        $dataRow->{$check} = isset($requestData["field_{$check}_{$field}"]);
+                    }
 
-            foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
-                if (isset($requestData["field_{$check}_{$field}"])) {
-                    $dataRow->{$check} = 1;
-                } else {
-                    $dataRow->{$check} = 0;
+                    $dataRow->required = $requestData['field_required_'.$field];
+                    $dataRow->field = $requestData['field_'.$field];
+                    $dataRow->type = $requestData['field_input_type_'.$field];
+                    $dataRow->details = $requestData['field_details_'.$field];
+                    $dataRow->display_name = $requestData['field_display_name_'.$field];
+
+                    if (!$dataRow->save()) {
+                        throw new \Exception('Failed to save field '.$field.", we're rolling back!");
+                    }
                 }
+
+                // Clean data_rows that don't have an associated field
+                // TODO: need a way to identify deleted and renamed fields.
+                //   maybe warn the user and let him decide to either rename or delete?
+                $this->rows()->whereNotIn('field', $fields)->delete();
+
+                // It seems everything was fine. Let's check if we need to generate permissions
+                if ($this->generate_permissions) {
+                    Voyager::model('Permission')->generateFor($this->name);
+                }
+
+                DB::commit();
+
+                return true;
             }
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-            $dataRow->field = $requestData['field_'.$field];
-            $dataRow->type = $requestData['field_input_type_'.$field];
-            $dataRow->details = $requestData['field_details_'.$field];
-            $dataRow->display_name = $requestData['field_display_name_'.$field];
-            $dataRowSuccess = $dataRow->save();
-
-            // If success has never failed yet, let's add DataRowSuccess to success
-            if ($success !== false) {
-                $success = $dataRowSuccess;
+            if ($throw) {
+                throw $e;
             }
         }
 
-        $requestData = array_filter(
-            $requestData,
-            function ($value, $key) {
-                return strpos($key, 'field_') !== 0;
-            },
-            ARRAY_FILTER_USE_BOTH
-        );
-        $success = $success && $this->fill($requestData)->save();
-
-        if ($this->generate_permissions) {
-            Permission::generateFor($this->name);
-        }
-
-        return $success !== false;
+        return false;
     }
 
-    public function fields()
+    public function fields($name = null)
     {
-        $fields = Schema::getColumnListing($this->name);
+        if (is_null($name)) {
+            $name = $this->name;
+        }
+
+        $fields = SchemaManager::listTableColumnNames($name);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
@@ -122,7 +141,7 @@ class DataType extends Model
     {
         $table = $this->name;
 
-        $fieldOptions = DB::select("DESCRIBE ${table}");
+        $fieldOptions = SchemaManager::describeTable($table);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
@@ -135,8 +154,11 @@ class DataType extends Model
 
     public function extraFields()
     {
-        $model = app($this->model_name);
+        if (empty(trim($this->model_name))) {
+            return [];
+        }
 
+        $model = app($this->model_name);
         if (method_exists($model, 'adminFields')) {
             return $model->adminFields();
         }

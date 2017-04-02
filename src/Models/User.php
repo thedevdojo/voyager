@@ -18,21 +18,9 @@ class User extends AuthUser
     public function save(array $options = [])
     {
         // If no avatar has been set, set it to the default
-        if (!$this->avatar) {
-            $this->avatar = 'users/default.png';
-        }
+        $this->avatar = $this->avatar ?: config('voyager.user.default_avatar', 'users/default.png');
 
         parent::save();
-    }
-
-    public function getNameAttribute($value)
-    {
-        return ucwords($value);
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::parse($value)->format('F jS, Y h:i A');
     }
 
     public function setCreatedAtAttribute($value)

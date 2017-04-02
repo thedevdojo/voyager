@@ -4,11 +4,12 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Voyager;
+use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
 class VoyagerBreadController extends Controller
 {
+    use BreadRelationshipParser;
     //***************************************
     //               ____
     //              |  _ \
@@ -27,10 +28,10 @@ class VoyagerBreadController extends Controller
         $slug = $this->getSlug($request);
 
         // GET THE DataType based on the slug
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('browse_'.$dataType->name);
+        Voyager::canOrFail('browse_'.$dataType->name);
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
@@ -38,15 +39,23 @@ class VoyagerBreadController extends Controller
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
 
+            $relationships = $this->getRelationships($dataType);
+
             if ($model->timestamps) {
-                $dataTypeContent = call_user_func([$model->latest(), $getter]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
             } else {
-                $dataTypeContent = call_user_func([$model->orderBy('id', 'DESC'), $getter]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
+
+            //Replace relationships' keys for labels and create READ links if a slug is provided.
+            $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
         } else {
             // If Model doesn't exist, get data from table name
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
         }
+
+        // Check if BREAD is Translatable
+        $isModelTranslatable = isBreadTranslatable($model);
 
         $view = 'voyager::bread.browse';
 
@@ -54,7 +63,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.browse";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     //***************************************
@@ -73,14 +82,25 @@ class VoyagerBreadController extends Controller
     {
         $slug = $this->getSlug($request);
 
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('read_'.$dataType->name);
+        Voyager::canOrFail('read_'.$dataType->name);
 
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
-            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+        $relationships = $this->getRelationships($dataType);
+        if (strlen($dataType->model_name) != 0) {
+            $model = app($dataType->model_name);
+            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+        } else {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
+        }
+
+        //Replace relationships' keys for labels and create READ links if a slug is provided.
+        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
+
+        // Check if BREAD is Translatable
+        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
 
         $view = 'voyager::bread.read';
 
@@ -88,7 +108,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.read";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     //***************************************
@@ -107,14 +127,19 @@ class VoyagerBreadController extends Controller
     {
         $slug = $this->getSlug($request);
 
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_'.$dataType->name);
+
+        $relationships = $this->getRelationships($dataType);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? call_user_func([$dataType->model_name, 'findOrFail'], $id)
+            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+
+        // Check if BREAD is Translatable
+        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
 
         $view = 'voyager::bread.edit-add';
 
@@ -122,7 +147,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     // POST BR(E)AD
@@ -130,16 +155,17 @@ class VoyagerBreadController extends Controller
     {
         $slug = $this->getSlug($request);
 
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('edit_'.$dataType->name);
+        Voyager::canOrFail('edit_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
         return redirect()
-            ->route("voyager.{$dataType->slug}.index")
+            ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
             ->with([
                 'message'    => "Successfully Updated {$dataType->display_name_singular}",
                 'alert-type' => 'success',
@@ -163,10 +189,17 @@ class VoyagerBreadController extends Controller
     {
         $slug = $this->getSlug($request);
 
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('add_'.$dataType->name);
+        Voyager::canOrFail('add_'.$dataType->name);
+
+        $dataTypeContent = (strlen($dataType->model_name) != 0)
+                            ? new $dataType->model_name()
+                            : false;
+
+        // Check if BREAD is Translatable
+        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
 
         $view = 'voyager::bread.edit-add';
 
@@ -174,7 +207,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     // POST BRE(A)D
@@ -182,21 +215,15 @@ class VoyagerBreadController extends Controller
     {
         $slug = $this->getSlug($request);
 
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('add_'.$dataType->name);
+        Voyager::canOrFail('add_'.$dataType->name);
 
-        if (function_exists('voyager_add_post')) {
-            $url = $request->url();
-            voyager_add_post($request);
-        }
-
-        $data = new $dataType->model_name();
-        $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
+        $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
         return redirect()
-            ->route("voyager.{$dataType->slug}.index")
+            ->route("voyager.{$dataType->slug}.edit", ['id' => $data->id])
             ->with([
                 'message'    => "Successfully Added New {$dataType->display_name_singular}",
                 'alert-type' => 'success',
@@ -219,12 +246,17 @@ class VoyagerBreadController extends Controller
     {
         $slug = $this->getSlug($request);
 
-        $dataType = DataType::where('slug', '=', $slug)->first();
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::can('delete_'.$dataType->name);
+        Voyager::canOrFail('delete_'.$dataType->name);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
+        // Delete Translations, if present
+        if (isBreadTranslatable($data)) {
+            $data->deleteAttributeTranslations($data->getTranslatableAttributes());
+        }
 
         foreach ($dataType->deleteRows as $row) {
             if ($row->type == 'image') {

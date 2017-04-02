@@ -153,11 +153,14 @@
         textarea {
             min-height: 120px;
         }
+        textarea.hidden{
+            display:none;
+        }
     </style>
 @stop
 
 @section('head')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jsonarea/jsonarea.min.js"></script>
+    <script type="text/javascript" src="{{ voyager_asset('lib/js/jsonarea/jsonarea.min.js') }}"></script>
 @stop
 
 @section('page_header')
@@ -169,10 +172,13 @@
 @section('content')
 
     <div class="container-fluid">
+        @include('voyager::alerts')
+        @if(config('voyager.show_dev_tips'))
         <div class="alert alert-info">
             <strong>How To Use:</strong>
             <p>You can get the value of each setting anywhere on your site by calling <code>Voyager::setting('key')</code></p>
         </div>
+        @endif
     </div>
 
     <div class="page-content container-fluid">
@@ -202,18 +208,18 @@
                         @if ($setting->type == "text")
                             <input type="text" class="form-control" name="{{ $setting->key }}" value="{{ $setting->value }}">
                         @elseif($setting->type == "text_area")
-                            <textarea class="form-control" name="{{ $setting->key }}">
-                                @if(isset($setting->value)){{ $setting->value }}@endif
-                            </textarea>
+                            <textarea class="form-control" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
                         @elseif($setting->type == "rich_text_box")
-                            <textarea class="form-control richTextBox" name="{{ $setting->key }}">
-                                @if(isset($setting->value)){{ $setting->value }}@endif
-                            </textarea>
+                            <textarea class="form-control richTextBox" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                        @elseif($setting->type == "code_editor")
+                            <?php $options = json_decode($setting->details); ?>
+                            <div id="{{ $setting->key }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_400" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</div>
+                            <textarea name="{{ $setting->key }}" id="{{ $setting->key }}_textarea" class="hidden">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
                         @elseif($setting->type == "image" || $setting->type == "file")
-                            @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::exists(config('voyager.storage.subfolder') . $setting->value))
+                            @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::disk(config('voyager.storage.disk'))->exists($setting->value))
                                 <div class="img_settings_container">
                                     <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x"></a>
-                                    <img src="{{ Storage::url(config('voyager.storage.subfolder') . $setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
+                                    <img src="{{ Storage::disk(config('voyager.storage.disk'))->url($setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                 </div>
                             @elseif($setting->type == "file" && isset( $setting->value ))
                                 <div class="fileType">{{ $setting->value }}</div>
@@ -278,18 +284,20 @@
                     {{ csrf_field() }}
                     <div class="col-md-4">
                         <label for="display_name">Name</label>
-                        <input type="text" class="form-control" name="display_name">
+                        <input type="text" class="form-control" name="display_name" placeholder="Setting name ex: Admin Title" required="required">
                     </div>
                     <div class="col-md-4">
                         <label for="key">Key</label>
-                        <input type="text" class="form-control" name="key">
+                        <input type="text" class="form-control" name="key" placeholder="Setting key ex: admin_title" required="required">
                     </div>
                     <div class="col-md-4">
                         <label for="asdf">Type</label>
-                        <select name="type" class="form-control">
+                        <select name="type" class="form-control" required="required">
+                            <option value="">Choose type</option>
                             <option value="text">Text Box</option>
                             <option value="text_area">Text Area</option>
                             <option value="rich_text_box">Rich Textbox</option>
+                            <option value="code_editor">Code Editor</option>
                             <option value="checkbox">Check Box</option>
                             <option value="radio_btn">Radio Button</option>
                             <option value="select_dropdown">Select Dropdown</option>
@@ -304,40 +312,12 @@
                                 <small>(optional, only applies to certain types like dropdown box or radio button)
                                 </small>
                             </label>
-                            <textarea name="details" id="options_textarea" class="form-control"></textarea>
+                            <div id="options_editor" class="form-control min_height_200" data-language="json"></div>
+                            <textarea id="options_textarea" name="details" class="hidden"></textarea>
                             <div id="valid_options" class="alert-success alert" style="display:none">Valid Json</div>
                             <div id="invalid_options" class="alert-danger alert" style="display:none">Invalid Json</div>
                         </div>
                     </div>
-                    <script>
-                        // do the deal
-                        var myJSONArea = JSONArea(document.getElementById('options_textarea'), {
-                            sourceObjects: [] // optional array of objects for JSONArea to inherit from
-                        });
-
-                        valid_json = false;
-
-                        // then here's how you use JSONArea's update event
-                        myJSONArea.getElement().addEventListener('update', function (e) {
-                            if (e.target.value != "") {
-                                valid_json = e.detail.isJSON;
-                            }
-                        });
-
-                        myJSONArea.getElement().addEventListener('focusout', function (e) {
-                            if (valid_json) {
-                                $('#valid_options').show();
-                                $('#invalid_options').hide();
-                                var ugly = e.target.value;
-                                var obj = JSON.parse(ugly);
-                                var pretty = JSON.stringify(obj, undefined, 4);
-                                document.getElementById('options_textarea').value = pretty;
-                            } else {
-                                $('#valid_options').hide();
-                                $('#invalid_options').show();
-                            }
-                        });
-                    </script>
                     <script>
                         $('document').ready(function () {
                             $('#toggle_options').click(function () {
@@ -406,6 +386,18 @@
         <input type="hidden" name="type_slug" id="type_slug" value="settings">
     </form>
 
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
+    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
+    <script>
+        var options_editor = ace.edit('options_editor');
+        options_editor.getSession().setMode("ace/mode/json");
+
+        var options_textarea = document.getElementById('options_textarea');
+        options_editor.getSession().on('change', function() {
+            console.log(options_editor.getValue());
+            options_textarea.value = options_editor.getValue();
+        });
+    </script>
 @stop

@@ -48,7 +48,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
              ->press('Submit')
-             ->seePageIs($this->listOfUsers)
+             ->seePageIs($this->editPageForTheCurrentUser)
              ->seeInDatabase(
                  'users',
                  ['name' => 'New Awesome Name']
@@ -63,7 +63,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press('Submit')
-             ->seePageIs($this->listOfUsers)
+             ->seePageIs($this->editPageForTheCurrentUser)
              ->seeInDatabase(
                  'users',
                  ['email' => 'another@email.com']
@@ -78,7 +78,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
              ->press('Submit')
-             ->seePageIs($this->listOfUsers);
+             ->seePageIs($this->editPageForTheCurrentUser);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('voyager-rocks', $updatedPassword));
@@ -92,7 +92,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
              ->press('Submit')
-             ->seePageIs($this->listOfUsers)
+             ->seePageIs($this->editPageForTheCurrentUser)
              ->dontSeeInDatabase(
                  'users',
                  ['id' => 1, 'avatar' => 'user/default.png']

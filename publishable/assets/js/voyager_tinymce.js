@@ -14,14 +14,16 @@ $(document).ready(function(){
     menubar: false,
     selector:'textarea.richTextBox',
     skin: 'voyager',
-    plugins: 'link, image, code, youtube, giphy',
-    extended_valid_elements : 'input[onclick|value|style|type]',
+    min_height: 600,
+    resize: 'vertical',
+    plugins: 'link, image, code, youtube, giphy, table, textcolor',
+    extended_valid_elements : 'input[id|name|value|type|class|style|required|placeholder|autocomplete|onclick]',
     file_browser_callback: function(field_name, url, type, win) {
             if(type =='image'){
               $('#upload_file').trigger('click');
             }
         },
-    toolbar: 'styleselect bold italic underline | alignleft aligncenter alignright | bullist numlist outdent indent | link image youtube giphy | code',
+    toolbar: 'styleselect bold italic underline | forecolor backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | link image table youtube giphy | code',
     convert_urls: false,
     image_caption: true,
     image_title: true

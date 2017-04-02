@@ -1,59 +1,13 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/ga-embed.css">
+    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/ga-embed.css') }}">
 @stop
 
 @section('content')
     <div class="page-content">
-        <div class="alerts">
-            @foreach ($alerts as $alert)
-                <div class="alert alert-{{ $alert->type }} alert-name-{{ $alert->name }}">
-                    @foreach($alert->components as $component)
-                        <?php echo $component->render(); ?>
-                    @endforeach
-                </div>
-            @endforeach
-        </div>
-        <div class="widgets">
-            <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\User())->getTable())) { ?>
-            <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/02.png);">
-                <div class="dimmer"></div>
-                <div class="panel-content">
-                    <i class="voyager-group"></i>
-                    <?php $user_count = TCG\Voyager\Models\User::count(); ?>
-                    <h4>{{ $user_count }} Users</h4>
-                    <p>You have {{ $user_count }} active users registered. Click on 'View All Users' to view all your current users.</p>
-                    <a href="{{ route('voyager.users.index') }}" class="btn btn-primary">View All Users</a>
-                </div>
-            </div>
-            <?php } ?>
-            <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\Post())->getTable())) { ?>
-            <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/03.png);">
-                <div class="dimmer"></div>
-                <div class="panel-content">
-                    <i class="voyager-news"></i>
-                    <?php $post_count = TCG\Voyager\Models\Post::count(); ?>
-                    <h4>{{ $post_count }} Post(s)</h4>
-                    <p>You have {{ $post_count }} Posts in your database. Click on 'View All Posts' below to view all posts.</p>
-                    <a href="{{ route('voyager.posts.index') }}" class="btn btn-primary">View All Posts</a>
-                </div>
-            </div>
-            <?php } ?>
-            <?php if (Illuminate\Support\Facades\Schema::hasTable(with(new TCG\Voyager\Models\Page())->getTable())) { ?>
-            <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') }}/images/widget-backgrounds/04.png);">
-                <div class="dimmer"></div>
-                <div class="panel-content">
-                    <i class="voyager-file-text"></i>
-                    <?php $page_count = TCG\Voyager\Models\Page::count(); ?>
-                    <h4>{{ $page_count }} Page(s)</h4>
-                    <p>You have {{ $page_count }} Pages in your database. Click on 'View All Pages' below to view all pages.</p>
-                    <a href="{{ route('voyager.pages.index') }}" class="btn btn-primary">View All Pages</a>
-                </div>
-            </div>
-            <?php } ?>
-        </div>
-        <div style="clear:both"></div>
+        @include('voyager::alerts')
+        @include('voyager::dimmers')
         <div style="padding:15px;">
             <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
             @if (isset($google_analytics_client_id) && !empty($google_analytics_client_id))
@@ -150,14 +104,14 @@
             }(window, document, 'script'));
         </script>
 
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/chart.min.js"></script>
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/moment.min.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/chart.min.js') }}"></script>
+        <script src="{{ voyager_asset('js/ga-embed/moment.min.js') }}"></script>
         <!-- Include the ViewSelector2 component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/view-selector2.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/view-selector2.js') }}"></script>
         <!-- Include the DateRangeSelector component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/date-range-selector.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/date-range-selector.js') }}"></script>
         <!-- Include the ActiveUsers component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/active-users.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/active-users.js') }}"></script>
 
         <script>
             // == NOTE ==
@@ -173,7 +127,7 @@
                  */
                 gapi.analytics.auth.authorize({
                     container: 'embed-api-auth-container',
-                    clientid: '<?= $google_analytics_client_id; ?>'
+                    clientid: '{{ $google_analytics_client_id }}'
                 });
 
 

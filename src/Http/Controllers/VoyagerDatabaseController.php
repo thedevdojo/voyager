@@ -3,58 +3,68 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
-use Illuminate\Console\AppNamespaceDetectorTrait;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use TCG\Voyager\Http\Controllers\Traits\DatabaseUpdate;
+use TCG\Voyager\Database\DatabaseUpdater;
+use TCG\Voyager\Database\Schema\Column;
+use TCG\Voyager\Database\Schema\Identifier;
+use TCG\Voyager\Database\Schema\SchemaManager;
+use TCG\Voyager\Database\Schema\Table;
+use TCG\Voyager\Database\Types\Type;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Voyager;
 
 class VoyagerDatabaseController extends Controller
 {
-    use DatabaseUpdate;
-    use AppNamespaceDetectorTrait;
-
     public function index()
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        return view('voyager::tools.database.index');
+        $dataTypes = Voyager::model('DataType')->select('id', 'name')->get()->pluck('id', 'name')->toArray();
+
+        $tables = array_map(function ($table) use ($dataTypes) {
+            $table = [
+                'name'          => $table,
+                'dataTypeId'    => isset($dataTypes[$table]) ? $dataTypes[$table] : null,
+            ];
+
+            return (object) $table;
+        }, SchemaManager::listTableNames());
+
+        return view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
     }
 
     public function create()
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        return view('voyager::tools.database.edit-add');
+        $db = $this->prepareDbManager('create');
+
+        return view('voyager::tools.database.edit-add', compact('db'));
     }
 
     public function store(Request $request)
     {
-        Voyager::can('browse_database');
-
-        $tableName = $request->name;
+        Voyager::canOrFail('browse_database');
 
         try {
-            Schema::create($tableName, function (Blueprint $table) use ($request) {
-                foreach ($this->buildQuery($request) as $query) {
-                    $query($table);
-                }
-            });
+            Type::registerCustomPlatformTypes();
+
+            $table = Table::make($request->table);
+            SchemaManager::createTable($table);
 
             if (isset($request->create_model) && $request->create_model == 'on') {
+                $modelNamespace = config('voyager.models.namespace', app()->getNamespace());
                 $params = [
-                    'name' => ucfirst($tableName),
+                    'name' => $modelNamespace.Str::studly(Str::singular($table->name)),
                 ];
 
-                if (in_array('deleted_at', $request->input('field.*'))) {
-                    $params['--softdelete'] = true;
-                }
+                // if (in_array('deleted_at', $request->input('field.*'))) {
+                //     $params['--softdelete'] = true;
+                // }
 
                 if (isset($request->create_migration) && $request->create_migration == 'on') {
                     $params['--migration'] = true;
@@ -63,36 +73,32 @@ class VoyagerDatabaseController extends Controller
                 Artisan::call('voyager:make:model', $params);
             } elseif (isset($request->create_migration) && $request->create_migration == 'on') {
                 Artisan::call('make:migration', [
-                    'name'    => 'create_'.$tableName.'_table',
-                    '--table' => $tableName,
+                    'name'    => 'create_'.$table->name.'_table',
+                    '--table' => $table->name,
                 ]);
             }
 
             return redirect()
-                ->route('voyager.database.index')
-                ->with(
-                    [
-                        'message'    => "Successfully created $tableName table",
-                        'alert-type' => 'success',
-                    ]
-                );
+               ->route('voyager.database.edit', $table->name)
+               ->with($this->alertSuccess("Successfully created {$table->name} table"));
         } catch (Exception $e) {
-            return back()->with(
-                [
-                    'message'    => 'Exception: '.$e->getMessage(),
-                    'alert-type' => 'error',
-                ]
-            );
+            return back()->with($this->alertException($e))->withInput();
         }
     }
 
     public function edit($table)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        $rows = $this->describeTable($table);
+        if (!SchemaManager::tableExists($table)) {
+            return redirect()
+                ->route('voyager.database.index')
+                ->with($this->alertError("The table you want to edit doesn't exist"));
+        }
 
-        return view('voyager::tools.database.edit-add', compact('table', 'rows'));
+        $db = $this->prepareDbManager('update', $table);
+
+        return view('voyager::tools.database.edit-add', compact('db'));
     }
 
     /**
@@ -104,26 +110,78 @@ class VoyagerDatabaseController extends Controller
      */
     public function update(Request $request)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        $this->renameTable($request->original_name, $request->name);
-        $this->renameColumns($request, $request->name);
-        $this->dropColumns($request, $request->name);
-        $this->updateColumns($request, $request->name);
+        $table = json_decode($request->table, true);
+
+        try {
+            DatabaseUpdater::update($table);
+            // TODO: synch BREAD with Table
+            // $this->cleanOldAndCreateNew($request->original_name, $request->name);
+        } catch (Exception $e) {
+            return back()->with($this->alertException($e))->withInput();
+        }
 
         return redirect()
-            ->route('voyager.database.index')
-            ->with(
-                [
-                    'message'    => "Successfully updated $request->name table",
-                    'alert-type' => 'success',
-                ]
-            );
+               ->route('voyager.database.edit', $table['name'])
+               ->with($this->alertSuccess("Successfully updated {$table['name']} table"));
+    }
+
+    protected function prepareDbManager($action, $table = '')
+    {
+        $db = new \stdClass();
+
+        // Need to get the types first to register custom types
+        $db->types = Type::getPlatformTypes();
+
+        if ($action == 'update') {
+            $db->table = SchemaManager::listTableDetails($table);
+            $db->formAction = route('voyager.database.update', $table);
+        } else {
+            $db->table = new Table('New Table');
+
+            // Add prefilled columns
+            $db->table->addColumn('id', 'integer', [
+                'unsigned'      => true,
+                'notnull'       => true,
+                'autoincrement' => true,
+            ]);
+
+            $db->table->setPrimaryKey(['id'], 'primary');
+
+            $db->formAction = route('voyager.database.store');
+        }
+
+        $oldTable = old('table');
+        $db->oldTable = $oldTable ? $oldTable : json_encode(null);
+        $db->action = $action;
+        $db->identifierRegex = Identifier::REGEX;
+        $db->platform = SchemaManager::getDatabasePlatform()->getName();
+
+        return $db;
+    }
+
+    public function cleanOldAndCreateNew($originalName, $tableName)
+    {
+        if (!empty($originalName) && $originalName != $tableName) {
+            $dt = DB::table('data_types')->where('name', $originalName);
+            if ($dt->get()) {
+                $dt->delete();
+            }
+
+            $perm = DB::table('permissions')->where('table_name', $originalName);
+            if ($perm->get()) {
+                $perm->delete();
+            }
+
+            $params = ['name' => Str::studly(Str::singular($tableName))];
+            Artisan::call('voyager:make:model', $params);
+        }
     }
 
     public function reorder_column(Request $request)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         if ($request->ajax()) {
             $table = $request->table;
@@ -142,33 +200,23 @@ class VoyagerDatabaseController extends Controller
 
     public function show($table)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        return response()->json($this->describeTable($table));
+        return response()->json(SchemaManager::describeTable($table));
     }
 
     public function destroy($table)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
         try {
-            Schema::drop($table);
+            SchemaManager::dropTable($table);
 
             return redirect()
                 ->route('voyager.database.index')
-                ->with(
-                    [
-                        'message'    => "Successfully deleted $table table",
-                        'alert-type' => 'success',
-                    ]
-                );
+                ->with($this->alertSuccess("Successfully deleted $table table"));
         } catch (Exception $e) {
-            return back()->with(
-                [
-                    'message'    => 'Exception: '.$e->getMessage(),
-                    'alert-type' => 'error',
-                ]
-            );
+            return back()->with($this->alertException($e));
         }
     }
 
@@ -179,96 +227,113 @@ class VoyagerDatabaseController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function addBread(Request $request)
+    public function addBread(Request $request, $table)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        $table = $request->input('table');
+        $data = $this->prepopulateBreadInfo($table);
+        $data['fieldOptions'] = SchemaManager::describeTable($table);
 
-        return view('voyager::tools.database.edit-add-bread', $this->prepopulateBreadInfo($table));
+        return view('voyager::tools.database.edit-add-bread', $data);
     }
 
     private function prepopulateBreadInfo($table)
     {
         $displayName = Str::singular(implode(' ', explode('_', Str::title($table))));
+        $modelNamespace = config('voyager.models.namespace', app()->getNamespace());
+        if (empty($modelNamespace)) {
+            $modelNamespace = app()->getNamespace();
+        }
 
         return [
-            'table'                 => $table,
-            'slug'                  => Str::slug($table),
-            'display_name'          => $displayName,
-            'display_name_plural'   => Str::plural($displayName),
-            'model_name'            => $this->getAppNamespace().Str::studly(Str::singular($table)),
-            'generate_permissions'  => true,
-            'server_side'           => false,
+            'isModelTranslatable'  => true,
+            'table'                => $table,
+            'slug'                 => Str::slug($table),
+            'display_name'         => $displayName,
+            'display_name_plural'  => Str::plural($displayName),
+            'model_name'           => $modelNamespace.Str::studly(Str::singular($table)),
+            'generate_permissions' => true,
+            'server_side'          => false,
         ];
     }
 
     public function storeBread(Request $request)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        $dataType = new DataType();
-        $data = $dataType->updateDataType($request->all())
-            ? [
-                'message'    => 'Successfully created new BREAD',
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => 'Sorry it appears there may have been a problem creating this bread',
-                'alert-type' => 'error',
-            ];
+        try {
+            $dataType = Voyager::model('DataType');
+            $data = $dataType->updateDataType($request->all(), true)
+                ? $this->alertSuccess('Successfully created new BREAD')
+                : $this->alertError('Sorry it appears there may have been a problem creating this BREAD');
 
-        return redirect()->route('voyager.database.index')->with($data);
+            return redirect()->route('voyager.database.index')->with($data);
+        } catch (Exception $e) {
+            return redirect()->route('voyager.database.index')->with($this->alertException($e, 'Saving Failed'));
+        }
     }
 
-    public function addEditBread($id)
+    public function addEditBread($table)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        return view(
-            'voyager::tools.database.edit-add-bread', [
-            'dataType' => DataType::find($id),
-        ]
-        );
+        $dataType = Voyager::model('DataType')->whereName($table)->first();
+
+        try {
+            $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : SchemaManager::describeTable($dataType->name);
+        } catch (Exception $e) {
+            $fieldOptions = SchemaManager::describeTable($dataType->name);
+        }
+
+        $isModelTranslatable = isBreadTranslatable($dataType);
+
+        return view('voyager::tools.database.edit-add-bread', compact('dataType', 'fieldOptions', 'isModelTranslatable'));
     }
 
     public function updateBread(Request $request, $id)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        /** @var \TCG\Voyager\Models\DataType $dataType */
-        $dataType = DataType::find($id);
-        $data = $dataType->updateDataType($request->all())
-            ? [
-                'message'    => "Successfully updated the {$dataType->name} BREAD",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => 'Sorry it appears there may have been a problem updating this bread',
-                'alert-type' => 'error',
-            ];
+        /* @var \TCG\Voyager\Models\DataType $dataType */
+        try {
+            $dataType = Voyager::model('DataType')->find($id);
 
-        return redirect()->route('voyager.database.index')->with($data);
+            // Prepare Translations and Transform data
+            $translations = isBreadTranslatable($dataType)
+                ? $dataType->prepareTranslations($request)
+                : [];
+
+            $data = $dataType->updateDataType($request->all(), true)
+                ? $this->alertSuccess("Successfully updated the {$dataType->name} BREAD")
+                : $this->alertError('Sorry it appears there may have been a problem updating this BREAD');
+
+            // Save translations if applied
+            $dataType->saveTranslations($translations);
+
+            return redirect()->route('voyager.database.index')->with($data);
+        } catch (Exception $e) {
+            return back()->with($this->alertException($e, 'Update Failed'));
+        }
     }
 
     public function deleteBread($id)
     {
-        Voyager::can('browse_database');
+        Voyager::canOrFail('browse_database');
 
-        /** @var \TCG\Voyager\Models\DataType $dataType */
-        $dataType = DataType::find($id);
-        $data = DataType::destroy($id)
-            ? [
-                'message'    => "Successfully removed BREAD from {$dataType->name}",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => 'Sorry it appears there was a problem removing this bread',
-                'alert-type' => 'danger',
-            ];
+        /* @var \TCG\Voyager\Models\DataType $dataType */
+        $dataType = Voyager::model('DataType')->find($id);
+
+        // Delete Translations, if present
+        if (isBreadTranslatable($dataType)) {
+            $dataType->deleteAttributeTranslations($dataType->getTranslatableAttributes());
+        }
+
+        $data = Voyager::model('DataType')->destroy($id)
+            ? $this->alertSuccess("Successfully removed BREAD from {$dataType->name}")
+            : $this->alertError('Sorry it appears there was a problem removing this BREAD');
 
         if (!is_null($dataType)) {
-            Permission::removeFrom($dataType->name);
+            Voyager::model('Permission')->removeFrom($dataType->name);
         }
 
         return redirect()->route('voyager.database.index')->with($data);

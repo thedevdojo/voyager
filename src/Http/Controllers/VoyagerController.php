@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
-use TCG\Voyager\Voyager;
+use TCG\Voyager\Facades\Voyager;
 
 class VoyagerController extends Controller
 {
@@ -21,7 +21,7 @@ class VoyagerController extends Controller
     {
         Auth::logout();
 
-        return redirect()->route('voyager.logout');
+        return redirect()->route('voyager.login');
     }
 
     public function upload(Request $request)
@@ -45,7 +45,7 @@ class VoyagerController extends Controller
                 ->encode($file->getClientOriginalExtension(), 75);
 
             // move uploaded file from temp to uploads directory
-            if (Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $image, 'public')) {
+            if (Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public')) {
                 $status = 'Image successfully uploaded!';
                 $fullFilename = $fullPath;
             } else {

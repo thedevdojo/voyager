@@ -5,9 +5,15 @@ namespace TCG\Voyager\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\Translatable;
 
 class Post extends Model
 {
+    use Translatable;
+
+    protected $translatable = ['title', 'seo_title', 'excerpt', 'body', 'slug', 'meta_description', 'meta_keywords'];
+
     const PUBLISHED = 'PUBLISHED';
 
     protected $guarded = [];
@@ -22,9 +28,9 @@ class Post extends Model
         parent::save();
     }
 
-    public function author_id()
+    public function authorId()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Voyager::modelClass('User'));
     }
 
     /**
@@ -37,5 +43,13 @@ class Post extends Model
     public function scopePublished(Builder $query)
     {
         return $query->where('status', '=', static::PUBLISHED);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function category()
+    {
+        return $this->hasOne(Voyager::modelClass('Category'), 'id', 'category_id');
     }
 }
