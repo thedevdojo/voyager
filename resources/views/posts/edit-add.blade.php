@@ -125,7 +125,7 @@
                                 <label for="name">URL slug</label>
                                 <input type="text" class="form-control" id="slug" name="slug"
                                     placeholder="slug"
-                                    @if(isset($dataTypeContent)){!! isFieldSlugAutoGenerator($dataTypeContent, "slug") !!}@endif
+                                    {{!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}}
                                     value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">
