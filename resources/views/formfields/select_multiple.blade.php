@@ -10,7 +10,7 @@
             <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{camel_case($row->field)}()->pluck($options->relationship->key)->all() : array(); ?>
             <?php
             $relationshipListMethod = camel_case($row->field) . 'List';
-            if (method_exists($dataTypeContent, $relationshipListMethod)) {
+            if (isset($dataTypeContent) && method_exists($dataTypeContent, $relationshipListMethod)) {
                 $relationshipOptions = $dataTypeContent->$relationshipListMethod();
             } else {
                 $relationshipClass = get_class(app($dataType->model_name)->{camel_case($row->field)}()->getRelated());
