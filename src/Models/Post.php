@@ -52,4 +52,12 @@ class Post extends Model
     {
         return $this->hasOne(Voyager::modelClass('Category'), 'id', 'category_id');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function author()
+    {
+        return $this->hasOne(Voyager::modelClass('User'), 'id', 'author_id');
+    }
 }
