@@ -101,9 +101,9 @@ trait BreadRelationshipParser
                 $relationData = json_decode($bread_data->details)->relationship;
 
                 if ($bread_data->type == 'select_multiple') {
-                    $relationItems = array();
+                    $relationItems = [];
                     foreach ($relation as $model) {
-                        $relationItem = new \stdClass;
+                        $relationItem = new \stdClass();
                         $relationItem->{$field} = $model[$relationData->label];
                         if (isset($relationData->page_slug)) {
                             $id = $model->id;
