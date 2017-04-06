@@ -47,10 +47,10 @@ class DataRowsTableSeeder extends Seeder
                 'details'      => '',
             ])->save();
         }
-        
+
         $dataRow = $this->dataRow($postDataType, 'category_id');
-            if (!$dataRow->exists) {
-                $dataRow->fill([
+        if (!$dataRow->exists) {
+            $dataRow->fill([
                     'type'         => 'text',
                     'display_name' => 'Category',
                     'required'     => 1,
@@ -61,8 +61,8 @@ class DataRowsTableSeeder extends Seeder
                     'delete'       => 0,
                     'details'      => '',
                 ])->save();
-            }
-        
+        }
+
         $dataRow = $this->dataRow($postDataType, 'title');
         if (!$dataRow->exists) {
             $dataRow->fill([
