@@ -24,8 +24,13 @@
             @endif
             {{-- Populate all options from relationship --}}
             <?php
-            $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
-            $relationshipOptions = $relationshipClass::all();
+            $relationshipListMethod = camel_case($row->field) . 'List';
+            if (method_exists($dataTypeContent, $relationshipListMethod)) {
+                $relationshipOptions = $dataTypeContent->$relationshipListMethod();
+            } else {
+                $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
+                $relationshipOptions = $relationshipClass::all();
+            }
 
             // Try to get default value for the relationship
             // when default is a callable function (ClassName@methodName)

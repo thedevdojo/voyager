@@ -30,7 +30,7 @@ class Post extends Model
 
     public function authorId()
     {
-        return $this->belongsTo(Voyager::modelClass('User'));
+        return $this->belongsTo(Voyager::modelClass('User'), 'author_id', 'id');
     }
 
     /**

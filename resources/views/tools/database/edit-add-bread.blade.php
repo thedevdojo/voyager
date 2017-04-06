@@ -56,10 +56,7 @@
                                            name="display_name_singular"
                                            id="display_name_singular"
                                            placeholder="Display Name (Singular)"
-                                           value="@if(isset($dataType->display_name_singular))
-                                                    {{ $dataType->display_name_singular }}
-                                                    @else{{ $display_name }}
-                                                    @endif">
+                                           value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">Display Name (Plural)</label>
@@ -74,10 +71,7 @@
                                            name="display_name_plural"
                                            id="display_name_plural"
                                            placeholder="Display Name (Plural)"
-                                           value="@if(isset($dataType->display_name_plural))
-                                                    {{ $dataType->display_name_plural }}
-                                                    @else{{ $display_name_plural }}
-                                                    @endif">
+                                           value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
                                 </div>
                             </div>
                             <div class="row clearfix">
