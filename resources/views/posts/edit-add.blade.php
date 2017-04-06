@@ -73,6 +73,16 @@
                 <div class="col-md-8">
                     <!-- ### TITLE ### -->
                     <div class="panel">
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 <i class="voyager-character"></i> Post Title
