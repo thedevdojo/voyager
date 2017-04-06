@@ -27,10 +27,10 @@ class Post extends Model
 
         parent::save();
     }
-
+    
     public function authorId()
     {
-        return $this->belongsTo(Voyager::modelClass('User'));
+        return $this->belongsTo(Voyager::modelClass('User'),  'author_id', 'id');
     }
 
     /**
