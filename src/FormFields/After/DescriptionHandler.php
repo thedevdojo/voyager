@@ -17,8 +17,10 @@ class DescriptionHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dateTypeContent, $options)
     {
-        return '<i class="help-block"><span class="voyager-info-circled"></span>'
-            .$options->description
-            .'</i>';
+        return '<span class="glyphicon glyphicon-question-sign"
+                                        aria-hidden="true"
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title="'.$options->description.'"></span>';
     }
 }
