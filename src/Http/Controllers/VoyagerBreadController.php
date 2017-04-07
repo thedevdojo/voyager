@@ -160,16 +160,25 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::canOrFail('edit_'.$dataType->name);
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        //Validate fields with ajax
+        $val = $this->validateBread($request->all(), $dataType->addRows);
 
-        $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+        if($val->fails()){
+            return response()->json(['errors' => $val->messages()]);
+        }
 
-        return redirect()
+        if(!$request->ajax()){
+            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
+            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+
+            return redirect()
             ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
             ->with([
                 'message'    => "Successfully Updated {$dataType->display_name_singular}",
                 'alert-type' => 'success',
-            ]);
+                ]);
+        }        
     }
 
     //***************************************
@@ -223,11 +232,13 @@ class VoyagerBreadController extends Controller
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
 
-        if($val->fails()) {
+        if($val->fails())
+        {
             return response()->json(['errors' => $val->messages()]);
         }
 
-        if(!$request->ajax()) {
+        if(!$request->ajax())
+        {
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
             return redirect()
