@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
 use TCG\Voyager\Traits\AlertsMessages;
+use Validator;
 
 abstract class Controller extends BaseController
 {
@@ -46,22 +47,6 @@ abstract class Controller extends BaseController
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
-
-            if (isset($options->validation)) {
-                if (isset($options->validation->rule)) {
-                    if (!is_array($options->validation->rule)) {
-                        $rules[$row->field] = explode('|', $options->validation->rule);
-                    } else {
-                        $rules[$row->field] = $options->validation->rule;
-                    }
-                }
-
-                if (isset($options->validation->messages)) {
-                    foreach ($options->validation->messages as $key => $msg) {
-                        $messages[$row->field.'.'.$key] = $msg;
-                    }
-                }
-            }
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
@@ -109,6 +94,33 @@ abstract class Controller extends BaseController
         }
 
         return $data;
+    }
+
+    public function validateBread($request, $data){
+        $rules = [];
+        $messages = [];
+
+        foreach ($data as $row) {
+            $options = json_decode($row->details);
+
+            if (isset($options->validation)) {
+                if (isset($options->validation->rule)) {
+                    if (!is_array($options->validation->rule)) {
+                        $rules[$row->field] = explode('|', $options->validation->rule);
+                    } else {
+                        $rules[$row->field] = $options->validation->rule;
+                    }
+                }
+
+                if (isset($options->validation->messages)) {
+                    foreach ($options->validation->messages as $key => $msg) {
+                        $messages[$row->field.'.'.$key] = $msg;
+                    }
+                }
+            }
+        }
+
+        return Validator::make($request, $rules, $messages);
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
