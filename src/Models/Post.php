@@ -54,17 +54,17 @@ class Post extends Model
     }
 
     /**
-    *   Method for returning specific thumbnail for post.
-    */
+     *   Method for returning specific thumbnail for post.
+     */
     public function thumbnail($type)
     {
         // We take image from posts field
-        $image  = $this->attributes['image'];
+        $image = $this->attributes['image'];
         // We need to get extension type ( .jpeg , .png ...)
-        $ext    = pathinfo($image, PATHINFO_EXTENSION);
+        $ext = pathinfo($image, PATHINFO_EXTENSION);
         // We remove extension from file name so we can append thumbnail type
-        $name   = rtrim($image, '.'. $ext);
+        $name = rtrim($image, '.'.$ext);
         // We merge original name + type + extension
-        return $name . '-' . $type . '.' . $ext;
+        return $name.'-'.$type.'.'.$ext;
     }
 }
