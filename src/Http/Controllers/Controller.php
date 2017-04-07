@@ -34,8 +34,6 @@ abstract class Controller extends BaseController
 
     public function insertUpdateData($request, $slug, $rows, $data)
     {
-        $rules = [];
-        $messages = [];
         $multi_select = [];
 
         /*
