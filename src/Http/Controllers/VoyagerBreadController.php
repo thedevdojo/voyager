@@ -223,11 +223,11 @@ class VoyagerBreadController extends Controller
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
 
-        if($val->fails()){
+        if($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
         }
 
-        if(!$request->ajax()){
+        if(!$request->ajax()) {
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
             return redirect()
