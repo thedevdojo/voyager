@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$("form[method='POST']").submit(function(e){
+	$(".form-edit-add").submit(function(e){
 		e.preventDefault()
 
 		var url = $(this).attr('action');
@@ -22,7 +22,7 @@ $(document).ready(function(){
 				});
 			},
 			error: function(){
-				$("form[method='POST']").unbind("submit").submit();
+				$(".form-edit-add").unbind("submit").submit();
 			}
 		});
 	});
