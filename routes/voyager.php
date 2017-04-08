@@ -19,9 +19,6 @@ Route::group(['as' => 'voyager.'], function () {
 
     Route::get('login', ['uses' => $namespacePrefix.'VoyagerAuthController@login', 'as' => 'login']);
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
-	
-	Route::post('unlock', ['uses'=> $namespacePrefix.'VoyagerController@unlockScreen','as'=>'unlock']);
-	Route::get('lock', ['uses'=> $namespacePrefix.'VoyagerController@lockScreen','as'=>'lock']);
 
     Route::group(['middleware' => 'admin.user'], function () use ($namespacePrefix) {
         event('voyager.admin.routing', app('router'));

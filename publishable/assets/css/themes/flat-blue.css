@@ -3,22 +3,23 @@
   /* small screen */ }
   .flat-blue .app-footer {
     opacity: 0.7;
-    color: #353d47;
+    color: #353d47; 
     width: 100%;
     text-align: right;
     padding: 10px 0;
     background: #fff;
-    left: 0;
+    left:0px;
   }
   .flat-blue .app-footer i {
     color:#D9534F;
   }
   .flat-blue .navbar, .flat-blue .navbar.navbar-default {
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 0;
     box-shadow: 0 0 0; }
     .flat-blue .navbar > .container-fluid, .flat-blue .navbar.navbar-default > .container-fluid:after {
-        width: 99%;
-        height: 0;
+        border-bottom: 1px solid #eee;
+        width: 98%;
+        height:1px;
     }
     .flat-blue .navbar .navbar-header .navbar-brand, .flat-blue .navbar.navbar-default .navbar-header .navbar-brand {
       color: #F9F9F9; }
@@ -30,6 +31,8 @@
       color: #353d47; }
       .flat-blue .navbar .navbar-breadcrumb li a, .flat-blue .navbar.navbar-default .navbar-breadcrumb li a {
         color: #353d47; }
+    .flat-blue .navbar .navbar-nav > li, .flat-blue .navbar.navbar-default .navbar-nav > li {
+      border-left: 1px solid #F9F9F9; }
       .flat-blue .navbar .navbar-nav > li > a, .flat-blue .navbar.navbar-default .navbar-nav > li > a {
         color: #353d47; }
     .flat-blue .navbar .navbar-nav > li:hover > a, .flat-blue .navbar.navbar-default .navbar-nav > li:hover > a {

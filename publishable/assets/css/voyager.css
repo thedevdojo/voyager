@@ -3,8 +3,8 @@
  * ----------
  */
  html, body{
-  padding:0;
-  margin:0;
+  padding:0px;
+  margin:0px;
   height:100%;
   font-family: Roboto,sans-serif;
   font-size: 14px;
@@ -209,7 +209,7 @@
 .login-box img{
   width:50px;
   height:50px;
-  margin:0 auto;
+  margin:0px auto;
   display:block;
   -webkit-animation: spinnerRotate 900ms ease-out both;
   animation: spinnerRotate 900ms ease-out both;
@@ -256,7 +256,7 @@
 }
 
 .app-container .side-body{
-  margin-left: 60px;
+  margin-left: 45px;
 }
 
 .navbar .navbar-nav > li > a{
@@ -276,8 +276,8 @@
 .content-header>.breadcrumb{
   border:1px solid #f1f1f1;
   position:relative;
-  top:0;
-  left:0;
+  top:0px;
+  left:0px;
   width:100%;
   display:block;
   margin:10px auto;
@@ -297,7 +297,7 @@
 }
 
 table.dataTable{
-  margin-top:0 !important;
+  margin-top:0px !important;
 }
 
 table a.btn-sm{
@@ -316,8 +316,8 @@ table a.btn-sm{
   background: url('../images/dashboard-bg.jpg');
   background-size:cover;
   position:absolute;
-  top:0;
-  left:0;
+  top:0px;
+  left:0px;
   background-position-y: bottom;
   line-height:100px;
   color: #fff;
@@ -415,7 +415,7 @@ p#the_plugin_name{
 }
 
 .flat-blue .side-menu.sidebar-inverse .navbar li.active > a .icon{
-  margin-left:0;
+  margin-left:0px;
 }
 
 .app-container .content-container .side-menu .navbar-header .navbar-brand .icon {
@@ -441,7 +441,7 @@ p#the_plugin_name{
 
 .app-container.expanded .content-container .side-menu .navbar-header .navbar-brand .title{
     position: relative;
-    top:0;
+    top:0px;
     left:4px;
     text-transform: none;
 }
@@ -453,7 +453,7 @@ p#the_plugin_name{
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title{
   text-transform: uppercase;
   position:relative;
-  top:0;
+  top:0px;
   left:4px;
 }
 
@@ -465,7 +465,7 @@ p#the_plugin_name{
 .flat-blue .side-menu.sidebar-inverse .navbar li.active > a{
   color: #fff;
   background: none;
-  border:0;
+  border:0px;
 }
 
 .flat-blue .side-menu.sidebar-inverse .navbar li > a {
@@ -582,7 +582,7 @@ overflow-x: hidden;
 }
 .expanded #sidebar-anchor {
     position: relative;
-    top: 0;
+    top: 0px;
     transition: top .3s ease, color .2s;
     left: -10px;
     text-decoration: none;
@@ -593,8 +593,8 @@ overflow-x: hidden;
   position:fixed;
   width:100%;
   height:100%;
-  left:0;
-  top:0;
+  left:0px;
+  top:0px;
   z-index:99;
 }
 
@@ -655,7 +655,7 @@ overflow-x: hidden;
 .navbar .dropdown.profile .dropdown-menu h6{
     margin-top: 0;
     font-weight: 200;
-    width: 105px;
+    width:115px;
     text-overflow: ellipsis;
     overflow:hidden;
 }
@@ -739,6 +739,7 @@ float: left;
     border: 0;
     position: relative;
     left: -10px;
+    top: -1px;
 }
 
 .breadcrumb a{
@@ -782,17 +783,17 @@ float: left;
 
 .flat-blue .panel.panel-warning .panel-heading {
     background-color: #F2A654;
-    border-bottom:0;
+    border-bottom:0px;
 }
 
 .flat-blue .panel.panel-primary .panel-heading{
   background-color:#62A8EA;
-  border-bottom:0;
+  border-bottom:0px;
 }
 
 .flat-blue .panel.panel-primary .panel-info, .flat-blue .panel.panel-info .panel-heading{
   background-color:#57C7D4;
-  border-bottom:0;
+  border-bottom:0px;
 }
 
 .panel-title {
@@ -814,7 +815,7 @@ float: left;
 }
 
 .flat-blue .panel.panel-warning, .flat-blue .panel.panel-primary, .flat-blue .panel.panel-info{
-  border:0;
+  border:0px;
 }
 
 .flat-blue .pagination .active > a, .flat-blue .pagination .active > a:focus, .flat-blue .pagination .active > a:hover, .flat-blue .pagination .active span, .flat-blue .pagination .active > span:focus, .flat-blue .pagination .active > span:hover {
@@ -868,15 +869,15 @@ float: left;
 .widgets{
   display:flex;
   flex-direction:row;
-  padding:0;
+  padding:0px;
 }
 
 .panel.widget{
   padding:30px;
-  border:0;
+  border:0px;
   border-radius:3px;
   flex:1;
-  margin-top: 20px;
+  margin:10px;
 }
 
 .panel.widget.center{
@@ -917,7 +918,7 @@ float: left;
   color: #DDD;
   display:block;
   max-height:65px;
-  margin-bottom:0;
+  margin-bottom:0px;
 }
 
 .panel.widget .readm-link{
@@ -962,8 +963,8 @@ float: left;
   opacity:1;
   transition:opacity 0.3s ease;
   position:absolute;
-  left:0;
-  top:0;
+  left:0px;
+  top:0px;
   width:100%;
   height:100%;
   border-radius:3px;
@@ -974,7 +975,7 @@ float: left;
 }
 
 .side-menu .panel.widget .dimmer{
-  border-radius:0;
+  border-radius:0px;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#242c32+0,242c32+100&1+34,0+100 */
 background: -moz-linear-gradient(45deg,  rgba(36,44,50,1) 0%, rgba(36,44,50,1) 34%, rgba(36,44,50,0) 100%); /* FF3.6-15 */
 background: -webkit-linear-gradient(45deg,  rgba(36,44,50,1) 0%,rgba(36,44,50,1) 34%,rgba(36,44,50,0) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -985,18 +986,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 
  .side-menu .navbar-header, .flat-blue .side-menu .navbar-header{
   float:none;
-  margin-bottom:0;
+  margin-bottom:0px;
 }
 
  .side-menu .panel.widget{
   padding:8px 0;
   padding-bottom:6px;
-  margin:0;
-  border-radius:0;
+  margin:0px;
+  border-radius:0px;
 }
 
 .side-menu-container  .side-menu .panel.widget .dimmer{
-  border-radius:0;
+  border-radius:0px;
 }
 
 
@@ -1006,7 +1007,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 
 .app-container  .side-menu .panel.widget p{
   font-size:12px;
-  margin-top:0;
+  margin-top:0px;
 }
 
 .app-container  .side-menu .panel.widget .avatar{
@@ -1082,28 +1083,28 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 }
 
 .toggle-group .btn, .toggle-group .btn.btn-default{
-  padding-bottom:0;
-  margin-top:0;
-  margin-bottom:0;
+  padding-bottom:0px;
+  margin-top:0px;
+  margin-bottom:0px;
   padding-top:5px;
 }
 
 .toggle-group span.btn, .toggle-group span.btn-default{
-  margin-top:0;
-  margin-bottom:0;
+  margin-top:0px;
+  margin-bottom:0px;
   line-height:20px;
 }
 
 .toggle.btn{
-  margin-top:0;
+  margin-top:0px;
   height:30px !important;
   line-height:20px !important;
-  margin-bottom:0;
+  margin-bottom:0px;
 }
 
 .delete-row{
-  margin-top:0;
-  margin-bottom:0;
+  margin-top:0px;
+  margin-bottom:0px;
   padding-bottom:4px;
 }
 
@@ -1126,7 +1127,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 .newTableRow.ui-sortable-helper{
   width:100%;
   border:1px solid #EAEAEA;
-  border-top:0;
+  border-top:0px;
   background:#fff;
   display: table;
 }
@@ -1209,7 +1210,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 }
 
 .database-tables .bread_actions .edit {
-  margin-left:0;
+  margin-left:0px;
   display:inline-block;
 }
 
@@ -1222,7 +1223,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 }
 
 .flat-blue .side-menu.sidebar-inverse .navbar li.dropdown .panel-body{
-  padding:0;
+  padding:0px;
 }
 
 .flat-blue .alert{
@@ -1259,7 +1260,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 }
 
 .flat-blue .panel-body .alert{
-  margin-right:0;
+  margin-right:0px;
   margin-bottom:10px;
   margin-top:10px;
 }
@@ -1399,11 +1400,11 @@ ul.checkbox label {
 }
 
 .alerts {
-  padding: 10px 10px 0 10px;
+  padding: 10px 10px 0px 10px;
 }
 
 .alerts .alert {
-  margin-right: 0;
+  margin-right: 0px;
 }
 
 .alerts .alert>p,

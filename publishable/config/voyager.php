@@ -180,10 +180,6 @@ return [
                 'icon_class'    => 'voyager-home',
                 'target_blank'  => true,
             ],
-			'Lock' => [
-                'route'      => 'voyager.lock',
-                'icon_class' => 'voyager-lock',
-            ],
             'Logout' => [
                 'route'      => 'voyager.logout',
                 'icon_class' => 'voyager-power',
