@@ -297,5 +297,4 @@ class Voyager
     {
         return  session('admin_lock');
     }
-
 }
