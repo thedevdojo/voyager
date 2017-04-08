@@ -180,7 +180,7 @@ return [
                 'icon_class'    => 'voyager-home',
                 'target_blank'  => true,
             ],
-	    'Lock' => [
+            'Lock' => [
                 'route'      => 'voyager.lock',
                 'icon_class' => 'voyager-lock',
             ],

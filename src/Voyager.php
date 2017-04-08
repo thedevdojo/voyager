@@ -293,9 +293,9 @@ class Voyager
         return $this->users[$id];
     }
 
-	public function isLocked()
-	{
-		return  session('admin_lock');
-	}
+    public function isLocked()
+    {
+        return  session('admin_lock');
+    }
 
 }

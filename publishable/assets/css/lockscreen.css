@@ -75,7 +75,7 @@ body {
     border-radius:1px;
     outline:none !important;
     opacity:0.8;
-    border:0px;
+    border:0;
 }
 .unlock-button:hover, .login-button:focus {
     color: #FFF;
@@ -139,7 +139,7 @@ body {
 
 .highlight {
     position:absolute;
-    height:0%; 
+    height:0; 
     width:100px; 
     top:25%; 
     left:0;

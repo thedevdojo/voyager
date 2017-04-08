@@ -18,13 +18,11 @@ class VoyagerAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-
         if (!Auth::guest()) {
+	        if (Voyager::isLocked()) {
 
-			if(Voyager::isLocked()){
-
-				return redirect(route('voyager.lock'));
-			}
+			    return redirect(route('voyager.lock'));
+		    }
 
             $user = Voyager::model('User')->find(Auth::id());
 
