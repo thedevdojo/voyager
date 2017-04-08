@@ -3,9 +3,8 @@ $(document).ready(function(){
 		$($(this).parents('form')).submit(function(e){
 			e.preventDefault();
 			var form = $(this);
-			var method = $(form).find('[name="_method"]').attr('value');
-
-			if(method != 'DELETE' || method == undefined)
+			var method = $(form[0]['innerHTML']).find('.form-group');
+			if(method.length > 0)
 			{
 				var url = $(this).attr('action');
 				var data = new FormData(this);
