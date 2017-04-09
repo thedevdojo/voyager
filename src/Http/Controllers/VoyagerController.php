@@ -36,7 +36,7 @@ class VoyagerController extends Controller
         session(['admin_lock' => 1]);
         return view('voyager::lockscreen');
     }
-	
+
     public function unlockScreen(Request $request)
     {
         $id = Auth::user()->id;
@@ -47,6 +47,7 @@ class VoyagerController extends Controller
             session(['admin_lock' => 0]);
             return redirect()->route('voyager.dashboard');
         }
+
 
         return redirect()->route('voyager.lock')->with($this->alertSuccess("Password is wrong!"));
     }
