@@ -16,17 +16,26 @@ class VoyagerRoleController extends VoyagerBreadController
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-        $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+        //Validate fields with ajax
+        $val = $this->validateBread($request->all(), $dataType->addRows);
 
-        $data->permissions()->sync($request->input('permissions', []));
+        if ($val->fails()) {
+            return response()->json(['errors' => $val->messages()]);
+        }
 
-        return redirect()
+        if (!$request->ajax()) {
+            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+
+            $data->permissions()->sync($request->input('permissions', []));
+
+            return redirect()
             ->route("voyager.{$dataType->slug}.index")
             ->with([
                 'message'    => "Successfully Updated {$dataType->display_name_singular}",
                 'alert-type' => 'success',
-            ]);
+                ]);
+        }
     }
 
     // POST BRE(A)D
@@ -38,16 +47,25 @@ class VoyagerRoleController extends VoyagerBreadController
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        $data = new $dataType->model_name();
-        $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
+        //Validate fields with ajax
+        $val = $this->validateBread($request->all(), $dataType->addRows);
 
-        $data->permissions()->sync($request->input('permissions', []));
+        if ($val->fails()) {
+            return response()->json(['errors' => $val->messages()]);
+        }
 
-        return redirect()
+        if (!$request->ajax()) {
+            $data = new $dataType->model_name();
+            $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
+
+            $data->permissions()->sync($request->input('permissions', []));
+
+            return redirect()
             ->route("voyager.{$dataType->slug}.index")
             ->with([
                 'message'    => "Successfully Added New {$dataType->display_name_singular}",
                 'alert-type' => 'success',
-            ]);
+                ]);
+        }
     }
 }
