@@ -92,7 +92,8 @@ abstract class Controller extends BaseController
         return $data;
     }
 
-    public function validateBread($request, $data){
+    public function validateBread($request, $data)
+    {
         $rules = [];
         $messages = [];
 

@@ -163,11 +163,11 @@ class VoyagerBreadController extends Controller
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
 
-        if($val->fails()) {
+        if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
         }
 
-        if(!$request->ajax()) {
+        if (!$request->ajax()) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
@@ -178,7 +178,7 @@ class VoyagerBreadController extends Controller
                 'message'    => "Successfully Updated {$dataType->display_name_singular}",
                 'alert-type' => 'success',
                 ]);
-        }        
+        }
     }
 
     //***************************************
@@ -232,11 +232,11 @@ class VoyagerBreadController extends Controller
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
 
-        if($val->fails()) {
+        if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
         }
 
-        if(!$request->ajax()) {
+        if (!$request->ajax()) {
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
             return redirect()
