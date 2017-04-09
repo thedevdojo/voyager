@@ -22,6 +22,7 @@
         }
 
         $listItemClass = null;
+        $linkAttributes =  null;
         $styles = null;
         $icon = null;
         $caret = null;
@@ -44,10 +45,6 @@
             }else{
                 $listItemClass = 'dropdown';
             }
-        }
-        else
-        {
-            $linkAttributes =  '';
         }
 
         // Set Icon
