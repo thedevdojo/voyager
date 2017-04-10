@@ -30,10 +30,11 @@ class VoyagerController extends Controller
 
         if (!$user) {
             session()->flush();
+
             return redirect()->route('voyager.login');
         }
-
         session(['admin_lock' => 1]);
+
         return view('voyager::lockscreen');
     }
 
@@ -45,9 +46,9 @@ class VoyagerController extends Controller
 
         if (\Hash::check($password, $users->password)) {
             session(['admin_lock' => 0]);
+
             return redirect()->route('voyager.dashboard');
         }
-
 
         return redirect()->route('voyager.lock')->with($this->alertSuccess("Password is wrong!"));
     }
