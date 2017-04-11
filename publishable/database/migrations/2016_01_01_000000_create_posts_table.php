@@ -19,7 +19,7 @@ class CreatePostsTable extends Migration
             $table->integer('category_id')->nullable();
             $table->string('title');
             $table->string('seo_title')->nullable();
-            $table->text('excerpt');
+            $table->text('excerpt')->nullable();
             $table->text('body');
             $table->string('image')->nullable();
             $table->string('slug')->unique();
