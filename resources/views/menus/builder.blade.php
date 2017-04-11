@@ -82,14 +82,31 @@
                         <select id="m_link_type" class="form-control" name="type">
                             <option value="url" selected="selected">Static URL</option>
                             <option value="route">Dynamic Route</option>
+                            <option value="select_route">Select Route</option>
                         </select><br>
                         <div id="m_url_type">
                             <label for="url">URL for the Menu Item</label>
                             <input type="text" class="form-control" id="m_url" name="url" placeholder="URL"><br>
                         </div>
+
                         <div id="m_route_type">
                             <label for="route">Route for the menu item</label>
                             <input type="text" class="form-control" id="m_route" name="route" placeholder="Route"><br>
+                            <label for="parameters">Route parameters (if any)</label>
+                            <textarea rows="3" class="form-control" id="m_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
+                        </div>
+
+                        <div id="m_select_route_type">
+                            <label for="select_route">Select route</label>
+                                <select id="m_select_route" name="select_route" class="form-control">
+                                    <option>Select route</option>
+                                    @foreach($routes['GET'] as $route)
+                                        @if($route->getName())
+                                            <option value="{{$route->getName()}}">{{$route->getName()}} ({{$route->uri}})</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            <br>
                             <label for="parameters">Route parameters (if any)</label>
                             <textarea rows="3" class="form-control" id="m_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
                         </div>
@@ -169,6 +186,8 @@
                 $m_link_type   = $('#m_link_type'),
                 $m_route_type  = $('#m_route_type'),
                 $m_route       = $('#m_route'),
+                $m_select_route_type = $("#m_select_route_type"),
+                $m_select_route = $("#m_select_route"),
                 $m_parameters  = $('#m_parameters'),
                 $m_icon_class  = $('#m_icon_class'),
                 $m_color       = $('#m_color'),
@@ -218,7 +237,8 @@
 
                     $m_title.val(_src.data('title'));
                     $m_url.val(_src.data('url'));
-                    $m_route.val(_src.data('route'));
+                    $m_route.val(_src.data('route')? _src.data('route') : _src.data('select_route'));
+                    $m_select_route.val(_src.data('route')? _src.data('route') : _src.data('select_route'));
                     $m_parameters.val(JSON.stringify(_src.data('parameters')));
                     $m_icon_class.val(_src.data('icon_class'));
                     $m_color.val(_src.data('color'));
@@ -245,9 +265,17 @@
                     if ($m_link_type.val() == 'route') {
                         $m_url_type.hide();
                         $m_route_type.show();
-                    } else {
-                        $m_route_type.hide();
+                        $m_select_route_type.hide();
+                    } 
+                    else if($m_link_type.val() == 'url') {
                         $m_url_type.show();
+                        $m_route_type.hide();
+                        $m_select_route_type.hide();
+                    }
+                    else {
+                        $m_url_type.hide();
+                        $m_route_type.hide();
+                        $m_select_route_type.show();
                     }
                 }
 
@@ -265,9 +293,17 @@
                 if ($m_link_type.val() == 'route') {
                     $m_url_type.hide();
                     $m_route_type.show();
-                } else {
+                    $m_select_route_type.hide();
+                } 
+                else if($m_link_type.val() == 'url') {
                     $m_url_type.show();
                     $m_route_type.hide();
+                    $m_select_route_type.hide();
+                }
+                else {
+                    $m_url_type.hide();
+                    $m_route_type.hide();
+                    $m_select_route_type.show();
                 }
             });
 

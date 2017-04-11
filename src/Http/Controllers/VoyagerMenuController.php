@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager;
+use Route;
 
 class VoyagerMenuController extends Controller
 {
@@ -13,9 +14,11 @@ class VoyagerMenuController extends Controller
 
         $menu = Voyager::model('Menu')->findOrFail($id);
 
+        $routes = Route::getRoutes()->getRoutesByMethod();
+
         $isModelTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
 
-        return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
+        return view('voyager::menus.builder', compact('menu', 'isModelTranslatable', 'routes'));
     }
 
     public function delete_menu($menu, $id)
@@ -43,7 +46,6 @@ class VoyagerMenuController extends Controller
         $data = $this->prepareParameters(
             $request->all()
         );
-
         unset($data['id']);
         $data['order'] = 1;
 
@@ -132,6 +134,10 @@ class VoyagerMenuController extends Controller
             case 'route':
                 $parameters['url'] = null;
                 break;
+            case 'select_route':
+                $parameters['url'] = null;
+                $parameters['route'] = $parameters['select_route'];
+                break;
             default:
                 $parameters['route'] = null;
                 $parameters['parameters'] = '';
@@ -140,6 +146,10 @@ class VoyagerMenuController extends Controller
 
         if (isset($parameters['type'])) {
             unset($parameters['type']);
+        }
+
+        if (isset($parameters['select_route'])) {
+            unset($parameters['select_route']);
         }
 
         return $parameters;
