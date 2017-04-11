@@ -2,6 +2,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
 class AlterPostNullableFieldsTable extends Migration
 {
     /**
@@ -17,6 +18,7 @@ class AlterPostNullableFieldsTable extends Migration
             $table->text('meta_keywords')->nullable();
         });
     }
+    
     /**
      * Reverse the migrations.
      *
