@@ -125,31 +125,6 @@
             top: 2px;
         }
 
-        .img_settings_container {
-            width: 200px;
-            height: auto;
-            position: relative;
-        }
-
-        .img_settings_container > a {
-            position: absolute;
-            right: -10px;
-            top: -10px;
-            display: block;
-            padding: 5px;
-            background: #F94F3B;
-            color: #fff;
-            border-radius: 13px;
-            width: 25px;
-            height: 25px;
-            font-size: 15px;
-            line-height: 19px;
-        }
-
-        .img_settings_container > a:hover, .img_settings_container > a:focus, .img_settings_container > a:active {
-            text-decoration: none;
-        }
-
         textarea {
             min-height: 120px;
         }
@@ -221,6 +196,7 @@
                                     <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x"></a>
                                     <img src="{{ Storage::disk(config('voyager.storage.disk'))->url($setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                 </div>
+                                <div class="clearfix"></div>
                             @elseif($setting->type == "file" && isset( $setting->value ))
                                 <div class="fileType">{{ $setting->value }}</div>
                             @endif
