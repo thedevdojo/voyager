@@ -181,7 +181,6 @@ abstract class Controller extends BaseController
                                 $constraint->upsize();
                             })->encode($file->getClientOriginalExtension(), 75);
 
-
                         Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
 
                         if (isset($options->thumbnails)) {
@@ -217,7 +216,6 @@ abstract class Controller extends BaseController
                                 );
                             }
                         }
-
                     }
 
                     return json_encode($filesPath);
