@@ -50,7 +50,7 @@ class VoyagerController extends Controller
             return redirect()->route('voyager.dashboard');
         }
 
-        return redirect()->route('voyager.lock')->with($this->alertSuccess("Password is wrong!"));
+        return redirect()->route('voyager.lock')->with($this->alertError("Password is incorrect!"));
     }
 
     public function upload(Request $request)
