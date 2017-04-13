@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <input type="text" class="form-control" name="title" placeholder="Title" value="@if(isset($dataTypeContent->title)){{ $dataTypeContent->title }}@endif">
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="@if(isset($dataTypeContent->title)){{ $dataTypeContent->title }}@endif">
                         </div>
                     </div>
 
@@ -204,7 +204,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary pull-right">
-                @if(isset($dataTypeContent->id)){{ 'Update Post' }}@else<?= '<i class="icon wb-plus-circle"></i> Create New Post'; ?>@endif
+                @if(isset($dataTypeContent->id)){{ 'Update Post' }}@else <i class="icon wb-plus-circle"></i> Create New Post @endif
             </button>
         </form>
 
@@ -217,13 +217,13 @@
     </div>
 @stop
 
-@section('javascript')
+@section('javascript')    
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
+    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
     <script>
         $('document').ready(function () {
             $('#slug').slugify();
         });
     </script>
-    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
-    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
 @stop
