@@ -174,11 +174,50 @@ abstract class Controller extends BaseController
                         $path = $slug.'/'.date('F').date('Y').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
-                        $request->file($row->field)[$key]->storeAs(
-                            $path,
-                            $filename.'.'.$file->getClientOriginalExtension(),
-                            config('voyager.storage.disk', 'public')
-                        );
+
+                        $image = Image::make($file)->resize($resize_width, $resize_height,
+                            function (Constraint $constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })->encode($file->getClientOriginalExtension(), 75);
+
+
+                        Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
+
+                        if (isset($options->thumbnails)) {
+                            foreach ($options->thumbnails as $thumbnails) {
+                                if (isset($thumbnails->name) && isset($thumbnails->scale)) {
+                                    $scale = intval($thumbnails->scale) / 100;
+                                    $thumb_resize_width = $resize_width;
+                                    $thumb_resize_height = $resize_height;
+
+                                    if ($thumb_resize_width != 'null') {
+                                        $thumb_resize_width = $thumb_resize_width * $scale;
+                                    }
+
+                                    if ($thumb_resize_height != 'null') {
+                                        $thumb_resize_height = $thumb_resize_height * $scale;
+                                    }
+
+                                    $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
+                                        function (Constraint $constraint) {
+                                            $constraint->aspectRatio();
+                                            $constraint->upsize();
+                                        })->encode($file->getClientOriginalExtension(), 75);
+                                } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
+                                    $crop_width = $thumbnails->crop->width;
+                                    $crop_height = $thumbnails->crop->height;
+                                    $image = Image::make($file)
+                                        ->fit($crop_width, $crop_height)
+                                        ->encode($file->getClientOriginalExtension(), 75);
+                                }
+
+                                Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                                    (string) $image, 'public'
+                                );
+                            }
+                        }
+
                     }
 
                     return json_encode($filesPath);
