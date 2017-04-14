@@ -22,6 +22,8 @@ Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
 View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
+Recent Video on Larachat Live with Voyager: https://larachat.co/live
+
 <hr>
 
 Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Laravel 5.3.
