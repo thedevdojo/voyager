@@ -276,16 +276,16 @@
 
             formTextEditors.each(function () {
                 var textarea = $(this),
-                        mode = textarea.data('editor'),
-                        editDiv = $('<div>', {
-                            position: 'absolute',
-                            width: 250,
-                            resize: 'vertical',
-                            class: textarea.attr('class')
-                        }).insertBefore(textarea),
-                        editor = ace.edit(editDiv[0]),
-                        _session = editor.getSession(),
-                        valid = false;
+                mode = textarea.data('editor'),
+                editDiv = $('<div>', {
+                    position: 'absolute',
+                    width: 250,
+                    resize: 'vertical',
+                    class: textarea.attr('class')
+                }).insertBefore(textarea),
+                editor = ace.edit(editDiv[0]),
+                _session = editor.getSession(),
+                valid = false;
                 textarea.hide();
 
                 // Validate JSON
