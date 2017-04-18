@@ -11,6 +11,7 @@
             </a>
         @endif
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -114,4 +115,7 @@
             $('#delete_modal').modal('show');
         });
     </script>
+    @if($isModelTranslatable)
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
+    @endif
 @stop

@@ -52,10 +52,11 @@ class VoyagerBreadController extends Controller
         } else {
             // If Model doesn't exist, get data from table name
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
+            $model = false;
         }
 
         // Check if BREAD is Translatable
-        $isModelTranslatable = isBreadTranslatable($dataTypeContent);
+        $isModelTranslatable = isBreadTranslatable($model);
 
         $view = 'voyager::bread.browse';
 
