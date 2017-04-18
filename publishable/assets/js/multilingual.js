@@ -33,7 +33,8 @@
                 editing:       false,                       // Editing or View
                 form:          '.form-edit-add',
                 transInputs:   'input[data-i18n = true]',   // Hidden inputs holding translations
-                langSelectors: '> .language-selector input' // Language selector inputs
+                langSelectors: '> .language-selector input',// Language selector inputs
+                submitForm:    true                         // Determines whether to force form submit in plugin.
             };
 
         function Plugin ( element, options ) {
@@ -73,13 +74,19 @@
                 /**
                  * Save data before submit
                  */
-                if (this.settings.editing) {
-                    $(this.form).on('submit', function(e) {
-                        e.preventDefault();
-                        _this.prepareData();
-                        $(_this.form)[0].submit();
-                    });
+                if (this.settings.editing && this.settings.submitForm) {
+                    $(this.form).on('submit', this.submitForm.bind(this));
                 }
+            },
+
+
+            /**
+             * Submit form after preparing data
+             */
+            submitForm: function(e){
+                e.preventDefault();
+                this.prepareData();
+                $(this.form)[0].submit();
             },
 
             /**

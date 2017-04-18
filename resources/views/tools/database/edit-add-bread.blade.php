@@ -258,19 +258,23 @@
     <script>
         window.invalidEditors = [];
         var validationAlerts = $('.validation-error');
+        var breadForm = $('.side-body').find('form');
+        var formTextEditors = $('textarea[data-editor]');
         validationAlerts.hide();
+
         $(function () {
             @if ($isModelTranslatable)
-                /**
-                 * Multilingual setup
-                 */
-                $('.side-body').multilingual({
-                    "form":    'form',
-                    "editing": true
-                });
+            /**
+             * Multilingual setup
+             */
+            $('.side-body').multilingual({
+                "form":         'form',
+                "editing":      true,
+                "submitForm":   false,
+            });
             @endif
 
-            $('textarea[data-editor]').each(function () {
+            formTextEditors.each(function () {
                 var textarea = $(this),
                 mode = textarea.data('editor'),
                 editDiv = $('<div>', {
@@ -294,7 +298,7 @@
                     } else {
                         for(var i = window.invalidEditors.length - 1; i >= 0; i--) {
                             if(window.invalidEditors[i] == textarea.attr('id')) {
-                               window.invalidEditors.splice(i, 1);
+                                window.invalidEditors.splice(i, 1);
                             }
                         }
                     }
@@ -328,24 +332,56 @@
 
                 _session.setMode("ace/mode/" + mode);
 
-                // copy back to textarea on form submit...
-                textarea.closest('form').on('submit', function (ev) {
-                    if (window.invalidEditors.length) {
-                        ev.preventDefault();
-                        ev.stopPropagation();
-                        validationAlerts.hide();
-                        for (var i = window.invalidEditors.length - 1; i >= 0; i--) {
-                            $('#'+window.invalidEditors[i]).siblings('.validation-error').show();
-                        }
-                        toastr.error('Seems like you introduced some invalid JSON.', 'Validation errors', {"preventDuplicates": true, "preventOpenDuplicates": true});
-                    } else {
-                        if (_session.getValue()) {
-                            // uglify JSON object and update textarea for submit purposes
-                            textarea.val(JSON.stringify(JSON.parse(_session.getValue())));
-                        }
-                    }
-                });
+                // Bind editor to element to use later.
+                $(this).data('aceEditor', editor);
+
             });
+
+            /**
+             * Handler for form submission.  Handle ACE Editor fields and
+             * multilingual if enabled before submit.
+             * @param ev
+             */
+            var submitBreadForm = function (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+
+                if (window.invalidEditors.length) {
+                    validationAlerts.hide();
+                    for (var i = window.invalidEditors.length - 1; i >= 0; i--) {
+                        $('#'+window.invalidEditors[i]).siblings('.validation-error').show();
+                    }
+                    toastr.error('Seems like you introduced some invalid JSON.', 'Validation errors', {"preventDuplicates": true, "preventOpenDuplicates": true});
+                } else {
+                    formTextEditors.each(function () {
+                        var $textArea = $(this);
+                        var editor = $textArea.data('aceEditor');
+                        if(!editor) return;
+                        var textAreaSession = editor.getSession();
+                        if (textAreaSession.getValue()) {
+                            // uglify JSON object and update textarea for submit purposes
+                            $textArea.val(JSON.stringify(JSON.parse(textAreaSession.getValue())));
+                        }else{
+                            // Field is empty
+                            $textArea.val('');
+                        }
+                    });
+
+                    // If multilingual, prepare data manually.
+                            @if ($isModelTranslatable)
+                    var multilingual = $('.side-body').data().multilingual;
+                    if(multilingual) {
+                        multilingual.prepareData();
+                    }
+                    @endif
+
+                    breadForm.off('submit', submitBreadForm);
+                    breadForm.submit();
+                }
+            };
+
+            // Submit callback
+            breadForm.on('submit', submitBreadForm);
 
             $('[data-toggle="tooltip"]').tooltip();
 
