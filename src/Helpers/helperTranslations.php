@@ -1,15 +1,15 @@
 <?php
 
-if (!function_exists('isFieldTranslatable')) {
+if (!function_exists('is_field_translatable')) {
     /**
      * Check if a Field is translatable.
      *
      * @param Illuminate\Database\Eloquent\Model      $model
      * @param Illuminate\Database\Eloquent\Collection $row
      */
-    function isFieldTranslatable($model, $row)
+    function is_field_translatable($model, $row)
     {
-        if (!isBreadTranslatable($model)) {
+        if (!is_bread_translatable($model)) {
             return;
         }
 
@@ -18,7 +18,7 @@ if (!function_exists('isFieldTranslatable')) {
     }
 }
 
-if (!function_exists('getFieldTranslations')) {
+if (!function_exists('get_field_translations')) {
     /**
      * Return all field translations.
      *
@@ -27,7 +27,7 @@ if (!function_exists('getFieldTranslations')) {
      * @param string                             $rowType
      * @param bool                               $stripHtmlTags
      */
-    function getFieldTranslations($model, $field, $rowType = '', $stripHtmlTags = false)
+    function get_field_translations($model, $field, $rowType = '', $stripHtmlTags = false)
     {
         $_out = $model->getTranslationsOf($field);
 
@@ -41,13 +41,13 @@ if (!function_exists('getFieldTranslations')) {
     }
 }
 
-if (!function_exists('isBreadTranslatable')) {
+if (!function_exists('is_bread_translatable')) {
     /**
      * Check if BREAD is translatable.
      *
      * @param Illuminate\Database\Eloquent\Model $model
      */
-    function isBreadTranslatable($model)
+    function is_bread_translatable($model)
     {
         return config('voyager.multilingual.bread')
             && isset($model, $model['translatable']);

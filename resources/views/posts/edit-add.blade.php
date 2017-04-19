@@ -96,7 +96,7 @@
                         <div class="panel-body">
                             @include('voyager::multilingual.input-hidden', [
                                 '_field_name'  => 'title',
-                                '_field_trans' => getFieldTranslations($dataTypeContent, 'title')
+                                '_field_trans' => get_field_translations($dataTypeContent, 'title')
                             ])
                             <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="@if(isset($dataTypeContent->title)){{ $dataTypeContent->title }}@endif">
                         </div>
@@ -112,7 +112,7 @@
                         </div>
                         @include('voyager::multilingual.input-hidden', [
                             '_field_name'  => 'body',
-                            '_field_trans' => getFieldTranslations($dataTypeContent, 'body', 'rich_text_box', true)
+                            '_field_trans' => get_field_translations($dataTypeContent, 'body', 'rich_text_box', true)
                         ])
                         <textarea class="form-control richTextBox" id="richtextbody" name="body" style="border:0px;">@if(isset($dataTypeContent->body)){{ $dataTypeContent->body }}@endif</textarea>
                     </div><!-- .panel -->
@@ -128,7 +128,7 @@
                         <div class="panel-body">
                             @include('voyager::multilingual.input-hidden', [
                                 '_field_name'  => 'excerpt',
-                                '_field_trans' => getFieldTranslations($dataTypeContent, 'excerpt')
+                                '_field_trans' => get_field_translations($dataTypeContent, 'excerpt')
                             ])
                             <textarea class="form-control" name="excerpt">@if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif</textarea>
                         </div>
@@ -148,7 +148,7 @@
                                 <label for="name">URL slug</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'slug',
-                                    '_field_trans' => getFieldTranslations($dataTypeContent, 'slug')
+                                    '_field_trans' => get_field_translations($dataTypeContent, 'slug')
                                 ])
                                 <input type="text" class="form-control" id="slug" name="slug"
                                     placeholder="slug"
@@ -207,7 +207,7 @@
                                 <label for="name">Meta Description</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'meta_description',
-                                    '_field_trans' => getFieldTranslations($dataTypeContent, 'meta_description')
+                                    '_field_trans' => get_field_translations($dataTypeContent, 'meta_description')
                                 ])
                                 <textarea class="form-control" name="meta_description">@if(isset($dataTypeContent->meta_description)){{ $dataTypeContent->meta_description }}@endif</textarea>
                             </div>
@@ -215,7 +215,7 @@
                                 <label for="name">Meta Keywords</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'meta_keywords',
-                                    '_field_trans' => getFieldTranslations($dataTypeContent, 'meta_keywords')
+                                    '_field_trans' => get_field_translations($dataTypeContent, 'meta_keywords')
                                 ])
                                 <textarea class="form-control" name="meta_keywords">@if(isset($dataTypeContent->meta_keywords)){{ $dataTypeContent->meta_keywords }}@endif</textarea>
                             </div>
@@ -223,7 +223,7 @@
                                 <label for="name">SEO Title</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'seo_title',
-                                    '_field_trans' => getFieldTranslations($dataTypeContent, 'seo_title')
+                                    '_field_trans' => get_field_translations($dataTypeContent, 'seo_title')
                                 ])
                                 <input type="text" class="form-control" name="seo_title" placeholder="SEO Title" value="@if(isset($dataTypeContent->seo_title)){{ $dataTypeContent->seo_title }}@endif">
                             </div>

@@ -38,10 +38,10 @@
                                         @if($row->type == 'image')
                                             <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                         @else
-                                            @if(isFieldTranslatable($data, $row))
+                                            @if(is_field_translatable($data, $row))
                                                 @include('voyager::multilingual.input-hidden', [
                                                     '_field_name'  => $row->field,
-                                                    '_field_trans' => getFieldTranslations($data, $row->field)
+                                                    '_field_trans' => get_field_translations($data, $row->field)
                                                 ])
                                             @endif
                                             <span>{{ $data->{$row->field} }}</span>

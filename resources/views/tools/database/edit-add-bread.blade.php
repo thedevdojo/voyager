@@ -49,7 +49,7 @@
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
                                             '_field_name'         => 'display_name_singular',
-                                            '_field_trans' => getFieldTranslations($dataType, 'display_name_singular')
+                                            '_field_trans' => get_field_translations($dataType, 'display_name_singular')
                                         ])
                                     @endif
                                     <input type="text" class="form-control"
@@ -64,7 +64,7 @@
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
                                             '_field_name'         => 'display_name_plural',
-                                            '_field_trans' => getFieldTranslations($dataType, 'display_name_plural')
+                                            '_field_trans' => get_field_translations($dataType, 'display_name_plural')
                                         ])
                                     @endif
                                     <input type="text" class="form-control"
