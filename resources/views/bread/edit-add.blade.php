@@ -135,7 +135,7 @@
             });
 
             $('.form-group').on('click', '.remove-multi-image', function (e) {
-                $image = $(this).parent().siblings('img');
+                $image = $(this).siblings('img');
 
                 params = {
                     slug:   '{{ $dataTypeContent->getTable() }}',

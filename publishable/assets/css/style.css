@@ -904,48 +904,39 @@ body.login-page .login-footer {
 
 /* Multiple images */
 
-.image-tool-box {
-  display: inline-block;
-  clear: both;
-  padding: 2px;
-  border: 1px solid #ddd;
-  margin-bottom: 10px;
-  position: relative;
+.img_settings_container {
+    width: 200px;
+    height: auto;
+    position: relative;
+    float: left;
+    margin-right: 20px;
 }
 
-.image-tool-box img {
-  width: 200px;
-  height: auto;
+.img_settings_container > a {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    display: block;
+    padding: 5px;
+    background: #F94F3B;
+    color: #fff;
+    border-radius: 13px;
+    width: 25px;
+    height: 25px;
+    font-size: 15px;
+    line-height: 19px;
 }
 
-.image-tool-box .image-tools {
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
+.img_settings_container > img {
+    width: 200px;
+    height: auto;
+    padding: 2px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
 }
 
-.image-tool-box .image-tools .glyphicon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #fff;
-  display: none;
-  cursor: pointer;
-}
-
-.image-tool-box:hover .image-tools {
-  background:rgba(0,0,0,0.8);
-  transition: all 0.5s;
-  -webkit-transition: all 0.5s;
-}
-
-.image-tool-box:hover .image-tools .glyphicon {
-  display: block;
+.img_settings_container > a:hover, .img_settings_container > a:focus, .img_settings_container > a:active {
+    text-decoration: none;
 }
 
 .modal-open .select2-container {
