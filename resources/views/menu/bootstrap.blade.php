@@ -46,6 +46,10 @@
                 $listItemClass = 'dropdown';
             }
         }
+        else
+        {
+            $linkAttributes =  '';
+        }
 
         // Set Icon
         if(isset($options->icon) && $options->icon == true){
