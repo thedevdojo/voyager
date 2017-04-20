@@ -1,0 +1,186 @@
+body {
+    margin:0;
+    padding:0;
+    font-family:Roboto,Source Sans Pro,sans-serif;
+    background-size:cover;
+    -moz-background-size:cover;
+    -ms-background-size:cover;
+    -wenkit-background-size:cover;
+    background-position:center center;
+    background-repeat:no-repeat;
+    overflow:hidden;
+}
+
+.faded-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(50, 50, 50, 0.5);
+}
+
+.unlock-container {
+	position: relative;
+    border-radius: 5px;
+    justify-content: center;
+    background: rgba(39, 34, 34, 0.26);
+	color: white;
+	text-align: center;
+}
+
+.unlock-container h4{
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, Roboto, courier;
+    font-size: 20px;
+}
+
+.unlock-container h5{
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, Roboto, courier;
+}
+
+.jumbotron{
+	background: none;
+	margin-bottom: 0;
+	padding-bottom: 20px;
+}
+.unlock-content{
+	padding-top: 30px;
+}
+.unlock-content a{
+	color: white;
+    text-decoration: none;
+    margin-top: 15px;
+    display: block;
+}
+.unlock-content .glyphicon{
+	color: #ffffff;
+    top:-1px;
+    font-size:13px;
+}
+
+.unlock-content .unlock .glyphicon{
+    top:2px;
+    left:-5px;
+}
+.unlock-button {
+    display:block;
+    text-align:center;
+    text-decoration:none;
+    color:#eee;
+    font-family:Roboto,Source Sans Pro,sans-serif;
+    font-weight:100;
+    padding:15px 10px;
+    border-radius:1px;
+    outline:none !important;
+    opacity:0.8;
+    border:0px;
+}
+.unlock-button:hover, .login-button:focus {
+    color: #FFF;
+    opacity: 1
+}
+.group { 
+    position:relative; 
+    margin-bottom: 10px;
+}
+.group input {
+    font-size: 15px;
+    padding: 10px;
+    display: block;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    background: none;
+    color: #ffffff;
+}
+.group input:focus { outline:none; }
+
+.group label                 {
+    color: #ffffff;
+    font-size:18px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+	left:0;
+    top:5px;
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+}
+
+.group input:focus ~ label, input:valid ~ label  {
+    top:-10px;
+    font-size:14px;
+    color: #ffffff;
+}
+.bar    { position:relative; display:block; width:100%; }
+.bar:before, .bar:after {
+    content:'';
+    height:1px; 
+    width:0;
+    bottom:1px; 
+    position:absolute;
+    background:rgba(53,61,71, 0.3); 
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+}
+.bar:before {
+    left:50%;
+}
+.bar:after {
+    right:50%; 
+}
+.group input:focus ~ .bar:before, .group input:focus ~ .bar:after {
+    width:50%;
+}
+
+.highlight {
+    position:absolute;
+    height:0%; 
+    width:100px; 
+    top:25%; 
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+}
+
+.group input:focus ~ .highlight {
+    -webkit-animation:inputHighlighter 0.3s ease;
+    -moz-animation:inputHighlighter 0.3s ease;
+    animation:inputHighlighter 0.3s ease;
+}
+
+@-webkit-keyframes inputHighlighter {
+    from { background:rgba(255,255,255, 0.7); }
+    to  { width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+    from { background:rgba(255,255,255, 0.7); }
+    to  { width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+    from { background:rgba(255,255,255, 0.7); }
+    to  { width:0; background:transparent; }
+}
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(359deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(359deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(359deg);}
+}
+
+.glyphicon-refresh {
+    -webkit-animation:spin 0.6s infinite linear;
+    -moz-animation:spin 0.6s infinite linear;
+    animation:spin 0.6s infinite linear;
+}
+
