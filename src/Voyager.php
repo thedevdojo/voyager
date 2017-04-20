@@ -246,7 +246,7 @@ class Voyager
      */
     public function translatable($model)
     {
-        if (!config('voyager.multilingual.bread')) {
+        if (!config('voyager.multilingual.enabled')) {
             return false;
         }
 

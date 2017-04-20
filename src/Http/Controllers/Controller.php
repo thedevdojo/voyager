@@ -39,7 +39,7 @@ abstract class Controller extends BaseController
         /*
          * Prepare Translations and Transform data
          */
-        $translations = isBreadTranslatable($data)
+        $translations = is_bread_translatable($data)
                         ? $data->prepareTranslations($request)
                         : [];
 
