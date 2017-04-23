@@ -14,7 +14,7 @@ class AddOrderToDataRowsTable extends Migration
     public function up()
     {
         Schema::table('data_rows', function (Blueprint $table) {
-            $table->integer('order')->after('details');
+            $table->integer('order')->default(1)->after('details');
         });
     }
 
