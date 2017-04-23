@@ -148,8 +148,8 @@ class DataType extends Model
         $_fieldOptions = SchemaManager::describeTable($table)->toArray();
 
         $fieldOptions = [];
-        $_size = count($orderedFields);
-        for ($i=0; $i < $_size; $i++) {
+        $f_size = count($orderedFields);
+        for ($i = 0; $i < $f_size; $i++) {
             $fieldOptions[$orderedFields[$i]] = $_fieldOptions[$orderedFields[$i]];
         }
         $fieldOptions = collect($fieldOptions);
