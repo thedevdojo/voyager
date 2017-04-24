@@ -150,7 +150,10 @@ class DataType extends Model
             return $item;
         });
         
-        $fieldOptions = $fieldOptions->sortBy('dataRow.order');
+        //Sort by DataRow order field, put new fields at the end
+        $fieldOptions = $fieldOptions->sortBy(function ($elt) {
+            return isset($elt['dataRow']) ? $elt['dataRow']->order : PHP_INT_MAX;
+        });
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
