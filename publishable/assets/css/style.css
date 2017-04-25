@@ -689,7 +689,7 @@ body.login-page .login-footer {
   border-top: 0; }
 
 .tab-content > div {
-  padding: 20px; }
+  padding-top: 20px; }
 
 .tabs-below > .nav-tabs,
 .tabs-right > .nav-tabs,
