@@ -218,4 +218,13 @@ return [
 
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
 
+    // Here you can specify additonal assets you would like to be included in the master.blade
+    'additional_css' => [
+        //'css/custom.css',
+    ],
+
+    'additional_js' => [
+        //'js/custom.js',
+    ],
+
 ];
