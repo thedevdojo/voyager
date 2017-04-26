@@ -31,7 +31,7 @@ class DataType extends Model
 
     public function rows()
     {
-        return $this->hasMany(Voyager::modelClass('DataRow'));
+        return $this->hasMany(Voyager::modelClass('DataRow'))->orderBy('order');
     }
 
     public function browseRows()
@@ -89,6 +89,7 @@ class DataType extends Model
                     $dataRow->type = $requestData['field_input_type_'.$field];
                     $dataRow->details = $requestData['field_details_'.$field];
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
+                    $dataRow->order = $requestData['field_order_'.$field];
 
                     if (!$dataRow->save()) {
                         throw new \Exception('Failed to save field '.$field.", we're rolling back!");
@@ -142,6 +143,17 @@ class DataType extends Model
         $table = $this->name;
 
         $fieldOptions = SchemaManager::describeTable($table);
+        
+        //Add dataRows information to the collection
+        $fieldOptions->transform(function ($item, $key) {
+            $item['dataRow'] = $this->rows->where('field', $item['field'])->first();
+            return $item;
+        });
+        
+        //Sort by DataRow order field, put new fields at the end
+        $fieldOptions = $fieldOptions->sortBy(function ($elt) {
+            return isset($elt['dataRow']) ? $elt['dataRow']->order : PHP_INT_MAX;
+        });
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
