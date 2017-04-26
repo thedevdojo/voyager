@@ -109,7 +109,7 @@ return [
         /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
-        'bread' => false,
+        'enabled' => false,
 
         /*
          * Select default language
@@ -217,5 +217,14 @@ return [
     'primary_color' => '#22A7F0',
 
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
+
+    // Here you can specify additonal assets you would like to be included in the master.blade
+    'additional_css' => [
+        //'css/custom.css',
+    ],
+
+    'additional_js' => [
+        //'js/custom.js',
+    ],
 
 ];

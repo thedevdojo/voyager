@@ -13,7 +13,7 @@ class VoyagerMenuController extends Controller
 
         $menu = Voyager::model('Menu')->findOrFail($id);
 
-        $isModelTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
+        $isModelTranslatable = is_bread_translatable(Voyager::model('MenuItem'));
 
         return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
     }
@@ -56,7 +56,7 @@ class VoyagerMenuController extends Controller
         }
 
         // Check if is translatable
-        $_isTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
+        $_isTranslatable = is_bread_translatable(Voyager::model('MenuItem'));
         if ($_isTranslatable) {
             // Prepare data before saving the menu
             $trans = $this->prepareMenuTranslations($data);
@@ -88,7 +88,7 @@ class VoyagerMenuController extends Controller
 
         $menuItem = Voyager::model('MenuItem')->findOrFail($id);
 
-        if (isBreadTranslatable($menuItem)) {
+        if (is_bread_translatable($menuItem)) {
             $trans = $this->prepareMenuTranslations($data);
 
             // Save menu translations

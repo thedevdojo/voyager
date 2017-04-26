@@ -285,7 +285,7 @@ class VoyagerDatabaseController extends Controller
             $fieldOptions = SchemaManager::describeTable($dataType->name);
         }
 
-        $isModelTranslatable = isBreadTranslatable($dataType);
+        $isModelTranslatable = is_bread_translatable($dataType);
 
         return view('voyager::tools.database.edit-add-bread', compact('dataType', 'fieldOptions', 'isModelTranslatable'));
     }
@@ -299,7 +299,7 @@ class VoyagerDatabaseController extends Controller
             $dataType = Voyager::model('DataType')->find($id);
 
             // Prepare Translations and Transform data
-            $translations = isBreadTranslatable($dataType)
+            $translations = is_bread_translatable($dataType)
                 ? $dataType->prepareTranslations($request)
                 : [];
 
@@ -324,7 +324,7 @@ class VoyagerDatabaseController extends Controller
         $dataType = Voyager::model('DataType')->find($id);
 
         // Delete Translations, if present
-        if (isBreadTranslatable($dataType)) {
+        if (is_bread_translatable($dataType)) {
             $dataType->deleteAttributeTranslations($dataType->getTranslatableAttributes());
         }
 

@@ -49,7 +49,7 @@
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
                                             '_field_name'         => 'display_name_singular',
-                                            '_field_trans' => getFieldTranslations($dataType, 'display_name_singular')
+                                            '_field_trans' => get_field_translations($dataType, 'display_name_singular')
                                         ])
                                     @endif
                                     <input type="text" class="form-control"
@@ -64,7 +64,7 @@
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
                                             '_field_name'         => 'display_name_plural',
-                                            '_field_trans' => getFieldTranslations($dataType, 'display_name_plural')
+                                            '_field_trans' => get_field_translations($dataType, 'display_name_plural')
                                         ])
                                     @endif
                                     <input type="text" class="form-control"
@@ -236,8 +236,7 @@
                             </table>
 
                             <div class="box-footer">
-                                <!-- <button type="submit" class="btn btn-primary">Submit</button>-->
-                                <button type="submit" class="btn btn-primary add-edit">Submit</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div><!-- .panel-body -->
                     </div><!-- .panel -->
@@ -330,8 +329,7 @@
                 _session.setMode("ace/mode/" + mode);
 
                 // copy back to textarea on form submit...
-            //    textarea.closest('form').on('submit', function (ev) {
-               $('.add-edit').on('click', function (ev) {
+                textarea.closest('form').on('submit', function (ev) {
                     if (window.invalidEditors.length) {
                         ev.preventDefault();
                         ev.stopPropagation();
@@ -355,4 +353,3 @@
         });
     </script>
 @stop
-

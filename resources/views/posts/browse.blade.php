@@ -11,6 +11,7 @@
             </a>
         @endif
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -37,7 +38,13 @@
                                         @if($row->type == 'image')
                                             <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                         @else
-                                            {{ $data->{$row->field} }}
+                                            @if(is_field_translatable($data, $row))
+                                                @include('voyager::multilingual.input-hidden', [
+                                                    '_field_name'  => $row->field,
+                                                    '_field_trans' => get_field_translations($data, $row->field)
+                                                ])
+                                            @endif
+                                            <span>{{ $data->{$row->field} }}</span>
                                         @endif
                                     </td>
                                     @endforeach
@@ -103,15 +110,21 @@
 @section('javascript')
     {{-- DataTables --}}
     <script>
-        @if (!$dataType->server_side)
-            $(document).ready(function () {
+        $(document).ready(function () {
+            @if (!$dataType->server_side)
                 $('#dataTable').DataTable({ "order": [] });
-            });
-        @endif
+            @endif
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual();
+            @endif
+        });
 
         $('td').on('click', '.delete', function(e) {
             $('#delete_form')[0].action = $('#delete_form')[0].action.replace('__id', $(e.target).data('id'));
             $('#delete_modal').modal('show');
         });
     </script>
+    @if($isModelTranslatable)
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
+    @endif
 @stop
