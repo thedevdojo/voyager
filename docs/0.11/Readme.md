@@ -746,3 +746,20 @@ Route::group(['prefix' => 'admin'], function () {
    Route::post('login', ['uses' => 'MyAuthController@postLogin', 'as' => 'postlogin']);
 });
 ```
+
+## Theming / Additional CSS or JS
+As of the latest version you can now add additional css or js files to the voyager master blade without having to copy or modify the blade file itself removing potential manual migration head aches later on.
+This is all handled via the `voyager.php` config, if you have not started with a fresh install of `0.11.10+` you will need to manually add this to your config.
+
+```
+    // Here you can specify additonal assets you would like to be included in the master.blade
+    'additional_css' => [
+        'css/vv-custom.css',
+    ],
+
+    'additional_js' => [
+        //'js/custom.js',
+    ],
+```
+
+You may want to look at the `/vendor/tcg/voyager/publishable/config/voyager.php` to see the config layout and check for any missing options.
