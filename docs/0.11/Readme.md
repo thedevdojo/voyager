@@ -747,7 +747,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 ```
 
-## Theming / Additional CSS or JS
+## Additional CSS And JS (Theming)
 As of the latest version you can now add additional CSS or JS files to the voyager master blade without having to copy or modify the blade file itself removing potential manual migration headaches later on.
 The CSS and JS files are added *after* any Voyager assets so you can override styles and functionality comfortably.
 
