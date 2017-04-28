@@ -46,7 +46,7 @@ class VoyagerBreadController extends Controller
             } else {
                 $dataTypeContent = call_user_func([
                     $model->with($relationships)->orderBy($model->getKeyName(), 'DESC'),
-                    $getter
+                    $getter,
                 ]);
             }
 
