@@ -145,9 +145,9 @@ class DataType extends Model
         // Get BREAD fields + order
         $orderedFields = $this->rows()->pluck('order', 'field');
         $fieldOptions = SchemaManager::describeTable($table);
-        
+
         $fieldOptions = $fieldOptions->sortBy(function ($elt) use ($orderedFields) {
-            return isset($orderedFields[$elt['field']]) 
+            return isset($orderedFields[$elt['field']])
                     ? $orderedFields[$elt['field']] : PHP_INT_MAX;
         });
 
