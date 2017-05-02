@@ -179,7 +179,7 @@ abstract class Controller extends BaseController
                         $resize_width = 1800;
                         $resize_height = null;
                     }
-                    
+
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('F').date('Y').'/';
