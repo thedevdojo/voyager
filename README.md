@@ -14,15 +14,13 @@ Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
 ![Voyager Screenshot](https://raw.githubusercontent.com/the-control-group/voyager/gh-pages/images/screenshot.png)
 
-Website & Documentation: https://the-control-group.github.io/voyager/
+Website & Documentation: https://laravelvoyager.com
 
 Video Demo Here: https://devdojo.com/series/laravel-voyager-010/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
 View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
-
-Recent Video on Larachat Live with Voyager: https://larachat.co/live
 
 <hr>
 
