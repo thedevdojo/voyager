@@ -372,7 +372,6 @@
 
         var options_textarea = document.getElementById('options_textarea');
         options_editor.getSession().on('change', function() {
-            console.log(options_editor.getValue());
             options_textarea.value = options_editor.getValue();
         });
     </script>
