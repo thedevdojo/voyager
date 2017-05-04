@@ -142,17 +142,14 @@ class DataType extends Model
     {
         $table = $this->name;
 
-        // Get ordered BREAD fields
-        $orderedFields = $this->rows()->pluck('field')->toArray();
+        // Get BREAD fields + order
+        $orderedFields = $this->rows()->pluck('order', 'field');
+        $fieldOptions = SchemaManager::describeTable($table);
 
-        $_fieldOptions = SchemaManager::describeTable($table)->toArray();
-
-        $fieldOptions = [];
-        $f_size = count($orderedFields);
-        for ($i = 0; $i < $f_size; $i++) {
-            $fieldOptions[$orderedFields[$i]] = $_fieldOptions[$orderedFields[$i]];
-        }
-        $fieldOptions = collect($fieldOptions);
+        $fieldOptions = $fieldOptions->sortBy(function ($elt) use ($orderedFields) {
+            return isset($orderedFields[$elt['field']])
+                    ? $orderedFields[$elt['field']] : PHP_INT_MAX;
+        });
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
