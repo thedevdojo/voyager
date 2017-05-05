@@ -29,7 +29,7 @@
                 $relationshipOptions = $dataTypeContent->$relationshipListMethod();
             } else {
                 $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
-                if(isset($options->relationship->where)) {
+                if (isset($options->relationship->where)) {
                     $relationshipOptions = $relationshipClass::where(
                         $options->relationship->where[0],
                         $options->relationship->where[1]
