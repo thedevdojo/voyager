@@ -29,7 +29,14 @@
                 $relationshipOptions = $dataTypeContent->$relationshipListMethod();
             } else {
                 $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
-                $relationshipOptions = $relationshipClass::all();
+                if(isset($options->relationship->where)) {
+                    $relationshipOptions = $relationshipClass::where(
+                        $options->relationship->where[0],
+                        $options->relationship->where[1]
+                    )->get();
+                } else {
+                    $relationshipOptions = $relationshipClass::all();
+                }
             }
 
             // Try to get default value for the relationship
