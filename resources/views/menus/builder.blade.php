@@ -1,6 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
+    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/fontawesome-iconpicker.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/nestable.css') }}">
 @stop
 
@@ -126,6 +127,8 @@
 @section('javascript')
 
     <script type="text/javascript" src="{{ voyager_asset('js/jquery.nestable.js') }}"></script>
+    <script type="text/javascript" src="{{ voyager_asset('js/fontawesome-iconpicker.min.js') }}"></script>
+
     @if($isModelTranslatable)
         <script type="text/javascript" src="{{ voyager_asset('js/multilingual.js') }}"></script>
     @endif
@@ -174,6 +177,19 @@
                 $m_color       = $('#m_color'),
                 $m_target      = $('#m_target'),
                 $m_id          = $('#m_id');
+
+            /**
+             * Init Icon picker
+             */
+            // TODO: Make it reusable in all forms. Configurable set of icons (i.e. Font Awesome)
+            $m_icon_class.iconpicker({
+                inputSearch: true,
+                icons : [
+                    "voyager-bread", "voyager-helm", "voyager-play", "voyager-activity", "voyager-company", "voyager-file-text", "voyager-folder", "voyager-paw", "voyager-sort", "voyager-sort-asc", "voyager-sort-desc", "voyager-handle", "voyager-hammer", "voyager-images", "voyager-categories", "voyager-group", "voyager-plus", "voyager-person", "voyager-people", "voyager-power", "voyager-tools", "voyager-anchor", "voyager-double-down", "voyager-double-up", "voyager-double-left", "voyager-double-right", "voyager-window-list", "voyager-x", "voyager-dot", "voyager-dot-2", "voyager-dot-3", "voyager-list", "voyager-list-add", "voyager-pie-chart", "voyager-watch", "voyager-data", "voyager-music", "voyager-settings", "voyager-video", "voyager-trash", "voyager-tv", "voyager-lock", "voyager-news", "voyager-bag", "voyager-upload", "voyager-refresh", "voyager-character", "voyager-move", "voyager-paypal", "voyager-paper-plane", "voyager-ticket", "voyager-youtube-play", "voyager-boat", "voyager-check", "voyager-alarm-clock", "voyager-controller", "voyager-pizza", "voyager-backpack", "voyager-barbeque", "voyager-bomb", "voyager-book-download", "voyager-browser", "voyager-brush", "voyager-bubble-hear", "voyager-polaroid", "voyager-crop", "voyager-dashboard", "voyager-hotdog", "voyager-laptop", "voyager-paint-bucket", "voyager-photo", "voyager-photos", "voyager-receipt", "voyager-buy", "voyager-lightbulb", "voyager-archive", "voyager-paperclip", "voyager-warning", "voyager-basket", "voyager-bell", "voyager-book", "voyager-chat", "voyager-down-circled", "voyager-location", "voyager-forward", "voyager-flashlight", "voyager-trophy", "voyager-diamond", "voyager-credit-cards", "voyager-shop", "voyager-sound", "voyager-study", "voyager-pen", "voyager-params", "voyager-fire", "voyager-dollar", "voyager-bulb", "voyager-lab", "voyager-cup", "voyager-megaphone", "voyager-heart", "voyager-bubble", "voyager-search", "voyager-tag", "voyager-world", "voyager-camera", "voyager-calendar", "voyager-mail", "voyager-phone", "voyager-star", "voyager-star-half", "voyager-star-half-1", "voyager-star-two", "voyager-medal-rank-star", "voyager-facebook", "voyager-google-plus", "voyager-twitter", "voyager-github", "voyager-code", "voyager-pie-graph", "voyager-javascript", "voyager-wand", "voyager-wineglass", "voyager-milestone", "voyager-terminal", "voyager-plug", "voyager-gift", "voyager-markdown", "voyager-beer", "voyager-credit-card", "voyager-bolt", "voyager-external", "voyager-magnet", "voyager-certificate", "voyager-cloud-download", "voyager-campfire", "voyager-new", "voyager-skull", "voyager-telephone", "voyager-trees", "voyager-bar-chart", "voyager-check-circle", "voyager-exclamation", "voyager-font", "voyager-puzzle", "voyager-smile", "voyager-frown", "voyager-meh", "voyager-leaf", "voyager-info-circled", "voyager-underline", "voyager-wallet", "voyager-truck", "voyager-eye", "voyager-sun", "voyager-barbell", "voyager-bookmark", "voyager-volume-up", "voyager-volume-down", "voyager-wifi", "voyager-pause", "voyager-resize-full", "voyager-resize-small", "voyager-download", "voyager-droplet", "voyager-umbrella", "voyager-harddrive", "voyager-css3", "voyager-html5", "voyager-tree", "voyager-file-code", "voyager-bug", "voyager-rocket", "voyager-key", "voyager-question", "voyager-cursor", "voyager-lifebuoy", "voyager-thumbs-up", "voyager-thumb-tack", "voyager-edit", "voyager-angle-down", "voyager-angle-left", "voyager-angle-right", "voyager-angle-up", "voyager-home", "voyager-pirate-swords", "voyager-pirate", "voyager-rum", "voyager-cannon", "voyager-hook", "voyager-kraken", "voyager-lighthouse", "voyager-pirate-hat", "voyager-rum-1", "voyager-ship", "voyager-treasure", "voyager-treasure-open", "voyager-whale"
+                ]
+            });
+
+
 
             /**
              * Add Menu
