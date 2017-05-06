@@ -74,11 +74,7 @@ class InstallCommand extends Command
         $process = new Process($composer.' dump-autoload');
         $process->setWorkingDirectory(base_path())->run();
 
-        $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(
-            base_path('routes/web.php'),
-            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
-        );
+        $this->call('voyager:routes');
 
         \Route::group(['prefix' => 'admin'], function () {
             \Voyager::routes();
