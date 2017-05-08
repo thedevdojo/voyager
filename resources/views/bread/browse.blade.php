@@ -57,11 +57,18 @@
                                                 @endif
 
                                             @elseif($row->type == 'select_dropdown' && property_exists($options, 'options'))
-
                                                 @if($data->{$row->field . '_page_slug'})
-                                                    <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $options->options->{$data->{$row->field}} !!}</a>
+                                                    <a href="{{ $data->{$row->field . '_page_slug'} }}">
+                                                        @if(property_exists($options->options, ($data->{$row->field} ?: "_empty_")))
+                                                            {!! $options->options->{($data->{$row->field} ?: "_empty_")} !!}
+                                                        @else
+                                                            {!! $data->{$row->field} !!}
+                                                        @endif
+                                                    </a>
+                                                @elseif(property_exists($options->options, ($data->{$row->field} ?: "_empty_")))
+                                                    {!! $options->options->{($data->{$row->field} ?: "_empty_")} !!}
                                                 @else
-                                                        {!! $options->options->{($data->{$row->field} ?: "_empty_")} !!}
+                                                    {!! $data->{$row->field} !!}
                                                 @endif
 
 
