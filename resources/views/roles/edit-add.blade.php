@@ -6,7 +6,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
+        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ trans('voyager.generic_edit') }}@else{{ trans('voyager.generic_new') }}@endif {{ $dataType->display_name_singular }}
     </h1>
 @stop
 
@@ -19,7 +19,7 @@
                 <div class="panel panel-bordered">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'Add New' }}@endif {{ $dataType->display_name_singular }}</h3>
+                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ trans('voyager.generic_add_new') }}@endif {{ $dataType->display_name_singular }}</h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
@@ -56,13 +56,13 @@
                                 </div>
                             @endforeach
 
-                            <label for="permission">Permissions</label><br>
-                            <a href="#" class="permission-select-all">Select All</a> / <a href="#"  class="permission-deselect-all">Deselect All</a>
+                            <label for="permission">{{ trans('voyager.generic_permissions') }}</label><br>
+                            <a href="#" class="permission-select-all">{{ trans('voyager.generic_select_all') }}</a> / <a href="#"  class="permission-deselect-all">{{ trans('voyager.generic_deselect_all') }}</a>
                             <ul class="permissions checkbox">
                                 <?php
                                     $role_permissions = (isset($dataTypeContent)) ? $dataTypeContent->permissions->pluck('key')->toArray() : [];
                                 ?>
-                                @foreach(TCG\Voyager\Models\Permission::all()->groupBy('table_name')->sortBy('table_name') as $table => $permission)
+                                @foreach(TCG\Voyager\Models\Permission::all()->groupBy('table_name') as $table => $permission)
                                     <li>
                                         <input type="checkbox" id="{{$table}}" class="permission-group">
                                         <label for="{{$table}}"><strong>{{ucwords($table)}}</strong></label>
@@ -79,7 +79,7 @@
                             </ul>
                         </div><!-- panel-body -->
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">{{ trans('voyager.generic_submit') }}</button>
                         </div>
                     </form>
 

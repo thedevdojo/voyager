@@ -6,8 +6,8 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-list"></i>Menu Builder ({{ $menu->name }})
-        <div class="btn btn-success add_item"><i class="voyager-plus"></i> New Menu Item</div>
+        <i class="voyager-list"></i>{{ trans('voyager.generic_menu_builder') }} ({{ $menu->name }})
+        <div class="btn btn-success add_item"><i class="voyager-plus"></i> {{ trans('voyager.menu_builder_new_menu_item') }}</div>
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
@@ -20,7 +20,7 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-heading">
-                        <p class="panel-title" style="color:#777">Drag and drop the menu Items below to re-arrange them.</p>
+                        <p class="panel-title" style="color:#777">{{ trans('voyager.menu_builder_drag_drop_info') }}</p>
                     </div>
 
                     <div class="panel-body" style="padding:30px;">
@@ -38,9 +38,9 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ trans('voyager.generic_close') }}"><span
                             aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete this menu item?</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ trans('voyager.menu_builder_delete_item_question') }}</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '__id']) }}"
@@ -49,9 +49,9 @@
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                               value="Yes, Delete This Menu Item">
+                               value="{{ trans('voyager.menu_builder_delete_item_confirm') }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ trans('voyager.generic_cancel') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -62,10 +62,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ trans('voyager.generic_close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 id="m_hd_add" class="modal-title hidden"><i class="voyager-plus"></i> Create a New Menu Item</h4>
-                    <h4 id="m_hd_edit" class="modal-title hidden"><i class="voyager-edit"></i> Edit Menu Item</h4>
+                    <h4 id="m_hd_add" class="modal-title hidden"><i class="voyager-plus"></i> {{ trans('voyager.menu_builder_create_new_item') }}</h4>
+                    <h4 id="m_hd_edit" class="modal-title hidden"><i class="voyager-edit"></i> {{ trans('voyager.menu_builder_edit_item') }}</h4>
                 </div>
                 <form action="" id="m_form" method="POST"
                       data-action-add="{{ route('voyager.menus.item.add', ['menu' => $menu->id]) }}"
@@ -75,43 +75,43 @@
                     {{ csrf_field() }}
                     <div class="modal-body">
                         @include('voyager::multilingual.language-selector')
-                        <label for="name">Title of the Menu Item</label>
+                        <label for="name">{{ trans('voyager.menu_builder_item_title') }}</label>
                         @include('voyager::multilingual.input-hidden', ['_field_name' => 'title', '_field_trans' => ''])
-                        <input type="text" class="form-control" id="m_title" name="title" placeholder="Title"><br>
-                        <label for="type">Link type</label>
+                        <input type="text" class="form-control" id="m_title" name="title" placeholder="{{ trans('voyager.generic_title') }}"><br>
+                        <label for="type">{{ trans('voyager.menu_builder_link_type') }}</label>
                         <select id="m_link_type" class="form-control" name="type">
-                            <option value="url" selected="selected">Static URL</option>
-                            <option value="route">Dynamic Route</option>
+                            <option value="url" selected="selected">{{ trans('voyager.menu_builder_static_url') }}</option>
+                            <option value="route">{{ trans('voyager.menu_builder_dynamic_route') }}</option>
                         </select><br>
                         <div id="m_url_type">
-                            <label for="url">URL for the Menu Item</label>
-                            <input type="text" class="form-control" id="m_url" name="url" placeholder="URL"><br>
+                            <label for="url">{{ trans('voyager.menu_builder_url') }}</label>
+                            <input type="text" class="form-control" id="m_url" name="url" placeholder="{{ trans('voyager.generic_url') }}"><br>
                         </div>
                         <div id="m_route_type">
-                            <label for="route">Route for the menu item</label>
-                            <input type="text" class="form-control" id="m_route" name="route" placeholder="Route"><br>
-                            <label for="parameters">Route parameters (if any)</label>
+                            <label for="route">{{ trans('voyager.menu_builder_item_route') }}</label>
+                            <input type="text" class="form-control" id="m_route" name="route" placeholder="{{ trans('voyager.generic_route') }}"><br>
+                            <label for="parameters">{{ trans('voyager.menu_builder_route_parameter') }}</label>
                             <textarea rows="3" class="form-control" id="m_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
                         </div>
-                        <label for="icon_class">Font Icon class for the Menu Item (Use a <a
+                        <label for="icon_class">{{ trans('voyager.menu_builder_icon_class') }} <a
                                     href="{{ voyager_asset('fonts/voyager/icons-reference.html') }}"
-                                    target="_blank">Voyager Font Class</a>)</label>
+                                    target="_blank">{!! trans('voyager.menu_builder_icon_class2') !!}</label>
                         <input type="text" class="form-control" id="m_icon_class" name="icon_class"
-                               placeholder="Icon Class (optional)"><br>
-                        <label for="color">Color in RGB or hex (optional)</label>
+                               placeholder="{{ trans('voyager.menu_builder_icon_class_ph') }}"><br>
+                        <label for="color">{{ trans('voyager.menu_builder_color') }}</label>
                         <input type="color" class="form-control" id="m_color" name="color"
-                               placeholder="Color (ex. #ffffff or rgb(255, 255, 255)"><br>
-                        <label for="target">Open In</label>
+                               placeholder="{{ trans('voyager.menu_builder_color_ph') }}"><br>
+                        <label for="target">{{ trans('voyager.menu_builder_open_in') }}</label>
                         <select id="m_target" class="form-control" name="target">
-                            <option value="_self" selected="selected">Same Tab/Window</option>
-                            <option value="_blank">New Tab/Window</option>
+                            <option value="_self" selected="selected">{{ trans('voyager.menu_builder_open_same') }}</option>
+                            <option value="_blank">{{ trans('voyager.menu_builder_open_new') }}</option>
                         </select>
                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                         <input type="hidden" name="id" id="m_id" value="">
                     </div>
                     <div class="modal-footer">
-                        <input type="submit" class="btn btn-success pull-right delete-confirm__" value="Update">
-                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                        <input type="submit" class="btn btn-success pull-right delete-confirm__" value="{{ trans('voyager.generic_update') }}">
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ trans('voyager.generic_cancel') }}</button>
                     </div>
                 </form>
             </div><!-- /.modal-content -->
@@ -290,7 +290,7 @@
                     order: JSON.stringify($('.dd').nestable('serialize')),
                     _token: '{{ csrf_token() }}'
                 }, function (data) {
-                    toastr.success("Successfully updated menu order.");
+                    toastr.success("{{ trans('voyager.menu_builder_updated_order') }}");
                 });
             });
         });

@@ -1,8 +1,8 @@
 @section('database-table-helper-buttons-template')
     <div>
-        <div class="btn btn-success" @click="addNewColumn">+ Add New Column</div>
-        <div class="btn btn-success" @click="addTimestamps">+ Add Timestamps</div>
-        <div class="btn btn-success" @click="addSoftDeletes">+ Add Soft Deletes</div>
+        <div class="btn btn-success" @click="addNewColumn">+ {{ trans('voyager.database_add_new_column') }}</div>
+        <div class="btn btn-success" @click="addTimestamps">+ {{ trans('voyager.database_add_timestamps') }}</div>
+        <div class="btn btn-success" @click="addSoftDeletes">+ {{ trans('voyager.database_add_timestamps') }}</div>
     </div>
 @endsection
 

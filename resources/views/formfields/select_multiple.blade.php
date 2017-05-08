@@ -1,6 +1,6 @@
 {{-- If this is a relationship and the method does not exist, show a warning message --}}
 @if(isset($options->relationship) && !method_exists( $dataType->model_name, camel_case($row->field) ) )
-    <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ camel_case($row->field) . '()' }} method of the {{ $dataType->model_name }} class.</p>
+    <p class="label label-warning"><i class="voyager-warning"></i> {{ trans('voyager.form_field_select_dd_relationship', ['method' => camel_case($row->field).'()', 'class' => $dataType->model_name]) }}</p>
 @endif
 
 <select class="form-control select2" name="{{ $row->field }}[]" multiple>
