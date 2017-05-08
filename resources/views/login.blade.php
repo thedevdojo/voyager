@@ -13,6 +13,7 @@
     <style>
         body {
             background-image:url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
+            background-color: {{ Voyager::setting("admin_bg_color", "#FFFFFF" ) }};
         }
         .login-sidebar:after {
             background: linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});
