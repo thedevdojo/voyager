@@ -132,9 +132,9 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->fixMissingStorageSymlink();
         } elseif (!file_exists(public_path('storage'))) {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
-                ->title('Missing storage symlink')
-                ->text('We could not find a storage symlink. This could cause problems with loading media files from the browser.')
-                ->button('Fix it', '?fix-missing-storage-symlink=1');
+                ->title(trans('voyager.error_symlink_missing_title'))
+                ->text(trans('voyager.error_symlink_missing_text'))
+                ->button(trans('voyager.error_symlink_missing_button'), '?fix-missing-storage-symlink=1');
 
             VoyagerFacade::addAlert($alert);
         }
@@ -146,12 +146,12 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (file_exists(public_path('storage'))) {
             $alert = (new Alert('fixed-missing-storage-symlink', 'success'))
-                ->title('Missing storage symlink created')
-                ->text('We just created the missing symlink for you.');
+                ->title(trans('voyager.error_symlink_created_title'))
+                ->text(trans('voyager.error_symlink_created_text'));
         } else {
             $alert = (new Alert('failed-fixing-missing-storage-symlink', 'danger'))
-                ->title('Could not create missing storage symlink')
-                ->text('We failed to generate the missing symlink for your application. It seems like your hosting provider does not support it.');
+                ->title(trans('voyager.error_symlink_failed_title'))
+                ->text(trans('voyager.error_symlink_failed_text'));
         }
 
         VoyagerFacade::addAlert($alert);

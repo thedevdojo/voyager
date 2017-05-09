@@ -43,7 +43,7 @@
                         @endif
                         <div class="copy animated fadeIn">
                             <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
-                            <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
+                            <p>{{ Voyager::setting('admin_description', trans('voyager.login_welcome')) }}</p>
                         </div>
                     </div> <!-- .logo-title-container -->
                 </div>
@@ -54,29 +54,29 @@
 
             <div class="login-container animated fadeInRightBig">
 
-                <h2>Sign In Below:</h2>
+                <h2>{{ trans('voyager.login_signin_below') }}</h2>
 
                 <form action="{{ route('voyager.login') }}" method="POST">
                 {{ csrf_field() }}
-                <div class="group">      
+                <div class="group">
                   <input type="text" name="email" value="{{ old('email') }}" required>
                   <span class="highlight"></span>
                   <span class="bar"></span>
-                  <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> E-mail</span></label>
+                  <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> {{ trans('voyager.generic_email') }}</span></label>
                 </div>
 
-                <div class="group">      
+                <div class="group">
                   <input type="password" name="password" required>
                   <span class="highlight"></span>
                   <span class="bar"></span>
-                  <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> Password</span></label>
+                  <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> {{ trans('voyager.generic_password') }}</span></label>
                 </div>
 
                 <button type="submit" class="btn btn-block login-button">
-                    <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
-                    <span class="signin">Login</span>
+                    <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> {{ trans('voyager.login_logginin') }}...</span>
+                    <span class="signin">{{ trans('voyager.generic_login') }}</span>
                 </button>
-               
+
               </form>
 
               @if(!$errors->isEmpty())
@@ -84,13 +84,13 @@
                 <ul class="list-unstyled">
                     @foreach($errors->all() as $err)
                     <li>{{ $err }}</li>
-                    @endforeach                
+                    @endforeach
                 </ul>
-              </div>            
+              </div>
               @endif
 
             </div> <!-- .login-container -->
-            
+
         </div> <!-- .login-sidebar -->
     </div> <!-- .row -->
 </div> <!-- .container-fluid -->

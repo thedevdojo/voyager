@@ -84,6 +84,12 @@ class InstallCommand extends Command
             \Voyager::routes();
         });
 
+        $this->info('Moving language file to resources/lang/en/voyager.php');
+        $filesystem->move(
+            __DIR__.'/../../publishable/lang/voyager.php',
+            base_path('resources/lang/en/voyager.php')
+        );
+
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
 

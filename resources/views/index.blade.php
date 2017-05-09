@@ -15,7 +15,7 @@
                 <div id="embed-api-auth-container"></div>
             @else
                 <p style="border-radius:4px; padding:20px; background:#fff; margin:0; color:#999; text-align:center;">
-                    To view analytics you'll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console:
+                    {!! trans('voyager.analytics_no_client_id') !!}
                     <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
                 </p>
             @endif
@@ -25,8 +25,8 @@
                     <ul class="FlexGrid">
                         <li class="FlexGrid-item">
                             <div class="Titles">
-                                <h1 class="Titles-main" id="view-name">Select a View</h1>
-                                <div class="Titles-sub">Various visualizations</div>
+                                <h1 class="Titles-main" id="view-name">{{ trans('voyager.analytics_select_view') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_various_visualizations') }}</div>
                             </div>
                         </li>
                         <li class="FlexGrid-item FlexGrid-item--fixed">
@@ -40,8 +40,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">This Week vs Last Week</h1>
-                                <div class="Titles-sub">By users</div>
+                                <h1 class="Titles-main">{{ trans('voyager.analytics_this_vs_last_week') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_by_users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-1-container"></figure>
                             <ol class="Chartjs-legend" id="legend-1-container"></ol>
@@ -50,8 +50,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">This Year vs Last Year</h1>
-                                <div class="Titles-sub">By users</div>
+                                <h1 class="Titles-main">{{ trans('voyager.analytics_this_vs_last_year') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_by_users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-2-container"></figure>
                             <ol class="Chartjs-legend" id="legend-2-container"></ol>
@@ -60,8 +60,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">Top Browsers</h1>
-                                <div class="Titles-sub">By pageview</div>
+                                <h1 class="Titles-main">{{ trans('voyager.analytics_top_browsers') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_by_pageview') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-3-container"></figure>
                             <ol class="Chartjs-legend" id="legend-3-container"></ol>
@@ -70,8 +70,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">Top Countries</h1>
-                                <div class="Titles-sub">By sessions</div>
+                                <h1 class="Titles-main">{{ trans('voyager.analytics_top_countries') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_by_sessions') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-4-container"></figure>
                             <ol class="Chartjs-legend" id="legend-4-container"></ol>
@@ -245,7 +245,7 @@
                             labels: labels,
                             datasets: [
                                 {
-                                    label: 'Last Week',
+                                    label: '{{ trans('voyager.date_last_week') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     pointColor: 'rgba(220,220,220,1)',
@@ -253,7 +253,7 @@
                                     data: data2
                                 },
                                 {
-                                    label: 'This Week',
+                                    label: '{{ trans('voyager.date_this_week') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     pointColor: 'rgba(151,187,205,1)',
@@ -318,13 +318,13 @@
                             labels: labels,
                             datasets: [
                                 {
-                                    label: 'Last Year',
+                                    label: '{{ trans('voyager.date_last_year') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     data: data2
                                 },
                                 {
-                                    label: 'This Year',
+                                    label: '{{ trans('voyager.date_this_year') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     data: data1

@@ -47,7 +47,7 @@ class UserProfileTest extends TestCase
              ->see('Edit User')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
-             ->press('Submit')
+             ->press(trans('voyager.generic_submit'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->seeInDatabase(
                  'users',
@@ -62,7 +62,7 @@ class UserProfileTest extends TestCase
              ->see('Edit User')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
-             ->press('Submit')
+             ->press(trans('voyager.generic_submit'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->seeInDatabase(
                  'users',
@@ -77,7 +77,7 @@ class UserProfileTest extends TestCase
              ->see('Edit User')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
-             ->press('Submit')
+             ->press(trans('voyager.generic_submit'))
              ->seePageIs($this->editPageForTheCurrentUser);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
@@ -91,7 +91,7 @@ class UserProfileTest extends TestCase
              ->see('Edit User')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
-             ->press('Submit')
+             ->press(trans('voyager.generic_submit'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->dontSeeInDatabase(
                  'users',
