@@ -2,7 +2,7 @@
 
 @section('page_header')
     <div class="page-title">
-        <i class="voyager-data"></i> @if(isset($dataType->id)){{ trans('voyager.database_edit_bread_for_table', ['table' => $dataType->name]) }}@elseif(isset($table)){{ trans('voyager.database_create_bread_for_table', ['table' => $dataType->name]) }}@endif
+        <i class="voyager-data"></i> @if(isset($dataType->id)){{ trans('voyager.database_edit_bread_for_table', ['table' => @$dataType->name]) }}@elseif(isset($table)){{ trans('voyager.database_create_bread_for_table', ['table' => $table]) }}@endif
     </div>
     @php
         $isModelTranslatable = (!isset($isModelTranslatable) || !isset($dataType)) ? false : $isModelTranslatable;
