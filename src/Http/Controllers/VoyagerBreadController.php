@@ -44,7 +44,10 @@ class VoyagerBreadController extends Controller
             if ($model->timestamps) {
                 $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
             } else {
-                $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
+                $dataTypeContent = call_user_func([
+                    $model->with($relationships)->orderBy($model->getKeyName(), 'DESC'),
+                    $getter,
+                ]);
             }
 
             //Replace relationships' keys for labels and create READ links if a slug is provided.
