@@ -220,6 +220,9 @@ class VoyagerServiceProvider extends ServiceProvider
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
+            'lang' => [
+                "{$publishablePath}/lang/voyager.php" => storage_path('resources/lang/en/voyager.php'),
+            ],
         ];
 
         foreach ($publishable as $group => $paths) {

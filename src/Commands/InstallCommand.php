@@ -60,7 +60,7 @@ class InstallCommand extends Command
      */
     public function fire(Filesystem $filesystem)
     {
-        $this->info('Publishing the Voyager assets, database, and config files');
+        $this->info('Publishing the Voyager assets, database, language, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
@@ -83,12 +83,6 @@ class InstallCommand extends Command
         \Route::group(['prefix' => 'admin'], function () {
             \Voyager::routes();
         });
-
-        $this->info('Moving language file to resources/lang/en/voyager.php');
-        $filesystem->copy(
-            __DIR__.'/../../publishable/lang/voyager.php',
-            base_path('resources/lang/en/voyager.php')
-        );
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
