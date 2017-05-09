@@ -85,7 +85,7 @@ class InstallCommand extends Command
         });
 
         $this->info('Moving language file to resources/lang/en/voyager.php');
-        $filesystem->move(
+        $filesystem->copy(
             __DIR__.'/../../publishable/lang/voyager.php',
             base_path('resources/lang/en/voyager.php')
         );
