@@ -332,7 +332,7 @@
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ trans('voyager.settings_delete_confirm') }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager.generic_cancel') }}</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ trans('voyager.generic_cancel') }}</button>
                 </div>
             </div>
         </div>
