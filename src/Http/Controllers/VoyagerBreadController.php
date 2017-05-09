@@ -304,7 +304,7 @@ class VoyagerBreadController extends Controller
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => trans('voyager.generic_error_deleting') . " {$dataType->display_name_singular}",
+                'message'    => trans('voyager.generic_error_deleting')." {$dataType->display_name_singular}",
                 'alert-type' => 'error',
             ];
 
