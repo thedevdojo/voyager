@@ -271,7 +271,7 @@ return [
     'database_add_softdeletes'          => 'Add Soft Deletes',
     'database_field_safe_failed'        => 'Failed to save field :field, we\'re rolling back!',
     'database_success_create_table'     => 'Successfully created :table table',
-    'database_success_delete_table'     => 'Successfully deleted :table table'
+    'database_success_delete_table'     => 'Successfully deleted :table table',
     'database_edit_table_not_exist'     => 'The table you want to edit doesn\'t exist',
 
     //Dimmer
