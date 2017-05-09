@@ -108,7 +108,8 @@ return [
     'settings_new'                      => 'New Setting',
     'settings_help_name'                => 'Setting name ex: Admin Title',
     'settings_help_key'                 => 'Setting key ex: admin_title',
-    'settings_help_option'              => '(optional, only applies to certain types like dropdown box or radio button)',
+    'settings_help_option'              => '(optional, only applies to certain types like dropdown box or radio '.
+                                            'button)',
     'settings_add_new'                  => 'Add New Setting',
     'settings_delete_question'          => 'Are you sure you want to delete the :setting Setting?',
     'settings_delete_confirm'           => 'Yes, Delete This Setting',
@@ -141,13 +142,20 @@ return [
     'media_error_uploading'             => 'Upload Fail: Unknown error occurred!',
     'media_uploading_wrong_type'        => 'Upload Fail: Unsupported file format or It is too large to upload!',
     'media_success_uploading'           => 'Image successfully uploaded!',
-    'media_folder_exists_already'       => 'Sorry that folder already exists, please delete that folder if you wish to re-create it',
-    'media_error_creating_dir'          => 'Sorry something seems to have gone wrong with creating the directory, please check your permissions',
-    'media_error_deleting_folder'       => 'Sorry something seems to have gone wrong when deleting this folder, please check your permissions',
-    'media_error_deleting_file'         => 'Sorry something seems to have gone wrong deleting this file, please check your permissions',
-    'media_error_moving'                => 'Sorry there seems to be a problem moving that file/folder, please make sure you have the correct permissions.',
-    'media_error_already_exists'        => 'Sorry there is already a file/folder with that existing name in that folder.',
-    'media_error_may_exist'             => 'File or Folder may already exist with that name. Please choose another name or delete the other file.',
+    'media_folder_exists_already'       => 'Sorry that folder already exists, please delete that folder if you wish '.
+                                            'to re-create it',
+    'media_error_creating_dir'          => 'Sorry something seems to have gone wrong with creating the directory, '.
+                                            'please check your permissions',
+    'media_error_deleting_folder'       => 'Sorry something seems to have gone wrong when deleting this folder, '.
+                                            'please check your permissions',
+    'media_error_deleting_file'         => 'Sorry something seems to have gone wrong deleting this file, please check '.
+                                            'your permissions',
+    'media_error_moving'                => 'Sorry there seems to be a problem moving that file/folder, please make '.
+                                            'sure you have the correct permissions.',
+    'media_error_already_exists'        => 'Sorry there is already a file/folder with that existing name in that '.
+                                            'folder.',
+    'media_error_may_exist'             => 'File or Folder may already exist with that name. Please choose another '.
+                                            'name or delete the other file.',
     'media_success_uploaded_file'       => 'Successfully uploaded new file!',
     'media_image_does_not_exist'        => 'Image does not exist',
     'media_image_removed'               => 'Image removed',
@@ -175,7 +183,8 @@ return [
     'menu_builder_open_same'            => 'Same Tab/Window',
     'menu_builder_open_new'             => 'New Tab/Window',
     'menu_builder_updated_order'        => 'Successfully updated menu order.',
-    'menu_builder_usage_hint'           => 'You can output a menu anywhere on your site by calling|You can output this menu anywhere on your site by calling',
+    'menu_builder_usage_hint'           => 'You can output a menu anywhere on your site by calling|You can output '.
+                                            'this menu anywhere on your site by calling',
     'menu_builder_successfully_deleted' => 'Successfully Deleted Menu Item.',
     'menu_builder_successfully_created' => 'Successfully Created New Menu Item.',
     'menu_builder_successfully_updated' => 'Successfully Updated Menu Item.',
@@ -219,7 +228,8 @@ return [
     'database_key'                      => 'Key',
     'database_default'                  => 'Default',
     'database_extra'                    => 'Extra',
-    'database_delete_bread_before_table'=> 'Please make sure to remove the BREAD on this table before deleting the table.',
+    'database_delete_bread_before_table'=> 'Please make sure to remove the BREAD on this table before deleting '.
+                                            'the table.',
     'database_create_bread_for_table'   => 'Create BREAD for :table table',
     'database_edit_bread_for_table'     => 'Edit BREAD for :table table',
     'database_success_created_bread'    => 'Successfully created new BREAD',
@@ -258,7 +268,8 @@ return [
     'database_create_model_table'       => 'Create model for this table?',
     'database_create_migration'         => 'Create migration for this table?',
     'database_table_columns'            => 'Table Columns',
-    'database_no_composites_warning'    => 'This table has composite indexes. Please note that they are not supported at the moment. Be careful when trying to add/remove indexes.',
+    'database_no_composites_warning'    => 'This table has composite indexes. Please note that they are not supported '.
+                                            'at the moment. Be careful when trying to add/remove indexes.',
     'database_table_no_columns'         => 'The table has no columns...',
     'database_update_table'             => 'Update Table',
     'database_column'                   => 'Column',
@@ -276,13 +287,16 @@ return [
 
     //Dimmer
     'dimmer_page'                       => 'Page|Pages',
-    'dimmer_page_text'                  => 'You have :count :string in your database. Click on button below to view all pages.',
+    'dimmer_page_text'                  => 'You have :count :string in your database. Click on button below to view '.
+                                            'all pages.',
     'dimmer_page_link_text'             => 'View all pages',
     'dimmer_post'                       => 'Post|Posts',
-    'dimmer_post_text'                  => 'You have :count :string in your database. Click on button below to view all posts.',
+    'dimmer_post_text'                  => 'You have :count :string in your database. Click on button below to view '.
+                                            'all posts.',
     'dimmer_post_link_text'             => 'View all posts',
     'dimmer_user'                       => 'User|User',
-    'dimmer_user_text'                  => 'You have :count :string in your database. Click on button below to view all users.',
+    'dimmer_user_text'                  => 'You have :count :string in your database. Click on button below to view '.
+                                            'all users.',
     'dimmer_user_link_text'             => 'View all users',
 
     //Form types
@@ -298,7 +312,8 @@ return [
 
     //Form fields
     'form_field_password_keep'          => 'Leave empty to keep the same',
-    'form_field_select_dd_relationship' => 'Make sure to setup the appropriate relationship in the :method method of the :class class.',
+    'form_field_select_dd_relationship' => 'Make sure to setup the appropriate relationship in the :method method of '.
+                                            'the :class class.',
 
     //Theme
     'theme_footer_copyright'            => 'Made with <i class="voyager-heart"></i> by',
@@ -311,7 +326,9 @@ return [
     'json_validation_errors'            => 'Validation errors',
 
     // Google Analytics
-    'analytics_no_client_id'            => 'To view analytics you\'ll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console:',
+    'analytics_no_client_id'            => 'To view analytics you\'ll need to get a google analytics client id and '.
+                                            'add it to your settings for the key <code>google_analytics_client_id'.
+                                            '</code>. Get your key in your Google developer console:',
     'analytics_set_view'                => 'Select a View',
     'analytics_various_visualizations'  => 'Various visualizations',
     'analytics_this_vs_last_week'       => 'This Week vs Last Week',
@@ -324,12 +341,12 @@ return [
 
     //Errors
     'error_symlink_missing_title'       => 'Missing storage symlink',
-    'error_symlink_missing_text'        => 'We could not find a storage symlink. This could cause problems with loading media files from the browser.',
+    'error_symlink_missing_text'        => 'We could not find a storage symlink. This could cause problems with '.
+                                            'loading media files from the browser.',
     'error_symlink_missing_button'      => 'Fix it',
     'error_symlink_created_title'       => 'Missing storage symlink created',
     'error_symlink_created_text'        => 'We just created the missing symlink for you.',
     'error_symlink_failed_title'        => 'Could not create missing storage symlink',
-    'error_symlink_failed_text'         => 'We failed to generate the missing symlink for your application. It seems like your hosting provider does not support it.',
-
-
+    'error_symlink_failed_text'         => 'We failed to generate the missing symlink for your application. '.
+                                            'It seems like your hosting provider does not support it.',
 ];
