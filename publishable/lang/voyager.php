@@ -181,7 +181,7 @@ return [
     'menu_builder_successfully_updated' => 'Successfully Updated Menu Item.',
 
     //Posts
-    'post_title'                       => 'Post Title',
+    'post_title'                        => 'Post Title',
     'post_title_sub'                    => 'The title for your post',
     'post_content'                      => 'Post Content',
     'post_excerpt'                      => 'Excerpt <small>Small description of this post</small>',

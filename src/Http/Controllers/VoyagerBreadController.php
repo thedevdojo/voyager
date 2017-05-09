@@ -176,7 +176,7 @@ class VoyagerBreadController extends Controller
             return redirect()
             ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
             ->with([
-                'message'    => trans('voyager.generic_successfully_updated') . " {$dataType->display_name_singular}",
+                'message'    => trans('voyager.generic_successfully_updated')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
                 ]);
         }
@@ -243,7 +243,7 @@ class VoyagerBreadController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.edit", ['id' => $data->id])
                 ->with([
-                        'message'    => trans('generic_successfully_added_new') . " {$dataType->display_name_singular}",
+                        'message'    => trans('generic_successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
         }
@@ -300,7 +300,7 @@ class VoyagerBreadController extends Controller
 
         $data = $data->destroy($id)
             ? [
-                'message'    => trans('voyager.generic_successfully_deleted') . " {$dataType->display_name_singular}",
+                'message'    => trans('voyager.generic_successfully_deleted')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
             ]
             : [
