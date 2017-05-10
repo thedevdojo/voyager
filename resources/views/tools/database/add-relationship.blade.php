@@ -7,7 +7,7 @@
                 <h4 class="modal-title"><i class="voyager-data"></i>Many to Many</h4>
             </div>
             <div class="modal-body">
-                <form action="{{ route('voyager.database.add_bread_relationship', $dataType->id) }}" method="POST" role="form">
+                <form action="{{ route('voyager.database.bread.add_relationship', $dataType->id) }}" method="POST" role="form">
                   <!-- CSRF TOKEN -->
                   {{ csrf_field() }}
 
