@@ -108,7 +108,7 @@ abstract class Controller extends BaseController
             /*
              * Translation support
              */
-            } elseif (isFieldTranslatable($data, $row)) {
+            } elseif (is_field_translatable($data, $row)) {
                 $this->prepareTranslations($translations, $data, $row->field, $request);
 
                 $multi_select[] = ['row' => $row->field, 'content' => $content];
