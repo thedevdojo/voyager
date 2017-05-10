@@ -202,22 +202,23 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     private function registerPublishableResources()
     {
-        $basePath = dirname(__DIR__);
+        $publishablePath = dirname(__DIR__).'/publishable';
+
         $publishable = [
             'voyager_assets' => [
-                "$basePath/publishable/assets" => public_path('vendor/tcg/voyager/assets'),
+                "{$publishablePath}/assets/" => public_path(config('voyager.assets_path')),
             ],
             'migrations' => [
-                "$basePath/publishable/database/migrations/" => database_path('migrations'),
+                "{$publishablePath}/database/migrations/" => database_path('migrations'),
             ],
             'seeds' => [
-                "$basePath/publishable/database/seeds/" => database_path('seeds'),
+                "{$publishablePath}/database/seeds/" => database_path('seeds'),
             ],
             'demo_content' => [
-                "$basePath/publishable/demo_content/" => storage_path('app/public'),
+                "{$publishablePath}/demo_content/" => storage_path('app/public'),
             ],
             'config' => [
-                "$basePath/publishable/config/voyager.php" => config_path('voyager.php'),
+                "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
         ];
 

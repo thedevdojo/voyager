@@ -23,7 +23,7 @@
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
-                    <form role="form"
+                    <form class="form-edit-add" role="form"
                           action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
                           method="POST" enctype="multipart/form-data">
 
@@ -62,7 +62,7 @@
                                 <?php
                                     $role_permissions = (isset($dataTypeContent)) ? $dataTypeContent->permissions->pluck('key')->toArray() : [];
                                 ?>
-                                @foreach(TCG\Voyager\Models\Permission::all()->groupBy('table_name') as $table => $permission)
+                                @foreach(TCG\Voyager\Models\Permission::all()->groupBy('table_name')->sortBy('table_name') as $table => $permission)
                                     <li>
                                         <input type="checkbox" id="{{$table}}" class="permission-group">
                                         <label for="{{$table}}"><strong>{{ucwords($table)}}</strong></label>
@@ -134,6 +134,6 @@
             });
         });
     </script>
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
 @stop

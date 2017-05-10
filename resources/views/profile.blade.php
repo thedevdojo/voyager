@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/ga-embed.css">
+    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/ga-embed.css') }}">
     <style>
         .user-email {
             font-size: .85rem;

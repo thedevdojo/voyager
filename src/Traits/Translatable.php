@@ -257,4 +257,79 @@ trait Translatable
 
         return $this->translatorMethods[$name];
     }
+
+    public function deleteAttributeTranslations(array $attributes, $locales = null)
+    {
+        $this->translations()
+            ->whereIn('column_name', $attributes)
+            ->when(!is_null($locales), function ($query) use ($locales) {
+                $method = is_array($locales) ? 'whereIn' : 'where';
+
+                return $query->$method('locale', $locales);
+            })
+            ->delete();
+    }
+
+    public function deleteAttributeTranslation($attribute, $locales = null)
+    {
+        $this->translations()
+            ->where('column_name', $attribute)
+            ->when(!is_null($locales), function ($query) use ($locales) {
+                $method = is_array($locales) ? 'whereIn' : 'where';
+
+                return $query->$method('locale', $locales);
+            })
+            ->delete();
+    }
+
+    /**
+     * Prepare translations and set default locale field value.
+     *
+     * @param object $request
+     *
+     * @return array translations
+     */
+    public function prepareTranslations(&$request)
+    {
+        $translations = [];
+
+        // Translatable Fields
+        $transFields = $this->getTranslatableAttributes();
+
+        foreach ($transFields as $field) {
+            $trans = json_decode($request->input($field.'_i18n'), true);
+
+            // Set the default local value
+            $request->merge([$field => $trans[config('voyager.multilingual.default', 'en')]]);
+
+            $translations[$field] = $this->setAttributeTranslations(
+                $field,
+                $trans
+            );
+
+            // Remove field hidden input
+            unset($request[$field.'_i18n']);
+        }
+
+        // Remove language selector input
+        unset($request['i18n_selector']);
+
+        return $translations;
+    }
+
+    /**
+     * Save translations.
+     *
+     * @param object $translations
+     *
+     * @return void
+     */
+    public function saveTranslations($translations)
+    {
+        foreach ($translations as $field => $locales) {
+            foreach ($locales as $locale => $translation) {
+                $translation->save();
+            }
+        }
+    }
 }

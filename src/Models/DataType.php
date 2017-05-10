@@ -4,12 +4,16 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\Translatable;
 
 class DataType extends Model
 {
+    use Translatable;
+
+    protected $translatable = ['display_name_singular', 'display_name_plural'];
+
     protected $table = 'data_types';
 
     protected $fillable = [
@@ -27,7 +31,7 @@ class DataType extends Model
 
     public function rows()
     {
-        return $this->hasMany(Voyager::modelClass('DataRow'));
+        return $this->hasMany(Voyager::modelClass('DataRow'))->orderBy('order');
     }
 
     public function browseRows()
@@ -85,6 +89,7 @@ class DataType extends Model
                     $dataRow->type = $requestData['field_input_type_'.$field];
                     $dataRow->details = $requestData['field_details_'.$field];
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
+                    $dataRow->order = intval($requestData['field_order_'.$field]);
 
                     if (!$dataRow->save()) {
                         throw new \Exception('Failed to save field '.$field.", we're rolling back!");
@@ -122,7 +127,7 @@ class DataType extends Model
             $name = $this->name;
         }
 
-        $fields = Schema::getColumnListing($name);
+        $fields = SchemaManager::listTableColumnNames($name);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
@@ -137,7 +142,14 @@ class DataType extends Model
     {
         $table = $this->name;
 
+        // Get BREAD fields + order
+        $orderedFields = $this->rows()->pluck('order', 'field');
         $fieldOptions = SchemaManager::describeTable($table);
+
+        $fieldOptions = $fieldOptions->sortBy(function ($elt) use ($orderedFields) {
+            return isset($orderedFields[$elt['field']])
+                    ? $orderedFields[$elt['field']] : PHP_INT_MAX;
+        });
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {

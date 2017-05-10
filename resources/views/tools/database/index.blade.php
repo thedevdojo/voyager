@@ -1,8 +1,8 @@
 @extends('voyager::master')
 
 @section('css')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue21.min.js"></script>
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/database.css">
+    <script type="text/javascript" src="{{ voyager_asset('js/vue21.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ voyager_asset('css/database.css') }}">
 @stop
 
 @section('page_header')
@@ -48,7 +48,7 @@
                         <td>
                             <div class="bread_actions">
                             @if($table->dataTypeId)
-                                <a href="{{ route('voyager.database.edit_bread', $table->name) }}"
+                                <a href="{{ route('voyager.database.bread.edit', $table->name) }}"
                                    class="btn-sm btn-default edit">
                                    Edit BREAD
                                 </a>
@@ -57,7 +57,7 @@
                                      Delete BREAD
                                 </div>
                             @else
-                                <a href="{{ route('voyager.database.create_bread', ['name' => $table->name]) }}"
+                                <a href="{{ route('voyager.database.bread.create', ['name' => $table->name]) }}"
                                    class="btn-sm btn-default">
                                     <i class="voyager-plus"></i> Add BREAD to this table
                                 </a>
@@ -97,7 +97,7 @@
                         the <span id="delete_builder_name"></span> table?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.database.delete_bread', ['id' => null]) }}" id="delete_builder_form" method="POST">
+                    <form action="{{ route('voyager.database.bread.delete', ['id' => null]) }}" id="delete_builder_form" method="POST">
                         {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger" value="Yes, remove the BREAD">

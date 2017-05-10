@@ -10,19 +10,22 @@
             </button>
         @endif
     </div>
+    @php
+        $isModelTranslatable = (!isset($isModelTranslatable) || !isset($dataType)) ? false : $isModelTranslatable;
+        if (isset($dataType->name)) {
+            $table = $dataType->name;
+        }
+    @endphp
+    @include('voyager::multilingual.language-selector')
 @stop
 
+
 @section('content')
-
-    @if(isset($dataType->name))
-        <?php $table = $dataType->name; ?>
-    @endif
-
     <div class="page-content container-fluid">
         <div class="row">
             <div class="col-md-12">
 
-                <form action="@if(isset($dataType->id)){{ route('voyager.database.update_bread', $dataType->id) }}@else{{ route('voyager.database.store_bread') }}@endif"
+                <form action="@if(isset($dataType->id)){{ route('voyager.database.bread.update', $dataType->id) }}@else{{ route('voyager.database.bread.store') }}@endif"
                       method="POST" role="form">
                 @if(isset($dataType->id))
                     <input type="hidden" value="{{ $dataType->id }}" name="id">
@@ -30,108 +33,6 @@
                 @endif
                     <!-- CSRF TOKEN -->
                     {{ csrf_field() }}
-
-                    <div class="panel panel-primary panel-bordered">
-
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Edit the rows for the {{ $table }} table below:</h3>
-                        </div>
-
-                        <table id="users" class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Field</th>
-                                    <th>Field Info</th>
-                                    <th>Visibility</th>
-                                    <th>Input Type</th>
-                                    <th>Display Name</th>
-                                    <th>Optional Details</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($fieldOptions as $data)
-
-                                @if(isset($dataType->id))
-                                    <?php $dataRow = TCG\Voyager\Models\DataRow::where('data_type_id', '=',
-                                            $dataType->id)->where('field', '=', $data['field'])->first(); ?>
-                                @endif
-                                <tr>
-                                    <td><h4><strong>{{ $data['field'] }}</strong></h4></td>
-                                    <td>
-                                        <strong>Type:</strong> <span>{{ $data['type'] }}</span><br/>
-                                        <strong>Key:</strong> <span>{{ $data['key'] }}</span><br/>
-                                        <strong>Required:</strong>
-                                        @if($data['null'] == "NO")
-                                            <span>Yes</span>
-                                            <input type="hidden" value="1" name="field_required_{{ $data['field'] }}"
-                                                   checked="checked">
-                                        @else
-                                            <span>No</span>
-                                            <input type="hidden" value="0" name="field_required_{{ $data['field'] }}">
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <input type="checkbox"
-                                               id="field_browse_{{ $data['field'] }}"
-                                               name="field_browse_{{ $data['field'] }}"
-                                               @if(isset($dataRow->browse) && $dataRow->browse)
-                                                    {{ 'checked="checked"' }}
-                                               @elseif($data['key'] == 'PRI')
-                                               @elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')
-                                               @elseif(!isset($dataRow->browse))
-                                                    {{ 'checked="checked"' }}
-                                               @endif>
-                                        <label for="field_browse_{{ $data['field'] }}">Browse</label><br/>
-                                        <input type="checkbox"
-                                               id="field_read_{{ $data['field'] }}"
-                                               name="field_read_{{ $data['field'] }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
-                                        <label for="field_read_{{ $data['field'] }}">Read</label><br/>
-                                        <input type="checkbox"
-                                               id="field_edit_{{ $data['field'] }}"
-                                               name="field_edit_{{ $data['field'] }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
-                                        <label for="field_edit_{{ $data['field'] }}">Edit</label><br/>
-                                        <input type="checkbox"
-                                               id="field_add_{{ $data['field'] }}"
-                                               name="field_add_{{ $data['field'] }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'created_at')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
-                                            <label for="field_add_{{ $data['field'] }}">Add</label><br/>
-                                        <input type="checkbox"
-                                               id="field_delete_{{ $data['field'] }}"
-                                               name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
-                                                <label for="field_delete_{{ $data['field'] }}">Delete</label><br/>
-                                    </td>
-                                    <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">
-                                    <td>
-                                        @if($data['type'] == 'timestamp')
-                                            <p>Timestamp</p>
-                                            <input type="hidden" value="timestamp"
-                                                   name="field_input_type_{{ $data['field'] }}">
-                                        @else
-                                            <select name="field_input_type_{{ $data['field'] }}">
-                                                @foreach (Voyager::formFields() as $formField)
-                                                    <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
-                                                        {{ $formField->getName() }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        @endif
-
-                                    </td>
-                                    <td><input type="text" class="form-control"
-                                               value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ ucwords(str_replace('_', ' ', $data['field'])) }}@endif"
-                                               name="field_display_name_{{ $data['field'] }}"></td>
-                                    <td>
-                                        <div class="alert alert-danger validation-error">
-                                            Invalid JSON
-                                        </div>
-                                        <textarea id="json-input-{{ $data['field'] }}" class="resizable-editor" data-editor="json" name="field_details_{{ $data['field'] }}">@if(isset($dataRow->details)){{ $dataRow->details }}@endif</textarea>
-                                    </td>
-                                </tr>
-
-                            @endforeach
-                            </tbody>
-                        </table>
-
-                    </div><!-- .panel -->
 
                     <div class="panel panel-primary panel-bordered">
 
@@ -149,31 +50,49 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
+                                    <label for="email">Display Name (Singular)</label>
+                                    @if($isModelTranslatable)
+                                        @include('voyager::multilingual.input-hidden', [
+                                            'isModelTranslatable' => true,
+                                            '_field_name'         => 'display_name_singular',
+                                            '_field_trans' => get_field_translations($dataType, 'display_name_singular')
+                                        ])
+                                    @endif
+                                    <input type="text" class="form-control"
+                                           name="display_name_singular"
+                                           id="display_name_singular"
+                                           placeholder="Display Name (Singular)"
+                                           value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="email">Display Name (Plural)</label>
+                                    @if($isModelTranslatable)
+                                        @include('voyager::multilingual.input-hidden', [
+                                            'isModelTranslatable' => true,
+                                            '_field_name'         => 'display_name_plural',
+                                            '_field_trans' => get_field_translations($dataType, 'display_name_plural')
+                                        ])
+                                    @endif
+                                    <input type="text" class="form-control"
+                                           name="display_name_plural"
+                                           id="display_name_plural"
+                                           placeholder="Display Name (Plural)"
+                                           value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-6 form-group">
                                     <label for="email">URL Slug (must be unique)</label>
                                     <input type="text" class="form-control" name="slug" placeholder="URL slug (ex. posts)"
                                            value="@if(isset($dataType->slug)){{ $dataType->slug }}@else{{ $slug }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">Icon (optional) Use a <a
-                                                href="{{ config('voyager.assets_path') . '/fonts/voyager/icons-reference.html' }}"
+                                                href="{{ voyager_asset('fonts/voyager/icons-reference.html') }}"
                                                 target="_blank">Voyager Font Class</a></label>
                                     <input type="text" class="form-control" name="icon"
                                            placeholder="Icon to use for this Table"
                                            value="@if(isset($dataType->icon)){{ $dataType->icon }}@endif">
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-6 form-group">
-                                    <label for="email">Display Name (Singular)</label>
-                                    <input type="text" class="form-control" name="display_name_singular"
-                                           placeholder="Display Name (Singular)"
-                                           value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    <label for="email">Display Name (Plural)</label>
-                                    <input type="text" class="form-control" name="display_name_plural"
-                                           placeholder="Display Name (Plural)"
-                                           value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
                                 </div>
                             </div>
                             <div class="row clearfix">
@@ -215,15 +134,124 @@
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea class="form-control" name="description"
-                                          placeholder="Description">@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
+                                          placeholder="Description"
+                                    >@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
+                            </div>
+                        </div><!-- .panel-body -->
+                    </div><!-- .panel -->
+
+                    <div class="panel panel-primary panel-bordered">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Edit the rows for the {{ $table }} table below:</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row fake-table-hd">
+                                <div class="col-xs-2">Field</div>
+                                <div class="col-xs-2">Visibility</div>
+                                <div class="col-xs-2">Input Type</div>
+                                <div class="col-xs-2">Display Name</div>
+                                <div class="col-xs-4">Optional Details</div>
+                            </div>
+
+                            <div id="bread-items">
+                            @php
+                                $r_order = 0;
+                            @endphp
+                            @foreach($fieldOptions as $data)
+                                @php
+                                    $r_order += 1;
+                                @endphp
+
+                                @if(isset($dataType->id))
+                                    <?php $dataRow = TCG\Voyager\Models\DataRow::where('data_type_id', '=',
+                                            $dataType->id)->where('field', '=', $data['field'])->first(); ?>
+                                @endif
+
+                                <div class="row row-dd">
+                                    <div class="col-xs-2">
+                                        <h4><strong>{{ $data['field'] }}</strong></h4>
+                                        <strong>Type:</strong> <span>{{ $data['type'] }}</span><br/>
+                                        <strong>Key:</strong> <span>{{ $data['key'] }}</span><br/>
+                                        <strong>Required:</strong>
+                                        @if($data['null'] == "NO")
+                                            <span>Yes</span>
+                                            <input type="hidden" value="1" name="field_required_{{ $data['field'] }}"
+                                                   checked="checked">
+                                        @else
+                                            <span>No</span>
+                                            <input type="hidden" value="0" name="field_required_{{ $data['field'] }}">
+                                        @endif
+                                        <div class="handler glyphicon glyphicon-sort"></div>
+                                        <input class="row_order" type="hidden" value="{{ $r_order }}" name="field_order_{{ $data['field'] }}">
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <input type="checkbox"
+                                               id="field_browse_{{ $data['field'] }}"
+                                               name="field_browse_{{ $data['field'] }}"
+                                               @if(isset($dataRow->browse) && $dataRow->browse)
+                                                    {{ 'checked="checked"' }}
+                                               @elseif($data['key'] == 'PRI')
+                                               @elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')
+                                               @elseif(!isset($dataRow->browse))
+                                                    {{ 'checked="checked"' }}
+                                               @endif>
+                                        <label for="field_browse_{{ $data['field'] }}">Browse</label><br/>
+                                        <input type="checkbox"
+                                               id="field_read_{{ $data['field'] }}"
+                                               name="field_read_{{ $data['field'] }}" @if(isset($dataRow->read) && $dataRow->read){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->read)){{ 'checked="checked"' }}@endif>
+                                        <label for="field_read_{{ $data['field'] }}">Read</label><br/>
+                                        <input type="checkbox"
+                                               id="field_edit_{{ $data['field'] }}"
+                                               name="field_edit_{{ $data['field'] }}" @if(isset($dataRow->edit) && $dataRow->edit){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->edit)){{ 'checked="checked"' }}@endif>
+                                        <label for="field_edit_{{ $data['field'] }}">Edit</label><br/>
+                                        <input type="checkbox"
+                                               id="field_add_{{ $data['field'] }}"
+                                               name="field_add_{{ $data['field'] }}" @if(isset($dataRow->add) && $dataRow->add){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'created_at')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->add)){{ 'checked="checked"' }}@endif>
+                                            <label for="field_add_{{ $data['field'] }}">Add</label><br/>
+                                        <input type="checkbox"
+                                               id="field_delete_{{ $data['field'] }}"
+                                               name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
+                                                <label for="field_delete_{{ $data['field'] }}">Delete</label><br/>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">
+                                        @if($data['type'] == 'timestamp')
+                                            <p>Timestamp</p>
+                                            <input type="hidden" value="timestamp"
+                                                   name="field_input_type_{{ $data['field'] }}">
+                                        @else
+                                            <select name="field_input_type_{{ $data['field'] }}">
+                                                @foreach (Voyager::formFields() as $formField)
+                                                    <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
+                                                        {{ $formField->getName() }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        @endif
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <input type="text" class="form-control"
+                                               value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ ucwords(str_replace('_', ' ', $data['field'])) }}@endif"
+                                               name="field_display_name_{{ $data['field'] }}">
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="alert alert-danger validation-error">
+                                            Invalid JSON
+                                        </div>
+                                        <textarea id="json-input-{{ $data['field'] }}" class="resizable-editor" data-editor="json" name="field_details_{{ $data['field'] }}">@if(isset($dataRow->details)){{ $dataRow->details }}@endif</textarea>
+                                    </div>
+                                </div>
+
+                            @endforeach
                             </div>
 
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </div><!-- .panel-body -->
-
                     </div><!-- .panel -->
+
                 </form>
             </div><!-- .col-md-12 -->
         </div><!-- .row -->
@@ -236,12 +264,42 @@
 @stop
 
 @section('javascript')
-    <script src="{{ config('voyager.assets_path') }}/lib/js/ace/ace.js"></script>
+    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+    @if($isModelTranslatable)
+        <script type="text/javascript" src="{{ voyager_asset('js/multilingual.js') }}"></script>
+    @endif
     <script>
         window.invalidEditors = [];
         var validationAlerts = $('.validation-error');
         validationAlerts.hide();
         $(function () {
+            @if ($isModelTranslatable)
+                /**
+                 * Multilingual setup
+                 */
+                $('.side-body').multilingual({
+                    "form":    'form',
+                    "editing": true
+                });
+            @endif
+
+            /**
+             * Reorder items
+             */
+            $('#bread-items').sortable({
+                update: function (e, ui) {
+                    var _rows = $('#bread-items').find('.row_order'),
+                        _size = _rows.length;
+
+                    for (var i = 0; i < _size; i++) {
+                        $(_rows[i]).val(i+1);
+                    }
+                }
+            });
+
+            $('#bread-items').disableSelection();
+
+
             $('textarea[data-editor]').each(function () {
                 var textarea = $(this),
                 mode = textarea.data('editor'),

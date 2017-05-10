@@ -8,11 +8,20 @@
 <select class="form-control select2" name="{{ $row->field }}[]" multiple>
     @if(isset($options->relationship))
         {{-- Check that the relationship method exists --}}
+
         @if( method_exists( $dataType->model_name, $method ) )
             <?php $relatedKey = app($dataType->model_name)->{$method}()->getRelated()->getQualifiedKeyName(); ?>
             <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{$method}()->pluck($relatedKey)->all() : array(); ?>
-            <?php $relationshipClass = get_class(app($dataType->model_name)->{$method}()->getRelated()); ?>
-            <?php $relationshipOptions = $relationshipClass::all(); ?>
+            <?php
+            $relationshipListMethod = isset($options->relationship->listmethod) ? $options->relationship->listmethod : camel_case($row->field) . 'List';
+            if (isset($dataTypeContent) && method_exists($dataTypeContent, $relationshipListMethod)) {
+                $relationshipOptions = $dataTypeContent->$relationshipListMethod();
+            } else {
+                <?php $relationshipClass = get_class(app($dataType->model_name)->{$method}()->getRelated()); ?>
+                <?php $relationshipOptions = $relationshipClass::all(); ?>
+            }
+            ?>
+
             @foreach($relationshipOptions as $relationshipOption)
                 <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if(in_array($relationshipOption->{$options->relationship->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
             @endforeach

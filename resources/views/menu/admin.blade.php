@@ -22,7 +22,7 @@
         </div>
         <div class="dd-handle">
             @if($options->isModelTranslatable)
-                @include('voyager::multilingual.input-hidden-menu', [
+                @include('voyager::multilingual.input-hidden', [
                     'isModelTranslatable' => true,
                     '_field_name'         => 'title'.$item->id,
                     '_field_trans'        => htmlspecialchars(json_encode($item->getTranslationsOf('title')))

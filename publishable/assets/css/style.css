@@ -1207,6 +1207,36 @@ body.login-page .login-footer {
 .row-example > [class*="col-"] {
   margin-bottom: 0; }
 
+/* Row Sortable (Drag and Drop), used in BREAD edit
+-------------------------------------------------- */
+.row-dd {
+  border-bottom:  1px solid #eee;
+  margin:         0 -7px;
+  padding-top:    8px;
+  padding-bottom: 8px;
+}
+.row-dd:hover {
+  background-color: #F6F8FA;
+}
+.row-dd > div:first-child { padding-left: 37px; }
+.row-dd > div:first-child .handler {
+  position: absolute;
+  top:      3px;
+  left:     14px;
+  cursor:   move;
+}
+.fake-table-hd {
+  padding: 0 8px;
+}
+.fake-table-hd > div:first-child { padding-left: 29px; }
+.fake-table-hd > div {
+  font-weight:      500;
+  padding:          8px;
+  margin-bottom:    0 !important;
+  background-color: #F6F8FA;
+  border-bottom:    1px solid #EAEAEA;
+}
+
 /* CUSTOMIZE THE NAVBAR
 -------------------------------------------------- */
 /* Special class on .container surrounding .navbar, used for positioning it into place. */
@@ -1283,6 +1313,9 @@ body.login-page .login-footer {
 -------------------------------------------------- */
 .language-selector {
   float: right !important;
+  padding: 0 10px 0 0;
+}
+.side-body > .language-selector {
   padding: 28px 15px 0 0;
 }
 .modal-body .language-selector {

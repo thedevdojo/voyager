@@ -63,7 +63,7 @@
                             @foreach($dataTypeRows as $row)
                                 <div class="form-group @if($row->type == 'hidden') hidden @endif">
                                     <label for="name">{{ $row->display_name }}</label>
-                                    @include('voyager::multilingual.input-hidden-bread')
+                                    @include('voyager::multilingual.input-hidden-bread-edit-add')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
                                     @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
@@ -125,6 +125,15 @@
 
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
+            
+            //Init datepicker for date fields if data-datepicker attribute defined
+            //or if browser does not handle date inputs
+            $('.form-group input[type=date]').each(function (idx, elt) {
+                if (elt.type != 'date' || elt.hasAttribute('data-datepicker')) {
+                    elt.type = 'text';
+                    $(elt).datetimepicker($(elt).data('datepicker'));
+                }
+            });
 
             @if ($isModelTranslatable)
                 $('.side-body').multilingual({"editing": true});
@@ -135,7 +144,7 @@
             });
 
             $('.form-group').on('click', '.remove-multi-image', function (e) {
-                $image = $(this).parent().siblings('img');
+                $image = $(this).siblings('img');
 
                 params = {
                     slug:   '{{ $dataTypeContent->getTable() }}',
@@ -165,14 +174,15 @@
 
                 $('#confirm_delete_modal').modal('hide');
             });
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
     @if($isModelTranslatable)
-        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
     @endif
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/lib/js/ace/ace.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_ace_editor.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
+    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
+    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
 @stop

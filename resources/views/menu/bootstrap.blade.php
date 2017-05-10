@@ -22,6 +22,7 @@
         }
 
         $listItemClass = null;
+        $linkAttributes =  null;
         $styles = null;
         $icon = null;
         $caret = null;

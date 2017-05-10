@@ -41,7 +41,10 @@ class VoyagerAuthController extends Controller
         return $this->sendFailedLoginResponse($request);
     }
 
-    public function redirectPath()
+    /*
+     * Preempts $redirectTo member variable (from RedirectsUsers trait)
+     */
+    public function redirectTo()
     {
         return route('voyager.dashboard');
     }

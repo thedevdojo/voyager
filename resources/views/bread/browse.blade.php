@@ -55,9 +55,7 @@
                                                      {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
                                                     @endforeach
                                                 @endif
-                                                @if ($data->{$row->field} && isset($options->relationship))
-                                                    {{ $data->{$row->field}->implode($options->relationship->label, ', ') }}
-                                                @endif
+
                                             @elseif($row->type == 'select_dropdown' && property_exists($options, 'options'))
 
                                                 @if($data->{$row->field . '_page_slug'})
@@ -156,17 +154,17 @@
 
 @section('css')
 @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-<link rel="stylesheet" href="{{ config('voyager.assets_path') }}/lib/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="{{ voyager_asset('lib/css/responsive.dataTables.min.css') }}">
 @endif
 @stop
 
 @section('javascript')
     <!-- DataTables -->
     @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-        <script src="{{ config('voyager.assets_path') }}/lib/js/dataTables.responsive.min.js"></script>
+        <script src="{{ voyager_asset('lib/js/dataTables.responsive.min.js') }}"></script>
     @endif
     @if($isModelTranslatable)
-        <script src="{{ config('voyager.assets_path') }}/js/multilingual.js"></script>
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
     @endif
     <script>
         $(document).ready(function () {

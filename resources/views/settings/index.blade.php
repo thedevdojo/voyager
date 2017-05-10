@@ -125,31 +125,6 @@
             top: 2px;
         }
 
-        .img_settings_container {
-            width: 200px;
-            height: auto;
-            position: relative;
-        }
-
-        .img_settings_container > a {
-            position: absolute;
-            right: -10px;
-            top: -10px;
-            display: block;
-            padding: 5px;
-            background: #F94F3B;
-            color: #fff;
-            border-radius: 13px;
-            width: 25px;
-            height: 25px;
-            font-size: 15px;
-            line-height: 19px;
-        }
-
-        .img_settings_container > a:hover, .img_settings_container > a:focus, .img_settings_container > a:active {
-            text-decoration: none;
-        }
-
         textarea {
             min-height: 120px;
         }
@@ -160,7 +135,7 @@
 @stop
 
 @section('head')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jsonarea/jsonarea.min.js"></script>
+    <script type="text/javascript" src="{{ voyager_asset('lib/js/jsonarea/jsonarea.min.js') }}"></script>
 @stop
 
 @section('page_header')
@@ -173,10 +148,12 @@
 
     <div class="container-fluid">
         @include('voyager::alerts')
+        @if(config('voyager.show_dev_tips'))
         <div class="alert alert-info">
             <strong>How To Use:</strong>
             <p>You can get the value of each setting anywhere on your site by calling <code>Voyager::setting('key')</code></p>
         </div>
+        @endif
     </div>
 
     <div class="page-content container-fluid">
@@ -219,6 +196,7 @@
                                     <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x"></a>
                                     <img src="{{ Storage::disk(config('voyager.storage.disk'))->url($setting->value) }}" style="width:200px; height:auto; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                 </div>
+                                <div class="clearfix"></div>
                             @elseif($setting->type == "file" && isset( $setting->value ))
                                 <div class="fileType">{{ $setting->value }}</div>
                             @endif
@@ -282,15 +260,16 @@
                     {{ csrf_field() }}
                     <div class="col-md-4">
                         <label for="display_name">Name</label>
-                        <input type="text" class="form-control" name="display_name">
+                        <input type="text" class="form-control" name="display_name" placeholder="Setting name ex: Admin Title" required="required">
                     </div>
                     <div class="col-md-4">
                         <label for="key">Key</label>
-                        <input type="text" class="form-control" name="key">
+                        <input type="text" class="form-control" name="key" placeholder="Setting key ex: admin_title" required="required">
                     </div>
                     <div class="col-md-4">
                         <label for="asdf">Type</label>
-                        <select name="type" class="form-control">
+                        <select name="type" class="form-control" required="required">
+                            <option value="">Choose type</option>
                             <option value="text">Text Box</option>
                             <option value="text_area">Text Area</option>
                             <option value="rich_text_box">Rich Textbox</option>
@@ -383,17 +362,16 @@
         <input type="hidden" name="type_slug" id="type_slug" value="settings">
     </form>
 
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/lib/js/ace/ace.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_ace_editor.js"></script>
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
+    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
     <script>
         var options_editor = ace.edit('options_editor');
         options_editor.getSession().setMode("ace/mode/json");
 
         var options_textarea = document.getElementById('options_textarea');
         options_editor.getSession().on('change', function() {
-            console.log(options_editor.getValue());
             options_textarea.value = options_editor.getValue();
         });
     </script>

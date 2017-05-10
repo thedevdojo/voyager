@@ -1,15 +1,15 @@
 <?php
 
-if (!function_exists('isFieldTranslatable')) {
+if (!function_exists('is_field_translatable')) {
     /**
      * Check if a Field is translatable.
      *
      * @param Illuminate\Database\Eloquent\Model      $model
      * @param Illuminate\Database\Eloquent\Collection $row
      */
-    function isFieldTranslatable($model, $row)
+    function is_field_translatable($model, $row)
     {
-        if (!isBreadTranslatable($model)) {
+        if (!is_bread_translatable($model)) {
             return;
         }
 
@@ -18,40 +18,38 @@ if (!function_exists('isFieldTranslatable')) {
     }
 }
 
-if (!function_exists('getFieldTranslations')) {
+if (!function_exists('get_field_translations')) {
     /**
      * Return all field translations.
      *
-     * @param Illuminate\Database\Eloquent\Model      $model
-     * @param Illuminate\Database\Eloquent\Collection $row
+     * @param Illuminate\Database\Eloquent\Model $model
+     * @param string                             $field
+     * @param string                             $rowType
+     * @param bool                               $stripHtmlTags
      */
-    function getFieldTranslations($model, $row)
+    function get_field_translations($model, $field, $rowType = '', $stripHtmlTags = false)
     {
-        if (!isBreadTranslatable($model)) {
-            return;
-        }
+        $_out = $model->getTranslationsOf($field);
 
-        $_out = $model->getTranslationsOf($row->field);
-
-        if ($row->type == 'rich_text_box') {
+        if ($stripHtmlTags && $rowType == 'rich_text_box') {
             foreach ($_out as $language => $value) {
-                $_out[$language] = strip_tags($_out[$language], '<b><i><u>');
+                $_out[$language] = strip_tags($_out[$language]);
             }
         }
 
-        return htmlentities(json_encode($_out));
+        return json_encode($_out);
     }
 }
 
-if (!function_exists('isBreadTranslatable')) {
+if (!function_exists('is_bread_translatable')) {
     /**
      * Check if BREAD is translatable.
      *
      * @param Illuminate\Database\Eloquent\Model $model
      */
-    function isBreadTranslatable($model)
+    function is_bread_translatable($model)
     {
-        return config('voyager.multilingual.bread')
+        return config('voyager.multilingual.enabled')
             && isset($model, $model['translatable']);
     }
 }
