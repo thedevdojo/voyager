@@ -37,60 +37,60 @@
                                         <td>
                                             <?php $options = json_decode($row->details); ?>
                                             @if($row->type == 'image')
-                                                <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                                <img src="@if( strpos($data->{strtolower(strtolower($row->field))}, 'http://') === false && strpos($data->{strtolower($row->field)}, 'https://') === false){{ Voyager::image( $data->{strtolower($row->field)} ) }}@else{{ $data->{strtolower($row->field)} }}@endif" style="width:100px">
                                             @elseif($row->type == 'select_multiple')
                                                 @if(property_exists($options, 'relationship'))
 
-                                                    @foreach($data->{$row->field} as $item)
-                                                        @if($item->{$row->field . '_page_slug'})
-                                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
+                                                    @foreach($data->{strtolower($row->field)} as $item)
+                                                        @if($item->{strtolower($row->field) . '_page_slug'})
+                                                        <a href="{{ $item->{strtolower($row->field) . '_page_slug'} }}">{{ $item->{strtolower($row->field)} }}</a>@if(!$loop->last), @endif
                                                         @else
-                                                        {{ $item->{$row->field} }}
+                                                        {{ $item->{strtolower($row->field)} }}
                                                         @endif
                                                     @endforeach
 
-                                                    {{-- $data->{$row->field}->implode($options->relationship->label, ', ') --}}
+                                                    {{-- $data->{strtolower($row->field)}->implode($options->relationship->label, ', ') --}}
                                                 @elseif(property_exists($options, 'options'))
-                                                    @foreach($data->{$row->field} as $item)
+                                                    @foreach($data->{strtolower($row->field)} as $item)
                                                      {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
                                                     @endforeach
                                                 @endif
 
                                             @elseif($row->type == 'select_dropdown' && property_exists($options, 'options'))
 
-                                                @if($data->{$row->field . '_page_slug'})
-                                                    <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $options->options->{$data->{$row->field}} !!}</a>
+                                                @if($data->{strtolower($row->field) . '_page_slug'})
+                                                    <a href="{{ $data->{strtolower($row->field) . '_page_slug'} }}">{!! $options->options->{$data->{strtolower($row->field)}} !!}</a>
                                                 @else
-                                                    {!! $options->options->{$data->{$row->field}} !!}
+                                                    {!! $options->options->{$data->{strtolower($row->field)}} !!}
                                                 @endif
 
 
-                                            @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
-                                                <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
+                                            @elseif($row->type == 'select_dropdown' && $data->{strtolower($row->field) . '_page_slug'})
+                                                <a href="{{ $data->{strtolower($row->field) . '_page_slug'} }}">{{ $data->{strtolower($row->field)} }}</a>
                                             @elseif($row->type == 'date')
-                                            {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $data->{$row->field} }}
+                                            {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{strtolower($row->field)})->formatLocalized($options->format) : $data->{strtolower($row->field)} }}
                                             @elseif($row->type == 'checkbox')
                                                 @if($options && property_exists($options, 'on') && property_exists($options, 'off'))
-                                                    @if($data->{$row->field})
+                                                    @if($data->{strtolower($row->field)})
                                                     <span class="label label-info">{{ $options->on }}</span>
                                                     @else
                                                     <span class="label label-primary">{{ $options->off }}</span>
                                                     @endif
                                                 @else
-                                                {{ $data->{$row->field} }}
+                                                {{ $data->{strtolower($row->field)} }}
                                                 @endif
                                             @elseif($row->type == 'text')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
-                                                <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                <div class="readmore">{{ strlen( $data->{strtolower($row->field)} ) > 200 ? substr($data->{strtolower($row->field)}, 0, 200) . ' ...' : $data->{strtolower($row->field)} }}</div>
                                             @elseif($row->type == 'text_area')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
-                                                <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                <div class="readmore">{{ strlen( $data->{strtolower($row->field)} ) > 200 ? substr($data->{strtolower($row->field)}, 0, 200) . ' ...' : $data->{strtolower($row->field)} }}</div>
                                             @elseif($row->type == 'rich_text_box')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
-                                                <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
+                                                <div class="readmore">{{ strlen( strip_tags($data->{strtolower($row->field)}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{strtolower($row->field)}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{strtolower($row->field)}, '<b><i><u>') }}</div>
                                             @else
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
-                                                <span>{{ $data->{$row->field} }}</span>
+                                                <span>{{ $data->{strtolower($row->field)} }}</span>
                                             @endif
                                         </td>
                                     @endforeach
