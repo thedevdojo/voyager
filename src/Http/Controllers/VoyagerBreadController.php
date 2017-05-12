@@ -134,7 +134,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission if not the own profile
-        if($request->user()->id !== (int) $id) {
+        if ($request->user()->id !== (int) $id) {
             Voyager::canOrFail('edit_'.$dataType->name);
         }
 
@@ -164,7 +164,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission if not the own profile
-        if($request->user()->id !== (int) $id) {
+        if ($request->user()->id !== (int) $id) {
             Voyager::canOrFail('edit_'.$dataType->name);
         }
 
