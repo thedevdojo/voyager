@@ -142,9 +142,10 @@
                         <div class="panel-body">
                             <div class="row fake-table-hd">
                                 <div class="col-xs-2">Field</div>
-                                <div class="col-xs-2">Visibility</div>
+                                <div class="col-xs-1">Visibility</div>
                                 <div class="col-xs-2">Input Type</div>
                                 <div class="col-xs-2">Display Name</div>
+                                <div class="col-xs-1">Display Width</div>
                                 <div class="col-xs-4">Optional Details</div>
                             </div>
 
@@ -179,7 +180,7 @@
                                         <div class="handler glyphicon glyphicon-sort"></div>
                                         <input class="row_order" type="hidden" value="{{ $r_order }}" name="field_order_{{ $data['field'] }}">
                                     </div>
-                                    <div class="col-xs-2">
+                                    <div class="col-xs-1">
                                         <input type="checkbox"
                                                id="field_browse_{{ $data['field'] }}"
                                                name="field_browse_{{ $data['field'] }}"
@@ -228,6 +229,14 @@
                                         <input type="text" class="form-control"
                                                value="@if(isset($dataRow->display_name)){{ $dataRow->display_name }}@else{{ ucwords(str_replace('_', ' ', $data['field'])) }}@endif"
                                                name="field_display_name_{{ $data['field'] }}">
+                                    </div>
+                                    <div class="col-xs-1">
+                                        <select name="field_column_width_{{ $data['field'] }}" class="form-control">
+                                            <option value="12" @if($dataRow->column_width == 12) selected @endif>Full</option>
+                                            <option value="6" @if($dataRow->column_width == 6) selected @endif>Half</option>
+                                            <option value="3" @if($dataRow->column_width == 3) selected @endif>One-fourth</option>
+                                            <option value="9" @if($dataRow->column_width == 9) selected @endif>Three-fourth</option>
+                                        </select>
                                     </div>
                                     <div class="col-xs-4">
                                         <div class="alert alert-danger validation-error">
