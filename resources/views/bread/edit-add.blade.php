@@ -61,7 +61,27 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $row->column_width }}">
+                            
+                                @php
+                                $column_width = "col-md-12";
+                                if($row->col_width <= 25) {
+                                    $column_width = "col-md-3";
+                                }
+                                else if($row->col_width <= 34) {
+                                    $column_width = "col-md-4";
+                                }
+                                else if($row->col_width <= 50) {
+                                    $column_width = "col-md-6";
+                                }
+                                else if($row->col_width <= 67) {
+                                    $column_width = "col-md-8";
+                                }
+                                else if($row->col_width <= 75) {
+                                    $column_width = "col-md-9";
+                                }
+                                @endphp
+                                
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif {{ $column_width }}">
                                     <label for="name">{{ $row->display_name }}</label>
                                     @include('voyager::multilingual.input-hidden-bread-edit-add')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
