@@ -90,6 +90,7 @@ class DataType extends Model
                     $dataRow->details = $requestData['field_details_'.$field];
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
+                    $dataRow->column_width = intval($requestData['field_column_width_'.$field]);
 
                     if (!$dataRow->save()) {
                         throw new \Exception('Failed to save field '.$field.", we're rolling back!");
