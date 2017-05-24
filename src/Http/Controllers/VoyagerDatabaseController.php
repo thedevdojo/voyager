@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Validator;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -309,6 +310,41 @@ class VoyagerDatabaseController extends Controller
 
             // Save translations if applied
             $dataType->saveTranslations($translations);
+
+            return redirect()->route('voyager.database.index')->with($data);
+        } catch (Exception $e) {
+            return back()->with($this->alertException($e, 'Update Failed'));
+        }
+    }
+
+    public function addBreadRelationship(Request $request, $id)
+    {
+        Voyager::canOrFail('browse_database');
+
+        $validator = Validator::make($request->all(), [
+            'details' => [
+                'required',
+                'json',
+                'regex:/^.*(?=.*\brelationship\b)(?=.*\bkey\b)(?=.*\blabel\b)(?=.*\bmethod\b).*$/'
+            ],
+            'type' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $exception = new \Exception($validator->errors()->first());
+
+            return back()->with($this->alertException($exception, 'Update Failed'));
+        }
+
+        /* @var \TCG\Voyager\Models\DataType $dataType */
+        try {
+            $dataRow = Voyager::model('DataRow');
+
+            $dataType = Voyager::model('DataType')->find($id);
+
+            $data = $dataRow->addRelationshipRow($dataType, $request->all())
+                ? $this->alertSuccess("Successfully updated the {$dataType->name} BREAD")
+                : $this->alertError('Sorry it appears there may have been a problem updating this BREAD');
 
             return redirect()->route('voyager.database.index')->with($data);
         } catch (Exception $e) {

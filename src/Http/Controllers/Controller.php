@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
 use TCG\Voyager\Traits\AlertsMessages;
@@ -46,6 +48,32 @@ abstract class Controller extends BaseController
         foreach ($rows as $row) {
             $options = json_decode($row->details);
 
+            if (isset($options->validation)) {
+                if (isset($options->validation->rule)) {
+                    if (!is_array($options->validation->rule)) {
+                        $rules[$row->field] = explode('|', $options->validation->rule);
+                    } else {
+                        $rules[$row->field] = $options->validation->rule;
+                    }
+                }
+
+                if (isset($options->validation->messages)) {
+                    foreach ($options->validation->messages as $key => $msg) {
+                        $messages[$row->field.'.'.$key] = $msg;
+                    }
+                }
+            }
+
+            /**
+             * If it's an Eloquent relation of type HasOne or HasMany, than it's read only
+             * and value should be changed in relational table.
+             */
+            if (isset($options) && property_exists($options, 'relationship') && isset($options->relationship->method)) {
+                $relationshipBuilder = $data->{$options->relationship->method}();
+
+                if ($relationshipBuilder instanceof HasOneOrMany || $relationshipBuilder instanceof HasManyThrough) continue;
+            }
+
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
             /*
@@ -61,7 +89,7 @@ abstract class Controller extends BaseController
             }
 
             if (is_null($content)) {
-                // Only set the content back to the previous value when there is really now input for this field
+                // Only set the content back to the previous value when there is really new input for this field
                 if (is_null($request->input($row->field)) && isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
@@ -72,7 +100,19 @@ abstract class Controller extends BaseController
 
             if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
                 // Only if select_multiple is working with a relationship
+
+                $method = isset($options->relationship->method) ? $options->relationship->method : $row->field;
+
+                $multi_select[] = ['method' => $method, 'content' => $content];
+
+            /*
+             * Translation support
+             */
+            } elseif (is_field_translatable($data, $row)) {
+                $this->prepareTranslations($translations, $data, $row->field, $request);
+
                 $multi_select[] = ['row' => $row->field, 'content' => $content];
+
             } else {
                 $data->{$row->field} = $content;
             }
@@ -86,7 +126,7 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->{$sync_data['row']}()->sync($sync_data['content']);
+            $data->{$sync_data['method']}()->sync($sync_data['content']);
         }
 
         return $data;

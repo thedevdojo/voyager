@@ -35,16 +35,24 @@
                                 <tr>
                                     @foreach($dataType->browseRows as $row)
                                     <td>
+                                        <?php $options = json_decode($row->details); ?>
                                         @if($row->type == 'image')
                                             <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                         @else
+
                                             @if(is_field_translatable($data, $row))
                                                 @include('voyager::multilingual.input-hidden', [
                                                     '_field_name'  => $row->field,
                                                     '_field_trans' => get_field_translations($data, $row->field)
                                                 ])
                                             @endif
-                                            <span>{{ $data->{$row->field} }}</span>
+                                            
+                                            @if(!is_scalar($data->{$row->field}) && substr(strrchr(get_class($data->{$row->field}), '\\'), 1) == "Collection")
+                                                {{ $data->{$row->field}->implode($options->relationship->label, ", ") }}
+                                            @else
+                                                {{ $data->{$row->field} }}
+                                            @endif
+
                                         @endif
                                     </td>
                                     @endforeach
