@@ -165,7 +165,7 @@ class VoyagerBreadController extends Controller
         Voyager::canOrFail('edit_'.$dataType->name);
 
         //Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
+        $val = $this->validateBread($request->all(), $dataType->editRows);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
