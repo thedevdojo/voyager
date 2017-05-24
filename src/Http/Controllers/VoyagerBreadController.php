@@ -133,8 +133,10 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
+        // Check permission if not the own profile
+        if ($request->user()->id !== (int) $id) {
+            Voyager::canOrFail('edit_'.$dataType->name);
+        }
 
         $relationships = $this->getRelationships($dataType);
 
@@ -166,8 +168,10 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
+        // Check permission if not the own profile
+        if ($request->user()->id !== (int) $id) {
+            Voyager::canOrFail('edit_'.$dataType->name);
+        }
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
