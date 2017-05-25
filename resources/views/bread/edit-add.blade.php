@@ -62,26 +62,14 @@
 
                             @foreach($dataTypeRows as $row)
                             
+                                <!-- GET THE DISPLAY OPTIONS -->
                                 @php
-                                $column_width = "col-md-12";
-                                if($row->col_width <= 25) {
-                                    $column_width = "col-md-3";
-                                }
-                                else if($row->col_width <= 34) {
-                                    $column_width = "col-md-4";
-                                }
-                                else if($row->col_width <= 50) {
-                                    $column_width = "col-md-6";
-                                }
-                                else if($row->col_width <= 67) {
-                                    $column_width = "col-md-8";
-                                }
-                                else if($row->col_width <= 75) {
-                                    $column_width = "col-md-9";
-                                }
+                                    $options = json_decode($row->details);
+                                    $display_options = isset($options->display) ? $options->display : NULL;
                                 @endphp
                                 
-                                <div class="form-group @if($row->type == 'hidden') hidden @endif {{ $column_width }}">
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@else{{ 'col-md-12' }}@endif" @if(isset($display_options->id)){{ 'id="' . $display_options->id . '"' }}@endif>
+                                    {{ $row->slugify }}
                                     <label for="name">{{ $row->display_name }}</label>
                                     @include('voyager::multilingual.input-hidden-bread-edit-add')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
