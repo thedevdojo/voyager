@@ -44,7 +44,7 @@
 
     <!-- Few Dynamic Styles -->
     <style type="text/css">
-        .flat-blue .side-menu .navbar-header, .widget .btn-primary, .widget .btn-primary:focus, .widget .btn-primary:hover, .widget .btn-primary:active, .widget .btn-primary.active, .widget .btn-primary:active:focus{
+        .side-menu .navbar-header, .widget .btn-primary, .widget .btn-primary:focus, .widget .btn-primary:hover, .widget .btn-primary:active, .widget .btn-primary.active, .widget .btn-primary:active:focus{
             background:{{ config('voyager.primary_color','#22A7F0') }};
             border-color:{{ config('voyager.primary_color','#22A7F0') }};
         }
@@ -60,7 +60,7 @@
     @yield('head')
 </head>
 
-<body class="flat-blue">
+<body class="voyager @if(isset($dataType) && isset($dataType->slug)){{ $dataType->slug }}@endif">
 
 <div id="voyager-loader">
     <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>

@@ -147,6 +147,1230 @@
 * ----------
 */
 
+.voyager {
+    background-color: #F9F9F9;
+    /* small screen */
+}
+
+.voyager .app-footer {
+    opacity: 0.7;
+    color: #353d47;
+    width: 100%;
+    text-align: right;
+    padding: 10px 0;
+    background: #fff;
+    left: 0px;
+}
+
+.voyager .app-footer i {
+    color: #D9534F;
+}
+
+.voyager .navbar,
+.voyager .navbar.navbar-default {
+    border-bottom: 0;
+    box-shadow: 0 0 0;
+}
+
+.voyager .navbar > .container-fluid,
+.voyager .navbar.navbar-default > .container-fluid:after {
+    border-bottom: 1px solid #eee;
+    width: 98%;
+    height: 1px;
+}
+
+.voyager .navbar .navbar-header .navbar-brand,
+.voyager .navbar.navbar-default .navbar-header .navbar-brand {
+    color: #F9F9F9;
+}
+
+.voyager .navbar .navbar-header .navbar-expand-toggle,
+.voyager .navbar.navbar-default .navbar-header .navbar-expand-toggle {
+    color: #353d47;
+}
+
+.voyager .navbar .navbar-header .navbar-right-expand-toggle,
+.voyager .navbar.navbar-default .navbar-header .navbar-right-expand-toggle {
+    color: #353d47;
+}
+
+.voyager .navbar .navbar-breadcrumb li,
+.voyager .navbar.navbar-default .navbar-breadcrumb li {
+    color: #353d47;
+}
+
+.voyager .navbar .navbar-breadcrumb li a,
+.voyager .navbar.navbar-default .navbar-breadcrumb li a {
+    color: #353d47;
+}
+
+.voyager .navbar .navbar-nav > li,
+.voyager .navbar.navbar-default .navbar-nav > li {
+    border-left: 1px solid #F9F9F9;
+}
+
+.voyager .navbar .navbar-nav > li > a,
+.voyager .navbar.navbar-default .navbar-nav > li > a {
+    color: #353d47;
+}
+
+.voyager .navbar .navbar-nav > li:hover > a,
+.voyager .navbar.navbar-default .navbar-nav > li:hover > a {
+    color: #22A7F0;
+}
+
+.voyager .navbar .navbar-nav > li.open > a,
+.voyager .navbar.navbar-default .navbar-nav > li.open > a {
+    background-color: transparent;
+    color: #22A7F0;
+}
+
+.voyager .navbar .navbar-nav > li.danger > a,
+.voyager .navbar.navbar-default .navbar-nav > li.danger > a {
+    background-color: transparent;
+    border-bottom: 4px solid #FA2A00;
+    color: #FA2A00;
+}
+
+.voyager .navbar .navbar-nav > li.danger.open > a,
+.voyager .navbar.navbar-default .navbar-nav > li.danger.open > a {
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .navbar .navbar-nav .dropdown-menu,
+.voyager .navbar.navbar-default .navbar-nav .dropdown-menu {
+    background-color: #F9F9F9;
+    border-color: #E4E4E4;
+}
+
+.voyager .navbar .navbar-nav .dropdown-menu .title,
+.voyager .navbar.navbar-default .navbar-nav .dropdown-menu .title {
+    background-color: #FFF;
+}
+
+.voyager .navbar .navbar-nav .dropdown-menu .title .badge,
+.voyager .navbar.navbar-default .navbar-nav .dropdown-menu .title .badge {
+    background-color: #353d47;
+}
+
+.voyager .navbar .navbar-nav .dropdown-menu.danger,
+.voyager .navbar.navbar-default .navbar-nav .dropdown-menu.danger {
+    border-color: #FA2A00;
+}
+
+.voyager .navbar .navbar-nav .dropdown-menu.danger .title,
+.voyager .navbar.navbar-default .navbar-nav .dropdown-menu.danger .title {
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .navbar .navbar-nav .dropdown-menu.danger .title .badge,
+.voyager .navbar.navbar-default .navbar-nav .dropdown-menu.danger .title .badge {
+    background-color: #FFF;
+    color: #FA2A00;
+}
+
+.voyager .navbar.navbar-inverse {
+    background-color: #353d47;
+    border-bottom: 0;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+.voyager .navbar.navbar-inverse > .container-fluid {
+    background-color: #353d47;
+}
+
+.voyager .navbar.navbar-inverse .navbar-header .navbar-brand {
+    color: #F9F9F9;
+}
+
+.voyager .navbar.navbar-inverse .navbar-header .navbar-expand-toggle {
+    color: #FFF;
+}
+
+.voyager .navbar.navbar-inverse .navbar-header .navbar-right-expand-toggle {
+    color: #FFF;
+}
+
+.voyager .navbar.navbar-inverse .navbar-breadcrumb li {
+    color: #FFF;
+}
+
+.voyager .navbar.navbar-inverse .navbar-breadcrumb li a {
+    color: #FFF;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav > li {
+    border-left: 1px solid #363c46;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav > li > a {
+    color: #FFF;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav > li:hover > a {
+    color: #22A7F0;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav > li.open > a {
+    background-color: transparent;
+    color: #22A7F0;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav > li.danger > a {
+    background-color: transparent;
+    border-bottom: 4px solid #FA2A00;
+    color: #FFF;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav > li.danger.open > a {
+    background-color: #FA2A00;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav .dropdown-menu {
+    background-color: #F9F9F9;
+    border-color: #353d47;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav .dropdown-menu .title {
+    background-color: #FFF;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav .dropdown-menu .title .badge {
+    background-color: #353d47;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav .dropdown-menu.danger {
+    border-color: #FA2A00;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav .dropdown-menu.danger .title {
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .navbar.navbar-inverse .navbar-nav .dropdown-menu.danger .title .badge {
+    background-color: #FFF;
+    color: #FA2A00;
+}
+
+.voyager .side-menu {
+    background-color: #FFF;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.voyager .side-menu .navbar-header {
+    background-color: #22A7F0;
+    margin-bottom: 4px;
+}
+
+.voyager .side-menu .navbar-header .navbar-brand {
+    color: #19B5FE;
+}
+
+.voyager .side-menu .navbar-nav {
+    width: 100%;
+}
+
+.voyager .side-menu .navbar {
+    background-color: #FFF;
+    border-bottom: 0;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.voyager .side-menu .navbar li > a {
+    color: #363c46;
+}
+
+.voyager .side-menu .navbar li.active {
+    border-left: 0;
+}
+
+.voyager .side-menu .navbar li.active > a {
+    border-right: 4px solid #22A7F0;
+    background-color: #FFF;
+}
+
+.voyager .side-menu .navbar > li:hover > a {
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .side-menu .navbar li.dropdown {
+    background-color: transparent;
+}
+
+.voyager .side-menu .navbar li.dropdown > .panel-collapse {
+    background-color: #E4E4E4;
+}
+
+.voyager .side-menu .navbar li.dropdown .panel-body {
+    padding: 0 7px;
+}
+
+.voyager .side-menu.sidebar-inverse {
+    background-color: #353d47;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.voyager .side-menu.sidebar-inverse .navbar {
+    background-color: #353d47;
+    border-bottom: 0;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.voyager .side-menu.sidebar-inverse .navbar li {
+    border-left: 0;
+}
+
+.voyager .side-menu.sidebar-inverse .navbar li > a {
+    color: #FFF;
+}
+
+.voyager .side-menu.sidebar-inverse .navbar li.active > a {
+    color: #353d47;
+    border-left: 3px solid #22A7F0;
+    border-right: 0 solid #22A7F0;
+    background-color: #FFF;
+}
+
+.voyager .side-menu.sidebar-inverse .navbar li.active > a .icon {
+    margin-left: -3px;
+}
+
+.voyager .side-menu.sidebar-inverse .navbar > li:hover > a {
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .side-menu.sidebar-inverse .navbar li.dropdown > .panel-collapse {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.voyager .side-menu.sidebar-inverse .navbar li.dropdown .panel-body {
+    padding: 0 7px;
+}
+
+@media (max-width: 768px) {
+    .voyager .navbar.navbar-default .navbar-nav > li {
+        border-left: 0;
+    }
+    .voyager .navbar.navbar-default .navbar-right {
+        background-color: #FFF;
+    }
+    .voyager .navbar.navbar-inverse .navbar-nav > li {
+        border-left: 0;
+    }
+    .voyager .navbar.navbar-inverse .navbar-right {
+        background-color: #353d47;
+    }
+}
+
+.voyager .card.red {
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .card.yellow {
+    background-color: #ffb400;
+    color: #FFF;
+}
+
+.voyager .card.green {
+    background-color: #1ABC9C;
+    color: #FFF;
+}
+
+.voyager .card.blue {
+    background-color: #22A7F0;
+    color: #FFF;
+}
+
+.voyager .card.dark {
+    background-color: #353d47;
+    color: #FFF;
+}
+
+.voyager .card.red,
+.voyager .card.yellow,
+.voyager .card.green,
+.voyager .card.blue,
+.voyager .card.dark {
+    border: 0;
+}
+
+.voyager .card.red .card-header,
+.voyager .card.yellow .card-header,
+.voyager .card.green .card-header,
+.voyager .card.blue .card-header,
+.voyager .card.dark .card-header {
+    border-bottom: 0;
+}
+
+.voyager .card.red .card-header .title,
+.voyager .card.yellow .card-header .title,
+.voyager .card.green .card-header .title,
+.voyager .card.blue .card-header .title,
+.voyager .card.dark .card-header .title {
+    color: #FFF;
+}
+
+.voyager .card {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border: 0 solid #E4E4E4;
+}
+
+.voyager .card .card-header {
+    border-bottom: 1px solid #E4E4E4;
+}
+
+.voyager .card .card-header .title {
+    color: #353d47;
+}
+
+.voyager .card .card-body .sub-title {
+    border-bottom: 1px solid #EAEAEA;
+}
+
+.voyager .card .card-header.no-border {
+    border-bottom: 0;
+}
+
+.voyager .card .card-jumbotron {
+    background-color: #EAEAEA;
+}
+
+.voyager .card.primary .card-jumbotron {
+    background-color: #353d47;
+    color: #FFF;
+}
+
+.voyager .card.profile .card-footer {
+    border-top: 1px solid #F9F9F9;
+}
+
+.voyager .card.summary-inline.red:hover {
+    background-color: #7c1a06;
+}
+
+.voyager .card.summary-inline.yellow:hover {
+    background-color: #85630f;
+}
+
+.voyager .card.summary-inline.green:hover {
+    background-color: #006551;
+}
+
+.voyager .card.summary-inline.blue:hover {
+    background-color: #353d47;
+}
+
+.voyager .card.summary-inline.dark:hover {
+    background-color: #09486b;
+}
+
+.voyager .card.card-success .card-header {
+    background-color: #1ABC9C;
+}
+
+.voyager .card.card-success .card-header .title {
+    color: #FFF;
+}
+
+.voyager .card.card-info .card-header {
+    background-color: #22A7F0;
+}
+
+.voyager .card.card-info .card-header .title {
+    color: #FFF;
+}
+
+.voyager .panel.panel-default {
+    border: 1px solid #EAEAEA;
+}
+
+.voyager .panel.panel-default .panel-heading {
+    border-bottom: 1px solid #EAEAEA;
+    background-color: #F0F0F0;
+}
+
+.voyager .panel.panel-primary {
+    border: 1px solid #353d47;
+}
+
+.voyager .panel.panel-primary .panel-heading {
+    border-bottom: 1px solid #353d47;
+    background-color: #73849d;
+    color: #FFF;
+}
+
+.voyager .panel.panel-success {
+    border: 1px solid #1ABC9C;
+}
+
+.voyager .panel.panel-success .panel-heading {
+    border-bottom: 1px solid #1ABC9C;
+    background-color: #99e9d9;
+    color: #006551;
+}
+
+.voyager .panel.panel-info {
+    border: 1px solid #22A7F0;
+}
+
+.voyager .panel.panel-info .panel-heading {
+    border-bottom: 1px solid #22A7F0;
+    background-color: #91d5fb;
+    color: #09486b;
+}
+
+.voyager .panel.panel-warning {
+    border: 1px solid #FABE28;
+}
+
+.voyager .panel.panel-warning .panel-heading {
+    border-bottom: 1px solid #FABE28;
+    background-color: #ffe5a2;
+    color: #85630f;
+}
+
+.voyager .panel.panel-danger {
+    border: 1px solid #fb927d;
+}
+
+.voyager .panel.panel-danger .panel-heading {
+    border-bottom: 1px solid #fb927d;
+    background-color: #ffb8aa;
+    color: #7c1a06;
+}
+
+.voyager .panel.fresh-color.panel-primary {
+    border: 1px solid #353d47;
+}
+
+.voyager .panel.fresh-color.panel-primary .panel-heading {
+    border-bottom: 1px solid #353d47;
+    background-color: #353d47;
+    color: #FFF;
+}
+
+.voyager .panel.fresh-color.panel-success {
+    border: 1px solid #1ABC9C;
+}
+
+.voyager .panel.fresh-color.panel-success .panel-heading {
+    border-bottom: 1px solid #1ABC9C;
+    background-color: #1ABC9C;
+    color: #FFF;
+}
+
+.voyager .panel.fresh-color.panel-info {
+    border: 1px solid #22A7F0;
+}
+
+.voyager .panel.fresh-color.panel-info .panel-heading {
+    border-bottom: 1px solid #22A7F0;
+    background-color: #22A7F0;
+    color: #FFF;
+}
+
+.voyager .panel.fresh-color.panel-warning {
+    border: 1px solid #FABE28;
+}
+
+.voyager .panel.fresh-color.panel-warning .panel-heading {
+    border-bottom: 1px solid #FABE28;
+    background-color: #FABE28;
+    color: #FFF;
+}
+
+.voyager .panel.fresh-color.panel-danger {
+    border: 1px solid #FA2A00;
+}
+
+.voyager .panel.fresh-color.panel-danger .panel-heading {
+    border-bottom: 1px solid #FA2A00;
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .btn.btn-default {
+    background-color: #F0F0F0;
+    border-color: #EAEAEA;
+}
+
+.voyager .btn.btn-default:hover {
+    background-color: #EAEAEA;
+}
+
+.voyager .btn.btn-success {
+    background-color: #1ABC9C;
+    color: #FFF;
+    border-color: #1ABC9C;
+}
+
+.voyager .btn.btn-warning {
+    background-color: #FABE28;
+    color: #FFF;
+    border-color: #FABE28;
+}
+
+.voyager .btn.btn-info {
+    background-color: #22A7F0;
+    color: #FFF;
+    border-color: #22A7F0;
+}
+
+.voyager .btn.btn-danger {
+    background-color: #FA2A00;
+    color: #FFF;
+    border-color: #FA2A00;
+}
+
+.voyager .btn.btn-link {
+    color: #353d47;
+}
+
+.voyager .progress .progress-bar {
+    background-color: #353d47;
+    color: #FFF;
+}
+
+.voyager .progress .progress-bar.progress-bar-success {
+    background-color: #1ABC9C;
+}
+
+.voyager .progress .progress-bar.progress-bar-info {
+    background-color: #22A7F0;
+}
+
+.voyager .progress .progress-bar.progress-bar-warning {
+    background-color: #FABE28;
+}
+
+.voyager .progress .progress-bar.progress-bar-danger {
+    background-color: #FA2A00;
+}
+
+.voyager .color-white {
+    color: #FFF;
+}
+
+.voyager .pagination > li > a {
+    color: #353d47;
+}
+
+.voyager .pagination .active > a,
+.voyager .pagination .active > a:focus,
+.voyager .pagination .active > a:hover,
+.voyager .pagination .active span,
+.voyager .pagination .active > span:focus,
+.voyager .pagination .active > span:hover {
+    background-color: #353d47;
+    border-color: #353d47;
+    color: #FFF;
+}
+
+.voyager .modal.modal-primary .modal-header {
+    background-color: #353d47;
+    color: #FFF;
+}
+
+.voyager .modal.modal-success .modal-header {
+    background-color: #1ABC9C;
+    color: #FFF;
+}
+
+.voyager .modal.modal-info .modal-header {
+    background-color: #22A7F0;
+    color: #FFF;
+}
+
+.voyager .modal.modal-warning .modal-header {
+    background-color: #FABE28;
+    color: #FFF;
+}
+
+.voyager .modal.modal-danger .modal-header {
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .alert.alert-success {
+    background-color: #99e9d9;
+    color: #006551;
+    border-color: #1ABC9C;
+}
+
+.voyager .alert.alert-success .alert-link {
+    color: #006551;
+    text-decoration: underline;
+}
+
+.voyager .alert.alert-success .btn-link {
+    color: #006551;
+}
+
+.voyager .alert.alert-info {
+    background-color: #91d5fb;
+    color: #09486b;
+    border-color: #22A7F0;
+}
+
+.voyager .alert.alert-info .alert-link {
+    color: #09486b;
+    text-decoration: underline;
+}
+
+.voyager .alert.alert-info .btn-link {
+    color: #09486b;
+}
+
+.voyager .alert.alert-warning {
+    background-color: #ffe5a2;
+    border-color: #FABE28;
+    color: #85630f;
+}
+
+.voyager .alert.alert-warning .alert-link {
+    color: #85630f;
+    text-decoration: underline;
+}
+
+.voyager .alert.alert-warning .btn-link {
+    color: #85630f;
+}
+
+.voyager .alert.alert-danger {
+    background-color: #ffb8aa;
+    border-color: #fb927d;
+    color: #7c1a06;
+}
+
+.voyager .alert.alert-danger .alert-link {
+    color: #7c1a06;
+    text-decoration: underline;
+}
+
+.voyager .alert.alert-danger .btn-link {
+    color: #7c1a06;
+}
+
+.voyager .alert.fresh-color {
+    color: #FFF;
+}
+
+.voyager .alert.fresh-color .alert-link {
+    color: #FFF;
+    text-decoration: underline;
+}
+
+.voyager .alert.fresh-color .btn-link {
+    color: #FFF;
+}
+
+.voyager .alert.fresh-color.alert-success {
+    background-color: #1ABC9C;
+}
+
+.voyager .alert.fresh-color.alert-info {
+    background-color: #22A7F0;
+}
+
+.voyager .alert.fresh-color.alert-warning {
+    background-color: #FABE28;
+}
+
+.voyager .alert.fresh-color.alert-danger {
+    background-color: #FA2A00;
+    border-color: #FA2A00;
+}
+
+.voyager .list-group .list-group-item.active {
+    background-color: #353d47;
+    color: #FFF;
+    border-color: #353d47;
+}
+
+.voyager .list-group .list-group-item.active .badge {
+    color: #353d47;
+}
+
+.voyager .list-group .list-group-item.list-group-item-success {
+    background-color: #99e9d9;
+    color: #006551;
+    border-color: #99e9d9;
+}
+
+.voyager .list-group .list-group-item.list-group-item-success .badge {
+    background-color: #FFF;
+    color: #1ABC9C;
+}
+
+.voyager .list-group .list-group-item.list-group-item-info {
+    background-color: #91d5fb;
+    color: #09486b;
+    border-color: #91d5fb;
+}
+
+.voyager .list-group .list-group-item.list-group-item-info .badge {
+    background-color: #FFF;
+    color: #22A7F0;
+}
+
+.voyager .list-group .list-group-item.list-group-item-warning {
+    background-color: #ffe5a2;
+    color: #85630f;
+    border-color: #ffe5a2;
+}
+
+.voyager .list-group .list-group-item.list-group-item-warning .badge {
+    background-color: #FFF;
+    color: #FABE28;
+}
+
+.voyager .list-group .list-group-item.list-group-item-danger {
+    background-color: #ffb8aa;
+    color: #7c1a06;
+    border-color: #ffb8aa;
+}
+
+.voyager .list-group .list-group-item.list-group-item-danger .badge {
+    background-color: #FFF;
+    color: #FA2A00;
+}
+
+.voyager .bootstrap-switch {
+    border-color: #EAEAEA;
+}
+
+.voyager .bootstrap-switch .bootstrap-switch-primary {
+    background-color: #353d47;
+}
+
+.voyager .table .active td,
+.voyager .table .active th {
+    background-color: #EAEAEA;
+}
+
+.voyager .table .success {
+    color: #006551;
+}
+
+.voyager .table .success td,
+.voyager .table .success th {
+    background-color: #99e9d9;
+}
+
+.voyager .table .info {
+    color: #09486b;
+}
+
+.voyager .table .info td,
+.voyager .table .info th {
+    background-color: #91d5fb;
+}
+
+.voyager .table .warning {
+    color: #85630f;
+}
+
+.voyager .table .warning td,
+.voyager .table .warning th {
+    background-color: #ffe5a2;
+}
+
+.voyager .table .danger {
+    color: #7c1a06;
+}
+
+.voyager .table .danger td,
+.voyager .table .danger th {
+    background-color: #ffb8aa;
+}
+
+.voyager .table > tbody > tr > td,
+.voyager .table > tbody > tr > th,
+.voyager .table > tfoot > tr > td,
+.voyager .table > tfoot > tr > th {
+    border-color: #EAEAEA;
+}
+
+.voyager .table > thead > tr > th {
+    border-color: #EAEAEA;
+    background: #F8FAFC;
+}
+
+.voyager .table.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #FDFDFD;
+}
+
+.voyager .login-box .login-form .login-header {
+    color: #FFF;
+}
+
+.voyager .login-box .login-form .login-body {
+    background-color: #FFF;
+}
+
+.voyager .login-box input {
+    background-color: #F9F9F9;
+    border: 1px solid #F9F9F9;
+}
+
+.voyager .login-box .login-footer a {
+    color: #FFF;
+}
+
+.voyager .login-box .login-footer a:hover {
+    color: #FFF;
+    text-decoration: underline;
+}
+
+.voyager .badge.primary {
+    background-color: #353d47;
+}
+
+.voyager .badge.success {
+    background-color: #1ABC9C;
+}
+
+.voyager .badge.info {
+    background-color: #22A7F0;
+}
+
+.voyager .badge.warning {
+    background-color: #FABE28;
+}
+
+.voyager .badge.danger {
+    background-color: #FA2A00;
+}
+
+.voyager .nav-tabs {
+    background-color: #EAEAEA;
+}
+
+.voyager .nav-tabs > li > a:hover {
+    background-color: #EAEAEA;
+}
+
+.voyager .nav-tabs > li.active > a:hover {
+    background-color: #FFF;
+}
+
+.voyager .tabs-below > .nav-tabs {
+    border-top: 1px solid #E4E4E4;
+}
+
+.voyager .tabs-below > .nav-tabs > li > a:hover,
+.voyager .tabs-below > .nav-tabs > li > a:focus {
+    border-top-color: #E4E4E4;
+    border-bottom-color: transparent;
+}
+
+.voyager .tabs-below > .nav-tabs > .active > a,
+.voyager .tabs-below > .nav-tabs > .active > a:hover,
+.voyager .tabs-below > .nav-tabs > .active > a:focus {
+    border-color: transparent #E4E4E4 #E4E4E4 #E4E4E4;
+}
+
+.voyager .tabs-left > .nav-tabs {
+    border-right: 1px solid #E4E4E4;
+}
+
+.voyager .tabs-left > .nav-tabs > li > a:hover,
+.voyager .tabs-left > .nav-tabs > li > a:focus {
+    border-color: #E4E4E4 #E4E4E4 #E4E4E4 #E4E4E4;
+}
+
+.voyager .tabs-left > .nav-tabs .active > a,
+.voyager .tabs-left > .nav-tabs .active > a:hover,
+.voyager .tabs-left > .nav-tabs .active > a:focus {
+    border-color: #E4E4E4 transparent #E4E4E4 #E4E4E4;
+    *border-right-color: #FFF;
+}
+
+.voyager .tabs-right > .nav-tabs {
+    border-left: 1px solid #E4E4E4;
+}
+
+.voyager .tabs-right > .nav-tabs > li > a:hover,
+.voyager .tabs-right > .nav-tabs > li > a:focus {
+    border-color: #E4E4E4 #E4E4E4 #E4E4E4 #E4E4E4;
+}
+
+.voyager .tabs-right > .nav-tabs .active > a,
+.voyager .tabs-right > .nav-tabs .active > a:hover,
+.voyager .tabs-right > .nav-tabs .active > a:focus {
+    border-color: #E4E4E4 #E4E4E4 #E4E4E4 transparent;
+    *border-left-color: #FFF;
+}
+
+.voyager .step .nav-tabs {
+    background-color: #FFF;
+}
+
+.voyager .step .nav-tabs > li {
+    border: 1px solid #E4E4E4;
+    border-right: 0;
+}
+
+.voyager .step .nav-tabs > li:after {
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid #FFF;
+}
+
+.voyager .step .nav-tabs > li:before {
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-left: 16px solid #E4E4E4;
+}
+
+.voyager .step .nav-tabs > li.active {
+    background-color: #EAEAEA;
+}
+
+.voyager .step .nav-tabs > li.active > a,
+.voyager .step .nav-tabs > li.active > a:focus,
+.voyager .step .nav-tabs > li.active > a:hover {
+    background: transparent;
+}
+
+.voyager .step .nav-tabs > li:hover {
+    background-color: #EAEAEA;
+}
+
+.voyager .step .nav-tabs > li:hover:after,
+.voyager .step .nav-tabs > li.active:after {
+    border-left: 15px solid #EAEAEA;
+}
+
+.voyager .step .nav-tabs > li:last-child {
+    border-right: 1px solid #E4E4E4;
+}
+
+.voyager .step .nav-tabs > li.step-success {
+    background-color: #99e9d9;
+    border: 1px solid #1ABC9C;
+}
+
+.voyager .step .nav-tabs > li.step-success a {
+    color: #006551;
+}
+
+.voyager .step .nav-tabs > li.step-disabled {
+    background-color: #99e9d9;
+}
+
+.voyager .step .nav-tabs > li.step-success:after {
+    border-left: 15px solid #99e9d9;
+}
+
+.voyager .step .nav-tabs > li.step-success.active:hover:after {
+    border-left: 15px solid #99e9d9;
+}
+
+.voyager .step .nav-tabs > li.step-success:hover:after {
+    border-left: 15px solid #EAEAEA;
+}
+
+.voyager .step.card-no-padding .nav-tabs > li {
+    border: 0 solid transparent;
+    border-right: 1px solid #E4E4E4;
+    border-bottom: 1px solid #E4E4E4;
+}
+
+.voyager .step.card-no-padding .nav-tabs > li:last-child {
+    border-right: 0 solid #E4E4E4;
+}
+
+.voyager .step.tabs-left .nav-tabs > li {
+    border: 1px solid #E4E4E4;
+}
+
+.voyager .step.tabs-left .nav-tabs > li:after {
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid #FFF;
+}
+
+.voyager .step.tabs-left .nav-tabs > li:before {
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-left: 16px solid #E4E4E4;
+}
+
+.voyager .step.tabs-left .nav-tabs > li.active {
+    background-color: #EAEAEA;
+}
+
+.voyager .step.tabs-left .nav-tabs > li.active > a,
+.voyager .step.tabs-left .nav-tabs > li.active > a:focus,
+.voyager .step.tabs-left .nav-tabs > li.active > a:hover {
+    background: transparent;
+}
+
+.voyager .step.tabs-left .nav-tabs > li:hover {
+    background-color: #EAEAEA;
+}
+
+.voyager .step.tabs-left .nav-tabs > li:hover:after,
+.voyager .step.tabs-left .nav-tabs > li.active:after {
+    border-left: 15px solid #EAEAEA;
+}
+
+.voyager .step.tabs-left.card-no-padding .nav-tabs > li {
+    border: 0 solid transparent;
+}
+
+.voyager .pricing-table {
+    box-shadow: 0 1px 1px #CCC;
+}
+
+.voyager .pricing-table .pt-header {
+    background-color: #E4E4E4;
+}
+
+.voyager .pricing-table .pt-header .plan-pricing .pricing {
+    text-shadow: 0 1px 1px #FFF;
+}
+
+.voyager .pricing-table .pt-body {
+    background-color: #F9F9F9;
+}
+
+.voyager .pricing-table .pt-body .plan-detail {
+    border-top: 1px dashed rgba(255, 255, 255, 0.6);
+    padding-top: 1em;
+    margin-top: 1em;
+}
+
+.voyager .pricing-table .pt-footer {
+    background-color: #F9F9F9;
+}
+
+.voyager .pricing-table.dark-blue .pt-header {
+    background-color: #353d47;
+    color: #FFF;
+}
+
+.voyager .pricing-table.dark-blue .pt-body {
+    background-color: #9eaabd;
+    color: #363c46;
+}
+
+.voyager .pricing-table.green .pt-header {
+    background-color: #1ABC9C;
+    color: #FFF;
+}
+
+.voyager .pricing-table.green .pt-body {
+    background-color: #99e9d9;
+    color: #006551;
+}
+
+.voyager .pricing-table.blue .pt-header {
+    background-color: #22A7F0;
+    color: #FFF;
+}
+
+.voyager .pricing-table.blue .pt-body {
+    background-color: #91d5fb;
+    color: #09486b;
+}
+
+.voyager .pricing-table.yellow .pt-header {
+    background-color: #FABE28;
+    color: #FFF;
+}
+
+.voyager .pricing-table.yellow .pt-body {
+    background-color: #ffe5a2;
+    color: #85630f;
+}
+
+.voyager .pricing-table.red .pt-header {
+    background-color: #FA2A00;
+    color: #FFF;
+}
+
+.voyager .pricing-table.red .pt-body {
+    background-color: #ffb8aa;
+    color: #7c1a06;
+}
+
+.voyager.landing-page .navbar-inverse .navbar-toggle:focus,
+.voyager.landing-page .navbar-inverse .navbar-toggle:hover {
+    background-color: transparent;
+}
+
+.voyager.landing-page .navbar {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.voyager.landing-page .navbar .navbar-nav > .active > a {
+    background-color: transparent;
+}
+
+.voyager.landing-page .navbar .navbar-nav > li {
+    border-left: 0 solid #F9F9F9;
+}
+
+.voyager.landing-page .navbar .navbar-nav > li > a {
+    color: #FFF;
+}
+
+.voyager.landing-page .navbar .navbar-collapse {
+    border: 0;
+}
+
+.voyager.landing-page .navbar.affix .navbar-nav > li > a {
+    color: #353d47;
+}
+
+.voyager.landing-page .navbar.affix .navbar-nav > li:hover > a {
+    color: #22A7F0;
+}
+
+@media (max-width: 768px) {
+    .voyager.landing-page .navbar .navbar-collapse {
+        background-color: #333;
+    }
+    .voyager.landing-page .navbar .navbar-right {
+        background-color: transparent;
+        color: #FFF;
+    }
+    .voyager.landing-page .navbar.affix .navbar-nav > li > a {
+        color: #FFF;
+    }
+}
+
+.voyager.landing-page .navbar.affix .navbar-brand {
+    color: #353d47;
+}
+
+.voyager.landing-page .navbar.affix .navbar-toggle .icon-bar {
+    background-color: #353d47;
+}
+
+.voyager.landing-page .app-header .app-btn {
+    background-color: transparent;
+    border: 2px solid #FFF;
+}
+
+.voyager.landing-page .app-content-a {
+    background-color: #EAEAEA;
+}
+
+
 .alert .close{
   position: relative;
   right: -31px;
@@ -414,7 +1638,7 @@ p#the_plugin_name{
   font-size: 18px;
 }
 
-.flat-blue .side-menu.sidebar-inverse .navbar li.active > a .icon{
+.voyager .side-menu.sidebar-inverse .navbar li.active > a .icon{
   margin-left:0px;
 }
 
@@ -462,21 +1686,21 @@ p#the_plugin_name{
   top:-4px;
 }
 
-.flat-blue .side-menu.sidebar-inverse .navbar li.active > a{
+.voyager .side-menu.sidebar-inverse .navbar li.active > a{
   color: #fff;
   background: none;
   border:0px;
 }
 
-.flat-blue .side-menu.sidebar-inverse .navbar li > a {
+.voyager .side-menu.sidebar-inverse .navbar li > a {
     color: #76838f;
 }
 
-.flat-blue .side-menu.sidebar-inverse .navbar{
+.voyager .side-menu.sidebar-inverse .navbar{
   background:none;
 }
 
-.flat-blue .side-menu.sidebar-inverse{
+.voyager .side-menu.sidebar-inverse{
  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#353d47+0,21292e+100 */
 background: rgb(53,61,71); /* Old browsers */
 background: -moz-linear-gradient(45deg,  rgba(53,61,71,1) 0%, rgba(33,41,46,1) 100%); /* FF3.6-15 */
@@ -487,7 +1711,7 @@ overflow-x: hidden;
 
 }
 
-.flat-blue .side-menu.sidebar-inverse .navbar li > a:hover{
+.voyager .side-menu.sidebar-inverse .navbar li > a:hover{
   color: #fff;
   background: #2A363B;
 }
@@ -499,7 +1723,7 @@ overflow-x: hidden;
   width:30px;
   height:30px;
   position:relative;
-  padding:30px;
+  padding:27px 30px;
   cursor:pointer;
   opacity:1;
   transition:opacity 0.2s ease;
@@ -615,7 +1839,7 @@ overflow-x: hidden;
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
-.flat-blue .navbar .navbar-nav .dropdown-menu, .flat-blue .navbar.navbar-default .navbar-nav .dropdown-menu{
+.voyager .navbar .navbar-nav .dropdown-menu, .voyager .navbar.navbar-default .navbar-nav .dropdown-menu{
   background-color:#fff;
 }
 
@@ -781,17 +2005,17 @@ float: left;
     line-height: 1.5;
   }
 
-.flat-blue .panel.panel-warning .panel-heading {
+.voyager .panel.panel-warning .panel-heading {
     background-color: #F2A654;
     border-bottom:0px;
 }
 
-.flat-blue .panel.panel-primary .panel-heading{
+.voyager .panel.panel-primary .panel-heading{
   background-color:#62A8EA;
   border-bottom:0px;
 }
 
-.flat-blue .panel.panel-primary .panel-info, .flat-blue .panel.panel-info .panel-heading{
+.voyager .panel.panel-primary .panel-info, .voyager .panel.panel-info .panel-heading{
   background-color:#57C7D4;
   border-bottom:0px;
 }
@@ -814,11 +2038,11 @@ float: left;
 
 }
 
-.flat-blue .panel.panel-warning, .flat-blue .panel.panel-primary, .flat-blue .panel.panel-info{
+.voyager .panel.panel-warning, .voyager .panel.panel-primary, .voyager .panel.panel-info{
   border:0px;
 }
 
-.flat-blue .pagination .active > a, .flat-blue .pagination .active > a:focus, .flat-blue .pagination .active > a:hover, .flat-blue .pagination .active span, .flat-blue .pagination .active > span:focus, .flat-blue .pagination .active > span:hover {
+.voyager .pagination .active > a, .voyager .pagination .active > a:focus, .voyager .pagination .active > a:hover, .voyager .pagination .active span, .voyager .pagination .active > span:focus, .voyager .pagination .active > span:hover {
     z-index: 3;
     color: #fff;
     cursor: default;
@@ -984,7 +2208,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
 
 }
 
- .side-menu .navbar-header, .flat-blue .side-menu .navbar-header{
+ .side-menu .navbar-header, .voyager .side-menu .navbar-header{
   float:none;
   margin-bottom:0px;
 }
@@ -1222,11 +2446,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
   border:1px solid #eeeeee;
 }
 
-.flat-blue .side-menu.sidebar-inverse .navbar li.dropdown .panel-body{
+.voyager .side-menu.sidebar-inverse .navbar li.dropdown .panel-body{
   padding:0px;
 }
 
-.flat-blue .alert{
+.voyager .alert{
     margin-right: 15px;
     margin-bottom: 5px;
     border-radius: 0;
@@ -1238,28 +2462,28 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', end
     margin-bottom:30px;
 }
 
-.flat-blue .alert.alert-success{
+.voyager .alert.alert-success{
   background-color: #55B559;
   color:#fff;
   border-color:rgba(0, 0, 0, 0.1);
 }
-.flat-blue .alert.alert-danger{
+.voyager .alert.alert-danger{
   background-color: #F55145;
   color:#fff;
   border-color:rgba(0, 0, 0, 0.1);
 }
-.flat-blue .alert.alert-warning{
+.voyager .alert.alert-warning{
   background-color: #FF9E0F;
   color:#fff;
   border-color:rgba(0, 0, 0, 0.1);
 }
-.flat-blue .alert.alert-info{
+.voyager .alert.alert-info{
   background-color:#22A7F0;
   color:#fff;
   border-color:rgba(0, 0, 0, 0.1);
 }
 
-.flat-blue .panel-body .alert{
+.voyager .panel-body .alert{
   margin-right:0px;
   margin-bottom:10px;
   margin-top:10px;
