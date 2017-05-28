@@ -128,25 +128,27 @@ class DataRowsTableSeeder extends Seeder
                 'details'      => json_encode([
                     'resize' => [
                         'width'  => '1000',
-                        'height' => 'null'
+                        'height' => 'null',
                     ],
                     'quality'    => '70%',
                     'upsize'     => true,
                     'thumbnails' => [
                         [
                             'name'  => 'medium',
-                            'scale' => '50%'
-                        ],[
+                            'scale' => '50%',
+                        ],
+                        [
                             'name'  => 'small',
-                            'scale' => '25%'
-                        ],[
+                            'scale' => '25%',
+                        ],
+                        [
                             'name' => 'cropped',
                             'crop' => [
                                 'width' => '300',
-                                'height' => '250'
-                            ]
-                        ]
-                    ]
+                                'height' => '250',
+                            ],
+                        ],
+                    ],
                 ]),
                 'order' => 7,
             ])->save();
@@ -166,7 +168,7 @@ class DataRowsTableSeeder extends Seeder
                 'details'      => json_encode([
                     'slugify' => [
                         'origin'      => 'title',
-                        'forceUpdate' => true
+                        'forceUpdate' => true,
                     ],
                 ]),
                 'order'        => 8,
