@@ -125,33 +125,30 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "resize": {
-        "width": "1000",
-        "height": "null"
-    },
-    "quality": "70%",
-    "upsize": true,
-    "thumbnails": [
-        {
-            "name": "medium",
-            "scale": "50%"
-        },
-        {
-            "name": "small",
-            "scale": "25%"
-        },
-        {
-            "name": "cropped",
-            "crop": {
-                "width": "300",
-                "height": "250"
-            }
-        }
-    ]
-}',
-                'order'        => 7,
+                'details'      => json_encode([
+                    'resize' => [
+                        'width'  => '1000',
+                        'height' => 'null'
+                    ],
+                    'quality'    => '70%',
+                    'upsize'     => true,
+                    'thumbnails' => [
+                        [
+                            'name'  => 'medium',
+                            'scale' => '50%'
+                        ],[
+                            'name'  => 'small',
+                            'scale' => '25%'
+                        ],[
+                            'name' => 'cropped',
+                            'crop' => [
+                                'width' => '300',
+                                'height' => '250'
+                            ]
+                        ]
+                    ]
+                ]),
+                'order' => 7,
             ])->save();
         }
 
@@ -166,13 +163,12 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "slugify": {
-        "origin": "title",
-        "forceUpdate": true
-    }
-}',
+                'details'      => json_encode([
+                    'slugify' => [
+                        'origin'      => 'title',
+                        'forceUpdate' => true
+                    ],
+                ]),
                 'order'        => 8,
             ])->save();
         }
@@ -220,15 +216,14 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '
-{
-    "default": "DRAFT",
-    "options": {
-        "PUBLISHED": "published",
-        "DRAFT": "draft",
-        "PENDING": "pending"
-    }
-}',
+                'details'      => json_encode([
+                    'default' => 'DRAFT',
+                    'options' => [
+                        'PUBLISHED' => 'published',
+                        'DRAFT'     => 'draft',
+                        'PENDING'   => 'pending'
+                    ],
+                ]),
                 'order'        => 11,
             ])->save();
         }
