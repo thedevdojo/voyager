@@ -746,7 +746,11 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'slugify' => [
+                        'origin' => 'name',
+                    ],
+                ]),
                 'order'        => 5,
             ])->save();
         }
