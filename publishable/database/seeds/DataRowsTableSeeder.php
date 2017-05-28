@@ -144,7 +144,7 @@ class DataRowsTableSeeder extends Seeder
                         [
                             'name' => 'cropped',
                             'crop' => [
-                                'width' => '300',
+                                'width'  => '300',
                                 'height' => '250',
                             ],
                         ],
@@ -223,7 +223,7 @@ class DataRowsTableSeeder extends Seeder
                     'options' => [
                         'PUBLISHED' => 'published',
                         'DRAFT'     => 'draft',
-                        'PENDING'   => 'pending'
+                        'PENDING'   => 'pending',
                     ],
                 ]),
                 'order'        => 11,
