@@ -1,4 +1,4 @@
 @if(isset($dataTypeContent->{$row->field}))
-    <div class="fileType">{{ $dataTypeContent->{$row->field} }}</div>
+    <a class="fileType" href="/storage/{{ $dataTypeContent->{$row->field} }}">Download</a>
 @endif
 <input type="file" name="{{ $row->field }}">
