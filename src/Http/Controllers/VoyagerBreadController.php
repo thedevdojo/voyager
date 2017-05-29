@@ -299,8 +299,8 @@ class VoyagerBreadController extends Controller
     /**
      * Delete all images related to a BREAD item.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $data
-     * @param  \Illuminate\Database\Eloquent\Model  $rows
+     * @param  \Illuminate\Database\Eloquent\Model $data
+     * @param  \Illuminate\Database\Eloquent\Model $rows
      * @return  void
      */
     public function deleteBreadImages($data, $rows)
