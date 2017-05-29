@@ -167,7 +167,7 @@ class Voyager
         $exist = $this->permissions->where('key', $permission)->first();
 
         // Permission not found
-        if (! $exist) {
+        if (!$exist) {
             throw new \Exception('Permission does not exist', 400);
         }
 
