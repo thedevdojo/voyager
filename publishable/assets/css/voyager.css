@@ -179,6 +179,11 @@
     height: 1px;
 }
 
+.voyager .expanded .navbar > .container-fluid,
+.voyager .expanded .navbar.navbar-default > .container-fluid:after {
+  border-bottom:0px;
+}
+
 .voyager .navbar .navbar-header .navbar-brand,
 .voyager .navbar.navbar-default .navbar-header .navbar-brand {
     color: #F9F9F9;
@@ -1723,7 +1728,7 @@ overflow-x: hidden;
   width:30px;
   height:30px;
   position:relative;
-  padding:27px 30px;
+  padding:28px 30px;
   cursor:pointer;
   opacity:1;
   transition:opacity 0.2s ease;

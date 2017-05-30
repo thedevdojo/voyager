@@ -15,6 +15,9 @@
             background-image:url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
             background-color: {{ Voyager::setting("admin_bg_color", "#FFFFFF" ) }};
         }
+        .login-sidebar{
+            border-top:5px solid {{ config('voyager.primary_color','#22A7F0') }};
+        }
         .login-sidebar:after {
             background: linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});
             background: -webkit-linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});
@@ -25,14 +28,13 @@
 
     </style>
 
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 </head>
 <body>
-<!-- Designed with ♥ by Frondor -->
 <div class="container-fluid">
     <div class="row">
         <div class="faded-bg animated"></div>
-        <div class="hidden-xs col-sm-8 col-md-9">
+        <div class="hidden-xs col-sm-7 col-md-8">
             <div class="clearfix">
                 <div class="col-sm-12 col-md-10 col-md-offset-2">
                     <div class="logo-title-container">
@@ -51,37 +53,39 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-4 col-md-3 login-sidebar animated fadeInRightBig">
+        <div class="col-xs-12 col-sm-5 col-md-4 login-sidebar">
 
-            <div class="login-container animated fadeInRightBig">
+            <div class="login-container">
 
-                <h2>Sign In Below:</h2>
+                <p>Sign in to your account</p>
 
                 <form action="{{ route('voyager.login') }}" method="POST">
-                {{ csrf_field() }}
-                <div class="group">      
-                  <input type="text" name="email" value="{{ old('email') }}" required>
-                  <span class="highlight"></span>
-                  <span class="bar"></span>
-                  <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> E-mail</span></label>
-                </div>
+                    {{ csrf_field() }}
+                    <div class="form-group form-group-default ">
+                        <label>Email</label>
+                        <div class="controls">
+                            <input type="text" name="email" id="email" value="{{ old('email') }}" placeholder="Enter your email" class="form-control" required>
+                         </div>
+                    </div>
 
-                <div class="group">      
-                  <input type="password" name="password" required>
-                  <span class="highlight"></span>
-                  <span class="bar"></span>
-                  <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> Password</span></label>
-                </div>
+                    <div class="form-group form-group-default ">
+                        <label>Password</label>
+                        <div class="controls">
+                            <input type="password" name="password" placeholder="Enter your password" class="form-control" required>
+                        </div>
+                    </div>
 
-                <button type="submit" class="btn btn-block login-button">
-                    <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
-                    <span class="signin">Login</span>
-                </button>
+                    <button type="submit" class="btn btn-block login-button">
+                        <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
+                        <span class="signin">Login</span>
+                    </button>
                
               </form>
 
+              <div style="clear:both"></div>
+
               @if(!$errors->isEmpty())
-              <div class="alert alert-black">
+              <div class="alert alert-red">
                 <ul class="list-unstyled">
                     @foreach($errors->all() as $err)
                     <li>{{ $err }}</li>
@@ -106,6 +110,7 @@
             ev.preventDefault();
         }
     });
+    document.getElementById('email').focus();
 </script>
 </body>
 </html>
