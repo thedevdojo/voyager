@@ -177,11 +177,11 @@ class VoyagerBreadController extends Controller
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
             return redirect()
-            ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
-            ->with([
-                'message'    => "Successfully Updated {$dataType->display_name_singular}",
-                'alert-type' => 'success',
-                ]);
+                ->route("voyager.{$dataType->slug}.index", ['id' => $id])
+                ->with([
+                    'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                    'alert-type' => 'success',
+                    ]);
         }
     }
 
@@ -244,7 +244,7 @@ class VoyagerBreadController extends Controller
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
             return redirect()
-                ->route("voyager.{$dataType->slug}.edit", ['id' => $data->id])
+                ->route("voyager.{$dataType->slug}.index", ['id' => $data->id])
                 ->with([
                         'message'    => "Successfully Added New {$dataType->display_name_singular}",
                         'alert-type' => 'success',
