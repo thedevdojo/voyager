@@ -22,9 +22,9 @@
     <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/bootstrap-toggle.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ voyager_asset('js/icheck/icheck.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ voyager_asset('js/datetimepicker/bootstrap-datetimepicker.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/simplemde.min.css') }}">
     <!-- CSS App -->
     <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/themes/flat-blue.css') }}">
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
 
@@ -136,6 +136,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 <script type="text/javascript" src="{{ voyager_asset('js/jquery.cookie.js') }}"></script>
 <script type="text/javascript" src="{{ voyager_asset('js/moment-with-locales.min.js') }}"></script>
 <script type="text/javascript" src="{{ voyager_asset('js/datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+<script type="text/javascript" src="{{ voyager_asset('js/simplemde.min.js') }}"></script>
 <!-- Javascript -->
 <script type="text/javascript" src="{{ voyager_asset('js/readmore.min.js') }}"></script>
 <script type="text/javascript" src="{{ voyager_asset('js/val.js') }}"></script>

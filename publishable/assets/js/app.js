@@ -115,4 +115,18 @@ $(document).ready(function(){
       return false;
     }
   });
+
+  /********** MARKDOWN EDITOR **********/
+
+  $('textarea.simplemde').each(function() {
+      var simplemde = new SimpleMDE({
+          element: this,
+      });
+      simplemde.render(); 
+  });
+
+  console.log('hit');
+
+  /********** END MARKDOWN EDITOR **********/
+
 });
