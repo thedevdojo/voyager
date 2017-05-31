@@ -27,7 +27,7 @@ class UserProfileTest extends TestCase
 
         $this->user = Auth::loginUsingId(1);
 
-        $this->editPageForTheCurrentUser = route('voyager.users.index', ['user' => $this->user->id]);
+        $this->editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $this->user->id]);
 
         $this->listOfUsers = route('voyager.users.index');
     }
@@ -48,7 +48,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
              ->press('Submit')
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
                  ['name' => 'New Awesome Name']
@@ -63,7 +63,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press('Submit')
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
                  ['email' => 'another@email.com']
@@ -78,7 +78,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
              ->press('Submit')
-             ->seePageIs($this->editPageForTheCurrentUser);
+             ->seePageIs($this->listOfUsers);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('voyager-rocks', $updatedPassword));
@@ -92,7 +92,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
              ->press('Submit')
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->listOfUsers)
              ->dontSeeInDatabase(
                  'users',
                  ['id' => 1, 'avatar' => 'user/default.png']
