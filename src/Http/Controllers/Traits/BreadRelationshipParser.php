@@ -100,6 +100,21 @@ trait BreadRelationshipParser
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
                 $relationData = json_decode($bread_data->details)->relationship;
 
+                if ($bread_data->type == 'select_multiple') {
+                    $relationItems = [];
+                    foreach ($relation as $model) {
+                        $relationItem = new \stdClass();
+                        $relationItem->{$field} = $model[$relationData->label];
+                        if (isset($relationData->page_slug)) {
+                            $id = $model->id;
+                            $relationItem->{$field.'_page_slug'} = url($relationData->page_slug, $id);
+                        }
+                        $relationItems[] = $relationItem;
+                    }
+                    $item[$field] = $relationItems;
+                    continue; // Go to the next relation
+                }
+
                 if (!is_object($item[$field])) {
                     $item[$field] = $relation[$relationData->label];
                 } else {

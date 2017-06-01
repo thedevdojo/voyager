@@ -58,11 +58,12 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
     <div class="page-content container-fluid">
-        <form role="form" action="@if(isset($dataTypeContent->id)){{ route('voyager.posts.update', $dataTypeContent->id) }}@else{{ route('voyager.posts.store') }}@endif" method="POST" enctype="multipart/form-data">
+        <form class="form-edit-add" role="form" action="@if(isset($dataTypeContent->id)){{ route('voyager.posts.update', $dataTypeContent->id) }}@else{{ route('voyager.posts.store') }}@endif" method="POST" enctype="multipart/form-data">
             <!-- PUT Method if we are editing -->
             @if(isset($dataTypeContent->id))
                 {{ method_field("PUT") }}
@@ -73,6 +74,16 @@
                 <div class="col-md-8">
                     <!-- ### TITLE ### -->
                     <div class="panel">
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 <i class="voyager-character"></i> Post Title
@@ -83,7 +94,11 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <input type="text" class="form-control" name="title" placeholder="Title" value="@if(isset($dataTypeContent->title)){{ $dataTypeContent->title }}@endif">
+                            @include('voyager::multilingual.input-hidden', [
+                                '_field_name'  => 'title',
+                                '_field_trans' => get_field_translations($dataTypeContent, 'title')
+                            ])
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="@if(isset($dataTypeContent->title)){{ $dataTypeContent->title }}@endif">
                         </div>
                     </div>
 
@@ -95,7 +110,11 @@
                                 <a class="panel-action voyager-resize-full" data-toggle="panel-fullscreen" aria-hidden="true"></a>
                             </div>
                         </div>
-                        <textarea class="richTextBox" name="body" style="border:0px;">@if(isset($dataTypeContent->body)){{ $dataTypeContent->body }}@endif</textarea>
+                        @include('voyager::multilingual.input-hidden', [
+                            '_field_name'  => 'body',
+                            '_field_trans' => get_field_translations($dataTypeContent, 'body', 'rich_text_box', true)
+                        ])
+                        <textarea class="form-control richTextBox" id="richtextbody" name="body" style="border:0px;">@if(isset($dataTypeContent->body)){{ $dataTypeContent->body }}@endif</textarea>
                     </div><!-- .panel -->
 
                     <!-- ### EXCERPT ### -->
@@ -107,7 +126,11 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                          <textarea class="form-control" name="excerpt">@if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif</textarea>
+                            @include('voyager::multilingual.input-hidden', [
+                                '_field_name'  => 'excerpt',
+                                '_field_trans' => get_field_translations($dataTypeContent, 'excerpt')
+                            ])
+                            <textarea class="form-control" name="excerpt">@if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif</textarea>
                         </div>
                     </div>
                 </div>
@@ -123,9 +146,13 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label for="name">URL slug</label>
+                                @include('voyager::multilingual.input-hidden', [
+                                    '_field_name'  => 'slug',
+                                    '_field_trans' => get_field_translations($dataTypeContent, 'slug')
+                                ])
                                 <input type="text" class="form-control" id="slug" name="slug"
                                     placeholder="slug"
-                                    @if(isset($dataTypeContent)){!! isFieldSlugAutoGenerator($dataTypeContent, "slug") !!}@endif
+                                    {{!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}}
                                     value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">
@@ -178,14 +205,26 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <label for="name">Meta Description</label>
+                                @include('voyager::multilingual.input-hidden', [
+                                    '_field_name'  => 'meta_description',
+                                    '_field_trans' => get_field_translations($dataTypeContent, 'meta_description')
+                                ])
                                 <textarea class="form-control" name="meta_description">@if(isset($dataTypeContent->meta_description)){{ $dataTypeContent->meta_description }}@endif</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="name">Meta Keywords</label>
+                                @include('voyager::multilingual.input-hidden', [
+                                    '_field_name'  => 'meta_keywords',
+                                    '_field_trans' => get_field_translations($dataTypeContent, 'meta_keywords')
+                                ])
                                 <textarea class="form-control" name="meta_keywords">@if(isset($dataTypeContent->meta_keywords)){{ $dataTypeContent->meta_keywords }}@endif</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="name">SEO Title</label>
+                                @include('voyager::multilingual.input-hidden', [
+                                    '_field_name'  => 'seo_title',
+                                    '_field_trans' => get_field_translations($dataTypeContent, 'seo_title')
+                                ])
                                 <input type="text" class="form-control" name="seo_title" placeholder="SEO Title" value="@if(isset($dataTypeContent->seo_title)){{ $dataTypeContent->seo_title }}@endif">
                             </div>
                         </div>
@@ -194,7 +233,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary pull-right">
-                @if(isset($dataTypeContent->id)){{ 'Update Post' }}@else<?= '<i class="icon wb-plus-circle"></i> Create New Post'; ?>@endif
+                @if(isset($dataTypeContent->id)){{ 'Update Post' }}@else <i class="icon wb-plus-circle"></i> Create New Post @endif
             </button>
         </form>
 
@@ -211,9 +250,16 @@
     <script>
         $('document').ready(function () {
             $('#slug').slugify();
+
+        @if ($isModelTranslatable)
+            $('.side-body').multilingual({"editing": true});
+        @endif
         });
     </script>
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
+    @if($isModelTranslatable)
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
+    @endif
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
+    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
 @stop

@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -18,6 +20,7 @@ use TCG\Voyager\Models\Post;
 use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\User;
+use TCG\Voyager\Traits\Translatable;
 
 class Voyager
 {
@@ -93,6 +96,8 @@ class Voyager
         }
 
         $this->models[studly_case($name)] = $class;
+
+        return $this;
     }
 
     public function formField($row, $dateType, $dataTypeContent)
@@ -118,6 +123,8 @@ class Voyager
         }
 
         $this->formFields[$handler->getCodename()] = $handler;
+
+        return $this;
     }
 
     public function addAfterFormField($handler)
@@ -127,6 +134,8 @@ class Voyager
         }
 
         $this->afterFormFields[$handler->getCodename()] = $handler;
+
+        return $this;
     }
 
     public function formFields()
@@ -242,6 +251,34 @@ class Voyager
                 }
             }
         }
+    }
+
+    /**
+     * @param string|Model|Collection $model
+     *
+     * @return bool
+     */
+    public function translatable($model)
+    {
+        if (!config('voyager.multilingual.enabled')) {
+            return false;
+        }
+
+        if (is_string($model)) {
+            $model = app($model);
+        }
+
+        if ($model instanceof Collection) {
+            $model = $model->first();
+        }
+
+        if (!is_subclass_of($model, Model::class)) {
+            return false;
+        }
+
+        $traits = class_uses_recursive(get_class($model));
+
+        return in_array(Translatable::class, $traits);
     }
 
     protected function loadPermissions()

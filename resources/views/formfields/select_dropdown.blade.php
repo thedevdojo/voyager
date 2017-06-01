@@ -18,14 +18,26 @@
             @if(isset($options->options))
                 <optgroup label="Custom">
                 @foreach($options->options as $key => $option)
-                    <option value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if((string)$selected_value == (string)$key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                    <option value="{{ ($key == '_empty_' ? '' : $key) }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if((string)$selected_value == (string)$key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
                 @endforeach
                 </optgroup>
             @endif
             {{-- Populate all options from relationship --}}
             <?php
-            $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
-            $relationshipOptions = $relationshipClass::all();
+            $relationshipListMethod = camel_case($row->field) . 'List';
+            if (method_exists($dataTypeContent, $relationshipListMethod)) {
+                $relationshipOptions = $dataTypeContent->$relationshipListMethod();
+            } else {
+                $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
+                if (isset($options->relationship->where)) {
+                    $relationshipOptions = $relationshipClass::where(
+                        $options->relationship->where[0],
+                        $options->relationship->where[1]
+                    )->get();
+                } else {
+                    $relationshipOptions = $relationshipClass::all();
+                }
+            }
 
             // Try to get default value for the relationship
             // when default is a callable function (ClassName@methodName)

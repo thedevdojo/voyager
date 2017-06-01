@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/vue21.min.js"></script>
+    <script type="text/javascript" src="{{ voyager_asset('js/vue21.min.js') }}"></script>
 @stop
 
 @section('page_header')

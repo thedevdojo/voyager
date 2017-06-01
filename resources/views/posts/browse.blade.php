@@ -5,10 +5,13 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-news"></i> {{ $dataType->display_name_plural }}
-        <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
-            <i class="voyager-plus"></i> Add New
-        </a>
+        @if (Voyager::can('add_'.$dataType->name))
+            <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
+                <i class="voyager-plus"></i> Add New
+            </a>
+        @endif
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -35,20 +38,32 @@
                                         @if($row->type == 'image')
                                             <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                         @else
-                                            {{ $data->{$row->field} }}
+                                            @if(is_field_translatable($data, $row))
+                                                @include('voyager::multilingual.input-hidden', [
+                                                    '_field_name'  => $row->field,
+                                                    '_field_trans' => get_field_translations($data, $row->field)
+                                                ])
+                                            @endif
+                                            <span>{{ $data->{$row->field} }}</span>
                                         @endif
                                     </td>
                                     @endforeach
                                     <td class="no-sort no-click">
-                                        <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}">
-                                            <i class="voyager-trash"></i> Delete
-                                        </div>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
-                                            <i class="voyager-edit"></i> Edit
-                                        </a>
-                                        <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
-                                            <i class="voyager-eye"></i> View
-                                        </a>
+                                        @if (Voyager::can('delete_'.$dataType->name))
+                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}">
+                                                <i class="voyager-trash"></i> Delete
+                                            </div>
+                                        @endif
+                                        @if (Voyager::can('edit_'.$dataType->name))
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
+                                                <i class="voyager-edit"></i> Edit
+                                            </a>
+                                        @endif
+                                        @if (Voyager::can('read_'.$dataType->name))
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
+                                                <i class="voyager-eye"></i> View
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -95,15 +110,21 @@
 @section('javascript')
     {{-- DataTables --}}
     <script>
-        @if (!$dataType->server_side)
-            $(document).ready(function () {
+        $(document).ready(function () {
+            @if (!$dataType->server_side)
                 $('#dataTable').DataTable({ "order": [] });
-            });
-        @endif
+            @endif
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual();
+            @endif
+        });
 
         $('td').on('click', '.delete', function(e) {
             $('#delete_form')[0].action = $('#delete_form')[0].action.replace('__id', $(e.target).data('id'));
             $('#delete_modal').modal('show');
         });
     </script>
+    @if($isModelTranslatable)
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
+    @endif
 @stop

@@ -25,7 +25,7 @@
 
             <div class="col-md-3 col-sm-4 col-xs-6">
                 <label for="create_migration">Create migration for this table?</label><br>
-                <input type="checkbox" name="create_migration" data-toggle="toggle"
+                <input disabled type="checkbox" name="create_migration" data-toggle="toggle"
                        data-on="Yes, Please" data-off="No Thanks">
             </div>
         @endif
@@ -34,6 +34,8 @@
         <div v-if="compositeIndexes.length" v-once class="alert alert-danger">
             <p>This table has composite indexes. Please note that they are not supported at the moment. Be careful when trying to add/remove indexes.</p>
         </div>
+
+        <div id="alertsContainer"></div>
 
         <template v-if="tableHasColumns">
             <p>Table Columns</p>
@@ -44,11 +46,11 @@
                     <th>Name</th>
                     <th>Type</th>
                     <th>Length</th>
-                    <th>Not Null?</th>
-                    <th>Unsigned?</th>
-                    <th>AI?</th>
+                    <th>Not Null</th>
+                    <th>Unsigned</th>
+                    <th>Auto Increment</th>
                     <th>Index</th>
-                    <th>Default Value</th>
+                    <th>Default</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -72,7 +74,9 @@
         </div>
 
         <div style="text-align:center">
-            <div class="btn btn-success" @click="addColumn">+ Add New Column</div>
+            <database-table-helper-buttons
+                @columnAdded="addColumn"
+            ></database-table-helper-buttons>
         </div>
     </div><!-- .panel-body -->
 
@@ -88,6 +92,7 @@
 @endsection
 
 @include('voyager::tools.database.vue-components.database-column')
+@include('voyager::tools.database.vue-components.database-table-helper-buttons')
 
 <script>
     Vue.component('database-table-editor', {
@@ -99,17 +104,6 @@
         },
         data() {
             return {
-                newColumnTemplate: {
-                    name: '',
-                    oldName: '',
-                    type: databaseTypes.Numbers[0],
-                    length: null,
-                    fixed: false,
-                    unsigned: false,
-                    autoincrement: false,
-                    notnull: false,
-                    default: null
-                },
                 emptyIndex: {
                     type: '',
                     name: ''
@@ -126,6 +120,11 @@
             for (col in compositeColumns) {
                 this.getColumn(compositeColumns[col]).composite = true;
             }
+
+            // Display errors
+            @if(Session::has('alerts'))
+                displayAlerts(alerts, bootstrapAlerter({dismissible: true}), 'error');
+            @endif
         },
         computed: {
             tableHasColumns() {
@@ -133,28 +132,33 @@
             }
         },
         methods: {
-            addColumn() {
+            addColumn(column) {
+                column.name = column.name.trim();
+
+                if (column.name && this.hasColumn(column.name)) {
+                    return toastr.error("Column " + column.name + " already exists");
+                }
+
                 this.table.columns.push(
-                    JSON.parse(JSON.stringify(this.newColumnTemplate))
+                    JSON.parse(JSON.stringify(column))
                 );
             },
             getColumn(name) {
-                name = name.toLowerCase();
+                name = name.toLowerCase().trim();
 
                 return this.table.columns.find(function (column) {
                     return name == column.name.toLowerCase();
                 });
             },
+            hasColumn(name) {
+                return !!this.getColumn(name);
+            },
             renameColumn(column) {
                 let newName = column.newName.trim();
-                let compareName = newName.toLowerCase();
                 column = column.column;
 
-                let alreadyExists = !!this.table.columns.find(function(tableColumn) {
-                    return (column !== tableColumn) && (compareName == tableColumn.name.toLowerCase());
-                });
-
-                if (alreadyExists) {
+                let existingColumn;
+                if ((existingColumn = this.getColumn(newName)) && (existingColumn !== column)) {
                     return toastr.error("Column " + newName + " already exists");
                 }
 
