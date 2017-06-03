@@ -1,0 +1,35 @@
+/*
+ * Right-To-Left (RTL) Support for the Login page.
+ * ----------
+ */
+
+body {
+	height: 100vh;
+}
+
+[dir="rtl"] .login-container h2 {
+  text-align: right;
+}
+
+[dir="rtl"] .login-sidebar {
+  float: left;
+  left: 0;
+  position: absolute;
+}
+
+[dir="rtl"] .logo-title-container img.logo {
+  position: absolute;
+  margin-right: -95px;
+}
+
+[dir="rtl"] .copy p {
+  left: 0;
+}
+
+[dir="rtl"] .login-container input[type=text] {
+  text-align: right;
+}
+
+[dir="rtl"] .group label {
+  width: 100%;
+}
