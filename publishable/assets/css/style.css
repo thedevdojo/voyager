@@ -335,6 +335,7 @@ a:hover {
   color: #555;
   position:relative;
   padding-left:75px;
+  margin-bottom:0px;
 }
 .page-title > i{
   font-size:36px;
