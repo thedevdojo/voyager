@@ -38,25 +38,31 @@
                                 <label for="name">Name</label>
                                 <input type="text" class="form-control" name="name"
                                     placeholder="Name" id="name"
-                                    value="@if(isset($dataTypeContent->name)){{ old('name', $dataTypeContent->name) }}@else{{old('name')}}@endif">
+                                    value="@if(isset($dataTypeContent->name)){{ old('name', $dataTypeContent->name) }}@else{{old('name')}}@endif"
+                                    required="required"
+                                    >
                             </div>
 
                             <div class="form-group">
                                 <label for="name">Email</label>
                                 <input type="text" class="form-control" name="email"
                                        placeholder="Email" id="email"
-                                       value="@if(isset($dataTypeContent->email)){{ old('email', $dataTypeContent->email) }}@else{{old('email')}}@endif">
+                                       value="@if(isset($dataTypeContent->email)){{ old('email', $dataTypeContent->email) }}@else{{old('email')}}@endif"
+                                       required="required"
+                                       >
                             </div>
 
                             <div class="form-group">
                                 <label for="password">Password</label>
                                 @if(isset($dataTypeContent->password))
                                     <br>
-                                    <small>Leave empty to keep the same</small>
+                                    @if(!empty($dataTypeContent->id))<small>Leave empty to keep the same</small>@endif
                                 @endif
                                 <input type="password" class="form-control" name="password"
                                        placeholder="Password" id="password"
-                                       value="">
+                                       value=""
+                                       @if(empty($dataTypeContent->id))required="required"@endif
+                                       >
                             </div>
 
                             <div class="form-group">
