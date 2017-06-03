@@ -715,37 +715,28 @@
 }
 
 .voyager .btn.btn-success {
-    background: none;
-    color: #2ecc71;
-    border: 2px solid #2ecc71;
-    border-radius: 50px;
-}
-
-.voyager .btn.btn-sm.btn-success {
-  background:#2ecc71;
+    background:#2ecc71;
+    color:#fff;
+    border: 0px;
+    border-radius: 3px;
+    opacity:0.9;
 }
 
 .voyager .btn.btn-success:hover {
-  background:#2ecc71;
-  color:#fff;
-  border:2px solid rgba(255, 255, 255, 0);
+  
+  opacity:1;
 }
 
 .voyager .btn.btn-warning {
-    background: none;
-    color: #FABE28;
-    border: 2px solid #FABE28;
-    border-radius: 50px;
-}
-
-.voyager .btn.btn-sm.btn-warning {
-  background:#FABE28;
+    background: #FABE28;
+    color: #fff;
+    border: 0px;
+    border-radius: 3px;
+    opacity:0.9;
 }
 
 .voyager .btn.btn-warning:hover {
-  background:#FABE28;
-  color:#fff;
-  border:2px solid rgba(255, 255, 255, 0);
+  opacity:1;
 }
 
 .voyager .btn.btn-info {
@@ -759,20 +750,15 @@
 }
 
 .voyager .btn.btn-danger {
-    background:none;
-    color: #FA2A00;
-    border:2px solid #FA2A00;
-    border-radius:50px;
-}
-
-.voyager .btn.btn-sm.btn-danger {
-  background:#FA2A00;
+    background:#FA2A00;
+    color: #fff;
+    border:0px;
+    border-radius:3px;
+    opacity:0.9;
 }
 
 .voyager .btn.btn-danger:hover{
-  color:#fff;
-  background:#FA2A00;
-  border:1px solid rgba(255, 255, 255, 0);
+  opacity:1;
 }
 
 .voyager .btn.btn-link {
@@ -2001,8 +1987,8 @@ float: left;
 .breadcrumb{
     padding: 8px 15px;
     list-style: none;
-    background-color: #ffffff;
-    border-radius: 25px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
     border: 0;
     position: relative;
     left: -10px;
@@ -2112,24 +2098,21 @@ float: left;
 }
 
 .btn.btn-primary {
-    color: #22A7F0;
+    color: #fff;
     opacity:0.9;
-    background:none;
-    border: 2px solid #22A7F0;
-    border-radius: 50px;
+    background:#22A7F0;
+    border: 0px;
+    border-radius: 3px;
 
-}
-
-.voyager .btn.btn-sm.btn-primary{
-  background:#22A7F0;
 }
 
 .btn.btn-primary:hover{
-  color:#fff;
-  background:#22A7F0;
-  border: 2px solid rgba(255, 255, 255, 0);
+  opacity:1;
 }
 
+.voyager .btn.btn-circle{
+  border-radius:50px;
+}
 
 .voyager .btn.btn-sm{
   opacity:0.9;

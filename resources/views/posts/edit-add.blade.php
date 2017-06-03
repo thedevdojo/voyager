@@ -232,7 +232,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary pull-right">
+            <button type="submit" class="btn btn-success btn-circle pull-right">
                 @if(isset($dataTypeContent->id)){{ 'Update Post' }}@else <i class="icon wb-plus-circle"></i> Create New Post @endif
             </button>
         </form>

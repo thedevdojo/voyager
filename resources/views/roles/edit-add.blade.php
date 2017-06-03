@@ -79,7 +79,7 @@
                             </ul>
                         </div><!-- panel-body -->
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-success btn-circle">Submit</button>
                         </div>
                     </form>
 

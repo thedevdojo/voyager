@@ -6,7 +6,7 @@
     <h1 class="page-title">
         <i class="voyager-news"></i> {{ $dataType->display_name_plural }}
         @if (Voyager::can('add_'.$dataType->name))
-            <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
+            <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success btn-circle">
                 <i class="voyager-plus"></i> Add New
             </a>
         @endif

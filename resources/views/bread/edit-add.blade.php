@@ -83,7 +83,7 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary save">Save</button>
+                            <button type="submit" class="btn btn-success btn-circle save">Save</button>
                         </div>
                     </form>
 
