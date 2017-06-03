@@ -77,7 +77,9 @@ class InstallCommand extends Command
         $this->info('Adding Voyager routes to routes/web.php');
         $filesystem->append(
             base_path('routes/web.php'),
-            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
+            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n
+             \n\n// Keep this route as the last one\nRoute::get('/{slug}', '\\TCG\\Voyager\\Http\\Controllers\\DynamicRouteController@handle');
+            "
         );
 
         \Route::group(['prefix' => 'admin'], function () {
