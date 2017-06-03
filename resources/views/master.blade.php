@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {{-- <title>{{Voyager::setting('admin_title')}} - {{Voyager::setting('admin_description')}}</title> --}}
-    <title>@yield('page_title',Voyager::setting('admin_title') . " - " . Voyager::setting('admin_description'))</title>
+    <title>@yield('page_title', setting('admin_title') . " - " . setting('admin_description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <!-- Fonts -->
@@ -44,17 +43,17 @@
 
     <!-- Few Dynamic Styles -->
     <style type="text/css">
-        .side-menu .navbar-header, .widget .btn-primary, .widget .btn-primary:focus, .widget .btn-primary:hover, .widget .btn-primary:active, .widget .btn-primary.active, .widget .btn-primary:active:focus{
+        .voyager .side-menu .navbar-header, .widget .btn-primary, .widget .btn-primary:focus, .widget .btn-primary:hover, .widget .btn-primary:active, .widget .btn-primary.active, .widget .btn-primary:active:focus{
             background:{{ config('voyager.primary_color','#22A7F0') }};
             border-color:{{ config('voyager.primary_color','#22A7F0') }};
         }
-        .breadcrumb a{
+        .voyager .breadcrumb a{
             color:{{ config('voyager.primary_color','#22A7F0') }};
         }
     </style>
 
     @if(!empty(config('voyager.additional_css')))<!-- Additional CSS -->
-    @foreach(config('voyager.additional_css') as $css)<link rel="stylesheet" type="text/css" href="{{ asset($css) }}">@endforeach
+        @foreach(config('voyager.additional_css') as $css)<link rel="stylesheet" type="text/css" href="{{ asset($css) }}">@endforeach
     @endif
 
     @yield('head')
