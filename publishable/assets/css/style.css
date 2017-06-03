@@ -67,7 +67,7 @@ a:hover {
   height: 60px;
   line-height: 60px;
   margin-left: 0;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-weight: 400;
   padding: 0;
   font-size: 1.5em; }
@@ -108,10 +108,10 @@ a:hover {
   height: 60px;
   line-height: 60px;
   vertical-align: middle;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1.5em; }
 .navbar .navbar-nav > li > a {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   height: 60px;
   line-height: 60px;
   padding: 0 20px 0 20px; }
@@ -125,13 +125,13 @@ a:hover {
   z-index: -1;
   position: absolute; }
 .navbar .dropdown-menu .title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding: 5px 10px;
   -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); }
 .navbar .dropdown-menu .message {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   text-align: center;
   padding: 10px 20px; }
 .navbar .dropdown-menu .notifications.list-group {
@@ -169,7 +169,7 @@ a:hover {
   margin: 0;
   border: 0; }
 .navbar .dropdown.profile .dropdown-menu .profile-info {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding: 15px; }
 .navbar .dropdown.profile .dropdown-menu .profile-info .username {
   font-size: 1.8em; }
@@ -188,7 +188,7 @@ a:hover {
   -webkit-transition: all 0.25s;
   transition: all 0.25s;
   font-size: 12px;
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Open Sans', sans-serif; }
 .app-container .app-footer .wrapper {
   padding: 10px 35px;
   padding-left: 25px;
@@ -216,7 +216,7 @@ a:hover {
   padding: 0;
   width: 100%;
   overflow: hidden;
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Open Sans', sans-serif; }
 .app-container .content-container .side-menu .navbar-header .navbar-brand .icon {
   width: 60px;
   text-align: center;
@@ -244,7 +244,7 @@ a:hover {
   width: 100%;
   overflow: hidden; }
 .app-container .content-container .side-menu .navbar-nav li a {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   padding: 0 10px 0 10px;
   height: 46px;
   line-height: 46px;
@@ -336,6 +336,7 @@ a:hover {
   position:relative;
   padding-left:75px;
   margin-bottom:0px;
+  font-weight:700;
 }
 .page-title > i{
   font-size:36px;
@@ -353,13 +354,13 @@ a:hover {
   vertical-align: middle; }
 
 .sub-title {
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Open Sans', sans-serif; }
 .sub-title > * {
   display: inline-block; }
 .sub-title h3 {
   margin-right: 10px; }
 .sub-title .description {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 0.9em; }
 .sub-title .action .btn {
   padding: 0 0.5em; }
@@ -438,7 +439,7 @@ a:hover {
   padding: 1.2em 25px;
   float: left; }
 .card .card-header .card-title .title {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1.5em;
   text-decoration: none; }
 .card .card-header .pull-right {
@@ -498,7 +499,7 @@ a:hover {
   margin-bottom: 5px;
   border-radius: 1px;
   border-width: 1px;
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Open Sans', sans-serif; }
 
 .btn-group-lg > .btn, .btn-group-lg > .btn-lg {
   border-radius: 1px; }
@@ -531,7 +532,7 @@ a:hover {
 .modal {
   z-index: 100001; }
 .modal .modal-dialog .modal-header {
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Open Sans', sans-serif; }
 .modal .modal-dialog .modal-content {
   border-radius: 4px;
   box-shadow: none; }
@@ -1071,7 +1072,7 @@ body.login-page .login-footer {
   margin-bottom: 5px; }
 
 .landing-page {
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Open Sans', sans-serif; }
 .landing-page .navbar .navbar-toggle {
   position: absolute;
   right: 0;
@@ -1181,7 +1182,7 @@ body.login-page .login-footer {
   width: 100%;
   overflow: hidden;
   padding-left: 0;
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Open Sans', sans-serif; }
 .landing-page .navbar .navbar-header .navbar-brand .icon {
   width: 50px;
   text-align: center;

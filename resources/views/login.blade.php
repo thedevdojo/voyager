@@ -18,6 +18,11 @@
         .login-sidebar{
             border-top:5px solid {{ config('voyager.primary_color','#22A7F0') }};
         }
+        @media (max-width: 767px) {
+            .login-sidebar {
+                border-top:0px !important;
+            }
+        }
         .login-sidebar:after {
             background: linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});
             background: -webkit-linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});

@@ -4,9 +4,6 @@
     <title>@yield('page_title', setting('admin_title') . " - " . setting('admin_description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400|Lato:300,400,700,900' rel='stylesheet'
-          type='text/css'>
 
     <!-- CSS Libs -->
     <link rel="stylesheet" type="text/css" href="{{ voyager_asset('lib/css/bootstrap.min.css') }}">
@@ -25,7 +22,7 @@
     <!-- CSS App -->
     <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/style.css') }}">
 
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
@@ -147,14 +144,14 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 <script type="text/javascript" src="{{ voyager_asset('js/val.js') }}"></script>
 <script type="text/javascript" src="{{ voyager_asset('js/app.js') }}"></script>
 <script type="text/javascript" src="{{ voyager_asset('js/helpers.js') }}"></script>
+
 @if(!empty(config('voyager.additional_js')))<!-- Additional Javascript -->
-@foreach(config('voyager.additional_js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
+    @foreach(config('voyager.additional_js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
 @endif
 
 <script>
     @if(Session::has('alerts'))
         let alerts = {!! json_encode(Session::get('alerts')) !!};
-
         displayAlerts(alerts, toastr);
     @endif
 

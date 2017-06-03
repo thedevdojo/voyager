@@ -6,7 +6,7 @@
   padding:0px;
   margin:0px;
   height:100%;
-  font-family: Roboto,sans-serif;
+  font-family: Open Sans,sans-serif;
   font-size: 14px;
   line-height: 1.57142857;
   color: #76838f;
@@ -443,6 +443,7 @@
     border-left: 3px solid #22A7F0;
     border-right: 0 solid #22A7F0;
     background-color: #FFF;
+    font-weight:700;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li.active > a .icon {
@@ -1513,7 +1514,7 @@
 }
 
 .navbar .navbar-nav > li > a{
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     text-transform: capitalize;
 }
 .app-container .content-container .side-body.padding-top{
@@ -1696,7 +1697,9 @@ p#the_plugin_name{
     position: relative;
     top:0px;
     left:4px;
-    text-transform: none;
+    text-transform: uppercase;
+    font-weight:400;
+
 }
 
 .page-content.dashboard{
@@ -1727,6 +1730,7 @@ p#the_plugin_name{
 
 .voyager .side-menu.sidebar-inverse .navbar{
   background:none;
+  font-weight:400;
 }
 
 .voyager .side-menu.sidebar-inverse{
@@ -1737,7 +1741,11 @@ background: -webkit-linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1)
 background: linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#353d47', endColorstr='#21292e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 overflow-x: hidden;
+transition:all 0.4s ease-in-out;
+}
 
+.app-container .side-body, .app-container.expanded .content-container .navbar-top, .app-container .content-container .navbar-top{
+  transition:all 0.4s ease-in-out;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a:hover{
@@ -1997,7 +2005,7 @@ float: left;
 
 .breadcrumb a{
   color:#22A7F0;
-  font-family:'Roboto';
+  font-family:'Open Sans';
   font-weight:400;
 }
 
