@@ -43,6 +43,7 @@ class MenuItem extends Model
         }
 
         if (!is_array($parameters)) {
+            $parameters = json_encode($parameters);
             $parameters = json_decode($parameters, true);
         }
 
