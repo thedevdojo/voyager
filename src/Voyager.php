@@ -168,14 +168,12 @@ class Voyager
 
         if ($exist) {
             $user = $this->getUser();
-            if ($user == null || !$user->hasPermission($permission)) {
-                return false;
+            if ($user != null && $user->hasPermission($permission)) {
+                return true;
             }
-
-            return true;
         }
 
-        return true;
+        return false;
     }
 
     public function canOrFail($permission)

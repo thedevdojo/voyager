@@ -45,7 +45,7 @@ class VoyagerSettingsController extends Controller
     public function update(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('visit_settings');
+        Voyager::canOrFail('browse_settings');
 
         $settings = Voyager::model('Setting')->all();
 
@@ -72,10 +72,8 @@ class VoyagerSettingsController extends Controller
 
     public function delete($id)
     {
-        Voyager::canOrFail('browse_settings');
-
         // Check permission
-        Voyager::canOrFail('visit_settings');
+        Voyager::canOrFail('browse_settings');
 
         Voyager::model('Setting')->destroy($id);
 
