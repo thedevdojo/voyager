@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Tests;
 
-use TCG\Voyager\Facades\Voyager;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Facades\Voyager;
 
 class DashboardTest extends TestCase
 {
