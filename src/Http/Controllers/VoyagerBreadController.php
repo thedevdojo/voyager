@@ -280,26 +280,8 @@ class VoyagerBreadController extends Controller
             $data->deleteAttributeTranslations($data->getTranslatableAttributes());
         }
 
-        foreach ($dataType->deleteRows as $row) {
-            if ($row->type == 'image') {
-                $this->deleteFileIfExists('/uploads/'.$data->{$row->field});
-
-                $options = json_decode($row->details);
-
-                if (isset($options->thumbnails)) {
-                    foreach ($options->thumbnails as $thumbnail) {
-                        $ext = explode('.', $data->{$row->field});
-                        $extension = '.'.$ext[count($ext) - 1];
-
-                        $path = str_replace($extension, '', $data->{$row->field});
-
-                        $thumb_name = $thumbnail->name;
-
-                        $this->deleteFileIfExists('/uploads/'.$path.'-'.$thumb_name.$extension);
-                    }
-                }
-            }
-        }
+        // Delete Images
+        $this->deleteBreadImages($data, $dataType->deleteRows->where('type', 'image'));
 
         $data = $data->destroy($id)
             ? [
@@ -312,5 +294,35 @@ class VoyagerBreadController extends Controller
             ];
 
         return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+    }
+
+    /**
+     * Delete all images related to a BREAD item.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $data
+     * @param \Illuminate\Database\Eloquent\Model $rows
+     *
+     * @return void
+     */
+    public function deleteBreadImages($data, $rows)
+    {
+        foreach ($rows as $row) {
+            $this->deleteFileIfExists($data->{$row->field});
+
+            $options = json_decode($row->details);
+
+            if (isset($options->thumbnails)) {
+                foreach ($options->thumbnails as $thumbnail) {
+                    $ext = explode('.', $data->{$row->field});
+                    $extension = '.'.$ext[count($ext) - 1];
+
+                    $path = str_replace($extension, '', $data->{$row->field});
+
+                    $thumb_name = $thumbnail->name;
+
+                    $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
+                }
+            }
+        }
     }
 }
