@@ -58,6 +58,8 @@ class Voyager
     {
         $this->filesystem = app(Filesystem::class);
 
+        $this->models['User'] = config('voyager.user.namespace', User::class);
+
         $this->findVersion();
     }
 
@@ -287,7 +289,7 @@ class Voyager
         }
 
         if (!isset($this->users[$id])) {
-            $this->users[$id] = User::find($id);
+            $this->users[$id] = $this->model('User')->find($id);
         }
 
         return $this->users[$id];
