@@ -23,6 +23,7 @@ class RolesTest extends TestCase
      */
     public function testRoles()
     {
+        // Access Dashboard
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');

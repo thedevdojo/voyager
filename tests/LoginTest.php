@@ -23,11 +23,11 @@ class LoginTest extends TestCase
     public function testShowAnErrorMessageWhenITryToLoginWithWrongCredentials()
     {
         $this->visit(route('voyager.login'))
-             ->type('john@Doe.com', 'email')
+             ->type('john@doe.com', 'email')
              ->type('pass', 'password')
              ->press('Login')
              ->seePageIs(route('voyager.login'))
              ->see(trans('auth.failed'))
-             ->seeInField('email', 'john@Doe.com');
+             ->seeInField('email', 'john@doe.com');
     }
 }

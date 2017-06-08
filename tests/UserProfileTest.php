@@ -91,11 +91,15 @@ class UserProfileTest extends TestCase
              ->see('Edit User')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
+             ->seeInDatabase(
+                 'users',
+                 ['id' => 1, 'avatar' => 'users/default.png']
+             )
              ->press('Submit')
              ->seePageIs($this->editPageForTheCurrentUser)
              ->dontSeeInDatabase(
                  'users',
-                 ['id' => 1, 'avatar' => 'user/default.png']
+                 ['id' => 1, 'avatar' => 'users/default.png']
              );
     }
 
