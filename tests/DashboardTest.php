@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Tests;
 
+use TCG\Voyager\Facades\Voyager;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardTest extends TestCase
@@ -57,5 +58,15 @@ class DashboardTest extends TestCase
         $this->click('Dashboard');
         $this->seePageIs(route('voyager.dashboard'));
         $this->see('Dashboard');
+    }
+
+    public function testSeingCorrectFooterVersionNumber()
+    {
+        // We must first login and visit the dashboard page.
+        Auth::loginUsingId(1);
+
+        $this->visit(route('voyager.dashboard'));
+
+        $this->see(Voyager::getVersion());
     }
 }
