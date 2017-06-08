@@ -62,7 +62,16 @@ Add the Voyager service provider to the `config/app.php` file in the `providers`
     // ...
 ],
 ```
+Also add the Voyager alias to the `config/app.php` file in the `aliases` array:
 
+```php
+'aliases' => [
+   
+    //...
+    'Voyager'=>\TCG\Voyager\Facades\Voyager::class
+    // ...
+],
+```
 Lastly, we can install voyager. You can do this either with or without dummy data.
 The dummy data will include 1 admin account (if no users already exists), 1 demo page, 4 demo posts, 2 categories and 7 settings.
 
