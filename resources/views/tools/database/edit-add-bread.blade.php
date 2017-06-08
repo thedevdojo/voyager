@@ -241,7 +241,7 @@
                             </div>
 
                             <div class="box-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary add-edit">Submit</button>
                             </div>
                         </div><!-- .panel-body -->
                     </div><!-- .panel -->
@@ -353,7 +353,7 @@
                 _session.setMode("ace/mode/" + mode);
 
                 // copy back to textarea on form submit...
-                textarea.closest('form').on('submit', function (ev) {
+                $('.add-edit').on('click', function (ev) {
                     if (window.invalidEditors.length) {
                         ev.preventDefault();
                         ev.stopPropagation();

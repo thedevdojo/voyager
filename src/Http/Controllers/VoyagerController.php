@@ -24,6 +24,37 @@ class VoyagerController extends Controller
         return redirect()->route('voyager.login');
     }
 
+	public function lockScreen()
+	{
+
+		$user = Voyager::model('User')->find(Auth::id());
+
+		if(!$user){
+
+			session()->flush();
+
+			return redirect()->route('voyager.login');
+
+		}
+
+		session(['admin_lock' => 1]);
+		return view('voyager::lockscreen');
+	}
+	
+	public function unlockScreen(Request $request)
+	{
+		$id       = Auth::user()->id;
+		$password = $request->password;		
+		$users    = Voyager::model('User')->find($id);
+
+		if(\Hash::check($password,$users->password)) {
+			session(['admin_lock' => 0]);
+			return redirect()->route('voyager.dashboard');
+		}
+
+		return redirect()->route('voyager.lock')->with($this->alertSuccess("Password is wrong!"));
+	}
+
     public function upload(Request $request)
     {
         $fullFilename = null;
