@@ -60,7 +60,7 @@ class DashboardTest extends TestCase
         $this->see('Dashboard');
     }
 
-    public function testSeingCorrectFooterVersionNumber()
+    public function testSeeingCorrectFooterVersionNumber()
     {
         // We must first login and visit the dashboard page.
         Auth::loginUsingId(1);
