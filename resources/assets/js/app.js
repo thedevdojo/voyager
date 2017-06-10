@@ -1,12 +1,26 @@
 window.jQuery = window.$ = require('jquery');
-window.perfectScrollbar = require('perfect-scrollbar');
+window.perfectScrollbar = require('./perfect-scrollbar');
 window.toastr = require('toastr');
-window.DataTable = require('datatables');
-window.readmore = require('readmore-js');
+window.DataTable = require('./bootstrap-datatables');
+window.SimpleMDE = require('simplemde');
+require('./readmore');
+require('./jquery-match-height');
+require('./bootstrap-toggle');
+require('./jquery-cookie');
+require('./jquery-nestable');
 require('bootstrap');
 require('bootstrap-switch');
 require('jquery-match-height');
-window.SimpleMDE = require('simplemde');
+require('select2');
+require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
+require('ace-builds/src-min-noconflict/ace');
+require('./slugify');
+require('tinymce');
+require('./multilingual');
+require('./voyager_tinymce');
+require('./voyager_ace_editor');
+
+
 
 $(document).ready(function(){
     var appContainer = $(".app-container"),
@@ -14,7 +28,7 @@ $(document).ready(function(){
         fadedOverlay = $('.fadetoblack'),
         hamburger = $('.hamburger');
 
-  //$('.side-menu').perfectScrollbar();
+  $('.side-menu').perfectScrollbar();
 
   $('#voyager-loader').fadeOut();
   $('.readmore').readmore({
@@ -185,6 +199,12 @@ $(document).ready(function(){
   });
 });
 
+
+/*--------------------
+|
+| HELPERS
+|
+--------------------*/
 
 function displayAlert(alert, alerter) {
     let alertMethod = alerter[alert.type];

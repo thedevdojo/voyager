@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta name="description" content="admin login">
     <title>Admin - {{ Voyager::setting("title") }}</title>
-    <link rel="stylesheet" href="{{ voyager_asset('lib/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ voyager_asset('css/animate.min.css') }}">
-    <link rel="stylesheet" href="{{ voyager_asset('css/login.css') }}">
+    <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
     <style>
         body {
             background-image:url('{{ Voyager::image( Voyager::setting("admin_bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');

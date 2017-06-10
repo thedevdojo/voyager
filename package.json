@@ -19,18 +19,25 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "ace-builds": "^1.2.6",
     "animate.css": "^3.5.2",
     "bootstrap": "^3.3.7",
     "bootstrap-datepicker": "^1.6.4",
+    "bootstrap-datetimepicker": "0.0.7",
     "bootstrap-switch": "^3.3.4",
     "bootstrap-toggle": "^2.2.2",
     "datatables-bootstrap3-plugin": "^0.5.0",
+    "datatables.net": "^1.10.15",
+    "datetimepicker": "^0.1.38",
     "icheck": "^1.0.2",
     "jquery-match-height": "^0.7.2",
+    "jquery-ui": "^1.12.1",
     "perfect-scrollbar": "^0.7.1",
     "readmore-js": "^2.1.0",
     "select2": "^4.0.3",
     "simplemde": "^1.11.2",
+    "slugify": "^1.1.0",
+    "tinymce": "^4.6.3",
     "toastr": "^2.1.2"
   }
 }
