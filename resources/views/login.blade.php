@@ -30,12 +30,11 @@
         .login-button, .bar:before, .bar:after{
             background:{{ config('voyager.primary_color','#22A7F0') }};
         }
-
     </style>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 </head>
-<body>
+<body class="login">
 <div class="container-fluid">
     <div class="row">
         <div class="faded-bg animated"></div>
