@@ -59,14 +59,14 @@
 
                 <form action="{{ route('voyager.login') }}" method="POST">
                 {{ csrf_field() }}
-                <div class="group">      
+                <div class="group">
                   <input type="text" name="email" value="{{ old('email') }}" required>
                   <span class="highlight"></span>
                   <span class="bar"></span>
                   <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> E-mail</span></label>
                 </div>
 
-                <div class="group">      
+                <div class="group">
                   <input type="password" name="password" required>
                   <span class="highlight"></span>
                   <span class="bar"></span>
@@ -74,10 +74,10 @@
                 </div>
 
                 <button type="submit" class="btn btn-block login-button">
-                    <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
+                    <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Logging in...</span>
                     <span class="signin">Login</span>
                 </button>
-               
+
               </form>
 
               @if(!$errors->isEmpty())
@@ -85,13 +85,13 @@
                 <ul class="list-unstyled">
                     @foreach($errors->all() as $err)
                     <li>{{ $err }}</li>
-                    @endforeach                
+                    @endforeach
                 </ul>
-              </div>            
+              </div>
               @endif
 
             </div> <!-- .login-container -->
-            
+
         </div> <!-- .login-sidebar -->
     </div> <!-- .row -->
 </div> <!-- .container-fluid -->
