@@ -466,7 +466,8 @@
   .flat-blue .table > tbody > tr > td, .flat-blue .table > tbody > tr > th, .flat-blue .table > tfoot > tr > td, .flat-blue .table > tfoot > tr > th {
     border-color: #EAEAEA; }
   .flat-blue .table > thead > tr > th {
-    border-color: #EAEAEA; }
+    border-color: #EAEAEA;
+    background: #F8FAFC; }
   .flat-blue .table.table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #FDFDFD; }
   .flat-blue .login-box .login-form .login-header {

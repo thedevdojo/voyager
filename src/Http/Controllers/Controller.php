@@ -11,12 +11,15 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use TCG\Voyager\Traits\AlertsMessages;
+use Validator;
 
 abstract class Controller extends BaseController
 {
     use DispatchesJobs,
         ValidatesRequests,
-        AuthorizesRequests;
+        AuthorizesRequests,
+        AlertsMessages;
 
     public function getSlug(Request $request)
     {
@@ -31,30 +34,31 @@ abstract class Controller extends BaseController
 
     public function insertUpdateData($request, $slug, $rows, $data)
     {
-        $rules = [];
-        $messages = [];
         $multi_select = [];
+
+        /*
+         * Prepare Translations and Transform data
+         */
+        $translations = is_bread_translatable($data)
+                        ? $data->prepareTranslations($request)
+                        : [];
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
 
-            if (isset($options->validation)) {
-                if (isset($options->validation->rule)) {
-                    if (!is_array($options->validation->rule)) {
-                        $rules[$row->field] = explode('|', $options->validation->rule);
-                    } else {
-                        $rules[$row->field] = $options->validation->rule;
-                    }
-                }
+            $content = $this->getContentBasedOnType($request, $slug, $row);
 
-                if (isset($options->validation->messages)) {
-                    foreach ($options->validation->messages as $key => $msg) {
-                        $messages[$row->field.'.'.$key] = $msg;
+            /*
+             * merge ex_images and upload images
+             */
+            if ($row->type == 'multiple_images' && !is_null($content)) {
+                if (isset($data->{$row->field})) {
+                    $ex_files = json_decode($data->{$row->field}, true);
+                    if (!is_null($ex_files)) {
+                        $content = json_encode(array_merge($ex_files, json_decode($content)));
                     }
                 }
             }
-
-            $content = $this->getContentBasedOnType($request, $slug, $row);
 
             if (is_null($content)) {
                 // Only set the content back to the previous value when there is really now input for this field
@@ -74,15 +78,46 @@ abstract class Controller extends BaseController
             }
         }
 
-        $this->validate($request, $rules, $messages);
-
         $data->save();
+
+        // Save translations
+        if (count($translations) > 0) {
+            $data->saveTranslations($translations);
+        }
 
         foreach ($multi_select as $sync_data) {
             $data->{$sync_data['row']}()->sync($sync_data['content']);
         }
 
         return $data;
+    }
+
+    public function validateBread($request, $data)
+    {
+        $rules = [];
+        $messages = [];
+
+        foreach ($data as $row) {
+            $options = json_decode($row->details);
+
+            if (isset($options->validation)) {
+                if (isset($options->validation->rule)) {
+                    if (!is_array($options->validation->rule)) {
+                        $rules[$row->field] = explode('|', $options->validation->rule);
+                    } else {
+                        $rules[$row->field] = $options->validation->rule;
+                    }
+                }
+
+                if (isset($options->validation->messages)) {
+                    foreach ($options->validation->messages as $key => $msg) {
+                        $messages[$row->field.'.'.$key] = $msg;
+                    }
+                }
+            }
+        }
+
+        return Validator::make($request, $rules, $messages);
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
@@ -117,12 +152,75 @@ abstract class Controller extends BaseController
                     $filename = Str::random(20);
                     $path = $slug.'/'.date('F').date('Y').'/';
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
-
-                    $request->file($row->field)->storeAs(config('voyager.storage.subfolder').$path, $filename.'.'.$file->getClientOriginalExtension());
+                    $request->file($row->field)->storeAs(
+                        $path,
+                        $filename.'.'.$file->getClientOriginalExtension(),
+                        config('voyager.storage.disk', 'public')
+                    );
 
                     return $fullPath;
                 }
             // no break
+
+            /********** MULTIPLE IMAGES TYPE **********/
+            case 'multiple_images':
+                if ($files = $request->file($row->field)) {
+                    /**
+                     * upload files.
+                     */
+                    $filesPath = [];
+                    foreach ($files as $key => $file) {
+                        $filename = Str::random(20);
+                        $path = $slug.'/'.date('F').date('Y').'/';
+                        array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
+                        $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
+
+                        $image = Image::make($file)->resize($resize_width, $resize_height,
+                            function (Constraint $constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })->encode($file->getClientOriginalExtension(), 75);
+
+                        Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
+
+                        if (isset($options->thumbnails)) {
+                            foreach ($options->thumbnails as $thumbnails) {
+                                if (isset($thumbnails->name) && isset($thumbnails->scale)) {
+                                    $scale = intval($thumbnails->scale) / 100;
+                                    $thumb_resize_width = $resize_width;
+                                    $thumb_resize_height = $resize_height;
+
+                                    if ($thumb_resize_width != 'null') {
+                                        $thumb_resize_width = $thumb_resize_width * $scale;
+                                    }
+
+                                    if ($thumb_resize_height != 'null') {
+                                        $thumb_resize_height = $thumb_resize_height * $scale;
+                                    }
+
+                                    $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
+                                        function (Constraint $constraint) {
+                                            $constraint->aspectRatio();
+                                            $constraint->upsize();
+                                        })->encode($file->getClientOriginalExtension(), 75);
+                                } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
+                                    $crop_width = $thumbnails->crop->width;
+                                    $crop_height = $thumbnails->crop->height;
+                                    $image = Image::make($file)
+                                        ->fit($crop_width, $crop_height)
+                                        ->encode($file->getClientOriginalExtension(), 75);
+                                }
+
+                                Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                                    (string) $image, 'public'
+                                );
+                            }
+                        }
+                    }
+
+                    return json_encode($filesPath);
+                }
+                break;
 
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
@@ -181,7 +279,7 @@ abstract class Controller extends BaseController
                             $constraint->upsize();
                         })->encode($file->getClientOriginalExtension(), 75);
 
-                    Storage::put(config('voyager.storage.subfolder').$fullPath, (string) $image, 'public');
+                    Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
 
                     if (isset($options->thumbnails)) {
                         foreach ($options->thumbnails as $thumbnails) {
@@ -211,8 +309,7 @@ abstract class Controller extends BaseController
                                     ->encode($file->getClientOriginalExtension(), 75);
                             }
 
-                            Storage::put(
-                                config('voyager.storage.subfolder').$path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                            Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
                                 (string) $image, 'public'
                             );
                         }
@@ -249,8 +346,8 @@ abstract class Controller extends BaseController
 
     public function deleteFileIfExists($path)
     {
-        if (Storage::exists($path)) {
-            Storage::delete($path);
+        if (Storage::disk(config('voyager.storage.disk'))->exists($path)) {
+            Storage::disk(config('voyager.storage.disk'))->delete($path);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 if (!function_exists('isBreadSlugAutoGenerator')) {
     /**
-     * Check if a slug field can be auto generated.
+     * Check if a field slug can be auto generated.
      *
      * @param json $options
      *
@@ -23,25 +23,24 @@ if (!function_exists('isFieldSlugAutoGenerator')) {
     /**
      * Determine the details field, for a given dataTypeContent.
      *
-     * @param Illuminate\Database\Eloquent\Collection $dataTypeContent
-     * @param string                                  $field
+     * @param Illuminate\Database\Eloquent\Collection $dType    Data type
+     * @param Illuminate\Database\Eloquent\Collection $dContent Data type Content
+     * @param string                                  $field    Field name
      *
      * @return string HTML output.
      */
-    function isFieldSlugAutoGenerator($dataTypeContent, $field)
+    function isFieldSlugAutoGenerator($dType, $dContent, $field)
     {
-        if (!isset($dataType)) {
+        $_row = (isset($dContent->id))
+                    ? $dType->editRows
+                    : $dType->addRows;
+
+        $_row = $_row->where('field', $field)->first();
+
+        if (!$_row) {
             return;
         }
 
-        $_tmp = (isset($dataTypeContent->id))
-                      ? $dataType->editRows
-                      : $dataType->addRows;
-
-        $_tmp = $_tmp->filter(function ($val) {
-            return $val->field == $field;
-        })->first()->details;
-
-        return isBreadTranslatable(json_decode($_tmp));
+        return isBreadSlugAutoGenerator(json_decode($_row->details));
     }
 }

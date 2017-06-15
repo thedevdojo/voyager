@@ -5,7 +5,8 @@ namespace TCG\Voyager\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use TCG\Voyager\Voyager;
+use Intervention\Image\ImageManagerStatic as Image;
+use TCG\Voyager\Facades\Voyager;
 
 class VoyagerMediaController extends Controller
 {
@@ -17,18 +18,12 @@ class VoyagerMediaController extends Controller
 
     public function __construct()
     {
-        $this->filesystem = config('filesystems.default');
-
-        if ($this->filesystem === 'local') {
-            $this->directory = 'public';
-        } elseif ($this->filesystem === 's3') {
-            $this->directory = '';
-        }
+        $this->filesystem = config('voyager.storage.disk');
     }
 
     public function index()
     {
-        Voyager::can('browse_media');
+        Voyager::canOrFail('browse_media');
 
         return view('voyager::media.index');
     }
@@ -53,56 +48,25 @@ class VoyagerMediaController extends Controller
         ]);
     }
 
-    private function getFiles($dir)
-    {
-        $files = [];
-        $storageFiles = Storage::files($dir);
-        $storageFolders = Storage::directories($dir);
-
-        foreach ($storageFiles as $file) {
-            $files[] = [
-                'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
-                'type'          => Storage::mimeType($file),
-                'path'          => Storage::disk(config('filesystem.default'))->url($file),
-                'size'          => Storage::size($file),
-                'last_modified' => Storage::lastModified($file),
-            ];
-        }
-
-        foreach ($storageFolders as $folder) {
-            $files[] = [
-                'name'          => strpos($folder, '/') > 1 ? str_replace('/', '', strrchr($folder, '/')) : $folder,
-                'type'          => 'folder',
-                'path'          => Storage::disk(config('filesystem.default'))->url($folder),
-                'items'         => '',
-                'last_modified' => '',
-            ];
-        }
-
-        return $files;
-    }
-
     // New Folder with 5.3
-
     public function new_folder(Request $request)
     {
         $new_folder = $request->new_folder;
         $success = false;
         $error = '';
 
-        if (Storage::exists($new_folder)) {
-            $error = 'Sorry that folder already exists, please delete that folder if you wish to re-create it';
-        } elseif (Storage::makeDirectory($new_folder)) {
+        if (Storage::disk($this->filesystem)->exists($new_folder)) {
+            $error = trans('voyager.media_folder_exists_already');
+        } elseif (Storage::disk($this->filesystem)->makeDirectory($new_folder)) {
             $success = true;
         } else {
-            $error = 'Sorry something seems to have gone wrong with creating the directory, please check your permissions';
+            $error = trans('voyager.media_error_creating_dir');
         }
 
         return compact('success', 'error');
     }
 
     // Delete File or Folder with 5.3
-
     public function delete_file_folder(Request $request)
     {
         $folderLocation = $request->folder_location;
@@ -119,12 +83,12 @@ class VoyagerMediaController extends Controller
         $fileFolder = "{$location}/{$fileFolder}";
 
         if ($type == 'folder') {
-            if (!Storage::deleteDirectory($fileFolder)) {
-                $error = 'Sorry something seems to have gone wrong when deleting this folder, please check your permissions';
+            if (!Storage::disk($this->filesystem)->deleteDirectory($fileFolder)) {
+                $error = trans('voyager.media_error_deleting_folder');
                 $success = false;
             }
-        } elseif (!Storage::delete($fileFolder)) {
-            $error = 'Sorry something seems to have gone wrong deleting this file, please check your permissions';
+        } elseif (!Storage::disk($this->filesystem)->delete($fileFolder)) {
+            $error = trans('voyager.media_error_deleting_file');
             $success = false;
         }
 
@@ -132,7 +96,6 @@ class VoyagerMediaController extends Controller
     }
 
     // GET ALL DIRECTORIES Working with Laravel 5.3
-
     public function get_all_dirs(Request $request)
     {
         $folderLocation = $request->folder_location;
@@ -144,12 +107,11 @@ class VoyagerMediaController extends Controller
         $location = "{$this->directory}/{$folderLocation}";
 
         return response()->json(
-            str_replace($location, '', Storage::directories($location))
+            str_replace($location, '', Storage::disk($this->filesystem)->directories($location))
         );
     }
 
     // NEEDS TESTING
-
     public function move_file(Request $request)
     {
         $source = $request->source;
@@ -169,20 +131,19 @@ class VoyagerMediaController extends Controller
             : "{$location}/{$destination}";
 
         if (!file_exists($destination)) {
-            if (Storage::move($source, $destination)) {
+            if (Storage::disk($this->filesystem)->move($source, $destination)) {
                 $success = true;
             } else {
-                $error = 'Sorry there seems to be a problem moving that file/folder, please make sure you have the correct permissions.';
+                $error = trans('voyager.media_error_moving');
             }
         } else {
-            $error = 'Sorry there is already a file/folder with that existing name in that folder.';
+            $error = trans('voyager.media_error_already_exists');
         }
 
         return compact('success', 'error');
     }
 
     // RENAME FILE WORKING with 5.3
-
     public function rename_file(Request $request)
     {
         $folderLocation = $request->folder_location;
@@ -197,34 +158,156 @@ class VoyagerMediaController extends Controller
 
         $location = "{$this->directory}/{$folderLocation}";
 
-        if (!Storage::exists("{$location}/{$newFilename}")) {
-            if (Storage::move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
+        if (!Storage::disk($this->filesystem)->exists("{$location}/{$newFilename}")) {
+            if (Storage::disk($this->filesystem)->move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
                 $success = true;
             } else {
-                $error = 'Sorry there seems to be a problem moving that file/folder, please make sure you have the correct permissions.';
+                $error = trans('voyager.media_error_moving');
             }
         } else {
-            $error = 'File or Folder may already exist with that name. Please choose another name or delete the other file.';
+            $error = trans('voyager.media_error_may_exist');
         }
 
         return compact('success', 'error');
     }
 
     // Upload Working with 5.3
-
     public function upload(Request $request)
     {
         try {
-            $path = $request->file->store($request->upload_path);
+            $path = $request->file->store($request->upload_path, $this->filesystem);
             $success = true;
-            $message = 'Successfully uploaded new file!';
+            $message = trans('voyager.media_success_uploaded_file');
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
         }
 
+        $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix().$path;
+        Image::make($realPath)->orientate()->save();
+
         $path = preg_replace('/^public\//', '', $path);
 
         return response()->json(compact('success', 'message', 'path'));
+    }
+
+    private function getFiles($dir)
+    {
+        $files = [];
+        $storageFiles = Storage::disk($this->filesystem)->files($dir);
+        $storageFolders = Storage::disk($this->filesystem)->directories($dir);
+
+        foreach ($storageFiles as $file) {
+            if (empty(pathinfo($file, PATHINFO_FILENAME)) && config('voyager.hidden_files')) {
+                $files[] = [
+                    'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
+                    'type'          => Storage::disk($this->filesystem)->mimeType($file),
+                    'path'          => Storage::disk($this->filesystem)->url($file),
+                    'size'          => Storage::disk($this->filesystem)->size($file),
+                    'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
+                ];
+            } elseif (!empty(pathinfo($file, PATHINFO_FILENAME))) {
+                $files[] = [
+                    'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
+                    'type'          => Storage::disk($this->filesystem)->mimeType($file),
+                    'path'          => Storage::disk($this->filesystem)->url($file),
+                    'size'          => Storage::disk($this->filesystem)->size($file),
+                    'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
+                ];
+            }
+        }
+
+        foreach ($storageFolders as $folder) {
+            $files[] = [
+                'name'          => strpos($folder, '/') > 1 ? str_replace('/', '', strrchr($folder, '/')) : $folder,
+                'type'          => 'folder',
+                'path'          => Storage::disk($this->filesystem)->url($folder),
+                'items'         => '',
+                'last_modified' => '',
+            ];
+        }
+
+        return $files;
+    }
+
+    // REMOVE FILE
+    public function remove(Request $request)
+    {
+        try {
+            // GET THE SLUG, ex. 'posts', 'pages', etc.
+            $slug = $request->get('slug');
+
+            // GET image name
+            $image = $request->get('image');
+
+            // GET record id
+            $id = $request->get('id');
+
+            // GET field name
+            $field = $request->get('field');
+
+            // GET THE DataType based on the slug
+            $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+            // Check permission
+            Voyager::canOrFail('delete_'.$dataType->name);
+
+            // Load model and find record
+            $model = app($dataType->model_name);
+            $data = $model::find([$id])->first();
+
+            // Check if field exists
+            if (!isset($data->{$field})) {
+                throw new Exception(trans('voyager.generic_field_does_not_exist'), 400);
+            }
+
+            // Check if valid json
+            if (is_null(@json_decode($data->{$field}))) {
+                throw new Exception(trans('voyager.json_invalid'), 500);
+            }
+
+            // Decode field value
+            $fieldData = @json_decode($data->{$field}, true);
+
+            // Flip keys and values
+            $fieldData = array_flip($fieldData);
+
+            // Check if image exists in array
+            if (!array_key_exists($image, $fieldData)) {
+                throw new Exception(trans('voyager.media_image_does_not_exist'), 400);
+            }
+
+            // Remove image from array
+            unset($fieldData[$image]);
+
+            // Generate json and update field
+            $data->{$field} = json_encode(array_flip($fieldData));
+            $data->save();
+
+            return response()->json([
+               'data' => [
+                   'status'     => 200,
+                   'message'    => trans('voyager.media_image_removed'),
+               ],
+            ]);
+        } catch (Exception $e) {
+            $code = 500;
+            $message = trans('voyager.generic_internal_error');
+
+            if ($e->getCode()) {
+                $code = $e->getCode();
+            }
+
+            if ($e->getMessage()) {
+                $message = $e->getMessage();
+            }
+
+            return response()->json([
+                'data' => [
+                    'status'    => $code,
+                    'message'   => $message,
+                ],
+            ], $code);
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> Viewing {{ ucfirst($dataType->display_name_singular) }}
+        <i class="{{ $dataType->icon }}"></i> {{ trans('voyager.generic_viewing') }} {{ ucfirst($dataType->display_name_singular) }}
     </h1>
 @stop
 
@@ -26,9 +26,11 @@
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
                                 <img style="max-width:640px"
-                                     src="<?php echo Voyager::image($dataTypeContent->{$row->field}) ?>">
+                                     src="{!! Voyager::image($dataTypeContent->{$row->field}) !!}">
+                            @elseif($row->type == 'date')
+                            {{ \Carbon\Carbon::parse($dataTypeContent->{$row->field})->format('F jS, Y h:i A') }}
                             @else
-                                <p><?php echo $dataTypeContent->{$row->field} ?></p>
+                                <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
                         @if(!$loop->last)
@@ -37,7 +39,7 @@
                     @endforeach
 
                     <div class="panel-heading" style="border-bottom:0;">
-                        <h3 class="panel-title">User Role</h3>
+                        <h3 class="panel-title">{{ trans('voyager.profile_user_role') }}</h3>
                     </div>
 
                     <div class="panel-body" style="padding-top:0;">

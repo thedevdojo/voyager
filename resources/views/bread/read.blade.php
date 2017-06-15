@@ -4,13 +4,20 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> Viewing {{ ucfirst($dataType->display_name_singular) }} &nbsp;
+        <i class="{{ $dataType->icon }}"></i> {{ trans('voyager.generic_viewing') }} {{ ucfirst($dataType->display_name_singular) }} &nbsp;
 
+        @if (Voyager::can('edit_'.$dataType->name))
         <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-            Edit
+            {{ trans('voyager.generic_edit') }}
+        </a>
+        @endif
+        <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
+            <span class="glyphicon glyphicon-list"></span>&nbsp;
+            {{ trans('voyager.generic_return_to_list') }}
         </a>
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -20,10 +27,8 @@
 
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
 
-
                     <!-- /.box-header -->
                     <!-- form start -->
-
 
                     @foreach($dataType->readRows as $row)
                         @php $rowDetails = json_decode($row->details); @endphp
@@ -34,7 +39,7 @@
 
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
-                                <img style="max-width:640px"
+                                <img class="img-responsive"
                                      src="{{ Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'select_dropdown' && property_exists($rowDetails, 'options') &&
                                     !empty($rowDetails->options->{$dataTypeContent->{$row->field}})
@@ -71,7 +76,11 @@
                                 @else
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
+                            @elseif($row->type == 'rich_text_box')
+                                @include('voyager::multilingual.input-hidden-bread-read')
+                                <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @else
+                                @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
@@ -80,7 +89,6 @@
                         @endif
                     @endforeach
 
-
                 </div>
             </div>
         </div>
@@ -88,5 +96,12 @@
 @stop
 
 @section('javascript')
-
+    @if ($isModelTranslatable)
+    <script>
+        $(document).ready(function () {
+            $('.side-body').multilingual();
+        });
+    </script>
+    <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
+    @endif
 @stop

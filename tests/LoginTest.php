@@ -16,7 +16,7 @@ class LoginTest extends TestCase
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
-        $this->press('Login');
+        $this->press(trans('voyager.generic_login'));
         $this->seePageIs(route('voyager.dashboard'));
     }
 
@@ -25,9 +25,9 @@ class LoginTest extends TestCase
         $this->visit(route('voyager.login'))
              ->type('john@Doe.com', 'email')
              ->type('pass', 'password')
-             ->press('Login')
+             ->press(trans('voyager.generic_login'))
              ->seePageIs(route('voyager.login'))
-             ->see('The given credentials don\'t match with an user registered.')
+             ->see(trans('auth.failed'))
              ->seeInField('email', 'john@Doe.com');
     }
 }

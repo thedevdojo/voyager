@@ -7,14 +7,10 @@ class DataTypesTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
     public function run()
     {
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'posts',
-        ]);
+        $dataType = $this->dataType('slug', 'posts');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'posts',
@@ -22,14 +18,13 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Posts',
                 'icon'                  => 'voyager-news',
                 'model_name'            => 'TCG\\Voyager\\Models\\Post',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'pages',
-        ]);
+        $dataType = $this->dataType('slug', 'pages');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'pages',
@@ -37,14 +32,13 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Pages',
                 'icon'                  => 'voyager-file-text',
                 'model_name'            => 'TCG\\Voyager\\Models\\Page',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'users',
-        ]);
+        $dataType = $this->dataType('slug', 'users');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'users',
@@ -52,14 +46,13 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Users',
                 'icon'                  => 'voyager-person',
                 'model_name'            => 'TCG\\Voyager\\Models\\User',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'name'                  => 'categories',
-        ]);
+        $dataType = $this->dataType('name', 'categories');
         if (!$dataType->exists) {
             $dataType->fill([
                 'slug'                  => 'categories',
@@ -67,14 +60,13 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Categories',
                 'icon'                  => 'voyager-categories',
                 'model_name'            => 'TCG\\Voyager\\Models\\Category',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'menus',
-        ]);
+        $dataType = $this->dataType('slug', 'menus');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'menus',
@@ -82,14 +74,13 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Menus',
                 'icon'                  => 'voyager-list',
                 'model_name'            => 'TCG\\Voyager\\Models\\Menu',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
         }
 
-        $dataType = DataType::firstOrNew([
-            'slug'                  => 'roles',
-        ]);
+        $dataType = $this->dataType('slug', 'roles');
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'roles',
@@ -97,9 +88,23 @@ class DataTypesTableSeeder extends Seeder
                 'display_name_plural'   => 'Roles',
                 'icon'                  => 'voyager-lock',
                 'model_name'            => 'TCG\\Voyager\\Models\\Role',
+                'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
             ])->save();
         }
+    }
+
+    /**
+     * [dataType description].
+     *
+     * @param [type] $field [description]
+     * @param [type] $for   [description]
+     *
+     * @return [type] [description]
+     */
+    protected function dataType($field, $for)
+    {
+        return DataType::firstOrNew([$field => $for]);
     }
 }

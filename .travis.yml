@@ -35,4 +35,10 @@ before_script:
   - composer show laravel/framework
 
 script:
-  # - vendor/bin/phpunit
+  - vendor/bin/phpunit
+  
+addons:
+ code_climate
+
+after_success:
+  - vendor/bin/test-reporter

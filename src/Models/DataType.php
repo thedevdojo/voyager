@@ -3,11 +3,17 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Schema;
-use TCG\Voyager\Facades\DBSchema;
+use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Database\Schema\SchemaManager;
+use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\Translatable;
 
 class DataType extends Model
 {
+    use Translatable;
+
+    protected $translatable = ['display_name_singular', 'display_name_plural'];
+
     protected $table = 'data_types';
 
     protected $fillable = [
@@ -17,6 +23,7 @@ class DataType extends Model
         'display_name_plural',
         'icon',
         'model_name',
+        'controller',
         'description',
         'generate_permissions',
         'server_side',
@@ -24,7 +31,7 @@ class DataType extends Model
 
     public function rows()
     {
-        return $this->hasMany(DataRow::class);
+        return $this->hasMany(Voyager::modelClass('DataRow'))->orderBy('order');
     }
 
     public function browseRows()
@@ -65,7 +72,7 @@ class DataType extends Model
     public function updateDataType($requestData, $throw = false)
     {
         try {
-            \DB::beginTransaction();
+            DB::beginTransaction();
 
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields(array_get($requestData, 'name'));
@@ -82,23 +89,30 @@ class DataType extends Model
                     $dataRow->type = $requestData['field_input_type_'.$field];
                     $dataRow->details = $requestData['field_details_'.$field];
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
+                    $dataRow->order = intval($requestData['field_order_'.$field]);
 
                     if (!$dataRow->save()) {
-                        throw new \Exception('Failed to save field '.$field.", we're rolling back!");
+                        throw new \Exception(trans('voyager.database_field_safe_failed', ['field' => $field]));
                     }
                 }
 
+                // Clean data_rows that don't have an associated field
+                // TODO: need a way to identify deleted and renamed fields.
+                //   maybe warn the user and let him decide to either rename or delete?
+                $this->rows()->whereNotIn('field', $fields)->delete();
+
                 // It seems everything was fine. Let's check if we need to generate permissions
                 if ($this->generate_permissions) {
-                    Permission::generateFor($this->name);
+                    Voyager::model('Permission')->generateFor($this->name);
                 }
 
-                \DB::commit();
+                DB::commit();
 
                 return true;
             }
         } catch (\Exception $e) {
-            \DB::rollBack();
+            DB::rollBack();
+
             if ($throw) {
                 throw $e;
             }
@@ -113,7 +127,7 @@ class DataType extends Model
             $name = $this->name;
         }
 
-        $fields = Schema::getColumnListing($name);
+        $fields = SchemaManager::listTableColumnNames($name);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
@@ -128,7 +142,17 @@ class DataType extends Model
     {
         $table = $this->name;
 
-        $fieldOptions = DBSchema::describeTable($table);
+        // Get ordered BREAD fields
+        $orderedFields = $this->rows()->pluck('field')->toArray();
+
+        $_fieldOptions = SchemaManager::describeTable($table)->toArray();
+
+        $fieldOptions = [];
+        $f_size = count($orderedFields);
+        for ($i = 0; $i < $f_size; $i++) {
+            $fieldOptions[$orderedFields[$i]] = $_fieldOptions[$orderedFields[$i]];
+        }
+        $fieldOptions = collect($fieldOptions);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {

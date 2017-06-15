@@ -1,35 +1,13 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/ga-embed.css">
+    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/ga-embed.css') }}">
 @stop
 
 @section('content')
     <div class="page-content">
-        <div class="alerts">
-            @foreach ($alerts as $alert)
-                <div class="alert alert-{{ $alert->type }} alert-name-{{ $alert->name }}">
-                    @foreach($alert->components as $component)
-                        <?php echo $component->render(); ?>
-                    @endforeach
-                </div>
-            @endforeach
-        </div>
-        <div class="widgets">
-            @foreach(config('voyager.widgets', []) as $element)
-                <div class="panel widget center bgimage" style="background-image:url({{ config('voyager.assets_path') . $element['image']}});">
-                    <div class="dimmer"></div>
-                    <div class="panel-content">
-                        <i class={{ $element['icon'] }}></i>
-                        <?php $count = $element['model']::count(); ?>
-                        <h4>{{ $count . ' ' .  $element['name'] }}(s)</h4>
-                        <p>You have {{ $count . ' ' .  $element['name'] }}(s) in your database. Click on button below to view all {{ lcfirst($element['name']) }}s.</p>
-                        <a href="{{ $element['url'] }}" class="btn btn-primary">View All {{ $element['name'] }}s</a>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-        <div style="clear:both"></div>
+        @include('voyager::alerts')
+        @include('voyager::dimmers')
         <div style="padding:15px;">
             <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
             @if (isset($google_analytics_client_id) && !empty($google_analytics_client_id))
@@ -37,7 +15,7 @@
                 <div id="embed-api-auth-container"></div>
             @else
                 <p style="border-radius:4px; padding:20px; background:#fff; margin:0; color:#999; text-align:center;">
-                    To view analytics you'll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console:
+                    {!! trans('voyager.analytics_no_client_id') !!}
                     <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
                 </p>
             @endif
@@ -47,8 +25,8 @@
                     <ul class="FlexGrid">
                         <li class="FlexGrid-item">
                             <div class="Titles">
-                                <h1 class="Titles-main" id="view-name">Select a View</h1>
-                                <div class="Titles-sub">Various visualizations</div>
+                                <h1 class="Titles-main" id="view-name">{{ trans('voyager.analytics_select_view') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_various_visualizations') }}</div>
                             </div>
                         </li>
                         <li class="FlexGrid-item FlexGrid-item--fixed">
@@ -62,8 +40,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">This Week vs Last Week</h1>
-                                <div class="Titles-sub">By users</div>
+                                <h1 class="Titles-main">{{ trans('voyager.analytics_this_vs_last_week') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_by_users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-1-container"></figure>
                             <ol class="Chartjs-legend" id="legend-1-container"></ol>
@@ -72,8 +50,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">This Year vs Last Year</h1>
-                                <div class="Titles-sub">By users</div>
+                                <h1 class="Titles-main">{{ trans('voyager.analytics_this_vs_last_year') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_by_users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-2-container"></figure>
                             <ol class="Chartjs-legend" id="legend-2-container"></ol>
@@ -82,8 +60,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">Top Browsers</h1>
-                                <div class="Titles-sub">By pageview</div>
+                                <h1 class="Titles-main">{{ trans('voyager.analytics_top_browsers') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_by_pageview') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-3-container"></figure>
                             <ol class="Chartjs-legend" id="legend-3-container"></ol>
@@ -92,8 +70,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">Top Countries</h1>
-                                <div class="Titles-sub">By sessions</div>
+                                <h1 class="Titles-main">{{ trans('voyager.analytics_top_countries') }}</h1>
+                                <div class="Titles-sub">{{ trans('voyager.analytics_by_sessions') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-4-container"></figure>
                             <ol class="Chartjs-legend" id="legend-4-container"></ol>
@@ -126,14 +104,14 @@
             }(window, document, 'script'));
         </script>
 
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/chart.min.js"></script>
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/moment.min.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/chart.min.js') }}"></script>
+        <script src="{{ voyager_asset('js/ga-embed/moment.min.js') }}"></script>
         <!-- Include the ViewSelector2 component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/view-selector2.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/view-selector2.js') }}"></script>
         <!-- Include the DateRangeSelector component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/date-range-selector.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/date-range-selector.js') }}"></script>
         <!-- Include the ActiveUsers component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/active-users.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/active-users.js') }}"></script>
 
         <script>
             // == NOTE ==
@@ -149,7 +127,7 @@
                  */
                 gapi.analytics.auth.authorize({
                     container: 'embed-api-auth-container',
-                    clientid: '<?= $google_analytics_client_id; ?>'
+                    clientid: '{{ $google_analytics_client_id }}'
                 });
 
 
@@ -267,7 +245,7 @@
                             labels: labels,
                             datasets: [
                                 {
-                                    label: 'Last Week',
+                                    label: '{{ trans('voyager.date_last_week') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     pointColor: 'rgba(220,220,220,1)',
@@ -275,7 +253,7 @@
                                     data: data2
                                 },
                                 {
-                                    label: 'This Week',
+                                    label: '{{ trans('voyager.date_this_week') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     pointColor: 'rgba(151,187,205,1)',
@@ -340,13 +318,13 @@
                             labels: labels,
                             datasets: [
                                 {
-                                    label: 'Last Year',
+                                    label: '{{ trans('voyager.date_last_year') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     data: data2
                                 },
                                 {
-                                    label: 'This Year',
+                                    label: '{{ trans('voyager.date_this_year') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     data: data1

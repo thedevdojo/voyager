@@ -5,15 +5,16 @@
 @stop
 
 @if(isset($dataTypeContent->id))
-    @section('page_title','Edit '.$dataType->display_name_singular)
+    @section('page_title', trans('voyager.generic_edit').' '.$dataType->display_name_singular)
 @else
-    @section('page_title','Add '.$dataType->display_name_singular)
+    @section('page_title', trans('voyager.generic_add').' '.$dataType->display_name_singular)
 @endif
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
+        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ trans('voyager.generic_edit') }}@else{{ trans('voyager.generic_new') }}@endif {{ $dataType->display_name_singular }}
     </h1>
+    @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
@@ -24,13 +25,14 @@
                 <div class="panel panel-bordered">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'Add New' }}@endif {{ $dataType->display_name_singular }}</h3>
+                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ trans('voyager.generic_edit') }}@else{{ trans('voyager.generic_add_new') }}@endif {{ $dataType->display_name_singular }}</h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
                     <form role="form"
-                          action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
-                          method="POST" enctype="multipart/form-data">
+                            class="form-edit-add"
+                            action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
+                            method="POST" enctype="multipart/form-data">
                         <!-- PUT Method if we are editing -->
                         @if(isset($dataTypeContent->id))
                             {{ method_field("PUT") }}
@@ -59,222 +61,29 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <?php $options = json_decode($row->details); $checked = false; ?>
-                                <div class="form-group">
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif">
                                     <label for="name">{{ $row->display_name }}</label>
+                                    @include('voyager::multilingual.input-hidden-bread-edit-add')
+                                    {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
 
-                                    @if($row->type == "text")
-                                        <input type="text" class="form-control" name="{{ $row->field }}"
-                                               placeholder="{{ $row->display_name }}"
-                                               {!! isBreadSlugAutoGenerator($options) !!}
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif">
-                                    @elseif($row->type == "password")
-                                        @if(isset($dataTypeContent->{$row->field}))
-                                            <br>
-                                            <small>Leave empty to keep the same</small>
-                                        @endif
-                                        <input type="password" class="form-control" name="{{ $row->field }}" value="">
-                                    @elseif($row->type == "text_area")
-                                        <textarea class="form-control"
-                                                  name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif</textarea>
-                                    @elseif($row->type == "rich_text_box")
-                                        <textarea class="form-control richTextBox"
-                                                  name="{{ $row->field }}">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif</textarea>
-                                    @elseif($row->type == "image" || $row->type == "file")
-                                        @if($row->type == "image" && isset($dataTypeContent->{$row->field}))
-                                            <img src="{{ Voyager::image( $dataTypeContent->{$row->field} ) }}"
-                                                 style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
-                                        @elseif($row->type == "file" && isset($dataTypeContent->{$row->field}))
-                                            <div class="fileType">{{ $dataTypeContent->{$row->field} }}</div>
-                                        @endif
-                                        <input type="file" name="{{ $row->field }}">
-                                    @elseif($row->type == "select_dropdown")
-                                        <?php 
-                                            if(strpos($row->field, '_id')){
-                                                $row->field = str_replace('_id', '', $row->field); 
-                                                $hasId = true;
-                                            }else{
-                                                $row->field = snake_case($row->field);
-                                                $hasId = false;
-                                            }
-                                        ?>
-
-                                        @if(isset($options->relationship))
-
-
-                                            @if( !method_exists( $dataType->model_name, $row->field ) )
-                                                <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
-                                            @endif
-
-                                            @if( method_exists( $dataType->model_name, $row->field ) )
-                                                @if(isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field})))
-                                                    <?php $selected_value = old($row->field, $dataTypeContent->{$row->field}->{$options->relationship->key}); ?>
-                                                @else
-                                                    <?php $selected_value = old($row->field); ?>
-                                                @endif
-
-                                                <select class="form-control select2" name="{{ ($hasId) ? snake_case($row->field).'_id' : snake_case($row->field) }}">
-                                                    <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
-
-                                                    @if(isset($options->options))
-                                                        <optgroup label="Custom">
-                                                        @foreach($options->options as $key => $option)
-                                                            <option value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if((string)$selected_value == (string)$key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
-                                                        @endforeach
-                                                        </optgroup>
-                                                    @endif
-                                                    {{-- Populate all options from relationship --}}
-                                                    <?php
-                                                    $relationshipClass = $dataTypeContent->{$row->field}()->getRelated();
-                                                    $relationshipOptions = $relationshipClass::all();
-
-                                                    // Try to get default value for the relationship
-                                                    // when default is a callable function (ClassName@methodName)
-                                                    if ($default != NULL) {
-                                                        $comps = explode('@', $default);
-                                                        if (count($comps) == 2 && method_exists($comps[0], $comps[1])) {
-                                                            $default = call_user_func([$comps[0], $comps[1]]);
-                                                        }
-                                                    }
-                                                    ?>
-
-                                                    <optgroup label="Relationship">
-                                                    @foreach($relationshipOptions as $relationshipOption)
-                                                        <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
-                                                    @endforeach
-                                                    </optgroup>
-                                                </select>
-                                            @else
-                                                <select class="form-control select2" name="{{ $row->field }}"></select>
-                                            @endif
-                                        @else
-                                            <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
-                                            <select class="form-control select2" name="{{ $row->field }}">
-                                                <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
-                                                @if(isset($options->options))
-                                                    @foreach($options->options as $key => $option)
-                                                        <option value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        @endif
-
-                                    @elseif($row->type == "select_multiple")
-                                        {{-- If this is a relationship and the method does not exist, show a warning message --}}
-                                        @if(isset($options->relationship) && !method_exists( $dataType->model_name, $row->field ) )
-                                            <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ $row->field . '()' }} method of the {{ $dataType->model_name }} class.</p>
-                                        @endif
-
-                                        <select class="form-control select2" name="{{ $row->field }}[]" multiple>
-                                            @if(isset($options->relationship))
-                                                {{-- Check that the method relationship exists --}}
-                                                @if( method_exists( $dataType->model_name, $row->field ) )
-                                                    <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{$row->field}()->pluck($options->relationship->key)->all() : array(); ?>
-                                                    <?php $relationshipClass = get_class(app($dataType->model_name)->{$row->field}()->getRelated()); ?>
-                                                    <?php $relationshipOptions = $relationshipClass::all(); ?>
-                                                    @foreach($relationshipOptions as $relationshipOption)
-
-                                                    <?php 
-                                                        if(strpos($options->relationship->key, '.'))
-                                                        {
-                                                            list(,$key) = explode('.', $options->relationship->key);
-                                                        }else{
-                                                            $key = $options->relationship->key;
-                                                        }
-
-                                                    ?>
-                                                        <option value="{{ $relationshipOption->{$key} }}" @if(in_array($relationshipOption->{$key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
-                                                    @endforeach
-                                                @endif
-                                            @elseif(isset($options->options))
-                                                @foreach($options->options as $key => $label)
-                                                        <?php $selected = ''; ?>
-                                                    @if(is_array($dataTypeContent->{$row->field}) && in_array($key, $dataTypeContent->{$row->field}))
-                                                        <?php $selected = 'selected="selected"'; ?>
-                                                    @endif
-                                                    <option value="{{ $key }}" {!! $selected !!}>
-                                                        {{ $label }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-
-                                    @elseif($row->type == "radio_btn")
-                                        <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !empty(old($row->field,
-                                                        $dataTypeContent->{$row->field}))) ? old($row->field,
-                                                $dataTypeContent->{$row->field}) : old($row->field); ?>
-                                        <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
-                                        <ul class="radio">
-                                            @if(isset($options->options))
-                                                @foreach($options->options as $key => $option)
-                                                    <li>
-                                                        <input type="radio" id="option-{{ $key }}"
-                                                               name="{{ $row->field }}"
-                                                               value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'checked' }}@endif @if($selected_value == $key){{ 'checked' }}@endif>
-                                                        <label for="option-{{ $key }}">{{ $option }}</label>
-                                                        <div class="check"></div>
-                                                    </li>
-                                                @endforeach
-                                            @endif
-                                        </ul>
-
-                                    @elseif($row->type == "checkbox")
-                                        <br>
-                                        <?php $checked = false; ?>
-                                        @if(isset($dataTypeContent->{$row->field}) || old($row->field))
-                                         <?php $checked = old($row->field, $dataTypeContent->{$row->field}); ?>
-                                        @else
-                                         <?php $checked = isset($options->checked) && $options->checked ? true : false; ?>
-                                        @endif
-
-                                        @if(isset($options->on) && isset($options->off))
-                                            <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
-                                                   data-on="{{ $options->on }}" {!! $checked ? 'checked="checked"' : '' !!}
-                                                   data-off="{{ $options->off }}">
-                                        @else
-                                            <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
-                                                   @if($checked) checked @endif>
-                                        @endif
-
-                                    @elseif($row->type == "timestamp")
-                                        <input type="datetime" class="form-control datepicker" name="{{ $row->field }}"
-                                                value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('m/d/Y g:i A', strtotime(old($row->field, $dataTypeContent->{$row->field})))  }}@else{{old($row->field)}}@endif">
-
-                                    @elseif($row->type == "date")
-                                        <input type="date" class="form-control" name="{{ $row->field }}"
-                                               placeholder="{{ $row->display_name }}"
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('Y-m-d', strtotime(old($row->field, $dataTypeContent->{$row->field}))) }}@else{{old($row->field)}}@endif">
-
-                                    @elseif($row->type == "date-time")
-                                        <input type="datetime-local" class="form-control" name="{{ $row->field }}"
-                                               placeholder="{{ $row->display_name }}"
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('Y-m-d\TH:i:s', strtotime(old($row->field, $dataTypeContent->{$row->field}))) }}@else{{old($row->field)}}@endif">
-
-                                    @elseif($row->type == "number")
-                                        <input type="number" class="form-control" name="{{ $row->field }}"
-                                               placeholder="{{ $row->display_name }}"
-                                               value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
-
-                                    @endif
-                                    
-                                    @if(isset($options->description))
-                                    <i class="help-block"><span class="voyager-info-circled"></span> {{$options->description}}</i>
-                                    @endif
+                                    @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
+                                        {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                                    @endforeach
                                 </div>
                             @endforeach
 
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary save">{{ trans('generic_save') }}</button>
                         </div>
                     </form>
 
                     <iframe id="form_target" name="form_target" style="display:none"></iframe>
                     <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post"
-                          enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
+                            enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
                         <input name="image" id="upload_file" type="file"
-                               onchange="$('#my_form').submit();this.value='';">
+                                 onchange="$('#my_form').submit();this.value='';">
                         <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
                         {{ csrf_field() }}
                     </form>
@@ -283,19 +92,88 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade modal-danger" id="confirm_delete_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ trans('voyager.generic_are_you_sure') }}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <h4>{{ trans('voyager.generic_are_you_sure_delete') }} '<span class="confirm_delete_name"></span>'</h4>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('voyager.generic_delete') }}</button>
+                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ trans('voyager.generic_delete_confirm') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Delete File Modal -->
 @stop
 
 @section('javascript')
     <script>
+        var params = {}
+        var $image
+
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
+
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual({"editing": true});
+            @endif
 
             $('.side-body input[data-slug-origin]').each(function(i, el) {
                 $(el).slugify();
             });
+
+            $('.form-group').on('click', '.remove-multi-image', function (e) {
+                $image = $(this).siblings('img');
+
+                params = {
+                    slug:   '{{ $dataTypeContent->getTable() }}',
+                    image:  $image.data('image'),
+                    id:     $image.data('id'),
+                    field:  $image.parent().data('field-name'),
+                    _token: '{{ csrf_token() }}'
+                }
+
+                $('.confirm_delete_name').text($image.data('image'));
+                $('#confirm_delete_modal').modal('show');
+            });
+
+            $('#confirm_delete').on('click', function(){
+                $.post('{{ route('voyager.media.remove') }}', params, function (response) {
+                    if ( response
+                        && response.data
+                        && response.data.status
+                        && response.data.status == 200 ) {
+
+                        toastr.success(response.data.message);
+                        $image.parent().fadeOut(300, function() { $(this).remove(); })
+                    } else {
+                        toastr.error("Error removing image.");
+                    }
+                });
+
+                $('#confirm_delete_modal').modal('hide');
+            });
+            $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/slugify.js"></script>
+    @if($isModelTranslatable)
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
+    @endif
+    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
+    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
+    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
 @stop

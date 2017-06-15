@@ -4,17 +4,16 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use TCG\Voyager\Models\Setting;
-use TCG\Voyager\Voyager;
+use TCG\Voyager\Facades\Voyager;
 
 class VoyagerSettingsController extends Controller
 {
     public function index()
     {
         // Check permission
-        Voyager::can('browse_settings');
+        Voyager::canOrFail('browse_settings');
 
-        $settings = Setting::orderBy('order', 'ASC')->get();
+        $settings = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
 
         return view('voyager::settings.index', compact('settings'));
     }
@@ -22,9 +21,9 @@ class VoyagerSettingsController extends Controller
     public function store(Request $request)
     {
         // Check permission
-        Voyager::can('browse_settings');
+        Voyager::canOrFail('browse_settings');
 
-        $lastSetting = Setting::orderBy('order', 'DESC')->first();
+        $lastSetting = Voyager::model('Setting')->orderBy('order', 'DESC')->first();
 
         if (is_null($lastSetting)) {
             $order = 0;
@@ -35,10 +34,10 @@ class VoyagerSettingsController extends Controller
         $request->merge(['order' => $order]);
         $request->merge(['value' => '']);
 
-        Setting::create($request->all());
+        Voyager::model('Setting')->create($request->all());
 
         return back()->with([
-            'message'    => 'Successfully Created Settings',
+            'message'    => trans('voyager.settings_successfully_created'),
             'alert-type' => 'success',
         ]);
     }
@@ -46,11 +45,11 @@ class VoyagerSettingsController extends Controller
     public function update(Request $request)
     {
         // Check permission
-        Voyager::can('visit_settings');
+        Voyager::canOrFail('visit_settings');
 
-        $settings = Setting::all();
+        $settings = Voyager::model('Setting')->all();
 
-        foreach ($settings->whereIn('key', array_keys($request->all())) as $setting) {
+        foreach ($settings as $setting) {
             $content = $this->getContentBasedOnType($request, 'settings', (object) [
                 'type'    => $setting->type,
                 'field'   => $setting->key,
@@ -66,33 +65,33 @@ class VoyagerSettingsController extends Controller
         }
 
         return back()->with([
-            'message'    => 'Successfully Saved Settings',
+            'message'    => trans('voyager.settings_successfully_saved'),
             'alert-type' => 'success',
         ]);
     }
 
     public function delete($id)
     {
-        Voyager::can('browse_settings');
+        Voyager::canOrFail('browse_settings');
 
         // Check permission
-        Voyager::can('visit_settings');
+        Voyager::canOrFail('visit_settings');
 
-        Setting::destroy($id);
+        Voyager::model('Setting')->destroy($id);
 
         return back()->with([
-            'message'    => 'Successfully Deleted Setting',
+            'message'    => trans('voyager.settings_successfully_deleted'),
             'alert-type' => 'success',
         ]);
     }
 
     public function move_up($id)
     {
-        $setting = Setting::find($id);
+        $setting = Voyager::model('Setting')->find($id);
         $swapOrder = $setting->order;
-        $previousSetting = Setting::where('order', '<', $swapOrder)->orderBy('order', 'DESC')->first();
+        $previousSetting = Voyager::model('Setting')->where('order', '<', $swapOrder)->orderBy('order', 'DESC')->first();
         $data = [
-            'message'    => 'This is already at the top of the list',
+            'message'    => trans('voyager.settings_already_at_top'),
             'alert-type' => 'error',
         ];
 
@@ -103,7 +102,7 @@ class VoyagerSettingsController extends Controller
             $previousSetting->save();
 
             $data = [
-                'message'    => "Moved {$setting->display_name} setting order up",
+                'message'    => trans('voyager.settings_moved_order_up', ['name' => $setting->display_name]),
                 'alert-type' => 'success',
             ];
         }
@@ -114,15 +113,15 @@ class VoyagerSettingsController extends Controller
     public function delete_value($id)
     {
         // Check permission
-        Voyager::can('browse_settings');
+        Voyager::canOrFail('browse_settings');
 
-        $setting = Setting::find($id);
+        $setting = Voyager::model('Setting')->find($id);
 
         if (isset($setting->id)) {
             // If the type is an image... Then delete it
             if ($setting->type == 'image') {
-                if (Storage::exists(config('voyager.storage.subfolder').$setting->value)) {
-                    Storage::delete(config('voyager.storage.subfolder').$setting->value);
+                if (Storage::disk(config('voyager.storage.disk'))->exists($setting->value)) {
+                    Storage::disk(config('voyager.storage.disk'))->delete($setting->value);
                 }
             }
             $setting->value = '';
@@ -130,19 +129,19 @@ class VoyagerSettingsController extends Controller
         }
 
         return back()->with([
-            'message'    => "Successfully removed {$setting->display_name} value",
+            'message'    => trans('voyager.settings_successfully_removed', ['name' => $setting->display_name]),
             'alert-type' => 'success',
         ]);
     }
 
     public function move_down($id)
     {
-        $setting = Setting::find($id);
+        $setting = Voyager::model('Setting')->find($id);
         $swapOrder = $setting->order;
 
-        $previousSetting = Setting::where('order', '>', $swapOrder)->orderBy('order', 'ASC')->first();
+        $previousSetting = Voyager::model('Setting')->where('order', '>', $swapOrder)->orderBy('order', 'ASC')->first();
         $data = [
-            'message'    => 'This is already at the bottom of the list',
+            'message'    => trans('voyager.settings_already_at_bottom'),
             'alert-type' => 'error',
         ];
 
@@ -153,7 +152,7 @@ class VoyagerSettingsController extends Controller
             $previousSetting->save();
 
             $data = [
-                'message'    => "Moved {$setting->display_name} setting order down",
+                'message'    => trans('voyager.settings_moved_order_down', ['name' => $setting->display_name]),
                 'alert-type' => 'success',
             ];
         }

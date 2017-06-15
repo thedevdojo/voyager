@@ -6,16 +6,13 @@
                     <div class="logo-icon-container">
                         <?php $admin_logo_img = Voyager::setting('admin_icon_image', ''); ?>
                         @if($admin_logo_img == '')
-                            <img src="{{ config('voyager.assets_path') }}/images/logo-icon-light.png" alt="Logo Icon">
+                            <img src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
                         @else
                             <img src="{{ Voyager::image($admin_logo_img) }}" alt="Logo Icon">
                         @endif
                     </div>
                     <div class="title">{{Voyager::setting('admin_title', 'VOYAGER')}}</div>
                 </a>
-                <button type="button" class="navbar-expand-toggle pull-right visible-xs">
-                    <i class="voyager-x icon"></i>
-                </button>
             </div><!-- .navbar-header -->
 
             <div class="panel widget center bgimage"
@@ -26,13 +23,13 @@
                     <h4>{{ ucwords(Auth::user()->name) }}</h4>
                     <p>{{ Auth::user()->email }}</p>
 
-                    <a href="{{ route('voyager.profile') }}" class="btn btn-primary">Profile</a>
+                    <a href="{{ route('voyager.profile') }}" class="btn btn-primary">{{ trans('voyager.generic_profile') }}</a>
                     <div style="clear:both"></div>
                 </div>
             </div>
 
         </div>
 
-        {!! Menu::display('admin', 'admin_menu') !!}
+        {!! menu('admin', 'admin_menu') !!}
     </nav>
 </div>

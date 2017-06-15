@@ -5,9 +5,15 @@ namespace TCG\Voyager\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\Translatable;
 
 class Post extends Model
 {
+    use Translatable;
+
+    protected $translatable = ['title', 'seo_title', 'excerpt', 'body', 'slug', 'meta_description', 'meta_keywords'];
+
     const PUBLISHED = 'PUBLISHED';
 
     protected $guarded = [];
@@ -24,7 +30,7 @@ class Post extends Model
 
     public function authorId()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Voyager::modelClass('User'), 'author_id', 'id');
     }
 
     /**
@@ -37,5 +43,28 @@ class Post extends Model
     public function scopePublished(Builder $query)
     {
         return $query->where('status', '=', static::PUBLISHED);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function category()
+    {
+        return $this->hasOne(Voyager::modelClass('Category'), 'id', 'category_id');
+    }
+
+    /**
+     *   Method for returning specific thumbnail for post.
+     */
+    public function thumbnail($type)
+    {
+        // We take image from posts field
+        $image = $this->attributes['image'];
+        // We need to get extension type ( .jpeg , .png ...)
+        $ext = pathinfo($image, PATHINFO_EXTENSION);
+        // We remove extension from file name so we can append thumbnail type
+        $name = rtrim($image, '.'.$ext);
+        // We merge original name + type + extension
+        return $name.'-'.$type.'.'.$ext;
     }
 }

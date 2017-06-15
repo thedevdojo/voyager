@@ -5,8 +5,7 @@ namespace TCG\Voyager\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\Console\Input\InputOption;
-use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Models\Role;
+use TCG\Voyager\Facades\Voyager;
 
 class AdminCommand extends Command
 {
@@ -50,7 +49,7 @@ class AdminCommand extends Command
         $role = $this->getAdministratorRole();
 
         // Get all permissions
-        $permissions = Permission::all();
+        $permissions = Voyager::model('Permission')->all();
 
         // Assign all permissions to the admin role
         $role->permissions()->sync(
@@ -83,7 +82,7 @@ class AdminCommand extends Command
      */
     protected function getAdministratorRole()
     {
-        $role = Role::firstOrNew([
+        $role = Voyager::model('Role')->firstOrNew([
             'name' => 'admin',
         ]);
 
@@ -113,6 +112,12 @@ class AdminCommand extends Command
         if ($create) {
             $name = $this->ask('Enter the admin name');
             $password = $this->secret('Enter admin password');
+
+            // Ask for email if there wasnt set one
+            if (!$email) {
+                $email = $this->ask('Enter the admin email');
+            }
+
             $this->info('Creating admin account');
 
             return $model::create([
