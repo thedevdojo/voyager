@@ -246,13 +246,14 @@ class VoyagerServiceProvider extends ServiceProvider
             'password',
             'radio_btn',
             'rich_text_box',
+            'code_editor',
+            'markdown_editor',
             'select_dropdown',
             'select_multiple',
             'text',
             'text_area',
             'timestamp',
             'hidden',
-            'code_editor',
         ];
 
         foreach ($formFields as $formField) {

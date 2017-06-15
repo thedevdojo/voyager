@@ -18,7 +18,7 @@
 @stop
 
 @section('content')
-    <div class="page-content container-fluid">
+    <div class="page-content edit-add container-fluid">
         <div class="row">
             <div class="col-md-12">
 
@@ -61,7 +61,15 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <div class="form-group @if($row->type == 'hidden') hidden @endif">
+                            
+                                <!-- GET THE DISPLAY OPTIONS -->
+                                @php
+                                    $options = json_decode($row->details);
+                                    $display_options = isset($options->display) ? $options->display : NULL;
+                                @endphp
+                                
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@else{{ 'col-md-12' }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+                                    {{ $row->slugify }}
                                     <label for="name">{{ $row->display_name }}</label>
                                     @include('voyager::multilingual.input-hidden-bread-edit-add')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
@@ -75,7 +83,7 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary save">Save</button>
+                            <button type="submit" class="btn btn-success save">Save</button>
                         </div>
                     </form>
 
@@ -125,7 +133,7 @@
 
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
-            
+
             //Init datepicker for date fields if data-datepicker attribute defined
             //or if browser does not handle date inputs
             $('.form-group input[type=date]').each(function (idx, elt) {
@@ -177,12 +185,4 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-    @if($isModelTranslatable)
-        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
-    @endif
-    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
-    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
-    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
 @stop
