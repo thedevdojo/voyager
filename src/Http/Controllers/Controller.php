@@ -61,6 +61,10 @@ abstract class Controller extends BaseController
             }
 
             if (is_null($content)) {
+                // Only set the content back to the previous value when there is really now input for this field
+                if (is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                    $content = $data->{$row->field};
+                }
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
                 }
