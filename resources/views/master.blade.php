@@ -116,7 +116,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 
 -->
 <script type="text/javascript" src="{{ voyager_asset('js/app.js') }}"></script>
-
+<script type="text/javascript" src="{{ voyager_asset('js/helpers.js') }}"></script>
 
 <script>
     @if(Session::has('alerts'))
