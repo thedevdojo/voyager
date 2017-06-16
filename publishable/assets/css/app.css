@@ -26414,7 +26414,7 @@ p#the_plugin_name {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#353d47', endColorstr='#21292e',GradientType=1 );
   /* IE6-9 fallback on horizontal gradient */
   overflow-x: hidden;
-  transition: all 0.4s ease-in-out;
+  transition: width 0.25s;
 }
 
 .app-container .side-body, .app-container.expanded .content-container .navbar-top, .app-container .content-container .navbar-top {
@@ -27188,7 +27188,7 @@ p#the_plugin_name {
 }
 
 .voyager .alert {
-  margin-right: 15px;
+  margin-right: 0px;
   margin-bottom: 5px;
   border-radius: 0;
   color: #fff;

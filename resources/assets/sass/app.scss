@@ -4604,7 +4604,8 @@ background: -webkit-linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1)
 background: linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#353d47', endColorstr='#21292e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 overflow-x: hidden;
-transition:all 0.4s ease-in-out;
+    -webkit-transition: width 0.25s;
+    transition: width 0.25s;
 }
 
 .app-container .side-body, .app-container.expanded .content-container .navbar-top, .app-container .content-container .navbar-top{
@@ -5363,7 +5364,7 @@ float: left;
 }
 
 .voyager .alert{
-    margin-right: 15px;
+    margin-right: 0px;
     margin-bottom: 5px;
     border-radius: 0;
     color: #fff;

@@ -90,7 +90,7 @@
                                                 </template>
 
                                             </div>
-                                            <div class="details">
+                                            <div class="details" :data-type="file.type">
                                                 <div :class="file.type">
                                                     <h4>@{{ file.name }}</h4>
                                                     <small>
@@ -124,7 +124,7 @@
 
                             </div>
 
-                            <!--div id="right">
+                            <div id="right">
                                 <div class="right_none_selected">
                                     <i class="voyager-cursor"></i>
                                     <p>No File or Folder Selected</p>
@@ -132,10 +132,10 @@
                                 <div class="right_details">
                                     <div class="detail_img">
                                         <div :class="selected_file.type">
-                                            <template v-if="selected_file.type.includes('image')">
+                                            <template v-if="selectedFileIs('image')">
                                                 <img :src="selected_file.path"/>
                                             </template>
-                                            <template v-if="selected_file.type.includes('video')">
+                                            <!--template v-if="selected_file.type.includes('video')">
                                                 <video width="100%" height="auto" controls>
                                                     <source :src="selected_file.path" type="video/mp4">
                                                     <source :src="selected_file.path" type="video/ogg">
@@ -156,7 +156,7 @@
                                             <template
                                                     v-if="selected_file.type != 'folder' && !selected_file.type.includes('audio') && !selected_file.type.includes('video') && !selected_file.type.includes('image')">
                                                 <i class="voyager-file-text-o"></i>
-                                            </template>
+                                            </template-->
                                         </div>
 
                                     </div>
@@ -180,7 +180,7 @@
                                     </div>
                                 </div>
 
-                            </div--><!-- #right -->
+                            </div><!-- #right -->
 
                         </div>
 
