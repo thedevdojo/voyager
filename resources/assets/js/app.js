@@ -1,9 +1,12 @@
 window.jQuery = window.$ = require('jquery');
+window.Vue = require('vue');
 window.perfectScrollbar = require('./perfect-scrollbar');
 window.toastr = require('toastr');
 window.DataTable = require('./bootstrap-datatables');
 window.SimpleMDE = require('simplemde');
+require('dropzone');
 require('./readmore');
+require('./media');
 require('./jquery-match-height');
 require('./bootstrap-toggle');
 require('./jquery-cookie');
