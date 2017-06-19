@@ -130,14 +130,21 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
+        // Check permission if not the own profile
+        if ($request->user()->id !== (int) $id) {
+            Voyager::canOrFail('edit_'.$dataType->name);
+        }
 
         $relationships = $this->getRelationships($dataType);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+
+        foreach ($dataType->editRows as $key => $row) {
+            $details = json_decode($row->details);
+            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+        }
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -158,11 +165,13 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
+        // Check permission if not the own profile
+        if ($request->user()->id !== (int) $id) {
+            Voyager::canOrFail('edit_'.$dataType->name);
+        }
 
         //Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
+        $val = $this->validateBread($request->all(), $dataType->editRows);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
@@ -207,6 +216,11 @@ class VoyagerBreadController extends Controller
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
                             : false;
+
+        foreach ($dataType->addRows as $key => $row) {
+            $details = json_decode($row->details);
+            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+        }
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -277,26 +291,8 @@ class VoyagerBreadController extends Controller
             $data->deleteAttributeTranslations($data->getTranslatableAttributes());
         }
 
-        foreach ($dataType->deleteRows as $row) {
-            if ($row->type == 'image') {
-                $this->deleteFileIfExists('/uploads/'.$data->{$row->field});
-
-                $options = json_decode($row->details);
-
-                if (isset($options->thumbnails)) {
-                    foreach ($options->thumbnails as $thumbnail) {
-                        $ext = explode('.', $data->{$row->field});
-                        $extension = '.'.$ext[count($ext) - 1];
-
-                        $path = str_replace($extension, '', $data->{$row->field});
-
-                        $thumb_name = $thumbnail->name;
-
-                        $this->deleteFileIfExists('/uploads/'.$path.'-'.$thumb_name.$extension);
-                    }
-                }
-            }
-        }
+        // Delete Images
+        $this->deleteBreadImages($data, $dataType->deleteRows->where('type', 'image'));
 
         $data = $data->destroy($id)
             ? [
@@ -309,5 +305,35 @@ class VoyagerBreadController extends Controller
             ];
 
         return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+    }
+
+    /**
+     * Delete all images related to a BREAD item.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $data
+     * @param \Illuminate\Database\Eloquent\Model $rows
+     *
+     * @return void
+     */
+    public function deleteBreadImages($data, $rows)
+    {
+        foreach ($rows as $row) {
+            $this->deleteFileIfExists($data->{$row->field});
+
+            $options = json_decode($row->details);
+
+            if (isset($options->thumbnails)) {
+                foreach ($options->thumbnails as $thumbnail) {
+                    $ext = explode('.', $data->{$row->field});
+                    $extension = '.'.$ext[count($ext) - 1];
+
+                    $path = str_replace($extension, '', $data->{$row->field});
+
+                    $thumb_name = $thumbnail->name;
+
+                    $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
+                }
+            }
+        }
     }
 }

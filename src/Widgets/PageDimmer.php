@@ -31,7 +31,7 @@ class PageDimmer extends AbstractWidget
                 'text' => __('voyager.dimmer.page_link_text'),
                 'link' => route('voyager.pages.index'),
             ],
-            'image' => voyager_asset('images/widget-backgrounds/03.png'),
+            'image' => voyager_asset('images/widget-backgrounds/03.jpg'),
         ]));
     }
 }

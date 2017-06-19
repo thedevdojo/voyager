@@ -1,9 +1,5 @@
 @extends('voyager::master')
 
-@section('css')
-    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/nestable.css') }}">
-@stop
-
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-list"></i>{{ __('voyager.generic.menu_builder') }} ({{ $menu->name }})
@@ -125,10 +121,6 @@
 
 @section('javascript')
 
-    <script type="text/javascript" src="{{ voyager_asset('js/jquery.nestable.js') }}"></script>
-    @if($isModelTranslatable)
-        <script type="text/javascript" src="{{ voyager_asset('js/multilingual.js') }}"></script>
-    @endif
     <script>
         $(document).ready(function () {
             @if ($isModelTranslatable)

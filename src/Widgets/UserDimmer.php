@@ -31,7 +31,7 @@ class UserDimmer extends AbstractWidget
                 'text' => __('voyager.dimmer.user_link_text'),
                 'link' => route('voyager.users.index'),
             ],
-            'image' => voyager_asset('images/widget-backgrounds/02.png'),
+            'image' => voyager_asset('images/widget-backgrounds/01.jpg'),
         ]));
     }
 }

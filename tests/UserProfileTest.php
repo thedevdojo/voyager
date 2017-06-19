@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use TCG\Voyager\Models\Role;
 
 class UserProfileTest extends TestCase
 {
@@ -30,6 +31,8 @@ class UserProfileTest extends TestCase
         $this->editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $this->user->id]);
 
         $this->listOfUsers = route('voyager.users.index');
+
+        $this->withFactories(__DIR__.'/database/factories');
     }
 
     public function testCanSeeTheUserInfoOnHisProfilePage()
@@ -97,6 +100,29 @@ class UserProfileTest extends TestCase
                  'users',
                  ['id' => 1, 'avatar' => 'user/default.png']
              );
+    }
+
+    public function testCanEditUserEmailWithEditorPermissions()
+    {
+        $user = factory(\TCG\Voyager\Models\User::class)->create();
+        $editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $user->id]);
+        $roleId = $user->role_id;
+        $role = Role::find($roleId);
+        // add permissions which reflect a possible editor role
+        // without permissions to edit  users
+        $role->permissions()->attach([1, 3, 12, 27, 32]);
+        Auth::onceUsingId($user->id);
+        $this->visit(route('voyager.profile'))
+            ->click('Edit My Profile')
+            ->see('Edit User')
+            ->seePageIs($editPageForTheCurrentUser)
+            ->type('another@email.com', 'email')
+            ->press('Submit')
+            ->seePageIs($editPageForTheCurrentUser)
+            ->seeInDatabase(
+                'users',
+                ['email' => 'another@email.com']
+            );
     }
 
     protected function newImagePath()

@@ -325,6 +325,7 @@
                 // Use workers only when needed
                 editor.on('focus', function () {
                     _session.setUseWorker(true);
+                    $('#bread-items').sortable("disable");
                 });
                 editor.on('blur', function () {
                     if (valid) {
@@ -333,6 +334,7 @@
                     } else {
                         textarea.siblings('.validation-error').show();
                     }
+                    $('#bread-items').sortable("enable");
                 });
 
                 _session.setUseWorker(false);
