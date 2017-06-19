@@ -304,18 +304,18 @@ return [
     ],
 
     'form' => [
-        'form_field_password_keep'          => 'Leave empty to keep the same',
-        'form_field_select_dd_relationship' => 'Make sure to setup the appropriate relationship in the :method method of '.
+        'field_password_keep'          => 'Leave empty to keep the same',
+        'field_select_dd_relationship' => 'Make sure to setup the appropriate relationship in the :method method of '.
                                                 'the :class class.',
-        'form_type_checkbox'                => 'Check Box',
-        'form_type_codeeditor'              => 'Code Editor',
-        'form_type_file'                    => 'File',
-        'form_type_image'                   => 'Image',
-        'form_type_radiobutton'             => 'Radio Button',
-        'form_type_richtextbox'             => 'Rich Textbox',
-        'form_type_selectdropdown'          => 'Select Dropdown',
-        'form_type_textarea'                => 'Text Area',
-        'form_type_textbox'                 => 'Text Box',
+        'type_checkbox'                => 'Check Box',
+        'type_codeeditor'              => 'Code Editor',
+        'type_file'                    => 'File',
+        'type_image'                   => 'Image',
+        'type_radiobutton'             => 'Radio Button',
+        'type_richtextbox'             => 'Rich Textbox',
+        'type_selectdropdown'          => 'Select Dropdown',
+        'type_textarea'                => 'Text Area',
+        'type_textbox'                 => 'Text Box',
     ],
 
     'theme' => [
