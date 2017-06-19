@@ -75,17 +75,19 @@ body.login {
         padding-top:15px;
     }
 
-    .login-container .glyphicon{
+    .login-container .voyager-refresh{
         top:0px;
         font-size:10px;
     }
 
-    .login-container .signingin .glyphicon{
-        top:1px;
-        left:-5px;
-        -webkit-transform-origin: 54% 50%;
-        transform-origin:54% 50%;
-        -ms-transform-origin:54% 50%;
+    .login-container .signingin .voyager-refresh{
+        top: 1px;
+        left: 0px;
+        -webkit-transform-origin: 43% 40%;
+        transform-origin: 43% 40%;
+        -ms-transform-origin: 43% 40%;
+        display: inline-block;
+        position: relative;
     }
 
     .logo-title-container{
@@ -114,6 +116,8 @@ body.login {
     .logo-container .logo{
         padding:50px 0px;
     }
+
+
 
 
     @-moz-keyframes spin {
@@ -206,7 +210,7 @@ body.login {
         background: linear-gradient(to bottom, rgba(21,21,28,0) 0%,rgba(21,21,28,0.1) 40%,rgba(21,21,28,0.3) 55%,rgba(21,21,28,0.61) 75%,rgba(21,21,28,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0015151c', endColorstr='#15151c',GradientType=0 ); /* IE6-9 */
     }
-    .glyphicon-refresh {
+    .voyager-refresh {
         -webkit-animation:spin 0.6s infinite linear;
         -moz-animation:spin 0.6s infinite linear;
         animation:spin 0.6s infinite linear;
@@ -2852,9 +2856,6 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     font-size: 12px;
 }
 
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 /********* END MEDIA STYLES *********/
 
@@ -4736,9 +4737,6 @@ overflow-x: hidden;
   animation:spin 1s linear infinite;
 }
 
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 .voyager .navbar .navbar-nav .dropdown-menu, .voyager .navbar.navbar-default .navbar-nav .dropdown-menu{
   background-color:#fff;
@@ -4857,14 +4855,17 @@ float: left;
 }
 
 .breadcrumb{
-    padding: 8px 15px;
+    padding: 3px 10px;
     list-style: none;
     background-color: #f1f1f1;
-    border-radius: 5px;
-    border: 0;
+    border-radius: 25px;
     position: relative;
-    left: -10px;
-    top: -1px;
+    top: 2px;
+    border: 2px solid #eee;
+    font-size: 12px;
+    padding-right: 15px;
+    border-right: 2px solid #f1f1f1;
+    border-bottom: 2px solid #f1f1f1;
 }
 
 .breadcrumb a{
@@ -9371,8 +9372,10 @@ limitations under the License.
   border-radius:0px;
   padding-left:20px;
   width: 100%;
-    margin-top: 0;
-    left: 0;
+  margin-top: 0;
+  left: 0;
+  padding-top: 7px;
+  padding-bottom: 8px;
 }
 
 .breadcrumb.filemanager li{
@@ -9782,10 +9785,6 @@ limitations under the License.
     font-weight: 400;
     font-size: 12px;
 }
-
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 
 /********** END MEDIA CSS **********/

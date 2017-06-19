@@ -78,7 +78,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-block login-button">
-                        <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> Loggin in...</span>
+                        <span class="signingin hidden"><span class="voyager-refresh"></span> Loggin in...</span>
                         <span class="signin">Login</span>
                     </button>
                

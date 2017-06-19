@@ -32,6 +32,7 @@
     "dropzone": "^5.0.1",
     "icheck": "^1.0.2",
     "jquery-match-height": "^0.7.2",
+    "jquery-sortable": "^0.9.13",
     "jquery-ui": "^1.12.1",
     "perfect-scrollbar": "^0.7.1",
     "readmore-js": "^2.1.0",

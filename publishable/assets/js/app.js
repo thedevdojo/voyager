@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 66);
+/******/ 	return __webpack_require__(__webpack_require__.s = 68);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -19836,7 +19836,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(6), __webpack_require__(45));
+    mod(__webpack_require__(0), __webpack_require__(6), __webpack_require__(46));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../xml/xml", "../meta"], mod);
   else // Plain browser env
@@ -21033,30 +21033,32 @@ if (!CodeMirror.mimeModes.hasOwnProperty("text/html"))
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-window.jQuery = window.$ = __webpack_require__(1);
-window.Vue = __webpack_require__(61);
-window.perfectScrollbar = __webpack_require__(17);
-window.toastr = __webpack_require__(59);
+window.jQuery = window.$ = $ = __webpack_require__(1);
+window.Vue = __webpack_require__(63);
+window.perfectScrollbar = __webpack_require__(18);
+window.toastr = __webpack_require__(61);
 window.DataTable = __webpack_require__(11);
-window.SimpleMDE = __webpack_require__(56);
-__webpack_require__(47);
-__webpack_require__(18);
-__webpack_require__(15);
-__webpack_require__(14);
-__webpack_require__(12);
-__webpack_require__(13);
-__webpack_require__(63);
-__webpack_require__(25);
-__webpack_require__(24);
-__webpack_require__(50);
-__webpack_require__(53);
-__webpack_require__(23);
-__webpack_require__(10);
+window.SimpleMDE = __webpack_require__(58);
+window.sortable = __webpack_require__(52);
+__webpack_require__(48);
 __webpack_require__(19);
-__webpack_require__(58);
 __webpack_require__(16);
-__webpack_require__(21);
+__webpack_require__(15);
+__webpack_require__(12);
+__webpack_require__(14);
+__webpack_require__(65);
+__webpack_require__(26);
+__webpack_require__(25);
+__webpack_require__(51);
+__webpack_require__(55);
+__webpack_require__(24);
+__webpack_require__(10);
 __webpack_require__(20);
+__webpack_require__(60);
+__webpack_require__(17);
+__webpack_require__(22);
+__webpack_require__(21);
+__webpack_require__(13);
 
 $(document).ready(function () {
   var appContainer = $(".app-container"),
@@ -21184,8 +21186,6 @@ $(document).ready(function () {
     simplemde.render();
   });
 
-  console.log('hit');
-
   /********** END MARKDOWN EDITOR **********/
 });
 
@@ -21231,77 +21231,6 @@ $(document).ready(function () {
   });
 });
 
-/*--------------------
-|
-| HELPERS
-|
---------------------*/
-
-function displayAlert(alert, alerter) {
-  var alertMethod = alerter[alert.type];
-
-  if (alertMethod) {
-    return alertMethod(alert.message);
-  }
-
-  alerter.error("No alert method found for alert type: " + alert.type);
-}
-
-function displayAlerts(alerts, alerter, type) {
-  if (type) {
-    // Only display alerts of this type...
-    alerts = alerts.filter(function (alert) {
-      return type == alert.type;
-    });
-  }
-
-  for (a in alerts) {
-    displayAlert(alerts[a], alerter);
-  }
-}
-
-function bootstrapAlerter(customOptions) {
-  // Default options
-  var options = {
-    alertsContainer: '#alertsContainer',
-    dismissible: false,
-    dismissButton: '<button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-  };
-
-  if (customOptions) {
-    options = $.extend({}, options, customOptions);
-  }
-
-  var dismissibleClass = '';
-  var dismissButton = '';
-
-  if (options.dismissible) {
-    dismissButton = options.dismissButton;
-    dismissibleClass = ' alert-dismissible';
-  }
-
-  function notify(type, message) {
-    var alert = '<div class="alert alert-' + type + dismissibleClass + '" role="alert">' + dismissButton + message + '</div>';
-
-    $(options.alertsContainer).append(alert);
-  }
-
-  return {
-    success: function success(message) {
-      notify('success', message);
-    },
-    info: function info(message) {
-      notify('info', message);
-    },
-    warning: function warning(message) {
-      notify('warning', message);
-    },
-    error: function error(message) {
-      notify('danger', message);
-    }
-  };
-}
-
 /***/ }),
 /* 8 */,
 /* 9 */,
@@ -21334,7 +21263,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = ty
  ©2011-2015 SpryMedia Ltd - datatables.net/license
 */
 (function (b) {
-   true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(46)], __WEBPACK_AMD_DEFINE_RESULT__ = function (a) {
+   true ? !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1), __webpack_require__(47)], __WEBPACK_AMD_DEFINE_RESULT__ = function (a) {
     return b(a, window, document);
   }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : "object" === (typeof exports === "undefined" ? "undefined" : _typeof(exports)) ? module.exports = function (a, e) {
@@ -21440,6 +21369,81 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /***/ }),
 /* 13 */
+/***/ (function(module, exports) {
+
+/*--------------------
+|
+| HELPERS
+|
+--------------------*/
+
+function displayAlert(alert, alerter) {
+    var alertMethod = alerter[alert.type];
+
+    if (alertMethod) {
+        return alertMethod(alert.message);
+    }
+
+    alerter.error("No alert method found for alert type: " + alert.type);
+}
+
+function displayAlerts(alerts, alerter, type) {
+    if (type) {
+        // Only display alerts of this type...
+        alerts = alerts.filter(function (alert) {
+            return type == alert.type;
+        });
+    }
+
+    for (a in alerts) {
+        displayAlert(alerts[a], alerter);
+    }
+}
+
+function bootstrapAlerter(customOptions) {
+    // Default options
+    var options = {
+        alertsContainer: '#alertsContainer',
+        dismissible: false,
+        dismissButton: '<button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
+    };
+
+    if (customOptions) {
+        options = $.extend({}, options, customOptions);
+    }
+
+    var dismissibleClass = '';
+    var dismissButton = '';
+
+    if (options.dismissible) {
+        dismissButton = options.dismissButton;
+        dismissibleClass = ' alert-dismissible';
+    }
+
+    function notify(type, message) {
+        var alert = '<div class="alert alert-' + type + dismissibleClass + '" role="alert">' + dismissButton + message + '</div>';
+
+        $(options.alertsContainer).append(alert);
+    }
+
+    return {
+        success: function success(message) {
+            notify('success', message);
+        },
+        info: function info(message) {
+            notify('info', message);
+        },
+        warning: function warning(message) {
+            notify('warning', message);
+        },
+        error: function error(message) {
+            notify('danger', message);
+        }
+    };
+}
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -21561,7 +21565,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -21649,7 +21653,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 })(jQuery);
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -21998,7 +22002,7 @@ if (document.getElementById('filemanager')) {
 }
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 /**
@@ -22238,7 +22242,7 @@ if (document.getElementById('filemanager')) {
 })(jQuery, window, document);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var require;var require;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -22700,7 +22704,7 @@ var require;var require;var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE
   }, { "../lib/dom": 3, "../lib/helper": 6, "./instances": 18, "./update-geometry": 19, "./update-scroll": 20 }] }, {}, [1]);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -23031,7 +23035,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 /*
@@ -23234,7 +23238,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 })(jQuery, window, document);
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 var ace_editor_element = document.getElementsByClassName("ace_editor");
@@ -23265,7 +23269,7 @@ for (var i = 0; i < ace_editor_element.length; i++) {
 }
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 function setImageValue(url) {
@@ -23301,7 +23305,7 @@ $(document).ready(function () {
 });
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23422,7 +23426,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 /**
@@ -24576,7 +24580,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -25369,25 +25373,25 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This file is autogenerated via the `commonjs` Grunt task. You can require() this file in a CommonJS environment.
-__webpack_require__(37)
-__webpack_require__(27)
+__webpack_require__(38)
 __webpack_require__(28)
 __webpack_require__(29)
 __webpack_require__(30)
 __webpack_require__(31)
 __webpack_require__(32)
-__webpack_require__(36)
 __webpack_require__(33)
+__webpack_require__(37)
 __webpack_require__(34)
 __webpack_require__(35)
-__webpack_require__(26)
+__webpack_require__(36)
+__webpack_require__(27)
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -25555,7 +25559,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -25655,7 +25659,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -25786,7 +25790,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -26029,7 +26033,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -26247,7 +26251,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -26418,7 +26422,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -26763,7 +26767,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -26877,7 +26881,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -27055,7 +27059,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -27216,7 +27220,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -27742,7 +27746,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 /* ========================================================================
@@ -27807,7 +27811,7 @@ __webpack_require__(26)
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27821,9 +27825,9 @@ __webpack_require__(26)
 
 
 
-var base64 = __webpack_require__(22)
-var ieee754 = __webpack_require__(48)
-var isArray = __webpack_require__(49)
+var base64 = __webpack_require__(23)
+var ieee754 = __webpack_require__(49)
+var isArray = __webpack_require__(50)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -29604,7 +29608,7 @@ function isnan (val) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29613,7 +29617,7 @@ function isnan (val) {
 
 
 // Requires
-var Typo = __webpack_require__(60);
+var Typo = __webpack_require__(62);
 
 
 // Create function
@@ -29729,7 +29733,7 @@ CodeMirrorSpellChecker.typo;
 module.exports = CodeMirrorSpellChecker;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -29776,7 +29780,7 @@ module.exports = CodeMirrorSpellChecker;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -29844,7 +29848,7 @@ module.exports = CodeMirrorSpellChecker;
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -29901,7 +29905,7 @@ module.exports = CodeMirrorSpellChecker;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -30026,7 +30030,7 @@ module.exports = CodeMirrorSpellChecker;
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -30161,7 +30165,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -30381,7 +30385,7 @@ CodeMirror.defineMode("gfm", function(config, modeConfig) {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1.10.15
@@ -45732,7 +45736,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {
@@ -45884,6 +45888,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
       hiddenInputContainer: "body",
       capture: null,
       renameFilename: null,
+      renameFile: null,
       forceFallback: false,
       dictDefaultMessage: "Drop files here to upload",
       dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
@@ -45896,6 +45901,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
       dictRemoveFile: "Remove file",
       dictRemoveFileConfirmation: null,
       dictMaxFilesExceeded: "You can not upload any more files.",
+      dictFileSizeUnits: {
+        tb: "TB",
+        gb: "GB",
+        mb: "MB",
+        kb: "KB",
+        b: "b"
+      },
       init: function() {
         return noop;
       },
@@ -46022,7 +46034,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
           ref = file.previewElement.querySelectorAll("[data-dz-name]");
           for (j = 0, len = ref.length; j < len; j++) {
             node = ref[j];
-            node.textContent = this._renameFilename(file.name, file);
+            node.textContent = file.upload.filename;
           }
           ref1 = file.previewElement.querySelectorAll("[data-dz-size]");
           for (k = 0, len1 = ref1.length; k < len1; k++) {
@@ -46206,6 +46218,13 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
       if (this.options.acceptedMimeTypes) {
         this.options.acceptedFiles = this.options.acceptedMimeTypes;
         delete this.options.acceptedMimeTypes;
+      }
+      if (this.options.renameFilename != null) {
+        this.options.renameFile = (function(_this) {
+          return function(file) {
+            return _this.options.renameFilename.call(_this, file.name, file);
+          };
+        })(this);
       }
       this.options.method = this.options.method.toUpperCase();
       if ((fallback = this.getExistingFallback()) && fallback.parentNode) {
@@ -46482,11 +46501,11 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
       }
     };
 
-    Dropzone.prototype._renameFilename = function(name, file) {
-      if (typeof this.options.renameFilename !== "function") {
-        return name;
+    Dropzone.prototype._renameFile = function(file) {
+      if (typeof this.options.renameFile !== "function") {
+        return file.name;
       }
-      return this.options.renameFilename(name, file);
+      return this.options.renameFile(file);
     };
 
     Dropzone.prototype.getFallbackForm = function() {
@@ -46597,7 +46616,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
       selectedSize = 0;
       selectedUnit = "b";
       if (size > 0) {
-        units = ['TB', 'GB', 'MB', 'KB', 'b'];
+        units = ['tb', 'gb', 'mb', 'kb', 'b'];
         for (i = j = 0, len = units.length; j < len; i = ++j) {
           unit = units[i];
           cutoff = Math.pow(this.options.filesizeBase, 4 - i) / 10;
@@ -46609,7 +46628,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
         }
         selectedSize = Math.round(10 * selectedSize) / 10;
       }
-      return "<strong>" + selectedSize + "</strong> " + selectedUnit;
+      return "<strong>" + selectedSize + "</strong> " + this.options.dictFileSizeUnits[selectedUnit];
     };
 
     Dropzone.prototype._updateMaxFilesReachedClass = function() {
@@ -46740,7 +46759,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
       file.upload = {
         progress: 0,
         total: file.size,
-        bytesSent: 0
+        bytesSent: 0,
+        filename: this._renameFile(file)
       };
       this.files.push(file);
       file.status = Dropzone.ADDED;
@@ -47215,7 +47235,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
             };
           };
         })(this);
-        results.push(this.options.transformFile.call(this, files[i], doneFunction(files[i], this._getParamName(i), this._renameFilename(file.name, file))));
+        results.push(this.options.transformFile.call(this, files[i], doneFunction(files[i], this._getParamName(i), files[i].upload.filename)));
       }
       return results;
     };
@@ -47262,7 +47282,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 
   })(Emitter);
 
-  Dropzone.version = "5.0.1";
+  Dropzone.version = "5.1.0";
 
   Dropzone.options = {};
 
@@ -47772,10 +47792,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! DataTables 1
 
 }).call(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(62)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(64)(module)))
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -47865,7 +47885,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -47876,7 +47896,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -48273,7 +48293,705 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 51 */
+/* 52 */
+/***/ (function(module, exports) {
+
+/* ===================================================
+ *  jquery-sortable.js v0.9.13
+ *  http://johnny.github.com/jquery-sortable/
+ * ===================================================
+ *  Copyright (c) 2012 Jonas von Andrian
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
+ *  * Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *  * The name of the author may not be used to endorse or promote products
+ *    derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ *  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * ========================================================== */
+
+!function ( $, window, pluginName, undefined){
+  var containerDefaults = {
+    // If true, items can be dragged from this container
+    drag: true,
+    // If true, items can be droped onto this container
+    drop: true,
+    // Exclude items from being draggable, if the
+    // selector matches the item
+    exclude: "",
+    // If true, search for nested containers within an item.If you nest containers,
+    // either the original selector with which you call the plugin must only match the top containers,
+    // or you need to specify a group (see the bootstrap nav example)
+    nested: true,
+    // If true, the items are assumed to be arranged vertically
+    vertical: true
+  }, // end container defaults
+  groupDefaults = {
+    // This is executed after the placeholder has been moved.
+    // $closestItemOrContainer contains the closest item, the placeholder
+    // has been put at or the closest empty Container, the placeholder has
+    // been appended to.
+    afterMove: function ($placeholder, container, $closestItemOrContainer) {
+    },
+    // The exact css path between the container and its items, e.g. "> tbody"
+    containerPath: "",
+    // The css selector of the containers
+    containerSelector: "ol, ul",
+    // Distance the mouse has to travel to start dragging
+    distance: 0,
+    // Time in milliseconds after mousedown until dragging should start.
+    // This option can be used to prevent unwanted drags when clicking on an element.
+    delay: 0,
+    // The css selector of the drag handle
+    handle: "",
+    // The exact css path between the item and its subcontainers.
+    // It should only match the immediate items of a container.
+    // No item of a subcontainer should be matched. E.g. for ol>div>li the itemPath is "> div"
+    itemPath: "",
+    // The css selector of the items
+    itemSelector: "li",
+    // The class given to "body" while an item is being dragged
+    bodyClass: "dragging",
+    // The class giving to an item while being dragged
+    draggedClass: "dragged",
+    // Check if the dragged item may be inside the container.
+    // Use with care, since the search for a valid container entails a depth first search
+    // and may be quite expensive.
+    isValidTarget: function ($item, container) {
+      return true
+    },
+    // Executed before onDrop if placeholder is detached.
+    // This happens if pullPlaceholder is set to false and the drop occurs outside a container.
+    onCancel: function ($item, container, _super, event) {
+    },
+    // Executed at the beginning of a mouse move event.
+    // The Placeholder has not been moved yet.
+    onDrag: function ($item, position, _super, event) {
+      $item.css(position)
+    },
+    // Called after the drag has been started,
+    // that is the mouse button is being held down and
+    // the mouse is moving.
+    // The container is the closest initialized container.
+    // Therefore it might not be the container, that actually contains the item.
+    onDragStart: function ($item, container, _super, event) {
+      $item.css({
+        height: $item.outerHeight(),
+        width: $item.outerWidth()
+      })
+      $item.addClass(container.group.options.draggedClass)
+      $("body").addClass(container.group.options.bodyClass)
+    },
+    // Called when the mouse button is being released
+    onDrop: function ($item, container, _super, event) {
+      $item.removeClass(container.group.options.draggedClass).removeAttr("style")
+      $("body").removeClass(container.group.options.bodyClass)
+    },
+    // Called on mousedown. If falsy value is returned, the dragging will not start.
+    // Ignore if element clicked is input, select or textarea
+    onMousedown: function ($item, _super, event) {
+      if (!event.target.nodeName.match(/^(input|select|textarea)$/i)) {
+        event.preventDefault()
+        return true
+      }
+    },
+    // The class of the placeholder (must match placeholder option markup)
+    placeholderClass: "placeholder",
+    // Template for the placeholder. Can be any valid jQuery input
+    // e.g. a string, a DOM element.
+    // The placeholder must have the class "placeholder"
+    placeholder: '<li class="placeholder"></li>',
+    // If true, the position of the placeholder is calculated on every mousemove.
+    // If false, it is only calculated when the mouse is above a container.
+    pullPlaceholder: true,
+    // Specifies serialization of the container group.
+    // The pair $parent/$children is either container/items or item/subcontainers.
+    serialize: function ($parent, $children, parentIsContainer) {
+      var result = $.extend({}, $parent.data())
+
+      if(parentIsContainer)
+        return [$children]
+      else if ($children[0]){
+        result.children = $children
+      }
+
+      delete result.subContainers
+      delete result.sortable
+
+      return result
+    },
+    // Set tolerance while dragging. Positive values decrease sensitivity,
+    // negative values increase it.
+    tolerance: 0
+  }, // end group defaults
+  containerGroups = {},
+  groupCounter = 0,
+  emptyBox = {
+    left: 0,
+    top: 0,
+    bottom: 0,
+    right:0
+  },
+  eventNames = {
+    start: "touchstart.sortable mousedown.sortable",
+    drop: "touchend.sortable touchcancel.sortable mouseup.sortable",
+    drag: "touchmove.sortable mousemove.sortable",
+    scroll: "scroll.sortable"
+  },
+  subContainerKey = "subContainers"
+
+  /*
+   * a is Array [left, right, top, bottom]
+   * b is array [left, top]
+   */
+  function d(a,b) {
+    var x = Math.max(0, a[0] - b[0], b[0] - a[1]),
+    y = Math.max(0, a[2] - b[1], b[1] - a[3])
+    return x+y;
+  }
+
+  function setDimensions(array, dimensions, tolerance, useOffset) {
+    var i = array.length,
+    offsetMethod = useOffset ? "offset" : "position"
+    tolerance = tolerance || 0
+
+    while(i--){
+      var el = array[i].el ? array[i].el : $(array[i]),
+      // use fitting method
+      pos = el[offsetMethod]()
+      pos.left += parseInt(el.css('margin-left'), 10)
+      pos.top += parseInt(el.css('margin-top'),10)
+      dimensions[i] = [
+        pos.left - tolerance,
+        pos.left + el.outerWidth() + tolerance,
+        pos.top - tolerance,
+        pos.top + el.outerHeight() + tolerance
+      ]
+    }
+  }
+
+  function getRelativePosition(pointer, element) {
+    var offset = element.offset()
+    return {
+      left: pointer.left - offset.left,
+      top: pointer.top - offset.top
+    }
+  }
+
+  function sortByDistanceDesc(dimensions, pointer, lastPointer) {
+    pointer = [pointer.left, pointer.top]
+    lastPointer = lastPointer && [lastPointer.left, lastPointer.top]
+
+    var dim,
+    i = dimensions.length,
+    distances = []
+
+    while(i--){
+      dim = dimensions[i]
+      distances[i] = [i,d(dim,pointer), lastPointer && d(dim, lastPointer)]
+    }
+    distances = distances.sort(function  (a,b) {
+      return b[1] - a[1] || b[2] - a[2] || b[0] - a[0]
+    })
+
+    // last entry is the closest
+    return distances
+  }
+
+  function ContainerGroup(options) {
+    this.options = $.extend({}, groupDefaults, options)
+    this.containers = []
+
+    if(!this.options.rootGroup){
+      this.scrollProxy = $.proxy(this.scroll, this)
+      this.dragProxy = $.proxy(this.drag, this)
+      this.dropProxy = $.proxy(this.drop, this)
+      this.placeholder = $(this.options.placeholder)
+
+      if(!options.isValidTarget)
+        this.options.isValidTarget = undefined
+    }
+  }
+
+  ContainerGroup.get = function  (options) {
+    if(!containerGroups[options.group]) {
+      if(options.group === undefined)
+        options.group = groupCounter ++
+
+      containerGroups[options.group] = new ContainerGroup(options)
+    }
+
+    return containerGroups[options.group]
+  }
+
+  ContainerGroup.prototype = {
+    dragInit: function  (e, itemContainer) {
+      this.$document = $(itemContainer.el[0].ownerDocument)
+
+      // get item to drag
+      var closestItem = $(e.target).closest(this.options.itemSelector);
+      // using the length of this item, prevents the plugin from being started if there is no handle being clicked on.
+      // this may also be helpful in instantiating multidrag.
+      if (closestItem.length) {
+        this.item = closestItem;
+        this.itemContainer = itemContainer;
+        if (this.item.is(this.options.exclude) || !this.options.onMousedown(this.item, groupDefaults.onMousedown, e)) {
+            return;
+        }
+        this.setPointer(e);
+        this.toggleListeners('on');
+        this.setupDelayTimer();
+        this.dragInitDone = true;
+      }
+    },
+    drag: function  (e) {
+      if(!this.dragging){
+        if(!this.distanceMet(e) || !this.delayMet)
+          return
+
+        this.options.onDragStart(this.item, this.itemContainer, groupDefaults.onDragStart, e)
+        this.item.before(this.placeholder)
+        this.dragging = true
+      }
+
+      this.setPointer(e)
+      // place item under the cursor
+      this.options.onDrag(this.item,
+                          getRelativePosition(this.pointer, this.item.offsetParent()),
+                          groupDefaults.onDrag,
+                          e)
+
+      var p = this.getPointer(e),
+      box = this.sameResultBox,
+      t = this.options.tolerance
+
+      if(!box || box.top - t > p.top || box.bottom + t < p.top || box.left - t > p.left || box.right + t < p.left)
+        if(!this.searchValidTarget()){
+          this.placeholder.detach()
+          this.lastAppendedItem = undefined
+        }
+    },
+    drop: function  (e) {
+      this.toggleListeners('off')
+
+      this.dragInitDone = false
+
+      if(this.dragging){
+        // processing Drop, check if placeholder is detached
+        if(this.placeholder.closest("html")[0]){
+          this.placeholder.before(this.item).detach()
+        } else {
+          this.options.onCancel(this.item, this.itemContainer, groupDefaults.onCancel, e)
+        }
+        this.options.onDrop(this.item, this.getContainer(this.item), groupDefaults.onDrop, e)
+
+        // cleanup
+        this.clearDimensions()
+        this.clearOffsetParent()
+        this.lastAppendedItem = this.sameResultBox = undefined
+        this.dragging = false
+      }
+    },
+    searchValidTarget: function  (pointer, lastPointer) {
+      if(!pointer){
+        pointer = this.relativePointer || this.pointer
+        lastPointer = this.lastRelativePointer || this.lastPointer
+      }
+
+      var distances = sortByDistanceDesc(this.getContainerDimensions(),
+                                         pointer,
+                                         lastPointer),
+      i = distances.length
+
+      while(i--){
+        var index = distances[i][0],
+        distance = distances[i][1]
+
+        if(!distance || this.options.pullPlaceholder){
+          var container = this.containers[index]
+          if(!container.disabled){
+            if(!this.$getOffsetParent()){
+              var offsetParent = container.getItemOffsetParent()
+              pointer = getRelativePosition(pointer, offsetParent)
+              lastPointer = getRelativePosition(lastPointer, offsetParent)
+            }
+            if(container.searchValidTarget(pointer, lastPointer))
+              return true
+          }
+        }
+      }
+      if(this.sameResultBox)
+        this.sameResultBox = undefined
+    },
+    movePlaceholder: function  (container, item, method, sameResultBox) {
+      var lastAppendedItem = this.lastAppendedItem
+      if(!sameResultBox && lastAppendedItem && lastAppendedItem[0] === item[0])
+        return;
+
+      item[method](this.placeholder)
+      this.lastAppendedItem = item
+      this.sameResultBox = sameResultBox
+      this.options.afterMove(this.placeholder, container, item)
+    },
+    getContainerDimensions: function  () {
+      if(!this.containerDimensions)
+        setDimensions(this.containers, this.containerDimensions = [], this.options.tolerance, !this.$getOffsetParent())
+      return this.containerDimensions
+    },
+    getContainer: function  (element) {
+      return element.closest(this.options.containerSelector).data(pluginName)
+    },
+    $getOffsetParent: function  () {
+      if(this.offsetParent === undefined){
+        var i = this.containers.length - 1,
+        offsetParent = this.containers[i].getItemOffsetParent()
+
+        if(!this.options.rootGroup){
+          while(i--){
+            if(offsetParent[0] != this.containers[i].getItemOffsetParent()[0]){
+              // If every container has the same offset parent,
+              // use position() which is relative to this parent,
+              // otherwise use offset()
+              // compare #setDimensions
+              offsetParent = false
+              break;
+            }
+          }
+        }
+
+        this.offsetParent = offsetParent
+      }
+      return this.offsetParent
+    },
+    setPointer: function (e) {
+      var pointer = this.getPointer(e)
+
+      if(this.$getOffsetParent()){
+        var relativePointer = getRelativePosition(pointer, this.$getOffsetParent())
+        this.lastRelativePointer = this.relativePointer
+        this.relativePointer = relativePointer
+      }
+
+      this.lastPointer = this.pointer
+      this.pointer = pointer
+    },
+    distanceMet: function (e) {
+      var currentPointer = this.getPointer(e)
+      return (Math.max(
+        Math.abs(this.pointer.left - currentPointer.left),
+        Math.abs(this.pointer.top - currentPointer.top)
+      ) >= this.options.distance)
+    },
+    getPointer: function(e) {
+      var o = e.originalEvent || e.originalEvent.touches && e.originalEvent.touches[0]
+      return {
+        left: e.pageX || o.pageX,
+        top: e.pageY || o.pageY
+      }
+    },
+    setupDelayTimer: function () {
+      var that = this
+      this.delayMet = !this.options.delay
+
+      // init delay timer if needed
+      if (!this.delayMet) {
+        clearTimeout(this._mouseDelayTimer);
+        this._mouseDelayTimer = setTimeout(function() {
+          that.delayMet = true
+        }, this.options.delay)
+      }
+    },
+    scroll: function  (e) {
+      this.clearDimensions()
+      this.clearOffsetParent() // TODO is this needed?
+    },
+    toggleListeners: function (method) {
+      var that = this,
+      events = ['drag','drop','scroll']
+
+      $.each(events,function  (i,event) {
+        that.$document[method](eventNames[event], that[event + 'Proxy'])
+      })
+    },
+    clearOffsetParent: function () {
+      this.offsetParent = undefined
+    },
+    // Recursively clear container and item dimensions
+    clearDimensions: function  () {
+      this.traverse(function(object){
+        object._clearDimensions()
+      })
+    },
+    traverse: function(callback) {
+      callback(this)
+      var i = this.containers.length
+      while(i--){
+        this.containers[i].traverse(callback)
+      }
+    },
+    _clearDimensions: function(){
+      this.containerDimensions = undefined
+    },
+    _destroy: function () {
+      containerGroups[this.options.group] = undefined
+    }
+  }
+
+  function Container(element, options) {
+    this.el = element
+    this.options = $.extend( {}, containerDefaults, options)
+
+    this.group = ContainerGroup.get(this.options)
+    this.rootGroup = this.options.rootGroup || this.group
+    this.handle = this.rootGroup.options.handle || this.rootGroup.options.itemSelector
+
+    var itemPath = this.rootGroup.options.itemPath
+    this.target = itemPath ? this.el.find(itemPath) : this.el
+
+    this.target.on(eventNames.start, this.handle, $.proxy(this.dragInit, this))
+
+    if(this.options.drop)
+      this.group.containers.push(this)
+  }
+
+  Container.prototype = {
+    dragInit: function  (e) {
+      var rootGroup = this.rootGroup
+
+      if( !this.disabled &&
+          !rootGroup.dragInitDone &&
+          this.options.drag &&
+          this.isValidDrag(e)) {
+        rootGroup.dragInit(e, this)
+      }
+    },
+    isValidDrag: function(e) {
+      return e.which == 1 ||
+        e.type == "touchstart" && e.originalEvent.touches.length == 1
+    },
+    searchValidTarget: function  (pointer, lastPointer) {
+      var distances = sortByDistanceDesc(this.getItemDimensions(),
+                                         pointer,
+                                         lastPointer),
+      i = distances.length,
+      rootGroup = this.rootGroup,
+      validTarget = !rootGroup.options.isValidTarget ||
+        rootGroup.options.isValidTarget(rootGroup.item, this)
+
+      if(!i && validTarget){
+        rootGroup.movePlaceholder(this, this.target, "append")
+        return true
+      } else
+        while(i--){
+          var index = distances[i][0],
+          distance = distances[i][1]
+          if(!distance && this.hasChildGroup(index)){
+            var found = this.getContainerGroup(index).searchValidTarget(pointer, lastPointer)
+            if(found)
+              return true
+          }
+          else if(validTarget){
+            this.movePlaceholder(index, pointer)
+            return true
+          }
+        }
+    },
+    movePlaceholder: function  (index, pointer) {
+      var item = $(this.items[index]),
+      dim = this.itemDimensions[index],
+      method = "after",
+      width = item.outerWidth(),
+      height = item.outerHeight(),
+      offset = item.offset(),
+      sameResultBox = {
+        left: offset.left,
+        right: offset.left + width,
+        top: offset.top,
+        bottom: offset.top + height
+      }
+      if(this.options.vertical){
+        var yCenter = (dim[2] + dim[3]) / 2,
+        inUpperHalf = pointer.top <= yCenter
+        if(inUpperHalf){
+          method = "before"
+          sameResultBox.bottom -= height / 2
+        } else
+          sameResultBox.top += height / 2
+      } else {
+        var xCenter = (dim[0] + dim[1]) / 2,
+        inLeftHalf = pointer.left <= xCenter
+        if(inLeftHalf){
+          method = "before"
+          sameResultBox.right -= width / 2
+        } else
+          sameResultBox.left += width / 2
+      }
+      if(this.hasChildGroup(index))
+        sameResultBox = emptyBox
+      this.rootGroup.movePlaceholder(this, item, method, sameResultBox)
+    },
+    getItemDimensions: function  () {
+      if(!this.itemDimensions){
+        this.items = this.$getChildren(this.el, "item").filter(
+          ":not(." + this.group.options.placeholderClass + ", ." + this.group.options.draggedClass + ")"
+        ).get()
+        setDimensions(this.items, this.itemDimensions = [], this.options.tolerance)
+      }
+      return this.itemDimensions
+    },
+    getItemOffsetParent: function  () {
+      var offsetParent,
+      el = this.el
+      // Since el might be empty we have to check el itself and
+      // can not do something like el.children().first().offsetParent()
+      if(el.css("position") === "relative" || el.css("position") === "absolute"  || el.css("position") === "fixed")
+        offsetParent = el
+      else
+        offsetParent = el.offsetParent()
+      return offsetParent
+    },
+    hasChildGroup: function (index) {
+      return this.options.nested && this.getContainerGroup(index)
+    },
+    getContainerGroup: function  (index) {
+      var childGroup = $.data(this.items[index], subContainerKey)
+      if( childGroup === undefined){
+        var childContainers = this.$getChildren(this.items[index], "container")
+        childGroup = false
+
+        if(childContainers[0]){
+          var options = $.extend({}, this.options, {
+            rootGroup: this.rootGroup,
+            group: groupCounter ++
+          })
+          childGroup = childContainers[pluginName](options).data(pluginName).group
+        }
+        $.data(this.items[index], subContainerKey, childGroup)
+      }
+      return childGroup
+    },
+    $getChildren: function (parent, type) {
+      var options = this.rootGroup.options,
+      path = options[type + "Path"],
+      selector = options[type + "Selector"]
+
+      parent = $(parent)
+      if(path)
+        parent = parent.find(path)
+
+      return parent.children(selector)
+    },
+    _serialize: function (parent, isContainer) {
+      var that = this,
+      childType = isContainer ? "item" : "container",
+
+      children = this.$getChildren(parent, childType).not(this.options.exclude).map(function () {
+        return that._serialize($(this), !isContainer)
+      }).get()
+
+      return this.rootGroup.options.serialize(parent, children, isContainer)
+    },
+    traverse: function(callback) {
+      $.each(this.items || [], function(item){
+        var group = $.data(this, subContainerKey)
+        if(group)
+          group.traverse(callback)
+      });
+
+      callback(this)
+    },
+    _clearDimensions: function  () {
+      this.itemDimensions = undefined
+    },
+    _destroy: function() {
+      var that = this;
+
+      this.target.off(eventNames.start, this.handle);
+      this.el.removeData(pluginName)
+
+      if(this.options.drop)
+        this.group.containers = $.grep(this.group.containers, function(val){
+          return val != that
+        })
+
+      $.each(this.items || [], function(){
+        $.removeData(this, subContainerKey)
+      })
+    }
+  }
+
+  var API = {
+    enable: function() {
+      this.traverse(function(object){
+        object.disabled = false
+      })
+    },
+    disable: function (){
+      this.traverse(function(object){
+        object.disabled = true
+      })
+    },
+    serialize: function () {
+      return this._serialize(this.el, true)
+    },
+    refresh: function() {
+      this.traverse(function(object){
+        object._clearDimensions()
+      })
+    },
+    destroy: function () {
+      this.traverse(function(object){
+        object._destroy();
+      })
+    }
+  }
+
+  $.extend(Container.prototype, API)
+
+  /**
+   * jQuery API
+   *
+   * Parameters are
+   *   either options on init
+   *   or a method name followed by arguments to pass to the method
+   */
+  $.fn[pluginName] = function(methodOrOptions) {
+    var args = Array.prototype.slice.call(arguments, 1)
+
+    return this.map(function(){
+      var $t = $(this),
+      object = $t.data(pluginName)
+
+      if(object && API[methodOrOptions])
+        return API[methodOrOptions].apply(object, args) || this
+      else if(!object && (methodOrOptions === undefined ||
+                          typeof methodOrOptions === "object"))
+        $t.data(pluginName, new Container($t, methodOrOptions))
+
+      return this
+    });
+  };
+
+}(jQuery, window, 'sortable');
+
+
+/***/ }),
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {/**
@@ -49566,7 +50284,7 @@ if (true) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -49756,7 +50474,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;var require;var require;/*!
@@ -55490,7 +56208,7 @@ S2.define('jquery.select2',[
 
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -55680,10 +56398,10 @@ S2.define('jquery.select2',[
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(52)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(54)))
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -55733,24 +56451,24 @@ CodeMirror.commands.shiftTabAndUnindentMarkdownList = function (cm) {
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /*global require,module*/
 
 var CodeMirror = __webpack_require__(0);
-__webpack_require__(42);
-__webpack_require__(55);
-__webpack_require__(40);
+__webpack_require__(43);
+__webpack_require__(57);
+__webpack_require__(41);
 __webpack_require__(5);
 __webpack_require__(4);
-__webpack_require__(41);
-__webpack_require__(43);
+__webpack_require__(42);
 __webpack_require__(44);
+__webpack_require__(45);
 __webpack_require__(6);
-var CodeMirrorSpellChecker = __webpack_require__(39);
-var marked = __webpack_require__(51);
+var CodeMirrorSpellChecker = __webpack_require__(40);
+var marked = __webpack_require__(53);
 
 
 // Some variables
@@ -57767,7 +58485,7 @@ SimpleMDE.prototype.toTextArea = function() {
 module.exports = SimpleMDE;
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var apply = Function.prototype.apply;
@@ -57820,16 +58538,16 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(54);
+__webpack_require__(56);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(setImmediate) {// 4.6.3 (2017-05-30)
+/* WEBPACK VAR INJECTION */(function(setImmediate) {// 4.6.4 (2017-06-13)
 (function () {
 
 var defs = {}; // id -> {dependencies, definition, instance (possibly undefined)}
@@ -57913,7 +58631,7 @@ var defineGlobal = function (id, ref) {
   define(id, [], function () { return ref; });
 };
 /*jsc
-["tinymce.core.api.Main","tinymce.core.api.Tinymce","tinymce.core.Register","tinymce.core.geom.Rect","tinymce.core.util.Promise","tinymce.core.util.Delay","tinymce.core.Env","tinymce.core.dom.EventUtils","tinymce.core.dom.Sizzle","tinymce.core.util.Tools","tinymce.core.dom.DomQuery","tinymce.core.html.Styles","tinymce.core.dom.TreeWalker","tinymce.core.html.Entities","tinymce.core.dom.DOMUtils","tinymce.core.dom.ScriptLoader","tinymce.core.AddOnManager","tinymce.core.dom.RangeUtils","tinymce.core.html.Node","tinymce.core.html.Schema","tinymce.core.html.SaxParser","tinymce.core.html.DomParser","tinymce.core.html.Writer","tinymce.core.html.Serializer","tinymce.core.dom.Serializer","tinymce.core.util.VK","tinymce.core.dom.ControlSelection","tinymce.core.dom.BookmarkManager","tinymce.core.dom.Selection","tinymce.core.Formatter","tinymce.core.UndoManager","tinymce.core.EditorCommands","tinymce.core.util.URI","tinymce.core.util.Class","tinymce.core.util.EventDispatcher","tinymce.core.util.Observable","tinymce.core.WindowManager","tinymce.core.NotificationManager","tinymce.core.EditorObservable","tinymce.core.Shortcuts","tinymce.core.Editor","tinymce.core.util.I18n","tinymce.core.FocusManager","tinymce.core.EditorManager","tinymce.core.util.XHR","tinymce.core.util.JSON","tinymce.core.util.JSONRequest","tinymce.core.util.JSONP","tinymce.core.util.LocalStorage","tinymce.core.api.Compat","tinymce.core.util.Color","tinymce.core.ui.Api","tinymce.core.util.Arr","tinymce.core.dom.Range","tinymce.core.dom.StyleSheetLoader","tinymce.core.dom.NodeType","tinymce.core.caret.CaretContainer","tinymce.core.text.Zwsp","tinymce.core.caret.CaretBookmark","tinymce.core.caret.CaretPosition","tinymce.core.dom.ScrollIntoView","tinymce.core.dom.TridentSelection","tinymce.core.selection.FragmentReader","tinymce.core.dom.ElementUtils","tinymce.core.util.Fun","tinymce.core.fmt.Preview","tinymce.core.fmt.Hooks","tinymce.core.undo.Levels","tinymce.core.delete.DeleteCommands","tinymce.core.InsertContent","global!document","tinymce.core.ui.Window","tinymce.core.ui.MessageBox","tinymce.core.ui.Notification","tinymce.core.init.Render","tinymce.core.Mode","tinymce.core.ui.Sidebar","tinymce.core.util.Uuid","tinymce.core.ErrorReporter","tinymce.core.LegacyInput","tinymce.core.ui.Selector","tinymce.core.ui.Collection","tinymce.core.ui.ReflowQueue","tinymce.core.ui.Control","tinymce.core.ui.Factory","tinymce.core.ui.KeyboardNavigation","tinymce.core.ui.Container","tinymce.core.ui.DragHelper","tinymce.core.ui.Scrollable","tinymce.core.ui.Panel","tinymce.core.ui.Movable","tinymce.core.ui.Resizable","tinymce.core.ui.FloatPanel","tinymce.core.ui.Tooltip","tinymce.core.ui.Widget","tinymce.core.ui.Progress","tinymce.core.ui.Layout","tinymce.core.ui.AbsoluteLayout","tinymce.core.ui.Button","tinymce.core.ui.ButtonGroup","tinymce.core.ui.Checkbox","tinymce.core.ui.ComboBox","tinymce.core.ui.ColorBox","tinymce.core.ui.PanelButton","tinymce.core.ui.ColorButton","tinymce.core.ui.ColorPicker","tinymce.core.ui.Path","tinymce.core.ui.ElementPath","tinymce.core.ui.FormItem","tinymce.core.ui.Form","tinymce.core.ui.FieldSet","tinymce.core.ui.FilePicker","tinymce.core.ui.FitLayout","tinymce.core.ui.FlexLayout","tinymce.core.ui.FlowLayout","tinymce.core.ui.FormatControls","tinymce.core.ui.GridLayout","tinymce.core.ui.Iframe","tinymce.core.ui.InfoBox","tinymce.core.ui.Label","tinymce.core.ui.Toolbar","tinymce.core.ui.MenuBar","tinymce.core.ui.MenuButton","tinymce.core.ui.MenuItem","tinymce.core.ui.Throbber","tinymce.core.ui.Menu","tinymce.core.ui.ListBox","tinymce.core.ui.Radio","tinymce.core.ui.ResizeHandle","tinymce.core.ui.SelectBox","tinymce.core.ui.Slider","tinymce.core.ui.Spacer","tinymce.core.ui.SplitButton","tinymce.core.ui.StackLayout","tinymce.core.ui.TabPanel","tinymce.core.ui.TextBox","ephox.katamari.api.Arr","ephox.katamari.api.Fun","ephox.katamari.api.Future","ephox.katamari.api.Futures","ephox.katamari.api.Result","tinymce.core.caret.CaretCandidate","tinymce.core.geom.ClientRect","tinymce.core.text.ExtendingChar","ephox.sugar.api.dom.Insert","ephox.sugar.api.dom.Replication","ephox.sugar.api.node.Element","ephox.sugar.api.node.Fragment","ephox.sugar.api.node.Node","tinymce.core.dom.ElementType","tinymce.core.dom.Parents","tinymce.core.selection.SelectionUtils","tinymce.core.undo.Fragments","tinymce.core.delete.BlockBoundaryDelete","tinymce.core.delete.BlockRangeDelete","tinymce.core.delete.CefDelete","tinymce.core.delete.InlineBoundaryDelete","tinymce.core.caret.CaretWalker","tinymce.core.dom.RangeNormalizer","tinymce.core.InsertList","tinymce.core.data.ObservableObject","tinymce.core.ui.DomUtils","tinymce.core.ui.BoxUtils","tinymce.core.ui.ClassList","global!window","tinymce.core.init.Init","tinymce.core.PluginManager","tinymce.core.ThemeManager","tinymce.core.content.LinkTargets","tinymce.core.fmt.FontInfo","ephox.katamari.api.Option","global!Array","global!Error","global!String","ephox.katamari.api.LazyValue","ephox.katamari.async.Bounce","ephox.katamari.async.AsyncValues","ephox.sugar.api.search.Traverse","ephox.sugar.api.properties.Attr","global!console","ephox.sugar.api.dom.InsertAll","ephox.sugar.api.dom.Remove","ephox.sugar.api.node.NodeTypes","ephox.sugar.api.dom.Compare","ephox.katamari.api.Options","tinymce.core.undo.Diff","tinymce.core.delete.BlockBoundary","tinymce.core.delete.MergeBlocks","tinymce.core.delete.DeleteUtils","tinymce.core.caret.CaretUtils","tinymce.core.delete.CefDeleteAction","tinymce.core.delete.DeleteElement","tinymce.core.caret.CaretFinder","tinymce.core.keyboard.BoundaryCaret","tinymce.core.keyboard.BoundaryLocation","tinymce.core.keyboard.BoundarySelection","tinymce.core.keyboard.InlineUtils","tinymce.core.data.Binding","tinymce.core.init.InitContentBody","global!Object","global!setTimeout","ephox.katamari.api.Type","ephox.katamari.api.Struct","ephox.sugar.alien.Recurse","ephox.sand.api.Node","ephox.sand.api.PlatformDetection","ephox.sugar.api.search.Selectors","ephox.katamari.api.Obj","ephox.sugar.api.search.PredicateFind","tinymce.core.dom.Empty","ephox.katamari.api.Adt","tinymce.core.text.Bidi","tinymce.core.caret.CaretContainerInline","tinymce.core.caret.CaretContainerRemove","tinymce.core.util.LazyEvaluator","ephox.katamari.api.Cell","tinymce.core.caret.CaretContainerInput","tinymce.core.EditorUpload","tinymce.core.ForceBlocks","tinymce.core.keyboard.KeyboardOverrides","tinymce.core.NodeChange","tinymce.core.SelectionOverrides","tinymce.core.util.Quirks","ephox.katamari.data.Immutable","ephox.katamari.data.MixedBag","ephox.sand.util.Global","ephox.katamari.api.Thunk","ephox.sand.core.PlatformDetection","global!navigator","ephox.sugar.api.node.Body","ephox.sugar.impl.ClosestOrAncestor","ephox.sugar.api.search.SelectorExists","tinymce.core.file.Uploader","tinymce.core.file.ImageScanner","tinymce.core.file.BlobCache","tinymce.core.file.UploadStatus","tinymce.core.keyboard.ArrowKeys","tinymce.core.keyboard.DeleteBackspaceKeys","tinymce.core.keyboard.EnterKey","tinymce.core.keyboard.SpaceKey","tinymce.core.caret.FakeCaret","tinymce.core.caret.LineUtils","tinymce.core.DragDropOverrides","tinymce.core.keyboard.CefUtils","tinymce.core.dom.NodePath","ephox.katamari.util.BagUtils","ephox.katamari.api.Resolve","ephox.sand.core.Browser","ephox.sand.core.OperatingSystem","ephox.sand.detect.DeviceType","ephox.sand.detect.UaString","ephox.sand.info.PlatformInfo","ephox.sugar.api.search.SelectorFind","tinymce.core.file.Conversions","global!URL","tinymce.core.keyboard.CefNavigation","tinymce.core.keyboard.MatchKeys","tinymce.core.keyboard.InsertSpace","tinymce.core.dom.Dimensions","tinymce.core.dom.MousePosition","ephox.katamari.api.Global","ephox.sand.detect.Version","ephox.katamari.api.Strings","tinymce.core.caret.LineWalker","ephox.katamari.api.Merger","global!Number","ephox.katamari.str.StrAppend","ephox.katamari.str.StringParts"]
+["tinymce.core.api.Main","tinymce.core.api.Tinymce","tinymce.core.Register","tinymce.core.geom.Rect","tinymce.core.util.Promise","tinymce.core.util.Delay","tinymce.core.Env","tinymce.core.dom.EventUtils","tinymce.core.dom.Sizzle","tinymce.core.util.Tools","tinymce.core.dom.DomQuery","tinymce.core.html.Styles","tinymce.core.dom.TreeWalker","tinymce.core.html.Entities","tinymce.core.dom.DOMUtils","tinymce.core.dom.ScriptLoader","tinymce.core.AddOnManager","tinymce.core.dom.RangeUtils","tinymce.core.html.Node","tinymce.core.html.Schema","tinymce.core.html.SaxParser","tinymce.core.html.DomParser","tinymce.core.html.Writer","tinymce.core.html.Serializer","tinymce.core.dom.Serializer","tinymce.core.util.VK","tinymce.core.dom.ControlSelection","tinymce.core.dom.BookmarkManager","tinymce.core.dom.Selection","tinymce.core.Formatter","tinymce.core.UndoManager","tinymce.core.EditorCommands","tinymce.core.util.URI","tinymce.core.util.Class","tinymce.core.util.EventDispatcher","tinymce.core.util.Observable","tinymce.core.WindowManager","tinymce.core.NotificationManager","tinymce.core.EditorObservable","tinymce.core.Shortcuts","tinymce.core.Editor","tinymce.core.util.I18n","tinymce.core.FocusManager","tinymce.core.EditorManager","tinymce.core.util.XHR","tinymce.core.util.JSON","tinymce.core.util.JSONRequest","tinymce.core.util.JSONP","tinymce.core.util.LocalStorage","tinymce.core.api.Compat","tinymce.core.util.Color","tinymce.core.ui.Api","tinymce.core.util.Arr","tinymce.core.dom.Range","tinymce.core.dom.StyleSheetLoader","tinymce.core.dom.NodeType","tinymce.core.caret.CaretContainer","tinymce.core.text.Zwsp","ephox.katamari.api.Fun","tinymce.core.dom.RangePoint","tinymce.core.caret.CaretBookmark","tinymce.core.caret.CaretPosition","ephox.sugar.api.dom.Compare","ephox.sugar.api.node.Element","tinymce.core.dom.ScrollIntoView","tinymce.core.dom.TridentSelection","tinymce.core.selection.FragmentReader","tinymce.core.dom.ElementUtils","tinymce.core.util.Fun","tinymce.core.fmt.Preview","tinymce.core.fmt.Hooks","tinymce.core.undo.Levels","tinymce.core.delete.DeleteCommands","tinymce.core.InsertContent","global!document","tinymce.core.ui.Window","tinymce.core.ui.MessageBox","tinymce.core.ui.Notification","tinymce.core.EditorSettings","tinymce.core.init.Render","tinymce.core.Mode","tinymce.core.ui.Sidebar","tinymce.core.util.Uuid","tinymce.core.ErrorReporter","tinymce.core.LegacyInput","tinymce.core.ui.Selector","tinymce.core.ui.Collection","tinymce.core.ui.ReflowQueue","tinymce.core.ui.Control","tinymce.core.ui.Factory","tinymce.core.ui.KeyboardNavigation","tinymce.core.ui.Container","tinymce.core.ui.DragHelper","tinymce.core.ui.Scrollable","tinymce.core.ui.Panel","tinymce.core.ui.Movable","tinymce.core.ui.Resizable","tinymce.core.ui.FloatPanel","tinymce.core.ui.Tooltip","tinymce.core.ui.Widget","tinymce.core.ui.Progress","tinymce.core.ui.Layout","tinymce.core.ui.AbsoluteLayout","tinymce.core.ui.Button","tinymce.core.ui.ButtonGroup","tinymce.core.ui.Checkbox","tinymce.core.ui.ComboBox","tinymce.core.ui.ColorBox","tinymce.core.ui.PanelButton","tinymce.core.ui.ColorButton","tinymce.core.ui.ColorPicker","tinymce.core.ui.Path","tinymce.core.ui.ElementPath","tinymce.core.ui.FormItem","tinymce.core.ui.Form","tinymce.core.ui.FieldSet","tinymce.core.ui.FilePicker","tinymce.core.ui.FitLayout","tinymce.core.ui.FlexLayout","tinymce.core.ui.FlowLayout","tinymce.core.ui.FormatControls","tinymce.core.ui.GridLayout","tinymce.core.ui.Iframe","tinymce.core.ui.InfoBox","tinymce.core.ui.Label","tinymce.core.ui.Toolbar","tinymce.core.ui.MenuBar","tinymce.core.ui.MenuButton","tinymce.core.ui.MenuItem","tinymce.core.ui.Throbber","tinymce.core.ui.Menu","tinymce.core.ui.ListBox","tinymce.core.ui.Radio","tinymce.core.ui.ResizeHandle","tinymce.core.ui.SelectBox","tinymce.core.ui.Slider","tinymce.core.ui.Spacer","tinymce.core.ui.SplitButton","tinymce.core.ui.StackLayout","tinymce.core.ui.TabPanel","tinymce.core.ui.TextBox","ephox.katamari.api.Arr","global!Array","global!Error","ephox.katamari.api.Future","ephox.katamari.api.Futures","ephox.katamari.api.Result","tinymce.core.geom.ClientRect","tinymce.core.caret.CaretCandidate","tinymce.core.text.ExtendingChar","ephox.sand.api.Node","ephox.sand.api.PlatformDetection","ephox.sugar.api.search.Selectors","global!console","ephox.sugar.api.dom.Insert","ephox.sugar.api.dom.Replication","ephox.sugar.api.node.Fragment","ephox.sugar.api.node.Node","tinymce.core.dom.ElementType","tinymce.core.dom.Parents","tinymce.core.selection.SelectionUtils","tinymce.core.undo.Fragments","tinymce.core.delete.BlockBoundaryDelete","tinymce.core.delete.BlockRangeDelete","tinymce.core.delete.CefDelete","tinymce.core.delete.InlineBoundaryDelete","tinymce.core.caret.CaretWalker","tinymce.core.dom.RangeNormalizer","tinymce.core.InsertList","tinymce.core.data.ObservableObject","tinymce.core.ui.DomUtils","tinymce.core.ui.BoxUtils","tinymce.core.ui.ClassList","global!window","tinymce.core.init.Init","tinymce.core.PluginManager","tinymce.core.ThemeManager","tinymce.core.content.LinkTargets","tinymce.core.fmt.FontInfo","ephox.katamari.api.Option","global!String","ephox.katamari.api.LazyValue","ephox.katamari.async.Bounce","ephox.katamari.async.AsyncValues","ephox.sand.util.Global","ephox.katamari.api.Thunk","ephox.sand.core.PlatformDetection","global!navigator","ephox.sugar.api.node.NodeTypes","ephox.sugar.api.search.Traverse","ephox.sugar.api.properties.Attr","ephox.sugar.api.dom.InsertAll","ephox.sugar.api.dom.Remove","ephox.katamari.api.Options","tinymce.core.undo.Diff","tinymce.core.delete.BlockBoundary","tinymce.core.delete.MergeBlocks","tinymce.core.delete.DeleteUtils","tinymce.core.caret.CaretUtils","tinymce.core.delete.CefDeleteAction","tinymce.core.delete.DeleteElement","tinymce.core.caret.CaretFinder","tinymce.core.keyboard.BoundaryCaret","tinymce.core.keyboard.BoundaryLocation","tinymce.core.keyboard.BoundarySelection","tinymce.core.keyboard.InlineUtils","tinymce.core.data.Binding","tinymce.core.init.InitContentBody","global!Object","global!setTimeout","ephox.katamari.api.Resolve","ephox.sand.core.Browser","ephox.sand.core.OperatingSystem","ephox.sand.detect.DeviceType","ephox.sand.detect.UaString","ephox.sand.info.PlatformInfo","ephox.katamari.api.Type","ephox.katamari.api.Struct","ephox.sugar.alien.Recurse","ephox.katamari.api.Obj","ephox.sugar.api.search.PredicateFind","tinymce.core.dom.Empty","ephox.katamari.api.Adt","tinymce.core.text.Bidi","tinymce.core.caret.CaretContainerInline","tinymce.core.caret.CaretContainerRemove","tinymce.core.util.LazyEvaluator","ephox.katamari.api.Cell","tinymce.core.caret.CaretContainerInput","tinymce.core.EditorUpload","tinymce.core.ForceBlocks","tinymce.core.keyboard.KeyboardOverrides","tinymce.core.NodeChange","tinymce.core.SelectionOverrides","tinymce.core.util.Quirks","ephox.katamari.api.Global","ephox.sand.detect.Version","ephox.katamari.api.Strings","ephox.katamari.data.Immutable","ephox.katamari.data.MixedBag","ephox.sugar.api.node.Body","ephox.sugar.impl.ClosestOrAncestor","ephox.sugar.api.search.SelectorExists","tinymce.core.file.Uploader","tinymce.core.file.ImageScanner","tinymce.core.file.BlobCache","tinymce.core.file.UploadStatus","tinymce.core.keyboard.ArrowKeys","tinymce.core.keyboard.DeleteBackspaceKeys","tinymce.core.keyboard.EnterKey","tinymce.core.keyboard.SpaceKey","tinymce.core.caret.FakeCaret","tinymce.core.caret.LineUtils","tinymce.core.DragDropOverrides","tinymce.core.EditorView","tinymce.core.keyboard.CefUtils","tinymce.core.dom.NodePath","global!Number","ephox.katamari.str.StrAppend","ephox.katamari.str.StringParts","ephox.katamari.util.BagUtils","ephox.sugar.api.search.SelectorFind","tinymce.core.file.Conversions","global!URL","tinymce.core.keyboard.CefNavigation","tinymce.core.keyboard.MatchKeys","tinymce.core.keyboard.InsertSpace","tinymce.core.dom.Dimensions","tinymce.core.dom.MousePosition","ephox.sugar.api.properties.Css","tinymce.core.caret.LineWalker","ephox.katamari.api.Merger","ephox.sugar.impl.Style"]
 jsc*/
 /**
  * Rect.js
@@ -66804,7 +67522,7 @@ define(
       textInlineElementsMap = createLookupTable('text_inline_elements', 'span strong b em i font strike u var cite ' +
         'dfn code mark q sup sub samp');
 
-      each((settings.special || 'script noscript style textarea').split(' '), function (name) {
+      each((settings.special || 'script noscript noframes noembed title style textarea xmp').split(' '), function (name) {
         specialElements[name] = new RegExp('<\/' + name + '[^>]*>', 'gi');
       });
 
@@ -71503,6 +72221,10 @@ define(
       return name.indexOf('data-') === 0 || name.indexOf('aria-') === 0;
     };
 
+    var trimComments = function (text) {
+      return text.replace(/<!--|-->/g, '');
+    };
+
     /**
      * Returns the index of the end tag for a specific start tag. This can be
      * used to skip all children of a parent element from being processed.
@@ -71669,6 +72391,11 @@ define(
             if (!settings.allow_html_data_urls && dataUriRegExp.test(uri) && !/^data:image\//i.test(uri)) {
               return;
             }
+          }
+
+          // Block data or event attributes on elements marked as internal
+          if (isInternalElement && (name in filteredUrlAttrs || name.indexOf('on') === 0)) {
+            return;
           }
 
           // Add attribute to list and map
@@ -71897,7 +72624,7 @@ define(
 
             self.comment(value);
           } else if ((value = matches[2])) { // CDATA
-            self.cdata(value);
+            self.cdata(trimComments(value));
           } else if ((value = matches[3])) { // DOCTYPE
             self.doctype(value);
           } else if ((value = matches[4])) { // PI
@@ -72702,34 +73429,35 @@ define(
         });
       }
 
-      if (!settings.allow_unsafe_link_target) {
-        self.addAttributeFilter('href', function (nodes) {
-          var i = nodes.length, node;
 
-          var appendRel = function (rel) {
-            var parts = rel.split(' ').filter(function (p) {
-              return p.length > 0;
-            });
-            return parts.concat(['noopener']).join(' ');
-          };
+      self.addAttributeFilter('href', function (nodes) {
+        var i = nodes.length, node;
 
-          var addNoOpener = function (rel) {
-            var newRel = rel ? Tools.trim(rel) : '';
-            if (!/\b(noopener)\b/g.test(newRel)) {
-              return appendRel(newRel);
-            } else {
-              return newRel;
-            }
-          };
+        var appendRel = function (rel) {
+          var parts = rel.split(' ').filter(function (p) {
+            return p.length > 0;
+          });
+          return parts.concat(['noopener']).sort().join(' ');
+        };
 
+        var addNoOpener = function (rel) {
+          var newRel = rel ? Tools.trim(rel) : '';
+          if (!/\b(noopener)\b/g.test(newRel)) {
+            return appendRel(newRel);
+          } else {
+            return newRel;
+          }
+        };
+
+        if (!settings.allow_unsafe_link_target) {
           while (i--) {
             node = nodes[i];
             if (node.name === 'a' && node.attr('target') === '_blank') {
               node.attr('rel', addNoOpener(node.attr('rel')));
             }
           }
-        });
-      }
+        }
+      });
 
       // Force anchor names closed, unless the setting "allow_html_in_named_anchor" is explicitly included.
       if (!settings.allow_html_in_named_anchor) {
@@ -73726,6 +74454,180 @@ define(
 );
 
 /**
+ * ClientRect.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * Utility functions for working with client rects.
+ *
+ * @private
+ * @class tinymce.geom.ClientRect
+ */
+define(
+  'tinymce.core.geom.ClientRect',
+  [
+  ],
+  function () {
+    var round = Math.round;
+
+    function clone(rect) {
+      if (!rect) {
+        return { left: 0, top: 0, bottom: 0, right: 0, width: 0, height: 0 };
+      }
+
+      return {
+        left: round(rect.left),
+        top: round(rect.top),
+        bottom: round(rect.bottom),
+        right: round(rect.right),
+        width: round(rect.width),
+        height: round(rect.height)
+      };
+    }
+
+    function collapse(clientRect, toStart) {
+      clientRect = clone(clientRect);
+
+      if (toStart) {
+        clientRect.right = clientRect.left;
+      } else {
+        clientRect.left = clientRect.left + clientRect.width;
+        clientRect.right = clientRect.left;
+      }
+
+      clientRect.width = 0;
+
+      return clientRect;
+    }
+
+    function isEqual(rect1, rect2) {
+      return (
+        rect1.left === rect2.left &&
+        rect1.top === rect2.top &&
+        rect1.bottom === rect2.bottom &&
+        rect1.right === rect2.right
+      );
+    }
+
+    function isValidOverflow(overflowY, clientRect1, clientRect2) {
+      return overflowY >= 0 && overflowY <= Math.min(clientRect1.height, clientRect2.height) / 2;
+
+    }
+
+    function isAbove(clientRect1, clientRect2) {
+      if ((clientRect1.bottom - clientRect1.height / 2) < clientRect2.top) {
+        return true;
+      }
+
+      if (clientRect1.top > clientRect2.bottom) {
+        return false;
+      }
+
+      return isValidOverflow(clientRect2.top - clientRect1.bottom, clientRect1, clientRect2);
+    }
+
+    function isBelow(clientRect1, clientRect2) {
+      if (clientRect1.top > clientRect2.bottom) {
+        return true;
+      }
+
+      if (clientRect1.bottom < clientRect2.top) {
+        return false;
+      }
+
+      return isValidOverflow(clientRect2.bottom - clientRect1.top, clientRect1, clientRect2);
+    }
+
+    function isLeft(clientRect1, clientRect2) {
+      return clientRect1.left < clientRect2.left;
+    }
+
+    function isRight(clientRect1, clientRect2) {
+      return clientRect1.right > clientRect2.right;
+    }
+
+    function compare(clientRect1, clientRect2) {
+      if (isAbove(clientRect1, clientRect2)) {
+        return -1;
+      }
+
+      if (isBelow(clientRect1, clientRect2)) {
+        return 1;
+      }
+
+      if (isLeft(clientRect1, clientRect2)) {
+        return -1;
+      }
+
+      if (isRight(clientRect1, clientRect2)) {
+        return 1;
+      }
+
+      return 0;
+    }
+
+    function containsXY(clientRect, clientX, clientY) {
+      return (
+        clientX >= clientRect.left &&
+        clientX <= clientRect.right &&
+        clientY >= clientRect.top &&
+        clientY <= clientRect.bottom
+      );
+    }
+
+    return {
+      clone: clone,
+      collapse: collapse,
+      isEqual: isEqual,
+      isAbove: isAbove,
+      isBelow: isBelow,
+      isLeft: isLeft,
+      isRight: isRight,
+      compare: compare,
+      containsXY: containsXY
+    };
+  }
+);
+
+/**
+ * RangePoint.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.dom.RangePoint',
+  [
+    'ephox.katamari.api.Arr',
+    'tinymce.core.geom.ClientRect'
+  ],
+  function (Arr, ClientRect) {
+    var isXYWithinRange = function (clientX, clientY, range) {
+      if (range.collapsed) {
+        return false;
+      }
+
+      return Arr.foldl(range.getClientRects(), function (state, rect) {
+        return state || ClientRect.containsXY(rect, clientX, clientY);
+      }, false);
+    };
+
+    return {
+      isXYWithinRange: isXYWithinRange
+    };
+  }
+);
+/**
  * ControlSelection.js
  *
  * Released under LGPL License.
@@ -73745,13 +74647,15 @@ define(
 define(
   'tinymce.core.dom.ControlSelection',
   [
-    "tinymce.core.util.VK",
-    "tinymce.core.util.Tools",
-    "tinymce.core.util.Delay",
-    "tinymce.core.Env",
-    "tinymce.core.dom.NodeType"
+    'ephox.katamari.api.Fun',
+    'tinymce.core.dom.NodeType',
+    'tinymce.core.dom.RangePoint',
+    'tinymce.core.Env',
+    'tinymce.core.util.Delay',
+    'tinymce.core.util.Tools',
+    'tinymce.core.util.VK'
   ],
-  function (VK, Tools, Delay, Env, NodeType) {
+  function (Fun, NodeType, RangePoint, Env, Delay, Tools, VK) {
     var isContentEditableFalse = NodeType.isContentEditableFalse;
     var isContentEditableTrue = NodeType.isContentEditableTrue;
 
@@ -73766,6 +74670,23 @@ define(
 
       return null;
     }
+
+    var isImage = function (elm) {
+      return elm && elm.nodeName === 'IMG';
+    };
+
+    var isEventOnImageOutsideRange = function (evt, range) {
+      return isImage(evt.target) && !RangePoint.isXYWithinRange(evt.clientX, evt.clientY, range);
+    };
+
+    var contextMenuSelectImage = function (editor, evt) {
+      var target = evt.target;
+
+      if (isEventOnImageOutsideRange(evt, editor.selection.getRng()) && !evt.isDefaultPrevented()) {
+        evt.preventDefault();
+        editor.selection.select(target);
+      }
+    };
 
     return function (selection, editor) {
       var dom = editor.dom, each = Tools.each;
@@ -74302,7 +75223,9 @@ define(
               var target = e.target, nodeName = target.nodeName;
 
               if (!resizeStarted && /^(TABLE|IMG|HR)$/.test(nodeName) && !isWithinContentEditableFalse(target)) {
-                editor.selection.select(target, nodeName == 'TABLE');
+                if (e.button !== 2) {
+                  editor.selection.select(target, nodeName == 'TABLE');
+                }
 
                 // Only fire once since nodeChange is expensive
                 if (e.type == 'mousedown') {
@@ -74354,6 +75277,7 @@ define(
         });
 
         editor.on('hide blur', hideResizeRect);
+        editor.on('contextmenu', Fun.curry(contextMenuSelectImage, editor));
 
         // Hide rect on focusout since it would float on top of windows otherwise
         //editor.on('focusout', hideResizeRect);
@@ -74568,148 +75492,6 @@ define(
     };
   }
 );
-/**
- * ClientRect.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * Utility functions for working with client rects.
- *
- * @private
- * @class tinymce.geom.ClientRect
- */
-define(
-  'tinymce.core.geom.ClientRect',
-  [
-  ],
-  function () {
-    var round = Math.round;
-
-    function clone(rect) {
-      if (!rect) {
-        return { left: 0, top: 0, bottom: 0, right: 0, width: 0, height: 0 };
-      }
-
-      return {
-        left: round(rect.left),
-        top: round(rect.top),
-        bottom: round(rect.bottom),
-        right: round(rect.right),
-        width: round(rect.width),
-        height: round(rect.height)
-      };
-    }
-
-    function collapse(clientRect, toStart) {
-      clientRect = clone(clientRect);
-
-      if (toStart) {
-        clientRect.right = clientRect.left;
-      } else {
-        clientRect.left = clientRect.left + clientRect.width;
-        clientRect.right = clientRect.left;
-      }
-
-      clientRect.width = 0;
-
-      return clientRect;
-    }
-
-    function isEqual(rect1, rect2) {
-      return (
-        rect1.left === rect2.left &&
-        rect1.top === rect2.top &&
-        rect1.bottom === rect2.bottom &&
-        rect1.right === rect2.right
-      );
-    }
-
-    function isValidOverflow(overflowY, clientRect1, clientRect2) {
-      return overflowY >= 0 && overflowY <= Math.min(clientRect1.height, clientRect2.height) / 2;
-
-    }
-
-    function isAbove(clientRect1, clientRect2) {
-      if ((clientRect1.bottom - clientRect1.height / 2) < clientRect2.top) {
-        return true;
-      }
-
-      if (clientRect1.top > clientRect2.bottom) {
-        return false;
-      }
-
-      return isValidOverflow(clientRect2.top - clientRect1.bottom, clientRect1, clientRect2);
-    }
-
-    function isBelow(clientRect1, clientRect2) {
-      if (clientRect1.top > clientRect2.bottom) {
-        return true;
-      }
-
-      if (clientRect1.bottom < clientRect2.top) {
-        return false;
-      }
-
-      return isValidOverflow(clientRect2.bottom - clientRect1.top, clientRect1, clientRect2);
-    }
-
-    function isLeft(clientRect1, clientRect2) {
-      return clientRect1.left < clientRect2.left;
-    }
-
-    function isRight(clientRect1, clientRect2) {
-      return clientRect1.right > clientRect2.right;
-    }
-
-    function compare(clientRect1, clientRect2) {
-      if (isAbove(clientRect1, clientRect2)) {
-        return -1;
-      }
-
-      if (isBelow(clientRect1, clientRect2)) {
-        return 1;
-      }
-
-      if (isLeft(clientRect1, clientRect2)) {
-        return -1;
-      }
-
-      if (isRight(clientRect1, clientRect2)) {
-        return 1;
-      }
-
-      return 0;
-    }
-
-    function containsXY(clientRect, clientX, clientY) {
-      return (
-        clientX >= clientRect.left &&
-        clientX <= clientRect.right &&
-        clientY >= clientRect.top &&
-        clientY <= clientRect.bottom
-      );
-    }
-
-    return {
-      clone: clone,
-      collapse: collapse,
-      isEqual: isEqual,
-      isAbove: isAbove,
-      isBelow: isBelow,
-      isLeft: isLeft,
-      isRight: isRight,
-      compare: compare,
-      containsXY: containsXY
-    };
-  }
-);
-
 /**
  * ExtendingChar.js
  *
@@ -75912,949 +76694,6 @@ define(
     return BookmarkManager;
   }
 );
-/**
- * ScrollIntoView.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-define(
-  'tinymce.core.dom.ScrollIntoView',
-  [
-    'tinymce.core.dom.NodeType'
-  ],
-  function (NodeType) {
-    var getPos = function (elm) {
-      var x = 0, y = 0;
-
-      var offsetParent = elm;
-      while (offsetParent && offsetParent.nodeType) {
-        x += offsetParent.offsetLeft || 0;
-        y += offsetParent.offsetTop || 0;
-        offsetParent = offsetParent.offsetParent;
-      }
-
-      return { x: x, y: y };
-    };
-
-    var fireScrollIntoViewEvent = function (editor, elm, alignToTop) {
-      var scrollEvent = { elm: elm, alignToTop: alignToTop };
-      editor.fire('scrollIntoView', scrollEvent);
-      return scrollEvent.isDefaultPrevented();
-    };
-
-    var scrollIntoView = function (editor, elm, alignToTop) {
-      var y, viewPort, dom = editor.dom, root = dom.getRoot(), viewPortY, viewPortH, offsetY = 0;
-
-      if (fireScrollIntoViewEvent(editor, elm, alignToTop)) {
-        return;
-      }
-
-      if (!NodeType.isElement(elm)) {
-        return;
-      }
-
-      if (alignToTop === false) {
-        offsetY = elm.offsetHeight;
-      }
-
-      if (root.nodeName !== 'BODY') {
-        var scrollContainer = editor.selection.getScrollContainer();
-        if (scrollContainer) {
-          y = getPos(elm).y - getPos(scrollContainer).y + offsetY;
-          viewPortH = scrollContainer.clientHeight;
-          viewPortY = scrollContainer.scrollTop;
-          if (y < viewPortY || y + 25 > viewPortY + viewPortH) {
-            scrollContainer.scrollTop = y < viewPortY ? y : y - viewPortH + 25;
-          }
-
-          return;
-        }
-      }
-
-      viewPort = dom.getViewPort(editor.getWin());
-      y = dom.getPos(elm).y + offsetY;
-      viewPortY = viewPort.y;
-      viewPortH = viewPort.h;
-      if (y < viewPort.y || y + 25 > viewPortY + viewPortH) {
-        editor.getWin().scrollTo(0, y < viewPortY ? y : y - viewPortH + 25);
-      }
-    };
-
-    return {
-      scrollIntoView: scrollIntoView
-    };
-  }
-);
-
-/**
- * TridentSelection.js
- *
- * Released under LGPL License.
- * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
- *
- * License: http://www.tinymce.com/license
- * Contributing: http://www.tinymce.com/contributing
- */
-
-/**
- * Selection class for old explorer versions. This one fakes the
- * native selection object available on modern browsers.
- *
- * @private
- * @class tinymce.dom.TridentSelection
- */
-define(
-  'tinymce.core.dom.TridentSelection',
-  [
-  ],
-  function () {
-    function Selection(selection) {
-      var self = this, dom = selection.dom, FALSE = false;
-
-      function getPosition(rng, start) {
-        var checkRng, startIndex = 0, endIndex, inside,
-          children, child, offset, index, position = -1, parent;
-
-        // Setup test range, collapse it and get the parent
-        checkRng = rng.duplicate();
-        checkRng.collapse(start);
-        parent = checkRng.parentElement();
-
-        // Check if the selection is within the right document
-        if (parent.ownerDocument !== selection.dom.doc) {
-          return;
-        }
-
-        // IE will report non editable elements as it's parent so look for an editable one
-        while (parent.contentEditable === "false") {
-          parent = parent.parentNode;
-        }
-
-        // If parent doesn't have any children then return that we are inside the element
-        if (!parent.hasChildNodes()) {
-          return { node: parent, inside: 1 };
-        }
-
-        // Setup node list and endIndex
-        children = parent.children;
-        endIndex = children.length - 1;
-
-        // Perform a binary search for the position
-        while (startIndex <= endIndex) {
-          index = Math.floor((startIndex + endIndex) / 2);
-
-          // Move selection to node and compare the ranges
-          child = children[index];
-          checkRng.moveToElementText(child);
-          position = checkRng.compareEndPoints(start ? 'StartToStart' : 'EndToEnd', rng);
-
-          // Before/after or an exact match
-          if (position > 0) {
-            endIndex = index - 1;
-          } else if (position < 0) {
-            startIndex = index + 1;
-          } else {
-            return { node: child };
-          }
-        }
-
-        // Check if child position is before or we didn't find a position
-        if (position < 0) {
-          // No element child was found use the parent element and the offset inside that
-          if (!child) {
-            checkRng.moveToElementText(parent);
-            checkRng.collapse(true);
-            child = parent;
-            inside = true;
-          } else {
-            checkRng.collapse(false);
-          }
-
-          // Walk character by character in text node until we hit the selected range endpoint,
-          // hit the end of document or parent isn't the right one
-          // We need to walk char by char since rng.text or rng.htmlText will trim line endings
-          offset = 0;
-          while (checkRng.compareEndPoints(start ? 'StartToStart' : 'StartToEnd', rng) !== 0) {
-            if (checkRng.move('character', 1) === 0 || parent != checkRng.parentElement()) {
-              break;
-            }
-
-            offset++;
-          }
-        } else {
-          // Child position is after the selection endpoint
-          checkRng.collapse(true);
-
-          // Walk character by character in text node until we hit the selected range endpoint, hit
-          // the end of document or parent isn't the right one
-          offset = 0;
-          while (checkRng.compareEndPoints(start ? 'StartToStart' : 'StartToEnd', rng) !== 0) {
-            if (checkRng.move('character', -1) === 0 || parent != checkRng.parentElement()) {
-              break;
-            }
-
-            offset++;
-          }
-        }
-
-        return { node: child, position: position, offset: offset, inside: inside };
-      }
-
-      // Returns a W3C DOM compatible range object by using the IE Range API
-      function getRange() {
-        var ieRange = selection.getRng(), domRange = dom.createRng(), element, collapsed, tmpRange, element2, bookmark;
-
-        // If selection is outside the current document just return an empty range
-        element = ieRange.item ? ieRange.item(0) : ieRange.parentElement();
-        if (element.ownerDocument != dom.doc) {
-          return domRange;
-        }
-
-        collapsed = selection.isCollapsed();
-
-        // Handle control selection
-        if (ieRange.item) {
-          domRange.setStart(element.parentNode, dom.nodeIndex(element));
-          domRange.setEnd(domRange.startContainer, domRange.startOffset + 1);
-
-          return domRange;
-        }
-
-        function findEndPoint(start) {
-          var endPoint = getPosition(ieRange, start), container, offset, textNodeOffset = 0, sibling, undef, nodeValue;
-
-          container = endPoint.node;
-          offset = endPoint.offset;
-
-          if (endPoint.inside && !container.hasChildNodes()) {
-            domRange[start ? 'setStart' : 'setEnd'](container, 0);
-            return;
-          }
-
-          if (offset === undef) {
-            domRange[start ? 'setStartBefore' : 'setEndAfter'](container);
-            return;
-          }
-
-          if (endPoint.position < 0) {
-            sibling = endPoint.inside ? container.firstChild : container.nextSibling;
-
-            if (!sibling) {
-              domRange[start ? 'setStartAfter' : 'setEndAfter'](container);
-              return;
-            }
-
-            if (!offset) {
-              if (sibling.nodeType == 3) {
-                domRange[start ? 'setStart' : 'setEnd'](sibling, 0);
-              } else {
-                domRange[start ? 'setStartBefore' : 'setEndBefore'](sibling);
-              }
-
-              return;
-            }
-
-            // Find the text node and offset
-            while (sibling) {
-              if (sibling.nodeType == 3) {
-                nodeValue = sibling.nodeValue;
-                textNodeOffset += nodeValue.length;
-
-                // We are at or passed the position we where looking for
-                if (textNodeOffset >= offset) {
-                  container = sibling;
-                  textNodeOffset -= offset;
-                  textNodeOffset = nodeValue.length - textNodeOffset;
-                  break;
-                }
-              }
-
-              sibling = sibling.nextSibling;
-            }
-          } else {
-            // Find the text node and offset
-            sibling = container.previousSibling;
-
-            if (!sibling) {
-              return domRange[start ? 'setStartBefore' : 'setEndBefore'](container);
-            }
-
-            // If there isn't any text to loop then use the first position
-            if (!offset) {
-              if (container.nodeType == 3) {
-                domRange[start ? 'setStart' : 'setEnd'](sibling, container.nodeValue.length);
-              } else {
-                domRange[start ? 'setStartAfter' : 'setEndAfter'](sibling);
-              }
-
-              return;
-            }
-
-            while (sibling) {
-              if (sibling.nodeType == 3) {
-                textNodeOffset += sibling.nodeValue.length;
-
-                // We are at or passed the position we where looking for
-                if (textNodeOffset >= offset) {
-                  container = sibling;
-                  textNodeOffset -= offset;
-                  break;
-                }
-              }
-
-              sibling = sibling.previousSibling;
-            }
-          }
-
-          domRange[start ? 'setStart' : 'setEnd'](container, textNodeOffset);
-        }
-
-        try {
-          // Find start point
-          findEndPoint(true);
-
-          // Find end point if needed
-          if (!collapsed) {
-            findEndPoint();
-          }
-        } catch (ex) {
-          // IE has a nasty bug where text nodes might throw "invalid argument" when you
-          // access the nodeValue or other properties of text nodes. This seems to happen when
-          // text nodes are split into two nodes by a delete/backspace call.
-          // So let us detect and try to fix it.
-          if (ex.number == -2147024809) {
-            // Get the current selection
-            bookmark = self.getBookmark(2);
-
-            // Get start element
-            tmpRange = ieRange.duplicate();
-            tmpRange.collapse(true);
-            element = tmpRange.parentElement();
-
-            // Get end element
-            if (!collapsed) {
-              tmpRange = ieRange.duplicate();
-              tmpRange.collapse(false);
-              element2 = tmpRange.parentElement();
-              element2.innerHTML = element2.innerHTML;
-            }
-
-            // Remove the broken elements
-            element.innerHTML = element.innerHTML;
-
-            // Restore the selection
-            self.moveToBookmark(bookmark);
-
-            // Since the range has moved we need to re-get it
-            ieRange = selection.getRng();
-
-            // Find start point
-            findEndPoint(true);
-
-            // Find end point if needed
-            if (!collapsed) {
-              findEndPoint();
-            }
-          } else {
-            throw ex; // Throw other errors
-          }
-        }
-
-        return domRange;
-      }
-
-      this.getBookmark = function (type) {
-        var rng = selection.getRng(), bookmark = {};
-
-        function getIndexes(node) {
-          var parent, root, children, i, indexes = [];
-
-          parent = node.parentNode;
-          root = dom.getRoot().parentNode;
-
-          while (parent != root && parent.nodeType !== 9) {
-            children = parent.children;
-
-            i = children.length;
-            while (i--) {
-              if (node === children[i]) {
-                indexes.push(i);
-                break;
-              }
-            }
-
-            node = parent;
-            parent = parent.parentNode;
-          }
-
-          return indexes;
-        }
-
-        function getBookmarkEndPoint(start) {
-          var position;
-
-          position = getPosition(rng, start);
-          if (position) {
-            return {
-              position: position.position,
-              offset: position.offset,
-              indexes: getIndexes(position.node),
-              inside: position.inside
-            };
-          }
-        }
-
-        // Non ubstructive bookmark
-        if (type === 2) {
-          // Handle text selection
-          if (!rng.item) {
-            bookmark.start = getBookmarkEndPoint(true);
-
-            if (!selection.isCollapsed()) {
-              bookmark.end = getBookmarkEndPoint();
-            }
-          } else {
-            bookmark.start = { ctrl: true, indexes: getIndexes(rng.item(0)) };
-          }
-        }
-
-        return bookmark;
-      };
-
-      this.moveToBookmark = function (bookmark) {
-        var rng, body = dom.doc.body;
-
-        function resolveIndexes(indexes) {
-          var node, i, idx, children;
-
-          node = dom.getRoot();
-          for (i = indexes.length - 1; i >= 0; i--) {
-            children = node.children;
-            idx = indexes[i];
-
-            if (idx <= children.length - 1) {
-              node = children[idx];
-            }
-          }
-
-          return node;
-        }
-
-        function setBookmarkEndPoint(start) {
-          var endPoint = bookmark[start ? 'start' : 'end'], moveLeft, moveRng, undef, offset;
-
-          if (endPoint) {
-            moveLeft = endPoint.position > 0;
-
-            moveRng = body.createTextRange();
-            moveRng.moveToElementText(resolveIndexes(endPoint.indexes));
-
-            offset = endPoint.offset;
-            if (offset !== undef) {
-              moveRng.collapse(endPoint.inside || moveLeft);
-              moveRng.moveStart('character', moveLeft ? -offset : offset);
-            } else {
-              moveRng.collapse(start);
-            }
-
-            rng.setEndPoint(start ? 'StartToStart' : 'EndToStart', moveRng);
-
-            if (start) {
-              rng.collapse(true);
-            }
-          }
-        }
-
-        if (bookmark.start) {
-          if (bookmark.start.ctrl) {
-            rng = body.createControlRange();
-            rng.addElement(resolveIndexes(bookmark.start.indexes));
-            rng.select();
-          } else {
-            rng = body.createTextRange();
-            setBookmarkEndPoint(true);
-            setBookmarkEndPoint();
-            rng.select();
-          }
-        }
-      };
-
-      this.addRange = function (rng) {
-        var ieRng, ctrlRng, startContainer, startOffset, endContainer, endOffset, sibling,
-          doc = selection.dom.doc, body = doc.body, nativeRng, ctrlElm;
-
-        function setEndPoint(start) {
-          var container, offset, marker, tmpRng, nodes;
-
-          marker = dom.create('a');
-          container = start ? startContainer : endContainer;
-          offset = start ? startOffset : endOffset;
-          tmpRng = ieRng.duplicate();
-
-          if (container == doc || container == doc.documentElement) {
-            container = body;
-            offset = 0;
-          }
-
-          if (container.nodeType == 3) {
-            container.parentNode.insertBefore(marker, container);
-            tmpRng.moveToElementText(marker);
-            tmpRng.moveStart('character', offset);
-            dom.remove(marker);
-            ieRng.setEndPoint(start ? 'StartToStart' : 'EndToEnd', tmpRng);
-          } else {
-            nodes = container.childNodes;
-
-            if (nodes.length) {
-              if (offset >= nodes.length) {
-                dom.insertAfter(marker, nodes[nodes.length - 1]);
-              } else {
-                container.insertBefore(marker, nodes[offset]);
-              }
-
-              tmpRng.moveToElementText(marker);
-            } else if (container.canHaveHTML) {
-              // Empty node selection for example <div>|</div>
-              // Setting innerHTML with a span marker then remove that marker seems to keep empty block elements open
-              container.innerHTML = '<span>&#xFEFF;</span>';
-              marker = container.firstChild;
-              tmpRng.moveToElementText(marker);
-              tmpRng.collapse(FALSE); // Collapse false works better than true for some odd reason
-            }
-
-            ieRng.setEndPoint(start ? 'StartToStart' : 'EndToEnd', tmpRng);
-            dom.remove(marker);
-          }
-        }
-
-        // Setup some shorter versions
-        startContainer = rng.startContainer;
-        startOffset = rng.startOffset;
-        endContainer = rng.endContainer;
-        endOffset = rng.endOffset;
-        ieRng = body.createTextRange();
-
-        // If single element selection then try making a control selection out of it
-        if (startContainer == endContainer && startContainer.nodeType == 1) {
-          // Trick to place the caret inside an empty block element like <p></p>
-          if (startOffset == endOffset && !startContainer.hasChildNodes()) {
-            if (startContainer.canHaveHTML) {
-              // Check if previous sibling is an empty block if it is then we need to render it
-              // IE would otherwise move the caret into the sibling instead of the empty startContainer see: #5236
-              // Example this: <p></p><p>|</p> would become this: <p>|</p><p></p>
-              sibling = startContainer.previousSibling;
-              if (sibling && !sibling.hasChildNodes() && dom.isBlock(sibling)) {
-                sibling.innerHTML = '&#xFEFF;';
-              } else {
-                sibling = null;
-              }
-
-              startContainer.innerHTML = '<span>&#xFEFF;</span><span>&#xFEFF;</span>';
-              ieRng.moveToElementText(startContainer.lastChild);
-              ieRng.select();
-              dom.doc.selection.clear();
-              startContainer.innerHTML = '';
-
-              if (sibling) {
-                sibling.innerHTML = '';
-              }
-              return;
-            }
-
-            startOffset = dom.nodeIndex(startContainer);
-            startContainer = startContainer.parentNode;
-          }
-
-          if (startOffset == endOffset - 1) {
-            try {
-              ctrlElm = startContainer.childNodes[startOffset];
-              ctrlRng = body.createControlRange();
-              ctrlRng.addElement(ctrlElm);
-              ctrlRng.select();
-
-              // Check if the range produced is on the correct element and is a control range
-              // On IE 8 it will select the parent contentEditable container if you select an inner element see: #5398
-              nativeRng = selection.getRng();
-              if (nativeRng.item && ctrlElm === nativeRng.item(0)) {
-                return;
-              }
-            } catch (ex) {
-              // Ignore
-            }
-          }
-        }
-
-        // Set start/end point of selection
-        setEndPoint(true);
-        setEndPoint();
-
-        // Select the new range and scroll it into view
-        ieRng.select();
-      };
-
-      // Expose range method
-      this.getRangeAt = getRange;
-    }
-
-    return Selection;
-  }
-);
-
-define(
-  'ephox.katamari.api.Type',
-
-  [
-    'global!Array',
-    'global!String'
-  ],
-
-  function (Array, String) {
-    var typeOf = function(x) {
-      if (x === null) return 'null';
-      var t = typeof x;
-      if (t === 'object' && Array.prototype.isPrototypeOf(x)) return 'array';
-      if (t === 'object' && String.prototype.isPrototypeOf(x)) return 'string';
-      return t;
-    };
-
-    var isType = function (type) {
-      return function (value) {
-        return typeOf(value) === type;
-      };
-    };
-
-    return {
-      isString: isType('string'),
-      isObject: isType('object'),
-      isArray: isType('array'),
-      isNull: isType('null'),
-      isBoolean: isType('boolean'),
-      isUndefined: isType('undefined'),
-      isFunction: isType('function'),
-      isNumber: isType('number')
-    };
-  }
-);
-
-
-define(
-  'ephox.katamari.data.Immutable',
-
-  [
-    'ephox.katamari.api.Arr',
-    'ephox.katamari.api.Fun',
-    'global!Array',
-    'global!Error'
-  ],
-
-  function (Arr, Fun, Array, Error) {
-    return function () {
-      var fields = arguments;
-      return function(/* values */) {
-        //  Don't use array slice(arguments), makes the whole function unoptimisable on Chrome
-        var values = new Array(arguments.length);
-        for (var i = 0; i < values.length; i++) values[i] = arguments[i];
-
-        if (fields.length !== values.length)
-          throw new Error('Wrong number of arguments to struct. Expected "[' + fields.length + ']", got ' + values.length + ' arguments');
-
-        var struct = {};
-        Arr.each(fields, function (name, i) {
-          struct[name] = Fun.constant(values[i]);
-        });
-        return struct;
-      };
-    };
-  }
-);
-
-define(
-  'ephox.katamari.api.Obj',
-
-  [
-    'ephox.katamari.api.Option',
-    'global!Object'
-  ],
-
-  function (Option, Object) {
-    // There are many variations of Object iteration that are faster than the 'for-in' style:
-    // http://jsperf.com/object-keys-iteration/107
-    //
-    // Use the native keys if it is available (IE9+), otherwise fall back to manually filtering
-    var keys = (function () {
-      var fastKeys = Object.keys;
-
-      // This technically means that 'each' and 'find' on IE8 iterate through the object twice.
-      // This code doesn't run on IE8 much, so it's an acceptable tradeoff.
-      // If it becomes a problem we can always duplicate the feature detection inside each and find as well.
-      var slowKeys = function (o) {
-        var r = [];
-        for (var i in o) {
-          if (o.hasOwnProperty(i)) {
-            r.push(i);
-          }
-        }
-        return r;
-      };
-
-      return fastKeys === undefined ? slowKeys : fastKeys;
-    })();
-
-
-    var each = function (obj, f) {
-      var props = keys(obj);
-      for (var k = 0, len = props.length; k < len; k++) {
-        var i = props[k];
-        var x = obj[i];
-        f(x, i, obj);
-      }
-    };
-
-    /** objectMap :: (JsObj(k, v), (v, k, JsObj(k, v) -> x)) -> JsObj(k, x) */
-    var objectMap = function (obj, f) {
-      return tupleMap(obj, function (x, i, obj) {
-        return {
-          k: i,
-          v: f(x, i, obj)
-        };
-      });
-    };
-
-    /** tupleMap :: (JsObj(k, v), (v, k, JsObj(k, v) -> { k: x, v: y })) -> JsObj(x, y) */
-    var tupleMap = function (obj, f) {
-      var r = {};
-      each(obj, function (x, i) {
-        var tuple = f(x, i, obj);
-        r[tuple.k] = tuple.v;
-      });
-      return r;
-    };
-
-    /** bifilter :: (JsObj(k, v), (v, k -> Bool)) -> { t: JsObj(k, v), f: JsObj(k, v) } */
-    var bifilter = function (obj, pred) {
-      var t = {};
-      var f = {};
-      each(obj, function(x, i) {
-        var branch = pred(x, i) ? t : f;
-        branch[i] = x;
-      });
-      return {
-        t: t,
-        f: f
-      };
-    };
-
-    /** mapToArray :: (JsObj(k, v), (v, k -> a)) -> [a] */
-    var mapToArray = function (obj, f) {
-      var r = [];
-      each(obj, function(value, name) {
-        r.push(f(value, name));
-      });
-      return r;
-    };
-
-    /** find :: (JsObj(k, v), (v, k, JsObj(k, v) -> Bool)) -> Option v */
-    var find = function (obj, pred) {
-      var props = keys(obj);
-      for (var k = 0, len = props.length; k < len; k++) {
-        var i = props[k];
-        var x = obj[i];
-        if (pred(x, i, obj)) {
-          return Option.some(x);
-        }
-      }
-      return Option.none();
-    };
-
-    /** values :: JsObj(k, v) -> [v] */
-    var values = function (obj) {
-      return mapToArray(obj, function (v) {
-        return v;
-      });
-    };
-
-    var size = function (obj) {
-      return values(obj).length;
-    };
-
-    return {
-      bifilter: bifilter,
-      each: each,
-      map: objectMap,
-      mapToArray: mapToArray,
-      tupleMap: tupleMap,
-      find: find,
-      keys: keys,
-      values: values,
-      size: size
-    };
-  }
-);
-define(
-  'ephox.katamari.util.BagUtils',
-
-  [
-    'ephox.katamari.api.Arr',
-    'ephox.katamari.api.Type',
-    'global!Error'
-  ],
-
-  function (Arr, Type, Error) {
-    var sort = function (arr) {
-      return arr.slice(0).sort();
-    };
-
-    var reqMessage = function (required, keys) {
-      throw new Error('All required keys (' + sort(required).join(', ') + ') were not specified. Specified keys were: ' + sort(keys).join(', ') + '.');
-    };
-
-    var unsuppMessage = function (unsupported) {
-      throw new Error('Unsupported keys for object: ' + sort(unsupported).join(', '));
-    };
-
-    var validateStrArr = function (label, array) {
-      if (!Type.isArray(array)) throw new Error('The ' + label + ' fields must be an array. Was: ' + array + '.');
-      Arr.each(array, function (a) {
-        if (!Type.isString(a)) throw new Error('The value ' + a + ' in the ' + label + ' fields was not a string.');
-      });
-    };
-
-    var invalidTypeMessage = function (incorrect, type) {
-      throw new Error('All values need to be of type: ' + type + '. Keys (' + sort(incorrect).join(', ') + ') were not.');
-    };
-
-    var checkDupes = function (everything) {
-      var sorted = sort(everything);
-      var dupe = Arr.find(sorted, function (s, i) {
-        return i < sorted.length -1 && s === sorted[i + 1];
-      });
-
-      dupe.each(function (d) {
-        throw new Error('The field: ' + d + ' occurs more than once in the combined fields: [' + sorted.join(', ') + '].');
-      });
-    };
-
-    return {
-      sort: sort,
-      reqMessage: reqMessage,
-      unsuppMessage: unsuppMessage,
-      validateStrArr: validateStrArr,
-      invalidTypeMessage: invalidTypeMessage,
-      checkDupes: checkDupes
-    };
-  }
-);
-define(
-  'ephox.katamari.data.MixedBag',
-
-  [
-    'ephox.katamari.api.Arr',
-    'ephox.katamari.api.Fun',
-    'ephox.katamari.api.Obj',
-    'ephox.katamari.api.Option',
-    'ephox.katamari.util.BagUtils',
-    'global!Error',
-    'global!Object'
-  ],
-
-  function (Arr, Fun, Obj, Option, BagUtils, Error, Object) {
-    
-    return function (required, optional) {
-      var everything = required.concat(optional);
-      if (everything.length === 0) throw new Error('You must specify at least one required or optional field.');
-
-      BagUtils.validateStrArr('required', required);
-      BagUtils.validateStrArr('optional', optional);
-
-      BagUtils.checkDupes(everything);
-
-      return function (obj) {
-        var keys = Obj.keys(obj);
-
-        // Ensure all required keys are present.
-        var allReqd = Arr.forall(required, function (req) {
-          return Arr.contains(keys, req);
-        });
-
-        if (! allReqd) BagUtils.reqMessage(required, keys);
-
-        var unsupported = Arr.filter(keys, function (key) {
-          return !Arr.contains(everything, key);
-        });
-
-        if (unsupported.length > 0) BagUtils.unsuppMessage(unsupported);
-
-        var r = {};
-        Arr.each(required, function (req) {
-          r[req] = Fun.constant(obj[req]);
-        });
-
-        Arr.each(optional, function (opt) {
-          r[opt] = Fun.constant(Object.prototype.hasOwnProperty.call(obj, opt) ? Option.some(obj[opt]): Option.none());
-        });
-
-        return r;
-      };
-    };
-  }
-);
-define(
-  'ephox.katamari.api.Struct',
-
-  [
-    'ephox.katamari.data.Immutable',
-    'ephox.katamari.data.MixedBag'
-  ],
-
-  function (Immutable, MixedBag) {
-    return {
-      immutable: Immutable,
-      immutableBag: MixedBag
-    };
-  }
-);
-
-define(
-  'ephox.sugar.alien.Recurse',
-
-  [
-
-  ],
-
-  function () {
-    /**
-     * Applies f repeatedly until it completes (by returning Option.none()).
-     *
-     * Normally would just use recursion, but JavaScript lacks tail call optimisation.
-     *
-     * This is what recursion looks like when manually unravelled :)
-     */
-    var toArray = function (target, f) {
-      var r = [];
-
-      var recurse = function (e) {
-        r.push(e);
-        return f(e);
-      };
-
-      var cur = f(target);
-      do {
-        cur = cur.bind(recurse);
-      } while (cur.isSome());
-
-      return r;
-    };
-
-    return {
-      toArray: toArray
-    };
-  }
-);
 define(
   'ephox.katamari.api.Global',
 
@@ -77827,6 +77666,949 @@ define(
   }
 );
 
+/**
+ * ScrollIntoView.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.dom.ScrollIntoView',
+  [
+    'tinymce.core.dom.NodeType'
+  ],
+  function (NodeType) {
+    var getPos = function (elm) {
+      var x = 0, y = 0;
+
+      var offsetParent = elm;
+      while (offsetParent && offsetParent.nodeType) {
+        x += offsetParent.offsetLeft || 0;
+        y += offsetParent.offsetTop || 0;
+        offsetParent = offsetParent.offsetParent;
+      }
+
+      return { x: x, y: y };
+    };
+
+    var fireScrollIntoViewEvent = function (editor, elm, alignToTop) {
+      var scrollEvent = { elm: elm, alignToTop: alignToTop };
+      editor.fire('scrollIntoView', scrollEvent);
+      return scrollEvent.isDefaultPrevented();
+    };
+
+    var scrollIntoView = function (editor, elm, alignToTop) {
+      var y, viewPort, dom = editor.dom, root = dom.getRoot(), viewPortY, viewPortH, offsetY = 0;
+
+      if (fireScrollIntoViewEvent(editor, elm, alignToTop)) {
+        return;
+      }
+
+      if (!NodeType.isElement(elm)) {
+        return;
+      }
+
+      if (alignToTop === false) {
+        offsetY = elm.offsetHeight;
+      }
+
+      if (root.nodeName !== 'BODY') {
+        var scrollContainer = editor.selection.getScrollContainer();
+        if (scrollContainer) {
+          y = getPos(elm).y - getPos(scrollContainer).y + offsetY;
+          viewPortH = scrollContainer.clientHeight;
+          viewPortY = scrollContainer.scrollTop;
+          if (y < viewPortY || y + 25 > viewPortY + viewPortH) {
+            scrollContainer.scrollTop = y < viewPortY ? y : y - viewPortH + 25;
+          }
+
+          return;
+        }
+      }
+
+      viewPort = dom.getViewPort(editor.getWin());
+      y = dom.getPos(elm).y + offsetY;
+      viewPortY = viewPort.y;
+      viewPortH = viewPort.h;
+      if (y < viewPort.y || y + 25 > viewPortY + viewPortH) {
+        editor.getWin().scrollTo(0, y < viewPortY ? y : y - viewPortH + 25);
+      }
+    };
+
+    return {
+      scrollIntoView: scrollIntoView
+    };
+  }
+);
+
+/**
+ * TridentSelection.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+/**
+ * Selection class for old explorer versions. This one fakes the
+ * native selection object available on modern browsers.
+ *
+ * @private
+ * @class tinymce.dom.TridentSelection
+ */
+define(
+  'tinymce.core.dom.TridentSelection',
+  [
+  ],
+  function () {
+    function Selection(selection) {
+      var self = this, dom = selection.dom, FALSE = false;
+
+      function getPosition(rng, start) {
+        var checkRng, startIndex = 0, endIndex, inside,
+          children, child, offset, index, position = -1, parent;
+
+        // Setup test range, collapse it and get the parent
+        checkRng = rng.duplicate();
+        checkRng.collapse(start);
+        parent = checkRng.parentElement();
+
+        // Check if the selection is within the right document
+        if (parent.ownerDocument !== selection.dom.doc) {
+          return;
+        }
+
+        // IE will report non editable elements as it's parent so look for an editable one
+        while (parent.contentEditable === "false") {
+          parent = parent.parentNode;
+        }
+
+        // If parent doesn't have any children then return that we are inside the element
+        if (!parent.hasChildNodes()) {
+          return { node: parent, inside: 1 };
+        }
+
+        // Setup node list and endIndex
+        children = parent.children;
+        endIndex = children.length - 1;
+
+        // Perform a binary search for the position
+        while (startIndex <= endIndex) {
+          index = Math.floor((startIndex + endIndex) / 2);
+
+          // Move selection to node and compare the ranges
+          child = children[index];
+          checkRng.moveToElementText(child);
+          position = checkRng.compareEndPoints(start ? 'StartToStart' : 'EndToEnd', rng);
+
+          // Before/after or an exact match
+          if (position > 0) {
+            endIndex = index - 1;
+          } else if (position < 0) {
+            startIndex = index + 1;
+          } else {
+            return { node: child };
+          }
+        }
+
+        // Check if child position is before or we didn't find a position
+        if (position < 0) {
+          // No element child was found use the parent element and the offset inside that
+          if (!child) {
+            checkRng.moveToElementText(parent);
+            checkRng.collapse(true);
+            child = parent;
+            inside = true;
+          } else {
+            checkRng.collapse(false);
+          }
+
+          // Walk character by character in text node until we hit the selected range endpoint,
+          // hit the end of document or parent isn't the right one
+          // We need to walk char by char since rng.text or rng.htmlText will trim line endings
+          offset = 0;
+          while (checkRng.compareEndPoints(start ? 'StartToStart' : 'StartToEnd', rng) !== 0) {
+            if (checkRng.move('character', 1) === 0 || parent != checkRng.parentElement()) {
+              break;
+            }
+
+            offset++;
+          }
+        } else {
+          // Child position is after the selection endpoint
+          checkRng.collapse(true);
+
+          // Walk character by character in text node until we hit the selected range endpoint, hit
+          // the end of document or parent isn't the right one
+          offset = 0;
+          while (checkRng.compareEndPoints(start ? 'StartToStart' : 'StartToEnd', rng) !== 0) {
+            if (checkRng.move('character', -1) === 0 || parent != checkRng.parentElement()) {
+              break;
+            }
+
+            offset++;
+          }
+        }
+
+        return { node: child, position: position, offset: offset, inside: inside };
+      }
+
+      // Returns a W3C DOM compatible range object by using the IE Range API
+      function getRange() {
+        var ieRange = selection.getRng(), domRange = dom.createRng(), element, collapsed, tmpRange, element2, bookmark;
+
+        // If selection is outside the current document just return an empty range
+        element = ieRange.item ? ieRange.item(0) : ieRange.parentElement();
+        if (element.ownerDocument != dom.doc) {
+          return domRange;
+        }
+
+        collapsed = selection.isCollapsed();
+
+        // Handle control selection
+        if (ieRange.item) {
+          domRange.setStart(element.parentNode, dom.nodeIndex(element));
+          domRange.setEnd(domRange.startContainer, domRange.startOffset + 1);
+
+          return domRange;
+        }
+
+        function findEndPoint(start) {
+          var endPoint = getPosition(ieRange, start), container, offset, textNodeOffset = 0, sibling, undef, nodeValue;
+
+          container = endPoint.node;
+          offset = endPoint.offset;
+
+          if (endPoint.inside && !container.hasChildNodes()) {
+            domRange[start ? 'setStart' : 'setEnd'](container, 0);
+            return;
+          }
+
+          if (offset === undef) {
+            domRange[start ? 'setStartBefore' : 'setEndAfter'](container);
+            return;
+          }
+
+          if (endPoint.position < 0) {
+            sibling = endPoint.inside ? container.firstChild : container.nextSibling;
+
+            if (!sibling) {
+              domRange[start ? 'setStartAfter' : 'setEndAfter'](container);
+              return;
+            }
+
+            if (!offset) {
+              if (sibling.nodeType == 3) {
+                domRange[start ? 'setStart' : 'setEnd'](sibling, 0);
+              } else {
+                domRange[start ? 'setStartBefore' : 'setEndBefore'](sibling);
+              }
+
+              return;
+            }
+
+            // Find the text node and offset
+            while (sibling) {
+              if (sibling.nodeType == 3) {
+                nodeValue = sibling.nodeValue;
+                textNodeOffset += nodeValue.length;
+
+                // We are at or passed the position we where looking for
+                if (textNodeOffset >= offset) {
+                  container = sibling;
+                  textNodeOffset -= offset;
+                  textNodeOffset = nodeValue.length - textNodeOffset;
+                  break;
+                }
+              }
+
+              sibling = sibling.nextSibling;
+            }
+          } else {
+            // Find the text node and offset
+            sibling = container.previousSibling;
+
+            if (!sibling) {
+              return domRange[start ? 'setStartBefore' : 'setEndBefore'](container);
+            }
+
+            // If there isn't any text to loop then use the first position
+            if (!offset) {
+              if (container.nodeType == 3) {
+                domRange[start ? 'setStart' : 'setEnd'](sibling, container.nodeValue.length);
+              } else {
+                domRange[start ? 'setStartAfter' : 'setEndAfter'](sibling);
+              }
+
+              return;
+            }
+
+            while (sibling) {
+              if (sibling.nodeType == 3) {
+                textNodeOffset += sibling.nodeValue.length;
+
+                // We are at or passed the position we where looking for
+                if (textNodeOffset >= offset) {
+                  container = sibling;
+                  textNodeOffset -= offset;
+                  break;
+                }
+              }
+
+              sibling = sibling.previousSibling;
+            }
+          }
+
+          domRange[start ? 'setStart' : 'setEnd'](container, textNodeOffset);
+        }
+
+        try {
+          // Find start point
+          findEndPoint(true);
+
+          // Find end point if needed
+          if (!collapsed) {
+            findEndPoint();
+          }
+        } catch (ex) {
+          // IE has a nasty bug where text nodes might throw "invalid argument" when you
+          // access the nodeValue or other properties of text nodes. This seems to happen when
+          // text nodes are split into two nodes by a delete/backspace call.
+          // So let us detect and try to fix it.
+          if (ex.number == -2147024809) {
+            // Get the current selection
+            bookmark = self.getBookmark(2);
+
+            // Get start element
+            tmpRange = ieRange.duplicate();
+            tmpRange.collapse(true);
+            element = tmpRange.parentElement();
+
+            // Get end element
+            if (!collapsed) {
+              tmpRange = ieRange.duplicate();
+              tmpRange.collapse(false);
+              element2 = tmpRange.parentElement();
+              element2.innerHTML = element2.innerHTML;
+            }
+
+            // Remove the broken elements
+            element.innerHTML = element.innerHTML;
+
+            // Restore the selection
+            self.moveToBookmark(bookmark);
+
+            // Since the range has moved we need to re-get it
+            ieRange = selection.getRng();
+
+            // Find start point
+            findEndPoint(true);
+
+            // Find end point if needed
+            if (!collapsed) {
+              findEndPoint();
+            }
+          } else {
+            throw ex; // Throw other errors
+          }
+        }
+
+        return domRange;
+      }
+
+      this.getBookmark = function (type) {
+        var rng = selection.getRng(), bookmark = {};
+
+        function getIndexes(node) {
+          var parent, root, children, i, indexes = [];
+
+          parent = node.parentNode;
+          root = dom.getRoot().parentNode;
+
+          while (parent != root && parent.nodeType !== 9) {
+            children = parent.children;
+
+            i = children.length;
+            while (i--) {
+              if (node === children[i]) {
+                indexes.push(i);
+                break;
+              }
+            }
+
+            node = parent;
+            parent = parent.parentNode;
+          }
+
+          return indexes;
+        }
+
+        function getBookmarkEndPoint(start) {
+          var position;
+
+          position = getPosition(rng, start);
+          if (position) {
+            return {
+              position: position.position,
+              offset: position.offset,
+              indexes: getIndexes(position.node),
+              inside: position.inside
+            };
+          }
+        }
+
+        // Non ubstructive bookmark
+        if (type === 2) {
+          // Handle text selection
+          if (!rng.item) {
+            bookmark.start = getBookmarkEndPoint(true);
+
+            if (!selection.isCollapsed()) {
+              bookmark.end = getBookmarkEndPoint();
+            }
+          } else {
+            bookmark.start = { ctrl: true, indexes: getIndexes(rng.item(0)) };
+          }
+        }
+
+        return bookmark;
+      };
+
+      this.moveToBookmark = function (bookmark) {
+        var rng, body = dom.doc.body;
+
+        function resolveIndexes(indexes) {
+          var node, i, idx, children;
+
+          node = dom.getRoot();
+          for (i = indexes.length - 1; i >= 0; i--) {
+            children = node.children;
+            idx = indexes[i];
+
+            if (idx <= children.length - 1) {
+              node = children[idx];
+            }
+          }
+
+          return node;
+        }
+
+        function setBookmarkEndPoint(start) {
+          var endPoint = bookmark[start ? 'start' : 'end'], moveLeft, moveRng, undef, offset;
+
+          if (endPoint) {
+            moveLeft = endPoint.position > 0;
+
+            moveRng = body.createTextRange();
+            moveRng.moveToElementText(resolveIndexes(endPoint.indexes));
+
+            offset = endPoint.offset;
+            if (offset !== undef) {
+              moveRng.collapse(endPoint.inside || moveLeft);
+              moveRng.moveStart('character', moveLeft ? -offset : offset);
+            } else {
+              moveRng.collapse(start);
+            }
+
+            rng.setEndPoint(start ? 'StartToStart' : 'EndToStart', moveRng);
+
+            if (start) {
+              rng.collapse(true);
+            }
+          }
+        }
+
+        if (bookmark.start) {
+          if (bookmark.start.ctrl) {
+            rng = body.createControlRange();
+            rng.addElement(resolveIndexes(bookmark.start.indexes));
+            rng.select();
+          } else {
+            rng = body.createTextRange();
+            setBookmarkEndPoint(true);
+            setBookmarkEndPoint();
+            rng.select();
+          }
+        }
+      };
+
+      this.addRange = function (rng) {
+        var ieRng, ctrlRng, startContainer, startOffset, endContainer, endOffset, sibling,
+          doc = selection.dom.doc, body = doc.body, nativeRng, ctrlElm;
+
+        function setEndPoint(start) {
+          var container, offset, marker, tmpRng, nodes;
+
+          marker = dom.create('a');
+          container = start ? startContainer : endContainer;
+          offset = start ? startOffset : endOffset;
+          tmpRng = ieRng.duplicate();
+
+          if (container == doc || container == doc.documentElement) {
+            container = body;
+            offset = 0;
+          }
+
+          if (container.nodeType == 3) {
+            container.parentNode.insertBefore(marker, container);
+            tmpRng.moveToElementText(marker);
+            tmpRng.moveStart('character', offset);
+            dom.remove(marker);
+            ieRng.setEndPoint(start ? 'StartToStart' : 'EndToEnd', tmpRng);
+          } else {
+            nodes = container.childNodes;
+
+            if (nodes.length) {
+              if (offset >= nodes.length) {
+                dom.insertAfter(marker, nodes[nodes.length - 1]);
+              } else {
+                container.insertBefore(marker, nodes[offset]);
+              }
+
+              tmpRng.moveToElementText(marker);
+            } else if (container.canHaveHTML) {
+              // Empty node selection for example <div>|</div>
+              // Setting innerHTML with a span marker then remove that marker seems to keep empty block elements open
+              container.innerHTML = '<span>&#xFEFF;</span>';
+              marker = container.firstChild;
+              tmpRng.moveToElementText(marker);
+              tmpRng.collapse(FALSE); // Collapse false works better than true for some odd reason
+            }
+
+            ieRng.setEndPoint(start ? 'StartToStart' : 'EndToEnd', tmpRng);
+            dom.remove(marker);
+          }
+        }
+
+        // Setup some shorter versions
+        startContainer = rng.startContainer;
+        startOffset = rng.startOffset;
+        endContainer = rng.endContainer;
+        endOffset = rng.endOffset;
+        ieRng = body.createTextRange();
+
+        // If single element selection then try making a control selection out of it
+        if (startContainer == endContainer && startContainer.nodeType == 1) {
+          // Trick to place the caret inside an empty block element like <p></p>
+          if (startOffset == endOffset && !startContainer.hasChildNodes()) {
+            if (startContainer.canHaveHTML) {
+              // Check if previous sibling is an empty block if it is then we need to render it
+              // IE would otherwise move the caret into the sibling instead of the empty startContainer see: #5236
+              // Example this: <p></p><p>|</p> would become this: <p>|</p><p></p>
+              sibling = startContainer.previousSibling;
+              if (sibling && !sibling.hasChildNodes() && dom.isBlock(sibling)) {
+                sibling.innerHTML = '&#xFEFF;';
+              } else {
+                sibling = null;
+              }
+
+              startContainer.innerHTML = '<span>&#xFEFF;</span><span>&#xFEFF;</span>';
+              ieRng.moveToElementText(startContainer.lastChild);
+              ieRng.select();
+              dom.doc.selection.clear();
+              startContainer.innerHTML = '';
+
+              if (sibling) {
+                sibling.innerHTML = '';
+              }
+              return;
+            }
+
+            startOffset = dom.nodeIndex(startContainer);
+            startContainer = startContainer.parentNode;
+          }
+
+          if (startOffset == endOffset - 1) {
+            try {
+              ctrlElm = startContainer.childNodes[startOffset];
+              ctrlRng = body.createControlRange();
+              ctrlRng.addElement(ctrlElm);
+              ctrlRng.select();
+
+              // Check if the range produced is on the correct element and is a control range
+              // On IE 8 it will select the parent contentEditable container if you select an inner element see: #5398
+              nativeRng = selection.getRng();
+              if (nativeRng.item && ctrlElm === nativeRng.item(0)) {
+                return;
+              }
+            } catch (ex) {
+              // Ignore
+            }
+          }
+        }
+
+        // Set start/end point of selection
+        setEndPoint(true);
+        setEndPoint();
+
+        // Select the new range and scroll it into view
+        ieRng.select();
+      };
+
+      // Expose range method
+      this.getRangeAt = getRange;
+    }
+
+    return Selection;
+  }
+);
+
+define(
+  'ephox.katamari.api.Type',
+
+  [
+    'global!Array',
+    'global!String'
+  ],
+
+  function (Array, String) {
+    var typeOf = function(x) {
+      if (x === null) return 'null';
+      var t = typeof x;
+      if (t === 'object' && Array.prototype.isPrototypeOf(x)) return 'array';
+      if (t === 'object' && String.prototype.isPrototypeOf(x)) return 'string';
+      return t;
+    };
+
+    var isType = function (type) {
+      return function (value) {
+        return typeOf(value) === type;
+      };
+    };
+
+    return {
+      isString: isType('string'),
+      isObject: isType('object'),
+      isArray: isType('array'),
+      isNull: isType('null'),
+      isBoolean: isType('boolean'),
+      isUndefined: isType('undefined'),
+      isFunction: isType('function'),
+      isNumber: isType('number')
+    };
+  }
+);
+
+
+define(
+  'ephox.katamari.data.Immutable',
+
+  [
+    'ephox.katamari.api.Arr',
+    'ephox.katamari.api.Fun',
+    'global!Array',
+    'global!Error'
+  ],
+
+  function (Arr, Fun, Array, Error) {
+    return function () {
+      var fields = arguments;
+      return function(/* values */) {
+        //  Don't use array slice(arguments), makes the whole function unoptimisable on Chrome
+        var values = new Array(arguments.length);
+        for (var i = 0; i < values.length; i++) values[i] = arguments[i];
+
+        if (fields.length !== values.length)
+          throw new Error('Wrong number of arguments to struct. Expected "[' + fields.length + ']", got ' + values.length + ' arguments');
+
+        var struct = {};
+        Arr.each(fields, function (name, i) {
+          struct[name] = Fun.constant(values[i]);
+        });
+        return struct;
+      };
+    };
+  }
+);
+
+define(
+  'ephox.katamari.api.Obj',
+
+  [
+    'ephox.katamari.api.Option',
+    'global!Object'
+  ],
+
+  function (Option, Object) {
+    // There are many variations of Object iteration that are faster than the 'for-in' style:
+    // http://jsperf.com/object-keys-iteration/107
+    //
+    // Use the native keys if it is available (IE9+), otherwise fall back to manually filtering
+    var keys = (function () {
+      var fastKeys = Object.keys;
+
+      // This technically means that 'each' and 'find' on IE8 iterate through the object twice.
+      // This code doesn't run on IE8 much, so it's an acceptable tradeoff.
+      // If it becomes a problem we can always duplicate the feature detection inside each and find as well.
+      var slowKeys = function (o) {
+        var r = [];
+        for (var i in o) {
+          if (o.hasOwnProperty(i)) {
+            r.push(i);
+          }
+        }
+        return r;
+      };
+
+      return fastKeys === undefined ? slowKeys : fastKeys;
+    })();
+
+
+    var each = function (obj, f) {
+      var props = keys(obj);
+      for (var k = 0, len = props.length; k < len; k++) {
+        var i = props[k];
+        var x = obj[i];
+        f(x, i, obj);
+      }
+    };
+
+    /** objectMap :: (JsObj(k, v), (v, k, JsObj(k, v) -> x)) -> JsObj(k, x) */
+    var objectMap = function (obj, f) {
+      return tupleMap(obj, function (x, i, obj) {
+        return {
+          k: i,
+          v: f(x, i, obj)
+        };
+      });
+    };
+
+    /** tupleMap :: (JsObj(k, v), (v, k, JsObj(k, v) -> { k: x, v: y })) -> JsObj(x, y) */
+    var tupleMap = function (obj, f) {
+      var r = {};
+      each(obj, function (x, i) {
+        var tuple = f(x, i, obj);
+        r[tuple.k] = tuple.v;
+      });
+      return r;
+    };
+
+    /** bifilter :: (JsObj(k, v), (v, k -> Bool)) -> { t: JsObj(k, v), f: JsObj(k, v) } */
+    var bifilter = function (obj, pred) {
+      var t = {};
+      var f = {};
+      each(obj, function(x, i) {
+        var branch = pred(x, i) ? t : f;
+        branch[i] = x;
+      });
+      return {
+        t: t,
+        f: f
+      };
+    };
+
+    /** mapToArray :: (JsObj(k, v), (v, k -> a)) -> [a] */
+    var mapToArray = function (obj, f) {
+      var r = [];
+      each(obj, function(value, name) {
+        r.push(f(value, name));
+      });
+      return r;
+    };
+
+    /** find :: (JsObj(k, v), (v, k, JsObj(k, v) -> Bool)) -> Option v */
+    var find = function (obj, pred) {
+      var props = keys(obj);
+      for (var k = 0, len = props.length; k < len; k++) {
+        var i = props[k];
+        var x = obj[i];
+        if (pred(x, i, obj)) {
+          return Option.some(x);
+        }
+      }
+      return Option.none();
+    };
+
+    /** values :: JsObj(k, v) -> [v] */
+    var values = function (obj) {
+      return mapToArray(obj, function (v) {
+        return v;
+      });
+    };
+
+    var size = function (obj) {
+      return values(obj).length;
+    };
+
+    return {
+      bifilter: bifilter,
+      each: each,
+      map: objectMap,
+      mapToArray: mapToArray,
+      tupleMap: tupleMap,
+      find: find,
+      keys: keys,
+      values: values,
+      size: size
+    };
+  }
+);
+define(
+  'ephox.katamari.util.BagUtils',
+
+  [
+    'ephox.katamari.api.Arr',
+    'ephox.katamari.api.Type',
+    'global!Error'
+  ],
+
+  function (Arr, Type, Error) {
+    var sort = function (arr) {
+      return arr.slice(0).sort();
+    };
+
+    var reqMessage = function (required, keys) {
+      throw new Error('All required keys (' + sort(required).join(', ') + ') were not specified. Specified keys were: ' + sort(keys).join(', ') + '.');
+    };
+
+    var unsuppMessage = function (unsupported) {
+      throw new Error('Unsupported keys for object: ' + sort(unsupported).join(', '));
+    };
+
+    var validateStrArr = function (label, array) {
+      if (!Type.isArray(array)) throw new Error('The ' + label + ' fields must be an array. Was: ' + array + '.');
+      Arr.each(array, function (a) {
+        if (!Type.isString(a)) throw new Error('The value ' + a + ' in the ' + label + ' fields was not a string.');
+      });
+    };
+
+    var invalidTypeMessage = function (incorrect, type) {
+      throw new Error('All values need to be of type: ' + type + '. Keys (' + sort(incorrect).join(', ') + ') were not.');
+    };
+
+    var checkDupes = function (everything) {
+      var sorted = sort(everything);
+      var dupe = Arr.find(sorted, function (s, i) {
+        return i < sorted.length -1 && s === sorted[i + 1];
+      });
+
+      dupe.each(function (d) {
+        throw new Error('The field: ' + d + ' occurs more than once in the combined fields: [' + sorted.join(', ') + '].');
+      });
+    };
+
+    return {
+      sort: sort,
+      reqMessage: reqMessage,
+      unsuppMessage: unsuppMessage,
+      validateStrArr: validateStrArr,
+      invalidTypeMessage: invalidTypeMessage,
+      checkDupes: checkDupes
+    };
+  }
+);
+define(
+  'ephox.katamari.data.MixedBag',
+
+  [
+    'ephox.katamari.api.Arr',
+    'ephox.katamari.api.Fun',
+    'ephox.katamari.api.Obj',
+    'ephox.katamari.api.Option',
+    'ephox.katamari.util.BagUtils',
+    'global!Error',
+    'global!Object'
+  ],
+
+  function (Arr, Fun, Obj, Option, BagUtils, Error, Object) {
+    
+    return function (required, optional) {
+      var everything = required.concat(optional);
+      if (everything.length === 0) throw new Error('You must specify at least one required or optional field.');
+
+      BagUtils.validateStrArr('required', required);
+      BagUtils.validateStrArr('optional', optional);
+
+      BagUtils.checkDupes(everything);
+
+      return function (obj) {
+        var keys = Obj.keys(obj);
+
+        // Ensure all required keys are present.
+        var allReqd = Arr.forall(required, function (req) {
+          return Arr.contains(keys, req);
+        });
+
+        if (! allReqd) BagUtils.reqMessage(required, keys);
+
+        var unsupported = Arr.filter(keys, function (key) {
+          return !Arr.contains(everything, key);
+        });
+
+        if (unsupported.length > 0) BagUtils.unsuppMessage(unsupported);
+
+        var r = {};
+        Arr.each(required, function (req) {
+          r[req] = Fun.constant(obj[req]);
+        });
+
+        Arr.each(optional, function (opt) {
+          r[opt] = Fun.constant(Object.prototype.hasOwnProperty.call(obj, opt) ? Option.some(obj[opt]): Option.none());
+        });
+
+        return r;
+      };
+    };
+  }
+);
+define(
+  'ephox.katamari.api.Struct',
+
+  [
+    'ephox.katamari.data.Immutable',
+    'ephox.katamari.data.MixedBag'
+  ],
+
+  function (Immutable, MixedBag) {
+    return {
+      immutable: Immutable,
+      immutableBag: MixedBag
+    };
+  }
+);
+
+define(
+  'ephox.sugar.alien.Recurse',
+
+  [
+
+  ],
+
+  function () {
+    /**
+     * Applies f repeatedly until it completes (by returning Option.none()).
+     *
+     * Normally would just use recursion, but JavaScript lacks tail call optimisation.
+     *
+     * This is what recursion looks like when manually unravelled :)
+     */
+    var toArray = function (target, f) {
+      var r = [];
+
+      var recurse = function (e) {
+        r.push(e);
+        return f(e);
+      };
+
+      var cur = f(target);
+      do {
+        cur = cur.bind(recurse);
+      } while (cur.isSome());
+
+      return r;
+    };
+
+    return {
+      toArray: toArray
+    };
+  }
+);
 define(
   'ephox.sugar.api.search.Traverse',
 
@@ -78722,6 +79504,8 @@ define(
 define(
   'tinymce.core.dom.Selection',
   [
+    'ephox.sugar.api.dom.Compare',
+    'ephox.sugar.api.node.Element',
     'tinymce.core.caret.CaretPosition',
     'tinymce.core.dom.BookmarkManager',
     'tinymce.core.dom.ControlSelection',
@@ -78735,9 +79519,16 @@ define(
     'tinymce.core.text.Zwsp',
     'tinymce.core.util.Tools'
   ],
-  function (CaretPosition, BookmarkManager, ControlSelection, NodeType, RangeUtils, ScrollIntoView, TreeWalker, TridentSelection, Env, FragmentReader, Zwsp, Tools) {
+  function (
+    Compare, Element, CaretPosition, BookmarkManager, ControlSelection, NodeType, RangeUtils, ScrollIntoView, TreeWalker, TridentSelection, Env, FragmentReader,
+    Zwsp, Tools
+  ) {
     var each = Tools.each, trim = Tools.trim;
     var isIE = Env.ie;
+
+    var isAttachedToDom = function (node) {
+      return !!(node && node.ownerDocument) && Compare.contains(Element.fromDom(node.ownerDocument), Element.fromDom(node));
+    };
 
     var isValidRange = function (rng) {
       if (!rng) {
@@ -78745,8 +79536,7 @@ define(
       } else if (rng.select) { // Native IE range still produced by placeCaretAt
         return true;
       } else {
-        var sc = rng.startContainer, ec = rng.endContainer;
-        return !!(sc && sc.parentNode && ec && ec.parentNode);
+        return isAttachedToDom(rng.startContainer) && isAttachedToDom(rng.endContainer);
       }
     };
 
@@ -95781,20 +96571,20 @@ define(
  */
 
 /**
- * Contains all logic for handling of keyboard shortcuts.
+ * Contains logic for handling keyboard shortcuts.
  *
  * @class tinymce.Shortcuts
  * @example
- * editor.shortcuts.add('ctrl+a', function() {});
- * editor.shortcuts.add('meta+a', function() {}); // "meta" maps to Command on Mac and Ctrl on PC
- * editor.shortcuts.add('ctrl+alt+a', function() {});
- * editor.shortcuts.add('access+a', function() {}); // "access" maps to ctrl+alt on Mac and shift+alt on PC
+ * editor.shortcuts.add('ctrl+a', "description of the shortcut", function() {});
+ * editor.shortcuts.add('meta+a', "description of the shortcut", function() {}); // "meta" maps to Command on Mac and Ctrl on PC
+ * editor.shortcuts.add('ctrl+alt+a', "description of the shortcut", function() {});
+ * editor.shortcuts.add('access+a', "description of the shortcut", function() {}); // "access" maps to ctrl+alt on Mac and shift+alt on PC
  */
 define(
   'tinymce.core.Shortcuts',
   [
-    "tinymce.core.util.Tools",
-    "tinymce.core.Env"
+    'tinymce.core.util.Tools',
+    'tinymce.core.Env'
   ],
   function (Tools, Env) {
     var each = Tools.each, explode = Tools.explode;
@@ -95987,6 +96777,91 @@ define(
 
         return false;
       };
+    };
+  }
+);
+
+/**
+ * DefaultSettings.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2017 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.EditorSettings',
+  [
+    'tinymce.core.util.Tools'
+  ],
+  function (Tools) {
+    var getEditorSettings = function (editor, id, documentBaseUrl, defaultOverrideSettings, settings) {
+      settings = Tools.extend(
+        // Default settings
+        {
+          id: id,
+          theme: 'modern',
+          delta_width: 0,
+          delta_height: 0,
+          popup_css: '',
+          plugins: '',
+          document_base_url: documentBaseUrl,
+          add_form_submit_trigger: true,
+          submit_patch: true,
+          add_unload_trigger: true,
+          convert_urls: true,
+          relative_urls: true,
+          remove_script_host: true,
+          object_resizing: true,
+          doctype: '<!DOCTYPE html>',
+          visual: true,
+          font_size_style_values: 'xx-small,x-small,small,medium,large,x-large,xx-large',
+
+          // See: http://www.w3.org/TR/CSS2/fonts.html#propdef-font-size
+          font_size_legacy_values: 'xx-small,small,medium,large,x-large,xx-large,300%',
+          forced_root_block: 'p',
+          hidden_input: true,
+          padd_empty_editor: true,
+          render_ui: true,
+          indentation: '30px',
+          inline_styles: true,
+          convert_fonts_to_spans: true,
+          indent: 'simple',
+          indent_before: 'p,h1,h2,h3,h4,h5,h6,blockquote,div,title,style,pre,script,td,th,ul,ol,li,dl,dt,dd,area,table,thead,' +
+          'tfoot,tbody,tr,section,article,hgroup,aside,figure,figcaption,option,optgroup,datalist',
+          indent_after: 'p,h1,h2,h3,h4,h5,h6,blockquote,div,title,style,pre,script,td,th,ul,ol,li,dl,dt,dd,area,table,thead,' +
+          'tfoot,tbody,tr,section,article,hgroup,aside,figure,figcaption,option,optgroup,datalist',
+          entity_encoding: 'named',
+          url_converter: editor.convertURL,
+          url_converter_scope: editor,
+          ie7_compat: true
+        },
+
+        // tinymce.overrideDefaults settings
+        defaultOverrideSettings,
+
+        // User settings
+        settings,
+
+        // Forced settings
+        {
+          validate: true,
+          content_editable: settings.inline
+        }
+      );
+
+      // Merge external_plugins
+      if (defaultOverrideSettings && defaultOverrideSettings.external_plugins && settings.external_plugins) {
+        settings.external_plugins = Tools.extend({}, defaultOverrideSettings.external_plugins, settings.external_plugins);
+      }
+
+      return settings;
+    };
+
+    return {
+      getEditorSettings: getEditorSettings
     };
   }
 );
@@ -99884,6 +100759,280 @@ define(
   }
 );
 
+define(
+  'ephox.sugar.impl.Style',
+
+  [
+
+  ],
+
+  function () {
+    // some elements, such as mathml, don't have style attributes
+    var isSupported = function (dom) {
+      return dom.style !== undefined;
+    };
+
+    return {
+      isSupported: isSupported
+    };
+  }
+);
+define(
+  'ephox.sugar.api.properties.Css',
+
+  [
+    'ephox.katamari.api.Type',
+    'ephox.katamari.api.Arr',
+    'ephox.katamari.api.Obj',
+    'ephox.katamari.api.Option',
+    'ephox.sugar.api.properties.Attr',
+    'ephox.sugar.api.node.Body',
+    'ephox.sugar.api.node.Element',
+    'ephox.sugar.api.node.Node',
+    'ephox.sugar.impl.Style',
+    'ephox.katamari.api.Strings',
+    'global!Error',
+    'global!console',
+    'global!window'
+  ],
+
+  function (Type, Arr, Obj, Option, Attr, Body, Element, Node, Style, Strings, Error, console, window) {
+    var internalSet = function (dom, property, value) {
+      // This is going to hurt. Apologies.
+      // JQuery coerces numbers to pixels for certain property names, and other times lets numbers through.
+      // we're going to be explicit; strings only.
+      if (!Type.isString(value)) {
+        console.error('Invalid call to CSS.set. Property ', property, ':: Value ', value, ':: Element ', dom);
+        throw new Error('CSS value must be a string: ' + value);
+      }
+
+      // removed: support for dom().style[property] where prop is camel case instead of normal property name
+      if (Style.isSupported(dom)) dom.style.setProperty(property, value);
+    };
+
+    var internalRemove = function (dom, property) {
+      /*
+       * IE9 and above - MDN doesn't have details, but here's a couple of random internet claims
+       *
+       * http://help.dottoro.com/ljopsjck.php
+       * http://stackoverflow.com/a/7901886/7546
+       */
+      if (Style.isSupported(dom)) dom.style.removeProperty(property);
+    };
+
+    var set = function (element, property, value) {
+      var dom = element.dom();
+      internalSet(dom, property, value);
+    };
+
+    var setAll = function (element, css) {
+      var dom = element.dom();
+
+      Obj.each(css, function (v, k) {
+        internalSet(dom, k, v);
+      });
+    };
+
+    var setOptions = function(element, css) {
+      var dom = element.dom();
+
+      Obj.each(css, function (v, k) {
+        v.fold(function () {
+          internalRemove(dom, k);
+        }, function (value) {
+          internalSet(dom, k, value);
+        });
+      });
+    };
+
+    /*
+     * NOTE: For certain properties, this returns the "used value" which is subtly different to the "computed value" (despite calling getComputedStyle).
+     * Blame CSS 2.0.
+     *
+     * https://developer.mozilla.org/en-US/docs/Web/CSS/used_value
+     */
+    var get = function (element, property) {
+      var dom = element.dom();
+      /*
+       * IE9 and above per
+       * https://developer.mozilla.org/en/docs/Web/API/window.getComputedStyle
+       *
+       * Not in numerosity, because it doesn't memoize and looking this up dynamically in performance critical code would be horrendous.
+       *
+       * JQuery has some magic here for IE popups, but we don't really need that.
+       * It also uses element.ownerDocument.defaultView to handle iframes but that hasn't been required since FF 3.6.
+       */
+      var styles = window.getComputedStyle(dom);
+      var r = styles.getPropertyValue(property);
+
+      // jquery-ism: If r is an empty string, check that the element is not in a document. If it isn't, return the raw value.
+      // Turns out we do this a lot.
+      var v = (r === '' && !Body.inBody(element)) ? getUnsafeProperty(dom, property) : r;
+
+      // undefined is the more appropriate value for JS. JQuery coerces to an empty string, but screw that!
+      return v === null ? undefined : v;
+    };
+
+    var getUnsafeProperty = function (dom, property) {
+      // removed: support for dom().style[property] where prop is camel case instead of normal property name
+      // empty string is what the browsers (IE11 and Chrome) return when the propertyValue doesn't exists.
+      return Style.isSupported(dom) ? dom.style.getPropertyValue(property) : '';
+    };
+
+    /*
+     * Gets the raw value from the style attribute. Useful for retrieving "used values" from the DOM:
+     * https://developer.mozilla.org/en-US/docs/Web/CSS/used_value
+     *
+     * Returns NONE if the property isn't set, or the value is an empty string.
+     */
+    var getRaw = function (element, property) {
+      var dom = element.dom();
+      var raw = getUnsafeProperty(dom, property);
+
+      return Option.from(raw).filter(function (r) { return r.length > 0; });
+    };
+
+    var isValidValue = function (tag, property, value) {
+      var element = Element.fromTag(tag);
+      set(element, property, value);
+      var style = getRaw(element, property);
+      return style.isSome();
+    };
+
+    var remove = function (element, property) {
+      var dom = element.dom();
+
+      internalRemove(dom, property);
+
+      if (Attr.has(element, 'style') && Strings.trim(Attr.get(element, 'style')) === '') {
+        // No more styles left, remove the style attribute as well
+        Attr.remove(element, 'style');
+      }
+    };
+
+    var preserve = function (element, f) {
+      var oldStyles = Attr.get(element, 'style');
+      var result = f(element);
+      var restore = oldStyles === undefined ? Attr.remove : Attr.set;
+      restore(element, 'style', oldStyles);
+      return result;
+    };
+
+    var copy = function (source, target) {
+      var sourceDom = source.dom();
+      var targetDom = target.dom();
+      if (Style.isSupported(sourceDom) && Style.isSupported(targetDom)) {
+        targetDom.style.cssText = sourceDom.style.cssText;
+      }
+    };
+
+    var reflow = function (e) {
+      /* NOTE:
+       * do not rely on this return value.
+       * It's here so the closure compiler doesn't optimise the property access away.
+       */
+      return e.dom().offsetWidth;
+    };
+
+    var transferOne = function (source, destination, style) {
+      getRaw(source, style).each(function (value) {
+        // NOTE: We don't want to clobber any existing inline styles.
+        if (getRaw(destination, style).isNone()) set(destination, style, value);
+      });
+    };
+
+    var transfer = function (source, destination, styles) {
+      if (!Node.isElement(source) || !Node.isElement(destination)) return;
+      Arr.each(styles, function (style) {
+        transferOne(source, destination, style);
+      });
+    };
+
+    return {
+      copy: copy,
+      set: set,
+      preserve: preserve,
+      setAll: setAll,
+      setOptions: setOptions,
+      remove: remove,
+      get: get,
+      getRaw: getRaw,
+      isValidValue: isValidValue,
+      reflow: reflow,
+      transfer: transfer
+    };
+  }
+);
+
+/**
+ * EditorView.js
+ *
+ * Released under LGPL License.
+ * Copyright (c) 1999-2016 Ephox Corp. All rights reserved
+ *
+ * License: http://www.tinymce.com/license
+ * Contributing: http://www.tinymce.com/contributing
+ */
+
+define(
+  'tinymce.core.EditorView',
+  [
+    'ephox.katamari.api.Fun',
+    'ephox.sugar.api.node.Element',
+    'ephox.sugar.api.properties.Css',
+    'ephox.sugar.api.search.Traverse'
+  ],
+  function (Fun, Element, Css, Traverse) {
+    var getProp = function (propName, elm) {
+      var rawElm = elm.dom();
+      return rawElm[propName];
+    };
+
+    var getComputedSizeProp = function (propName, elm) {
+      return parseInt(Css.get(elm, propName), 10);
+    };
+
+    var getClientWidth = Fun.curry(getProp, 'clientWidth');
+    var getClientHeight = Fun.curry(getProp, 'clientHeight');
+    var getMarginTop = Fun.curry(getComputedSizeProp, 'margin-top');
+    var getMarginLeft = Fun.curry(getComputedSizeProp, 'margin-left');
+
+    var getBoundingClientRect = function (elm) {
+      return elm.dom().getBoundingClientRect();
+    };
+
+    var isInsideElementContentArea = function (bodyElm, clientX, clientY) {
+      var clientWidth = getClientWidth(bodyElm);
+      var clientHeight = getClientHeight(bodyElm);
+
+      return clientX >= 0 && clientY >= 0 && clientX <= clientWidth && clientY <= clientHeight;
+    };
+
+    var transpose = function (inline, elm, clientX, clientY) {
+      var clientRect = getBoundingClientRect(elm);
+      var deltaX = inline ? clientRect.left + elm.dom().clientLeft + getMarginLeft(elm) : 0;
+      var deltaY = inline ? clientRect.top + elm.dom().clientTop + getMarginTop(elm) : 0;
+      var x = clientX - deltaX;
+      var y = clientY - deltaY;
+
+      return { x: x, y: y };
+    };
+
+    // Checks if the specified coordinate is within the visual content area excluding the scrollbars
+    var isXYInContentArea = function (editor, clientX, clientY) {
+      var bodyElm = Element.fromDom(editor.getBody());
+      var targetElm = editor.inline ? bodyElm : Traverse.documentElement(bodyElm);
+      var transposedPoint = transpose(editor.inline, targetElm, clientX, clientY);
+
+      return isInsideElementContentArea(targetElm, transposedPoint.x, transposedPoint.y);
+    };
+
+    return {
+      isXYInContentArea: isXYInContentArea
+    };
+  }
+);
+
 /**
  * SelectionOverrides.js
  *
@@ -99917,16 +101066,18 @@ define(
     'tinymce.core.caret.FakeCaret',
     'tinymce.core.caret.LineUtils',
     'tinymce.core.dom.NodeType',
+    'tinymce.core.dom.RangePoint',
     'tinymce.core.DragDropOverrides',
+    'tinymce.core.EditorView',
     'tinymce.core.Env',
-    'tinymce.core.geom.ClientRect',
     'tinymce.core.keyboard.CefUtils',
-    'tinymce.core.util.Arr',
     'tinymce.core.util.Delay',
-    'tinymce.core.util.Fun',
     'tinymce.core.util.VK'
   ],
-  function (CaretContainer, CaretPosition, CaretUtils, CaretWalker, FakeCaret, LineUtils, NodeType, DragDropOverrides, Env, ClientRect, CefUtils, Arr, Delay, Fun, VK) {
+  function (
+    CaretContainer, CaretPosition, CaretUtils, CaretWalker, FakeCaret, LineUtils, NodeType, RangePoint, DragDropOverrides, EditorView, Env, CefUtils, Delay,
+    VK
+  ) {
     var isContentEditableTrue = NodeType.isContentEditableTrue,
       isContentEditableFalse = NodeType.isContentEditableFalse,
       isAfterContentEditableFalse = CaretUtils.isAfterContentEditableFalse,
@@ -100017,22 +101168,12 @@ define(
           return null;
         }
 
-        function isXYWithinRange(clientX, clientY, range) {
-          if (range.collapsed) {
-            return false;
-          }
-
-          return Arr.reduce(range.getClientRects(), function (state, rect) {
-            return state || ClientRect.containsXY(rect, clientX, clientY);
-          }, false);
-        }
-
         // Some browsers (Chrome) lets you place the caret after a cE=false
         // Make sure we render the caret container in this case
-        editor.on('mouseup', function () {
+        editor.on('mouseup', function (e) {
           var range = getRange();
 
-          if (range.collapsed) {
+          if (range.collapsed && EditorView.isXYInContentArea(editor, e.clientX, e.clientY)) {
             setRange(CefUtils.renderCaretAtRange(editor, range));
           }
         });
@@ -100119,6 +101260,10 @@ define(
         editor.on('mousedown', function (e) {
           var contentEditableRoot;
 
+          if (EditorView.isXYInContentArea(editor, e.clientX, e.clientY) === false) {
+            return;
+          }
+
           contentEditableRoot = getContentEditableRoot(e.target);
           if (contentEditableRoot) {
             if (isContentEditableFalse(contentEditableRoot)) {
@@ -100128,7 +101273,7 @@ define(
               removeContentEditableSelection();
 
               // Check that we're not attempting a shift + click select within a contenteditable='true' element
-              if (!(isContentEditableTrue(contentEditableRoot) && e.shiftKey) && !isXYWithinRange(e.clientX, e.clientY, editor.selection.getRng())) {
+              if (!(isContentEditableTrue(contentEditableRoot) && e.shiftKey) && !RangePoint.isXYWithinRange(e.clientX, e.clientY, editor.selection.getRng())) {
                 editor.selection.placeCaretAt(e.clientX, e.clientY);
               }
             }
@@ -101766,6 +102911,10 @@ define(
       autoFocus(editor);
     };
 
+    var getStyleSheetLoader = function (editor) {
+      return editor.inline ? DOM.styleSheetLoader : editor.dom.styleSheetLoader;
+    };
+
     var initContentBody = function (editor, skipWrite) {
       var settings = editor.settings, targetElm = editor.getElement(), doc = editor.getDoc(), body, contentCssText;
 
@@ -101903,7 +103052,7 @@ define(
         editor.dom.addStyle(contentCssText);
       }
 
-      editor.dom.styleSheetLoader.loadAll(
+      getStyleSheetLoader(editor).loadAll(
         editor.contentCSS,
         function (_) {
           initEditor(editor);
@@ -102624,6 +103773,7 @@ define(
     'tinymce.core.dom.DOMUtils',
     'tinymce.core.EditorCommands',
     'tinymce.core.EditorObservable',
+    'tinymce.core.EditorSettings',
     'tinymce.core.Env',
     'tinymce.core.html.Serializer',
     'tinymce.core.init.Render',
@@ -102634,10 +103784,7 @@ define(
     'tinymce.core.util.URI',
     'tinymce.core.util.Uuid'
   ],
-  function (
-    AddOnManager, DomQuery, DOMUtils, EditorCommands, EditorObservable, Env, Serializer, Render, Mode,
-    Shortcuts, Sidebar, Tools, URI, Uuid
-  ) {
+  function (AddOnManager, DomQuery, DOMUtils, EditorCommands, EditorObservable, EditorSettings, Env, Serializer, Render, Mode, Shortcuts, Sidebar, Tools, URI, Uuid) {
     // Shorten these names
     var DOM = DOMUtils.DOM;
     var extend = Tools.extend, each = Tools.each;
@@ -102660,11 +103807,10 @@ define(
      * @param {tinymce.EditorManager} editorManager EditorManager instance.
      */
     function Editor(id, settings, editorManager) {
-      var self = this, documentBaseUrl, baseUri, defaultSettings;
+      var self = this, documentBaseUrl, baseUri;
 
       documentBaseUrl = self.documentBaseUrl = editorManager.documentBaseURL;
       baseUri = editorManager.baseURI;
-      defaultSettings = editorManager.defaultSettings;
 
       /**
        * Name/value collection with editor settings.
@@ -102675,52 +103821,9 @@ define(
        * // Get the value of the theme setting
        * tinymce.activeEditor.windowManager.alert("You are using the " + tinymce.activeEditor.settings.theme + " theme");
        */
-      settings = extend({
-        id: id,
-        theme: 'modern',
-        delta_width: 0,
-        delta_height: 0,
-        popup_css: '',
-        plugins: '',
-        document_base_url: documentBaseUrl,
-        add_form_submit_trigger: true,
-        submit_patch: true,
-        add_unload_trigger: true,
-        convert_urls: true,
-        relative_urls: true,
-        remove_script_host: true,
-        object_resizing: true,
-        doctype: '<!DOCTYPE html>',
-        visual: true,
-        font_size_style_values: 'xx-small,x-small,small,medium,large,x-large,xx-large',
-
-        // See: http://www.w3.org/TR/CSS2/fonts.html#propdef-font-size
-        font_size_legacy_values: 'xx-small,small,medium,large,x-large,xx-large,300%',
-        forced_root_block: 'p',
-        hidden_input: true,
-        padd_empty_editor: true,
-        render_ui: true,
-        indentation: '30px',
-        inline_styles: true,
-        convert_fonts_to_spans: true,
-        indent: 'simple',
-        indent_before: 'p,h1,h2,h3,h4,h5,h6,blockquote,div,title,style,pre,script,td,th,ul,ol,li,dl,dt,dd,area,table,thead,' +
-        'tfoot,tbody,tr,section,article,hgroup,aside,figure,figcaption,option,optgroup,datalist',
-        indent_after: 'p,h1,h2,h3,h4,h5,h6,blockquote,div,title,style,pre,script,td,th,ul,ol,li,dl,dt,dd,area,table,thead,' +
-        'tfoot,tbody,tr,section,article,hgroup,aside,figure,figcaption,option,optgroup,datalist',
-        validate: true,
-        entity_encoding: 'named',
-        url_converter: self.convertURL,
-        url_converter_scope: self,
-        ie7_compat: true
-      }, defaultSettings, settings);
-
-      // Merge external_plugins
-      if (defaultSettings && defaultSettings.external_plugins && settings.external_plugins) {
-        settings.external_plugins = extend({}, defaultSettings.external_plugins, settings.external_plugins);
-      }
-
+      settings = EditorSettings.getEditorSettings(self, id, documentBaseUrl, editorManager.defaultSettings, settings);
       self.settings = settings;
+
       AddOnManager.language = settings.language || 'en';
       AddOnManager.languageLoad = settings.language_load;
       AddOnManager.baseURL = editorManager.baseURL;
@@ -102731,7 +103834,7 @@ define(
        * @property id
        * @type String
        */
-      self.id = settings.id = id;
+      self.id = id;
 
       /**
        * State to force the editor to return false on a isDirty call.
@@ -102765,7 +103868,7 @@ define(
        * // Get absolute URL from the location of document_base_url
        * tinymce.activeEditor.documentBaseURI.toAbsolute('somefile.htm');
        */
-      self.documentBaseURI = new URI(settings.document_base_url || documentBaseUrl, {
+      self.documentBaseURI = new URI(settings.document_base_url, {
         base_uri: baseUri
       });
 
@@ -102806,7 +103909,6 @@ define(
       self.suffix = editorManager.suffix;
       self.editorManager = editorManager;
       self.inline = settings.inline;
-      self.settings.content_editable = self.inline;
 
       if (settings.cache_suffix) {
         Env.cacheSuffix = settings.cache_suffix.replace(/^[\?\&]+/, '');
@@ -102908,6 +104010,9 @@ define(
                 body.focus();
               }
             } else {
+              // Restore previous selection before focus to prevent Chrome from
+              // jumping to the top of the document in long inline editors
+              self.selection.setRng(self.lastRng);
               body.focus();
             }
 
@@ -102970,15 +104075,13 @@ define(
        * @return {String} Translated string.
        */
       translate: function (text) {
-        var lang = this.settings.language || 'en', i18n = this.editorManager.i18n;
+        if (text && Tools.is(text, 'string')) {
+          var lang = this.settings.language || 'en', i18n = this.editorManager.i18n;
 
-        if (!text) {
-          return '';
+          text = i18n.data[lang + '.' + text] || text.replace(/\{\#([^\}]+)\}/g, function (a, b) {
+            return i18n.data[lang + '.' + b] || '{#' + b + '}';
+          });
         }
-
-        text = i18n.data[lang + '.' + text] || text.replace(/\{\#([^\}]+)\}/g, function (a, b) {
-          return i18n.data[lang + '.' + b] || '{#' + b + '}';
-        });
 
         return this.editorManager.translate(text);
       },
@@ -104669,7 +105772,7 @@ define(
        * @property minorVersion
        * @type String
        */
-      minorVersion: '6.3',
+      minorVersion: '6.4',
 
       /**
        * Release date of TinyMCE build.
@@ -104677,7 +105780,7 @@ define(
        * @property releaseDate
        * @type String
        */
-      releaseDate: '2017-05-30',
+      releaseDate: '2017-06-13',
 
       /**
        * Collection of editor instances.
@@ -107483,7 +108586,12 @@ define(
           self.panel.show();
         }
 
-        self.panel.moveRel(self.getEl(), settings.popoverAlign || (self.isRtl() ? ['bc-tr', 'bc-tc'] : ['bc-tl', 'bc-tc']));
+        var rel = self.panel.testMoveRel(self.getEl(), settings.popoverAlign || (self.isRtl() ? ['bc-tc', 'bc-tl', 'bc-tr'] : ['bc-tc', 'bc-tr', 'bc-tl']));
+
+        self.panel.classes.toggle('start', rel === 'bc-tl');
+        self.panel.classes.toggle('end', rel === 'bc-tr');
+
+        self.panel.moveRel(self.getEl(), rel);
       },
 
       /**
@@ -109356,7 +110464,7 @@ define(
             return fontFamily ? fontFamily.split(',')[0] : '';
           };
 
-          editor.on('nodeChange', function (e) {
+          editor.on('init nodeChange', function (e) {
             var fontFamily, value = null;
 
             fontFamily = FontInfo.getFontFamily(editor.getBody(), e.element);
@@ -109386,7 +110494,7 @@ define(
         return function () {
           var self = this;
 
-          editor.on('nodeChange', function (e) {
+          editor.on('init nodeChange', function (e) {
             var px, pt, value = null;
 
             px = FontInfo.getFontSize(editor.getBody(), e.element);
@@ -113256,10 +114364,10 @@ define(
 dem('tinymce.core.api.Main')();
 })();
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(57).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59).setImmediate))
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -113695,7 +114803,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__dirname, Buffer) {/* globals chrome: false */
@@ -113958,7 +115066,7 @@ Typo.prototype = {
 		}
 		else if (true) {
 			// Node.js
-			var fs = __webpack_require__(64);
+			var fs = __webpack_require__(66);
 			
 			try {
 				if (fs.existsSync(path)) {
@@ -114629,10 +115737,10 @@ Typo.prototype = {
 if (true) {
 	module.exports = Typo;
 }
-/* WEBPACK VAR INJECTION */}.call(exports, "/", __webpack_require__(38).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, "/", __webpack_require__(39).Buffer))
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -124331,7 +125439,7 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -124359,7 +125467,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports) {
 
 /*!
@@ -124848,14 +125956,14 @@ module.exports = function(module) {
 })(window.jQuery || window.Zepto, window, document);
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 65 */,
-/* 66 */
+/* 67 */,
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(7);

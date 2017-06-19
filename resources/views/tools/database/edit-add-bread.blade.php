@@ -256,10 +256,6 @@
 @stop
 
 @section('javascript')
-    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
-    @if($isModelTranslatable)
-        <script type="text/javascript" src="{{ voyager_asset('js/multilingual.js') }}"></script>
-    @endif
     <script>
         window.invalidEditors = [];
         var validationAlerts = $('.validation-error');
