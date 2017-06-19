@@ -2,7 +2,7 @@
 
 <div class="panel panel-bordered">
     <div class="panel-heading">
-        <h3 class="panel-title">@if($db->action == 'update'){{ trans('voyager.database_edit_table', ['table' => $db->table->name]) }}@else{{ trans('voyager.database_create_your_new_table') }}@endif</h3>
+        <h3 class="panel-title">@if($db->action == 'update'){{ __('voyager.database.edit_table', ['table' => $db->table->name]) }}@else{{ __('voyager.database.create_your_new_table') }}@endif</h3>
     </div>
 
     <div class="panel-body">
@@ -12,45 +12,45 @@
         @else
             <div class="col-md-6">
         @endif
-                <label for="name">{{ trans('voyager.database_table_name') }}</label><br>
-                <input v-model.trim="table.name" type="text" class="form-control" placeholder="{{ trans('voyager.database_table_name') }}" required pattern="{{ $db->identifierRegex }}">
+                <label for="name">{{ __('voyager.database.table_name') }}</label><br>
+                <input v-model.trim="table.name" type="text" class="form-control" placeholder="{{ __('voyager.database.table_name') }}" required pattern="{{ $db->identifierRegex }}">
             </div>
 
         @if($db->action == 'create')
             <div class="col-md-3 col-sm-4 col-xs-6">
-                <label for="create_model">{{ trans('voyager.database_create_model_table') }}</label><br>
+                <label for="create_model">{{ __('voyager.database.create_model_table') }}</label><br>
                 <input type="checkbox" name="create_model" data-toggle="toggle"
-                       data-on="{{ trans('voyager.generic_yes_please') }}" data-off="{{ trans('voyager.generic_no_thanks') }}">
+                       data-on="{{ __('voyager.generic.yes_please') }}" data-off="{{ __('voyager.generic.no_thanks') }}">
             </div>
 
             <div class="col-md-3 col-sm-4 col-xs-6">
-                <label for="create_migration">{{ trans('voyager.database_create_migration') }}</label><br>
+                <label for="create_migration">{{ __('voyager.database.create_migration') }}</label><br>
                 <input disabled type="checkbox" name="create_migration" data-toggle="toggle"
-                       data-on="{{ trans('voyager.generic_yes_please') }}" data-off="{{ trans('voyager.generic_no_thanks') }}">
+                       data-on="{{ __('voyager.generic.yes_please') }}" data-off="{{ __('voyager.generic.no_thanks') }}">
             </div>
         @endif
         </div><!-- .panel-body .row -->
 
         <div v-if="compositeIndexes.length" v-once class="alert alert-danger">
-            <p>{{ trans('voyager.database_no_composites_warning') }}</p>
+            <p>{{ __('voyager.database.no_composites_warning') }}</p>
         </div>
 
         <div id="alertsContainer"></div>
 
         <template v-if="tableHasColumns">
-            <p>{{ trans('voyager.database_table_columns') }}</p>
+            <p>{{ __('voyager.database.table_columns') }}</p>
 
             <table class="table table-bordered" style="width:100%;">
                 <thead>
                 <tr>
-                    <th>{{ trans('voyager.generic_name') }}</th>
-                    <th>{{ trans('voyager.generic_type') }}</th>
-                    <th>{{ trans('voyager.generic_length') }}</th>
-                    <th>{{ trans('voyager.generic_not_null') }}</th>
-                    <th>{{ trans('voyager.generic_unsigned') }}</th>
-                    <th>{{ trans('voyager.generic_auto_increment') }}</th>
-                    <th>{{ trans('voyager.generic_index') }}</th>
-                    <th>{{ trans('voyager.generic_default') }}</th>
+                    <th>{{ __('voyager.generic.name') }}</th>
+                    <th>{{ __('voyager.generic.type') }}</th>
+                    <th>{{ __('voyager.generic.length') }}</th>
+                    <th>{{ __('voyager.generic.not_null') }}</th>
+                    <th>{{ __('voyager.generic.unsigned') }}</th>
+                    <th>{{ __('voyager.generic.auto_increment') }}</th>
+                    <th>{{ __('voyager.generic.index') }}</th>
+                    <th>{{ __('voyager.generic.default') }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -70,7 +70,7 @@
             </table>
         </template>
         <div v-else>
-          <p>{{ trans('voyager.database_table_no_columns') }}</p>
+          <p>{{ __('voyager.database.table_no_columns') }}</p>
         </div>
 
         <div style="text-align:center">
@@ -82,7 +82,7 @@
 
     <div class="panel-footer">
         <input type="submit" class="btn btn-primary pull-right"
-               value="@if($db->action == 'update'){{ trans('voyager.database_update_table') }}@else{{ trans('voyager.database_create_new_table') }}@endif"
+               value="@if($db->action == 'update'){{ __('voyager.database.update_table') }}@else{{ __('voyager.database.create_new_table') }}@endif"
                :disabled="!tableHasColumns">
         <div style="clear:both"></div>
     </div>
@@ -136,7 +136,7 @@
                 column.name = column.name.trim();
 
                 if (column.name && this.hasColumn(column.name)) {
-                    return toastr.error("{{ trans('voyager.database_column') }} " + column.name + " {{ trans('voyager.database_already_exists') }}");
+                    return toastr.error("{{ __('voyager.database.column') }} " + column.name + " {{ __('voyager.database.already_exists') }}");
                 }
 
                 this.table.columns.push(
@@ -159,7 +159,7 @@
 
                 let existingColumn;
                 if ((existingColumn = this.getColumn(newName)) && (existingColumn !== column)) {
-                    return toastr.error("{{ trans('voyager.database_column') }} " + newName + " {{ trans('voyager.database_already_exists') }}");
+                    return toastr.error("{{ __('voyager.database.column') }} " + newName + " {{ __('voyager.database.already_exists') }}");
                 }
 
                 let index = this.getColumnsIndex(column.name);
@@ -220,7 +220,7 @@
             addIndex(index) {
                 if (index.type == 'PRIMARY') {
                     if (this.table.primaryKeyName) {
-                        return toastr.error("{{ trans('voyager.database_table_has_index') }}");
+                        return toastr.error("{{ __('voyager.database.table_has_index') }}");
                     }
 
                     this.table.primaryKeyName = 'primary';
@@ -245,7 +245,7 @@
                     this.table.primaryKeyName = false;
                 } else if (newType == 'PRIMARY') {
                     if (this.table.primaryKeyName) {
-                        return toastr.error("{{ trans('voyager.database_table_has_index') }}");
+                        return toastr.error("{{ __('voyager.database.table_has_index') }}");
                     }
 
                     this.table.primaryKeyName = 'primary';

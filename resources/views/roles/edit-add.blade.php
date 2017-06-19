@@ -6,7 +6,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ trans('voyager.generic_edit') }}@else{{ trans('voyager.generic_new') }}@endif {{ $dataType->display_name_singular }}
+        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ __('voyager.generic.edit') }}@else{{ __('voyager.generic.new') }}@endif {{ $dataType->display_name_singular }}
     </h1>
 @stop
 
@@ -19,7 +19,7 @@
                 <div class="panel panel-bordered">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ trans('voyager.generic_add_new') }}@endif {{ $dataType->display_name_singular }}</h3>
+                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ __('voyager.generic.add_new') }}@endif {{ $dataType->display_name_singular }}</h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
@@ -56,8 +56,8 @@
                                 </div>
                             @endforeach
 
-                            <label for="permission">{{ trans('voyager.generic_permissions') }}</label><br>
-                            <a href="#" class="permission-select-all">{{ trans('voyager.generic_select_all') }}</a> / <a href="#"  class="permission-deselect-all">{{ trans('voyager.generic_deselect_all') }}</a>
+                            <label for="permission">{{ __('voyager.generic.permissions') }}</label><br>
+                            <a href="#" class="permission-select-all">{{ __('voyager.generic.select_all') }}</a> / <a href="#"  class="permission-deselect-all">{{ __('voyager.generic.deselect_all') }}</a>
                             <ul class="permissions checkbox">
                                 <?php
                                     $role_permissions = (isset($dataTypeContent)) ? $dataTypeContent->permissions->pluck('key')->toArray() : [];
@@ -79,7 +79,7 @@
                             </ul>
                         </div><!-- panel-body -->
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">{{ trans('voyager.generic_submit') }}</button>
+                            <button type="submit" class="btn btn-primary">{{ __('voyager.generic.submit') }}</button>
                         </div>
                     </form>
 

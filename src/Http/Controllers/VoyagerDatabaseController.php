@@ -80,7 +80,7 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                ->route('voyager.database.edit', $table->name)
-               ->with($this->alertSuccess(trans('voyager.database_success_create_table', ['table' => $table->name])));
+               ->with($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table->name])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e))->withInput();
         }
@@ -93,7 +93,7 @@ class VoyagerDatabaseController extends Controller
         if (!SchemaManager::tableExists($table)) {
             return redirect()
                 ->route('voyager.database.index')
-                ->with($this->alertError(trans('voyager.database_edit_table_not_exist')));
+                ->with($this->alertError(__('voyager.database.edit_table_not_exist')));
         }
 
         $db = $this->prepareDbManager('update', $table);
@@ -124,7 +124,7 @@ class VoyagerDatabaseController extends Controller
 
         return redirect()
                ->route('voyager.database.edit', $table['name'])
-               ->with($this->alertSuccess(trans('voyager.database_success_create_table', ['table' => $table['name']])));
+               ->with($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table['name']])));
     }
 
     protected function prepareDbManager($action, $table = '')
@@ -214,7 +214,7 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                 ->route('voyager.database.index')
-                ->with($this->alertSuccess(trans('voyager.database_success_delete_table', ['table' => $table])));
+                ->with($this->alertSuccess(__('voyager.database.success_delete_table', ['table' => $table])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e));
         }
@@ -264,8 +264,8 @@ class VoyagerDatabaseController extends Controller
         try {
             $dataType = Voyager::model('DataType');
             $data = $dataType->updateDataType($request->all(), true)
-                ? $this->alertSuccess(trans('voyager.database_success_created_bread'))
-                : $this->alertError(trans('voyager.database_error_creating_bread'));
+                ? $this->alertSuccess(__('voyager.database.success_created_bread'))
+                : $this->alertError(__('voyager.database.error_creating_bread'));
 
             return redirect()->route('voyager.database.index')->with($data);
         } catch (Exception $e) {
@@ -304,15 +304,15 @@ class VoyagerDatabaseController extends Controller
                 : [];
 
             $data = $dataType->updateDataType($request->all(), true)
-                ? $this->alertSuccess(trans('voyager.database_success_update_bread', ['datatype' => $dataType->name]))
-                : $this->alertError(trans('voyager.database_error_updating_bread'));
+                ? $this->alertSuccess(__('voyager.database.success_update_bread', ['datatype' => $dataType->name]))
+                : $this->alertError(__('voyager.database.error_updating_bread'));
 
             // Save translations if applied
             $dataType->saveTranslations($translations);
 
             return redirect()->route('voyager.database.index')->with($data);
         } catch (Exception $e) {
-            return back()->with($this->alertException($e, trans('voyager.generic_update_failed')));
+            return back()->with($this->alertException($e, __('voyager.generic.update_failed')));
         }
     }
 
@@ -329,8 +329,8 @@ class VoyagerDatabaseController extends Controller
         }
 
         $data = Voyager::model('DataType')->destroy($id)
-            ? $this->alertSuccess(trans('voyager.database_success_remove_bread', ['datatype' => $dataType->name]))
-            : $this->alertError(trans('voyager.database_error_updating_bread'));
+            ? $this->alertSuccess(__('voyager.database.success_remove_bread', ['datatype' => $dataType->name]))
+            : $this->alertError(__('voyager.database.error_updating_bread'));
 
         if (!is_null($dataType)) {
             Voyager::model('Permission')->removeFrom($dataType->name);

@@ -5,16 +5,16 @@
                 <span class="hamburger-inner"></span>
             </button>
             <a id="sidebar-anchor" class="voyager-anchor btn-link navbar-link hidden-xs"
-                title="{{ trans('voyager.generic_keep_sidebar_open') }}"
-                data-unstick="{{ trans('voyager.generic_unstick_sidebar') }}"
+                title="{{ __('voyager.generic.keep_sidebar_open') }}"
+                data-unstick="{{ __('voyager.generic.unstick_sidebar') }}"
             data-toggle="tooltip" data-placement="bottom"></a>
 
             <ol class="breadcrumb hidden-xs">
                 @if(count(Request::segments()) == 1)
-                    <li class="active"><i class="voyager-boat"></i> {{ trans('voyager.generic_dashboard') }}</li>
+                    <li class="active"><i class="voyager-boat"></i> {{ __('voyager.generic.dashboard') }}</li>
                 @else
                     <li class="active">
-                        <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> {{ trans('voyager.generic_dashboard') }}</a>
+                        <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> {{ __('voyager.generic.dashboard') }}</a>
                     </li>
                 @endif
                 <?php $breadcrumb_url = ''; ?>

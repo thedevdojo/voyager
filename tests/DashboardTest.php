@@ -22,7 +22,7 @@ class DashboardTest extends TestCase
 
         $this->visit(route('voyager.dashboard'));
 
-        $this->see(trans('voyager.generic_dashboard'));
+        $this->see(__('voyager.generic.dashboard'));
 
         // We can see number of Users.
         $this->see('1 user');
@@ -32,7 +32,7 @@ class DashboardTest extends TestCase
         $this->seePageIs(route('voyager.users.index'));
 
         // and return to dashboard from there.
-        $this->click(trans('voyager.generic_dashboard'));
+        $this->click(__('voyager.generic.dashboard'));
         $this->seePageIs(route('voyager.dashboard'));
 
         // We can see number of posts.
@@ -54,8 +54,8 @@ class DashboardTest extends TestCase
         $this->seePageIs(route('voyager.pages.index'));
 
         // and return to Dashboard from there.
-        $this->click(trans('voyager.generic_dashboard'));
+        $this->click(__('voyager.generic.dashboard'));
         $this->seePageIs(route('voyager.dashboard'));
-        $this->see(trans('voyager.generic_dashboard'));
+        $this->see(__('voyager.generic.dashboard'));
     }
 }

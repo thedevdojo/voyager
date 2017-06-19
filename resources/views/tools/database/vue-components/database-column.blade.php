@@ -33,11 +33,11 @@
                 :disabled="column.type.notSupportIndex"
                 class="form-control" tabindex="-1">
             <option value=""></option>
-            <option value="INDEX">{{ trans('voyager.database_index') }}</option>
-            <option value="UNIQUE">{{ trans('voyager.database_unique') }}</option>
-            <option value="PRIMARY">{{ trans('voyager.database_primary') }}</option>
+            <option value="INDEX">{{ __('voyager.database.index') }}</option>
+            <option value="UNIQUE">{{ __('voyager.database.unique') }}</option>
+            <option value="PRIMARY">{{ __('voyager.database.primary') }}</option>
         </select>
-        <small v-if="column.composite" v-once>{{ trans('voyager.database_composite_warning') }}</small>
+        <small v-if="column.composite" v-once>{{ __('voyager.database.composite_warning') }}</small>
     </td>
 
     <td>
@@ -94,7 +94,7 @@
             },
             onIndexTypeChange(event) {
                 if (this.column.name == '') {
-                    return toastr.error("{{ trans('voyager.database_name_warning') }}");
+                    return toastr.error("{{ __('voyager.database.name_warning') }}");
                 }
 
                 return this.$emit('indexChanged', {

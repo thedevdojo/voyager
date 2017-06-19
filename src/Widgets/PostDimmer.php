@@ -26,9 +26,9 @@ class PostDimmer extends AbstractWidget
         return view('voyager::dimmer', array_merge($this->config, [
             'icon'   => 'voyager-group',
             'title'  => "{$count} {$string}",
-            'text'   => trans('voyager.dimmer_post_text', ['count' => $count, 'string' => strtolower($string)]),
+            'text'   => __('voyager.dimmer.post_text', ['count' => $count, 'string' => strtolower($string)]),
             'button' => [
-                'text' => trans('voyager.dimmer_post_link_text'),
+                'text' => __('voyager.dimmer.post_link_text'),
                 'link' => route('voyager.posts.index'),
             ],
             'image' => voyager_asset('images/widget-backgrounds/03.png'),

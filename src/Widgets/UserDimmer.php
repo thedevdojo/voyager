@@ -26,9 +26,9 @@ class UserDimmer extends AbstractWidget
         return view('voyager::dimmer', array_merge($this->config, [
             'icon'   => 'voyager-group',
             'title'  => "{$count} {$string}",
-            'text'   => trans('voyager.dimmer_user_text', ['count' => $count, 'string' => strtolower($string)]),
+            'text'   => __('voyager.dimmer.user_text', ['count' => $count, 'string' => strtolower($string)]),
             'button' => [
-                'text' => trans('voyager.dimmer_user_link_text'),
+                'text' => __('voyager.dimmer.user_link_text'),
                 'link' => route('voyager.users.index'),
             ],
             'image' => voyager_asset('images/widget-backgrounds/02.png'),

@@ -140,7 +140,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-settings"></i> {{ trans('voyager.generic_settings') }}
+        <i class="voyager-settings"></i> {{ __('voyager.generic.settings') }}
     </h1>
 @stop
 
@@ -150,8 +150,8 @@
         @include('voyager::alerts')
         @if(config('voyager.show_dev_tips'))
         <div class="alert alert-info">
-            <strong>{{ trans('voyager.generic_how_to_use') }}:</strong>
-            <p>{{ trans('voyager.settings_usage_help') }} <code>Voyager::setting('key')</code></p>
+            <strong>{{ __('voyager.generic.how_to_use') }}:</strong>
+            <p>{{ __('voyager.settings.usage_help') }} <code>Voyager::setting('key')</code></p>
         </div>
         @endif
     </div>
@@ -245,7 +245,7 @@
                     @endif
                 @endforeach
             </div>
-            <button type="submit" class="btn btn-primary pull-right">{{ trans('voyager.settings_save') }}</button>
+            <button type="submit" class="btn btn-primary pull-right">{{ __('voyager.settings.save') }}</button>
         </form>
 
         <div style="clear:both"></div>
@@ -253,44 +253,44 @@
         <div class="panel" style="margin-top:10px;">
             <div class="panel-heading new-setting">
                 <hr>
-                <h3 class="panel-title"><i class="voyager-plus"></i> {{ trans('voyager.settings_new') }}</h3>
+                <h3 class="panel-title"><i class="voyager-plus"></i> {{ __('voyager.settings.new') }}</h3>
             </div>
             <div class="panel-body">
                 <form action="{{ route('voyager.settings.store') }}" method="POST">
                     {{ csrf_field() }}
                     <div class="col-md-4">
-                        <label for="display_name">{{ trans('voyager.generic_name') }}</label>
-                        <input type="text" class="form-control" name="display_name" placeholder="{{ trans('voyager.settings_help_name') }}" required="required">
+                        <label for="display_name">{{ __('voyager.generic.name') }}</label>
+                        <input type="text" class="form-control" name="display_name" placeholder="{{ __('voyager.settings.help_name') }}" required="required">
                     </div>
                     <div class="col-md-4">
-                        <label for="key">{{ trans('voyager.generic_key') }}</label>
-                        <input type="text" class="form-control" name="key" placeholder="{{ trans('voyager.settings_help_key') }}" required="required">
+                        <label for="key">{{ __('voyager.generic.key') }}</label>
+                        <input type="text" class="form-control" name="key" placeholder="{{ __('voyager.settings.help_key') }}" required="required">
                     </div>
                     <div class="col-md-4">
-                        <label for="asdf">{{ trans('voyager.generic_type') }}</label>
+                        <label for="asdf">{{ __('voyager.generic.type') }}</label>
                         <select name="type" class="form-control" required="required">
-                            <option value="">{{ trans('voyager.generic_choose_type') }}</option>
-                            <option value="text">{{ trans('voyager.form_type_textbox') }}</option>
-                            <option value="text_area">{{ trans('voyager.form_type_textarea') }}</option>
-                            <option value="rich_text_box">{{ trans('voyager.form_type_richtextbox') }}</option>
-                            <option value="code_editor">{{ trans('voyager.form_type_codeeditor') }}</option>
-                            <option value="checkbox">{{ trans('voyager.form_type_checkbox') }}</option>
-                            <option value="radio_btn">{{ trans('voyager.form_type_radiobutton') }}</option>
-                            <option value="select_dropdown">{{ trans('voyager.form_type_selectdropdown') }}</option>
-                            <option value="file">{{ trans('voyager.form_type_file') }}</option>
-                            <option value="image">{{ trans('voyager.form_type_image') }}</option>
+                            <option value="">{{ __('voyager.generic.choose_type') }}</option>
+                            <option value="text">{{ __('voyager.form.type_textbox') }}</option>
+                            <option value="text_area">{{ __('voyager.form.type_textarea') }}</option>
+                            <option value="rich_text_box">{{ __('voyager.form.type_richtextbox') }}</option>
+                            <option value="code_editor">{{ __('voyager.form.type_codeeditor') }}</option>
+                            <option value="checkbox">{{ __('voyager.form.type_checkbox') }}</option>
+                            <option value="radio_btn">{{ __('voyager.form.type_radiobutton') }}</option>
+                            <option value="select_dropdown">{{ __('voyager.form.type_selectdropdown') }}</option>
+                            <option value="file">{{ __('voyager.form.type_file') }}</option>
+                            <option value="image">{{ __('voyager.form.type_image') }}</option>
                         </select>
                     </div>
                     <div class="col-md-12">
-                        <a id="toggle_options"><i class="voyager-double-down"></i> {{ strtoupper(trans('voyager.generic_options')) }}</a>
+                        <a id="toggle_options"><i class="voyager-double-down"></i> {{ strtoupper(__('voyager.generic.options')) }}</a>
                         <div class="new-settings-options">
-                            <label for="options">{{ trans('voyager.generic_options') }}
-                                <small>{{ trans('voyager.settings_help_option') }}</small>
+                            <label for="options">{{ __('voyager.generic.options') }}
+                                <small>{{ __('voyager.settings.help_option') }}</small>
                             </label>
                             <div id="options_editor" class="form-control min_height_200" data-language="json"></div>
                             <textarea id="options_textarea" name="details" class="hidden"></textarea>
-                            <div id="valid_options" class="alert-success alert" style="display:none">{{ trans('voyager.json_valid') }}</div>
-                            <div id="invalid_options" class="alert-danger alert" style="display:none">{{ trans('voyager.json_invalid') }}</div>
+                            <div id="valid_options" class="alert-success alert" style="display:none">{{ __('voyager.json.valid') }}</div>
+                            <div id="invalid_options" class="alert-danger alert" style="display:none">{{ __('voyager.json.invalid') }}</div>
                         </div>
                     </div>
                     <script>
@@ -307,7 +307,7 @@
                     </script>
                     <div style="clear:both"></div>
                     <button type="submit" class="btn btn-primary pull-right new-setting-btn">
-                        <i class="voyager-plus"></i> {{ trans('voyager.settings_add_new') }}
+                        <i class="voyager-plus"></i> {{ __('voyager.settings.add_new') }}
                     </button>
                     <div style="clear:both"></div>
                 </form>
@@ -319,20 +319,20 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ trans('voyager.generic_close') }}">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <h4 class="modal-title">
-                        <i class="voyager-trash"></i> {!! trans('voyager.settings_delete_question', ['setting' => '<span id="delete_setting_title"></span>']) !!}
+                        <i class="voyager-trash"></i> {!! __('voyager.settings.delete_question', ['setting' => '<span id="delete_setting_title"></span>']) !!}
                     </h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.settings.delete', ['id' => '__id']) }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
-                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ trans('voyager.settings_delete_confirm') }}">
+                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager.settings.delete_confirm') }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ trans('voyager.generic_cancel') }}</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
                 </div>
             </div>
         </div>

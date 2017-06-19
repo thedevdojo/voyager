@@ -7,7 +7,7 @@
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
         @if (Voyager::can('add_'.$dataType->name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
-                <i class="voyager-plus"></i> {{ trans('voyager.generic_add_new') }}
+                <i class="voyager-plus"></i> {{ __('voyager.generic.add_new') }}
             </a>
         @endif
     </h1>
@@ -27,7 +27,7 @@
                                     @foreach($dataType->browseRows as $rows)
                                     <th>{{ $rows->display_name }}</th>
                                     @endforeach
-                                    <th class="actions">{{ trans('voyager.generic_actions') }}</th>
+                                    <th class="actions">{{ __('voyager.generic.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,18 +96,18 @@
                                     @endforeach
                                     <td class="no-sort no-click" id="bread-actions">
                                         @if (Voyager::can('delete_'.$dataType->name))
-                                            <a href="javascript:;" title="{{ trans('voyager.generic_delete') }}" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
-                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ trans('voyager.generic_delete') }}</span>
+                                            <a href="javascript:;" title="{{ __('voyager.generic.delete') }}" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete') }}</span>
                                             </a>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" title="{{ trans('voyager.generic_edit') }}" class="btn btn-sm btn-primary pull-right edit">
-                                                <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ trans('voyager.generic_edit') }}</span>
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
+                                                <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
                                             </a>
                                         @endif
                                         @if (Voyager::can('read_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" title="{{ trans('voyager.generic_view') }}" class="btn btn-sm btn-warning pull-right">
-                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ trans('voyager.generic_view') }}</span>
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
+                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
                                             </a>
                                         @endif
                                     </td>
@@ -117,7 +117,7 @@
                         </table>
                         @if (isset($dataType->server_side) && $dataType->server_side)
                             <div class="pull-left">
-                                <div role="status" class="show-res" aria-live="polite">{{ trans('generic_showing_entries', $dataTypeContent->total(), ['from' => $dataTypeContent->firstItem(), 'to' => $dataTypeContent->lastItem(), 'all' => $dataTypeContent->total()]) }}</div>
+                                <div role="status" class="show-res" aria-live="polite">{{ __('generic_showing_entries', $dataTypeContent->total(), ['from' => $dataTypeContent->firstItem(), 'to' => $dataTypeContent->lastItem(), 'all' => $dataTypeContent->total()]) }}</div>
                             </div>
                             <div class="pull-right">
                                 {{ $dataTypeContent->links() }}
@@ -133,18 +133,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ trans('voyager.generic_close') }}"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ trans('voyager.generic_delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager.generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.'.$dataType->slug.'.index') }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                                 value="{{ trans('voyager.generic_delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
+                                 value="{{ __('voyager.generic.delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ trans('voyager.generic_cancel') }}</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

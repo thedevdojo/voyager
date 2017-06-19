@@ -5,7 +5,7 @@
     <li class="dd-item" data-id="{{ $item->id }}">
         <div class="pull-right item_actions">
             <div class="btn-sm btn-danger pull-right delete" data-id="{{ $item->id }}">
-                <i class="voyager-trash"></i> {{ trans('voyager.generic_delete') }}
+                <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
             </div>
             <div class="btn-sm btn-primary pull-right edit"
                 data-id="{{ $item->id }}"
@@ -17,7 +17,7 @@
                 data-route="{{ $item->route }}"
                 data-parameters="{{ htmlspecialchars(json_encode($item->parameters)) }}"
             >
-                <i class="voyager-edit"></i> {{ trans('voyager.generic_edit') }}
+                <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
             </div>
         </div>
         <div class="dd-handle">

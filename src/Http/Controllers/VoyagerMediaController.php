@@ -56,11 +56,11 @@ class VoyagerMediaController extends Controller
         $error = '';
 
         if (Storage::disk($this->filesystem)->exists($new_folder)) {
-            $error = trans('voyager.media_folder_exists_already');
+            $error = __('voyager.media.folder_exists_already');
         } elseif (Storage::disk($this->filesystem)->makeDirectory($new_folder)) {
             $success = true;
         } else {
-            $error = trans('voyager.media_error_creating_dir');
+            $error = __('voyager.media.error_creating_dir');
         }
 
         return compact('success', 'error');
@@ -84,11 +84,11 @@ class VoyagerMediaController extends Controller
 
         if ($type == 'folder') {
             if (!Storage::disk($this->filesystem)->deleteDirectory($fileFolder)) {
-                $error = trans('voyager.media_error_deleting_folder');
+                $error = __('voyager.media.error_deleting_folder');
                 $success = false;
             }
         } elseif (!Storage::disk($this->filesystem)->delete($fileFolder)) {
-            $error = trans('voyager.media_error_deleting_file');
+            $error = __('voyager.media.error_deleting_file');
             $success = false;
         }
 
@@ -134,10 +134,10 @@ class VoyagerMediaController extends Controller
             if (Storage::disk($this->filesystem)->move($source, $destination)) {
                 $success = true;
             } else {
-                $error = trans('voyager.media_error_moving');
+                $error = __('voyager.media.error_moving');
             }
         } else {
-            $error = trans('voyager.media_error_already_exists');
+            $error = __('voyager.media.error_already_exists');
         }
 
         return compact('success', 'error');
@@ -162,10 +162,10 @@ class VoyagerMediaController extends Controller
             if (Storage::disk($this->filesystem)->move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
                 $success = true;
             } else {
-                $error = trans('voyager.media_error_moving');
+                $error = __('voyager.media.error_moving');
             }
         } else {
-            $error = trans('voyager.media_error_may_exist');
+            $error = __('voyager.media.error_may_exist');
         }
 
         return compact('success', 'error');
@@ -177,7 +177,7 @@ class VoyagerMediaController extends Controller
         try {
             $path = $request->file->store($request->upload_path, $this->filesystem);
             $success = true;
-            $message = trans('voyager.media_success_uploaded_file');
+            $message = __('voyager.media.success_uploaded_file');
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
@@ -258,12 +258,12 @@ class VoyagerMediaController extends Controller
 
             // Check if field exists
             if (!isset($data->{$field})) {
-                throw new Exception(trans('voyager.generic_field_does_not_exist'), 400);
+                throw new Exception(__('voyager.generic.field_does_not_exist'), 400);
             }
 
             // Check if valid json
             if (is_null(@json_decode($data->{$field}))) {
-                throw new Exception(trans('voyager.json_invalid'), 500);
+                throw new Exception(__('voyager.json.invalid'), 500);
             }
 
             // Decode field value
@@ -274,7 +274,7 @@ class VoyagerMediaController extends Controller
 
             // Check if image exists in array
             if (!array_key_exists($image, $fieldData)) {
-                throw new Exception(trans('voyager.media_image_does_not_exist'), 400);
+                throw new Exception(__('voyager.media.image_does_not_exist'), 400);
             }
 
             // Remove image from array
@@ -287,12 +287,12 @@ class VoyagerMediaController extends Controller
             return response()->json([
                'data' => [
                    'status'     => 200,
-                   'message'    => trans('voyager.media_image_removed'),
+                   'message'    => __('voyager.media.image_removed'),
                ],
             ]);
         } catch (Exception $e) {
             $code = 500;
-            $message = trans('voyager.generic_internal_error');
+            $message = __('voyager.generic.internal_error');
 
             if ($e->getCode()) {
                 $code = $e->getCode();

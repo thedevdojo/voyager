@@ -2,7 +2,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> {{ trans('voyager.generic_viewing') }} {{ ucfirst($dataType->display_name_singular) }}
+        <i class="{{ $dataType->icon }}"></i> {{ __('voyager.generic.viewing') }} {{ ucfirst($dataType->display_name_singular) }}
     </h1>
 @stop
 
@@ -39,7 +39,7 @@
                     @endforeach
 
                     <div class="panel-heading" style="border-bottom:0;">
-                        <h3 class="panel-title">{{ trans('voyager.profile_user_role') }}</h3>
+                        <h3 class="panel-title">{{ __('voyager.profile.user_role') }}</h3>
                     </div>
 
                     <div class="panel-body" style="padding-top:0;">

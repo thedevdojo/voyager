@@ -15,7 +15,7 @@
                 <div id="embed-api-auth-container"></div>
             @else
                 <p style="border-radius:4px; padding:20px; background:#fff; margin:0; color:#999; text-align:center;">
-                    {!! trans('voyager.analytics_no_client_id') !!}
+                    {!! __('voyager.analytics.no_client_id') !!}
                     <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
                 </p>
             @endif
@@ -25,8 +25,8 @@
                     <ul class="FlexGrid">
                         <li class="FlexGrid-item">
                             <div class="Titles">
-                                <h1 class="Titles-main" id="view-name">{{ trans('voyager.analytics_select_view') }}</h1>
-                                <div class="Titles-sub">{{ trans('voyager.analytics_various_visualizations') }}</div>
+                                <h1 class="Titles-main" id="view-name">{{ __('voyager.analytics.select_view') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.various_visualizations') }}</div>
                             </div>
                         </li>
                         <li class="FlexGrid-item FlexGrid-item--fixed">
@@ -40,8 +40,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">{{ trans('voyager.analytics_this_vs_last_week') }}</h1>
-                                <div class="Titles-sub">{{ trans('voyager.analytics_by_users') }}</div>
+                                <h1 class="Titles-main">{{ __('voyager.analytics.this_vs_last_week') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.by_users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-1-container"></figure>
                             <ol class="Chartjs-legend" id="legend-1-container"></ol>
@@ -50,8 +50,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">{{ trans('voyager.analytics_this_vs_last_year') }}</h1>
-                                <div class="Titles-sub">{{ trans('voyager.analytics_by_users') }}</div>
+                                <h1 class="Titles-main">{{ __('voyager.analytics.this_vs_last_year') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.by_users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-2-container"></figure>
                             <ol class="Chartjs-legend" id="legend-2-container"></ol>
@@ -60,8 +60,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">{{ trans('voyager.analytics_top_browsers') }}</h1>
-                                <div class="Titles-sub">{{ trans('voyager.analytics_by_pageview') }}</div>
+                                <h1 class="Titles-main">{{ __('voyager.analytics.top_browsers') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.by_pageview') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-3-container"></figure>
                             <ol class="Chartjs-legend" id="legend-3-container"></ol>
@@ -70,8 +70,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">{{ trans('voyager.analytics_top_countries') }}</h1>
-                                <div class="Titles-sub">{{ trans('voyager.analytics_by_sessions') }}</div>
+                                <h1 class="Titles-main">{{ __('voyager.analytics.top_countries') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.by_sessions') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-4-container"></figure>
                             <ol class="Chartjs-legend" id="legend-4-container"></ol>
@@ -245,7 +245,7 @@
                             labels: labels,
                             datasets: [
                                 {
-                                    label: '{{ trans('voyager.date_last_week') }}',
+                                    label: '{{ __('voyager.date.last_week') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     pointColor: 'rgba(220,220,220,1)',
@@ -253,7 +253,7 @@
                                     data: data2
                                 },
                                 {
-                                    label: '{{ trans('voyager.date_this_week') }}',
+                                    label: '{{ __('voyager.date.this_week') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     pointColor: 'rgba(151,187,205,1)',
@@ -318,13 +318,13 @@
                             labels: labels,
                             datasets: [
                                 {
-                                    label: '{{ trans('voyager.date_last_year') }}',
+                                    label: '{{ __('voyager.date.last_year') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     data: data2
                                 },
                                 {
-                                    label: '{{ trans('voyager.date_this_year') }}',
+                                    label: '{{ __('voyager.date.this_year') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     data: data1
