@@ -221,7 +221,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
             'lang' => [
-                "{$publishablePath}/lang/voyager.php" => storage_path('resources/lang/en/voyager.php'),
+                "{$publishablePath}/lang/voyager.php" => base_path('resources/lang/en/voyager.php'),
             ],
         ];
 
