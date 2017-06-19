@@ -40,14 +40,14 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->seeInElement('h4', $this->user->name)
              ->seeInElement('.user-email', $this->user->email)
-             ->seeLink('Edit My Profile');
+             ->seeLink(__('voyager.profile.edit'));
     }
 
     public function testCanEditUserName()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click(__('voyager.profile.edit'))
+             // ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
              ->press(__('voyager.generic.submit'))
@@ -61,8 +61,8 @@ class UserProfileTest extends TestCase
     public function testCanEditUserEmail()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click(__('voyager.profile.edit'))
+             // ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager.generic.submit'))
@@ -76,8 +76,8 @@ class UserProfileTest extends TestCase
     public function testCanEditUserPassword()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click(__('voyager.profile.edit'))
+             // ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
              ->press(__('voyager.generic.submit'))
@@ -90,8 +90,8 @@ class UserProfileTest extends TestCase
     public function testCanEditUserAvatar()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click(__('voyager.profile.edit'))
+             // ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
              ->press(__('voyager.generic.submit'))
@@ -113,16 +113,16 @@ class UserProfileTest extends TestCase
         $role->permissions()->attach([1, 3, 12, 27, 32]);
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
-            ->click('Edit My Profile')
-            ->see('Edit User')
-            ->seePageIs($editPageForTheCurrentUser)
-            ->type('another@email.com', 'email')
-            ->press('Submit')
-            ->seePageIs($editPageForTheCurrentUser)
-            ->seeInDatabase(
-                'users',
-                ['email' => 'another@email.com']
-            );
+             ->click(__('voyager.profile.edit'))
+             // ->see(__('voyager.profile.edit_user'))
+             ->seePageIs($editPageForTheCurrentUser)
+             ->type('another@email.com', 'email')
+             ->press(__('voyager.generic.submit'))
+             ->seePageIs($editPageForTheCurrentUser)
+             ->seeInDatabase(
+                 'users',
+                 ['email' => 'another@email.com']
+             );
     }
 
     protected function newImagePath()

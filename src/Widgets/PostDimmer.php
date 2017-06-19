@@ -21,7 +21,7 @@ class PostDimmer extends AbstractWidget
     public function run()
     {
         $count = Voyager::model('Post')->count();
-        $string = trans_choice('voyager.dimmer_post', $count);
+        $string = trans_choice('voyager.dimmer.post', $count);
 
         return view('voyager::dimmer', array_merge($this->config, [
             'icon'   => 'voyager-group',

@@ -21,7 +21,7 @@ class PageDimmer extends AbstractWidget
     public function run()
     {
         $count = Voyager::model('Page')->count();
-        $string = trans_choice('voyager.dimmer_page', $count);
+        $string = trans_choice('voyager.dimmer.page', $count);
 
         return view('voyager::dimmer', array_merge($this->config, [
             'icon'   => 'voyager-group',
