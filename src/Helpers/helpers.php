@@ -1,12 +1,5 @@
 <?php
 
-if (!function_exists('__')) {
-    function __($key)
-    {
-        return trans($key);
-    }
-}
-
 if (!function_exists('setting')) {
     function setting($key, $default = null)
     {
