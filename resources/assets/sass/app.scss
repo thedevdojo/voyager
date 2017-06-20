@@ -2492,8 +2492,9 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 }
 
 .breadcrumb li:last-child{
-  color:#949494;
+  color:#58595f;
   cursor:pointer;
+  font-weight:400;
 }
 
 .breadcrumb-container .toggle{
@@ -3307,7 +3308,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     border-left: 3px solid #22A7F0;
     border-right: 0 solid #22A7F0;
     background-color: #FFF;
-    font-weight:700;
+    font-weight:400;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li.active > a .icon {
@@ -4855,17 +4856,15 @@ float: left;
 }
 
 .breadcrumb{
-    padding: 3px 10px;
+    padding: 4px 10px;
     list-style: none;
-    background-color: #f1f1f1;
+    background-color: #fff;
     border-radius: 25px;
     position: relative;
     top: 2px;
-    border: 2px solid #eee;
+    border: 1px solid #f9f9f9;
     font-size: 12px;
     padding-right: 15px;
-    border-right: 2px solid #f1f1f1;
-    border-bottom: 2px solid #f1f1f1;
 }
 
 .breadcrumb a{
@@ -9422,7 +9421,7 @@ limitations under the License.
 }
 
 .breadcrumb li:last-child{
-  color:#949494;
+  color:#58595f;
   cursor:pointer;
 }
 

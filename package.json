@@ -26,6 +26,7 @@
     "bootstrap-datetimepicker": "0.0.7",
     "bootstrap-switch": "^3.3.4",
     "bootstrap-toggle": "^2.2.2",
+    "brace": "^0.10.0",
     "datatables-bootstrap3-plugin": "^0.5.0",
     "datatables.net": "^1.10.15",
     "datetimepicker": "^0.1.38",

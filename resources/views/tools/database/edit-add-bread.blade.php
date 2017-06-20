@@ -92,7 +92,7 @@
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
                                     <label for="email">Model Name</label>
-                                    <span class="glyphicon glyphicon-question-sign"
+                                    <span class="voyager-question"
                                         aria-hidden="true"
                                         data-toggle="tooltip"
                                         data-placement="right"
@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">Controller Name</label>
-                                    <span class="glyphicon glyphicon-question-sign"
+                                    <span class="voyager-question"
                                         aria-hidden="true"
                                         data-toggle="tooltip"
                                         data-placement="right"
@@ -176,7 +176,7 @@
                                             <span>No</span>
                                             <input type="hidden" value="0" name="field_required_{{ $data['field'] }}">
                                         @endif
-                                        <div class="handler glyphicon glyphicon-sort"></div>
+                                        <div class="handler voyager-handle"></div>
                                         <input class="row_order" type="hidden" value="{{ $r_order }}" name="field_order_{{ $data['field'] }}">
                                     </div>
                                     <div class="col-xs-2">
@@ -256,6 +256,9 @@
 @stop
 
 @section('javascript')
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+
     <script>
         window.invalidEditors = [];
         var validationAlerts = $('.validation-error');
@@ -287,16 +290,20 @@
 
             $('#bread-items').disableSelection();
 
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('.toggleswitch').bootstrapToggle();
 
             $('textarea[data-editor]').each(function () {
                 var textarea = $(this),
                 mode = textarea.data('editor'),
-                editDiv = $('<div>', {
-                    position: 'absolute',
-                    width: 250,
-                    resize: 'vertical',
-                    class: textarea.attr('class')
-                }).insertBefore(textarea),
+                // editDiv = $('<div>', {
+                //     position: 'absolute',
+                //     width: 250,
+                //     resize: 'vertical',
+                //     class: textarea.attr('class')
+                // }).insertBefore(textarea),
+                editDiv = $('<div>').insertBefore(textarea),
                 editor = ace.edit(editDiv[0]),
                 _session = editor.getSession(),
                 valid = false;
@@ -367,9 +374,7 @@
                 });
             });
 
-            $('[data-toggle="tooltip"]').tooltip();
-
-            $('.toggleswitch').bootstrapToggle();
+            
         });
     </script>
 @stop
