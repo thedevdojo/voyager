@@ -121,7 +121,7 @@ trait BreadRelationshipParser
                     $tmp = $item[$field];
                     $item[$field] = $tmp;
                 }
-                if (isset($relationData->page_slug)) {
+                if (isset($relationData->page_slug) && $relation) {
                     $id = $relation->id;
                     $item[$field.'_page_slug'] = url($relationData->page_slug, $id);
                 }
