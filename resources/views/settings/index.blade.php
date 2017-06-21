@@ -134,10 +134,6 @@
     </style>
 @stop
 
-@section('head')
-    <script type="text/javascript" src="{{ voyager_asset('lib/js/jsonarea/jsonarea.min.js') }}"></script>
-@stop
-
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-settings"></i> {{ __('voyager.generic.settings') }}
@@ -293,18 +289,6 @@
                             <div id="invalid_options" class="alert-danger alert" style="display:none">{{ __('voyager.json.invalid') }}</div>
                         </div>
                     </div>
-                    <script>
-                        $('document').ready(function () {
-                            $('#toggle_options').click(function () {
-                                $('.new-settings-options').toggle();
-                                if ($('#toggle_options .voyager-double-down').length) {
-                                    $('#toggle_options .voyager-double-down').removeClass('voyager-double-down').addClass('voyager-double-up');
-                                } else {
-                                    $('#toggle_options .voyager-double-up').removeClass('voyager-double-up').addClass('voyager-double-down');
-                                }
-                            });
-                        });
-                    </script>
                     <div style="clear:both"></div>
                     <button type="submit" class="btn btn-primary pull-right new-setting-btn">
                         <i class="voyager-plus"></i> {{ __('voyager.settings.add_new') }}
@@ -338,8 +322,20 @@
         </div>
     </div>
 
+@stop
+
+@section('javascript')
     <script>
         $('document').ready(function () {
+            $('#toggle_options').click(function () {
+                $('.new-settings-options').toggle();
+                if ($('#toggle_options .voyager-double-down').length) {
+                    $('#toggle_options .voyager-double-down').removeClass('voyager-double-down').addClass('voyager-double-up');
+                } else {
+                    $('#toggle_options .voyager-double-up').removeClass('voyager-double-up').addClass('voyager-double-down');
+                }
+            });
+
             $('.voyager-trash').click(function () {
                 var display = $(this).data('display-name') + '/' + $(this).data('display-key');
 
@@ -351,9 +347,7 @@
             $('.toggleswitch').bootstrapToggle();
         });
     </script>
-@stop
 
-@section('javascript')
     <iframe id="form_target" name="form_target" style="display:none"></iframe>
     <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="POST" enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
         {{ csrf_field() }}
@@ -361,10 +355,6 @@
         <input type="hidden" name="type_slug" id="type_slug" value="settings">
     </form>
 
-    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
-    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
     <script>
         var options_editor = ace.edit('options_editor');
         options_editor.getSession().setMode("ace/mode/json");

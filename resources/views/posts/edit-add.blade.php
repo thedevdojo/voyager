@@ -256,10 +256,4 @@
         @endif
         });
     </script>
-    @if($isModelTranslatable)
-        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
-    @endif
-    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
-    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
 @stop

@@ -74,11 +74,12 @@
                   <span class="bar"></span>
                   <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> {{ __('voyager.generic.password') }}</span></label>
                 </div>
-
-                <button type="submit" class="btn btn-block login-button">
-                    <span class="signingin hidden"><span class="glyphicon glyphicon-refresh"></span> {{ __('voyager.login.logginin') }}...</span>
-                    <span class="signin">{{ __('voyager.generic.login') }}</span>
-                </button>
+                
+                    <button type="submit" class="btn btn-block login-button">
+                        <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager.login.logginin') }}...</span>
+                        <span class="signin">{{ __('voyager.generic.login') }}</span>
+                    </button>
+                    
               </form>
 
               <div style="clear:both"></div>

@@ -107,16 +107,9 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 </script>
 <!-- Javascript Libs -->
 
-<!--
 
-<script type="text/javascript" src="{{ voyager_asset('lib/js/jquery.min.js') }}"></script>
-    <!-- JQUERY UI 
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
-
--->
 <script type="text/javascript" src="{{ voyager_asset('js/app.js') }}"></script>
-<script type="text/javascript" src="{{ voyager_asset('js/helpers.js') }}"></script>
+
 
 <script>
     @if(Session::has('alerts'))
