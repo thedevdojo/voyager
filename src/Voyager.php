@@ -175,7 +175,7 @@ class Voyager
         if ($user == null || !$user->hasPermission($permission)) {
             return false;
         }
-  
+
         return true;
     }
 
