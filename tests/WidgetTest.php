@@ -68,16 +68,13 @@ class WidgetTest extends TestCase
 
     public function testRuntimeDisableWidget()
     {
-        
     }
 
     public function testRuntimeEnableWidget()
     {
-        
     }
 
     public function testOverwrittingWidgetView()
     {
-        
     }
 }
