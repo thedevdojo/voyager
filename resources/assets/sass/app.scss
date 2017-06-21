@@ -553,10 +553,13 @@ a:hover {
 .app-container .content-container .side-menu .navbar-nav li a {
   font-family: 'Open Sans', sans-serif;
   padding: 0 10px 0 10px;
-  height: 46px;
-  line-height: 46px;
+  height: 50px;
+  line-height: 50px;
   display: block;
-  white-space: nowrap; }
+  white-space: nowrap;
+  
+  font-size: 15px;
+}
 .app-container .content-container .side-menu .navbar-nav li a .icon {
   margin-left: 0;
   width: 38px;
@@ -676,8 +679,8 @@ a:hover {
 .app-container .side-body {
   margin-left: 75px;
   margin-right: 15px;
-  -webkit-transition: all 0.25s;
-  transition: all 0.25s; }
+  -webkit-transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1) }
 
 .app-container.expanded .side-body {
   margin-left: 235px; }
@@ -3284,7 +3287,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 
 .voyager .side-menu.sidebar-inverse {
     background-color: #353d47;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 0px 0px;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar {
@@ -4586,7 +4589,7 @@ p#the_plugin_name{
 .voyager .side-menu.sidebar-inverse .navbar li.active > a{
   color: #fff;
   background: none;
-  border:0px;
+  border-left:0px;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a {
@@ -4606,12 +4609,12 @@ background: -webkit-linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1)
 background: linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#353d47', endColorstr='#21292e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 overflow-x: hidden;
-    -webkit-transition: width 0.25s;
-    transition: width 0.25s;
+    -webkit-transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    transition: width  500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .app-container .side-body, .app-container.expanded .content-container .navbar-top, .app-container .content-container .navbar-top{
-  transition:all 0.4s ease-in-out;
+  transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a:hover{
@@ -4629,16 +4632,16 @@ overflow-x: hidden;
   padding:28px 30px;
   cursor:pointer;
   opacity:1;
-  transition:opacity 0.2s ease;
+  transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .hamburger:hover{
   opacity:0.7;
-  transition:opacity 0.2s ease;
+  transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .hamburger-inner{
-  width:20px;
+  width:15px;
   height:2px;
   background:#76838F;
   display:block;
@@ -4648,11 +4651,11 @@ overflow-x: hidden;
   margin-left:-10px;
   margin-top:-1px;
   position:absolute;
-  transition:opacity 0.6s ease;
+  transition:all 300ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .hamburger-inner:after{
-  width:20px;
+  width:10px;
   height:2px;
   background:#76838F;
   display:block;
@@ -4660,9 +4663,7 @@ overflow-x: hidden;
   position:absolute;
   bottom:-5px;
   content:'';
-  transition: bottom .1s ease,-webkit-transform .15s .1s cubic-bezier(.295,.03,.685,.22);
-  transition: bottom .1s ease,transform .15s .1s cubic-bezier(.295,.03,.685,.22);
-  transition: bottom .1s ease,transform .15s .1s cubic-bezier(.295,.03,.685,.22),-webkit-transform .15s .1s cubic-bezier(.295,.03,.685,.22);
+  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .hamburger-inner:before{
@@ -4674,17 +4675,21 @@ overflow-x: hidden;
   position:absolute;
   content:'';
   top:-5px;
-  transition: bottom .1s ease,-webkit-transform .15s .1s cubic-bezier(.295,.03,.685,.22);
-  transition: bottom .1s ease,transform .15s .1s cubic-bezier(.295,.03,.685,.22);
-  transition: bottom .1s ease,transform .15s .1s cubic-bezier(.295,.03,.685,.22),-webkit-transform .15s .1s cubic-bezier(.295,.03,.685,.22);
+  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.hamburger.is-active .hamburger-inner{
+  width:20px;
 }
 
 .hamburger.is-active .hamburger-inner:before{
+    width:20px;
     -webkit-transform: translate3d(-5px,1px,0) rotate(-45deg) scaleX(.5);
     transform: translate3d(-5px,1px,0) rotate(-45deg) scaleX(.5);
 }
 
 .hamburger.is-active .hamburger-inner:after{
+    width:20px;
     -webkit-transform: translate3d(-5px,-1px,0) rotate(45deg) scaleX(.5);
     transform: translate3d(-5px,-1px,0) rotate(45deg) scaleX(.5);
 }
@@ -5100,21 +5105,21 @@ float: left;
   background: linear-gradient(135deg,  rgba(45,53,61,0.79) 0%,rgba(45,53,61,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c92d353d', endColorstr='#802d353d',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   opacity:1;
-  transition:opacity 0.3s ease;
+  transition:all 0.3s ease;
   position:absolute;
   left:0px;
   top:0px;
   width:100%;
   height:100%;
-  border-radius:3px;
-}
-
-.panel.widget:hover .dimmer{
-  opacity:0.9;
+  border-radius:0px;
 }
 
 .side-menu .panel.widget .dimmer{
   border-radius: 0px;
+}
+
+.side-menu:hover .panel.widget .dimmer, .expanded .side-menu .panel.widget .dimmer{
+
   background: -moz-linear-gradient(275deg, rgba(36,44,50,1) 0%, rgba(36,44,50,0.95) 34%, rgba(36,44,50,0.7) 100%);
   background: -webkit-linear-gradient(275deg, rgba(36,44,50,1) 0%,rgba(36,44,50,0.95) 34%,rgba(36,44,50,0.7) 100%);
   background: linear-gradient(275deg, rgba(36,44,50,1) 0%,rgba(36,44,50,0.95) 34%,rgba(36,44,50,0.7) 100%);
@@ -5127,8 +5132,7 @@ float: left;
 }
 
  .side-menu .panel.widget{
-  padding:8px 0;
-  padding-bottom:6px;
+  padding:12px 0;
   margin:0px;
   border-radius:0px;
 }
@@ -5148,10 +5152,12 @@ float: left;
 }
 
 .app-container  .side-menu .panel.widget .avatar{
-    width: 40px;
-    float:left;
-    margin-left:10px;
-    border:2px solid rgba(51,59,69, 0.5);
+    width: 36px;
+    float: left;
+    margin-left: 12px;
+    border: 0px;
+    position: relative;
+    top: 3px;
 }
 
 .app-container .side-menu .panel.widget h4 {
@@ -5180,7 +5186,7 @@ float: left;
 
 .app-container .side-menu:hover .panel.widget .avatar{
   float:left;
-  margin-left:10px;
+  margin-left:12px;
   transition:none;
 }
 

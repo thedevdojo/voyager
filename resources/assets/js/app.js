@@ -1,7 +1,7 @@
 window.jQuery = window.$ = $ = require('jquery');
 window.Vue = require('vue');
 window.perfectScrollbar = require('./perfect-scrollbar');
-window.toastr = require('toastr');
+window.toastr = require('./toastr');
 window.DataTable = require('./bootstrap-datatables');
 window.SimpleMDE = require('simplemde');
 window.tooltip = require('./bootstrap-tooltip');
@@ -14,7 +14,6 @@ require('./jquery-cookie');
 require('./jquery-nestable');
 require('bootstrap');
 require('bootstrap-switch');
-require('jquery-match-height');
 require('select2');
 require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
 var brace = require('brace');
