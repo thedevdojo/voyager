@@ -17,31 +17,25 @@ class WidgetTest extends TestCase
 
     public function testWidgetRenders()
     {
-        
     }
 
     public function testWidgetShowCorrectInformation()
     {
-        
     }
 
     public function testWidgetLinksToTheCorrectPlaces()
     {
-        
     }
 
     public function testRuntimeDisableWidget()
     {
-        
     }
 
     public function testRuntimeEnableWidget()
     {
-        
     }
 
     public function testOverwrittingWidgetView()
     {
-        
     }
 }
