@@ -1,12 +1,8 @@
 <?php
 
 if (!function_exists('__')) {
-    function __($key, $par = null)
+    function __($key, array $par = [])
     {
-        if (isset($par)) {
-            return trans($key, $par);
-        } else {
-            return trans($key);
-        }
+        return trans($key, $par);
     }
 }
