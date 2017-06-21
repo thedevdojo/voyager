@@ -33,11 +33,11 @@
                 :disabled="column.type.notSupportIndex"
                 class="form-control" tabindex="-1">
             <option value=""></option>
-            <option value="INDEX">INDEX</option>
-            <option value="UNIQUE">UNIQUE</option>
-            <option value="PRIMARY">PRIMARY</option>
+            <option value="INDEX">{{ __('voyager.database.index') }}</option>
+            <option value="UNIQUE">{{ __('voyager.database.unique') }}</option>
+            <option value="PRIMARY">{{ __('voyager.database.primary') }}</option>
         </select>
-        <small v-if="column.composite" v-once>Warning: this column is part of a composite index</small>
+        <small v-if="column.composite" v-once>{{ __('voyager.database.composite_warning') }}</small>
     </td>
 
     <td>
@@ -71,7 +71,7 @@
         methods: {
             deleteColumn() {
                 this.$emit('columnDeleted', this.column);
-                
+
                 // todo: add an UNDO button or something in case the user mistakenly deletes the column
             },
             onColumnNameInput(event) {
@@ -94,7 +94,7 @@
             },
             onIndexTypeChange(event) {
                 if (this.column.name == '') {
-                    return toastr.error("Please name the column before adding an index");
+                    return toastr.error("{{ __('voyager.database.name_warning') }}");
                 }
 
                 return this.$emit('indexChanged', {

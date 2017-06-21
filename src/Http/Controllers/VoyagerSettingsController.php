@@ -37,7 +37,7 @@ class VoyagerSettingsController extends Controller
         Voyager::model('Setting')->create($request->all());
 
         return back()->with([
-            'message'    => 'Successfully Created Settings',
+            'message'    => __('voyager.settings.successfully_created'),
             'alert-type' => 'success',
         ]);
     }
@@ -65,7 +65,7 @@ class VoyagerSettingsController extends Controller
         }
 
         return back()->with([
-            'message'    => 'Successfully Saved Settings',
+            'message'    => __('voyager.settings.successfully_saved'),
             'alert-type' => 'success',
         ]);
     }
@@ -80,7 +80,7 @@ class VoyagerSettingsController extends Controller
         Voyager::model('Setting')->destroy($id);
 
         return back()->with([
-            'message'    => 'Successfully Deleted Setting',
+            'message'    => __('voyager.settings.successfully_deleted'),
             'alert-type' => 'success',
         ]);
     }
@@ -91,7 +91,7 @@ class VoyagerSettingsController extends Controller
         $swapOrder = $setting->order;
         $previousSetting = Voyager::model('Setting')->where('order', '<', $swapOrder)->orderBy('order', 'DESC')->first();
         $data = [
-            'message'    => 'This is already at the top of the list',
+            'message'    => __('voyager.settings.already_at_top'),
             'alert-type' => 'error',
         ];
 
@@ -102,7 +102,7 @@ class VoyagerSettingsController extends Controller
             $previousSetting->save();
 
             $data = [
-                'message'    => "Moved {$setting->display_name} setting order up",
+                'message'    => __('voyager.settings.moved_order_up', ['name' => $setting->display_name]),
                 'alert-type' => 'success',
             ];
         }
@@ -129,7 +129,7 @@ class VoyagerSettingsController extends Controller
         }
 
         return back()->with([
-            'message'    => "Successfully removed {$setting->display_name} value",
+            'message'    => __('voyager.settings.successfully_removed', ['name' => $setting->display_name]),
             'alert-type' => 'success',
         ]);
     }
@@ -141,7 +141,7 @@ class VoyagerSettingsController extends Controller
 
         $previousSetting = Voyager::model('Setting')->where('order', '>', $swapOrder)->orderBy('order', 'ASC')->first();
         $data = [
-            'message'    => 'This is already at the bottom of the list',
+            'message'    => __('voyager.settings.already_at_bottom'),
             'alert-type' => 'error',
         ];
 
@@ -152,7 +152,7 @@ class VoyagerSettingsController extends Controller
             $previousSetting->save();
 
             $data = [
-                'message'    => "Moved {$setting->display_name} setting order down",
+                'message'    => __('voyager.settings.moved_order_down', ['name' => $setting->display_name]),
                 'alert-type' => 'success',
             ];
         }
