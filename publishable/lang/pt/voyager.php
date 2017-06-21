@@ -34,6 +34,7 @@ return [
         'delete_question'        => 'Tem certeza de que deseja remover isto',
         'delete_this_confirm'    => 'Sim, exclua isto',
         'deselect_all'           => 'Desmarcar todos',
+        'download'               => 'Descarregar',
         'edit'                   => 'Editar',
         'email'                  => 'E-mail',
         'error_deleting'         => 'Oops, ocorreu um problema ao remover',

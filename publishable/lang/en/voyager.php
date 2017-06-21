@@ -34,6 +34,7 @@ return [
         'delete_question'        => 'Are you sure you want to delete this',
         'delete_this_confirm'    => 'Yes, Delete This',
         'deselect_all'           => 'Deselect All',
+        'download'               => 'Download',
         'edit'                   => 'Edit',
         'email'                  => 'E-mail',
         'error_deleting'         => 'Sorry it appears there was a problem deleting this',

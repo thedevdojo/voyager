@@ -120,7 +120,12 @@
                         </table>
                         @if (isset($dataType->server_side) && $dataType->server_side)
                             <div class="pull-left">
-                                <div role="status" class="show-res" aria-live="polite">{{ __('generic_showing_entries', $dataTypeContent->total(), ['from' => $dataTypeContent->firstItem(), 'to' => $dataTypeContent->lastItem(), 'all' => $dataTypeContent->total()]) }}</div>
+                                <div role="status" class="show-res" aria-live="polite">{{ __(
+                                    'voyager.generic.showing_entries', $dataTypeContent->total(), [
+                                        'from' => $dataTypeContent->firstItem(),
+                                        'to' => $dataTypeContent->lastItem(),
+                                        'all' => $dataTypeContent->total()
+                                    ]) }}</div>
                             </div>
                             <div class="pull-right">
                                 {{ $dataTypeContent->links() }}
@@ -172,7 +177,8 @@
         $(document).ready(function () {
             @if (!$dataType->server_side)
                 var table = $('#dataTable').DataTable({
-                    "order": []
+                    "order": [],
+                    "language": {!! json_encode(__('voyager.datatable'), true) !!}
                     @if(config('dashboard.data_tables.responsive')), responsive: true @endif
                 });
             @endif

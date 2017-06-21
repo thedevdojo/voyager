@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title','All '.$dataType->display_name_plural)
+
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
@@ -98,24 +100,28 @@
 @section('javascript')
     <!-- DataTables -->
     <script>
-        @if (!$dataType->server_side)
-            $(document).ready(function () {
-                $('#dataTable').DataTable({ "order": [] });
+        $(document).ready(function () {
+            @if (!$dataType->server_side)
+                $('#dataTable').DataTable({
+                    "order": [],
+                    "language": {!! json_encode(__('voyager.datatable'), true) !!}
+                    @if(config('dashboard.data_tables.responsive')), responsive: true @endif
+                });
+            @endif
+
+            $('td').on('click', '.delete', function (e) {
+                var form = $('#delete_form')[0];
+
+                form.action = parseActionUrl(form.action, $(this).data('id'));
+
+                $('#delete_modal').modal('show');
             });
-        @endif
 
-        $('td').on('click', '.delete', function (e) {
-            var form = $('#delete_form')[0];
-
-            form.action = parseActionUrl(form.action, $(this).data('id'));
-
-            $('#delete_modal').modal('show');
+            function parseActionUrl(action, id) {
+                return action.match(/\/[0-9]+$/)
+                        ? action.replace(/([0-9]+$)/, id)
+                        : action + '/' + id;
+            }
         });
-
-        function parseActionUrl(action, id) {
-            return action.match(/\/[0-9]+$/)
-                    ? action.replace(/([0-9]+$)/, id)
-                    : action + '/' + id;
-        }
     </script>
 @stop

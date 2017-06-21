@@ -113,7 +113,11 @@
     <script>
         $(document).ready(function () {
             @if (!$dataType->server_side)
-                $('#dataTable').DataTable({ "order": [] });
+                $('#dataTable').DataTable({
+                    "order": [],
+                    "language": {!! json_encode(__('voyager.datatable'), true) !!}
+                    @if(config('dashboard.data_tables.responsive')), responsive: true @endif
+                });
             @endif
             @if ($isModelTranslatable)
                 $('.side-body').multilingual();

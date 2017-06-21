@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title','All '.$dataType->display_name_plural)
+
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-list-add"></i> {{ $dataType->display_name_plural }}
@@ -96,7 +98,11 @@
     <!-- DataTables -->
     <script>
         $(document).ready(function () {
-            $('#dataTable').DataTable({ "order": [] });
+            $('#dataTable').DataTable({
+                "order": [],
+                "language": {!! json_encode(__('voyager.datatable'), true) !!}
+                @if(config('dashboard.data_tables.responsive')), responsive: true @endif
+            });
         });
 
         $('td').on('click', '.delete', function (e) {
