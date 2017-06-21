@@ -47,7 +47,7 @@ class UserProfileTest extends TestCase
     {
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
-             // ->see(__('voyager.profile.edit_user'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
              ->press(__('voyager.generic.submit'))
@@ -62,7 +62,7 @@ class UserProfileTest extends TestCase
     {
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
-             // ->see(__('voyager.profile.edit_user'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager.generic.submit'))
@@ -77,7 +77,7 @@ class UserProfileTest extends TestCase
     {
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
-             // ->see(__('voyager.profile.edit_user'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
              ->press(__('voyager.generic.submit'))
@@ -91,7 +91,7 @@ class UserProfileTest extends TestCase
     {
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
-             // ->see(__('voyager.profile.edit_user'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
              ->press(__('voyager.generic.submit'))
@@ -114,7 +114,7 @@ class UserProfileTest extends TestCase
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
-             // ->see(__('voyager.profile.edit_user'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager.generic.submit'))
