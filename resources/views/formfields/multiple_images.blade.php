@@ -11,4 +11,4 @@
     @endif
 @endif
 <div class="clearfix"></div>
-<input type="file" name="{{ $row->field }}[]" multiple="multiple">
+<input @if($row->required == 1) required @endif type="file" name="{{ $row->field }}[]" multiple="multiple">
