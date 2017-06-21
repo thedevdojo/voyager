@@ -166,14 +166,11 @@ class Voyager
         // Check if permission exist
         $exist = $this->permissions->where('key', $permission)->first();
 
-        // Permission not found
-        if (!$exist) {
-            throw new \Exception('Permission does not exist', 400);
-        }
-
-        $user = $this->getUser();
-        if ($user == null || !$user->hasPermission($permission)) {
-            return false;
+        if ($exist) {
+            $user = $this->getUser();
+            if ($user == null || !$user->hasPermission($permission)) {
+                return false;
+            }
         }
 
         return true;
