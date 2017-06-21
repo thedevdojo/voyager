@@ -83,7 +83,7 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary save">{{ __('generic_save') }}</button>
+                            <button type="submit" class="btn btn-primary save">{{ __('voyager.generic.save') }}</button>
                         </div>
                     </form>
 
