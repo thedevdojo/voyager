@@ -41,7 +41,8 @@ class WidgetTest extends TestCase
             <div class=\"panel widget center bgimage\" style=\"margin-bottom:0;overflow:hidden;background-image:url('http://localhost/vendor/tcg/voyager/assets/images/widget-backgrounds/03.png');\">
                 <div class=\"dimmer\"></div>
                 <div class=\"panel-content\">
-                    <i class='voyager-group'></i>        <h4>4 posts</h4>
+                    <i class='voyager-group'></i>
+                    <h4>4 posts</h4>
                     <p>You have 4 posts in your database. Click on button below to view all posts.</p>
                     <a href=\"http://localhost/admin/posts\" class=\"btn btn-primary\">View all posts</a>
                 </div>
@@ -50,7 +51,8 @@ class WidgetTest extends TestCase
             <div class=\"panel widget center bgimage\" style=\"margin-bottom:0;overflow:hidden;background-image:url('http://localhost/vendor/tcg/voyager/assets/images/widget-backgrounds/03.png');\">
                 <div class=\"dimmer\"></div>
                 <div class=\"panel-content\">
-                    <i class='voyager-group'></i>        <h4>1 page</h4>
+                    <i class='voyager-group'></i>
+                    <h4>1 page</h4>
                     <p>You have 1 page in your database. Click on button below to view all pages.</p>
                     <a href=\"http://localhost/admin/pages\" class=\"btn btn-primary\">View all pages</a>
                 </div>
