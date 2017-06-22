@@ -55,31 +55,31 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-5 col-md-4 login-sidebar">
+        <div class="col-xs-12 col-sm-5 col-md-4 login-sidebar animated fadeInRightBig">
 
-            <div class="login-container">
+            <div class="login-container animated fadeInRightBig">
                 <h2>{{ __('voyager.login.signin_below') }}</h2>
                 <form action="{{ route('voyager.login') }}" method="POST">
                 {{ csrf_field() }}
-                <div class="group">
-                  <input type="text" name="email" value="{{ old('email') }}" required>
+                <div class="form-group-default">
+                  <input class="form-control" type="text" name="email" value="{{ old('email') }}" required>
                   <span class="highlight"></span>
                   <span class="bar"></span>
                   <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> {{ __('voyager.generic.email') }}</span></label>
                 </div>
 
-                <div class="group">
-                  <input type="password" name="password" required>
+                <div class="form-group-default">
+                  <input class="form-control" type="password" name="password" required>
                   <span class="highlight"></span>
                   <span class="bar"></span>
                   <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> {{ __('voyager.generic.password') }}</span></label>
                 </div>
-                
+
                     <button type="submit" class="btn btn-block login-button">
-                        <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager.login.logginin') }}...</span>
+                        <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager.login.loginin') }}...</span>
                         <span class="signin">{{ __('voyager.generic.login') }}</span>
                     </button>
-                    
+
               </form>
 
               <div style="clear:both"></div>
@@ -110,7 +110,6 @@
             ev.preventDefault();
         }
     });
-    document.getElementById('email').focus();
 </script>
 </body>
 </html>

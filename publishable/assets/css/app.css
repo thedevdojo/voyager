@@ -14674,9 +14674,8 @@ body.login .login-container .signingin .voyager-refresh {
 body.login .logo-title-container {
   position: fixed;
   width: 100%;
-  bottom: 0px;
+  top: 50%;
   margin-top: -100px;
-  left: 30px;
 }
 
 body.login .logo-container {
@@ -14726,29 +14725,22 @@ body.login .span-input {
 }
 
 body.login .login-button {
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  color: #eee;
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  color:#eee;
   font-family: 'Open Sans', sans-serif;
-  font-weight: 100;
-  padding: 12px 20px;
-  border-radius: 1px;
-  outline: none !important;
-  opacity: 0.8;
-  border: 0px;
-  width: auto;
-  border-radius: 2px;
-  float: left;
-  font-size: 11px;
-  font-weight: normal;
-  text-transform: uppercase;
-  transition: width 0.3s ease;
+  font-weight:100;
+  padding:15px 10px;
+  border-radius:1px;
+  outline:none !important;
+  opacity:0.8;
+  border:0px;
 }
 
 body.login .login-button:hover, body.login .login-button:focus {
   color: #FFF;
-  opacity: 1;
+  opacity: 1
 }
 
 body.login .copy {
@@ -14764,26 +14756,24 @@ body.login .copy h1 {
   z-index: 9999;
   position: relative;
   text-transform: uppercase;
-  font-size: 20px;
-  font-weight: 700;
-  top: 0px;
+  font-size: 50px;
+  font-weight: 400;
+  top: -10px;
   line-height: 45px;
   margin: 20px 0 0 20px;
-  margin-left: 14px;
 }
 
 body.login .copy p {
+  text-shadow: 0 0 10px #000;
   color: #fff;
-  font-size: 13px;
+  font-size: 20px;
   max-width: 650px;
-  opacity: .9;
+  opacity: .4;
   position: relative;
   z-index: 99;
-  font-weight: 300;
+  font-weight: 200;
   margin-top: 0;
-  left: 15px;
-  position: relative;
-  top: -8px;
+  left: 25px;
 }
 
 body.login .faded-bg {
@@ -14826,50 +14816,38 @@ body.login .alert-red {
 }
 
 body.login .form-group-default {
-  background-color: #fff;
-  position: relative;
-  border: 1px solid rgba(28, 43, 54, 0.07);
-  border-radius: 2px;
-  padding: 7px 12px 4px;
-  overflow: hidden;
-  transition: background-color .2s ease;
+  position:relative;
+  margin-bottom:45px;
 }
-
-body.login .form-group-default label {
-  margin: 0;
-  display: block;
-  opacity: 1;
-  transition: opacity .2s ease;
-  font-weight: 500;
-  font-size: 10px;
-  color: #58666e;
-  margin-bottom: 3px;
-}
-
 body.login .form-group-default .form-control {
-  border: none;
-  height: 25px;
-  min-height: 25px;
-  padding: 0;
-  margin-top: -4px;
-  background: 0 0;
+  font-size:15px;
+  padding:10px 10px 10px 10px;
+  display:block;
+  width:100%;
+  border:none;
+  border-bottom:1px solid rgba(53,61,71, 0.1);
+  background:none;
+  color:#454C55;
+}
+body.login .form-group-default .form-control:focus { outline:none; }
+
+body.login .form-group-default label                 {
+  color:rgba(53,61,71, 0.3);
+  font-size:18px;
+  font-weight:normal;
+  position:absolute;
+  pointer-events:none;
+  left:5px;
+  top:5px;
+  transition:0.2s ease all;
+  -moz-transition:0.2s ease all;
+  -webkit-transition:0.2s ease all;
 }
 
-body.login .form-control {
-  background: #fff;
-  border: 1px solid rgba(28, 43, 54, 0.07);
-  -webkit-appearance: none;
-  color: #1c2b36;
-  outline: 0;
-  border: 0;
-  height: 35px;
-  line-height: normal;
-  font-weight: 300;
-  vertical-align: middle;
-  min-height: 35px;
-  box-shadow: none;
-  border-radius: 2px;
-  transition: background .2s linear 0s;
+body.login .form-group-default .form-control:focus ~ label, body.login .form-group-default .form-control:valid ~ label  {
+  top:-20px;
+  font-size:14px;
+  color:rgba(53,61,71, 0.5);
 }
 
 body.login .form-control-grey:focus, body.login .form-control:focus {
