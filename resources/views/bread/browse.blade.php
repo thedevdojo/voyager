@@ -120,7 +120,7 @@
                         </table>
                         @if (isset($dataType->server_side) && $dataType->server_side)
                             <div class="pull-left">
-                                <div role="status" class="show-res" aria-live="polite">{{ __(
+                                <div role="status" class="show-res" aria-live="polite">{{ trans_choice(
                                     'voyager.generic.showing_entries', $dataTypeContent->total(), [
                                         'from' => $dataTypeContent->firstItem(),
                                         'to' => $dataTypeContent->lastItem(),

@@ -58,28 +58,30 @@
         <div class="col-xs-12 col-sm-5 col-md-4 login-sidebar">
 
             <div class="login-container">
-                <h2>{{ __('voyager.login.signin_below') }}</h2>
-                <form action="{{ route('voyager.login') }}" method="POST">
-                {{ csrf_field() }}
-                <div class="group">
-                  <input type="text" name="email" value="{{ old('email') }}" required>
-                  <span class="highlight"></span>
-                  <span class="bar"></span>
-                  <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> {{ __('voyager.generic.email') }}</span></label>
-                </div>
 
-                <div class="group">
-                  <input type="password" name="password" required>
-                  <span class="highlight"></span>
-                  <span class="bar"></span>
-                  <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> {{ __('voyager.generic.password') }}</span></label>
-                </div>
-                
+                <p>{{ __('voyager.login.signin_below') }}</p>
+
+                <form action="{{ route('voyager.login') }}" method="POST">
+                    {{ csrf_field() }}
+                    <div class="form-group form-group-default ">
+                        <label>Email</label>
+                        <div class="controls">
+                            <input type="text" name="email" id="email" value="{{ old('email') }}" placeholder="{{ __('voyager.generic.email') }}" class="form-control" required>
+                         </div>
+                    </div>
+
+                    <div class="form-group form-group-default ">
+                        <label>Password</label>
+                        <div class="controls">
+                            <input type="password" name="password" placeholder="{{ __('voyager.generic.password') }}" class="form-control" required>
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn btn-block login-button">
-                        <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager.login.logginin') }}...</span>
+                        <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager.login.loginin') }}...</span>
                         <span class="signin">{{ __('voyager.generic.login') }}</span>
                     </button>
-                    
+               
               </form>
 
               <div style="clear:both"></div>
@@ -89,13 +91,13 @@
                 <ul class="list-unstyled">
                     @foreach($errors->all() as $err)
                     <li>{{ $err }}</li>
-                    @endforeach
+                    @endforeach                
                 </ul>
-              </div>
+              </div>            
               @endif
 
             </div> <!-- .login-container -->
-
+            
         </div> <!-- .login-sidebar -->
     </div> <!-- .row -->
 </div> <!-- .container-fluid -->
