@@ -44,10 +44,7 @@ class VoyagerBreadController extends Controller
             if ($model->timestamps) {
                 $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
             } else {
-                $dataTypeContent = call_user_func([
-                    $model->with($relationships)->orderBy($model->getKeyName(), 'DESC'),
-                    $getter,
-                ]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
 
             //Replace relationships' keys for labels and create READ links if a slug is provided.
@@ -188,7 +185,7 @@ class VoyagerBreadController extends Controller
             return redirect()
             ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
             ->with([
-                'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
                 ]);
         }
@@ -260,7 +257,7 @@ class VoyagerBreadController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.edit", ['id' => $data->id])
                 ->with([
-                        'message'    => "Successfully Added New {$dataType->display_name_singular}",
+                        'message'    => __('generic_successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
         }
@@ -299,11 +296,11 @@ class VoyagerBreadController extends Controller
 
         $data = $data->destroy($id)
             ? [
-                'message'    => "Successfully Deleted {$dataType->display_name_singular}",
+                'message'    => __('voyager.generic.successfully_deleted')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => "Sorry it appears there was a problem deleting this {$dataType->display_name_singular}",
+                'message'    => __('voyager.generic.error_deleting')." {$dataType->display_name_singular}",
                 'alert-type' => 'error',
             ];
 

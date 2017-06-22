@@ -2,7 +2,7 @@
 
     {{-- If this is a relationship and the method does not exist, show a warning message --}}
     @if( !method_exists( $dataType->model_name, camel_case($row->field) ) )
-        <p class="label label-warning"><i class="voyager-warning"></i> Make sure to setup the appropriate relationship in the {{ camel_case($row->field) . '()' }} method of the {{ $dataType->model_name }} class.</p>
+        <p class="label label-warning"><i class="voyager-warning"></i> {{ __('voyager.form.field_select_dd_relationship', ['method' => camel_case($row->field).'()', 'class' => $dataType->model_name]) }}</p>
     @endif
 
     @if( method_exists( $dataType->model_name, camel_case($row->field) ) )
@@ -16,7 +16,7 @@
             <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : NULL; ?>
 
             @if(isset($options->options))
-                <optgroup label="Custom">
+                <optgroup label="{{ __('voyager.generic.custom') }}">
                 @foreach($options->options as $key => $option)
                     <option value="{{ ($key == '_empty_' ? '' : $key) }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if((string)$selected_value == (string)$key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
                 @endforeach

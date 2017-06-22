@@ -32,7 +32,7 @@ class VoyagerRoleController extends VoyagerBreadController
             return redirect()
             ->route("voyager.{$dataType->slug}.index")
             ->with([
-                'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
                 ]);
         }
@@ -63,7 +63,7 @@ class VoyagerRoleController extends VoyagerBreadController
             return redirect()
             ->route("voyager.{$dataType->slug}.index")
             ->with([
-                'message'    => "Successfully Added New {$dataType->display_name_singular}",
+                'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
                 ]);
         }

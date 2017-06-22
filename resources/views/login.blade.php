@@ -48,7 +48,7 @@
                         @endif
                         <div class="copy animated fadeIn">
                             <h1>{{ Voyager::setting('admin_title', 'Voyager') }}</h1>
-                            <p>{{ Voyager::setting('admin_description', 'Welcome to Voyager. The Missing Admin for Laravel') }}</p>
+                            <p>{{ Voyager::setting('admin_description', __('voyager.login.welcome')) }}</p>
                         </div>
                     </div> <!-- .logo-title-container -->
                 </div>
@@ -58,30 +58,28 @@
         <div class="col-xs-12 col-sm-5 col-md-4 login-sidebar">
 
             <div class="login-container">
-
-                <p>Sign in to your account</p>
-
+                <h2>{{ __('voyager.login.signin_below') }}</h2>
                 <form action="{{ route('voyager.login') }}" method="POST">
-                    {{ csrf_field() }}
-                    <div class="form-group form-group-default ">
-                        <label>Email</label>
-                        <div class="controls">
-                            <input type="text" name="email" id="email" value="{{ old('email') }}" placeholder="Enter your email" class="form-control" required>
-                         </div>
-                    </div>
+                {{ csrf_field() }}
+                <div class="group">
+                  <input type="text" name="email" value="{{ old('email') }}" required>
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label><i class="glyphicon glyphicon-user"></i><span class="span-input"> {{ __('voyager.generic.email') }}</span></label>
+                </div>
 
-                    <div class="form-group form-group-default ">
-                        <label>Password</label>
-                        <div class="controls">
-                            <input type="password" name="password" placeholder="Enter your password" class="form-control" required>
-                        </div>
-                    </div>
-
+                <div class="group">
+                  <input type="password" name="password" required>
+                  <span class="highlight"></span>
+                  <span class="bar"></span>
+                  <label><i class="glyphicon glyphicon-lock"></i><span class="span-input"> {{ __('voyager.generic.password') }}</span></label>
+                </div>
+                
                     <button type="submit" class="btn btn-block login-button">
-                        <span class="signingin hidden"><span class="voyager-refresh"></span> Loggin in...</span>
-                        <span class="signin">Login</span>
+                        <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager.login.logginin') }}...</span>
+                        <span class="signin">{{ __('voyager.generic.login') }}</span>
                     </button>
-               
+                    
               </form>
 
               <div style="clear:both"></div>
@@ -91,13 +89,13 @@
                 <ul class="list-unstyled">
                     @foreach($errors->all() as $err)
                     <li>{{ $err }}</li>
-                    @endforeach                
+                    @endforeach
                 </ul>
-              </div>            
+              </div>
               @endif
 
             </div> <!-- .login-container -->
-            
+
         </div> <!-- .login-sidebar -->
     </div> <!-- .row -->
 </div> <!-- .container-fluid -->
