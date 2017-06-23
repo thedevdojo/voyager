@@ -138,9 +138,9 @@ return [
         'error_already_exists'   => 'Es ist bereits eine Datei bzw. ein Ordner mit diesem Namen in diesem Ordner enthalten.',
         'error_creating_dir'     => 'Beim Versuch das Verzeichnis Anzulegen ist ein Fehler aufgetreten. '.
                                     'Stellen Sie sicher, dass Sie ausreichende Zugriffsrechte dafür haben.',
-        'error_deleting_file'    => 'Beim Versuch diese Datei zu Löschen ist ein Fehler aufgetreten. '. 
+        'error_deleting_file'    => 'Beim Versuch diese Datei zu Löschen ist ein Fehler aufgetreten. '.
                                     'Stellen Sie sicher, dass Sie ausreichende Zugriffsrechte dafür haben.',
-        'error_deleting_folder'  => 'Beim Versuch diesen Ordner zu Löschen ist ein Fehler aufgetreten. Stellen Sie'. 
+        'error_deleting_folder'  => 'Beim Versuch diesen Ordner zu Löschen ist ein Fehler aufgetreten. Stellen Sie'.
                                     'sicher, dass Sie ausreichende Zugriffsrechte dafür haben.',
         'error_may_exist'        => 'Datei oder Ordner unter diesem Namen können bereits existieren. Wählen Sie '.
                                     'einen anderen Namen oder Löschen Sie die andere Datei.',
@@ -274,7 +274,7 @@ return [
         'name_warning'              => 'Sie müssen einen Namen für die Spalte vergeben, '.
                                        ' bevor Sie einen Index hinzufügen',
         'no_composites_warning'     => 'Hinweis: Diese Tabelle hat zusammengesetzte Indexe. '.
-                                       'Diese werden momentan nicht unterstützt. '. 
+                                       'Diese werden momentan nicht unterstützt. '.
                                        'Seien Sie vorsichtig beim Hinzufügen/Ändern von Indexen.',
         'null'                     => 'Null',
         'optional_details'         => 'Optionale Details',
