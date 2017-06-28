@@ -29,11 +29,27 @@
                 $relationshipOptions = $dataTypeContent->$relationshipListMethod();
             } else {
                 $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
-                if (isset($options->relationship->where)) {
-                    $relationshipOptions = $relationshipClass::where(
-                        $options->relationship->where[0],
-                        $options->relationship->where[1]
-                    )->get();
+               if (isset($options->relationship->where)) {
+                    if (count($options->relationship->where) == 2) {
+                        $relationshipOptions = $relationshipClass::where(
+                                $options->relationship->where[0],
+                                $options->relationship->where[1]
+                        )->get();
+                    } else {
+                        if (count($options->relationship->where) == 3) {
+                            $relationshipOptions = $relationshipClass::where(
+                                    $options->relationship->where[0],
+                                    $options->relationship->where[1],
+                                    $options->relationship->where[2]
+                            )->get();
+                        } else {
+                            $relationshipOptions = $relationshipClass::where(
+                                    'id',
+                                    $options->relationship->where[0]
+                            )->get();
+                        }
+                    }
+
                 } else {
                     $relationshipOptions = $relationshipClass::all();
                 }
