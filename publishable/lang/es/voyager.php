@@ -7,6 +7,7 @@ return [
         'this_week' => 'Esta semana',
         'this_year' => 'Este año',
     ],
+
     'generic' => [
         'action'                 => 'Acción',
         'actions'                => 'Acciones',
@@ -90,11 +91,13 @@ return [
         'yes'                    => 'Sí',
         'yes_please'             => 'Sí por favor',
     ],
+
     'login' => [
         'loginin'      => 'Iniciar Sesión',
         'signin_below' => 'Ingresar abajo:',
         'welcome'      => 'Bienvenido a Voyager. El administrador desaparecido de Laravel ',
     ],
+
     'profile' => [
         'avatar'        => 'Avatar',
         'edit'          => 'Editar mi perfil',
@@ -104,6 +107,7 @@ return [
         'role'          => 'Rol',
         'user_role'     => 'Rol del usuario',
     ],
+
     'settings' => [
         'usage_help'           => 'Puede obtener el valor de cada parámetro en cualquier lugar de su sitio llamando',
         'save'                 => 'Guardar parámetro',
@@ -123,6 +127,7 @@ return [
         'moved_order_down'     => 'Orden del parámetro :name disminuido',
         'successfully_removed' => 'Eliminado correctamente parámetro :name ',
     ],
+
     'media' => [
         'add_new_folder'         => 'Añadir nueva carpeta',
         'audio_support'          => 'Su navegador no admite el elemento de audio.',
@@ -160,6 +165,7 @@ return [
         'uploading_wrong_type'  => 'Falla de carga: formato de archivo no soportado o es demasiado grande para cargar!',
         'video_support'         => 'Su navegador no soporta la etiqueta de vídeo.',
     ],
+
     'menu_builder' => [
         'color'                => 'Color en RGB o hex (opcional)',
         'color_ph'             => 'Color (por ejemplo, #ffffff o rgb (255, 255, 255)',
@@ -189,6 +195,7 @@ return [
         'usage_hint'           => 'Puede emitir un menú en cualquier lugar de su sitio llamando a ',
         //   'this menu anywhere on your site by calling',
     ],
+
     'post' => [
         'category'         => 'Categoría del Post',
         'content'          => 'Contenido del Post',
@@ -209,6 +216,7 @@ return [
         'title_sub'        => 'El título de Post',
         'update'           => 'Actualizar Post',
     ],
+
     'database' => [
         'add_bread'                 => 'Añadir BREAD a esta tabla',
         'add_new_column'            => 'Añadir nueva columna',
@@ -286,6 +294,7 @@ return [
         'url_slug_ph'           => 'URL slug (ej posts)',
         'visibility'            => 'Visibilidad',
     ],
+
     'dimmer' => [
         'page'           => 'Página|Páginas',
         'page_link_text' => 'Ver todas las páginas',
@@ -297,6 +306,7 @@ return [
         'user_link_text' => 'Ver todos los usuarios',
         'user_text'      => 'Tiene :count :string en su base de datos. Haga clic en el botón de abajo para ver todos los usuarios. ',
     ],
+
     'form' => [
         'field_password_keep'          => 'Dejar vacío para mantener el mismo',
         'field_select_dd_relationship' => 'Asegúrese de configurar la relación apropiada en el método :method de'.
@@ -311,6 +321,7 @@ return [
         'type_textarea'       => 'Área de texto',
         'type_textbox'        => 'Caja de texto',
     ],
+
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
     'datatable' => [
         'sEmptyTable'     => 'No hay datos disponibles en la tabla',
@@ -335,16 +346,19 @@ return [
             'sSortDescending' => ': Activar para ordenar la columna descendente',
         ],
     ],
+
     'theme' => [
         'footer_copyright'  => 'Hecho con <i class = "voyager-heart"> </i> por',
         'footer_copyright2' => 'Hecho con ron e incluso más ron',
     ],
+
     'json' => [
         'invalid'           => 'Json inválido',
         'invalid_message'   => 'Parece que has introducido algún JSON inválido.',
         'valid'             => 'Json Válido ',
         'validation_errors' => 'Errores de validación',
     ],
+
     'analytics' => [
         'by_pageview'  => 'Por página',
         'by_sessions'  => 'Por sesiones',
@@ -359,6 +373,7 @@ return [
         'top_countries'          => 'Principales países',
         'various_visualizations' => 'Varias visualizaciones',
     ],
+
     'error' => [
         'symlink_created_text'  => 'Acabamos de crear el enlace simbólico que faltaba para usted.',
         'symlink_created_title' => 'Enlace simbólico de almacenamiento faltante creado',
