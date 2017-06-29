@@ -74,6 +74,13 @@ class DataType extends Model
         try {
             DB::beginTransaction();
 
+            // Prepare data
+            foreach (['generate_permissions', 'server_side'] as $field) {
+                if (!isset($requestData[$field])) {
+                    $requestData[$field] = 0;
+                }
+            }
+
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields(array_get($requestData, 'name'));
 
@@ -92,7 +99,7 @@ class DataType extends Model
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
                     if (!$dataRow->save()) {
-                        throw new \Exception('Failed to save field '.$field.", we're rolling back!");
+                        throw new \Exception(__('voyager.database.field_safe_failed', ['field' => $field]));
                     }
                 }
 
@@ -142,14 +149,17 @@ class DataType extends Model
     {
         $table = $this->name;
 
-        // Get BREAD fields + order
-        $orderedFields = $this->rows()->pluck('order', 'field');
-        $fieldOptions = SchemaManager::describeTable($table);
+        // Get ordered BREAD fields
+        $orderedFields = $this->rows()->pluck('field')->toArray();
 
-        $fieldOptions = $fieldOptions->sortBy(function ($elt) use ($orderedFields) {
-            return isset($orderedFields[$elt['field']])
-                    ? $orderedFields[$elt['field']] : PHP_INT_MAX;
-        });
+        $_fieldOptions = SchemaManager::describeTable($table)->toArray();
+
+        $fieldOptions = [];
+        $f_size = count($orderedFields);
+        for ($i = 0; $i < $f_size; $i++) {
+            $fieldOptions[$orderedFields[$i]] = $_fieldOptions[$orderedFields[$i]];
+        }
+        $fieldOptions = collect($fieldOptions);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {

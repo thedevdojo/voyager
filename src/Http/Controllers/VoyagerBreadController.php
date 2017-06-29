@@ -44,10 +44,7 @@ class VoyagerBreadController extends Controller
             if ($model->timestamps) {
                 $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
             } else {
-                $dataTypeContent = call_user_func([
-                    $model->with($relationships)->orderBy($model->getKeyName(), 'DESC'),
-                    $getter,
-                ]);
+                $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
 
             //Replace relationships' keys for labels and create READ links if a slug is provided.
@@ -133,14 +130,21 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
+        // Check permission if not the own profile
+        if ($request->user()->id !== (int) $id) {
+            Voyager::canOrFail('edit_'.$dataType->name);
+        }
 
         $relationships = $this->getRelationships($dataType);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
             ? app($dataType->model_name)->with($relationships)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+
+        foreach ($dataType->editRows as $key => $row) {
+            $details = json_decode($row->details);
+            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+        }
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -161,8 +165,10 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
+        // Check permission if not the own profile
+        if ($request->user()->id !== (int) $id) {
+            Voyager::canOrFail('edit_'.$dataType->name);
+        }
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows);
@@ -211,6 +217,11 @@ class VoyagerBreadController extends Controller
                             ? new $dataType->model_name()
                             : false;
 
+        foreach ($dataType->addRows as $key => $row) {
+            $details = json_decode($row->details);
+            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+        }
+
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
@@ -246,7 +257,7 @@ class VoyagerBreadController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                        'message'    => "Successfully Added New {$dataType->display_name_singular}",
+                        'message'    => __('generic_successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
         }
@@ -285,11 +296,11 @@ class VoyagerBreadController extends Controller
 
         $data = $data->destroy($id)
             ? [
-                'message'    => "Successfully Deleted {$dataType->display_name_singular}",
+                'message'    => __('voyager.generic.successfully_deleted')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => "Sorry it appears there was a problem deleting this {$dataType->display_name_singular}",
+                'message'    => __('voyager.generic.error_deleting')." {$dataType->display_name_singular}",
                 'alert-type' => 'error',
             ];
 

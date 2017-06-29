@@ -1,9 +1,5 @@
 @extends('voyager::master')
 
-@section('css')
-    <script type="text/javascript" src="{{ voyager_asset('js/vue21.min.js') }}"></script>
-@stop
-
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-data"></i>

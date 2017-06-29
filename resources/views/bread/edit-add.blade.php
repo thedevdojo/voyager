@@ -5,27 +5,27 @@
 @stop
 
 @if(isset($dataTypeContent->id))
-    @section('page_title','Edit '.$dataType->display_name_singular)
+    @section('page_title', __('voyager.generic.edit').' '.$dataType->display_name_singular)
 @else
-    @section('page_title','Add '.$dataType->display_name_singular)
+    @section('page_title', __('voyager.generic.add').' '.$dataType->display_name_singular)
 @endif
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
+        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ __('voyager.generic.edit') }}@else{{ __('voyager.generic.new') }}@endif {{ $dataType->display_name_singular }}
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
-    <div class="page-content container-fluid">
+    <div class="page-content edit-add container-fluid">
         <div class="row">
             <div class="col-md-12">
 
                 <div class="panel panel-bordered">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'Add New' }}@endif {{ $dataType->display_name_singular }}</h3>
+                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ __('voyager.generic.edit') }}@else{{ __('voyager.generic.add_new') }}@endif {{ $dataType->display_name_singular }}</h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
@@ -61,7 +61,15 @@
                             @endif
 
                             @foreach($dataTypeRows as $row)
-                                <div class="form-group @if($row->type == 'hidden') hidden @endif">
+
+                                <!-- GET THE DISPLAY OPTIONS -->
+                                @php
+                                    $options = json_decode($row->details);
+                                    $display_options = isset($options->display) ? $options->display : NULL;
+                                @endphp
+
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@else{{ 'col-md-12' }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+                                    {{ $row->slugify }}
                                     <label for="name">{{ $row->display_name }}</label>
                                     @include('voyager::multilingual.input-hidden-bread-edit-add')
                                     {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
@@ -75,7 +83,7 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary save">Save</button>
+                            <button type="submit" class="btn btn-primary save">{{ __('voyager.generic.save') }}</button>
                         </div>
                     </form>
 
@@ -100,16 +108,16 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
                             aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><i class="voyager-warning"></i> Are You Sure</h4>
+                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager.generic.are_you_sure') }}</h4>
                 </div>
 
                 <div class="modal-body">
-                    <h4>Are you sure you want to delete '<span class="confirm_delete_name"></span>'</h4>
+                    <h4>{{ __('voyager.generic.are_you_sure_delete') }} '<span class="confirm_delete_name"></span>'</h4>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirm_delete">Yes, Delete it!
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager.generic.delete') }}</button>
+                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ __('voyager.generic.delete_confirm') }}
                     </button>
                 </div>
             </div>
@@ -125,7 +133,7 @@
 
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
-            
+
             //Init datepicker for date fields if data-datepicker attribute defined
             //or if browser does not handle date inputs
             $('.form-group input[type=date]').each(function (idx, elt) {
@@ -177,12 +185,4 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-    @if($isModelTranslatable)
-        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
-    @endif
-    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
-    <script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_ace_editor.js') }}"></script>
-    <script src="{{ voyager_asset('js/slugify.js') }}"></script>
 @stop

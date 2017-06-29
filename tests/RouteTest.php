@@ -25,7 +25,7 @@ class RouteTest extends TestCase
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
-        $this->press('Login');
+        $this->press(__('voyager.generic.login'));
 
         $urls = [
             route('voyager.dashboard'),
