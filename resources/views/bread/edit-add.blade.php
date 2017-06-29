@@ -4,11 +4,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
-@if(isset($dataTypeContent->id))
-    @section('page_title', __('voyager.generic.edit').' '.$dataType->display_name_singular)
-@else
-    @section('page_title', __('voyager.generic.add').' '.$dataType->display_name_singular)
-@endif
+@section('page_title',
+    __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
 
 @section('page_header')
     <h1 class="page-title">
@@ -23,11 +20,6 @@
             <div class="col-md-12">
 
                 <div class="panel panel-bordered">
-
-                    <div class="panel-heading">
-                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ __('voyager.generic.edit') }}@else{{ __('voyager.generic.add_new') }}@endif {{ $dataType->display_name_singular }}</h3>
-                    </div>
-                    <!-- /.box-header -->
                     <!-- form start -->
                     <form role="form"
                             class="form-edit-add"
@@ -53,12 +45,10 @@
                                 </div>
                             @endif
 
-                            <!-- If we are editing -->
-                            @if(isset($dataTypeContent->id))
-                                <?php $dataTypeRows = $dataType->editRows; ?>
-                            @else
-                                <?php $dataTypeRows = $dataType->addRows; ?>
-                            @endif
+                            <!-- Adding / Editing -->
+                            @php
+                                $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                            @endphp
 
                             @foreach($dataTypeRows as $row)
 
