@@ -11,7 +11,7 @@
     <td><input type="text" name="pivot_{{$pivotField}}[]" class="form-control" placeholder="{{ $pivotField }}" value=""></td>
     @endforeach
     <td class="danger">
-        <button type="button" class="close form-control btn-remove-bread-relationship" aria-label="Close"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
+        <button type="button" class="close form-control btn-remove-bread-relationship" aria-label="{{ __('voyager.generic.close') }}"><span aria-hidden="true" class="glyphicon glyphicon-remove"></span></button>
     </td>
 </tr>
 </tr>
