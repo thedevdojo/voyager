@@ -1,10 +1,6 @@
 @extends('voyager::master')
 
-@if(isset($dataTypeContent->id))
-    @section('page_title', __('voyager.generic.new').' '.$dataType->display_name_singular)
-@else
-    @section('page_title', __('voyager.generic.add').' '.$dataType->display_name_singular)
-@endif
+@section('page_title', __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
 
 @section('css')
     <style>
@@ -56,7 +52,8 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
+        <i class="{{ $dataType->icon }}"></i>
+        {{ __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop

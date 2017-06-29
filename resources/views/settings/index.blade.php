@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title', __('voyager.generic.viewing').' '.__('voyager.generic.settings'))
+
 @section('css')
     <style>
         .panel-actions .voyager-trash {
@@ -141,7 +143,6 @@
 @stop
 
 @section('content')
-
     <div class="container-fluid">
         @include('voyager::alerts')
         @if(config('voyager.show_dev_tips'))

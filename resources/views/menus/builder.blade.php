@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title', __('voyager.generic.menu_builder'))
+
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-list"></i>{{ __('voyager.generic.menu_builder') }} ({{ $menu->name }})
