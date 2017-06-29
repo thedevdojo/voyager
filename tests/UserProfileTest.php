@@ -110,7 +110,7 @@ class UserProfileTest extends TestCase
         $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
         // without permissions to edit  users
-        $role->permissions()->attach([1, 3, 12, 27, 32]);
+        $role->permissions()->attach([1, 3, 12, 20, 27, 32]);
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
@@ -118,7 +118,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager.generic.submit'))
-             ->seePageIs($editPageForTheCurrentUser)
+             ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
                  ['email' => 'another@email.com']
