@@ -92,8 +92,7 @@ class Voyager
 
     public function view($name, array $parameters = [])
     {
-        foreach (array_get($this->viewLoadingEvents, $name, []) as $event)
-        {
+        foreach (array_get($this->viewLoadingEvents, $name, []) as $event) {
             $event($name, $parameters);
         }
 

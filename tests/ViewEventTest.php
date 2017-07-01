@@ -4,7 +4,7 @@ namespace TCG\Voyager\Tests;
 
 use TCG\Voyager\Facades\Voyager;
 
-class LoginTest extends TestCase
+class ViewEventTest extends TestCase
 {
     public $eventTrigered = false;
 
