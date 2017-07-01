@@ -256,13 +256,6 @@ class VoyagerServiceProvider extends ServiceProvider
         }
 
         $this->registerPolicies();
-
-        /*foreach ($dataTypes as $dataType) {
-            Gate::resource($dataType->name, $dataType->name.'Policy', [
-                $dataType->name.'.browse' => 'browse',
-                $dataType->name.'.store' => 'store'
-            ]);
-        }*/
     }
 
     protected function registerFormFields()
