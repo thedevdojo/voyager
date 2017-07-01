@@ -31,7 +31,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('browse_'.$dataType->name);
+        $this->authorize('browse', app($dataType->model_name));
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 

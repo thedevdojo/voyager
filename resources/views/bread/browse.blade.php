@@ -5,7 +5,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
-        @can('create',$dataType->model_name)
+        @can('create',app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
                 <i class="voyager-plus"></i> {{ __('voyager.generic.add_new') }}
             </a>
