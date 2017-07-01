@@ -5,6 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
@@ -159,8 +160,20 @@ class Voyager
         require __DIR__.'/../routes/voyager.php';
     }
 
-    public function can($permission)
+    public function can($permission, $id = null, Request $request = null)
     {
+        $explode = explode('_',$permission,2);
+        if (count($explode) > 1) {
+            $method = 'can' . studly_case($explode[0]);
+            $dataType = DataType::where('name',$explode[1])->first();
+            if ($dataType) {
+                $model = app($dataType->model_name);
+                if (method_exists($model,$method)) {
+                    return call_user_func_array(array($model, $method),array($id, $request));
+                }
+            }
+        }
+
         $this->loadPermissions();
 
         // Check if permission exist
@@ -179,18 +192,18 @@ class Voyager
         return true;
     }
 
-    public function canOrFail($permission)
+    public function canOrFail($permission, $id = null, Request $request = null)
     {
-        if (!$this->can($permission)) {
+        if (!$this->can($permission, $id, $request)) {
             throw new UnauthorizedHttpException(null);
         }
 
         return true;
     }
 
-    public function canOrAbort($permission, $statusCode = 403)
+    public function canOrAbort($permission, $statusCode = 403, $id = null, Request $request = null)
     {
-        if (!$this->can($permission)) {
+        if (!$this->can($permission, $id, $request)) {
             return abort($statusCode);
         }
 

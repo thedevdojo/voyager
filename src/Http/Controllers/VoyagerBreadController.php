@@ -31,7 +31,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('browse_'.$dataType->name);
+        Voyager::canOrFail('browse_'.$dataType->name, $request);
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
@@ -86,7 +86,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('read_'.$dataType->name);
+        Voyager::canOrFail('read_'.$dataType->name, $id, $request);
 
         $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
@@ -132,7 +132,7 @@ class VoyagerBreadController extends Controller
 
         // Check permission if not the own profile
         if ($request->user()->id !== (int) $id) {
-            Voyager::canOrFail('edit_'.$dataType->name);
+            Voyager::canOrFail('edit_'.$dataType->name, $id, $request);
         }
 
         $relationships = $this->getRelationships($dataType);
@@ -167,7 +167,7 @@ class VoyagerBreadController extends Controller
 
         // Check permission if not the own profile
         if ($request->user()->id !== (int) $id) {
-            Voyager::canOrFail('edit_'.$dataType->name);
+            Voyager::canOrFail('edit_'.$dataType->name, $id, $request);
         }
 
         //Validate fields with ajax
@@ -211,7 +211,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
+        Voyager::canOrFail('add_'.$dataType->name, $request);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
@@ -242,7 +242,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
+        Voyager::canOrFail('add_'.$dataType->name, $request);
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
@@ -282,7 +282,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('delete_'.$dataType->name);
+        Voyager::canOrFail('delete_'.$dataType->name, $id, $request);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
