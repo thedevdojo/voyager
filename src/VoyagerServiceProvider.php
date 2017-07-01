@@ -7,18 +7,32 @@ use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\User;
+use TCG\Voyager\Policies\Policy;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
+
+
+use TCG\Voyager\Models\Page;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        Page::class =>  Policy::class
+    ];
+
     /**
      * Register the application services.
      */
@@ -41,6 +55,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->registerWidgets();
 
         $this->registerConfigs();
+        $this->registerGates();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
@@ -235,6 +250,15 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
         );
+    }
+
+    public function registerGates()
+    {
+        $this->registerPolicies();
+
+        Gate::resource('pages', 'Policy', [
+            'pages.browse' => 'browse'
+        ]);
     }
 
     protected function registerFormFields()
