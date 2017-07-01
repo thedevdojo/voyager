@@ -25,7 +25,7 @@ class VoyagerMediaController extends Controller
     {
         Voyager::canOrFail('browse_media');
 
-        return view('voyager::media.index');
+        return Voyager::view('voyager::media.index');
     }
 
     public function files(Request $request)

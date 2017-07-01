@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use TCG\Voyager\Facades\Voyager;
 
 class VoyagerAuthController extends Controller
 {
@@ -11,7 +12,7 @@ class VoyagerAuthController extends Controller
 
     public function login()
     {
-        return view('voyager::login');
+        return Voyager::view('voyager::login');
     }
 
     public function postLogin(Request $request)

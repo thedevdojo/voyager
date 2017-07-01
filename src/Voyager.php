@@ -38,6 +38,8 @@ class Voyager
 
     protected $users = [];
 
+    protected $viewLoadingEvents = [];
+
     protected $models = [
         'Category'   => Category::class,
         'DataRow'    => DataRow::class,
@@ -86,6 +88,25 @@ class Voyager
         $this->models[studly_case($name)] = $class;
 
         return $this;
+    }
+
+    public function view($name, array $parameters = [])
+    {
+        foreach (array_get($this->viewLoadingEvents, $name, []) as $event)
+        {
+            $event($name, $parameters);
+        }
+
+        return view($name, $parameters);
+    }
+
+    public function onLoadingView($name, \Closure $closure)
+    {
+        if (!isset($this->viewLoadingEvents[$name])) {
+            $this->viewLoadingEvents[$name] = [];
+        }
+
+        $this->viewLoadingEvents[$name][] = $closure;
     }
 
     public function formField($row, $dateType, $dataTypeContent)
