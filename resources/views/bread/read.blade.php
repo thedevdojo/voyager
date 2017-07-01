@@ -6,7 +6,7 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ __('voyager.generic.viewing') }} {{ ucfirst($dataType->display_name_singular) }} &nbsp;
 
-        @can('edit', $data)
+        @can('update', $dataTypeContent)
         <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
             {{ __('voyager.generic.edit') }}
