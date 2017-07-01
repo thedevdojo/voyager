@@ -142,7 +142,7 @@ class VoyagerBreadController extends Controller
         }
 
         // Check permission
-        $this->authorize('update', $dataTypeContent);
+        $this->authorize('edit', $dataTypeContent);
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -209,7 +209,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
+        $this->authorize('create', app($dataType->name));
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()

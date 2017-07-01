@@ -50,6 +50,20 @@ class Policy
     }
 
     /**
+     * Determine if the given model can be edited by the user.
+     *
+     * @param  \TCG\Voyager\Models\User  $user
+     * @param  $model
+     * @return bool
+     */
+    // TODO: Any way to get more specific on the $model parameter?
+    public function edit(User $user, $model)
+    {
+        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        return Voyager::can('edit_'.$dataType->name);
+    }
+
+    /**
      * Determine if the given user can store this model.
      *
      * @param  \TCG\Voyager\Models\User  $user
