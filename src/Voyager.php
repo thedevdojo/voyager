@@ -5,6 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
@@ -161,6 +162,16 @@ class Voyager
 
     public function can($permission)
     {
+        $explode = explode('_',$permission,2);
+        if (count($explode) > 1) {
+            $method = 'can' . studly_case($explode[0]);
+            $dataType = DataType::where('name',$explode[1])->firstOrFail();
+            $model = app($dataType->model_name);
+            if (method_exists($model,$method)) {
+                return call_user_func_array(array($model, $method));
+            }
+        }
+
         $this->loadPermissions();
 
         // Check if permission exist
