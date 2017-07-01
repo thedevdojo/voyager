@@ -27,7 +27,7 @@ class ViewEventTest extends TestCase
         });
     }
 
-    public function test_rendering_view_triggers_event()
+    public function testRenderingViewTriggersEvent()
     {
         // Load view, and test if view works
         $this->get('test')
@@ -49,7 +49,7 @@ class ViewEventTest extends TestCase
         $this->assertTrue($this->eventTrigered);
     }
 
-    public function test_overwriting_view_name()
+    public function testOverwritingViewName()
     {
         // Add event on test view
         Voyager::onLoadingView('test', function (&$name, array $parameters) {
@@ -61,7 +61,7 @@ class ViewEventTest extends TestCase
             ->see('This is the foo view');
     }
 
-    public function test_overwriting_view_name_and_parameters()
+    public function testOverwritingViewNameAndParameters()
     {
         // Add event on test view
         Voyager::onLoadingView('test', function (&$name, array &$parameters) {
