@@ -42,6 +42,19 @@ class Policy
     }
 
     /**
+     * Determine if the given user can store this model.
+     *
+     * @param  \TCG\Voyager\Models\User  $user
+     * @param  $model
+     * @return bool
+     */
+    // TODO: Any way to get more specific on the $model parameter?
+    public function store(User $user, $model)
+    {
+        return true;
+    }
+
+    /**
      * Determine if the given model can be updated by the user.
      *
      * @param  \TCG\Voyager\Models\User  $user

@@ -19,9 +19,6 @@ use TCG\Voyager\Models\User;
 use TCG\Voyager\Policies\Policy;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
-
-use TCG\Voyager\Models\Page;
-
 class VoyagerServiceProvider extends ServiceProvider
 {
     /**
@@ -29,9 +26,7 @@ class VoyagerServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
-        Page::class =>  Policy::class
-    ];
+    protected $policies = [];
 
     /**
      * Register the application services.
@@ -55,7 +50,6 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->registerWidgets();
 
         $this->registerConfigs();
-        $this->registerGates();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
@@ -97,6 +91,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
         }
 
+        $this->registerGates();
         $this->registerViewComposers();
 
         $event->listen('voyager.alerts.collecting', function () {
@@ -254,11 +249,20 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function registerGates()
     {
+        $dataTypes = VoyagerFacade::model('DataType')::get();
+        foreach ($dataTypes as $dataType) {
+            //TODO: Use custom policy when available
+            $this->policies[$dataType->model_name] = Policy::class;
+        }
+
         $this->registerPolicies();
 
-        Gate::resource('pages', 'Policy', [
-            'pages.browse' => 'browse'
-        ]);
+        foreach ($dataTypes as $dataType) {
+            Gate::resource($dataType->name, 'Policy', [
+                $dataType->name.'.browse' => 'browse',
+                $dataType->name.'.store' => 'store'
+            ]);
+        }
     }
 
     protected function registerFormFields()
