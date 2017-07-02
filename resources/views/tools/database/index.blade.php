@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title', __('voyager.generic.viewing').' '.__('voyager.generic.database'))
+
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-data"></i> {{ __('voyager.generic.database') }}

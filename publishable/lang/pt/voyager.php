@@ -141,7 +141,7 @@ return [
         'error_deleting_folder'  => 'Oops, ocorreu algo inesperado removendo esta pasta, por favor verifique as suas permissões',
         'error_may_exist'        => 'Talvez um Ficheiro ou Pasta exista com esse nome. Por favor tente com outro nome, ou apague o ficheiro correspondente.',
         'error_moving'           => 'Oops, ocorreu um problema ao mover esse ficheiro / pasta, verifique as suas permissões.',
-        'error_uploading'        => 'Falha ac Copiar: Ocorreu um erro desconhecido!',
+        'error_uploading'        => 'Falha ao Copiar: Ocorreu um erro desconhecido!',
         'folder_exists_already'  => 'Oops, essa pasta já existe, por favor remova essa pasta se desejar criar uma nova',
         'image_does_not_exist'   => 'A imagem não existe',
         'image_removed'          => 'Imagem removida',

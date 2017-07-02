@@ -259,7 +259,7 @@ class VoyagerBreadController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.edit", ['id' => $data->id])
                 ->with([
-                        'message'    => __('generic_successfully_added_new')." {$dataType->display_name_singular}",
+                        'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
         }
