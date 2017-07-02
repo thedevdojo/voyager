@@ -98,7 +98,7 @@ class VoyagerBreadController extends Controller
         $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
         // Check permission
-        $this->authorize('view', $dataTypeContent);
+        $this->authorize('show', $dataTypeContent);
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -209,7 +209,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        $this->authorize('create', app($dataType->name));
+        $this->authorize('create', app($dataType->model_name));
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
@@ -240,7 +240,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
+        $this->authorize('store', app($dataType->model_name));
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
@@ -280,7 +280,8 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('delete_'.$dataType->name);
+        $model = app($dataType->model_name)::where('id',$id)->get();
+        $this->authorize('store', $model);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 

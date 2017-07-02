@@ -6,6 +6,7 @@ use Auth;
 use TCG\Voyager\Facades\Voyager as Voyager;
 use TCG\Voyager\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Http\Request;
 
 class Policy
 {
@@ -28,7 +29,6 @@ class Policy
      * @param  $model
      * @return bool
      */
-    // TODO: Any way to get more specific on the $model parameter?
     public function browse(User $user, $model)
     {
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
@@ -42,7 +42,6 @@ class Policy
      * @param  $model
      * @return bool
      */
-    // TODO: Any way to get more specific on the $model parameter?
     public function create(User $user, $model)
     {
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
@@ -56,7 +55,6 @@ class Policy
      * @param  $model
      * @return bool
      */
-    // TODO: Any way to get more specific on the $model parameter?
     public function edit(User $user, $model)
     {
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
@@ -70,9 +68,9 @@ class Policy
      * @param  $model
      * @return bool
      */
-    // TODO: Any way to get more specific on the $model parameter?
     public function store(User $user, $model)
     {
+        dump($model);exit();
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
         return Voyager::can('add_'.$dataType->name);
     }
@@ -84,7 +82,6 @@ class Policy
      * @param  $model
      * @return bool
      */
-    // TODO: Any way to get more specific on the $model parameter?
     public function update(User $user, $model)
     {
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
@@ -98,8 +95,7 @@ class Policy
      * @param  $model
      * @return bool
      */
-    // TODO: Any way to get more specific on the $model parameter?
-    public function view(User $user, $model)
+    public function show(User $user, $model)
     {
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
         return Voyager::can('read_'.$dataType->name);
@@ -112,7 +108,6 @@ class Policy
      * @param  $model
      * @return bool
      */
-    // TODO: Any way to get more specific on the $model parameter?
     public function delete(User $user, $model)
     {
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
