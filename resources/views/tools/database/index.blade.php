@@ -72,7 +72,7 @@
                             <a href="{{ route('voyager.database.show', $table->name) }}"
                                data-name="{{ $table->name }}"
                                class="btn-sm btn-warning pull-right desctable" style="display:inline; margin-right:10px;">
-                               <i class="voyager-eye"></i> {{ __('voyager.generic.edit') }}
+                               <i class="voyager-eye"></i> {{ __('voyager.generic.view') }}
                             </a>
                         </td>
                     </tr>
