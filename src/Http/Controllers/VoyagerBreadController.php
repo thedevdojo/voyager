@@ -187,9 +187,9 @@ class VoyagerBreadController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                    'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
-                    ]);
+                ]);
         }
     }
 
