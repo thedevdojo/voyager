@@ -336,9 +336,10 @@ abstract class Controller extends BaseController
                 if (empty($coordinates = $request->input($row->field))) {
                     $content = null;
                 } else {
-                    //DB::connection()->getPdo()->quote won't work as it quotes the lat/lng, which leads to wrong Geometry type in POINT() MySQL constructor
-                    $lat = (float)($coordinates['lat']);
-                    $lng = (float)($coordinates['lng']);
+                    //DB::connection()->getPdo()->quote won't work as it quotes the
+                    // lat/lng, which leads to wrong Geometry type in POINT() MySQL constructor
+                    $lat = (float) ($coordinates['lat']);
+                    $lng = (float) ($coordinates['lng']);
                     $content = DB::raw('GeomFromText("POINT('.$lat.' '.$lng.')")');
                 }
                 break;

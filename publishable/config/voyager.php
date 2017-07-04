@@ -233,7 +233,7 @@ return [
             'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT'),
             'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG'),
         ],
-        'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM')
+        'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM'),
     ],
 
 ];
