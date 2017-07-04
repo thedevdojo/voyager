@@ -344,7 +344,6 @@ abstract class Controller extends BaseController
                 }
                 break;
 
-
             /********** ALL OTHER TEXT TYPE **********/
             default:
                 $value = $request->input($row->field);
