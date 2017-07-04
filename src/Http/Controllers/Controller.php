@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
 use TCG\Voyager\Traits\AlertsMessages;
@@ -329,6 +330,16 @@ abstract class Controller extends BaseController
                     }
                 }
                 break;
+
+            /********** COORDINATES TYPE **********/
+            case 'coordinates':
+                if (empty($coordinates = $request->input($row->field))) {
+                    $content = null;
+                } else {
+                    $content = DB::raw('GeomFromText("POINT(' . $coordinates['lat'] . ' '. $coordinates['lng'] . ')")');
+                }
+                break;
+
 
             /********** ALL OTHER TEXT TYPE **********/
             default:
