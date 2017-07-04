@@ -2,7 +2,7 @@
 
 namespace TCG\Voyager\FormFields;
 
-class CoordinatesHandler  extends AbstractHandler
+class CoordinatesHandler extends AbstractHandler
 {
     protected $codename = 'coordinates';
 
