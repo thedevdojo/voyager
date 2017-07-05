@@ -11,6 +11,7 @@ trait Spatial
      * Manipulate in case we need to convert geometrical fields to text.
      *
      * @param bool $excludeDeleted
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function newQuery($excludeDeleted = true)
@@ -21,8 +22,10 @@ trait Spatial
                 $raw .= 'AsText(`'.$this->table.'`.`'.$column.'`) as `'.$column.'`, ';
             }
             $raw = substr($raw, 0, -2);
+
             return parent::newQuery($excludeDeleted)->addSelect('*', DB::raw($raw));
         }
+
         return parent::newQuery($excludeDeleted);
     }
 
