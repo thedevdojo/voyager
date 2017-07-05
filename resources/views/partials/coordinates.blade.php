@@ -4,8 +4,6 @@
         width: 100%;
     }
 </style>
-<input type="hidden" name="{{ $row->field }}[lat]" value="{{ config('voyager.googlemaps.center.lat') }}" id="lat"/>
-<input type="hidden" name="{{ $row->field }}[lng]" value="{{ config('voyager.googlemaps.center.lng') }}" id="lng"/>
 
 <script type="application/javascript">
     function initMap() {
@@ -15,25 +13,13 @@
             center: center
         });
         var markers = [];
-        @forelse($dataTypeContent->getCoordinates() as $point)
+        @foreach($dataTypeContent->getCoordinates() as $point)
             var marker = new google.maps.Marker({
                     position: {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}},
-                    map: map,
-                    draggable: true
+                    map: map
                 });
             markers.push(marker);
-        @empty
-            var marker = new google.maps.Marker({
-                    position: center,
-                    map: map,
-                    draggable: true
-                });
-        @endforelse
-
-        google.maps.event.addListener(marker,'dragend',function(event) {
-            document.getElementById('lat').value = this.position.lat();
-            document.getElementById('lng').value = this.position.lng();
-        });
+        @endforeach
     }
 </script>
 <div id="map"/>
