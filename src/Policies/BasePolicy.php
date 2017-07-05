@@ -8,7 +8,7 @@ use TCG\Voyager\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Request;
 
-class Policy
+class BasePolicy
 {
     use HandlesAuthorization;
 
@@ -31,7 +31,7 @@ class Policy
      */
     public function browse(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        $dataType = Voyager::model('DataType')::where('model_name', get_class($model))->first();
         return Voyager::can('browse_'.$dataType->name);
     }
 
