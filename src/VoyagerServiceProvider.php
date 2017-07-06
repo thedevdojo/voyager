@@ -9,14 +9,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\User;
-use TCG\Voyager\Policies\Policy;
+use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -250,9 +249,15 @@ class VoyagerServiceProvider extends ServiceProvider
     public function registerGates()
     {
         $dataTypes = VoyagerFacade::model('DataType')::get();
+
         foreach ($dataTypes as $dataType) {
-            //TODO: Use custom policy when available
-            $this->policies[$dataType->model_name] = Policy::class;
+            $policyClass = BasePolicy::class;
+            if (isset($dataType->policy_name) && $dataType->policy_name !== ''
+                && class_exists($dataType->policy_name)) {
+
+                $policyClass = $dataType->policy_name;
+            }
+            $this->policies[$dataType->model_name] = $policyClass;
         }
 
         $this->registerPolicies();
