@@ -23,6 +23,7 @@ class DataType extends Model
         'display_name_plural',
         'icon',
         'model_name',
+        'policy_name',
         'controller',
         'description',
         'generate_permissions',

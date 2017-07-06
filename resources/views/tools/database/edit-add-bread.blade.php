@@ -113,12 +113,22 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
+                                    <label for="email">{{ __('voyager.database.policy_name') }}</label>
+                                    <span class="voyager-question"
+                                          aria-hidden="true"
+                                          data-toggle="tooltip"
+                                          data-placement="right"
+                                          title="{{ __('voyager.database.policy_name_ph') }}"></span>
+                                    <input type="text" class="form-control" name="policy_name" placeholder="{{ __('voyager.database.policy_class') }}"
+                                           value="@if(isset($dataType->policy_name)){{ $dataType->policy_name }}@endif">
+                                </div>
+                                <div class="col-md-3 form-group">
                                     <label for="generate_permissions">{{ __('voyager.database.generate_permissions') }}</label><br>
                                     <?php $checked = (isset($dataType->generate_permissions) && $dataType->generate_permissions == 1) ? true : (isset($generate_permissions) && $generate_permissions) ? true : false; ?>
                                     <input type="checkbox" name="generate_permissions" class="toggleswitch"
                                            @if($checked) checked @endif>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-3 form-group">
                                     <label for="server_side">{{ __('voyager.database.server_pagination') }}</label><br>
                                     <?php $checked = (isset($dataType->server_side) && $dataType->server_side == 1) ? true : (isset($server_side) && $server_side) ? true : false; ?>
                                     <input type="checkbox" name="server_side" class="toggleswitch"
