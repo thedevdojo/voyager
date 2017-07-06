@@ -13,16 +13,6 @@ class BasePolicy
     use HandlesAuthorization;
 
     /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Determine if the given user can browse the model.
      *
      * @param  \TCG\Voyager\Models\User  $user
@@ -36,16 +26,16 @@ class BasePolicy
     }
 
     /**
-     * Determine if the given user can create the model.
+     * Determine if the given model can be viewed by the user.
      *
      * @param  \TCG\Voyager\Models\User  $user
      * @param  $model
      * @return bool
      */
-    public function create(User $user, $model)
+    public function read(User $user, $model)
     {
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
-        return Voyager::can('add_'.$dataType->name);
+        return Voyager::can('read_'.$dataType->name);
     }
 
     /**
@@ -62,43 +52,16 @@ class BasePolicy
     }
 
     /**
-     * Determine if the given user can store this model.
+     * Determine if the given user can create the model.
      *
      * @param  \TCG\Voyager\Models\User  $user
      * @param  $model
      * @return bool
      */
-    public function store(User $user, $model)
+    public function add(User $user, $model)
     {
-        dump($model);exit();
         $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
         return Voyager::can('add_'.$dataType->name);
-    }
-
-    /**
-     * Determine if the given model can be updated by the user.
-     *
-     * @param  \TCG\Voyager\Models\User  $user
-     * @param  $model
-     * @return bool
-     */
-    public function update(User $user, $model)
-    {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
-        return Voyager::can('edit_'.$dataType->name);
-    }
-
-    /**
-     * Determine if the given model can be viewed by the user.
-     *
-     * @param  \TCG\Voyager\Models\User  $user
-     * @param  $model
-     * @return bool
-     */
-    public function show(User $user, $model)
-    {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
-        return Voyager::can('read_'.$dataType->name);
     }
 
     /**

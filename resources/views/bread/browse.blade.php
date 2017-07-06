@@ -5,7 +5,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
-        @can('create',app($dataType->model_name))
+        @can('add',app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
                 <i class="voyager-plus"></i> {{ __('voyager.generic.add_new') }}
             </a>
@@ -103,12 +103,12 @@
                                                 <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete') }}</span>
                                             </a>
                                         @endcan
-                                        @can('update', $data)
+                                        @can('edit', $data)
                                             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
                                             </a>
                                         @endcan
-                                        @can('view', $data)
+                                        @can('read', $data)
                                             <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
                                                 <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
                                             </a>
