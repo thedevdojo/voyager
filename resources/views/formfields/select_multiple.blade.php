@@ -14,7 +14,31 @@
                 $relationshipOptions = $dataTypeContent->$relationshipListMethod();
             } else {
                 $relationshipClass = get_class(app($dataType->model_name)->{camel_case($row->field)}()->getRelated());
-                $relationshipOptions = $relationshipClass::all();
+                if (isset($options->relationship->where)) {
+                    $relationshipOptions = $relationshipClass::where(
+                            $options->relationship->where[0],
+                            $options->relationship->where[1]
+                    )->get();
+                } elseif (isset($options->relationship->scopes)) {
+
+                    $relationshipOptions = $relationshipClass::all();
+                    foreach ($options->relationship->scopes as $scope) {
+                        $scopeParameters = explode(",", $scope);
+
+                        $dynamicScope = count($scopeParameters) > 1 ? true : false;
+                        $scopeName = camel_case($scopeParameters[0]);
+                        if ($dynamicScope) {
+                            $scopeVal = camel_case($scopeParameters[1]);
+                            $relationshipOptions = $relationshipOptions->intersect($relationshipClass::{$scopeName}($scopeVal)->get());
+
+                        } else {
+                            $relationshipOptions = $relationshipOptions->intersect($relationshipClass::{$scopeName}()->get());
+
+                        }
+                    }
+                } else {
+                    $relationshipOptions = $relationshipClass::all();
+                }  
             }
             ?>
             @foreach($relationshipOptions as $relationshipOption)
