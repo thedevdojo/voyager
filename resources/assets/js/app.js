@@ -5,9 +5,9 @@ window.toastr = require('./toastr');
 window.DataTable = require('./bootstrap-datatables');
 window.SimpleMDE = require('simplemde');
 window.tooltip = require('./bootstrap-tooltip');
+window.MediaManager = require('./media');
 require('dropzone');
 require('./readmore');
-require('./media');
 require('./jquery-match-height');
 require('./bootstrap-toggle');
 require('./jquery-cookie');
@@ -26,9 +26,8 @@ require('./voyager_tinymce');
 require('./voyager_ace_editor');
 require('./helpers.js');
 
-
-
 $(document).ready(function(){
+
     var appContainer = $(".app-container"),
         sidebarAnchor = $('#sidebar-anchor'),
         fadedOverlay = $('.fadetoblack'),
