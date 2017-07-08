@@ -29,9 +29,6 @@
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
-                        @if(!$loop->last)
-                            <hr style="margin:0;">
-                        @endif
                     @endforeach
 
                     <div class="panel-heading" style="border-bottom:0;">
@@ -41,8 +38,6 @@
                     <div class="panel-body" style="padding-top:0;">
                         <p>{{$dataTypeContent->role->display_name}}</p>
                     </div>
-
-
                 </div>
             </div>
         </div>

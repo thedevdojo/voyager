@@ -26373,6 +26373,10 @@ p#the_plugin_name {
   margin-top: 360px;
 }
 
+.page-content.read .panel .panel-body:not(:last-child) {
+  border-bottom: 1px solid #eeeeee;
+}
+
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title {
   text-transform: uppercase;
   position: relative;

@@ -26,10 +26,7 @@
             <div class="col-md-12">
 
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
-
-                    <!-- /.box-header -->
                     <!-- form start -->
-
                     @foreach($dataType->readRows as $row)
                         @php $rowDetails = json_decode($row->details); @endphp
 
@@ -84,9 +81,6 @@
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
-                        @if(!$loop->last)
-                            <hr style="margin:0;">
-                        @endif
                     @endforeach
 
                 </div>
