@@ -26380,6 +26380,13 @@ p#the_plugin_name {
   border-bottom: 1px solid #eeeeee;
 }
 
+.page-content > .row > [class*="col-"]:not(:first-child) {
+  padding-left: 8px;
+}
+.page-content > .row > [class*="col-"]:not(:last-child) {
+  padding-right: 8px;
+}
+
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title {
   text-transform: uppercase;
   position: relative;
