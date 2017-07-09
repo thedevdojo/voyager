@@ -98,7 +98,7 @@ class VoyagerBreadController extends Controller
         $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
         // Check permission
-        $this->authorize('show', $dataTypeContent);
+        $this->authorize('read', $dataTypeContent);
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -163,10 +163,10 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission if not the own profile
-        if ($request->user()->id !== (int) $id) {
-            Voyager::canOrFail('edit_'.$dataType->name);
-        }
+        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
+        // Check permission
+        $this->authorize('edit', $data);
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows);
@@ -176,8 +176,6 @@ class VoyagerBreadController extends Controller
         }
 
         if (!$request->ajax()) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
             return redirect()
@@ -209,7 +207,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        $this->authorize('create', app($dataType->model_name));
+        $this->authorize('add', app($dataType->model_name));
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
@@ -240,7 +238,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        $this->authorize('store', app($dataType->model_name));
+        $this->authorize('edit', app($dataType->model_name));
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
@@ -281,7 +279,7 @@ class VoyagerBreadController extends Controller
 
         // Check permission
         $model = app($dataType->model_name)::where('id',$id)->get();
-        $this->authorize('store', $model);
+        $this->authorize('delete', $model);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 

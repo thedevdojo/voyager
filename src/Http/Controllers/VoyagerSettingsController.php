@@ -11,7 +11,7 @@ class VoyagerSettingsController extends Controller
     public function index()
     {
         // Check permission
-        Voyager::canOrFail('browse_settings');
+        $this->authorize('browse', Voyager::model('Setting'));
 
         $settings = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
 
@@ -21,7 +21,7 @@ class VoyagerSettingsController extends Controller
     public function store(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('browse_settings');
+        $this->authorize('browse', Voyager::model('Setting'));
 
         $lastSetting = Voyager::model('Setting')->orderBy('order', 'DESC')->first();
 
@@ -45,7 +45,7 @@ class VoyagerSettingsController extends Controller
     public function update(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('visit_settings');
+        $this->authorize('browse', Voyager::model('Setting'));
 
         $settings = Voyager::model('Setting')->all();
 
@@ -72,10 +72,8 @@ class VoyagerSettingsController extends Controller
 
     public function delete($id)
     {
-        Voyager::canOrFail('browse_settings');
-
         // Check permission
-        Voyager::canOrFail('visit_settings');
+        $this->authorize('browse', Voyager::model('Setting'));
 
         Voyager::model('Setting')->destroy($id);
 
@@ -88,6 +86,10 @@ class VoyagerSettingsController extends Controller
     public function move_up($id)
     {
         $setting = Voyager::model('Setting')->find($id);
+
+        // Check permission
+        $this->authorize('browse', $setting);
+
         $swapOrder = $setting->order;
         $previousSetting = Voyager::model('Setting')->where('order', '<', $swapOrder)->orderBy('order', 'DESC')->first();
         $data = [
@@ -112,10 +114,10 @@ class VoyagerSettingsController extends Controller
 
     public function delete_value($id)
     {
-        // Check permission
-        Voyager::canOrFail('browse_settings');
-
         $setting = Voyager::model('Setting')->find($id);
+
+        // Check permission
+        $this->authorize('browse', $setting);
 
         if (isset($setting->id)) {
             // If the type is an image... Then delete it
@@ -137,6 +139,10 @@ class VoyagerSettingsController extends Controller
     public function move_down($id)
     {
         $setting = Voyager::model('Setting')->find($id);
+
+        // Check permission
+        $this->authorize('browse', $setting);
+
         $swapOrder = $setting->order;
 
         $previousSetting = Voyager::model('Setting')->where('order', '>', $swapOrder)->orderBy('order', 'ASC')->first();
