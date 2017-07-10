@@ -16,7 +16,7 @@ return [
         'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
     ],
-    
+
     'auth' => [
         /*
          * The guard to use for authenticating to Voyager's admin panel.
