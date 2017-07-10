@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager;
+use Illuminate\Support\Facades\Auth;
 
 class VoyagerAuthController extends Controller
 {
@@ -48,5 +49,15 @@ class VoyagerAuthController extends Controller
     public function redirectTo()
     {
         return route('voyager.dashboard');
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard(config('voyager.auth.guard'));
     }
 }
