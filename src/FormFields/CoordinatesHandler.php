@@ -4,6 +4,11 @@ namespace TCG\Voyager\FormFields;
 
 class CoordinatesHandler extends AbstractHandler
 {
+    protected $supports = [
+        'mysql',
+        'pgsql',
+    ];
+
     protected $codename = 'coordinates';
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
