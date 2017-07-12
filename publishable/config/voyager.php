@@ -230,10 +230,10 @@ return [
     'googlemaps' => [
         'key'    => env('GOOGLE_MAPS_KEY'),
         'center' => [
-            'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT'),
-            'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG'),
+            'lat' => '',
+            'lng' => '',
         ],
-        'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM'),
+        'zoom' => '',
     ],
 
 ];

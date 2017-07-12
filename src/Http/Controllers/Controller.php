@@ -340,7 +340,7 @@ abstract class Controller extends BaseController
                     // lat/lng, which leads to wrong Geometry type in POINT() MySQL constructor
                     $lat = (float) ($coordinates['lat']);
                     $lng = (float) ($coordinates['lng']);
-                    $content = DB::raw('GeomFromText("POINT('.$lat.' '.$lng.')")');
+                    $content = DB::raw('ST_GeomFromText(\'POINT('.$lat.' '.$lng.')\')');
                 }
                 break;
 
