@@ -19,7 +19,7 @@ trait Spatial
         if (!empty($this->spatial)) {
             $raw = '';
             foreach ($this->spatial as $column) {
-                $raw .= 'ST_AsText(' . $column . ') AS ' . $column . ', ';
+                $raw .= 'ST_AsText('.$column.') AS '.$column.', ';
             }
             $raw = substr($raw, 0, -2);
 
