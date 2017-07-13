@@ -18,12 +18,7 @@
                 <input type="checkbox" name="create_model" data-toggle="toggle"
                        data-on="{{ __('voyager.generic.yes_please') }}" data-off="{{ __('voyager.generic.no_thanks') }}">
             </div>
-
-            <div class="col-md-3 col-sm-4 col-xs-6">
-                <label for="create_migration">{{ __('voyager.database.create_migration') }}</label><br>
-                <input disabled type="checkbox" name="create_migration" data-toggle="toggle"
-                       data-on="{{ __('voyager.generic.yes_please') }}" data-off="{{ __('voyager.generic.no_thanks') }}">
-            </div>
+            
         @endif
         </div><!-- .panel-body .row -->
 
