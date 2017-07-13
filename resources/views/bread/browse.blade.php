@@ -99,8 +99,16 @@
                                     @endforeach
                                     <td class="no-sort no-click" id="bread-actions">
                                         @if (Voyager::can('delete_'.$dataType->name))
-                                            <a href="javascript:;" title="{{ __('voyager.generic.delete') }}" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->primaryKey} }}" id="delete-{{ $data->{$data->primaryKey} }}">
-                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete') }}</span>
+                                            <a
+                                                href="javascript:;"
+                                                title="{{ __('voyager.generic.delete') }}"
+                                                class="btn btn-sm btn-danger pull-right delete"
+                                                data-id="{{ $data->{$data->primaryKey} }}"
+                                                id="delete-{{ $data->{$data->primaryKey} }}"
+                                            >
+                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">
+                                                    {{ __('voyager.generic.delete') }}
+                                                </span>
                                             </a>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
