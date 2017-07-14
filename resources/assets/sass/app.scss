@@ -2404,7 +2404,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 .voyager .navbar > .container-fluid,
 .voyager .navbar.navbar-default > .container-fluid:after {
     border-bottom: 1px solid #eee;
-    width: 98%;
+    width: 99.5%;
     height: 1px;
 }
 
@@ -2957,7 +2957,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 }
 
 .voyager .btn.btn-warning {
-    background: #FABE28;
+    background: #f39c12;
     color: #fff;
     border: 0px;
     border-radius: 3px;
@@ -3993,6 +3993,8 @@ overflow-x: hidden;
   cursor:pointer;
   opacity:1;
   transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  padding-left: 25px;
+  margin-right: 0px;
 }
 
 .hamburger:hover{
@@ -4581,7 +4583,7 @@ float: left;
 }
 
 .modal-open .select2-container{
-  z-index: 10 !important;
+  z-index: 999999 !important;
   width:100% !important;
 }
 

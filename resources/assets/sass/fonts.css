@@ -86,9 +86,6 @@
 .voyager-group:before {
   content: "\6b";
 }
-.voyager-plus:before {
-  content: "\72";
-}
 .voyager-person:before {
   content: "\73";
 }
@@ -637,4 +634,25 @@
 }
 .voyager-logbook:before {
   content: "\e069";
+}
+.voyager-plus:before {
+  content: "\e06a";
+}
+.voyager-documentation:before {
+  content: "\72";
+}
+.voyager-belt:before {
+  content: "\e06b";
+}
+.voyager-zoom-in:before {
+  content: "\e06c";
+}
+.voyager-zoom-out:before {
+  content: "\e06d";
+}
+.voyager-scissors:before {
+  content: "\e06e";
+}
+.voyager-github-icon:before {
+  content: "\e06f";
 }
