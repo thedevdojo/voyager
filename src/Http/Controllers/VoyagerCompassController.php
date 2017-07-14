@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerCompassController extends Controller
@@ -15,5 +13,4 @@ class VoyagerCompassController extends Controller
 
         return view('voyager::compass.index');
     }
-
 }
