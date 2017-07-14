@@ -107,7 +107,6 @@ Route::group(['as' => 'voyager.'], function () {
             Route::delete('bread/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@deleteBread',  'as' => 'delete']);
         });
 
-
         // Compass Routes
         Route::group([
             'as'     => 'compass.',
