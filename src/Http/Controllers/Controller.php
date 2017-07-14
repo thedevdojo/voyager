@@ -258,12 +258,16 @@ abstract class Controller extends BaseController
             case 'image':
                 if ($request->hasFile($row->field)) {
                     $file = $request->file($row->field);
-                    $filename = Str::random(20);
+                    $options = json_decode($row->details);
+
+                    if (isset($options->preserveFileUploadName) && $options->preserveFileUploadName) {
+                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+                    } else {
+                        $filename = Str::random(20);
+                    }
 
                     $path = $slug.'/'.date('F').date('Y').'/';
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
-
-                    $options = json_decode($row->details);
 
                     if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
                         $resize_width = $options->resize->width;
