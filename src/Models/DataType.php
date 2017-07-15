@@ -75,6 +75,13 @@ class DataType extends Model
         try {
             DB::beginTransaction();
 
+            // Prepare data
+            foreach (['generate_permissions', 'server_side'] as $field) {
+                if (!isset($requestData[$field])) {
+                    $requestData[$field] = 0;
+                }
+            }
+
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields(array_get($requestData, 'name'));
 

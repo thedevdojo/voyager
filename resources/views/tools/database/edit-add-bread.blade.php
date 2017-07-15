@@ -216,7 +216,7 @@
                                         <input type="checkbox"
                                                id="field_delete_{{ $data['field'] }}"
                                                name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
-                                                <label for="field_delete_{{ $data['field'] }}">{{ __('voyager.generic.add') }}</label><br/>
+                                                <label for="field_delete_{{ $data['field'] }}">{{ __('voyager.generic.delete') }}</label><br/>
                                     </div>
                                     <div class="col-xs-2">
                                         <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">

@@ -296,8 +296,8 @@ th {
 
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url("../fonts/bootstrap/glyphicons-halflings-regular.eot");
-  src: url("../fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+  src: url("../fonts/glyphicons-halflings-regular.eot");
+  src: url("../fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 
 .glyphicon {
@@ -15224,11 +15224,10 @@ a:hover {
 .app-container .content-container .side-menu .navbar-nav li a {
   font-family: 'Open Sans', sans-serif;
   padding: 0 10px 0 10px;
-  height: 50px;
-  line-height: 50px;
+  height: 46px;
+  line-height: 46px;
   display: block;
   white-space: nowrap;
-  font-size: 15px;
 }
 
 .app-container .content-container .side-menu .navbar-nav li a .icon {
@@ -15403,7 +15402,7 @@ a:hover {
 .app-container .side-body {
   margin-left: 75px;
   margin-right: 15px;
-  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 0.25s;
 }
 
 .app-container.expanded .side-body {
@@ -25121,7 +25120,7 @@ html, body {
 
 .voyager .side-menu.sidebar-inverse {
   background-color: #353d47;
-  box-shadow: 0px 0px 0px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .voyager .side-menu.sidebar-inverse .navbar {
@@ -26389,7 +26388,7 @@ p#the_plugin_name {
 .voyager .side-menu.sidebar-inverse .navbar li.active > a {
   color: #fff;
   background: none;
-  border-left: 0px;
+  border: 0px;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a {
@@ -26412,11 +26411,11 @@ p#the_plugin_name {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#353d47', endColorstr='#21292e',GradientType=1 );
   /* IE6-9 fallback on horizontal gradient */
   overflow-x: hidden;
-  transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: width 0.25s;
 }
 
 .app-container .side-body, .app-container.expanded .content-container .navbar-top, .app-container .content-container .navbar-top {
-  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 0.4s ease-in-out;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a:hover {
@@ -26433,16 +26432,16 @@ p#the_plugin_name {
   padding: 28px 30px;
   cursor: pointer;
   opacity: 1;
-  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: opacity 0.2s ease;
 }
 
 .hamburger:hover {
   opacity: 0.7;
-  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: opacity 0.2s ease;
 }
 
 .hamburger-inner {
-  width: 15px;
+  width: 20px;
   height: 2px;
   background: #76838F;
   display: block;
@@ -26452,11 +26451,11 @@ p#the_plugin_name {
   margin-left: -10px;
   margin-top: -1px;
   position: absolute;
-  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: opacity 0.6s ease;
 }
 
 .hamburger-inner:after {
-  width: 10px;
+  width: 20px;
   height: 2px;
   background: #76838F;
   display: block;
@@ -26464,7 +26463,9 @@ p#the_plugin_name {
   position: absolute;
   bottom: -5px;
   content: '';
-  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: bottom 0.1s ease, -webkit-transform 0.15s 0.1s cubic-bezier(0.295, 0.03, 0.685, 0.22);
+  transition: bottom 0.1s ease, transform 0.15s 0.1s cubic-bezier(0.295, 0.03, 0.685, 0.22);
+  transition: bottom 0.1s ease, transform 0.15s 0.1s cubic-bezier(0.295, 0.03, 0.685, 0.22), -webkit-transform 0.15s 0.1s cubic-bezier(0.295, 0.03, 0.685, 0.22);
 }
 
 .hamburger-inner:before {
@@ -26476,21 +26477,17 @@ p#the_plugin_name {
   position: absolute;
   content: '';
   top: -5px;
-  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.hamburger.is-active .hamburger-inner {
-  width: 20px;
+  transition: bottom 0.1s ease, -webkit-transform 0.15s 0.1s cubic-bezier(0.295, 0.03, 0.685, 0.22);
+  transition: bottom 0.1s ease, transform 0.15s 0.1s cubic-bezier(0.295, 0.03, 0.685, 0.22);
+  transition: bottom 0.1s ease, transform 0.15s 0.1s cubic-bezier(0.295, 0.03, 0.685, 0.22), -webkit-transform 0.15s 0.1s cubic-bezier(0.295, 0.03, 0.685, 0.22);
 }
 
 .hamburger.is-active .hamburger-inner:before {
-  width: 20px;
   -webkit-transform: translate3d(-5px, 1px, 0) rotate(-45deg) scaleX(0.5);
   transform: translate3d(-5px, 1px, 0) rotate(-45deg) scaleX(0.5);
 }
 
 .hamburger.is-active .hamburger-inner:after {
-  width: 20px;
   -webkit-transform: translate3d(-5px, -1px, 0) rotate(45deg) scaleX(0.5);
   transform: translate3d(-5px, -1px, 0) rotate(45deg) scaleX(0.5);
 }
@@ -26921,20 +26918,21 @@ p#the_plugin_name {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c92d353d', endColorstr='#802d353d',GradientType=1 );
   /* IE6-9 fallback on horizontal gradient */
   opacity: 1;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease;
   position: absolute;
   left: 0px;
   top: 0px;
   width: 100%;
   height: 100%;
-  border-radius: 0px;
+  border-radius: 3px;
+}
+
+.panel.widget:hover .dimmer {
+  opacity: 0.9;
 }
 
 .side-menu .panel.widget .dimmer {
   border-radius: 0px;
-}
-
-.side-menu:hover .panel.widget .dimmer, .expanded .side-menu .panel.widget .dimmer {
   background: linear-gradient(275deg, #242c32 0%, rgba(36, 44, 50, 0.95) 34%, rgba(36, 44, 50, 0.7) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#242c32', endColorstr='#00242c32',GradientType=1 );
 }
@@ -26945,7 +26943,8 @@ p#the_plugin_name {
 }
 
 .side-menu .panel.widget {
-  padding: 12px 0;
+  padding: 8px 0;
+  padding-bottom: 6px;
   margin: 0px;
   border-radius: 0px;
 }
@@ -26964,12 +26963,10 @@ p#the_plugin_name {
 }
 
 .app-container .side-menu .panel.widget .avatar {
-  width: 36px;
+  width: 40px;
   float: left;
-  margin-left: 12px;
-  border: 0px;
-  position: relative;
-  top: 3px;
+  margin-left: 10px;
+  border: 2px solid rgba(51, 59, 69, 0.5);
 }
 
 .app-container .side-menu .panel.widget h4 {
@@ -26998,7 +26995,7 @@ p#the_plugin_name {
 
 .app-container .side-menu:hover .panel.widget .avatar {
   float: left;
-  margin-left: 12px;
+  margin-left: 10px;
   transition: none;
 }
 
