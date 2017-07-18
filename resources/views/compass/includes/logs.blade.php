@@ -1,5 +1,5 @@
 
-<div class="col-sm-3 col-md-2 sidebar">
+<div class="col-sm-3 col-md-3 sidebar">
   <h3><i class="voyager-logbook"></i> Logs <small>Your app logs.</small></h3>
   <div class="list-group">
     @foreach($files as $file)
@@ -10,7 +10,7 @@
     @endforeach
   </div>
 </div>
-<div class="col-sm-9 col-md-10 table-container">
+<div class="col-sm-9 col-md-9 table-container">
   @if ($logs === null)
     <div>
       Log file >50M, please download it.

@@ -77,8 +77,7 @@
               </div>
             </div>
           <div id="commands" class="tab-pane fade in">
-            <h3>Menu 1</h3>
-            <p>Some content in menu 1.</p>
+            <h3><i class="voyager-terminal"></i> Commands <small>Run Artisan Commands from Voyager.</small></h3>
           </div>
           <div id="logs" class="tab-pane fade in @if($active_tab == 'logs'){!! 'active' !!}@endif">
             <div class="row">
