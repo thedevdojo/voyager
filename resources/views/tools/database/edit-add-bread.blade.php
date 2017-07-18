@@ -101,7 +101,7 @@
                                         data-placement="right"
                                         title="{{ __('voyager.database.model_name_ph') }}"></span>
                                     <input type="text" class="form-control" name="model_name" placeholder="{{ __('voyager.database.model_class') }}"
-                                           value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
+                                           value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">{{ __('voyager.database.controller_name') }}</label>
