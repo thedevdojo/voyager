@@ -1,20 +1,11 @@
 // src URL for news and other Voyager related stuff
 var remote_src_url = 'https://s3.amazonaws.com/laravelvoyager/voyager.js';
 
-if(urlExists(remote_src_url)){
-    loadJS(remote_src_url)
-}
+loadVoyagerRemoteJS(remote_src_url);
 
-function urlExists(url)
+function loadVoyagerRemoteJS(url)
 {
-    var http = new XMLHttpRequest();
-    http.open('GET', url, true);
-    http.send();
-    return http.status!=404;
-
-} 
-
-function loadJS(url){
+    // dynamically Load the script if it exists
     var script = document.createElement("script");
     script.type = "text/javascript";
     script.setAttribute("async", "");
