@@ -109,12 +109,14 @@ return [
     ],
 
     'settings' => [
-        'usage_help'           => 'Vous pouvez obtenir la valeur de chaque paramètre n\'importe où sur votre site en appelant',
+        'usage_help'           => 'Vous pouvez obtenir la valeur de chaque paramètre n\'importe où sur votre site en '.
+                                  'appelant',
         'save'                 => 'Enregistrer les paramètres',
         'new'                  => 'Nouveau paramètre',
         'help_name'            => 'Nom du paramètre, exemple : Titre de l\'espace d\'administration',
         'help_key'             => 'Clé de paramètre, exemple : titre_admin',
-        'help_option'          => '(en option. S\'applique uniquement à certains types, comme un menu déroulant ou un bouton radio)',
+        'help_option'          => '(en option. S\'applique uniquement à certains types, comme un menu déroulant ou un '.
+                                  'bouton radio)',
         'add_new'              => 'Ajouter un nouveau paramètre',
         'delete_question'      => 'Êtes-vous sûr de vouloir supprimer le paramètre : :setting ?',
         'delete_confirm'       => 'Oui, supprimer ce paramètre',
@@ -162,7 +164,8 @@ return [
         'rename_file_folder'    => 'renommer le fichier/dossier',
         'success_uploaded_file' => 'Téléchargement du fichier réussi !',
         'success_uploading'     => 'Image téléchargée avec succès !',
-        'uploading_wrong_type'  => 'Échec du téléchargement : format de fichier non pris en charge ou volume trop important !',
+        'uploading_wrong_type'  => 'Échec du téléchargement : format de fichier non pris en charge ou volume trop '.
+                                   'important !',
         'video_support'         => 'Votre navigateur ne prend pas en charge la balise vidéo.',
     ],
 
@@ -227,7 +230,8 @@ return [
         'bread_crud_actions'        => 'Actions du BREAD/CRUD',
         'bread_info'                => 'Information du BREAD',
         'column'                    => 'Colonne',
-        'composite_warning'         => 'Avertissement : cette colonne fait partie d\'un indice composite (composite index)',
+        'composite_warning'         => 'Avertissement : cette colonne fait partie d\'un indice composite '.
+                                       '(composite index)',
         'controller_name'           => 'Nom du controleur',
         'controller_name_hint'      => 'exemple : PageController. Si laissé vide, utilisera le contrôleur BREAD',
         'create_bread_for_table'    => 'Créer un BREAD pour la table :table',
@@ -268,8 +272,9 @@ return [
         'model_name'                => 'Nom du modèle (model)',
         'model_name_ph'             => 'exemple : \App\User. Si laissé vide, essayera d\'utiliser le nom de la table',
         'name_warning'              => 'Nommez la colonne avant d\'ajouter un index SVP',
-        'no_composites_warning'     => 'Cette table comporte des index composites. Notez qu\'ils ne sont pas pris en charge '.
-                                       'pour le moment. Faites attention lorsque vous essayez d\'ajouter/supprimer des index.',
+        'no_composites_warning'     => 'Cette table comporte des index composites. Notez qu\'ils ne sont pas pris en '.
+                                       'charge pour le moment. Faites attention lorsque vous essayez '.
+                                       'd\'ajouter/supprimer des index.',
         'null'                      => 'Null',
         'optional_details'          => 'Détails facultatifs',
         'primary'                   => 'PRIMARY',
@@ -298,19 +303,22 @@ return [
     'dimmer' => [
         'page'           => 'Page|Pages',
         'page_link_text' => 'Voir toutes les pages',
-        'page_text'      => 'Vous avez :count :string enregistrées. Cliquez sur le bouton ci-dessous pour afficher toutes les pages.',
+        'page_text'      => 'Vous avez :count :string enregistrées. Cliquez sur le bouton ci-dessous pour afficher '.
+                            'toutes les pages.',
         'post'           => 'Article|Articles',
         'post_link_text' => 'Voir tous les articles',
-        'post_text'      => 'Vous avez :count :string enregistrés. Cliquez sur le bouton ci-dessous pour afficher tous les articles.',
+        'post_text'      => 'Vous avez :count :string enregistrés. Cliquez sur le bouton ci-dessous pour afficher '.
+                            'tous les articles.',
         'user'           => 'Utilisateur|Utilisateur',
         'user_link_text' => 'Voir tous les utilisateurs',
-        'user_text'      => 'Vous avez :count :string enregistrés. Cliquez sur le bouton ci-dessous pour afficher tous les utilisateurs.',
+        'user_text'      => 'Vous avez :count :string enregistrés. Cliquez sur le bouton ci-dessous pour afficher '.
+                            'tous les utilisateurs.',
     ],
 
     'form' => [
         'field_password_keep'          => 'Laissez vide pour garder le même',
         'field_select_dd_relationship' => 'Assurez-vous de configurer la relation appropriée dans la méthode :method '.
-                                          'de la classe :class..',
+                                          'de la classe :class.',
         'type_checkbox'                => 'Case à cocher',
         'type_codeeditor'              => 'Editeur de code',
         'type_file'                    => 'Fichier',
