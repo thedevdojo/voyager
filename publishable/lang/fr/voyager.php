@@ -170,7 +170,7 @@ return [
     ],
 
     'menu_builder' => [
-        'color'                 => 'Couleur en RVB ou hexadécimal (optionnel)',
+        'color'                => 'Couleur en RVB ou hexadécimal (optionnel)',
         'color_ph'             => 'Couleur (ex. #ffffff ou rgb(255, 255, 255)',
         'create_new_item'      => 'Créer un nouvel élément de menu',
         'delete_item_confirm'  => 'Oui, supprimez cet élément de menu',
