@@ -25,7 +25,7 @@
     <div class="page-content compass container-fluid">
         <ul class="nav nav-tabs">
           <li @if(empty($active_tab) || (isset($active_tab) && $active_tab == 'resources')){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#resources"><i class="voyager-book"></i> Resources</a></li>
-          <li><a data-toggle="tab" href="#commands"><i class="voyager-terminal"></i> Commands</a></li>
+          <li @if($active_tab == 'commands'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#commands"><i class="voyager-terminal"></i> Commands</a></li>
           <li @if($active_tab == 'logs'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#logs"><i class="voyager-logbook"></i> Logs</a></li>
         </ul>
 
@@ -76,8 +76,13 @@
 
               </div>
             </div>
-          <div id="commands" class="tab-pane fade in">
+
+          <div id="commands" class="tab-pane fade in @if($active_tab == 'commands'){!! 'active' !!}@endif">
             <h3><i class="voyager-terminal"></i> Commands <small>Run Artisan Commands from Voyager.</small></h3>
+            <div id="command_lists">
+                @include('voyager::compass.includes.commands')
+            </div>
+
           </div>
           <div id="logs" class="tab-pane fade in @if($active_tab == 'logs'){!! 'active' !!}@endif">
             <div class="row">
@@ -107,6 +112,23 @@
             });
         });
     </script>
+    <!-- JS for commands -->
+    <script>
+        
+        $(document).ready(function(){
+            $('.command').click(function(){
+                $(this).find('.cmd_form').slideDown(); 
+                $(this).addClass('more_args');
+                $(this).find('input[type="text"]').focus();
+            });
+
+            $('.close-output').click(function(){
+                $('#commands pre').slideUp();
+            });
+        });
+
+    </script>
+
     <!-- JS for logs -->
     <script>
       $(document).ready(function () {

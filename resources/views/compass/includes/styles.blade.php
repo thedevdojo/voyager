@@ -384,4 +384,153 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3111111', e
             bottom: 0px;
             z-index: 9;
          }
+
+         #command_lists{
+            display:flex;
+            flex-wrap:wrap;
+         }
+
+         #commands h3{
+            width: 100%;
+            clear: both;
+            margin-bottom: 20px;
+         }
+
+         #commands h3 i{
+            position: relative;
+            top: 3px;
+         }
+
+         #commands .command{
+            padding: 10px;
+            border: 1px solid #f1f1f1;
+            border-radius: 4px;
+            border-bottom: 2px solid #f5f5f5;
+            cursor:pointer;
+            transition:all 0.3s ease;
+            position:relative;
+            padding-top:30px;
+            padding-right: 52px;
+            flex:1;
+            min-width:275px;
+            margin:10px;
+            margin-left:0px;
+         }
+
+         #commands .command.more_args{
+            padding-bottom:40px;
+         }
+
+         #commands .command i{
+            position: absolute;
+            right: 4px;
+            top: -6px;
+            font-size: 45px;
+         }
+
+         #commands code{
+            color: #549DEA;
+            padding: 4px 7px;
+            font-weight: normal;
+            font-size: 12px;
+            background: #f3f7ff;
+            border: 0px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            border-bottom-left-radius: 0px;
+            border-top-right-radius: 0px;
+         }
+
+         #commands .command:hover{
+            border-color:#eaeaea;
+            border-bottom-width:2px;
+         }
+
+         
+
+         .cmd_form{
+            display:none;
+            position:absolute;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+        }
+
+        .cmd_form input[type="text"], .cmd_form input[type="submit"]{
+            width:30%;
+            float:left;
+            margin: 0px;
+            font-size: 12px;
+        }
+
+        .cmd_form input[type="text"]{
+            line-height: 30px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            height: 30px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-top-left-radius:0px;
+            padding-left:5px;
+            font-size:12px;
+            width:70%;
+        }
+
+        .cmd_form .form-control.focus, .cmd_form .form-control:focus{
+            border-color:#eee;
+        }
+
+        .cmd_form input[type="submit"]{
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-top-left-radius:0px;
+            font-size: 10px;
+            padding-left: 7px;
+            padding-right: 7px;
+            height: 30px;
+        }
+         
+
+         #commands pre{
+            background:#323A42;
+            color:#fff;
+            width:100%;
+            margin:10px;
+            margin-left:0px;
+            padding: 15px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            position:relative;
+         }
+
+         #commands .close-output{
+            position:absolute;
+            right:15px;
+            top:15px;
+            color:#ccc;
+            cursor:pointer;
+            padding: 5px 14px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 25px;
+            transition:all 0.3s ease;
+         }
+
+         #commands .close-output:hover{
+            color:#fff;
+            background: rgba(0, 0, 0, 0.3);
+         }
+
+         #commands pre i:before{
+            position:relative;
+            top:3px;
+            right:5px;
+         }
+
+         #commands pre .art_out{
+            width: 100%;
+            display: block;
+            color: #98cb00;
+            margin-bottom:10px;
+         }
     </style>

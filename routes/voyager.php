@@ -113,6 +113,7 @@ Route::group(['as' => 'voyager.'], function () {
             'prefix' => 'compass',
         ], function () use ($namespacePrefix) {
             Route::get('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'index']);
+            Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
         });
 
         Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');
