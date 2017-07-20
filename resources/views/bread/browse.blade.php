@@ -87,13 +87,18 @@
                                                 <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                             @elseif($row->type == 'file' && !empty($data->{$row->field}) )
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
-                                                @foreach(json_decode($data->{$row->field}) as $file)
-                                                    <a href="/storage/{{ $file->download_link or '' }}">
-                                                        {{ $file->original_name or '' }}
+                                                @if(json_decode($data->{$row->field}))
+                                                    @foreach(json_decode($data->{$row->field}) as $file)
+                                                        <a href="/storage/{{ $file->download_link or '' }}">
+                                                            {{ $file->original_name or '' }}
+                                                        </a>
+                                                        <br/>
+                                                    @endforeach
+                                                @else
+                                                    <a href="/storage/{{ $data->{$row->field} }}">
+                                                        Download
                                                     </a>
-                                                    <br/>
-                                                @endforeach
-                                            @elseif($row->type == 'rich_text_box')
+                                                @endif                                            @elseif($row->type == 'rich_text_box')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                             @else
