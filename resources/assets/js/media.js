@@ -84,7 +84,7 @@ module.exports = function(){
 					setCurrentSelected(clicked);
 				});
 
-				$('.breadcrumb').on("click", "li", function(){
+				$('.breadcrumb').on("click", "li.media_breadcrumb", function(){
 					var index = $(this).data('index');
 					manager.folders = manager.folders.splice(0, index);
 					getFiles(manager.folders);
@@ -105,7 +105,7 @@ module.exports = function(){
 					if ($.contains(files.parent()[0], el[0])) {
 						return true;
 					} else {
-						$(document).off('click');
+						//$(document).off('click');
 						return false;
 					}
 				},
@@ -115,7 +115,7 @@ module.exports = function(){
 
 				files.on('click', function (event) {
 					if (! isBrowsingFiles) {
-						$(document).on('click', function (e) {
+						files.on('click', function (e) {
 							handleFileBrowserStatus(e.target);
 						});
 					} else {

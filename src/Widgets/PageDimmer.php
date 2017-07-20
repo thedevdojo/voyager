@@ -24,7 +24,7 @@ class PageDimmer extends AbstractWidget
         $string = trans_choice('voyager.dimmer.page', $count);
 
         return view('voyager::dimmer', array_merge($this->config, [
-            'icon'   => 'voyager-group',
+            'icon'   => 'voyager-file-text',
             'title'  => "{$count} {$string}",
             'text'   => __('voyager.dimmer.page_text', ['count' => $count, 'string' => strtolower($string)]),
             'button' => [

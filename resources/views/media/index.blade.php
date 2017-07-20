@@ -49,7 +49,7 @@
 
                         <div class="breadcrumb-container">
                             <ol class="breadcrumb filemanager">
-                                <li data-folder="/" data-index="0"><span class="arrow"></span><strong>{{ __('voyager.media.library') }}</strong></li>
+                                <li class="media_breadcrumb" data-folder="/" data-index="0"><span class="arrow"></span><strong>{{ __('voyager.media.library') }}</strong></li>
                                 <template v-for="(folder, index) in folders">
                                     <li v-bind:data-folder="folder" v-bind:data-index="index+1"><span
                                                 class="arrow"></span>@{{ folder }}</li>

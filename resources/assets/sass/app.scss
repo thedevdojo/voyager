@@ -3993,7 +3993,7 @@ overflow-x: hidden;
   cursor:pointer;
   opacity:1;
   transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
-  padding-left: 5px;
+  padding-left: 20px;
   margin-right: 0px;
 }
 
@@ -4397,7 +4397,7 @@ float: left;
 }
 
 .panel.widget i{
-    font-size: 60px;
+    font-size: 48px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     width: 100px;
@@ -4922,7 +4922,11 @@ ul.checkbox label {
 }
 
 .alerts {
-  padding: 10px 10px 0px 10px;
+  padding: 10px 10px 0;
+  padding-left: 25px;
+  padding-right: 25px;
+  position: relative;
+  top: 10px;
 }
 
 .alerts .alert {
@@ -6512,6 +6516,11 @@ limitations under the License.
   border-radius: 3px;
   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
   box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.analytics-container{
+  padding: 25px;
+  padding-top: 15px;
 }
 
 #analytics-dashboard{

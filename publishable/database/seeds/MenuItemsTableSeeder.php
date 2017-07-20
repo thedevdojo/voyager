@@ -170,6 +170,21 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
+                'title'      => 'Compass',
+                'url'        => route('voyager.compass.index', [], false),
+            ]);
+            if (!$menuItem->exists) {
+                $menuItem->fill([
+                    'target'     => '_self',
+                    'icon_class' => 'voyager-compass',
+                    'color'      => null,
+                    'parent_id'  => $toolsMenuItem->id,
+                    'order'      => 12,
+                ])->save();
+            }
+
+            $menuItem = MenuItem::firstOrNew([
+                'menu_id'    => $menu->id,
                 'title'      => 'Settings',
                 'url'        => route('voyager.settings.index', [], false),
             ]);
@@ -179,7 +194,7 @@ class MenuItemsTableSeeder extends Seeder
                     'icon_class' => 'voyager-settings',
                     'color'      => null,
                     'parent_id'  => null,
-                    'order'      => 12,
+                    'order'      => 13,
                 ])->save();
             }
         }
