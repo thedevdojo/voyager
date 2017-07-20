@@ -296,6 +296,13 @@ class VoyagerBreadController extends Controller
         // Delete Images
         $this->deleteBreadImages($data, $dataType->deleteRows->where('type', 'image'));
 
+        // Delete Files
+        foreach($dataType->deleteRows->where('type', 'file') as $row) {
+            foreach(json_decode($data->{$row->field}) as $file) {
+                $this->deleteFileIfExists($file->download_link);
+            }
+        }
+
         $data = $data->destroy($id)
             ? [
                 'message'    => __('voyager.generic.successfully_deleted')." {$dataType->display_name_singular}",
