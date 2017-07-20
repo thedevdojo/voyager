@@ -81,7 +81,10 @@
                                 <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @elseif($row->type == 'file')
                                 @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
-                                    <a href="/storage/{{ $file->download_link or '' }}">{{ $file->original_name or '' }}</a><br/>
+                                    <a href="/storage/{{ $file->download_link or '' }}">
+                                        {{ $file->original_name or '' }}
+                                    </a>
+                                    <br/>
                                 @endforeach
                             @else
                                 @include('voyager::multilingual.input-hidden-bread-read')
