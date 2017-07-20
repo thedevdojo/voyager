@@ -152,11 +152,11 @@ abstract class Controller extends BaseController
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug . '/' . date('F') . date('Y') . '/';
-                        $fullPath = $path . $filename . '.' . $file->getClientOriginalExtension();
+                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
                         $file->storeAs(
                             $path,
-                            $filename . '.' . $file->getClientOriginalExtension(),
+                            $filename.'.'.$file->getClientOriginalExtension(),
                             config('voyager.storage.disk', 'public')
                         );
                         array_push($filesPath, [
