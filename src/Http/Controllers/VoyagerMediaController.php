@@ -25,7 +25,7 @@ class VoyagerMediaController extends Controller
     {
         Voyager::canOrFail('browse_media');
 
-        return view('voyager::media.index');
+        return Voyager::view('voyager::media.index');
     }
 
     public function files(Request $request)
@@ -280,7 +280,7 @@ class VoyagerMediaController extends Controller
             unset($fieldData[$image]);
 
             // Generate json and update field
-            $data->{$field} = json_encode(array_flip($fieldData));
+            $data->{$field} = json_encode(array_values(array_flip($fieldData)));
             $data->save();
 
             return response()->json([

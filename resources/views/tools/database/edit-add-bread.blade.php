@@ -1,8 +1,11 @@
 @extends('voyager::master')
 
+@section('page_title', __('voyager.database.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]))
+
 @section('page_header')
     <div class="page-title">
-        <i class="voyager-data"></i> @if(isset($dataType->id)){{ __('voyager.database.edit_bread_for_table', ['table' => @$dataType->name]) }}@elseif(isset($table)){{ __('voyager.database.create_bread_for_table', ['table' => $table]) }}@endif
+        <i class="voyager-data"></i>
+        {{ __('voyager.database.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]) }}
     </div>
     @php
         $isModelTranslatable = (!isset($isModelTranslatable) || !isset($dataType)) ? false : $isModelTranslatable;
@@ -82,7 +85,11 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">{{ __('voyager.database.icon_hint') }} <a
+<<<<<<< HEAD
                                                 href="{{ '/' . config('voyager.prefix') . '/compass#fonts' }}"
+=======
+                                                href="{{ voyager_asset('fonts/icons-reference.html') }}"
+>>>>>>> master
                                                 target="_blank">{{ __('voyager.database.icon_hint2') }}</a></label>
                                     <input type="text" class="form-control" name="icon"
                                            placeholder="{{ __('voyager.database.icon_class') }}"
@@ -206,12 +213,12 @@
                                         <input type="checkbox"
                                                id="field_delete_{{ $data['field'] }}"
                                                name="field_delete_{{ $data['field'] }}" @if(isset($dataRow->delete) && $dataRow->delete){{ 'checked="checked"' }}@elseif($data['key'] == 'PRI')@elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')@elseif(!isset($dataRow->delete)){{ 'checked="checked"' }}@endif>
-                                                <label for="field_delete_{{ $data['field'] }}">{{ __('voyager.generic.add') }}</label><br/>
+                                                <label for="field_delete_{{ $data['field'] }}">{{ __('voyager.generic.delete') }}</label><br/>
                                     </div>
                                     <div class="col-xs-2">
                                         <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">
                                         @if($data['type'] == 'timestamp')
-                                            <p>{{ __('generic_timestamp') }}</p>
+                                            <p>{{ __('voyager.generic.timestamp') }}</p>
                                             <input type="hidden" value="timestamp"
                                                    name="field_input_type_{{ $data['field'] }}">
                                         @else
@@ -373,7 +380,7 @@
                 });
             });
 
-            
+
         });
     </script>
 @stop

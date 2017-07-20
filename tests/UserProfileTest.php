@@ -51,7 +51,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
              ->press(__('voyager.generic.submit'))
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
                  ['name' => 'New Awesome Name']
@@ -66,7 +66,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager.generic.submit'))
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
                  ['email' => 'another@email.com']
@@ -81,7 +81,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
              ->press(__('voyager.generic.submit'))
-             ->seePageIs($this->editPageForTheCurrentUser);
+             ->seePageIs($this->listOfUsers);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('voyager-rocks', $updatedPassword));
@@ -95,7 +95,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
              ->press(__('voyager.generic.submit'))
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->listOfUsers)
              ->dontSeeInDatabase(
                  'users',
                  ['id' => 1, 'avatar' => 'user/default.png']
@@ -110,7 +110,7 @@ class UserProfileTest extends TestCase
         $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
         // without permissions to edit  users
-        $role->permissions()->attach([1, 3, 12, 27, 32]);
+        $role->permissions()->attach([1, 3, 12, 20, 27, 32]);
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
@@ -118,7 +118,7 @@ class UserProfileTest extends TestCase
              ->seePageIs($editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager.generic.submit'))
-             ->seePageIs($editPageForTheCurrentUser)
+             ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
                  ['email' => 'another@email.com']

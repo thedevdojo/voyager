@@ -52,7 +52,7 @@ class DatabaseTest extends TestCase
     {
         // Test correct response
         $this->assertSessionHasAll($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $this->table['name']])));
-        $this->assertRedirectedToRoute('voyager.database.edit', $this->table['name']);
+        $this->assertRedirectedToRoute('voyager.database.index');
 
         // Test table exists
         $this->assertTrue(SchemaManager::tableExists($this->table['name']));
@@ -253,7 +253,7 @@ class DatabaseTest extends TestCase
 
         // Test correct response
         $this->assertSessionHasAll($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table['name']])));
-        $this->assertRedirectedToRoute('voyager.database.edit', $table['name']);
+        $this->assertRedirectedToRoute('voyager.database.index');
 
         return SchemaManager::listTableDetails($table['name']);
     }

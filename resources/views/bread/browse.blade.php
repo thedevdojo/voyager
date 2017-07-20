@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title','All '.$dataType->display_name_plural)
+@section('page_title', __('voyager.generic.viewing').' '.$dataType->display_name_plural)
 
 @section('page_header')
     <h1 class="page-title">
@@ -24,8 +24,8 @@
                         <table id="dataTable" class="row table table-hover">
                             <thead>
                                 <tr>
-                                    @foreach($dataType->browseRows as $rows)
-                                    <th>{{ $rows->display_name }}</th>
+                                    @foreach($dataType->browseRows as $row)
+                                    <th>{{ $row->display_name }}</th>
                                     @endforeach
                                     <th class="actions">{{ __('voyager.generic.actions') }}</th>
                                 </tr>

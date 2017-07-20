@@ -1,10 +1,6 @@
 @section('database-table-editor-template')
 
 <div class="panel panel-bordered">
-    <div class="panel-heading">
-        <h3 class="panel-title">@if($db->action == 'update'){{ __('voyager.database.edit_table', ['table' => $db->table->name]) }}@else{{ __('voyager.database.create_your_new_table') }}@endif</h3>
-    </div>
-
     <div class="panel-body">
         <div class="row">
         @if($db->action == 'update')

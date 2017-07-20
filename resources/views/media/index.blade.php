@@ -1,7 +1,8 @@
 @extends('voyager::master')
 
-@section('content')
+@section('page_title', __('voyager.generic.media'))
 
+@section('content')
     <div class="page-content container-fluid">
         @include('voyager::alerts')
         <div class="row">

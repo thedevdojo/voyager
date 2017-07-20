@@ -1,5 +1,7 @@
 @extends('voyager::master')
 
+@section('page_title', __('voyager.generic.viewing').' '.__('voyager.generic.database'))
+
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-data"></i> {{ __('voyager.generic.database') }}
@@ -72,7 +74,7 @@
                             <a href="{{ route('voyager.database.show', $table->name) }}"
                                data-name="{{ $table->name }}"
                                class="btn-sm btn-warning pull-right desctable" style="display:inline; margin-right:10px;">
-                               <i class="voyager-eye"></i> {{ __('voyager.generic.edit') }}
+                               <i class="voyager-eye"></i> {{ __('voyager.generic.view') }}
                             </a>
                         </td>
                     </tr>
@@ -88,7 +90,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i>  {{ __('voyager.database.delete_table_bread_quest', ['table' => '<span id="delete_builder_name"></span>']) }}</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i>  {!! __('voyager.database.delete_table_bread_quest', ['table' => '<span id="delete_builder_name"></span>']) !!}</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.database.bread.delete', ['id' => null]) }}" id="delete_builder_form" method="POST">
@@ -108,7 +110,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager.database.delete_table_bread_quest', ['table' => '<span id="delete_builder_name"></span>']) }}</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> {!! __('voyager.database.delete_table_bread_quest', ['table' => '<span id="delete_table_name"></span>']) !!}</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.database.destroy', ['database' => '__database']) }}" id="delete_table_form" method="POST">
