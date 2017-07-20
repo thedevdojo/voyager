@@ -88,7 +88,10 @@
                                             @elseif($row->type == 'file' && !empty($data->{$row->field}) )
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 @foreach(json_decode($data->{$row->field}) as $file)
-                                                    <a href="/storage/{{ $file->download_link or '' }}">{{ $file->original_name or '' }}</a><br/>
+                                                    <a href="/storage/{{ $file->download_link or '' }}">
+                                                        {{ $file->original_name or '' }}
+                                                    </a>
+                                                    <br/>
                                                 @endforeach
                                             @elseif($row->type == 'rich_text_box')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
