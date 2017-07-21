@@ -79,7 +79,7 @@ class VoyagerDatabaseController extends Controller
             }
 
             return redirect()
-               ->route('voyager.database.edit', $table->name)
+               ->route('voyager.database.index')
                ->with($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table->name])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e))->withInput();
@@ -123,7 +123,7 @@ class VoyagerDatabaseController extends Controller
         }
 
         return redirect()
-               ->route('voyager.database.edit', $table['name'])
+               ->route('voyager.database.index')
                ->with($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table['name']])));
     }
 
