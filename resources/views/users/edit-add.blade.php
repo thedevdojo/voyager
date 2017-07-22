@@ -60,7 +60,7 @@
                             <div class="form-group">
                                 <label for="password">{{ __('voyager.profile.avatar') }}</label>
                                 @if(isset($dataTypeContent->avatar))
-                                    <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Voyager::image($dataTypeContent->{$row->field}) }}"
+                                    <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Voyager::image($dataTypeContent->avatar) }}"
                                          style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;">
                                 @endif
                                 <input type="file" name="avatar">
