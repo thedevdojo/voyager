@@ -15043,7 +15043,7 @@ a:hover {
   font-family: 'Open Sans', sans-serif;
   height: 60px;
   line-height: 60px;
-  padding: 0 20px 0 20px;
+  padding: 0 10px 0 20px;
 }
 
 .navbar .dropdown-menu {
@@ -15401,8 +15401,11 @@ a:hover {
 /* Main body section */
 .app-container .side-body {
   margin-left: 75px;
-  margin-right: 15px;
   transition: all 0.25s;
+}
+
+.app-container .side-body .container-fluid {
+  padding-right: 0;
 }
 
 .app-container.expanded .side-body {
@@ -26371,6 +26374,17 @@ p#the_plugin_name {
 
 .page-content.dashboard {
   margin-top: 360px;
+}
+
+.page-content.read .panel .panel-body:not(:last-child) {
+  border-bottom: 1px solid #eeeeee;
+}
+
+.page-content > .row > [class*="col-"]:not(:first-child) {
+  padding-left: 8px;
+}
+.page-content > .row > [class*="col-"]:not(:last-child) {
+  padding-right: 8px;
 }
 
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title {

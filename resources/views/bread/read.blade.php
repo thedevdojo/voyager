@@ -81,9 +81,6 @@
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
                             @endif
                         </div><!-- panel-body -->
-                        @if(!$loop->last)
-                            <hr style="margin:0;">
-                        @endif
                     @endforeach
 
                 </div>
