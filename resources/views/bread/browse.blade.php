@@ -21,7 +21,7 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body table-responsive">
-                        <table id="dataTable" class="row table table-hover">
+                        <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
                                     @foreach($dataType->browseRows as $row)
