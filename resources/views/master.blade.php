@@ -69,6 +69,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
         <div class="container-fluid">
             <div class="side-body padding-top">
                 @yield('page_header')
+                <div id="voyager-notifications"></div>
                 @yield('content')
             </div>
         </div>
@@ -81,7 +82,6 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
                 sidebar = appContainer.querySelector('.side-menu'),
                 navbar = appContainer.querySelector('nav.navbar.navbar-top'),
                 loader = document.getElementById('voyager-loader'),
-                anchor = document.getElementById('sidebar-anchor'),
                 hamburgerMenu = document.querySelector('.hamburger'),
                 sidebarTransition = sidebar.style.transition,
                 navbarTransition = navbar.style.transition,
@@ -94,9 +94,6 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
             if (window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
                 appContainer.className += ' expanded';
                 loader.style.left = (sidebar.clientWidth/2)+'px';
-                anchor.className += ' active';
-                anchor.dataset.sticky = anchor.title;
-                anchor.title = anchor.dataset.unstick;
                 hamburgerMenu.className += ' is-active';
             }
 

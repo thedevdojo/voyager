@@ -107,6 +107,15 @@ Route::group(['as' => 'voyager.'], function () {
             Route::delete('bread/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@deleteBread',  'as' => 'delete']);
         });
 
+        // Compass Routes
+        Route::group([
+            'as'     => 'compass.',
+            'prefix' => 'compass',
+        ], function () use ($namespacePrefix) {
+            Route::get('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'index']);
+            Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
+        });
+
         Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');
     });
 });

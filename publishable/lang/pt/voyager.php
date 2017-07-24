@@ -24,6 +24,7 @@ return [
         'choose_type'            => 'Escolha o tipo',
         'click_here'             => 'Clique aqui',
         'close'                  => 'Fechar',
+        'compass'                => 'Bússola',
         'created_at'             => 'Criado em',
         'custom'                 => 'Personalizado',
         'dashboard'              => 'Painel de Controle',
