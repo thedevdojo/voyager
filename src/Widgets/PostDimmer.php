@@ -24,7 +24,7 @@ class PostDimmer extends AbstractWidget
         $string = trans_choice('voyager.dimmer.post', $count);
 
         return view('voyager::dimmer', array_merge($this->config, [
-            'icon'   => 'voyager-group',
+            'icon'   => 'voyager-news',
             'title'  => "{$count} {$string}",
             'text'   => __('voyager.dimmer.post_text', ['count' => $count, 'string' => strtolower($string)]),
             'button' => [

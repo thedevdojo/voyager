@@ -50,9 +50,9 @@
 
                         <div class="breadcrumb-container">
                             <ol class="breadcrumb filemanager">
-                                <li data-folder="/" data-index="0"><span class="arrow"></span><strong>{{ __('voyager.media.library') }}</strong></li>
-                                <template v-for="folder in folders">
-                                    <li data-folder="@{{folder}}" data-index="@{{ $index+1 }}"><span
+                                <li class="media_breadcrumb" data-folder="/" data-index="0"><span class="arrow"></span><strong>{{ __('voyager.media.library') }}</strong></li>
+                                <template v-for="(folder, index) in folders">
+                                    <li v-bind:data-folder="folder" v-bind:data-index="index+1"><span
                                                 class="arrow"></span>@{{ folder }}</li>
                                 </template>
                             </ol>
@@ -73,7 +73,7 @@
                                                         <?php /* Fix
                                                             style="background-size: cover; background-image: url(@{{ encodeURI(file.path) }}); background-repeat:no-repeat; background-position:center center;display:inline-block; width:100%; height:100%;"></div>
                                                             */ ?>
-                                                         style="background-size: cover; background-image: url(''); background-repeat:no-repeat; background-position:center center;display:inline-block; width:100%; height:100%;"></div>
+                                                         :style="imgIcon(file.path)"></div>
                                                 </template>
                                                 <template v-if="file.type.includes('video')">
                                                     <i class="icon voyager-video"></i>
@@ -337,3 +337,11 @@
     <input type="hidden" id="base_url" value="{{ route('voyager.dashboard') }}">
 
 @stop
+
+@section('javascript')
+
+     <script>
+        MediaManager();
+    </script>
+
+@endsection

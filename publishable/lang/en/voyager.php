@@ -24,6 +24,7 @@ return [
         'choose_type'            => 'Choose Type',
         'click_here'             => 'Click Here',
         'close'                  => 'Close',
+        'compass'                => 'Compass',
         'created_at'             => 'Created at',
         'custom'                 => 'Custom',
         'dashboard'              => 'Dashboard',
