@@ -80,7 +80,7 @@
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
                             @elseif($row->type == 'file')
-                                @if(json_decode($data->{$row->field}))
+                                @if(json_decode($dataTypeContent->{$row->field}))
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
                                         <a href="/storage/{{ $file->download_link or '' }}">
                                             {{ $file->original_name or '' }}
