@@ -1,10 +1,6 @@
 @section('database-table-editor-template')
 
 <div class="panel panel-bordered">
-    <div class="panel-heading">
-        <h3 class="panel-title">@if($db->action == 'update'){{ __('voyager.database.edit_table', ['table' => $db->table->name]) }}@else{{ __('voyager.database.create_your_new_table') }}@endif</h3>
-    </div>
-
     <div class="panel-body">
         <div class="row">
         @if($db->action == 'update')
@@ -22,12 +18,14 @@
                 <input type="checkbox" name="create_model" data-toggle="toggle"
                        data-on="{{ __('voyager.generic.yes_please') }}" data-off="{{ __('voyager.generic.no_thanks') }}">
             </div>
-
-            <div class="col-md-3 col-sm-4 col-xs-6">
-                <label for="create_migration">{{ __('voyager.database.create_migration') }}</label><br>
-                <input disabled type="checkbox" name="create_migration" data-toggle="toggle"
-                       data-on="{{ __('voyager.generic.yes_please') }}" data-off="{{ __('voyager.generic.no_thanks') }}">
-            </div>
+            {{--
+                Hide migration button until feature is available.
+                 <div class="col-md-3 col-sm-4 col-xs-6">
+                    <label for="create_migration">{{ __('voyager.database.create_migration') }}</label><br>
+                    <input disabled type="checkbox" name="create_migration" data-toggle="toggle"
+                           data-on="{{ __('voyager.generic.yes_please') }}" data-off="{{ __('voyager.generic.no_thanks') }}">
+                </div>
+            --}}
         @endif
         </div><!-- .panel-body .row -->
 

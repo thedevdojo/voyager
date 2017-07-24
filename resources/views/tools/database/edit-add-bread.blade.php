@@ -1,8 +1,11 @@
 @extends('voyager::master')
 
+@section('page_title', __('voyager.database.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]))
+
 @section('page_header')
     <div class="page-title">
-        <i class="voyager-data"></i> @if(isset($dataType->id)){{ __('voyager.database.edit_bread_for_table', ['table' => @$dataType->name]) }}@elseif(isset($table)){{ __('voyager.database.create_bread_for_table', ['table' => $table]) }}@endif
+        <i class="voyager-data"></i>
+        {{ __('voyager.database.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]) }}
     </div>
     @php
         $isModelTranslatable = (!isset($isModelTranslatable) || !isset($dataType)) ? false : $isModelTranslatable;
@@ -221,7 +224,7 @@
                                     <div class="col-xs-2">
                                         <input type="hidden" name="field_{{ $data['field'] }}" value="{{ $data['field'] }}">
                                         @if($data['type'] == 'timestamp')
-                                            <p>{{ __('generic_timestamp') }}</p>
+                                            <p>{{ __('voyager.generic.timestamp') }}</p>
                                             <input type="hidden" value="timestamp"
                                                    name="field_input_type_{{ $data['field'] }}">
                                         @else
@@ -383,7 +386,7 @@
                 });
             });
 
-            
+
         });
     </script>
 @stop

@@ -64,7 +64,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.browse";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     //***************************************
@@ -109,7 +109,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.read";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     //***************************************
@@ -129,6 +129,14 @@ class VoyagerBreadController extends Controller
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        /*
+		// If dataType is users and user owns the profile, skip the permission check
+        $skip = $dataType->name === 'users' && $request->user()->id === (int) $id;
+        if (!$skip) {
+            Voyager::canOrFail('edit_'.$dataType->name);
+        }
+		*/
 
         $relationships = $this->getRelationships($dataType);
 
@@ -153,7 +161,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     // POST BR(E)AD
@@ -167,6 +175,14 @@ class VoyagerBreadController extends Controller
 
         // Check permission
         $this->authorize('edit', $data);
+		
+		/*
+        // If dataType is users and user owns the profile, skip the permission check
+        $skip = $dataType->name === 'users' && $request->user()->id === (int) $id;
+        if (!$skip) {
+            Voyager::canOrFail('edit_'.$dataType->name);
+        }
+		*/
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows);
@@ -179,10 +195,10 @@ class VoyagerBreadController extends Controller
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
             return redirect()
-            ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
-            ->with([
-                'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
-                'alert-type' => 'success',
+                ->route("voyager.{$dataType->slug}.index")
+                ->with([
+                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                    'alert-type' => 'success',
                 ]);
         }
     }
@@ -215,7 +231,7 @@ class VoyagerBreadController extends Controller
 
         foreach ($dataType->addRows as $key => $row) {
             $details = json_decode($row->details);
-            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+            $dataType->addRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
         }
 
         // Check if BREAD is Translatable
@@ -227,7 +243,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.edit-add";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
     // POST BRE(A)D
@@ -251,9 +267,9 @@ class VoyagerBreadController extends Controller
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
             return redirect()
-                ->route("voyager.{$dataType->slug}.edit", ['id' => $data->id])
+                ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                        'message'    => __('generic_successfully_added_new')." {$dataType->display_name_singular}",
+                        'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
         }

@@ -1,13 +1,13 @@
 @extends('voyager::master')
 
-@section('page_title','All '.$dataType->display_name_plural)
+@section('page_title', __('voyager.generic.viewing').' '.$dataType->display_name_plural)
 
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-news"></i> {{ $dataType->display_name_plural }}
         @can('add',app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
-                <i class="voyager-plus"></i> {{ __('voyager.generic.new') }}
+                <i class="voyager-plus"></i> {{ __('voyager.generic.add_new') }}
             </a>
         @endcan
     </h1>
@@ -71,8 +71,12 @@
                         </table>
                         @if (isset($dataType->server_side) && $dataType->server_side)
                             <div class="pull-left">
-                                <div role="status" class="show-res" aria-live="polite">{{ __('generic_showing_entries', $dataTypeContent->total(), ['from' => $dataTypeContent->firstItem(), 'to' => $dataTypeContent->lastItem(), 'all' => $dataTypeContent->total()]) }}</div>
-
+                                <div role="status" class="show-res" aria-live="polite">{{ trans_choice(
+                                    'voyager.generic.showing_entries', $dataTypeContent->total(), [
+                                        'from' => $dataTypeContent->firstItem(),
+                                        'to' => $dataTypeContent->lastItem(),
+                                        'all' => $dataTypeContent->total()
+                                    ]) }}</div>
                             </div>
                             <div class="pull-right">
                                 {{ $dataTypeContent->links() }}
