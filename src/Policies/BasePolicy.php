@@ -2,9 +2,9 @@
 
 namespace TCG\Voyager\Policies;
 
+use Illuminate\Auth\Access\HandlesAuthorization;
 use TCG\Voyager\Facades\Voyager as Voyager;
 use TCG\Voyager\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BasePolicy
 {
@@ -13,8 +13,9 @@ class BasePolicy
     /**
      * Determine if the given user can browse the model.
      *
-     * @param  \TCG\Voyager\Models\User  $user
+     * @param \TCG\Voyager\Models\User $user
      * @param  $model
+     *
      * @return bool
      */
     public function browse(User $user, $model)
@@ -27,8 +28,9 @@ class BasePolicy
     /**
      * Determine if the given model can be viewed by the user.
      *
-     * @param  \TCG\Voyager\Models\User  $user
+     * @param \TCG\Voyager\Models\User $user
      * @param  $model
+     *
      * @return bool
      */
     public function read(User $user, $model)
@@ -41,8 +43,9 @@ class BasePolicy
     /**
      * Determine if the given model can be edited by the user.
      *
-     * @param  \TCG\Voyager\Models\User  $user
+     * @param \TCG\Voyager\Models\User $user
      * @param  $model
+     *
      * @return bool
      */
     public function edit(User $user, $model)
@@ -55,8 +58,9 @@ class BasePolicy
     /**
      * Determine if the given user can create the model.
      *
-     * @param  \TCG\Voyager\Models\User  $user
+     * @param \TCG\Voyager\Models\User $user
      * @param  $model
+     *
      * @return bool
      */
     public function add(User $user, $model)
@@ -69,8 +73,9 @@ class BasePolicy
     /**
      * Determine if the given model can be deleted by the user.
      *
-     * @param  \TCG\Voyager\Models\User  $user
+     * @param \TCG\Voyager\Models\User $user
      * @param  $model
+     *
      * @return bool
      */
     public function delete(User $user, $model)

@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Policies;
 
-use Auth;
 use TCG\Voyager\Facades\Voyager as Voyager;
 use TCG\Voyager\Models\User;
 
@@ -11,8 +10,9 @@ class PostPolicy extends BasePolicy
     /**
      * Determine if the given model can be viewed by the user.
      *
-     * @param  \TCG\Voyager\Models\User  $user
+     * @param \TCG\Voyager\Models\User $user
      * @param  $model
+     *
      * @return bool
      */
     public function read(User $user, $model)
@@ -31,8 +31,9 @@ class PostPolicy extends BasePolicy
     /**
      * Determine if the given model can be edited by the user.
      *
-     * @param  \TCG\Voyager\Models\User  $user
+     * @param \TCG\Voyager\Models\User $user
      * @param  $model
+     *
      * @return bool
      */
     public function edit(User $user, $model)
@@ -51,8 +52,9 @@ class PostPolicy extends BasePolicy
     /**
      * Determine if the given model can be deleted by the user.
      *
-     * @param  \TCG\Voyager\Models\User  $user
+     * @param \TCG\Voyager\Models\User $user
      * @param  $model
+     *
      * @return bool
      */
     public function delete(User $user, $model)

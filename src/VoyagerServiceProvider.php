@@ -254,10 +254,9 @@ class VoyagerServiceProvider extends ServiceProvider
         $dataTypes = $dataType->get();
 
         foreach ($dataTypes as $dataType) {
-            $policyClass = isset($this->policies[$dataType->model_name]) ? $this->policies[$dataType->model_name] : BasePolicy::class;
+            $policyClass = BasePolicy::class;
             if (isset($dataType->policy_name) && $dataType->policy_name !== ''
                 && class_exists($dataType->policy_name)) {
-
                 $policyClass = $dataType->policy_name;
             }
 
