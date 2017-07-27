@@ -84,4 +84,5 @@ class BasePolicy
         $dataType = $dataType->where('model_name', get_class($model))->first();
         return Voyager::can('delete_'.$dataType->name);
     }
+
 }
