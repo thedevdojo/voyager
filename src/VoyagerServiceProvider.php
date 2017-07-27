@@ -16,8 +16,6 @@ use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Policies\BasePolicy;
-use TCG\Voyager\Policies\PostPolicy;
-use TCG\Voyager\Policies\UserPolicy;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -27,10 +25,7 @@ class VoyagerServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
-        'TCG\Voyager\Models\Post' => PostPolicy::class,
-        'TCG\Voyager\Models\User' => UserPolicy::class
-    ];
+    protected $policies = [];
 
     /**
      * Register the application services.
@@ -255,7 +250,8 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function registerGates()
     {
-        $dataTypes = VoyagerFacade::model('DataType')->get();
+        $dataType = VoyagerFacade::model('DataType');
+        $dataTypes = $dataType->get();
 
         foreach ($dataTypes as $dataType) {
             $policyClass = isset($this->policies[$dataType->model_name]) ? $this->policies[$dataType->model_name] : BasePolicy::class;
