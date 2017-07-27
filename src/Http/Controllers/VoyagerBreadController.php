@@ -294,7 +294,8 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        $model = app($dataType->model_name)::where('id',$id)->get();
+        $model = app($dataType->model_name);
+        $model = $model::where('id',$id)->get();
         $this->authorize('delete', $model);
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);

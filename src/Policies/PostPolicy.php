@@ -19,7 +19,8 @@ class PostPolicy extends BasePolicy
      */
     public function read(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        $dataType = Voyager::model('DataType');
+        $dataType = $dataType::where('model_name', get_class($model))->first();
 
         // Does this post belong to the current user?
         $current = $user->id === $model->author_id ? true : false;
@@ -38,7 +39,8 @@ class PostPolicy extends BasePolicy
      */
     public function edit(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        $dataType = Voyager::model('DataType');
+        $dataType = $dataType::where('model_name', get_class($model))->first();
 
         // Does this post belong to the current user?
         $current = $user->id === $model->author_id ? true : false;
@@ -57,7 +59,8 @@ class PostPolicy extends BasePolicy
      */
     public function delete(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        $dataType = Voyager::model('DataType');
+        $dataType = $dataType::where('model_name', get_class($model))->first();
 
         // Does this post belong to the current user?
         $current = $user->id === $model->author_id ? true : false;

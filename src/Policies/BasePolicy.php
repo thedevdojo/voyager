@@ -21,7 +21,8 @@ class BasePolicy
      */
     public function browse(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name', get_class($model))->first();
+        $dataType = Voyager::model('DataType');
+        $dataType = $dataType::where('model_name', get_class($model))->first();
         return Voyager::can('browse_'.$dataType->name);
     }
 
@@ -34,7 +35,8 @@ class BasePolicy
      */
     public function read(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        $dataType = Voyager::model('DataType');
+        $dataType = $dataType::where('model_name', get_class($model))->first();
         return Voyager::can('read_'.$dataType->name);
     }
 
@@ -47,7 +49,8 @@ class BasePolicy
      */
     public function edit(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        $dataType = Voyager::model('DataType');
+        $dataType = $dataType::where('model_name', get_class($model))->first();
         return Voyager::can('edit_'.$dataType->name);
     }
 
@@ -60,7 +63,8 @@ class BasePolicy
      */
     public function add(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        $dataType = Voyager::model('DataType');
+        $dataType = $dataType::where('model_name', get_class($model))->first();
         return Voyager::can('add_'.$dataType->name);
     }
 
@@ -73,7 +77,8 @@ class BasePolicy
      */
     public function delete(User $user, $model)
     {
-        $dataType = Voyager::model('DataType')::where('model_name',get_class($model))->first();
+        $dataType = Voyager::model('DataType');
+        $dataType = $dataType::where('model_name', get_class($model))->first();
         return Voyager::can('delete_'.$dataType->name);
     }
 }
