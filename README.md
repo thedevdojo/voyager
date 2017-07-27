@@ -12,7 +12,7 @@
 # **V**oyager - The Missing Laravel Admin
 Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
-![Voyager Screenshot](https://laravelvoyager.com/images/screenshot.png)
+![Voyager Screenshot](laravelvoyager.com/images/screenshot.png)
 
 Website & Documentation: https://laravelvoyager.com
 
