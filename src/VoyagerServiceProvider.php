@@ -255,7 +255,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function registerGates()
     {
-        $dataTypes = VoyagerFacade::model('DataType')::get();
+        $dataTypes = VoyagerFacade::model('DataType')->get();
 
         foreach ($dataTypes as $dataType) {
             $policyClass = isset($this->policies[$dataType->model_name]) ? $this->policies[$dataType->model_name] : BasePolicy::class;
