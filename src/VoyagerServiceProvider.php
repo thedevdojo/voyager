@@ -43,8 +43,6 @@ class VoyagerServiceProvider extends ServiceProvider
         });
 
         $this->loadHelpers();
-        
-        $this->registerGates();
 
         $this->registerAlertComponents();
         $this->registerFormFields();
@@ -91,6 +89,8 @@ class VoyagerServiceProvider extends ServiceProvider
         } else {
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
         }
+        
+        $this->registerGates();
 
         $this->registerViewComposers();
 
@@ -251,20 +251,22 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function registerGates()
     {
-        $dataType = VoyagerFacade::model('DataType');
-        $dataTypes = $dataType->get();
+        if (Schema::hasTable('data_types')) {
+            $dataType = VoyagerFacade::model('DataType');
+            $dataTypes = $dataType->get();
 
-        foreach ($dataTypes as $dataType) {
-            $policyClass = BasePolicy::class;
-            if (isset($dataType->policy_name) && $dataType->policy_name !== ''
-                && class_exists($dataType->policy_name)) {
-                $policyClass = $dataType->policy_name;
+            foreach ($dataTypes as $dataType) {
+                $policyClass = BasePolicy::class;
+                if (isset($dataType->policy_name) && $dataType->policy_name !== ''
+                    && class_exists($dataType->policy_name)) {
+                    $policyClass = $dataType->policy_name;
+                }
+
+                $this->policies[$dataType->model_name] = $policyClass;
             }
 
-            $this->policies[$dataType->model_name] = $policyClass;
+            $this->registerPolicies();
         }
-
-        $this->registerPolicies();
     }
 
     protected function registerFormFields()
