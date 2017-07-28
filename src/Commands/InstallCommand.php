@@ -72,7 +72,7 @@ class InstallCommand extends Command
             $str = file_get_contents(app_path('User.php'));
 
             if ($str !== false) {
-                $str = str_replace("extends Authenticatable", "extends \TCG\Voyager\models\User", $str);
+                $str = str_replace("extends Authenticatable", "extends \TCG\Voyager\Models\User", $str);
 
                 file_put_contents(app_path('User.php'), $str);
             }
