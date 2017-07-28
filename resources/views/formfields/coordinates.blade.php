@@ -4,12 +4,21 @@
         width: 100%;
     }
 </style>
-<input type="hidden" name="{{ $row->field }}[lat]" value="{{ config('voyager.googlemaps.center.lat') }}" id="lat"/>
-<input type="hidden" name="{{ $row->field }}[lng]" value="{{ config('voyager.googlemaps.center.lng') }}" id="lng"/>
+@forelse($dataTypeContent->getCoordinates() as $point)
+    <input type="hidden" name="{{ $row->field }}[lat]" value="{{ $point['lat'] }}" id="lat"/>
+    <input type="hidden" name="{{ $row->field }}[lng]" value="{{ $point['lng'] }}" id="lng"/>
+@empty
+    <input type="hidden" name="{{ $row->field }}[lat]" value="{{ config('voyager.googlemaps.center.lat') }}" id="lat"/>
+    <input type="hidden" name="{{ $row->field }}[lng]" value="{{ config('voyager.googlemaps.center.lng') }}" id="lng"/>
+@endforelse
 
 <script type="application/javascript">
     function initMap() {
-        var center = {lat: {{ config('voyager.googlemaps.center.lat') }}, lng: {{ config('voyager.googlemaps.center.lng') }}};
+        @forelse($dataTypeContent->getCoordinates() as $point)
+            var center = {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}};
+        @empty
+            var center = {lat: {{ config('voyager.googlemaps.center.lat') }}, lng: {{ config('voyager.googlemaps.center.lng') }}};
+        @endforelse
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: {{ config('voyager.googlemaps.zoom') }},
             center: center
