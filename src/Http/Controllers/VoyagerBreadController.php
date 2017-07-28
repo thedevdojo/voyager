@@ -4,10 +4,9 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
-use TCG\Voyager\Database\Schema\SchemaManager;
-use Schema;
 
 class VoyagerBreadController extends Controller
 {
@@ -37,7 +36,7 @@ class VoyagerBreadController extends Controller
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
-        $search = (object)['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
+        $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
         $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
@@ -47,12 +46,11 @@ class VoyagerBreadController extends Controller
 
             $relationships = $this->getRelationships($dataType);
 
-            if($search->value && $search->key && $search->filter){
+            if ($search->value && $search->key && $search->filter) {
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
                 $query->where($search->key, $search_filter, $search_value);
             }
-            
 
             if ($model->timestamps) {
                 $dataTypeContent = call_user_func([$query->latest(), $getter]);
