@@ -20,7 +20,7 @@ class TestCase extends OrchestraTestCase
 
         if (app()->version() < 5.4) {
             $this->loadMigrationsFrom([
-                '--realpath' => realpath(__DIR__.'/migrations'),
+                '--realpath' => realpath(__DIR__.'/../migrations'),
             ]);
         }
 
