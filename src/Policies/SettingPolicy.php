@@ -17,7 +17,7 @@ class SettingPolicy extends BasePolicy
      */
     public function browse(User $user, $model)
     {
-        return Voyager::can('browse_setting');
+        return Voyager::can('browse_settings');
     }
 
 }
