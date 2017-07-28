@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
+use Schema;
 
 class VoyagerBreadController extends Controller
 {
@@ -24,6 +25,8 @@ class VoyagerBreadController extends Controller
 
     public function index(Request $request)
     {
+        $search = $request->get("s");
+
         // GET THE SLUG, ex. 'posts', 'pages', etc.
         $slug = $this->getSlug($request);
 
@@ -41,10 +44,19 @@ class VoyagerBreadController extends Controller
 
             $relationships = $this->getRelationships($dataType);
 
+            // Search
+            $columns = Schema::getColumnListing($dataType->name);
+
+            $query = $model::select('*');
+
+            foreach($columns as $column) {
+                $query->orWhere($column, 'LIKE', "%".$search."%");
+            }
+
             if ($model->timestamps) {
-                $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
+                $dataTypeContent = call_user_func([$query->latest(), $getter]);
             } else {
-                $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
+                $dataTypeContent = call_user_func([$query->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
 
             //Replace relationships' keys for labels and create READ links if a slug is provided.
@@ -63,7 +75,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.browse";
         }
 
-        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'search'));
     }
 
     //***************************************
