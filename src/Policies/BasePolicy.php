@@ -3,7 +3,7 @@
 namespace TCG\Voyager\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use TCG\Voyager\Facades\Voyager as Voyager;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\User;
 
 class BasePolicy

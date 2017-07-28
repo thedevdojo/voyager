@@ -15,8 +15,9 @@ use Intervention\Image\ImageServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Models\User;
+use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Policies\BasePolicy;
+use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -26,7 +27,9 @@ class VoyagerServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [];
+    protected $policies = [
+        Setting::class => SettingPolicy::class
+    ];
 
     /**
      * Register the application services.

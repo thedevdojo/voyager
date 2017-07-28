@@ -2,7 +2,7 @@
 
 namespace TCG\Voyager\Policies;
 
-use TCG\Voyager\Facades\Voyager as Voyager;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\User;
 
 class UserPolicy extends BasePolicy
