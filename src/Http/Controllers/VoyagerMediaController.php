@@ -24,7 +24,7 @@ class VoyagerMediaController extends Controller
     public function index()
     {
         // Check permission
-        $this->authorize('browse', Voyager::model('Media'));
+        Voyager::canOrFail('browse_media');
 
         return Voyager::view('voyager::media.index');
     }
