@@ -1,13 +1,13 @@
 @extends('voyager::master')
 
-@section('page_title','All '.$dataType->display_name_plural)
+@section('page_title', __('voyager.generic.viewing').' '.$dataType->display_name_plural)
 
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
         @if (Voyager::can('add_'.$dataType->name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
-                <i class="voyager-plus"></i> Add New
+                <i class="voyager-plus"></i> {{ __('voyager.generic.add_new') }}
             </a>
         @endif
     </h1>
@@ -15,34 +15,42 @@
 @stop
 
 @section('content')
-    <div class="page-content container-fluid">
+    <div class="page-content browse container-fluid">
         @include('voyager::alerts')
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body table-responsive">
                         @if (isset($dataType->server_side) && $dataType->server_side)
-                            <h4>Search</h4>
                             <form method="get">
-                            <div id="search-input">
-                                <div class="input-group col-md-12">
-                                    <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search }}">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-info btn-lg" type="submit">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </span>
+                                <div id="search-input">
+                                    <select id="search_key" name="key">
+                                        @foreach($searchable as $key)
+                                                <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select id="filter" name="filter">
+                                        <option value="contains" @if($search->filter == "contains"){{ 'selected' }}@endif>contains</option>
+                                        <option value="equals" @if($search->filter == "equals"){{ 'selected' }}@endif>=</option>
+                                    </select>
+                                    <div class="input-group col-md-12">
+                                        <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search->value }}">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info btn-lg" type="submit">
+                                                <i class="voyager-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
                             </form>
                         @endif
-                        <table id="dataTable" class="row table table-hover">
+                        <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
-                                    @foreach($dataType->browseRows as $rows)
-                                    <th>{{ $rows->display_name }}</th>
+                                    @foreach($dataType->browseRows as $row)
+                                    <th>{{ $row->display_name }}</th>
                                     @endforeach
-                                    <th class="actions">Actions</th>
+                                    <th class="actions">{{ __('voyager.generic.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,9 +108,14 @@
                                             @elseif($row->type == 'text_area')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                            @elseif($row->type == 'file' && !empty($data->{$row->field}) )
+                                                @include('voyager::multilingual.input-hidden-bread-browse')
+                                                <a href="/storage/{{ $data->{$row->field} }}">Download</a>
                                             @elseif($row->type == 'rich_text_box')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
+                                            @elseif($row->type == 'coordinates')
+                                                @include('voyager::partials.coordinates-static-image')
                                             @else
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 <span>{{ $data->{$row->field} }}</span>
@@ -111,18 +124,18 @@
                                     @endforeach
                                     <td class="no-sort no-click" id="bread-actions">
                                         @if (Voyager::can('delete_'.$dataType->name))
-                                            <a href="javascript:;" title="Delete" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
-                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Delete</span>
+                                            <a href="javascript:;" title="{{ __('voyager.generic.delete') }}" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete') }}</span>
                                             </a>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" title="Edit" class="btn btn-sm btn-primary pull-right edit">
-                                                <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">Edit</span>
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
+                                                <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
                                             </a>
                                         @endif
                                         @if (Voyager::can('read_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" title="View" class="btn btn-sm btn-warning pull-right">
-                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">View</span>
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
+                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
                                             </a>
                                         @endif
                                     </td>
@@ -132,7 +145,12 @@
                         </table>
                         @if (isset($dataType->server_side) && $dataType->server_side)
                             <div class="pull-left">
-                                <div role="status" class="show-res" aria-live="polite">Showing {{ $dataTypeContent->firstItem() }} to {{ $dataTypeContent->lastItem() }} of {{ $dataTypeContent->total() }} entries</div>
+                                <div role="status" class="show-res" aria-live="polite">{{ trans_choice(
+                                    'voyager.generic.showing_entries', $dataTypeContent->total(), [
+                                        'from' => $dataTypeContent->firstItem(),
+                                        'to' => $dataTypeContent->lastItem(),
+                                        'all' => $dataTypeContent->total()
+                                    ]) }}</div>
                             </div>
                             <div class="pull-right">
                                 {{ $dataTypeContent->appends(['s' => $search])->links() }}
@@ -148,19 +166,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete
-                        this {{ strtolower($dataType->display_name_singular) }}?</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager.generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.'.$dataType->slug.'.index') }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                                 value="Yes, delete this {{ strtolower($dataType->display_name_singular) }}">
+                                 value="{{ __('voyager.generic.delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -185,14 +202,20 @@
         $(document).ready(function () {
             @if (!$dataType->server_side)
                 var table = $('#dataTable').DataTable({
-                    "order": []
+                    "order": [],
+                    "language": {!! json_encode(__('voyager.datatable'), true) !!}
                     @if(config('dashboard.data_tables.responsive')), responsive: true @endif
+                });
+            @else
+                $('#search-input select').select2({
+                    minimumResultsForSearch: Infinity
                 });
             @endif
 
             @if ($isModelTranslatable)
                 $('.side-body').multilingual();
             @endif
+             
         });
 
 

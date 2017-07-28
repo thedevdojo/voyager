@@ -97,6 +97,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | The prefix you wish to use with your voyager installation
+    |--------------------------------------------------------------------------
+    |
+    | specify the domain prefix you would like your users to visit in order
+    | to view the Voyager admin panel
+    |
+    */
+
+    'prefix' => 'admin',
+
+    /*
+    |--------------------------------------------------------------------------
     | Multilingual configuration
     |--------------------------------------------------------------------------
     |
@@ -109,7 +121,7 @@ return [
         /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
-        'bread' => false,
+        'enabled' => false,
 
         /*
          * Select default language
@@ -217,5 +229,23 @@ return [
     'primary_color' => '#22A7F0',
 
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
+
+    // Here you can specify additional assets you would like to be included in the master.blade
+    'additional_css' => [
+        //'css/custom.css',
+    ],
+
+    'additional_js' => [
+        //'js/custom.js',
+    ],
+
+    'googlemaps' => [
+         'key'    => env('GOOGLE_MAPS_KEY', ''),
+         'center' => [
+             'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
+             'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
+         ],
+         'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
+     ],
 
 ];

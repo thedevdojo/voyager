@@ -24,6 +24,12 @@ class VoyagerAdminMiddleware
             return $user->hasPermission('browse_admin') ? $next($request) : redirect('/');
         }
 
-        return redirect(route('voyager.login'));
+        $urlLogin = route('voyager.login');
+        $urlIntended = $request->url();
+        if ($urlIntended == $urlLogin) {
+            $urlIntended = null;
+        }
+
+        return redirect($urlLogin)->with('url.intended', $urlIntended);
     }
 }

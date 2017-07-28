@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
@@ -39,7 +40,7 @@ abstract class Controller extends BaseController
         /*
          * Prepare Translations and Transform data
          */
-        $translations = isBreadTranslatable($data)
+        $translations = is_bread_translatable($data)
                         ? $data->prepareTranslations($request)
                         : [];
 
@@ -61,10 +62,6 @@ abstract class Controller extends BaseController
             }
 
             if (is_null($content)) {
-                // Only set the content back to the previous value when there is really now input for this field
-                if (is_null($request->input($row->field)) && isset($data->{$row->field})) {
-                    $content = $data->{$row->field};
-                }
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
                 }
@@ -169,16 +166,64 @@ abstract class Controller extends BaseController
                      * upload files.
                      */
                     $filesPath = [];
+
+                    $options = json_decode($row->details);
+
+                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
+                        $resize_width = $options->resize->width;
+                        $resize_height = $options->resize->height;
+                    } else {
+                        $resize_width = 1800;
+                        $resize_height = null;
+                    }
+
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('F').date('Y').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
-                        $request->file($row->field)[$key]->storeAs(
-                            $path,
-                            $filename.'.'.$file->getClientOriginalExtension(),
-                            config('voyager.storage.disk', 'public')
-                        );
+
+                        $image = Image::make($file)->resize($resize_width, $resize_height,
+                            function (Constraint $constraint) {
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })->encode($file->getClientOriginalExtension(), 75);
+
+                        Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
+
+                        if (isset($options->thumbnails)) {
+                            foreach ($options->thumbnails as $thumbnails) {
+                                if (isset($thumbnails->name) && isset($thumbnails->scale)) {
+                                    $scale = intval($thumbnails->scale) / 100;
+                                    $thumb_resize_width = $resize_width;
+                                    $thumb_resize_height = $resize_height;
+
+                                    if ($thumb_resize_width != 'null') {
+                                        $thumb_resize_width = $thumb_resize_width * $scale;
+                                    }
+
+                                    if ($thumb_resize_height != 'null') {
+                                        $thumb_resize_height = $thumb_resize_height * $scale;
+                                    }
+
+                                    $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
+                                        function (Constraint $constraint) {
+                                            $constraint->aspectRatio();
+                                            $constraint->upsize();
+                                        })->encode($file->getClientOriginalExtension(), 75);
+                                } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
+                                    $crop_width = $thumbnails->crop->width;
+                                    $crop_height = $thumbnails->crop->height;
+                                    $image = Image::make($file)
+                                        ->fit($crop_width, $crop_height)
+                                        ->encode($file->getClientOriginalExtension(), 75);
+                                }
+
+                                Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                                    (string) $image, 'public'
+                                );
+                            }
+                        }
                     }
 
                     return json_encode($filesPath);
@@ -290,6 +335,19 @@ abstract class Controller extends BaseController
                     } else {
                         $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
                     }
+                }
+                break;
+
+            /********** COORDINATES TYPE **********/
+            case 'coordinates':
+                if (empty($coordinates = $request->input($row->field))) {
+                    $content = null;
+                } else {
+                    //DB::connection()->getPdo()->quote won't work as it quotes the
+                    // lat/lng, which leads to wrong Geometry type in POINT() MySQL constructor
+                    $lat = (float) ($coordinates['lat']);
+                    $lng = (float) ($coordinates['lng']);
+                    $content = DB::raw('ST_GeomFromText(\'POINT('.$lat.' '.$lng.')\')');
                 }
                 break;
 

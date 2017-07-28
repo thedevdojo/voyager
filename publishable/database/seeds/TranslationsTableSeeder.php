@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\Category;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\MenuItem;
 use TCG\Voyager\Models\Page;
@@ -16,8 +17,30 @@ class TranslationsTableSeeder extends Seeder
     public function run()
     {
         $this->dataTypesTranslations();
+        $this->categoriesTranslations();
         $this->pagesTranslations();
         $this->menusTranslations();
+    }
+
+    /**
+     * Auto generate Categories Translations.
+     *
+     * @return void
+     */
+    private function categoriesTranslations()
+    {
+        // Adding translations for 'categories'
+        //
+        $cat = Category::where('slug', 'category-1')->firstOrFail();
+        if ($cat->exists) {
+            $this->trans('pt', $this->arr(['categories', 'slug'], $cat->id), 'categoria-1');
+            $this->trans('pt', $this->arr(['categories', 'name'], $cat->id), 'Categoria 1');
+        }
+        $cat = Category::where('slug', 'category-2')->firstOrFail();
+        if ($cat->exists) {
+            $this->trans('pt', $this->arr(['categories', 'slug'], $cat->id), 'categoria-2');
+            $this->trans('pt', $this->arr(['categories', 'name'], $cat->id), 'Categoria 2');
+        }
     }
 
     /**
@@ -122,63 +145,63 @@ class TranslationsTableSeeder extends Seeder
     private function menusTranslations()
     {
         $_tpl = ['menu_items', 'title'];
-        $_item = $this->mItem('Dashboard');
+        $_item = $this->findMenuItem('Dashboard');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Painel de Controle');
         }
 
-        $_item = $this->mItem('Media');
+        $_item = $this->findMenuItem('Media');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Media');
         }
 
-        $_item = $this->mItem('Posts');
+        $_item = $this->findMenuItem('Posts');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Publicações');
         }
 
-        $_item = $this->mItem('Users');
+        $_item = $this->findMenuItem('Users');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Utilizadores');
         }
 
-        $_item = $this->mItem('Categories');
+        $_item = $this->findMenuItem('Categories');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Categorias');
         }
 
-        $_item = $this->mItem('Pages');
+        $_item = $this->findMenuItem('Pages');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Páginas');
         }
 
-        $_item = $this->mItem('Roles');
+        $_item = $this->findMenuItem('Roles');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Funções');
         }
 
-        $_item = $this->mItem('Tools');
+        $_item = $this->findMenuItem('Tools');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Ferramentas');
         }
 
-        $_item = $this->mItem('Menu Builder');
+        $_item = $this->findMenuItem('Menu Builder');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Menus');
         }
 
-        $_item = $this->mItem('Database');
+        $_item = $this->findMenuItem('Database');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Base de dados');
         }
 
-        $_item = $this->mItem('Settings');
+        $_item = $this->findMenuItem('Settings');
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Configurações');
         }
     }
 
-    private function mItem($title)
+    private function findMenuItem($title)
     {
         return MenuItem::where('title', $title)->firstOrFail();
     }

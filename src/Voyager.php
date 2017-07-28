@@ -38,6 +38,8 @@ class Voyager
 
     protected $users = [];
 
+    protected $viewLoadingEvents = [];
+
     protected $models = [
         'Category'   => Category::class,
         'DataRow'    => DataRow::class,
@@ -51,6 +53,8 @@ class Voyager
         'Setting'    => Setting::class,
         'User'       => User::class,
     ];
+
+    public $setting_cache = null;
 
     public function __construct()
     {
@@ -84,6 +88,24 @@ class Voyager
         $this->models[studly_case($name)] = $class;
 
         return $this;
+    }
+
+    public function view($name, array $parameters = [])
+    {
+        foreach (array_get($this->viewLoadingEvents, $name, []) as $event) {
+            $event($name, $parameters);
+        }
+
+        return view($name, $parameters);
+    }
+
+    public function onLoadingView($name, \Closure $closure)
+    {
+        if (!isset($this->viewLoadingEvents[$name])) {
+            $this->viewLoadingEvents[$name] = [];
+        }
+
+        $this->viewLoadingEvents[$name][] = $closure;
     }
 
     public function formField($row, $dateType, $dataTypeContent)
@@ -136,13 +158,11 @@ class Voyager
 
     public function setting($key, $default = null)
     {
-        $setting = Setting::where('key', '=', $key)->first();
-
-        if (isset($setting->id)) {
-            return $setting->value;
+        if ($this->setting_cache === null) {
+            $this->setting_cache = Setting::pluck('value', 'key');
         }
 
-        return $default;
+        return $this->setting_cache->get($key) ?: $default;
     }
 
     public function image($file, $default = '')
@@ -166,13 +186,14 @@ class Voyager
         // Check if permission exist
         $exist = $this->permissions->where('key', $permission)->first();
 
-        if ($exist) {
-            $user = $this->getUser();
-            if ($user == null || !$user->hasPermission($permission)) {
-                return false;
-            }
+        // Permission not found
+        if (!$exist) {
+            throw new \Exception('Permission does not exist', 400);
+        }
 
-            return true;
+        $user = $this->getUser();
+        if ($user == null || !$user->hasPermission($permission)) {
+            return false;
         }
 
         return true;
@@ -246,7 +267,7 @@ class Voyager
      */
     public function translatable($model)
     {
-        if (!config('voyager.multilingual.bread')) {
+        if (!config('voyager.multilingual.enabled')) {
             return false;
         }
 

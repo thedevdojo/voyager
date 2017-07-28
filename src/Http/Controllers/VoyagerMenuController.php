@@ -13,9 +13,9 @@ class VoyagerMenuController extends Controller
 
         $menu = Voyager::model('Menu')->findOrFail($id);
 
-        $isModelTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
+        $isModelTranslatable = is_bread_translatable(Voyager::model('MenuItem'));
 
-        return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
+        return Voyager::view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
     }
 
     public function delete_menu($menu, $id)
@@ -31,7 +31,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menus.builder', [$menu])
             ->with([
-                'message'    => 'Successfully Deleted Menu Item.',
+                'message'    => __('voyager.menu.builder_successfully_deleted'),
                 'alert-type' => 'success',
             ]);
     }
@@ -56,7 +56,7 @@ class VoyagerMenuController extends Controller
         }
 
         // Check if is translatable
-        $_isTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
+        $_isTranslatable = is_bread_translatable(Voyager::model('MenuItem'));
         if ($_isTranslatable) {
             // Prepare data before saving the menu
             $trans = $this->prepareMenuTranslations($data);
@@ -72,7 +72,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menus.builder', [$data['menu_id']])
             ->with([
-                'message'    => 'Successfully Created New Menu Item.',
+                'message'    => __('voyager.menu.builder_successfully_created'),
                 'alert-type' => 'success',
             ]);
     }
@@ -88,7 +88,7 @@ class VoyagerMenuController extends Controller
 
         $menuItem = Voyager::model('MenuItem')->findOrFail($id);
 
-        if (isBreadTranslatable($menuItem)) {
+        if (is_bread_translatable($menuItem)) {
             $trans = $this->prepareMenuTranslations($data);
 
             // Save menu translations
@@ -100,7 +100,7 @@ class VoyagerMenuController extends Controller
         return redirect()
             ->route('voyager.menus.builder', [$menuItem->menu_id])
             ->with([
-                'message'    => 'Successfully Updated Menu Item.',
+                'message'    => __('voyager.menu.builder_successfully_updated'),
                 'alert-type' => 'success',
             ]);
     }
