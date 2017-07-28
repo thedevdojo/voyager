@@ -20,7 +20,26 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-bordered">
-                    <div class="panel-body">
+                    <div class="panel-body table-responsive">
+                        @if (isset($dataType->server_side) && $dataType->server_side)
+                            <form method="get">
+                            <div id="search-input">
+                                <select id="search_filter" name="search_filter">
+                                    @foreach($searchable as $search_filter)
+                                        <option value="{{ $search_filter }}">{{ ucfirst($search_filter ) }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group col-md-12">
+                                    <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search }}">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-info btn-lg" type="submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            </form>
+                        @endif
                         <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
@@ -79,7 +98,7 @@
                                     ]) }}</div>
                             </div>
                             <div class="pull-right">
-                                {{ $dataTypeContent->links() }}
+                                {{ $dataTypeContent->appends(['s' => $search])->links() }}
                             </div>
                         @endif
                     </div>

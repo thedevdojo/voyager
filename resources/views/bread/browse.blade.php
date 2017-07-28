@@ -21,7 +21,30 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body table-responsive">
-                        <table id="dataTable" class="row table table-hover">
+                        @if (isset($dataType->server_side) && $dataType->server_side)
+                            <form method="get">
+                                <div id="search-input">
+                                    <select id="search_key" name="key">
+                                        @foreach($searchable as $key)
+                                                <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select id="filter" name="filter">
+                                        <option value="contains" @if($search->filter == "contains"){{ 'selected' }}@endif>contains</option>
+                                        <option value="equals" @if($search->filter == "equals"){{ 'selected' }}@endif>=</option>
+                                    </select>
+                                    <div class="input-group col-md-12">
+                                        <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search->value }}">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info btn-lg" type="submit">
+                                                <i class="voyager-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        @endif
+                        <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
                                     @foreach($dataType->browseRows as $row)
@@ -130,7 +153,7 @@
                                     ]) }}</div>
                             </div>
                             <div class="pull-right">
-                                {{ $dataTypeContent->links() }}
+                                {{ $dataTypeContent->appends(['s' => $search])->links() }}
                             </div>
                         @endif
                     </div>
@@ -183,11 +206,16 @@
                     "language": {!! json_encode(__('voyager.datatable'), true) !!}
                     @if(config('dashboard.data_tables.responsive')), responsive: true @endif
                 });
+            @else
+                $('#search-input select').select2({
+                    minimumResultsForSearch: Infinity
+                });
             @endif
 
             @if ($isModelTranslatable)
                 $('.side-body').multilingual();
             @endif
+             
         });
 
 
