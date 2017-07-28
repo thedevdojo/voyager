@@ -72,13 +72,13 @@ class InstallCommand extends Command
             $str = file_get_contents(app_path('User.php'));
 
             if ($str !== false) {
-                $str = str_replace("extends Authenticatable", "extends TCG\Voyager\models\User", $str);
+                $str = str_replace("extends Authenticatable", "extends \TCG\Voyager\models\User", $str);
 
                 file_put_contents(app_path('User.php'), $str);
             }
         } else {
             $this->warn('Unable to locate "app/User.php".  Did you move this file?');
-            $this->warn('You will need to update this manually.  Change "extends Authenticatable" to "extends TCG\Voyager\Models\User" in your User model');
+            $this->warn('You will need to update this manually.  Change "extends Authenticatable" to "extends \TCG\Voyager\Models\User" in your User model');
         }
 
         $this->info('Dumping the autoloaded files and reloading all new files');
