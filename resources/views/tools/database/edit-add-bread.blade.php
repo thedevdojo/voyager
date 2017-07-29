@@ -85,6 +85,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">{{ __('voyager.database.icon_hint') }} <a
+                                                href="{{ '/' . config('voyager.prefix') . '/compass#fonts' }}"
                                                 href="{{ voyager_asset('fonts/icons-reference.html') }}"
                                                 target="_blank">{{ __('voyager.database.icon_hint2') }}</a></label>
                                     <input type="text" class="form-control" name="icon"

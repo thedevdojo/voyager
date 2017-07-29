@@ -12,7 +12,7 @@
 # **V**oyager - The Missing Laravel Admin
 Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
-![Voyager Screenshot](https://laravelvoyager.com/images/screenshot.png)
+![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.png)
 
 Website & Documentation: https://laravelvoyager.com
 
@@ -91,7 +91,7 @@ If you did go ahead with the dummy data, a user should have been created for you
 
 NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
 
-If you did not go with the dummy user, you may wish to assign admin priveleges to an existing user.
+If you did not go with the dummy user, you may wish to assign admin privileges to an existing user.
 This can easily be done by running this command:
 
 ```bash

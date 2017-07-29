@@ -128,9 +128,11 @@ class VoyagerServiceProvider extends ServiceProvider
             return;
         }
 
+        $storage_disk = (!empty(config('voyager.storage.disk'))) ? config('voyager.storage.disk') : 'public';
+
         if (request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
             $this->fixMissingStorageSymlink();
-        } elseif (!file_exists(public_path('storage'))) {
+        } elseif (!file_exists(public_path('storage')) && $storage_disk == 'public') {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
                 ->title(__('voyager.error.symlink_missing_title'))
                 ->text(__('voyager.error.symlink_missing_text'))
@@ -258,6 +260,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'text_area',
             'timestamp',
             'hidden',
+            'coordinates',
         ];
 
         foreach ($formFields as $formField) {

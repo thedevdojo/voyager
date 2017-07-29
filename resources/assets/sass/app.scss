@@ -11,6 +11,7 @@
 @import "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker";
 @import "node_modules/simplemde/dist/simplemde.min";
 @import "node_modules/dropzone/dist/dropzone";
+@import "fonts";
 
 /********** LOGIN STYLES ***********/
 
@@ -553,10 +554,13 @@ a:hover {
 .app-container .content-container .side-menu .navbar-nav li a {
   font-family: 'Open Sans', sans-serif;
   padding: 0 10px 0 10px;
-  height: 46px;
-  line-height: 46px;
+  height: 50px;
+  line-height: 50px;
   display: block;
-  white-space: nowrap; }
+  white-space: nowrap;
+  
+  font-size: 15px;
+}
 .app-container .content-container .side-menu .navbar-nav li a .icon {
   margin-left: 0;
   width: 38px;
@@ -676,8 +680,8 @@ a:hover {
 .app-container .side-body {
   margin-left: 75px;
   margin-right: 15px;
-  -webkit-transition: all 0.25s;
-  transition: all 0.25s; }
+  -webkit-transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1) }
 
 .app-container.expanded .side-body {
   margin-left: 235px; }
@@ -1265,6 +1269,27 @@ table.dataTable.no-footer{
   z-index: auto;
 }
 
+.select2-container--default .select2-selection--single{
+    border: 0px;
+    border-right: 1px solid #f1f1f1;
+    border-radius: 0px;
+    height: 34px;
+    padding: 3px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    top:4px;
+}
+
+.select2-dropdown{
+    z-index:9;
+}
+
+.select2-container--open .select2-dropdown--below{
+    border: 0px;
+    box-shadow: 0px 15px 15px -1px rgba(0, 0, 0, 0.15);
+}
+
 @media (max-width: 768px) {
   .step .nav-tabs > li:after {
     display: none; }
@@ -1682,647 +1707,6 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
   background: none !important;
 }
 .navbar-nav.navbar-right li.dropdown.open .dropdown-menu {display: block}
-
-
-
-/********* VOYAGER FONTS **********/
-
-@charset "UTF-8";
-
-@font-face {
-  font-family: "voyager";
-  src:url("../fonts/voyager.eot");
-  src:url("../fonts/voyager.eot?#iefix") format("embedded-opentype"),
-    url("../fonts/voyager.woff") format("woff"),
-    url("../fonts/voyager.ttf") format("truetype"),
-    url("../fonts/voyager.svg#voyager") format("svg");
-  font-weight: normal;
-  font-style: normal;
-
-}
-
-[data-icon]:before {
-  font-family: "voyager" !important;
-  content: attr(data-icon);
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-variant: normal !important;
-  text-transform: none !important;
-  speak: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-[class^="voyager-"]:before,
-[class*=" voyager-"]:before {
-  font-family: "voyager" !important;
-  font-style: normal !important;
-  font-weight: normal !important;
-  font-variant: normal !important;
-  text-transform: none !important;
-  speak: none;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-.voyager-bread:before {
-  content: "\61";
-}
-.voyager-helm:before {
-  content: "\62";
-}
-.voyager-play:before {
-  content: "\63";
-}
-.voyager-activity:before {
-  content: "\64";
-}
-.voyager-company:before {
-  content: "\65";
-}
-.voyager-file-text:before {
-  content: "\66";
-}
-.voyager-folder:before {
-  content: "\67";
-}
-.voyager-paw:before {
-  content: "\68";
-}
-.voyager-sort:before {
-  content: "\6f";
-}
-.voyager-sort-asc:before {
-  content: "\70";
-}
-.voyager-sort-desc:before {
-  content: "\71";
-}
-.voyager-handle:before {
-  content: "\6d";
-}
-.voyager-hammer:before {
-  content: "\6e";
-}
-.voyager-images:before {
-  content: "\69";
-}
-.voyager-categories:before {
-  content: "\6a";
-}
-.voyager-group:before {
-  content: "\6b";
-}
-.voyager-plus:before {
-  content: "\72";
-}
-.voyager-person:before {
-  content: "\73";
-}
-.voyager-people:before {
-  content: "\74";
-}
-.voyager-power:before {
-  content: "\75";
-}
-.voyager-tools:before {
-  content: "\76";
-}
-.voyager-anchor:before {
-  content: "\77";
-}
-.voyager-double-down:before {
-  content: "\78";
-}
-.voyager-double-up:before {
-  content: "\79";
-}
-.voyager-double-left:before {
-  content: "\7a";
-}
-.voyager-double-right:before {
-  content: "\41";
-}
-.voyager-window-list:before {
-  content: "\42";
-}
-.voyager-x:before {
-  content: "\43";
-}
-.voyager-dot:before {
-  content: "\44";
-}
-.voyager-dot-2:before {
-  content: "\45";
-}
-.voyager-dot-3:before {
-  content: "\46";
-}
-.voyager-list:before {
-  content: "\47";
-}
-.voyager-list-add:before {
-  content: "\48";
-}
-.voyager-pie-chart:before {
-  content: "\49";
-}
-.voyager-watch:before {
-  content: "\4a";
-}
-.voyager-data:before {
-  content: "\4b";
-}
-.voyager-music:before {
-  content: "\4c";
-}
-.voyager-settings:before {
-  content: "\4e";
-}
-.voyager-video:before {
-  content: "\4f";
-}
-.voyager-trash:before {
-  content: "\50";
-}
-.voyager-tv:before {
-  content: "\51";
-}
-.voyager-lock:before {
-  content: "\52";
-}
-.voyager-news:before {
-  content: "\4d";
-}
-.voyager-bag:before {
-  content: "\53";
-}
-.voyager-upload:before {
-  content: "\54";
-}
-.voyager-refresh:before {
-  content: "\55";
-}
-.voyager-character:before {
-  content: "\57";
-}
-.voyager-move:before {
-  content: "\58";
-}
-.voyager-paypal:before {
-  content: "\56";
-}
-.voyager-paper-plane:before {
-  content: "\59";
-}
-.voyager-ticket:before {
-  content: "\5a";
-}
-.voyager-youtube-play:before {
-  content: "\30";
-}
-.voyager-boat:before {
-  content: "\31";
-}
-.voyager-check:before {
-  content: "\6c";
-}
-.voyager-alarm-clock:before {
-  content: "\32";
-}
-.voyager-controller:before {
-  content: "\34";
-}
-.voyager-pizza:before {
-  content: "\35";
-}
-.voyager-backpack:before {
-  content: "\36";
-}
-.voyager-barbeque:before {
-  content: "\37";
-}
-.voyager-bomb:before {
-  content: "\38";
-}
-.voyager-book-download:before {
-  content: "\39";
-}
-.voyager-browser:before {
-  content: "\21";
-}
-.voyager-brush:before {
-  content: "\22";
-}
-.voyager-bubble-hear:before {
-  content: "\23";
-}
-.voyager-polaroid:before {
-  content: "\24";
-}
-.voyager-crop:before {
-  content: "\26";
-}
-.voyager-dashboard:before {
-  content: "\27";
-}
-.voyager-hotdog:before {
-  content: "\28";
-}
-.voyager-laptop:before {
-  content: "\29";
-}
-.voyager-paint-bucket:before {
-  content: "\2c";
-}
-.voyager-photo:before {
-  content: "\2d";
-}
-.voyager-photos:before {
-  content: "\2e";
-}
-.voyager-receipt:before {
-  content: "\2f";
-}
-.voyager-buy:before {
-  content: "\3a";
-}
-.voyager-lightbulb:before {
-  content: "\3b";
-}
-.voyager-archive:before {
-  content: "\3f";
-}
-.voyager-paperclip:before {
-  content: "\40";
-}
-.voyager-warning:before {
-  content: "\5b";
-}
-.voyager-basket:before {
-  content: "\5d";
-}
-.voyager-bell:before {
-  content: "\5e";
-}
-.voyager-book:before {
-  content: "\5f";
-}
-.voyager-chat:before {
-  content: "\60";
-}
-.voyager-down-circled:before {
-  content: "\7b";
-}
-.voyager-location:before {
-  content: "\7d";
-}
-.voyager-forward:before {
-  content: "\7e";
-}
-.voyager-flashlight:before {
-  content: "\5c";
-}
-.voyager-trophy:before {
-  content: "\e001";
-}
-.voyager-diamond:before {
-  content: "\e002";
-}
-.voyager-credit-cards:before {
-  content: "\e003";
-}
-.voyager-shop:before {
-  content: "\e004";
-}
-.voyager-sound:before {
-  content: "\e005";
-}
-.voyager-study:before {
-  content: "\e006";
-}
-.voyager-pen:before {
-  content: "\e007";
-}
-.voyager-params:before {
-  content: "\e008";
-}
-.voyager-fire:before {
-  content: "\e009";
-}
-.voyager-dollar:before {
-  content: "\e00a";
-}
-.voyager-bulb:before {
-  content: "\e00b";
-}
-.voyager-lab:before {
-  content: "\e00c";
-}
-.voyager-cup:before {
-  content: "\e00d";
-}
-.voyager-megaphone:before {
-  content: "\e00e";
-}
-.voyager-heart:before {
-  content: "\e00f";
-}
-.voyager-bubble:before {
-  content: "\e011";
-}
-.voyager-search:before {
-  content: "\e012";
-}
-.voyager-tag:before {
-  content: "\e013";
-}
-.voyager-world:before {
-  content: "\25";
-}
-.voyager-camera:before {
-  content: "\2a";
-}
-.voyager-calendar:before {
-  content: "\7c";
-}
-.voyager-mail:before {
-  content: "\e014";
-}
-.voyager-phone:before {
-  content: "\e015";
-}
-.voyager-star:before {
-  content: "\e016";
-}
-.voyager-star-half:before {
-  content: "\e017";
-}
-.voyager-star-half-1:before {
-  content: "\e018";
-}
-.voyager-star-two:before {
-  content: "\e019";
-}
-.voyager-medal-rank-star:before {
-  content: "\e01a";
-}
-.voyager-facebook:before {
-  content: "\e01b";
-}
-.voyager-google-plus:before {
-  content: "\e01c";
-}
-.voyager-twitter:before {
-  content: "\e01d";
-}
-.voyager-github:before {
-  content: "\e01e";
-}
-.voyager-code:before {
-  content: "\e01f";
-}
-.voyager-pie-graph:before {
-  content: "\e020";
-}
-.voyager-javascript:before {
-  content: "\e021";
-}
-.voyager-wand:before {
-  content: "\e022";
-}
-.voyager-wineglass:before {
-  content: "\e023";
-}
-.voyager-milestone:before {
-  content: "\e024";
-}
-.voyager-terminal:before {
-  content: "\e025";
-}
-.voyager-plug:before {
-  content: "\e026";
-}
-.voyager-gift:before {
-  content: "\e027";
-}
-.voyager-markdown:before {
-  content: "\e028";
-}
-.voyager-beer:before {
-  content: "\e029";
-}
-.voyager-credit-card:before {
-  content: "\e02a";
-}
-.voyager-bolt:before {
-  content: "\e02b";
-}
-.voyager-external:before {
-  content: "\e02c";
-}
-.voyager-magnet:before {
-  content: "\e02d";
-}
-.voyager-certificate:before {
-  content: "\e02e";
-}
-.voyager-cloud-download:before {
-  content: "\e02f";
-}
-.voyager-campfire:before {
-  content: "\e030";
-}
-.voyager-new:before {
-  content: "\e031";
-}
-.voyager-skull:before {
-  content: "\e032";
-}
-.voyager-telephone:before {
-  content: "\e033";
-}
-.voyager-trees:before {
-  content: "\e034";
-}
-.voyager-bar-chart:before {
-  content: "\e035";
-}
-.voyager-check-circle:before {
-  content: "\e036";
-}
-.voyager-exclamation:before {
-  content: "\e037";
-}
-.voyager-font:before {
-  content: "\e03a";
-}
-.voyager-puzzle:before {
-  content: "\e03b";
-}
-.voyager-smile:before {
-  content: "\e03c";
-}
-.voyager-frown:before {
-  content: "\e03d";
-}
-.voyager-meh:before {
-  content: "\e03e";
-}
-.voyager-leaf:before {
-  content: "\e03f";
-}
-.voyager-info-circled:before {
-  content: "\e040";
-}
-.voyager-underline:before {
-  content: "\e041";
-}
-.voyager-wallet:before {
-  content: "\e042";
-}
-.voyager-truck:before {
-  content: "\e043";
-}
-.voyager-eye:before {
-  content: "\e044";
-}
-.voyager-sun:before {
-  content: "\e045";
-}
-.voyager-barbell:before {
-  content: "\e04a";
-}
-.voyager-bookmark:before {
-  content: "\e04c";
-}
-.voyager-volume-up:before {
-  content: "\e04d";
-}
-.voyager-volume-down:before {
-  content: "\e04e";
-}
-.voyager-wifi:before {
-  content: "\e04f";
-}
-.voyager-pause:before {
-  content: "\e053";
-}
-.voyager-resize-full:before {
-  content: "\e054";
-}
-.voyager-resize-small:before {
-  content: "\e055";
-}
-.voyager-download:before {
-  content: "\e056";
-}
-.voyager-droplet:before {
-  content: "\e057";
-}
-.voyager-umbrella:before {
-  content: "\e058";
-}
-.voyager-harddrive:before {
-  content: "\e059";
-}
-.voyager-css3:before {
-  content: "\e05a";
-}
-.voyager-html5:before {
-  content: "\e05b";
-}
-.voyager-tree:before {
-  content: "\e05e";
-}
-.voyager-file-code:before {
-  content: "\e061";
-}
-.voyager-bug:before {
-  content: "\e062";
-}
-.voyager-rocket:before {
-  content: "\e063";
-}
-.voyager-key:before {
-  content: "\33";
-}
-.voyager-question:before {
-  content: "\2b";
-}
-.voyager-cursor:before {
-  content: "\3c";
-}
-.voyager-lifebuoy:before {
-  content: "\3d";
-}
-.voyager-thumbs-up:before {
-  content: "\3e";
-}
-.voyager-thumb-tack:before {
-  content: "\e000";
-}
-.voyager-edit:before {
-  content: "\e010";
-}
-.voyager-angle-down:before {
-  content: "\e038";
-}
-.voyager-angle-left:before {
-  content: "\e039";
-}
-.voyager-angle-right:before {
-  content: "\e046";
-}
-.voyager-angle-up:before {
-  content: "\e047";
-}
-.voyager-home:before {
-  content: "\e048";
-}
-.voyager-pirate-swords:before {
-  content: "\e04b";
-}
-.voyager-pirate:before {
-  content: "\e050";
-}
-.voyager-rum:before {
-  content: "\e051";
-}
-.voyager-cannon:before {
-  content: "\e049";
-}
-.voyager-hook:before {
-  content: "\e052";
-}
-.voyager-kraken:before {
-  content: "\e05c";
-}
-.voyager-lighthouse:before {
-  content: "\e05d";
-}
-.voyager-pirate-hat:before {
-  content: "\e05f";
-}
-.voyager-rum-1:before {
-  content: "\e060";
-}
-.voyager-ship:before {
-  content: "\e064";
-}
-.voyager-treasure:before {
-  content: "\e065";
-}
-.voyager-treasure-open:before {
-  content: "\e066";
-}
-.voyager-whale:before {
-  content: "\e067";
-}
-
-/********** END VOYAGER FONTS ***********/
 
 
 /********** MEDIA STYLES *********/
@@ -3029,6 +2413,8 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 
 .voyager .app-footer i {
     color: #D9534F;
+    position: relative;
+    top: 2px;
 }
 
 .voyager .navbar,
@@ -3041,7 +2427,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 .voyager .navbar > .container-fluid,
 .voyager .navbar.navbar-default > .container-fluid:after {
     border-bottom: 1px solid #eee;
-    width: 98%;
+    width: 99.5%;
     height: 1px;
 }
 
@@ -3284,7 +2670,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 
 .voyager .side-menu.sidebar-inverse {
     background-color: #353d47;
-    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px 0px 0px;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar {
@@ -3594,7 +2980,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 }
 
 .voyager .btn.btn-warning {
-    background: #FABE28;
+    background: #f39c12;
     color: #fff;
     border: 0px;
     border-radius: 3px;
@@ -4571,6 +3957,10 @@ p#the_plugin_name{
   margin-top:360px;
 }
 
+.page-content.col-md-12{
+    padding-right:0px;
+}
+
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title{
   text-transform: uppercase;
   position:relative;
@@ -4586,7 +3976,7 @@ p#the_plugin_name{
 .voyager .side-menu.sidebar-inverse .navbar li.active > a{
   color: #fff;
   background: none;
-  border:0px;
+  border-left:0px;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a {
@@ -4606,12 +3996,12 @@ background: -webkit-linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1)
 background: linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#353d47', endColorstr='#21292e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 overflow-x: hidden;
-    -webkit-transition: width 0.25s;
-    transition: width 0.25s;
+    -webkit-transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    transition: width  500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .app-container .side-body, .app-container.expanded .content-container .navbar-top, .app-container .content-container .navbar-top{
-  transition:all 0.4s ease-in-out;
+  transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a:hover{
@@ -4629,16 +4019,18 @@ overflow-x: hidden;
   padding:28px 30px;
   cursor:pointer;
   opacity:1;
-  transition:opacity 0.2s ease;
+  transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  padding-left: 20px;
+  margin-right: 0px;
 }
 
 .hamburger:hover{
   opacity:0.7;
-  transition:opacity 0.2s ease;
+  transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .hamburger-inner{
-  width:20px;
+  width:15px;
   height:2px;
   background:#76838F;
   display:block;
@@ -4648,11 +4040,11 @@ overflow-x: hidden;
   margin-left:-10px;
   margin-top:-1px;
   position:absolute;
-  transition:opacity 0.6s ease;
+  transition:all 300ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .hamburger-inner:after{
-  width:20px;
+  width:10px;
   height:2px;
   background:#76838F;
   display:block;
@@ -4660,9 +4052,7 @@ overflow-x: hidden;
   position:absolute;
   bottom:-5px;
   content:'';
-  transition: bottom .1s ease,-webkit-transform .15s .1s cubic-bezier(.295,.03,.685,.22);
-  transition: bottom .1s ease,transform .15s .1s cubic-bezier(.295,.03,.685,.22);
-  transition: bottom .1s ease,transform .15s .1s cubic-bezier(.295,.03,.685,.22),-webkit-transform .15s .1s cubic-bezier(.295,.03,.685,.22);
+  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .hamburger-inner:before{
@@ -4674,17 +4064,21 @@ overflow-x: hidden;
   position:absolute;
   content:'';
   top:-5px;
-  transition: bottom .1s ease,-webkit-transform .15s .1s cubic-bezier(.295,.03,.685,.22);
-  transition: bottom .1s ease,transform .15s .1s cubic-bezier(.295,.03,.685,.22);
-  transition: bottom .1s ease,transform .15s .1s cubic-bezier(.295,.03,.685,.22),-webkit-transform .15s .1s cubic-bezier(.295,.03,.685,.22);
+  transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.hamburger.is-active .hamburger-inner{
+  width:20px;
 }
 
 .hamburger.is-active .hamburger-inner:before{
+    width:20px;
     -webkit-transform: translate3d(-5px,1px,0) rotate(-45deg) scaleX(.5);
     transform: translate3d(-5px,1px,0) rotate(-45deg) scaleX(.5);
 }
 
 .hamburger.is-active .hamburger-inner:after{
+    width:20px;
     -webkit-transform: translate3d(-5px,-1px,0) rotate(45deg) scaleX(.5);
     transform: translate3d(-5px,-1px,0) rotate(45deg) scaleX(.5);
 }
@@ -4957,7 +4351,9 @@ float: left;
 }
 
 .panel-bordered>.panel-body {
+    padding:20px;
     padding-top: 30px;
+    overflow:hidden;
 }
 
 .voyager .panel {
@@ -5030,7 +4426,7 @@ float: left;
 }
 
 .panel.widget i{
-    font-size: 60px;
+    font-size: 48px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 50%;
     width: 100px;
@@ -5100,21 +4496,21 @@ float: left;
   background: linear-gradient(135deg,  rgba(45,53,61,0.79) 0%,rgba(45,53,61,0.5) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c92d353d', endColorstr='#802d353d',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
   opacity:1;
-  transition:opacity 0.3s ease;
+  transition:all 0.3s ease;
   position:absolute;
   left:0px;
   top:0px;
   width:100%;
   height:100%;
-  border-radius:3px;
-}
-
-.panel.widget:hover .dimmer{
-  opacity:0.9;
+  border-radius:0px;
 }
 
 .side-menu .panel.widget .dimmer{
   border-radius: 0px;
+}
+
+.side-menu:hover .panel.widget .dimmer, .expanded .side-menu .panel.widget .dimmer{
+
   background: -moz-linear-gradient(275deg, rgba(36,44,50,1) 0%, rgba(36,44,50,0.95) 34%, rgba(36,44,50,0.7) 100%);
   background: -webkit-linear-gradient(275deg, rgba(36,44,50,1) 0%,rgba(36,44,50,0.95) 34%,rgba(36,44,50,0.7) 100%);
   background: linear-gradient(275deg, rgba(36,44,50,1) 0%,rgba(36,44,50,0.95) 34%,rgba(36,44,50,0.7) 100%);
@@ -5127,8 +4523,7 @@ float: left;
 }
 
  .side-menu .panel.widget{
-  padding:8px 0;
-  padding-bottom:6px;
+  padding:12px 0;
   margin:0px;
   border-radius:0px;
 }
@@ -5148,10 +4543,12 @@ float: left;
 }
 
 .app-container  .side-menu .panel.widget .avatar{
-    width: 40px;
-    float:left;
-    margin-left:10px;
-    border:2px solid rgba(51,59,69, 0.5);
+    width: 36px;
+    float: left;
+    margin-left: 12px;
+    border: 0px;
+    position: relative;
+    top: 3px;
 }
 
 .app-container .side-menu .panel.widget h4 {
@@ -5180,7 +4577,7 @@ float: left;
 
 .app-container .side-menu:hover .panel.widget .avatar{
   float:left;
-  margin-left:10px;
+  margin-left:12px;
   transition:none;
 }
 
@@ -5215,7 +4612,7 @@ float: left;
 }
 
 .modal-open .select2-container{
-  z-index: 10 !important;
+  z-index: 999999 !important;
   width:100% !important;
 }
 
@@ -5554,7 +4951,11 @@ ul.checkbox label {
 }
 
 .alerts {
-  padding: 10px 10px 0px 10px;
+  padding: 10px 10px 0;
+  padding-left: 25px;
+  padding-right: 25px;
+  position: relative;
+  top: 10px;
 }
 
 .alerts .alert {
@@ -7144,6 +6545,11 @@ limitations under the License.
   border-radius: 3px;
   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
   box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.analytics-container{
+  padding: 25px;
+  padding-top: 15px;
 }
 
 #analytics-dashboard{
@@ -9353,6 +8759,60 @@ limitations under the License.
   position: relative;
     top: 2px;
 }
+
+/********** Search Bar CSS **********/
+
+#search-input{
+    padding: 1px;
+    border: solid 1px #EAEAF1;
+    border-radius: 6px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    display:flex;
+    .input-group{
+        display:flex;
+        position:relative;
+    }
+    input{
+        border: 0;
+        box-shadow: none;
+        width:100%;
+    }
+    button{
+        margin: 2px 0 0 0;
+        background: none;
+        box-shadow: none;
+        border: 0;
+        color: #999;
+        padding: 1px 8px 0 10px;
+        border-left: solid 1px #eee;
+        right: 20px;
+        z-index: 9;
+        &:hover{
+            border: 0;
+            box-shadow: none;
+            color:#777;
+            border-left: solid 1px #ddd;
+        }
+    }
+    i{
+        font-size: 18px;
+        transform: rotate(270deg);
+        display: block;
+    }
+
+
+    .select2-results{
+        text-align:center;
+    }
+
+    #filter{
+        text-align:center;
+        min-width:100px;
+    }
+}
+
+/********** END SEARCH BAR CSS **********/
 
 
 /**************************************************/

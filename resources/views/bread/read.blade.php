@@ -75,9 +75,24 @@
                                 @endif
                             @elseif($row->type == 'color')
                                 <span class="badge badge-lg" style="background-color: {{ $dataTypeContent->{$row->field} }}">{{ $dataTypeContent->{$row->field} }}</span>
+                            @elseif($row->type == 'coordinates')
+                                @include('voyager::partials.coordinates')
                             @elseif($row->type == 'rich_text_box')
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
+                            @elseif($row->type == 'file')
+                                @if(json_decode($dataTypeContent->{$row->field}))
+                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
+                                        <a href="/storage/{{ $file->download_link or '' }}">
+                                            {{ $file->original_name or '' }}
+                                        </a>
+                                        <br/>
+                                    @endforeach
+                                @else
+                                    <a href="/storage/{{ $dataTypeContent->{$row->field} }}">
+                                        Download
+                                    </a>
+                                @endif
                             @else
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>
