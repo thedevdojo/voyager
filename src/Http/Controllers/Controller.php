@@ -145,20 +145,26 @@ abstract class Controller extends BaseController
 
             /********** FILE TYPE **********/
             case 'file':
-                if ($file = $request->file($row->field)) {
-                    $filename = Str::random(20);
-                    $path = $slug.'/'.date('F').date('Y').'/';
-                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
-                    $request->file($row->field)->storeAs(
-                        $path,
-                        $filename.'.'.$file->getClientOriginalExtension(),
-                        config('voyager.storage.disk', 'public')
-                    );
+                if ($files = $request->file($row->field)) {
+                    $filesPath = [];
+                    foreach ($files as $key => $file) {
+                        $filename = Str::random(20);
+                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                        $file->storeAs(
+                            $path,
+                            $filename.'.'.$file->getClientOriginalExtension(),
+                            config('voyager.storage.disk', 'public')
+                        );
+                        array_push($filesPath, [
+                            'download_link' => $path.$filename.'.'.$file->getClientOriginalExtension(),
+                            'original_name' => $file->getClientOriginalName(),
+                        ]);
+                    }
 
-                    return $fullPath;
+                    return json_encode($filesPath);
                 }
             // no break
-
             /********** MULTIPLE IMAGES TYPE **********/
             case 'multiple_images':
                 if ($files = $request->file($row->field)) {
