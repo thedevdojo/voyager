@@ -62,6 +62,12 @@ abstract class Controller extends BaseController
             }
 
             if (is_null($content)) {
+
+                // If the image upload is null and it has a current image keep the current image
+                if ($row->field == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                    $content = $data->{$row->field};
+                }
+
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
                 }
