@@ -102,6 +102,8 @@
                                                 @else
                                                 {{ $data->{$row->field} }}
                                                 @endif
+                                            @elseif($row->type == 'color')
+                                                <span class="badge badge-lg" style="background-color: {{ $data->{$row->field} }}">{{ $data->{$row->field} }}</span>
                                             @elseif($row->type == 'text')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>

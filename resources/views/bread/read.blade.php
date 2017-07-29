@@ -73,6 +73,8 @@
                                 @else
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
+                            @elseif($row->type == 'color')
+                                <span class="badge badge-lg" style="background-color: {{ $dataTypeContent->{$row->field} }}">{{ $dataTypeContent->{$row->field} }}</span>
                             @elseif($row->type == 'coordinates')
                                 @include('voyager::partials.coordinates')
                             @elseif($row->type == 'rich_text_box')
