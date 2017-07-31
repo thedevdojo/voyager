@@ -105,3 +105,5 @@ php artisan voyager:admin your@email.com --create
 ```
 
 And you will be prompted for the users name and password.
+
+<!-- yakov -->
