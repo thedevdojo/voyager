@@ -92,6 +92,9 @@ abstract class Controller extends BaseController
             $data->{$sync_data['row']}()->sync($sync_data['content']);
         }
 
+        //Added a event after update data
+        event('voyager.insert_update_data', [$request, $slug, $rows, $data]);
+
         return $data;
     }
 
