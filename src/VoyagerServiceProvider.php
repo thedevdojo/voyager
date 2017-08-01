@@ -16,9 +16,12 @@ use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
+use TCG\Voyager\Traits\CroppingImages;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
+    use CroppingImages;
+
     /**
      * Register the application services.
      */
@@ -86,6 +89,11 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $event->listen('voyager.alerts.collecting', function () {
             $this->addStorageSymlinkAlert();
+        });
+
+        //Added a listener on event after update data
+        $event->listen('voyager.insert_update_data', function ($request, $slug, $rows, $data) {
+            $this->cropImages($request, $slug, $rows, $data);
         });
 
         $this->bootTranslatorCollectionMacros();

@@ -248,4 +248,17 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Images Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify images settings
+    |
+    */
+
+    'images' => [
+        'quality' => 80,
+        'crop_folder' => 'crop',
+    ],
 ];
