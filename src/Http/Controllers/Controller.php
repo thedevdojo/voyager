@@ -71,6 +71,15 @@ abstract class Controller extends BaseController
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
                 }
+
+                /*
+                 * If a image name is null,
+                 * then get the image name from text input.
+                 * This may be necessary when you need to crop photos by coordinates
+                 */
+                if ($row->type === 'image' && is_null($content)) {
+                    $content = $request->input($row->field);
+                }
             }
 
             if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {

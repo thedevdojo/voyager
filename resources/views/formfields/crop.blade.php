@@ -36,10 +36,9 @@
 @endforeach
 </style>
 
-
 @section('javascript')
-<link rel="stylesheet" href="{{ voyager_asset('js/plugins/crop/crop.css') }}">
-<script src="{{ voyager_asset('js/plugins/crop/crop.js') }}"></script>
+<link rel="stylesheet" href="{{ voyager_asset('js/plugins/crop/crop.min.css') }}">
+<script src="{{ voyager_asset('js/plugins/crop/crop.min.js') }}"></script>
 
 <script>
 $(document).ready(function() {
@@ -48,9 +47,9 @@ $(document).ready(function() {
         {{ $photoParams->name }}.init(".{{ $photoParams->name }}");
 
         @if ( old($row->field) )
-            {{ $photoParams->name }}.loadImage("{{ '/' . temp_path(old($row->field)) }}?{{ time() }}");
+            {{ $photoParams->name }}.loadImg("{{ '/' . temp_path(old($row->field)) }}?{{ time() }}");
         @elseif ( isset($dataTypeContent->{$row->field}) )
-            {{ $photoParams->name }}.loadImage("{{ '/storage/' . $dataTypeContent->{$row->field} }}");
+            {{ $photoParams->name }}.loadImg("{{ '/storage/' . $dataTypeContent->{$row->field} }}");
         @endif
     @endforeach
 });
@@ -75,7 +74,7 @@ $("#upload, #dropzone").dropzone({
             @foreach($options->crop as $photoParams)
                 var {{ $photoParams->name }} = new CROP;
                 {{ $photoParams->name }}.init(".{{ $photoParams->name }}");
-                {{ $photoParams->name }}.loadImage('/storage/' + res.path);
+                {{ $photoParams->name }}.loadImg('/storage/' + res.path);
 
                 $("button:submit").click(function() {
                     $('input[name={{ $row->field . '_' . $photoParams->name }}]').val(

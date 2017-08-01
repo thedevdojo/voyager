@@ -258,6 +258,7 @@ return [
     */
 
     'images' => [
-        'quality' => 80
+        'quality' => 80,
+        'crop_folder' => 'crop',
     ],
 ];

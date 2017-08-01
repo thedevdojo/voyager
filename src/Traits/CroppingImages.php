@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
+use File;
 
 trait CroppingImages
 {
@@ -25,7 +25,7 @@ trait CroppingImages
      * @param Illuminate\Database\Eloquent\Model $data
      * @return boolean
      */
-    public static function save(Request $request, $slug, Collection $dataType, Model $data)
+    public function cropImages(Request $request, $slug, Collection $dataType, Model $data)
     {
         $this->quality = config('voyager.images.quality', 100);
         $this->request = $request;
@@ -39,7 +39,7 @@ trait CroppingImages
             if (!isset($details->crop)) return false;
             if (!$this->request->{$dataRow->field}) return false;
 
-            $this->crop($details->crop, $dataRow);
+            $this->cropImage($details->crop, $dataRow);
         }
 
         return true;
@@ -52,16 +52,13 @@ trait CroppingImages
      * @param Illuminate\Database\Eloquent\Collection $dataRow
      * @return void
      */
-    public function crop($crop, $dataRow) {
-        dd($dataRow);
+    public function cropImage($crop, $dataRow) {
         $request = $this->request;
-        $cropfilesystem = config('setting.crop_storage.disk');
-        $directory = $this->slug;
+        $cropFolder = config('voyager.images.crop_folder');
+        $directory = $cropFolder . '/' . $this->slug;
 
         //If a directory is not exists, then make the directory
-        if (!Storage::disk($cropfilesystem)->exists($directory)) {
-            Storage::disk($cropfilesystem)->makeDirectory($directory);
-        }
+        if (!File::exists($directory)) File::makeDirectory($directory, 0775, true, true);
 
         $item_id = $this->data->id;
 
@@ -78,12 +75,12 @@ trait CroppingImages
             );
 
             $img->resize($cropParam->size->width, $cropParam->size->height);
-            $photo_name = "crop/{$directory}/{$cropParam->name}_{$item_id}_{$cropParam->size->name}.jpg";
+            $photo_name = $directory . '/' . $cropParam->name . '_' .$item_id . '_' . $cropParam->size->name . '.jpg';
             $img->save($photo_name, $this->quality);
 
             if (!empty($cropParam->resize)) {
                 foreach ($cropParam->resize as $cropParamResize) {
-                    $photo_name = "crop/{$directory}/{$cropParam->name}_{$item_id}_{$cropParamResize->name}.jpg";
+                    $photo_name = $directory . '/' . $cropParam->name . '_' .$item_id . '_' . $cropParam->name . '.jpg';
                     $img->resize($cropParamResize->width, $cropParamResize->height, function ($constraint) {
                         $constraint->aspectRatio();
                     });
