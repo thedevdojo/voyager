@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use TCG\Voyager\Http\Controllers\Traits\ImagesCrop;
 use TCG\Voyager\Traits\AlertsMessages;
 use Validator;
 
@@ -20,7 +21,8 @@ abstract class Controller extends BaseController
     use DispatchesJobs,
         ValidatesRequests,
         AuthorizesRequests,
-        AlertsMessages;
+        AlertsMessages,
+        ImagesCrop;
 
     public function getSlug(Request $request)
     {
@@ -36,6 +38,7 @@ abstract class Controller extends BaseController
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $multi_select = [];
+        $needImagesCropByСoordinates = false;
 
         /*
          * Prepare Translations and Transform data
@@ -71,6 +74,19 @@ abstract class Controller extends BaseController
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
                 }
+
+                /*
+                 * If a image name is null,
+                 * then get the image name from text input.
+                 * This may be necessary when you need to crop photos by coordinates
+                 */
+                if ($row->type === 'image' && is_null($content)) {
+                    $content = $request->input($row->field);
+                }
+
+                if (isset($options->crop) && $request->input($row->field)) {
+                    $needImagesCropByСoordinates = true;
+                }
             }
 
             if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
@@ -90,6 +106,10 @@ abstract class Controller extends BaseController
 
         foreach ($multi_select as $sync_data) {
             $data->{$sync_data['row']}()->sync($sync_data['content']);
+        }
+
+        if ($needImagesCropByСoordinates) {
+            $this->cropImages($request, $slug, $rows, $data);
         }
 
         return $data;
