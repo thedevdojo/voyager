@@ -20,3 +20,10 @@ if (!function_exists('voyager_asset')) {
         return asset(config('voyager.assets_path').'/'.$path, $secure);
     }
 }
+
+if (!function_exists('storage_url')) {
+    function storage_url($path)
+    {
+        return Storage::disk(config('voyager.storage.disk'))->url($path);
+    }
+}
