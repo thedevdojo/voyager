@@ -24,7 +24,7 @@ trait ImagesCrop
      * @param Illuminate\Database\Eloquent\Collection $dataType
      * @param Illuminate\Database\Eloquent\Model      $data
      *
-     * @return boolean
+     * @return bool
      */
     public function cropImages(Request $request, $slug, Collection $dataType, Model $data)
     {
