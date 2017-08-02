@@ -6,6 +6,7 @@ use File;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 trait ImagesCrop
@@ -40,7 +41,7 @@ trait ImagesCrop
             if (!isset($details->crop)) {
                 return false;
             }
-            if (!$this->request->{$dataRow->field}) {
+            if (!$request->{$dataRow->field}) {
                 return false;
             }
 
@@ -74,7 +75,13 @@ trait ImagesCrop
         foreach ($crop as $cropParam) {
             $inputName = $dataRow->field.'_'.$cropParam->name;
             $params = json_decode($request->get($inputName));
-            $img = Image::make(public_path('storage/'.$request->image));
+
+            if (!is_object($params)) {
+                return false;
+            }
+
+            $img = Image::make(Storage::disk(config('voyager.storage.disk'))
+                ->url($request->{$dataRow->field}));
 
             $img->crop(
                 (int) $params->w,

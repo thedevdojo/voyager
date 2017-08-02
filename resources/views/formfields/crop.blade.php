@@ -1,7 +1,7 @@
 @php ($id = 'input_' . $row->field)
 
 <input id="{{ $id }}" type="hidden" name="{{ $row->field }}"
-    value="{{ old($row->field) }}">
+    value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif">
 
 @foreach($options->crop as $photoParams)
     <input type="hidden" name="{{ $row->field . '_' . $photoParams->name }}"
