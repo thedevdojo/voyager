@@ -26,7 +26,7 @@ class FormBuildersTableSeeder extends Seeder
                                 'excerpt',
                                 'body',
                                 'slug',
-                            ]
+                            ],
                         ],
                         [
                             'class'  => 'panel panel-bordered panel-info',
@@ -34,7 +34,7 @@ class FormBuildersTableSeeder extends Seeder
                             'fields' => [
                                 'meta_keywords',
                                 'meta_description',
-                            ]
+                            ],
                         ],
                     ],
                 ],
@@ -47,7 +47,7 @@ class FormBuildersTableSeeder extends Seeder
                             'fields' => [
                                 'image',
                                 'status',
-                            ]
+                            ],
                         ],
                     ],
                 ],

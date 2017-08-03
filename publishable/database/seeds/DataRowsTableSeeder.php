@@ -962,7 +962,7 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => json_encode([
-                    'formfields_custom' => 'form-builder-details'
+                    'formfields_custom' => 'form-builder-details',
                 ]),
                 'order'        => 3,
             ])->save();

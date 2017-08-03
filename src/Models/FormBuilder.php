@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use TCG\Voyager\Models\DataType;
 
 class FormBuilder extends Model
 {
