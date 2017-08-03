@@ -37,6 +37,6 @@ class PermissionsTableSeeder extends Seeder
 
         Permission::generateFor('categories');
 
-        Permission::generateFor('form-builders');
+        Permission::generateFor('form_builders');
     }
 }
