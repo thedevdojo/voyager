@@ -940,7 +940,12 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'relationship' => [
+                        'key'   => 'id',
+                        'label' => 'display_name_singular',
+                    ],
+                ]),
                 'order'        => 2,
             ])->save();
         }

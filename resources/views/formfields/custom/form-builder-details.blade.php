@@ -4,21 +4,42 @@
     <textarea name="{{ $row->field }}" id="{{ $row->field }}_textarea" data-editor="json">@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@elseif(isset($options->default)){{ old($row->field, $options->default) }}@else{{ old($row->field) }}@endif</textarea>
 </div>
 
-<script src="{{ voyager_asset('lib/js/ace/ace.js') }}"></script>
+@section('javascript')
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+
     <script>
         window.invalidEditors = [];
-        var validationAlerts = $('.validation-error');
-        validationAlerts.hide();
+        //var validationAlerts = $('.validation-error');
+        //validationAlerts.hide();
         $(function () {
+
+            /**
+             * Reorder items
+             */
+            $('#bread-items').sortable({
+                handle: '.handler',
+                update: function (e, ui) {
+                    var _rows = $('#bread-items').find('.row_order'),
+                        _size = _rows.length;
+
+                    for (var i = 0; i < _size; i++) {
+                        $(_rows[i]).val(i+1);
+                    }
+                }
+            });
+
+            $('#bread-items').disableSelection();
+
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('.toggleswitch').bootstrapToggle();
+
             $('textarea[data-editor]').each(function () {
                 var textarea = $(this),
                 mode = textarea.data('editor'),
-                editDiv = $('<div>', {
-                    position: 'absolute',
-                    //width: 700,
-                    resize: 'vertical',
-                    class: textarea.attr('class')
-                }).insertBefore(textarea),
+
+                editDiv = $('<div>').insertBefore(textarea),
                 editor = ace.edit(editDiv[0]),
                 _session = editor.getSession(),
                 valid = false;
@@ -43,7 +64,6 @@
                 // Use workers only when needed
                 editor.on('focus', function () {
                     _session.setUseWorker(true);
-                    $('#bread-items').sortable("disable");
                 });
                 editor.on('blur', function () {
                     if (valid) {
@@ -52,15 +72,14 @@
                     } else {
                         textarea.siblings('.validation-error').show();
                     }
-                    $('#bread-items').sortable("enable");
                 });
 
                 _session.setUseWorker(false);
 
                 editor.setAutoScrollEditorIntoView(true);
                 editor.$blockScrolling = Infinity;
-                editor.setOption("maxLines", 30);
-                editor.setOption("minLines", 4);
+                editor.setOption("maxLines", 100);
+                editor.setOption("minLines", 40);
                 editor.setOption("showLineNumbers", false);
                 editor.setTheme("ace/theme/github");
                 _session.setMode("ace/mode/json");
@@ -79,7 +98,7 @@
                         for (var i = window.invalidEditors.length - 1; i >= 0; i--) {
                             $('#'+window.invalidEditors[i]).siblings('.validation-error').show();
                         }
-                        toastr.error('Seems like you introduced some invalid JSON.', 'Validation errors', {"preventDuplicates": true, "preventOpenDuplicates": true});
+                        toastr.error('{{ __('voyager.json.invalid_message') }}', '{{ __('voyager.json.validation_errors') }}', {"preventDuplicates": true, "preventOpenDuplicates": true});
                     } else {
                         if (_session.getValue()) {
                             // uglify JSON object and update textarea for submit purposes
@@ -88,9 +107,6 @@
                     }
                 });
             });
-
-            $('[data-toggle="tooltip"]').tooltip();
-
-            $('.toggleswitch').bootstrapToggle();
         });
     </script>
+@stop
