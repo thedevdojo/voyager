@@ -1,212 +1,124 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\MenuItem;
+use TCG\Voyager\Models\DataType;
 
-class MenuItemsTableSeeder extends Seeder
+class DataTypesTableSeeder extends Seeder
 {
     /**
      * Auto generated seed file.
-     *
-     * @return void
      */
     public function run()
     {
-        if (file_exists(base_path('routes/web.php'))) {
-            require base_path('routes/web.php');
-
-            $menu = Menu::where('name', 'admin')->firstOrFail();
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Dashboard',
-                'url'        => '',
-                'route'      => 'voyager.dashboard',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-boat',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 1,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Media',
-                'url'        => '',
-                'route'      => 'voyager.media.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-images',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 5,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Posts',
-                'url'        => '',
-                'route'      => 'voyager.posts.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-news',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 6,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Users',
-                'url'        => '',
-                'route'      => 'voyager.users.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-person',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 3,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Categories',
-                'url'        => '',
-                'route'      => 'voyager.categories.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-categories',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 8,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Pages',
-                'url'        => '',
-                'route'      => 'voyager.pages.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-file-text',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 7,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Roles',
-                'url'        => '',
-                'route'      => 'voyager.roles.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-lock',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 2,
-                ])->save();
-            }
-
-            $toolsMenuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Tools',
-                'url'        => '',
-            ]);
-            if (!$toolsMenuItem->exists) {
-                $toolsMenuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-tools',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 9,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Menu Builder',
-                'url'        => '',
-                'route'      => 'voyager.menus.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-list',
-                    'color'      => null,
-                    'parent_id'  => $toolsMenuItem->id,
-                    'order'      => 10,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Database',
-                'url'        => '',
-                'route'      => 'voyager.database.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-data',
-                    'color'      => null,
-                    'parent_id'  => $toolsMenuItem->id,
-                    'order'      => 11,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Compass',
-                'url'        => route('voyager.compass.index', [], false),
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-compass',
-                    'color'      => null,
-                    'parent_id'  => $toolsMenuItem->id,
-                    'order'      => 12,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => 'Settings',
-                'url'        => '',
-                'route'      => 'voyager.settings.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-settings',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 13,
-                ])->save();
-            }
+        $dataType = $this->dataType('slug', 'posts');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'posts',
+                'display_name_singular' => 'Post',
+                'display_name_plural'   => 'Posts',
+                'icon'                  => 'voyager-news',
+                'model_name'            => 'TCG\\Voyager\\Models\\Post',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
         }
+
+        $dataType = $this->dataType('slug', 'pages');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'pages',
+                'display_name_singular' => 'Page',
+                'display_name_plural'   => 'Pages',
+                'icon'                  => 'voyager-file-text',
+                'model_name'            => 'TCG\\Voyager\\Models\\Page',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'users');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'users',
+                'display_name_singular' => 'User',
+                'display_name_plural'   => 'Users',
+                'icon'                  => 'voyager-person',
+                'model_name'            => 'TCG\\Voyager\\Models\\User',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('name', 'categories');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'slug'                  => 'categories',
+                'display_name_singular' => 'Category',
+                'display_name_plural'   => 'Categories',
+                'icon'                  => 'voyager-categories',
+                'model_name'            => 'TCG\\Voyager\\Models\\Category',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'menus');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'menus',
+                'display_name_singular' => 'Menu',
+                'display_name_plural'   => 'Menus',
+                'icon'                  => 'voyager-list',
+                'model_name'            => 'TCG\\Voyager\\Models\\Menu',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'roles');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'roles',
+                'display_name_singular' => 'Role',
+                'display_name_plural'   => 'Roles',
+                'icon'                  => 'voyager-lock',
+                'model_name'            => 'TCG\\Voyager\\Models\\Role',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+
+        $dataType = $this->dataType('slug', 'form-builders');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'form_builders',
+                'display_name_singular' => 'Form Builder',
+                'display_name_plural'   => 'Forms Builder',
+                'icon'                  => 'voyager-list',
+                'model_name'            => 'TCG\\Voyager\\Models\\FormBuilder',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
+    }
+
+    /**
+     * [dataType description].
+     *
+     * @param [type] $field [description]
+     * @param [type] $for   [description]
+     *
+     * @return [type] [description]
+     */
+    protected function dataType($field, $for)
+    {
+        return DataType::firstOrNew([$field => $for]);
     }
 }
