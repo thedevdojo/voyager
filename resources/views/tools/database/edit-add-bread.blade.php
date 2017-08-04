@@ -254,26 +254,28 @@
                                             {{ __('voyager.json.invalid') }}
                                         </div>
                                         <?php
-                                            $detail = !empty($dataRow->details) ? json_decode($dataRow->details) : new \stdClass;
-                                            if (!isset($detail->validation)) {
+                                        $detail = !empty($dataRow->details) ? json_decode($dataRow->details) : new \stdClass;
+                                        if (!isset($detail->validation)) {
                                                 $detail->validation = new \stdClass;
+                                        }
+                                        $rule = "";
+                                        if (isset($detail->validation->rule)) {
+                                            $rule = $detail->validation->rule;
+                                        }
+                                        $rules = empty($rule) ? [] : explode("|", $rule);
+                                        if ($data['null'] == 'NO' && !$data['autoincrement']) {
+                                            if (strpos($rule, "required") === false) {
+                                                $rules[] = 'required';
                                             }
-                                            $rule = "";
-                                            if (isset($detail->validation->rule)) $rule = $detail->validation->rule;
-                                            $rules = empty($rule) ? [] : explode("|", $rule);
-                                            if ($data['null'] == 'NO' && !$data['autoincrement']) {
-                                                if (strpos($rule, "required") === false) {
-                                                    $rules[] = 'required';
-                                                }
+                                        }
+                                        if (in_array($data['type'], $types['number'])) {
+                                            if (strpos($rule, "numeric") === false) {
+                                                $rules[] = 'numeric';
                                             }
-                                            if (in_array($data['type'], $types['number'])) {
-                                                if (strpos($rule, "numeric") === false) {
-                                                    $rules[] = 'numeric';
-                                                }
-                                            }
-                                            if (count($rules) > 0) {
-                                                $detail->validation->rule = implode("|", $rules);
-                                            }
+                                        }
+                                        if (count($rules) > 0) {
+                                            $detail->validation->rule = implode("|", $rules);
+                                        }
                                         ?>
                                         <textarea id="json-input-{{ $data['field'] }}" class="resizable-editor" data-editor="json" name="field_details_{{ $data['field'] }}">@if(count($rules) > 0){{ json_encode($detail) }}@endif</textarea>
                                     </div>
