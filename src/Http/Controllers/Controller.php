@@ -67,12 +67,12 @@ abstract class Controller extends BaseController
                 if ($row->field == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
-                
+
                 // If the file upload is null and it has a current file keep the current file
                 if ($row->field == 'file') {
                     $content = $data->{$row->field};
                 }
-                
+
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
                 }
