@@ -18,7 +18,7 @@
     @foreach($formBuilder as $key => $htmlRow)
         <div class="{{ $htmlRow->class }}">
             @foreach($htmlRow->panels as $key_panel => $panel)
-                <div class="{{ $panel->class ?? '' }}">
+                <div class="{{ isset($panel->class) ? $panel->class : '' }}">
                     <div class="panel-heading">
                         <h3 class="panel-title"><i class="icon wb-image"></i> @isset($panel->title) {{ __($panel->title) }} @endisset</h3>
                         <div class="panel-actions">
