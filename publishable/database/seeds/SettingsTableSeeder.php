@@ -18,6 +18,7 @@ class SettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 1,
+                'group'        => 'Site',
             ])->save();
         }
 
@@ -29,6 +30,7 @@ class SettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 2,
+                'group'        => 'Site',
             ])->save();
         }
 
@@ -40,6 +42,7 @@ class SettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'image',
                 'order'        => 3,
+                'group'        => 'Site',
             ])->save();
         }
 
@@ -50,7 +53,8 @@ class SettingsTableSeeder extends Seeder
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'image',
-                'order'        => 9,
+                'order'        => 5,
+                'group'        => 'Admin',
             ])->save();
         }
 
@@ -61,7 +65,8 @@ class SettingsTableSeeder extends Seeder
                 'value'        => 'Voyager',
                 'details'      => '',
                 'type'         => 'text',
-                'order'        => 4,
+                'order'        => 1,
+                'group'        => 'Admin',
             ])->save();
         }
 
@@ -72,7 +77,8 @@ class SettingsTableSeeder extends Seeder
                 'value'        => 'Welcome to Voyager. The Missing Admin for Laravel',
                 'details'      => '',
                 'type'         => 'text',
-                'order'        => 5,
+                'order'        => 2,
+                'group'        => 'Admin',
             ])->save();
         }
 
@@ -83,7 +89,8 @@ class SettingsTableSeeder extends Seeder
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'image',
-                'order'        => 6,
+                'order'        => 3,
+                'group'        => 'Admin',
             ])->save();
         }
 
@@ -94,7 +101,8 @@ class SettingsTableSeeder extends Seeder
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'image',
-                'order'        => 7,
+                'order'        => 4,
+                'group'        => 'Admin',
             ])->save();
         }
 
@@ -105,7 +113,8 @@ class SettingsTableSeeder extends Seeder
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'text',
-                'order'        => 9,
+                'order'        => 1,
+                'group'        => '',
             ])->save();
         }
     }

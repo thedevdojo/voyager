@@ -13,9 +13,31 @@ class VoyagerSettingsController extends Controller
         // Check permission
         Voyager::canOrFail('browse_settings');
 
-        $settings = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
+        $data = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
 
-        return Voyager::view('voyager::settings.index', compact('settings'));
+        $settings = array();
+        $settings[__('voyager.settings.group_general')] = array();
+        foreach($data as $d) {
+            if($d->group == '' || $d->group == __('voyager.settings.group_general')) {
+                $settings[__('voyager.settings.group_general')][] = $d;
+            } else {
+                $settings[$d->group][] = $d;
+            }
+        }
+        if(count($settings[__('voyager.settings.group_general')]) == 0) {
+            unset($settings[__('voyager.settings.group_general')]);
+        }
+
+        $groups_data = Voyager::model('Setting')::select('group')->distinct()->get();
+        $groups = array();
+        $groups[] = __('voyager.settings.group_general');
+        foreach($groups_data as $group) {
+            if($group->group != __('voyager.settings.group_general') && $group->group != '') {
+                $groups[] = $group->group;
+            }
+        }
+
+        return Voyager::view('voyager::settings.index', compact('settings', 'groups'));
     }
 
     public function store(Request $request)
@@ -54,6 +76,7 @@ class VoyagerSettingsController extends Controller
                 'type'    => $setting->type,
                 'field'   => $setting->key,
                 'details' => $setting->details,
+                'group'   => $setting->group,
             ]);
 
             if ($content === null && isset($setting->value)) {
@@ -61,6 +84,7 @@ class VoyagerSettingsController extends Controller
             }
 
             $setting->value = $content;
+            $setting->group = $request->input($setting->key . '_group');
             $setting->save();
         }
 
@@ -89,7 +113,10 @@ class VoyagerSettingsController extends Controller
     {
         $setting = Voyager::model('Setting')->find($id);
         $swapOrder = $setting->order;
-        $previousSetting = Voyager::model('Setting')->where('order', '<', $swapOrder)->orderBy('order', 'DESC')->first();
+        $previousSetting = Voyager::model('Setting')
+                            ->where('order', '<', $swapOrder)
+                            ->where('group', $setting->group)
+                            ->orderBy('order', 'DESC')->first();
         $data = [
             'message'    => __('voyager.settings.already_at_top'),
             'alert-type' => 'error',
@@ -139,7 +166,10 @@ class VoyagerSettingsController extends Controller
         $setting = Voyager::model('Setting')->find($id);
         $swapOrder = $setting->order;
 
-        $previousSetting = Voyager::model('Setting')->where('order', '>', $swapOrder)->orderBy('order', 'ASC')->first();
+        $previousSetting = Voyager::model('Setting')
+                            ->where('order', '>', $swapOrder)
+                            ->where('group', $setting->group)
+                            ->orderBy('order', 'ASC')->first();
         $data = [
             'message'    => __('voyager.settings.already_at_bottom'),
             'alert-type' => 'error',
