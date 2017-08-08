@@ -193,7 +193,9 @@
                 <div class="page-content settings container-fluid">
                     <ul class="nav nav-tabs">
                       @foreach($settings as $group => $setting)
-                      <li @if($loop->first) class="active" @endif><a data-toggle="tab" href="#{{ str_slug($group) }}">{{ $group }}</a></li>
+                      <li @if($loop->first) class="active" @endif>
+                          <a data-toggle="tab" href="#{{ str_slug($group) }}">{{ $group }}</a>
+                      </li>
                       @endforeach
                     </ul>
 
@@ -283,7 +285,7 @@
                                 <div class="col-md-2">
                                     <select class="form-control group_select" name="{{ $setting->key }}_group">
                                         @foreach($groups as $group)
-                                        <option value="{{ $group }}"{!! $setting->group == $group ? 'selected' : '' !!}>{{ $group }}</group>
+                                        <option value="{{ $group }}" {!! $setting->group == $group ? 'selected' : '' !!}>{{ $group }}</group>
                                         @endforeach
                                     </select>
                                 </div>
@@ -414,7 +416,8 @@
     </script>
     <script type="text/javascript">
     $(".group_select").select2({
-        tags: true
+        tags: true,
+        width: 'resolve'
     });
     </script>
     <iframe id="form_target" name="form_target" style="display:none"></iframe>
