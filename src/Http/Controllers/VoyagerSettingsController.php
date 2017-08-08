@@ -15,24 +15,24 @@ class VoyagerSettingsController extends Controller
 
         $data = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
 
-        $settings = array();
-        $settings[__('voyager.settings.group_general')] = array();
-        foreach($data as $d) {
-            if($d->group == '' || $d->group == __('voyager.settings.group_general')) {
+        $settings = [];
+        $settings[__('voyager.settings.group_general')] = [];
+        foreach ($data as $d) {
+            if ($d->group == '' || $d->group == __('voyager.settings.group_general')) {
                 $settings[__('voyager.settings.group_general')][] = $d;
             } else {
                 $settings[$d->group][] = $d;
             }
         }
-        if(count($settings[__('voyager.settings.group_general')]) == 0) {
+        if (count($settings[__('voyager.settings.group_general')]) == 0) {
             unset($settings[__('voyager.settings.group_general')]);
         }
 
         $groups_data = Voyager::model('Setting')::select('group')->distinct()->get();
-        $groups = array();
+        $groups = [];
         $groups[] = __('voyager.settings.group_general');
-        foreach($groups_data as $group) {
-            if($group->group != __('voyager.settings.group_general') && $group->group != '') {
+        foreach ($groups_data as $group) {
+            if ($group->group != __('voyager.settings.group_general') && $group->group != '') {
                 $groups[] = $group->group;
             }
         }
@@ -84,7 +84,7 @@ class VoyagerSettingsController extends Controller
             }
 
             $setting->value = $content;
-            $setting->group = $request->input($setting->key . '_group');
+            $setting->group = $request->input($setting->key.'_group');
             $setting->save();
         }
 
