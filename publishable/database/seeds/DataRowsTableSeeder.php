@@ -479,7 +479,7 @@ class DataRowsTableSeeder extends Seeder
                                     'width'  => '400',
                                     'height' => '200',
                                 ],
-                            ]
+                            ],
                         ],
                         [
                             'name'   => 'catalog',
@@ -499,7 +499,7 @@ class DataRowsTableSeeder extends Seeder
                                     'width'  => '100',
                                     'height' => 'null',
                                 ],
-                            ]
+                            ],
                         ],
                     ],
                 ]),
