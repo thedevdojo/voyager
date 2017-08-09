@@ -3,14 +3,67 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
-class EdipresseBreadController extends Controller
+class EdipresseBreadController extends VoyagerBreadController
 {
-    use BreadRelationshipParser;
+    //use BreadRelationshipParser;
+
+    public function insertUpdateData($request, $slug, $rows, $data)
+    {
+        $multi_select = [];
+
+        /*
+         * Prepare Translations and Transform data
+         */
+
+        foreach ($rows as $row) {
+            $options = json_decode($row->details);
+
+            $content = $this->getContentBasedOnType($request, $slug, $row);
+
+            /*
+             * merge ex_images and upload images
+             */
+            if ($row->type == 'multiple_images' && !is_null($content)) {
+                if (isset($data->{$row->field})) {
+                    $ex_files = json_decode($data->{$row->field}, true);
+                    if (!is_null($ex_files)) {
+                        $content = json_encode(array_merge($ex_files, json_decode($content)));
+                    }
+                }
+            }
+
+            if (is_null($content)) {
+
+                // If the image upload is null and it has a current image keep the current image
+                if ($row->field == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                    $content = $data->{$row->field};
+                }
+
+                if ($row->field == 'password') {
+                    $content = $data->{$row->field};
+                }
+            }
+
+            if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
+                // Only if select_multiple is working with a relationship
+                $multi_select[] = ['row' => $row->field, 'content' => $content];
+            } else {
+                $data->{$row->field} = $content;
+            }
+        }
+
+        $data->fill($request->all());
+        $data->save();
+
+        foreach ($multi_select as $sync_data) {
+            $data->{$sync_data['row']}()->sync($sync_data['content']);
+        }
+
+        return $data;
+    }
+
     //***************************************
     //               ____
     //              |  _ \
@@ -57,9 +110,9 @@ class EdipresseBreadController extends Controller
             } else {
                 $dataTypeContent = call_user_func([$query->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
-
+//dd($dataTypeContent);
             //Replace relationships' keys for labels and create READ links if a slug is provided.
-            $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
+            //$dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);die;
         } else {
             // If Model doesn't exist, get data from table name
             $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
@@ -71,11 +124,13 @@ class EdipresseBreadController extends Controller
 
         $view = 'voyager::edipresse-bread.browse';
 
-        if (view()->exists("voyager::$slug.browse")) {
-            $view = "voyager::$slug.browse";
-        }
-
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'search', 'searchable'));
+        return Voyager::view($view, compact(
+            'dataType',
+            'dataTypeContent',
+            'isModelTranslatable',
+            'search',
+            'searchable'
+            ));
     }
 
     //***************************************
@@ -109,7 +164,7 @@ class EdipresseBreadController extends Controller
         }
 
         //Replace relationships' keys for labels and create READ links if a slug is provided.
-        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
+        //$dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -140,86 +195,38 @@ class EdipresseBreadController extends Controller
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-        $dataTranslationType = Voyager::model('DataType')->where('slug', '=', 'test-translations')->first(); //online code
 
         // If dataType is users and user owns the profile, skip the permission check
         $skip = $dataType->name === 'users' && $request->user()->id === (int) $id;
+
         if (!$skip) {
             Voyager::canOrFail('edit_'.$dataType->name);
         }
 
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->findOrFail($id)
-            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+        $dataTypeContent = app($dataType->model_name)->findOrFail($id);
+        $dataTypeContentTranslation = $dataTypeContent->translations->first();
 
-        $dataTranslationTypeContent = (strlen($dataTranslationType->model_name) != 0)
-            ? app($dataTranslationType->model_name)->findOrFail($id)
-            : DB::table($dataTranslationType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
-
-        foreach ($dataType->editRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
-        }
-
-        foreach ($dataTranslationType->editRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataTranslationType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
-        }
+        $dataTypeTranslation = Voyager::model('DataType')
+            ->where('model_name', '=', get_class($dataTypeContentTranslation->first()))
+            ->first();
 
         // Check if BREAD is Translation
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
         $view = 'voyager::edipresse-bread.edit-add';
 
-        if (view()->exists("voyager::$slug.edit-add")) {
-            $view = "voyager::$slug.edit-add";
-        }
-
         return view($view, compact(
             'dataType',
             'dataTypeContent',
             'isModelTranslatable',
-            'dataTranslationType',
-            'dataTranslationTypeContent'
+            'dataTypeTranslation',
+            'dataTypeContentTranslation'
             )
         );
-
-        //return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslation'));
     }
 
-    // POST BR(E)AD
-    public function update(Request $request, $id)
-    {
-        $slug = $this->getSlug($request);
+    // POST BR(E)AD use from VoyagerBreadController
 
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // If dataType is users and user owns the profile, skip the permission check
-        $skip = $dataType->name === 'users' && $request->user()->id === (int) $id;
-        if (!$skip) {
-            Voyager::canOrFail('edit_'.$dataType->name);
-        }
-
-        //Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows);
-
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
-        }
-
-        if (!$request->ajax()) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-
-            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
-                    'alert-type' => 'success',
-                ]);
-        }
-    }
 
     //***************************************
     //
@@ -243,55 +250,30 @@ class EdipresseBreadController extends Controller
         // Check permission
         Voyager::canOrFail('add_'.$dataType->name);
 
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-                            ? new $dataType->model_name()
-                            : false;
+        $dataTypeContent = new $dataType->model_name;
+        $translation_model_name = $dataTypeContent->getTranslationModelName();
 
-        foreach ($dataType->addRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataType->addRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
-        }
+        $dataTypeContentTranslation = new $translation_model_name;
+
+        $dataTypeTranslation = Voyager::model('DataType')
+            ->where('model_name', '=', $translation_model_name)
+            ->first();
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
         $view = 'voyager::edipresse-bread.edit-add';
 
-        if (view()->exists("voyager::$slug.edit-add")) {
-            $view = "voyager::$slug.edit-add";
-        }
-
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact(
+            'dataType',
+            'dataTypeContent',
+            'isModelTranslatable',
+            'dataTypeTranslation',
+            'dataTypeContentTranslation'
+        ));
     }
 
-    // POST BRE(A)D
-    public function store(Request $request)
-    {
-        $slug = $this->getSlug($request);
-
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
-
-        //Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
-
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
-        }
-
-        if (!$request->ajax()) {
-            $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
-
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                        'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
-                        'alert-type' => 'success',
-                    ]);
-        }
-    }
+    // POST BRE(A)D use from VoyagerBreadController
 
     //***************************************
     //                _____
@@ -318,7 +300,8 @@ class EdipresseBreadController extends Controller
 
         // Delete Translations, if present
         if (is_bread_translatable($data)) {
-            $data->deleteAttributeTranslations($data->getTranslatableAttributes());
+            $dataTypeContent = app($dataType->model_name)->findOrFail($id);
+            $dataTypeContent->translations()->delete();
         }
 
         // Delete Images
