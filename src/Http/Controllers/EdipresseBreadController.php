@@ -7,8 +7,6 @@ use TCG\Voyager\Facades\Voyager;
 
 class EdipresseBreadController extends VoyagerBreadController
 {
-    //use BreadRelationshipParser;
-
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $multi_select = [];
@@ -87,36 +85,32 @@ class EdipresseBreadController extends VoyagerBreadController
         // Check permission
         Voyager::canOrFail('browse_'.$dataType->name);
 
+        $dataTypeContent = app($dataType->model_name)->first();
+        $dataTypeContentTranslation = $dataTypeContent->translations->first();
+
+        $dataTypeTranslation = Voyager::model('DataType')
+            ->where('model_name', '=', $dataTypeContent->getTranslationModelName())
+            ->first();
+
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
         $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
         $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
-        if (strlen($dataType->model_name) != 0) {
-            $model = app($dataType->model_name);
-            $query = $model::select('*');
+        $model = app($dataType->model_name);
+        $query = $model::select('*');
 
-            $relationships = $this->getRelationships($dataType);
+        if ($search->value && $search->key && $search->filter) {
+            $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
+            $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
+            $query->where($search->key, $search_filter, $search_value);
+        }
 
-            if ($search->value && $search->key && $search->filter) {
-                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
-                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
-                $query->where($search->key, $search_filter, $search_value);
-            }
-
-            if ($model->timestamps) {
-                $dataTypeContent = call_user_func([$query->latest(), $getter]);
-            } else {
-                $dataTypeContent = call_user_func([$query->with($relationships)->orderBy('id', 'DESC'), $getter]);
-            }
-//dd($dataTypeContent);
-            //Replace relationships' keys for labels and create READ links if a slug is provided.
-            //$dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);die;
+        if ($model->timestamps) {
+            $dataTypeContent = call_user_func([$query->latest(), $getter]);
         } else {
-            // If Model doesn't exist, get data from table name
-            $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
-            $model = false;
+            $dataTypeContent = call_user_func([$query->orderBy('id', 'DESC'), $getter]);
         }
 
         // Check if BREAD is Translatable
@@ -129,8 +123,11 @@ class EdipresseBreadController extends VoyagerBreadController
             'dataTypeContent',
             'isModelTranslatable',
             'search',
-            'searchable'
-            ));
+            'searchable',
+            'dataTypeTranslation',
+            'dataTypeContentTranslation'
+            )
+        );
     }
 
     //***************************************
@@ -273,7 +270,8 @@ class EdipresseBreadController extends VoyagerBreadController
             'isModelTranslatable',
             'dataTypeTranslation',
             'dataTypeContentTranslation'
-        ));
+            )
+        );
     }
 
     // POST BRE(A)D use from VoyagerBreadController
