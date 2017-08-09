@@ -62,12 +62,13 @@ trait ImagesCrop
     public function cropImage($crop, $dataRow)
     {
         $request = $this->request;
-        $cropFolder = config('voyager.images.crop_folder');
-        $directory = $cropFolder.'/'.$this->slug;
+        $cropFolderWithoutSlug = config('voyager.images.crop_folder');
+        $cropFolder = $cropFolderWithoutSlug.'/'.$this->slug;
 
-        //If a directory is not exists, then make the directory
-        if (!File::exists($directory)) {
-            File::makeDirectory($directory, 0775, true, true);
+        //If a folder is not exists, then make the folder
+
+        if (!File::exists($cropFolder)) {
+            File::makeDirectory($cropFolder, 0775, true, true);
         }
 
         $item_id = $this->data->id;
@@ -91,12 +92,12 @@ trait ImagesCrop
             );
 
             $img->resize($cropParam->size->width, $cropParam->size->height);
-            $photo_name = $directory.'/'.$cropParam->name.'_'.$item_id.'_'.$cropParam->size->name.'.jpg';
+            $photo_name = $cropFolder.'/'.$cropParam->name.'_'.$item_id.'_'.$cropParam->size->name.'.jpg';
             $img->save($photo_name, $this->quality);
 
             if (!empty($cropParam->resize)) {
                 foreach ($cropParam->resize as $cropParamResize) {
-                    $photo_name = $directory.'/'.$cropParam->name.'_'.$item_id.'_'.$cropParam->name.'.jpg';
+                    $photo_name = $cropFolder.'/'.$cropParam->name.'_'.$item_id.'_'.$cropParam->name.'.jpg';
                     $img->resize($cropParamResize->width, $cropParamResize->height, function ($constraint) {
                         $constraint->aspectRatio();
                     });
