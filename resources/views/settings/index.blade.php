@@ -10,6 +10,9 @@
         .panel-actions .voyager-trash:hover {
             color: #e94542;
         }
+        .settings .panel-actions{
+            right:0px;
+        }
         .panel hr {
             margin-bottom: 10px;
         }
@@ -58,6 +61,10 @@
             height: auto;
             position: relative;
             padding-right: 15px;
+        }
+        .settings .panel-title{
+            padding-left:0px;
+            padding-right:0px;
         }
         .new-setting hr {
             margin-bottom: 0;
@@ -119,6 +126,25 @@
             border-bottom:0px;
         }
 
+        .select2{
+            width:100% !important;
+            border: 1px solid #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .voyager .settings input[type=file]{
+            width:100%;
+        }
+
+        .settings .select2{
+            margin-left:10px;
+        }
+
+        .settings .select2-selection{
+            height: 32px;
+            padding: 2px;
+        }
+
         .voyager .settings .nav-tabs > li{
             margin-bottom:-1px !important;
         }
@@ -141,8 +167,15 @@
         .tab-content{
             background:#ffffff;
             border: 1px solid transparent;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-content>div{
+            padding:10px;
+        }
+
+        .settings .no-padding-left-right{
+            padding-left:0px;
+            padding-right:0px;
         }
 
         .nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover{
@@ -179,7 +212,7 @@
         @if(config('voyager.show_dev_tips'))
         <div class="alert alert-info">
             <strong>{{ __('voyager.generic.how_to_use') }}:</strong>
-            <p>{{ __('voyager.settings.usage_help') }} <code>Voyager::setting('key')</code></p>
+            <p>{{ __('voyager.settings.usage_help') }} <code>setting('section.key')</code></p>
         </div>
         @endif
     </div>
@@ -205,7 +238,7 @@
                             @foreach($group_settings as $setting)
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    {{ $setting->display_name }}<code>Voyager::setting('{{ $setting->key }}')</code>
+                                    {{ $setting->display_name }}<code>setting('{{ $setting->key }}')</code>
                                 </h3>
                                 <div class="panel-actions">
                                     <a href="{{ route('voyager.settings.move_up', $setting->id) }}">
@@ -221,8 +254,8 @@
                                 </div>
                             </div>
 
-                            <div class="panel-body">
-                                <div class="col-md-10">
+                            <div class="panel-body no-padding-left-right">
+                                <div class="col-md-10 no-padding-left-right">
                                     @if ($setting->type == "text")
                                         <input type="text" class="form-control" name="{{ $setting->key }}" value="{{ $setting->value }}">
                                     @elseif($setting->type == "text_area")
@@ -282,7 +315,7 @@
                                         @endif
                                     @endif
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 no-padding-left-right">
                                     <select class="form-control group_select" name="{{ $setting->key }}_group">
                                         @foreach($groups as $group)
                                         <option value="{{ $group }}" {!! $setting->group == $group ? 'selected' : '' !!}>{{ $group }}</group>
