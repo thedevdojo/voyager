@@ -28,7 +28,7 @@ class VoyagerSettingsController extends Controller
             unset($settings[__('voyager.settings.group_general')]);
         }
 
-        $groups_data = Voyager::model('Setting')::select('group')->distinct()->get();
+        $groups_data = Voyager::model('Setting')->select('group')->distinct()->get();
         $groups = [];
         $groups[] = __('voyager.settings.group_general');
         foreach ($groups_data as $group) {
