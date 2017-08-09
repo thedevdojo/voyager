@@ -67,7 +67,7 @@ class VoyagerSettingsController extends Controller
     public function update(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('visit_settings');
+        Voyager::canOrFail('browse_settings');
 
         $settings = Voyager::model('Setting')->all();
 

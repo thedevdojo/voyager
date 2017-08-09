@@ -16,6 +16,10 @@ class PermissionsTableSeeder extends Seeder
             'browse_media',
             'browse_compass',
             'browse_settings',
+            'read_settings',
+            'edit_settings',
+            'add_settings',
+            'delete_settings'
         ];
 
         foreach ($keys as $key) {

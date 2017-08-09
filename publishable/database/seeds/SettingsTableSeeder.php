@@ -114,7 +114,7 @@ class SettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 1,
-                'group'        => '',
+                'group'        => 'Site',
             ])->save();
         }
     }

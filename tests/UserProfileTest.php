@@ -110,7 +110,7 @@ class UserProfileTest extends TestCase
         $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
         // without permissions to edit  users
-        $role->permissions()->attach([1, 3, 13, 21, 28, 33]);
+        $role->permissions()->attach([1, 3, 18, 25, 33, 38]);
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
