@@ -147,35 +147,38 @@ class EdipresseBreadController extends VoyagerBreadController
 
     public function show(Request $request, $id)
     {
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        Voyager::canOrFail('read_'.$dataType->name);
+        // If dataType is users and user owns the profile, skip the permission check
+        $skip = $dataType->name === 'users' && $request->user()->id === (int) $id;
 
-        $relationships = $this->getRelationships($dataType);
-        if (strlen($dataType->model_name) != 0) {
-            $model = app($dataType->model_name);
-            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
-        } else {
-            // If Model doest exist, get data from table name
-            $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
+        if (!$skip) {
+            Voyager::canOrFail('edit_'.$dataType->name);
         }
 
-        //Replace relationships' keys for labels and create READ links if a slug is provided.
-        //$dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
+        $dataTypeContent = app($dataType->model_name)->findOrFail($id);
+        $dataTypeContentTranslation = $dataTypeContent->translations->first();
 
-        // Check if BREAD is Translatable
+        $dataTypeTranslation = Voyager::model('DataType')
+            ->where('model_name', '=', $dataTypeContent->getTranslationModelName())
+            ->first();
+
+        // Check if BREAD is Translation
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
         $view = 'voyager::edipresse-bread.read';
 
-        if (view()->exists("voyager::$slug.read")) {
-            $view = "voyager::$slug.read";
-        }
-
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return view($view, compact(
+            'dataType',
+            'dataTypeContent',
+            'isModelTranslatable',
+            'dataTypeTranslation',
+            'dataTypeContentTranslation'
+            )
+        );
     }
 
     //***************************************
@@ -207,7 +210,7 @@ class EdipresseBreadController extends VoyagerBreadController
         $dataTypeContentTranslation = $dataTypeContent->translations->first();
 
         $dataTypeTranslation = Voyager::model('DataType')
-            ->where('model_name', '=', get_class($dataTypeContentTranslation->first()))
+            ->where('model_name', '=', $dataTypeContent->getTranslationModelName())
             ->first();
 
         // Check if BREAD is Translation
