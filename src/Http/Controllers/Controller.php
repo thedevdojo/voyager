@@ -260,13 +260,16 @@ abstract class Controller extends BaseController
                     $file = $request->file($row->field);
                     $options = json_decode($row->details);
 
-                    if (isset($options->preserveFileUploadName) && $options->preserveFileUploadName) {
-                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
-                    } else {
-                        $filename = Str::random(20);
+                    $filename = basename($file->getClientOriginalName(), '.' . $file->getClientOriginalExtension());
+                    $filename_counter = 1;
+                    
+                    $path = $slug.'/'.date('F').date('Y').'/';
+                    
+                    // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+                    while( Storage::disk(config('voyager.storage.disk'))->exists( $path.$filename.'.'.$file->getClientOriginalExtension() ) ) {
+                        $filename = basename($file->getClientOriginalName(), '.' . $file->getClientOriginalExtension()) . (string)($filename_counter++);
                     }
 
-                    $path = $slug.'/'.date('F').date('Y').'/';
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
                     if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
