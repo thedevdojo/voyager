@@ -20,7 +20,7 @@
             @foreach($htmlRow->panels as $key_panel => $panel)
                 <div class="{{ isset($panel->class) ? $panel->class : '' }}">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><i class="icon wb-image"></i> @isset($panel->title) {{ __($panel->title) }} @endisset</h3>
+                        <h3 class="panel-title"><i class="icon wb-image"></i> {{ isset($panel->title) ? __($panel->title) : '' }}</h3>
                         <div class="panel-actions">
                             <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                         </div>
@@ -64,8 +64,11 @@
     @endforeach
 
     @php
-        $formBuilderFields = $formBuilderFields->collapse()->toArray();
-        $notFormBuilderFields = $dataTypeRows->whereNotIn('field', $formBuilderFields)
+        $formBuilderFields = $formBuilderFields->collapse();
+
+        $notFormBuilderFields = $dataTypeRows->filter(function ($value, $key) use ($formBuilderFields) {
+            return !$formBuilderFields->contains($value->field);
+        });
     @endphp
 
     @if(count($notFormBuilderFields))
