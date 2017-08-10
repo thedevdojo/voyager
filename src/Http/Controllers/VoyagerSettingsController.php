@@ -45,6 +45,16 @@ class VoyagerSettingsController extends Controller
         // Check permission
         Voyager::canOrFail('browse_settings');
 
+        $key = implode('.', [str_slug($request->input('group')), $request->input('key')]);
+        $key_check = Voyager::model('Setting')->where('key', $key)->get()->count();
+
+        if ($key_check > 0) {
+            return back()->with([
+                'message'    => __('voyager.settings.key_already_exists', ['key' => $key]),
+                'alert-type' => 'error',
+            ]);
+        }
+
         $lastSetting = Voyager::model('Setting')->orderBy('order', 'DESC')->first();
 
         if (is_null($lastSetting)) {
@@ -55,7 +65,7 @@ class VoyagerSettingsController extends Controller
 
         $request->merge(['order' => $order]);
         $request->merge(['value' => '']);
-        $request->merge(['key' => implode('.', array(str_slug($request->input('group')), $request->input('key')))]);
+        $request->merge(['key' => $key]);
 
         Voyager::model('Setting')->create($request->all());
 
@@ -87,7 +97,7 @@ class VoyagerSettingsController extends Controller
             $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
 
             $setting->group = $request->input(str_replace('.', '_', $setting->key).'_group');
-            $setting->key = implode('.', array(str_slug($setting->group), $key));
+            $setting->key = implode('.', [str_slug($setting->group), $key]);
             $setting->value = $content;
             $setting->save();
         }
