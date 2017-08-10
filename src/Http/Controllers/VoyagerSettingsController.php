@@ -67,7 +67,6 @@ class VoyagerSettingsController extends Controller
         $request->merge(['value' => '']);
         $request->merge(['key' => $key]);
 
-
         Voyager::model('Setting')->create($request->all());
 
         return back()->with([
