@@ -161,7 +161,7 @@ class Voyager
         if ($this->setting_cache === null) {
             foreach (Setting::all() as $setting) {
                 $keys = explode('.', $setting->key);
-                $this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+                @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
             }
         }
 

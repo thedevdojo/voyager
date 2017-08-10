@@ -46,6 +46,18 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
+        $setting = $this->findSetting('site.google_analytics_tracking_id');
+        if (!$setting->exists) {
+            $setting->fill([
+                'display_name' => 'Google Analytics Tracking ID',
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'text',
+                'order'        => 4,
+                'group'        => 'Site',
+            ])->save();
+        }
+
         $setting = $this->findSetting('admin.bg_image');
         if (!$setting->exists) {
             $setting->fill([
@@ -106,15 +118,15 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('site.google_analytics_client_id');
+        $setting = $this->findSetting('admin.google_analytics_client_id');
         if (!$setting->exists) {
             $setting->fill([
-                'display_name' => 'Google Analytics Client ID',
+                'display_name' => 'Google Analytics Client ID (used for admin dashboard)',
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 1,
-                'group'        => 'Site',
+                'group'        => 'Admin',
             ])->save();
         }
     }
