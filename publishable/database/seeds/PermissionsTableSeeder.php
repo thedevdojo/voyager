@@ -19,7 +19,7 @@ class PermissionsTableSeeder extends Seeder
             'read_settings',
             'edit_settings',
             'add_settings',
-            'delete_settings'
+            'delete_settings',
         ];
 
         foreach ($keys as $key) {

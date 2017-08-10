@@ -10,7 +10,7 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        $setting = $this->findSetting('title');
+        $setting = $this->findSetting('site.title');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Title',
@@ -22,7 +22,7 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('description');
+        $setting = $this->findSetting('site.description');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Description',
@@ -34,7 +34,7 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('logo');
+        $setting = $this->findSetting('site.logo');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Logo',
@@ -46,7 +46,7 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_bg_image');
+        $setting = $this->findSetting('admin.bg_image');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Background Image',
@@ -58,7 +58,7 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_title');
+        $setting = $this->findSetting('admin.title');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Title',
@@ -70,7 +70,7 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_description');
+        $setting = $this->findSetting('admin.description');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Description',
@@ -82,7 +82,7 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_loader');
+        $setting = $this->findSetting('admin.loader');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Loader',
@@ -94,7 +94,7 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_icon_image');
+        $setting = $this->findSetting('admin.icon_image');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Icon Image',
@@ -106,7 +106,7 @@ class SettingsTableSeeder extends Seeder
             ])->save();
         }
 
-        $setting = $this->findSetting('google_analytics_client_id');
+        $setting = $this->findSetting('site.google_analytics_client_id');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Google Analytics Client ID',

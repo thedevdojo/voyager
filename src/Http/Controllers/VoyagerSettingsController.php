@@ -55,6 +55,7 @@ class VoyagerSettingsController extends Controller
 
         $request->merge(['order' => $order]);
         $request->merge(['value' => '']);
+        $request->merge(['key' => implode('.', array(str_slug($request->input('group')), $request->input('key')))]);
 
         Voyager::model('Setting')->create($request->all());
 
@@ -83,8 +84,11 @@ class VoyagerSettingsController extends Controller
                 $content = $setting->value;
             }
 
+            $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
+
+            $setting->group = $request->input(str_replace('.', '_', $setting->key).'_group');
+            $setting->key = implode('.', array(str_slug($setting->group), $key));
             $setting->value = $content;
-            $setting->group = $request->input($setting->key.'_group');
             $setting->save();
         }
 
