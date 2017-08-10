@@ -16,7 +16,7 @@ class FormBuildersTableSeeder extends Seeder
             'data_type_id' => 2,
             'details'      => json_encode([
                 [
-                    'class'  => 'col-md-8',
+                    'class'  => 'col-md-7',
                     'panels' => [
                         [
                             'class'  => 'panel',
@@ -26,6 +26,7 @@ class FormBuildersTableSeeder extends Seeder
                                 'excerpt',
                                 'body',
                                 'slug',
+                                'status',
                             ],
                         ],
                         [
@@ -39,14 +40,13 @@ class FormBuildersTableSeeder extends Seeder
                     ],
                 ],
                 [
-                    'class'  => 'col-md-4',
+                    'class'  => 'col-md-5',
                     'panels' => [
                         [
                             'class'  => 'panel panel-bordered panel-primary',
-                            'title'  => 'voyager.post.details',
+                            'title'  => 'Image block',
                             'fields' => [
                                 'image',
-                                'status',
                             ],
                         ],
                     ],
