@@ -44,19 +44,18 @@
                                     </td>
                                     @endforeach
                                     <td class="no-sort no-click">
-                                        @php $primaryKey = isset($data->primaryKey) ? $data->primaryKey : $data->id @endphp
                                         @if (Voyager::can('delete_'.$dataType->name))
-                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $primaryKey }}">
+                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->primaryKey} }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
                                             </div>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $primaryKey) }}" class="btn-sm btn-primary pull-right edit">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->primaryKey}) }}" class="btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
                                             </a>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.builder', $primaryKey) }}" class="btn-sm btn-success pull-right">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.builder', $data->{$data->primaryKey}) }}" class="btn-sm btn-success pull-right">
                                                 <i class="voyager-list"></i> {{ __('voyager.generic.builder') }}
                                             </a>
                                         @endif
