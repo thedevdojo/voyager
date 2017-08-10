@@ -45,6 +45,10 @@
             position: relative;
             top: -2px;
         }
+        .modal-open .settings  .select2-container {
+            z-index: 9!important;
+            width: 100%!important;
+        }
         .new-setting {
             text-align: center;
             width: 100%;
