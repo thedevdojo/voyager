@@ -43,7 +43,17 @@ class VoyagerSettingsController extends Controller
     public function store(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('browse_settings');
+        Voyager::canOrFail('add_settings');
+
+        $key = implode('.', [str_slug($request->input('group')), $request->input('key')]);
+        $key_check = Voyager::model('Setting')->where('key', $key)->get()->count();
+
+        if ($key_check > 0) {
+            return back()->with([
+                'message'    => __('voyager.settings.key_already_exists', ['key' => $key]),
+                'alert-type' => 'error',
+            ]);
+        }
 
         $lastSetting = Voyager::model('Setting')->orderBy('order', 'DESC')->first();
 
@@ -58,6 +68,7 @@ class VoyagerSettingsController extends Controller
         // prepend the group to the key
         $request->merge(['key' => strtolower($request->group) . '.' . $request->key]);
 
+
         Voyager::model('Setting')->create($request->all());
 
         return back()->with([
@@ -69,7 +80,7 @@ class VoyagerSettingsController extends Controller
     public function update(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('browse_settings');
+        Voyager::canOrFail('edit_settings');
 
         $settings = Voyager::model('Setting')->all();
 
@@ -85,8 +96,11 @@ class VoyagerSettingsController extends Controller
                 $content = $setting->value;
             }
 
+            $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
+
+            $setting->group = $request->input(str_replace('.', '_', $setting->key).'_group');
+            $setting->key = implode('.', [str_slug($setting->group), $key]);
             $setting->value = $content;
-            $setting->group = $request->input($setting->key.'_group');
             $setting->save();
         }
 
@@ -98,8 +112,6 @@ class VoyagerSettingsController extends Controller
 
     public function delete($id)
     {
-        Voyager::canOrFail('browse_settings');
-
         // Check permission
         Voyager::canOrFail('delete_settings');
 
@@ -113,6 +125,9 @@ class VoyagerSettingsController extends Controller
 
     public function move_up($id)
     {
+        // Check permission
+        Voyager::canOrFail('edit_settings');
+
         $setting = Voyager::model('Setting')->find($id);
         $swapOrder = $setting->order;
         $previousSetting = Voyager::model('Setting')
@@ -142,7 +157,7 @@ class VoyagerSettingsController extends Controller
     public function delete_value($id)
     {
         // Check permission
-        Voyager::canOrFail('browse_settings');
+        Voyager::canOrFail('delete_settings');
 
         $setting = Voyager::model('Setting')->find($id);
 
@@ -165,6 +180,9 @@ class VoyagerSettingsController extends Controller
 
     public function move_down($id)
     {
+        // Check permission
+        Voyager::canOrFail('edit_settings');
+
         $setting = Voyager::model('Setting')->find($id);
         $swapOrder = $setting->order;
 
