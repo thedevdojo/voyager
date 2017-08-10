@@ -124,9 +124,15 @@ return [
         'successfully_deleted' => 'Successfully Deleted Setting',
         'already_at_top'       => 'This is already at the top of the list',
         'already_at_bottom'    => 'This is already at the bottom of the list',
+        'key_already_exists'   => 'The key :key already exists',
         'moved_order_up'       => 'Moved :name setting order up',
         'moved_order_down'     => 'Moved :name setting order down',
         'successfully_removed' => 'Successfully removed :name value',
+        'group_general'        => 'General',
+        'group_admin'          => 'Admin',
+        'group_site'           => 'Site',
+        'group'                => 'Group',
+        'help_group'           => 'Group this setting is assigned to',
     ],
 
     'media' => [
