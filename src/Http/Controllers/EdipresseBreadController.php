@@ -118,6 +118,10 @@ class EdipresseBreadController extends VoyagerBreadController
 
         $view = 'voyager::edipresse-bread.browse';
 
+        if (view()->exists("voyager::$slug.browse")) {
+            $view = "voyager::$slug.browse";
+        }
+
         return Voyager::view($view, compact(
             'dataType',
             'dataTypeContent',
@@ -168,6 +172,10 @@ class EdipresseBreadController extends VoyagerBreadController
 
         $view = 'voyager::edipresse-bread.read';
 
+        if (view()->exists("voyager::$slug.read")) {
+            $view = "voyager::$slug.read";
+        }
+
         return view($view, compact(
             'dataType',
             'dataTypeContent',
@@ -214,6 +222,10 @@ class EdipresseBreadController extends VoyagerBreadController
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
         $view = 'voyager::edipresse-bread.edit-add';
+
+        if (view()->exists("voyager::$slug.edit-add")) {
+            $view = "voyager::$slug.edit-add";
+        }
 
         return view($view, compact(
             'dataType',
@@ -263,6 +275,10 @@ class EdipresseBreadController extends VoyagerBreadController
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
         $view = 'voyager::edipresse-bread.edit-add';
+
+        if (view()->exists("voyager::$slug.edit-add")) {
+            $view = "voyager::$slug.edit-add";
+        }
 
         return Voyager::view($view, compact(
             'dataType',
