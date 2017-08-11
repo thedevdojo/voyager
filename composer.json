@@ -16,15 +16,15 @@
     ],
     "require": {
         "illuminate/support": "5.5.x-dev",
-        "intervention/image": "^2.3",
-        "doctrine/dbal": "^2.5",
-        "larapack/doctrine-support": "~0.1.0",
+        "intervention/image": "^2.4",
+        "doctrine/dbal": "^2.6",
+        "larapack/doctrine-support": "~0.1.2",
         "arrilot/laravel-widgets": "^3.7",
-        "league/flysystem": "~1.0.35"
+        "league/flysystem": "~1.0.41"
     },
     "require-dev": {
         "phpunit/phpcov": "dev-master",
-        "phpunit/phpunit": "~6.0",
+        "phpunit/phpunit": "~6.1",
         "laravel/framework": "5.5.x-dev",
         "orchestra/testbench": "3.5.x-dev",
         "orchestra/database": "3.5.x-dev",
