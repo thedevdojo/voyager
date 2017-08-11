@@ -23,11 +23,12 @@
         "league/flysystem": "~1.0.35"
     },
     "require-dev": {
-        "phpunit/phpcov": "~3.0",
-        "phpunit/phpunit": "~5.7.14",
+        "phpunit/phpcov": "dev-master",
+        "phpunit/phpunit": "~6.0",
         "laravel/framework": "5.5.x-dev",
         "orchestra/testbench": "3.5.x-dev",
         "orchestra/database": "3.5.x-dev",
+        "orchestra/testbench-core": "3.5.x-dev",
         "laravel/browser-kit-testing": "2.0.x-dev",
         "orchestra/testbench-browser-kit": "3.5.x-dev",
         "codeclimate/php-test-reporter": "dev-master"
