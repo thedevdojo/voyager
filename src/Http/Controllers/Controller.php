@@ -283,12 +283,19 @@ abstract class Controller extends BaseController
             case 'image':
                 if ($request->hasFile($row->field)) {
                     $file = $request->file($row->field);
-                    $filename = Str::random(20);
+                    $options = json_decode($row->details);
+
+                    $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+                    $filename_counter = 1;
 
                     $path = $slug.'/'.date('F').date('Y').'/';
-                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    $options = json_decode($row->details);
+                    // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+                    while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+                    }
+
+                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
                     if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
                         $resize_width = $options->resize->width;
