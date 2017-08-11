@@ -89,11 +89,14 @@ class TranslationBreadController extends VoyagerBreadController
         $dataTypeContentTranslation = null;
 
         $dataTypeContent = app($dataType->model_name)->first();
-        $dataTypeContentTranslation = $dataTypeContent->translations->first();
 
-        $dataTypeTranslation = Voyager::model('DataType')
-            ->where('model_name', '=', $dataTypeContent->getTranslationModelName())
-            ->first();
+        if ($dataTypeContent) {
+            $dataTypeContentTranslation = $dataTypeContent->translations->first();
+
+            $dataTypeTranslation = Voyager::model('DataType')
+                ->where('model_name', '=', $dataTypeContent->getTranslationModelName())
+                ->first();
+        }
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
