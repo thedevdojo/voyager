@@ -3,8 +3,8 @@
 namespace TCG\Voyager\Widgets;
 
 use Arrilot\Widgets\AbstractWidget;
-use TCG\Voyager\Facades\Voyager;
 use Illuminate\Support\Str;
+use TCG\Voyager\Facades\Voyager;
 
 class UserDimmer extends AbstractWidget
 {
