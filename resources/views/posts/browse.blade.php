@@ -69,17 +69,17 @@
                                     @endforeach
                                     <td class="no-sort no-click">
                                         @if (Voyager::can('delete_'.$dataType->name))
-                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->primaryKey} }}">
+                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
                                             </div>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->primaryKey}) }}" class="btn-sm btn-primary pull-right edit">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" class="btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
                                             </a>
                                         @endif
                                         @if (Voyager::can('read_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->primaryKey}) }}" class="btn-sm btn-warning pull-right">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" class="btn-sm btn-warning pull-right">
                                                 <i class="voyager-eye"></i> {{ __('voyager.generic.view') }}
                                             </a>
                                         @endif
