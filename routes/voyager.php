@@ -37,7 +37,7 @@ Route::group(['as' => 'voyager.'], function () {
                 }
 
                 if (in_array(TCG\Voyager\Traits\EdipresseTranslatable::class, class_uses(new $dataType->model_name))) {
-                    $breadControllerName = 'EdipresseBreadController';
+                    $breadControllerName = 'TranslationBreadController';
                 } else {
                     $breadControllerName = 'VoyagerBreadController';
                 }

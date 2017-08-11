@@ -45,6 +45,7 @@
                             </form>
                         @endif
                         <table id="dataTable" class="table table-hover">
+                            @if(isset($dataType->browseRows) && isset($dataTypeTranslation->browseRows))
                             <thead>
                                 <tr>
                                     @foreach($dataType->browseRows as $row)
@@ -58,8 +59,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @include('voyager::edipresse-bread.partials.browse-rows')
+                                @include('voyager::translation-bread.partials.browse-rows')
                             </tbody>
+                            @endif
                         </table>
                         @if (isset($dataType->server_side) && $dataType->server_side)
                             <div class="pull-left">
