@@ -58,7 +58,7 @@ class InstallCommand extends Command
      *
      * @return void
      */
-    public function fire(Filesystem $filesystem)
+    public function handle(Filesystem $filesystem)
     {
         $this->info('Publishing the Voyager assets, database, language, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
