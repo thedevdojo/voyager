@@ -5,7 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager;
 
-class EdipresseBreadController extends VoyagerBreadController
+class TranslationBreadController extends VoyagerBreadController
 {
     public function insertUpdateData($request, $slug, $rows, $data)
     {
@@ -85,6 +85,9 @@ class EdipresseBreadController extends VoyagerBreadController
         // Check permission
         Voyager::canOrFail('browse_'.$dataType->name);
 
+        $dataTypeTranslation = null;
+        $dataTypeContentTranslation = null;
+
         $dataTypeContent = app($dataType->model_name)->first();
         $dataTypeContentTranslation = $dataTypeContent->translations->first();
 
@@ -116,7 +119,7 @@ class EdipresseBreadController extends VoyagerBreadController
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($model);
 
-        $view = 'voyager::edipresse-bread.browse';
+        $view = 'voyager::translation-bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
             $view = "voyager::$slug.browse";
@@ -170,7 +173,7 @@ class EdipresseBreadController extends VoyagerBreadController
         // Check if BREAD is Translation
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
-        $view = 'voyager::edipresse-bread.read';
+        $view = 'voyager::translation-bread.read';
 
         if (view()->exists("voyager::$slug.read")) {
             $view = "voyager::$slug.read";
@@ -221,7 +224,7 @@ class EdipresseBreadController extends VoyagerBreadController
         // Check if BREAD is Translation
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
-        $view = 'voyager::edipresse-bread.edit-add';
+        $view = 'voyager::translation-bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
@@ -274,7 +277,7 @@ class EdipresseBreadController extends VoyagerBreadController
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
-        $view = 'voyager::edipresse-bread.edit-add';
+        $view = 'voyager::translation-bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
             $view = "voyager::$slug.edit-add";
