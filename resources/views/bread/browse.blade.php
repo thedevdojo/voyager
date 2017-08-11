@@ -136,18 +136,27 @@
                                         </td>
                                     @endforeach
                                     <td class="no-sort no-click" id="bread-actions">
+                                        @php $primaryKey = isset($data->primaryKey) ? $data->primaryKey : $data->id @endphp
                                         @if (Voyager::can('delete_'.$dataType->name))
-                                            <a href="javascript:;" title="{{ __('voyager.generic.delete') }}" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
-                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete') }}</span>
+                                            <a
+                                                href="javascript:;"
+                                                title="{{ __('voyager.generic.delete') }}"
+                                                class="btn btn-sm btn-danger pull-right delete"
+                                                data-id="{{ $primaryKey }}"
+                                                id="delete-{{ $primaryKey }}"
+                                            >
+                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">
+                                                    {{ __('voyager.generic.delete') }}
+                                                </span>
                                             </a>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $primaryKey) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
                                             </a>
                                         @endif
                                         @if (Voyager::can('read_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $primaryKey) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
                                                 <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
                                             </a>
                                         @endif
