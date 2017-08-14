@@ -214,3 +214,44 @@
 [dir="rtl"] .navbar .dropdown.profile .dropdown-menu h5, [dir="rtl"] .navbar .dropdown.profile .dropdown-menu h6 {
     float: right;
 }
+
+[dir="rtl"] .breadcrumb-container .toggle{
+    float: left;
+    right: auto;
+    left: 5px;
+}
+
+[dir="rtl"] .breadcrumb-container .toggle span {
+    float: right;
+    left: 10px;
+    right: auto;
+}
+
+[dir="rtl"] .breadcrumb-container .toggle i {
+    float: left;
+    margin-right: auto;
+    margin-left: 5px;
+    top: -8px;
+    -ms-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+ }
+
+[dir="rtl"] .detail_info h4 {
+    float: right;
+    margin-right: auto;
+    margin-left: 8px;
+}
+
+[dir="rtl"] .detail_info p {
+     float: right;
+     color: #444;
+     padding-bottom: 3px;
+     font-size: 12px;
+     font-weight: 400;
+ }
+
+[dir="rtl"] .file_link .link_icon {
+    margin-left: 5px;
+    margin-right: 0;
+}
