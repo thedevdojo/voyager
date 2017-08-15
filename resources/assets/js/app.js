@@ -93,6 +93,8 @@ $(document).ready(function(){
     $this.closest('.panel').toggleClass('is-fullscreen');
   });
 
+  console.log($('.datepicker'));
+
   $('.datepicker').datetimepicker();
 
   // Save shortcut
