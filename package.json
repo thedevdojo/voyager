@@ -23,7 +23,7 @@
     "animate.css": "^3.5.2",
     "bootstrap": "^3.3.7",
     "bootstrap-datepicker": "^1.6.4",
-    "bootstrap-datetimepicker": "0.0.7",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "bootstrap-switch": "^3.3.4",
     "bootstrap-toggle": "^2.2.2",
     "brace": "^0.10.0",

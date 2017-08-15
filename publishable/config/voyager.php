@@ -91,7 +91,7 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings'],
+            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings', 'form_builders'],
         ],
     ],
 
@@ -248,4 +248,17 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Images Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify images settings
+    |
+    */
+
+    'images' => [
+        'quality'     => 80,
+        'crop_folder' => 'storage/crop',
+    ],
 ];

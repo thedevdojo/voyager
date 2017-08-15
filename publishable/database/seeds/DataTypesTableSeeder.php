@@ -93,6 +93,20 @@ class DataTypesTableSeeder extends Seeder
                 'description'           => '',
             ])->save();
         }
+
+        $dataType = $this->dataType('slug', 'form-builders');
+        if (!$dataType->exists) {
+            $dataType->fill([
+                'name'                  => 'form_builders',
+                'display_name_singular' => 'Form Builder',
+                'display_name_plural'   => 'Forms Builder',
+                'icon'                  => 'voyager-list',
+                'model_name'            => 'TCG\\Voyager\\Models\\FormBuilder',
+                'controller'            => '',
+                'generate_permissions'  => 1,
+                'description'           => '',
+            ])->save();
+        }
     }
 
     /**

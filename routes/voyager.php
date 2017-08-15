@@ -32,9 +32,19 @@ Route::group(['as' => 'voyager.'], function () {
 
         try {
             foreach (DataType::all() as $dataType) {
+                if (!class_exists($dataType->model_name)) {
+                    continue;
+                }
+
+                if (in_array(TCG\Voyager\Traits\EdipresseTranslatable::class, class_uses(new $dataType->model_name))) {
+                    $breadControllerName = 'TranslationBreadController';
+                } else {
+                    $breadControllerName = 'VoyagerBreadController';
+                }
+
                 $breadController = $dataType->controller
                                  ? $dataType->controller
-                                 : $namespacePrefix.'VoyagerBreadController';
+                                 : $namespacePrefix.$breadControllerName;
 
                 Route::resource($dataType->slug, $breadController);
             }
