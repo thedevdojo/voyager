@@ -39,7 +39,11 @@ trait BreadRelationshipParser
 
                 $relationships[$method] = function ($query) use ($relation) {
                     // select only what we need
-                    $query->select($relation->key, $relation->label);
+                    if (isset($relation->selectRaw)) {
+                        $query->selectRaw($relation->selectRaw);
+                    } else {
+                        $query->select($relation->key, $relation->label);
+                    }
                 };
             }
         });
