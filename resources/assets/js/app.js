@@ -95,7 +95,7 @@ $(document).ready(function(){
 
   if ($('.datepicker').length) {
     $.each($('.datepicker'), function(i, datepicker){
-        $(datepicker).datetimepicker($(datepicker).data('details'));
+        $(datepicker).datetimepicker($(datepicker).data('datetimepicker'));
     });
   }
 
