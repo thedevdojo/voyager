@@ -210,6 +210,8 @@ class TranslationBreadController extends VoyagerBreadController
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        $formBuilder = $dataType->getFormBuilder();
+
         // If dataType is users and user owns the profile, skip the permission check
         $skip = $dataType->name === 'users' && $request->user()->id === (int) $id;
 
@@ -238,7 +240,8 @@ class TranslationBreadController extends VoyagerBreadController
             'dataTypeContent',
             'isModelTranslatable',
             'dataTypeTranslation',
-            'dataTypeContentTranslation'
+            'dataTypeContentTranslation',
+            'formBuilder'
             )
         );
     }
@@ -310,6 +313,8 @@ class TranslationBreadController extends VoyagerBreadController
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        $formBuilder = $dataType->getFormBuilder();
+
         // Check permission
         Voyager::canOrFail('add_'.$dataType->name);
 
@@ -336,7 +341,8 @@ class TranslationBreadController extends VoyagerBreadController
             'dataTypeContent',
             'isModelTranslatable',
             'dataTypeTranslation',
-            'dataTypeContentTranslation'
+            'dataTypeContentTranslation',
+            'formBuilder'
             )
         );
     }
