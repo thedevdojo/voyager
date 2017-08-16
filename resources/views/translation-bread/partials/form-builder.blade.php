@@ -29,6 +29,7 @@
                         @php
                             $formBuilderFields->push($panel->fields);
                         @endphp
+
                         @foreach($dataTypeRows->whereIn('field', $panel->fields) as $row)
                             <!-- GET THE DISPLAY OPTIONS -->
                             @php
@@ -53,10 +54,10 @@
                         @endforeach
 
                         @php
-                            $dataTypeRows = $dataTypeTranslation->{(isset($dataTypeContentTranslation->id) ? 'editRows' : 'addRows' )};
+                            $dataTypeRowsTranslation = $dataTypeTranslation->{(isset($dataTypeContentTranslation->id) ? 'editRows' : 'addRows' )};
                         @endphp
 
-                        @foreach($dataTypeRows->whereIn('field', $panel->fields) as $row)
+                        @foreach($dataTypeRowsTranslation->whereIn('field', $panel->fields) as $row)
                             <!-- GET THE DISPLAY OPTIONS -->
                             @php
                                 $options = json_decode($row->details);
