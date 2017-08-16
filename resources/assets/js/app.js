@@ -93,9 +93,11 @@ $(document).ready(function(){
     $this.closest('.panel').toggleClass('is-fullscreen');
   });
 
-  console.log($('.datepicker'));
-
-  $('.datepicker').datetimepicker();
+  if ($('.datepicker').length) {
+    $.each($('.datepicker'), function(i, datepicker){
+        $(datepicker).datetimepicker($(datepicker).data('datetimepicker'));
+    });
+  }
 
   // Save shortcut
   $(document).keydown(function (e){
