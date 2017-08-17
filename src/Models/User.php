@@ -12,13 +12,13 @@ class User extends AuthUser
 
     protected $guarded = [];
 
-    public function getAvatarAttribute()
+    public function getAvatarAttribute($value)
     {
-        if (!is_null($this->attributes['avatar'])) {
-            return $this->attributes['avatar'];
+        if (is_null($value)) {
+            return config('voyager.user.default_avatar', 'users/default.png');
         }
 
-        return config('voyager.user.default_avatar', 'users/default.png');
+        return $value;
     }
 
     public function setCreatedAtAttribute($value)
