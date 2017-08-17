@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
@@ -35,16 +36,26 @@ class VoyagerBreadController extends Controller
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
+        $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
+        $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
+
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
+            $query = $model::select('*');
 
             $relationships = $this->getRelationships($dataType);
 
+            if ($search->value && $search->key && $search->filter) {
+                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
+                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
+                $query->where($search->key, $search_filter, $search_value);
+            }
+
             if ($model->timestamps) {
-                $dataTypeContent = call_user_func([$model->with($relationships)->latest(), $getter]);
+                $dataTypeContent = call_user_func([$query->latest(), $getter]);
             } else {
-                $dataTypeContent = call_user_func([$model->with($relationships)->orderBy('id', 'DESC'), $getter]);
+                $dataTypeContent = call_user_func([$query->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
 
             // Replace relationships' keys for labels and create READ links if a slug is provided.
@@ -64,7 +75,7 @@ class VoyagerBreadController extends Controller
             $view = "voyager::$slug.browse";
         }
 
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'search', 'searchable'));
     }
 
     //***************************************
@@ -291,6 +302,13 @@ class VoyagerBreadController extends Controller
 
         // Delete Images
         $this->deleteBreadImages($data, $dataType->deleteRows->where('type', 'image'));
+
+        // Delete Files
+        foreach ($dataType->deleteRows->where('type', 'file') as $row) {
+            foreach (json_decode($data->{$row->field}) as $file) {
+                $this->deleteFileIfExists($file->download_link);
+            }
+        }
 
         $data = $data->destroy($id)
             ? [

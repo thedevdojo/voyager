@@ -1269,6 +1269,27 @@ table.dataTable.no-footer{
   z-index: auto;
 }
 
+.select2-container--default .select2-selection--single{
+    border: 0px;
+    border-right: 1px solid #f1f1f1;
+    border-radius: 0px;
+    height: 34px;
+    padding: 3px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow{
+    top:4px;
+}
+
+.select2-dropdown{
+    z-index:9;
+}
+
+.select2-container--open .select2-dropdown--below{
+    border: 0px;
+    box-shadow: 0px 15px 15px -1px rgba(0, 0, 0, 0.15);
+}
+
 @media (max-width: 768px) {
   .step .nav-tabs > li:after {
     display: none; }
@@ -3936,6 +3957,10 @@ p#the_plugin_name{
   margin-top:360px;
 }
 
+.page-content.col-md-12{
+    padding-right:0px;
+}
+
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title{
   text-transform: uppercase;
   position:relative;
@@ -4326,7 +4351,9 @@ float: left;
 }
 
 .panel-bordered>.panel-body {
+    padding:20px;
     padding-top: 30px;
+    overflow:hidden;
 }
 
 .voyager .panel {
@@ -8732,6 +8759,60 @@ limitations under the License.
   position: relative;
     top: 2px;
 }
+
+/********** Search Bar CSS **********/
+
+#search-input{
+    padding: 1px;
+    border: solid 1px #EAEAF1;
+    border-radius: 6px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    display:flex;
+    .input-group{
+        display:flex;
+        position:relative;
+    }
+    input{
+        border: 0;
+        box-shadow: none;
+        width:100%;
+    }
+    button{
+        margin: 2px 0 0 0;
+        background: none;
+        box-shadow: none;
+        border: 0;
+        color: #999;
+        padding: 1px 8px 0 10px;
+        border-left: solid 1px #eee;
+        right: 20px;
+        z-index: 9;
+        &:hover{
+            border: 0;
+            box-shadow: none;
+            color:#777;
+            border-left: solid 1px #ddd;
+        }
+    }
+    i{
+        font-size: 18px;
+        transform: rotate(270deg);
+        display: block;
+    }
+
+
+    .select2-results{
+        text-align:center;
+    }
+
+    #filter{
+        text-align:center;
+        min-width:100px;
+    }
+}
+
+/********** END SEARCH BAR CSS **********/
 
 
 /**************************************************/

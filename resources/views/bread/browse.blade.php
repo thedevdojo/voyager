@@ -21,7 +21,30 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body table-responsive">
-                        <table id="dataTable" class="row table table-hover">
+                        @if (isset($dataType->server_side) && $dataType->server_side)
+                            <form method="get">
+                                <div id="search-input">
+                                    <select id="search_key" name="key">
+                                        @foreach($searchable as $key)
+                                                <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select id="filter" name="filter">
+                                        <option value="contains" @if($search->filter == "contains"){{ 'selected' }}@endif>contains</option>
+                                        <option value="equals" @if($search->filter == "equals"){{ 'selected' }}@endif>=</option>
+                                    </select>
+                                    <div class="input-group col-md-12">
+                                        <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search->value }}">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-info btn-lg" type="submit">
+                                                <i class="voyager-search"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        @endif
+                        <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
                                     @foreach($dataType->browseRows as $row)
@@ -79,6 +102,8 @@
                                                 @else
                                                 {{ $data->{$row->field} }}
                                                 @endif
+                                            @elseif($row->type == 'color')
+                                                <span class="badge badge-lg" style="background-color: {{ $data->{$row->field} }}">{{ $data->{$row->field} }}</span>
                                             @elseif($row->type == 'text')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
@@ -87,10 +112,23 @@
                                                 <div class="readmore">{{ strlen( $data->{$row->field} ) > 200 ? substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                             @elseif($row->type == 'file' && !empty($data->{$row->field}) )
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
-                                                <a href="/storage/{{ $data->{$row->field} }}">Download</a>
+                                                @if(json_decode($data->{$row->field}))
+                                                    @foreach(json_decode($data->{$row->field}) as $file)
+                                                        <a href="/storage/{{ $file->download_link or '' }}">
+                                                            {{ $file->original_name or '' }}
+                                                        </a>
+                                                        <br/>
+                                                    @endforeach
+                                                @else
+                                                    <a href="/storage/{{ $data->{$row->field} }}">
+                                                        Download
+                                                    </a>
+                                                @endif
                                             @elseif($row->type == 'rich_text_box')
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 <div class="readmore">{{ strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
+                                            @elseif($row->type == 'coordinates')
+                                                @include('voyager::partials.coordinates-static-image')
                                             @else
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 <span>{{ $data->{$row->field} }}</span>
@@ -110,6 +148,7 @@
                                         @endcan
                                         @can('read', $data)
                                             <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
+
                                                 <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
                                             </a>
                                         @endcan
@@ -128,7 +167,7 @@
                                     ]) }}</div>
                             </div>
                             <div class="pull-right">
-                                {{ $dataTypeContent->links() }}
+                                {{ $dataTypeContent->appends(['s' => $search])->links() }}
                             </div>
                         @endif
                     </div>
@@ -181,11 +220,16 @@
                     "language": {!! json_encode(__('voyager.datatable'), true) !!}
                     @if(config('dashboard.data_tables.responsive')), responsive: true @endif
                 });
+            @else
+                $('#search-input select').select2({
+                    minimumResultsForSearch: Infinity
+                });
             @endif
 
             @if ($isModelTranslatable)
                 $('.side-body').multilingual();
             @endif
+             
         });
 
 
