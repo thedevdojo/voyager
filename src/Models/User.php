@@ -11,16 +11,14 @@ class User extends AuthUser
     use VoyagerUser;
 
     protected $guarded = [];
-
-    /**
-     * On save make sure to set the default avatar if image is not set.
-     */
-    public function save(array $options = [])
+    
+    public function getAvatarAttribute()
     {
-        // If no avatar has been set, set it to the default
-        $this->avatar = $this->avatar ?: config('voyager.user.default_avatar', 'users/default.png');
+        if (!is_null($this->attributes['avatar'])) {
+            return $this->attributes['avatar'];
+        }
 
-        parent::save();
+        return config('voyager.user.default_avatar', 'users/default.png');
     }
 
     public function setCreatedAtAttribute($value)
