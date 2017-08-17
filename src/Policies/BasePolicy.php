@@ -4,7 +4,6 @@ namespace TCG\Voyager\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\User;
 
 class BasePolicy
 {
@@ -13,12 +12,12 @@ class BasePolicy
     /**
      * Determine if the given user can browse the model.
      *
-     * @param \TCG\Voyager\Models\User $user
-     * @param  $model
+     * @param $user
+     * @param $model
      *
      * @return bool
      */
-    public function browse(User $user, $model)
+    public function browse($user, $model)
     {
         $dataType = Voyager::model('DataType');
         $dataType = $dataType->where('model_name', get_class($model))->first();
@@ -29,12 +28,12 @@ class BasePolicy
     /**
      * Determine if the given model can be viewed by the user.
      *
-     * @param \TCG\Voyager\Models\User $user
-     * @param  $model
+     * @param $user
+     * @param $model
      *
      * @return bool
      */
-    public function read(User $user, $model)
+    public function read($user, $model)
     {
         $dataType = Voyager::model('DataType');
         $dataType = $dataType->where('model_name', get_class($model))->first();
@@ -45,12 +44,12 @@ class BasePolicy
     /**
      * Determine if the given model can be edited by the user.
      *
-     * @param \TCG\Voyager\Models\User $user
-     * @param  $model
+     * @param $user
+     * @param $model
      *
      * @return bool
      */
-    public function edit(User $user, $model)
+    public function edit($user, $model)
     {
         $dataType = Voyager::model('DataType');
         $dataType = $dataType->where('model_name', get_class($model))->first();
@@ -61,12 +60,12 @@ class BasePolicy
     /**
      * Determine if the given user can create the model.
      *
-     * @param \TCG\Voyager\Models\User $user
-     * @param  $model
+     * @param $user
+     * @param $model
      *
      * @return bool
      */
-    public function add(User $user, $model)
+    public function add($user, $model)
     {
         $dataType = Voyager::model('DataType');
         $dataType = $dataType->where('model_name', get_class($model))->first();
@@ -77,12 +76,12 @@ class BasePolicy
     /**
      * Determine if the given model can be deleted by the user.
      *
-     * @param \TCG\Voyager\Models\User $user
-     * @param  $model
+     * @param $user
+     * @param $model
      *
      * @return bool
      */
-    public function delete(User $user, $model)
+    public function delete($user, $model)
     {
         $dataType = Voyager::model('DataType');
         $dataType = $dataType->where('model_name', get_class($model))->first();
