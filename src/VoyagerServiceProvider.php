@@ -268,9 +268,9 @@ class VoyagerServiceProvider extends ServiceProvider
 
                 $this->policies[$dataType->model_name] = $policyClass;
             }
-
-            $this->registerPolicies();
         }
+
+        $this->registerPolicies();
     }
 
     protected function registerFormFields()
