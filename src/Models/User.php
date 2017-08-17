@@ -11,7 +11,7 @@ class User extends AuthUser
     use VoyagerUser;
 
     protected $guarded = [];
-    
+
     public function getAvatarAttribute()
     {
         if (!is_null($this->attributes['avatar'])) {
