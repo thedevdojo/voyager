@@ -12,6 +12,7 @@ use TCG\Voyager\FormFields\HandlerInterface;
 use TCG\Voyager\Models\Category;
 use TCG\Voyager\Models\DataRow;
 use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Models\FormBuilder;
 use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
 use TCG\Voyager\Models\Page;
@@ -41,17 +42,18 @@ class Voyager
     protected $viewLoadingEvents = [];
 
     protected $models = [
-        'Category'   => Category::class,
-        'DataRow'    => DataRow::class,
-        'DataType'   => DataType::class,
-        'Menu'       => Menu::class,
-        'MenuItem'   => MenuItem::class,
-        'Page'       => Page::class,
-        'Permission' => Permission::class,
-        'Post'       => Post::class,
-        'Role'       => Role::class,
-        'Setting'    => Setting::class,
-        'User'       => User::class,
+        'Category'    => Category::class,
+        'DataRow'     => DataRow::class,
+        'DataType'    => DataType::class,
+        'FormBuilder' => FormBuilder::class,
+        'Menu'        => Menu::class,
+        'MenuItem'    => MenuItem::class,
+        'Page'        => Page::class,
+        'Permission'  => Permission::class,
+        'Post'        => Post::class,
+        'Role'        => Role::class,
+        'Setting'     => Setting::class,
+        'User'        => User::class,
     ];
 
     public $setting_cache = null;

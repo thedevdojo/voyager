@@ -181,4 +181,15 @@ class DataType extends Model
             return $model->adminFields();
         }
     }
+
+    public function getFormBuilder()
+    {
+        $formBuilder = $this->hasOne(Voyager::modelClass('FormBuilder'))->first();
+
+        if ($formBuilder) {
+            return $formBuilder->getDetails();
+        }
+
+        return $formBuilder;
+    }
 }
