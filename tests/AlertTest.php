@@ -2,9 +2,9 @@
 
 namespace TCG\Voyager\Tests;
 
+use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Alert;
 use TCG\Voyager\Facades\Voyager;
-use Illuminate\Support\Facades\Auth;
 
 class AlertTest extends TestCase
 {
@@ -34,7 +34,7 @@ class AlertTest extends TestCase
         Voyager::addAlert((new Alert('test', 'warning'))
             ->title('Title')
             ->text('Text')
-            ->button('Button', 'http://example.com', 'danger'));   
+            ->button('Button', 'http://example.com', 'danger'));
 
         $alerts = app('voyager')->alerts();
 
