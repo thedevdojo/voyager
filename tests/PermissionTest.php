@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Tests;
 
-use TCG\Voyager\Models\Role;
+use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Permission;
-use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Models\Role;
 
 class PermissionTest extends TestCase
 {
