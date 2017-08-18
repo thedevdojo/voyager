@@ -8,8 +8,8 @@
     padding-right: 60px;}
 
 [dir="rtl"] .app-container .side-body{
-    margin-left: -15px;
-    margin-right: 45px;
+    margin-left: 15px;
+    margin-right: 75px;
 }
 
 [dir="rtl"].flat-blue .app-footer {
@@ -27,6 +27,15 @@
 }
 
 [dir="rtl"] .app-container .content-container .navbar-top .hamburger {
+    float: right;
+    -ms-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+[dir="rtl"] #sidebar-anchor {
+    margin-left: 10px;
+    margin-right: auto;
     float: right;
 }
 
@@ -96,16 +105,162 @@
     left: 10px;
 }
 
-[dir="rtl"] .app-container .side-menu:hover .panel.widget .avatar
-{
+[dir="rtl"] .app-container .side-menu .panel.widget .avatar {
     float: right;
     margin-left: 0px;
     margin-right: 10px;
 }
-[dir="rtl"] .app-container .side-menu .panel.widget h4
-{
+
+[dir="rtl"] .app-container .side-menu .panel.widget h4 {
     float: right;
     text-align: right;
     right: 56px;
     left:auto;
+}
+
+[dir="rtl"] .text-right {
+    text-align: left !important;
+}
+
+[dir="rtl"] .app-container.expanded .side-body {
+    margin-right: 235px;
+}
+
+[dir="rtl"] .panel-title{
+    padding: 20px 30px;
+    padding-right: 15px;
+    text-align: right;
+}
+
+[dir="rtl"] .panel-actions{
+    left: 30px;
+    right: auto;
+}
+
+[dir="rtl"] code{
+    direction: ltr;
+    display: inline-block;
+}
+
+[dir="rtl"] .pull-right {
+    float: left !important;
+}
+
+[dir="rtl"] .delete, [dir="rtl"] .edit {
+    margin-right: 5px;
+    margin-left: auto;
+}
+
+[dir="rtl"] .app-container .content-container .side-menu .navbar-nav li.dropdown > a:after {
+    right: auto;
+    left: 1em;
+}
+
+[dir="rtl"] .dd .item_actions{
+    right: auto;
+    left: 10px;
+}
+
+[dir="rtl"] .dd .dd-handle .url {
+    display: inline-block;
+}
+
+[dir="rtl"] .panel-actions .voyager-trash, [dir="rtl"] .voyager-sort-desc, [dir="rtl"] .voyager-sort-asc {
+    display: inline-block;
+}
+
+[dir="rtl"] .voyager-sort-desc {
+    margin-left: 10px;
+    margin-right: auto;
+}
+
+[dir="rtl"] .database-tables .name{
+    float: right;
+}
+
+[dir="rtl"] .database-tables .voyager-bread{
+    margin-right: 10px;
+    margin-left: auto;
+    right: 100%;
+    left: auto;
+}
+
+[dir="rtl"] .database-tables .actions .btn-warning, [dir="rtl"] .database-tables .actions .btn-primary{
+    margin-left: 10px !important;
+    margin-right: auto !important;
+}
+
+[dir="rtl"] .toast-top-right {
+    top: 12px;
+    right: auto;
+    left: 12px;
+}
+
+[dir="rtl"] #toast-container>div {
+    background-position: calc(100% - 15px) center;
+    padding: 15px 50px 15px 15px;
+}
+
+[dir="rtl"] .dropdown-menu>li>a {
+    text-align: right;
+}
+
+[dir="rtl"] .navbar .dropdown.profile .dropdown-menu li.profile-img img.profile-img {
+    float: right;
+    margin-right: auto;
+    margin-left: 10px;
+}
+
+[dir="rtl"] .navbar .dropdown.profile .dropdown-menu h5, [dir="rtl"] .navbar .dropdown.profile .dropdown-menu h6 {
+    float: right;
+}
+
+[dir="rtl"] .breadcrumb-container .toggle{
+    float: left;
+    right: auto;
+    left: 5px;
+}
+
+[dir="rtl"] .breadcrumb-container .toggle span {
+    float: right;
+    left: 10px;
+    right: auto;
+}
+
+[dir="rtl"] .breadcrumb-container .toggle i {
+    float: left;
+    margin-right: auto;
+    margin-left: 5px;
+    top: -8px;
+    -ms-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+ }
+
+[dir="rtl"] .detail_info h4 {
+    float: right;
+    margin-right: auto;
+    margin-left: 8px;
+}
+
+[dir="rtl"] .detail_info p {
+     float: right;
+     color: #444;
+     padding-bottom: 3px;
+     font-size: 12px;
+     font-weight: 400;
+ }
+
+[dir="rtl"] .file_link .link_icon {
+    margin-left: 5px;
+    margin-right: 0;
+}
+
+@media (min-width: 992px) {
+    [dir="rtl"] .col-md-1, [dir="rtl"] .col-md-10, [dir="rtl"] .col-md-11,
+    [dir="rtl"] .col-md-12, [dir="rtl"] .col-md-2, [dir="rtl"] .col-md-3,
+    [dir="rtl"] .col-md-4, [dir="rtl"] .col-md-5, [dir="rtl"] .col-md-6,
+    [dir="rtl"] .col-md-7, [dir="rtl"] .col-md-8, [dir="rtl"] .col-md-9 {
+        float: right;
+    }
 }

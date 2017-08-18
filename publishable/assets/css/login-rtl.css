@@ -7,6 +7,11 @@ body {
 	height: 100vh;
 }
 
+[dir="rtl"] .login-container, [dir="rtl"] .login-sidebar{
+  -webkit-animation-name: fadeInLeftBig;
+  animation-name: fadeInLeftBig;
+}
+
 [dir="rtl"] .login-container h2 {
   text-align: right;
 }
