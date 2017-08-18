@@ -35,13 +35,19 @@ class WidgetTest extends TestCase
 
     public function testRuntimeDisableWidget()
     {
+        // waiting for support from https://github.com/arrilot/laravel-widgets
+        // if it does not come soon, I will make a overwriting of it
     }
 
     public function testRuntimeEnableWidget()
     {
+        // waiting for support from https://github.com/arrilot/laravel-widgets
+        // if it does not come soon, I will make a overwriting of it
     }
 
     public function testOverwrittingWidgetView()
     {
+        // waiting for support from https://github.com/arrilot/laravel-widgets
+        // if it does not come soon, I will make a overwriting of it
     }
 }
