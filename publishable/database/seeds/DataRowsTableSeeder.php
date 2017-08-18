@@ -459,7 +459,50 @@ class DataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
+                'details'      => json_encode([
+                    'crop' => [
+                        [
+                            'name'   => 'avatar',
+                            'size'   => [
+                                'name'   => 'max',
+                                'width'  => '800',
+                                'height' => '400',
+                            ],
+                            'resize' => [
+                                [
+                                    'name'   => 'norm',
+                                    'width'  => '600',
+                                    'height' => 'null',
+                                ],
+                                [
+                                    'name'   => 'min',
+                                    'width'  => '400',
+                                    'height' => '200',
+                                ],
+                            ],
+                        ],
+                        [
+                            'name'   => 'catalog',
+                            'size'   => [
+                                'name'   => 'max',
+                                'width'  => '300',
+                                'height' => '200',
+                            ],
+                            'resize' => [
+                                [
+                                    'name'   => 'norm',
+                                    'width'  => '200',
+                                    'height' => 'null',
+                                ],
+                                [
+                                    'name'   => 'min',
+                                    'width'  => '100',
+                                    'height' => 'null',
+                                ],
+                            ],
+                        ],
+                    ],
+                ]),
                 'order'        => 12,
             ])->save();
         }
