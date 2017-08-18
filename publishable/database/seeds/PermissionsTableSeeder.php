@@ -14,6 +14,7 @@ class PermissionsTableSeeder extends Seeder
             'browse_admin',
             'browse_database',
             'browse_media',
+            'browse_compass',
             'browse_settings',
         ];
 

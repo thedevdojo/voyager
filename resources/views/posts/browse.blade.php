@@ -20,7 +20,26 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-bordered">
-                    <div class="panel-body">
+                    <div class="panel-body table-responsive">
+                        @if (isset($dataType->server_side) && $dataType->server_side)
+                            <form method="get">
+                            <div id="search-input">
+                                <select id="search_filter" name="search_filter">
+                                    @foreach($searchable as $search_filter)
+                                        <option value="{{ $search_filter }}">{{ ucfirst($search_filter ) }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="input-group col-md-12">
+                                    <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search }}">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-info btn-lg" type="submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            </form>
+                        @endif
                         <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
@@ -36,7 +55,7 @@
                                     @foreach($dataType->browseRows as $row)
                                     <td>
                                         @if($row->type == 'image')
-                                            <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                            <img src="@if(!filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                         @else
                                             @if(is_field_translatable($data, $row))
                                                 @include('voyager::multilingual.input-hidden', [
@@ -49,6 +68,7 @@
                                     </td>
                                     @endforeach
                                     <td class="no-sort no-click">
+                                        @php $primaryKey = isset($data->primaryKey) ? $data->primaryKey : $data->id @endphp
                                         @if (Voyager::can('delete_'.$dataType->name))
                                             <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->getKey() }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
@@ -79,7 +99,7 @@
                                     ]) }}</div>
                             </div>
                             <div class="pull-right">
-                                {{ $dataTypeContent->links() }}
+                                {{ $dataTypeContent->appends(['s' => $search])->links() }}
                             </div>
                         @endif
                     </div>

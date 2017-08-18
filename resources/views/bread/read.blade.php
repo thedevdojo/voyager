@@ -37,7 +37,7 @@
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
                                 <img class="img-responsive"
-                                     src="{{ Voyager::image($dataTypeContent->{$row->field}) }}">
+                                     src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'select_dropdown' && property_exists($rowDetails, 'options') &&
                                     !empty($rowDetails->options->{$dataTypeContent->{$row->field}})
                             )
@@ -73,9 +73,26 @@
                                 @else
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
+                            @elseif($row->type == 'color')
+                                <span class="badge badge-lg" style="background-color: {{ $dataTypeContent->{$row->field} }}">{{ $dataTypeContent->{$row->field} }}</span>
+                            @elseif($row->type == 'coordinates')
+                                @include('voyager::partials.coordinates')
                             @elseif($row->type == 'rich_text_box')
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
+                            @elseif($row->type == 'file')
+                                @if(json_decode($dataTypeContent->{$row->field}))
+                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
+                                        <a href="/storage/{{ $file->download_link or '' }}">
+                                            {{ $file->original_name or '' }}
+                                        </a>
+                                        <br/>
+                                    @endforeach
+                                @else
+                                    <a href="/storage/{{ $dataTypeContent->{$row->field} }}">
+                                        Download
+                                    </a>
+                                @endif
                             @else
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>

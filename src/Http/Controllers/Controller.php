@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
@@ -61,6 +62,17 @@ abstract class Controller extends BaseController
             }
 
             if (is_null($content)) {
+
+                // If the image upload is null and it has a current image keep the current image
+                if ($row->field == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                    $content = $data->{$row->field};
+                }
+
+                // If the file upload is null and it has a current file keep the current file
+                if ($row->field == 'file') {
+                    $content = $data->{$row->field};
+                }
+
                 if ($row->field == 'password') {
                     $content = $data->{$row->field};
                 }
@@ -144,20 +156,26 @@ abstract class Controller extends BaseController
 
             /********** FILE TYPE **********/
             case 'file':
-                if ($file = $request->file($row->field)) {
-                    $filename = Str::random(20);
-                    $path = $slug.'/'.date('F').date('Y').'/';
-                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
-                    $request->file($row->field)->storeAs(
-                        $path,
-                        $filename.'.'.$file->getClientOriginalExtension(),
-                        config('voyager.storage.disk', 'public')
-                    );
+                if ($files = $request->file($row->field)) {
+                    $filesPath = [];
+                    foreach ($files as $key => $file) {
+                        $filename = Str::random(20);
+                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                        $file->storeAs(
+                            $path,
+                            $filename.'.'.$file->getClientOriginalExtension(),
+                            config('voyager.storage.disk', 'public')
+                        );
+                        array_push($filesPath, [
+                            'download_link' => $path.$filename.'.'.$file->getClientOriginalExtension(),
+                            'original_name' => $file->getClientOriginalName(),
+                        ]);
+                    }
 
-                    return $fullPath;
+                    return json_encode($filesPath);
                 }
             // no break
-
             /********** MULTIPLE IMAGES TYPE **********/
             case 'multiple_images':
                 if ($files = $request->file($row->field)) {
@@ -265,12 +283,19 @@ abstract class Controller extends BaseController
             case 'image':
                 if ($request->hasFile($row->field)) {
                     $file = $request->file($row->field);
-                    $filename = Str::random(20);
+                    $options = json_decode($row->details);
+
+                    $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+                    $filename_counter = 1;
 
                     $path = $slug.'/'.date('F').date('Y').'/';
-                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    $options = json_decode($row->details);
+                    // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+                    while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+                    }
+
+                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
                     if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
                         $resize_width = $options->resize->width;
@@ -334,6 +359,19 @@ abstract class Controller extends BaseController
                     } else {
                         $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
                     }
+                }
+                break;
+
+            /********** COORDINATES TYPE **********/
+            case 'coordinates':
+                if (empty($coordinates = $request->input($row->field))) {
+                    $content = null;
+                } else {
+                    //DB::connection()->getPdo()->quote won't work as it quotes the
+                    // lat/lng, which leads to wrong Geometry type in POINT() MySQL constructor
+                    $lat = (float) ($coordinates['lat']);
+                    $lng = (float) ($coordinates['lng']);
+                    $content = DB::raw('ST_GeomFromText(\'POINT('.$lat.' '.$lng.')\')');
                 }
                 break;
 
