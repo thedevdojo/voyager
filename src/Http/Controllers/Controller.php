@@ -66,9 +66,9 @@ abstract class Controller extends BaseController
 
             if (is_null($content)) {
 
-                // If the image upload is null and it has a current image keep the current image
-                if ($row->field == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
-                    $content = $data->{$row->field};
+                // If image path stored in the input text, it used for crop images with preview
+                if ($row->field == 'image' && $request->input($row->field)) {
+                    $content = $request->input($row->field);
                 }
 
                 // If the file upload is null and it has a current file keep the current file

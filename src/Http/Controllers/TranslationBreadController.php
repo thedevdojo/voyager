@@ -33,10 +33,9 @@ class TranslationBreadController extends VoyagerBreadController
             }
 
             if (is_null($content)) {
-
-                // If the image upload is null and it has a current image keep the current image
-                if ($row->field == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
-                    $content = $data->{$row->field};
+                // If image path stored in the input text, it used for crop images with preview
+                if ($row->field == 'image' && $request->input($row->field)) {
+                    $content = $request->input($row->field);
                 }
 
                 if ($row->field == 'password') {
@@ -52,7 +51,6 @@ class TranslationBreadController extends VoyagerBreadController
             }
         }
 
-        $data->fill($request->all());
         $data->save();
 
         foreach ($multi_select as $sync_data) {
@@ -283,13 +281,14 @@ class TranslationBreadController extends VoyagerBreadController
         if (!$request->ajax()) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
-            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+            $rows = $dataType->editRows->merge($dataTypeTranslation->editRows);
+            $this->insertUpdateData($request, $slug, $rows, $data);
 
             return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
-                    'alert-type' => 'success',
+            ->route("voyager.{$dataType->slug}.index")
+            ->with([
+                'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                'alert-type' => 'success',
                 ]);
         }
     }
@@ -379,7 +378,8 @@ class TranslationBreadController extends VoyagerBreadController
         }
 
         if (!$request->ajax()) {
-            $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+            $rows = $dataType->editRows->merge($dataTypeTranslation->editRows);
+            $data = $this->insertUpdateData($request, $slug, $rows, new $dataType->model_name());
 
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
