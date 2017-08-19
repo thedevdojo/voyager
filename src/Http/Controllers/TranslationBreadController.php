@@ -227,6 +227,10 @@ class TranslationBreadController extends VoyagerBreadController
         // Check if BREAD is Translation
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
+        $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+        $dataTypeRowsTranslation = $dataTypeTranslation->{(isset($dataTypeContentTranslation->id) ? 'editRows' : 'addRows' )};
+        $dataTypeRows = $dataTypeRows->merge($dataTypeRowsTranslation);
+
         $view = 'voyager::translation-bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
@@ -237,8 +241,7 @@ class TranslationBreadController extends VoyagerBreadController
             'dataType',
             'dataTypeContent',
             'isModelTranslatable',
-            'dataTypeTranslation',
-            'dataTypeContentTranslation',
+            'dataTypeRows',
             'formBuilder'
             )
         );
