@@ -26,10 +26,6 @@
                 @endif
 
                 <!-- Adding / Editing -->
-                @php
-                    $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
-                @endphp
-
                 @foreach($dataTypeRows as $row)
                     <!-- GET THE DISPLAY OPTIONS -->
                     @php
@@ -53,34 +49,6 @@
                 @endforeach
 
                 <!-- Adding / Editing -->
-                @php
-                    $dataTypeRows = $dataTypeTranslation->{(isset($dataTypeContentTranslation->id) ? 'editRows' : 'addRows' )};
-                @endphp
-
-                @foreach($dataTypeRows as $row)
-                    <!-- GET THE DISPLAY OPTIONS -->
-                    @php
-                        $options = json_decode($row->details);
-                        $display_options = isset($options->display) ? $options->display : NULL;
-                    @endphp
-                    @if ($options && isset($options->formfields_custom))
-                        @include('voyager::formfields.custom.' . $options->formfields_custom)
-                    @else
-                        <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@else{{ 'col-md-12' }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
-                            {{ $row->slugify }}
-                            <label for="name">{{ $row->display_name }}</label>
-
-
-                            {!! app('voyager')->formField($row, $dataTypeTranslation, $dataTypeContentTranslation) !!}
-
-
-                            @foreach (app('voyager')->afterFormFields($row, $dataTypeTranslation, $dataTypeContentTranslation) as $after)
-                                {!! $after->handle($row, $dataTypeTranslation, $dataTypeContentTranslation) !!}
-                            @endforeach
-                        </div>
-                    @endif
-                @endforeach
-
             </div><!-- panel-body -->
 
             <div class="panel-footer">
