@@ -27,8 +27,8 @@
 
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
                     <!-- form start -->
-                    @include('voyager::edipresse-bread.partials.read-fields', compact('dataType', 'dataTypeContent'))
-                    @include('voyager::edipresse-bread.partials.read-fields', [
+                    @include('voyager::translation-bread.partials.read-fields', compact('dataType', 'dataTypeContent'))
+                    @include('voyager::translation-bread.partials.read-fields', [
                         'dataType' => $dataTypeTranslation,
                         'dataTypeContent' => $dataTypeContentTranslation
                     ])
