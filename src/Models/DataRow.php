@@ -12,16 +12,18 @@ class DataRow extends Model
 
     public $timestamps = false;
 
-    public function rowBefore(){
-    	$previous = DataRow::where('data_type_id', '=', $this->data_type_id)->where('order', '=', ($this->order-1))->first();
-    	if(isset($previous->id)){
-    		return $previous->field;
-    	}
+    public function rowBefore()
+    {
+        $previous = self::where('data_type_id', '=', $this->data_type_id)->where('order', '=', ($this->order - 1))->first();
+        if (isset($previous->id)) {
+            return $previous->field;
+        }
 
-    	return '__first__';
+        return '__first__';
     }
 
-    public function relationshipField(){
-    	return rtrim($this->field, '_relationship');
+    public function relationshipField()
+    {
+        return rtrim($this->field, '_relationship');
     }
 }
