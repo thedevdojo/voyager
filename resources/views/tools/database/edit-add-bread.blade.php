@@ -18,7 +18,7 @@
 
 
 @section('content')
-    <div class="page-content container-fluid">
+    <div class="page-content container-fluid" id="voyagerBreadEditAdd">
         <div class="row">
             <div class="col-md-12">
 
@@ -34,7 +34,10 @@
                     <div class="panel panel-primary panel-bordered">
 
                         <div class="panel-heading">
-                            <h3 class="panel-title">{{ ucfirst($table) }} {{ __('voyager.database.bread_info') }}</h3>
+                            <h3 class="panel-title panel-icon"><i class="voyager-bread"></i> {{ ucfirst($table) }} {{ __('voyager.database.bread_info') }}</h3>
+                            <div class="panel-actions">
+                                <a class="panel-action voyager-angle-up" data-toggle="panel-collapse" aria-hidden="true"></a>
+                            </div>
                         </div>
 
                         <div class="panel-body">
@@ -138,9 +141,13 @@
                         </div><!-- .panel-body -->
                     </div><!-- .panel -->
 
+
                     <div class="panel panel-primary panel-bordered">
                         <div class="panel-heading">
-                            <h3 class="panel-title">{{ __('voyager.database.edit_rows', ['table' => $table]) }}:</h3>
+                            <h3 class="panel-title panel-icon"><i class="voyager-window-list"></i> {{ __('voyager.database.edit_rows', ['table' => $table]) }}:</h3>
+                            <div class="panel-actions">
+                                <a class="panel-action voyager-angle-up" data-toggle="panel-collapse" aria-hidden="true"></a>
+                            </div>
                         </div>
 
                         <div class="panel-body">
@@ -241,14 +248,28 @@
                                     </div>
                                 </div>
 
-                            @endforeach
-                            </div>
+                                
 
-                            <div class="box-footer">
-                                <button type="submit" class="btn btn-primary">{{ __('voyager.generic.submit') }}</button>
+                            @endforeach
+                            
+                            @foreach($dataTypeRelationships as $relationship)
+                                @include('voyager::tools.database.relationship-partial', $relationship)
+                            @endforeach
+                            
                             </div>
+                            
                         </div><!-- .panel-body -->
+                        <div class="panel-footer">
+                             <div class="btn btn-default btn-new-relationship"><i class="voyager-heart"></i> <span>Create a Relationship</span></div>
+                        </div>
                     </div><!-- .panel -->
+
+                    @include('voyager::tools.database.relationship-new-modal')
+                    
+
+                    
+                    <button type="submit" class="btn pull-right btn-primary">{{ __('voyager.generic.submit') }}</button>
+                    
 
                 </form>
             </div><!-- .col-md-12 -->
@@ -277,21 +298,10 @@
                     "editing": true
                 });
             @endif
-
             /**
              * Reorder items
              */
-            $('#bread-items').sortable({
-                handle: '.handler',
-                update: function (e, ui) {
-                    var _rows = $('#bread-items').find('.row_order'),
-                        _size = _rows.length;
-
-                    for (var i = 0; i < _size; i++) {
-                        $(_rows[i]).val(i+1);
-                    }
-                }
-            });
+            reOrderItems();
 
             $('#bread-items').disableSelection();
 
@@ -302,12 +312,6 @@
             $('textarea[data-editor]').each(function () {
                 var textarea = $(this),
                 mode = textarea.data('editor'),
-                // editDiv = $('<div>', {
-                //     position: 'absolute',
-                //     width: 250,
-                //     resize: 'vertical',
-                //     class: textarea.attr('class')
-                // }).insertBefore(textarea),
                 editDiv = $('<div>').insertBefore(textarea),
                 editor = ace.edit(editDiv[0]),
                 _session = editor.getSession(),
@@ -377,7 +381,94 @@
                 });
             });
 
-
         });
+
+        function reOrderItems(){
+            $('#bread-items').sortable({
+                handle: '.handler',
+                update: function (e, ui) {
+                    var _rows = $('#bread-items').find('.row_order'),
+                        _size = _rows.length;
+
+                    for (var i = 0; i < _size; i++) {
+                        $(_rows[i]).val(i+1);
+                    }
+                }
+            });
+        }
+
+        /********** Relationship functionality **********/
+
+       $(function () {
+            $('.rowDrop').each(function(){
+                populateRowsFromTable($(this));
+            });
+
+            $('.btn-new-relationship').click(function(){
+                $('#new_relationship_modal').modal('show');
+            });
+
+            relationshipTextDataBinding();
+
+            $('.relationship_table').on('change', function(){
+                var tbl_selected = $(this).val();
+                var rowDropDowns = $(this).parent().parent().find('.rowDrop');
+                $(this).parent().parent().find('.rowDrop').each(function(){
+                    console.log('1');
+                    $(this).data('table', tbl_selected);
+                    populateRowsFromTable($(this));
+                });
+            });
+
+            $('.voyager-relationship-details-btn').click(function(){
+                $(this).toggleClass('open');
+                if($(this).hasClass('open')){
+                    $(this).parent().parent().find('.voyager-relationship-details').slideDown();
+                } else {
+                    $(this).parent().parent().find('.voyager-relationship-details').slideUp();
+                }
+            });
+           
+        });
+
+        function populateRowsFromTable(dropdown){
+            var tbl = dropdown.data('table');
+            var selected_value = dropdown.data('selected');
+            if(tbl.length != 0){
+                $.get('/{{ config("voyager.prefix") }}/database/' + tbl, function(data){
+                    $(dropdown).empty();
+                    for (var option in data) {
+                       $('<option/>', {
+                        value: option,
+                        html: option
+                        }).appendTo($(dropdown));
+                    }
+
+                    if($(dropdown).find('option[value="'+selected_value+'"]').length > 0){
+                        $(dropdown).val(selected_value);   
+                    }
+                });
+            }
+        }
+
+        function relationshipTextDataBinding(){
+            $('.relationship_display_name').bind('input', function() {
+                $(this).parent().parent().parent().find('.label_relationship p').text($(this).val());
+            });
+            $('.relationship_table').on('change', function(){
+                var tbl_selected_text = $(this).find('option:selected').text();
+                $(this).parent().parent().find('.label_table_name').text(tbl_selected_text);
+            });
+            $('.relationship_table').each(function(){
+                var tbl_selected_text = $(this).find('option:selected').text();
+                $(this).parent().parent().find('.label_table_name').text(tbl_selected_text);
+            });
+        }
+
+        function addNewRelationshipItem(){
+            $('#bread-items').prepend('<div class="row row-dd"><div class="col-xs-2"><h4><strong>body</strong></h4><i class="handler voyager-handle"></i><input class="row_order" type="hidden" value="3"></div></div>');
+        }
+
+        /********** End Relationship Functionality **********/
     </script>
 @stop

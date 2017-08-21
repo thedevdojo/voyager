@@ -63,7 +63,11 @@
                                         {{ $row->slugify }}
                                         <label for="name">{{ $row->display_name }}</label>
                                         @include('voyager::multilingual.input-hidden-bread-edit-add')
-                                        {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                        @if($row->type == 'relationship')
+                                            @include('voyager::formfields.relationship')
+                                        @else
+                                            {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                        @endif
 
                                         @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
                                             {!! $after->handle($row, $dataType, $dataTypeContent) !!}

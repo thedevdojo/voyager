@@ -111,7 +111,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 <script>
     @if(Session::has('alerts'))
         let alerts = {!! json_encode(Session::get('alerts')) !!};
-        displayAlerts(alerts, toastr);
+        helpers.displayAlerts(alerts, toastr);
     @endif
 
     @if(Session::has('message'))

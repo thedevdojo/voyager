@@ -4,7 +4,7 @@
 |
 --------------------*/
 
-function displayAlert(alert, alerter) {
+var displayAlert = function(alert, alerter) {
     let alertMethod = alerter[alert.type];
 
     if (alertMethod) {
@@ -14,7 +14,7 @@ function displayAlert(alert, alerter) {
     alerter.error("No alert method found for alert type: " + alert.type);
 }
 
-function displayAlerts(alerts, alerter, type) {
+var displayAlerts = function(alerts, alerter, type) {
     if (type) {
         // Only display alerts of this type...
         alerts = alerts.filter(function(alert) {
@@ -27,7 +27,7 @@ function displayAlerts(alerts, alerter, type) {
     }
 }
 
-function bootstrapAlerter(customOptions) {
+var bootstrapAlerter = function(customOptions) {
     // Default options
     let options = {
         alertsContainer: '#alertsContainer',
@@ -70,3 +70,7 @@ function bootstrapAlerter(customOptions) {
         }
     };
 }
+
+exports.displayAlert = displayAlert;
+exports.displayAlerts = displayAlerts;
+exports.bootstrapAlerter = bootstrapAlerter;

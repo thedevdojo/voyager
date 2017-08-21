@@ -83,6 +83,11 @@ class DataType extends Model
 
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields(array_get($requestData, 'name'));
+                
+                //dd($requestData);
+                $requestData = $this->getRelationships($requestData, $fields);
+                //dd($relationships);
+                //dd($requestData);
 
                 foreach ($fields as $field) {
                     $dataRow = $this->rows()->firstOrNew(['field' => $field]);
@@ -143,6 +148,52 @@ class DataType extends Model
         }
 
         return $fields;
+    }
+
+    public function getRelationships($requestData, &$fields){
+        if(isset($requestData['relationship_field']) && count($requestData['relationship_field']) > 0){
+            //dd(count($requestData['relationship_display_name']));
+            foreach($requestData['relationship_field'] as $index => $relationship){
+                    $relationshipField = $requestData['relationship_field'][$index];
+                    
+                    // Add the relationship field to the array of fields
+                    array_push($fields, $relationshipField);
+                    
+                    // Build the relationship details
+                    $relationshipDetails = [
+                        'model' => $requestData['relationship_model'][$index],
+                        'table' => $requestData['relationship_table'][$index],
+                        'type' => $requestData['relationship_type'][$index],
+                        'key' => $requestData['relationship_key'][$index],
+                        'label' => $requestData['relationship_label'][$index]
+                    ];
+
+                    // Build the relationship field data and store it back in the request
+                    $requestData['field_required_'.$relationshipField] = 0;
+                    $requestData['field_'.$relationshipField] = $relationshipField;
+                    $requestData['field_input_type_'.$relationshipField] = 'relationship';
+                    $requestData['field_details_'.$relationshipField] = $relationshipDetails;
+                    $requestData['field_display_name_'.$relationshipField] = $requestData['relationship_display_name'][$index];
+                    $requestData['field_details_'.$relationshipField] = json_encode($relationshipDetails);
+
+                    // !! WORK ON ORDER BELOW !!
+                    //$requestData['field_order_'.$relationshipField] = json_encode($relationshipDetails);
+
+                    $requestData['field_browse_'.$relationshipField] = $requestData['relationship_browse'][$index];
+                    $requestData['field_read_'.$relationshipField] = $requestData['relationship_read'][$index];
+                    $requestData['field_edit_'.$relationshipField] = $requestData['relationship_edit'][$index];
+                    $requestData['field_add_'.$relationshipField] = $requestData['relationship_add'][$index];
+                    $requestData['field_delete_'.$relationshipField] = $requestData['relationship_delete'][$index];
+            }
+
+            // Unset all the 'relationship_' fields
+            foreach($requestData as $key => $value){
+                if(substr( $key, 0, 13 ) == "relationship_"){
+                    unset($requestData[$key]);
+                }
+            }
+        }
+        return $requestData;
     }
 
     public function fieldOptions()

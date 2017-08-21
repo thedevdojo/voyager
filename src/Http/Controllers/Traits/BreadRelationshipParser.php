@@ -10,6 +10,23 @@ trait BreadRelationshipParser
 {
     protected $patchId;
 
+
+    protected function removeRelationshipField(DataType $dataType, $bread_type = 'browse'){
+        $forget_keys = [];
+        foreach ($dataType->{$bread_type . 'Rows'} as $key => $row) {
+            if($row->type == 'relationship'){
+                $relationshipField = rtrim($row->field, '_relationship');
+                $keyInCollection = key($dataType->{$bread_type . 'Rows'}->where('field', '=', $relationshipField)->toArray());
+                array_push($forget_keys, $keyInCollection);
+            }
+
+        }
+
+        foreach($forget_keys as $forget_key){
+            $dataType->{$bread_type . 'Rows'}->forget($forget_key);
+        }
+    }
+
     /**
      * Build the relationships array for the model's eager load.
      *

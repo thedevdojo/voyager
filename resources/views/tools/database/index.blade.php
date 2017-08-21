@@ -63,17 +63,17 @@
                         </td>
 
                         <td class="actions">
-                            <a class="btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
+                            <a class="btn btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
                                data-table="{{ $table->name }}" style="display:inline; cursor:pointer;">
                                <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
                             </a>
                             <a href="{{ route('voyager.database.edit', $table->name) }}"
-                               class="btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;">
+                               class="btn btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;">
                                <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
                             </a>
                             <a href="{{ route('voyager.database.show', $table->name) }}"
                                data-name="{{ $table->name }}"
-                               class="btn-sm btn-warning pull-right desctable" style="display:inline; margin-right:10px;">
+                               class="btn btn-sm btn-warning pull-right desctable" style="display:inline; margin-right:10px;">
                                <i class="voyager-eye"></i> {{ __('voyager.generic.view') }}
                             </a>
                         </td>

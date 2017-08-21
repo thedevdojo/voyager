@@ -24,7 +24,7 @@ window.TinyMCE = window.tinymce = require('./tinymce');
 require('./multilingual');
 require('./voyager_tinymce');
 require('./voyager_ace_editor');
-require('./helpers.js');
+window.helpers = require('./helpers.js');
 require('./load-remote.js');
 
 $(document).ready(function(){
@@ -73,11 +73,11 @@ $(document).ready(function(){
     if(!$this.hasClass('panel-collapsed')) {
       $this.parents('.panel').find('.panel-body').slideUp();
       $this.addClass('panel-collapsed');
-      $this.removeClass('voyager-angle-down').addClass('voyager-angle-up');
+      $this.removeClass('voyager-angle-up').addClass('voyager-angle-down');
     } else {
       $this.parents('.panel').find('.panel-body').slideDown();
       $this.removeClass('panel-collapsed');
-      $this.removeClass('voyager-angle-up').addClass('voyager-angle-down');
+      $this.removeClass('voyager-angle-down').addClass('voyager-angle-up');
     }
   });
 
