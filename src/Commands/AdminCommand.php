@@ -32,13 +32,18 @@ class AdminCommand extends Command
             ['create', null, InputOption::VALUE_NONE, 'Create an admin user', null],
         ];
     }
+    
+    public function fire()
+    {
+        return $this->handle();
+    }
 
     /**
      * Execute the console command.
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         // Get or create user
         $user = $this->getUser(
