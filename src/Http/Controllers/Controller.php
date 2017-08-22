@@ -157,22 +157,18 @@ abstract class Controller extends BaseController
             /********** FILE TYPE **********/
             case 'file':
                 if ($files = $request->file($row->field)) {
-                    
                     if (!is_array($files)) {
                         $files = [$files];
                     }
-                    
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('F').date('Y').'/';
-                       
                         $file->storeAs(
                             $path,
                             $filename.'.'.$file->getClientOriginalExtension(),
                             config('voyager.storage.disk', 'public')
                         );
-                        
                         array_push($filesPath, [
                             'download_link' => $path.$filename.'.'.$file->getClientOriginalExtension(),
                             'original_name' => $file->getClientOriginalName(),
