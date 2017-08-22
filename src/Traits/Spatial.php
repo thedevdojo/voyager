@@ -32,7 +32,7 @@ trait Spatial
 
         if (!empty($this->spatial)) {
             foreach ($this->spatial as $column) {
-                $clear = trim(preg_replace('/[a-zA-Z\(\)]/', '', $this->$column));
+                $clear = trim(preg_replace('/[a-zA-Z\(\)]/', '', $this->getLocation($column)));
                 if (!empty($clear)) {
                     foreach (explode(',', $clear) as $point) {
                         list($lat, $lng) = explode(' ', $point);
