@@ -975,7 +975,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($formBuilderDataType, 'data_type_id');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'number',
+                'type'         => 'select_dropdown',
                 'display_name' => 'Data Type',
                 'required'     => 1,
                 'browse'       => 1,
