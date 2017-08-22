@@ -47,13 +47,18 @@ class ControllersCommand extends Command
 
         parent::__construct();
     }
+    
+    public function fire()
+    {
+        return $this->handle();
+    }
 
     /**
      * Execute the console command.
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         $stub = $this->getStub();
         $files = $this->filesystem->files(base_path('vendor/tcg/voyager/src/Http/Controllers'));
