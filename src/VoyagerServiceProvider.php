@@ -16,6 +16,7 @@ use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
+use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,7 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(WidgetServiceProvider::class);
+        $this->app->register(VoyagerHooksServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
