@@ -50,7 +50,7 @@ class InstallCommand extends Command
 
         return 'composer';
     }
-    
+
     public function fire(Filesystem $filesystem)
     {
         return $this->handle($filesystem);
