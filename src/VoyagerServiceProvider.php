@@ -11,12 +11,12 @@ use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
+use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
-use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
