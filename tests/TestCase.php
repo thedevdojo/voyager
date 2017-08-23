@@ -102,7 +102,7 @@ class TestCase extends OrchestraTestCase
             require __DIR__.'/../publishable/config/voyager.php'
         );
 
-        $this->registerGates();
+        app(VoyagerServiceProvider::class, ['app' => $this->app])->registerGates();
     }
 
     public function disableExceptionHandling()
@@ -145,24 +145,6 @@ class TestCase extends OrchestraTestCase
         }
 
         return $this->assertSee($text);
-    }
-
-    private function registerGates()
-    {
-        if (Schema::hasTable('data_types')) {
-            $dataType = VoyagerFacade::model('DataType');
-            $dataTypes = $dataType->get();
-
-            foreach ($dataTypes as $dataType) {
-                $policyClass = BasePolicy::class;
-                if (isset($dataType->policy_name) && $dataType->policy_name !== ''
-                    && class_exists($dataType->policy_name)) {
-                    $policyClass = $dataType->policy_name;
-                }
-
-                Gate::policy($dataType->model_name, $policyClass);
-            }
-        }
     }
 }
 
