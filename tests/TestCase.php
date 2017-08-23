@@ -6,9 +6,13 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
+use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\VoyagerServiceProvider;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class TestCase extends OrchestraTestCase
 {
@@ -97,6 +101,8 @@ class TestCase extends OrchestraTestCase
             'voyager',
             require __DIR__.'/../publishable/config/voyager.php'
         );
+
+        $this->registerGates();
     }
 
     public function disableExceptionHandling()
@@ -139,6 +145,24 @@ class TestCase extends OrchestraTestCase
         }
 
         return $this->assertSee($text);
+    }
+
+    private function registerGates()
+    {
+        if (Schema::hasTable('data_types')) {
+            $dataType = VoyagerFacade::model('DataType');
+            $dataTypes = $dataType->get();
+
+            foreach ($dataTypes as $dataType) {
+                $policyClass = BasePolicy::class;
+                if (isset($dataType->policy_name) && $dataType->policy_name !== ''
+                    && class_exists($dataType->policy_name)) {
+                    $policyClass = $dataType->policy_name;
+                }
+
+                Gate::policy($dataType->model_name, $policyClass);
+            }
+        }
     }
 }
 

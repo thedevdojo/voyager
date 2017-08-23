@@ -291,7 +291,7 @@ class VoyagerBreadController extends Controller
         // Check permission
         $model = app($dataType->model_name);
         $model = $model::where('id', $id)->get();
-        $this->authorize('delete', $model);
+        $this->authorize('delete', app($dataType->model_name));
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
