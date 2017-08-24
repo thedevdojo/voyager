@@ -8,7 +8,7 @@ use TCG\Voyager\Models\DataType;
 
 trait BreadRelationshipParser
 {
-    protected $patchId;
+    protected $relation_field = [];
 
     /**
      * Build the relationships array for the model's eager load.
@@ -27,20 +27,15 @@ trait BreadRelationshipParser
                 $relation = $details->relationship;
                 if (isset($relation->method)) {
                     $method = $relation->method;
-                    $this->patchId[$method] = true;
+                    $this->relation_field[$method] = $item->field;
                 } else {
                     $method = camel_case($item->field);
-                    $this->patchId[$method] = false;
-                }
-
-                if (strpos($relation->key, '.') > 0) {
-                    $this->patchId[$method] = false;
                 }
 
                 $relationships[$method] = function ($query) use ($relation) {
                     // select only what we need
-                    if (isset($relation->selectRaw)) {
-                        $query->selectRaw($relation->selectRaw);
+                    if (isset($relation->method)) {
+                        return $query;
                     } else {
                         $query->select($relation->key, $relation->label);
                     }
@@ -95,8 +90,8 @@ trait BreadRelationshipParser
 
         if (!empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
-                if ($this->patchId[$field]) {
-                    $field = snake_case($field).'_id';
+                if (isset($this->relation_field[$field])) {
+                    $field = $this->relation_field[$field];
                 } else {
                     $field = snake_case($field);
                 }
