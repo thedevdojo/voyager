@@ -107,7 +107,7 @@ trait Translatable
      */
     public function translate($language = null, $fallback = true)
     {
-        if (! $this->relationLoaded('translations')) {
+        if (!$this->relationLoaded('translations')) {
             $this->load('translations');
         }
 
