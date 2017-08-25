@@ -44,12 +44,10 @@ abstract class Controller extends BaseController
                         ? $data->prepareTranslations($request)
                         : [];
 
-
         foreach ($rows as $row) {
-
             $options = json_decode($row->details);
 
-            if($row->type == 'relationship'){
+            if ($row->type == 'relationship') {
                 $row->field = @$options->column;
             }
 
@@ -436,11 +434,10 @@ abstract class Controller extends BaseController
     //             //     }
     //             // }
     //             // $content = $newContent;
-                
+
     //                 return [1];
 
     //             break;
-
 
     //         case 'hasMany':
 
@@ -451,8 +448,6 @@ abstract class Controller extends BaseController
     //     }
 
     //     return $content;
-        
-            
-    // }
 
+    // }
 }

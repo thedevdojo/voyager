@@ -59,7 +59,8 @@ class DataType extends Model
         return $this->rows()->where('delete', 1);
     }
 
-    public function lastRow(){
+    public function lastRow()
+    {
         return $this->hasMany(Voyager::modelClass('DataRow'))->orderBy('order', 'DESC')->first();
     }
 
@@ -151,12 +152,12 @@ class DataType extends Model
         return $fields;
     }
 
-    public function getRelationships($requestData, &$fields){
-        
-        if(isset($requestData['relationships'])){
+    public function getRelationships($requestData, &$fields)
+    {
+        if (isset($requestData['relationships'])) {
             $relationships = $requestData['relationships'];
-            if(count($relationships) > 0){
-                foreach($relationships as $index => $relationship){
+            if (count($relationships) > 0) {
+                foreach ($relationships as $index => $relationship) {
                     // Push the relationship on the allowed fields
                     array_push($fields, $relationship);
 
@@ -178,7 +179,6 @@ class DataType extends Model
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
-
                 }
             }
         }
@@ -213,11 +213,10 @@ class DataType extends Model
 
     public function extraFields()
     {
-        
         if (empty(trim($this->model_name))) {
             return [];
         }
-        
+
         $model = app($this->model_name);
         if (method_exists($model, 'adminFields')) {
             return $model->adminFields();

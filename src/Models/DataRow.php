@@ -22,8 +22,10 @@ class DataRow extends Model
         return '__first__';
     }
 
-    public function relationshipField(){
+    public function relationshipField()
+    {
         $options = json_decode($this->details);
-    	return @$options->column;
+
+        return @$options->column;
     }
 }
