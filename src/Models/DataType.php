@@ -59,7 +59,8 @@ class DataType extends Model
         return $this->rows()->where('delete', 1);
     }
 
-    public function lastRow(){
+    public function lastRow()
+    {
         return $this->hasMany(Voyager::modelClass('DataRow'))->orderBy('order', 'DESC')->first();
     }
 
@@ -154,29 +155,28 @@ class DataType extends Model
         return $fields;
     }
 
-    public function getRelationships($requestData, &$fields){
-        
-        if(isset($requestData['relationships'])){
+    public function getRelationships($requestData, &$fields)
+    {
+        if (isset($requestData['relationships'])) {
             $relationships = $requestData['relationships'];
-            if(count($relationships) > 0){
-                foreach($relationships as $index => $relationship){
+            if (count($relationships) > 0) {
+                foreach ($relationships as $index => $relationship) {
                     // Push the relationship on the allowed fields
                     array_push($fields, $relationship);
 
                     // Build the relationship details
                     $relationshipDetails = [
-                        'model' => $requestData['relationship_model_' . $relationship],
-                        'table' => $requestData['relationship_table_' . $relationship],
-                        'type' => $requestData['relationship_type_' . $relationship],
-                        'column' => $requestData['relationship_column_' . $relationship],
-                        'key' => $requestData['relationship_key_' . $relationship],
-                        'label' => $requestData['relationship_label_' . $relationship],
-                        'pivot_table' => $requestData['relationship_pivot_table_' . $relationship],
-                        'pivot' => $requestData['relationship_pivot_' . $relationship]
+                        'model'       => $requestData['relationship_model_'.$relationship],
+                        'table'       => $requestData['relationship_table_'.$relationship],
+                        'type'        => $requestData['relationship_type_'.$relationship],
+                        'column'      => $requestData['relationship_column_'.$relationship],
+                        'key'         => $requestData['relationship_key_'.$relationship],
+                        'label'       => $requestData['relationship_label_'.$relationship],
+                        'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
+                        'pivot'       => $requestData['relationship_pivot_'.$relationship],
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
-
                 }
             }
         }
@@ -211,11 +211,10 @@ class DataType extends Model
 
     public function extraFields()
     {
-        
         if (empty(trim($this->model_name))) {
             return [];
         }
-        
+
         $model = app($this->model_name);
         if (method_exists($model, 'adminFields')) {
             return $model->adminFields();
