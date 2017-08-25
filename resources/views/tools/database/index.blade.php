@@ -45,6 +45,10 @@
                         <td>
                             <div class="bread_actions">
                             @if($table->dataTypeId)
+                                <a href="{{ route('voyager.' . $table->name . '.index') }}"
+                                   class="btn-sm btn-warning browse_bread">
+                                    <i class="voyager-plus"></i> Browse BREAD
+                                </a>
                                 <a href="{{ route('voyager.database.bread.edit', $table->name) }}"
                                    class="btn-sm btn-default edit">
                                    {{ __('voyager.database.edit_bread') }}

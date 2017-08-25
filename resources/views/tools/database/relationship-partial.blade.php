@@ -1,29 +1,29 @@
 @php $relationshipDetails = json_decode($relationship['details']); @endphp
 <div class="row row-dd row-dd-relationship">
     <div class="col-xs-2">
-
         <h4><i class="voyager-heart"></i><strong>{{ $relationship->display_name }}</strong></h4>
         <div class="handler voyager-handle"></div>
-        <strong>{{ __('voyager.database.type') }}:</strong> <span>Relationship</span>
-        <input class="row_order" type="hidden" value="3">
+        <strong>{{ __('voyager.database.type') }}:</strong> <span>relationship</span>
+        <div class="handler voyager-handle"></div>
+        <input class="row_order" type="hidden" value="{{ $relationship['order'] }}" name="field_order_{{ $relationship['field'] }}">
     </div>
     <div class="col-xs-2">
-        <input type="checkbox" name="relationship_browse[]" @if(isset($relationship->browse) && $relationship->browse){{ 'checked="checked"' }}@elseif(!isset($relationship->browse)){{ 'checked="checked"' }}@endif>
-        <label for="relationship_browse[]"> Browse</label><br>
-        <input type="checkbox" name="relationship_read[]" @if(isset($relationship->read) && $relationship->read){{ 'checked="checked"' }}@elseif(!isset($relationship->read)){{ 'checked="checked"' }}@endif>
-        <label for="relationship_read[]"> Read</label><br>
-        <input type="checkbox" name="relationship_edit[]" @if(isset($relationship->edit) && $relationship->edit){{ 'checked="checked"' }}@elseif(!isset($relationship->edit)){{ 'checked="checked"' }}@endif>
-        <label for="relationship_edit[]"> Edit</label><br>
-        <input type="checkbox" name="relationship_add[]" @if(isset($relationship->add) && $relationship->add){{ 'checked="checked"' }}@elseif(!isset($relationship->add)){{ 'checked="checked"' }}@endif>
-        <label for="relationship_add[]"> Add</label><br>
-        <input type="checkbox" name="relationship_delete[]" @if(isset($relationship->delete) && $relationship->delete){{ 'checked="checked"' }}@elseif(!isset($relationship->delete)){{ 'checked="checked"' }}@endif>
-        <label for="relationship_delete[]"> Delete</label><br>
+        <input type="checkbox" name="field_browse_{{ $relationship['field'] }}" @if(isset($relationship->browse) && $relationship->browse){{ 'checked="checked"' }}@elseif(!isset($relationship->browse)){{ 'checked="checked"' }}@endif>
+        <label for="field_browse_{{ $relationship['field'] }}"> Browse</label><br>
+        <input type="checkbox" name="field_read_{{ $relationship['field'] }}" @if(isset($relationship->read) && $relationship->read){{ 'checked="checked"' }}@elseif(!isset($relationship->read)){{ 'checked="checked"' }}@endif>
+        <label for="field_read_{{ $relationship['field'] }}"> Read</label><br>
+        <input type="checkbox" name="field_edit_{{ $relationship['field'] }}" @if(isset($relationship->edit) && $relationship->edit){{ 'checked="checked"' }}@elseif(!isset($relationship->edit)){{ 'checked="checked"' }}@endif>
+        <label for="field_edit_{{ $relationship['field'] }}"> Edit</label><br>
+        <input type="checkbox" name="field_add_{{ $relationship['field'] }}" @if(isset($relationship->add) && $relationship->add){{ 'checked="checked"' }}@elseif(!isset($relationship->add)){{ 'checked="checked"' }}@endif>
+        <label for="field_add_{{ $relationship['field'] }}"> Add</label><br>
+        <input type="checkbox" name="field_delete_{{ $relationship['field'] }}" @if(isset($relationship->delete) && $relationship->delete){{ 'checked="checked"' }}@elseif(!isset($relationship->delete)){{ 'checked="checked"' }}@endif>
+        <label for="field_delete_{{ $relationship['field'] }}"> Delete</label><br>
     </div>
     <div class="col-xs-2">
         <p>Relationship</p>
     </div>
     <div class="col-xs-2">
-        <input type="text" name="relationship_display_name[]" class="form-control relationship_display_name" value="{{ $relationship['display_name'] }}">
+        <input type="text" name="field_display_name_{{ $relationship['field'] }}" class="form-control relationship_display_name" value="{{ $relationship['display_name'] }}">
     </div>
     <div class="col-xs-4">
         <div class="voyager-relationship-details-btn">
@@ -31,36 +31,36 @@
         </div>
     </div>
     <div class="col-md-12 voyager-relationship-details">
-        <div class="delete_relationship"><i class="voyager-trash"></i> Delete</div>
+        <a href="{{ route('voyager.database.bread.delete_relationship', $relationship['id']) }}" class="delete_relationship"><i class="voyager-trash"></i> Delete</a>
         <div class="relationship_details_content">
-            <p class="relationship_table_select">{{ str_singular(ucfirst($table)) }}
-                <select name="relationship_field[]">
-                @foreach($fieldOptions as $data)
-                    <option value="{{ $data['field'] }}_relationship" @if($relationship->relationshipField() == $data['field']){{ 'selected="selected"' }}@endif>{{ $data['field'] }}</option>
-                @endforeach
-                <option value="__pivot__">PIVOT</option>
-            </select>
-            </p>
-            <select class="relationship_type select2" name="relationship_type[]">
+            <p class="relationship_table_select">{{ str_singular(ucfirst($table)) }}</p>
+            <select class="relationship_type select2" name="relationship_type_{{ $relationship['field'] }}">
                 <option value="hasOne" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasOne'){{ 'selected="selected"' }}@endif>Has One</option>
                 <option value="hasMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasMany'){{ 'selected="selected"' }}@endif>Has Many</option>
                 <option value="belongsTo" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'belongsTo'){{ 'selected="selected"' }}@endif>Belongs To</option>
                 <option value="belongsToMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'belongsToMany'){{ 'selected="selected"' }}@endif>Belongs To Many</option>
             </select>
-            <select class="relationship_table select2" name="relationship_table[]">
+            <select class="relationship_table select2" name="relationship_table_{{ $relationship['field'] }}">
                 @foreach($tables as $table)
                     <option value="{{ $table }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $table){{ 'selected="selected"' }}@endif>{{ ucfirst($table) }}</option>
                 @endforeach
             </select>
-            <span><input type="text" class="form-control" name="relationship_model[]" placeholder="Model Namespace (ex. App\Category)" value="@if(isset($relationshipDetails->model)){{ $relationshipDetails->model }}@endif"></span>
+            <span><input type="text" class="form-control" name="relationship_model_{{ $relationship['field'] }}" placeholder="Model Namespace (ex. App\Category)" value="@if(isset($relationshipDetails->model)){{ $relationshipDetails->model }}@endif"></span>
         </div>
         <div class="relationship_details_content margin_top">
             <label>Display the <span class="label_table_name"></span></label>
-            <select name="relationship_label[]" class="rowDrop select2" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="@if(isset($relationshipDetails->label)){{ $relationshipDetails->label }}@endif">
+            <select name="relationship_label_{{ $relationship['field'] }}" class="rowDrop select2" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="@if(isset($relationshipDetails->label)){{ $relationshipDetails->label }}@endif">
             </select>
             <label>Store the <span class="label_table_name"></span></label>
-            <select name="relationship_key[]" class="rowDrop select2" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="@if(isset($relationshipDetails->key)){{ $relationshipDetails->key }}@endif">
+            <select name="relationship_key_{{ $relationship['field'] }}" class="rowDrop select2" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="@if(isset($relationshipDetails->key)){{ $relationshipDetails->key }}@endif">
             </select>
         </div>
     </div>
+    <input type="hidden" value="0" name="field_required_{{ $relationship['field'] }}" checked="checked">
+    <input type="hidden" name="field_input_type_{{ $relationship['field'] }}" value="relationship">
+    <input type="hidden" name="field_{{ $relationship['field'] }}" value="{{ $relationship['field'] }}">
+    <input type="hidden" name="relationship_column_{{ $relationship['field'] }}" value="@if(isset($relationshipDetails->column)){{ $relationshipDetails->column }}@endif">
+    <input type="hidden" name="relationship_pivot_table_{{ $relationship['field'] }}" value="@if(isset($relationshipDetails->pivot_table)){{ $relationshipDetails->pivot_table }}@endif">
+    <input type="hidden" name="relationship_pivot_{{ $relationship['field'] }}" value="@if(isset($relationshipDetails->pivot) && intval($relationshipDetails->pivot)){{ '1' }}@else{{ '0' }}@endif">
+    <input type="hidden" name="relationships[]" value="{{ $relationship['field'] }}">
 </div>

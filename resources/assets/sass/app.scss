@@ -1594,19 +1594,19 @@ table.dataTable.no-footer{
     }
     .delete_relationship{
         position: absolute;
-        right: -1px;
-        top: -1px;
-        padding: 6px 10px;
-        background: #ff0000;
-        border-top-right-radius: 3px;
-        border-bottom-left-radius: 4px;
-        color: #ffffff;
+        right: 0px;
+        bottom: 0px;
+        padding: 6px 28px 6px 10px;
+        background: red;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 0px;
+        color: #fff;
         font-size: 10px;
-        font-weight: bold;
-        padding-right: 28px;
-        cursor:pointer;
-        transition:opacity 0.1s linear;
-        opacity:0.7;
+        font-weight: 700;
+        cursor: pointer;
+        transition: opacity .1s linear;
+        opacity: .7;
+        z-index:2;
         i{
             position: absolute;
             right: 4px;
@@ -1634,7 +1634,8 @@ table.dataTable.no-footer{
         float: right;
         position: relative;
         padding-left: 30px;
-        background:all 0.2s ease;
+        background:#f9f9fb;
+        transition:all 0.2s ease;
         cursor:pointer;
         i{
             top: 8px;
@@ -1673,10 +1674,12 @@ table.dataTable.no-footer{
     }
     .voyager-relationship-details{
         display: none;
-        background: #f1f1f5;
+        background: #f5f5f7;
         margin-bottom: 0px;
         height:auto;
         padding:15px;
+        padding-bottom:45px;
+        border-top:1px solid #efeff2;
     }
     .relationship_details_content{
         &.margin_top{
@@ -3101,7 +3104,19 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 
 .voyager .modal.modal-relationships{
     border:0px;
-    
+    h5{
+        font-size: 42px;
+        margin-top: 0px;
+        margin-bottom:20px;
+        text-align:center;
+    }
+    h4{
+        i{
+            position: relative;
+            top: 2px;
+            margin-right: 5px;
+        }
+    }
     label{
         height: 38px;
         background: #f1f1f1;
@@ -3127,6 +3142,9 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     }
     .modal-body{
       background:#ffffff;
+      .col-md-12{
+        margin-bottom:0px;
+      }
     }
     .modal-footer{
         background: #f7f7f9;
@@ -3137,9 +3155,30 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
         background-color: #f9f9fc;
         border: 1px solid #eaeaea;
     }
+    p.relationship-warn{
+        text-align:center;
+    }
     
     .relationship_details{
         display:flex;
+        &.relationshipPivot{
+            display:none;
+        }
+        .hasOneMany.flexed, .belongsTo.flexed{
+          display:flex;
+        }
+        .hasOneMany, .belongsTo{
+          width:100%;
+          display:none;
+          label{
+            span{
+              color:#444;
+            }
+          }
+        }
+        &.col-md-12{
+            margin-bottom:20px;
+        }
         p{
             float: left;
             padding: 6px 10px;
@@ -3180,9 +3219,8 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
                 }
             }
         }
-        span{
-            flex:1;
-            display:block;
+        span.label_table_name{
+            display:inline-block;
         }
         .relationship_type + span{
             font-weight:bold;
@@ -3233,18 +3271,37 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
             width:100%;
             border: 0px;
         }
+        .select2-container--default .select2-selection--single{
+            border:1px solid #f1f1f1;
+        }
+        .relationship_key{
+          display:none;
+        }
         .well{
             position:relative;
             padding-top:55px;
             margin-bottom:5px;
             background: none;
             border: 1px solid #f1f1f1;
-        }
+        }   
+    }
+    
+}
+
+.btn-new-relationship{
+    background: #F2435C;
+    border: 1px solid #F2435C;
+    color: #fff;
+    &:hover{
+        color:#fff;
+    }
+    i{
+        position: relative;
+        top: 2px;
     }
 }
 
 .relationship-btn-container{
-    text-align:center;
     .btn{
         i{
             position:relative;
@@ -5105,6 +5162,10 @@ float: left;
 .database-tables .name{
   float:left;
   position:relative;
+}
+
+.database-tables .browse_bread{
+    margin-right:10px;
 }
 
 .database-tables .name a{

@@ -22,6 +22,7 @@ class DataRow extends Model
     }
 
     public function relationshipField(){
-    	return rtrim($this->field, '_relationship');
+        $options = json_decode($this->details);
+    	return @$options->column;
     }
 }

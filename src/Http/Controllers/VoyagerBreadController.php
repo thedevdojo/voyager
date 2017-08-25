@@ -237,6 +237,8 @@ class VoyagerBreadController extends Controller
             $dataType->addRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
         }
 
+        $this->removeRelationshipField($dataType, 'add');
+
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 

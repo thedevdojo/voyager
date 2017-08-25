@@ -188,7 +188,7 @@
                                             <input type="hidden" value="0" name="field_required_{{ $data['field'] }}">
                                         @endif
                                         <div class="handler voyager-handle"></div>
-                                        <input class="row_order" type="hidden" value="{{ $r_order }}" name="field_order_{{ $data['field'] }}">
+                                        <input class="row_order" type="hidden" value="@if(isset($dataRow->order)){{ $dataRow->order }}@else{{ $r_order }}@endif" name="field_order_{{ $data['field'] }}">
                                     </div>
                                     <div class="col-xs-2">
                                         <input type="checkbox"
@@ -252,31 +252,28 @@
 
                             @endforeach
                             
-                            @foreach($dataTypeRelationships as $relationship)
-                                @include('voyager::tools.database.relationship-partial', $relationship)
-                            @endforeach
+                            @if(isset($dataTypeRelationships))
+                                @foreach($dataTypeRelationships as $relationship)
+                                    @include('voyager::tools.database.relationship-partial', $relationship)
+                                @endforeach
+                            @endif
                             
                             </div>
                             
                         </div><!-- .panel-body -->
                         <div class="panel-footer">
-                             <div class="btn btn-default btn-new-relationship"><i class="voyager-heart"></i> <span>Create a Relationship</span></div>
+                             <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>Create a Relationship</span></div>
                         </div>
                     </div><!-- .panel -->
-
-                    @include('voyager::tools.database.relationship-new-modal')
-                    
-
                     
                     <button type="submit" class="btn pull-right btn-primary">{{ __('voyager.generic.submit') }}</button>
-                    
 
                 </form>
             </div><!-- .col-md-12 -->
         </div><!-- .row -->
     </div><!-- .page-content -->
 
-
+@include('voyager::tools.database.relationship-new-modal')
 
 @stop
 
@@ -393,8 +390,22 @@
                     for (var i = 0; i < _size; i++) {
                         $(_rows[i]).val(i+1);
                     }
+                },
+                create: function (event, ui) {
+                    sort();
                 }
             });
+        }
+
+        function sort() {
+            var sortableList = $('#bread-items');
+            var listitems = $('div.row.row-dd', sortableList);
+
+            listitems.sort(function (a, b) {
+                return (parseInt($(a).find('.row_order').val()) > parseInt($(b).find('.row_order').val()))  ? 1 : -1;
+            });
+            sortableList.append(listitems);
+
         }
 
         /********** Relationship functionality **********/
@@ -402,6 +413,26 @@
        $(function () {
             $('.rowDrop').each(function(){
                 populateRowsFromTable($(this));
+            });
+
+            $('.relationship_type').change(function(){
+                if($(this).val() == 'belongsTo'){
+                    $('.relationshipField').show();
+                    $('.relationshipPivot').hide();
+                    $('.relationship_key').show();
+                    $('.hasOneMany').removeClass('flexed');
+                    $('.belongsTo').addClass('flexed');
+                } else if($(this).val() == 'hasOne' || $(this).val() == 'hasMany'){
+                    $('.relationshipField').show();
+                    $('.relationshipPivot').hide();
+                    $('.relationship_key').hide();
+                    $('.hasOneMany').addClass('flexed');
+                    $('.belongsTo').removeClass('flexed');
+                } else {
+                    $('.relationshipField').hide();
+                    $('.relationshipPivot').css('display', 'flex');
+                    $('.relationship_key').hide();
+                }
             });
 
             $('.btn-new-relationship').click(function(){
@@ -465,9 +496,6 @@
             });
         }
 
-        function addNewRelationshipItem(){
-            $('#bread-items').prepend('<div class="row row-dd"><div class="col-xs-2"><h4><strong>body</strong></h4><i class="handler voyager-handle"></i><input class="row_order" type="hidden" value="3"></div></div>');
-        }
 
         /********** End Relationship Functionality **********/
     </script>
