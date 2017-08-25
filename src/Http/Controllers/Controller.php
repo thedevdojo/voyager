@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
-use TCG\Voyager\Http\Controllers\Traits\ImagesCrop;
 use TCG\Voyager\Traits\AlertsMessages;
 use Validator;
 
@@ -21,8 +20,7 @@ abstract class Controller extends BaseController
     use DispatchesJobs,
         ValidatesRequests,
         AuthorizesRequests,
-        AlertsMessages,
-        ImagesCrop;
+        AlertsMessages;
 
     public function getSlug(Request $request)
     {
@@ -90,7 +88,7 @@ abstract class Controller extends BaseController
                 }
 
                 if (isset($options->crop) && $request->input($row->field)) {
-                    $needImagesCropByСoordinates = true;
+                    $needCropPhotosByСoordinates = true;
                 }
             }
 
@@ -113,8 +111,8 @@ abstract class Controller extends BaseController
             $data->{$sync_data['row']}()->sync($sync_data['content']);
         }
 
-        if ($needImagesCropByСoordinates) {
-            $this->cropImages($request, $slug, $rows, $data);
+        if ($needCropPhotosByСoordinates) {
+            $data->cropPhotos($request, $slug, $rows, $data);
         }
 
         return $data;

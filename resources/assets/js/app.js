@@ -24,8 +24,9 @@ window.TinyMCE = window.tinymce = require('./tinymce');
 require('./multilingual');
 require('./voyager_tinymce');
 require('./voyager_ace_editor');
-require('./helpers.js');
-require('./load-remote.js');
+require('./helpers');
+require('./load-remote');
+window.Image = require('./crop');
 
 $(document).ready(function(){
 
@@ -146,13 +147,13 @@ $(document).ready(function(){
         $("body").css("cursor", "auto");
 
         $.each(d.errors, function(key, row){
-                                        //Scroll to first error
-                                        if (Object.keys(d.errors).indexOf(key) === 0) {
-                                            $('html, body').animate({
-                                                scrollTop: $("[name='"+key+"']").parent().offset().top
-                                                        - $('nav.navbar').height() + 'px'
-                                            }, 'fast');
-                                        }
+          //Scroll to first error
+          if (Object.keys(d.errors).indexOf(key) === 0) {
+              $('html, body').animate({
+                  scrollTop: $("[name='"+key+"']").parent().offset().top
+                          - $('nav.navbar').height() + 'px'
+              }, 'fast');
+          }
                                         
           $("[name='"+key+"']").parent().addClass("has-error");
           $("[name='"+key+"']").parent().append("<span class='help-block' style='color:#f96868'>"+row+"</span>")
