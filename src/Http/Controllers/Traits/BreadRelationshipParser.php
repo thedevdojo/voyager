@@ -10,8 +10,8 @@ trait BreadRelationshipParser
 {
     protected $patchId;
 
-
-    protected function removeRelationshipField(DataType $dataType, $bread_type = 'browse'){
+    protected function removeRelationshipField(DataType $dataType, $bread_type = 'browse')
+    {
         $forget_keys = [];
         foreach ($dataType->{$bread_type . 'Rows'} as $key => $row) {
             if($row->type == 'relationship'){
@@ -20,11 +20,10 @@ trait BreadRelationshipParser
                 $keyInCollection = key($dataType->{$bread_type . 'Rows'}->where('field', '=', $relationshipField)->toArray());
                 array_push($forget_keys, $keyInCollection);
             }
-
         }
 
-        foreach($forget_keys as $forget_key){
-            $dataType->{$bread_type . 'Rows'}->forget($forget_key);
+        foreach ($forget_keys as $forget_key) {
+            $dataType->{$bread_type.'Rows'}->forget($forget_key);
         }
     }
 

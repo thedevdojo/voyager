@@ -87,7 +87,7 @@ class DataType extends Model
 
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields(array_get($requestData, 'name'));
-                
+
                 //dd($requestData);
                 $requestData = $this->getRelationships($requestData, $fields);
                 //dd($relationships);
@@ -176,9 +176,11 @@ class DataType extends Model
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
+
                 }
             }
         }
+
         return $requestData;
     }
 
