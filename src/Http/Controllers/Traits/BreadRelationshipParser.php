@@ -13,11 +13,11 @@ trait BreadRelationshipParser
     protected function removeRelationshipField(DataType $dataType, $bread_type = 'browse')
     {
         $forget_keys = [];
-        foreach ($dataType->{$bread_type . 'Rows'} as $key => $row) {
-            if($row->type == 'relationship'){
+        foreach ($dataType->{$bread_type.'Rows'} as $key => $row) {
+            if ($row->type == 'relationship') {
                 $options = json_decode($row->details);
                 $relationshipField = @$options->column;
-                $keyInCollection = key($dataType->{$bread_type . 'Rows'}->where('field', '=', $relationshipField)->toArray());
+                $keyInCollection = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relationshipField)->toArray());
                 array_push($forget_keys, $keyInCollection);
             }
         }
