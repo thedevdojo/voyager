@@ -46,6 +46,9 @@ class VoyagerBreadController extends Controller
 
             $relationships = $this->getRelationships($dataType);
 
+            // If a column has a relationship associated with it, we do not want to show that field
+            $this->removeRelationshipField($dataType, 'browse');
+
             if ($search->value && $search->key && $search->filter) {
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
@@ -111,6 +114,9 @@ class VoyagerBreadController extends Controller
         //Replace relationships' keys for labels and create READ links if a slug is provided.
         $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
+        // If a column has a relationship associated with it, we do not want to show that field
+        $this->removeRelationshipField($dataType, 'read');
+
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
@@ -158,6 +164,7 @@ class VoyagerBreadController extends Controller
             $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
         }
 
+        // If a column has a relationship associated with it, we do not want to show that field
         $this->removeRelationshipField($dataType, 'edit');
 
         // Check if BREAD is Translatable
@@ -237,6 +244,7 @@ class VoyagerBreadController extends Controller
             $dataType->addRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
         }
 
+        // If a column has a relationship associated with it, we do not want to show that field
         $this->removeRelationshipField($dataType, 'add');
 
         // Check if BREAD is Translatable

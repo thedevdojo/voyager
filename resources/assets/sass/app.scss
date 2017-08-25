@@ -1686,6 +1686,24 @@ table.dataTable.no-footer{
           margin-top:20px;
         }
         display:flex;
+        &.hasOneMany.flexed, &.belongsTo.flexed{
+          display:flex;
+        }
+        &.hasOneMany, &.belongsTo{
+          width:100%;
+          display:none;
+          label{
+            span{
+              color:#444;
+            }
+          }
+        }
+        &.relationshipPivot{
+            display:none;
+            &.visible{
+              display:flex;
+            }
+        }
         label{
             height: 38px;
             background: #f1f1f1;
@@ -1754,6 +1772,9 @@ table.dataTable.no-footer{
         select{
             border: 1px solid #f1f1f1;
             margin-left: 10px;
+        }
+        .relationship_key{
+          display:none;
         }
         .select2{
             flex:1;

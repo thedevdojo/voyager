@@ -417,21 +417,21 @@
 
             $('.relationship_type').change(function(){
                 if($(this).val() == 'belongsTo'){
-                    $('.relationshipField').show();
-                    $('.relationshipPivot').hide();
-                    $('.relationship_key').show();
-                    $('.hasOneMany').removeClass('flexed');
-                    $('.belongsTo').addClass('flexed');
+                    $(this).parent().parent().find('.relationshipField').show();
+                    $(this).parent().parent().find('.relationshipPivot').hide();
+                    $(this).parent().parent().find('.relationship_key').show();
+                    $(this).parent().parent().find('.hasOneMany').removeClass('flexed');
+                    $(this).parent().parent().find('.belongsTo').addClass('flexed');
                 } else if($(this).val() == 'hasOne' || $(this).val() == 'hasMany'){
-                    $('.relationshipField').show();
-                    $('.relationshipPivot').hide();
-                    $('.relationship_key').hide();
-                    $('.hasOneMany').addClass('flexed');
-                    $('.belongsTo').removeClass('flexed');
+                    $(this).parent().parent().find('.relationshipField').show();
+                    $(this).parent().parent().find('.relationshipPivot').hide();
+                    $(this).parent().parent().find('.relationship_key').hide();
+                    $(this).parent().parent().find('.hasOneMany').addClass('flexed');
+                    $(this).parent().parent().find('.belongsTo').removeClass('flexed');
                 } else {
-                    $('.relationshipField').hide();
-                    $('.relationshipPivot').css('display', 'flex');
-                    $('.relationship_key').hide();
+                    $(this).parent().parent().find('.relationshipField').hide();
+                    $(this).parent().parent().find('.relationshipPivot').css('display', 'flex');
+                    $(this).parent().parent().find('.relationship_key').hide();
                 }
             });
 

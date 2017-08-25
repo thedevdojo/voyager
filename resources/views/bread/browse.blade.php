@@ -61,6 +61,8 @@
                                             <?php $options = json_decode($row->details); ?>
                                             @if($row->type == 'image')
                                                 <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                            @elseif($row->type == 'relationship')
+                                                @include('voyager::formfields.relationship', ['view' => 'browse'])
                                             @elseif($row->type == 'select_multiple')
                                                 @if(property_exists($options, 'relationship'))
 

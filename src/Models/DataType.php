@@ -88,10 +88,7 @@ class DataType extends Model
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields(array_get($requestData, 'name'));
 
-                //dd($requestData);
                 $requestData = $this->getRelationships($requestData, $fields);
-                //dd($relationships);
-                //dd($requestData);
 
                 foreach ($fields as $field) {
                     $dataRow = $this->rows()->firstOrNew(['field' => $field]);
@@ -163,16 +160,21 @@ class DataType extends Model
                     // Push the relationship on the allowed fields
                     array_push($fields, $relationship);
 
+                    $relationship_column = $requestData['relationship_column_belongs_to_' . $relationship];
+                    if($requestData['relationship_type_' . $relationship] == 'hasOne' || $requestData['relationship_type_' . $relationship] == 'hasMany'){
+                        $relationship_column = $requestData['relationship_column_' . $relationship];
+                    }
+
                     // Build the relationship details
                     $relationshipDetails = [
                         'model' => $requestData['relationship_model_' . $relationship],
                         'table' => $requestData['relationship_table_' . $relationship],
                         'type' => $requestData['relationship_type_' . $relationship],
-                        'column' => $requestData['relationship_column_' . $relationship],
+                        'column' => $relationship_column,
                         'key' => $requestData['relationship_key_' . $relationship],
                         'label' => $requestData['relationship_label_' . $relationship],
                         'pivot_table' => $requestData['relationship_pivot_table_' . $relationship],
-                        'pivot' => $requestData['relationship_pivot_' . $relationship]
+                        'pivot' => ($requestData['relationship_type_' . $relationship] == 'belongsToMany') ? '1' : '0'
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
