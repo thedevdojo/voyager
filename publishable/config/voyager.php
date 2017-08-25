@@ -261,4 +261,19 @@ return [
         'quality'     => 80,
         'crop_folder' => 'crop',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Formfields Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify formfields settings
+    |
+    */
+
+    'formfields' => [
+        'textarea' => [
+            'rows' => 4,
+        ]
+    ]
 ];
