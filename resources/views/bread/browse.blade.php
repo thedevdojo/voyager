@@ -60,7 +60,7 @@
                                         <td>
                                             <?php $options = json_decode($row->details); ?>
                                             @if($row->type == 'image')
-                                                <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                                <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                             @elseif($row->type == 'relationship')
                                                 @include('voyager::formfields.relationship', ['view' => 'browse'])
                                             @elseif($row->type == 'select_multiple')
@@ -138,14 +138,13 @@
                                         </td>
                                     @endforeach
                                     <td class="no-sort no-click" id="bread-actions">
-                                        @php $primaryKey = isset($data->primaryKey) ? $data->primaryKey : $data->id @endphp
                                         @if (Voyager::can('delete_'.$dataType->name))
                                             <a
                                                 href="javascript:;"
                                                 title="{{ __('voyager.generic.delete') }}"
                                                 class="btn btn-sm btn-danger pull-right delete"
-                                                data-id="{{ $primaryKey }}"
-                                                id="delete-{{ $primaryKey }}"
+                                                data-id="{{ $data->{$data->getKeyName()} }}"
+                                                id="delete-{{ $data->{$data->getKeyName()} }}"
                                             >
                                                 <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">
                                                     {{ __('voyager.generic.delete') }}
@@ -153,12 +152,12 @@
                                             </a>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $primaryKey) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
                                             </a>
                                         @endif
                                         @if (Voyager::can('read_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $primaryKey) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
                                                 <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
                                             </a>
                                         @endif

@@ -68,16 +68,16 @@ abstract class Controller extends BaseController
             if (is_null($content)) {
 
                 // If the image upload is null and it has a current image keep the current image
-                if ($row->field == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                if ($row->type == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
 
                 // If the file upload is null and it has a current file keep the current file
-                if ($row->field == 'file') {
+                if ($row->type == 'file') {
                     $content = $data->{$row->field};
                 }
 
-                if ($row->field == 'password') {
+                if ($row->type == 'password') {
                     $content = $data->{$row->field};
                 }
             }
@@ -161,11 +161,13 @@ abstract class Controller extends BaseController
             /********** FILE TYPE **********/
             case 'file':
                 if ($files = $request->file($row->field)) {
+                    if (!is_array($files)) {
+                        $files = [$files];
+                    }
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('F').date('Y').'/';
-                        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
                         $file->storeAs(
                             $path,
                             $filename.'.'.$file->getClientOriginalExtension(),

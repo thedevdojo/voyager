@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@yield('page_title', setting('admin_title') . " - " . setting('admin_description'))</title>
+    <title>@yield('page_title', setting('admin.title') . " - " . setting('admin.description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
 
@@ -11,7 +11,7 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
 
-    
+
 
     <!-- App CSS -->
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
@@ -45,7 +45,7 @@
 <body class="voyager @if(isset($dataType) && isset($dataType->slug)){{ $dataType->slug }}@endif">
 
 <div id="voyager-loader">
-    <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
+    <?php $admin_loader_img = Voyager::setting('admin.loader', ''); ?>
     @if($admin_loader_img == '')
         <img src="{{ voyager_asset('images/logo-icon.png') }}" alt="Voyager Loader">
     @else
@@ -88,9 +88,9 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
                 containerTransition = appContainer.style.transition;
 
             sidebar.style.WebkitTransition = sidebar.style.MozTransition = sidebar.style.transition =
-            appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition = 
+            appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition =
             navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = 'none';
-            
+
             if (window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
                 appContainer.className += ' expanded';
                 loader.style.left = (sidebar.clientWidth/2)+'px';
@@ -115,7 +115,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     @endif
 
     @if(Session::has('message'))
-    
+
     // TODO: change Controllers to use AlertsMessages trait... then remove this
     var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
     var alertMessage = {!! json_encode(Session::get('message')) !!};

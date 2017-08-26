@@ -55,7 +55,7 @@
                                     @foreach($dataType->browseRows as $row)
                                     <td>
                                         @if($row->type == 'image')
-                                            <img src="@if( strpos($data->{$row->field}, 'http://') === false && strpos($data->{$row->field}, 'https://') === false){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                            <img src="@if(!filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                         @else
                                             @if(is_field_translatable($data, $row))
                                                 @include('voyager::multilingual.input-hidden', [
@@ -68,19 +68,18 @@
                                     </td>
                                     @endforeach
                                     <td class="no-sort no-click">
-                                        @php $primaryKey = isset($data->primaryKey) ? $data->primaryKey : $data->id @endphp
                                         @if (Voyager::can('delete_'.$dataType->name))
-                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $primaryKey }}">
+                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
                                             </div>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $primaryKey) }}" class="btn-sm btn-primary pull-right edit">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" class="btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
                                             </a>
                                         @endif
                                         @if (Voyager::can('read_'.$dataType->name))
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $primaryKey) }}" class="btn-sm btn-warning pull-right">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" class="btn-sm btn-warning pull-right">
                                                 <i class="voyager-eye"></i> {{ __('voyager.generic.view') }}
                                             </a>
                                         @endif
