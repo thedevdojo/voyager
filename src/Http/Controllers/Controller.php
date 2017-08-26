@@ -383,11 +383,6 @@ abstract class Controller extends BaseController
 
             case 'relationship':
                     return $request->input($row->field);
-                    // $options = json_decode($row->details);
-                    // if($options->type == 'belongsToMany'){
-                    //     dd($request->input($row->field));
-                    // }
-                    // return $this->handleRelationshipContent( $row, $request->input($row->field) );
                 break;
 
             /********** ALL OTHER TEXT TYPE **********/
