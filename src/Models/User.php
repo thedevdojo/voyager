@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use TCG\Voyager\Traits\VoyagerUser;
 
-class User extends Authenticatable
+class User extends Authenticatable implements \TCG\Voyager\Interfaces\User
 {
     use VoyagerUser;
 
