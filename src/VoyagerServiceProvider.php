@@ -29,7 +29,7 @@ class VoyagerServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Setting::class => SettingPolicy::class
+        Setting::class => SettingPolicy::class,
     ];
 
     /**
@@ -95,7 +95,7 @@ class VoyagerServiceProvider extends ServiceProvider
         } else {
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
         }
-        
+
         $this->registerGates();
 
         $this->registerViewComposers();

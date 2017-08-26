@@ -19,5 +19,4 @@ class SettingPolicy extends BasePolicy
     {
         return Voyager::can('browse_settings');
     }
-
 }

@@ -6,13 +6,9 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Foundation\Exceptions\Handler;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
-use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\VoyagerServiceProvider;
-use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class TestCase extends OrchestraTestCase
 {

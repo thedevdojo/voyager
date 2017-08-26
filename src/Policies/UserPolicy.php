@@ -48,5 +48,4 @@ class UserPolicy extends BasePolicy
 
         return $current || $permission;
     }
-
 }

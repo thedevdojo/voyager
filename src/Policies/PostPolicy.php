@@ -69,5 +69,4 @@ class PostPolicy extends BasePolicy
 
         return $current || $permission;
     }
-
 }

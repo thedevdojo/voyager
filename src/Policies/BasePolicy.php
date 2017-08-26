@@ -89,5 +89,4 @@ class BasePolicy
 
         return Voyager::can('delete_'.$dataType->name);
     }
-
 }
