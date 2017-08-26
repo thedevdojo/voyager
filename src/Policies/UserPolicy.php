@@ -3,14 +3,14 @@
 namespace TCG\Voyager\Policies;
 
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\User;
+use TCG\Voyager\Contracts\User;
 
 class UserPolicy extends BasePolicy
 {
     /**
      * Determine if the given model can be viewed by the user.
      *
-     * @param \TCG\Voyager\Models\User $user
+     * @param \TCG\Voyager\Contracts\User $user
      * @param  $model
      *
      * @return bool
@@ -31,7 +31,7 @@ class UserPolicy extends BasePolicy
     /**
      * Determine if the given model can be edited by the user.
      *
-     * @param \TCG\Voyager\Models\User $user
+     * @param \TCG\Voyager\Contracts\User $user
      * @param  $model
      *
      * @return bool

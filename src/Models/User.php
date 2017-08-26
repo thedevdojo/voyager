@@ -5,8 +5,9 @@ namespace TCG\Voyager\Models;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use TCG\Voyager\Traits\VoyagerUser;
+use TCG\Voyager\Contracts\User as UserContract;
 
-class User extends Authenticatable implements \TCG\Voyager\Interfaces\User
+class User extends Authenticatable implements UserContract
 {
     use VoyagerUser;
 
