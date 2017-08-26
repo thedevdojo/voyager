@@ -37,22 +37,22 @@
                                     <td>{{$data->email}}</td>
                                     <td>{{ \Carbon\Carbon::parse($data->created_at)->format('F jS, Y h:i A') }}</td>
                                     <td>
-                                        <img src="@if( strpos($data->avatar, 'http://') === false && strpos($data->avatar, 'https://') === false){{ Voyager::image( $data->avatar ) }}@else{{ $data->avatar }}@endif" style="width:100px">
+                                        <img src="@if( !filter_var($data->avatar, FILTER_VALIDATE_URL)){{ Voyager::image( $data->avatar ) }}@else{{ $data->avatar }}@endif" style="width:100px">
                                     </td>
                                     <td>{{ $data->role ? $data->role->display_name : '' }}</td>
                                     <td class="no-sort no-click">
                                         @can('delete', $data)
-                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}" id="delete-{{ $data->{$data->getKeyName()} }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
                                             </div>
                                         @endcan
                                         @can('edit', $data)
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" class="btn-sm btn-primary pull-right edit">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" class="btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
                                             </a>
                                         @endcan
-                                        @can('view', $data)
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->id) }}" class="btn-sm btn-warning pull-right">
+                                        @can('read', $data)
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" class="btn-sm btn-warning pull-right">
                                                 <i class="voyager-eye"></i> {{ __('voyager.generic.view') }}
                                             </a>
                                         @endcan

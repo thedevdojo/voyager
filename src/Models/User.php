@@ -12,15 +12,13 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
-    /**
-     * On save make sure to set the default avatar if image is not set.
-     */
-    public function save(array $options = [])
+    public function getAvatarAttribute($value)
     {
-        // If no avatar has been set, set it to the default
-        $this->avatar = $this->avatar ?: config('voyager.user.default_avatar', 'users/default.png');
+        if (is_null($value)) {
+            return config('voyager.user.default_avatar', 'users/default.png');
+        }
 
-        parent::save();
+        return $value;
     }
 
     public function setCreatedAtAttribute($value)

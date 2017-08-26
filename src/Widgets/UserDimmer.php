@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Widgets;
 
 use Arrilot\Widgets\AbstractWidget;
+use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 
 class UserDimmer extends AbstractWidget
@@ -26,7 +27,7 @@ class UserDimmer extends AbstractWidget
         return view('voyager::dimmer', array_merge($this->config, [
             'icon'   => 'voyager-group',
             'title'  => "{$count} {$string}",
-            'text'   => __('voyager.dimmer.user_text', ['count' => $count, 'string' => strtolower($string)]),
+            'text'   => __('voyager.dimmer.user_text', ['count' => $count, 'string' => Str::lower($string)]),
             'button' => [
                 'text' => __('voyager.dimmer.user_link_text'),
                 'link' => route('voyager.users.index'),
