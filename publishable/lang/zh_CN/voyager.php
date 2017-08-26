@@ -365,6 +365,6 @@ return [
         'symlink_missing_button' =>'修复',
         'symlink_missing_text'   => '我们找不到一个存储软连接，这可能会导致'.
                                     '从浏览器加载媒体文件的问题。',
-        'symlink_missing_title' =>'失踪的存储软连接',
+        'symlink_missing_title' =>'缺失的存储软连接',
     ],
 ];
