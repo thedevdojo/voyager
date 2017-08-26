@@ -2,7 +2,8 @@
 
 namespace TCG\Voyager\Interfaces;
 
-interface User {
+interface User
+{
     public function role();
 
     public function hasRole($name);
