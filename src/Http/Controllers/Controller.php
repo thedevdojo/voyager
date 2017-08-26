@@ -36,7 +36,7 @@ abstract class Controller extends BaseController
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $multi_select = [];
-        $needImagesCropByСoordinates = false;
+        $needCropPhotosByСoordinates = false;
 
         /*
          * Prepare Translations and Transform data
