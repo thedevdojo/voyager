@@ -4,11 +4,13 @@ namespace TCG\Voyager\Models;
 
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as AuthUser;
+use TCG\Voyager\Traits\CroppedPhotos;
 use TCG\Voyager\Traits\VoyagerUser;
 
 class User extends AuthUser
 {
-    use VoyagerUser;
+    use VoyagerUser,
+        CroppedPhotos;
 
     protected $guarded = [];
 
@@ -26,5 +28,9 @@ class User extends AuthUser
     public function setCreatedAtAttribute($value)
     {
         $this->attributes['created_at'] = Carbon::parse($value)->format('Y-m-d H:i:s');
+    }
+
+    public function roleId(){
+        return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 }

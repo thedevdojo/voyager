@@ -78,7 +78,12 @@
                                                      {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
                                                     @endforeach
                                                 @endif
+                                            @elseif($row->type == 'select_dropdown' && property_exists($options, 'relationship'))
+                                                @php
+                                                    $relationship = camel_case($row->field);
+                                                @endphp
 
+                                                {!! $data->{$relationship} ? $data->{$relationship}->name : $data->{$relationship} !!}
                                             @elseif($row->type == 'select_dropdown' && property_exists($options, 'options'))
 
                                                 @if($data->{$row->field . '_page_slug'})
