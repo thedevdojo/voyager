@@ -145,19 +145,26 @@
                                                 data-id="{{ $primaryKey }}"
                                                 id="delete-{{ $primaryKey }}"
                                             >
-                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">
-                                                    {{ __('voyager.generic.delete') }}
-                                                </span>
+                                                <i class="voyager-trash"></i>
+                                                @if(config('voyager.views.browse.display_text_on_service_buttons'))
+                                                    <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete')}}</span>
+                                                @endif
                                             </a>
                                         @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
                                             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $primaryKey) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
-                                                <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
+                                                <i class="voyager-edit"></i>
+                                                @if(config('voyager.views.browse.display_text_on_service_buttons'))
+                                                    <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit')}}</span>
+                                                @endif
                                             </a>
                                         @endif
                                         @if (Voyager::can('read_'.$dataType->name))
                                             <a href="{{ route('voyager.'.$dataType->slug.'.show', $primaryKey) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
-                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
+                                                <i class="voyager-eye"></i>
+                                                @if(config('voyager.views.browse.display_text_on_service_buttons'))
+                                                    <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view')}}</span>
+                                                @endif
                                             </a>
                                         @endif
                                     </td>

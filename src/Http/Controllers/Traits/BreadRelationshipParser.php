@@ -91,13 +91,16 @@ trait BreadRelationshipParser
 
         if (!empty($relations) && array_filter($relations)) {
             foreach ($relations as $field => $relation) {
-                if ($this->patchId[$field]) {
+                if (isset($this->patchId[$field]) && $this->patchId[$field]) {
                     $field = snake_case($field).'_id';
                 } else {
                     $field = snake_case($field);
                 }
 
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
+
+                if (!$bread_data || !$bread_data->details) return $item;
+
                 $relationData = json_decode($bread_data->details)->relationship;
 
                 if ($bread_data->type == 'select_multiple') {

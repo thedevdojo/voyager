@@ -26,22 +26,11 @@ class TranslationBreadController extends VoyagerBreadController
 
         // GET THE DataType based on the slug
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
+        $translationModel = get_class(app($dataType->model_name)->first()->translations->first());
+        $dataTypeTranslation = Voyager::model('DataType')->where('model_name', '=', $translationModel)->first();
+        $dataRows = $dataType->browseRows->merge($dataTypeTranslation->browseRows);
         // Check permission
         Voyager::canOrFail('browse_'.$dataType->name);
-
-        $dataTypeTranslation = null;
-        $dataTypeContentTranslation = null;
-
-        $dataTypeContent = app($dataType->model_name)->first();
-
-        if ($dataTypeContent) {
-            $dataTypeContentTranslation = $dataTypeContent->translations->first();
-
-            $dataTypeTranslation = Voyager::model('DataType')
-                ->where('model_name', '=', $dataTypeContent->getTranslationModelName())
-                ->first();
-        }
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
@@ -49,19 +38,30 @@ class TranslationBreadController extends VoyagerBreadController
         $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
-        $model = app($dataType->model_name);
-        $query = $model::select('*');
+        if (strlen($dataType->model_name) != 0) {
+            $model = app($dataType->model_name);
+            $query = $model::select('*');
 
-        if ($search->value && $search->key && $search->filter) {
-            $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
-            $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
-            $query->where($search->key, $search_filter, $search_value);
-        }
+            $relationships = $this->getRelationships($dataType);
 
-        if ($model->timestamps) {
-            $dataTypeContent = call_user_func([$query->latest(), $getter]);
+            if ($search->value && $search->key && $search->filter) {
+                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
+                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
+                $query->where($search->key, $search_filter, $search_value);
+            }
+
+            if ($model->timestamps) {
+                $dataTypeContent = call_user_func([$query->latest(), $getter]);
+            } else {
+                $dataTypeContent = call_user_func([$query->with($relationships)->orderBy('id', 'DESC'), $getter]);
+            }
+
+            //Replace relationships' keys for labels and create READ links if a slug is provided.
+            $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
         } else {
-            $dataTypeContent = call_user_func([$query->orderBy('id', 'DESC'), $getter]);
+            // If Model doesn't exist, get data from table name
+            $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
+            $model = false;
         }
 
         // Check if BREAD is Translatable
@@ -73,16 +73,7 @@ class TranslationBreadController extends VoyagerBreadController
             $view = "voyager::$slug.browse";
         }
 
-        return Voyager::view($view, compact(
-            'dataType',
-            'dataTypeContent',
-            'isModelTranslatable',
-            'search',
-            'searchable',
-            'dataTypeTranslation',
-            'dataTypeContentTranslation'
-            )
-        );
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'search', 'searchable', 'dataRows'));
     }
 
     //***************************************

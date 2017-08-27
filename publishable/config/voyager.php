@@ -275,5 +275,19 @@ return [
         'textarea' => [
             'rows' => 4,
         ]
-    ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Views Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify views settings
+    |
+    */
+    'views' => [
+        'browse' => [
+            'display_text_on_service_buttons' => true
+        ]
+    ],
 ];

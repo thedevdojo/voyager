@@ -26,7 +26,7 @@
                                 <div id="search-input">
                                     <select id="search_key" name="key">
                                         @foreach($searchable as $key)
-                                                <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
+                                            <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
                                         @endforeach
                                     </select>
                                     <select id="filter" name="filter">
@@ -45,14 +45,9 @@
                             </form>
                         @endif
                         <table id="dataTable" class="table table-hover">
-                            @if(isset($dataType->browseRows) && isset($dataTypeTranslation->browseRows))
                             <thead>
                                 <tr>
-                                    @foreach($dataType->browseRows as $row)
-                                    <th>{{ $row->display_name }}</th>
-                                    @endforeach
-
-                                    @foreach($dataTypeTranslation->browseRows as $row)
+                                    @foreach($dataRows as $row)
                                     <th>{{ $row->display_name }}</th>
                                     @endforeach
                                     <th class="actions">{{ __('voyager.generic.actions') }}</th>
@@ -61,7 +56,6 @@
                             <tbody>
                                 @include('voyager::translation-bread.partials.browse-rows')
                             </tbody>
-                            @endif
                         </table>
                         @if (isset($dataType->server_side) && $dataType->server_side)
                             <div class="pull-left">
@@ -105,9 +99,9 @@
 @stop
 
 @section('css')
-@if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-<link rel="stylesheet" href="{{ voyager_asset('lib/css/responsive.dataTables.min.css') }}">
-@endif
+    @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
+    <link rel="stylesheet" href="{{ voyager_asset('lib/css/responsive.dataTables.min.css') }}">
+    @endif
 @stop
 
 @section('javascript')
@@ -137,7 +131,6 @@
             @endif
              
         });
-
 
         var deleteFormAction;
         $('td').on('click', '.delete', function (e) {
