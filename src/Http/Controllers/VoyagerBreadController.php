@@ -32,7 +32,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('browse_'.$dataType->name);
+        $this->authorize('browse', app($dataType->model_name));
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
@@ -61,7 +61,7 @@ class VoyagerBreadController extends Controller
                 $dataTypeContent = call_user_func([$query->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
 
-            //Replace relationships' keys for labels and create READ links if a slug is provided.
+            // Replace relationships' keys for labels and create READ links if a slug is provided.
             $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
         } else {
             // If Model doesn't exist, get data from table name
@@ -99,9 +99,6 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        Voyager::canOrFail('read_'.$dataType->name);
-
         $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
@@ -111,11 +108,14 @@ class VoyagerBreadController extends Controller
             $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
         }
 
-        //Replace relationships' keys for labels and create READ links if a slug is provided.
+        // Replace relationships' keys for labels and create READ links if a slug is provided.
         $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
         // If a column has a relationship associated with it, we do not want to show that field
         $this->removeRelationshipField($dataType, 'read');
+
+        // Check permission
+        $this->authorize('read', $dataTypeContent);
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -147,12 +147,6 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // If dataType is users and user owns the profile, skip the permission check
-        $skip = $dataType->name === 'users' && $request->user()->id === (int) $id;
-        if (!$skip) {
-            Voyager::canOrFail('edit_'.$dataType->name);
-        }
-
         $relationships = $this->getRelationships($dataType);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
@@ -166,6 +160,9 @@ class VoyagerBreadController extends Controller
 
         // If a column has a relationship associated with it, we do not want to show that field
         $this->removeRelationshipField($dataType, 'edit');
+
+        // Check permission
+        $this->authorize('edit', $dataTypeContent);
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -186,13 +183,12 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // If dataType is users and user owns the profile, skip the permission check
-        $skip = $dataType->name === 'users' && $request->user()->id === (int) $id;
-        if (!$skip) {
-            Voyager::canOrFail('edit_'.$dataType->name);
-        }
+        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
-        //Validate fields with ajax
+        // Check permission
+        $this->authorize('edit', $data);
+
+        // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows);
 
         if ($val->fails()) {
@@ -200,8 +196,6 @@ class VoyagerBreadController extends Controller
         }
 
         if (!$request->ajax()) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
             return redirect()
@@ -233,7 +227,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
+        $this->authorize('add', app($dataType->model_name));
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
@@ -267,9 +261,9 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('add_'.$dataType->name);
+        $this->authorize('edit', app($dataType->model_name));
 
-        //Validate fields with ajax
+        // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
 
         if ($val->fails()) {
@@ -307,7 +301,9 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        Voyager::canOrFail('delete_'.$dataType->name);
+        $model = app($dataType->model_name);
+        $model = $model::where('id', $id)->get();
+        $this->authorize('delete', app($dataType->model_name));
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 

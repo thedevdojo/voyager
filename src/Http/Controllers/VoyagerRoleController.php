@@ -10,11 +10,12 @@ class VoyagerRoleController extends VoyagerBreadController
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
-        Voyager::canOrFail('edit_roles');
-
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        // Check permission
+        $this->authorize('edit', app($dataType->model_name));
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
@@ -41,11 +42,12 @@ class VoyagerRoleController extends VoyagerBreadController
     // POST BRE(A)D
     public function store(Request $request)
     {
-        Voyager::canOrFail('add_roles');
-
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        // Check permission
+        $this->authorize('add', app($dataType->model_name));
 
         //Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);

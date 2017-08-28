@@ -97,6 +97,8 @@ class TestCase extends OrchestraTestCase
             'voyager',
             require __DIR__.'/../publishable/config/voyager.php'
         );
+
+        app(VoyagerServiceProvider::class, ['app' => $this->app])->registerGates();
     }
 
     public function disableExceptionHandling()
