@@ -30,9 +30,8 @@ class VoyagerSettingsController extends Controller
 
         $groups_data = Voyager::model('Setting')->select('group')->distinct()->get();
         $groups = [];
-        $groups[] = __('voyager.settings.group_general');
         foreach ($groups_data as $group) {
-            if ($group->group != __('voyager.settings.group_general') && $group->group != '') {
+            if ($group->group != '') {
                 $groups[] = $group->group;
             }
         }
