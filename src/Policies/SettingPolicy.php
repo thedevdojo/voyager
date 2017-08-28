@@ -18,4 +18,24 @@ class SettingPolicy extends BasePolicy
     {
         return $user->hasPermission('browse_settings');
     }
+
+    public function read(User $user, $model)
+    {
+        return $user->hasPermission('read_settings');
+    }
+
+    public function edit(User $user, $model)
+    {
+        return $user->hasPermission('edit_settings');
+    }
+
+    public function add(User $user, $model)
+    {
+        return $user->hasPermission('add_settings');
+    }
+
+    public function delete(User $user, $model)
+    {
+        return $user->hasPermission('delete_settings');
+    }
 }

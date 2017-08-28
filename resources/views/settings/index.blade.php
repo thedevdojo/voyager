@@ -130,6 +130,10 @@
             border-bottom:0px;
         }
 
+        .voyager .settings .nav-tabs .active a{
+            border:0px;
+        }
+
         .select2{
             width:100% !important;
             border: 1px solid #f1f1f1;
@@ -375,9 +379,9 @@
                     </div>
                     <div class="col-md-3">
                         <label for="group">{{ __('voyager.settings.group') }}</label>
-                        <select class="form-control group_select" name="group">
+                        <select class="form-control group_select group_select_new" name="group" placeholder="blah">
                             @foreach($groups as $group)
-                            <option value="{{ $group }}">{{ $group }}</group>
+                                <option value="{{ $group }}">{{ $group }}</group>
                             @endforeach
                         </select>
                     </div>
@@ -452,10 +456,16 @@
         });
     </script>
     <script type="text/javascript">
-    $(".group_select").select2({
+    $(".group_select").not('.group_select_new').select2({
         tags: true,
         width: 'resolve'
     });
+    $(".group_select_new").select2({
+        tags: true,
+        width: 'resolve',
+        placeholder: '{{ __("voyager.generic.select_group") }}'
+    });
+    $(".group_select_new").val('').trigger('change');
     </script>
     <iframe id="form_target" name="form_target" style="display:none"></iframe>
     <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="POST" enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">

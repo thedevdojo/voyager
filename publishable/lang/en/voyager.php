@@ -72,6 +72,7 @@ return [
         'save'                   => 'Save',
         'search'                 => 'Search',
         'select_all'             => 'Select All',
+        'select_group'           => 'Select Existing Group or Add New',
         'settings'               => 'Settings',
         'showing_entries'        => 'Showing :from to :to of :all entrie|Showing :from to :to of :all entries',
         'submit'                 => 'Submit',
