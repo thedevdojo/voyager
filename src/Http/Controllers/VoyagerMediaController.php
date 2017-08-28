@@ -23,6 +23,7 @@ class VoyagerMediaController extends Controller
 
     public function index()
     {
+        // Check permission
         Voyager::canOrFail('browse_media');
 
         return Voyager::view('voyager::media.index');

@@ -11,7 +11,7 @@ class VoyagerSettingsController extends Controller
     public function index()
     {
         // Check permission
-        Voyager::canOrFail('browse_settings');
+        $this->authorize('browse', Voyager::model('Setting'));
 
         $data = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
 
@@ -43,7 +43,7 @@ class VoyagerSettingsController extends Controller
     public function store(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('add_settings');
+        $this->authorize('add', Voyager::model('Setting'));
 
         $key = implode('.', [str_slug($request->input('group')), $request->input('key')]);
         $key_check = Voyager::model('Setting')->where('key', $key)->get()->count();
@@ -78,7 +78,7 @@ class VoyagerSettingsController extends Controller
     public function update(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('edit_settings');
+        $this->authorize('edit', Voyager::model('Setting'));
 
         $settings = Voyager::model('Setting')->all();
 
@@ -111,7 +111,7 @@ class VoyagerSettingsController extends Controller
     public function delete($id)
     {
         // Check permission
-        Voyager::canOrFail('delete_settings');
+        $this->authorize('delete', Voyager::model('Setting'));
 
         Voyager::model('Setting')->destroy($id);
 
@@ -127,6 +127,10 @@ class VoyagerSettingsController extends Controller
         Voyager::canOrFail('edit_settings');
 
         $setting = Voyager::model('Setting')->find($id);
+
+        // Check permission
+        $this->authorize('browse', $setting);
+
         $swapOrder = $setting->order;
         $previousSetting = Voyager::model('Setting')
                             ->where('order', '<', $swapOrder)
@@ -155,7 +159,7 @@ class VoyagerSettingsController extends Controller
     public function delete_value($id)
     {
         // Check permission
-        Voyager::canOrFail('delete_settings');
+        $this->authorize('delete', $setting);
 
         $setting = Voyager::model('Setting')->find($id);
 
@@ -182,6 +186,10 @@ class VoyagerSettingsController extends Controller
         Voyager::canOrFail('edit_settings');
 
         $setting = Voyager::model('Setting')->find($id);
+
+        // Check permission
+        $this->authorize('browse', $setting);
+
         $swapOrder = $setting->order;
 
         $previousSetting = Voyager::model('Setting')
