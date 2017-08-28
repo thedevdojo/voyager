@@ -379,7 +379,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="group">{{ __('voyager.settings.group') }}</label>
-                        <select class="form-control group_select group_select_new" name="group" placeholder="blah">
+                        <select class="form-control group_select group_select_new" name="group">
                             @foreach($groups as $group)
                                 <option value="{{ $group }}">{{ $group }}</group>
                             @endforeach
