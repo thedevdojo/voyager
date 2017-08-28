@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Policies;
 
 use TCG\Voyager\Contracts\User;
-use TCG\Voyager\Facades\Voyager;
 
 class SettingPolicy extends BasePolicy
 {
