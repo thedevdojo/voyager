@@ -189,7 +189,7 @@ return [
         'usage_hint'           => 'You can output a menu anywhere on your site by calling|You can output '.
                                    'this menu anywhere on your site by calling',
     ],
-    'post' => [     
+    'post' => [  
         'category'         => '分类目录',
         'content'          => '文章内容',
         'details'          => '文章详细信息',
