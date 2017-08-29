@@ -1,4 +1,5 @@
 <?php
+
 return [
     'date' => [
         'last_week' => '上周',
