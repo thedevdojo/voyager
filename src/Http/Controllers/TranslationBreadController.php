@@ -26,12 +26,15 @@ class TranslationBreadController extends VoyagerBreadController
 
         // GET THE DataType based on the slug
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-        $dataRows = [];
+        $dataRows = $dataType->browseRows;
 
-        if (get_class(app($dataType->model_name)->first())) {
-            $translationModel = get_class(app($dataType->model_name)->first()->translations->first());
-            $dataTypeTranslation = Voyager::model('DataType')->where('model_name', '=', $translationModel)->first();
-            $dataRows = $dataType->browseRows->merge($dataTypeTranslation->browseRows);
+        if (app($dataType->model_name)->first() && get_class(app($dataType->model_name)->first())) {
+            $model = app($dataType->model_name)->whereHas('translations')->first();
+            if (isset($model)){
+                $translationModel = get_class($model->translations->first());
+                $dataTypeTranslation = Voyager::model('DataType')->where('model_name', '=', $translationModel)->first();
+                $dataRows = $dataType->browseRows->merge($dataTypeTranslation->browseRows);
+            }
         }
 
         // Check permission
