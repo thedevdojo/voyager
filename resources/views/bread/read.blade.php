@@ -28,7 +28,12 @@
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
                     <!-- form start -->
                     @foreach($dataType->readRows as $row)
-                        @php $rowDetails = json_decode($row->details); @endphp
+                        @php $rowDetails = json_decode($row->details);
+                         if($rowDetails === null){
+                                $rowDetails=new stdClass();
+                                $rowDetails->options=new stdClass();
+                         }
+                        @endphp
 
                         <div class="panel-heading" style="border-bottom:0;">
                             <h3 class="panel-title">{{ $row->display_name }}</h3>
