@@ -4,7 +4,7 @@ return [
         'last_week' =>'上周',
         'last_year' =>'去年',
         'this_week' =>'本周',
-        'this_year' =>'今年'
+        'this_year' =>'今年',
     ],
     'generic' => [
         'action' =>'操作',
@@ -88,7 +88,7 @@ return [
         'view' =>'视图',
         'viewing' =>'查看',
         'yes' =>'好的',
-        'yes_please' =>'好的，就这样做'
+        'yes_please' =>'好的，就这样做',
     ],
     'login' => [
         'loginin'      => '正在登录',
@@ -127,7 +127,7 @@ return [
         'group_admin' =>'管理',
         'group_site' =>'站点',
         'group' =>'组',
-        'help_group' =>'这个设置被分配给'
+        'help_group' =>'这个设置被分配给',
     ],
     'media' => [
         'add_new_folder' =>'添加新文件夹',
@@ -158,7 +158,7 @@ return [
         'success_uploaded_file' =>'成功上传新文件!',
         'success_uploading' =>'图片上传成功!',
         'uploading_wrong_type' =>'上传失败：不受支持的文件格式，或是它文件过大而无法上传!',
-        'video_support' =>'您的浏览器不支持视频标签。'
+        'video_support' =>'您的浏览器不支持视频标签。',
     ],
     'menu_builder' => [
         'color' =>'RGB或hex中的颜色(可选)',
@@ -330,7 +330,7 @@ return [
         ],
         'oAria' => [
             'sSortAscending'  => ": 以升序排列此列",
-            'sSortDescending' => ": 以降序排列此列"
+            'sSortDescending' => ": 以降序排列此列",
         ],
     ],
     'theme' => [
