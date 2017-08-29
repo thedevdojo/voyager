@@ -434,7 +434,7 @@ a:hover {
   font-family: 'Open Sans', sans-serif;
   height: 60px;
   line-height: 60px;
-  padding: 0 20px 0 20px; }
+  padding: 0 10px 0 20px; }
 .navbar .dropdown-menu {
   padding: 0;
   border: 0;
@@ -691,10 +691,12 @@ a:hover {
 /* Main body section */
 .app-container .side-body {
   margin-left: 75px;
-  margin-right: 15px;
+  margin-right: 0px;
   -webkit-transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
   transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1) }
-
+.app-container .side-body .container-fluid {
+  padding-right: 0;
+}
 .app-container.expanded .side-body {
   margin-left: 235px; }
 /* small screen */
@@ -4231,7 +4233,8 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 }
 
 .app-container .side-body{
-  margin-left: 45px;
+  margin-left: 50px;
+  margin-right: 12px;
 }
 
 .navbar .navbar-nav > li > a{
@@ -4412,6 +4415,17 @@ p#the_plugin_name{
     position: relative;
     top:-1px;
     display:inline-block;
+}
+
+.page-content.read .panel .panel-body:not(:last-child) {
+  border-bottom: 1px solid #eeeeee;
+}
+
+.page-content > .row > [class*="col-"]:not(:first-child) {
+  padding-left: 8px;
+}
+.page-content > .row > [class*="col-"]:not(:last-child) {
+  padding-right: 8px;
 }
 
 .app-container.expanded .content-container .side-menu .navbar-header .navbar-brand .title{
