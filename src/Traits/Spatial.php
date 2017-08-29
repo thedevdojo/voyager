@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 trait Spatial
 {
     /**
-     * Get location as WKT from Geometry for given field
+     * Get location as WKT from Geometry for given field.
      *
      * @param string $column
      *
