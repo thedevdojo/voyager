@@ -7,26 +7,18 @@ use Illuminate\Support\Facades\DB;
 trait Spatial
 {
     /**
-     * Get a new query builder for the model's table.
-     * Manipulate in case we need to convert geometrical fields to text.
+     * Get location as WKT from Geometry for given field.
      *
-     * @param bool $excludeDeleted
+     * @param string $column
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return string WKT
      */
-    public function newQuery($excludeDeleted = true)
+    public function getLocation($column)
     {
-        if (!empty($this->spatial)) {
-            $raw = '';
-            foreach ($this->spatial as $column) {
-                $raw .= 'ST_AsText('.$column.') AS '.$column.', ';
-            }
-            $raw = substr($raw, 0, -2);
-
-            return parent::newQuery($excludeDeleted)->addSelect('*', DB::raw($raw));
-        }
-
-        return parent::newQuery($excludeDeleted);
+        return self::select(DB::Raw('ST_AsText('.$column.') AS '.$column))
+            ->where('id', $this->id)
+            ->first()
+            ->$column;
     }
 
     /**
@@ -40,7 +32,7 @@ trait Spatial
 
         if (!empty($this->spatial)) {
             foreach ($this->spatial as $column) {
-                $clear = trim(preg_replace('/[a-zA-Z\(\)]/', '', $this->$column));
+                $clear = trim(preg_replace('/[a-zA-Z\(\)]/', '', $this->getLocation($column)));
                 if (!empty($clear)) {
                     foreach (explode(',', $clear) as $point) {
                         list($lat, $lng) = explode(' ', $point);
