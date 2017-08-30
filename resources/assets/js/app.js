@@ -1,8 +1,12 @@
-window.jQuery = window.$ = require('jquery');
+window.jQuery = window.$ = $ = require('jquery');
+window.Vue = require('vue');
 window.perfectScrollbar = require('./perfect-scrollbar');
-window.toastr = require('toastr');
+window.toastr = require('./toastr');
 window.DataTable = require('./bootstrap-datatables');
 window.SimpleMDE = require('simplemde');
+window.tooltip = require('./bootstrap-tooltip');
+window.MediaManager = require('./media');
+require('dropzone');
 require('./readmore');
 require('./jquery-match-height');
 require('./bootstrap-toggle');
@@ -10,21 +14,22 @@ require('./jquery-cookie');
 require('./jquery-nestable');
 require('bootstrap');
 require('bootstrap-switch');
-require('jquery-match-height');
 require('select2');
 require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
-require('ace-builds/src-min-noconflict/ace');
+var brace = require('brace');
+require('brace/mode/json');
+require('brace/theme/github');
 require('./slugify');
-require('tinymce');
+window.TinyMCE = window.tinymce = require('./tinymce');
 require('./multilingual');
 require('./voyager_tinymce');
 require('./voyager_ace_editor');
-
-
+window.helpers = require('./helpers.js');
+require('./load-remote.js');
 
 $(document).ready(function(){
+
     var appContainer = $(".app-container"),
-        sidebarAnchor = $('#sidebar-anchor'),
         fadedOverlay = $('.fadetoblack'),
         hamburger = $('.hamburger');
 
@@ -38,50 +43,14 @@ $(document).ready(function(){
     moreLink: '<a href="#" class="readm-link">Read More</a>',
   });
 
-  $(".hamburger, .navbar-expand-toggle, .side-menu .navbar-nav li:not(.dropdown)").on('click', function() {
-      if ($(this).is('button')) {
-        appContainer.toggleClass("expanded");
-        $(this).toggleClass('is-active');
-      } else {
-        if (!sidebarAnchor.hasClass('active')) {
-          appContainer.removeClass("expanded");
-          hamburger.toggleClass('is-active');
-        }
-      }
-  });
-
-  fadedOverlay.on('click', function(){
-    appContainer.removeClass('expanded');
-    hamburger.removeClass('is-active');
-  });
-
-  sidebarAnchor.on('click', function(){
-    if (appContainer.hasClass('expanded')) {
-      if ($(this).hasClass('active')) {
-        appContainer.removeClass("expanded");
-        $(this).removeClass('active');
-        window.localStorage.removeItem('voyager.stickySidebar');
-        toastr.success("Sidebar isn't sticky anymore.");
-
-        sidebarAnchor[0].title = sidebarAnchor.data('sticky');
-      }
-      else {
-        $(this).addClass('active');
+  $(".hamburger, .navbar-expand-toggle").on('click', function() {
+      appContainer.toggleClass("expanded");
+      $(this).toggleClass('is-active');
+      if ($(this).hasClass('is-active')) {
         window.localStorage.setItem('voyager.stickySidebar', true);
-        toastr.success("Sidebar is now sticky");
-
-        sidebarAnchor.data('sticky', sidebarAnchor[0].title);
-        sidebarAnchor[0].title = sidebarAnchor.data('unstick');
+      } else {
+        window.localStorage.setItem('voyager.stickySidebar', false);
       }
-    }
-    else {
-      appContainer.addClass("expanded");
-      $(this).removeClass('active');
-      window.localStorage.removeItem('voyager.stickySidebar');
-      toastr.success("Sidebar isn't sticky anymore.");
-
-      sidebarAnchor[0].title = sidebarAnchor.data('sticky');
-    }
   });
 
   $('select.select2').select2({ width: '100%' });
@@ -104,11 +73,11 @@ $(document).ready(function(){
     if(!$this.hasClass('panel-collapsed')) {
       $this.parents('.panel').find('.panel-body').slideUp();
       $this.addClass('panel-collapsed');
-      $this.removeClass('voyager-angle-down').addClass('voyager-angle-up');
+      $this.removeClass('voyager-angle-up').addClass('voyager-angle-down');
     } else {
       $this.parents('.panel').find('.panel-body').slideDown();
       $this.removeClass('panel-collapsed');
-      $this.removeClass('voyager-angle-up').addClass('voyager-angle-down');
+      $this.removeClass('voyager-angle-down').addClass('voyager-angle-up');
     }
   });
 
@@ -125,11 +94,6 @@ $(document).ready(function(){
   });
 
   $('.datepicker').datetimepicker();
-
-  // Right navbar toggle
-  $('.navbar-right-expand-toggle').on('click', function(){
-    $('ul.navbar-right').toggleClass('expanded');
-  });
 
   // Save shortcut
   $(document).keydown(function (e){
@@ -148,8 +112,6 @@ $(document).ready(function(){
       });
       simplemde.render(); 
   });
-
-  console.log('hit');
 
   /********** END MARKDOWN EDITOR **********/
 
@@ -198,78 +160,3 @@ $(document).ready(function(){
     });
   });
 });
-
-
-/*--------------------
-|
-| HELPERS
-|
---------------------*/
-
-function displayAlert(alert, alerter) {
-    let alertMethod = alerter[alert.type];
-
-    if (alertMethod) {
-        return alertMethod(alert.message);
-    }
-
-    alerter.error("No alert method found for alert type: " + alert.type);
-}
-
-function displayAlerts(alerts, alerter, type) {
-    if (type) {
-        // Only display alerts of this type...
-        alerts = alerts.filter(function(alert) {
-            return type == alert.type;
-        });
-    }
-
-    for (a in alerts) {
-        displayAlert(alerts[a], alerter);
-    }
-}
-
-function bootstrapAlerter(customOptions) {
-    // Default options
-    let options = {
-        alertsContainer: '#alertsContainer',
-        dismissible: false,
-        dismissButton: '<button class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-    };
-
-    if (customOptions) {
-        options = $.extend({}, options, customOptions);
-    }
-
-    let dismissibleClass = '';
-    let dismissButton = '';
-
-    if (options.dismissible) {
-        dismissButton = options.dismissButton;
-        dismissibleClass = ' alert-dismissible';
-    }
-
-    function notify(type, message) {
-        let alert = '<div class="alert alert-'  + type +  dismissibleClass + '" role="alert">'
-                        + dismissButton + message +
-                    '</div>';
-
-        $(options.alertsContainer).append(alert);
-    }
-
-    return {
-        success(message) {
-            notify('success', message);
-        },
-        info(message) {
-            notify('info', message);
-        },
-        warning(message) {
-            notify('warning', message);
-        },
-        error(message) {
-            notify('danger', message);
-        }
-    };
-}
-

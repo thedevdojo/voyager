@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Widgets;
 
 use Arrilot\Widgets\AbstractWidget;
+use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 
 class PageDimmer extends AbstractWidget
@@ -21,14 +22,14 @@ class PageDimmer extends AbstractWidget
     public function run()
     {
         $count = Voyager::model('Page')->count();
-        $string = $count == 1 ? 'page' : 'pages';
+        $string = trans_choice('voyager.dimmer.page', $count);
 
         return view('voyager::dimmer', array_merge($this->config, [
-            'icon'   => 'voyager-group',
+            'icon'   => 'voyager-file-text',
             'title'  => "{$count} {$string}",
-            'text'   => "You have {$count} {$string} in your database. Click on button below to view all pages.",
+            'text'   => __('voyager.dimmer.page_text', ['count' => $count, 'string' => Str::lower($string)]),
             'button' => [
-                'text' => 'View all pages',
+                'text' => __('voyager.dimmer.page_link_text'),
                 'link' => route('voyager.pages.index'),
             ],
             'image' => voyager_asset('images/widget-backgrounds/03.jpg'),

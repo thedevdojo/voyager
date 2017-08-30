@@ -7,18 +7,31 @@ use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\ServiceProvider;
 use Intervention\Image\ImageServiceProvider;
+use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Models\User;
+use TCG\Voyager\Models\Setting;
+use TCG\Voyager\Policies\BasePolicy;
+use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
+    /**
+     * The policy mappings for the application.
+     *
+     * @var array
+     */
+    protected $policies = [
+        Setting::class => SettingPolicy::class,
+    ];
+
     /**
      * Register the application services.
      */
@@ -26,6 +39,7 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(WidgetServiceProvider::class);
+        $this->app->register(VoyagerHooksServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
@@ -82,6 +96,8 @@ class VoyagerServiceProvider extends ServiceProvider
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
         }
 
+        $this->registerGates();
+
         $this->registerViewComposers();
 
         $event->listen('voyager.alerts.collecting', function () {
@@ -128,13 +144,15 @@ class VoyagerServiceProvider extends ServiceProvider
             return;
         }
 
+        $storage_disk = (!empty(config('voyager.storage.disk'))) ? config('voyager.storage.disk') : 'public';
+
         if (request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
             $this->fixMissingStorageSymlink();
-        } elseif (!file_exists(public_path('storage'))) {
+        } elseif (!file_exists(public_path('storage')) && $storage_disk == 'public') {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
-                ->title('Missing storage symlink')
-                ->text('We could not find a storage symlink. This could cause problems with loading media files from the browser.')
-                ->button('Fix it', '?fix-missing-storage-symlink=1');
+                ->title(__('voyager.error.symlink_missing_title'))
+                ->text(__('voyager.error.symlink_missing_text'))
+                ->button(__('voyager.error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
 
             VoyagerFacade::addAlert($alert);
         }
@@ -146,12 +164,12 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (file_exists(public_path('storage'))) {
             $alert = (new Alert('fixed-missing-storage-symlink', 'success'))
-                ->title('Missing storage symlink created')
-                ->text('We just created the missing symlink for you.');
+                ->title(__('voyager.error.symlink_created_title'))
+                ->text(__('voyager.error.symlink_created_text'));
         } else {
             $alert = (new Alert('failed-fixing-missing-storage-symlink', 'danger'))
-                ->title('Could not create missing storage symlink')
-                ->text('We failed to generate the missing symlink for your application. It seems like your hosting provider does not support it.');
+                ->title(__('voyager.error.symlink_failed_title'))
+                ->text(__('voyager.error.symlink_failed_text'));
         }
 
         VoyagerFacade::addAlert($alert);
@@ -220,6 +238,9 @@ class VoyagerServiceProvider extends ServiceProvider
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
+            'lang' => [
+                "{$publishablePath}/lang/" => base_path('resources/lang/'),
+            ],
         ];
 
         foreach ($publishable as $group => $paths) {
@@ -234,10 +255,31 @@ class VoyagerServiceProvider extends ServiceProvider
         );
     }
 
+    public function registerGates()
+    {
+        if (Schema::hasTable('data_types')) {
+            $dataType = VoyagerFacade::model('DataType');
+            $dataTypes = $dataType->get();
+
+            foreach ($dataTypes as $dataType) {
+                $policyClass = BasePolicy::class;
+                if (isset($dataType->policy_name) && $dataType->policy_name !== ''
+                    && class_exists($dataType->policy_name)) {
+                    $policyClass = $dataType->policy_name;
+                }
+
+                $this->policies[$dataType->model_name] = $policyClass;
+            }
+
+            $this->registerPolicies();
+        }
+    }
+
     protected function registerFormFields()
     {
         $formFields = [
             'checkbox',
+            'color',
             'date',
             'file',
             'image',
@@ -254,6 +296,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'text_area',
             'timestamp',
             'hidden',
+            'coordinates',
         ];
 
         foreach ($formFields as $formField) {

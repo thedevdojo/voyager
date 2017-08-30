@@ -4,17 +4,13 @@
             <button class="hamburger btn-link">
                 <span class="hamburger-inner"></span>
             </button>
-            <a id="sidebar-anchor" class="voyager-anchor btn-link navbar-link hidden-xs" 
-                title="Yarr! Drop the anchors! (and keep the sidebar open)" 
-                data-unstick="Unstick the sidebar" 
-            data-toggle="tooltip" data-placement="bottom"></a>
 
             <ol class="breadcrumb hidden-xs">
                 @if(count(Request::segments()) == 1)
-                    <li class="active"><i class="voyager-boat"></i> Dashboard</li>
+                    <li class="active"><i class="voyager-boat"></i> {{ __('voyager.generic.dashboard') }}</li>
                 @else
                     <li class="active">
-                        <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> Dashboard</a>
+                        <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> {{ __('voyager.generic.dashboard') }}</a>
                     </li>
                 @endif
                 <?php $breadcrumb_url = url(''); ?>
@@ -33,6 +29,11 @@
                     @endif
                 @endfor
             </ol>
+            <ul class="navbar-form navbar-left">
+                <div class="form-group">
+                    @yield('bulk_actions')
+                </div>
+            </ul>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown profile">

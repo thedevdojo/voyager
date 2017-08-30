@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title>Giphy Gif Search</title>
+  <meta name="description" content="Find and share Gifs via Giphy.">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600,400" rel="stylesheet" type="text/css"/>
+
+  <link href="./css/giphyPopup.css" rel="stylesheet" type="text/css"/>
+
+  <!-- ext -->
+
+  <!-- this style tag must be inline! -->
+  <style type="text/css">
+    .loading_icon_box {
+      position: fixed;
+      top:0;
+      left:0;
+      z-index:7000;
+    }
+    .loading_icon {
+      z-index:10000;
+      /*position: absolute;*/
+      /*bottom:0;*/
+      /*right:0;*/
+      /*width: 100%;*/
+      /*height:100%;*/
+      width:40px;
+      height:40px;
+      bottom:5px;
+      right:6px;
+      position: fixed;
+      /*background: rgba(10,10,10,0.7);*/
+    }
+    .loading_icon img {
+      width:35px;
+      height:35px;
+    }
+    /*        .loading_icon:before {
+                content:"loading";
+                color:white;
+                font-size:14px;
+                text-align: center;
+                position: absolute;
+                top:50%;
+                left:50%;
+                margin-left:-20px;
+                margin-top:-100px;
+                width:70px;            
+            }*/
+
+    .loading_icon img {
+      /*position: absolute;*/
+      /*top:50%;*/
+      /*left:50%;*/
+      /*margin-left:-20px;*/
+      /*margin-top:-100px;*/
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <div class="loading_icon_box">
+      <div class="loading_icon">
+        <img width="40" border="0" alt="loading" height="40" src="data:image/gif;base64,R0lGODlhKAAoAKIEAP9m/0wZf5kz/2YAzP///wAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/wtYTVAgRGF0YVhNUDw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCIgeG1wOkNyZWF0ZURhdGU9IjIwMTMtMDQtMzBUMTM6MTg6MzEtMDQ6MDAiIHhtcDpNb2RpZnlEYXRlPSIyMDEzLTA1LTEzVDIxOjI3OjI4LTA0OjAwIiB4bXA6TWV0YWRhdGFEYXRlPSIyMDEzLTA1LTEzVDIxOjI3OjI4LTA0OjAwIiBkYzpmb3JtYXQ9ImltYWdlL2dpZiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo0MTM5OUZFNUI0MzgxMUUyOUUzNUZFQTEzQkRGQjYwOSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo0MTM5OUZFNkI0MzgxMUUyOUUzNUZFQTEzQkRGQjYwOSIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOkQzQjlFNEQ1MEUyMDY4MTE5MTA5RTM5QzBBN0IxMzZCIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpEM0I5RTRENTBFMjA2ODExOTEwOUUzOUMwQTdCMTM2QiIgc3RFdnQ6d2hlbj0iMjAxMy0wNC0zMFQxMzoxODozMS0wNDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjAzODAxMTc0MDcyMDY4MTE5MTA5ODRFRUUyRDdDQjhGIiBzdEV2dDp3aGVuPSIyMDEzLTA1LTEzVDE3OjI2OjU0LTA0OjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6MDQ4MDExNzQwNzIwNjgxMTkxMDk4NEVFRTJEN0NCOEYiIHN0RXZ0OndoZW49IjIwMTMtMDUtMTNUMTc6MjY6NTQtMDQ6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDUzUgTWFjaW50b3NoIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowNDgwMTE3NDA3MjA2ODExOTEwOTg0RUVFMkQ3Q0I4RiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpEM0I5RTRENTBFMjA2ODExOTEwOUUzOUMwQTdCMTM2QiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAUKAAQALAAAAAAoACgAAAOECLrcHTDKOZ21NOfLl/5R14GgyJGfeaGairGU68CxzNCV7eGhrvA9HxDi+w2LgGEAqWQei03oUzjVKQXYrHa7HXi/4HCYSyaLz+eyOotuf9drtxuulrfpZTsab9aL+Vx+f4BagmOEbIZviFiKi4yOXoyNkZMCkQOWmJqVk5uenZChiJgJACH5BAUKAAQALAAAAAAoACgAAAOEKLrcDTDKOZ21NOfLl/5R14GgyJGfeaGairGU68CxzNCV7eGhrvA9HxDi+w2LgiEAqWQei03oUzjVKQfYrHa7DXi/4HCYSyaLz+eyOotuf9drtxuulrfpZTsab9aL+Vx+f4BagmOEbIZviFiKi4yOXoyNkZMDkQGWmJqVk5uenZChiJgJACH5BAUKAAQALAAAAAAoACgAAAOEOLrcLTDKOZ21NOfLl/5R14GgyJGfeaGairGU68CxzNCV7eGhrvA9HxDi+w2Lg6EAqWQei03oUzjVKQPYrHa7BXi/4HCYSyaLz+eyOotuf9drtxuulrfpZTsab9aL+Vx+f4BagmOEbIZviFiKi4yOXoyNkZMBkQCWmJqVk5uenZChiJgJACH5BAUKAAQALAAAAAAoACgAAAOEGLrcPTDKOZ21NOfLl/5R14GgyJGfeaGairGU68CxzNCV7eGhrvA9HxDi+w2LgeEAqWQei03oUzjVKQHYrHa7FXi/4HCYSyaLz+eyOotuf9drtxuulrfpZTsab9aL+Vx+f4BagmOEbIZviFiKi4yOXoyNkZMAkQKWmJqVk5uenZChiJgJADs=" /></div></div>
+    <!-- HEADER -->
+    <div id="header">
+      <span id="back-button" class="back-button"> </span>
+      <!--<img id="back-button" class="back-button" src="img/icon_back.png"/>-->
+      <img class="logo-image" src="img/giphy_logo_laser.gif"/>
+      <img class="logo-text" src="img/giphy_logo_txt.png"/>
+      <div class="ff_window_close_btn"><span href="#">CLOSE</span></div> 
+    </div>
+    <!-- /HEADER -->
+
+    <!-- CONTENT -->
+    <div id="container">
+
+      <!-- GIFS -->
+      <ul id="gifs"></ul>
+      <!-- /GIFS -->
+
+      <!-- GIF DETAIL -->
+      <div id="gif-detail">
+        <div draggable="true" class="gif-detail-cover"></div>
+        <img id="gif-detail-gif" src="">
+        <!-- <img id="loader" src="/img/loader_purple.gif"> -->
+        <!-- SHARE MENU -->
+        <div id="share-menu">
+          <div id="gif-detail-tags"></div>
+          <div id="gif-detail-link"></div>
+          <div id="gif-inject-cms"></div>
+          <div id="copy-gif">Tap and Hold to Copy GIF</div>
+
+        </div>
+        <!-- /SHARE MENU -->
+
+      </div>
+      <!-- /GIF DETAIL -->
+
+      <!-- CATEGORIES -->
+      <ul id="categories">
+        <li class="subtitle">Reactions</li>
+        <li class="popular_tag" data-tag="agree">agree</li>
+        <li class="popular_tag" data-tag="applause">applause</li>
+        <li class="popular_tag" data-tag="awesome">awesome</li>
+        <li class="popular_tag" data-tag="burn">burn</li>
+        <li class="popular_tag" data-tag="cool-story-bro">cool story bro</li>
+        <li class="popular_tag" data-tag="deal-with-it">deal with it</li>
+        <li class="popular_tag" data-tag="do-not-want">do not want</li>
+        <li class="popular_tag" data-tag="eye-roll">eye roll</li>
+        <li class="popular_tag" data-tag="facepalm">facepalm</li>
+        <li class="popular_tag" data-tag="finger-guns">finger guns</li>
+        <li class="popular_tag" data-tag="fist-bump">fist bump</li>
+        <li class="popular_tag" data-tag="fml">fml</li>
+        <li class="popular_tag" data-tag="frown">frown</li>
+        <li class="popular_tag" data-tag="goodbye">goodbye</li>
+        <li class="popular_tag" data-tag="gtfo">gtfo</li>
+        <li class="popular_tag" data-tag="hair-flip">hair flip</li>
+        <li class="popular_tag" data-tag="happy-dance">happy dance</li>
+        <li class="popular_tag" data-tag="hello">hello</li>
+        <li class="popular_tag" data-tag="help">help</li>
+        <li class="popular_tag" data-tag="high five">high five</li>
+        <li class="popular_tag" data-tag="hug">hug</li>
+        <li class="popular_tag" data-tag="idgaf">idgaf</li>
+        <li class="popular_tag" data-tag="idk">idk</li>
+        <li class="popular_tag" data-tag="kiss">kiss</li>
+        <li class="popular_tag" data-tag="lol">lol</li>
+        <li class="popular_tag" data-tag="meh">meh</li>
+        <li class="popular_tag" data-tag="mic drop">mic drop</li>
+        <li class="popular_tag" data-tag="middle finger">middle finger</li>
+        <li class="popular_tag" data-tag="no">no</li>
+        <li class="popular_tag" data-tag="oh-no-you-didnt">oh no you didnt</li>
+        <li class="popular_tag" data-tag="oh-snap">oh snap</li>
+        <li class="popular_tag" data-tag="ok">ok</li>
+        <li class="popular_tag" data-tag="omg">omg</li>
+        <li class="popular_tag" data-tag="oops">oops</li>
+        <li class="popular_tag" data-tag="please">please</li>
+        <li class="popular_tag" data-tag="popcorn">popcorn</li>
+        <li class="popular_tag" data-tag="seriously">seriously</li>
+        <li class="popular_tag" data-tag="shrug">shrug</li>
+        <li class="popular_tag" data-tag="shut-up">shut up</li>
+        <li class="popular_tag" data-tag="sigh">sigh</li>
+        <li class="popular_tag" data-tag="slow-clap">slow clap</li>
+        <li class="popular_tag" data-tag="smh">smh</li>
+        <li class="popular_tag" data-tag="smile">smile</li>
+        <li class="popular_tag" data-tag="sorry">sorry</li>
+        <li class="popular_tag" data-tag="squee">squee</li>
+        <li class="popular_tag" data-tag="suck it">suck it</li>
+        <li class="popular_tag" data-tag="table-flip">table flip</li>
+        <li class="popular_tag" data-tag="thank-you">thank you</li>
+        <li class="popular_tag" data-tag="thumbs-down">thumbs down</li>
+        <li class="popular_tag" data-tag="thumbs-up">thumbs up</li>
+        <li class="popular_tag" data-tag="ugh">ugh</li>
+        <li class="popular_tag" data-tag="want">want</li>
+        <li class="popular_tag" data-tag="what">what</li>
+        <li class="popular_tag" data-tag="whatever">whatever</li>
+        <li class="popular_tag" data-tag="win">win</li>
+        <li class="popular_tag" data-tag="wink">wink</li>
+        <li class="popular_tag" data-tag="wow">wow</li>
+        <li class="popular_tag" data-tag="wtf">wtf</li>
+        <li class="popular_tag" data-tag="yawn">yawn</li>
+        <li class="popular_tag" data-tag="yes">yes</li>
+        <li class="popular_tag" data-tag="yolo">yolo</li>
+
+        <li class="subtitle">Emotions</li>
+        <li class="popular_tag" data-tag="angry">angry</li>
+        <li class="popular_tag" data-tag="bored">bored</li>
+        <li class="popular_tag" data-tag="disappointed">disappointed</li>
+        <li class="popular_tag" data-tag="drunk">drunk</li>
+        <li class="popular_tag" data-tag="embarassed">embarassed</li>
+        <li class="popular_tag" data-tag="excited">excited</li>
+        <li class="popular_tag" data-tag="frustrated">frustrated</li>
+        <li class="popular_tag" data-tag="happy">happy</li>
+        <li class="popular_tag" data-tag="hungry">hungry</li>
+        <li class="popular_tag" data-tag="inspired">inspired</li>
+        <li class="popular_tag" data-tag="lonely">lonely</li>
+        <li class="popular_tag" data-tag="love">love</li>
+        <li class="popular_tag" data-tag="make-it-rain">make it rain</li>
+        <li class="popular_tag" data-tag="meh">meh</li>
+        <li class="popular_tag" data-tag="nervous">nervous</li>
+        <li class="popular_tag" data-tag="pain">pain</li>
+        <li class="popular_tag" data-tag="reaction">reaction</li>
+        <li class="popular_tag" data-tag="relaxed">relaxed</li>
+        <li class="popular_tag" data-tag="sad">sad</li>
+        <li class="popular_tag" data-tag="sassy">sassy</li>
+        <li class="popular_tag" data-tag="scared">scared</li>
+        <li class="popular_tag" data-tag="shocked">shocked</li>
+        <li class="popular_tag" data-tag="sick">sick</li>
+        <li class="popular_tag" data-tag="stressed">stressed</li>
+        <li class="popular_tag" data-tag="surprised">surprised</li>
+        <li class="popular_tag" data-tag="suspicious">suspicious</li>
+        <li class="popular_tag" data-tag="tired">tired</li>
+        <li class="popular_tag" data-tag="unimpressed">unimpressed</li>
+
+        <li class="subtitle">Actions</li>
+        <li class="popular_tag" data-tag="breaking-up">breaking up</li>
+        <li class="popular_tag" data-tag="cooking">cooking</li>
+        <li class="popular_tag" data-tag="crying">crying</li>
+        <li class="popular_tag" data-tag="dancing">dancing</li>
+        <li class="popular_tag" data-tag="dreaming">dreaming</li>
+        <li class="popular_tag" data-tag="drinking">drinking</li>
+        <li class="popular_tag" data-tag="eating">eating</li>
+        <li class="popular_tag" data-tag="fainting">fainting</li>
+        <li class="popular_tag" data-tag="falling">falling</li>
+        <li class="popular_tag" data-tag="fighting">fighting</li>
+        <li class="popular_tag" data-tag="finger-guns">finger guns</li>
+        <li class="popular_tag" data-tag="laughing">laughing</li>
+        <li class="popular_tag" data-tag="pout">pout</li>
+        <li class="popular_tag" data-tag="running">running</li>
+        <li class="popular_tag" data-tag="singing">singing</li>
+        <li class="popular_tag" data-tag="slapping">slapping</li>
+        <li class="popular_tag" data-tag="sleeping">sleeping</li>
+        <li class="popular_tag" data-tag="smiling">smiling</li>
+        <li class="popular_tag" data-tag="smoking">smoking</li>
+        <li class="popular_tag" data-tag="sneezing">sneezing</li>
+        <li class="popular_tag" data-tag="spinning">spinning</li>
+        <li class="popular_tag" data-tag="swimming">swimming</li>
+        <li class="popular_tag" data-tag="tossing drink">tossing drink</li>
+        <li class="popular_tag" data-tag="waiting">waiting</li>
+
+        <li class="subtitle">Animals</li>
+        <li class="popular_tag" data-tag="cat">cat</li>
+        <li class="popular_tag" data-tag="dog">dog</li>
+        <li class="popular_tag" data-tag="panda">panda</li>
+        <li class="popular_tag" data-tag="penguin">penguin</li>
+        <li class="popular_tag" data-tag="sloth">sloth</li>
+
+        <li class="subtitle">Celebrities</li>
+        <li class="popular_tag" data-tag="benedict-cumberbatch">benedict cumberbatch</li>
+        <li class="popular_tag" data-tag="david-tennent">david tennent</li>
+        <li class="popular_tag" data-tag="emma-stone">emma stone</li>
+        <li class="popular_tag" data-tag="emma-watson">emma watson</li>
+        <li class="popular_tag" data-tag="jennifer-lawrence">jennifer lawrence</li>
+        <li class="popular_tag" data-tag="jim-carrey">jim carrey</li>
+        <li class="popular_tag" data-tag="kate-upton">kate upton</li>
+        <li class="popular_tag" data-tag="kristen-wiig">kristen wiig</li>
+        <li class="popular_tag" data-tag="leonardo-dicaprio">leonardo dicaprio</li>
+        <li class="popular_tag" data-tag="matt-smith">matt smith</li>
+        <li class="popular_tag" data-tag="robert-downey jr">robert downey jr</li>
+        <li class="popular_tag" data-tag="ryan-gosling">ryan gosling</li>
+        <li class="popular_tag" data-tag="selena-gomez">selena gomez</li>
+        <li class="popular_tag" data-tag="tom-hiddleston">tom hiddleston</li>
+
+        <li class="subtitle">TV</li>
+        <li class="popular_tag" data-tag="30-rock">30 rock</li>
+        <li class="popular_tag" data-tag="adventure-time">adventure time</li>
+        <li class="popular_tag" data-tag="arrested-development">arrested development</li>
+        <li class="popular_tag" data-tag="breaking-bad">breaking bad</li>
+        <li class="popular_tag" data-tag="community">community</li>
+        <li class="popular_tag" data-tag="doctor-who">doctor who</li>
+        <li class="popular_tag" data-tag="family-guy">family guy</li>
+        <li class="popular_tag" data-tag="futurama">futurama</li>
+        <li class="popular_tag" data-tag="game-of-thrones">game of thrones</li>
+        <li class="popular_tag" data-tag="mad-men">mad men</li>
+        <li class="popular_tag" data-tag="new-girl">new girl</li>
+        <li class="popular_tag" data-tag="orange-is-the-new-black">orange is the new black</li>
+        <li class="popular_tag" data-tag="parks-and-recreation">parks and recreation</li>
+        <li class="popular_tag" data-tag="pokemon">pokemon</li>
+        <li class="popular_tag" data-tag="sailor-moon">sailor moon</li>
+        <li class="popular_tag" data-tag="seinfeld">seinfeld</li>
+        <li class="popular_tag" data-tag="sherlock">sherlock</li>
+        <li class="popular_tag" data-tag="spongebob-squarepants">spongebob squarepants</li>
+        <li class="popular_tag" data-tag="star-trek">star trek</li>
+        <li class="popular_tag" data-tag="supernatural">supernatural</li>
+        <li class="popular_tag" data-tag="the-simpsons">the simpsons</li>
+        <li class="popular_tag" data-tag="twin-peaks">twin peaks</li>
+        <li class="popular_tag" data-tag="workaholics">workaholics</li>
+
+        <li class="subtitle">Movies</li>
+        <li class="popular_tag" data-tag="american-psycho">american psycho</li>
+        <li class="popular_tag" data-tag="batman">batman</li>
+        <li class="popular_tag" data-tag="despicable me">despicable me</li>
+        <li class="popular_tag" data-tag="disney">disney</li>
+        <li class="popular_tag" data-tag="harry potter">harry potter</li>
+        <li class="popular_tag" data-tag="iron-man">iron man</li>
+        <li class="popular_tag" data-tag="mean-girls">mean girls</li>
+        <li class="popular_tag" data-tag="minions">minions</li>
+        <li class="popular_tag" data-tag="pulp-fiction">pulp fiction</li>
+        <li class="popular_tag" data-tag="scarface">scarface</li>
+        <li class="popular_tag" data-tag="star-wars">star wars</li>
+
+        <li class="subtitle">Music</li>
+        <li class="popular_tag" data-tag="beyonce">beyonce</li>
+        <li class="popular_tag" data-tag="britney-spears">britney spears</li>
+        <li class="popular_tag" data-tag="justin-bieber">justin bieber</li>
+        <li class="popular_tag" data-tag="kanye-west">kanye west</li>
+        <li class="popular_tag" data-tag="katy-perry">katy perry</li>
+        <li class="popular_tag" data-tag="lady-gaga">lady gaga</li>
+        <li class="popular_tag" data-tag="lana-del-rey">lana del rey</li>
+        <li class="popular_tag" data-tag="miley-cyrus">miley cyrus</li>
+        <li class="popular_tag" data-tag="nicki-minaj">nicki minaj</li>
+        <li class="popular_tag" data-tag="one-direction">one direction</li>
+        <li class="popular_tag" data-tag="rihanna">rihanna</li>
+
+        <li class="subtitle">Popular Tags</li>
+        <li class="popular_tag" data-tag="90s">90s</li>
+        <li class="popular_tag" data-tag="beach">beach</li>
+        <li class="popular_tag" data-tag="beer">beer</li>
+        <li class="popular_tag" data-tag="birthday">birthday</li>
+        <li class="popular_tag" data-tag="black and white">black and white</li>
+        <li class="popular_tag" data-tag="cheeseburger">cheeseburger</li>
+        <li class="popular_tag" data-tag="christmas">christmas</li>
+        <li class="popular_tag" data-tag="clouds">clouds</li>
+        <li class="popular_tag" data-tag="coffee">coffee</li>
+        <li class="popular_tag" data-tag="computer">computer</li>
+        <li class="popular_tag" data-tag="football">football</li>
+        <li class="popular_tag" data-tag="galaxy">galaxy</li>
+        <li class="popular_tag" data-tag="glitch">glitch</li>
+        <li class="popular_tag" data-tag="halloween">halloween</li>
+        <li class="popular_tag" data-tag="homestuck">homestuck</li>
+        <li class="popular_tag" data-tag="money">money</li>
+        <li class="popular_tag" data-tag="party">party</li>
+        <li class="popular_tag" data-tag="pizza">pizza</li>
+        <li class="popular_tag" data-tag="rain">rain</li>
+        <li class="popular_tag" data-tag="robot">robot</li>
+        <li class="popular_tag" data-tag="scary">scary</li>
+        <li class="popular_tag" data-tag="summer">summer</li>
+        <li class="popular_tag" data-tag="vintage">vintage</li>
+        <li class="popular_tag" data-tag="zombie">zombie</li>
+      </ul>
+      <!-- /CATEGORIES -->
+
+
+
+    </div>
+    <!-- /CONTENT -->
+
+
+    <!-- FOOTER -->
+    <div id="footer">
+
+      <a id="categories-button" href="#"></a>
+
+      <!-- SEARCH BAR -->
+      <div id="searchbar">
+        <input id="searchbar-input" type="text" name="q" placeholder="Search all the GIFs: Trending GIFs"/>
+      </div>
+      <!-- /SEARCH BAR -->
+
+      <a id="search-button" href="#"></a>
+
+    </div>
+    <!-- /FOOTER -->
+
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  
+  <script type="text/javascript">
+    jQuery = $;
+  </script>
+
+  <!-- ext specific -->
+  <script src="js/newT.js"></script>
+  <script src="js/masonry.pkgd.min.js"></script>
+  <script src="js/GiphySearch.js"></script>
+    
+    <!--[if IE]>
+     <script src="js/jquery.xdomainrequest.min.js"></script> 
+    <![endif]-->
+
+  <script src="js/giphy_cms_ext.js"></script>
+  <script src="js/init.js"></script>
+
+</body>
+</html>

@@ -91,9 +91,21 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings'],
+            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | The prefix you wish to use with your voyager installation
+    |--------------------------------------------------------------------------
+    |
+    | specify the domain prefix you would like your users to visit in order
+    | to view the Voyager admin panel
+    |
+    */
+
+    'prefix' => 'admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -226,5 +238,14 @@ return [
     'additional_js' => [
         //'js/custom.js',
     ],
+
+    'googlemaps' => [
+         'key'    => env('GOOGLE_MAPS_KEY', ''),
+         'center' => [
+             'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
+             'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
+         ],
+         'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
+     ],
 
 ];

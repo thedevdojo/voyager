@@ -40,18 +40,18 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->seeInElement('h4', $this->user->name)
              ->seeInElement('.user-email', $this->user->email)
-             ->seeLink('Edit My Profile');
+             ->seeLink(__('voyager.profile.edit'));
     }
 
     public function testCanEditUserName()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click(__('voyager.profile.edit'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
-             ->press('Submit')
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->press(__('voyager.generic.save'))
+             ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
                  ['name' => 'New Awesome Name']
@@ -61,12 +61,12 @@ class UserProfileTest extends TestCase
     public function testCanEditUserEmail()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click(__('voyager.profile.edit'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
-             ->press('Submit')
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->press(__('voyager.generic.save'))
+             ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
                  ['email' => 'another@email.com']
@@ -76,12 +76,12 @@ class UserProfileTest extends TestCase
     public function testCanEditUserPassword()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click(__('voyager.profile.edit'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
-             ->press('Submit')
-             ->seePageIs($this->editPageForTheCurrentUser);
+             ->press(__('voyager.generic.save'))
+             ->seePageIs($this->listOfUsers);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('voyager-rocks', $updatedPassword));
@@ -90,12 +90,12 @@ class UserProfileTest extends TestCase
     public function testCanEditUserAvatar()
     {
         $this->visit(route('voyager.profile'))
-             ->click('Edit My Profile')
-             ->see('Edit User')
+             ->click(__('voyager.profile.edit'))
+             ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
-             ->press('Submit')
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->press(__('voyager.generic.save'))
+             ->seePageIs($this->listOfUsers)
              ->dontSeeInDatabase(
                  'users',
                  ['id' => 1, 'avatar' => 'user/default.png']
@@ -110,19 +110,22 @@ class UserProfileTest extends TestCase
         $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
         // without permissions to edit  users
-        $role->permissions()->attach([1, 3, 12, 27, 32]);
+        $role->permissions()->attach(\TCG\Voyager\Models\Permission::whereIn('key', [
+            'browse_admin',
+            'browse_users',
+        ])->get()->pluck('id')->all());
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
-            ->click('Edit My Profile')
-            ->see('Edit User')
-            ->seePageIs($editPageForTheCurrentUser)
-            ->type('another@email.com', 'email')
-            ->press('Submit')
-            ->seePageIs($editPageForTheCurrentUser)
-            ->seeInDatabase(
-                'users',
-                ['email' => 'another@email.com']
-            );
+             ->click(__('voyager.profile.edit'))
+             ->see(__('voyager.profile.edit_user'))
+             ->seePageIs($editPageForTheCurrentUser)
+             ->type('another@email.com', 'email')
+             ->press(__('voyager.generic.save'))
+             ->seePageIs($this->listOfUsers)
+             ->seeInDatabase(
+                 'users',
+                 ['email' => 'another@email.com']
+             );
     }
 
     protected function newImagePath()

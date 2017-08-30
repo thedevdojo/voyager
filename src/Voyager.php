@@ -38,6 +38,8 @@ class Voyager
 
     protected $users = [];
 
+    protected $viewLoadingEvents = [];
+
     protected $models = [
         'Category'   => Category::class,
         'DataRow'    => DataRow::class,
@@ -86,6 +88,24 @@ class Voyager
         $this->models[studly_case($name)] = $class;
 
         return $this;
+    }
+
+    public function view($name, array $parameters = [])
+    {
+        foreach (array_get($this->viewLoadingEvents, $name, []) as $event) {
+            $event($name, $parameters);
+        }
+
+        return view($name, $parameters);
+    }
+
+    public function onLoadingView($name, \Closure $closure)
+    {
+        if (!isset($this->viewLoadingEvents[$name])) {
+            $this->viewLoadingEvents[$name] = [];
+        }
+
+        $this->viewLoadingEvents[$name][] = $closure;
     }
 
     public function formField($row, $dateType, $dataTypeContent)
@@ -139,10 +159,19 @@ class Voyager
     public function setting($key, $default = null)
     {
         if ($this->setting_cache === null) {
-            $this->setting_cache = Setting::pluck('value', 'key');
+            foreach (Setting::all() as $setting) {
+                $keys = explode('.', $setting->key);
+                @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+            }
         }
 
-        return $this->setting_cache->get($key) ?: $default;
+        $parts = explode('.', $key);
+
+        if (count($parts) == 2) {
+            return @$this->setting_cache[$parts[0]][$parts[1]] ?: $default;
+        } else {
+            return @$this->setting_cache[$parts[0]] ?: $default;
+        }
     }
 
     public function image($file, $default = '')

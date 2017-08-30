@@ -23,6 +23,7 @@ class DataType extends Model
         'display_name_plural',
         'icon',
         'model_name',
+        'policy_name',
         'controller',
         'description',
         'generate_permissions',
@@ -59,6 +60,11 @@ class DataType extends Model
         return $this->rows()->where('delete', 1);
     }
 
+    public function lastRow()
+    {
+        return $this->hasMany(Voyager::modelClass('DataRow'))->orderBy('order', 'DESC')->first();
+    }
+
     public function setGeneratePermissionsAttribute($value)
     {
         $this->attributes['generate_permissions'] = $value ? 1 : 0;
@@ -74,8 +80,17 @@ class DataType extends Model
         try {
             DB::beginTransaction();
 
+            // Prepare data
+            foreach (['generate_permissions', 'server_side'] as $field) {
+                if (!isset($requestData[$field])) {
+                    $requestData[$field] = 0;
+                }
+            }
+
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields(array_get($requestData, 'name'));
+
+                $requestData = $this->getRelationships($requestData, $fields);
 
                 foreach ($fields as $field) {
                     $dataRow = $this->rows()->firstOrNew(['field' => $field]);
@@ -92,7 +107,7 @@ class DataType extends Model
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
                     if (!$dataRow->save()) {
-                        throw new \Exception('Failed to save field '.$field.", we're rolling back!");
+                        throw new \Exception(__('voyager.database.field_safe_failed', ['field' => $field]));
                     }
                 }
 
@@ -138,18 +153,55 @@ class DataType extends Model
         return $fields;
     }
 
+    public function getRelationships($requestData, &$fields)
+    {
+        if (isset($requestData['relationships'])) {
+            $relationships = $requestData['relationships'];
+            if (count($relationships) > 0) {
+                foreach ($relationships as $index => $relationship) {
+                    // Push the relationship on the allowed fields
+                    array_push($fields, $relationship);
+
+                    $relationship_column = $requestData['relationship_column_belongs_to_'.$relationship];
+                    if ($requestData['relationship_type_'.$relationship] == 'hasOne' || $requestData['relationship_type_'.$relationship] == 'hasMany') {
+                        $relationship_column = $requestData['relationship_column_'.$relationship];
+                    }
+
+                    // Build the relationship details
+                    $relationshipDetails = [
+                        'model'       => $requestData['relationship_model_'.$relationship],
+                        'table'       => $requestData['relationship_table_'.$relationship],
+                        'type'        => $requestData['relationship_type_'.$relationship],
+                        'column'      => $relationship_column,
+                        'key'         => $requestData['relationship_key_'.$relationship],
+                        'label'       => $requestData['relationship_label_'.$relationship],
+                        'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
+                        'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
+                    ];
+
+                    $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
+                }
+            }
+        }
+
+        return $requestData;
+    }
+
     public function fieldOptions()
     {
         $table = $this->name;
 
-        // Get BREAD fields + order
-        $orderedFields = $this->rows()->pluck('order', 'field');
-        $fieldOptions = SchemaManager::describeTable($table);
+        // Get ordered BREAD fields
+        $orderedFields = $this->rows()->pluck('field')->toArray();
 
-        $fieldOptions = $fieldOptions->sortBy(function ($elt) use ($orderedFields) {
-            return isset($orderedFields[$elt['field']])
-                    ? $orderedFields[$elt['field']] : PHP_INT_MAX;
-        });
+        $_fieldOptions = SchemaManager::describeTable($table)->toArray();
+
+        $fieldOptions = [];
+        $f_size = count($orderedFields);
+        for ($i = 0; $i < $f_size; $i++) {
+            $fieldOptions[$orderedFields[$i]] = $_fieldOptions[$orderedFields[$i]];
+        }
+        $fieldOptions = collect($fieldOptions);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
