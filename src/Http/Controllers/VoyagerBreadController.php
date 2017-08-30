@@ -336,10 +336,10 @@ class VoyagerBreadController extends Controller
 
     /**
      * Remove translations, images and files related to a BREAD item.
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Model $dataType
      * @param \Illuminate\Database\Eloquent\Model $data
-     * 
+     *
      * @return void
      */
     protected function cleanup($dataType, $data)
