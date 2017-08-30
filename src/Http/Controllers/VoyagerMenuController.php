@@ -22,7 +22,7 @@ class VoyagerMenuController extends Controller
     {
         $item = Voyager::model('MenuItem')->findOrFail($id);
 
-        $this->authorize('delete', $item);
+        $this->authorize('delete', $item->menu);
 
         $item->deleteAttributeTranslation('title');
 
@@ -38,7 +38,7 @@ class VoyagerMenuController extends Controller
 
     public function add_item(Request $request)
     {
-        $menu = app('MenuItem');
+        $menu = Voyager::model('Menu');
 
         $this->authorize('add', $menu);
 
@@ -88,7 +88,7 @@ class VoyagerMenuController extends Controller
 
         $menuItem = Voyager::model('MenuItem')->findOrFail($id);
 
-        $this->authorize('edit', $menuItem);
+        $this->authorize('edit', $menuItem->menu);
 
         if (is_bread_translatable($menuItem)) {
             $trans = $this->prepareMenuTranslations($data);

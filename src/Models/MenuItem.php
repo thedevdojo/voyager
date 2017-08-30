@@ -26,6 +26,10 @@ class MenuItem extends Model
             ->with('children');
     }
 
+    public function menu(){
+        return $this->belongsTo('TCG\Voyager\Models\Menu');
+    }
+
     public function link($absolute = false)
     {
         return $this->prepareLink($absolute, $this->route, $this->parameters, $this->url);
