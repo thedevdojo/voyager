@@ -343,7 +343,8 @@ class VoyagerBreadController extends Controller
      * 
      * @return void
      */
-    protected function cleanup($dataType, $data) {
+    protected function cleanup($dataType, $data)
+    {
         // Delete Translations, if present
         if (is_bread_translatable($data)) {
             $data->deleteAttributeTranslations($data->getTranslatableAttributes());
