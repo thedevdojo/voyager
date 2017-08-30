@@ -320,15 +320,14 @@ class VoyagerBreadController extends Controller
         }
 
         $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
-        $these = count($ids) > 1 ? 'these' : 'this';
 
-        $data = $data->destroy($ids)
+        $data = $data->destroy($id)
             ? [
-                'message'    => "Successfully Deleted {$displayName}",
+                'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => "Sorry it appears there was a problem deleting {$these} {$displayName}",
+                'message'    => __('voyager.generic.error_deleting')." {$displayName}",
                 'alert-type' => 'error',
             ];
 
