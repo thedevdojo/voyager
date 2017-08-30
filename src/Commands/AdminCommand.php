@@ -33,6 +33,12 @@ class AdminCommand extends Command
         ];
     }
 
+
+    public function handle()
+    {
+        $this->fire();
+    }
+
     /**
      * Execute the console command.
      *
