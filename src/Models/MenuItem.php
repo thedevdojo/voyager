@@ -26,7 +26,8 @@ class MenuItem extends Model
             ->with('children');
     }
 
-    public function menu(){
+    public function menu()
+    {
         return $this->belongsTo('TCG\Voyager\Models\Menu');
     }
 
