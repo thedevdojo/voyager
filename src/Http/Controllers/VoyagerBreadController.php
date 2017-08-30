@@ -305,8 +305,45 @@ class VoyagerBreadController extends Controller
         $model = $model::where('id', $id)->get();
         $this->authorize('delete', app($dataType->model_name));
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        // Init array of IDs
+        $ids = [];
+        if (empty($id)) {
+            // Bulk delete, get IDs from POST
+            $ids = explode(',', $request->ids);
+        } else {
+            // Single item delete, get ID from URL
+            $ids[] = $id;
+        }
+        foreach ($ids as $id) {
+            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $this->cleanup($dataType, $data);
+        }
 
+        $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
+
+        $data = $data->destroy($ids)
+            ? [
+                'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
+                'alert-type' => 'success',
+            ]
+            : [
+                'message'    => __('voyager.generic.error_deleting')." {$displayName}",
+                'alert-type' => 'error',
+            ];
+
+        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+    }
+
+    /**
+     * Remove translations, images and files related to a BREAD item.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $dataType
+     * @param \Illuminate\Database\Eloquent\Model $data
+     *
+     * @return void
+     */
+    protected function cleanup($dataType, $data)
+    {
         // Delete Translations, if present
         if (is_bread_translatable($data)) {
             $data->deleteAttributeTranslations($data->getTranslatableAttributes());
@@ -321,18 +358,6 @@ class VoyagerBreadController extends Controller
                 $this->deleteFileIfExists($file->download_link);
             }
         }
-
-        $data = $data->destroy($id)
-            ? [
-                'message'    => __('voyager.generic.successfully_deleted')." {$dataType->display_name_singular}",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => __('voyager.generic.error_deleting')." {$dataType->display_name_singular}",
-                'alert-type' => 'error',
-            ];
-
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
     }
 
     /**

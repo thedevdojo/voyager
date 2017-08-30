@@ -20,6 +20,7 @@ return [
         'auto_increment'         => 'Auto Increment',
         'browse'                 => 'Browse',
         'builder'                => 'Builder',
+        'bulk_delete_confirm'    => 'Yes, Delete These',
         'cancel'                 => 'Cancel',
         'choose_type'            => 'Choose Type',
         'click_here'             => 'Click Here',

@@ -29,6 +29,11 @@
                     @endif
                 @endfor
             </ol>
+            <ul class="navbar-form navbar-left">
+                <div class="form-group">
+                    @yield('bulk_actions')
+                </div>
+            </ul>
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown profile">

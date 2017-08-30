@@ -2,6 +2,10 @@
 
 @section('page_title', __('voyager.generic.viewing').' '.$dataType->display_name_plural)
 
+@section('bulk_actions')
+    @include('voyager::partials.bulk-delete')
+@stop
+
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-news"></i> {{ $dataType->display_name_plural }}
@@ -43,6 +47,7 @@
                         <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     @foreach($dataType->browseRows as $row)
                                     <th>{{ $row->display_name }}</th>
                                     @endforeach
@@ -52,6 +57,9 @@
                             <tbody>
                                 @foreach($dataTypeContent as $data)
                                 <tr>
+                                    <td>
+                                        <input type="checkbox" name="row_id" id="checkbox_{{ $data->id }}" value="{{ $data->id }}">
+                                    </td>
                                     @foreach($dataType->browseRows as $row)
                                     <td>
                                         @if($row->type == 'image')
