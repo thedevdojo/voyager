@@ -321,7 +321,7 @@ class VoyagerBreadController extends Controller
 
         $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
 
-        $data = $data->destroy($id)
+        $data = $data->destroy($ids)
             ? [
                 'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
                 'alert-type' => 'success',
