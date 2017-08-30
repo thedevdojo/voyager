@@ -91,13 +91,11 @@
                             <label for="parameters">{{ __('voyager.menu_builder.route_parameter') }}</label>
                             <textarea rows="3" class="form-control" id="m_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
                         </div>
-                        <label for="icon_class">{{ __('voyager.menu_builder.icon_class') }} <a
-<<<<<<< HEAD
-                                    href="{{ '/' . config('voyager.prefix') . '/compass#fonts' }}"
-=======
-                                    href="{{ voyager_asset('fonts/icons-reference.html') }}"
->>>>>>> master
-                                    target="_blank">{!! __('voyager.menu_builder.icon_class2') !!}</label>
+                        <label for="icon_class">{{ __('voyager.menu_builder.icon_class') }}
+                            <a href="{{ '/' . config('voyager.prefix') . '/compass#fonts' }}" target="_blank">
+                                {!! __('voyager.menu_builder.icon_class2') !!}
+                            </a>
+                        </label>
                         <input type="text" class="form-control" id="m_icon_class" name="icon_class"
                                placeholder="{{ __('voyager.menu_builder.icon_class_ph') }}"><br>
                         <label for="color">{{ __('voyager.menu_builder.color') }}</label>
