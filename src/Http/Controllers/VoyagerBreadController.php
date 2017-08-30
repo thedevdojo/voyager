@@ -273,8 +273,37 @@ class VoyagerBreadController extends Controller
         // Check permission
         Voyager::canOrFail('delete_'.$dataType->name);
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        // Init array of IDs
+        $ids = [];
+        if (empty($id)) {
+            // Bulk delete, get IDs from POST
+            $ids = explode(',', $request->ids);
+        } else {
+            // Single item delete, get ID from URL
+            $ids[] = $id;
+        }
+        foreach ($ids as $id) {
+            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $this->cleanup($dataType, $data);
+        }
 
+        $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
+        $these = count($ids) > 1 ? 'these' : 'this';
+
+        $data = $data->destroy($ids)
+            ? [
+                'message'    => "Successfully Deleted {$displayName}",
+                'alert-type' => 'success',
+            ]
+            : [
+                'message'    => "Sorry it appears there was a problem deleting {$these} {$displayName}",
+                'alert-type' => 'error',
+            ];
+
+        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+    }
+
+    protected function cleanup($dataType, $data) {
         // Delete Translations, if present
         if (is_bread_translatable($data)) {
             $data->deleteAttributeTranslations($data->getTranslatableAttributes());
@@ -300,17 +329,5 @@ class VoyagerBreadController extends Controller
                 }
             }
         }
-
-        $data = $data->destroy($id)
-            ? [
-                'message'    => "Successfully Deleted {$dataType->display_name_singular}",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => "Sorry it appears there was a problem deleting this {$dataType->display_name_singular}",
-                'alert-type' => 'error',
-            ];
-
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
     }
 }
