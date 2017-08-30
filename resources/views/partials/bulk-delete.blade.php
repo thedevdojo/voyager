@@ -7,8 +7,9 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="voyager-trash"></i> Are you sure you want to delete
-                    these {{ strtolower($dataType->display_name_plural) }}?</h4>
+                <h4 class="modal-title">
+                    <i class="voyager-trash"></i> {{ __('voyager.generic.are_you_sure_delete') }} <span id="bulk_delete_count"></span> <span id="bulk_delete_display_name"></span>?
+                </h4>
             </div>
             <div class="modal-body" id="bulk_delete_modal_body">
             </div>
@@ -18,9 +19,11 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="ids" id="bulk_delete_input" value="">
                     <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                             value="Yes, delete these {{ strtolower($dataType->display_name_plural) }}">
+                             value="{{ __('voyager.generic.bulk_delete_confirm') }} {{ strtolower($dataType->display_name_plural) }}">
                 </form>
-                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">
+                    {{ __('voyager.generic.cancel') }}
+                </button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -31,7 +34,8 @@ window.onload = function () {
     // Bulk delete selectors
     var $bulkDeleteBtn = $('#bulk_delete_btn');
     var $bulkDeleteModal = $('#bulk_delete_modal');
-    var $bulkDeleteModalBody = $('#bulk_delete_modal_body');
+    var $bulkDeleteCount = $('#bulk_delete_count');
+    var $bulkDeleteDisplayName = $('#bulk_delete_display_name');
     var $bulkDeleteInput = $('#bulk_delete_input');
     // Reposition modal to prevent z-index issues
     $bulkDeleteModal.appendTo('body');
@@ -39,18 +43,20 @@ window.onload = function () {
     $bulkDeleteBtn.click(function () {
         var ids = [];
         var $checkedBoxes = $('#dataTable input[type=checkbox]:checked');
-        if ($checkedBoxes.length) {
+        var count = $checkedBoxes.length;
+        if (count) {
             // Reset input value
             $bulkDeleteInput.val('');
-            // Gather IDs and build modal's message
-            var displayName = $checkedBoxes.length > 1 ? '{{ $dataType->display_name_plural }}' : '{{ $dataType->display_name_singular }}';
-            var html = '<div>You\'re about to delete ' + $checkedBoxes.length + ' ' + displayName;
+            // Deletion info
+            var displayName = count > 1 ? '{{ $dataType->display_name_plural }}' : '{{ $dataType->display_name_singular }}';
+            displayName = displayName.toLowerCase();
+            $bulkDeleteCount.html(count);
+            $bulkDeleteDisplayName.html(displayName);
+            // Gather IDs
             $.each($checkedBoxes, function () {
                 var value = $(this).val();
                 ids.push(value);
             })
-            html += '</div>';
-            $bulkDeleteModalBody.html(html);
             // Set input value
             $bulkDeleteInput.val(ids);
             // Show modal
