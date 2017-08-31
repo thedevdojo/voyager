@@ -25,7 +25,7 @@
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body table-responsive">
-                        @if (isset($dataType->server_side) && $dataType->server_side)
+                        @if ($isServerSide)
                             <form method="get">
                                 <div id="search-input">
                                     <select id="search_key" name="key">
@@ -53,7 +53,22 @@
                                 <tr>
                                     <th></th>
                                     @foreach($dataType->browseRows as $row)
-                                    <th>{{ $row->display_name }}</th>
+                                    <th>
+                                        @if ($isServerSide)
+                                            <a href="{{ $row->sortByUrl() }}">
+                                        @endif
+                                        {{ $row->display_name }}
+                                        @if ($isServerSide)
+                                            @if ($row->isCurrentSortField())
+                                                @if (!isset($_GET['sort_order']) || $_GET['sort_order'] == 'asc')
+                                                    <i class="voyager-angle-up pull-right"></i>
+                                                @else
+                                                    <i class="voyager-angle-down pull-right"></i>
+                                                @endif
+                                            @endif
+                                            </a>
+                                        @endif
+                                    </th>
                                     @endforeach
                                     <th class="actions">{{ __('voyager.generic.actions') }}</th>
                                 </tr>
@@ -166,7 +181,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        @if (isset($dataType->server_side) && $dataType->server_side)
+                        @if ($isServerSide)
                             <div class="pull-left">
                                 <div role="status" class="show-res" aria-live="polite">{{ trans_choice(
                                     'voyager.generic.showing_entries', $dataTypeContent->total(), [
@@ -176,7 +191,11 @@
                                     ]) }}</div>
                             </div>
                             <div class="pull-right">
-                                {{ $dataTypeContent->appends(['s' => $search])->links() }}
+                                {{ $dataTypeContent->appends([
+                                    's' => $search,
+                                    'order_by' => $orderBy,
+                                    'sort_order' => $sortOrder
+                                ])->links() }}
                             </div>
                         @endif
                     </div>
