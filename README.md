@@ -1,5 +1,4 @@
 <p><strong>Quick Note.</strong> Laravel 5.5 just got released and we will be releasing Voyager 1.0 very soon, but in the meantime you will need to use Laravel 5.4 to install Voyager 0.11</p>
-<p>If you do want to try out the latest version, you can do a `laravel new folder_name --dev` and then `composer require tcg/voyager dev-master`</p>
 <h3>1.0 coming out real soon 🎉</h3>
 <p align="center"><a href="https://the-control-group.github.io/voyager/" target="_blank"><img width="400" src="https://s3.amazonaws.com/thecontrolgroup/voyager.png"></a></p>
 
