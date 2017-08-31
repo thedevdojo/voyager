@@ -32,7 +32,7 @@ class DataRow extends Model
     /**
      * Check if this field is the current filter.
      *
-     * @return boolean True if this is the current filter, false otherwise
+     * @return bool True if this is the current filter, false otherwise
      */
     public function isCurrentSortField()
     {
