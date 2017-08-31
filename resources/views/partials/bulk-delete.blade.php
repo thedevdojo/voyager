@@ -1,4 +1,4 @@
-<a class="btn btn-danger" id="bulk_delete_btn"><i class="voyager-trash"></i> Bulk delete</a>
+<a class="btn btn-danger" id="bulk_delete_btn"><i class="voyager-trash"></i> {{ __('voyager.generic.bulk_delete') }}</a>
 
 {{-- Bulk delete modal --}}
 <div class="modal modal-danger fade" tabindex="-1" id="bulk_delete_modal" role="dialog">
@@ -63,7 +63,7 @@ window.onload = function () {
             $bulkDeleteModal.modal('show');
         } else {
             // No row selected
-            toastr.warning('You haven\'t selected anything to delete');
+            toastr.warning('{{ __('voyager.generic.bulk_delete_nothing') }}');
         }
     });
 }
