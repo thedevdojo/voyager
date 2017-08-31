@@ -56,7 +56,7 @@ class VoyagerBreadController extends Controller
             }
 
             if ($model->timestamps) {
-                $dataTypeContent = call_user_func([$query->latest(), $getter]);
+                $dataTypeContent = call_user_func([$query->latest($model::CREATED_AT), $getter]);
             } else {
                 $dataTypeContent = call_user_func([$query->with($relationships)->orderBy('id', 'DESC'), $getter]);
             }
