@@ -2,20 +2,21 @@
 
 @section('page_title', __('voyager.generic.viewing').' '.$dataType->display_name_plural)
 
-@section('bulk_actions')
-    @include('voyager::partials.bulk-delete')
-@stop
-
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
+    </h1>
+    <div class="container-fluid">
         @can('add',app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
                 <i class="voyager-plus"></i> {{ __('voyager.generic.add_new') }}
             </a>
         @endcan
-    </h1>
-    @include('voyager::multilingual.language-selector')
+        @can('delete',app($dataType->model_name))
+            @include('voyager::partials.bulk-delete')
+        @endcan
+        @include('voyager::multilingual.language-selector')
+    </div>
 @stop
 
 @section('content')
