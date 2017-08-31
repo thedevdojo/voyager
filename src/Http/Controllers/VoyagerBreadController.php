@@ -57,13 +57,13 @@ class VoyagerBreadController extends Controller
                 $query->where($search->key, $search_filter, $search_value);
             }
 
-            if ($orderBy && in_array($orderBy, $dataType->fields()))  {
+            if ($orderBy && in_array($orderBy, $dataType->fields())) {
                 $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'DESC';
                 $dataTypeContent = call_user_func([
                     $query->with($relationships)->orderBy($orderBy, $querySortOrder),
                     $getter
                 ]);
-            } else if ($model->timestamps) {
+            } elseif ($model->timestamps) {
                 $dataTypeContent = call_user_func([$query->latest($model::CREATED_AT), $getter]);
             } else {
                 $dataTypeContent = call_user_func([$query->with($relationships)->orderBy('id', 'DESC'), $getter]);

@@ -31,6 +31,7 @@ class DataRow extends Model
 
     /**
      * Check if this field is the current filter
+     *
      * @return boolean True if this is the current filter, false otherwise
      */
     public function isCurrentSortField()
@@ -40,6 +41,7 @@ class DataRow extends Model
 
     /**
      * Build the URL to sort data type by this field
+     *
      * @return string Built URL
      */
     public function sortByUrl()
@@ -52,6 +54,6 @@ class DataRow extends Model
             $params['sort_order'] = 'desc';
         }
         $params['order_by'] = $this->field;
-        return url()->current() . '?' . http_build_query($params);
+        return url()->current().'?'.http_build_query($params);
     }
 }
