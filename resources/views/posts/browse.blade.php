@@ -2,14 +2,18 @@
 
 @section('page_title', __('voyager.generic.viewing').' '.$dataType->display_name_plural)
 
+@section('bulk_actions')
+    @include('voyager::partials.bulk-delete')
+@stop
+
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-news"></i> {{ $dataType->display_name_plural }}
-        @if (Voyager::can('add_'.$dataType->name))
+        @can('add',app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
                 <i class="voyager-plus"></i> {{ __('voyager.generic.add_new') }}
             </a>
-        @endif
+        @endcan
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
@@ -43,6 +47,7 @@
                         <table id="dataTable" class="table table-hover">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     @foreach($dataType->browseRows as $row)
                                     <th>{{ $row->display_name }}</th>
                                     @endforeach
@@ -52,6 +57,9 @@
                             <tbody>
                                 @foreach($dataTypeContent as $data)
                                 <tr>
+                                    <td>
+                                        <input type="checkbox" name="row_id" id="checkbox_{{ $data->id }}" value="{{ $data->id }}">
+                                    </td>
                                     @foreach($dataType->browseRows as $row)
                                     <td>
                                         @if($row->type == 'image')
@@ -68,21 +76,21 @@
                                     </td>
                                     @endforeach
                                     <td class="no-sort no-click">
-                                        @if (Voyager::can('delete_'.$dataType->name))
+                                        @can('delete', $data)
                                             <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
                                             </div>
-                                        @endif
-                                        @if (Voyager::can('edit_'.$dataType->name))
+                                        @endcan
+                                        @can('edit', $data)
                                             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" class="btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
                                             </a>
-                                        @endif
-                                        @if (Voyager::can('read_'.$dataType->name))
+                                        @endcan
+                                        @can('read', $data)
                                             <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" class="btn-sm btn-warning pull-right">
                                                 <i class="voyager-eye"></i> {{ __('voyager.generic.view') }}
                                             </a>
-                                        @endif
+                                        @endcan
                                     </td>
                                 </tr>
                                 @endforeach

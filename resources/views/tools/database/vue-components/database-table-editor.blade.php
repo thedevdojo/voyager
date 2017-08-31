@@ -121,7 +121,7 @@
 
             // Display errors
             @if(Session::has('alerts'))
-                displayAlerts(alerts, bootstrapAlerter({dismissible: true}), 'error');
+                helpers.displayAlerts(alerts, helpers.bootstrapAlerter({dismissible: true}), 'error');
             @endif
         },
         computed: {

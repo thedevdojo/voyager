@@ -50,7 +50,7 @@ class UserProfileTest extends TestCase
              ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
-             ->press(__('voyager.generic.submit'))
+             ->press(__('voyager.generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
@@ -65,7 +65,7 @@ class UserProfileTest extends TestCase
              ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
-             ->press(__('voyager.generic.submit'))
+             ->press(__('voyager.generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
@@ -80,7 +80,7 @@ class UserProfileTest extends TestCase
              ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
-             ->press(__('voyager.generic.submit'))
+             ->press(__('voyager.generic.save'))
              ->seePageIs($this->listOfUsers);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
@@ -94,7 +94,7 @@ class UserProfileTest extends TestCase
              ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
-             ->press(__('voyager.generic.submit'))
+             ->press(__('voyager.generic.save'))
              ->seePageIs($this->listOfUsers)
              ->dontSeeInDatabase(
                  'users',
@@ -110,14 +110,17 @@ class UserProfileTest extends TestCase
         $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
         // without permissions to edit  users
-        $role->permissions()->attach([1, 3, 13, 21, 28, 33]);
+        $role->permissions()->attach(\TCG\Voyager\Models\Permission::whereIn('key', [
+            'browse_admin',
+            'browse_users',
+        ])->get()->pluck('id')->all());
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
              ->click(__('voyager.profile.edit'))
              ->see(__('voyager.profile.edit_user'))
              ->seePageIs($editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
-             ->press(__('voyager.generic.submit'))
+             ->press(__('voyager.generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',

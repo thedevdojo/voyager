@@ -14,6 +14,7 @@ use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Types\Type;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Models\DataRow;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
 
@@ -286,8 +287,10 @@ class VoyagerDatabaseController extends Controller
         }
 
         $isModelTranslatable = is_bread_translatable($dataType);
+        $tables = SchemaManager::listTableNames();
+        $dataTypeRelationships = Voyager::model('DataRow')->where('data_type_id', '=', $dataType->id)->where('type', '=', 'relationship')->get();
 
-        return Voyager::view('voyager::tools.database.edit-add-bread', compact('dataType', 'fieldOptions', 'isModelTranslatable'));
+        return Voyager::view('voyager::tools.database.edit-add-bread', compact('dataType', 'fieldOptions', 'isModelTranslatable', 'tables', 'dataTypeRelationships'));
     }
 
     public function updateBread(Request $request, $id)
@@ -337,5 +340,106 @@ class VoyagerDatabaseController extends Controller
         }
 
         return redirect()->route('voyager.database.index')->with($data);
+    }
+
+    public function addRelationship(Request $request)
+    {
+        $relationshipField = $this->getRelationshipField($request);
+
+        if (!class_exists($request->relationship_model)) {
+            return back()->with([
+                    'message'    => 'Model Class '.$request->relationship_model.' does not exist. Please create Model before creating relationship.',
+                    'alert-type' => 'error',
+                ]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $relationship_column = $request->relationship_column_belongs_to;
+            if ($request->relationship_type == 'hasOne' || $request->relationship_type == 'hasMany') {
+                $relationship_column = $request->relationship_column;
+            }
+
+            // Build the relationship details
+            $relationshipDetails = json_encode([
+                'model'       => $request->relationship_model,
+                'table'       => $request->relationship_table,
+                'type'        => $request->relationship_type,
+                'column'      => $relationship_column,
+                'key'         => $request->relationship_key,
+                'label'       => $request->relationship_label,
+                'pivot_table' => $request->relationship_pivot,
+                'pivot'       => ($request->relationship_type == 'belongsToMany') ? '1' : '0',
+            ]);
+
+            $newRow = new DataRow();
+
+            $newRow->data_type_id = $request->data_type_id;
+            $newRow->field = $relationshipField;
+            $newRow->type = 'relationship';
+            $newRow->display_name = $request->relationship_table;
+            $newRow->required = 0;
+
+            foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
+                $newRow->{$check} = 1;
+            }
+
+            $newRow->details = $relationshipDetails;
+            $newRow->order = intval(Voyager::model('DataType')->find($request->data_type_id)->lastRow()->order) + 1;
+
+            if (!$newRow->save()) {
+                return back()->with([
+                    'message'    => 'Error saving new relationship row for '.$request->relationship_table,
+                    'alert-type' => 'error',
+                ]);
+            }
+
+            DB::commit();
+
+            return back()->with([
+                'message'    => 'Successfully created new relationship for '.$request->relationship_table,
+                'alert-type' => 'success',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with([
+                'message'    => 'Error creating new relationship: '.$e->getMessage(),
+                'alert-type' => 'error',
+            ]);
+        }
+    }
+
+    private function getRelationshipField($request)
+    {
+        // We need to make sure that we aren't creating an already existing field
+
+        $dataType = Voyager::model('DataType')->find($request->data_type_id);
+
+        $field = str_singular($dataType->name).'_'.$request->relationship_type.'_'.str_singular($request->relationship_table).'_relationship';
+
+        $relationshipFieldOriginal = $relationshipField = strtolower($field);
+
+        $existingRow = Voyager::model('DataRow')->where('field', '=', $relationshipField)->first();
+        $index = 1;
+
+        while (isset($existingRow->id)) {
+            $relationshipField = $relationshipFieldOriginal.'_'.$index;
+            $existingRow = Voyager::model('DataRow')->where('field', '=', $relationshipField)->first();
+            $index += 1;
+        }
+
+        return $relationshipField;
+    }
+
+    public function deleteRelationship($id)
+    {
+        Voyager::model('DataRow')->destroy($id);
+
+        return back()->with([
+                'message'    => 'Successfully deleted relationship.',
+                'alert-type' => 'success',
+            ]);
     }
 }

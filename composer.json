@@ -15,12 +15,13 @@
         }
     ],
     "require": {
-        "illuminate/support": "~5.3.0|~5.4.0|5.5.x-dev",
+        "illuminate/support": "~5.3.0|~5.4.0|~5.5.0|5.5.x-dev",
         "intervention/image": "^2.4",
         "doctrine/dbal": "^2.5",
         "larapack/doctrine-support": "~0.1.2",
         "arrilot/laravel-widgets": "^3.7",
-        "league/flysystem": "~1.0.41"
+        "league/flysystem": "~1.0.41",
+        "larapack/voyager-hooks": "~1.0.2"
     },
     "require-dev": {
         "phpunit/phpcov": "~3.0|dev-master",

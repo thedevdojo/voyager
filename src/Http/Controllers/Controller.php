@@ -47,6 +47,10 @@ abstract class Controller extends BaseController
         foreach ($rows as $row) {
             $options = json_decode($row->details);
 
+            if ($row->type == 'relationship') {
+                $row->field = @$options->column;
+            }
+
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
             /*
@@ -64,23 +68,23 @@ abstract class Controller extends BaseController
             if (is_null($content)) {
 
                 // If the image upload is null and it has a current image keep the current image
-                if ($row->field == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                if ($row->type == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
 
                 // If the file upload is null and it has a current file keep the current file
-                if ($row->field == 'file') {
+                if ($row->type == 'file') {
                     $content = $data->{$row->field};
                 }
 
-                if ($row->field == 'password') {
+                if ($row->type == 'password') {
                     $content = $data->{$row->field};
                 }
             }
 
-            if ($row->type == 'select_multiple' && property_exists($options, 'relationship')) {
+            if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
-                $multi_select[] = ['row' => $row->field, 'content' => $content];
+                $multi_select[] = ['model' => $options->model, 'content' => $content];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -94,7 +98,7 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->{$sync_data['row']}()->sync($sync_data['content']);
+            $data->belongsToMany($sync_data['model'])->sync($sync_data['content']);
         }
 
         return $data;
@@ -157,11 +161,13 @@ abstract class Controller extends BaseController
             /********** FILE TYPE **********/
             case 'file':
                 if ($files = $request->file($row->field)) {
+                    if (!is_array($files)) {
+                        $files = [$files];
+                    }
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('F').date('Y').'/';
-                        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
                         $file->storeAs(
                             $path,
                             $filename.'.'.$file->getClientOriginalExtension(),
@@ -375,6 +381,10 @@ abstract class Controller extends BaseController
                 }
                 break;
 
+            case 'relationship':
+                    return $request->input($row->field);
+                break;
+
             /********** ALL OTHER TEXT TYPE **********/
             default:
                 $value = $request->input($row->field);
@@ -395,4 +405,46 @@ abstract class Controller extends BaseController
             Storage::disk(config('voyager.storage.disk'))->delete($path);
         }
     }
+
+    // public function handleRelationshipContent($row, $content){
+
+    //     $options = json_decode($row->details);
+
+    //     switch ($options->type) {
+    //         /********** PASSWORD TYPE **********/
+    //         case 'belongsToMany':
+
+    //             // $pivotContent = [];
+    //             // // Read all values for fields in pivot tables from the request
+    //             // foreach ($options->relationship->editablePivotFields as $pivotField) {
+    //             //     if (!isset($pivotContent[$pivotField])) {
+    //             //         $pivotContent[$pivotField] = [];
+    //             //     }
+    //             //     $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
+    //             // }
+    //             // // Create a new content array for updating pivot table
+    //             // $newContent = [];
+    //             // foreach ($content as $contentIndex => $contentValue) {
+    //             //     $newContent[$contentValue] = [];
+    //             //     foreach ($pivotContent as $pivotContentKey => $value) {
+    //             //         $newContent[$contentValue][$pivotContentKey] = $value[$contentIndex];
+    //             //     }
+    //             // }
+    //             // $content = $newContent;
+
+    //                 return [1];
+
+    //             break;
+
+    //         case 'hasMany':
+
+    //         default:
+
+    //             return $content;
+
+    //     }
+
+    //     return $content;
+
+    // }
 }

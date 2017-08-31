@@ -159,10 +159,19 @@ class Voyager
     public function setting($key, $default = null)
     {
         if ($this->setting_cache === null) {
-            $this->setting_cache = Setting::pluck('value', 'key');
+            foreach (Setting::all() as $setting) {
+                $keys = explode('.', $setting->key);
+                @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+            }
         }
 
-        return $this->setting_cache->get($key) ?: $default;
+        $parts = explode('.', $key);
+
+        if (count($parts) == 2) {
+            return @$this->setting_cache[$parts[0]][$parts[1]] ?: $default;
+        } else {
+            return @$this->setting_cache[$parts[0]] ?: $default;
+        }
     }
 
     public function image($file, $default = '')
