@@ -317,7 +317,13 @@ abstract class Controller extends BaseController
                             $constraint->upsize();
                         })->encode($file->getClientOriginalExtension(), 75);
 
-                    Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
+                    if ($this->is_animated_gif($file)) {
+                        Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
+                        $fullPathStatic = $path.$filename.'-static.'.$file->getClientOriginalExtension();
+                        Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string) $image, 'public');
+                    } else {
+                        Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
+                    }
 
                     if (isset($options->thumbnails)) {
                         foreach ($options->thumbnails as $thumbnails) {
@@ -397,6 +403,33 @@ abstract class Controller extends BaseController
         }
 
         return $content;
+    }
+
+    private function is_animated_gif($filename)
+    {
+        $raw = file_get_contents($filename);
+
+        $offset = 0;
+        $frames = 0;
+        while ($frames < 2) {
+            $where1 = strpos($raw, "\x00\x21\xF9\x04", $offset);
+            if ($where1 === false) {
+                break;
+            } else {
+                $offset = $where1 + 1;
+                $where2 = strpos($raw, "\x00\x2C", $offset);
+                if ($where2 === false) {
+                    break;
+                } else {
+                    if ($where1 + 8 == $where2) {
+                        $frames++;
+                    }
+                    $offset = $where2 + 1;
+                }
+            }
+        }
+
+        return $frames > 1;
     }
 
     public function deleteFileIfExists($path)
