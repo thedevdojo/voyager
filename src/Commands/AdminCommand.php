@@ -38,7 +38,7 @@ class AdminCommand extends Command
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         // Get or create user
         $user = $this->getUser(
