@@ -53,7 +53,7 @@ class ControllersCommand extends Command
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         $stub = $this->getStub();
         $files = $this->filesystem->files(base_path('vendor/tcg/voyager/src/Http/Controllers'));
