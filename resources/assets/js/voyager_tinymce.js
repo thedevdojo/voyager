@@ -1,7 +1,3 @@
-function setImageValue(url){
-  $('.mce-btn.mce-open').parent().find('.mce-textbox').val(url);
-}
-
 $(document).ready(function(){
 
   $.ajaxSetup({

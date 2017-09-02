@@ -71,6 +71,11 @@ var bootstrapAlerter = function(customOptions) {
     };
 }
 
+var setImageValue = function(url){
+  $('.mce-btn.mce-open').parent().find('.mce-textbox').val(url);
+}
+
+exports.setImageValue = setImageValue;
 exports.displayAlert = displayAlert;
 exports.displayAlerts = displayAlerts;
 exports.bootstrapAlerter = bootstrapAlerter;
