@@ -109,7 +109,7 @@
 
 				@php
 					$relationshipData = (isset($data)) ? $data : $dataTypeContent;
-	            	$selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : array(); //{camel_case($row->field)}()->pluck($options->relationship->key)->all() : array();
+	            	$selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : array();
 	            @endphp
 
 	            @if($view == 'browse')
@@ -139,7 +139,7 @@
 				<select class="form-control select2" name="{{ $relationshipField }}[]" multiple>
 					
 			            @php 
-			            	$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model)->pluck($options->key)->all() : array(); //{camel_case($row->field)}()->pluck($options->relationship->key)->all() : array(); ?>
+			            	$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model)->pluck($options->key)->all() : array();
 			                $relationshipOptions = app($options->model)->all();
 			            @endphp
 
