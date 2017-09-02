@@ -372,6 +372,7 @@ abstract class Controller extends BaseController
                         $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
                     }
                 }
+                $content = $request->input($row->field);
                 break;
 
             /********** COORDINATES TYPE **********/
