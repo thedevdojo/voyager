@@ -5,7 +5,6 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
 use TCG\Voyager\Facades\Voyager;
@@ -31,8 +30,18 @@ class VoyagerController extends Controller
         $resizeHeight = null;
         $slug = $request->input('type_slug');
         $file = $request->file('image');
-        $filename = Str::random(20);
-        $fullPath = $slug.'/'.date('F').date('Y').'/'.$filename.'.'.$file->getClientOriginalExtension();
+
+        $path = $slug.'/'.date('F').date('Y').'/';
+
+        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+        $filename_counter = 1;
+
+        // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+        }
+
+        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
         $ext = $file->guessClientExtension();
 
@@ -56,7 +65,7 @@ class VoyagerController extends Controller
         }
 
         // echo out script that TinyMCE can handle and update the image in the editor
-        return "<script> parent.setImageValue('".Voyager::image($fullFilename)."'); </script>";
+        return "<script> parent.helpers.setImageValue('".Voyager::image($fullFilename)."'); </script>";
     }
 
     public function profile()

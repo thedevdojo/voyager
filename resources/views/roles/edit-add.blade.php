@@ -132,6 +132,4 @@
             });
         });
     </script>
-    <script src="{{ voyager_asset('lib/js/tinymce/tinymce.min.js') }}"></script>
-    <script src="{{ voyager_asset('js/voyager_tinymce.js') }}"></script>
 @stop
