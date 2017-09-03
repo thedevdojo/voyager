@@ -26,7 +26,7 @@
     "require-dev": {
         "phpunit/phpcov": "~3.0|dev-master",
         "phpunit/phpunit": "~5.7.14|~6.1",
-        "laravel/framework": "~5.4.0|~5.5.0",
+        "laravel/framework": "~5.4.36|~5.5.0",
         "orchestra/testbench": "~3.4.0|~3.5.0",
         "orchestra/database": "~3.4.0|~3.5.0",
         "orchestra/testbench-core": "~3.4.0|~3.5.0",
