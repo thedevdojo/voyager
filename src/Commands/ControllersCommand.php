@@ -48,6 +48,11 @@ class ControllersCommand extends Command
         parent::__construct();
     }
 
+    public function fire()
+    {
+        return $this->handle();
+    }
+
     /**
      * Execute the console command.
      *
