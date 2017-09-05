@@ -280,11 +280,7 @@ class VoyagerDatabaseController extends Controller
 
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
-        try {
-            $fieldOptions = isset($dataType) ? $dataType->fieldOptions() : SchemaManager::describeTable($dataType->name);
-        } catch (Exception $e) {
-            $fieldOptions = SchemaManager::describeTable($dataType->name);
-        }
+        $fieldOptions = SchemaManager::describeTable($dataType->name);
 
         $isModelTranslatable = is_bread_translatable($dataType);
         $tables = SchemaManager::listTableNames();

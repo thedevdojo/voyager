@@ -5,6 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
@@ -176,7 +177,7 @@ class Voyager
 
     public function image($file, $default = '')
     {
-        if (!empty($file) && Storage::disk(config('voyager.storage.disk'))->exists($file)) {
+        if (!empty($file)) {
             return Storage::disk(config('voyager.storage.disk'))->url($file);
         }
 
