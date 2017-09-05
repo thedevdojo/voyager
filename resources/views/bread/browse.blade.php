@@ -225,11 +225,13 @@
     <script>
         $(document).ready(function () {
             @if (!$dataType->server_side)
-                var table = $('#dataTable').DataTable({
-                    "order": [],
-                    "language": {!! json_encode(__('voyager.datatable'), true) !!}
-                    @if(config('dashboard.data_tables.responsive')), responsive: true @endif
-                });
+                var table = $('#dataTable').DataTable({!! json_encode(
+                    array_merge([
+                        "order" => [],
+                        "language" => __('voyager.datatable'),
+                    ],
+                    config('voyager.dashboard.data_tables', []))
+                , true) !!});
             @else
                 $('#search-input select').select2({
                     minimumResultsForSearch: Infinity
