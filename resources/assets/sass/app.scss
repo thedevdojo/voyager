@@ -660,6 +660,7 @@ a:hover {
   padding-left:75px;
   margin-bottom:0px;
   font-weight:700;
+  margin-right:20px;
 }
 .page-title > i{
   font-size:36px;
@@ -675,7 +676,14 @@ a:hover {
   height: 40px;
   line-height: 40px;
   vertical-align: middle; }
-
+.voyager .btn-add-new, .voyager #bulk_delete_btn{
+  margin-top:2px;
+}
+@media (max-width: 768px) {
+  .btn-add-new span, #bulk_delete_btn span{
+    display:none;
+  }
+}
 .sub-title {
   font-family: 'Open Sans', sans-serif; }
 .sub-title > * {
