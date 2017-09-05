@@ -230,7 +230,7 @@
                         "order" => [],
                         "language" => __('voyager.datatable'),
                     ],
-                    config('voyager.dashboard.data_tables'))
+                    config('voyager.dashboard.data_tables', []))
                 , true) !!});
             @else
                 $('#search-input select').select2({
