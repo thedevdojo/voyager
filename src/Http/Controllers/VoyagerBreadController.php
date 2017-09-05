@@ -70,7 +70,9 @@ class VoyagerBreadController extends Controller
         }
 
         // Check if BREAD is Translatable
-        $isModelTranslatable = is_bread_translatable($model);
+        if (($isModelTranslatable = is_bread_translatable($model))) {
+            $dataTypeContent->load('translations');
+        }
 
         $view = 'voyager::bread.browse';
 
