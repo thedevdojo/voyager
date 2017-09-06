@@ -1,3 +1,12 @@
+<?php
+    $types = [
+        'number' => ['smallint', 'mediumint', 'integer', 'float', 'double', 'decimal'],
+        'date' => ['datetime', 'date'],
+        'textarea' => ['bigtext', 'text', 'mediumtext', 'longtext'],
+        'checkbox' => ['tinyint'],
+        'text' => ['varchar', 'char']
+    ]
+?>
 @extends('voyager::master')
 
 @section('page_title', __('voyager.database.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]))
@@ -238,7 +247,14 @@
                                         @else
                                             <select name="field_input_type_{{ $data['field'] }}">
                                                 @foreach (Voyager::formFields() as $formField)
-                                                    <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
+                                                    <option value="{{ $formField->getCodename() }}" 
+                                                    @if (isset($dataRow->type) && $dataRow->type == $formField->getCodename())
+                                                    {{ 'selected' }}
+                                                    @elseif (!isset($dataRow->type) && isset($types[$formField->getCodename()]))
+                                                        @if (in_array($data['type'], $types[$formField->getCodename()]))
+                                                            {{ 'selected' }}
+                                                        @endif
+                                                    @endif>
                                                         {{ $formField->getName() }}
                                                     </option>
                                                 @endforeach
@@ -254,7 +270,31 @@
                                         <div class="alert alert-danger validation-error">
                                             {{ __('voyager.json.invalid') }}
                                         </div>
-                                        <textarea id="json-input-{{ $data['field'] }}" class="resizable-editor" data-editor="json" name="field_details_{{ $data['field'] }}">@if(isset($dataRow->details)){{ $dataRow->details }}@endif</textarea>
+                                        <?php
+                                        $detail = !empty($dataRow->details) ? json_decode($dataRow->details) : new \stdClass;
+                                        if (!isset($detail->validation)) {
+                                                $detail->validation = new \stdClass;
+                                        }
+                                        $rule = "";
+                                        if (isset($detail->validation->rule)) {
+                                            $rule = $detail->validation->rule;
+                                        }
+                                        $rules = empty($rule) ? [] : explode("|", $rule);
+                                        if ($data['null'] == 'NO' && !$data['autoincrement']) {
+                                            if (strpos($rule, "required") === false) {
+                                                $rules[] = 'required';
+                                            }
+                                        }
+                                        if (in_array($data['type'], $types['number'])) {
+                                            if (strpos($rule, "numeric") === false) {
+                                                $rules[] = 'numeric';
+                                            }
+                                        }
+                                        if (count($rules) > 0) {
+                                            $detail->validation->rule = implode("|", $rules);
+                                        }
+                                        ?>
+                                        <textarea id="json-input-{{ $data['field'] }}" class="resizable-editor" data-editor="json" name="field_details_{{ $data['field'] }}">@if(count($rules) > 0){{ json_encode($detail) }}@endif</textarea>
                                     </div>
                                 </div>
 
