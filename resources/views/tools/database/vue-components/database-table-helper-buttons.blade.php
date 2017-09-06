@@ -1,8 +1,8 @@
 @section('database-table-helper-buttons-template')
     <div>
-        <div class="btn btn-success" @click="addNewColumn">+ Add New Column</div>
-        <div class="btn btn-success" @click="addTimestamps">+ Add Timestamps</div>
-        <div class="btn btn-success" @click="addSoftDeletes">+ Add Soft Deletes</div>
+        <div class="btn btn-success" @click="addNewColumn">+ {{ __('voyager.database.add_new_column') }}</div>
+        <div class="btn btn-success" @click="addTimestamps">+ {{ __('voyager.database.add_timestamps') }}</div>
+        <div class="btn btn-success" @click="addSoftDeletes">+ {{ __('voyager.database.add_softdeletes') }}</div>
     </div>
 @endsection
 
@@ -17,7 +17,7 @@
                 return $.extend({
                     name: '',
                     oldName: '',
-                    type: databaseTypes.getType('integer'),
+                    type: getDbType('integer'),
                     length: null,
                     fixed: false,
                     unsigned: false,
@@ -32,18 +32,18 @@
             addTimestamps() {
                 this.addColumn(this.makeColumn({
                     name: 'created_at',
-                    type: databaseTypes.getType('timestamp')
+                    type: getDbType('timestamp')
                 }));
 
                 this.addColumn(this.makeColumn({
                     name: 'updated_at',
-                    type: databaseTypes.getType('timestamp')
+                    type: getDbType('timestamp')
                 }));
             },
             addSoftDeletes() {
                 this.addColumn(this.makeColumn({
                     name: 'deleted_at',
-                    type: databaseTypes.getType('timestamp')
+                    type: getDbType('timestamp')
                 }));
             }
         }

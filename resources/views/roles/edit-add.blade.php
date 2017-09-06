@@ -1,12 +1,15 @@
 @extends('voyager::master')
 
+@section('page_title', __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
+
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'New' }}@endif {{ $dataType->display_name_singular }}
+        <i class="{{ $dataType->icon }}"></i>
+        {{ __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
     </h1>
 @stop
 
@@ -17,13 +20,8 @@
             <div class="col-md-12">
 
                 <div class="panel panel-bordered">
-
-                    <div class="panel-heading">
-                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Edit' }}@else{{ 'Add New' }}@endif {{ $dataType->display_name_singular }}</h3>
-                    </div>
-                    <!-- /.box-header -->
                     <!-- form start -->
-                    <form role="form"
+                    <form class="form-edit-add" role="form"
                           action="@if(isset($dataTypeContent->id)){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
                           method="POST" enctype="multipart/form-data">
 
@@ -56,8 +54,8 @@
                                 </div>
                             @endforeach
 
-                            <label for="permission">Permissions</label><br>
-                            <a href="#" class="permission-select-all">Select All</a> / <a href="#"  class="permission-deselect-all">Deselect All</a>
+                            <label for="permission">{{ __('voyager.generic.permissions') }}</label><br>
+                            <a href="#" class="permission-select-all">{{ __('voyager.generic.select_all') }}</a> / <a href="#"  class="permission-deselect-all">{{ __('voyager.generic.deselect_all') }}</a>
                             <ul class="permissions checkbox">
                                 <?php
                                     $role_permissions = (isset($dataTypeContent)) ? $dataTypeContent->permissions->pluck('key')->toArray() : [];
@@ -65,7 +63,7 @@
                                 @foreach(TCG\Voyager\Models\Permission::all()->groupBy('table_name') as $table => $permission)
                                     <li>
                                         <input type="checkbox" id="{{$table}}" class="permission-group">
-                                        <label for="{{$table}}"><strong>{{ucwords($table)}}</strong></label>
+                                        <label for="{{$table}}"><strong>{{title_case(str_replace('_',' ', $table))}}</strong></label>
                                         <ul>
                                             @foreach($permission as $perm)
                                                 <li>
@@ -79,7 +77,7 @@
                             </ul>
                         </div><!-- panel-body -->
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">{{ __('voyager.generic.submit') }}</button>
                         </div>
                     </form>
 
@@ -134,6 +132,4 @@
             });
         });
     </script>
-    <script src="{{ config('voyager.assets_path') }}/lib/js/tinymce/tinymce.min.js"></script>
-    <script src="{{ config('voyager.assets_path') }}/js/voyager_tinymce.js"></script>
 @stop

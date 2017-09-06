@@ -51,6 +51,11 @@ class InstallCommand extends Command
         return 'composer';
     }
 
+    public function fire(Filesystem $filesystem)
+    {
+        return $this->handle($filesystem);
+    }
+
     /**
      * Execute the console command.
      *
@@ -58,14 +63,31 @@ class InstallCommand extends Command
      *
      * @return void
      */
-    public function fire(Filesystem $filesystem)
+    public function handle(Filesystem $filesystem)
     {
-        $this->info('Publishing the Voyager assets, database, and config files');
+        $this->info('Setting up the hooks');
+        $this->call('hook:setup');
+
+        $this->info('Publishing the Voyager assets, database, language, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
         $this->call('migrate');
+
+        $this->info('Attempting to set Voyager User model as parent to App\User');
+        if (file_exists(app_path('User.php'))) {
+            $str = file_get_contents(app_path('User.php'));
+
+            if ($str !== false) {
+                $str = str_replace('extends Authenticatable', "extends \TCG\Voyager\Models\User", $str);
+
+                file_put_contents(app_path('User.php'), $str);
+            }
+        } else {
+            $this->warn('Unable to locate "app/User.php".  Did you move this file?');
+            $this->warn('You will need to update this manually.  Change "extends Authenticatable" to "extends \TCG\Voyager\Models\User" in your User model');
+        }
 
         $this->info('Dumping the autoloaded files and reloading all new files');
 
@@ -75,10 +97,17 @@ class InstallCommand extends Command
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Voyager routes to routes/web.php');
-        $filesystem->append(
-            base_path('routes/web.php'),
-            "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
-        );
+        $routes_contents = $filesystem->get(base_path('routes/web.php'));
+        if (false === strpos($routes_contents, 'Voyager::routes()')) {
+            $filesystem->append(
+                base_path('routes/web.php'),
+                "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
+            );
+        }
+
+        \Route::group(['prefix' => 'admin'], function () {
+            \Voyager::routes();
+        });
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
@@ -90,6 +119,6 @@ class InstallCommand extends Command
         $this->info('Adding the storage symlink to your public folder');
         $this->call('storage:link');
 
-        $this->info('Successfully installed Voyager! Enjoy 🎉');
+        $this->info('Successfully installed Voyager! Enjoy');
     }
 }

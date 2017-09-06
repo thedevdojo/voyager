@@ -25,7 +25,7 @@ class RouteTest extends TestCase
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
-        $this->press('Login');
+        $this->press(__('voyager.generic.login'));
 
         $urls = [
             route('voyager.dashboard'),
@@ -56,7 +56,7 @@ class RouteTest extends TestCase
             route('voyager.menus.show', ['menu' => 1]),
             route('voyager.menus.edit', ['menu' => 1]),
             route('voyager.database.index'),
-            route('voyager.database.edit_bread', ['table' => 'categories']),
+            route('voyager.database.bread.edit', ['table' => 'categories']),
             route('voyager.database.edit', ['table' => 'categories']),
             route('voyager.database.create'),
         ];

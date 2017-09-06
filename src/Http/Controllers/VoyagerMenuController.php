@@ -9,39 +9,44 @@ class VoyagerMenuController extends Controller
 {
     public function builder($id)
     {
-        Voyager::canOrFail('edit_menus');
-
         $menu = Voyager::model('Menu')->findOrFail($id);
 
-        $isModelTranslatable = isBreadTranslatable(Voyager::model('MenuItem'));
+        $this->authorize('edit', $menu);
 
-        return view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
+        $isModelTranslatable = is_bread_translatable(Voyager::model('MenuItem'));
+
+        return Voyager::view('voyager::menus.builder', compact('menu', 'isModelTranslatable'));
     }
 
     public function delete_menu($menu, $id)
     {
-        Voyager::canOrFail('delete_menus');
-
         $item = Voyager::model('MenuItem')->findOrFail($id);
+
+        $this->authorize('delete', $item->menu);
+
+        $item->deleteAttributeTranslation('title');
 
         $item->destroy($id);
 
         return redirect()
             ->route('voyager.menus.builder', [$menu])
             ->with([
-                'message'    => 'Successfully Deleted Menu Item.',
+                'message'    => __('voyager.menu.builder_successfully_deleted'),
                 'alert-type' => 'success',
             ]);
     }
 
     public function add_item(Request $request)
     {
-        Voyager::canOrFail('add_menus');
+        $menu = Voyager::model('Menu');
+
+        $this->authorize('add', $menu);
 
         $data = $this->prepareParameters(
             $request->all()
         );
 
+        unset($data['id']);
         $data['order'] = 1;
 
         $highestOrderMenuItem = Voyager::model('MenuItem')->where('parent_id', '=', null)
@@ -52,27 +57,30 @@ class VoyagerMenuController extends Controller
             $data['order'] = intval($highestOrderMenuItem->order) + 1;
         }
 
-        $menuItem = Voyager::model('MenuItem')->create(
-            collect($data)->filter(function ($item, $key) {
-                return !ends_with($key, '_i18n') and $key !== 'i18n_selector';
-            })->all()
-        );
+        // Check if is translatable
+        $_isTranslatable = is_bread_translatable(Voyager::model('MenuItem'));
+        if ($_isTranslatable) {
+            // Prepare data before saving the menu
+            $trans = $this->prepareMenuTranslations($data);
+        }
 
-        // Save menu translations if available
-        $this->saveMenuTranslations($menuItem, $data, 'add');
+        $menuItem = Voyager::model('MenuItem')->create($data);
+
+        // Save menu translations
+        if ($_isTranslatable) {
+            $menuItem->setAttributeTranslations('title', $trans, true);
+        }
 
         return redirect()
             ->route('voyager.menus.builder', [$data['menu_id']])
             ->with([
-                'message'    => 'Successfully Created New Menu Item.',
+                'message'    => __('voyager.menu.builder_successfully_created'),
                 'alert-type' => 'success',
             ]);
     }
 
     public function update_item(Request $request)
     {
-        Voyager::canOrFail('edit_menus');
-
         $id = $request->input('id');
         $data = $this->prepareParameters(
             $request->except(['id'])
@@ -80,15 +88,21 @@ class VoyagerMenuController extends Controller
 
         $menuItem = Voyager::model('MenuItem')->findOrFail($id);
 
-        // Save menu translations if available
-        $this->saveMenuTranslations($menuItem, $data, 'edit');
+        $this->authorize('edit', $menuItem->menu);
+
+        if (is_bread_translatable($menuItem)) {
+            $trans = $this->prepareMenuTranslations($data);
+
+            // Save menu translations
+            $menuItem->setAttributeTranslations('title', $trans, true);
+        }
 
         $menuItem->update($data);
 
         return redirect()
             ->route('voyager.menus.builder', [$menuItem->menu_id])
             ->with([
-                'message'    => 'Successfully Updated Menu Item.',
+                'message'    => __('voyager.menu.builder_successfully_updated'),
                 'alert-type' => 'success',
             ]);
     }
@@ -134,29 +148,22 @@ class VoyagerMenuController extends Controller
     }
 
     /**
-     * Save menu translations.
+     * Prepare menu translations.
      *
-     * @param object $_menuItem
-     * @param array  $data      menu data
-     * @param string $action    add or edit action
+     * @param array $data menu data
      *
      * @return JSON translated item
      */
-    protected function saveMenuTranslations($_menuItem, &$data, $action)
+    protected function prepareMenuTranslations(&$data)
     {
-        if (isBreadTranslatable($_menuItem)) {
-            $key = $action.'_title_i18n';
-            $trans = json_decode($data[$key], true);
+        $trans = json_decode($data['title_i18n'], true);
 
-            // Set field value with the default locale
-            $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
+        // Set field value with the default locale
+        $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
 
-            unset($data[$key]);             // Remove hidden input holding translations
-            unset($data['i18n_selector']);  // Remove language selector input radio
+        unset($data['title_i18n']);     // Remove hidden input holding translations
+        unset($data['i18n_selector']);  // Remove language selector input radio
 
-            $_menuItem->setAttributeTranslations(
-                'title', $trans, true
-            );
-        }
+        return $trans;
     }
 }

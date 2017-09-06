@@ -53,6 +53,6 @@ trait AlertsMessages
 
     protected function alertException(\Exception $e, $prefixMessage = '')
     {
-        return $this->alertError("{$prefixMessage} Exception: {$e->getMessage()}");
+        return $this->alertError("{$prefixMessage} ".__('generic.exception').": {$e->getMessage()}");
     }
 }

@@ -1,5 +1,9 @@
 @if(isset($dataTypeContent->{$row->field}))
     <br>
-    <small>Leave empty to keep the same</small>
+    <small>{{ __('voyager.form.field_password_keep') }}</small>
 @endif
-<input type="password" class="form-control" name="{{ $row->field }}" value="">
+<input type="password"
+       @if($row->required == 1) required @endif
+       class="form-control"
+       name="{{ $row->field }}"
+       value="">

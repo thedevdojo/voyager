@@ -103,32 +103,17 @@ abstract class SchemaManager
         });
     }
 
-    public static function listTableColumns($table, $database = null)
+    public static function listTableColumnNames($tableName)
     {
-        $platform = static::manager()->getDatabasePlatform();
-        $conn = static::getDatabaseConnection();
+        Type::registerCustomPlatformTypes();
 
-        if (!$database) {
-            $database = $conn->getDatabase();
+        $columnNames = [];
+
+        foreach (static::manager()->listTableColumns($tableName) as $column) {
+            $columnNames[] = $column->getName();
         }
 
-        $sql = $platform->getListTableColumnsSQL($table, $database);
-
-        $tableColumns = $conn->fetchAll($sql);
-
-        $list = [];
-
-        $manager = static::manager();
-        $getPortableTableColumnDefinition = get_reflection_method($manager, '_getPortableTableColumnDefinition');
-
-        foreach ($tableColumns as $tableColumn) {
-            $column = $getPortableTableColumnDefinition->invoke($manager, $tableColumn);
-
-            $name = strtolower($column->getQuotedName($platform));
-            $list[$name] = $column;
-        }
-
-        return $list;
+        return $columnNames;
     }
 
     public static function createTable($table)

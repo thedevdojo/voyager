@@ -5,6 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
@@ -38,6 +39,8 @@ class Voyager
 
     protected $users = [];
 
+    protected $viewLoadingEvents = [];
+
     protected $models = [
         'Category'   => Category::class,
         'DataRow'    => DataRow::class,
@@ -51,6 +54,8 @@ class Voyager
         'Setting'    => Setting::class,
         'User'       => User::class,
     ];
+
+    public $setting_cache = null;
 
     public function __construct()
     {
@@ -84,6 +89,24 @@ class Voyager
         $this->models[studly_case($name)] = $class;
 
         return $this;
+    }
+
+    public function view($name, array $parameters = [])
+    {
+        foreach (array_get($this->viewLoadingEvents, $name, []) as $event) {
+            $event($name, $parameters);
+        }
+
+        return view($name, $parameters);
+    }
+
+    public function onLoadingView($name, \Closure $closure)
+    {
+        if (!isset($this->viewLoadingEvents[$name])) {
+            $this->viewLoadingEvents[$name] = [];
+        }
+
+        $this->viewLoadingEvents[$name][] = $closure;
     }
 
     public function formField($row, $dateType, $dataTypeContent)
@@ -136,18 +159,25 @@ class Voyager
 
     public function setting($key, $default = null)
     {
-        $setting = Setting::where('key', '=', $key)->first();
-
-        if (isset($setting->id)) {
-            return $setting->value;
+        if ($this->setting_cache === null) {
+            foreach (Setting::all() as $setting) {
+                $keys = explode('.', $setting->key);
+                @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+            }
         }
 
-        return $default;
+        $parts = explode('.', $key);
+
+        if (count($parts) == 2) {
+            return @$this->setting_cache[$parts[0]][$parts[1]] ?: $default;
+        } else {
+            return @$this->setting_cache[$parts[0]] ?: $default;
+        }
     }
 
     public function image($file, $default = '')
     {
-        if (!empty($file) && Storage::disk(config('voyager.storage.disk'))->exists($file)) {
+        if (!empty($file)) {
             return Storage::disk(config('voyager.storage.disk'))->url($file);
         }
 
@@ -166,13 +196,14 @@ class Voyager
         // Check if permission exist
         $exist = $this->permissions->where('key', $permission)->first();
 
-        if ($exist) {
-            $user = $this->getUser();
-            if ($user == null || !$user->hasPermission($permission)) {
-                return false;
-            }
+        // Permission not found
+        if (!$exist) {
+            throw new \Exception('Permission does not exist', 400);
+        }
 
-            return true;
+        $user = $this->getUser();
+        if ($user == null || !$user->hasPermission($permission)) {
+            return false;
         }
 
         return true;
@@ -246,7 +277,7 @@ class Voyager
      */
     public function translatable($model)
     {
-        if (!config('voyager.multilingual.bread')) {
+        if (!config('voyager.multilingual.enabled')) {
             return false;
         }
 

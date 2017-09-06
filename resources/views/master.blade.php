@@ -1,67 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {{-- <title>{{Voyager::setting('admin_title')}} - {{Voyager::setting('admin_description')}}</title> --}}
-    <title>@yield('page_title',Voyager::setting('admin_title') . " - " . Voyager::setting('admin_description'))</title>
+    <title>@yield('page_title', setting('admin.title') . " - " . setting('admin.description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400|Lato:300,400,700,900' rel='stylesheet'
-          type='text/css'>
 
-    <!-- CSS Libs -->
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/bootstrap-switch.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/checkbox3.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/dataTables.bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/toastr.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/lib/css/perfect-scrollbar.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/bootstrap-toggle.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/icheck/icheck.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/js/datetimepicker/bootstrap-datetimepicker.min.css">
-    <!-- CSS App -->
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/style.css">
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/themes/flat-blue.css">
-
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,300italic">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ config('voyager.assets_path') }}/images/logo-icon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
 
-    <!-- CSS Fonts -->
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/fonts/voyager/styles.css">
-    <script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+
+
+    <!-- App CSS -->
+    <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
 
     @yield('css')
 
-    <!-- Voyager CSS -->
-    <link rel="stylesheet" href="{{ config('voyager.assets_path') }}/css/voyager.css">
-
     <!-- Few Dynamic Styles -->
     <style type="text/css">
-        .flat-blue .side-menu .navbar-header, .widget .btn-primary, .widget .btn-primary:focus, .widget .btn-primary:hover, .widget .btn-primary:active, .widget .btn-primary.active, .widget .btn-primary:active:focus{
+        .voyager .side-menu .navbar-header {
             background:{{ config('voyager.primary_color','#22A7F0') }};
             border-color:{{ config('voyager.primary_color','#22A7F0') }};
         }
-        .breadcrumb a{
+        .widget .btn-primary{
+            border-color:{{ config('voyager.primary_color','#22A7F0') }};
+        }
+        .widget .btn-primary:focus, .widget .btn-primary:hover, .widget .btn-primary:active, .widget .btn-primary.active, .widget .btn-primary:active:focus{
+            background:{{ config('voyager.primary_color','#22A7F0') }};
+        }
+        .voyager .breadcrumb a{
             color:{{ config('voyager.primary_color','#22A7F0') }};
         }
     </style>
 
+    @if(!empty(config('voyager.additional_css')))<!-- Additional CSS -->
+        @foreach(config('voyager.additional_css') as $css)<link rel="stylesheet" type="text/css" href="{{ asset($css) }}">@endforeach
+    @endif
+
     @yield('head')
 </head>
 
-<body class="flat-blue">
+<body class="voyager @if(isset($dataType) && isset($dataType->slug)){{ $dataType->slug }}@endif">
 
 <div id="voyager-loader">
-    <?php $admin_loader_img = Voyager::setting('admin_loader', ''); ?>
+    <?php $admin_loader_img = Voyager::setting('admin.loader', ''); ?>
     @if($admin_loader_img == '')
-        <img src="{{ config('voyager.assets_path') . '/images/logo-icon.png' }}" alt="Voyager Loader">
+        <img src="{{ voyager_asset('images/logo-icon.png') }}" alt="Voyager Loader">
     @else
         <img src="{{ Voyager::image($admin_loader_img) }}" alt="Voyager Loader">
     @endif
@@ -83,6 +69,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
         <div class="container-fluid">
             <div class="side-body padding-top">
                 @yield('page_header')
+                <div id="voyager-notifications"></div>
                 @yield('content')
             </div>
         </div>
@@ -95,22 +82,18 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
                 sidebar = appContainer.querySelector('.side-menu'),
                 navbar = appContainer.querySelector('nav.navbar.navbar-top'),
                 loader = document.getElementById('voyager-loader'),
-                anchor = document.getElementById('sidebar-anchor'),
                 hamburgerMenu = document.querySelector('.hamburger'),
                 sidebarTransition = sidebar.style.transition,
                 navbarTransition = navbar.style.transition,
                 containerTransition = appContainer.style.transition;
 
             sidebar.style.WebkitTransition = sidebar.style.MozTransition = sidebar.style.transition =
-            appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition = 
+            appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition =
             navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = 'none';
-            
+
             if (window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
                 appContainer.className += ' expanded';
                 loader.style.left = (sidebar.clientWidth/2)+'px';
-                anchor.className += ' active';
-                anchor.dataset.sticky = anchor.title;
-                anchor.title = anchor.dataset.unstick;
                 hamburgerMenu.className += ' is-active';
             }
 
@@ -120,31 +103,19 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     })();
 </script>
 <!-- Javascript Libs -->
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/bootstrap-switch.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.matchHeight-min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/toastr.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/lib/js/perfect-scrollbar.jquery.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/select2/select2.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/bootstrap-toggle.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/moment-with-locales.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/datetimepicker/bootstrap-datetimepicker.min.js"></script>
-<!-- Javascript -->
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/readmore.min.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/app.js"></script>
-<script type="text/javascript" src="{{ config('voyager.assets_path') }}/js/helpers.js"></script>
+
+
+<script type="text/javascript" src="{{ voyager_asset('js/app.js') }}"></script>
+
+
 <script>
     @if(Session::has('alerts'))
         let alerts = {!! json_encode(Session::get('alerts')) !!};
-
-        displayAlerts(alerts, toastr);
+        helpers.displayAlerts(alerts, toastr);
     @endif
 
     @if(Session::has('message'))
-    
+
     // TODO: change Controllers to use AlertsMessages trait... then remove this
     var alertType = {!! json_encode(Session::get('alert-type', 'info')) !!};
     var alertMessage = {!! json_encode(Session::get('message')) !!};
@@ -159,5 +130,10 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     @endif
 </script>
 @yield('javascript')
+
+@if(!empty(config('voyager.additional_js')))<!-- Additional Javascript -->
+    @foreach(config('voyager.additional_js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
+@endif
+
 </body>
 </html>

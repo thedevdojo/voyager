@@ -66,8 +66,19 @@ return [
     */
 
     'storage' => [
-        'disk' => 'public',
+        'disk' => 'local',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Media Manager
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify if media manager can show hidden files like(.gitignore)
+    |
+    */
+
+    'hidden_files' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -80,9 +91,21 @@ return [
 
     'database' => [
         'tables' => [
-            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'permissions', 'settings'],
+            'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | The prefix you wish to use with your voyager installation
+    |--------------------------------------------------------------------------
+    |
+    | specify the domain prefix you would like your users to visit in order
+    | to view the Voyager admin panel
+    |
+    */
+
+    'prefix' => 'admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -98,7 +121,7 @@ return [
         /*
          * Set whether or not the multilingual is supported by the BREAD input.
          */
-        'bread' => false,
+        'enabled' => false,
 
         /*
          * Select default language
@@ -174,15 +197,29 @@ return [
                 'icon_class' => 'voyager-power',
             ],
         ],
+
         'data_tables' => [
             'responsive' => true, // Use responsive extension for jQuery dataTables that are not server-side paginated
         ],
+
         'widgets' => [
             'TCG\\Voyager\\Widgets\\UserDimmer',
             'TCG\\Voyager\\Widgets\\PostDimmer',
             'TCG\\Voyager\\Widgets\\PageDimmer',
         ],
+
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | UI Generic Config
+    |--------------------------------------------------------------------------
+    |
+    | Here you change some of the Voyager UI settings.
+    |
+    | TODO: Move style properties to assets/css
+    |
+    */
 
     'login' => [
         'gradient_a' => '#ffffff',
@@ -190,4 +227,25 @@ return [
     ],
 
     'primary_color' => '#22A7F0',
+
+    'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
+
+    // Here you can specify additional assets you would like to be included in the master.blade
+    'additional_css' => [
+        //'css/custom.css',
+    ],
+
+    'additional_js' => [
+        //'js/custom.js',
+    ],
+
+    'googlemaps' => [
+         'key'    => env('GOOGLE_MAPS_KEY', ''),
+         'center' => [
+             'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
+             'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
+         ],
+         'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
+     ],
+
 ];

@@ -1,7 +1,7 @@
 @extends('voyager::master')
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/ga-embed.css">
+    <link rel="stylesheet" type="text/css" href="{{ voyager_asset('css/ga-embed.css') }}">
     <style>
         .user-email {
             font-size: .85rem;
@@ -11,7 +11,7 @@
 @stop
 
 @section('content')
-    <div style="background-size:cover; background: url({{ Voyager::image( Voyager::setting('admin_bg_image'), config('voyager.assets_path') . '/images/bg.jpg') }}) center center;position:absolute; top:0; left:0; width:100%; height:300px;"></div>
+    <div style="background-size:cover; background-image: url({{ Voyager::image( Voyager::setting('admin.bg_image'), config('voyager.assets_path') . '/images/bg.jpg') }}); background-position: center center;position:absolute; top:0; left:0; width:100%; height:300px;"></div>
     <div style="height:160px; display:block; width:100%"></div>
     <div style="position:relative; z-index:9; text-align:center;">
         <img src="{{ Voyager::image( Auth::user()->avatar ) }}" class="avatar"
@@ -20,6 +20,6 @@
         <h4>{{ ucwords(Auth::user()->name) }}</h4>
         <div class="user-email text-muted">{{ ucwords(Auth::user()->email) }}</div>
         <p>{{ Auth::user()->bio }}</p>
-        <a href="{{ route('voyager.users.edit', Auth::user()->id) }}" class="btn btn-primary">Edit My Profile</a>
+        <a href="{{ route('voyager.users.edit', Auth::user()->id) }}" class="btn btn-primary">{{ __('voyager.profile.edit') }}</a>
     </div>
 @stop

@@ -1,21 +1,17 @@
 @extends('voyager::master')
 
-@section('css')
-    <link rel="stylesheet" type="text/css" href="{{ config('voyager.assets_path') }}/css/ga-embed.css">
-@stop
-
 @section('content')
     <div class="page-content">
         @include('voyager::alerts')
         @include('voyager::dimmers')
-        <div style="padding:15px;">
-            <?php $google_analytics_client_id = Voyager::setting("google_analytics_client_id"); ?>
+        <div class="analytics-container">
+            <?php $google_analytics_client_id = Voyager::setting("site.google_analytics_client_id"); ?>
             @if (isset($google_analytics_client_id) && !empty($google_analytics_client_id))
                 {{-- Google Analytics Embed --}}
                 <div id="embed-api-auth-container"></div>
             @else
                 <p style="border-radius:4px; padding:20px; background:#fff; margin:0; color:#999; text-align:center;">
-                    To view analytics you'll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console:
+                    {!! __('voyager.analytics.no_client_id') !!}
                     <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a>
                 </p>
             @endif
@@ -25,8 +21,8 @@
                     <ul class="FlexGrid">
                         <li class="FlexGrid-item">
                             <div class="Titles">
-                                <h1 class="Titles-main" id="view-name">Select a View</h1>
-                                <div class="Titles-sub">Various visualizations</div>
+                                <h1 class="Titles-main" id="view-name">{{ __('voyager.analytics.select_view') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.various_visualizations') }}</div>
                             </div>
                         </li>
                         <li class="FlexGrid-item FlexGrid-item--fixed">
@@ -40,8 +36,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">This Week vs Last Week</h1>
-                                <div class="Titles-sub">By users</div>
+                                <h1 class="Titles-main">{{ __('voyager.analytics.this_vs_last_week') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.by_users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-1-container"></figure>
                             <ol class="Chartjs-legend" id="legend-1-container"></ol>
@@ -50,8 +46,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">This Year vs Last Year</h1>
-                                <div class="Titles-sub">By users</div>
+                                <h1 class="Titles-main">{{ __('voyager.analytics.this_vs_last_year') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.by_users') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-2-container"></figure>
                             <ol class="Chartjs-legend" id="legend-2-container"></ol>
@@ -60,8 +56,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">Top Browsers</h1>
-                                <div class="Titles-sub">By pageview</div>
+                                <h1 class="Titles-main">{{ __('voyager.analytics.top_browsers') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.by_pageview') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-3-container"></figure>
                             <ol class="Chartjs-legend" id="legend-3-container"></ol>
@@ -70,8 +66,8 @@
                     <li class="FlexGrid-item">
                         <div class="Chartjs">
                             <header class="Titles">
-                                <h1 class="Titles-main">Top Countries</h1>
-                                <div class="Titles-sub">By sessions</div>
+                                <h1 class="Titles-main">{{ __('voyager.analytics.top_countries') }}</h1>
+                                <div class="Titles-sub">{{ __('voyager.analytics.by_sessions') }}</div>
                             </header>
                             <figure class="Chartjs-figure" id="chart-4-container"></figure>
                             <ol class="Chartjs-legend" id="legend-4-container"></ol>
@@ -104,14 +100,14 @@
             }(window, document, 'script'));
         </script>
 
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/chart.min.js"></script>
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/moment.min.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/chart.min.js') }}"></script>
+        <script src="{{ voyager_asset('js/ga-embed/moment.min.js') }}"></script>
         <!-- Include the ViewSelector2 component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/view-selector2.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/view-selector2.js') }}"></script>
         <!-- Include the DateRangeSelector component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/date-range-selector.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/date-range-selector.js') }}"></script>
         <!-- Include the ActiveUsers component script. -->
-        <script src="{{ config('voyager.assets_path') }}/js/ga-embed/active-users.js"></script>
+        <script src="{{ voyager_asset('js/ga-embed/active-users.js') }}"></script>
 
         <script>
             // == NOTE ==
@@ -127,7 +123,7 @@
                  */
                 gapi.analytics.auth.authorize({
                     container: 'embed-api-auth-container',
-                    clientid: '<?= $google_analytics_client_id; ?>'
+                    clientid: '{{ $google_analytics_client_id }}'
                 });
 
 
@@ -245,7 +241,7 @@
                             labels: labels,
                             datasets: [
                                 {
-                                    label: 'Last Week',
+                                    label: '{{ __('voyager.date.last_week') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     pointColor: 'rgba(220,220,220,1)',
@@ -253,7 +249,7 @@
                                     data: data2
                                 },
                                 {
-                                    label: 'This Week',
+                                    label: '{{ __('voyager.date.this_week') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     pointColor: 'rgba(151,187,205,1)',
@@ -318,13 +314,13 @@
                             labels: labels,
                             datasets: [
                                 {
-                                    label: 'Last Year',
+                                    label: '{{ __('voyager.date.last_year') }}',
                                     fillColor: 'rgba(220,220,220,0.5)',
                                     strokeColor: 'rgba(220,220,220,1)',
                                     data: data2
                                 },
                                 {
-                                    label: 'This Year',
+                                    label: '{{ __('voyager.date.this_year') }}',
                                     fillColor: 'rgba(151,187,205,0.5)',
                                     strokeColor: 'rgba(151,187,205,1)',
                                     data: data1

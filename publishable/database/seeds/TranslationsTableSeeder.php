@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use TCG\Voyager\Models\Category;
+use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\MenuItem;
 use TCG\Voyager\Models\Page;
 use TCG\Voyager\Models\Translation;
@@ -14,8 +16,97 @@ class TranslationsTableSeeder extends Seeder
      */
     public function run()
     {
+        $this->dataTypesTranslations();
+        $this->categoriesTranslations();
         $this->pagesTranslations();
         $this->menusTranslations();
+    }
+
+    /**
+     * Auto generate Categories Translations.
+     *
+     * @return void
+     */
+    private function categoriesTranslations()
+    {
+        // Adding translations for 'categories'
+        //
+        $cat = Category::where('slug', 'category-1')->firstOrFail();
+        if ($cat->exists) {
+            $this->trans('pt', $this->arr(['categories', 'slug'], $cat->id), 'categoria-1');
+            $this->trans('pt', $this->arr(['categories', 'name'], $cat->id), 'Categoria 1');
+        }
+        $cat = Category::where('slug', 'category-2')->firstOrFail();
+        if ($cat->exists) {
+            $this->trans('pt', $this->arr(['categories', 'slug'], $cat->id), 'categoria-2');
+            $this->trans('pt', $this->arr(['categories', 'name'], $cat->id), 'Categoria 2');
+        }
+    }
+
+    /**
+     * Auto generate DataTypes Translations.
+     *
+     * @return void
+     */
+    private function dataTypesTranslations()
+    {
+        // Adding translations for 'display_name_singular'
+        //
+        $_fld = 'display_name_singular';
+        $_tpl = ['data_types', $_fld];
+        $dtp = DataType::where($_fld, 'Post')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Post');
+        }
+        $dtp = DataType::where($_fld, 'Page')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Página');
+        }
+        $dtp = DataType::where($_fld, 'User')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Utilizador');
+        }
+        $dtp = DataType::where($_fld, 'Category')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Categoria');
+        }
+        $dtp = DataType::where($_fld, 'Menu')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Menu');
+        }
+        $dtp = DataType::where($_fld, 'Role')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Função');
+        }
+
+        // Adding translations for 'display_name_plural'
+        //
+        $_fld = 'display_name_plural';
+        $_tpl = ['data_types', $_fld];
+        $dtp = DataType::where($_fld, 'Posts')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Posts');
+        }
+        $dtp = DataType::where($_fld, 'Pages')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Páginas');
+        }
+        $dtp = DataType::where($_fld, 'Users')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Utilizadores');
+        }
+        $dtp = DataType::where($_fld, 'Categories')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Categorias');
+        }
+        $dtp = DataType::where($_fld, 'Menus')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Menus');
+        }
+        $dtp = DataType::where($_fld, 'Roles')->firstOrFail();
+        if ($dtp->exists) {
+            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Funções');
+        }
     }
 
     /**
@@ -27,18 +118,21 @@ class TranslationsTableSeeder extends Seeder
     {
         $page = Page::where('slug', 'hello-world')->firstOrFail();
         if ($page->exists) {
-            $_arr = $this->_arr('pages', 'title', $page->id);
-            $this->_trans('en', $_arr, 'Hello World');
-            $this->_trans('pt', $_arr, 'Olá Mundo');
+            $_arr = $this->arr(['pages', 'title'], $page->id);
+            $this->trans('pt', $_arr, 'Olá Mundo');
+            /**
+             * For configuring additional languages use it e.g.
+             *
+             * ```
+             *   $this->trans('es', $_arr, 'hola-mundo');
+             *   $this->trans('de', $_arr, 'hallo-welt');
+             * ```
+             */
+            $_arr = $this->arr(['pages', 'slug'], $page->id);
+            $this->trans('pt', $_arr, 'ola-mundo');
 
-            $_arr = $this->_arr('pages', 'slug', $page->id);
-            $this->_trans('en', $_arr, 'hello-world');
-            $this->_trans('pt', $_arr, 'ola-mundo');
-
-            $_arr = $this->_arr('pages', 'body', $page->id);
-            $this->_trans('en', $_arr, '<p>Hello World. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
-                                        ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
-            $this->_trans('pt', $_arr, '<p>Olá Mundo. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
+            $_arr = $this->arr(['pages', 'body'], $page->id);
+            $this->trans('pt', $_arr, '<p>Olá Mundo. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
                                         ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
         }
     }
@@ -50,99 +144,78 @@ class TranslationsTableSeeder extends Seeder
      */
     private function menusTranslations()
     {
-        $menuItem = $this->_menuItem('Dashboard');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Dashboard');
-            $this->_trans('pt', $_arr, 'Painel de Controle');
+        $_tpl = ['menu_items', 'title'];
+        $_item = $this->findMenuItem('Dashboard');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Painel de Controle');
         }
 
-        $menuItem = $this->_menuItem('Media');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Media');
-            $this->_trans('pt', $_arr, 'Media');
+        $_item = $this->findMenuItem('Media');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Media');
         }
 
-        $menuItem = $this->_menuItem('Posts');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Posts');
-            $this->_trans('pt', $_arr, 'Publicações');
+        $_item = $this->findMenuItem('Posts');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Publicações');
         }
 
-        $menuItem = $this->_menuItem('Users');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Users');
-            $this->_trans('pt', $_arr, 'Utilizadores');
+        $_item = $this->findMenuItem('Users');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Utilizadores');
         }
 
-        $menuItem = $this->_menuItem('Categories');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Categories');
-            $this->_trans('pt', $_arr, 'Categorias');
+        $_item = $this->findMenuItem('Categories');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Categorias');
         }
 
-        $menuItem = $this->_menuItem('Pages');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Pages');
-            $this->_trans('pt', $_arr, 'Páginas');
+        $_item = $this->findMenuItem('Pages');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Páginas');
         }
 
-        $menuItem = $this->_menuItem('Roles');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Roles');
-            $this->_trans('pt', $_arr, 'Funções');
+        $_item = $this->findMenuItem('Roles');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Funções');
         }
 
-        $menuItem = $this->_menuItem('Tools');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Tools');
-            $this->_trans('pt', $_arr, 'Ferramentas');
+        $_item = $this->findMenuItem('Tools');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Ferramentas');
         }
 
-        $menuItem = $this->_menuItem('Menu Builder');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Menu Builder');
-            $this->_trans('pt', $_arr, 'Menus');
+        $_item = $this->findMenuItem('Menu Builder');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Menus');
         }
 
-        $menuItem = $this->_menuItem('Database');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Database');
-            $this->_trans('pt', $_arr, 'Base de dados');
+        $_item = $this->findMenuItem('Database');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Base de dados');
         }
 
-        $menuItem = $this->_menuItem('Settings');
-        if ($menuItem->exists) {
-            $_arr = $this->_arr('menu_items', 'title', $menuItem->id);
-            $this->_trans('en', $_arr, 'Settings');
-            $this->_trans('pt', $_arr, 'Configurações');
+        $_item = $this->findMenuItem('Settings');
+        if ($_item->exists) {
+            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Configurações');
         }
     }
 
-    protected function _menuItem($title)
+    private function findMenuItem($title)
     {
         return MenuItem::where('title', $title)->firstOrFail();
     }
 
-    protected function _arr($table, $key, $id)
+    private function arr($par, $id)
     {
         return [
-            'table_name'  => $table,
-            'column_name' => $key,
+            'table_name'  => $par[0],
+            'column_name' => $par[1],
             'foreign_key' => $id,
         ];
     }
 
-    protected function _trans($lang, $keys, $value)
+    private function trans($lang, $keys, $value)
     {
         $_t = Translation::firstOrNew(array_merge($keys, [
             'locale' => $lang,

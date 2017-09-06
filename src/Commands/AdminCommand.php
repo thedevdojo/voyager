@@ -33,12 +33,17 @@ class AdminCommand extends Command
         ];
     }
 
+    public function fire()
+    {
+        return $this->handle();
+    }
+
     /**
      * Execute the console command.
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         // Get or create user
         $user = $this->getUser(
@@ -112,13 +117,18 @@ class AdminCommand extends Command
         if ($create) {
             $name = $this->ask('Enter the admin name');
             $password = $this->secret('Enter admin password');
+
+            // Ask for email if there wasnt set one
+            if (!$email) {
+                $email = $this->ask('Enter the admin email');
+            }
+
             $this->info('Creating admin account');
 
             return $model::create([
                 'name'             => $name,
                 'email'            => $email,
                 'password'         => Hash::make($password),
-                'avatar'           => 'users/default.png',
             ]);
         }
 
