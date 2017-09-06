@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageServiceProvider;
 use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
@@ -278,7 +278,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
                 $this->registerPolicies();
             }
-        } catch (\PDOException $e){
+        } catch (\PDOException $e) {
             Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
         }
     }
