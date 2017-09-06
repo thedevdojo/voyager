@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageServiceProvider;
@@ -257,21 +258,28 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function registerGates()
     {
-        if (Schema::hasTable('data_types')) {
-            $dataType = VoyagerFacade::model('DataType');
-            $dataTypes = $dataType->get();
+        // This try catch is necessary for the Package Auto-discovery
+        // otherwise it will throw an error because no database
+        // connection has been made yet.
+        try {
+            if (Schema::hasTable('data_types')) {
+                $dataType = VoyagerFacade::model('DataType');
+                $dataTypes = $dataType->get();
 
-            foreach ($dataTypes as $dataType) {
-                $policyClass = BasePolicy::class;
-                if (isset($dataType->policy_name) && $dataType->policy_name !== ''
-                    && class_exists($dataType->policy_name)) {
-                    $policyClass = $dataType->policy_name;
+                foreach ($dataTypes as $dataType) {
+                    $policyClass = BasePolicy::class;
+                    if (isset($dataType->policy_name) && $dataType->policy_name !== ''
+                        && class_exists($dataType->policy_name)) {
+                        $policyClass = $dataType->policy_name;
+                    }
+
+                    $this->policies[$dataType->model_name] = $policyClass;
                 }
 
-                $this->policies[$dataType->model_name] = $policyClass;
+                $this->registerPolicies();
             }
-
-            $this->registerPolicies();
+        } catch (\PDOException $e) {
+            Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
         }
     }
 
