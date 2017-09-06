@@ -11,6 +11,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageServiceProvider;
 use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
@@ -96,7 +97,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
         }
 
-        $this->registerGates();
+        //$this->registerGates();
 
         $this->registerViewComposers();
 
@@ -257,21 +258,28 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function registerGates()
     {
-        if (Schema::hasTable('data_types')) {
-            $dataType = VoyagerFacade::model('DataType');
-            $dataTypes = $dataType->get();
+        // This try catch is necessary for the Package Auto-discovery
+        // otherwise it will throw an error because no database
+        // connection has been made yet.
+        try{
+            if (Schema::hasTable('data_types')) {
+                $dataType = VoyagerFacade::model('DataType');
+                $dataTypes = $dataType->get();
 
-            foreach ($dataTypes as $dataType) {
-                $policyClass = BasePolicy::class;
-                if (isset($dataType->policy_name) && $dataType->policy_name !== ''
-                    && class_exists($dataType->policy_name)) {
-                    $policyClass = $dataType->policy_name;
+                foreach ($dataTypes as $dataType) {
+                    $policyClass = BasePolicy::class;
+                    if (isset($dataType->policy_name) && $dataType->policy_name !== ''
+                        && class_exists($dataType->policy_name)) {
+                        $policyClass = $dataType->policy_name;
+                    }
+
+                    $this->policies[$dataType->model_name] = $policyClass;
                 }
 
-                $this->policies[$dataType->model_name] = $policyClass;
+                $this->registerPolicies();
             }
-
-            $this->registerPolicies();
+        } catch (Exception $e){
+            Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
         }
     }
 
