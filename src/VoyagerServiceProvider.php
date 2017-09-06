@@ -97,7 +97,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
         }
 
-        //$this->registerGates();
+        $this->registerGates();
 
         $this->registerViewComposers();
 
@@ -261,7 +261,7 @@ class VoyagerServiceProvider extends ServiceProvider
         // This try catch is necessary for the Package Auto-discovery
         // otherwise it will throw an error because no database
         // connection has been made yet.
-        try{
+        try {
             if (Schema::hasTable('data_types')) {
                 $dataType = VoyagerFacade::model('DataType');
                 $dataTypes = $dataType->get();
@@ -278,7 +278,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
                 $this->registerPolicies();
             }
-        } catch (Exception $e){
+        } catch (\PDOException $e){
             Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
         }
     }
