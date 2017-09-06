@@ -6,12 +6,12 @@
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i> {{ __('voyager.generic.viewing') }} {{ ucfirst($dataType->display_name_singular) }} &nbsp;
 
-        @if (Voyager::can('edit_'.$dataType->name))
+        @can('edit', $dataTypeContent)
         <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
             {{ __('voyager.generic.edit') }}
         </a>
-        @endif
+        @endcan
         <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;
             {{ __('voyager.generic.return_to_list') }}
@@ -26,12 +26,14 @@
             <div class="col-md-12">
 
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
-
-                    <!-- /.box-header -->
                     <!-- form start -->
-
                     @foreach($dataType->readRows as $row)
-                        @php $rowDetails = json_decode($row->details); @endphp
+                        @php $rowDetails = json_decode($row->details);
+                         if($rowDetails === null){
+                                $rowDetails=new stdClass();
+                                $rowDetails->options=new stdClass();
+                         }
+                        @endphp
 
                         <div class="panel-heading" style="border-bottom:0;">
                             <h3 class="panel-title">{{ $row->display_name }}</h3>
@@ -40,7 +42,9 @@
                         <div class="panel-body" style="padding-top:0;">
                             @if($row->type == "image")
                                 <img class="img-responsive"
-                                     src="{{ Voyager::image($dataTypeContent->{$row->field}) }}">
+                                     src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
+                            @elseif($row->type == 'relationship')
+                                 @include('voyager::formfields.relationship', ['view' => 'read', 'options' => $rowDetails])
                             @elseif($row->type == 'select_dropdown' && property_exists($rowDetails, 'options') &&
                                     !empty($rowDetails->options->{$dataTypeContent->{$row->field}})
                             )
@@ -76,9 +80,26 @@
                                 @else
                                 {{ $dataTypeContent->{$row->field} }}
                                 @endif
+                            @elseif($row->type == 'color')
+                                <span class="badge badge-lg" style="background-color: {{ $dataTypeContent->{$row->field} }}">{{ $dataTypeContent->{$row->field} }}</span>
+                            @elseif($row->type == 'coordinates')
+                                @include('voyager::partials.coordinates')
                             @elseif($row->type == 'rich_text_box')
                                 @include('voyager::multilingual.input-hidden-bread-read')
-                                <p>{{ strip_tags($dataTypeContent->{$row->field}, '<b><i><u>') }}</p>
+                                <p>{!! $dataTypeContent->{$row->field} !!}</p>
+                            @elseif($row->type == 'file')
+                                @if(json_decode($dataTypeContent->{$row->field}))
+                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
+                                        <a href="/storage/{{ $file->download_link or '' }}">
+                                            {{ $file->original_name or '' }}
+                                        </a>
+                                        <br/>
+                                    @endforeach
+                                @else
+                                    <a href="/storage/{{ $dataTypeContent->{$row->field} }}">
+                                        Download
+                                    </a>
+                                @endif
                             @else
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{{ $dataTypeContent->{$row->field} }}</p>

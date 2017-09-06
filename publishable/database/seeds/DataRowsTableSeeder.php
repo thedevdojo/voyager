@@ -517,7 +517,7 @@ class DataRowsTableSeeder extends Seeder
             $dataRow->fill([
                 'type'         => 'password',
                 'display_name' => 'password',
-                'required'     => 1,
+                'required'     => 0,
                 'browse'       => 0,
                 'read'         => 0,
                 'edit'         => 1,
@@ -525,6 +525,22 @@ class DataRowsTableSeeder extends Seeder
                 'delete'       => 0,
                 'details'      => '',
                 'order'        => 4,
+            ])->save();
+        }
+
+        $dataRow = $this->dataRow($userDataType, 'user_belongsto_role_relationship');
+        if (!$dataRow->exists) {
+            $dataRow->fill([
+                'type'         => 'relationship',
+                'display_name' => 'Role',
+                'required'     => 0,
+                'browse'       => 1,
+                'read'         => 1,
+                'edit'         => 1,
+                'add'          => 1,
+                'delete'       => 0,
+                'details'      => '{"model":"TCG\\\Voyager\\\Models\\\Role","table":"roles","type":"belongsTo","column":"role_id","key":"id","label":"name","pivot_table":"roles","pivot":"0"}',
+                'order'        => 10,
             ])->save();
         }
 

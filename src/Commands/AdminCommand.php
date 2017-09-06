@@ -33,12 +33,17 @@ class AdminCommand extends Command
         ];
     }
 
+    public function fire()
+    {
+        return $this->handle();
+    }
+
     /**
      * Execute the console command.
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         // Get or create user
         $user = $this->getUser(
@@ -124,7 +129,6 @@ class AdminCommand extends Command
                 'name'             => $name,
                 'email'            => $email,
                 'password'         => Hash::make($password),
-                'avatar'           => 'users/default.png',
             ]);
         }
 

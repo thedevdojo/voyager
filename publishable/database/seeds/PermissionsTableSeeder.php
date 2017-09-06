@@ -14,7 +14,7 @@ class PermissionsTableSeeder extends Seeder
             'browse_admin',
             'browse_database',
             'browse_media',
-            'browse_settings',
+            'browse_compass',
         ];
 
         foreach ($keys as $key) {
@@ -35,5 +35,7 @@ class PermissionsTableSeeder extends Seeder
         Permission::generateFor('posts');
 
         Permission::generateFor('categories');
+
+        Permission::generateFor('settings');
     }
 }

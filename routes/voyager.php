@@ -105,6 +105,17 @@ Route::group(['as' => 'voyager.'], function () {
             Route::get('{table}/bread/edit', ['uses' => $namespacePrefix.'VoyagerDatabaseController@addEditBread', 'as' => 'edit']);
             Route::put('bread/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@updateBread',  'as' => 'update']);
             Route::delete('bread/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@deleteBread',  'as' => 'delete']);
+            Route::post('bread/relationship', ['uses' => $namespacePrefix.'VoyagerDatabaseController@addRelationship',  'as' => 'relationship']);
+            Route::get('bread/delete_relationship/{id}', ['uses' => $namespacePrefix.'VoyagerDatabaseController@deleteRelationship',  'as' => 'delete_relationship']);
+        });
+
+        // Compass Routes
+        Route::group([
+            'as'     => 'compass.',
+            'prefix' => 'compass',
+        ], function () use ($namespacePrefix) {
+            Route::get('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'index']);
+            Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
         });
 
         Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');

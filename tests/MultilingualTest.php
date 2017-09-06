@@ -48,15 +48,15 @@ class MultilingualTest extends TestCase
     {
         $collection = TranslatableModel::all()->translate('da');
 
-        $this->isInstanceOf(Collection::class, $collection);
-        $this->isInstanceOf(Translator::class, $collection[0]);
+        $this->assertInstanceOf(Collection::class, $collection);
+        $this->assertInstanceOf(Translator::class, $collection[0]);
     }
 
     public function testGettingTranslatorModelOfNonExistingTranslation()
     {
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('Lorem Ipsum Post', $model->title);
         $this->assertFalse($model->getRawAttributes()['title']['exists']);
@@ -77,7 +77,7 @@ class MultilingualTest extends TestCase
 
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('Foo Bar Post', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
@@ -90,7 +90,7 @@ class MultilingualTest extends TestCase
     {
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('Lorem Ipsum Post', $model->title);
         $this->assertFalse($model->getRawAttributes()['title']['exists']);
@@ -116,7 +116,7 @@ class MultilingualTest extends TestCase
 
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('Danish Title', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
@@ -137,7 +137,7 @@ class MultilingualTest extends TestCase
 
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('Foo Bar Post', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
@@ -163,7 +163,7 @@ class MultilingualTest extends TestCase
 
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('Danish Title', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
@@ -188,7 +188,7 @@ class MultilingualTest extends TestCase
 
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('Danish Title Here', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
@@ -208,7 +208,7 @@ class MultilingualTest extends TestCase
 
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('Title', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
@@ -217,7 +217,7 @@ class MultilingualTest extends TestCase
 
         $model->title = 'New Title';
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('New Title', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
@@ -226,7 +226,7 @@ class MultilingualTest extends TestCase
 
         $model->save();
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('New Title', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
@@ -235,7 +235,7 @@ class MultilingualTest extends TestCase
 
         $model = TranslatableModel::first()->translate('da');
 
-        $this->isInstanceOf(Translator::class, $model);
+        $this->assertInstanceOf(Translator::class, $model);
         $this->assertEquals('da', $model->getLocale());
         $this->assertEquals('New Title', $model->title);
         $this->assertTrue($model->getRawAttributes()['title']['exists']);

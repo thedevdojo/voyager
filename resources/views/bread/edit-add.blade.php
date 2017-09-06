@@ -4,15 +4,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
-@if(isset($dataTypeContent->id))
-    @section('page_title', __('voyager.generic.edit').' '.$dataType->display_name_singular)
-@else
-    @section('page_title', __('voyager.generic.add').' '.$dataType->display_name_singular)
-@endif
+@section('page_title', __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ __('voyager.generic.edit') }}@else{{ __('voyager.generic.new') }}@endif {{ $dataType->display_name_singular }}
+        <i class="{{ $dataType->icon }}"></i>
+        {{ __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
@@ -23,11 +20,6 @@
             <div class="col-md-12">
 
                 <div class="panel panel-bordered">
-
-                    <div class="panel-heading">
-                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ __('voyager.generic.edit') }}@else{{ __('voyager.generic.add_new') }}@endif {{ $dataType->display_name_singular }}</h3>
-                    </div>
-                    <!-- /.box-header -->
                     <!-- form start -->
                     <form role="form"
                             class="form-edit-add"
@@ -53,31 +45,35 @@
                                 </div>
                             @endif
 
-                            <!-- If we are editing -->
-                            @if(isset($dataTypeContent->id))
-                                <?php $dataTypeRows = $dataType->editRows; ?>
-                            @else
-                                <?php $dataTypeRows = $dataType->addRows; ?>
-                            @endif
+                            <!-- Adding / Editing -->
+                            @php
+                                $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                            @endphp
 
                             @foreach($dataTypeRows as $row)
-
                                 <!-- GET THE DISPLAY OPTIONS -->
                                 @php
                                     $options = json_decode($row->details);
                                     $display_options = isset($options->display) ? $options->display : NULL;
                                 @endphp
+                                @if ($options && isset($options->formfields_custom))
+                                    @include('voyager::formfields.custom.' . $options->formfields_custom)
+                                @else
+                                    <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@else{{ '' }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+                                        {{ $row->slugify }}
+                                        <label for="name">{{ $row->display_name }}</label>
+                                        @include('voyager::multilingual.input-hidden-bread-edit-add')
+                                        @if($row->type == 'relationship')
+                                            @include('voyager::formfields.relationship')
+                                        @else
+                                            {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                        @endif
 
-                                <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@else{{ 'col-md-12' }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
-                                    {{ $row->slugify }}
-                                    <label for="name">{{ $row->display_name }}</label>
-                                    @include('voyager::multilingual.input-hidden-bread-edit-add')
-                                    {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
-
-                                    @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
-                                        {!! $after->handle($row, $dataType, $dataTypeContent) !!}
-                                    @endforeach
-                                </div>
+                                        @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
+                                            {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                                        @endforeach
+                                    </div>
+                                @endif
                             @endforeach
 
                         </div><!-- panel-body -->

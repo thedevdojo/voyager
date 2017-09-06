@@ -10,7 +10,7 @@ class SettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        $setting = $this->findSetting('title');
+        $setting = $this->findSetting('site.title');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Title',
@@ -18,10 +18,11 @@ class SettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 1,
+                'group'        => 'Site',
             ])->save();
         }
 
-        $setting = $this->findSetting('description');
+        $setting = $this->findSetting('site.description');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Description',
@@ -29,10 +30,11 @@ class SettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 2,
+                'group'        => 'Site',
             ])->save();
         }
 
-        $setting = $this->findSetting('logo');
+        $setting = $this->findSetting('site.logo');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Site Logo',
@@ -40,72 +42,91 @@ class SettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'image',
                 'order'        => 3,
+                'group'        => 'Site',
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_bg_image');
+        $setting = $this->findSetting('site.google_analytics_tracking_id');
+        if (!$setting->exists) {
+            $setting->fill([
+                'display_name' => 'Google Analytics Tracking ID',
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'text',
+                'order'        => 4,
+                'group'        => 'Site',
+            ])->save();
+        }
+
+        $setting = $this->findSetting('admin.bg_image');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Background Image',
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'image',
-                'order'        => 9,
+                'order'        => 5,
+                'group'        => 'Admin',
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_title');
+        $setting = $this->findSetting('admin.title');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Title',
                 'value'        => 'Voyager',
                 'details'      => '',
                 'type'         => 'text',
-                'order'        => 4,
+                'order'        => 1,
+                'group'        => 'Admin',
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_description');
+        $setting = $this->findSetting('admin.description');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Description',
                 'value'        => 'Welcome to Voyager. The Missing Admin for Laravel',
                 'details'      => '',
                 'type'         => 'text',
-                'order'        => 5,
+                'order'        => 2,
+                'group'        => 'Admin',
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_loader');
+        $setting = $this->findSetting('admin.loader');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Loader',
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'image',
-                'order'        => 6,
+                'order'        => 3,
+                'group'        => 'Admin',
             ])->save();
         }
 
-        $setting = $this->findSetting('admin_icon_image');
+        $setting = $this->findSetting('admin.icon_image');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Admin Icon Image',
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'image',
-                'order'        => 7,
+                'order'        => 4,
+                'group'        => 'Admin',
             ])->save();
         }
 
-        $setting = $this->findSetting('google_analytics_client_id');
+        $setting = $this->findSetting('admin.google_analytics_client_id');
         if (!$setting->exists) {
             $setting->fill([
-                'display_name' => 'Google Analytics Client ID',
+                'display_name' => 'Google Analytics Client ID (used for admin dashboard)',
                 'value'        => '',
                 'details'      => '',
                 'type'         => 'text',
-                'order'        => 9,
+                'order'        => 1,
+                'group'        => 'Admin',
             ])->save();
         }
     }

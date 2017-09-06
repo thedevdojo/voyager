@@ -4,10 +4,6 @@
             <button class="hamburger btn-link">
                 <span class="hamburger-inner"></span>
             </button>
-            <a id="sidebar-anchor" class="voyager-anchor btn-link navbar-link hidden-xs"
-                title="{{ __('voyager.generic.keep_sidebar_open') }}"
-                data-unstick="{{ __('voyager.generic.unstick_sidebar') }}"
-            data-toggle="tooltip" data-placement="bottom"></a>
 
             <ol class="breadcrumb hidden-xs">
                 @if(count(Request::segments()) == 1)
