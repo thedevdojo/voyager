@@ -221,11 +221,11 @@ abstract class Controller extends BaseController
                                     $thumb_resize_width = $resize_width;
                                     $thumb_resize_height = $resize_height;
 
-                                    if ($thumb_resize_width != 'null') {
+                                    if ($thumb_resize_width != null) {
                                         $thumb_resize_width = $thumb_resize_width * $scale;
                                     }
 
-                                    if ($thumb_resize_height != 'null') {
+                                    if ($thumb_resize_height != null) {
                                         $thumb_resize_height = $thumb_resize_height * $scale;
                                     }
 
@@ -332,11 +332,11 @@ abstract class Controller extends BaseController
                                 $thumb_resize_width = $resize_width;
                                 $thumb_resize_height = $resize_height;
 
-                                if ($thumb_resize_width != 'null') {
+                                if ($thumb_resize_width != null) {
                                     $thumb_resize_width = $thumb_resize_width * $scale;
                                 }
 
-                                if ($thumb_resize_height != 'null') {
+                                if ($thumb_resize_height != null) {
                                     $thumb_resize_height = $thumb_resize_height * $scale;
                                 }
 
