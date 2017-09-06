@@ -9,8 +9,12 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
-
+    <?php $favicon = Voyager::setting('admin.favicon', ''); ?>
+    @if($favicon == '')
+        <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
+    @else
+        <link rel="shortcut icon" href="{{ Voyager::image($favicon) }}" type="image/x-icon">
+    @
 
 
     <!-- App CSS -->
