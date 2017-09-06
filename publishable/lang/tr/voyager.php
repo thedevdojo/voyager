@@ -225,14 +225,14 @@ return [
     ],
 
     'database' => [
-        'add_bread'                 => 'Add BREAD to this table',
-        'add_new_column'            => 'Add New Column',
-        'add_softdeletes'           => 'Add Soft Deletes',
-        'add_timestamps'            => 'Add Timestamps',
-        'already_exists'            => 'already exists',
-        'already_exists_table'      => 'Table :table already exists',
-        'bread_crud_actions'        => 'BREAD/CRUD Actions',
-        'bread_info'                => 'BREAD info',
+        'add_bread'                 => 'Bu tabloya BREAD ekle',
+        'add_new_column'            => 'Yeni Sütun',
+        'add_softdeletes'           => 'Soft Delete Ekle',
+        'add_timestamps'            => 'Timestamps ekle',
+        'already_exists'            => 'mevcut',
+        'already_exists_table'      => ':table zaten var',
+        'bread_crud_actions'        => 'BREAD/CRUD İşlemler',
+        'bread_info'                => 'BREAD bilgi',
         'column'                    => 'Column',
         'composite_warning'         => 'Warning: this column is part of a composite index',
         'controller_name'           => 'Controller Name',
@@ -306,15 +306,15 @@ return [
     ],
 
     'dimmer' => [
-        'page'           => 'Page|Pages',
-        'page_link_text' => 'View all pages',
-        'page_text'      => 'You have :count :string in your database. Click on button below to view all pages.',
-        'post'           => 'Post|Posts',
-        'post_link_text' => 'View all posts',
-        'post_text'      => 'You have :count :string in your database. Click on button below to view all posts.',
-        'user'           => 'User|Users',
-        'user_link_text' => 'View all users',
-        'user_text'      => 'You have :count :string in your database. Click on button below to view all users.',
+        'page'           => 'Sayfa|Sayfalar',
+        'page_link_text' => 'Tüm Sayfalar',
+        'page_text'      => ':count adet :string var. Tamamını görüntülemek için aşağıdaki butona tıklayınız.',
+        'post'           => 'Yazı|Yazılar',
+        'post_link_text' => 'Tüm Yazılar',
+        'post_text'      => ':count adet :string var. Tamamını görüntülemek için aşağıdaki butona tıklayınız.',
+        'user'           => 'Kullanıcı|Kullanıcılar',
+        'user_link_text' => 'Tüm Kullanıcılar',
+        'user_text'      => ':count adet :string var. Tamamını görüntülemek için aşağıdaki butona tıklayınız.',
     ],
 
     'form' => [
@@ -334,26 +334,26 @@ return [
 
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
     'datatable' => [
-        'sEmptyTable'     => 'No data available in table',
-        'sInfo'           => 'Showing _START_ to _END_ of _TOTAL_ entries',
-        'sInfoEmpty'      => 'Showing 0 to 0 of 0 entries',
-        'sInfoFiltered'   => '(filtered from _MAX_ total entries)',
+        'sEmptyTable'     => 'Listelenecek data bulunamadı',
+        'sInfo'           => '_TOTAL_  içerikten _START_ - _END_ arası gösteriliyor',
+        'sInfoEmpty'      => '0 içerikten 0 - 0 arası gösteriliyor',
+        'sInfoFiltered'   => '(_MAX_ kayıt filtrelendi)',
         'sInfoPostFix'    => '',
         'sInfoThousands'  => ',',
-        'sLengthMenu'     => 'Show _MENU_ entries',
-        'sLoadingRecords' => 'Loading...',
-        'sProcessing'     => 'Processing...',
-        'sSearch'         => 'Search:',
-        'sZeroRecords'    => 'No matching records found',
+        'sLengthMenu'     => '_MENU_ göster',
+        'sLoadingRecords' => 'Yükleniyor...',
+        'sProcessing'     => 'Devam ediyor...',
+        'sSearch'         => 'Arama:',
+        'sZeroRecords'    => 'Sonuç bulunamadı',
         'oPaginate'       => [
-            'sFirst'    => 'First',
-            'sLast'     => 'Last',
-            'sNext'     => 'Next',
-            'sPrevious' => 'Previous',
+            'sFirst'    => 'İlk',
+            'sLast'     => 'Son',
+            'sNext'     => 'Sonraki',
+            'sPrevious' => 'Önceki',
         ],
         'oAria' => [
-            'sSortAscending'  => ': activate to sort column ascending',
-            'sSortDescending' => ': activate to sort column descending',
+            'sSortAscending'  => ': sütunu artan olarak sıralamak için etkinleştir',
+            'sSortDescending' => ': sütunu azalan olarak sıralamak için etkinleştir',
         ],
     ],
 
@@ -370,18 +370,18 @@ return [
     ],
 
     'analytics' => [
-        'by_pageview'             => 'By pageview',
-        'by_sessions'             => 'By sessions',
-        'by_users'                => 'By users',
-        'no_client_id'            => 'To view analytics you\'ll need to get a google analytics client id and '.
-                                     'add it to your settings for the key <code>google_analytics_client_id'.
-                                     '</code>. Get your key in your Google developer console:',
-        'set_view'                => 'Select a View',
-        'this_vs_last_week'       => 'This Week vs Last Week',
-        'this_vs_last_year'       => 'This Year vs Last Year',
-        'top_browsers'            => 'Top Browsers',
-        'top_countries'           => 'Top Countries',
-        'various_visualizations'  => 'Various visualizations',
+        'by_pageview'             => 'Sayfa Görüntüleme',
+        'by_sessions'             => 'Oturum',
+        'by_users'                => 'Kullanıcı',
+        'no_client_id'            => 'Analytics datalarını görüntülemek için google analytics kimliğine'.
+                                     'sahip olmanız gerekiyor. Daha sonra ayarlar sayfasından <code>google_analytics_client_id'.
+                                     '</code> alanına bu hesabın anahtarını ekleyiniz. Anahtarı almak için:',
+        'set_view'                => 'Görünüm Seç',
+        'this_vs_last_week'       => 'Bu Hafta vs Geçen Hafta',
+        'this_vs_last_year'       => 'Bu Yıl vs Geçen Yıl',
+        'top_browsers'            => 'Top Tarayıcılar',
+        'top_countries'           => 'Top Şehirler/Ülkeler',
+        'various_visualizations'  => 'Görselleştirmeler',
     ],
 
     'error' => [
