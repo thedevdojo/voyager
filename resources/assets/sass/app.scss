@@ -607,9 +607,14 @@ a:hover {
 .app-container .content-container .side-menu:hover .navbar-nav li a .title {
   width: 192px;
   display: inline-block; }
-.app-container .content-container .side-menu:hover .navbar-nav li.dropdown > a:after {
+.app-container .content-container .side-menu:hover .navbar-nav li.dropdown > a[aria-expanded="false"]:after {
   font-family: Voyager;
   content: "\e038";
+  position: absolute;
+  right: 1em; }
+.app-container .content-container .side-menu:hover .navbar-nav li.dropdown > a[aria-expanded="true"]:after {
+  font-family: Voyager;
+  content: "\e047";
   position: absolute;
   right: 1em; }
 .app-container .content-container .side-menu:hover .panel-collapse.in {
