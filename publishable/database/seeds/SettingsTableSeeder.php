@@ -117,7 +117,18 @@ class SettingsTableSeeder extends Seeder
                 'group'        => 'Admin',
             ])->save();
         }
-
+        
+        $setting = $this->findSetting('admin.favicon');
+        if (!$setting->exists) {
+            $setting->fill([
+                'display_name' => 'Admin Favicon Image',
+                'value'        => '',
+                'details'      => '',
+                'type'         => 'image',
+                'order'        => 5,
+                'group'        => 'Admin',
+            ])->save();
+        }
         $setting = $this->findSetting('admin.google_analytics_client_id');
         if (!$setting->exists) {
             $setting->fill([
