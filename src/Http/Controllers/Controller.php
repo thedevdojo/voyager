@@ -365,6 +365,7 @@ abstract class Controller extends BaseController
 
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
+                $content = $request->input($row->field);
                 if ($request->isMethod('PUT')) {
                     if (empty($request->input($row->field))) {
                         $content = null;
@@ -372,7 +373,6 @@ abstract class Controller extends BaseController
                         $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
                     }
                 }
-                $content = $request->input($row->field);
                 break;
 
             /********** COORDINATES TYPE **********/

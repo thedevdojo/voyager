@@ -19,11 +19,11 @@
         @media (max-width: 767px) {
             .login-sidebar {
                 border-top:0px !important;
+                border-left:5px solid {{ config('voyager.primary_color','#22A7F0') }};
             }
         }
-        .login-sidebar:after {
-            background: linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});
-            background: -webkit-linear-gradient(-135deg, {{config('voyager.login.gradient_a','#ffffff')}}, {{config('voyager.login.gradient_b','#ffffff')}});
+        body.login .form-group-default.focused{
+            border-color:{{ config('voyager.primary_color','#22A7F0') }};
         }
         .login-button, .bar:before, .bar:after{
             background:{{ config('voyager.primary_color','#22A7F0') }};
@@ -56,21 +56,21 @@
         </div>
 
         <div class="col-xs-12 col-sm-5 col-md-4 login-sidebar">
-
+            
             <div class="login-container">
-
+                
                 <p>{{ __('voyager.login.signin_below') }}</p>
 
                 <form action="{{ route('voyager.login') }}" method="POST">
                     {{ csrf_field() }}
-                    <div class="form-group form-group-default ">
+                    <div class="form-group form-group-default" id="emailGroup">
                         <label>Email</label>
                         <div class="controls">
                             <input type="text" name="email" id="email" value="{{ old('email') }}" placeholder="{{ __('voyager.generic.email') }}" class="form-control" required>
                          </div>
                     </div>
 
-                    <div class="form-group form-group-default ">
+                    <div class="form-group form-group-default" id="passwordGroup">
                         <label>Password</label>
                         <div class="controls">
                             <input type="password" name="password" placeholder="{{ __('voyager.generic.password') }}" class="form-control" required>
@@ -104,6 +104,8 @@
 <script>
     var btn = document.querySelector('button[type="submit"]');
     var form = document.forms[0];
+    var email = document.querySelector('[name="email"]');
+    var password = document.querySelector('[name="password"]');
     btn.addEventListener('click', function(ev){
         if (form.checkValidity()) {
             btn.querySelector('.signingin').className = 'signingin';
@@ -112,7 +114,24 @@
             ev.preventDefault();
         }
     });
-    document.getElementById('email').focus();
+    email.focus();
+    document.getElementById('emailGroup').classList.add("focused");
+    
+    // Focus events for email and password fields
+    email.addEventListener('focusin', function(e){
+        document.getElementById('emailGroup').classList.add("focused");
+    });
+    email.addEventListener('focusout', function(e){
+       document.getElementById('emailGroup').classList.remove("focused");
+    });
+
+    password.addEventListener('focusin', function(e){
+        document.getElementById('passwordGroup').classList.add("focused");
+    });
+    password.addEventListener('focusout', function(e){
+       document.getElementById('passwordGroup').classList.remove("focused");
+    });
+
 </script>
 </body>
 </html>

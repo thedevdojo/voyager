@@ -70,6 +70,7 @@ body.login {
         font-size: 10px;
         text-transform: uppercase;
         width: auto;
+        padding-left:2px;
     }
 
     .login-container form{
@@ -117,8 +118,6 @@ body.login {
     .logo-container .logo{
         padding:50px 0px;
     }
-
-
 
 
     @-moz-keyframes spin {
@@ -237,11 +236,12 @@ body.login {
     .form-group-default {
         background-color: #fff;
         position: relative;
-        border: 1px solid rgba(28,43,54,.07);
-        border-radius: 2px;
+        border: 2px solid rgba(28,43,54,.07);
+        border-radius: 3px;
         padding: 7px 12px 4px;
         overflow: hidden;
-        transition: background-color .2s ease;
+        transition: border 0.3s ease-in;
+        font-weight:normal;
     }
 
     .form-group-default label {
@@ -266,20 +266,33 @@ body.login {
 
     .form-control{
         background: #fff;
-        border: 1px solid rgba(28,43,54,.07);
         -webkit-appearance: none;
         color: #1c2b36;
         outline: 0;
         border:0;
         height: 35px;
         line-height: normal;
-        font-weight: 300;
         vertical-align: middle;
         min-height: 35px;
         box-shadow: none;
-        border-radius: 2px;
-        transition: background .2s linear 0s;
+        font-weight:normal;
+    }
 
+    .form-control::-webkit-input-placeholder{
+      color:#ccc;
+      font-weight:300;
+    }
+    .form-control::-moz-placeholder{
+      color:#ccc;
+      font-weight:300;
+    }
+    .form-control:-ms-input-placeholder{
+      color:#ccc;
+      font-weight:300;
+    }
+    .form-control:-moz-placeholder{
+      color:#ccc;
+      font-weight:300;
     }
 
     .form-control-grey:focus, .form-control:focus {
@@ -288,19 +301,19 @@ body.login {
     }
 
     .form-control:focus::-webkit-input-placeholder{
-        color:#1c2b36;
+        color:#8c9bA6;
     }
 
     .form-control:focus::-moz-placeholder{
-        color:#1c2b36;
+        color:#8c9bA6;
     }
 
     .form-control:focus:-ms-input-placeholder{
-        color:#1c2b36;
+        color:#8c9bA6;
     }
 
     .form-control:focus:-moz-placeholder{
-        color:#1c2b36;
+        color:#8c9bA6;
     }
 }
 
@@ -9748,3 +9761,35 @@ limitations under the License.
 
 
 /********** END MEDIA CSS **********/
+
+/********** Overriding Data Tables Icons **********/
+
+.voyager table.dataTable thead th.sorting:after, .voyager table.dataTable thead th.sorting_asc:after, .voyager table.dataTable thead th.sorting_desc:after, div.dataTables_paginate li.last a:after, div.dataTables_paginate li.next a:after, div.dataTables_paginate li.first a:before, div.dataTables_paginate li.previous a:before{
+  font-family:Voyager;
+}
+
+.voyager table.dataTable thead th.sorting:after{
+  content: 'o';
+  margin-top:3px;
+}
+
+.voyager table.dataTable thead th.sorting_asc:after{
+  content: 'p';
+  margin-top:5px;
+}
+
+.voyager table.dataTable thead th.sorting_desc:after{
+  content: 'q';
+}
+
+.voyager div.dataTables_paginate li.previous a:before{
+    content: "\e039";
+    margin-top: 3px;
+    margin-left: -3px;
+}
+
+.voyager div.dataTables_paginate li.next a:after{
+    content: "\e046";
+    margin-top: 3px;
+    margin-right: -3px;
+}
