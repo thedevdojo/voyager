@@ -82,9 +82,9 @@ class VoyagerSettingsController extends Controller
         $settings = Voyager::model('Setting')->all();
 
         foreach ($settings as $setting) {
-            $content = $this->getContentBasedOnType($request, 'settings', (object) [
+            $content = $this->getContentBasedOnType($request, 'public/settings', (object) [
                 'type'    => $setting->type,
-                'field'   => $setting->key,
+                'field'   => str_replace('.', '_', $setting->key),
                 'details' => $setting->details,
                 'group'   => $setting->group,
             ]);
