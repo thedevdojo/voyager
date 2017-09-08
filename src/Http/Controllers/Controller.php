@@ -167,7 +167,7 @@ abstract class Controller extends BaseController
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $path = $slug.'/public/'.date('F').date('Y').'/';
                         $file->storeAs(
                             $path,
                             $filename.'.'.$file->getClientOriginalExtension(),
@@ -202,7 +202,7 @@ abstract class Controller extends BaseController
 
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $path = $slug.'/public/'.date('F').date('Y').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
@@ -294,7 +294,7 @@ abstract class Controller extends BaseController
                     $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
                     $filename_counter = 1;
 
-                    $path = $slug.'/'.date('F').date('Y').'/';
+                    $path = $slug.'/public/'.date('F').date('Y').'/';
 
                     // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
                     while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
