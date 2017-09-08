@@ -2756,6 +2756,11 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     border-left: 1px solid #F9F9F9;
 }
 
+.voyager .navbar .navbar-nav > li.profile,
+.voyager .navbar.navbar-default .navbar-nav > li.provile {
+  border-left:0px;
+}
+
 .voyager .navbar .navbar-nav > li > a,
 .voyager .navbar.navbar-default .navbar-nav > li > a {
     color: #353d47;
@@ -4673,7 +4678,13 @@ overflow-x: hidden;
   width:250px;
   padding: 18px;
   display: none;
-  position: relative !important
+  position: relative !important;
+  visibility: hidden;
+}
+
+.navbar .dropdown.profile:hover .dropdown-menu{
+  visibility: visible;
+  display:block;
 }
 
 .navbar .dropdown.profile .dropdown-menu h5, .navbar .dropdown.profile .dropdown-menu h6{
@@ -5104,7 +5115,7 @@ float: left;
 .dd .item_actions{
   z-index:9;
   position:relative;
-  top:10px;
+  top:4px;
   right:10px;
 }
 
@@ -9136,6 +9147,9 @@ limitations under the License.
     background: -webkit-linear-gradient(to bottom, #bbb 0%, #999 100%);
     background:    -moz-linear-gradient(to bottom, #bbb 0%, #999 100%);
     background:         linear-gradient(to bottom, #bbb 0%, #999 100%);
+}
+.menus .table>tbody>tr>td{
+  line-height:44px;
 }
 #nestable2 .dd-handle:hover { background: #bbb; }
 #nestable2 .dd-item > button:before { color: #fff; }
