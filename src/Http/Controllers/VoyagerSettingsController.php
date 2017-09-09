@@ -89,7 +89,10 @@ class VoyagerSettingsController extends Controller
                 'group'   => $setting->group,
             ]);
 
-            if ($content === null && isset($setting->value)) {
+             if ($content === null && $setting->type !== 'image') {
+                $content = '';
+            }
+            if ($content === null && $setting->type === 'image') {
                 $content = $setting->value;
             }
 
