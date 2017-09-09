@@ -89,8 +89,11 @@ class VoyagerSettingsController extends Controller
                 'group'   => $setting->group,
             ]);
 
-            if ($content === null) {
+             if ($content === null && $setting->type !== 'image') {
                 $content = '';
+            }
+            if ($content === null && $setting->type === 'image') {
+                $content = $setting->value;
             }
 
             $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
