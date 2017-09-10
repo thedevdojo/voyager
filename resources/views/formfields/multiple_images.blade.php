@@ -1,6 +1,12 @@
 <br>
 @if(isset($dataTypeContent->{$row->field}))
-    <?php $images = json_decode($dataTypeContent->{$row->field}); ?>
+    <?php
+      if(is_array($row->field)){
+        $images = $dataTypeContent->{$row->field};
+      } else {
+        $images = json_decode($dataTypeContent->{$row->field});
+      }
+    ?>
     @if($images != null)
         @foreach($images as $image)
             <div class="img_settings_container" data-field-name="{{ $row->field }}">
