@@ -1,7 +1,7 @@
 <br>
 @if(isset($dataTypeContent->{$row->field}))
     <?php
-      if(is_array($row->field)){
+      if(is_array($dataTypeContent->{$row->field})){
         $images = $dataTypeContent->{$row->field};
       } else {
         $images = json_decode($dataTypeContent->{$row->field});
