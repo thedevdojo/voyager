@@ -332,12 +332,12 @@ abstract class Controller extends BaseController
                                 $thumb_resize_width = $resize_width;
                                 $thumb_resize_height = $resize_height;
 
-                                if ($thumb_resize_width != null) {
-                                    $thumb_resize_width = $thumb_resize_width * $scale;
+                                if ($thumb_resize_width != null && $thumb_resize_width != 'null') {
+                                    $thumb_resize_width = intval($thumb_resize_width * $scale);
                                 }
 
-                                if ($thumb_resize_height != null) {
-                                    $thumb_resize_height = $thumb_resize_height * $scale;
+                                if ($thumb_resize_height != null && $thumb_resize_height != 'null') {
+                                    $thumb_resize_height = intval($thumb_resize_height * $scale);
                                 }
 
                                 $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
