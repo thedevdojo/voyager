@@ -65,6 +65,32 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     <div class="row content-container">
         @include('voyager::dashboard.navbar')
         @include('voyager::dashboard.sidebar')
+        <script>
+            (function(){
+                    var appContainer = document.querySelector('.app-container'),
+                        sidebar = appContainer.querySelector('.side-menu'),
+                        navbar = appContainer.querySelector('nav.navbar.navbar-top'),
+                        loader = document.getElementById('voyager-loader'),
+                        hamburgerMenu = document.querySelector('.hamburger'),
+                        sidebarTransition = sidebar.style.transition,
+                        navbarTransition = navbar.style.transition,
+                        containerTransition = appContainer.style.transition;
+
+                    sidebar.style.WebkitTransition = sidebar.style.MozTransition = sidebar.style.transition =
+                    appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition =
+                    navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = 'none';
+
+                    if (window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
+                        appContainer.className += ' expanded no-animation';
+                        loader.style.left = (sidebar.clientWidth/2)+'px';
+                        hamburgerMenu.className += ' is-active no-animation';
+                    }
+
+                   navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = navbarTransition;
+                   sidebar.style.WebkitTransition = sidebar.style.MozTransition = sidebar.style.transition = sidebarTransition;
+                   appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition = containerTransition;
+            })();
+        </script>
         <!-- Main Content -->
         <div class="container-fluid">
             <div class="side-body padding-top">
@@ -76,32 +102,7 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
     </div>
 </div>
 @include('voyager::partials.app-footer')
-<script>
-    (function(){
-            var appContainer = document.querySelector('.app-container'),
-                sidebar = appContainer.querySelector('.side-menu'),
-                navbar = appContainer.querySelector('nav.navbar.navbar-top'),
-                loader = document.getElementById('voyager-loader'),
-                hamburgerMenu = document.querySelector('.hamburger'),
-                sidebarTransition = sidebar.style.transition,
-                navbarTransition = navbar.style.transition,
-                containerTransition = appContainer.style.transition;
 
-            sidebar.style.WebkitTransition = sidebar.style.MozTransition = sidebar.style.transition =
-            appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition =
-            navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = 'none';
-
-            if (window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
-                appContainer.className += ' expanded';
-                loader.style.left = (sidebar.clientWidth/2)+'px';
-                hamburgerMenu.className += ' is-active';
-            }
-
-            navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = navbarTransition;
-            sidebar.style.WebkitTransition = sidebar.style.MozTransition = sidebar.style.transition = sidebarTransition;
-            appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition = containerTransition;
-    })();
-</script>
 <!-- Javascript Libs -->
 
 

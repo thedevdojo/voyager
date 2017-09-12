@@ -194,6 +194,21 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
+                'title'      => 'Hooks',
+                'url'        => route('voyager.hooks', [], false),
+            ]);
+            if (!$menuItem->exists) {
+                $menuItem->fill([
+                    'target'     => '_self',
+                    'icon_class' => 'voyager-hook',
+                    'color'      => null,
+                    'parent_id'  => $toolsMenuItem->id,
+                    'order'      => 13,
+                ])->save();
+            }
+
+            $menuItem = MenuItem::firstOrNew([
+                'menu_id'    => $menu->id,
                 'title'      => 'Settings',
                 'url'        => '',
                 'route'      => 'voyager.settings.index',
@@ -204,7 +219,7 @@ class MenuItemsTableSeeder extends Seeder
                     'icon_class' => 'voyager-settings',
                     'color'      => null,
                     'parent_id'  => null,
-                    'order'      => 13,
+                    'order'      => 14,
                 ])->save();
             }
         }
