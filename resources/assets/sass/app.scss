@@ -4472,6 +4472,10 @@ p#the_plugin_name{
   margin-top:360px;
 }
 
+.page-content .settings{
+  padding-right:20px;
+}
+
 .page-content.col-md-12{
     padding-right:0px;
 }
@@ -4517,6 +4521,10 @@ overflow-x: hidden;
 
 .app-container .side-body, .app-container.expanded .content-container .navbar-top, .app-container .content-container .navbar-top{
   transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.app-container.expanded.no-animation .content-container, .app-container.expanded.no-animation{
+  transition:none;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a:hover{
@@ -4596,6 +4604,12 @@ overflow-x: hidden;
     width:20px;
     -webkit-transform: translate3d(-5px,-1px,0) rotate(45deg) scaleX(.5);
     transform: translate3d(-5px,-1px,0) rotate(45deg) scaleX(.5);
+}
+
+
+.hamburger.is-active.no-animation .hamburger-inner, .hamburger.is-active.no-animation .hamburger-inner:before, .hamburger.is-active.no-animation .hamburger-inner:after{
+  transition:none;
+  width:20px;
 }
 
 #sidebar-anchor {
