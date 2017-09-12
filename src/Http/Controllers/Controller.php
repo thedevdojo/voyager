@@ -167,7 +167,7 @@ abstract class Controller extends BaseController
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = '/public/'.$slug.'/'.date('F').date('Y').'/';
+                        $path = $slug.'/'.date('F').date('Y').'/';
                         $file->storeAs(
                             $path,
                             $filename.'.'.$file->getClientOriginalExtension(),
@@ -202,7 +202,7 @@ abstract class Controller extends BaseController
 
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = '/public/'.$slug.'/'.date('F').date('Y').'/';
+                        $path = $slug.'/'.date('F').date('Y').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
@@ -294,7 +294,7 @@ abstract class Controller extends BaseController
                     $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
                     $filename_counter = 1;
 
-                    $path = '/public/'.$slug.'/'.date('F').date('Y').'/';
+                    $path = $slug.'/'.date('F').date('Y').'/';
 
                     // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
                     while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
@@ -332,12 +332,12 @@ abstract class Controller extends BaseController
                                 $thumb_resize_width = $resize_width;
                                 $thumb_resize_height = $resize_height;
 
-                                if ($thumb_resize_width != null) {
-                                    $thumb_resize_width = $thumb_resize_width * $scale;
+                                if ($thumb_resize_width != null && $thumb_resize_width != 'null') {
+                                    $thumb_resize_width = intval($thumb_resize_width * $scale);
                                 }
 
-                                if ($thumb_resize_height != null) {
-                                    $thumb_resize_height = $thumb_resize_height * $scale;
+                                if ($thumb_resize_height != null && $thumb_resize_height != 'null') {
+                                    $thumb_resize_height = intval($thumb_resize_height * $scale);
                                 }
 
                                 $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
