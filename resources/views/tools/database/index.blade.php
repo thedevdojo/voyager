@@ -45,7 +45,7 @@
                         <td>
                             <div class="bread_actions">
                             @if($table->dataTypeId)
-                                <a href="{{ route('voyager.' . $table->name . '.index') }}"
+                                <a href="{{ route('voyager.' . $table->slug . '.index') }}"
                                    class="btn-sm btn-warning browse_bread">
                                     <i class="voyager-plus"></i> Browse BREAD
                                 </a>

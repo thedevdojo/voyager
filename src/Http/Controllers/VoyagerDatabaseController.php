@@ -24,12 +24,15 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::canOrFail('browse_database');
 
-        $dataTypes = Voyager::model('DataType')->select('id', 'name')->get()->pluck('id', 'name')->toArray();
+        $select = Voyager::model('DataType')->select('id', 'name', 'slug')->get()->toArray();
+
+        $dataTypes = collect($select)->keyBy('name')->toArray();
 
         $tables = array_map(function ($table) use ($dataTypes) {
             $table = [
                 'name'          => $table,
-                'dataTypeId'    => isset($dataTypes[$table]) ? $dataTypes[$table] : null,
+                'slug'          => isset($dataTypes[$table]['slug']) ? $dataTypes[$table]['slug'] : null,
+                'dataTypeId'    => isset($dataTypes[$table]['id']) ? $dataTypes[$table]['id'] : null,
             ];
 
             return (object) $table;

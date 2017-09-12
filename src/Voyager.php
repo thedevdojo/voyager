@@ -109,11 +109,11 @@ class Voyager
         $this->viewLoadingEvents[$name][] = $closure;
     }
 
-    public function formField($row, $dateType, $dataTypeContent)
+    public function formField($row, $dataType, $dataTypeContent)
     {
         $formField = $this->formFields[$row->type];
 
-        return $formField->handle($row, $dateType, $dataTypeContent);
+        return $formField->handle($row, $dataType, $dataTypeContent);
     }
 
     public function afterFormFields($row, $dataType, $dataTypeContent)

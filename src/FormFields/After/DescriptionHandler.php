@@ -6,7 +6,7 @@ class DescriptionHandler extends AbstractHandler
 {
     protected $codename = 'description';
 
-    public function visible($row, $dataType, $dateTypeContent, $options)
+    public function visible($row, $dataType, $dataTypeContent, $options)
     {
         if (!isset($options->description)) {
             return false;
@@ -15,7 +15,7 @@ class DescriptionHandler extends AbstractHandler
         return !empty($options->description);
     }
 
-    public function createContent($row, $dataType, $dateTypeContent, $options)
+    public function createContent($row, $dataType, $dataTypeContent, $options)
     {
         return '<span class="glyphicon glyphicon-question-sign"
                                         aria-hidden="true"
