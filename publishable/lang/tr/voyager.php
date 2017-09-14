@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'date' => [
-        'last_week' => 'Geçen Hafta',
-        'last_year' => 'Geçen Yıl',
-        'this_week' => 'Bu Hafta',
-        'this_year' => 'Bu Yıl',
-    ],
+		'date' => [
+				'last_week' => 'Geçen Hafta',
+				'last_year' => 'Geçen Yıl',
+				'this_week' => 'Bu Hafta',
+				'this_year' => 'Bu Yıl',
+		],
 
-    'generic' => [
+		'generic' => [
         'action'                 => 'İşlem',
         'actions'                => 'İşlemler',
         'add'                    => 'Ekle',
@@ -93,13 +93,13 @@ return [
         'yes_please'             => 'Evet, lütfen',
     ],
 
-    'login' => [
+		'login' => [
         'loginin'      => 'Giriş yap',
         'signin_below' => ' Below: oturum aç',
-        'welcome'      => 'Voyager a hoş geldiniz , Laravel'in aranan yönetim paneli',
+        'welcome'      => "Voyager a hoş geldiniz , Laravel'in aranan yönetim paneli",
     ],
 
-    'profile' => [
+		'profile' => [
         'avatar'        => 'Avatar',
         'edit'          => 'Profilimi düzenle',
         'edit_user'     => 'Kullanıcıyı düzenle',
@@ -108,8 +108,7 @@ return [
         'role'          => 'Rol',
         'user_role'     => 'Kullanıcı Rolü',
     ],
-
-    'settings' => [
+		'settings' => [
         'usage_help'           => 'Her ayarın değerini sitenizdeki herhangi bir yerinden çağırabilirisiniz',
         'save'                 => 'Ayarları Kaydet',
         'new'                  => 'Yeni Ayarlar',
@@ -127,9 +126,13 @@ return [
         'moved_order_up'       => ' :name ayarı yukarı taşındı',
         'moved_order_down'     => ' :name ayarı aşağı taşındı ',
         'successfully_removed' => ':name başarılı bir şekilde değeri silindi',
+				'group_general'        => 'Genel',
+        'group_admin'          => 'Admin',
+        'group_site'           => 'Site',
+        'group'                => 'Grop',
+        'help_group'           => 'Ayarların atandığı grup',
     ],
-
-    'media' => [
+		'media' => [
         'add_new_folder'         => 'Yeni dosya ekle',
         'audio_support'          => 'tarıyıcın ses dosyası desteklemiyor.',
         'create_new_folder'      => 'Yeni dosya oluştur',
@@ -163,97 +166,97 @@ return [
     ],
 
     'menu_builder' => [
-        'color'                => 'Color in RGB or hex (optional)',
-        'color_ph'             => 'Color (ex. #ffffff or rgb(255, 255, 255)',
-        'create_new_item'      => 'Create a New Menu Item',
-        'delete_item_confirm'  => 'Yes, Delete This Menu Item',
-        'delete_item_question' => 'Are you sure you want to delete this menu item?',
-        'drag_drop_info'       => 'Drag and drop the menu Items below to re-arrange them.',
-        'dynamic_route'        => 'Dynamic Route',
-        'edit_item'            => 'Edit Menu Item',
-        'icon_class'           => 'Font Icon class for the Menu Item (Use a',
-        'icon_class2'          => 'Voyager Font Class</a>)',
-        'icon_class_ph'        => 'Icon Class (optional)',
-        'item_route'           => 'Route for the menu item',
-        'item_title'           => 'Title of the Menu Item',
-        'link_type'            => 'Link type',
-        'new_menu_item'        => 'New Menu Item',
-        'open_in'              => 'Open In',
-        'open_new'             => 'New Tab/Window',
-        'open_same'            => 'Same Tab/Window',
-        'route_parameter'      => 'Route parameters (if any)',
-        'static_url'           => 'Static URL',
-        'successfully_created' => 'Successfully Created New Menu Item.',
-        'successfully_deleted' => 'Successfully Deleted Menu Item.',
-        'successfully_updated' => 'Successfully Updated Menu Item.',
-        'updated_order'        => 'Successfully updated menu order.',
-        'url'                  => 'URL for the Menu Item',
-        'usage_hint'           => 'You can output a menu anywhere on your site by calling|You can output '.
-                                  'this menu anywhere on your site by calling',
+        'color'                => 'Renkler RGB veya hex (tercihen)',
+        'color_ph'             => 'Renk (örn. #ffffff veya rgb(255, 255, 255)',
+        'create_new_item'      => 'Yeni bir kayıt oluşturun',
+        'delete_item_confirm'  => 'Evet , Bu menüyü sil',
+        'delete_item_question' => 'Bu menü kaydını silmek istediğinden eminmisin ?',
+        'drag_drop_info'       => 'Sürükle ve bırak ile menüyü ayarlayın',
+        'dynamic_route'        => 'Dinamik rota',
+        'edit_item'            => 'Menüyü düzenle',
+        'icon_class'           => 'Font Icon sınıfları menü için (Use a',
+        'icon_class2'          => 'Voyager Font sınıfları</a>)',
+        'icon_class_ph'        => 'Icon sınıfları (tercihen)',
+        'item_route'           => 'Menü için rota',
+        'item_title'           => 'Menü başlığı',
+        'link_type'            => 'Link tipi',
+        'new_menu_item'        => 'Yeni menü kaydı',
+        'open_in'              => 'Açılış hedefi',
+        'open_new'             => 'Yeni Tab/Ekran',
+        'open_same'            => 'Aynı Tab/Ekran',
+        'route_parameter'      => 'Rota parametresi',
+        'static_url'           => 'Statik URL',
+        'successfully_created' => 'Menü kaydı başarılı bir şekilde kaydoldu',
+        'successfully_deleted' => 'Menü kaydı başarılı bir şekilde silindi',
+        'successfully_updated' => 'Menü kaydı başarılı bir şekilde güncellendi',
+        'updated_order'        => 'Menü kaydı başarılı bir şekilde sıralandı',
+        'url'                  => 'Menü kaydının linki',
+        'usage_hint'           => 'Bu menüyü istediğiniz yerde çağra bilirsiniz|Şu şekilde '.
+                                  'Bu menüyü sitenin istediğiniz yerinde çağırmak için',
     ],
 
     'post' => [
-        'category'         => 'Post Category',
-        'content'          => 'Post Content',
-        'details'          => 'Post Details',
-        'excerpt'          => 'Excerpt <small>Small description of this post</small>',
-        'image'            => 'Post Image',
-        'meta_description' => 'Meta Description',
-        'meta_keywords'    => 'Meta Keywords',
-        'new'              => 'Create New Post',
-        'seo_content'      => 'SEO Content',
-        'seo_title'        => 'Seo Title',
-        'slug'             => 'URL slug',
-        'status'           => 'Post Status',
-        'status_draft'     => 'draft',
-        'status_pending'   => 'pending',
-        'status_published' => 'published',
-        'title'            => 'Post Title',
-        'title_sub'        => 'The title for your post',
-        'update'           => 'Update Post',
+        'category'         => 'Yazı kategorisi',
+        'content'          => 'Yazı içeriği',
+        'details'          => 'Yazo detayı',
+        'excerpt'          => 'Alıntı <small>Yazının kısa açıklaması</small>',
+        'image'            => 'Yazı resmi',
+        'meta_description' => 'Meta Açıklaması',
+        'meta_keywords'    => 'Meta Anahtar kelimesi',
+        'new'              => 'Yeni Yazı Oluştur',
+        'seo_content'      => 'SEO içeriği',
+        'seo_title'        => 'Seo başlığı',
+        'slug'             => 'URL link',
+        'status'           => 'Yazı durumu',
+        'status_draft'     => 'taslak',
+        'status_pending'   => 'bekliyor',
+        'status_published' => 'yayınlandı',
+        'title'            => 'Yazı başlığı',
+        'title_sub'        => 'Yazınız için başlık',
+        'update'           => 'Yazıyı güncelle',
     ],
 
     'database' => [
-        'add_bread'                 => 'Add BREAD to this table',
-        'add_new_column'            => 'Add New Column',
-        'add_softdeletes'           => 'Add Soft Deletes',
-        'add_timestamps'            => 'Add Timestamps',
-        'already_exists'            => 'already exists',
-        'already_exists_table'      => 'Table :table already exists',
-        'bread_crud_actions'        => 'BREAD/CRUD Actions',
-        'bread_info'                => 'BREAD info',
-        'column'                    => 'Column',
-        'composite_warning'         => 'Warning: this column is part of a composite index',
-        'controller_name'           => 'Controller Name',
-        'controller_name_hint'      => 'ex. PageController, if left empty will use the BREAD Controller',
-        'create_bread_for_table'    => 'Create BREAD for :table table',
-        'create_migration'          => 'Create migration for this table?',
-        'create_model_table'        => 'Create model for this table?',
-        'create_new_table'          => 'Create New Table',
-        'create_your_new_table'     => 'Create Your New Table',
-        'default'                   => 'Default',
-        'delete_bread'              => 'Delete BREAD',
-        'delete_bread_before_table' => 'Please make sure to remove the BREAD on this table before deleting the table.',
-        'delete_table_bread_conf'   => 'Yes, remove the BREAD',
-        'delete_table_bread_quest'  => 'Are you sure you want to delete the BREAD for the :table table?',
-        'delete_table_confirm'      => 'Yes, delete this table',
-        'delete_table_question'     => 'Are you sure you want to delete the :table table?',
-        'description'               => 'Description',
-        'display_name'              => 'Display Name',
-        'display_name_plural'       => 'Display Name (Plural)',
-        'display_name_singular'     => 'Display Name (Singular)',
-        'edit_bread'                => 'Edit BREAD',
-        'edit_bread_for_table'      => 'Edit BREAD for :table table',
-        'edit_rows'                 => 'Edit the rows for the :table table below',
-        'edit_table'                => 'Edit the :table table below',
-        'edit_table_not_exist'      => 'The table you want to edit doesn\'t exist',
-        'error_creating_bread'      => 'Sorry it appears there may have been a problem creating this BREAD',
-        'error_removing_bread'      => 'Sorry it appears there was a problem removing this BREAD',
-        'error_updating_bread'      => 'Sorry it appears there may have been a problem updating this BREAD',
+        'add_bread'                 => 'Bu tabloya BREAD ekle',
+        'add_new_column'            => 'Yeni kolon ekle',
+        'add_softdeletes'           => 'Yazılımsal silme kolonu ekle(soft delete)',
+        'add_timestamps'            => 'Zaman kolonları ekle(created_at , updated_at)',
+        'already_exists'            => 'Bu kolon var',
+        'already_exists_table'      => 'Tablo :table zaten var',
+        'bread_crud_actions'        => 'BREAD/CRUD işlemleri',
+        'bread_info'                => 'BREAD bilgisi',
+        'column'                    => 'Kolon',
+        'composite_warning'         => 'Warning: bu sütun, bileşik bir dizinin parçasıdır',
+        'controller_name'           => 'Kontrol Adı',
+        'controller_name_hint'      => 'örn. PageController, eğer boş bırakırsanı BREAD kontrolü kullanır',
+        'create_bread_for_table'    => ':table tablosu için BREAD oluştur',
+        'create_migration'          => 'Bu tablo için migrasyon oluşturulsunmu ?',
+        'create_model_table'        => 'bu tablo için model oluşturulsunmu ?',
+        'create_new_table'          => 'Yeni tablo oluştur',
+        'create_your_new_table'     => 'Kendine yeni tablo oluştur',
+        'default'                   => 'Varsayılan',
+        'delete_bread'              => 'BREAD sil',
+        'delete_bread_before_table' => "Lütfen tabloyu silmeden önce bu tablodaki BREAD'i kaldırdığınızdan emin olun.",
+        'delete_table_bread_conf'   => "Evet,BREAD'i sil",
+        'delete_table_bread_quest'  => ":table tablosunda BREAD'i silmek istediğinizden eminmisiniz ? ",
+        'delete_table_confirm'      => 'Evet bu tabloyu sil',
+        'delete_table_question'     => ':table tablosunu silmek istediğinizden eminmisiniz ? ',
+        'description'               => 'Açıklama',
+        'display_name'              => 'Görünüm adı',
+        'display_name_plural'       => 'Görünüm adı (Çoğul)',
+        'display_name_singular'     => 'Görünüm adı  (Tekil)',
+        'edit_bread'                => 'BREAD düzenle',
+        'edit_bread_for_table'      => ':table tablosu için BREAD düzenle',
+        'edit_rows'                 => 'Aşağıdaki :table tablolarının satırlarını düzenleyin:',
+        'edit_table'                => 'Aşağıdaki :table tablolarını düzenleyin',
+        'edit_table_not_exist'      => 'Düzenlemek istediğin tablo mevcut değil',
+        'error_creating_bread'      => "Maalesef, bu BREAD'i oluşturmakta bir sorun olabilir gibi görünüyor",
+        'error_removing_bread'      => "Maalesef, bu BREAD'i düzenlemekte bir sorun olabilir gibi görünüyor",
+        'error_updating_bread'      => "Maalesef, bu BREAD'i güncellemekde bir sorun olabilir gibi görünüyor",
         'extra'                     => 'Extra',
-        'field'                     => 'Field',
-        'field_safe_failed'         => 'Failed to save field :field, we\'re rolling back!',
-        'generate_permissions'      => 'İzinleri oluştur',
+        'field'                     => 'Alan',
+        'field_safe_failed'         => ':field alan kaydedilirken hata oluştur, veri tabanını geri sarıyorum',
+				'generate_permissions'      => 'İzinleri oluştur',
         'icon_class'                => 'Bu tablo için İcon',
         'icon_hint'                 => 'İcon (isteğe bağlı) kullanın',
         'icon_hint2'                => 'voyager ön yüz sınıfı',
@@ -266,7 +269,7 @@ return [
         'name_warning'              => 'Lütfen indeks eklemden önce kolon adı belirleyin',
         'no_composites_warning'     => 'This table has composite indexes. Please note that they are not supported '.
                                       'at the moment. Be careful when trying to add/remove indexes.',
-        'null'                     => 'Null',
+        'null'                     => 'Boş',
         'optional_details'         => 'İsteğe Bağlı Ayrıntılar',
         'primary'                  => 'BİRİNCİL',
         'server_pagination'        => 'Sunucu-taraflı sayfalama',
@@ -291,7 +294,7 @@ return [
         'visibility'               => 'Görünür',
     ],
 
-    'dimmer' => [
+		'dimmer' => [
         'page'           => 'Sayfa|Sayfalar',
         'page_link_text' => 'Tüm sayfaları Görüntüle',
         'page_text'      => ' :count kadar :string veritabanınızda. Tıklayarak tüm sayfaları görün',
@@ -303,7 +306,7 @@ return [
         'user_text'      => ':count kadar :string veritabanınızda. Tıklayarak tüm kullanıcıları görün',
     ],
 
-    'form' => [
+		'form' => [
         'field_password_keep'          => 'Aynı kalamsı için boş bırakın',
         'field_select_dd_relationship' => 'Şurada uygun ilişkiyi kurduğunuzdan emin olun. :method methodu ile '.
                                           ':class sınıfı içinde.',
@@ -318,8 +321,9 @@ return [
         'type_textbox'                 => 'metin Kutusu',
     ],
 
+
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
-    'datatable' => [
+		'datatable' => [
         'sEmptyTable'     => 'Tablo yok',
         'sInfo'           => '_START_ ile _END_ arasında _TOTAL_ kadar kayıt görüntülendi',
         'sInfoEmpty'      => '0 ile 0 arasında 0 kadar kayıt görüntülendi',
@@ -348,14 +352,14 @@ return [
         'footer_copyright2' => 'Rom ve daha da fazla romla yapılmış',
     ],
 
-    'json' => [
+		'json' => [
         'invalid'           => 'Geçersiz Json',
         'invalid_message'   => 'Doğru olmıyan bir JSON gibi görünüyor',
         'valid'             => 'Doğru Json',
         'validation_errors' => 'Doğrulama hatası',
     ],
 
-    'analytics' => [
+		'analytics' => [
         'by_pageview'             => 'Sayfa görüntülenmeye göre',
         'by_sessions'             => 'Oturuma göre',
         'by_users'                => 'Kullanıcıya göre',
@@ -370,7 +374,7 @@ return [
         'various_visualizations'  => 'Çeşitli görünümler',
     ],
 
-    'error' => [
+		'error' => [
         'symlink_created_text'   => 'Kayıp depolama alanı sembolik bağlantısı sizin için onardık',
         'symlink_created_title'  => 'Kayıp depolama alanı sembolik bağlantısı oluşturuldu',
         'symlink_failed_text'    => 'Kayıp depolama alanı sembolik bağlantısını sizin için oluştururken sorun alıyoruz'.
