@@ -13,8 +13,8 @@ if (!function_exists('is_field_translatable')) {
             return;
         }
 
-        return isset($model['translatable']) &&
-            in_array($row->field, $model['translatable']);
+        return $model->translatable() &&
+            in_array($row->field, $model->getTranslatableAttributes());
     }
 }
 
@@ -50,6 +50,7 @@ if (!function_exists('is_bread_translatable')) {
     function is_bread_translatable($model)
     {
         return config('voyager.multilingual.enabled')
-            && isset($model, $model['translatable']);
+            && isset($model)
+            && $model->translatable();
     }
 }
