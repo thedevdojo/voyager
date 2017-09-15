@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
     <style>
         body {
-            background-image:url('{{ Voyager::image( Voyager::setting("admin.bg_image"), config('voyager.assets_path') . "/images/bg.jpg" ) }}');
+            background-image:url('{{ Voyager::image( Voyager::setting("admin.bg_image"), voyager_asset("images/bg.jpg") ) }}');
             background-color: {{ Voyager::setting("admin.bg_color", "#FFFFFF" ) }};
         }
         .login-sidebar{
