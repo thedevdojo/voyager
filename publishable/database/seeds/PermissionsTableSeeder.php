@@ -16,7 +16,7 @@ class PermissionsTableSeeder extends Seeder
             'browse_media',
             'browse_compass',
             'browse_settings',
-						'user_update_self_role'
+                        'user_update_self_role',
         ];
 
         foreach ($keys as $key) {
