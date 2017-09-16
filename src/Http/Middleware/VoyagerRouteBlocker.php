@@ -14,7 +14,7 @@ class VoyagerRouteBlocker
         if ($enable) {
             $allow = config('voyager.blocker.ip_white_list');
 
-            $ip    = $request->getClientIp();
+            $ip = $request->getClientIp();
 
             $allowed = explode(',', $allow);
 
