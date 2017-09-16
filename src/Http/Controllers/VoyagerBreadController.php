@@ -135,6 +135,10 @@ class VoyagerBreadController extends Controller
         if (!$skip) {
             Voyager::canOrFail('edit_'.$dataType->name);
         }
+				// If user can edit his/her own profile check permission for the role
+				if($request->has('role_id')){
+						Voyager::canOrFail('user_update_self_role');
+				}
 
         $relationships = $this->getRelationships($dataType);
 

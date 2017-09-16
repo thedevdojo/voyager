@@ -65,7 +65,7 @@
                                 @endif
                                 <input type="file" name="avatar">
                             </div>
-
+														@if(Voyager::can('user_update_self_role'))
                             <div class="form-group">
                                 <label for="role">{{ __('voyager.profile.user_role') }}</label>
                                 <select name="role_id" id="role" class="form-control">
@@ -75,6 +75,7 @@
                                     @endforeach
                                 </select>
                             </div>
+														@endif
 
 
 
