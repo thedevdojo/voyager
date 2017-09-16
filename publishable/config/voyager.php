@@ -123,6 +123,7 @@ return [
 
         /*
          * Set whitelist ip's that will allow to enter admin side
+         * Separate ip's with comma
          */
         'ip_white_list' => '127.0.0.1',
     ],
