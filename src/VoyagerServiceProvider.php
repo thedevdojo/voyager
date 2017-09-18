@@ -17,6 +17,7 @@ use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Http\Middleware\VoyagerRouteBlocker;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\Policies\SettingPolicy;
@@ -89,12 +90,13 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (app()->version() >= 5.4) {
             $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
-
+            $router->aliasmiddleware('blocker', VoyagerRouteBlocker::class);
             if (config('app.env') == 'testing') {
                 $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
             }
         } else {
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+            $router->middleware('blocker', VoyagerRouteBlocker::class);
         }
 
         $this->registerGates();

@@ -109,6 +109,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Limit access to the admin area by ip
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager ip blocker for admin side
+    |
+    */
+    'blocker' => [
+        /*
+         * Set enable or disable route blocker.
+         */
+        'enable' => false,
+
+        /*
+         * Set whitelist ip's that will allow to enter admin side
+         * Separate ip's with comma
+         */
+        'ip_white_list' => '127.0.0.1',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Multilingual configuration
     |--------------------------------------------------------------------------
     |
