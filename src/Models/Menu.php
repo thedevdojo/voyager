@@ -81,7 +81,7 @@ class Menu extends Model
         }
 
         return new \Illuminate\Support\HtmlString(
-            \Illuminate\Support\Facades\View::make($type, ['items' => $menu->parent_items, 'options' => $options])->render()
+            \Illuminate\Support\Facades\View::make($type, ['items' => $menu->parent_items->sortBy('order'), 'options' => $options])->render()
         );
     }
 }

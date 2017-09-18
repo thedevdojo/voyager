@@ -1,6 +1,6 @@
 <ol class="dd-list">
 
-@foreach ($items->sortBy('order') as $item)
+@foreach ($items as $item)
 
     <li class="dd-item" data-id="{{ $item->id }}">
         <div class="pull-right item_actions">
