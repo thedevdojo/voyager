@@ -24,7 +24,7 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 <hr>
 
-Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Laravel 5.3.
+Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.4 and newer!
 
 After creating your new Laravel application you can include the Voyager package with the following command: 
 
