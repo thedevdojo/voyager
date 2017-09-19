@@ -26,7 +26,7 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Laravel 5.3.
 
-After creating your new Laravel application you can include the Voyager package with the following command: 
+After creating your new Laravel application you can include the Voyager package with the following command:
 
 ```bash
 composer require tcg/voyager
@@ -53,11 +53,11 @@ Add the Voyager service provider to the `config/app.php` file in the `providers`
 'providers' => [
     // Laravel Framework Service Providers...
     //...
-    
+
     // Package Service Providers
     TCG\Voyager\VoyagerServiceProvider::class,
     // ...
-    
+
     // Application Service Providers
     // ...
 ],
@@ -86,7 +86,7 @@ Start up a local development server with `php artisan serve` And, visit [http://
 
 If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
 
->**email:** `admin@admin.com`   
+>**email:** `admin@example.com`   
 >**password:** `password`
 
 NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
