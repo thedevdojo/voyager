@@ -7,7 +7,7 @@
 
 @endphp
 
-@foreach ($items->sortBy('order') as $item)
+@foreach ($items as $item)
     
     @php
         $originalItem = $item;
