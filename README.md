@@ -95,13 +95,13 @@ If you did not go with the dummy user, you may wish to assign admin privileges t
 This can easily be done by running this command:
 
 ```bash
-php artisan voyager:admin your@email.com
+php artisan voyager:admin example@example.com
 ```
 
 If you did not install the dummy data and you wish to create a new admin user you can pass the `--create` flag, like so:
 
 ```bash
-php artisan voyager:admin your@email.com --create
+php artisan voyager:admin example@example.com --create
 ```
 
 And you will be prompted for the users name and password.
