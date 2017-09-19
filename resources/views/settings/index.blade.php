@@ -386,7 +386,7 @@
                         </select>
                     </div>
                     <div class="col-md-12">
-                        <a id="toggle_options"><i class="voyager-double-down"></i> {{ strtoupper(__('voyager.generic.options')) }}</a>
+                        <a id="toggle_options"><i class="voyager-double-down"></i> {{ mb_strtoupper(__('voyager.generic.options')) }}</a>
                         <div class="new-settings-options">
                             <label for="options">{{ __('voyager.generic.options') }}
                                 <small>{{ __('voyager.settings.help_option') }}</small>
