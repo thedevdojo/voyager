@@ -212,7 +212,7 @@ class VoyagerBreadController extends Controller
             return response()->json(['errors' => $val->messages()]);
         }
         if (!$request->ajax()) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")

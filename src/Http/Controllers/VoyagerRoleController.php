@@ -12,9 +12,8 @@ class VoyagerRoleController extends VoyagerBreadController
      {
         $slug = $this->getSlug($request);
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
         // Check permission
-        $this->authorize('edit', $data);
+        $this->authorize('edit', app($dataType->model_name));
         //Validate fields with ajax
         $val = $this->updateValidateBread($request->all(), $dataType->editRows,$slug,$id);
         if ($val->fails()) {
@@ -24,11 +23,11 @@ class VoyagerRoleController extends VoyagerBreadController
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
             return redirect()
-                 ->route("voyager.{$dataType->slug}.index")
--            ->with([
--                'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
--                'alert-type' => 'success',
-        }
+                    ->route("voyager.{$dataType->slug}.index")
+                    ->with([
+                            'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                            'alert-type' => 'success',
+                         ]);
     }
 
     
