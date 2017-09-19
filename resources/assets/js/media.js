@@ -343,7 +343,6 @@ module.exports = function(){
 					// Add the latest files to the folder dropdown
 					var all_folders = '';
 					$.post(options.baseUrl+'/media/directories', { folder_location:manager.folders, _token: CSRF_TOKEN }, function(data){
-						console.log(data);
 						manager.directories = data;
 					});
 
