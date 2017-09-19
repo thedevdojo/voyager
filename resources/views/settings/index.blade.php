@@ -246,7 +246,7 @@
                             @foreach($group_settings as $setting)
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    {{ $setting->display_name }}<code>setting('{{ $setting->key }}')</code>
+                                    {{ $setting->display_name }} @if(config('voyager.show_dev_tips'))<code>setting('{{ $setting->key }}')</code>@endif
                                 </h3>
                                 <div class="panel-actions">
                                     <a href="{{ route('voyager.settings.move_up', $setting->id) }}">
