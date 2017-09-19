@@ -135,7 +135,7 @@
                                             <template v-if="selectedFileIs('image')">
                                                 <img :src="selected_file.path"/>
                                             </template>
-                                            <!--template v-if="selected_file.type.includes('video')">
+                                            <template v-if="selectedFileIs('video')">
                                                 <video width="100%" height="auto" controls>
                                                     <source :src="selected_file.path" type="video/mp4">
                                                     <source :src="selected_file.path" type="video/ogg">
@@ -143,7 +143,7 @@
                                                     Your browser does not support the video tag.
                                                 </video>
                                             </template>
-                                            <template v-if="selected_file.type.includes('audio')">
+                                            <template v-if="selectedFileIs('audio')">
                                                 <audio controls style="width:100%; margin-top:5px;">
                                                     <source :src="selected_file.path" type="audio/ogg">
                                                     <source :src="selected_file.path" type="audio/mpeg">
@@ -153,10 +153,10 @@
                                             <template v-if="selected_file.type == 'folder'">
                                                 <i class="voyager-folder"></i>
                                             </template>
-                                            <template
-                                                    v-if="selected_file.type != 'folder' && !selected_file.type.includes('audio') && !selected_file.type.includes('video') && !selected_file.type.includes('image')">
+                                            <!--template
+                                                    v-if="selected_file.type != 'folder' && !selectedFileIs('audio') && !selectedFileIs('video') && !selectedFileIs('image')">
                                                 <i class="voyager-file-text-o"></i>
-                                            </template-->
+                                            </template>-->
                                         </div>
 
                                     </div>
@@ -332,6 +332,26 @@
         </div><!-- .col-md-12 -->
     </div><!-- .page-content container-fluid -->
 
+	
+	<div class="modal fade" id="imagemodal">
+		<div class="modal-dialog">
+			<div class="modal-content">              
+				<div class="modal-body">
+			  
+					<button type="button" class="close" data-dismiss="modal">
+						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+					</button>
+					<img src="" class="imagepreview" style="width: 100%;">
+				</div>
+			  
+				<div class="modal-footer">
+					<small class="image-title"></small>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
 
     <input type="hidden" id="storage_path" value="{{ storage_path() }}">
     <input type="hidden" id="base_url" value="{{ route('voyager.dashboard') }}">
