@@ -16,7 +16,7 @@ Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
 Website & Documentation: https://laravelvoyager.com
 
-Video Demo Here: https://devdojo.com/series/laravel-voyager-010/
+Video Tutorial Here: https://laravelvoyager.com/academy/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
