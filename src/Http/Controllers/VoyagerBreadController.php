@@ -200,30 +200,24 @@ class VoyagerBreadController extends Controller
 
     // POST BR(E)AD
     public function update(Request $request, $id)
-    {
+     {
         $slug = $this->getSlug($request);
-
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
+        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
         // Check permission
-        Voyager::canOrFail('edit_'.$dataType->name);
-
+        $this->authorize('edit', $data);
         //Validate fields with ajax
         $val = $this->updateValidateBread($request->all(), $dataType->editRows,$slug,$id);
-
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
         }
-
         if (!$request->ajax()) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-
             return redirect()
-                ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
+                ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                    'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
                 ]);
         }
