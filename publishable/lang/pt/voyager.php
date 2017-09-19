@@ -212,7 +212,7 @@ return [
     ],
 
     'database' => [
-        'add_bread'                 => 'Adicionar BREAD  esta tabela',
+        'add_bread'                 => 'Adicionar BREAD a esta tabela',
         'add_new_column'            => 'Adicionar Novo Campo',
         'add_softdeletes'           => 'Adicionar Soft Deletes',
         'add_timestamps'            => 'Adicionar Timestamps',
