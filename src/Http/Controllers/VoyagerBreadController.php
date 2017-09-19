@@ -323,8 +323,6 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        $model = app($dataType->model_name);
-        $model = $model::where('id', $id)->get();
         $this->authorize('delete', app($dataType->model_name));
 
         // Init array of IDs
