@@ -9821,3 +9821,9 @@ limitations under the License.
     margin-top: 3px;
     margin-right: -3px;
 }
+
+/********** Add z-index to perfect-scrollbar **********/
+
+.ps.ps--active-x>.ps__scrollbar-x-rail, .ps.ps--active-y>.ps__scrollbar-y-rail {
+    z-index: 999;
+}
