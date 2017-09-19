@@ -53,6 +53,25 @@ abstract class Controller extends BaseController
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
+            if ($row->type == 'image' && !empty($data->{$row->field}) && !empty($request->image) ) {
+				$this->deleteFileIfExists($data->{$row->field});
+
+				$options = json_decode($row->details);
+
+				if (isset($options->thumbnails)) {
+					foreach ($options->thumbnails as $thumbnail) {
+						$ext = explode('.', $data->{$row->field});
+						$extension = '.'.$ext[count($ext) - 1];
+
+						$path = str_replace($extension, '', $data->{$row->field});
+
+						$thumb_name = $thumbnail->name;
+
+						$this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
+					}
+				}
+			}
+
             /*
              * merge ex_images and upload images
              */
