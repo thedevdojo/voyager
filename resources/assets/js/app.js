@@ -1,6 +1,6 @@
 window.jQuery = window.$ = $ = require('jquery');
 window.Vue = require('vue');
-window.perfectScrollbar = require('./perfect-scrollbar');
+window.perfectScrollbar = require('perfect-scrollbar/jquery')($);
 window.toastr = require('./toastr');
 window.DataTable = require('./bootstrap-datatables');
 window.SimpleMDE = require('simplemde');
