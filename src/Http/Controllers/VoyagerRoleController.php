@@ -20,14 +20,16 @@ class VoyagerRoleController extends VoyagerBreadController
             return response()->json(['errors' => $val->messages()]);
         }
         if (!$request->ajax()) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-            return redirect()
-                    ->route("voyager.{$dataType->slug}.index")
-                    ->with([
-                            'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
-                            'alert-type' => 'success',
-                         ]);
+	        $data = call_user_func( [ $dataType->model_name, 'findOrFail' ], $id );
+	        $this->insertUpdateData( $request, $slug, $dataType->editRows, $data );
+
+	        return redirect()
+		        ->route( "voyager.{$dataType->slug}.index" )
+		        ->with( [
+			        'message'    => __( 'voyager.generic.successfully_updated' ) . " {$dataType->display_name_singular}",
+			        'alert-type' => 'success',
+		        ] );
+        }
     }
 
     
