@@ -205,25 +205,25 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-
         // Check permission
-        $this->authorize('edit', $data);
+        Voyager::canOrFail('edit_'.$dataType->name);
 
-        // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows);
+        //Validate fields with ajax
+        $val = $this->updateValidateBread($request->all(), $dataType->editRows,$slug,$id);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
         }
 
         if (!$request->ajax()) {
+            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
             return redirect()
-                ->route("voyager.{$dataType->slug}.index")
+                ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
                 ->with([
-                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                    'message'    => "Successfully Updated {$dataType->display_name_singular}",
                     'alert-type' => 'success',
                 ]);
         }
@@ -410,5 +410,47 @@ class VoyagerBreadController extends Controller
                 }
             }
         }
+    }
+
+    public function updateValidateBread($request, $data, $slug,$id)
+    {
+        $rules = [];
+        $messages = [];
+
+        foreach ($data as $row) {
+            $options = json_decode($row->details);
+
+            if (isset($options->validation)) {
+                if (isset($options->validation->rule)) {
+                    if (!is_array($options->validation->rule)) {
+                        if( strpos(strtoupper($options->validation->rule), 'UNIQUE') !== false )
+                        {
+                            $options->validation->rule = str_replace('unique:'.$slug, '', $options->validation->rule);
+
+                            $explodedRules = explode('|', $options->validation->rule);
+
+                            $explodedRules[] = \Illuminate\Validation\Rule::unique($slug)->ignore($id);
+
+                            $rules[$row->field] = $explodedRules;
+
+
+                        }
+                        else {
+                            $rules[$row->field] = explode('|', $options->validation->rule);
+                        }
+                    } else {
+                        $rules[$row->field] = $options->validation->rule;
+                    }
+                }
+
+                if (isset($options->validation->messages)) {
+                    foreach ($options->validation->messages as $key => $msg) {
+                        $messages[$row->field.'.'.$key] = $msg;
+                    }
+                }
+            }
+        }
+
+        return Validator::make($request, $rules, $messages);
     }
 }
