@@ -69,9 +69,19 @@ module.exports = function(){
 
 
 				files.on("dblclick", "li .file_link", function(){
-					if (! $(this).children('.details').data('type') == 'folder') {
+					var type = manager.selected_file.type;
+
+					if (type == "image/jpeg") {
+						$('.imagepreview').attr('src', manager.selected_file.path);
+						$('.image-title').html(manager.selected_file.name);
+						$('#imagemodal').modal('show');   
 						return false;
 					}
+					
+					if (type !== "folder") {
+						return false;
+					}
+					
 					manager.folders.push( $(this).data('folder') );
 					getFiles(manager.folders);
 				});
@@ -144,6 +154,19 @@ module.exports = function(){
 					// enter key
 					if(e.which == 13) {
 						if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
+							var type = manager.selected_file.type;
+
+							if (type == "image/jpeg") {
+								$('.imagepreview').attr('src', manager.selected_file.path);
+								$('.image-title').html(manager.selected_file.name);
+								$('#imagemodal').modal('show');   
+								return false;
+							}
+							
+							if (type !== "folder") {
+								return false;
+							}
+							
 							manager.folders.push( $('#files li .selected').data('folder') );
 							getFiles(manager.folders);
 						}
