@@ -64,12 +64,12 @@ class UserProfileTest extends TestCase
              ->click(__('voyager.profile.edit'))
              ->see(__('voyager.profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
-             ->type('another@example.com', 'email')
+             ->type('another@email.com', 'email')
              ->press(__('voyager.generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
-                 ['email' => 'another@example.com']
+                 ['email' => 'another@email.com']
              );
     }
 
@@ -119,12 +119,12 @@ class UserProfileTest extends TestCase
              ->click(__('voyager.profile.edit'))
              ->see(__('voyager.profile.edit_user'))
              ->seePageIs($editPageForTheCurrentUser)
-             ->type('another@example.com', 'email')
+             ->type('another@email.com', 'email')
              ->press(__('voyager.generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
-                 ['email' => 'another@example.com']
+                 ['email' => 'another@email.com']
              );
     }
 
