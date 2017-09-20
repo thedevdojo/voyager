@@ -17,6 +17,20 @@ module.exports = function(){
 				},
 				imgIcon: function(path){
 					return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:100%; height:100%;';
+				},
+				dateFilter: function(date){
+					if(!date){
+						return null;
+					}
+					var date = new Date(date * 1000);
+
+					var month = "0" + (date.getMonth() + 1);
+					var minutes = "0" + date.getMinutes();
+					var seconds = "0" + date.getSeconds();
+					
+					var dateForamted = date.getFullYear() + '-' + month.substr(-2) + '-' + date.getDate() + ' ' + date.getHours() + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+					
+					return dateForamted;
 				}
 			}
 		});
