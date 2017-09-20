@@ -11,82 +11,39 @@ class BasePolicy
     use HandlesAuthorization;
 
     /**
-     * Determine if the given user can browse the model.
+     * Handle all requested permission checks
      *
-     * @param \TCG\Voyager\Contracts\User $user
-     * @param  $model
-     *
+     * @param string $name
+     * @param array $arguments
      * @return bool
      */
-    public function browse(User $user, $model)
+    public function __call($name, $arguments)
     {
-        $dataType = Voyager::model('DataType');
-        $dataType = $dataType->where('model_name', get_class($model))->first();
+        if (count($arguments) < 2) {
+            throw new \InvalidArgumentException("not enough arguments");
+        }
+        /** @var \TCG\Voyager\Contracts\User $user */
+        $user = $arguments[0];
 
-        return $user->hasPermission('browse_'.$dataType->name);
+        /** @var $model */
+        $model = $arguments[1];
+
+        return $this->checkPermission($user, $model, $name);
     }
 
     /**
-     * Determine if the given model can be viewed by the user.
+     * Check if user has an associated permission
      *
      * @param \TCG\Voyager\Contracts\User $user
-     * @param  $model
-     *
+     * @param object $model
+     * @param string $action
      * @return bool
      */
-    public function read(User $user, $model)
+    protected function checkPermission(User $user, $model, $action)
     {
         $dataType = Voyager::model('DataType');
         $dataType = $dataType->where('model_name', get_class($model))->first();
 
-        return $user->hasPermission('read_'.$dataType->name);
-    }
-
-    /**
-     * Determine if the given model can be edited by the user.
-     *
-     * @param \TCG\Voyager\Contracts\User $user
-     * @param  $model
-     *
-     * @return bool
-     */
-    public function edit(User $user, $model)
-    {
-        $dataType = Voyager::model('DataType');
-        $dataType = $dataType->where('model_name', get_class($model))->first();
-
-        return $user->hasPermission('edit_'.$dataType->name);
-    }
-
-    /**
-     * Determine if the given user can create the model.
-     *
-     * @param \TCG\Voyager\Contracts\User $user
-     * @param  $model
-     *
-     * @return bool
-     */
-    public function add(User $user, $model)
-    {
-        $dataType = Voyager::model('DataType');
-        $dataType = $dataType->where('model_name', get_class($model))->first();
-
-        return $user->hasPermission('add_'.$dataType->name);
-    }
-
-    /**
-     * Determine if the given model can be deleted by the user.
-     *
-     * @param \TCG\Voyager\Contracts\User $user
-     * @param  $model
-     *
-     * @return bool
-     */
-    public function delete(User $user, $model)
-    {
-        $dataType = Voyager::model('DataType');
-        $dataType = $dataType->where('model_name', get_class($model))->first();
-
-        return $user->hasPermission('delete_'.$dataType->name);
+        return $user->hasPermission($action . '_' . $dataType->name);
     }
 }

@@ -17,15 +17,10 @@ class UserPolicy extends BasePolicy
      */
     public function read(User $user, $model)
     {
-        $dataType = Voyager::model('DataType');
-        $dataType = $dataType->where('model_name', get_class($model))->first();
+        // Does this post belong to the current user?
+        $current = $user->id === $model->id;
 
-        // Is this the current user's profile?
-        $current = $user->id === $model->id ? true : false;
-
-        $permission = Voyager::can('read_'.$dataType->name);
-
-        return $current || $permission;
+        return $current || $this->checkPermission($user, $model, "read");
     }
 
     /**
@@ -38,14 +33,9 @@ class UserPolicy extends BasePolicy
      */
     public function edit(User $user, $model)
     {
-        $dataType = Voyager::model('DataType');
-        $dataType = $dataType->where('model_name', get_class($model))->first();
+        // Does this post belong to the current user?
+        $current = $user->id === $model->id;
 
-        // Is this the current user's profile?
-        $current = $user->id === $model->id ? true : false;
-
-        $permission = Voyager::can('edit_'.$dataType->name);
-
-        return $current || $permission;
+        return $current || $this->checkPermission($user, $model, "edit");
     }
 }
