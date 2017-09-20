@@ -28,7 +28,7 @@ Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Lar
 
 ## Installation Steps
 
-### 1. Require the Voyager Package
+### 1. Require the Package
 
 After creating your new Laravel application you can include the Voyager package with the following command: 
 
@@ -78,7 +78,7 @@ And we're all good to go!
 
 Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
 
----
+## Creating an Admin User
 
 If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
 
