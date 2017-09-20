@@ -8,7 +8,7 @@
 @endphp
 
 @foreach ($items as $item)
-    
+
     @php
         $originalItem = $item;
         if (Voyager::translatable($item)) {
@@ -25,6 +25,13 @@
             array_push($listItemClass,'active');
         }
 
+        //If have children, default false. we will check childs permissions!
+        if(!$originalItem->children->isEmpty()) {
+            $show_menu_item = false;
+        } else {
+            $show_menu_item = true;
+        }
+
         // With Children Attributes
         if(!$originalItem->children->isEmpty())
         {
@@ -34,6 +41,36 @@
                 {
                     array_push($listItemClass,'active');
                 }
+
+                // Childrens Permission Checker
+                $self_prefix = str_replace('/', '\/', $options->user->prefix);
+                $slug = str_replace('/', '', preg_replace('/^\/'.$self_prefix.'/', '', $children->link()));
+                if ($slug != '') {
+                    // Get dataType using slug
+                    $dataType = $options->user->dataTypes->first(function ($value) use ($slug) {
+                        return $value->slug == $slug;
+                    });
+
+                    if ($dataType) {
+                        // Check if datatype permission exist
+                        $exist = $options->user->permissions->first(function ($value) use ($dataType) {
+                            return $value->key == 'browse_'.$dataType->name;
+                        });
+                    } else {
+                        // Check if admin permission exists
+                        $exist = $options->user->permissions->first(function ($value) use ($slug) {
+                            return $value->key == 'browse_'.$slug;
+                        });
+                    }
+
+                    if ($exist) {
+                        if (in_array($exist->key, $options->user->user_permissions)) {
+                            $show_menu_item = true;
+                        }
+                    }
+                }
+
+
             }
             $linkAttributes =  'href="#' . str_slug($item->title, '-') .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
             array_push($listItemClass, 'dropdown');
@@ -61,7 +98,7 @@
             } else {
                 // Check if admin permission exists
                 $exist = $options->user->permissions->first(function ($value) use ($slug) {
-                    return $value->key == 'browse_'.$slug && is_null($value->table_name);
+                    return $value->key == 'browse_'.$slug;
                 });
             }
 
@@ -72,22 +109,24 @@
                 }
             }
         }
-        
+
     @endphp
 
-    <li class="{{ implode(" ", $listItemClass) }}">
-        <a {!! $linkAttributes !!} target="{{ $item->target }}">
-            <span class="icon {{ $item->icon_class }}"></span>
-            <span class="title">{{ $item->title }}</span>
-        </a>
-        @if(!$originalItem->children->isEmpty())
-        <div id="{{ str_slug($originalItem->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
-            <div class="panel-body">
-                @include('voyager::menu.admin_menu', ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
+    @if($show_menu_item)
+        <li class="{{ implode(" ", $listItemClass) }}">
+            <a {!! $linkAttributes !!} target="{{ $item->target }}">
+                <span class="icon {{ $item->icon_class }}"></span>
+                <span class="title">{{ $item->title }}</span>
+            </a>
+            @if(!$originalItem->children->isEmpty())
+            <div id="{{ str_slug($originalItem->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
+                <div class="panel-body">
+                    @include('voyager::menu.admin_menu', ['items' => $originalItem->children, 'options' => $options, 'innerLoop' => true])
+                </div>
             </div>
-        </div>
-        @endif
-    </li>
+            @endif
+        </li>
+    @endif
 @endforeach
 
 </ul>
