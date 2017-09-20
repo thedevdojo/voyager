@@ -47,21 +47,7 @@ You will also want to update your website URL inside of the `APP_URL` variable i
 APP_URL=http://localhost:8000
 ```
 
-Add the Voyager service provider to the `config/app.php` file in the `providers` array:
-
-```php
-'providers' => [
-    // Laravel Framework Service Providers...
-    //...
-    
-    // Package Service Providers
-    TCG\Voyager\VoyagerServiceProvider::class,
-    // ...
-    
-    // Application Service Providers
-    // ...
-],
-```
+> Only if you are on Laravel 5.4 you will need to [Add the Service Provider.](https://voyager.readme.io/docs/adding-the-service-provider)
 
 Lastly, we can install voyager. You can do this either with or without dummy data.
 The dummy data will include 1 admin account (if no users already exists), 1 demo page, 4 demo posts, 2 categories and 7 settings.
