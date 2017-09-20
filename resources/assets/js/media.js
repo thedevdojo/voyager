@@ -71,7 +71,9 @@ module.exports = function(){
 				files.on("dblclick", "li .file_link", function(){
 					var type = manager.selected_file.type;
 
-					if (type == "image/jpeg") {
+					var mediaTypes = ['image/jpg','image/jpeg', 'image/png', 'image/gif'];
+					
+					if (mediaTypes.indexOf(type) > -1) {
 						$('.imagepreview').attr('src', manager.selected_file.path);
 						$('.image-title').html(manager.selected_file.name);
 						$('#imagemodal').modal('show');   
@@ -82,7 +84,7 @@ module.exports = function(){
 						return false;
 					}
 					
-					manager.folders.push( $(this).data('folder') );
+					manager.folders.push(manager.selected_file.name);
 					getFiles(manager.folders);
 				});
 
@@ -96,6 +98,7 @@ module.exports = function(){
 
 				$('.breadcrumb').on("click", "li.media_breadcrumb", function(){
 					var index = $(this).data('index');
+					
 					manager.folders = manager.folders.splice(0, index);
 					getFiles(manager.folders);
 				});
@@ -156,7 +159,9 @@ module.exports = function(){
 						if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
 							var type = manager.selected_file.type;
 
-							if (type == "image/jpeg") {
+							var mediaTypes = ['image/jpg','image/jpeg', 'image/png', 'image/gif'];
+					
+							if (mediaTypes.indexOf(type) > -1) {
 								$('.imagepreview').attr('src', manager.selected_file.path);
 								$('.image-title').html(manager.selected_file.name);
 								$('#imagemodal').modal('show');   
@@ -167,12 +172,18 @@ module.exports = function(){
 								return false;
 							}
 							
-							manager.folders.push( $('#files li .selected').data('folder') );
+							manager.folders.push(manager.selected_file.name);
 							getFiles(manager.folders);
 						}
 						if($('#confirm_delete_modal').is(':visible')){
 							$('#confirm_delete').trigger('click');
 						}
+					}
+					// backspace key
+					if(e.which == 8) {
+						var index =  manager.folders.length - 1;
+						manager.folders = manager.folders.splice(0, index);
+						getFiles(manager.folders);
 					}
 				});
 				//********** End Keypress Functionality **********//
@@ -343,6 +354,7 @@ module.exports = function(){
 					// Add the latest files to the folder dropdown
 					var all_folders = '';
 					$.post(options.baseUrl+'/media/directories', { folder_location:manager.folders, _token: CSRF_TOKEN }, function(data){
+						//console.log(data);
 						manager.directories = data;
 					});
 
