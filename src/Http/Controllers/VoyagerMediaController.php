@@ -181,13 +181,11 @@ class VoyagerMediaController extends Controller
             $message = __('voyager.media.success_uploaded_file');
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix().$path;
             $image = Image::make($realPath);
-			
-			if ($request->file->getClientOriginalExtension() == 'gif') {
-				copy($request->file->getRealPath(), $realPath);
-			}
-			else {
-				$image->orientate()->save($realPath);
-			}
+            if ($request->file->getClientOriginalExtension() == 'gif') {
+                copy($request->file->getRealPath(), $realPath);
+            } else {
+                $image->orientate()->save($realPath);
+            }
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
