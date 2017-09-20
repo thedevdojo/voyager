@@ -26,11 +26,17 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.4 and newer!
 
+## Installation Steps
+
+### 1. Require the Package
+
 After creating your new Laravel application you can include the Voyager package with the following command: 
 
 ```bash
 composer require tcg/voyager
 ```
+
+### 2. Add the DB Credentials & APP_URL
 
 Next make sure to create a new database and add your database credentials to your .env file:
 
@@ -47,21 +53,9 @@ You will also want to update your website URL inside of the `APP_URL` variable i
 APP_URL=http://localhost:8000
 ```
 
-Add the Voyager service provider to the `config/app.php` file in the `providers` array:
+> Only if you are on Laravel 5.4 you will need to [Add the Service Provider.](https://voyager.readme.io/docs/adding-the-service-provider)
 
-```php
-'providers' => [
-    // Laravel Framework Service Providers...
-    //...
-    
-    // Package Service Providers
-    TCG\Voyager\VoyagerServiceProvider::class,
-    // ...
-    
-    // Application Service Providers
-    // ...
-],
-```
+### 3. Run The Installer
 
 Lastly, we can install voyager. You can do this either with or without dummy data.
 The dummy data will include 1 admin account (if no users already exists), 1 demo page, 4 demo posts, 2 categories and 7 settings.
@@ -83,6 +77,8 @@ php artisan voyager:install --with-dummy
 And we're all good to go!
 
 Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
+
+## Creating an Admin User
 
 If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
 
