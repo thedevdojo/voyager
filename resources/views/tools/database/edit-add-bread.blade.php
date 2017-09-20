@@ -88,8 +88,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">{{ __('voyager.database.icon_hint') }} <a
-                                                href="{{ '/' . config('voyager.prefix') . '/compass#fonts' }}"
-                                                href="{{ voyager_asset('fonts/icons-reference.html') }}"
+                                                href="{{ route('voyager.compass.index', [], false) }}#fonts"
                                                 target="_blank">{{ __('voyager.database.icon_hint2') }}</a></label>
                                     <input type="text" class="form-control" name="icon"
                                            placeholder="{{ __('voyager.database.icon_class') }}"
@@ -476,7 +475,7 @@
             var tbl = dropdown.data('table');
             var selected_value = dropdown.data('selected');
             if(tbl.length != 0){
-                $.get('/{{ config("voyager.prefix") }}/database/' + tbl, function(data){
+                $.get('{{ route('voyager.database.index', [], false) }}/' + tbl, function(data){
                     $(dropdown).empty();
                     for (var option in data) {
                        $('<option/>', {
