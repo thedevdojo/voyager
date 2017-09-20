@@ -366,7 +366,7 @@ abstract class Controller extends BaseController
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 $content = $request->input($row->field);
-                if ($request->isMethod('PUT')) {
+                if (in_array($request->method(), ['PUT', 'POST'])) {
                     if (empty($request->input($row->field))) {
                         $content = null;
                     } else {
