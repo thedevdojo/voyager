@@ -173,7 +173,7 @@
                                                 <span><h4>Public URL:</h4>
     								            <p><a :href="selected_file.path" target="_blank">Click Here</a></p></span>
                                                 <span><h4>Last Modified:</h4>
-    								            <p>@{{selected_file.last_modified}}</p></span>
+    								            <p>@{{ dateFilter(selected_file.last_modified) }}</p></span>
                                             </template>
                                         </div>
                                     </div>
