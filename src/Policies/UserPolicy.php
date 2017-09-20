@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Policies;
 
 use TCG\Voyager\Contracts\User;
-use TCG\Voyager\Facades\Voyager;
 
 class UserPolicy extends BasePolicy
 {
@@ -20,7 +19,7 @@ class UserPolicy extends BasePolicy
         // Does this post belong to the current user?
         $current = $user->id === $model->id;
 
-        return $current || $this->checkPermission($user, $model, "read");
+        return $current || $this->checkPermission($user, $model, 'read');
     }
 
     /**
@@ -36,6 +35,6 @@ class UserPolicy extends BasePolicy
         // Does this post belong to the current user?
         $current = $user->id === $model->id;
 
-        return $current || $this->checkPermission($user, $model, "edit");
+        return $current || $this->checkPermission($user, $model, 'edit');
     }
 }
