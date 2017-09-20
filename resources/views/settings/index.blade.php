@@ -419,7 +419,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.settings.delete', ['id' => '__id']) }}" id="delete_form" method="POST">
+                    <form action="{{ route('voyager.settings.delete', ['id' => '0']) }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager.settings.delete_confirm') }}">
