@@ -32,8 +32,8 @@
             defaults = {
                 editing:       false,                       // Editing or View
                 form:          '.form-edit-add',
-                transInputs:   'input[data-i18n = true]',   // Hidden inputs holding translations
-                langSelectors: '.language-selector input'   // Language selector inputs
+                transInputs:   'input[data-i18n = true]', // Hidden inputs holding translations
+                langSelectors: '.language-selector:first input' // Language selector inputs
             };
 
         function Plugin ( element, options ) {
@@ -53,6 +53,7 @@
                 if (this.transInputs.length === 0 || this.langSelectors === 0) {
                     return false;
                 }
+
                 this.setup();
                 this.refresh();
             },
@@ -214,10 +215,11 @@
 
                 if (!this.settings.editing) {
                     inpUsr.text(_val);
+
                 } else {
-                    var $richtext = 'richtext'+inpUsr.prop('name');
-                    if (inpUsr.hasClass('richTextBox') && tinymce.get($richtext)) {
-                        tinymce.get($richtext).setContent(_val);
+                    var _mce = tinymce.get('richtext'+inpUsr.prop('name'));
+                    if (inpUsr.hasClass('richTextBox') && _mce && _mce.initialized) {
+                        _mce.setContent(_val);
                     } else {
                         inpUsr.val(_val);
                     }

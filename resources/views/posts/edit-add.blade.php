@@ -287,6 +287,7 @@
 @stop
 
 @section('javascript')
+    <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
     <script>
         $('document').ready(function () {
             $('#slug').slugify();
