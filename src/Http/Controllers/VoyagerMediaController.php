@@ -177,6 +177,7 @@ class VoyagerMediaController extends Controller
     {
         try {
             $path = $request->file->store($request->upload_path, $this->filesystem);
+            $path = preg_replace('/^public\//', '', $path);
             $success = true;
             $message = __('voyager.media.success_uploaded_file');
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix().$path;
@@ -184,9 +185,8 @@ class VoyagerMediaController extends Controller
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
+            $path = "";
         }
-
-        $path = preg_replace('/^public\//', '', $path);
 
         return response()->json(compact('success', 'message', 'path'));
     }
