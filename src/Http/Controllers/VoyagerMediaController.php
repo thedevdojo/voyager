@@ -176,21 +176,36 @@ class VoyagerMediaController extends Controller
     public function upload(Request $request)
     {
         try {
-            $path = $request->file->store($request->upload_path, $this->filesystem);
-            $success = true;
-            $message = __('voyager.media.success_uploaded_file');
-            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix().$path;
-            $image = Image::make($realPath);
-            if ($request->file->getClientOriginalExtension() == 'gif') {
-                copy($request->file->getRealPath(), $realPath);
+            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix(); 
+
+            $allowedImageMimeTypes = [
+                'image/jpeg',
+                'image/png',
+                'image/gif',
+                'image/bmp',
+                'image/svg+xml'
+            ];
+
+            if (in_array($request->file->getMimeType(), $allowedImageMimeTypes)) {
+                $file = $request->file->store($request->upload_path, $this->filesystem);
+
+                $image = Image::make($realPath.$file);
+
+                if ($request->file->getClientOriginalExtension() == 'gif') {
+                    copy($request->file->getRealPath(), $realPath.$file);
+                } else {
+                    $image->orientate()->save($realPath.$file);
+                }
             } else {
-                $image->orientate()->save($realPath);
+                $file = $request->file->move($realPath, $request->file->getClientOriginalName());
             }
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
         }
 
+        $success = true;
+        $message = __('voyager.media.success_uploaded_file');
         $path = preg_replace('/^public\//', '', $path);
 
         return response()->json(compact('success', 'message', 'path'));
