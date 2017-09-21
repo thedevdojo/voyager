@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager;
 
+use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use Arrilot\Widgets\Facade as Widget;
 use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -41,6 +42,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(WidgetServiceProvider::class);
         $this->app->register(VoyagerHooksServiceProvider::class);
+        $this->app->register(DoctrineSupportServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
