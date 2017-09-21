@@ -52,7 +52,10 @@
                             <ol class="breadcrumb filemanager">
                                 <li class="media_breadcrumb" data-folder="/" data-index="0"><span class="arrow"></span><strong>{{ __('voyager.media.library') }}</strong></li>
                                 <template v-for="(folder, index) in folders">
-                                    <li v-bind:data-folder="folder" v-bind:data-index="index+1" v-bind:class="{media_breadcrumb: index !== folders.length - 1}"><span class="arrow"></span>@{{ folder }}</li>
+                                    <li v-bind:data-folder="folder" v-bind:data-index="index+1" 
+									v-bind:class="{media_breadcrumb: index !== folders.length - 1}"><span
+                                                class="arrow"></span>@{{ folder }}</li>
+												
                                 </template>
                             </ol>
 
@@ -80,11 +83,14 @@
                                                 <template v-if="file.type.includes('audio')">
                                                     <i class="icon voyager-music"></i>
                                                 </template>
+												<template v-if="file.type.includes('zip')">
+                                                    <i class="icon voyager-archive"></i>
+                                                </template>
                                                 <template v-if="file.type == 'folder'">
                                                     <i class="icon voyager-folder"></i>
                                                 </template>
                                                 <template
-                                                        v-if="file.type != 'folder' && !file.type.includes('image') && !file.type.includes('video') && !file.type.includes('audio')">
+                                                        v-if="file.type != 'folder' && !file.type.includes('image') && !file.type.includes('video') && !file.type.includes('audio') && !file.type.includes('zip')">
                                                     <i class="icon voyager-file-text"></i>
                                                 </template>
 
@@ -143,11 +149,15 @@
                                                 </video>
                                             </template>
                                             <template v-if="selectedFileIs('audio')">
+												<i class="voyager-music"></i>
                                                 <audio controls style="width:100%; margin-top:5px;">
                                                     <source :src="selected_file.path" type="audio/ogg">
                                                     <source :src="selected_file.path" type="audio/mpeg">
                                                     Your browser does not support the audio element.
                                                 </audio>
+                                            </template>
+											<template v-if="selectedFileIs('zip')">
+                                                <i class="voyager-archive"></i>
                                             </template>
                                             <template v-if="selected_file.type == 'folder'">
                                                 <i class="voyager-folder"></i>
