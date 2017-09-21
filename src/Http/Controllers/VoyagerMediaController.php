@@ -176,8 +176,7 @@ class VoyagerMediaController extends Controller
     public function upload(Request $request)
     {
         try {
-
-            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix(); 
+            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
 
             $allowedImageMimeTypes = [
                 'image/jpeg',
