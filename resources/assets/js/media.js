@@ -85,9 +85,9 @@ module.exports = function(){
 				files.on("dblclick", "li .file_link", function(){
 					var type = manager.selected_file.type;
 
-					var mediaTypes = ['image/jpg','image/jpeg', 'image/png', 'image/gif'];
+					var imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
 					
-					if (mediaTypes.indexOf(type) > -1) {
+					if (imageMimeTypes.indexOf(type) > -1) {
 						$('.imagepreview').attr('src', manager.selected_file.path);
 						$('.image-title').html(manager.selected_file.name);
 						$('#imagemodal').modal('show');   
@@ -173,9 +173,9 @@ module.exports = function(){
 						if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
 							var type = manager.selected_file.type;
 
-							var mediaTypes = ['image/jpg','image/jpeg', 'image/png', 'image/gif'];
+							var imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
 					
-							if (mediaTypes.indexOf(type) > -1) {
+							if (imageMimeTypes.indexOf(type) > -1) {
 								$('.imagepreview').attr('src', manager.selected_file.path);
 								$('.image-title').html(manager.selected_file.name);
 								$('#imagemodal').modal('show');   
