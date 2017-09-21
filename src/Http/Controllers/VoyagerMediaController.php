@@ -185,7 +185,7 @@ class VoyagerMediaController extends Controller
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
-            $path = "";
+            $path = '';
         }
 
         return response()->json(compact('success', 'message', 'path'));
