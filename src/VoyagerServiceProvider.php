@@ -65,6 +65,10 @@ class VoyagerServiceProvider extends ServiceProvider
         if (!$this->app->runningInConsole() || config('app.env') == 'testing') {
             $this->registerAppCommands();
         }
+
+        if (env('DB_CONNECTION') === 'mysql') {
+            Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'blob');
+        }
     }
 
     /**
