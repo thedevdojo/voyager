@@ -239,9 +239,6 @@
     @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
         <script src="{{ voyager_asset('lib/js/dataTables.responsive.min.js') }}"></script>
     @endif
-    @if($isModelTranslatable)
-        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
-    @endif
     <script>
         $(document).ready(function () {
             @if (!$dataType->server_side)
