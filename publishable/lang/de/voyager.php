@@ -98,7 +98,7 @@ return [
     ],
 
     'login' => [
-        'loginin'      => 'Einloggen',
+        'loggingin'    => 'Einloggen',
         'signin_below' => 'Unten anmelden:',
         'welcome'      => 'Willkommen bei Voyager. Der fehlende Admin für Laravel',
     ],
