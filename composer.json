@@ -1,0 +1,55 @@
+{
+    "name": "tcg/voyager",
+    "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
+    "keywords": ["laravel", "admin", "panel"],
+    "license": "MIT",
+    "homepage": "https://the-control-group.github.io/voyager/",
+    "support": {
+        "issues": "https://github.com/the-control-group/voyager/issues",
+        "source": "https://github.com/the-control-group/voyager"
+    },
+    "authors": [
+        {
+            "name": "Tony Lea",
+            "email": "tony.lea@thecontrolgroup.com"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~5.4.0|~5.5.0",
+        "intervention/image": "^2.4",
+        "doctrine/dbal": "^2.5",
+        "larapack/doctrine-support": "~0.1.4",
+        "arrilot/laravel-widgets": "^3.7",
+        "league/flysystem": "~1.0.41",
+        "larapack/voyager-hooks": "~1.0.2"
+    },
+    "require-dev": {
+        "phpunit/phpcov": "~3.0|dev-master",
+        "phpunit/phpunit": "~5.7.14|~6.1",
+        "laravel/framework": "~5.4.36|~5.5.0",
+        "orchestra/testbench": "~3.4.0|~3.5.0",
+        "orchestra/database": "~3.4.0|~3.5.0",
+        "orchestra/testbench-core": "~3.4.0|~3.5.0",
+        "laravel/browser-kit-testing": "~1.0.0|~2.0.0",
+        "orchestra/testbench-browser-kit": "~3.4.0|~3.5.0",
+        "codeclimate/php-test-reporter": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "TCG\\Voyager\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TCG\\Voyager\\Tests\\": "tests/"
+      }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TCG\\Voyager\\VoyagerServiceProvider"
+            ]
+        }
+    }
+}

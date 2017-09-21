@@ -1,0 +1,97 @@
+<form action="#" class="form-horizontal">
+    <input id="hidPage" type="hidden" value="1">
+
+    <div class="form-group">
+        <label class="control-label col-xs-2" for=
+        "inpKeywords">{{youtubeSearch}}:</label>
+
+        <div class="input-append">
+            <div class="input-group-btn">
+                <input class="form-control" id="inpKeywords" style=
+                "width:300px;float:left;" type="text" autocomplete="off">
+                <input class="btn-default btn" id="btnSearch" type=
+                "submit" value=" {{youtubeSearch}} ">
+            </div>
+        </div>
+
+        <ul class="reset autocomplete"></ul>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-7">
+            <div id="divScroll">
+                <ul class="reset videos"></ul>
+
+                <div id="load_more">
+                    <a href="javascript:loadmore()" style=
+                    "font-size:10pt">{{youtubeLOAD}}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-5">
+            <div id="preview"><img src="preview.jpg"></div>
+
+            <div style="clear:both; height:10px;"></div>
+
+            <div class="form-group">
+                <label class="col-xs-5 control-label" for=
+                "widthURL">{{youtubeWidth}}:</label>
+
+                <div class="col-xs-7">
+                    <input type="text" class="span2 form-control" value="{{width}}" data-slider-min="200" data-slider-max="1280" data-slider-step="5" data-slider-value="{{width}}" id="widthURL">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-5 control-label" for=
+                "heightURL">{{youtubeHeight}}:</label>
+
+                <div class="col-xs-7">
+                    <input type="text" class="span2 form-control" value="{{height}}" data-slider-min="113" data-slider-max="720" data-slider-step="5" data-slider-value="{{height}}" id="heightURL">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-5 control-label" for=
+                "inpURL">{{youtubeSkin}}:</label>
+
+                <div class="col-xs-7">
+                    <select class=" form-control" id="skinURL">
+                        <option value="dark">
+                            {{youtubeSkinD}}
+                        </option>
+
+                        <option value="light">
+                            {{youtubeSkinL}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-2 control-label" for="inpURL">{{youtubeurl}}:</label>
+
+        <div class="col-xs-10">
+            <input class="form-control" id="inpURL" placeholder=
+            "{{youtubeurl}}" type="text">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-xs-2 control-label" for=
+        "titleURL">{{youtubeTitle}}:</label>
+
+        <div class="col-xs-5">
+            <input class="form-control" id="titleURL" placeholder=
+            "{{youtubeTitle}}" type="text">
+        </div>
+
+        <div class="col-xs-5 pull-right">
+             <input type="button" name="btnInsert" id="btnInsert" value="{{youtubeADD}}" onclick="I_Insert();" class="btn btn-default pull-right insert">
+		     <input type="button" name="btnInsert" id="btnInsert" value="{{youtubeADDclose}}" onclick="I_Insert();I_Close();" class="btn btn-primary pull-right insert">
+        </div>
+    </div>
+</form>
