@@ -1,2 +1,0 @@
-<input type="datetime" class="form-control datepicker" name="{{ $row->field }}"
-       value="@if(isset($dataTypeContent->{$row->field})){{ gmdate('m/d/Y g:i A', strtotime(old($row->field, $dataTypeContent->{$row->field})))  }}@else{{old($row->field)}}@endif">
