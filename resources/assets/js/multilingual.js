@@ -33,7 +33,7 @@
                 editing:       false,                       // Editing or View
                 form:          '.form-edit-add',
                 transInputs:   'input[data-i18n = true]',   // Hidden inputs holding translations
-                langSelectors: '> .language-selector input' // Language selector inputs
+                langSelectors: '.language-selector input'   // Language selector inputs
             };
 
         function Plugin ( element, options ) {
