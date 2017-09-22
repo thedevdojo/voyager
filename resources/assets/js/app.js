@@ -26,6 +26,7 @@ require('./voyager_tinymce');
 require('./voyager_ace_editor');
 window.helpers = require('./helpers.js');
 require('./load-remote.js');
+require('cropperjs');
 
 $(document).ready(function(){
 
