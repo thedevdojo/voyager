@@ -13,12 +13,15 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageServiceProvider;
+use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Models\MenuItem;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Policies\BasePolicy;
+use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
@@ -30,7 +33,8 @@ class VoyagerServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Setting::class => SettingPolicy::class,
+        Setting::class  => SettingPolicy::class,
+        MenuItem::class => MenuItemPolicy::class,
     ];
 
     /**
@@ -41,6 +45,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(WidgetServiceProvider::class);
         $this->app->register(VoyagerHooksServiceProvider::class);
+        $this->app->register(DoctrineSupportServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
