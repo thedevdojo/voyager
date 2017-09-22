@@ -176,37 +176,39 @@ class VoyagerMediaController extends Controller
     public function upload(Request $request)
     {
         try {
-            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix(); 
 
-            $allowedImageMimeTypes = [
-                'image/jpeg',
-                'image/png',
-                'image/gif',
-                'image/bmp',
-                'image/svg+xml',
-            ];
+			$allowedImageMimeTypes = [
+				'image/jpeg',
+				'image/png',
+				'image/gif',
+				'image/bmp',
+				'image/svg+xml'
+			];
 
-            if (in_array($request->file->getMimeType(), $allowedImageMimeTypes)) {
+			if (in_array($request->file->getMimeType(),$allowedImageMimeTypes)) {
                 $file = $request->file->store($request->upload_path, $this->filesystem);
 
                 $image = Image::make($realPath.$file);
 
-                if ($request->file->getClientOriginalExtension() == 'gif') {
-                    copy($request->file->getRealPath(), $realPath.$file);
-                } else {
-                    $image->orientate()->save($realPath.$file);
-                }
-            } else {
-                $file = $request->file->move($realPath, $request->file->getClientOriginalName());
-            }
+				if ($request->file->getClientOriginalExtension() == 'gif') {
+					copy($request->file->getRealPath(), $realPath.$file);
+				} else {
+					$image->orientate()->save($realPath.$file);
+				}
+			} else {
+				$file = $request->file->move($realPath , $request->file->getClientOriginalName());
+			}
+
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
+            $path = '';
         }
 
         $success = true;
         $message = __('voyager.media.success_uploaded_file');
-        $path = preg_replace('/^public\//', '', $path);
+        $path = preg_replace('/^public\//', '', $file);
 
         return response()->json(compact('success', 'message', 'path'));
     }
