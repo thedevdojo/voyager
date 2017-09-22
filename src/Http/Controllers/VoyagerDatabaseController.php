@@ -368,7 +368,7 @@ class VoyagerDatabaseController extends Controller
                 'label'             => $request->relationship_label,
                 'pivot_table'       => $request->relationship_pivot,
                 'pivot'             => ($request->relationship_type == 'belongsToMany') ? '1' : '0',
-				'formfields_custom' => $request->relationship_formfields_custom,
+                'formfields_custom' => $request->relationship_formfields_custom,
             ]);
 
             $newRow = new DataRow();
