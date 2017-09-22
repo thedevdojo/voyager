@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageServiceProvider;
+use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
@@ -41,6 +42,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(WidgetServiceProvider::class);
         $this->app->register(VoyagerHooksServiceProvider::class);
+        $this->app->register(DoctrineSupportServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
