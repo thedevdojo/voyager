@@ -186,28 +186,27 @@ class VoyagerMediaController extends Controller
 				'image/svg+xml'
 			];
 			
-			if (in_array($request->file->getMimeType(),$allowedImageMimeTypes)) {
+			if (in_array($request->file->getMimeType(), $allowedImageMimeTypes)) {
                 $file = $request->file->store($request->upload_path, $this->filesystem);
 
                 $image = Image::make($realPath.$file);
-				
-				if ($request->file->getClientOriginalExtension() == 'gif') {
-					copy($request->file->getRealPath(), $realPath.$file);
-				} else {
-					$image->orientate()->save($realPath.$file);
-				}
-			} else {
-				$file = $request->file->move($realPath , $request->file->getClientOriginalName());
-			}
 
-			$success = true;
+                if ($request->file->getClientOriginalExtension() == 'gif') {
+                    copy($request->file->getRealPath(), $realPath.$file);
+                } else {
+                    $image->orientate()->save($realPath.$file);
+                }
+            } else {
+                $file = $request->file->move($realPath, $request->file->getClientOriginalName());
+            }
+            
+            $success = true;
             $message = __('voyager.media.success_uploaded_file');
             $path = preg_replace('/^public\//', '', $file);
-			
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
-			$path = '';
+            $path = '';
         }
 
         return response()->json(compact('success', 'message', 'path'));
