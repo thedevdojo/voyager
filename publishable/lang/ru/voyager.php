@@ -173,7 +173,7 @@ return [
         'crop_image'             => 'Обрезать изображение',
         'success_crop_image'     => 'Изображение успешно обрезано',
         'height'                 => 'Высота: ',
-	'width'                  => 'Ширина: ',
+        'width'                  => 'Ширина: ',
     ],
 
     'menu_builder' => [
