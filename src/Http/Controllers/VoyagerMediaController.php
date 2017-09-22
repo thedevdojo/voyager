@@ -331,4 +331,40 @@ class VoyagerMediaController extends Controller
             ], $code);
         }
     }
+
+    // Crop Image
+    public function crop(Request $request)
+    {
+        $createMode = $request->get('createMode') === 'true';
+        $x = $request->get('x');
+        $y = $request->get('y');
+        $height = $request->get('height');
+        $width = $request->get('width');
+
+        $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+        $originImagePath = $realPath.$request->upload_path.'/'.$request->originImageName;
+
+        try {
+            if ($createMode) {
+                // create a new image with the cpopped data
+                $fileNameParts = explode('.', $request->originImageName);
+                array_splice($fileNameParts, count($fileNameParts) - 1, 0, 'cropped_'.time());
+                $newImageName = implode('.', $fileNameParts);
+                $destImagePath = $realPath.$request->upload_path.'/'.$newImageName;
+            } else {
+                // override the original image
+                $destImagePath = $originImagePath;
+            }
+
+            Image::make($originImagePath)->crop($width, $height, $x, $y)->save($destImagePath);
+
+            $success = true;
+            $message = __('voyager.media.success_crop_image');
+        } catch (Exception $e) {
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json(compact('success', 'message'));
+    }
 }

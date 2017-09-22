@@ -93,6 +93,7 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('rename_file', ['uses' => $namespacePrefix.'VoyagerMediaController@rename_file',        'as' => 'rename_file']);
             Route::post('upload', ['uses' => $namespacePrefix.'VoyagerMediaController@upload',             'as' => 'upload']);
             Route::post('remove', ['uses' => $namespacePrefix.'VoyagerMediaController@remove',             'as' => 'remove']);
+            Route::post('crop', ['uses' => $namespacePrefix.'VoyagerMediaController@crop',             'as' => 'crop']);
         });
 
         // Database Routes
