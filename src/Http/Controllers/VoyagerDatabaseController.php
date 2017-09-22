@@ -360,14 +360,14 @@ class VoyagerDatabaseController extends Controller
 
             // Build the relationship details
             $relationshipDetails = json_encode([
-                'model'       => $request->relationship_model,
-                'table'       => $request->relationship_table,
-                'type'        => $request->relationship_type,
-                'column'      => $relationship_column,
-                'key'         => $request->relationship_key,
-                'label'       => $request->relationship_label,
-                'pivot_table' => $request->relationship_pivot,
-                'pivot'       => ($request->relationship_type == 'belongsToMany') ? '1' : '0',
+                'model'             => $request->relationship_model,
+                'table'             => $request->relationship_table,
+                'type'              => $request->relationship_type,
+                'column'            => $relationship_column,
+                'key'               => $request->relationship_key,
+                'label'             => $request->relationship_label,
+                'pivot_table'       => $request->relationship_pivot,
+                'pivot'             => ($request->relationship_type == 'belongsToMany') ? '1' : '0',
 				'formfields_custom' => $request->relationship_formfields_custom,
             ]);
 
