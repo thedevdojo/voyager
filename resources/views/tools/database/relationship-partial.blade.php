@@ -79,6 +79,10 @@
             <select name="relationship_key_{{ $relationship['field'] }}" class="rowDrop select2 relationship_key" style="@if($relationshipDetails->type == 'belongsTo' || $relationshipDetails->type == 'belongsToMany'){{ 'display:block' }}@endif" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="@if(isset($relationshipDetails->key)){{ $relationshipDetails->key }}@endif">
             </select>
         </div>
+        <div class="relationship_details_content margin_top">
+            <label>Set custom form fields</label>
+            <span><input type="text" class="form-control" name="relationship_formfields_custom_{{ $relationship['field'] }}" placeholder="subcategories" value="@if(isset($relationshipDetails->formfields_custom)){{ $relationshipDetails->formfields_custom }}@endif"></span>
+        </div>
     </div>
     <input type="hidden" value="0" name="field_required_{{ $relationship['field'] }}" checked="checked">
     <input type="hidden" name="field_input_type_{{ $relationship['field'] }}" value="relationship">
