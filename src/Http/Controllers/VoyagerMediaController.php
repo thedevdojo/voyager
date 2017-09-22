@@ -199,7 +199,6 @@ class VoyagerMediaController extends Controller
             } else {
                 $file = $request->file->move($realPath, $request->file->getClientOriginalName());
 	    }
-
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
