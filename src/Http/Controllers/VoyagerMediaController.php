@@ -199,7 +199,7 @@ class VoyagerMediaController extends Controller
             } else {
                 $file = $request->file->move($realPath, $request->file->getClientOriginalName());
             }
-            
+
             $success = true;
             $message = __('voyager.media.success_uploaded_file');
             $path = preg_replace('/^public\//', '', $file);
