@@ -331,7 +331,7 @@ class VoyagerMediaController extends Controller
             ], $code);
         }
     }
-	
+
     // Crop Image
     public function crop(Request $request)
     {
@@ -343,13 +343,13 @@ class VoyagerMediaController extends Controller
 
         $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
         $originImagePath = $realPath.$request->upload_path.'/'.$request->originImageName;
-		
+
         try {
 
             if ($createMode) {
                 // create a new image with the cpopped data
                 $fileNameParts = explode('.', $request->originImageName);
-                array_splice($fileNameParts, count($fileNameParts) - 1 , 0, 'cropped_'.time());
+                array_splice($fileNameParts, count($fileNameParts) - 1, 0, 'cropped_'.time());
                 $newImageName = implode('.', $fileNameParts);
                 $destImagePath = $realPath.$request->upload_path.'/'.$newImageName;
             } else {
