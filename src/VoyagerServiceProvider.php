@@ -33,7 +33,7 @@ class VoyagerServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Setting::class => SettingPolicy::class,
+        Setting::class  => SettingPolicy::class,
         MenuItem::class => MenuItemPolicy::class,
     ];
 
