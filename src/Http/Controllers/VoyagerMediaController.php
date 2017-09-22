@@ -345,7 +345,6 @@ class VoyagerMediaController extends Controller
         $originImagePath = $realPath.$request->upload_path.'/'.$request->originImageName;
 
         try {
-
             if ($createMode) {
                 // create a new image with the cpopped data
                 $fileNameParts = explode('.', $request->originImageName);
