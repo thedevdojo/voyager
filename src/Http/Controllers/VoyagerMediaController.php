@@ -176,12 +176,33 @@ class VoyagerMediaController extends Controller
     public function upload(Request $request)
     {
         try {
-            $path = $request->file->store($request->upload_path, $this->filesystem);
-            $path = preg_replace('/^public\//', '', $path);
+            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+
+            $allowedImageMimeTypes = [
+                'image/jpeg',
+                'image/png',
+                'image/gif',
+                'image/bmp',
+                'image/svg+xml',
+            ];
+
+            if (in_array($request->file->getMimeType(), $allowedImageMimeTypes)) {
+                $file = $request->file->store($request->upload_path, $this->filesystem);
+
+                $image = Image::make($realPath.$file);
+
+                if ($request->file->getClientOriginalExtension() == 'gif') {
+                    copy($request->file->getRealPath(), $realPath.$file);
+                } else {
+                    $image->orientate()->save($realPath.$file);
+                }
+            } else {
+                $file = $request->file->move($realPath, $request->file->getClientOriginalName());
+            }
+            
             $success = true;
             $message = __('voyager.media.success_uploaded_file');
-            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix().$path;
-            Image::make($realPath)->orientate()->save();
+            $path = preg_replace('/^public\//', '', $file);
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
