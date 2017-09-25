@@ -11,9 +11,10 @@
         $listItemClass = [];
         $styles = null;
         $linkAttributes = null;
+        $transItem = $item;
 
         if (Voyager::translatable($item)) {
-            $item = $item->translate($options->locale);
+            $transItem = $item->translate($options->locale);
         }
 
         $href = $item->link();
@@ -24,6 +25,7 @@
         }
 
         $permission = '';
+        $hasChildren = false;
 
         // With Children Attributes
         if(!$item->children->isEmpty())
@@ -38,9 +40,11 @@
                     array_push($listItemClass, 'active');
                 }
             }
-            if (!$hasChildren) { continue; }
+            if (!$hasChildren) {
+                continue;
+            }
 
-            $linkAttributes = 'href="#' . str_slug($item->title, '-') .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
+            $linkAttributes = 'href="#' . str_slug($transItem->title, '-') .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
             array_push($listItemClass, 'dropdown');
         }
         else
@@ -48,7 +52,7 @@
             $linkAttributes =  'href="' . url($href) .'"';
 
             if(!Auth::user()->can('browse', $item)) {
-                return;
+                continue;
             }
         }
     @endphp
@@ -56,10 +60,10 @@
     <li class="{{ implode(" ", $listItemClass) }}">
         <a {!! $linkAttributes !!} target="{{ $item->target }}">
             <span class="icon {{ $item->icon_class }}"></span>
-            <span class="title">{{ $item->title }}</span>
+            <span class="title">{{ $transItem->title }}</span>
         </a>
-        @if(!$item->children->isEmpty())
-            <div id="{{ str_slug($item->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
+        @if($hasChildren)
+            <div id="{{ str_slug($transItem->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
                 <div class="panel-body">
                     @include('voyager::menu.admin_menu', ['items' => $item->children, 'options' => $options, 'innerLoop' => true])
                 </div>
