@@ -72,6 +72,11 @@ abstract class Controller extends BaseController
                     $content = $data->{$row->field};
                 }
 
+                // If the multiple_images upload is null and it has a current image keep the current image
+                if ($row->type == 'multiple_images' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                    $content = $data->{$row->field};
+                }
+
                 // If the file upload is null and it has a current file keep the current file
                 if ($row->type == 'file') {
                     $content = $data->{$row->field};
