@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Policies;
 
 use TCG\Voyager\Contracts\User;
+use TCG\Voyager\Models\DataType;
 
 class MenuItemPolicy extends BasePolicy
 {
@@ -20,6 +21,10 @@ class MenuItemPolicy extends BasePolicy
         $regex = str_replace('/', '\/', preg_quote(route('voyager.dashboard')));
         $slug = preg_replace('/'.$regex.'/', '', $model->link(true));
         $slug = str_replace('/', '', $slug);
+
+        if ($resolvedDataType = DataType::whereSlug($slug)->first()) {
+            $slug = $resolvedDataType->name;
+        }
 
         if ($slug == '') {
             $slug = 'admin';
