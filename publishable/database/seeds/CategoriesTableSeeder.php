@@ -13,20 +13,20 @@ class CategoriesTableSeeder extends Seeder
     public function run()
     {
         $category = Category::firstOrNew([
-            'slug' => 'category-1',
+            'name' => '分类1',
         ]);
         if (!$category->exists) {
             $category->fill([
-                'name'       => 'Category 1',
+                'name'       => '分类1',
             ])->save();
         }
 
         $category = Category::firstOrNew([
-            'slug' => 'category-2',
+            'name' => '分类2',
         ]);
         if (!$category->exists) {
             $category->fill([
-                'name'       => 'Category 2',
+                'name'       => '分类2',
             ])->save();
         }
     }

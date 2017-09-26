@@ -20,7 +20,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Dashboard',
+                'title'      => '控制台',
                 'url'        => '',
                 'route'      => 'voyager.dashboard',
             ]);
@@ -36,7 +36,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Media',
+                'title'      => '附件',
                 'url'        => '',
                 'route'      => 'voyager.media.index',
             ]);
@@ -52,7 +52,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Posts',
+                'title'      => '文章',
                 'url'        => '',
                 'route'      => 'voyager.posts.index',
             ]);
@@ -68,7 +68,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Users',
+                'title'      => '用户',
                 'url'        => '',
                 'route'      => 'voyager.users.index',
             ]);
@@ -84,7 +84,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Categories',
+                'title'      => '分类',
                 'url'        => '',
                 'route'      => 'voyager.categories.index',
             ]);
@@ -100,7 +100,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Pages',
+                'title'      => '单页',
                 'url'        => '',
                 'route'      => 'voyager.pages.index',
             ]);
@@ -116,7 +116,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Roles',
+                'title'      => '角色',
                 'url'        => '',
                 'route'      => 'voyager.roles.index',
             ]);
@@ -132,7 +132,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $toolsMenuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Tools',
+                'title'      => '工具',
                 'url'        => '',
             ]);
             if (!$toolsMenuItem->exists) {
@@ -147,7 +147,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Menu Builder',
+                'title'      => '菜单生成器',
                 'url'        => '',
                 'route'      => 'voyager.menus.index',
             ]);
@@ -163,7 +163,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Database',
+                'title'      => '数据库',
                 'url'        => '',
                 'route'      => 'voyager.database.index',
             ]);
@@ -179,7 +179,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Compass',
+                'title'      => '指南',
                 'url'        => route('voyager.compass.index', [], false),
             ]);
             if (!$menuItem->exists) {
@@ -194,7 +194,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Hooks',
+                'title'      => '钩子',
                 'url'        => route('voyager.hooks', [], false),
             ]);
             if (!$menuItem->exists) {
@@ -209,7 +209,7 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => 'Settings',
+                'title'      => '设置',
                 'url'        => '',
                 'route'      => 'voyager.settings.index',
             ]);

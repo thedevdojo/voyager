@@ -17,14 +17,11 @@ class CreatePagesTable extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('author_id');
-            $table->string('title');
-            $table->text('excerpt')->nullable();
-            $table->text('body')->nullable();
-            $table->string('image')->nullable();
-            $table->string('slug')->unique();
-            $table->text('meta_description')->nullable();
-            $table->text('meta_keywords')->nullable();
-            $table->enum('status', Page::$statuses)->default(Page::STATUS_INACTIVE);
+            $table->string('title')->comment('标题');
+            $table->text('excerpt')->nullable()->comment('摘要');
+            $table->text('body')->nullable()->comment('内容');
+            $table->string('image')->nullable()->comment('图片');
+            $table->enum('status', Page::$statuses)->default(Page::STATUS_INACTIVE)->comment('状态');
             $table->timestamps();
         });
     }

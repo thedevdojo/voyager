@@ -1,7 +1,7 @@
 {
-    "name": "tcg/voyager",
-    "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
-    "keywords": ["laravel", "admin", "panel"],
+    "name": "bigface/voyager",
+    "description": "基于 The Control Group 的 voyager ，帮您轻松创建后台功能的 Laravel 后台管理的系统",
+    "keywords": ["laravel", "admin", "panel", "中文"],
     "license": "MIT",
     "homepage": "https://the-control-group.github.io/voyager/",
     "support": {
@@ -12,6 +12,11 @@
         {
             "name": "Tony Lea",
             "email": "tony.lea@thecontrolgroup.com"
+        },
+        {
+            "name": "bigface song",
+            "email": "saybye720@gmail.com",
+            "blog": "https://blog.11010.net"
         }
     ],
     "require": {

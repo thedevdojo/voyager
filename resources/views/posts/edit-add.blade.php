@@ -130,10 +130,9 @@
                             <textarea class="form-control" name="excerpt">@if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif</textarea>
                         </div>
                     </div>
-
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Additional Fields</h3>
+                            <h3 class="panel-title">其他信息</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
@@ -141,7 +140,7 @@
                         <div class="panel-body">
                             @php
                                 $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
-                                $exclude = ['title', 'body', 'excerpt', 'slug', 'status', 'category_id', 'author_id', 'featured', 'image', 'meta_description', 'meta_keywords', 'seo_title'];
+                                $exclude = ['title', 'body', 'excerpt', 'slug', 'status', 'category_id', 'author_id', 'featured', 'image'];
                             @endphp
 
                             @foreach($dataTypeRows as $row)
@@ -185,17 +184,6 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.post.slug') }}</label>
-                                @include('voyager::multilingual.input-hidden', [
-                                    '_field_name'  => 'slug',
-                                    '_field_trans' => get_field_translations($dataTypeContent, 'slug')
-                                ])
-                                <input type="text" class="form-control" id="slug" name="slug"
-                                    placeholder="slug"
-                                    {{!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}}
-                                    value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
-                            </div>
-                            <div class="form-group">
                                 <label for="name">{{ __('voyager.post.status') }}</label>
                                 <select class="form-control" name="status">
                                     <option value="PUBLISHED" @if(isset($dataTypeContent->status) && $dataTypeContent->status == 'PUBLISHED'){{ 'selected="selected"' }}@endif>{{ __('voyager.post.status_published') }}</option>
@@ -234,41 +222,6 @@
                         </div>
                     </div>
 
-                    <!-- ### SEO CONTENT ### -->
-                    <div class="panel panel-bordered panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon wb-search"></i> {{ __('voyager.post.seo_content') }}</h3>
-                            <div class="panel-actions">
-                                <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label for="name">{{ __('voyager.post.meta_description') }}</label>
-                                @include('voyager::multilingual.input-hidden', [
-                                    '_field_name'  => 'meta_description',
-                                    '_field_trans' => get_field_translations($dataTypeContent, 'meta_description')
-                                ])
-                                <textarea class="form-control" name="meta_description">@if(isset($dataTypeContent->meta_description)){{ $dataTypeContent->meta_description }}@endif</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="name">{{ __('voyager.post.meta_keywords') }}</label>
-                                @include('voyager::multilingual.input-hidden', [
-                                    '_field_name'  => 'meta_keywords',
-                                    '_field_trans' => get_field_translations($dataTypeContent, 'meta_keywords')
-                                ])
-                                <textarea class="form-control" name="meta_keywords">@if(isset($dataTypeContent->meta_keywords)){{ $dataTypeContent->meta_keywords }}@endif</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="name">{{ __('voyager.post.seo_title') }}</label>
-                                @include('voyager::multilingual.input-hidden', [
-                                    '_field_name'  => 'seo_title',
-                                    '_field_trans' => get_field_translations($dataTypeContent, 'seo_title')
-                                ])
-                                <input type="text" class="form-control" name="seo_title" placeholder="SEO Title" value="@if(isset($dataTypeContent->seo_title)){{ $dataTypeContent->seo_title }}@endif">
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 

@@ -14,20 +14,20 @@ class CreateMenuTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name')->unique()->comment('菜单外部调用名');
             $table->timestamps();
         });
 
         Schema::create('menu_items', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('menu_id')->nullable();
-            $table->string('title');
-            $table->string('url');
+            $table->string('title')->comment('菜单名');
+            $table->string('url')->comment('静态URL');
             $table->string('target')->default('_self');
-            $table->string('icon_class')->nullable();
-            $table->string('color')->nullable();
-            $table->integer('parent_id')->nullable();
-            $table->integer('order');
+            $table->string('icon_class')->nullable()->comment('图标');
+            $table->string('color')->nullable()->comment('颜色');
+            $table->integer('parent_id')->nullable()->comment('父ID');
+            $table->integer('order')->comment('排序');
             $table->timestamps();
         });
 

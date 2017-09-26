@@ -15,11 +15,10 @@ class CreateCategoriesTable extends Migration
         // Create table for storing categories
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent_id')->unsigned()->nullable()->default(null);
+            $table->integer('parent_id')->unsigned()->nullable()->default(null)->comment('父ID');
             $table->foreign('parent_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('set null');
-            $table->integer('order')->default(1);
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->integer('order')->default(1)->comment('排序');
+            $table->string('name')->unique()->comment('分类名称');
             $table->timestamps();
         });
     }

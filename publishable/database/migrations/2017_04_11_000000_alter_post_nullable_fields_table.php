@@ -17,9 +17,9 @@ class AlterPostNullableFieldsTable extends Migration
         $platform->registerDoctrineTypeMapping('enum', 'string');
 
         Schema::table('posts', function (Blueprint $table) {
-            $table->text('excerpt')->nullable()->change();
-            $table->text('meta_description')->nullable()->change();
-            $table->text('meta_keywords')->nullable()->change();
+            $table->text('excerpt')->nullable()->change()->comment('摘要');
+            $table->text('meta_description')->nullable()->change()->comment('meta 描述');
+            $table->text('meta_keywords')->nullable()->change()->comment('meta 关键字');
         });
     }
 
