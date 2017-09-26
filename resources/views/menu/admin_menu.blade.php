@@ -30,10 +30,9 @@
         // With Children Attributes
         if(!$item->children->isEmpty())
         {
-            $hasChildren = true;
             foreach($item->children as $child)
             {
-                $hasChildren = $hasChildren && Auth::user()->can('browse', $child);
+                $hasChildren = $hasChildren || Auth::user()->can('browse', $child);
 
                 if(url($child->link()) == url()->current())
                 {
