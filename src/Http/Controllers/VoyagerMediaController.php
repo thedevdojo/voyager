@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use League\Flysystem\Plugin\ListWith;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerMediaController extends Controller
@@ -215,37 +216,30 @@ class VoyagerMediaController extends Controller
     private function getFiles($dir)
     {
         $files = [];
-        $storageFiles = Storage::disk($this->filesystem)->files($dir);
-        $storageFolders = Storage::disk($this->filesystem)->directories($dir);
+        $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
+        $storageItems = $storage->listWith(['mimetype'], $dir);
 
-        foreach ($storageFiles as $file) {
-            if (empty(pathinfo($file, PATHINFO_FILENAME)) && config('voyager.hidden_files')) {
+        foreach ($storageItems as $item) {
+            if ($item['type'] == 'dir') {
                 $files[] = [
-                    'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
-                    'type'          => Storage::disk($this->filesystem)->mimeType($file),
-                    'path'          => Storage::disk($this->filesystem)->url($file),
-                    'size'          => Storage::disk($this->filesystem)->size($file),
-                    'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
+                    'name'          => $item['basename'],
+                    'type'          => 'folder',
+                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'items'         => '',
+                    'last_modified' => '',
                 ];
-            } elseif (!empty(pathinfo($file, PATHINFO_FILENAME))) {
+            } else {
+                if (empty(pathinfo($item['path'], PATHINFO_FILENAME)) && !config('voyager.hidden_files')) {
+                    continue;
+                }
                 $files[] = [
-                    'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
-                    'type'          => Storage::disk($this->filesystem)->mimeType($file),
-                    'path'          => Storage::disk($this->filesystem)->url($file),
-                    'size'          => Storage::disk($this->filesystem)->size($file),
-                    'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
+                    'name'          => $item['basename'],
+                    'type'          => isset($item['mimetype']) ? $item['mimetype'] : 'file',
+                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'size'          => $item['size'],
+                    'last_modified' => $item['timestamp'],
                 ];
             }
-        }
-
-        foreach ($storageFolders as $folder) {
-            $files[] = [
-                'name'          => strpos($folder, '/') > 1 ? str_replace('/', '', strrchr($folder, '/')) : $folder,
-                'type'          => 'folder',
-                'path'          => Storage::disk($this->filesystem)->url($folder),
-                'items'         => '',
-                'last_modified' => '',
-            ];
         }
 
         return $files;
