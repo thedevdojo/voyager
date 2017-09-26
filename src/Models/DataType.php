@@ -169,14 +169,15 @@ class DataType extends Model
 
                     // Build the relationship details
                     $relationshipDetails = [
-                        'model'       => $requestData['relationship_model_'.$relationship],
-                        'table'       => $requestData['relationship_table_'.$relationship],
-                        'type'        => $requestData['relationship_type_'.$relationship],
-                        'column'      => $relationship_column,
-                        'key'         => $requestData['relationship_key_'.$relationship],
-                        'label'       => $requestData['relationship_label_'.$relationship],
-                        'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
-                        'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
+                        'model'             => $requestData['relationship_model_'.$relationship],
+                        'table'             => $requestData['relationship_table_'.$relationship],
+                        'type'              => $requestData['relationship_type_'.$relationship],
+                        'column'            => $relationship_column,
+                        'key'               => $requestData['relationship_key_'.$relationship],
+                        'label'             => $requestData['relationship_label_'.$relationship],
+                        'pivot_table'       => $requestData['relationship_pivot_table_'.$relationship],
+                        'pivot'             => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
+                        'formfields_custom' => $requestData['relationship_formfields_custom_'.$relationship],
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
