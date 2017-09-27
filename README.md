@@ -12,11 +12,9 @@
 # **V**oyager - 基于 Laravel 的后台管理
 创建者 [The Control Group](https://www.thecontrolgroup.com)
 
-修改者 [Bigface Song](https://blog.11010.net)。几乎所有代码都来自[The Control Group](https://www.thecontrolgroup.com)，我纠结了很长时间才fork，主要因为slug，
-我自己做项目基本用不到，而且 `admin_menu.blade.php` 文件大约 65 行 `<div id="{{ str_slug($transItem->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">`，中文项目里面 `title` 几乎都是中文，这样 `str_slug()` 函数就回报错，本来打算提交PR，建议代码别用 `title`，比如改为 `url`，
-感觉这样做有点自私。还有就是因为国内无法加载谷歌的一些服务。
+修改者 [Bigface Song](https://blog.11010.net)
 
-![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.png)
+>几乎所有代码都来自[The Control Group](https://www.thecontrolgroup.com)，我纠结了很长时间才fork，主要因为slug，我自己做项目基本用不到，而且 `admin_menu.blade.php` 文件大约 65 行 `<div id="{{ str_slug($transItem->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">`，中文项目里面 `title` 几乎都是中文，这样 `str_slug()` 函数就回报错，本来打算提交PR，建议代码别用 `title`，比如改为 `url`，感觉这样做有点自私。还有就是因为国内无法加载谷歌的一些服务。
 
 网站 & 文档: https://laravelvoyager.com
 
@@ -63,19 +61,13 @@ APP_URL=http://localhost:8000
 
 ### 3. 运行安装
 
-最后，我们可以安装 voyager。 你可以不添加虚拟数据。
-虚拟数据包括 1 个 admin 用户（如果 admin 用户不存在），1 条单页数据，4 条文章数据， 2 个分类和 7 个设置
+最后，我们可以安装 voyager。 如果user表没有用户，则默认添加一个admin用户
+**官方的测试数据有1 条单页数据，4 条文章数据， 2 个分类和 7 个设置，我已经删除**
 
-不安装测试数据运行如下
+安装
 
 ```bash
 php artisan voyager:install
-```
-
-如果安装测试数据运行如下
-
-```bash
-php artisan voyager:install --with-dummy
 ```
 
 > 常见问题： **Specified key was too long error**。如果你遇到此错误信息，说明你的MySQL版本过时，请使用以下解决方案：https://laravel-news.com/laravel-5-4-key-too-long-error
@@ -86,21 +78,20 @@ php artisan voyager:install --with-dummy
 
 ## 创建管理员用户
 
-If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
-如果你已经添加测试数据，已经创建好如下用户数据供您登录
+如果你的user表为空，默认安装如下用户数据供您登录
 
 >**email:** `admin@admin.com`
 >**password:** `password`
 
-注意：请您注意，**只有**当数据库中没有此用户的情况下，才能创建测试数据成功
+注意：请您注意，**只有**当数据库中没有用户的情况下，才能创建用户成功
 
-如果您没有成功安装测试数据，您可以通过如下命令为您现有用户分配一个管理员权限
+如果您没有成功安装测试用户，您可以通过如下命令为您现有用户分配一个管理员权限
 
 ```bash
 php artisan voyager:admin your@email.com
 ```
 
-如果您安装的时候没有安装测试数据，您可以添加 `--create` 参数来创建一个管理员用户
+您也可以添加 `--create` 参数来创建一个管理员用户
 ```bash
 php artisan voyager:admin your@email.com --create
 ```
