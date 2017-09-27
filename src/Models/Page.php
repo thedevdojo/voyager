@@ -26,6 +26,16 @@ class Page extends Model
     public static $statuses = [self::STATUS_ACTIVE, self::STATUS_INACTIVE];
 
     protected $guarded = [];
+    
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     public function save(array $options = [])
     {
