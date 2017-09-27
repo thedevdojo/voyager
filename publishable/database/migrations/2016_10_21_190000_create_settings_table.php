@@ -21,6 +21,7 @@ class CreateSettingsTable extends Migration
             $table->text('details')->nullable()->default(null);
             $table->string('type')->comment('类型');
             $table->integer('order')->default('1')->comment('排序');
+            $table->string('group')->nullable();
         });
     }
 

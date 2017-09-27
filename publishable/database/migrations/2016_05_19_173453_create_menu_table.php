@@ -28,6 +28,8 @@ class CreateMenuTable extends Migration
             $table->string('color')->nullable()->comment('颜色');
             $table->integer('parent_id')->nullable()->comment('父ID');
             $table->integer('order')->comment('排序');
+            $table->string('route')->nullable()->default(null)->comment('路由name');
+            $table->text('parameters')->nullable()->default(null)->comment('路由参数');
             $table->timestamps();
         });
 

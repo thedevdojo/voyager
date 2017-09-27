@@ -21,8 +21,11 @@ class CreateDataTypesTable extends Migration
             $table->string('display_name_plural')->comment('负数显示名');
             $table->string('icon')->nullable()->comment('图标');
             $table->string('model_name')->nullable()->comment('模型');
+            $table->string('controller')->nullable()->comment('控制器');
+            $table->string('policy_name')->nullable()->comment('策略');
             $table->string('description')->nullable()->comment('描述');
             $table->boolean('generate_permissions')->default(false)->comment('权限');
+            $table->tinyInteger('server_side')->default(0);
             $table->timestamps();
         });
 
@@ -39,6 +42,7 @@ class CreateDataTypesTable extends Migration
             $table->boolean('edit')->default(true)->comment('可编写');
             $table->boolean('add')->default(true)->comment('可添加');
             $table->boolean('delete')->default(true)->comment('可删除');
+            $table->integer('order')->default(1)->comment('排序');
             $table->text('details')->nullable();
 
             $table->foreign('data_type_id')->references('id')->on('data_types')
