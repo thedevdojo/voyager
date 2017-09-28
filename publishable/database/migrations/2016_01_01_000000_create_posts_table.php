@@ -18,7 +18,6 @@ class CreatePostsTable extends Migration
             $table->integer('author_id');
             $table->integer('category_id')->nullable()->comment('分类');
             $table->string('title')->comment('标题');
-            $table->string('seo_title')->nullable()->comment('SEO 标题');
             $table->text('excerpt')->nullable()->comment('摘要');
             $table->text('body')->comment('内容');
             $table->string('image')->nullable()->comment('图片');
