@@ -59,7 +59,7 @@
     <li class="{{ implode(" ", $listItemClass) }}">
         <a {!! $linkAttributes !!} target="{{ $item->target }}">
             <span class="icon {{ $item->icon_class }}"></span>
-            <span class="title">{{ $transItem->url }}</span>
+            <span class="title">{{ $transItem->title }}</span>
         </a>
         @if($hasChildren)
             <div id="{{ str_slug($transItem->url, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
