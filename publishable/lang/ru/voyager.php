@@ -284,7 +284,7 @@ return [
         'policy_name'               => 'Политика',
         'policy_name_ph'            => 'например \App\Policies\UserPolicy, если оставить пустым - попытается использовать политику по умолчанию',
         'primary'                   => 'ПЕРВИЧНЫЙ КЛЮЧ',
-        'server_pagination'         => 'Паггинация на стороне сервера',
+        'server_pagination'         => 'Пагинация на стороне сервера',
         'success_create_table'      => 'Таблица :table успешно создана',
         'success_created_bread'     => 'Новый BREAD успешно создан',
         'success_delete_table'      => 'Таблица :table успешно удалена',
