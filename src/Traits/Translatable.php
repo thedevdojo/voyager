@@ -175,7 +175,7 @@ trait Translatable
 
         $localeTranslation = $translations->where('locale', $locale)->first();
 
-        if ($localeTranslation) {
+        if ($localeTranslation && !empty($localeTranslation->value)) {
             return [$localeTranslation->value, $locale, true];
         }
 
