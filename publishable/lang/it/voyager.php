@@ -185,7 +185,7 @@ return [
         'delete_item_question' => 'Sei sicuro di voler cancellare questo elemento del menù?',
         'drag_drop_info'       => 'Trascina gli elementi del menù qui sotto per riordinarli.',
         'dynamic_route'        => 'Percorso Dinamico',
-        'edit_item'            => 'Moodifica Elemento di Menù',
+        'edit_item'            => 'Modifica Elemento di Menù',
         'icon_class'           => 'Classe Font Icon per l\'elemento del menù (usare una',
         'icon_class2'          => 'Voyager Font Class</a>)',
         'icon_class_ph'        => 'Icon Class (opzionale)',
