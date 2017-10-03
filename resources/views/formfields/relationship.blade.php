@@ -1,5 +1,5 @@
 @if(isset($options->model) && isset($options->type))
-	
+
 	@if(class_exists($options->model))
 
 		@php $relationshipField = @$options->column @endphp
@@ -8,7 +8,7 @@
 
 			@if(isset($view) && ($view == 'browse' || $view == 'read'))
 
-				@php 
+				@php
 					$relationshipData = (isset($data)) ? $data : $dataTypeContent;
 					$model = app($options->model);
             		$query = $model::find($relationshipData->{$options->column});
@@ -16,33 +16,38 @@
 
             	@if(isset($query))
 					<p>{{ $query->{$options->label} }}</p>
+				@elseif(isset($options->null))
+				    <p>{{ $options->null }}</p>
 				@else
-					<p>No results</p>
+				    <p>No results.</p>
 				@endif
 
 			@else
-			
-				<select class="form-control select2" name="{{ $relationshipField }}">
-					@php 
-						$model = app($options->model);
-	            		$query = $model::all();
-	            	@endphp
+
+				<select class="form-control select2" name="{{ $relationshipField }}"  @if(isset($options->null)) data-allow-clear="true" data-placeholder="{{ $options->null }}" @endif>
+				    @php
+				        $model = app($options->model);
+				        $query = $model::all();
+				    @endphp
+				    @if(isset($options->null))
+				        <option></option>
+				    @endif
 					@foreach($query as $relationshipData)
 						<option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$relationshipField} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
 					@endforeach
 				</select>
 
 			@endif
-		
+
 		@elseif($options->type == 'hasOne')
 
-			@php 
+			@php
 
 				$relationshipData = (isset($data)) ? $data : $dataTypeContent;
-			
+
 				$model = app($options->model);
         		$query = $model::where($options->column, '=', $relationshipData->id)->first();
-			
+
 			@endphp
 
 			@if(isset($query))
@@ -63,8 +68,8 @@
 
 	            @if($view == 'browse')
 	            	@php
-	            		$string_values = implode(", ", $selected_values); 
-	            		if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; } 
+	            		$string_values = implode(", ", $selected_values);
+	            		if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
 	            	@endphp
 	            	@if(empty($selected_values))
 		            	<p>No results</p>
@@ -96,7 +101,7 @@
 							<li>{{ $query_res->{$options->label} }}</li>
 						@endforeach
 					</ul>
-					
+
 				@else
 					<p>No results</p>
 				@endif
@@ -114,8 +119,8 @@
 
 	            @if($view == 'browse')
 	            	@php
-	            		$string_values = implode(", ", $selected_values); 
-	            		if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; } 
+	            		$string_values = implode(", ", $selected_values);
+	            		if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
 	            	@endphp
 	            	@if(empty($selected_values))
 		            	<p>No results</p>
@@ -137,8 +142,8 @@
 			@else
 
 				<select class="form-control select2" name="{{ $relationshipField }}[]" multiple>
-					
-			            @php 
+
+			            @php
 			            	$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model)->pluck($options->key)->all() : array();
 			                $relationshipOptions = app($options->model)->all();
 			            @endphp
