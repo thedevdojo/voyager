@@ -283,7 +283,7 @@ abstract class Controller extends BaseController
                     }
                 }
 
-                return $content;
+                return json_encode($content);
 
             /********** IMAGE TYPE **********/
             case 'image':
