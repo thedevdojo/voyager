@@ -131,7 +131,7 @@ class VoyagerBreadController extends Controller
         }
 
         // Replace relationships' keys for labels and create READ links if a slug is provided.
-        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
+        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
 
         // If a column has a relationship associated with it, we do not want to show that field
         $this->removeRelationshipField($dataType, 'read');
