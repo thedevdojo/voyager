@@ -293,7 +293,7 @@ class VoyagerBreadController extends Controller
         }
 
         if (!$request->ajax()) {
-            $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+            $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
