@@ -86,7 +86,11 @@ abstract class Controller extends BaseController
                 // Only if select_multiple is working with a relationship
                 $multi_select[] = ['model' => $options->model, 'content' => $content, 'table' => $options->pivot_table];
             } else {
-                $data->{$row->field} = $content;
+                if(is_array($content)){
+                    $data->{$row->field} = json_encode($content);
+                }else{
+                    $data->{$row->field} = $content;
+                }
             }
         }
 
