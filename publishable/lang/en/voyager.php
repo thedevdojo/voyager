@@ -98,7 +98,7 @@ return [
     ],
 
     'login' => [
-        'loginin'      => 'Loggin in',
+        'loggingin'    => 'Logging in',
         'signin_below' => 'Sign In Below:',
         'welcome'      => 'Welcome to Voyager. The Missing Admin for Laravel',
     ],
@@ -175,6 +175,13 @@ return [
         'success_uploading'      => 'Image successfully uploaded!',
         'uploading_wrong_type'   => 'Upload Fail: Unsupported file format or It is too large to upload!',
         'video_support'          => 'Your browser does not support the video tag.',
+        'crop'                   => 'Crop',
+        'crop_and_create'        => 'Crop & Create',
+        'crop_override_confirm'  => 'It will override the original image, are you sure?',
+        'crop_image'             => 'Crop Image',
+        'success_crop_image'     => 'Successfully crop the image',
+        'height'                 => 'Height: ',
+        'width'                  => 'Width: ',
     ],
 
     'menu_builder' => [

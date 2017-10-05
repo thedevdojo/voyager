@@ -18,7 +18,7 @@ class VoyagerRoleController extends VoyagerBreadController
         $this->authorize('edit', app($dataType->model_name));
 
         //Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
+        $val = $this->validateBread($request->all(), $dataType->editRows);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);

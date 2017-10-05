@@ -47,7 +47,7 @@ abstract class Controller extends BaseController
         foreach ($rows as $row) {
             $options = json_decode($row->details);
 
-            if ($row->type == 'relationship') {
+            if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
                 $row->field = @$options->column;
             }
 
@@ -84,7 +84,7 @@ abstract class Controller extends BaseController
 
             if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
-                $multi_select[] = ['model' => $options->model, 'content' => $content];
+                $multi_select[] = ['model' => $options->model, 'content' => $content, 'table' => $options->pivot_table];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -98,7 +98,7 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->belongsToMany($sync_data['model'])->sync($sync_data['content']);
+            $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
         }
 
         return $data;
@@ -167,7 +167,7 @@ abstract class Controller extends BaseController
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $path = $slug.'/'.date('FY').'/';
                         $file->storeAs(
                             $path,
                             $filename.'.'.$file->getClientOriginalExtension(),
@@ -202,7 +202,7 @@ abstract class Controller extends BaseController
 
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $path = $slug.'/'.date('FY').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
@@ -283,7 +283,7 @@ abstract class Controller extends BaseController
                     }
                 }
 
-                return $content;
+                return json_encode($content);
 
             /********** IMAGE TYPE **********/
             case 'image':
@@ -294,7 +294,7 @@ abstract class Controller extends BaseController
                     $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
                     $filename_counter = 1;
 
-                    $path = $slug.'/'.date('F').date('Y').'/';
+                    $path = $slug.'/'.date('FY').'/';
 
                     // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
                     while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
@@ -366,7 +366,7 @@ abstract class Controller extends BaseController
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 $content = $request->input($row->field);
-                if ($request->isMethod('PUT')) {
+                if (in_array($request->method(), ['PUT', 'POST'])) {
                     if (empty($request->input($row->field))) {
                         $content = null;
                     } else {

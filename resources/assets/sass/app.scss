@@ -11,6 +11,7 @@
 @import "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker";
 @import "node_modules/simplemde/dist/simplemde.min";
 @import "node_modules/dropzone/dist/dropzone";
+@import "node_modules/cropperjs/dist/cropper";
 @import "fonts";
 
 /********** LOGIN STYLES ***********/
@@ -9827,3 +9828,17 @@ limitations under the License.
 .ps.ps--active-x>.ps__scrollbar-x-rail, .ps.ps--active-y>.ps__scrollbar-y-rail {
     z-index: 999;
 }
+
+/********** END perfect-scrollbar style **********/
+
+/********** Cropper Style **********/
+
+#cropping-image {
+  margin: 0 auto;
+}
+
+div.cropper-container img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
+
+/********** END Cropper Style **********/

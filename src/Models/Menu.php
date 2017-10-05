@@ -39,7 +39,9 @@ class Menu extends Model
     {
         // GET THE MENU - sort collection in blade
         $menu = static::where('name', '=', $menuName)
-            ->with('parent_items.children')
+            ->with(['parent_items.children' => function ($q) {
+                $q->orderBy('order');
+            }])
             ->first();
 
         // Check for Menu Existence

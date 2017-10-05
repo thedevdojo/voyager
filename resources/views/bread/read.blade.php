@@ -55,7 +55,7 @@
                             @elseif($row->type == 'select_multiple')
                                 @if(property_exists($rowDetails, 'relationship'))
 
-                                    @foreach($dataTypeContent->{$row->field} as $item)
+                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                                         @if($item->{$row->field . '_page_slug'})
                                         <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
                                         @else
@@ -64,7 +64,7 @@
                                     @endforeach
 
                                 @elseif(property_exists($rowDetails, 'options'))
-                                    @foreach($dataTypeContent->{$row->field} as $item)
+                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                                      {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
                                     @endforeach
                                 @endif
