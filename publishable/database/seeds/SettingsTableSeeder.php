@@ -57,7 +57,7 @@ class SettingsTableSeeder extends Seeder
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => '系统标题',
-                'value'        => 'Voyager',
+                'value'        => 'Face',
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 1,
