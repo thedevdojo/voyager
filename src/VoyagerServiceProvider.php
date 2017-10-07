@@ -253,7 +253,7 @@ class VoyagerServiceProvider extends ServiceProvider
             ],
             'views' => [
                  dirname(__DIR__).'/resources/views' => base_path('resources/views/voyager/'),
-            ]
+            ],
         ];
 
         foreach ($publishable as $group => $paths) {
