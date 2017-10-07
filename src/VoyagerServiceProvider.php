@@ -252,7 +252,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 "{$publishablePath}/lang/" => base_path('resources/lang/'),
             ],
             'views' => [
-                 dirname(__DIR__).'/resources/views' => base_path('resources/views/voyager/')
+                 dirname(__DIR__).'/resources/views' => base_path('resources/views/voyager/'),
             ]
         ];
 
