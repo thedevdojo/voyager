@@ -90,7 +90,11 @@ class VoyagerServiceProvider extends ServiceProvider
             });
         }
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
+        if (file_exists(base_path('resources/views/voyager/'))) {
+            $this->loadViewsFrom(base_path('resources/views/voyager/'), 'voyager');
+        } else {
+            $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
+        }
 
         if (app()->version() >= 5.4) {
             $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
@@ -246,6 +250,9 @@ class VoyagerServiceProvider extends ServiceProvider
             ],
             'lang' => [
                 "{$publishablePath}/lang/" => base_path('resources/lang/'),
+            ],
+            'views' => [
+                 dirname(__DIR__).'/resources/views' => base_path('resources/views/voyager/'),
             ],
         ];
 
