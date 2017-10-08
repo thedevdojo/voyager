@@ -24,8 +24,15 @@
 			
 				<select class="form-control select2" name="{{ $relationshipField }}">
 					@php 
-						$model = app($options->model);
-	            		$query = $model::all();
+						$relationshipListMethod = camel_case($relationshipField) . 'List';
+						$model = app($dataType->model_name);
+						if(method_exists($model, $relationshipListMethod)) {
+							$query = $model->$relationshipListMethod();
+						}
+						else {
+							$model = app($options->model);
+	            					$query = $model::all();
+						}
 	            	@endphp
 					@foreach($query as $relationshipData)
 						<option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$relationshipField} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
