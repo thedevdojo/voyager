@@ -13,8 +13,11 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => App\User::class,
+        // change app\User.php to app\Modules\User.php
+        'namespace'                    => App\Modules\User::class,
         'default_avatar'               => 'users/default.png',
+        // Add change default user models path
+        'default_path'                 => app_path('Models/User.php'),
     ],
 
     /*
