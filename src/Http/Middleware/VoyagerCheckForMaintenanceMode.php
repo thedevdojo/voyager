@@ -11,7 +11,7 @@ class VoyagerCheckForMaintenanceMode
     protected $whitelist = [
         'voyager.dashboard',
         'voyager.compass.index',
-        'voyager.compass.post'
+        'voyager.compass.post',
     ];
     /**
      * The application implementation.
@@ -24,6 +24,7 @@ class VoyagerCheckForMaintenanceMode
      * Create a new middleware instance.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
+     *
      * @return void
      */
     public function __construct(Application $app)
