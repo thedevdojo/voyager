@@ -3,17 +3,15 @@
 namespace TCG\Voyager\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 
 class VoyagerCheckForMaintenanceMode
 {
-    
     protected $whitelist = [
-        "voyager.dashboard",
-        "voyager.compass.index",
-        "voyager.compass.post"
+        'voyager.dashboard',
+        'voyager.compass.index',
+        'voyager.compass.post'
     ];
     /**
      * The application implementation.
@@ -25,7 +23,7 @@ class VoyagerCheckForMaintenanceMode
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @param \Illuminate\Contracts\Foundation\Application $app
      * @return void
      */
     public function __construct(Application $app)
@@ -36,24 +34,21 @@ class VoyagerCheckForMaintenanceMode
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next)
     {
-
-        
         if ($this->app->isDownForMaintenance()) {
-            
-            if(!in_array($request->route()->getName(), $this->whitelist)){
+            if (!in_array($request->route()->getName(), $this->whitelist)) {
                 $data = json_decode(file_get_contents($this->app->storagePath().'/framework/down'), true);
 
                 throw new MaintenanceModeException($data['time'], $data['retry'], $data['message']);
             }
-
         }
 
         return $next($request);
