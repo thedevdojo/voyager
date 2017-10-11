@@ -56,25 +56,12 @@ class Voyager
     ];
 
     public $setting_cache = null;
-    protected $rtl = false;
 
     public function __construct()
     {
         $this->filesystem = app(Filesystem::class);
 
         $this->findVersion();
-    }
-
-    public function rtl($enabled = true)
-    {
-        $this->rtl = $enabled;
-
-        return $this;
-    }
-
-    public function isRtl()
-    {
-        return $this->rtl;
     }
 
     public function model($name)
