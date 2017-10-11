@@ -2,7 +2,7 @@
 	
 	@if(class_exists($options->model))
 
-		@php $relationshipField = @$options->column @endphp
+		@php $relationshipField = (@$options->type=="belongsToMany" ? $row->field : @$options->column) @endphp
 
 		@if($options->type == 'belongsTo')
 
@@ -139,7 +139,7 @@
 				<select class="form-control select2" name="{{ $relationshipField }}[]" multiple>
 					
 			            @php 
-			            	$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model)->pluck($options->key)->all() : array();
+					$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->key)->all() : array();
 			                $relationshipOptions = app($options->model)->all();
 			            @endphp
 

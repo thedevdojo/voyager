@@ -47,7 +47,7 @@ abstract class Controller extends BaseController
         foreach ($rows as $row) {
             $options = json_decode($row->details);
 
-            if ($row->type == 'relationship') {
+            if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
                 $row->field = @$options->column;
             }
 
@@ -84,7 +84,7 @@ abstract class Controller extends BaseController
 
             if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
-                $multi_select[] = ['model' => $options->model, 'content' => $content];
+                $multi_select[] = ['model' => $options->model, 'content' => $content, 'table' => $options->pivot_table];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -98,7 +98,7 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->belongsToMany($sync_data['model'])->sync($sync_data['content']);
+            $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
         }
 
         return $data;
@@ -283,7 +283,7 @@ abstract class Controller extends BaseController
                     }
                 }
 
-                return $content;
+                return json_encode($content);
 
             /********** IMAGE TYPE **********/
             case 'image':
