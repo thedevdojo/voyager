@@ -10,19 +10,26 @@ trait BreadRelationshipParser
 {
     protected $relation_field = [];
 
+    /**
+     * Remove Relationship Field
+     *
+     * @param  DataType $dataType
+     * @param  string   $bread_type BREAD type. Default 'browse'
+     */
     protected function removeRelationshipField(DataType $dataType, $bread_type = 'browse')
     {
-        $forget_keys = [];
+        $_keys = [];  // Forget keys
         foreach ($dataType->{$bread_type.'Rows'} as $key => $row) {
             if ($row->type == 'relationship') {
-                $options = json_decode($row->details);
-                $relationshipField = @$options->column;
-                $keyInCollection = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relationshipField)->toArray());
-                array_push($forget_keys, $keyInCollection);
+                $options   = json_decode($row->details);
+                $relField  = @$options->column;      // Relationship Field
+                $keyInColl = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relField)->toArray());
+
+                array_push($_keys, $keyInColl);
             }
         }
 
-        foreach ($forget_keys as $forget_key) {
+        foreach ($_keys as $forget_key) {
             $dataType->{$bread_type.'Rows'}->forget($forget_key);
         }
     }
@@ -36,38 +43,38 @@ trait BreadRelationshipParser
      */
     protected function getRelationships(DataType $dataType)
     {
-        $relationships = [];
+        $rs = [];   // Relationships
 
-        $dataType->browseRows->each(function ($item) use (&$relationships) {
+        $dataType->browseRows->each(function ($item) use (&$rs) {
             $details = json_decode($item->details);
             if (isset($details->relationship) && isset($item->field)) {
-                $relation = $details->relationship;
-                if (isset($relation->method)) {
-                    $method = $relation->method;
+                $rel = $details->relationship;
+                if (isset($rel->method)) {
+                    $method = $rel->method;
                     $this->relation_field[$method] = $item->field;
                 } else {
                     $method = camel_case($item->field);
                 }
 
-                $relationships[$method] = function ($query) use ($relation) {
+                $rs[$method] = function ($query) use ($rel) {
                     // select only what we need
-                    if (isset($relation->method)) {
+                    if (isset($rel->method)) {
                         return $query;
                     } else {
-                        $query->select($relation->key, $relation->label);
+                        $query->select($rel->key, $rel->label);
                     }
                 };
             }
         });
 
-        return $relationships;
+        return $rs;
     }
 
     /**
      * Replace relationships' keys for labels and create READ links if a slug is provided.
      *
-     * @param  $dataTypeContent     Can be either an eloquent Model, Collection or LengthAwarePaginator instance.
-     * @param DataType $dataType
+     * @param  $dataTypeContent  Can be either an eloquent Model, Collection or LengthAwarePaginator instance.
+     * @param  DataType $dataType
      *
      * @return $dataTypeContent
      */
@@ -90,7 +97,9 @@ trait BreadRelationshipParser
             return $this->relationToLink($item, $dataType);
         });
 
-        return $dataTypeContent instanceof LengthAwarePaginator ? $dataTypeContent->setCollection($dataTypeCollection) : $dataTypeCollection;
+        return $dataTypeContent instanceof LengthAwarePaginator
+                                ? $dataTypeContent->setCollection($dataTypeCollection)
+                                : $dataTypeCollection;
     }
 
     /**
@@ -103,10 +112,10 @@ trait BreadRelationshipParser
      */
     protected function relationToLink(Model $item, DataType $dataType)
     {
-        $relations = $item->getRelations();
+        $rs = $item->getRelations();
 
-        if (!empty($relations) && array_filter($relations)) {
-            foreach ($relations as $field => $relation) {
+        if (!empty($rs) && array_filter($rs)) {
+            foreach ($rs as $field => $relation) {
                 if (isset($this->relation_field[$field])) {
                     $field = $this->relation_field[$field];
                 } else {
@@ -114,32 +123,32 @@ trait BreadRelationshipParser
                 }
 
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
-                $relationData = json_decode($bread_data->details)->relationship;
+                $relData = json_decode($bread_data->details)->relationship;
 
                 if ($bread_data->type == 'select_multiple') {
-                    $relationItems = [];
+                    $relItems = [];
                     foreach ($relation as $model) {
-                        $relationItem = new \stdClass();
-                        $relationItem->{$field} = $model[$relationData->label];
-                        if (isset($relationData->page_slug)) {
+                        $relItem = new \stdClass();
+                        $relItem->{$field} = $model[$relData->label];
+                        if (isset($relData->page_slug)) {
                             $id = $model->id;
-                            $relationItem->{$field.'_page_slug'} = url($relationData->page_slug, $id);
+                            $relItem->{$field.'_page_slug'} = url($relData->page_slug, $id);
                         }
-                        $relationItems[] = $relationItem;
+                        $relItems[] = $relItem;
                     }
-                    $item[$field] = $relationItems;
+                    $item[$field] = $relItems;
                     continue; // Go to the next relation
                 }
 
                 if (!is_object($item[$field])) {
-                    $item[$field] = $relation[$relationData->label];
+                    $item[$field] = $relation[$relData->label];
                 } else {
                     $tmp = $item[$field];
                     $item[$field] = $tmp;
                 }
-                if (isset($relationData->page_slug) && $relation) {
+                if (isset($relData->page_slug) && $relation) {
                     $id = $relation->id;
-                    $item[$field.'_page_slug'] = url($relationData->page_slug, $id);
+                    $item[$field.'_page_slug'] = url($relData->page_slug, $id);
                 }
             }
         }
