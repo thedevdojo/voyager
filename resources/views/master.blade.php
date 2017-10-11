@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ config('app.locale') }}" @if (config('voyager.multilingual.rtl')) dir="rtl" @endif>
 <head>
     <title>@yield('page_title', setting('admin.title') . " - " . setting('admin.description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +17,8 @@
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
 
     @yield('css')
-    @if(VoyageR::isRtl())
+    @if(config('voyager.multilingual.rtl'))
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.css">
         <link rel="stylesheet" href="{{ voyager_asset('css/rtl.css') }}">
     @endif
 
@@ -45,7 +46,7 @@
     @yield('head')
 </head>
 
-<body class="voyager @if(isset($dataType) && isset($dataType->slug)){{ $dataType->slug }}@endif" @if (Voyager::isRtl()) dir="rtl" @endif>
+<body class="voyager @if(isset($dataType) && isset($dataType->slug)){{ $dataType->slug }}@endif">
 
 <div id="voyager-loader">
     <?php $admin_loader_img = Voyager::setting('admin.loader', ''); ?>

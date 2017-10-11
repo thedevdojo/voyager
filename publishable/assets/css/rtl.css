@@ -3,6 +3,7 @@
  * ----------
  */
 
+
 /*login page*/
 [dir="rtl"] body.login .logo-title-container
 {
@@ -23,6 +24,67 @@
     text-align: right;
 }
 
+/*other app pages*/
+
+[dir="rtl"] .site-footer-right {
+    text-align: left;
+    padding-left: 20px;
+}
+[dir="rtl"] .side-body > .language-selector
+{
+    float: left !important;
+    padding: 28px 0 0 15px;
+}
+[dir="rtl"] .voyager div.dataTables_paginate li.next a::after,
+[dir="rtl"] .voyager div.dataTables_paginate li.previous a::before {
+    content: none;
+}
+[dir="rtl"] .voyager div.dataTables_paginate li.previous a::before {
+    content: "\e046";
+    font-family: Voyager;
+    right: 10px;
+    left: auto;
+}
+[dir="rtl"] div.dataTables_paginate li.first > a, div.dataTables_paginate li.previous > a
+{
+    padding-right: 24px;
+    padding-left: 10px;
+}
+
+[dir="rtl"] div.dataTables_paginate li.last > a, div.dataTables_paginate li.next > a
+{
+    padding-left: 24px;
+    padding-right: 10px;
+}
+[dir="rtl"] .voyager div.dataTables_paginate li.next a::after {
+    content: "\e039";
+    font-family: Voyager;
+    left: 10px;
+    right: auto;
+}
+
+/*imported and validated with v 1.0*/
+[dir="rtl"] .app-container .content-container .navbar-top .hamburger {
+    float: right;
+}
+
+[dir="rtl"] .breadcrumb > li + li:before {
+    display: none;
+}
+
+[dir="rtl"] .breadcrumb li+li:after {
+    padding: 0 5px;
+}
+[dir="rtl"] .breadcrumb > li + li:after {
+    font-family: Voyager;
+    content: '\e039';
+    position: relative;
+    top: 1px;
+    margin-left: 3px;
+}
+
+
+/*imported from v0.11*/
 [dir="rtl"] .navbar {
     padding-left: 0px;
     padding-right: 60px;}
@@ -32,11 +94,6 @@
     margin-right: 75px;
 }
 
-[dir="rtl"].flat-blue .app-footer {
-    text-align: left;
-    padding-left: 20px;
-}
-
 [dir="rtl"] .navbar-header {
     float: right;
 }
@@ -44,13 +101,6 @@
 [dir="rtl"] .app-container.expanded .content-container .navbar-top {
     padding-left: 0px;
     padding-right: 250px;
-}
-
-[dir="rtl"] .app-container .content-container .navbar-top .hamburger {
-    float: right;
-    -ms-transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
-    transform: rotate(180deg);
 }
 
 [dir="rtl"] #sidebar-anchor {
@@ -95,25 +145,6 @@
 [dir="rtl"] .page-title .btn.btn-success {
     left: unset;
     right: 15px;
-}
-
-[dir="rtl"] .breadcrumb > li + li:before {
-    display: none;
-}
-
-[dir="rtl"] .breadcrumb li+li:after {
-    padding: 0 5px;
-}
-[dir="rtl"] .breadcrumb > li + li:after {
-    font-family: Voyager;
-    content: '\e039';
-    position: relative;
-    top: 1px;
-    margin-left: 3px;
-}
-
-[dir="rtl"] .dropdown-toggle.text-right {
-  /*float: left;*/
 }
 
 [dir="rtl"] .dropdown-menu.dropdown-menu-animated {

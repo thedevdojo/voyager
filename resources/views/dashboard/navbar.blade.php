@@ -30,7 +30,7 @@
                 @endfor
             </ol>
         </div>
-        <ul class="nav navbar-nav @if (Voyager::isRtl()) navbar-left @else navbar-right @endif">
+        <ul class="nav navbar-nav @if (config('voyager.multilingual.rtl')) navbar-left @else navbar-right @endif">
             <li class="dropdown profile">
                 <a href="#" class="dropdown-toggle text-right" data-toggle="dropdown" role="button"
                    aria-expanded="false"><img src="{{ $user_avatar }}" class="profile-img"> <span
