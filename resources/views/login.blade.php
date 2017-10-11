@@ -8,6 +8,9 @@
     <meta name="description" content="admin login">
     <title>Admin - {{ Voyager::setting("admin.title") }}</title>
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
+    @if (Voyager::isRtl())
+        <link rel="stylesheet" href="{{ voyager_asset('css/login-rtl.css') }}">
+    @endif
     <style>
         body {
             background-image:url('{{ Voyager::image( Voyager::setting("admin.bg_image"), voyager_asset("images/bg.jpg") ) }}');
@@ -33,7 +36,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 </head>
 <body class="login">
-<div class="container-fluid">
+<div class="container-fluid" @if (Voyager::isRtl()) dir="rtl" @endif>
     <div class="row">
         <div class="faded-bg animated"></div>
         <div class="hidden-xs col-sm-7 col-md-8">
@@ -56,9 +59,9 @@
         </div>
 
         <div class="col-xs-12 col-sm-5 col-md-4 login-sidebar">
-            
+
             <div class="login-container">
-                
+
                 <p>{{ __('voyager.login.signin_below') }}</p>
 
                 <form action="{{ route('voyager.login') }}" method="POST">
@@ -116,7 +119,7 @@
     });
     email.focus();
     document.getElementById('emailGroup').classList.add("focused");
-    
+
     // Focus events for email and password fields
     email.addEventListener('focusin', function(e){
         document.getElementById('emailGroup').classList.add("focused");
