@@ -3,6 +3,26 @@
  * ----------
  */
 
+/*login page*/
+[dir="rtl"] body.login .logo-title-container
+{
+    right: 30px;
+    left: auto;
+}
+[dir="rtl"] body.login .copy h1
+{
+    margin: 20px 14px 0 0;
+}
+[dir="rtl"] body.login .copy p
+{
+    right: 15px;
+    left: auto;
+}
+[dir="rtl"] body.login .login-container p
+{
+    text-align: right;
+}
+
 [dir="rtl"] .navbar {
     padding-left: 0px;
     padding-right: 60px;}
