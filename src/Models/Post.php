@@ -12,7 +12,7 @@ class Post extends Model
 {
     use Translatable;
 
-    protected $translatable = ['title', 'seo_title', 'excerpt', 'body', 'slug', 'meta_description', 'meta_keywords'];
+    protected $translatable = ['title', 'excerpt', 'body'];
 
     const PUBLISHED = 'PUBLISHED';
 
