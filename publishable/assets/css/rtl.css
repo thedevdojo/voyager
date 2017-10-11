@@ -63,6 +63,16 @@
     right: auto;
 }
 
+[dir="rtl"] .dropdown-menu > li > form .voyager-power
+{
+    float: right;
+}
+[dir="rtl"] .dropdown-menu > li > a i
+{
+    float: right;
+    padding-left: 10px;
+}
+
 /*imported and validated with v 1.0*/
 [dir="rtl"] .app-container .content-container .navbar-top .hamburger {
     float: right;
