@@ -14,6 +14,6 @@ class TableUpdated
     {
         $this->name = $name;
 
-        event(new TableChanged($name["name"], 'Updated'));
+        event(new TableChanged($name['name'], 'Updated'));
     }
 }

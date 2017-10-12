@@ -93,7 +93,6 @@ class VoyagerDatabaseController extends Controller
                 Artisan::call('voyager:make:model', $params);
 
                 event(new TableAdded($table));
-
             } elseif (isset($request->create_migration) && $request->create_migration == 'on') {
                 Artisan::call('make:migration', [
                     'name'    => 'create_'.$table->name.'_table',
@@ -112,7 +111,7 @@ class VoyagerDatabaseController extends Controller
     /**
      * Edit database table.
      *
-     * @param  string $table
+     * @param string $table
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -295,8 +294,8 @@ class VoyagerDatabaseController extends Controller
 
         try {
             $dataType = Voyager::model('DataType');
-            $res      = $dataType->updateDataType($request->all(), true);
-            $data     = $res
+            $res = $dataType->updateDataType($request->all(), true);
+            $data = $res
                 ? $this->alertSuccess(__('voyager.database.success_created_bread'))
                 : $this->alertError(__('voyager.database.error_creating_bread'));
             if ($res) {
@@ -337,7 +336,7 @@ class VoyagerDatabaseController extends Controller
                 ? $dataType->prepareTranslations($request)
                 : [];
 
-            $res  = $dataType->updateDataType($request->all(), true);
+            $res = $dataType->updateDataType($request->all(), true);
             $data = $res
                 ? $this->alertSuccess(__('voyager.database.success_update_bread', ['datatype' => $dataType->name]))
                 : $this->alertError(__('voyager.database.error_updating_bread'));
@@ -366,7 +365,7 @@ class VoyagerDatabaseController extends Controller
             $dataType->deleteAttributeTranslations($dataType->getTranslatableAttributes());
         }
 
-        $res  = Voyager::model('DataType')->destroy($id);
+        $res = Voyager::model('DataType')->destroy($id);
         $data = $res
             ? $this->alertSuccess(__('voyager.database.success_remove_bread', ['datatype' => $dataType->name]))
             : $this->alertError(__('voyager.database.error_updating_bread'));
