@@ -5,6 +5,10 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
+use TCG\Voyager\Events\BreadDataAdded;
+use TCG\Voyager\Events\BreadDataDeleted;
+use TCG\Voyager\Events\BreadDataUpdated;
+use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
@@ -220,6 +224,8 @@ class VoyagerBreadController extends Controller
         if (!$request->ajax()) {
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
+            event(new BreadDataUpdated($dataType, $data));
+
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
@@ -275,7 +281,13 @@ class VoyagerBreadController extends Controller
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
-    // POST BRE(A)D
+    /**
+     * POST BRE(A)D - Store data.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);
@@ -294,6 +306,8 @@ class VoyagerBreadController extends Controller
 
         if (!$request->ajax()) {
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+
+            event(new BreadDataAdded($dataType, $data));
 
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
@@ -341,7 +355,8 @@ class VoyagerBreadController extends Controller
 
         $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
 
-        $data = $data->destroy($ids)
+        $res  = $data->destroy($ids);
+        $data = $res
             ? [
                 'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
                 'alert-type' => 'success',
@@ -350,6 +365,10 @@ class VoyagerBreadController extends Controller
                 'message'    => __('voyager.generic.error_deleting')." {$displayName}",
                 'alert-type' => 'error',
             ];
+
+        if ($res) {
+            event(new BreadDataDeleted($dataType, $data));
+        }
 
         return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
     }
@@ -407,6 +426,10 @@ class VoyagerBreadController extends Controller
                     $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
                 }
             }
+        }
+
+        if ($rows->count() > 0){
+            event(new BreadImagesDeleted($data, $rows));
         }
     }
 }
