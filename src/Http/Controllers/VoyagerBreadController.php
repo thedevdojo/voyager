@@ -355,7 +355,7 @@ class VoyagerBreadController extends Controller
 
         $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
 
-        $res  = $data->destroy($ids);
+        $res = $data->destroy($ids);
         $data = $res
             ? [
                 'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
@@ -428,7 +428,7 @@ class VoyagerBreadController extends Controller
             }
         }
 
-        if ($rows->count() > 0){
+        if ($rows->count() > 0) {
             event(new BreadImagesDeleted($data, $rows));
         }
     }
