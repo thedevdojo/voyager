@@ -5,6 +5,7 @@ namespace TCG\Voyager\Tests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use TCG\Voyager\Models\Role;
+use TCG\Voyager\Models\Page;
 use Illuminate\Support\Facades\Event;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Events\BreadAdded;
@@ -13,6 +14,9 @@ use TCG\Voyager\Events\BreadDeleted;
 use TCG\Voyager\Events\TableAdded;
 use TCG\Voyager\Events\TableUpdated;
 use TCG\Voyager\Events\TableDeleted;
+use TCG\Voyager\Events\BreadDataAdded;
+use TCG\Voyager\Events\BreadDataUpdated;
+use TCG\Voyager\Events\BreadDataDeleted;
 
 class EventTest extends TestCase
 {
@@ -107,12 +111,73 @@ class EventTest extends TestCase
         Event::assertDispatched(BreadDeleted::class);
     }
 
-    public function testBreadDataAddedEvent() {}
-    public function testBreadDataUpdatedEvent() {}
-    public function testBreadDataDeletedEvent() {}
-    public function testBreadDataChangedEvent() {}
-    public function testBreadImagesDeletedEvent() {}
-    public function testFileDeletedEvent() {}
+    public function testBreadDataAddedEvent()
+    {
+        Event::fake();
+        Auth::loginUsingId(1);
+
+        $this->post('/admin/pages', [
+            'title' => 'Toast',
+            'slug' => 'toasts',
+            'status' => 'active',
+        ]);
+
+        Event::assertDispatched(BreadDataAdded::class);
+    }
+
+    public function testBreadDataUpdatedEvent()
+    {
+        Event::fake();
+        Auth::loginUsingId(1);
+
+        $this->post('/admin/pages', [
+            'title' => 'Toast',
+            'slug' => 'toasts',
+            'status' => 'active',
+        ]);
+
+        Event::assertNotDispatched(BreadDataUpdated::class);
+
+        $page = Page::where('slug', 'toasts')->firstOrFail();
+
+        $this->put('/admin/pages/'.$page->id, [
+            'title' => 'Test',
+            'slug' => 'tests',
+            'status' => 'pending',
+        ]);
+
+        Event::assertDispatched(BreadDataUpdated::class);
+    }
+
+    public function testBreadDataDeletedEvent()
+    {
+        Event::fake();
+        Auth::loginUsingId(1);
+
+        $this->post('/admin/pages', [
+            'title' => 'Toast',
+            'slug' => 'toasts',
+            'status' => 'active',
+        ]);
+
+        Event::assertNotDispatched(BreadDataDeleted::class);
+
+        $page = Page::where('slug', 'toasts')->firstOrFail();
+
+        $this->delete('/admin/pages/'.$page->id);
+
+        Event::assertDispatched(BreadDataDeleted::class);
+    }
+
+    public function testBreadImagesDeletedEvent()
+    {
+        // TODO: Make this test
+    }
+
+    public function testFileDeletedEvent()
+    {
+        // TODO: Make this test
+    }
 
     public function testTableAddedEvent()
     {
