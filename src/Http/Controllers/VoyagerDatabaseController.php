@@ -18,7 +18,6 @@ use TCG\Voyager\Events\TableDeleted;
 use TCG\Voyager\Events\TableUpdated;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Permission;
 
 class VoyagerDatabaseController extends Controller
 {
@@ -225,9 +224,10 @@ class VoyagerDatabaseController extends Controller
     }
 
     /**
-     * Show table
+     * Show table.
      *
-     * @param  string $table
+     * @param string $table
+     *
      * @return JSON
      */
     public function show($table)
@@ -238,9 +238,10 @@ class VoyagerDatabaseController extends Controller
     }
 
     /**
-     * Destroy table
+     * Destroy table.
      *
      * @param string $table
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($table)

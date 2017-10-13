@@ -4,12 +4,9 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use TCG\Voyager\Database\DatabaseUpdater;
 use TCG\Voyager\Database\Schema\Column;
-use TCG\Voyager\Database\Schema\Identifier;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Types\Type;
@@ -46,7 +43,7 @@ class VoyagerBreadTableController extends Controller
      * Create BREAD.
      *
      * @param Request $request
-     * @param String $table Table name.
+     * @param String  $table   Table name.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -105,7 +102,6 @@ class VoyagerBreadTableController extends Controller
         }
     }
 
-
     /**
      * Edit BREAD.
      *
@@ -128,12 +124,11 @@ class VoyagerBreadTableController extends Controller
         return Voyager::view('voyager::tools.bread.edit-add', compact('dataType', 'fieldOptions', 'isModelTranslatable', 'tables', 'dataTypeRelationships'));
     }
 
-
     /**
      * Update BREAD.
      *
      * @param \Illuminate\Http\Request $request
-     * @param number $id
+     * @param number                   $id
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -166,7 +161,6 @@ class VoyagerBreadTableController extends Controller
             return back()->with($this->alertException($e, __('voyager.generic.update_failed')));
         }
     }
-
 
     /**
      * Delete BREAD.
@@ -202,7 +196,6 @@ class VoyagerBreadTableController extends Controller
         return redirect()->route('voyager.bread.index')->with($data);
     }
 
-
     // ************************************************************
     //  _____      _       _   _                 _     _
     // |  __ \    | |     | | (_)               | |   (_)
@@ -215,7 +208,7 @@ class VoyagerBreadTableController extends Controller
     // ************************************************************
 
     /**
-     * Add Relationship
+     * Add Relationship.
      *
      * @param Request $request
      */
@@ -289,10 +282,11 @@ class VoyagerBreadTableController extends Controller
     }
 
     /**
-     * Get Relationship Field
+     * Get Relationship Field.
      *
-     * @param  Request $request
-     * @return String
+     * @param Request $request
+     *
+     * @return string
      */
     private function getRelationshipField($request)
     {
@@ -317,9 +311,10 @@ class VoyagerBreadTableController extends Controller
     }
 
     /**
-     * Delete Relationship
+     * Delete Relationship.
      *
-     * @param  Number $id Record id
+     * @param Number $id Record id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteRelationship($id)
