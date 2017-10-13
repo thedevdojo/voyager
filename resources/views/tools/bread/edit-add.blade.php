@@ -1,11 +1,11 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.database.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]))
+@section('page_title', __('voyager.bread.edit_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]))
 
 @section('page_header')
     <div class="page-title">
         <i class="voyager-data"></i>
-        {{ __('voyager.database.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]) }}
+        {{ __('voyager.bread.edit_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]) }}
     </div>
     @php
         $isModelTranslatable = (!isset($isModelTranslatable) || !isset($dataType)) ? false : $isModelTranslatable;
@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                <form action="@if(isset($dataType->id)){{ route('voyager.database.bread.update', $dataType->id) }}@else{{ route('voyager.database.bread.store') }}@endif"
+                <form action="@if(isset($dataType->id)){{ route('voyager.bread.update', $dataType->id) }}@else{{ route('voyager.bread.store') }}@endif"
                       method="POST" role="form">
                 @if(isset($dataType->id))
                     <input type="hidden" value="{{ $dataType->id }}" name="id">
@@ -34,7 +34,7 @@
                     <div class="panel panel-primary panel-bordered">
 
                         <div class="panel-heading">
-                            <h3 class="panel-title panel-icon"><i class="voyager-bread"></i> {{ ucfirst($table) }} {{ __('voyager.database.bread_info') }}</h3>
+                            <h3 class="panel-title panel-icon"><i class="voyager-bread"></i> {{ ucfirst($table) }} {{ __('voyager.bread_info') }}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-up" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
@@ -257,24 +257,24 @@
                                     </div>
                                 </div>
 
-                                
+
 
                             @endforeach
-                            
+
                             @if(isset($dataTypeRelationships))
                                 @foreach($dataTypeRelationships as $relationship)
-                                    @include('voyager::tools.database.relationship-partial', $relationship)
+                                    @include('voyager::tools.bread.relationship-partial', $relationship)
                                 @endforeach
                             @endif
-                            
+
                             </div>
-                            
+
                         </div><!-- .panel-body -->
                         <div class="panel-footer">
                              <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>Create a Relationship</span></div>
                         </div>
                     </div><!-- .panel -->
-                    
+
                     <button type="submit" class="btn pull-right btn-primary">{{ __('voyager.generic.submit') }}</button>
 
                 </form>
@@ -282,7 +282,7 @@
         </div><!-- .row -->
     </div><!-- .page-content -->
 
-@include('voyager::tools.database.relationship-new-modal')
+@include('voyager::tools.bread.relationship-new-modal')
 
 @stop
 
@@ -468,14 +468,14 @@
                     $(this).parent().parent().find('.voyager-relationship-details').slideUp();
                 }
             });
-           
+
         });
 
         function populateRowsFromTable(dropdown){
             var tbl = dropdown.data('table');
             var selected_value = dropdown.data('selected');
             if(tbl.length != 0){
-                $.get('{{ route('voyager.database.index', [], false) }}/' + tbl, function(data){
+                $.get('{{ route('voyager.bread.index', [], false) }}/' + tbl, function(data){
                     $(dropdown).empty();
                     for (var option in data) {
                        $('<option/>', {
@@ -485,7 +485,7 @@
                     }
 
                     if($(dropdown).find('option[value="'+selected_value+'"]').length > 0){
-                        $(dropdown).val(selected_value);   
+                        $(dropdown).val(selected_value);
                     }
                 });
             }

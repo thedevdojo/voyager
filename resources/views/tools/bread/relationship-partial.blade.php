@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="col-md-12 voyager-relationship-details">
-        <a href="{{ route('voyager.database.bread.delete_relationship', $relationship['id']) }}" class="delete_relationship"><i class="voyager-trash"></i> Delete</a>
+        <a href="{{ route('voyager.bread.delete_relationship', $relationship['id']) }}" class="delete_relationship"><i class="voyager-trash"></i> Delete</a>
         <div class="relationship_details_content">
             <p class="relationship_table_select">{{ str_singular(ucfirst($table)) }}</p>
             <select class="relationship_type select2" name="relationship_type_{{ $relationship['field'] }}">
