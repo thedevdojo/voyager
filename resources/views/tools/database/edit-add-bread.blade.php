@@ -257,24 +257,24 @@
                                     </div>
                                 </div>
 
-                                
+
 
                             @endforeach
-                            
+
                             @if(isset($dataTypeRelationships))
                                 @foreach($dataTypeRelationships as $relationship)
                                     @include('voyager::tools.database.relationship-partial', $relationship)
                                 @endforeach
                             @endif
-                            
+
                             </div>
-                            
+
                         </div><!-- .panel-body -->
                         <div class="panel-footer">
                              <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>Create a Relationship</span></div>
                         </div>
                     </div><!-- .panel -->
-                    
+
                     <button type="submit" class="btn pull-right btn-primary">{{ __('voyager.generic.submit') }}</button>
 
                 </form>
@@ -287,8 +287,8 @@
 @stop
 
 @section('javascript')
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="{{ voyager_asset('js/plugins/jquery-ui/jquery-ui.css') }}">
+    <script type="text/javascript" src="{{ voyager_asset('js/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 
     <script>
         window.invalidEditors = [];
@@ -468,7 +468,7 @@
                     $(this).parent().parent().find('.voyager-relationship-details').slideUp();
                 }
             });
-           
+
         });
 
         function populateRowsFromTable(dropdown){
@@ -485,7 +485,7 @@
                     }
 
                     if($(dropdown).find('option[value="'+selected_value+'"]').length > 0){
-                        $(dropdown).val(selected_value);   
+                        $(dropdown).val(selected_value);
                     }
                 });
             }

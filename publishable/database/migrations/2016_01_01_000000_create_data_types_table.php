@@ -15,14 +15,17 @@ class CreateDataTypesTable extends Migration
         // Create table for storing roles
         Schema::create('data_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name')->unique()->comment('名称');
             $table->string('slug')->unique();
-            $table->string('display_name_singular');
-            $table->string('display_name_plural');
-            $table->string('icon')->nullable();
-            $table->string('model_name')->nullable();
-            $table->string('description')->nullable();
-            $table->boolean('generate_permissions')->default(false);
+            $table->string('display_name_singular')->comment('单数显示名');
+            $table->string('display_name_plural')->comment('负数显示名');
+            $table->string('icon')->nullable()->comment('图标');
+            $table->string('model_name')->nullable()->comment('模型');
+            $table->string('controller')->nullable()->comment('控制器');
+            $table->string('policy_name')->nullable()->comment('策略');
+            $table->string('description')->nullable()->comment('描述');
+            $table->boolean('generate_permissions')->default(false)->comment('权限');
+            $table->tinyInteger('server_side')->default(0);
             $table->timestamps();
         });
 
@@ -30,15 +33,16 @@ class CreateDataTypesTable extends Migration
         Schema::create('data_rows', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('data_type_id')->unsigned();
-            $table->string('field');
-            $table->string('type');
-            $table->string('display_name');
+            $table->string('field')->comment('字段名');
+            $table->string('type')->comment('字段类型');
+            $table->string('display_name')->comment('显示名');
             $table->boolean('required')->default(false);
-            $table->boolean('browse')->default(true);
-            $table->boolean('read')->default(true);
-            $table->boolean('edit')->default(true);
-            $table->boolean('add')->default(true);
-            $table->boolean('delete')->default(true);
+            $table->boolean('browse')->default(true)->comment('可浏览');
+            $table->boolean('read')->default(true)->comment('可读取');
+            $table->boolean('edit')->default(true)->comment('可编写');
+            $table->boolean('add')->default(true)->comment('可添加');
+            $table->boolean('delete')->default(true)->comment('可删除');
+            $table->integer('order')->default(1)->comment('排序');
             $table->text('details')->nullable();
 
             $table->foreign('data_type_id')->references('id')->on('data_types')
