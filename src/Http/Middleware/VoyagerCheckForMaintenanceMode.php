@@ -4,15 +4,16 @@ namespace TCG\Voyager\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 
-class VoyagerCheckForMaintenanceMode
+class VoyagerCheckForMaintenanceMode extends CheckForMaintenanceMode
 {
     protected $whitelist = [
         'voyager.dashboard',
         'voyager.compass.index',
         'voyager.compass.post',
     ];
+
     /**
      * The application implementation.
      *
@@ -44,14 +45,14 @@ class VoyagerCheckForMaintenanceMode
      */
     public function handle($request, Closure $next)
     {
+        $response = $next($request);
+        
         if ($this->app->isDownForMaintenance()) {
-            if (!in_array($request->route()->getName(), $this->whitelist)) {
-                $data = json_decode(file_get_contents($this->app->storagePath().'/framework/down'), true);
-
-                throw new MaintenanceModeException($data['time'], $data['retry'], $data['message']);
+            if (!in_array($request->route()->getName(), $this->whitelist)){
+                return parent::handle($request, $next);
             }
         }
 
-        return $next($request);
+        return $response;
     }
 }
