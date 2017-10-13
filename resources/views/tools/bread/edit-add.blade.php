@@ -1,11 +1,11 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.bread.edit_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]))
+@section('page_title', __('voyager.bread.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]))
 
 @section('page_header')
     <div class="page-title">
         <i class="voyager-data"></i>
-        {{ __('voyager.bread.edit_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]) }}
+        {{ __('voyager.bread.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]) }}
     </div>
     @php
         $isModelTranslatable = (!isset($isModelTranslatable) || !isset($dataType)) ? false : $isModelTranslatable;
@@ -34,7 +34,7 @@
                     <div class="panel panel-primary panel-bordered">
 
                         <div class="panel-heading">
-                            <h3 class="panel-title panel-icon"><i class="voyager-bread"></i> {{ ucfirst($table) }} {{ __('voyager.bread_info') }}</h3>
+                            <h3 class="panel-title panel-icon"><i class="voyager-bread"></i> {{ ucfirst($table) }} {{ __('voyager.bread.bread_info') }}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-up" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
@@ -50,7 +50,7 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.display_name_singular') }}</label>
+                                    <label for="email">{{ __('voyager.bread.display_name_singular') }}</label>
                                     @if($isModelTranslatable)
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
@@ -61,11 +61,11 @@
                                     <input type="text" class="form-control"
                                            name="display_name_singular"
                                            id="display_name_singular"
-                                           placeholder="{{ __('voyager.database.display_name_singular') }}"
+                                           placeholder="{{ __('voyager.bread.display_name_singular') }}"
                                            value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.display_name_plural') }}</label>
+                                    <label for="email">{{ __('voyager.bread.display_name_plural') }}</label>
                                     @if($isModelTranslatable)
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
@@ -76,75 +76,75 @@
                                     <input type="text" class="form-control"
                                            name="display_name_plural"
                                            id="display_name_plural"
-                                           placeholder="{{ __('voyager.database.display_name_plural') }}"
+                                           placeholder="{{ __('voyager.bread.display_name_plural') }}"
                                            value="@if(isset($dataType->display_name_plural)){{ $dataType->display_name_plural }}@else{{ $display_name_plural }}@endif">
                                 </div>
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.url_slug') }}</label>
-                                    <input type="text" class="form-control" name="slug" placeholder="{{ __('voyager.database.url_slug_ph') }}"
+                                    <label for="email">{{ __('voyager.bread.url_slug') }}</label>
+                                    <input type="text" class="form-control" name="slug" placeholder="{{ __('voyager.bread.url_slug_ph') }}"
                                            value="@if(isset($dataType->slug)){{ $dataType->slug }}@else{{ $slug }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.icon_hint') }} <a
+                                    <label for="email">{{ __('voyager.bread.icon_hint') }} <a
                                                 href="{{ route('voyager.compass.index', [], false) }}#fonts"
-                                                target="_blank">{{ __('voyager.database.icon_hint2') }}</a></label>
+                                                target="_blank">{{ __('voyager.bread.icon_hint2') }}</a></label>
                                     <input type="text" class="form-control" name="icon"
-                                           placeholder="{{ __('voyager.database.icon_class') }}"
+                                           placeholder="{{ __('voyager.bread.icon_class') }}"
                                            value="@if(isset($dataType->icon)){{ $dataType->icon }}@endif">
                                 </div>
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.model_name') }}</label>
+                                    <label for="email">{{ __('voyager.bread.model_name') }}</label>
                                     <span class="voyager-question"
                                         aria-hidden="true"
                                         data-toggle="tooltip"
                                         data-placement="right"
-                                        title="{{ __('voyager.database.model_name_ph') }}"></span>
-                                    <input type="text" class="form-control" name="model_name" placeholder="{{ __('voyager.database.model_class') }}"
+                                        title="{{ __('voyager.bread.model_name_ph') }}"></span>
+                                    <input type="text" class="form-control" name="model_name" placeholder="{{ __('voyager.bread.model_class') }}"
                                            value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.controller_name') }}</label>
+                                    <label for="email">{{ __('voyager.bread.controller_name') }}</label>
                                     <span class="voyager-question"
                                         aria-hidden="true"
                                         data-toggle="tooltip"
                                         data-placement="right"
-                                        title="{{ __('voyager.database.controller_name_hint') }}"></span>
-                                    <input type="text" class="form-control" name="controller" placeholder="{{ __('voyager.database.controller_name') }}"
+                                        title="{{ __('voyager.bread.controller_name_hint') }}"></span>
+                                    <input type="text" class="form-control" name="controller" placeholder="{{ __('voyager.bread.controller_name') }}"
                                            value="@if(isset($dataType->controller)){{ $dataType->controller }}@endif">
                                 </div>
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.policy_name') }}</label>
+                                    <label for="email">{{ __('voyager.bread.policy_name') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
                                           data-toggle="tooltip"
                                           data-placement="right"
-                                          title="{{ __('voyager.database.policy_name_ph') }}"></span>
-                                    <input type="text" class="form-control" name="policy_name" placeholder="{{ __('voyager.database.policy_class') }}"
+                                          title="{{ __('voyager.bread.policy_name_ph') }}"></span>
+                                    <input type="text" class="form-control" name="policy_name" placeholder="{{ __('voyager.bread.policy_class') }}"
                                            value="@if(isset($dataType->policy_name)){{ $dataType->policy_name }}@endif">
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label for="generate_permissions">{{ __('voyager.database.generate_permissions') }}</label><br>
+                                    <label for="generate_permissions">{{ __('voyager.bread.generate_permissions') }}</label><br>
                                     <?php $checked = (isset($dataType->generate_permissions) && $dataType->generate_permissions == 1) ? true : (isset($generate_permissions) && $generate_permissions) ? true : false; ?>
                                     <input type="checkbox" name="generate_permissions" class="toggleswitch"
                                            @if($checked) checked @endif>
                                 </div>
                                 <div class="col-md-3 form-group">
-                                    <label for="server_side">{{ __('voyager.database.server_pagination') }}</label><br>
+                                    <label for="server_side">{{ __('voyager.bread.server_pagination') }}</label><br>
                                     <?php $checked = (isset($dataType->server_side) && $dataType->server_side == 1) ? true : (isset($server_side) && $server_side) ? true : false; ?>
                                     <input type="checkbox" name="server_side" class="toggleswitch"
                                            @if($checked) checked @endif>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="description">{{ __('voyager.database.description') }}</label>
+                                <label for="description">{{ __('voyager.bread.description') }}</label>
                                 <textarea class="form-control" name="description"
-                                          placeholder="{{ __('voyager.database.description') }}"
+                                          placeholder="{{ __('voyager.bread.description') }}"
                                     >@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
                             </div>
                         </div><!-- .panel-body -->
@@ -153,7 +153,7 @@
 
                     <div class="panel panel-primary panel-bordered">
                         <div class="panel-heading">
-                            <h3 class="panel-title panel-icon"><i class="voyager-window-list"></i> {{ __('voyager.database.edit_rows', ['table' => $table]) }}:</h3>
+                            <h3 class="panel-title panel-icon"><i class="voyager-window-list"></i> {{ __('voyager.bread.edit_rows', ['table' => $table]) }}:</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-up" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
@@ -164,7 +164,7 @@
                                 <div class="col-xs-2">{{ __('voyager.database.field') }}</div>
                                 <div class="col-xs-2">{{ __('voyager.database.visibility') }}</div>
                                 <div class="col-xs-2">{{ __('voyager.database.input_type') }}</div>
-                                <div class="col-xs-2">{{ __('voyager.database.display_name') }}</div>
+                                <div class="col-xs-2">{{ __('voyager.bread.display_name') }}</div>
                                 <div class="col-xs-4">{{ __('voyager.database.optional_details') }}</div>
                             </div>
 

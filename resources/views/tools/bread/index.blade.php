@@ -4,7 +4,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-bread"></i> {{ __('voyager.generic.bread') }}
+        <i class="voyager-bread"></i> BREAD
     </h1>
 @stop
 
@@ -19,7 +19,7 @@
                     <thead>
                         <tr>
                             <th>{{ __('voyager.database.table_name') }}</th>
-                            <th style="text-align:right">{{ __('voyager.database.bread_crud_actions') }}</th>
+                            <th style="text-align:right">{{ __('voyager.bread.bread_crud_actions') }}</th>
                         </tr>
                     </thead>
 
@@ -54,7 +54,7 @@
                             @else
                                 <a href="{{ route('voyager.bread.create', ['name' => $table->name]) }}"
                                    class="_btn btn-default btn-sm pull-right">
-                                    <i class="voyager-plus"></i> {{ __('voyager.database.add_bread') }}
+                                    <i class="voyager-plus"></i> {{ __('voyager.bread.add_bread') }}
                                 </a>
                             @endif
                         </td>
@@ -77,7 +77,7 @@
                     <form action="{{ route('voyager.bread.delete', ['id' => null]) }}" id="delete_builder_form" method="POST">
                         {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="submit" class="btn btn-danger" value="{{ __('voyager.database.delete_table_bread_conf') }}">
+                        <input type="submit" class="btn btn-danger" value="{{ __('voyager.bread.delete_table_bread_conf') }}">
                     </form>
                     <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
                 </div>
