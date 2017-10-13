@@ -46,9 +46,8 @@ class VoyagerCheckForMaintenanceMode extends CheckForMaintenanceMode
     public function handle($request, Closure $next)
     {
         $response = $next($request);
-        
         if ($this->app->isDownForMaintenance()) {
-            if (!in_array($request->route()->getName(), $this->whitelist)){
+            if (!in_array($request->route()->getName(), $this->whitelist)) {
                 return parent::handle($request, $next);
             }
         }
