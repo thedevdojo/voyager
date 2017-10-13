@@ -43,7 +43,7 @@ class VoyagerBreadTableController extends Controller
      * Create BREAD.
      *
      * @param Request $request
-     * @param String  $table   Table name.
+     * @param string  $table   Table name.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
