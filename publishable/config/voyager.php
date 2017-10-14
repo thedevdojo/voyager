@@ -181,7 +181,7 @@ return [
     | When adding a BREAD to the system, automatic add Menu and Permission entry.
     |
     */
-    'add_bread_menu_permission' => true,
+    'autoadd_menu_permission' => true,
 
     /*
     |--------------------------------------------------------------------------

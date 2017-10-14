@@ -38,7 +38,7 @@ class AddMenuPermission
 
     private function addMenu($bread)
     {
-        if (config('voyager.add_bread_menu_permission') && file_exists(base_path('routes/web.php'))) {
+        if (config('voyager.autoadd_menu_permission') && file_exists(base_path('routes/web.php'))) {
             require base_path('routes/web.php');
 
             $menu = Menu::where('name', 'admin')->firstOrFail();
