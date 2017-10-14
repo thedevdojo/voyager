@@ -14,7 +14,7 @@ class AlertsCollection
     {
         $this->collection = $collection;
 
-        // Deprecate on v1.3
+        // @deprecate
         //
         event('voyager.alerts.collecting', $collection);
     }

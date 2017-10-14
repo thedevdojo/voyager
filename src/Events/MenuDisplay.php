@@ -15,7 +15,7 @@ class MenuDisplay
     {
         $this->menu = $menu;
 
-        // Deprecate on v1.3
+        // @deprecate
         //
         event('voyager.menu.display', $menu);
     }

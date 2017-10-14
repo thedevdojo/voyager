@@ -14,7 +14,7 @@ class FormFieldsRegistered
     {
         $this->fields = $fields;
 
-        // Deprecate on v1.3
+        // @deprecate
         //
         event('voyager.form-fields.registered', $fields);
     }
