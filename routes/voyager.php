@@ -34,7 +34,7 @@ Route::group(['as' => 'voyager.'], function () {
             foreach (DataType::all() as $dataType) {
                 $breadController = $dataType->controller
                                  ? $dataType->controller
-                                 : $namespacePrefix.'VoyagerBreadController';
+                                 : $namespacePrefix.'VoyagerBaseController';
 
                 Route::resource($dataType->slug, $breadController);
             }
@@ -101,14 +101,14 @@ Route::group(['as' => 'voyager.'], function () {
             'as'     => 'bread.',
             'prefix' => 'bread',
         ], function () use ($namespacePrefix) {
-            Route::get('/', ['uses' => $namespacePrefix.'VoyagerBreadTableController@index',              'as' => 'index']);
-            Route::get('{table}/create', ['uses' => $namespacePrefix.'VoyagerBreadTableController@create',     'as' => 'create']);
-            Route::post('/', ['uses' => $namespacePrefix.'VoyagerBreadTableController@store',   'as' => 'store']);
-            Route::get('{table}/edit', ['uses' => $namespacePrefix.'VoyagerBreadTableController@edit', 'as' => 'edit']);
-            Route::put('{id}', ['uses' => $namespacePrefix.'VoyagerBreadTableController@update',  'as' => 'update']);
-            Route::delete('{id}', ['uses' => $namespacePrefix.'VoyagerBreadTableController@destroy',  'as' => 'delete']);
-            Route::post('relationship', ['uses' => $namespacePrefix.'VoyagerBreadTableController@addRelationship',  'as' => 'relationship']);
-            Route::get('delete_relationship/{id}', ['uses' => $namespacePrefix.'VoyagerBreadTableController@deleteRelationship',  'as' => 'delete_relationship']);
+            Route::get('/', ['uses' => $namespacePrefix.'VoyagerBreadController@index',              'as' => 'index']);
+            Route::get('{table}/create', ['uses' => $namespacePrefix.'VoyagerBreadController@create',     'as' => 'create']);
+            Route::post('/', ['uses' => $namespacePrefix.'VoyagerBreadController@store',   'as' => 'store']);
+            Route::get('{table}/edit', ['uses' => $namespacePrefix.'VoyagerBreadController@edit', 'as' => 'edit']);
+            Route::put('{id}', ['uses' => $namespacePrefix.'VoyagerBreadController@update',  'as' => 'update']);
+            Route::delete('{id}', ['uses' => $namespacePrefix.'VoyagerBreadController@destroy',  'as' => 'delete']);
+            Route::post('relationship', ['uses' => $namespacePrefix.'VoyagerBreadController@addRelationship',  'as' => 'relationship']);
+            Route::get('delete_relationship/{id}', ['uses' => $namespacePrefix.'VoyagerBreadController@deleteRelationship',  'as' => 'delete_relationship']);
         });
 
         // Database Routes
