@@ -236,22 +236,22 @@ class VoyagerServiceProvider extends ServiceProvider
             'voyager_assets' => [
                 "{$publishablePath}/assets/" => public_path(config('voyager.assets_path')),
             ],
-            'migrations' => [
+            'voyager_migrations' => [
                 "{$publishablePath}/database/migrations/" => database_path('migrations'),
             ],
-            'seeds' => [
+            'voyager_seeds' => [
                 "{$publishablePath}/database/seeds/" => database_path('seeds'),
             ],
-            'demo_content' => [
+            'voyager_demo_content' => [
                 "{$publishablePath}/demo_content/" => storage_path('app/public'),
             ],
-            'config' => [
+            'voyager_config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
-            'lang' => [
+            'voyager_lang' => [
                 "{$publishablePath}/lang/" => base_path('resources/lang/'),
             ],
-            'views' => [
+            'voyager_views' => [
                  dirname(__DIR__).'/resources/views' => base_path('resources/views/voyager/'),
             ],
         ];
