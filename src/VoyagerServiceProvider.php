@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageServiceProvider;
 use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
+use TCG\Voyager\Events\FormFieldsRegistered;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
@@ -320,7 +321,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         VoyagerFacade::addAfterFormField(DescriptionHandler::class);
 
-        event('voyager.form-fields.registered');
+        event(new FormFieldsRegistered($formFields));
     }
 
     /**
