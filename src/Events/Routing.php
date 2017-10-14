@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Events;
 
-use Illuminate\Routing\Router;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Routing\Router;
 
 class Routing
 {
