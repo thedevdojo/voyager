@@ -96,9 +96,9 @@ class MenuItem extends Model
     /**
      * Return the Highest Order Menu Item.
      *
-     * @param  number $parent (Optional) Parent id. Default null
+     * @param number $parent (Optional) Parent id. Default null
      *
-     * @return number         Order number
+     * @return number Order number
      */
     public function highestOrderMenuItem($parent = null)
     {

@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Listeners;
 
-use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Events\BreadAdded;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
 use TCG\Voyager\Models\Permission;
@@ -24,7 +24,7 @@ class AddMenuPermission
     /**
      * Will create Menu item and Permission after creating a BREAD item.
      *
-     * @param  BreadAdded $event
+     * @param BreadAdded $event
      *
      * @return void
      */
@@ -34,7 +34,6 @@ class AddMenuPermission
 
         $this->addMenu($bread);
     }
-
 
     private function addMenu($bread)
     {
