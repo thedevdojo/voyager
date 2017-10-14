@@ -15,7 +15,7 @@ class RoutingAdmin
     {
         $this->router = $router;
 
-        // @deprecate on v1.3
+        // @deprecate
         //
         event('voyager.admin.routing', $router);
     }
