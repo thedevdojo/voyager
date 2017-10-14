@@ -15,7 +15,7 @@ use TCG\Voyager\Models\DataType;
 */
 
 Route::group(['as' => 'voyager.'], function () {
-    event(new Routing(app('router')));
+    event(new Routing());
 
     $namespacePrefix = '\\'.config('voyager.controllers.namespace').'\\';
 
@@ -23,7 +23,7 @@ Route::group(['as' => 'voyager.'], function () {
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
 
     Route::group(['middleware' => 'admin.user'], function () use ($namespacePrefix) {
-        event(new RoutingAdmin(app('router')));
+        event(new RoutingAdmin());
 
         // Main Admin and Logout Route
         Route::get('/', ['uses' => $namespacePrefix.'VoyagerController@index',   'as' => 'dashboard']);

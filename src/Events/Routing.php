@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Events;
 
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Routing\Router;
 
 class Routing
 {
@@ -11,12 +10,12 @@ class Routing
 
     public $router;
 
-    public function __construct(Router $router)
+    public function __construct()
     {
-        $this->router = $router;
+        $this->router = app('router');
 
         // @deprecate
         //
-        event('voyager.routing', $router);
+        event('voyager.routing', app('router'));
     }
 }
