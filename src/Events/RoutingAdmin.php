@@ -16,6 +16,6 @@ class RoutingAdmin
 
         // @deprecate
         //
-        event('voyager.admin.routing', app('router'));
+        event('voyager.admin.routing', $this->router);
     }
 }

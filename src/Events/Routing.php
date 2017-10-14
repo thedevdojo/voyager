@@ -16,6 +16,6 @@ class Routing
 
         // @deprecate
         //
-        event('voyager.routing', app('router'));
+        event('voyager.routing', $this->router);
     }
 }
