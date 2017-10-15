@@ -25,7 +25,6 @@ require('./multilingual');
 require('./voyager_tinymce');
 require('./voyager_ace_editor');
 window.helpers = require('./helpers.js');
-require('./load-remote.js');
 require('cropperjs');
 
 $(document).ready(function(){
@@ -111,7 +110,7 @@ $(document).ready(function(){
       var simplemde = new SimpleMDE({
           element: this,
       });
-      simplemde.render(); 
+      simplemde.render();
   });
 
   /********** END MARKDOWN EDITOR **********/
@@ -150,7 +149,7 @@ $(document).ready(function(){
                                                         - $('nav.navbar').height() + 'px'
                                             }, 'fast');
                                         }
-                                        
+
           $("[name='"+key+"']").parent().addClass("has-error");
           $("[name='"+key+"']").parent().append("<span class='help-block' style='color:#f96868'>"+row+"</span>")
         });
