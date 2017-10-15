@@ -36,22 +36,6 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
-                'title'      => '角色',
-                'url'        => '',
-                'route'      => 'voyager.roles.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-lock',
-                    'color'      => null,
-                    'parent_id'  => null,
-                    'order'      => 2,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
                 'title'      => '用户',
                 'url'        => '',
                 'route'      => 'voyager.users.index',
@@ -62,6 +46,22 @@ class MenuItemsTableSeeder extends Seeder
                     'icon_class' => 'voyager-person',
                     'color'      => null,
                     'parent_id'  => null,
+                    'order'      => 2,
+                ])->save();
+            }
+
+            $menuItem = MenuItem::firstOrNew([
+                'menu_id'    => $menu->id,
+                'title'      => '角色',
+                'url'        => '',
+                'route'      => 'voyager.roles.index',
+            ]);
+            if (!$menuItem->exists) {
+                $menuItem->fill([
+                    'target'     => '_self',
+                    'icon_class' => 'voyager-lock',
+                    'color'      => null,
+                    'parent_id'  => null,
                     'order'      => 3,
                 ])->save();
             }
@@ -69,12 +69,12 @@ class MenuItemsTableSeeder extends Seeder
             $contentMenuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
                 'title'      => '内容',
-                'url'        => '',
+                'url'        => 'contents'
             ]);
             if (!$contentMenuItem->exists) {
                 $contentMenuItem->fill([
                     'target'     => '_self',
-                    'icon_class' => 'voyager-news',
+                    'icon_class' => 'voyager-certificate',
                     'color'      => null,
                     'parent_id'  => null,
                     'order'      => 4,
@@ -106,7 +106,7 @@ class MenuItemsTableSeeder extends Seeder
             if (!$menuItem->exists) {
                 $menuItem->fill([
                     'target'     => '_self',
-                    'icon_class' => 'voyager-pen',
+                    'icon_class' => 'voyager-news',
                     'color'      => null,
                     'parent_id'  => $contentMenuItem->id,
                     'order'      => 2,
@@ -129,43 +129,10 @@ class MenuItemsTableSeeder extends Seeder
                 ])->save();
             }
 
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => '图片',
-                'url'        => '',
-                'route'      => 'voyager.pictures.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-images',
-                    'color'      => null,
-                    'parent_id'  => $contentMenuItem->id,
-                    'order'      => 4,
-                ])->save();
-            }
-
-            $menuItem = MenuItem::firstOrNew([
-                'menu_id'    => $menu->id,
-                'title'      => '招聘',
-                'url'        => '',
-                'route'      => 'voyager.jobs.index',
-            ]);
-            if (!$menuItem->exists) {
-                $menuItem->fill([
-                    'target'     => '_self',
-                    'icon_class' => 'voyager-megaphone',
-                    'color'      => null,
-                    'parent_id'  => $contentMenuItem->id,
-                    'order'      => 5,
-                ])->save();
-            }
-
-
             $toolsMenuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
                 'title'      => '工具',
-                'url'        => '',
+                'url'        => 'tools',
             ]);
             if (!$toolsMenuItem->exists) {
                 $toolsMenuItem->fill([
@@ -248,9 +215,9 @@ class MenuItemsTableSeeder extends Seeder
             if (!$menuItem->exists) {
                 $menuItem->fill([
                     'target'     => '_self',
-                    'icon_class' => 'voyager-folder',
+                    'icon_class' => 'voyager-images',
                     'color'      => null,
-                    'parent_id'  => $toolsMenuItem->id,
+                    'parent_id'  => null,
                     'order'      => 5,
                 ])->save();
             }
