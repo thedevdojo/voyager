@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
@@ -209,6 +210,9 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        // Compatibility with Model binding.
+        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
         // Check permission
@@ -345,8 +349,8 @@ class VoyagerBreadController extends Controller
             // Bulk delete, get IDs from POST
             $ids = explode(',', $request->ids);
         } else {
-            // Single item delete, get ID from URL
-            $ids[] = $id;
+            // Single item delete, get ID from URL or Model Binding
+            $ids[] = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
         }
         foreach ($ids as $id) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
