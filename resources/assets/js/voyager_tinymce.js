@@ -10,7 +10,7 @@ $(document).ready(function(){
     menubar: false,
     selector:'textarea.richTextBox',
     language: 'zh_CN',
-    language_url : '/vendor/tcg/voyager/assets/js/plugins/bigface_tinymce_lang.js',
+    language_url : '/vendor/bigface/voyager/assets/js/plugins/bigface_tinymce_lang.js',
     skin: 'voyager',
     min_height: 600,
     resize: 'vertical',
