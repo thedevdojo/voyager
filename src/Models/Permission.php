@@ -22,6 +22,16 @@ class Permission extends Model
         self::firstOrCreate(['key' => 'delete_'.$table_name, 'table_name' => $table_name]);
     }
 
+    /**
+     * Generate custom permission for table
+     * @param $table_name
+     * @param $permission
+     */
+    public static function generateCustomFor($table_name, $permission)
+    {
+        self::firstOrCreate(['key' => $permission.'_'.$table_name, 'table_name' => $table_name]);
+    }
+
     public static function removeFrom($table_name)
     {
         self::where(['table_name' => $table_name])->delete();
