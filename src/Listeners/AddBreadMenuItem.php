@@ -6,10 +6,8 @@ use TCG\Voyager\Events\BreadAdded;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
-use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Models\Role;
 
-class AddMenuPermission
+class AddBreadMenuItem
 {
     /**
      * Create the event listener.
@@ -22,7 +20,7 @@ class AddMenuPermission
     }
 
     /**
-     * Will create Menu item and Permission after creating a BREAD item.
+     * Create a MenuItem for a given BREAD.
      *
      * @param BreadAdded $event
      *
@@ -30,14 +28,7 @@ class AddMenuPermission
      */
     public function handle(BreadAdded $bread)
     {
-        $this->addPermission($bread);
-
-        $this->addMenu($bread);
-    }
-
-    private function addMenu($bread)
-    {
-        if (config('voyager.autoadd_menu_permission') && file_exists(base_path('routes/web.php'))) {
+        if (config('voyager.add_bread_menu_item') && file_exists(base_path('routes/web.php'))) {
             require base_path('routes/web.php');
 
             $menu = Menu::where('name', 'admin')->firstOrFail();
@@ -60,25 +51,5 @@ class AddMenuPermission
                 ])->save();
             }
         }
-    }
-
-    /**
-     * Add Permission for BREAD.
-     *
-     * @param [type] $bread [description]
-     */
-    private function addPermission($bread)
-    {
-        // Create permission
-        //
-        // Permission::generateFor(snake_case($bread->dataType->slug));
-
-        $role = Role::where('name', 'admin')->firstOrFail();
-
-        // Assign permission to admin
-        //
-        $permissions = Permission::where(['table_name' => $bread->dataType->name])->get()->pluck('id')->all();
-
-        $role->permissions()->attach($permissions);
     }
 }

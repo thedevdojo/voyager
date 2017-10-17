@@ -175,13 +175,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Add BREAD + Menu + Permission
+    | Automatic Procedures
     |--------------------------------------------------------------------------
     |
-    | When adding a BREAD to the system, automatic add Menu and Permission entry.
+    | When a change happens on Voyager, we can automate some routines.
     |
     */
-    'autoadd_menu_permission' => true,
+
+    // When a BREAD is added, create the Menu item using the BREAD properties.
+    'add_bread_menu_item' => true,
+
+    // When a BREAD is added, create the related Permission.
+    'add_bread_permission' => true,
 
     /*
     |--------------------------------------------------------------------------
