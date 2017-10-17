@@ -2,7 +2,7 @@
 	
 	@if(class_exists($options->model))
 
-		@php $relationshipField = (@$options->type=="belongsToMany" ? $row->field : @$options->column) @endphp
+		@php $relationshipField = $row->field; @endphp
 
 		@if($options->type == 'belongsTo')
 
