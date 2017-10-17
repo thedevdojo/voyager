@@ -219,7 +219,7 @@ class VoyagerBreadController extends Controller
         $this->authorize('edit', $data);
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows);
+        $val = $this->validateBread($request->all(), $dataType->editRows, __FUNCTION__);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
@@ -302,7 +302,7 @@ class VoyagerBreadController extends Controller
         $this->authorize('edit', app($dataType->model_name));
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
+        $val = $this->validateBread($request->all(), $dataType->addRows, __FUNCTION__);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
