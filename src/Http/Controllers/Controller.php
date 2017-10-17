@@ -141,7 +141,6 @@ abstract class Controller extends BaseController
                         $messages[$row->field.'.'.$key] = $msg;
                     }
                 }
-
             }
         }
 
