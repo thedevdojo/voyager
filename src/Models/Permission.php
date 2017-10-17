@@ -24,7 +24,7 @@ class Permission extends Model
 
     /**
      * Generate custom permission for table.
-     * 
+     *
      * @param $table_name
      * @param $permission
      */
