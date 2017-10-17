@@ -2,9 +2,14 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
+use TCG\Voyager\Events\BreadDataAdded;
+use TCG\Voyager\Events\BreadDataDeleted;
+use TCG\Voyager\Events\BreadDataUpdated;
+use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
@@ -205,6 +210,9 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        // Compatibility with Model binding.
+        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
         // Check permission
@@ -219,6 +227,8 @@ class VoyagerBreadController extends Controller
 
         if (!$request->ajax()) {
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+
+            event(new BreadDataUpdated($dataType, $data));
 
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
@@ -275,7 +285,13 @@ class VoyagerBreadController extends Controller
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
-    // POST BRE(A)D
+    /**
+     * POST BRE(A)D - Store data.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         $slug = $this->getSlug($request);
@@ -294,6 +310,8 @@ class VoyagerBreadController extends Controller
 
         if (!$request->ajax()) {
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+
+            event(new BreadDataAdded($dataType, $data));
 
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
@@ -331,8 +349,8 @@ class VoyagerBreadController extends Controller
             // Bulk delete, get IDs from POST
             $ids = explode(',', $request->ids);
         } else {
-            // Single item delete, get ID from URL
-            $ids[] = $id;
+            // Single item delete, get ID from URL or Model Binding
+            $ids[] = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
         }
         foreach ($ids as $id) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
@@ -341,7 +359,8 @@ class VoyagerBreadController extends Controller
 
         $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
 
-        $data = $data->destroy($ids)
+        $res = $data->destroy($ids);
+        $data = $res
             ? [
                 'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
                 'alert-type' => 'success',
@@ -350,6 +369,10 @@ class VoyagerBreadController extends Controller
                 'message'    => __('voyager.generic.error_deleting')." {$displayName}",
                 'alert-type' => 'error',
             ];
+
+        if ($res) {
+            event(new BreadDataDeleted($dataType, $data));
+        }
 
         return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
     }
@@ -374,8 +397,11 @@ class VoyagerBreadController extends Controller
 
         // Delete Files
         foreach ($dataType->deleteRows->where('type', 'file') as $row) {
-            foreach (json_decode($data->{$row->field}) as $file) {
-                $this->deleteFileIfExists($file->download_link);
+            $files = json_decode($data->{$row->field});
+            if ($files) {
+                foreach ($files as $file) {
+                    $this->deleteFileIfExists($file->download_link);
+                }
             }
         }
     }
@@ -407,6 +433,10 @@ class VoyagerBreadController extends Controller
                     $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
                 }
             }
+        }
+
+        if ($rows->count() > 0) {
+            event(new BreadImagesDeleted($data, $rows));
         }
     }
 }

@@ -64,14 +64,14 @@
                 <form action="{{ route('voyager.login') }}" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group form-group-default" id="emailGroup">
-                        <label>Email</label>
+                        <label>{{ __('voyager.generic.email') }}</label>
                         <div class="controls">
                             <input type="text" name="email" id="email" value="{{ old('email') }}" placeholder="{{ __('voyager.generic.email') }}" class="form-control" required>
                          </div>
                     </div>
 
                     <div class="form-group form-group-default" id="passwordGroup">
-                        <label>Password</label>
+                        <label>{{ __('voyager.generic.password') }}</label>
                         <div class="controls">
                             <input type="password" name="password" placeholder="{{ __('voyager.generic.password') }}" class="form-control" required>
                         </div>
