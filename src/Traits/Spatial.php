@@ -11,7 +11,7 @@ trait Spatial
      *
      * @param string $column
      *
-     * @return mixed
+     * @return string
      */
     public function getLocation($column)
     {
@@ -19,11 +19,7 @@ trait Spatial
             ->where('id', $this->id)
             ->first();
 
-        if (isset($model)) {
-            return $model->$column;
-        }
-
-        return null;
+        return isset($model) ? $model->$column : '';
     }
 
     /**
