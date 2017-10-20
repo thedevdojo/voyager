@@ -11,14 +11,19 @@ trait Spatial
      *
      * @param string $column
      *
-     * @return string WKT
+     * @return mixed
      */
     public function getLocation($column)
     {
-        return self::select(DB::Raw('ST_AsText('.$column.') AS '.$column))
+        $model = self::select(DB::Raw('ST_AsText('.$column.') AS '.$column))
             ->where('id', $this->id)
-            ->first()
-            ->$column;
+            ->first();
+
+        if (isset($model)) {
+            return $model->$column;
+        }
+
+        return null;
     }
 
     /**
