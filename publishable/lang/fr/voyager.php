@@ -93,6 +93,8 @@ return [
         'viewing'                => 'Affichage',
         'yes'                    => 'Oui',
         'yes_please'             => 'Oui, s\'il vous plaît',
+        'logout'                 => 'Logout',
+        'home'                   => 'Home',
     ],
 
     'login' => [

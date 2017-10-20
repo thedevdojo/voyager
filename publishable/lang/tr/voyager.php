@@ -91,6 +91,8 @@ return [
         'viewing'                => 'Görme',
         'yes'                    => 'Evet',
         'yes_please'             => 'Evet, lütfen',
+        'logout'                 => 'Logout',
+        'home'                   => 'Home',
     ],
 
     'login' => [

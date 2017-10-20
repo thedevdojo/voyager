@@ -91,6 +91,8 @@ return [
         'viewing'                => 'معاينة',
         'yes'                    => 'نعم',
         'yes_please'             => 'نعم، من فضلك',
+        'logout'                 => 'Logout',
+        'home'                   => 'Home',
     ],
 
     'login' => [
