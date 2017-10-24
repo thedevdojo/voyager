@@ -186,8 +186,6 @@ return [
 
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
 
-    'show_message_analytics' => true, // Show analytics message in dashboard
-
     // Here you can specify additional assets you would like to be included in the master.blade
     'additional_css' => [
         //'css/custom.css',
