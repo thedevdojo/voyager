@@ -175,6 +175,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Automatic Procedures
+    |--------------------------------------------------------------------------
+    |
+    | When a change happens on Voyager, we can automate some routines.
+    |
+    */
+
+    // When a BREAD is added, create the Menu item using the BREAD properties.
+    'add_bread_menu_item' => true,
+
+    // When a BREAD is added, create the related Permission.
+    'add_bread_permission' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | UI Generic Config
     |--------------------------------------------------------------------------
     |
