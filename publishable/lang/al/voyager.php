@@ -275,7 +275,7 @@ return [
         'edit_table'                => 'Ndrysho tabelën e tabelës më poshtë',
         'edit_table_not_exist'      => 'Tabela që dëshironi të redaktoni nuk ekziston',
         'error_creating_bread'      => 'Më vjen keq që duket se mund të ketë pasur një '
-        .'problem në krijimin e këtij brezi' ,
+        .'problem në krijimin e këtij brezi',
         'error_removing_bread'      => 'Më vjen keq që duket se ka pasur një problem'
         .' duke hequr këtë BREAME',
         'error_updating_bread'      => 'Më vjen keq që duket se mund të ketë pasur '
