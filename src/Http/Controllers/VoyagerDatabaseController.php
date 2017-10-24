@@ -13,6 +13,12 @@ use TCG\Voyager\Database\Schema\Identifier;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Types\Type;
+use TCG\Voyager\Events\BreadAdded;
+use TCG\Voyager\Events\BreadDeleted;
+use TCG\Voyager\Events\BreadUpdated;
+use TCG\Voyager\Events\TableAdded;
+use TCG\Voyager\Events\TableDeleted;
+use TCG\Voyager\Events\TableUpdated;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\DataRow;
 use TCG\Voyager\Models\DataType;
@@ -39,6 +45,11 @@ class VoyagerDatabaseController extends Controller
         return Voyager::view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
     }
 
+    /**
+     * Create database table.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function create()
     {
         Voyager::canOrFail('browse_database');
@@ -48,6 +59,13 @@ class VoyagerDatabaseController extends Controller
         return Voyager::view('voyager::tools.database.edit-add', compact('db'));
     }
 
+    /**
+     * Store new database table.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request)
     {
         Voyager::canOrFail('browse_database');
@@ -73,6 +91,8 @@ class VoyagerDatabaseController extends Controller
                 }
 
                 Artisan::call('voyager:make:model', $params);
+
+                event(new TableAdded($table));
             } elseif (isset($request->create_migration) && $request->create_migration == 'on') {
                 Artisan::call('make:migration', [
                     'name'    => 'create_'.$table->name.'_table',
@@ -88,6 +108,13 @@ class VoyagerDatabaseController extends Controller
         }
     }
 
+    /**
+     * Edit database table.
+     *
+     * @param string $table
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function edit($table)
     {
         Voyager::canOrFail('browse_database');
@@ -120,6 +147,7 @@ class VoyagerDatabaseController extends Controller
             DatabaseUpdater::update($table);
             // TODO: synch BREAD with Table
             // $this->cleanOldAndCreateNew($request->original_name, $request->name);
+            event(new TableUpdated($table));
         } catch (Exception $e) {
             return back()->with($this->alertException($e))->withInput();
         }
@@ -213,6 +241,7 @@ class VoyagerDatabaseController extends Controller
 
         try {
             SchemaManager::dropTable($table);
+            event(new TableDeleted($table));
 
             return redirect()
                 ->route('voyager.database.index')
@@ -265,9 +294,13 @@ class VoyagerDatabaseController extends Controller
 
         try {
             $dataType = Voyager::model('DataType');
-            $data = $dataType->updateDataType($request->all(), true)
+            $res = $dataType->updateDataType($request->all(), true);
+            $data = $res
                 ? $this->alertSuccess(__('voyager.database.success_created_bread'))
                 : $this->alertError(__('voyager.database.error_creating_bread'));
+            if ($res) {
+                event(new BreadAdded($dataType, $data));
+            }
 
             return redirect()->route('voyager.database.index')->with($data);
         } catch (Exception $e) {
@@ -303,9 +336,13 @@ class VoyagerDatabaseController extends Controller
                 ? $dataType->prepareTranslations($request)
                 : [];
 
-            $data = $dataType->updateDataType($request->all(), true)
+            $res = $dataType->updateDataType($request->all(), true);
+            $data = $res
                 ? $this->alertSuccess(__('voyager.database.success_update_bread', ['datatype' => $dataType->name]))
                 : $this->alertError(__('voyager.database.error_updating_bread'));
+            if ($res) {
+                event(new BreadUpdated($dataType, $data));
+            }
 
             // Save translations if applied
             $dataType->saveTranslations($translations);
@@ -328,9 +365,13 @@ class VoyagerDatabaseController extends Controller
             $dataType->deleteAttributeTranslations($dataType->getTranslatableAttributes());
         }
 
-        $data = Voyager::model('DataType')->destroy($id)
+        $res = Voyager::model('DataType')->destroy($id);
+        $data = $res
             ? $this->alertSuccess(__('voyager.database.success_remove_bread', ['datatype' => $dataType->name]))
             : $this->alertError(__('voyager.database.error_updating_bread'));
+        if ($res) {
+            event(new BreadDeleted($dataType, $data));
+        }
 
         if (!is_null($dataType)) {
             Voyager::model('Permission')->removeFrom($dataType->name);

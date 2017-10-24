@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use TCG\Voyager\Events\FileDeleted;
 use TCG\Voyager\Traits\AlertsMessages;
 use Validator;
 
@@ -51,6 +52,12 @@ abstract class Controller extends BaseController
                 $row->field = @$options->column;
             }
 
+            // if the field for this row is absent from the request, continue
+            // checkboxes will be absent when unchecked, thus they are the exception
+            if (!$request->has($row->field) && $row->type !== 'checkbox') {
+                continue;
+            }
+
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
             /*
@@ -69,6 +76,11 @@ abstract class Controller extends BaseController
 
                 // If the image upload is null and it has a current image keep the current image
                 if ($row->type == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                    $content = $data->{$row->field};
+                }
+
+                // If the multiple_images upload is null and it has a current image keep the current image
+                if ($row->type == 'multiple_images' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
 
@@ -437,6 +449,7 @@ abstract class Controller extends BaseController
     {
         if (Storage::disk(config('voyager.storage.disk'))->exists($path)) {
             Storage::disk(config('voyager.storage.disk'))->delete($path);
+            event(new FileDeleted($path));
         }
     }
 

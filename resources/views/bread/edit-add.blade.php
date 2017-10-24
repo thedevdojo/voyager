@@ -151,7 +151,7 @@
                 $image = $(this).siblings('img');
 
                 params = {
-                    slug:   '{{ $dataTypeContent->getTable() }}',
+                    slug:   '{{ $dataType->slug }}',
                     image:  $image.data('image'),
                     id:     $image.data('id'),
                     field:  $image.parent().data('field-name'),

@@ -41,8 +41,8 @@
                 <option value="belongsToMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'belongsToMany'){{ 'selected="selected"' }}@endif>Belongs To Many</option>
             </select>
             <select class="relationship_table select2" name="relationship_table_{{ $relationship['field'] }}">
-                @foreach($tables as $table)
-                    <option value="{{ $table }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $table){{ 'selected="selected"' }}@endif>{{ ucfirst($table) }}</option>
+                @foreach($tables as $tbl)
+                    <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl){{ 'selected="selected"' }}@endif>{{ ucfirst($tbl) }}</option>
                 @endforeach
             </select>
             <span><input type="text" class="form-control" name="relationship_model_{{ $relationship['field'] }}" placeholder="Model Namespace (ex. App\Category)" value="@if(isset($relationshipDetails->model)){{ $relationshipDetails->model }}@endif"></span>
