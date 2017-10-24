@@ -7,4 +7,4 @@
         <a class="fileType" href="/storage/{{ $dataTypeContent->{$row->field} }}"> Download </a>
     @endif
 @endif
-<input @if($row->required == 1) @endif type="file" name="{{ $row->field }}[]" multiple="multiple">
+<input @if($row->required == 1) @endif type="file"  data-name="{{ $row->display_name }}"  name="{{ $row->field }}[]" multiple="multiple">
