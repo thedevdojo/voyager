@@ -169,7 +169,8 @@
                  * element with the id "view-selector-container".
                  */
                 var viewSelector = new gapi.analytics.ext.ViewSelector2({
-                    container: 'view-selector-container'
+                    container: 'view-selector-container',
+                    propertyId: '{{ Voyager::setting("site.google_analytics_tracking_id")  }}'
                 })
                         .execute();
 
