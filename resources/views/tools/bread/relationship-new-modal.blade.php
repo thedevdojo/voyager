@@ -1,5 +1,5 @@
 <!-- !!! Add form action below -->
-<form role="form" action="{{ route('voyager.database.bread.relationship') }}" method="POST">
+<form role="form" action="{{ route('voyager.bread.relationship') }}" method="POST">
 	<div class="modal fade modal-danger modal-relationships" id="new_relationship_modal">
 		<div class="modal-dialog relationship-panel">
 		    <div class="model-content">
@@ -70,7 +70,7 @@
 				        		<p class="relationship-warn">Before you can create a new relationship you will need to create the BREAD first.<br> Then, return back to edit the BREAD and you will be able to add relationships.<br> Thanks.</p>
 				        	</div>
 				        @endif
-			        
+
 			        </div>
 			    </div>
 			    <div class="modal-footer">

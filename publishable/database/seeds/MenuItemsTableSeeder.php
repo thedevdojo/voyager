@@ -163,6 +163,22 @@ class MenuItemsTableSeeder extends Seeder
 
             $menuItem = MenuItem::firstOrNew([
                 'menu_id'    => $menu->id,
+                'title'      => 'BREAD',
+                'url'        => '',
+                'route'      => 'voyager.bread.index',
+            ]);
+            if (!$menuItem->exists) {
+                $menuItem->fill([
+                    'target'     => '_self',
+                    'icon_class' => 'voyager-bread',
+                    'color'      => null,
+                    'parent_id'  => $toolsMenuItem->id,
+                    'order'      => 11,
+                ])->save();
+            }
+
+            $menuItem = MenuItem::firstOrNew([
+                'menu_id'    => $menu->id,
                 'title'      => 'Database',
                 'url'        => '',
                 'route'      => 'voyager.database.index',
@@ -173,7 +189,7 @@ class MenuItemsTableSeeder extends Seeder
                     'icon_class' => 'voyager-data',
                     'color'      => null,
                     'parent_id'  => $toolsMenuItem->id,
-                    'order'      => 11,
+                    'order'      => 12,
                 ])->save();
             }
 
@@ -188,7 +204,7 @@ class MenuItemsTableSeeder extends Seeder
                     'icon_class' => 'voyager-compass',
                     'color'      => null,
                     'parent_id'  => $toolsMenuItem->id,
-                    'order'      => 12,
+                    'order'      => 13,
                 ])->save();
             }
 
@@ -203,7 +219,7 @@ class MenuItemsTableSeeder extends Seeder
                     'icon_class' => 'voyager-hook',
                     'color'      => null,
                     'parent_id'  => $toolsMenuItem->id,
-                    'order'      => 13,
+                    'order'      => 14,
                 ])->save();
             }
 
@@ -219,7 +235,7 @@ class MenuItemsTableSeeder extends Seeder
                     'icon_class' => 'voyager-settings',
                     'color'      => null,
                     'parent_id'  => null,
-                    'order'      => 14,
+                    'order'      => 15,
                 ])->save();
             }
         }

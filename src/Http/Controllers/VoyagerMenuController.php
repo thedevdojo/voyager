@@ -47,15 +47,7 @@ class VoyagerMenuController extends Controller
         );
 
         unset($data['id']);
-        $data['order'] = 1;
-
-        $highestOrderMenuItem = Voyager::model('MenuItem')->where('parent_id', '=', null)
-            ->orderBy('order', 'DESC')
-            ->first();
-
-        if (!is_null($highestOrderMenuItem)) {
-            $data['order'] = intval($highestOrderMenuItem->order) + 1;
-        }
+        $data['order'] = Voyager::model('MenuItem')->highestOrderMenuItem();
 
         // Check if is translatable
         $_isTranslatable = is_bread_translatable(Voyager::model('MenuItem'));
