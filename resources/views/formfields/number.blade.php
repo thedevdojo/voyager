@@ -1,6 +1,7 @@
 <input type="number"
        class="form-control"
        name="{{ $row->field }}"
+       data-name="{{ $row->display_name }}"
        type="number"
        @if($row->required == 1) required @endif
        step="any"
