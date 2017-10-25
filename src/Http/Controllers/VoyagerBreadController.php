@@ -2,7 +2,7 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;

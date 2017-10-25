@@ -7,7 +7,6 @@ return [
         'this_week' => 'Esta semana',
         'this_year' => 'Este año',
     ],
-
     'generic' => [
         'action'                 => 'Acción',
         'actions'                => 'Acciones',
@@ -54,7 +53,7 @@ return [
         'last_modified'          => 'Última modificación',
         'length'                 => 'Longitud',
         'login'                  => 'Iniciar sesión',
-        'media'                  => 'Media',
+        'media'                  => 'Medios',
         'menu_builder'           => 'Constructor de menús',
         'move'                   => 'Mover',
         'name'                   => 'Nombre',
@@ -96,13 +95,11 @@ return [
         'yes'                    => 'Sí',
         'yes_please'             => 'Sí, por favor',
     ],
-
     'login' => [
         'logginign'    => 'Iniciando sesión',
         'signin_below' => 'Ingresar abajo:',
         'welcome'      => 'Bienvenido a Voyager. El administrador desaparecido de Laravel ',
     ],
-
     'profile' => [
         'avatar'        => 'Avatar',
         'edit'          => 'Editar mi perfil',
@@ -112,7 +109,6 @@ return [
         'role'          => 'Rol',
         'user_role'     => 'Rol del usuario',
     ],
-
     'settings' => [
         'usage_help'           => 'Puede obtener el valor de cada parámetro en cualquier lugar de su sitio llamando',
         'save'                 => 'Guardar parámetro',
@@ -138,7 +134,6 @@ return [
         'group'                => 'Grupo',
         'help_group'           => 'Esta opción está asignada a',
     ],
-
     'media' => [
         'add_new_folder'         => 'Añadir nueva carpeta',
         'audio_support'          => 'Su navegador no admite el elemento de audio.',
@@ -169,8 +164,14 @@ return [
         'success_uploading'      => 'Imagen cargada exitosamente!',
         'uploading_wrong_type'   => 'Falla de carga: formato de archivo no soportado o es demasiado grande para cargar!',
         'video_support'          => 'Su navegador no soporta la etiqueta de vídeo.',
+        'crop'                   => 'Cortar',
+        'crop_and_create'        => 'Cortar & Crear',
+        'crop_override_confirm'  => 'Se anulará la imagen original, ¿está seguro?',
+        'crop_image'             => 'Recortar imagen',
+        'success_crop_image'     => 'Imagen recortada con éxito',
+        'height'                 => 'Alto: ',
+        'width'                  => 'Ancho: ',
     ],
-
     'menu_builder' => [
         'color'                => 'Color en RGB o hex (opcional)',
         'color_ph'             => 'Color (por ejemplo, #ffffff o rgb (255, 255, 255)',
@@ -199,7 +200,6 @@ return [
         'url'                  => 'URL para la opción de menú',
         'usage_hint'           => 'Puede emitir un menú en cualquier lugar de su sitio llamando a ',
     ],
-
     'post' => [
         'category'         => 'Categoría del Post',
         'content'          => 'Contenido del Post',
@@ -210,7 +210,7 @@ return [
         'meta_keywords'    => 'Meta palabras clave',
         'new'              => 'Crear nuevo post',
         'seo_content'      => 'Contenido SEO',
-        'seo_title'        => 'Título Seo ',
+        'seo_title'        => 'Título Seo',
         'slug'             => 'URL slug',
         'status'           => 'Estado del Post',
         'status_draft'     => 'borrador',
@@ -303,7 +303,6 @@ return [
         'update_table'              => 'Actualizar tabla',
         'visibility'                => 'Visibilidad',
     ],
-
     'dimmer' => [
         'page'           => 'Página|Páginas',
         'page_link_text' => 'Ver todas las páginas',
@@ -315,7 +314,6 @@ return [
         'user_link_text' => 'Ver todos los usuarios',
         'user_text'      => 'Tiene :count :string en su base de datos. Haga clic en el botón de abajo para ver todos los usuarios. ',
     ],
-
     'form' => [
         'field_password_keep'          => 'Dejar vacío para mantener el mismo',
         'field_select_dd_relationship' => 'Asegúrese de configurar la relación apropiada en el método :method de la clase :class.',
@@ -329,7 +327,6 @@ return [
         'type_textarea'                => 'Área de texto',
         'type_textbox'                 => 'Caja de texto',
     ],
-
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
     'datatable' => [
         'sEmptyTable'     => 'No hay datos disponibles en la tabla',
@@ -354,19 +351,16 @@ return [
             'sSortDescending' => ': Activar para ordenar la columna descendente',
         ],
     ],
-
     'theme' => [
         'footer_copyright'  => 'Hecho con <i class = "voyager-heart"> </i> por',
         'footer_copyright2' => 'Hecho con ron e incluso más ron',
     ],
-
     'json' => [
         'invalid'           => 'Json inválido',
         'invalid_message'   => 'Parece que has introducido algún JSON inválido.',
         'valid'             => 'Json Válido',
         'validation_errors' => 'Errores de validación',
     ],
-
     'analytics' => [
         'by_pageview'            => 'Por página',
         'by_sessions'            => 'Por sesiones',
@@ -379,7 +373,6 @@ return [
         'top_countries'          => 'Principales países',
         'various_visualizations' => 'Varias visualizaciones',
     ],
-
     'error' => [
         'symlink_created_text'   => 'Acabamos de crear el enlace simbólico que faltaba para usted.',
         'symlink_created_title'  => 'Enlace simbólico de almacenamiento faltante creado',
