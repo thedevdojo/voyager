@@ -93,6 +93,8 @@ return [
         'viewing'                => '查看',
         'yes'                    => '好的',
         'yes_please'             => '好的，就这样做',
+        'logout'                 => 'Logout',
+        'home'                   => 'Home',
     ],
     'login' => [
         'loggingin'    => '正在登录',
@@ -314,7 +316,7 @@ return [
         'type_textbox'                 => '文本框',
     ],
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
-'datatable' => [
+    'datatable' => [
         'sEmptyTable'     => '处理中...',
         'sInfo'           => '显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项',
         'sInfoEmpty'      => '显示第 0 至 0 项结果，共 0 项',

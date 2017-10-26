@@ -94,6 +94,8 @@ return [
         'viewing'                => 'Просмотр',
         'yes'                    => 'Да',
         'yes_please'             => 'Да, пожалуйста',
+        'logout'                 => 'Logout',
+        'home'                   => 'Home',
     ],
 
     'login' => [

@@ -90,6 +90,8 @@ return [
         'viewing'                => 'Visualizando',
         'yes'                    => 'Sim',
         'yes_please'             => 'Sim, por favor',
+        'logout'                 => 'Logout',
+        'home'                   => 'Home',
     ],
 
     'login' => [

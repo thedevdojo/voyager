@@ -95,6 +95,8 @@ return [
         'viewing'                => 'Viewing',
         'yes'                    => 'Yes',
         'yes_please'             => 'Yes, Please',
+        'logout'                 => 'Logout',
+        'home'                   => 'Home',
     ],
 
     'login' => [
