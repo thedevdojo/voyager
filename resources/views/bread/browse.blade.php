@@ -140,13 +140,13 @@
                                                 @include('voyager::multilingual.input-hidden-bread-browse')
                                                 @if(json_decode($data->{$row->field}))
                                                     @foreach(json_decode($data->{$row->field}) as $file)
-                                                        <a href="/storage/{{ $file->download_link or '' }}">
-                                                            {{ $file->original_name or '' }}
+                                                        <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) or '' }}" target="_blank">
+                                                            {{ Storage::disk(config('voyager.storage.disk'))->url($file->original_name) or '' }}
                                                         </a>
                                                         <br/>
                                                     @endforeach
                                                 @else
-                                                    <a href="/storage/{{ $data->{$row->field} }}">
+                                                    <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($data->{$row->field}) }}" target="_blank">
                                                         Download
                                                     </a>
                                                 @endif

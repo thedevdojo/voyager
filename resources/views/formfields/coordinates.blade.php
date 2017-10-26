@@ -5,11 +5,11 @@
     }
 </style>
 @forelse($dataTypeContent->getCoordinates() as $point)
-    <input type="hidden" name="{{ $row->field }}[lat]" value="{{ $point['lat'] }}" id="lat"/>
-    <input type="hidden" name="{{ $row->field }}[lng]" value="{{ $point['lng'] }}" id="lng"/>
+    <input type="hidden"  data-name="{{ $row->display_name }}" name="{{ $row->field }}[lat]" value="{{ $point['lat'] }}" id="lat"/>
+    <input type="hidden"  data-name="{{ $row->display_name }}" name="{{ $row->field }}[lng]" value="{{ $point['lng'] }}" id="lng"/>
 @empty
-    <input type="hidden" name="{{ $row->field }}[lat]" value="{{ config('voyager.googlemaps.center.lat') }}" id="lat"/>
-    <input type="hidden" name="{{ $row->field }}[lng]" value="{{ config('voyager.googlemaps.center.lng') }}" id="lng"/>
+    <input type="hidden"  data-name="{{ $row->display_name }}" name="{{ $row->field }}[lat]" value="{{ config('voyager.googlemaps.center.lat') }}" id="lat"/>
+    <input type="hidden"  data-name="{{ $row->display_name }}" name="{{ $row->field }}[lng]" value="{{ config('voyager.googlemaps.center.lng') }}" id="lng"/>
 @endforelse
 
 <script type="application/javascript">

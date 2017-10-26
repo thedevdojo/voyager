@@ -7,7 +7,6 @@ return [
         'this_week' => 'Esta semana',
         'this_year' => 'Este año',
     ],
-
     'generic' => [
         'action'                 => 'Acción',
         'actions'                => 'Acciones',
@@ -44,17 +43,17 @@ return [
         'error_deleting'         => 'Lo siento, parece que se ha producido un problema al eliminar',
         'exception'              => 'Excepción',
         'featured'               => 'Destacados',
-        'field_does_not_exist'   => 'Campo no existe',
+        'field_does_not_exist'   => 'El campo no existe',
         'how_to_use'             => 'Cómo utilizar',
         'index'                  => 'Índice',
         'internal_error'         => 'Error interno',
-        'items'                  => 'item(s)',
-        'keep_sidebar_open'      => '¡Yarr! ¡Suelta las anclas! (Y manten la barra lateral abierta) ',
+        'items'                  => 'Ítem(s)',
+        'keep_sidebar_open'      => '¡Yarr! ¡Suelta las anclas! (Y mantén la barra lateral abierta) ',
         'key'                    => 'Clave',
         'last_modified'          => 'Última modificación',
         'length'                 => 'Longitud',
         'login'                  => 'Iniciar sesión',
-        'media'                  => 'Media',
+        'media'                  => 'Medios',
         'menu_builder'           => 'Constructor de menús',
         'move'                   => 'Mover',
         'name'                   => 'Nombre',
@@ -94,15 +93,13 @@ return [
         'view'                   => 'Ver',
         'viewing'                => 'Viendo',
         'yes'                    => 'Sí',
-        'yes_please'             => 'Sí por favor',
+        'yes_please'             => 'Sí, por favor',
     ],
-
     'login' => [
         'logginign'    => 'Iniciando sesión',
         'signin_below' => 'Ingresar abajo:',
         'welcome'      => 'Bienvenido a Voyager. El administrador desaparecido de Laravel ',
     ],
-
     'profile' => [
         'avatar'        => 'Avatar',
         'edit'          => 'Editar mi perfil',
@@ -112,7 +109,6 @@ return [
         'role'          => 'Rol',
         'user_role'     => 'Rol del usuario',
     ],
-
     'settings' => [
         'usage_help'           => 'Puede obtener el valor de cada parámetro en cualquier lugar de su sitio llamando',
         'save'                 => 'Guardar parámetro',
@@ -138,7 +134,6 @@ return [
         'group'                => 'Grupo',
         'help_group'           => 'Esta opción está asignada a',
     ],
-
     'media' => [
         'add_new_folder'         => 'Añadir nueva carpeta',
         'audio_support'          => 'Su navegador no admite el elemento de audio.',
@@ -146,37 +141,43 @@ return [
         'delete_folder_question' => 'Eliminar una carpeta eliminará todos los archivos y carpetas contenidos dentro',
         'destination_folder'     => 'Carpeta de destino',
         'drag_drop_info'         => 'Arrastre y suelte archivos o haga clic abajo para cargar',
-        'error_already_exists'   => 'Lo siento, ya hay un archivo/carpeta con ese nombre existente en esa carpeta.',
+        'error_already_exists'   => 'Lo siento, ya hay un archivo/carpeta existente con ese nombre en esa carpeta.',
         'error_creating_dir'     => 'Lo siento, algo parece haber ido mal con la creación del directorio,'.
             'por favor revise sus permisos',
         'error_deleting_file' => 'Lo siento, algo parece haber ido mal con en el borrado del archivo,'.
             'por favor revise sus permisos',
-        'error_deleting_folder' => 'Lo siento, algo parece haber fallado al eliminar este,'.
+        'error_deleting_folder' => 'Lo siento, algo parece haber fallado al eliminar esta carpeta,'.
             'por favor revise sus permisos',
-        'error_may_exist' => 'El archivo o la carpeta ya pueden existir con ese nombre. Por favor, elige otro nombre o '.
+        'error_may_exist' => 'Puede que ya exista un archivo o carpeta con ese nombre. Por favor, elige otro nombre o '.
             'borre el otro archivo.',
-        'error_moving' => 'Lo siento, parece que hay un problema moviendo ese archivo/carpeta, por favor '.
+        'error_moving' => 'Lo siento, parece que hay un problema al mover ese archivo/carpeta, por favor '.
             'asegúrese de tener los permisos correctos.',
         'error_uploading'       => 'Carga Fallida: Ocurrió un error desconocido!',
-        'folder_exists_already' => 'Lo siento, la carpeta ya existe, por favor, elimine esa carpeta si lo desea'.
-            'para crearla nuevamente',
-        'image_does_not_exist'  => 'La imagen no existe',
-        'image_removed'         => 'Imagen eliminada',
-        'library'               => 'Mediateca',
-        'loading'               => 'CARGANDO SUS ARCHIVOS DE MEDIOS',
-        'move_file_folder'      => 'Mover Archivo/Carpeta',
-        'new_file_folder'       => 'Nuevo nombre de archivo/carpeta',
-        'new_folder_name'       => 'Nombre de carpeta nueva',
-        'no_files_here'         => 'No hay archivos aquí.',
-        'no_files_in_folder'    => 'No hay archivos en esta carpeta.',
-        'nothing_selected'      => 'No se ha seleccionado ningún archivo o carpeta',
-        'rename_file_folder'    => 'Renombrar archivo/carpeta',
-        'success_uploaded_file' => 'Nuevo archivo subido exitosamente!',
-        'success_uploading'     => 'Imagen cargada exitosamente!',
-        'uploading_wrong_type'  => 'Falla de carga: formato de archivo no soportado o es demasiado grande para cargar!',
-        'video_support'         => 'Su navegador no soporta la etiqueta de vídeo.',
+        'folder_exists_already' => 'Lo siento, la carpeta ya existe, por favor, elimine esa carpeta si desea '.
+            'crearla nuevamente',
+        'image_does_not_exist'   => 'La imagen no existe',
+        'image_removed'          => 'Imagen eliminada',
+        'library'                => 'Mediateca',
+        'loading'                => 'CARGANDO SUS ARCHIVOS DE MEDIOS',
+        'move_file_folder'       => 'Mover Archivo/Carpeta',
+        'new_file_folder'        => 'Nuevo nombre de archivo/carpeta',
+        'new_folder_name'        => 'Nombre de nueva carpeta',
+        'no_files_here'          => 'No hay archivos aquí.',
+        'no_files_in_folder'     => 'No hay archivos en esta carpeta.',
+        'nothing_selected'       => 'No se ha seleccionado ningún archivo o carpeta',
+        'rename_file_folder'     => 'Renombrar archivo/carpeta',
+        'success_uploaded_file'  => 'Nuevo archivo subido exitosamente!',
+        'success_uploading'      => 'Imagen cargada exitosamente!',
+        'uploading_wrong_type'   => 'Falla de carga: formato de archivo no soportado o es demasiado grande para cargar!',
+        'video_support'          => 'Su navegador no soporta la etiqueta de vídeo.',
+        'crop'                   => 'Cortar',
+        'crop_and_create'        => 'Cortar & Crear',
+        'crop_override_confirm'  => 'Se anulará la imagen original, ¿está seguro?',
+        'crop_image'             => 'Recortar imagen',
+        'success_crop_image'     => 'Imagen recortada con éxito',
+        'height'                 => 'Alto: ',
+        'width'                  => 'Ancho: ',
     ],
-
     'menu_builder' => [
         'color'                => 'Color en RGB o hex (opcional)',
         'color_ph'             => 'Color (por ejemplo, #ffffff o rgb (255, 255, 255)',
@@ -193,7 +194,7 @@ return [
         'item_title'           => 'Título de la opción de menú',
         'link_type'            => 'Tipo de enlace',
         'new_menu_item'        => 'Nueva opción de menú',
-        'open_in'              => 'Abrelo',
+        'open_in'              => 'Ábrelo',
         'open_new'             => 'Nueva pestaña / ventana',
         'open_same'            => 'Misma pestaña / ventana',
         'route_parameter'      => 'Parámetros de ruta (si existen)',
@@ -204,9 +205,7 @@ return [
         'updated_order'        => 'Orden actualizado exitosamente.',
         'url'                  => 'URL para la opción de menú',
         'usage_hint'           => 'Puede emitir un menú en cualquier lugar de su sitio llamando a ',
-        //   'this menu anywhere on your site by calling',
     ],
-
     'post' => [
         'category'         => 'Categoría del Post',
         'content'          => 'Contenido del Post',
@@ -217,7 +216,7 @@ return [
         'meta_keywords'    => 'Meta palabras clave',
         'new'              => 'Crear nuevo post',
         'seo_content'      => 'Contenido SEO',
-        'seo_title'        => 'Titulo Seo ',
+        'seo_title'        => 'Título Seo',
         'slug'             => 'URL slug',
         'status'           => 'Estado del Post',
         'status_draft'     => 'borrador',
@@ -227,7 +226,6 @@ return [
         'title_sub'        => 'El título de Post',
         'update'           => 'Actualizar Post',
     ],
-
     'database' => [
         'add_bread'                 => 'Añadir BREAD a esta tabla',
         'add_new_column'            => 'Añadir nueva columna',
@@ -285,7 +283,7 @@ return [
         'optional_details'          => 'Detalles opcionales',
         'policy_class'              => 'Clase de restricciones',
         'policy_name'               => 'Nombre de restricciones',
-        'policy_name_ph'            => 'ej. \App\Policies\UserPolicy, si se deja vacío, intentará usar la clase por defecto',
+        'policy_name_ph'            => 'ej. \App\Policies\UserPolicy, si se deja vacío, intentará usar el valor predeterminado',
         'primary'                   => 'PRIMARIO',
         'server_pagination'         => 'Paginación del servidor',
         'success_create_table'      => 'Tabla :table creada exitosamente',
@@ -293,7 +291,7 @@ return [
         'success_delete_table'      => 'Tabla :table eliminada exitosamente',
         'success_remove_bread'      => 'BREAD de tipo :datatype borrado exitosamente',
         'success_update_bread'      => 'Se actualizó correctamente el BREAD :datatype',
-        'success_update_table'      => 'Talba :table actualizada exitosamente',
+        'success_update_table'      => 'Tabla :table actualizada exitosamente',
         'table_actions'             => 'Acciones de la tabla',
         'table_columns'             => 'Columnas de la tabla',
         'table_has_index'           => 'La tabla ya tiene un índice primario.',
@@ -308,7 +306,6 @@ return [
         'url_slug_ph'               => 'URL slug (ej posts)',
         'visibility'                => 'Visibilidad',
     ],
-
     'dimmer' => [
         'page'           => 'Página|Páginas',
         'page_link_text' => 'Ver todas las páginas',
@@ -320,7 +317,6 @@ return [
         'user_link_text' => 'Ver todos los usuarios',
         'user_text'      => 'Tiene :count :string en su base de datos. Haga clic en el botón de abajo para ver todos los usuarios. ',
     ],
-
     'form' => [
         'field_password_keep'          => 'Dejar vacío para mantener el mismo',
         'field_select_dd_relationship' => 'Asegúrese de configurar la relación apropiada en el método :method de'.
@@ -329,13 +325,12 @@ return [
         'type_codeeditor'     => 'Editor de código',
         'type_file'           => 'Archivo',
         'type_image'          => 'Imagen',
-        'type_radiobutton'    => 'Boton de radio',
+        'type_radiobutton'    => 'Botón de radio',
         'type_richtextbox'    => 'Caja de texto enriquecido',
         'type_selectdropdown' => 'Seleccionar Desplegable',
         'type_textarea'       => 'Área de texto',
         'type_textbox'        => 'Caja de texto',
     ],
-
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
     'datatable' => [
         'sEmptyTable'     => 'No hay datos disponibles en la tabla',
@@ -360,25 +355,22 @@ return [
             'sSortDescending' => ': Activar para ordenar la columna descendente',
         ],
     ],
-
     'theme' => [
         'footer_copyright'  => 'Hecho con <i class = "voyager-heart"> </i> por',
         'footer_copyright2' => 'Hecho con ron e incluso más ron',
     ],
-
     'json' => [
         'invalid'           => 'Json inválido',
         'invalid_message'   => 'Parece que has introducido algún JSON inválido.',
-        'valid'             => 'Json Válido ',
+        'valid'             => 'Json Válido',
         'validation_errors' => 'Errores de validación',
     ],
-
     'analytics' => [
         'by_pageview'  => 'Por página',
         'by_sessions'  => 'Por sesiones',
         'by_users'     => 'Por usuarios',
-        'no_client_id' => 'Para ver en analisis, necesitará obtener un ID de cliente de Google Analytics y'.
-            'añádelo a su configuración para la clave <code>google_analytics_client_id'.
+        'no_client_id' => 'Para ver los análisis, necesitará obtener una ID de cliente de Google Analytics y'.
+            'añadirla a su configuración para la clave <code>google_analytics_client_id'.
             '</code>. Obtenga su clave en la consola de desarrolladores de Google: ',
         'set_view'               => 'Seleccionar una vista',
         'this_vs_last_week'      => 'Esta semana vs la semana pasada',
@@ -387,14 +379,13 @@ return [
         'top_countries'          => 'Principales países',
         'various_visualizations' => 'Varias visualizaciones',
     ],
-
     'error' => [
         'symlink_created_text'  => 'Acabamos de crear el enlace simbólico que faltaba para usted.',
         'symlink_created_title' => 'Enlace simbólico de almacenamiento faltante creado',
         'symlink_failed_text'   => 'No hemos podido generar el enlace simbólico perdido para su aplicación. '.
             'Parece que su proveedor de alojamiento no lo admite.',
         'symlink_failed_title'   => 'No se pudo crear un enlace simbólico de almacenamiento faltante',
-        'symlink_missing_button' => 'Arreglalo',
+        'symlink_missing_button' => 'Arréglalo',
         'symlink_missing_text'   => 'No pudimos encontrar un enlace simbólico de almacenamiento. Esto podría causar problemas con '.
             'la carga de archivos multimedia desde el navegador.',
         'symlink_missing_title' => 'Falta el enlace simbólico de almacenamiento',

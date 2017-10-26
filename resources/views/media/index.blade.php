@@ -36,6 +36,9 @@
                             <button type="button" class="btn btn-default" id="delete"><i class="voyager-trash"></i>
                                 {{ __('voyager.generic.delete') }}
                             </button>
+							<button v-show="selectedFileIs('image')" type="button" class="btn btn-default" id="crop"><i class="voyager-crop"></i>
+                                {{ __('voyager.media.crop') }}
+                            </button>
                         </div>
                     </div>
 
@@ -52,8 +55,10 @@
                             <ol class="breadcrumb filemanager">
                                 <li class="media_breadcrumb" data-folder="/" data-index="0"><span class="arrow"></span><strong>{{ __('voyager.media.library') }}</strong></li>
                                 <template v-for="(folder, index) in folders">
-                                    <li v-bind:data-folder="folder" v-bind:data-index="index+1"><span
+                                    <li v-bind:data-folder="folder" v-bind:data-index="index+1" 
+									v-bind:class="{media_breadcrumb: index !== folders.length - 1}"><span
                                                 class="arrow"></span>@{{ folder }}</li>
+												
                                 </template>
                             </ol>
 
@@ -69,11 +74,7 @@
                                         <div class="file_link" :data-folder="file.name" :data-index="index">
                                             <div class="link_icon">
                                                 <template v-if="file.type.includes('image')">
-                                                    <div class="img_icon"
-                                                        <?php /* Fix
-                                                            style="background-size: cover; background-image: url(@{{ encodeURI(file.path) }}); background-repeat:no-repeat; background-position:center center;display:inline-block; width:100%; height:100%;"></div>
-                                                            */ ?>
-                                                         :style="imgIcon(file.path)"></div>
+                                                    <div class="img_icon" :style="imgIcon(file.path)"></div>
                                                 </template>
                                                 <template v-if="file.type.includes('video')">
                                                     <i class="icon voyager-video"></i>
@@ -81,11 +82,14 @@
                                                 <template v-if="file.type.includes('audio')">
                                                     <i class="icon voyager-music"></i>
                                                 </template>
+												<template v-if="file.type.includes('zip')">
+                                                    <i class="icon voyager-archive"></i>
+                                                </template>
                                                 <template v-if="file.type == 'folder'">
                                                     <i class="icon voyager-folder"></i>
                                                 </template>
                                                 <template
-                                                        v-if="file.type != 'folder' && !file.type.includes('image') && !file.type.includes('video') && !file.type.includes('audio')">
+                                                        v-if="file.type != 'folder' && !file.type.includes('image') && !file.type.includes('video') && !file.type.includes('audio') && !file.type.includes('zip')">
                                                     <i class="icon voyager-file-text"></i>
                                                 </template>
 
@@ -135,7 +139,7 @@
                                             <template v-if="selectedFileIs('image')">
                                                 <img :src="selected_file.path"/>
                                             </template>
-                                            <!--template v-if="selected_file.type.includes('video')">
+                                            <template v-if="selectedFileIs('video')">
                                                 <video width="100%" height="auto" controls>
                                                     <source :src="selected_file.path" type="video/mp4">
                                                     <source :src="selected_file.path" type="video/ogg">
@@ -143,20 +147,24 @@
                                                     Your browser does not support the video tag.
                                                 </video>
                                             </template>
-                                            <template v-if="selected_file.type.includes('audio')">
+                                            <template v-if="selectedFileIs('audio')">
+												<i class="voyager-music"></i>
                                                 <audio controls style="width:100%; margin-top:5px;">
                                                     <source :src="selected_file.path" type="audio/ogg">
                                                     <source :src="selected_file.path" type="audio/mpeg">
                                                     Your browser does not support the audio element.
                                                 </audio>
                                             </template>
+											<template v-if="selectedFileIs('zip')">
+                                                <i class="voyager-archive"></i>
+                                            </template>
                                             <template v-if="selected_file.type == 'folder'">
                                                 <i class="voyager-folder"></i>
                                             </template>
-                                            <template
-                                                    v-if="selected_file.type != 'folder' && !selected_file.type.includes('audio') && !selected_file.type.includes('video') && !selected_file.type.includes('image')">
+                                            <!--template
+                                                    v-if="selected_file.type != 'folder' && !selectedFileIs('audio') && !selectedFileIs('video') && !selectedFileIs('image')">
                                                 <i class="voyager-file-text-o"></i>
-                                            </template-->
+                                            </template>-->
                                         </div>
 
                                     </div>
@@ -174,7 +182,7 @@
                                                 <span><h4>Public URL:</h4>
     								            <p><a :href="selected_file.path" target="_blank">Click Here</a></p></span>
                                                 <span><h4>Last Modified:</h4>
-    								            <p>@{{selected_file.last_modified}}</p></span>
+    								            <p>@{{ dateFilter(selected_file.last_modified) }}</p></span>
                                             </template>
                                         </div>
                                     </div>
@@ -249,6 +257,56 @@
                     </div>
                     <!-- End Move File Modal -->
 
+					<!-- Image Modal -->
+					<div class="modal fade" id="imagemodal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                </div>
+								<div class="modal-body">
+									<img :src="selected_file.path" class="img img-responsive" style="margin: 0 auto;">
+								</div>
+							  
+								<div class="modal-footer text-left">
+									<small class="image-title">@{{ selected_file.name }}</small>
+								</div>
+								
+							</div>
+						</div>
+					</div>
+					<!-- End Image Modal -->
+					
+					<!-- Crop Image Modal -->
+                    <div class="modal fade modal-warning" id="confirm_crop_modal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager.media.crop_image') }}</h4>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="crop-container">
+                                        <img v-if="selectedFileIs('image')" id="cropping-image" class="img img-responsive" :src="selected_file.path + '?' + selected_file.last_modified"/>
+                                    </div>
+                                    <div class="new-image-info">
+                                        {{ __('voyager.media.width') }} <span id="new-image-width"></span>, {{ __('voyager.media.height') }}<span id="new-image-height"></span>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
+                                    <button type="button" class="btn btn-warning" id="crop_btn" data-confirm="{{ __('voyager.media.crop_override_confirm') }}">{{ __('voyager.media.crop') }}</button>
+                                    <button type="button" class="btn btn-warning" id="crop_and_create_btn">{{ __('voyager.media.crop_and_create') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Crop Image Modal -->
+					
+					
                 </div><!-- #filemanager -->
 
                 <!-- New Folder Modal -->
@@ -332,7 +390,6 @@
         </div><!-- .col-md-12 -->
     </div><!-- .page-content container-fluid -->
 
-
     <input type="hidden" id="storage_path" value="{{ storage_path() }}">
     <input type="hidden" id="base_url" value="{{ route('voyager.dashboard') }}">
 
@@ -340,7 +397,7 @@
 
 @section('javascript')
 
-     <script>
+    <script>
         MediaManager();
     </script>
 
