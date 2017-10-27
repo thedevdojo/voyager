@@ -54,7 +54,7 @@ abstract class Controller extends BaseController
 
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
-            if (!$request->has($row->field) && $row->type !== 'checkbox') {
+            if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
                 continue;
             }
 
