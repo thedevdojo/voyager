@@ -5,294 +5,80 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use TCG\Voyager\Database\Schema\Column;
 use TCG\Voyager\Database\Schema\SchemaManager;
-use TCG\Voyager\Events\BreadDataAdded;
-use TCG\Voyager\Events\BreadDataDeleted;
-use TCG\Voyager\Events\BreadDataUpdated;
-use TCG\Voyager\Events\BreadImagesDeleted;
+use TCG\Voyager\Database\Schema\Table;
+use TCG\Voyager\Database\Types\Type;
+use TCG\Voyager\Events\BreadAdded;
+use TCG\Voyager\Events\BreadDeleted;
+use TCG\Voyager\Events\BreadUpdated;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
+use TCG\Voyager\Models\DataRow;
+use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Models\Permission;
 
 class VoyagerBreadController extends Controller
 {
-    use BreadRelationshipParser;
-    //***************************************
-    //               ____
-    //              |  _ \
-    //              | |_) |
-    //              |  _ <
-    //              | |_) |
-    //              |____/
-    //
-    //      Browse our Data Type (B)READ
-    //
-    //****************************************
-
-    public function index(Request $request)
+    public function index()
     {
-        // GET THE SLUG, ex. 'posts', 'pages', etc.
-        $slug = $this->getSlug($request);
+        Voyager::canOrFail('browse_bread');
 
-        // GET THE DataType based on the slug
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+        $dataTypes = Voyager::model('DataType')->select('id', 'name', 'slug')->get()->keyBy('name')->toArray();
 
-        // Check permission
-        $this->authorize('browse', app($dataType->model_name));
+        $tables = array_map(function ($table) use ($dataTypes) {
+            $table = [
+                'name'          => $table,
+                'slug'          => isset($dataTypes[$table]['slug']) ? $dataTypes[$table]['slug'] : null,
+                'dataTypeId'    => isset($dataTypes[$table]['id']) ? $dataTypes[$table]['id'] : null,
+            ];
 
-        $getter = $dataType->server_side ? 'paginate' : 'get';
+            return (object) $table;
+        }, SchemaManager::listTableNames());
 
-        $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
-        $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
-        $orderBy = $request->get('order_by');
-        $sortOrder = $request->get('sort_order', null);
-
-        // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
-        if (strlen($dataType->model_name) != 0) {
-            $model = app($dataType->model_name);
-            $query = $model::select('*');
-
-            $relationships = $this->getRelationships($dataType);
-
-            // If a column has a relationship associated with it, we do not want to show that field
-            $this->removeRelationshipField($dataType, 'browse');
-
-            if ($search->value && $search->key && $search->filter) {
-                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
-                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
-                $query->where($search->key, $search_filter, $search_value);
-            }
-
-            if ($orderBy && in_array($orderBy, $dataType->fields())) {
-                $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'DESC';
-                $dataTypeContent = call_user_func([
-                    $query->with($relationships)->orderBy($orderBy, $querySortOrder),
-                    $getter,
-                ]);
-            } elseif ($model->timestamps) {
-                $dataTypeContent = call_user_func([$query->latest($model::CREATED_AT), $getter]);
-            } else {
-                $dataTypeContent = call_user_func([$query->with($relationships)->orderBy($model->getKeyName(), 'DESC'), $getter]);
-            }
-
-            // Replace relationships' keys for labels and create READ links if a slug is provided.
-            $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType);
-        } else {
-            // If Model doesn't exist, get data from table name
-            $dataTypeContent = call_user_func([DB::table($dataType->name), $getter]);
-            $model = false;
-        }
-
-        // Check if BREAD is Translatable
-        if (($isModelTranslatable = is_bread_translatable($model))) {
-            $dataTypeContent->load('translations');
-        }
-
-        // Check if server side pagination is enabled
-        $isServerSide = isset($dataType->server_side) && $dataType->server_side;
-
-        $view = 'voyager::bread.browse';
-
-        if (view()->exists("voyager::$slug.browse")) {
-            $view = "voyager::$slug.browse";
-        }
-
-        return Voyager::view($view, compact(
-            'dataType',
-            'dataTypeContent',
-            'isModelTranslatable',
-            'search',
-            'orderBy',
-            'sortOrder',
-            'searchable',
-            'isServerSide'
-        ));
-    }
-
-    //***************************************
-    //                _____
-    //               |  __ \
-    //               | |__) |
-    //               |  _  /
-    //               | | \ \
-    //               |_|  \_\
-    //
-    //  Read an item of our Data Type B(R)EAD
-    //
-    //****************************************
-
-    public function show(Request $request, $id)
-    {
-        $slug = $this->getSlug($request);
-
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // Compatibility with Model binding.
-        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
-
-        $relationships = $this->getRelationships($dataType);
-        if (strlen($dataType->model_name) != 0) {
-            $model = app($dataType->model_name);
-            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
-        } else {
-            // If Model doest exist, get data from table name
-            $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
-        }
-
-        // Replace relationships' keys for labels and create READ links if a slug is provided.
-        $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
-
-        // If a column has a relationship associated with it, we do not want to show that field
-        $this->removeRelationshipField($dataType, 'read');
-
-        // Check permission
-        $this->authorize('read', $dataTypeContent);
-
-        // Check if BREAD is Translatable
-        $isModelTranslatable = is_bread_translatable($dataTypeContent);
-
-        $view = 'voyager::bread.read';
-
-        if (view()->exists("voyager::$slug.read")) {
-            $view = "voyager::$slug.read";
-        }
-
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
-    }
-
-    //***************************************
-    //                ______
-    //               |  ____|
-    //               | |__
-    //               |  __|
-    //               | |____
-    //               |______|
-    //
-    //  Edit an item of our Data Type BR(E)AD
-    //
-    //****************************************
-
-    public function edit(Request $request, $id)
-    {
-        $slug = $this->getSlug($request);
-
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // Compatibility with Model binding.
-        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
-
-        $relationships = $this->getRelationships($dataType);
-
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
-            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
-
-        foreach ($dataType->editRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
-        }
-
-        // If a column has a relationship associated with it, we do not want to show that field
-        $this->removeRelationshipField($dataType, 'edit');
-
-        // Check permission
-        $this->authorize('edit', $dataTypeContent);
-
-        // Check if BREAD is Translatable
-        $isModelTranslatable = is_bread_translatable($dataTypeContent);
-
-        $view = 'voyager::bread.edit-add';
-
-        if (view()->exists("voyager::$slug.edit-add")) {
-            $view = "voyager::$slug.edit-add";
-        }
-
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
-    }
-
-    // POST BR(E)AD
-    public function update(Request $request, $id)
-    {
-        $slug = $this->getSlug($request);
-
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // Compatibility with Model binding.
-        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
-
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-
-        // Check permission
-        $this->authorize('edit', $data);
-
-        // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows);
-
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
-        }
-
-        if (!$request->ajax()) {
-            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-
-            event(new BreadDataUpdated($dataType, $data));
-
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
-                    'alert-type' => 'success',
-                ]);
-        }
-    }
-
-    //***************************************
-    //
-    //                   /\
-    //                  /  \
-    //                 / /\ \
-    //                / ____ \
-    //               /_/    \_\
-    //
-    //
-    // Add a new item of our Data Type BRE(A)D
-    //
-    //****************************************
-
-    public function create(Request $request)
-    {
-        $slug = $this->getSlug($request);
-
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // Check permission
-        $this->authorize('add', app($dataType->model_name));
-
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-                            ? new $dataType->model_name()
-                            : false;
-
-        foreach ($dataType->addRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataType->addRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
-        }
-
-        // If a column has a relationship associated with it, we do not want to show that field
-        $this->removeRelationshipField($dataType, 'add');
-
-        // Check if BREAD is Translatable
-        $isModelTranslatable = is_bread_translatable($dataTypeContent);
-
-        $view = 'voyager::bread.edit-add';
-
-        if (view()->exists("voyager::$slug.edit-add")) {
-            $view = "voyager::$slug.edit-add";
-        }
-
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view('voyager::tools.bread.index')->with(compact('dataTypes', 'tables'));
     }
 
     /**
-     * POST BRE(A)D - Store data.
+     * Create BREAD.
+     *
+     * @param Request $request
+     * @param string  $table   Table name.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(Request $request, $table)
+    {
+        Voyager::canOrFail('browse_bread');
+
+        $data = $this->prepopulateBreadInfo($table);
+        $data['fieldOptions'] = SchemaManager::describeTable($table);
+
+        return Voyager::view('voyager::tools.bread.edit-add', $data);
+    }
+
+    private function prepopulateBreadInfo($table)
+    {
+        $displayName = Str::singular(implode(' ', explode('_', Str::title($table))));
+        $modelNamespace = config('voyager.models.namespace', app()->getNamespace());
+        if (empty($modelNamespace)) {
+            $modelNamespace = app()->getNamespace();
+        }
+
+        return [
+            'isModelTranslatable'  => true,
+            'table'                => $table,
+            'slug'                 => Str::slug($table),
+            'display_name'         => $displayName,
+            'display_name_plural'  => Str::plural($displayName),
+            'model_name'           => $modelNamespace.Str::studly(Str::singular($table)),
+            'generate_permissions' => true,
+            'server_side'          => false,
+        ];
+    }
+
+    /**
+     * Store BREAD.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -300,149 +86,244 @@ class VoyagerBreadController extends Controller
      */
     public function store(Request $request)
     {
-        $slug = $this->getSlug($request);
+        try {
+            $dataType = Voyager::model('DataType');
+            $res = $dataType->updateDataType($request->all(), true);
+            $data = $res
+                ? $this->alertSuccess(__('voyager.bread.success_created_bread'))
+                : $this->alertError(__('voyager.bread.error_creating_bread'));
+            if ($res) {
+                event(new BreadAdded($dataType, $data));
+            }
 
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // Check permission
-        $this->authorize('edit', app($dataType->model_name));
-
-        // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
-
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
+            return redirect()->route('voyager.bread.index')->with($data);
+        } catch (Exception $e) {
+            return redirect()->route('voyager.bread.index')->with($this->alertException($e, 'Saving Failed'));
         }
-
-        if (!$request->ajax()) {
-            $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
-
-            event(new BreadDataAdded($dataType, $data));
-
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                        'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
-                        'alert-type' => 'success',
-                    ]);
-        }
-    }
-
-    //***************************************
-    //                _____
-    //               |  __ \
-    //               | |  | |
-    //               | |  | |
-    //               | |__| |
-    //               |_____/
-    //
-    //         Delete an item BREA(D)
-    //
-    //****************************************
-
-    public function destroy(Request $request, $id)
-    {
-        $slug = $this->getSlug($request);
-
-        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-        // Check permission
-        $this->authorize('delete', app($dataType->model_name));
-
-        // Init array of IDs
-        $ids = [];
-        if (empty($id)) {
-            // Bulk delete, get IDs from POST
-            $ids = explode(',', $request->ids);
-        } else {
-            // Single item delete, get ID from URL or Model Binding
-            $ids[] = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
-        }
-        foreach ($ids as $id) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-            $this->cleanup($dataType, $data);
-        }
-
-        $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
-
-        $res = $data->destroy($ids);
-        $data = $res
-            ? [
-                'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
-                'alert-type' => 'success',
-            ]
-            : [
-                'message'    => __('voyager.generic.error_deleting')." {$displayName}",
-                'alert-type' => 'error',
-            ];
-
-        if ($res) {
-            event(new BreadDataDeleted($dataType, $data));
-        }
-
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
     }
 
     /**
-     * Remove translations, images and files related to a BREAD item.
+     * Edit BREAD.
      *
-     * @param \Illuminate\Database\Eloquent\Model $dataType
-     * @param \Illuminate\Database\Eloquent\Model $data
+     * @param string $table
      *
-     * @return void
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    protected function cleanup($dataType, $data)
+    public function edit($table)
     {
+        Voyager::canOrFail('browse_bread');
+
+        $dataType = Voyager::model('DataType')->whereName($table)->first();
+
+        $fieldOptions = SchemaManager::describeTable($dataType->name);
+
+        $isModelTranslatable = is_bread_translatable($dataType);
+        $tables = SchemaManager::listTableNames();
+        $dataTypeRelationships = Voyager::model('DataRow')->where('data_type_id', '=', $dataType->id)->where('type', '=', 'relationship')->get();
+
+        return Voyager::view('voyager::tools.bread.edit-add', compact('dataType', 'fieldOptions', 'isModelTranslatable', 'tables', 'dataTypeRelationships'));
+    }
+
+    /**
+     * Update BREAD.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param number                   $id
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function update(Request $request, $id)
+    {
+        Voyager::canOrFail('browse_bread');
+
+        /* @var \TCG\Voyager\Models\DataType $dataType */
+        try {
+            $dataType = Voyager::model('DataType')->find($id);
+
+            // Prepare Translations and Transform data
+            $translations = is_bread_translatable($dataType)
+                ? $dataType->prepareTranslations($request)
+                : [];
+
+            $res = $dataType->updateDataType($request->all(), true);
+            $data = $res
+                ? $this->alertSuccess(__('voyager.bread.success_update_bread', ['datatype' => $dataType->name]))
+                : $this->alertError(__('voyager.bread.error_updating_bread'));
+            if ($res) {
+                event(new BreadUpdated($dataType, $data));
+            }
+
+            // Save translations if applied
+            $dataType->saveTranslations($translations);
+
+            return redirect()->route('voyager.bread.index')->with($data);
+        } catch (Exception $e) {
+            return back()->with($this->alertException($e, __('voyager.generic.update_failed')));
+        }
+    }
+
+    /**
+     * Delete BREAD.
+     *
+     * @param Number $id BREAD data_type id.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy($id)
+    {
+        Voyager::canOrFail('browse_bread');
+
+        /* @var \TCG\Voyager\Models\DataType $dataType */
+        $dataType = Voyager::model('DataType')->find($id);
+
         // Delete Translations, if present
-        if (is_bread_translatable($data)) {
-            $data->deleteAttributeTranslations($data->getTranslatableAttributes());
+        if (is_bread_translatable($dataType)) {
+            $dataType->deleteAttributeTranslations($dataType->getTranslatableAttributes());
         }
 
-        // Delete Images
-        $this->deleteBreadImages($data, $dataType->deleteRows->where('type', 'image'));
+        $res = Voyager::model('DataType')->destroy($id);
+        $data = $res
+            ? $this->alertSuccess(__('voyager.bread.success_remove_bread', ['datatype' => $dataType->name]))
+            : $this->alertError(__('voyager.bread.error_updating_bread'));
+        if ($res) {
+            event(new BreadDeleted($dataType, $data));
+        }
 
-        // Delete Files
-        foreach ($dataType->deleteRows->where('type', 'file') as $row) {
-            $files = json_decode($data->{$row->field});
-            if ($files) {
-                foreach ($files as $file) {
-                    $this->deleteFileIfExists($file->download_link);
-                }
+        if (!is_null($dataType)) {
+            Voyager::model('Permission')->removeFrom($dataType->name);
+        }
+
+        return redirect()->route('voyager.bread.index')->with($data);
+    }
+
+    // ************************************************************
+    //  _____      _       _   _                 _     _
+    // |  __ \    | |     | | (_)               | |   (_)
+    // | |__) |___| | __ _| |_ _  ___  _ __  ___| |__  _ _ __  ___
+    // |  _  // _ \ |/ _` | __| |/ _ \| '_ \/ __| '_ \| | '_ \/ __|
+    // | | \ \  __/ | (_| | |_| | (_) | | | \__ \ | | | | |_) \__ \
+    // |_|  \_\___|_|\__,_|\__|_|\___/|_| |_|___/_| |_|_| .__/|___/
+    //                                                  | |
+    //                                                  |_|
+    // ************************************************************
+
+    /**
+     * Add Relationship.
+     *
+     * @param Request $request
+     */
+    public function addRelationship(Request $request)
+    {
+        $relationshipField = $this->getRelationshipField($request);
+
+        if (!class_exists($request->relationship_model)) {
+            return back()->with([
+                    'message'    => 'Model Class '.$request->relationship_model.' does not exist. Please create Model before creating relationship.',
+                    'alert-type' => 'error',
+                ]);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $relationship_column = $request->relationship_column_belongs_to;
+            if ($request->relationship_type == 'hasOne' || $request->relationship_type == 'hasMany') {
+                $relationship_column = $request->relationship_column;
             }
+
+            // Build the relationship details
+            $relationshipDetails = json_encode([
+                'model'       => $request->relationship_model,
+                'table'       => $request->relationship_table,
+                'type'        => $request->relationship_type,
+                'column'      => $relationship_column,
+                'key'         => $request->relationship_key,
+                'label'       => $request->relationship_label,
+                'pivot_table' => $request->relationship_pivot,
+                'pivot'       => ($request->relationship_type == 'belongsToMany') ? '1' : '0',
+            ]);
+
+            $newRow = new DataRow();
+
+            $newRow->data_type_id = $request->data_type_id;
+            $newRow->field = $relationshipField;
+            $newRow->type = 'relationship';
+            $newRow->display_name = $request->relationship_table;
+            $newRow->required = 0;
+
+            foreach (['browse', 'read', 'edit', 'add', 'delete'] as $check) {
+                $newRow->{$check} = 1;
+            }
+
+            $newRow->details = $relationshipDetails;
+            $newRow->order = intval(Voyager::model('DataType')->find($request->data_type_id)->lastRow()->order) + 1;
+
+            if (!$newRow->save()) {
+                return back()->with([
+                    'message'    => 'Error saving new relationship row for '.$request->relationship_table,
+                    'alert-type' => 'error',
+                ]);
+            }
+
+            DB::commit();
+
+            return back()->with([
+                'message'    => 'Successfully created new relationship for '.$request->relationship_table,
+                'alert-type' => 'success',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with([
+                'message'    => 'Error creating new relationship: '.$e->getMessage(),
+                'alert-type' => 'error',
+            ]);
         }
     }
 
     /**
-     * Delete all images related to a BREAD item.
+     * Get Relationship Field.
      *
-     * @param \Illuminate\Database\Eloquent\Model $data
-     * @param \Illuminate\Database\Eloquent\Model $rows
+     * @param Request $request
      *
-     * @return void
+     * @return string
      */
-    public function deleteBreadImages($data, $rows)
+    private function getRelationshipField($request)
     {
-        foreach ($rows as $row) {
-            $this->deleteFileIfExists($data->{$row->field});
+        // We need to make sure that we aren't creating an already existing field
 
-            $options = json_decode($row->details);
+        $dataType = Voyager::model('DataType')->find($request->data_type_id);
 
-            if (isset($options->thumbnails)) {
-                foreach ($options->thumbnails as $thumbnail) {
-                    $ext = explode('.', $data->{$row->field});
-                    $extension = '.'.$ext[count($ext) - 1];
+        $field = str_singular($dataType->name).'_'.$request->relationship_type.'_'.str_singular($request->relationship_table).'_relationship';
 
-                    $path = str_replace($extension, '', $data->{$row->field});
+        $relationshipFieldOriginal = $relationshipField = strtolower($field);
 
-                    $thumb_name = $thumbnail->name;
+        $existingRow = Voyager::model('DataRow')->where('field', '=', $relationshipField)->first();
+        $index = 1;
 
-                    $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
-                }
-            }
+        while (isset($existingRow->id)) {
+            $relationshipField = $relationshipFieldOriginal.'_'.$index;
+            $existingRow = Voyager::model('DataRow')->where('field', '=', $relationshipField)->first();
+            $index += 1;
         }
 
-        if ($rows->count() > 0) {
-            event(new BreadImagesDeleted($data, $rows));
-        }
+        return $relationshipField;
+    }
+
+    /**
+     * Delete Relationship.
+     *
+     * @param Number $id Record id
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deleteRelationship($id)
+    {
+        Voyager::model('DataRow')->destroy($id);
+
+        return back()->with([
+                'message'    => 'Successfully deleted relationship.',
+                'alert-type' => 'success',
+            ]);
     }
 }

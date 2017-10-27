@@ -7,6 +7,7 @@ return [
         'this_week' => '本周',
         'this_year' => '今年',
     ],
+
     'generic' => [
         'action'                 => '操作',
         'actions'                => '操作',
@@ -94,11 +95,13 @@ return [
         'yes'                    => '好的',
         'yes_please'             => '好的，就这样做',
     ],
+
     'login' => [
         'loggingin'    => '正在登录',
         'signin_below' => '在下方登录：',
         'welcome'      => '欢迎使用 Voyager - 不可错过的 Laravel 后台管理框架',
     ],
+
     'profile' => [
         'avatar'        => '头像',
         'edit'          => '更改个人资料',
@@ -108,6 +111,7 @@ return [
         'role'          => '权限',
         'user_role'     => '用户权限',
     ],
+
     'settings' => [
         'usage_help'           => '通过调用，您可以在站点的任何地方获得每个设置的值',
         'save'                 => '保存设置',
@@ -133,6 +137,7 @@ return [
         'group'                => '组',
         'help_group'           => '这个设置被分配给',
     ],
+
     'media' => [
         'add_new_folder'         => '添加新文件夹',
         'audio_support'          => '您的浏览器不支持音频元素。',
@@ -164,6 +169,7 @@ return [
         'uploading_wrong_type'   => '上传失败：不受支持的文件格式，或是它文件过大而无法上传!',
         'video_support'          => '您的浏览器不支持视频标签。',
     ],
+
     'menu_builder' => [
         'color'                => 'RGB或hex中的颜色(可选)',
         'color_ph'             => '颜色 (例如：#ffffff 或 rgb(255, 255, 255)',
@@ -190,9 +196,9 @@ return [
         'successfully_updated' => '成功更新菜单项。',
         'updated_order'        => '成功更新菜单顺序。',
         'url'                  => '菜单项的 URL',
-        'usage_hint'           => 'You can output a menu anywhere on your site by calling|You can output '.
-                                   'this menu anywhere on your site by calling',
+        'usage_hint'           => 'You can output a menu anywhere on your site by calling|You can output this menu anywhere on your site by calling',
     ],
+
     'post' => [
         'category'         => '分类目录',
         'content'          => '文章内容',
@@ -213,67 +219,76 @@ return [
         'title_sub'        => '该篇文章的标题',
         'update'           => '更新文章',
     ],
+
+    'bread' => [
+        'add_bread'              => '添加 BREAD 至该表',
+        'bread_crud_actions'     => 'BREAD / CRUD 操作',
+        'bread_info'             => 'BREAD 信息',
+        'controller_name_hint'   => '例如：PageController，如果留空将使用自带的 BREAD Controller',
+        'create_bread_for_table' => '为表 :table 创建 BREAD',
+        'delete_bread'           => '删除 BREAD',
+        'delete_bread_conf'      => '是的，删除该 BREAD',
+        'delete_bread_quest'     => '你确定要删除 :table 表的 BREAD吗？',
+        'edit_bread'             => '编辑 BREAD',
+        'edit_bread_for_table'   => '编辑 BREAD :table',
+        'error_creating_bread'   => '很抱歉，在创建 BREAD 时出现了问题',
+        'error_removing_bread'   => '很抱歉，在删除 BREAD 时出现了问题',
+        'error_updating_bread'   => '很抱歉，在更新 BREAD 时出现了问题',
+        'success_created_bread'  => '成功创建 BREAD',
+        'success_remove_bread'   => '成功地从 :datatype 中移除 BREAD',
+        'success_update_bread'   => '成功更新 :datatype BREAD',
+        'controller_name'        => 'Controller 名称',
+        'create_migration'       => '为该表创建迁移？',
+        'create_model_table'     => '为该表创建模型（Model）？',
+        'description'            => '描述',
+        'display_name'           => '显示名称',
+        'display_name_plural'    => '显示名称（复数）',
+        'display_name_singular'  => '显示名称（单数）',
+        'edit_rows'              => '在下方编辑 :table 行',
+        'generate_permissions'   => '权限生成',
+        'icon_class'             => '用于该表的图标',
+        'icon_hint'              => '使用图标（可选）',
+        'icon_hint2'             => 'Voyager 字体类',
+        'model_class'            => '模型类名称',
+        'model_name'             => '模型名称',
+        'model_name_ph'          => '如果左侧留空，将尝试使用表名',
+        'policy_class'           => 'CN:Policy Class Name',
+        'policy_name'            => 'CN:Policy Name',
+        'policy_name_ph'         => 'CN:ex. \App\Policies\UserPolicy, if left empty will try and use the default',
+        'server_pagination'      => '服务器端分页',
+        'url_slug'               => 'URL Slug（必须是唯一的）',
+        'url_slug_ph'            => 'URL Slug（例如文章）',
+    ],
+
     'database' => [
-        'add_bread'                 => '添加 BREAD 至该表',
         'add_new_column'            => '添加新列',
         'add_softdeletes'           => '添加 Soft Deletes',
         'add_timestamps'            => '添加时间戳',
         'already_exists'            => '已存在',
         'already_exists_table'      => '表 :table 已经存在',
-        'bread_crud_actions'        => 'BREAD / CRUD 操作',
-        'bread_info'                => 'BREAD 信息',
         'column'                    => '列',
         'composite_warning'         => '警告：此列是复合索引的一部分',
-        'controller_name'           => 'Controller 名称',
-        'controller_name_hint'      => '例如：PageController，如果留空将使用自带的 BREAD Controller',
-        'create_bread_for_table'    => '为表 :table 创建 BREAD',
-        'create_migration'          => '为该表创建迁移？',
-        'create_model_table'        => '为该表创建模型（Model）？',
         'create_new_table'          => '创建新表',
         'create_your_new_table'     => '创建新表',
         'default'                   => '默认',
-        'delete_bread'              => '删除 BREAD',
         'delete_bread_before_table' => '请务必在删除表前先删除该表的 BREAD。',
-        'delete_table_bread_conf'   => '是的，删除该 BREAD',
-        'delete_table_bread_quest'  => '你确定要删除 :table 表的 BREAD吗？',
         'delete_table_confirm'      => '是的，删除该表',
         'delete_table_question'     => '您确定要删除 :table 表吗?',
-        'description'               => '描述',
-        'display_name'              => '显示名称',
-        'display_name_plural'       => '显示名称（复数）',
-        'display_name_singular'     => '显示名称（单数）',
-        'edit_bread'                => '编辑 BREAD',
-        'edit_bread_for_table'      => '编辑 BREAD :table',
-        'edit_rows'                 => '在下方编辑 :table 行',
         'edit_table'                => '在下方编辑 :table 表',
         'edit_table_not_exist'      => '您想要编辑的表不存在',
-        'error_creating_bread'      => '很抱歉，在创建 BREAD 时出现了问题',
-        'error_removing_bread'      => '很抱歉，在删除 BREAD 时出现了问题',
-        'error_updating_bread'      => '很抱歉，在更新 BREAD 时出现了问题',
         'extra'                     => '额外',
         'field'                     => '字段',
         'field_safe_failed'         => '未能保存字段 :field，正在回滚操作！',
-        'generate_permissions'      => '权限生成',
-        'icon_class'                => '用于该表的图标',
-        'icon_hint'                 => '使用图标（可选）',
-        'icon_hint2'                => 'Voyager 字体类',
         'index'                     => 'INDEX',
         'input_type'                => '输入类型',
         'key'                       => '键',
-        'model_class'               => '模型类名称',
-        'model_name'                => '模型名称',
-        'model_name_ph'             => '如果左侧留空，将尝试使用表名',
         'name_warning'              => '请在添加索引之前给列命名',
         'no_composites_warning'     => '此表有复合索引。请注意，他们目前不受支持。在尝试添加 / 删除索引时要小心。',
         'null'                      => '空',
         'optional_details'          => '可选细项',
         'primary'                   => '主',
-        'server_pagination'         => '服务器端分页',
         'success_create_table'      => '成功创建了:table 表',
-        'success_created_bread'     => '成功创建 BREAD',
         'success_delete_table'      => '成功删除表 :table',
-        'success_remove_bread'      => '成功地从 :datatype 中移除 BREAD',
-        'success_update_bread'      => '成功更新 :datatype BREAD',
         'success_update_table'      => '成功更新 :table 表',
         'table_actions'             => '表操作',
         'table_columns'             => '表列',
@@ -285,10 +300,9 @@ return [
         'unique'                    => '唯一',
         'unknown_type'              => '未知类型',
         'update_table'              => '更新表',
-        'url_slug'                  => 'URL Slug（必须是唯一的）',
-        'url_slug_ph'               => 'URL Slug（例如文章）',
         'visibility'                => '可见性',
     ],
+
     'dimmer' => [
         'page'           => '页面|页面',
         'page_link_text' => '查看所有页面',
@@ -300,6 +314,7 @@ return [
         'user_link_text' => '查看所有用户',
         'user_text'      => '您有 :count :string 在数据库中。点击下面的按钮查看所有用户。',
     ],
+
     'form' => [
         'field_password_keep'          => '留空以保持不变',
         'field_select_dd_relationship' => '确保在 :class 类的 :method 方法中设置适当的关系。',
@@ -313,8 +328,9 @@ return [
         'type_textarea'                => '文本区域',
         'type_textbox'                 => '文本框',
     ],
+
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
-'datatable' => [
+    'datatable' => [
         'sEmptyTable'     => '处理中...',
         'sInfo'           => '显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项',
         'sInfoEmpty'      => '显示第 0 至 0 项结果，共 0 项',
@@ -337,38 +353,39 @@ return [
             'sSortDescending' => ': 以降序排列此列',
         ],
     ],
+
     'theme' => [
         'footer_copyright'  => 'Made with <i class="voyager-heart"></i> by',
         'footer_copyright2' => 'Made with rum and even more rum',
     ],
+
     'json' => [
         'invalid'           => '无效的 Json',
         'invalid_message'   => '看起来您引入了一些无效的 JSON',
         'valid'             => '有效的 Json',
         'validation_errors' => '验证错误',
     ],
+
     'analytics' => [
-        'by_pageview'             => 'By pageview',
-        'by_sessions'             => 'By sessions',
-        'by_users'                => 'By users',
-        'no_client_id'            => 'To view analytics you\'ll need to get a google analytics client id and '.
-                                     'add it to your settings for the key <code>google_analytics_client_id'.
-                                     '</code>. Get your key in your Google developer console:',
-        'set_view'                => 'Select a View',
-        'this_vs_last_week'       => 'This Week vs Last Week',
-        'this_vs_last_year'       => 'This Year vs Last Year',
-        'top_browsers'            => 'Top Browsers',
-        'top_countries'           => 'Top Countries',
-        'various_visualizations'  => 'Various visualizations',
+        'by_pageview'            => 'By pageview',
+        'by_sessions'            => 'By sessions',
+        'by_users'               => 'By users',
+        'no_client_id'           => 'To view analytics you\'ll need to get a google analytics client id and add it to your settings for the key <code>google_analytics_client_id</code>. Get your key in your Google developer console:',
+        'set_view'               => 'Select a View',
+        'this_vs_last_week'      => 'This Week vs Last Week',
+        'this_vs_last_year'      => 'This Year vs Last Year',
+        'top_browsers'           => 'Top Browsers',
+        'top_countries'          => 'Top Countries',
+        'various_visualizations' => 'Various visualizations',
     ],
+
     'error' => [
         'symlink_created_text'   => '我们刚刚为您创建了缺失的软连接。',
         'symlink_created_title'  => '丢失的存储软连接已被重新创建',
         'symlink_failed_text'    => '我们未能为您的应用程序生成缺失的软连接，似乎您的主机提供商不支持它。',
         'symlink_failed_title'   => '无法创建丢失的存储软连接',
         'symlink_missing_button' => '修复',
-        'symlink_missing_text'   => '我们找不到一个存储软连接，这可能会导致'.
-                                    '从浏览器加载媒体文件的问题。',
-        'symlink_missing_title' => '缺失的存储软连接',
+        'symlink_missing_text'   => '我们找不到一个存储软连接，这可能会导致从浏览器加载媒体文件的问题。',
+        'symlink_missing_title'  => '缺失的存储软连接',
     ],
 ];
