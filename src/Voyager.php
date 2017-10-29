@@ -171,9 +171,10 @@ class Voyager
 
         if (count($parts) == 2) {
             return @$this->setting_cache[$parts[0]][$parts[1]] ?: $default;
-        } else {
-            return @$this->setting_cache[$parts[0]] ?: $default;
         }
+        
+        return @$this->setting_cache[$parts[0]] ?: $default;
+       
     }
 
     public function image($file, $default = '')
