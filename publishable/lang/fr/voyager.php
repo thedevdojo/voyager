@@ -112,13 +112,13 @@ return [
     ],
 
     'settings' => [
-        'usage_help'           => 'Vous pouvez obtenir la valeur de chaque paramètre n\'importe où sur votre site en '.
+        'usage_help' => 'Vous pouvez obtenir la valeur de chaque paramètre n\'importe où sur votre site en '.
                                   'appelant',
-        'save'                 => 'Enregistrer les paramètres',
-        'new'                  => 'Nouveau paramètre',
-        'help_name'            => 'Nom du paramètre, exemple : Titre de l\'espace d\'administration',
-        'help_key'             => 'Clé de paramètre, exemple : titre_admin',
-        'help_option'          => '(en option. S\'applique uniquement à certains types, comme un menu déroulant ou un '.
+        'save'        => 'Enregistrer les paramètres',
+        'new'         => 'Nouveau paramètre',
+        'help_name'   => 'Nom du paramètre, exemple : Titre de l\'espace d\'administration',
+        'help_key'    => 'Clé de paramètre, exemple : titre_admin',
+        'help_option' => '(en option. S\'applique uniquement à certains types, comme un menu déroulant ou un '.
                                   'bouton radio)',
         'add_new'              => 'Ajouter un nouveau paramètre',
         'delete_question'      => 'Êtes-vous sûr de vouloir supprimer le paramètre : :setting ?',
@@ -143,33 +143,33 @@ return [
         'error_already_exists'   => 'Désolé, il existe déjà un fichier/dossier avec ce nom dans ce dossier.',
         'error_creating_dir'     => 'Désolé, quelque chose n\'a pas fonctionné lors de la création du dossier, '.
                                     'vérifiez les autorisations SVP',
-        'error_deleting_file'    => 'Désolé, quelque chose n\'a pas fonctionné lors de la suppression du fichier, '.
+        'error_deleting_file' => 'Désolé, quelque chose n\'a pas fonctionné lors de la suppression du fichier, '.
                                     'vérifiez les autorisations SVP',
-        'error_deleting_folder'  => 'Désolé, quelque chose n\'a pas fonctionné lors de la suppression du dossier, '.
+        'error_deleting_folder' => 'Désolé, quelque chose n\'a pas fonctionné lors de la suppression du dossier, '.
                                     'vérifiez les autorisations SVP',
-        'error_may_exist'        => 'Un fichier ou un dossier avec ce nom existe déjà. Choisissez un autre nom '.
+        'error_may_exist' => 'Un fichier ou un dossier avec ce nom existe déjà. Choisissez un autre nom '.
                                     'ou supprimez le fichier/dossier existant.',
-        'error_moving'           => 'Désolé, il y a un problème pour déplacer ce fichier/dossier, '.
+        'error_moving' => 'Désolé, il y a un problème pour déplacer ce fichier/dossier, '.
                                     'vérifiez les autorisations SVP',
-        'error_uploading'        => 'Échec du téléchargement : une erreur inconnue s\'est produite !',
-        'folder_exists_already'  => 'Désolé, ce dossier existe déjà. Supprimez-le pour le récréer ou '.
+        'error_uploading'       => 'Échec du téléchargement : une erreur inconnue s\'est produite !',
+        'folder_exists_already' => 'Désolé, ce dossier existe déjà. Supprimez-le pour le récréer ou '.
                                     'choisissez un autre nom',
-        'image_does_not_exist'   => 'L\'image n\'existe pas',
-        'image_removed'          => 'Image supprimée',
-        'library'                => 'Médiathèque',
-        'loading'                => 'CHARGEMENT DES FICHIERS MULTIMEDIA',
-        'move_file_folder'       => 'Déplacer fichier/dossier',
-        'new_file_folder'        => 'Nouveau nom de fichier/dossier',
-        'new_folder_name'        => 'Nouveau nom de dossier',
-        'no_files_here'          => 'Nouveau fichier ici.',
-        'no_files_in_folder'     => 'Il n\'y a pas de fichier dans ce dossier.',
-        'nothing_selected'       => 'Aucun fichier ou dossier sélectionné',
-        'rename_file_folder'     => 'renommer le fichier/dossier',
-        'success_uploaded_file'  => 'Téléchargement du fichier réussi !',
-        'success_uploading'      => 'Image téléchargée avec succès !',
-        'uploading_wrong_type'   => 'Échec du téléchargement : format de fichier non pris en charge ou volume trop '.
+        'image_does_not_exist'  => 'L\'image n\'existe pas',
+        'image_removed'         => 'Image supprimée',
+        'library'               => 'Médiathèque',
+        'loading'               => 'CHARGEMENT DES FICHIERS MULTIMEDIA',
+        'move_file_folder'      => 'Déplacer fichier/dossier',
+        'new_file_folder'       => 'Nouveau nom de fichier/dossier',
+        'new_folder_name'       => 'Nouveau nom de dossier',
+        'no_files_here'         => 'Nouveau fichier ici.',
+        'no_files_in_folder'    => 'Il n\'y a pas de fichier dans ce dossier.',
+        'nothing_selected'      => 'Aucun fichier ou dossier sélectionné',
+        'rename_file_folder'    => 'renommer le fichier/dossier',
+        'success_uploaded_file' => 'Téléchargement du fichier réussi !',
+        'success_uploading'     => 'Image téléchargée avec succès !',
+        'uploading_wrong_type'  => 'Échec du téléchargement : format de fichier non pris en charge ou volume trop '.
                                     'important !',
-        'video_support'          => 'Votre navigateur ne prend pas en charge la balise vidéo.',
+        'video_support' => 'Votre navigateur ne prend pas en charge la balise vidéo.',
     ],
 
     'menu_builder' => [
@@ -224,16 +224,16 @@ return [
     ],
 
     'database' => [
-        'add_bread'                 => 'Ajouter le BREAD à cette table',
-        'add_new_column'            => 'Ajouter une nouvelle colonne',
-        'add_softdeletes'           => 'Ajouter la suppression en cascade (soft deletes)',
-        'add_timestamps'            => 'Ajouter les Timestamps',
-        'already_exists'            => 'existe déjà',
-        'already_exists_table'      => 'La table :table existe déjà',
-        'bread_crud_actions'        => 'Actions du BREAD/CRUD',
-        'bread_info'                => 'Information du BREAD',
-        'column'                    => 'Colonne',
-        'composite_warning'         => 'Avertissement : cette colonne fait partie d\'un indice composite '.
+        'add_bread'            => 'Ajouter le BREAD à cette table',
+        'add_new_column'       => 'Ajouter une nouvelle colonne',
+        'add_softdeletes'      => 'Ajouter la suppression en cascade (soft deletes)',
+        'add_timestamps'       => 'Ajouter les Timestamps',
+        'already_exists'       => 'existe déjà',
+        'already_exists_table' => 'La table :table existe déjà',
+        'bread_crud_actions'   => 'Actions du BREAD/CRUD',
+        'bread_info'           => 'Information du BREAD',
+        'column'               => 'Colonne',
+        'composite_warning'    => 'Avertissement : cette colonne fait partie d\'un indice composite '.
                                        '(composite index)',
         'controller_name'           => 'Nom du controleur',
         'controller_name_hint'      => 'exemple : PageController. Si laissé vide, utilisera le contrôleur BREAD',
@@ -278,29 +278,29 @@ return [
         'no_composites_warning'     => 'Cette table comporte des index composites. Notez qu\'ils ne sont pas pris en '.
                                        'charge pour le moment. Faites attention lorsque vous essayez '.
                                        'd\'ajouter/supprimer des index.',
-        'null'                      => 'Null',
-        'optional_details'          => 'Détails facultatifs',
-        'primary'                   => 'PRIMARY',
-        'server_pagination'         => 'Pagination côté serveur',
-        'success_create_table'      => 'Table : :table créée avec succès',
-        'success_created_bread'     => 'Nouveau BREAD créé avec succès',
-        'success_delete_table'      => 'Table : :table supprimée avec succès',
-        'success_remove_bread'      => ':datatype BREAD supprimé avec succès',
-        'success_update_bread'      => ':datatype BREAD mis à jour avec succès',
-        'success_update_table'      => 'Table :table mise à jour avec succès',
-        'table_actions'             => 'Actions sur le tableau',
-        'table_columns'             => 'Colonnes de table',
-        'table_has_index'           => 'La table comporte déjà un indice primaire (primary index).',
-        'table_name'                => 'Nom de la table',
-        'table_no_columns'          => 'La table n\a pas de colonnes...',
-        'type'                      => 'Type',
-        'type_not_supported'        => 'Ce type n\'est pas supporté',
-        'unique'                    => 'UNIQUE',
-        'unknown_type'              => 'Type inconnu',
-        'update_table'              => 'Mettre la table à jour',
-        'url_slug'                  => 'URL Slug (doit être unique)',
-        'url_slug_ph'               => 'URL slug (exemple : articles)',
-        'visibility'                => 'Visibilité',
+        'null'                  => 'Null',
+        'optional_details'      => 'Détails facultatifs',
+        'primary'               => 'PRIMARY',
+        'server_pagination'     => 'Pagination côté serveur',
+        'success_create_table'  => 'Table : :table créée avec succès',
+        'success_created_bread' => 'Nouveau BREAD créé avec succès',
+        'success_delete_table'  => 'Table : :table supprimée avec succès',
+        'success_remove_bread'  => ':datatype BREAD supprimé avec succès',
+        'success_update_bread'  => ':datatype BREAD mis à jour avec succès',
+        'success_update_table'  => 'Table :table mise à jour avec succès',
+        'table_actions'         => 'Actions sur le tableau',
+        'table_columns'         => 'Colonnes de table',
+        'table_has_index'       => 'La table comporte déjà un indice primaire (primary index).',
+        'table_name'            => 'Nom de la table',
+        'table_no_columns'      => 'La table n\a pas de colonnes...',
+        'type'                  => 'Type',
+        'type_not_supported'    => 'Ce type n\'est pas supporté',
+        'unique'                => 'UNIQUE',
+        'unknown_type'          => 'Type inconnu',
+        'update_table'          => 'Mettre la table à jour',
+        'url_slug'              => 'URL Slug (doit être unique)',
+        'url_slug_ph'           => 'URL slug (exemple : articles)',
+        'visibility'            => 'Visibilité',
     ],
 
     'dimmer' => [
@@ -322,35 +322,35 @@ return [
         'field_password_keep'          => 'Laissez vide pour garder le même',
         'field_select_dd_relationship' => 'Assurez-vous de configurer la relation appropriée dans la méthode :method '.
                                           'de la classe :class.',
-        'type_checkbox'                => 'Case à cocher',
-        'type_codeeditor'              => 'Editeur de code',
-        'type_file'                    => 'Fichier',
-        'type_image'                   => 'Image',
-        'type_radiobutton'             => 'Bouton radio',
-        'type_richtextbox'             => 'Champ texte enrichie',
-        'type_selectdropdown'          => 'Menu déroulant',
-        'type_textarea'                => 'Aire de texte',
-        'type_textbox'                 => 'Champ texte',
+        'type_checkbox'       => 'Case à cocher',
+        'type_codeeditor'     => 'Editeur de code',
+        'type_file'           => 'Fichier',
+        'type_image'          => 'Image',
+        'type_radiobutton'    => 'Bouton radio',
+        'type_richtextbox'    => 'Champ texte enrichie',
+        'type_selectdropdown' => 'Menu déroulant',
+        'type_textarea'       => 'Aire de texte',
+        'type_textbox'        => 'Champ texte',
     ],
 
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
     'datatable' => [
-        'sEmptyTable'         => 'Aucune donnée disponible',
-        'sInfo'               => 'Affichage _START_ à _END_ de _TOTAL_ entréees',
-        'sInfoEmpty'          => 'Affichage 0 à 0 de 0 entréees',
-        'sInfoFiltered'       => '(filtré de _MAX_ entréees totales)',
-        'sInfoPostFix'        => '',
-        'sInfoThousands'      => ' ',
-        'sLengthMenu'         => 'Afficher les entréees : _MENU_',
-        'sLoadingRecords'     => 'Chargement...',
-        'sProcessing'         => 'En traitement...',
-        'sSearch'             => 'Recherche :',
-        'sZeroRecords'        => 'Aucun enregistrements correspondants trouvés',
-        'oPaginate'           => [
-            'sFirst'          => 'Premier',
-            'sLast'           => 'Dernier',
-            'sNext'           => 'Suivant',
-            'sPrevious'       => 'Précedent',
+        'sEmptyTable'     => 'Aucune donnée disponible',
+        'sInfo'           => 'Affichage _START_ à _END_ de _TOTAL_ entréees',
+        'sInfoEmpty'      => 'Affichage 0 à 0 de 0 entréees',
+        'sInfoFiltered'   => '(filtré de _MAX_ entréees totales)',
+        'sInfoPostFix'    => '',
+        'sInfoThousands'  => ' ',
+        'sLengthMenu'     => 'Afficher les entréees : _MENU_',
+        'sLoadingRecords' => 'Chargement...',
+        'sProcessing'     => 'En traitement...',
+        'sSearch'         => 'Recherche :',
+        'sZeroRecords'    => 'Aucun enregistrements correspondants trouvés',
+        'oPaginate'       => [
+            'sFirst'    => 'Premier',
+            'sLast'     => 'Dernier',
+            'sNext'     => 'Suivant',
+            'sPrevious' => 'Précedent',
         ],
         'oAria' => [
             'sSortAscending'  => ': Trier la colonne en ordre croissant',
@@ -371,10 +371,10 @@ return [
     ],
 
     'analytics' => [
-        'by_pageview'            => 'Par pages vues',
-        'by_sessions'            => 'Par sessions',
-        'by_users'               => 'Par utilisateurs',
-        'no_client_id'           => 'Pour afficher Google Analytics, vous devrez obtenir un identifiant et  '.
+        'by_pageview'  => 'Par pages vues',
+        'by_sessions'  => 'Par sessions',
+        'by_users'     => 'Par utilisateurs',
+        'no_client_id' => 'Pour afficher Google Analytics, vous devrez obtenir un identifiant et  '.
                                     'l\'ajouter à vos paramètres clé : <code>google_analytics_client_id</code>. '.
                                     'Obtenez une clé dans l\'espace développeur Google :',
         'set_view'               => 'Sélectionner une vue',
@@ -386,14 +386,14 @@ return [
     ],
 
     'error' => [
-        'symlink_created_text'   => 'Nous avons créé le lien symbolique manquant pour vous.',
-        'symlink_created_title'  => 'Le lien symbolique de stockage manquant a été créé',
-        'symlink_failed_text'    => 'Nous n\'avons pu généré le lien symbolique manquant pour votre application. '.
+        'symlink_created_text'  => 'Nous avons créé le lien symbolique manquant pour vous.',
+        'symlink_created_title' => 'Le lien symbolique de stockage manquant a été créé',
+        'symlink_failed_text'   => 'Nous n\'avons pu généré le lien symbolique manquant pour votre application. '.
                                     'Il semble que votre hébergeur ne supporte pas cette fonction.',
         'symlink_failed_title'   => 'Impossible de créer un lien symbolique de stockage manquant',
         'symlink_missing_button' => 'Le réparer !',
         'symlink_missing_text'   => 'Nous n\'avons pu trouver le lien symbolique de stockage. '.
                                     'Cela pourrait causer des problèmes de chargement des fichiers multimédias.',
-        'symlink_missing_title'  => 'Le lien symbolique de stockage est manquant',
+        'symlink_missing_title' => 'Le lien symbolique de stockage est manquant',
     ],
 ];

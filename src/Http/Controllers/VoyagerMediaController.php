@@ -307,8 +307,8 @@ class VoyagerMediaController extends Controller
 
             return response()->json([
                'data' => [
-                   'status'     => 200,
-                   'message'    => __('voyager.media.image_removed'),
+                   'status'  => 200,
+                   'message' => __('voyager.media.image_removed'),
                ],
             ]);
         } catch (Exception $e) {
@@ -325,8 +325,8 @@ class VoyagerMediaController extends Controller
 
             return response()->json([
                 'data' => [
-                    'status'    => $code,
-                    'message'   => $message,
+                    'status'  => $code,
+                    'message' => $message,
                 ],
             ], $code);
         }

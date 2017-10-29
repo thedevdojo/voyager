@@ -4,9 +4,9 @@ $factory->define(\TCG\Voyager\Models\User::class, function (Faker\Generator $fak
     static $password;
 
     return [
-        'name'      => $faker->name,
-        'email'     => $faker->unique()->safeEmail,
-        'role_id'   => function () {
+        'name'    => $faker->name,
+        'email'   => $faker->unique()->safeEmail,
+        'role_id' => function () {
             return factory(\TCG\Voyager\Models\Role::class)->create()->id;
         },
         'password'       => $password ?: $password = bcrypt('secret'),
