@@ -119,7 +119,7 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.policy_name') }}</label>
+                                    <label for="policy_name">{{ __('voyager.database.policy_name') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
                                           data-toggle="tooltip"
@@ -146,6 +146,40 @@
                                 <textarea class="form-control" name="description"
                                           placeholder="{{ __('voyager.database.description') }}"
                                     >@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
+                            </div>
+                            <div class="row clearfix">
+                              <div class="col-md-6 form-group">
+                                  <label for="order_column">{{ __('voyager.database.order_column') }}</label>
+                                  <span class="voyager-question"
+                                        aria-hidden="true"
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title="{{ __('voyager.database.order_column_ph') }}"></span>
+                                  <select name="order_column" class="select2">
+                                    <option value="">-- {{ __('voyager.generic.none') }} --</option>
+                                    @foreach($fieldOptions as $column)
+                                    <option value="{{ $column['field'] }}"
+                                    {{{ ( isset($dataType->order_column) && $dataType->order_column == $column['field']) ? ' selected' : '' }}}
+                                    >{{ $column['field'] }}</option>
+                                    @endforeach
+                                  </select>
+                              </div>
+                              <div class="col-md-6 form-group">
+                                  <label for="order_ident_column">{{ __('voyager.database.order_ident_column') }}</label>
+                                  <span class="voyager-question"
+                                        aria-hidden="true"
+                                        data-toggle="tooltip"
+                                        data-placement="right"
+                                        title="{{ __('voyager.database.order_ident_column_ph') }}"></span>
+                                  <select name="order_ident_column" class="select2">
+                                    <option value="">-- {{ __('voyager.generic.none') }} --</option>
+                                    @foreach($fieldOptions as $column)
+                                    <option value="{{ $column['field'] }}"
+                                    {{{ (isset($dataType->order_ident_column) && $dataType->order_ident_column == $column['field']) ? ' selected' : '' }}}
+                                    >{{ $column['field'] }}</option>
+                                    @endforeach
+                                  </select>
+                              </div>
                             </div>
                         </div><!-- .panel-body -->
                     </div><!-- .panel -->
@@ -257,25 +291,24 @@
                                     </div>
                                 </div>
 
-                                
+
 
                             @endforeach
-                            
+
                             @if(isset($dataTypeRelationships))
                                 @foreach($dataTypeRelationships as $relationship)
                                     @include('voyager::tools.database.relationship-partial', $relationship)
                                 @endforeach
                             @endif
-                            
+
                             </div>
-                            
+
                         </div><!-- .panel-body -->
                         <div class="panel-footer">
-                             <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>
-                             {{ __('voyager.database.relationship.create') }}</span></div>
+                             <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>Create a Relationship</span></div>
                         </div>
                     </div><!-- .panel -->
-                    
+
                     <button type="submit" class="btn pull-right btn-primary">{{ __('voyager.generic.submit') }}</button>
 
                 </form>
@@ -469,7 +502,7 @@
                     $(this).parent().parent().find('.voyager-relationship-details').slideUp();
                 }
             });
-           
+
         });
 
         function populateRowsFromTable(dropdown){
@@ -486,7 +519,7 @@
                     }
 
                     if($(dropdown).find('option[value="'+selected_value+'"]').length > 0){
-                        $(dropdown).val(selected_value);   
+                        $(dropdown).val(selected_value);
                     }
                 });
             }

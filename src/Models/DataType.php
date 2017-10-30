@@ -28,6 +28,8 @@ class DataType extends Model
         'description',
         'generate_permissions',
         'server_side',
+        'order_column',
+        'order_ident_column'
     ];
 
     public function rows()

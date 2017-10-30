@@ -383,6 +383,60 @@ class VoyagerBreadController extends Controller
         return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
     }
 
+    public function order(Request $request)
+    {
+      // GET THE SLUG, ex. 'posts', 'pages', etc.
+      $slug = $this->getSlug($request);
+
+      // GET THE DataType based on the slug
+      $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+      // Check permission
+      $this->authorize('edit', app($dataType->model_name));
+
+      if (!isset($dataType->order_column) || !isset($dataType->order_ident_column)) {
+        return redirect()
+            ->route("voyager.{$dataType->slug}.index")
+            ->with([
+                'message'    => __('voyager.database.ordering_not_set')." {$dataType->display_name_singular}",
+                'alert-type' => 'error',
+            ]);
+      }
+
+      $model = app($dataType->model_name);
+      $results = $model->orderBy($dataType->order_column)->get();
+
+      $view = 'voyager::bread.order';
+
+      if (view()->exists("voyager::$slug.order")) {
+          $view = "voyager::$slug.order";
+      }
+
+      return Voyager::view($view, compact(
+          'dataType',
+          'results'
+      ));
+    }
+
+    public function order_item(Request $request)
+    {
+      // GET THE SLUG, ex. 'posts', 'pages', etc.
+      $slug = $this->getSlug($request);
+
+      // GET THE DataType based on the slug
+      $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+      $model = app($dataType->model_name);
+
+      $order = json_decode($request->input('order'));
+      $column = $dataType->order_column;
+      foreach ($order as $key => $item)
+      {
+        $i = $model->findOrFail($item->id);
+        $i->$column = ($key + 1);
+        $i->save();
+      }
+    }
+
     /**
      * Remove translations, images and files related to a BREAD item.
      *
