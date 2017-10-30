@@ -54,8 +54,8 @@ abstract class Controller extends BaseController
                 continue;
             }
 
-            $content = $this->getContentBasedOnType($request, $slug, $row);
-            
+            $content = $this->getContentBasedOnType($request, $slug, $row); 
+
             if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
                 $row->field = @$options->column;
             }
