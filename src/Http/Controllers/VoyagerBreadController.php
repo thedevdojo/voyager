@@ -28,9 +28,9 @@ class VoyagerBreadController extends Controller
 
         $tables = array_map(function ($table) use ($dataTypes) {
             $table = [
-                'name'          => $table,
-                'slug'          => isset($dataTypes[$table]['slug']) ? $dataTypes[$table]['slug'] : null,
-                'dataTypeId'    => isset($dataTypes[$table]['id']) ? $dataTypes[$table]['id'] : null,
+                'name'       => $table,
+                'slug'       => isset($dataTypes[$table]['slug']) ? $dataTypes[$table]['slug'] : null,
+                'dataTypeId' => isset($dataTypes[$table]['id']) ? $dataTypes[$table]['id'] : null,
             ];
 
             return (object) $table;
