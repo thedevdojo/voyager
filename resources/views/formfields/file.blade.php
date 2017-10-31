@@ -7,4 +7,4 @@
         <a class="fileType" target="_blank" href="{{ Storage::disk(config('voyager.storage.disk'))->url($dataTypeContent->{$row->field}) }}"> Download </a>
     @endif
 @endif
-<input @if($row->required == 1) @endif type="file"  data-name="{{ $row->display_name }}"  name="{{ $row->field }}[]" multiple="multiple">
+<input @if($row->required == 1 && !isset($dataTypeContent->{$row->field})) required @endif type="file"  data-name="{{ $row->display_name }}"  name="{{ $row->field }}[]" multiple="multiple">
