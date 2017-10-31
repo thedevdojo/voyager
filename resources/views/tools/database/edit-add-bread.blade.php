@@ -271,7 +271,8 @@
                             
                         </div><!-- .panel-body -->
                         <div class="panel-footer">
-                             <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>Create a Relationship</span></div>
+                             <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>
+                             {{ __('voyager.database.relationship.create') }}</span></div>
                         </div>
                     </div><!-- .panel -->
                     

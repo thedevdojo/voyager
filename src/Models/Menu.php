@@ -4,6 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
 /**
@@ -49,7 +50,7 @@ class Menu extends Model
             return false;
         }
 
-        event('voyager.menu.display', $menu);
+        event(new MenuDisplay($menu));
 
         // Convert options array into object
         $options = (object) $options;

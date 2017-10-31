@@ -7,7 +7,7 @@
 @endif
 
 @if(isset($options->on) && isset($options->off))
-    <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
+    <input type="checkbox" name="{{ $row->field }}" data-name="{{ $row->display_name }}" class="toggleswitch"
            data-on="{{ $options->on }}" {!! $checked ? 'checked="checked"' : '' !!}
            data-off="{{ $options->off }}">
 @else
