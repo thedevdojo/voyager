@@ -220,7 +220,7 @@
         @if(config('voyager.show_dev_tips'))
         <div class="alert alert-info">
             <strong>{{ __('voyager.generic.how_to_use') }}:</strong>
-            <p>{{ __('voyager.settings.usage_help') }} <code>setting('section.key')</code></p>
+            <p>{{ __('voyager.settings.usage_help') }} <code>setting('group.key')</code></p>
         </div>
         @endif
     </div>
