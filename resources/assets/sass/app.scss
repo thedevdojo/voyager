@@ -584,7 +584,7 @@ a:hover {
   line-height: 50px;
   display: block;
   white-space: nowrap;
-  
+
   font-size: 15px;
 }
 .app-container .content-container .side-menu .navbar-nav li a .icon {
@@ -1598,7 +1598,7 @@ table.dataTable.no-footer{
   padding-top:    20px;
   padding-bottom: 0px;
   &:last-child{
-    border-bottom:0px;  
+    border-bottom:0px;
   }
 }
 .row-dd-relationship{
@@ -1828,7 +1828,7 @@ table.dataTable.no-footer{
             flex:1;
             &:last-child{
                 border-top-right-radius: 3px;
-                border-bottom-right-radius: 3px; 
+                border-bottom-right-radius: 3px;
             }
         }
     }
@@ -3213,7 +3213,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     p.relationship-warn{
         text-align:center;
     }
-    
+
     .relationship_details{
         display:flex;
         &.relationshipPivot{
@@ -3306,7 +3306,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
             flex:1;
             &:last-child{
                 border-top-right-radius: 3px;
-                border-bottom-right-radius: 3px; 
+                border-bottom-right-radius: 3px;
             }
         }
     }
@@ -3338,9 +3338,9 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
             margin-bottom:5px;
             background: none;
             border: 1px solid #f1f1f1;
-        }   
+        }
     }
-    
+
 }
 
 .btn-new-relationship{
@@ -3479,7 +3479,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 }
 
 .voyager .btn.btn-success:hover {
-  
+
   opacity:1;
 }
 
@@ -5147,7 +5147,7 @@ float: left;
   margin-left:10px;
 }
 
-.modal-open .select2-container{
+.modal-open .modal .select2-container{
   z-index: 999999 !important;
   width:100% !important;
 }
