@@ -1932,6 +1932,14 @@ table.dataTable.no-footer{
 .language-selector {
   float: right !important;
   padding: 0 10px 0 0;
+    .language-selector-button.btn.btn-default {
+        background-color: #c4cacc;
+        color: #76838f;
+    }
+    .language-selector-button.btn.btn-default.active {
+        background-color: #22a7f0;
+        color: white;
+    }
 }
 .side-body > .language-selector {
   padding: 28px 15px 0 0;
