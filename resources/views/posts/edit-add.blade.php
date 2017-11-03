@@ -109,7 +109,7 @@
                         </div>
                         @include('voyager::multilingual.input-hidden', [
                             '_field_name'  => 'body',
-                            '_field_trans' => get_field_translations($dataTypeContent, 'body', 'rich_text_box', true)
+                            '_field_trans' => get_field_translations($dataTypeContent, 'body')
                         ])
                         <textarea class="form-control richTextBox" id="richtextbody" name="body" style="border:0px;">@if(isset($dataTypeContent->body)){{ $dataTypeContent->body }}@endif</textarea>
                     </div><!-- .panel -->
