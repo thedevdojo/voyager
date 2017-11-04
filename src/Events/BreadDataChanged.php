@@ -15,7 +15,7 @@ class BreadDataChanged
 
     public $changeType;
 
-    public function __construct(DataType $dataType, $data, string $changeType)
+    public function __construct(DataType $dataType, $data, $changeType)
     {
         $this->dataType = $dataType;
 
