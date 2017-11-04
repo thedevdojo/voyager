@@ -244,6 +244,7 @@ return [
         'already_exists_table'      => 'Table :table already exists',
         'bread_crud_actions'        => 'BREAD/CRUD Actions',
         'bread_info'                => 'BREAD info',
+        'browse_bread'              => 'Browse BREAD',
         'column'                    => 'Column',
         'composite_warning'         => 'Warning: this column is part of a composite index',
         'controller_name'           => 'Controller Name',

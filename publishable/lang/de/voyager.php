@@ -239,6 +239,7 @@ return [
         'already_exists_table'      => 'Tabelle :table existiert bereits',
         'bread_crud_actions'        => 'BREAD/CRUD Aktionen',
         'bread_info'                => 'BREAD Info',
+        'browse_bread'              => 'BREAD ansehen',
         'column'                    => 'Spalte',
         'composite_warning'         => 'Warnung: Diese Spalte ist Teil eines zusammengesetzten indexes',
         'controller_name'           => 'Controller Name',
