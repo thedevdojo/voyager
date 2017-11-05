@@ -96,7 +96,7 @@ return [
         'yes_please'             => 'Sí, por favor',
     ],
     'login' => [
-        'logginign'    => 'Iniciando sesión',
+        'loggingin'    => 'Iniciando sesión',
         'signin_below' => 'Ingresar abajo:',
         'welcome'      => 'Bienvenido a Voyager. El administrador desaparecido de Laravel ',
     ],
