@@ -291,16 +291,16 @@ return [
         'no_composites_warning' => 'Hinweis: Diese Tabelle hat zusammengesetzte Indexe. '.
                                        'Diese werden momentan nicht unterstützt. '.
                                        'Seien Sie vorsichtig beim Hinzufügen/Ändern von Indexen.',
-        'null'             => 'Null',
-        'optional_details' => 'Optionale Details',
-        'order_column'           => 'Reihenfolge Spalte',
-        'order_column_ph'        => 'Die Spalte wo die Reihenfolge gespeichert wird',
-        'order_ident_column'     => 'Reihenfolge Anzeige Spalte',
-        'order_ident_column_ph'  => 'Die Spalte die in der Reihenfolge-Seite angezeigt wird',
-        'ordering_not_set'       => 'Sie müssen zuerst die Reihenfolge einstellen',
-        'policy_class'     => 'Policy Klassenname',
-        'policy_name'      => 'Policy Name',
-        'policy_name_ph'   => 'Bspw. \App\Policies\UserPolicy, falls leer gelassen wird versucht '.
+        'null'                  => 'Null',
+        'optional_details'      => 'Optionale Details',
+        'order_column'          => 'Reihenfolge Spalte',
+        'order_column_ph'       => 'Die Spalte wo die Reihenfolge gespeichert wird',
+        'order_ident_column'    => 'Reihenfolge Anzeige Spalte',
+        'order_ident_column_ph' => 'Die Spalte die in der Reihenfolge-Seite angezeigt wird',
+        'ordering_not_set'      => 'Sie müssen zuerst die Reihenfolge einstellen',
+        'policy_class'          => 'Policy Klassenname',
+        'policy_name'           => 'Policy Name',
+        'policy_name_ph'        => 'Bspw. \App\Policies\UserPolicy, falls leer gelassen wird versucht '.
                                       'den Default Wert zu Verwenden.',
         'primary'               => 'PRIMARY',
         'server_pagination'     => 'Serverseitige Pagination',

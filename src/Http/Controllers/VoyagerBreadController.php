@@ -430,8 +430,7 @@ class VoyagerBreadController extends Controller
 
         $order = json_decode($request->input('order'));
         $column = $dataType->order_column;
-        foreach ($order as $key => $item)
-        {
+        foreach ($order as $key => $item) {
             $i = $model->findOrFail($item->id);
             $i->$column = ($key + 1);
             $i->save();
