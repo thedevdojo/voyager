@@ -14,8 +14,8 @@ class AddOrderToDatatypesTable extends Migration
     public function up()
     {
         Schema::table('data_types', function (Blueprint $table) {
-            $table->string('order_ident_column')->after('server_side');
-            $table->string('order_column')->after('server_side');
+            $table->string('order_ident_column')->nullable()->after('server_side');
+            $table->string('order_column')->nullable()->after('server_side');
         });
     }
 
