@@ -147,7 +147,7 @@
                                           placeholder="{{ __('voyager.database.description') }}"
                                     >@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
                             </div>
-							@if(!is_null($dataType->order_column) && !is_null($dataType->order_ident_column))
+							@if(isset($dataType->order_column) && isset($dataType->order_ident_column))
 							<div class="row clearfix">
                                 <div class="col-md-6 form-group">
                                     <label for="order_column">{{ __('voyager.database.order_column') }}</label>
@@ -160,7 +160,7 @@
 	  									<option value="">-- {{ __('voyager.generic.none') }} --</option>
 										@foreach($fieldOptions as $tbl)
 										<option value="{{ $tbl['field'] }}"
-										@if(isset($dataType->order_column) && $dataType->order_column == $tbl['field']) selected @endif
+										@if($dataType->order_column == $tbl['field']) selected @endif
 										>{{ $tbl['field'] }}</option>
 										@endforeach
 	  								</select>
@@ -176,7 +176,7 @@
 										<option value="">-- {{ __('voyager.generic.none') }} --</option>
 										@foreach($fieldOptions as $tbl)
 										<option value="{{ $tbl['field'] }}"
-										@if(isset($dataType->order_ident_column) && $dataType->order_ident_column == $tbl['field']) selected @endif
+										@if($dataType->order_ident_column == $tbl['field']) selected @endif
 										>{{ $tbl['field'] }}</option>
 										@endforeach
 									</select>
