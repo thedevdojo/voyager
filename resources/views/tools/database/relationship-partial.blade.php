@@ -44,8 +44,8 @@
                 <option value="belongsToMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'belongsToMany'){{ 'selected="selected"' }}@endif>{{ __('voyager.database.relationship.belongs_to_many') }}</option>
             </select>
             <select class="relationship_table select2" name="relationship_table_{{ $relationship['field'] }}">
-                @foreach($tables as $table)
-                    <option value="{{ $table }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $table){{ 'selected="selected"' }}@endif>{{ ucfirst($table) }}</option>
+                @foreach($tables as $tablename)
+                    <option value="{{ $tablename }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tablename){{ 'selected="selected"' }}@endif>{{ ucfirst($tablename) }}</option>
                 @endforeach
             </select>
             <span><input type="text" class="form-control" name="relationship_model_{{ $relationship['field'] }}" placeholder="{{ __('voyager.database.relationship.namespace') }}" value="@if(isset($relationshipDetails->model)){{ $relationshipDetails->model }}@endif"></span>
