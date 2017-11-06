@@ -77,6 +77,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($dataTypeContent as $data)
+                                    @can('read', $data)
                                     <tr>
                                         <td>
                                             <input type="checkbox" name="row_id" id="checkbox_{{ $data->id }}" value="{{ $data->id }}">
@@ -173,13 +174,12 @@
                                                     <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
                                                 </a>
                                             @endcan
-                                            @can('read', $data)
-                                                <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
-                                                    <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
-                                                </a>
-                                            @endcan
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
+                                                <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
+                                            </a>
                                         </td>
                                     </tr>
+                                    @endcan
                                     @endforeach
                                 </tbody>
                             </table>
