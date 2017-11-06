@@ -149,32 +149,32 @@ return [
         'error_already_exists'   => 'عذراً، يوجد بالفعل ملف/مجلد بهذا الاسم في هذا المجلد.',
         'error_creating_dir'     => 'عذراً يبدو أن هناك خطأ في إنشاء المجلد، يرجى التحقق من صلاحياتك',
 
-        'error_deleting_file'    => 'عذراً، يبدو أنه حدث خطأ عند حذف هذا الملف، يرجى التحقق من صلاحياتك',
+        'error_deleting_file' => 'عذراً، يبدو أنه حدث خطأ عند حذف هذا الملف، يرجى التحقق من صلاحياتك',
 
-        'error_deleting_folder'  => 'عذراً، يبدو أنه حدث خطأ عند حذف هذا المجلد، يرجى التحقق من صلاحياتك',
+        'error_deleting_folder' => 'عذراً، يبدو أنه حدث خطأ عند حذف هذا المجلد، يرجى التحقق من صلاحياتك',
 
-        'error_may_exist'        => 'قد يكون هناك ملف أو مجلد موجود بالفعل بهذا الاسم. الرجاء اختيار اسم آخر أو حذف الملف الآخر.',
+        'error_may_exist' => 'قد يكون هناك ملف أو مجلد موجود بالفعل بهذا الاسم. الرجاء اختيار اسم آخر أو حذف الملف الآخر.',
 
-        'error_moving'           => 'عذراً، يبدو أنه حصلت مشكلة أثناء نقل هذا الملف/المجلد، يرجى التأكد من أن لديك الصلاحيات الصحيحة.',
+        'error_moving' => 'عذراً، يبدو أنه حصلت مشكلة أثناء نقل هذا الملف/المجلد، يرجى التأكد من أن لديك الصلاحيات الصحيحة.',
 
-        'error_uploading'        => 'أخفق الرفع: حدث خطأ غير معلوم!',
-        'folder_exists_already'  => 'عذراً، هذا المجلد موجود بالفعل، يرجى حذف هذا المجلد إذا كنت ترغب في إعادة إنشائه',
+        'error_uploading'       => 'أخفق الرفع: حدث خطأ غير معلوم!',
+        'folder_exists_already' => 'عذراً، هذا المجلد موجود بالفعل، يرجى حذف هذا المجلد إذا كنت ترغب في إعادة إنشائه',
 
-        'image_does_not_exist'   => 'الصورة غير موجودة',
-        'image_removed'          => 'تمت إزالة الصورة',
-        'library'                => 'مكتبة الوسائط',
-        'loading'                => 'تحميل ملفات الوسائط الخاصة بك',
-        'move_file_folder'       => 'نقل ملف/مجلد',
-        'new_file_folder'        => 'اسم ملف/مجلد جديد',
-        'new_folder_name'        => 'اسم مجلد جديد',
-        'no_files_here'          => 'لا توجد ملفات هنا.',
-        'no_files_in_folder'     => 'لا توجد ملفات في هذا المجلد.',
-        'nothing_selected'       => 'لم يتم تحديد ملف أو مجلد',
-        'rename_file_folder'     => 'إعادة تسمية ملف/مجلد',
-        'success_uploaded_file'  => 'تم رفع ملف جديد بنجاح!',
-        'success_uploading'      => 'تم رفع الصورة بنجاح!',
-        'uploading_wrong_type'   => 'فشل الرفع: تنسيق الملف غير مدعوم أو أنه كبير جدا لرفعه!',
-        'video_support'          => 'متصفحك الحالي لا يدعم تشغيل الفيديو.',
+        'image_does_not_exist'  => 'الصورة غير موجودة',
+        'image_removed'         => 'تمت إزالة الصورة',
+        'library'               => 'مكتبة الوسائط',
+        'loading'               => 'تحميل ملفات الوسائط الخاصة بك',
+        'move_file_folder'      => 'نقل ملف/مجلد',
+        'new_file_folder'       => 'اسم ملف/مجلد جديد',
+        'new_folder_name'       => 'اسم مجلد جديد',
+        'no_files_here'         => 'لا توجد ملفات هنا.',
+        'no_files_in_folder'    => 'لا توجد ملفات في هذا المجلد.',
+        'nothing_selected'      => 'لم يتم تحديد ملف أو مجلد',
+        'rename_file_folder'    => 'إعادة تسمية ملف/مجلد',
+        'success_uploaded_file' => 'تم رفع ملف جديد بنجاح!',
+        'success_uploading'     => 'تم رفع الصورة بنجاح!',
+        'uploading_wrong_type'  => 'فشل الرفع: تنسيق الملف غير مدعوم أو أنه كبير جدا لرفعه!',
+        'video_support'         => 'متصفحك الحالي لا يدعم تشغيل الفيديو.',
         'crop'                  => 'قص',
         'crop_and_create'       => 'قص وإنشاء',
         'crop_override_confirm' => 'ستستبدل الصورة الأصلية, هل أنت متأكد؟',
@@ -182,7 +182,7 @@ return [
         'success_crop_image'    => 'تم قص الصورة بنجاح',
         'height'                => 'الارتفاع: ',
         'width'                 => 'العرض: ',
-	],
+    ],
 
     'menu_builder' => [
         'color'                => 'اللون بصيغة RGB أو hex (اختياري)',
@@ -212,7 +212,7 @@ return [
         'url'                  => 'رابط URL لعنصر القائمة',
         'usage_hint'           => 'يمكنك عرض قائمة في أي مكان في موقعك من طريق استدعاء | يمكنك عرض هذه القائمة في أي مكان على موقعك عن طريق استدعاء',
 
-	],
+    ],
 
     'post' => [
         'category'         => 'قسم المقال',
@@ -361,15 +361,15 @@ return [
         'field_password_keep'          => 'اتركه فارغ لعدم التعديل',
         'field_select_dd_relationship' => 'تأكد من إعداد العلاقة المناسبة في الطريقة :method الخاصة بالمعرف :class',
 
-		'type_checkbox'                => 'مربع اختيار Checkbox',
-        'type_codeeditor'              => 'محرر أكواد Code Editor',
-        'type_file'                    => 'ملف',
-        'type_image'                   => 'صورة',
-        'type_radiobutton'             => 'زر اختيار من متعدد Radio Button',
-        'type_richtextbox'             => 'مربع نص منسق Rich Textbox',
-        'type_selectdropdown'          => 'قائمة تحديد منسدلة Dropdown',
-        'type_textarea'                => 'منطقة نص Text Area',
-        'type_textbox'                 => 'مربع نص Text Box',
+        'type_checkbox'       => 'مربع اختيار Checkbox',
+        'type_codeeditor'     => 'محرر أكواد Code Editor',
+        'type_file'           => 'ملف',
+        'type_image'          => 'صورة',
+        'type_radiobutton'    => 'زر اختيار من متعدد Radio Button',
+        'type_richtextbox'    => 'مربع نص منسق Rich Textbox',
+        'type_selectdropdown' => 'قائمة تحديد منسدلة Dropdown',
+        'type_textarea'       => 'منطقة نص Text Area',
+        'type_textbox'        => 'مربع نص Text Box',
     ],
 
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
@@ -410,11 +410,10 @@ return [
     ],
 
     'analytics' => [
-        'by_pageview'            => 'حسب المشاهدات',
-        'by_sessions'            => 'حسب الجلسات',
-        'by_users'               => 'حسب المستخدمين',
-        'no_client_id'           => 'لعرض التحليلات، ستحتاج إلى الحصول على معرف عميل google analytics وإضافته إلى إعدادات المفتاح <code> google_analytics_client_id </code>. احصل على المفتاح من لوحة تحكم مطوري جوجل:',
-
+        'by_pageview'  => 'حسب المشاهدات',
+        'by_sessions'  => 'حسب الجلسات',
+        'by_users'     => 'حسب المستخدمين',
+        'no_client_id' => 'لعرض التحليلات، ستحتاج إلى الحصول على معرف عميل google analytics وإضافته إلى إعدادات المفتاح <code> google_analytics_client_id </code>. احصل على المفتاح من لوحة تحكم مطوري جوجل:',
 
         'set_view'               => 'حدد طريقة العرض',
         'this_vs_last_week'      => 'هذا الأسبوع ضد الأسبوع الماضي',
@@ -425,14 +424,14 @@ return [
     ],
 
     'error' => [
-        'symlink_created_text'   => 'لقد أنشأنا للتو الاختصار symlink المفقود.',
-        'symlink_created_title'  => 'تم إنشاء الاختصار المفقود symlink إلى storage',
-        'symlink_failed_text'    => 'فشلنا في إنشاء الاختصار المفقود في تطبيقك. يبدو أن مزود خدمة الاستضافة لديك لا يدعمه.',
+        'symlink_created_text'  => 'لقد أنشأنا للتو الاختصار symlink المفقود.',
+        'symlink_created_title' => 'تم إنشاء الاختصار المفقود symlink إلى storage',
+        'symlink_failed_text'   => 'فشلنا في إنشاء الاختصار المفقود في تطبيقك. يبدو أن مزود خدمة الاستضافة لديك لا يدعمه.',
 
         'symlink_failed_title'   => 'تعذر إنشاء الاختصار المفقود symlink إلى مجلد التخزين',
         'symlink_missing_button' => 'إصلاح المشكلة',
         'symlink_missing_text'   => 'لم نتمكن من العثور على اختصار symlink الى مجلد التخزين. قد يتسبب هذا في حدوث مشكلات في تحميل ملفات الوسائط من المتصفح.',
 
-        'symlink_missing_title'  => 'الاختصار symlink إلى مجلد التخزين مفقود',
+        'symlink_missing_title' => 'الاختصار symlink إلى مجلد التخزين مفقود',
     ],
 ];
