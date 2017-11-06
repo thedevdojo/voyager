@@ -20,6 +20,9 @@ return [
         'auto_increment'         => 'زيادة تلقائية',
         'browse'                 => 'استعراض',
         'builder'                => 'البناء',
+        'bulk_delete'            => 'حذف متعدد',
+        'bulk_delete_confirm'    => 'نعم, حذف هذه',
+        'bulk_delete_nothing'    => 'لم تقم بتحديد أي عنصر لحذفه',
         'cancel'                 => 'إلغاء',
         'choose_type'            => 'اختر النوع',
         'click_here'             => 'اضغط هنا',
@@ -72,6 +75,7 @@ return [
         'save'                   => 'حفظ',
         'search'                 => 'بحث',
         'select_all'             => 'تحديد الكل',
+        'select_group'           => 'اختر مجموعة موجودة أو أضف جديدة',
         'settings'               => 'الإعدادت',
         'showing_entries'        => 'عرض :from إلى :to من :all عنصر|عرض :from إلى :to من :all عناصر',
         'submit'                 => 'إرسال',
@@ -124,9 +128,15 @@ return [
         'successfully_deleted' => 'تم حذف الإعداد بنجاح',
         'already_at_top'       => 'موجود بالفعل في أعلى القائمة',
         'already_at_bottom'    => 'موجود بالفعل في أسفل القائمة',
+        'key_already_exists'   => 'المفتاح :key موجود بالفعل',
         'moved_order_up'       => 'القيمة :name تم نقلها إلى أعلى',
         'moved_order_down'     => 'القيمة :name تم نقلها إلى أسفل',
         'successfully_removed' => 'تم إزالة :name بنجاح',
+        'group_general'        => 'عام',
+        'group_admin'          => 'الإدارة',
+        'group_site'           => 'الموقع',
+        'group'                => 'المجموعة',
+        'help_group'           => 'مجموعة هذا الإعداد تنتمي إلى',
     ],
 
     'media' => [
@@ -138,12 +148,18 @@ return [
         'drag_drop_info'         => 'يمكنك سحب الملفات وإفلاتها أو النقر أدناه لرفعها',
         'error_already_exists'   => 'عذراً، يوجد بالفعل ملف/مجلد بهذا الاسم في هذا المجلد.',
         'error_creating_dir'     => 'عذراً يبدو أن هناك خطأ في إنشاء المجلد، يرجى التحقق من صلاحياتك',
+
         'error_deleting_file'    => 'عذراً، يبدو أنه حدث خطأ عند حذف هذا الملف، يرجى التحقق من صلاحياتك',
+
         'error_deleting_folder'  => 'عذراً، يبدو أنه حدث خطأ عند حذف هذا المجلد، يرجى التحقق من صلاحياتك',
+
         'error_may_exist'        => 'قد يكون هناك ملف أو مجلد موجود بالفعل بهذا الاسم. الرجاء اختيار اسم آخر أو حذف الملف الآخر.',
+
         'error_moving'           => 'عذراً، يبدو أنه حصلت مشكلة أثناء نقل هذا الملف/المجلد، يرجى التأكد من أن لديك الصلاحيات الصحيحة.',
+
         'error_uploading'        => 'أخفق الرفع: حدث خطأ غير معلوم!',
         'folder_exists_already'  => 'عذراً، هذا المجلد موجود بالفعل، يرجى حذف هذا المجلد إذا كنت ترغب في إعادة إنشائه',
+
         'image_does_not_exist'   => 'الصورة غير موجودة',
         'image_removed'          => 'تمت إزالة الصورة',
         'library'                => 'مكتبة الوسائط',
@@ -159,7 +175,14 @@ return [
         'success_uploading'      => 'تم رفع الصورة بنجاح!',
         'uploading_wrong_type'   => 'فشل الرفع: تنسيق الملف غير مدعوم أو أنه كبير جدا لرفعه!',
         'video_support'          => 'متصفحك الحالي لا يدعم تشغيل الفيديو.',
-    ],
+        'crop'                  => 'قص',
+        'crop_and_create'       => 'قص وإنشاء',
+        'crop_override_confirm' => 'ستستبدل الصورة الأصلية, هل أنت متأكد؟',
+        'crop_image'            => 'قص الصورة',
+        'success_crop_image'    => 'تم قص الصورة بنجاح',
+        'height'                => 'الارتفاع: ',
+        'width'                 => 'العرض: ',
+	],
 
     'menu_builder' => [
         'color'                => 'اللون بصيغة RGB أو hex (اختياري)',
@@ -188,7 +211,8 @@ return [
         'updated_order'        => 'تم تحديث ترتيب القائمة بنجاح.',
         'url'                  => 'رابط URL لعنصر القائمة',
         'usage_hint'           => 'يمكنك عرض قائمة في أي مكان في موقعك من طريق استدعاء | يمكنك عرض هذه القائمة في أي مكان على موقعك عن طريق استدعاء',
-    ],
+
+	],
 
     'post' => [
         'category'         => 'قسم المقال',
@@ -220,6 +244,7 @@ return [
         'already_exists_table'      => 'الجدول :table موجود بالفعل',
         'bread_crud_actions'        => 'إجراءات BREAD/CRUD',
         'bread_info'                => 'معلومات ال BREAD',
+        'browse_bread'              => 'استعراض BREAD',
         'column'                    => 'عمود',
         'composite_warning'         => 'تحذير: هذا العمود جزء من فهرس مركب',
         'controller_name'           => 'اسم وحدة التحكم Controller',
@@ -265,6 +290,9 @@ return [
         'no_composites_warning'     => 'يحتوي هذا الجدول على فهارس مركبة. يرجى ملاحظة أنها غير معتمدة في الوقت الراهن. كن حذرا عند محاولة إضافة / إزالة الفهارس.',
         'null'                      => 'Null',
         'optional_details'          => 'تفاصيل اختيارية',
+        'policy_class'              => 'اسم فئة السياسة',
+        'policy_name'               => 'اسم السياسة Policy',
+        'policy_name_ph'            => 'مثل \App\Policies\UserPolicy, اذا ترك فارغا سيتم استخدام الافترضي',
         'primary'                   => 'اساسي Primary',
         'server_pagination'         => 'ترقيم الصفحات من جانب الخادم',
         'success_create_table'      => 'تم إنشاء الجدول :table بنجاح',
@@ -286,6 +314,35 @@ return [
         'url_slug'                  => 'رابط URL (يجب أن يكون فريد)',
         'url_slug_ph'               => 'رابط URL (مثل posts)',
         'visibility'                => 'الظهور',
+        'relationship'              => [
+            'relationship'         => 'علاقة',
+            'relationships'        => 'علاقات',
+            'has_one'              => 'لديه واحدة',
+            'has_many'             => 'لديه العديد',
+            'belongs_to'           => 'ينتمي إلى',
+            'belongs_to_many'      => 'ينتمي إلى العديد',
+            'which_column_from'    => 'أي عمود من ',
+            'is_used_to_reference' => 'سيستخدم للدلالة إلى هذه',
+            'pivot_table'          => 'جدول محوري',
+            'selection_details'    => 'تفاصيل الاختيار',
+            'display_the'          => 'عرض العنصر',
+            'store_the'            => 'خزن العنصر',
+            'easy_there'           => 'تمهل قليلا',
+            'before_create'        => 'قبل أن تنشئ علاقة جديدة ستحتاج أن تنشئ BREAD أولا.<br>ثم عد لتعديل ال BREAD وستتمكن من إضافة العلاقات.<br>شكرا.',
+
+            'cancel'               => 'إلغاء',
+            'add_new'              => 'إضافة علاقة جديدة',
+            'open'                 => 'فتح',
+            'close'                => 'إغلاق',
+            'relationship_details' => 'تفاصيل العلاقة',
+            'browse'               => 'استعراض',
+            'read'                 => 'معاينة',
+            'edit'                 => 'تعديل',
+            'add'                  => 'إضافة',
+            'delete'               => 'حذف',
+            'create'               => 'إنشاء علاقة',
+            'namespace'            => 'اسم النموذج Model (مثال App\Category)',
+        ],
     ],
 
     'dimmer' => [
@@ -303,7 +360,8 @@ return [
     'form' => [
         'field_password_keep'          => 'اتركه فارغ لعدم التعديل',
         'field_select_dd_relationship' => 'تأكد من إعداد العلاقة المناسبة في الطريقة :method الخاصة بالمعرف :class',
-        'type_checkbox'                => 'مربع اختيار Checkbox',
+
+		'type_checkbox'                => 'مربع اختيار Checkbox',
         'type_codeeditor'              => 'محرر أكواد Code Editor',
         'type_file'                    => 'ملف',
         'type_image'                   => 'صورة',
@@ -356,6 +414,8 @@ return [
         'by_sessions'            => 'حسب الجلسات',
         'by_users'               => 'حسب المستخدمين',
         'no_client_id'           => 'لعرض التحليلات، ستحتاج إلى الحصول على معرف عميل google analytics وإضافته إلى إعدادات المفتاح <code> google_analytics_client_id </code>. احصل على المفتاح من لوحة تحكم مطوري جوجل:',
+
+
         'set_view'               => 'حدد طريقة العرض',
         'this_vs_last_week'      => 'هذا الأسبوع ضد الأسبوع الماضي',
         'this_vs_last_year'      => 'هذا العام ضد العام الماضي',
@@ -368,9 +428,11 @@ return [
         'symlink_created_text'   => 'لقد أنشأنا للتو الاختصار symlink المفقود.',
         'symlink_created_title'  => 'تم إنشاء الاختصار المفقود symlink إلى storage',
         'symlink_failed_text'    => 'فشلنا في إنشاء الاختصار المفقود في تطبيقك. يبدو أن مزود خدمة الاستضافة لديك لا يدعمه.',
+
         'symlink_failed_title'   => 'تعذر إنشاء الاختصار المفقود symlink إلى مجلد التخزين',
         'symlink_missing_button' => 'إصلاح المشكلة',
         'symlink_missing_text'   => 'لم نتمكن من العثور على اختصار symlink الى مجلد التخزين. قد يتسبب هذا في حدوث مشكلات في تحميل ملفات الوسائط من المتصفح.',
+
         'symlink_missing_title'  => 'الاختصار symlink إلى مجلد التخزين مفقود',
     ],
 ];
