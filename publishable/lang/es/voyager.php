@@ -305,7 +305,7 @@ return [
         'url_slug'              => 'URL Slug (debe ser único)',
         'url_slug_ph'           => 'URL slug (ej posts)',
         'visibility'            => 'Visibilidad',
-        'relationship'              => [
+        'relationship'          => [
             'relationship'         => 'Relación',
             'relationships'        => 'Relaciones',
             'has_one'              => 'Has One',
