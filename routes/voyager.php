@@ -38,6 +38,8 @@ Route::group(['as' => 'voyager.'], function () {
                                  ? $dataType->controller
                                  : $namespacePrefix.'VoyagerBreadController';
 
+                Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
+                Route::post($dataType->slug.'/order', $breadController.'@order_item')->name($dataType->slug.'.order');
                 Route::resource($dataType->slug, $breadController);
             }
         } catch (\InvalidArgumentException $e) {

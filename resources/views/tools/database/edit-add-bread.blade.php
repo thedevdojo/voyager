@@ -50,7 +50,7 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.display_name_singular') }}</label>
+                                    <label for="display_name_singular">{{ __('voyager.database.display_name_singular') }}</label>
                                     @if($isModelTranslatable)
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
@@ -65,7 +65,7 @@
                                            value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.display_name_plural') }}</label>
+                                    <label for="display_name_plural">{{ __('voyager.database.display_name_plural') }}</label>
                                     @if($isModelTranslatable)
                                         @include('voyager::multilingual.input-hidden', [
                                             'isModelTranslatable' => true,
@@ -82,12 +82,12 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.url_slug') }}</label>
+                                    <label for="slug">{{ __('voyager.database.url_slug') }}</label>
                                     <input type="text" class="form-control" name="slug" placeholder="{{ __('voyager.database.url_slug_ph') }}"
                                            value="@if(isset($dataType->slug)){{ $dataType->slug }}@else{{ $slug }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.icon_hint') }} <a
+                                    <label for="icon">{{ __('voyager.database.icon_hint') }} <a
                                                 href="{{ route('voyager.compass.index', [], false) }}#fonts"
                                                 target="_blank">{{ __('voyager.database.icon_hint2') }}</a></label>
                                     <input type="text" class="form-control" name="icon"
@@ -97,7 +97,7 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.model_name') }}</label>
+                                    <label for="model_name">{{ __('voyager.database.model_name') }}</label>
                                     <span class="voyager-question"
                                         aria-hidden="true"
                                         data-toggle="tooltip"
@@ -107,7 +107,7 @@
                                            value="@if(isset($dataType->model_name)){{ $dataType->model_name }}@else{{ $model_name }}@endif">
                                 </div>
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.controller_name') }}</label>
+                                    <label for="controller">{{ __('voyager.database.controller_name') }}</label>
                                     <span class="voyager-question"
                                         aria-hidden="true"
                                         data-toggle="tooltip"
@@ -119,7 +119,7 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6 form-group">
-                                    <label for="email">{{ __('voyager.database.policy_name') }}</label>
+                                    <label for="policy_name">{{ __('voyager.database.policy_name') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
                                           data-toggle="tooltip"
@@ -147,6 +147,42 @@
                                           placeholder="{{ __('voyager.database.description') }}"
                                     >@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
                             </div>
+							@if(isset($dataType->order_column) && isset($dataType->order_ident_column))
+							<div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="order_column">{{ __('voyager.database.order_column') }}</label>
+                                    <span class="voyager-question"
+                                          aria-hidden="true"
+                                          data-toggle="tooltip"
+                                          data-placement="right"
+                                          title="{{ __('voyager.database.order_column_ph') }}"></span>
+									<select name="order_column" class="select2 form-control">
+	  									<option value="">-- {{ __('voyager.generic.none') }} --</option>
+										@foreach($fieldOptions as $tbl)
+										<option value="{{ $tbl['field'] }}"
+										@if($dataType->order_column == $tbl['field']) selected @endif
+										>{{ $tbl['field'] }}</option>
+										@endforeach
+	  								</select>
+                                </div>
+								<div class="col-md-6 form-group">
+                                    <label for="order_ident_column">{{ __('voyager.database.order_ident_column') }}</label>
+                                    <span class="voyager-question"
+                                          aria-hidden="true"
+                                          data-toggle="tooltip"
+                                          data-placement="right"
+                                          title="{{ __('voyager.database.order_ident_column_ph') }}"></span>
+                                    <select name="order_ident_column" class="select2 form-control">
+										<option value="">-- {{ __('voyager.generic.none') }} --</option>
+										@foreach($fieldOptions as $tbl)
+										<option value="{{ $tbl['field'] }}"
+										@if($dataType->order_ident_column == $tbl['field']) selected @endif
+										>{{ $tbl['field'] }}</option>
+										@endforeach
+									</select>
+                                </div>
+                            </div>
+							@endif
                         </div><!-- .panel-body -->
                     </div><!-- .panel -->
 
