@@ -126,9 +126,9 @@ class AdminCommand extends Command
             $this->info('Creating admin account');
 
             return $model::create([
-                'name'             => $name,
-                'email'            => $email,
-                'password'         => Hash::make($password),
+                'name'     => $name,
+                'email'    => $email,
+                'password' => Hash::make($password),
             ]);
         }
 
