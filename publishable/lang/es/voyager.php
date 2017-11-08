@@ -257,7 +257,7 @@ return [
         'display_name_singular'     => 'Nombre de visualización (Singular)',
         'edit_bread'                => 'Editar BREAD',
         'edit_bread_for_table'      => 'Editar BREAD para la tabla :table',
-        'edit_rows'                 => 'Editar las filas de la tabla siguiente:',
+        'edit_rows'                 => 'Editar las filas de la tabla siguiente',
         'edit_table'                => 'Editar la tabla siguiente:',
         'edit_table_not_exist'      => 'La tabla que desea editar no existe',
         'error_creating_bread'      => 'Lo siento, parece que puede haber habido un problema al crear el BREAD',

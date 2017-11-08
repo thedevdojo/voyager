@@ -153,7 +153,7 @@
 
                     <div class="panel panel-primary panel-bordered">
                         <div class="panel-heading">
-                            <h3 class="panel-title panel-icon"><i class="voyager-window-list"></i> {{ __('voyager.database.edit_rows', ['table' => $table]) }}</h3>
+                            <h3 class="panel-title panel-icon"><i class="voyager-window-list"></i> {{ __('voyager.database.edit_rows', ['table' => $table]) }}:</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-up" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
