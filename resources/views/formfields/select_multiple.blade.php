@@ -5,7 +5,7 @@
 @php
 $dataTypeContent->{$row->field} = json_decode($dataTypeContent->{$row->field})
 @endphp
-<select class="form-control select2"  data-name="{{ $row->display_name }}" name="{{ $row->field }}[]" multiple>
+<select class="form-control select2" name="{{ $row->field }}[]" multiple>
     @if(isset($options->relationship))
         {{-- Check that the relationship method exists --}}
         @if( method_exists( $dataType->model_name, camel_case($row->field) ) )
