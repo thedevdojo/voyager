@@ -118,7 +118,7 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * @param Request $request
+     * @param Request    $request
      * @param Collection $data
      *
      * @return mixed
@@ -154,15 +154,15 @@ abstract class Controller extends BaseController
      */
     protected function getFieldsWithValidationRules($fieldsConfig)
     {
-        return $fieldsConfig->filter(function($value){
+        return $fieldsConfig->filter(function ($value) {
             if (empty($value->details)) {
                 return false;
             }
             $decoded = json_decode($value->details, true);
+
             return !empty($decoded['validation']['rule']);
         });
     }
-
 
     public function getContentBasedOnType(Request $request, $slug, $row)
     {
