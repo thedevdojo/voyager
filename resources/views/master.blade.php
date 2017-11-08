@@ -103,6 +103,9 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 </div>
 @include('voyager::partials.app-footer')
 
+<!-- DateTimePicker anchor -->
+<div id="dtBox"></div>
+
 <!-- Javascript Libs -->
 
 

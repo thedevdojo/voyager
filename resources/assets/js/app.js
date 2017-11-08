@@ -15,7 +15,7 @@ require('./jquery-nestable');
 require('bootstrap');
 require('bootstrap-switch');
 require('select2');
-require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
+require('datetimepicker');
 var brace = require('brace');
 require('brace/mode/json');
 require('brace/theme/github');
@@ -29,6 +29,7 @@ require('./load-remote.js');
 require('cropperjs');
 
 $(document).ready(function(){
+    $("#dtBox").DateTimePicker();
 
     var appContainer = $(".app-container"),
         fadedOverlay = $('.fadetoblack'),
@@ -93,8 +94,6 @@ $(document).ready(function(){
     }
     $this.closest('.panel').toggleClass('is-fullscreen');
   });
-
-  $('.datepicker').datetimepicker();
 
   // Save shortcut
   $(document).keydown(function (e){
