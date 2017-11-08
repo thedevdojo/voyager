@@ -120,8 +120,11 @@ abstract class Controller extends BaseController
     {
         $rules = [];
         $messages = [];
+        $customAttributes = [];
 
         foreach ($data as $row) {
+            if ($row->display_name) $customAttributes[$row->field] = $row->display_name;
+
             $options = json_decode($row->details);
 
             if (isset($options->validation)) {
@@ -136,21 +139,21 @@ abstract class Controller extends BaseController
 
                 if (isset($validationOptions->rule)) {
                     if (!is_array($validationOptions->rule)) {
-                        $rules[$row->display_name] = explode('|', $validationOptions->rule);
+                        $rules[$row->field] = explode('|', $validationOptions->rule);
                     } else {
-                        $rules[$row->display_name] = $validationOptions->rule;
+                        $rules[$row->field] = $validationOptions->rule;
                     }
                 }
 
                 if (isset($validationOptions->messages)) {
                     foreach ($validationOptions->messages as $key => $msg) {
-                        $messages[$row->display_name.'.'.$key] = $msg;
+                        $messages[$row->field.'.'.$key] = $msg;
                     }
                 }
             }
         }
 
-        return Validator::make($request, $rules, $messages);
+        return Validator::make($request, $rules, $messages, $customAttributes);
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
