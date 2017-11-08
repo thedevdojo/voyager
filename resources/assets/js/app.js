@@ -146,13 +146,13 @@ $(document).ready(function(){
                                         //Scroll to first error
                                         if (Object.keys(d.errors).indexOf(key) === 0) {
                                             $('html, body').animate({
-                                                scrollTop: $("[data-name='"+key+"']").parent().offset().top
+                                                scrollTop: $("[name='"+key+"']").parent().offset().top
                                                         - $('nav.navbar').height() + 'px'
                                             }, 'fast');
                                         }
 
-          $("[data-name='"+key+"']").parent().addClass("has-error");
-          $("[data-name='"+key+"']").parent().append("<span class='help-block' style='color:#f96868'>"+row+"</span>")
+          $("[name='"+key+"']").parent().addClass("has-error");
+          $("[name='"+key+"']").parent().append("<span class='help-block' style='color:#f96868'>"+row+"</span>")
         });
       },
       error: function(){
