@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -116,33 +117,52 @@ abstract class Controller extends BaseController
         return $data;
     }
 
+    /**
+     * @param Request $request
+     * @param Collection $data
+     *
+     * @return mixed
+     */
     public function validateBread($request, $data)
     {
         $rules = [];
         $messages = [];
 
-        foreach ($data as $row) {
-            $options = json_decode($row->details);
+        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
-            if (isset($options->validation)) {
-                if (isset($options->validation->rule)) {
-                    if (!is_array($options->validation->rule)) {
-                        $rules[$row->display_name] = explode('|', $options->validation->rule);
-                    } else {
-                        $rules[$row->display_name] = $options->validation->rule;
-                    }
-                }
+        foreach ($fieldsWithValidationRules as $field) {
+            $options = json_decode($field->details);
+            $rule = $options->validation->rule;
+            $fieldName = $field->field;
 
-                if (isset($options->validation->messages)) {
-                    foreach ($options->validation->messages as $key => $msg) {
-                        $messages[$row->display_name.'.'.$key] = $msg;
-                    }
+            $rules[$fieldName] = is_array($rule) ? $rule : explode('|', $rule);
+
+            if (!empty($options->validation->messages)) {
+                foreach ($options->validation->messages as $key => $msg) {
+                    $messages["{$fieldName}.{$key}"] = $msg;
                 }
             }
         }
 
         return Validator::make($request, $rules, $messages);
     }
+
+    /**
+     * @param $fieldsConfig
+     *
+     * @return Collection
+     */
+    protected function getFieldsWithValidationRules($fieldsConfig)
+    {
+        return $fieldsConfig->filter(function($value){
+            if (empty($value->details)) {
+                return false;
+            }
+            $decoded = json_decode($value->details, true);
+            return !empty($decoded['validation']['rule']);
+        });
+    }
+
 
     public function getContentBasedOnType(Request $request, $slug, $row)
     {
