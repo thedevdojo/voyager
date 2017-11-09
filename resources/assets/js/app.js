@@ -134,15 +134,15 @@ $(document).ready(function () {
       processData: false,
       contentType: false,
       beforeSend: function () {
-        $('body').css('cursor', 'progress');
-        $('.has-error').removeClass('has-error');
-        $('.help-block').remove();
+        $("body").css("cursor", "progress");
+        $(".has-error").removeClass("has-error");
+        $(".help-block").remove();
       },
       success: function (d) {
-        $('body').css('cursor', 'auto');
+        $("body").css("cursor", "auto");
         $.each(d.errors, function (inputName, errorMessage) {
-          // Using ^ 'starts with' operator to also look for input arrays
-          var $inputElement = $("[name^='" + inputName + "']"),
+          // This will work also for fields with brackets in the name, ie. name="image[]
+          var $inputElement = $('[name="' + inputName + '"]'),
               inputElementPosition = $inputElement.first().parent().offset().top,
               navbarHeight = $('nav.navbar').height();
 
