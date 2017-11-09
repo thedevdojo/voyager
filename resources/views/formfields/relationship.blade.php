@@ -2,7 +2,7 @@
 	
 	@if(class_exists($options->model))
 
-		@php $relationshipField = (@$options->type=="belongsToMany" ? $row->field : @$options->column) @endphp
+		@php $relationshipField = $row->field; @endphp
 
 		@if($options->type == 'belongsTo')
 
@@ -22,13 +22,13 @@
 
 			@else
 			
-				<select class="form-control select2" name="{{ $relationshipField }}">
+				<select class="form-control select2" name="{{ $options->column }}">
 					@php 
 						$model = app($options->model);
 	            		$query = $model::all();
 	            	@endphp
 					@foreach($query as $relationshipData)
-						<option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$relationshipField} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
+						<option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$options->column} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
 					@endforeach
 				</select>
 

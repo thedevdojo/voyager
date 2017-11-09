@@ -197,7 +197,7 @@ return [
     'post' => [
         'category'         => 'Yazı kategorisi',
         'content'          => 'Yazı içeriği',
-        'details'          => 'Yazo detayı',
+        'details'          => 'Yazı detayı',
         'excerpt'          => 'Alıntı <small>Yazının kısa açıklaması</small>',
         'image'            => 'Yazı resmi',
         'meta_description' => 'Meta Açıklaması',

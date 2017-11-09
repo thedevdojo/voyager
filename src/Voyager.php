@@ -8,6 +8,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
 use TCG\Voyager\FormFields\HandlerInterface;
 use TCG\Voyager\Models\Category;
@@ -240,7 +241,7 @@ class Voyager
     public function alerts()
     {
         if (!$this->alertsCollected) {
-            event('voyager.alerts.collecting');
+            event(new AlertsCollection($this->alerts));
 
             $this->alertsCollected = true;
         }

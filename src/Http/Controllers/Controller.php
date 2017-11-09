@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use TCG\Voyager\Events\FileDeleted;
 use TCG\Voyager\Traits\AlertsMessages;
 use Validator;
 
@@ -51,6 +52,12 @@ abstract class Controller extends BaseController
                 $row->field = @$options->column;
             }
 
+            // if the field for this row is absent from the request, continue
+            // checkboxes will be absent when unchecked, thus they are the exception
+            if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
+                continue;
+            }
+
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
             /*
@@ -69,6 +76,11 @@ abstract class Controller extends BaseController
 
                 // If the image upload is null and it has a current image keep the current image
                 if ($row->type == 'image' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                    $content = $data->{$row->field};
+                }
+
+                // If the multiple_images upload is null and it has a current image keep the current image
+                if ($row->type == 'multiple_images' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
                     $content = $data->{$row->field};
                 }
 
@@ -115,15 +127,15 @@ abstract class Controller extends BaseController
             if (isset($options->validation)) {
                 if (isset($options->validation->rule)) {
                     if (!is_array($options->validation->rule)) {
-                        $rules[$row->field] = explode('|', $options->validation->rule);
+                        $rules[$row->display_name] = explode('|', $options->validation->rule);
                     } else {
-                        $rules[$row->field] = $options->validation->rule;
+                        $rules[$row->display_name] = $options->validation->rule;
                     }
                 }
 
                 if (isset($options->validation->messages)) {
                     foreach ($options->validation->messages as $key => $msg) {
-                        $messages[$row->field.'.'.$key] = $msg;
+                        $messages[$row->display_name.'.'.$key] = $msg;
                     }
                 }
             }
@@ -181,8 +193,8 @@ abstract class Controller extends BaseController
 
                     return json_encode($filesPath);
                 }
-            // no break
             /********** MULTIPLE IMAGES TYPE **********/
+            // no break
             case 'multiple_images':
                 if ($files = $request->file($row->field)) {
                     /**
@@ -206,11 +218,14 @@ abstract class Controller extends BaseController
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                        $image = Image::make($file)->resize($resize_width, $resize_height,
+                        $image = Image::make($file)->resize(
+                            $resize_width,
+                            $resize_height,
                             function (Constraint $constraint) {
                                 $constraint->aspectRatio();
                                 $constraint->upsize();
-                            })->encode($file->getClientOriginalExtension(), 75);
+                            }
+                        )->encode($file->getClientOriginalExtension(), 75);
 
                         Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
 
@@ -229,11 +244,14 @@ abstract class Controller extends BaseController
                                         $thumb_resize_height = $thumb_resize_height * $scale;
                                     }
 
-                                    $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
+                                    $image = Image::make($file)->resize(
+                                        $thumb_resize_width,
+                                        $thumb_resize_height,
                                         function (Constraint $constraint) {
                                             $constraint->aspectRatio();
                                             $constraint->upsize();
-                                        })->encode($file->getClientOriginalExtension(), 75);
+                                        }
+                                    )->encode($file->getClientOriginalExtension(), 75);
                                 } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                     $crop_width = $thumbnails->crop->width;
                                     $crop_height = $thumbnails->crop->height;
@@ -242,8 +260,10 @@ abstract class Controller extends BaseController
                                         ->encode($file->getClientOriginalExtension(), 75);
                                 }
 
-                                Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                    (string) $image, 'public'
+                                Storage::disk(config('voyager.storage.disk'))->put(
+                                    $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                                    (string) $image,
+                                    'public'
                                 );
                             }
                         }
@@ -291,14 +311,22 @@ abstract class Controller extends BaseController
                     $file = $request->file($row->field);
                     $options = json_decode($row->details);
 
-                    $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
-                    $filename_counter = 1;
-
                     $path = $slug.'/'.date('FY').'/';
+                    if (isset($options->preserveFileUploadName) && $options->preserveFileUploadName) {
+                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+                        $filename_counter = 1;
 
-                    // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
-                    while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+                        // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+                        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+                        }
+                    } else {
+                        $filename = Str::random(20);
+
+                        // Make sure the filename does not exist, if it does, just regenerate
+                        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                            $filename = Str::random(20);
+                        }
                     }
 
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
@@ -311,11 +339,14 @@ abstract class Controller extends BaseController
                         $resize_height = null;
                     }
 
-                    $image = Image::make($file)->resize($resize_width, $resize_height,
+                    $image = Image::make($file)->resize(
+                        $resize_width,
+                        $resize_height,
                         function (Constraint $constraint) {
                             $constraint->aspectRatio();
                             $constraint->upsize();
-                        })->encode($file->getClientOriginalExtension(), 75);
+                        }
+                    )->encode($file->getClientOriginalExtension(), 75);
 
                     if ($this->is_animated_gif($file)) {
                         Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
@@ -340,11 +371,14 @@ abstract class Controller extends BaseController
                                     $thumb_resize_height = intval($thumb_resize_height * $scale);
                                 }
 
-                                $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
+                                $image = Image::make($file)->resize(
+                                    $thumb_resize_width,
+                                    $thumb_resize_height,
                                     function (Constraint $constraint) {
                                         $constraint->aspectRatio();
                                         $constraint->upsize();
-                                    })->encode($file->getClientOriginalExtension(), 75);
+                                    }
+                                )->encode($file->getClientOriginalExtension(), 75);
                             } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                 $crop_width = $thumbnails->crop->width;
                                 $crop_height = $thumbnails->crop->height;
@@ -353,8 +387,10 @@ abstract class Controller extends BaseController
                                     ->encode($file->getClientOriginalExtension(), 75);
                             }
 
-                            Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                (string) $image, 'public'
+                            Storage::disk(config('voyager.storage.disk'))->put(
+                                $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                                (string) $image,
+                                'public'
                             );
                         }
                     }
@@ -437,6 +473,7 @@ abstract class Controller extends BaseController
     {
         if (Storage::disk(config('voyager.storage.disk'))->exists($path)) {
             Storage::disk(config('voyager.storage.disk'))->delete($path);
+            event(new FileDeleted($path));
         }
     }
 
