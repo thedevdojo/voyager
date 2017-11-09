@@ -127,6 +127,7 @@ abstract class Controller extends BaseController
     {
         $rules = [];
         $messages = [];
+        $displayNames = [];
 
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
@@ -134,6 +135,9 @@ abstract class Controller extends BaseController
             $options = json_decode($field->details);
             $rule = $options->validation->rule;
             $fieldName = $field->field;
+            if (!empty($field->display_name)) {
+                $displayNames[$fieldName] = $field->display_name;
+            }
 
             $rules[$fieldName] = is_array($rule) ? $rule : explode('|', $rule);
 
@@ -144,7 +148,7 @@ abstract class Controller extends BaseController
             }
         }
 
-        return Validator::make($request, $rules, $messages);
+        return Validator::make($request, $rules, $messages, $displayNames);
     }
 
     /**
