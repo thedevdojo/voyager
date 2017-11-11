@@ -9,16 +9,22 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Intervention\Image\ImageServiceProvider;
+use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
+use TCG\Voyager\Events\FormFieldsRegistered;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Models\MenuItem;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Policies\BasePolicy;
+use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
+use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -29,7 +35,8 @@ class VoyagerServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Setting::class => SettingPolicy::class,
+        Setting::class  => SettingPolicy::class,
+        MenuItem::class => MenuItemPolicy::class,
     ];
 
     /**
@@ -37,9 +44,11 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(VoyagerEventServiceProvider::class);
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(WidgetServiceProvider::class);
         $this->app->register(VoyagerHooksServiceProvider::class);
+        $this->app->register(DoctrineSupportServiceProvider::class);
 
         $loader = AliasLoader::getInstance();
         $loader->alias('Voyager', VoyagerFacade::class);
@@ -257,21 +266,28 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function registerGates()
     {
-        if (Schema::hasTable('data_types')) {
-            $dataType = VoyagerFacade::model('DataType');
-            $dataTypes = $dataType->get();
+        // This try catch is necessary for the Package Auto-discovery
+        // otherwise it will throw an error because no database
+        // connection has been made yet.
+        try {
+            if (Schema::hasTable('data_types')) {
+                $dataType = VoyagerFacade::model('DataType');
+                $dataTypes = $dataType->get();
 
-            foreach ($dataTypes as $dataType) {
-                $policyClass = BasePolicy::class;
-                if (isset($dataType->policy_name) && $dataType->policy_name !== ''
-                    && class_exists($dataType->policy_name)) {
-                    $policyClass = $dataType->policy_name;
+                foreach ($dataTypes as $dataType) {
+                    $policyClass = BasePolicy::class;
+                    if (isset($dataType->policy_name) && $dataType->policy_name !== ''
+                        && class_exists($dataType->policy_name)) {
+                        $policyClass = $dataType->policy_name;
+                    }
+
+                    $this->policies[$dataType->model_name] = $policyClass;
                 }
 
-                $this->policies[$dataType->model_name] = $policyClass;
+                $this->registerPolicies();
             }
-
-            $this->registerPolicies();
+        } catch (\PDOException $e) {
+            Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
         }
     }
 
@@ -307,7 +323,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         VoyagerFacade::addAfterFormField(DescriptionHandler::class);
 
-        event('voyager.form-fields.registered');
+        event(new FormFieldsRegistered($formFields));
     }
 
     /**

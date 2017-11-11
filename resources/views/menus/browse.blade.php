@@ -43,19 +43,19 @@
                                         @endif
                                     </td>
                                     @endforeach
-                                    <td class="no-sort no-click">
+                                    <td class="no-sort no-click bread-actions">
                                         @can('delete', $data)
-                                            <div class="btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}">
+                                            <div class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
                                             </div>
                                         @endcan
                                         @can('edit', $data)
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" class="btn-sm btn-primary pull-right edit">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" class="btn btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
                                             </a>
                                         @endcan
                                         @can('edit', $data)
-                                            <a href="{{ route('voyager.'.$dataType->slug.'.builder', $data->{$data->getKeyName()}) }}" class="btn-sm btn-success pull-right">
+                                            <a href="{{ route('voyager.'.$dataType->slug.'.builder', $data->{$data->getKeyName()}) }}" class="btn btn-sm btn-success pull-right">
                                                 <i class="voyager-list"></i> {{ __('voyager.generic.builder') }}
                                             </a>
                                         @endcan

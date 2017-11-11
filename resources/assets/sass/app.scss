@@ -11,6 +11,7 @@
 @import "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker";
 @import "node_modules/simplemde/dist/simplemde.min";
 @import "node_modules/dropzone/dist/dropzone";
+@import "node_modules/cropperjs/dist/cropper";
 @import "fonts";
 
 /********** LOGIN STYLES ***********/
@@ -22,7 +23,7 @@ body.login {
     background-size:cover;
     -moz-background-size:cover;
     -ms-background-size:cover;
-    -wenkit-background-size:cover;
+    -webkit-background-size:cover;
     background-position:center center;
     background-repeat:no-repeat;
     overflow:hidden;
@@ -70,6 +71,7 @@ body.login {
         font-size: 10px;
         text-transform: uppercase;
         width: auto;
+        padding-left:2px;
     }
 
     .login-container form{
@@ -117,8 +119,6 @@ body.login {
     .logo-container .logo{
         padding:50px 0px;
     }
-
-
 
 
     @-moz-keyframes spin {
@@ -237,11 +237,12 @@ body.login {
     .form-group-default {
         background-color: #fff;
         position: relative;
-        border: 1px solid rgba(28,43,54,.07);
-        border-radius: 2px;
+        border: 2px solid rgba(28,43,54,.07);
+        border-radius: 3px;
         padding: 7px 12px 4px;
         overflow: hidden;
-        transition: background-color .2s ease;
+        transition: border 0.3s ease-in;
+        font-weight:normal;
     }
 
     .form-group-default label {
@@ -266,20 +267,33 @@ body.login {
 
     .form-control{
         background: #fff;
-        border: 1px solid rgba(28,43,54,.07);
         -webkit-appearance: none;
         color: #1c2b36;
         outline: 0;
         border:0;
         height: 35px;
         line-height: normal;
-        font-weight: 300;
         vertical-align: middle;
         min-height: 35px;
         box-shadow: none;
-        border-radius: 2px;
-        transition: background .2s linear 0s;
+        font-weight:normal;
+    }
 
+    .form-control::-webkit-input-placeholder{
+      color:#ccc;
+      font-weight:300;
+    }
+    .form-control::-moz-placeholder{
+      color:#ccc;
+      font-weight:300;
+    }
+    .form-control:-ms-input-placeholder{
+      color:#ccc;
+      font-weight:300;
+    }
+    .form-control:-moz-placeholder{
+      color:#ccc;
+      font-weight:300;
     }
 
     .form-control-grey:focus, .form-control:focus {
@@ -288,19 +302,19 @@ body.login {
     }
 
     .form-control:focus::-webkit-input-placeholder{
-        color:#1c2b36;
+        color:#8c9bA6;
     }
 
     .form-control:focus::-moz-placeholder{
-        color:#1c2b36;
+        color:#8c9bA6;
     }
 
     .form-control:focus:-ms-input-placeholder{
-        color:#1c2b36;
+        color:#8c9bA6;
     }
 
     .form-control:focus:-moz-placeholder{
-        color:#1c2b36;
+        color:#8c9bA6;
     }
 }
 
@@ -570,7 +584,7 @@ a:hover {
   line-height: 50px;
   display: block;
   white-space: nowrap;
-  
+
   font-size: 15px;
 }
 .app-container .content-container .side-menu .navbar-nav li a .icon {
@@ -607,9 +621,14 @@ a:hover {
 .app-container .content-container .side-menu:hover .navbar-nav li a .title {
   width: 192px;
   display: inline-block; }
-.app-container .content-container .side-menu:hover .navbar-nav li.dropdown > a:after {
+.app-container .content-container .side-menu:hover .navbar-nav li.dropdown > a[aria-expanded="false"]:after {
   font-family: Voyager;
   content: "\e038";
+  position: absolute;
+  right: 1em; }
+.app-container .content-container .side-menu:hover .navbar-nav li.dropdown > a[aria-expanded="true"]:after {
+  font-family: Voyager;
+  content: "\e047";
   position: absolute;
   right: 1em; }
 .app-container .content-container .side-menu:hover .panel-collapse.in {
@@ -1579,7 +1598,7 @@ table.dataTable.no-footer{
   padding-top:    20px;
   padding-bottom: 0px;
   &:last-child{
-    border-bottom:0px;  
+    border-bottom:0px;
   }
 }
 .row-dd-relationship{
@@ -1809,7 +1828,7 @@ table.dataTable.no-footer{
             flex:1;
             &:last-child{
                 border-top-right-radius: 3px;
-                border-bottom-right-radius: 3px; 
+                border-bottom-right-radius: 3px;
             }
         }
     }
@@ -2738,6 +2757,11 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     border-left: 1px solid #F9F9F9;
 }
 
+.voyager .navbar .navbar-nav > li.profile,
+.voyager .navbar.navbar-default .navbar-nav > li.provile {
+  border-left:0px;
+}
+
 .voyager .navbar .navbar-nav > li > a,
 .voyager .navbar.navbar-default .navbar-nav > li > a {
     color: #353d47;
@@ -3189,7 +3213,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     p.relationship-warn{
         text-align:center;
     }
-    
+
     .relationship_details{
         display:flex;
         &.relationshipPivot{
@@ -3282,7 +3306,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
             flex:1;
             &:last-child{
                 border-top-right-radius: 3px;
-                border-bottom-right-radius: 3px; 
+                border-bottom-right-radius: 3px;
             }
         }
     }
@@ -3314,9 +3338,9 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
             margin-bottom:5px;
             background: none;
             border: 1px solid #f1f1f1;
-        }   
+        }
     }
-    
+
 }
 
 .btn-new-relationship{
@@ -3455,7 +3479,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 }
 
 .voyager .btn.btn-success:hover {
-  
+
   opacity:1;
 }
 
@@ -4449,6 +4473,10 @@ p#the_plugin_name{
   margin-top:360px;
 }
 
+.page-content .settings{
+  padding-right:20px;
+}
+
 .page-content.col-md-12{
     padding-right:0px;
 }
@@ -4494,6 +4522,10 @@ overflow-x: hidden;
 
 .app-container .side-body, .app-container.expanded .content-container .navbar-top, .app-container .content-container .navbar-top{
   transition:all 500ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.app-container.expanded.no-animation .content-container, .app-container.expanded.no-animation{
+  transition:none;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a:hover{
@@ -4573,6 +4605,12 @@ overflow-x: hidden;
     width:20px;
     -webkit-transform: translate3d(-5px,-1px,0) rotate(45deg) scaleX(.5);
     transform: translate3d(-5px,-1px,0) rotate(45deg) scaleX(.5);
+}
+
+
+.hamburger.is-active.no-animation .hamburger-inner, .hamburger.is-active.no-animation .hamburger-inner:before, .hamburger.is-active.no-animation .hamburger-inner:after{
+  transition:none;
+  width:20px;
 }
 
 #sidebar-anchor {
@@ -4655,7 +4693,13 @@ overflow-x: hidden;
   width:250px;
   padding: 18px;
   display: none;
-  position: relative !important
+  position: relative !important;
+  visibility: hidden;
+}
+
+.navbar .dropdown.profile:hover .dropdown-menu{
+  visibility: visible;
+  display:block;
 }
 
 .navbar .dropdown.profile .dropdown-menu h5, .navbar .dropdown.profile .dropdown-menu h6{
@@ -5086,7 +5130,7 @@ float: left;
 .dd .item_actions{
   z-index:9;
   position:relative;
-  top:10px;
+  top:4px;
   right:10px;
 }
 
@@ -5103,7 +5147,7 @@ float: left;
   margin-left:10px;
 }
 
-.modal-open .select2-container{
+.modal-open .modal .select2-container{
   z-index: 999999 !important;
   width:100% !important;
 }
@@ -9119,6 +9163,9 @@ limitations under the License.
     background:    -moz-linear-gradient(to bottom, #bbb 0%, #999 100%);
     background:         linear-gradient(to bottom, #bbb 0%, #999 100%);
 }
+.menus .table>tbody>tr>td{
+  line-height:44px;
+}
 #nestable2 .dd-handle:hover { background: #bbb; }
 #nestable2 .dd-item > button:before { color: #fff; }
 @media only screen and (min-width: 700px) {
@@ -9743,3 +9790,55 @@ limitations under the License.
 
 
 /********** END MEDIA CSS **********/
+
+/********** Overriding Data Tables Icons **********/
+
+.voyager table.dataTable thead th.sorting:after, .voyager table.dataTable thead th.sorting_asc:after, .voyager table.dataTable thead th.sorting_desc:after, div.dataTables_paginate li.last a:after, div.dataTables_paginate li.next a:after, div.dataTables_paginate li.first a:before, div.dataTables_paginate li.previous a:before{
+  font-family:Voyager;
+}
+
+.voyager table.dataTable thead th.sorting:after{
+  content: 'o';
+  margin-top:3px;
+}
+
+.voyager table.dataTable thead th.sorting_asc:after{
+  content: 'p';
+  margin-top:5px;
+}
+
+.voyager table.dataTable thead th.sorting_desc:after{
+  content: 'q';
+}
+
+.voyager div.dataTables_paginate li.previous a:before{
+    content: "\e039";
+    margin-top: 3px;
+    margin-left: -3px;
+}
+
+.voyager div.dataTables_paginate li.next a:after{
+    content: "\e046";
+    margin-top: 3px;
+    margin-right: -3px;
+}
+
+/********** Add z-index to perfect-scrollbar **********/
+
+.ps.ps--active-x>.ps__scrollbar-x-rail, .ps.ps--active-y>.ps__scrollbar-y-rail {
+    z-index: 999;
+}
+
+/********** END perfect-scrollbar style **********/
+
+/********** Cropper Style **********/
+
+#cropping-image {
+  margin: 0 auto;
+}
+
+div.cropper-container img {
+  max-width: 100%; /* This rule is very important, please do not ignore this! */
+}
+
+/********** END Cropper Style **********/

@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title','View '.$dataType->display_name_singular)
+@section('page_title', __('voyager.generic.view').' '.$dataType->display_name_singular)
 
 @section('page_header')
     <h1 class="page-title">
@@ -43,6 +43,16 @@
                             @if($row->type == "image")
                                 <img class="img-responsive"
                                      src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
+                            @elseif($row->type == 'multiple_images')
+                                @if(json_decode($dataTypeContent->{$row->field}))
+                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
+                                        <img class="img-responsive"
+                                             src="{{ filter_var($file, FILTER_VALIDATE_URL) ? $file : Voyager::image($file) }}">
+                                    @endforeach
+                                @else
+                                    <img class="img-responsive"
+                                         src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
+                                @endif
                             @elseif($row->type == 'relationship')
                                  @include('voyager::formfields.relationship', ['view' => 'read', 'options' => $rowDetails])
                             @elseif($row->type == 'select_dropdown' && property_exists($rowDetails, 'options') &&
@@ -55,7 +65,7 @@
                             @elseif($row->type == 'select_multiple')
                                 @if(property_exists($rowDetails, 'relationship'))
 
-                                    @foreach($dataTypeContent->{$row->field} as $item)
+                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                                         @if($item->{$row->field . '_page_slug'})
                                         <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
                                         @else
@@ -64,7 +74,7 @@
                                     @endforeach
 
                                 @elseif(property_exists($rowDetails, 'options'))
-                                    @foreach($dataTypeContent->{$row->field} as $item)
+                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                                      {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
                                     @endforeach
                                 @endif

@@ -220,7 +220,7 @@
         @if(config('voyager.show_dev_tips'))
         <div class="alert alert-info">
             <strong>{{ __('voyager.generic.how_to_use') }}:</strong>
-            <p>{{ __('voyager.settings.usage_help') }} <code>setting('section.key')</code></p>
+            <p>{{ __('voyager.settings.usage_help') }} <code>setting('group.key')</code></p>
         </div>
         @endif
     </div>
@@ -246,7 +246,7 @@
                             @foreach($group_settings as $setting)
                             <div class="panel-heading">
                                 <h3 class="panel-title">
-                                    {{ $setting->display_name }}<code>setting('{{ $setting->key }}')</code>
+                                    {{ $setting->display_name }} @if(config('voyager.show_dev_tips'))<code>setting('{{ $setting->key }}')</code>@endif
                                 </h3>
                                 <div class="panel-actions">
                                     <a href="{{ route('voyager.settings.move_up', $setting->id) }}">
@@ -386,7 +386,7 @@
                         </select>
                     </div>
                     <div class="col-md-12">
-                        <a id="toggle_options"><i class="voyager-double-down"></i> {{ strtoupper(__('voyager.generic.options')) }}</a>
+                        <a id="toggle_options"><i class="voyager-double-down"></i> {{ mb_strtoupper(__('voyager.generic.options')) }}</a>
                         <div class="new-settings-options">
                             <label for="options">{{ __('voyager.generic.options') }}
                                 <small>{{ __('voyager.settings.help_option') }}</small>
