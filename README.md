@@ -1,6 +1,3 @@
-<p><strong>Quick Note.</strong> Laravel 5.5 just got released and we will be releasing Voyager 1.0 very soon, but in the meantime you can use Laravel 5.4 to install Voyager 0.11</p>
-<p>Want to try out the latest version with Laravel 5.5? Be sure to use <code>composer require tcg/voyager dev-master</code></p>
-<h3>1.0 coming out real soon 🎉</h3>
 <p align="center"><a href="https://the-control-group.github.io/voyager/" target="_blank"><img width="400" src="https://s3.amazonaws.com/thecontrolgroup/voyager.png"></a></p>
 
 <p align="center">
@@ -19,7 +16,7 @@ Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
 Website & Documentation: https://laravelvoyager.com
 
-Video Demo Here: https://devdojo.com/series/laravel-voyager-010/
+Video Tutorial Here: https://laravelvoyager.com/academy/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
@@ -27,13 +24,19 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 <hr>
 
-Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), made for Laravel 5.3.
+Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.4 and newer!
+
+## Installation Steps
+
+### 1. Require the Package
 
 After creating your new Laravel application you can include the Voyager package with the following command: 
 
 ```bash
 composer require tcg/voyager
 ```
+
+### 2. Add the DB Credentials & APP_URL
 
 Next make sure to create a new database and add your database credentials to your .env file:
 
@@ -50,21 +53,9 @@ You will also want to update your website URL inside of the `APP_URL` variable i
 APP_URL=http://localhost:8000
 ```
 
-Add the Voyager service provider to the `config/app.php` file in the `providers` array:
+> Only if you are on Laravel 5.4 will you need to [Add the Service Provider.](https://voyager.readme.io/docs/adding-the-service-provider)
 
-```php
-'providers' => [
-    // Laravel Framework Service Providers...
-    //...
-    
-    // Package Service Providers
-    TCG\Voyager\VoyagerServiceProvider::class,
-    // ...
-    
-    // Application Service Providers
-    // ...
-],
-```
+### 3. Run The Installer
 
 Lastly, we can install voyager. You can do this either with or without dummy data.
 The dummy data will include 1 admin account (if no users already exists), 1 demo page, 4 demo posts, 2 categories and 7 settings.
@@ -87,6 +78,8 @@ And we're all good to go!
 
 Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
 
+## Creating an Admin User
+
 If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
 
 >**email:** `admin@admin.com`   
@@ -107,4 +100,4 @@ If you did not install the dummy data and you wish to create a new admin user yo
 php artisan voyager:admin your@email.com --create
 ```
 
-And you will be prompted for the users name and password.
+And you will be prompted for the user's name and password.

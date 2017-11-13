@@ -88,8 +88,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="email">{{ __('voyager.database.icon_hint') }} <a
-                                                href="{{ '/' . config('voyager.prefix') . '/compass#fonts' }}"
-                                                href="{{ voyager_asset('fonts/icons-reference.html') }}"
+                                                href="{{ route('voyager.compass.index', [], false) }}#fonts"
                                                 target="_blank">{{ __('voyager.database.icon_hint2') }}</a></label>
                                     <input type="text" class="form-control" name="icon"
                                            placeholder="{{ __('voyager.database.icon_class') }}"
@@ -132,13 +131,13 @@
                                 <div class="col-md-3 form-group">
                                     <label for="generate_permissions">{{ __('voyager.database.generate_permissions') }}</label><br>
                                     <?php $checked = (isset($dataType->generate_permissions) && $dataType->generate_permissions == 1) ? true : (isset($generate_permissions) && $generate_permissions) ? true : false; ?>
-                                    <input type="checkbox" name="generate_permissions" class="toggleswitch"
+                                    <input type="checkbox" name="generate_permissions" class="toggleswitch" data-on="{{ __('voyager.generic.yes') }}" data-off="{{ __('voyager.generic.no') }}"
                                            @if($checked) checked @endif>
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label for="server_side">{{ __('voyager.database.server_pagination') }}</label><br>
                                     <?php $checked = (isset($dataType->server_side) && $dataType->server_side == 1) ? true : (isset($server_side) && $server_side) ? true : false; ?>
-                                    <input type="checkbox" name="server_side" class="toggleswitch"
+                                    <input type="checkbox" name="server_side" class="toggleswitch" data-on="{{ __('voyager.generic.yes') }}" data-off="{{ __('voyager.generic.no') }}"
                                            @if($checked) checked @endif>
                                 </div>
                             </div>
@@ -258,24 +257,25 @@
                                     </div>
                                 </div>
 
-                                
+
 
                             @endforeach
-                            
+
                             @if(isset($dataTypeRelationships))
                                 @foreach($dataTypeRelationships as $relationship)
                                     @include('voyager::tools.database.relationship-partial', $relationship)
                                 @endforeach
                             @endif
-                            
+
                             </div>
-                            
+
                         </div><!-- .panel-body -->
                         <div class="panel-footer">
-                             <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>Create a Relationship</span></div>
+                             <div class="btn btn-new-relationship"><i class="voyager-heart"></i> <span>
+                             {{ __('voyager.database.relationship.create') }}</span></div>
                         </div>
                     </div><!-- .panel -->
-                    
+
                     <button type="submit" class="btn pull-right btn-primary">{{ __('voyager.generic.submit') }}</button>
 
                 </form>
@@ -469,14 +469,14 @@
                     $(this).parent().parent().find('.voyager-relationship-details').slideUp();
                 }
             });
-           
+
         });
 
         function populateRowsFromTable(dropdown){
             var tbl = dropdown.data('table');
             var selected_value = dropdown.data('selected');
             if(tbl.length != 0){
-                $.get('/{{ config("voyager.prefix") }}/database/' + tbl, function(data){
+                $.get('{{ route('voyager.database.index', [], false) }}/' + tbl, function(data){
                     $(dropdown).empty();
                     for (var option in data) {
                        $('<option/>', {
@@ -486,7 +486,7 @@
                     }
 
                     if($(dropdown).find('option[value="'+selected_value+'"]').length > 0){
-                        $(dropdown).val(selected_value);   
+                        $(dropdown).val(selected_value);
                     }
                 });
             }

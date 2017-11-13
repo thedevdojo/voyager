@@ -7,7 +7,11 @@
 
 <script type="application/javascript">
     function initMap() {
-        var center = {lat: {{ config('voyager.googlemaps.center.lat') }}, lng: {{ config('voyager.googlemaps.center.lng') }}};
+        @forelse($dataTypeContent->getCoordinates() as $point)
+            var center = {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}};
+        @empty
+            var center = {lat: {{ config('voyager.googlemaps.center.lat') }}, lng: {{ config('voyager.googlemaps.center.lng') }}};
+        @endforelse
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: {{ config('voyager.googlemaps.zoom') }},
             center: center

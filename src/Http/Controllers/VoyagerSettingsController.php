@@ -84,7 +84,7 @@ class VoyagerSettingsController extends Controller
         foreach ($settings as $setting) {
             $content = $this->getContentBasedOnType($request, 'settings', (object) [
                 'type'    => $setting->type,
-                'field'   => $setting->key,
+                'field'   => str_replace('.', '_', $setting->key),
                 'details' => $setting->details,
                 'group'   => $setting->group,
             ]);
@@ -157,10 +157,10 @@ class VoyagerSettingsController extends Controller
 
     public function delete_value($id)
     {
+        $setting = Voyager::model('Setting')->find($id);
+
         // Check permission
         $this->authorize('delete', $setting);
-
-        $setting = Voyager::model('Setting')->find($id);
 
         if (isset($setting->id)) {
             // If the type is an image... Then delete it

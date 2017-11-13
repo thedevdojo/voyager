@@ -19,6 +19,9 @@ return [
         'auto_increment'         => '自增',
         'browse'                 => '浏览',
         'builder'                => '构建器',
+        'bulk_delete'            => '删除选中',
+        'bulk_delete_confirm'    => '是的, 删除这些',
+        'bulk_delete_nothing'    => '没有选择要删除的内容',
         'cancel'                 => '取消',
         'choose_type'            => '选择类型',
         'click_here'             => '点击这里',
@@ -92,7 +95,7 @@ return [
         'yes_please'             => '好的，就这样做',
     ],
     'login' => [
-        'loginin'      => '正在登录',
+        'loggingin'    => '正在登录',
         'signin_below' => '在下方登录：',
         'welcome'      => '欢迎使用 Voyager - 不可错过的 Laravel 后台管理框架',
     ],
@@ -345,18 +348,18 @@ return [
         'validation_errors' => '验证错误',
     ],
     'analytics' => [
-        'by_pageview'             => 'By pageview',
-        'by_sessions'             => 'By sessions',
-        'by_users'                => 'By users',
-        'no_client_id'            => 'To view analytics you\'ll need to get a google analytics client id and '.
+        'by_pageview'  => 'By pageview',
+        'by_sessions'  => 'By sessions',
+        'by_users'     => 'By users',
+        'no_client_id' => 'To view analytics you\'ll need to get a google analytics client id and '.
                                      'add it to your settings for the key <code>google_analytics_client_id'.
                                      '</code>. Get your key in your Google developer console:',
-        'set_view'                => 'Select a View',
-        'this_vs_last_week'       => 'This Week vs Last Week',
-        'this_vs_last_year'       => 'This Year vs Last Year',
-        'top_browsers'            => 'Top Browsers',
-        'top_countries'           => 'Top Countries',
-        'various_visualizations'  => 'Various visualizations',
+        'set_view'               => 'Select a View',
+        'this_vs_last_week'      => 'This Week vs Last Week',
+        'this_vs_last_year'      => 'This Year vs Last Year',
+        'top_browsers'           => 'Top Browsers',
+        'top_countries'          => 'Top Countries',
+        'various_visualizations' => 'Various visualizations',
     ],
     'error' => [
         'symlink_created_text'   => '我们刚刚为您创建了缺失的软连接。',

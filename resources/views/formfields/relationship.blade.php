@@ -2,7 +2,7 @@
 	
 	@if(class_exists($options->model))
 
-		@php $relationshipField = @$options->column @endphp
+		@php $relationshipField = $row->field; @endphp
 
 		@if($options->type == 'belongsTo')
 
@@ -22,13 +22,13 @@
 
 			@else
 			
-				<select class="form-control select2" name="{{ $relationshipField }}">
+				<select class="form-control select2" name="{{ $options->column }}">
 					@php 
 						$model = app($options->model);
 	            		$query = $model::all();
 	            	@endphp
 					@foreach($query as $relationshipData)
-						<option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$relationshipField} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
+						<option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$options->column} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
 					@endforeach
 				</select>
 
@@ -139,7 +139,7 @@
 				<select class="form-control select2" name="{{ $relationshipField }}[]" multiple>
 					
 			            @php 
-			            	$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model)->pluck($options->key)->all() : array();
+					$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->key)->all() : array();
 			                $relationshipOptions = app($options->model)->all();
 			            @endphp
 

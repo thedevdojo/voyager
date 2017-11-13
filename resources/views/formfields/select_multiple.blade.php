@@ -2,12 +2,14 @@
 @if(isset($options->relationship) && !method_exists( $dataType->model_name, camel_case($row->field) ) )
     <p class="label label-warning"><i class="voyager-warning"></i> {{ __('voyager.form.field_select_dd_relationship', ['method' => camel_case($row->field).'()', 'class' => $dataType->model_name]) }}</p>
 @endif
-
-<select class="form-control select2" name="{{ $row->field }}[]" multiple>
+@php
+$dataTypeContent->{$row->field} = json_decode($dataTypeContent->{$row->field})
+@endphp
+<select class="form-control select2"  data-name="{{ $row->display_name }}" name="{{ $row->field }}[]" multiple>
     @if(isset($options->relationship))
         {{-- Check that the relationship method exists --}}
         @if( method_exists( $dataType->model_name, camel_case($row->field) ) )
-            <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{camel_case($row->field)}()->pluck($options->relationship->key)->all() : array(); ?>
+            <?php $selected_values = isset($dataTypeContent) ? $dataTypeContent->{camel_case($row->field)}()->pluck($options->relationship->key)->all() : []; ?>
             <?php
             $relationshipListMethod = camel_case($row->field) . 'List';
             if (isset($dataTypeContent) && method_exists($dataTypeContent, $relationshipListMethod)) {
