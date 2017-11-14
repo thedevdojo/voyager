@@ -356,7 +356,7 @@ return [
         ],
     ],
     'theme' => [
-        'footer_copyright'  => 'Gemaakt met <i class="voyager-heart"></i> by',
+        'footer_copyright'  => 'Gemaakt met <i class="voyager-heart"></i> door',
         'footer_copyright2' => 'Gemaakt met rum en nog meer rum',
     ],
     'json' => [
