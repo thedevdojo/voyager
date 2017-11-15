@@ -14,7 +14,8 @@
         @endforelse
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: {{ config('voyager.googlemaps.zoom') }},
-            center: center
+            center: center,
+            scrollwheel: {{ config('voyager.googlemaps.scrollwheel') }}
         });
         var markers = [];
         @foreach($dataTypeContent->getCoordinates() as $point)
