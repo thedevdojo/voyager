@@ -37,6 +37,30 @@
                             </p>
                         </td>
 
+                        <td>
+                            <div class="bread_actions">
+                            @if($table->dataTypeId)
+                                <a href="{{ route('voyager.' . $table->slug . '.index') }}"
+                                   class="btn-sm btn-warning browse_bread">
+                                    <i class="voyager-plus"></i> {{ __('voyager.database.browse_bread') }}
+                                </a>
+                                <a href="{{ route('voyager.database.bread.edit', $table->name) }}"
+                                   class="btn-sm btn-default edit">
+                                   {{ __('voyager.database.edit_bread') }}
+                                </a>
+                                <div data-id="{{ $table->dataTypeId }}" data-name="{{ $table->name }}"
+                                     class="btn-sm btn-danger delete" style="display:inline">
+                                     {{ __('voyager.database.delete_bread') }}
+                                </div>
+                            @else
+                                <a href="{{ route('voyager.database.bread.create', ['name' => $table->name]) }}"
+                                   class="btn-sm btn-default">
+                                    <i class="voyager-plus"></i> {{ __('voyager.database.add_bread') }}
+                                </a>
+                            @endif
+                            </div>
+                        </td>
+
                         <td class="actions">
                             <a class="btn btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
                                data-table="{{ $table->name }}" style="display:inline; cursor:pointer;">
@@ -168,7 +192,7 @@
             $('td.actions').on('click', '.delete_table', function (e) {
                 table = $(this).data('table');
                 if ($(this).hasClass('remove-bread-warning')) {
-                    toastr.warning("Please make sure to remove the BREAD on this table before deleting the table.");
+                    toastr.warning('{{ __('voyager.database.delete_bread_before_table') }}');
                 } else {
                     $('#delete_table_name').text(table);
                     $('#delete_table_form')[0].action = $('#delete_table_form')[0].action.replace('__database', table);
