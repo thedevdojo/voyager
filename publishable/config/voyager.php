@@ -217,6 +217,7 @@ return [
              'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
          ],
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
+         'scrollwheel' => env('GOOGLE_MAPS_DEFAULT_SCROLLWHEEL', true),
      ],
 
 ];
