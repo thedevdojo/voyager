@@ -423,7 +423,7 @@ class VoyagerBreadController extends Controller
     public function deleteBreadImages($data, $rows)
     {
         foreach ($rows as $row) {
-            if($data->{$row->field} != "users/default.png") {
+            if ($data->{$row->field} != "users/default.png") {
                 $this->deleteFileIfExists($data->{$row->field});
             }
 
