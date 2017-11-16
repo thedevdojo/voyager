@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" {!! isRtl() ? 'dir="rtl"' : '' !!}>
 <head>
     <title>@yield('page_title', setting('admin.title') . " - " . setting('admin.description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,11 @@
 
 
     <!-- App CSS -->
-    <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
+    @if(isRtl())
+        <link rel="stylesheet" href="{{ voyager_asset('css/app.rtl.css') }}">
+    @else
+        <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
+    @endif
 
     @yield('css')
 
