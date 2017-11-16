@@ -24,6 +24,6 @@ if (!function_exists('voyager_asset')) {
 if (!function_exists('isRtl')) {
     function isRtl()
     {
-        return app()->getLocale() == 'fa' || app()->getLocale() == 'ar';
+        return config('voyager.panel_direction', 'ltr') == 'rtl';
     }
 }
