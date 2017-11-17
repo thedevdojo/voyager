@@ -195,7 +195,9 @@
                             </div>
                             <div class="pull-right">
                                 {{ $dataTypeContent->appends([
-                                    's' => $search,
+                                    's' => $search->value,
+                                    'key'=>$search->key,
+                                    'filter'=>$search->filter,
                                     'order_by' => $orderBy,
                                     'sort_order' => $sortOrder
                                 ])->links() }}
