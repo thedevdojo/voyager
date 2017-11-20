@@ -22,7 +22,6 @@
     "ace-builds": "^1.2.6",
     "animate.css": "^3.5.2",
     "bootstrap": "^3.3.7",
-    "bootstrap-datetimepicker": "0.0.7",
     "bootstrap-switch": "^3.3.4",
     "bootstrap-toggle": "^2.2.2",
     "brace": "^0.10.0",
