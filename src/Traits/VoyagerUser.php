@@ -60,7 +60,7 @@ trait VoyagerUser
     }
 
     /**
-     * Set default User Role
+     * Set default User Role.
      *
      * @param string $name The role name to associate.
      */
