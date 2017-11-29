@@ -11,7 +11,8 @@ class Role extends Model
 
     public function users()
     {
-        return $this->belongsToMany(Voyager::modelClass('User'), 'user_roles');
+        return $this->hasMany(Voyager::modelClass('User'))->get()
+                    ->merge($this->belongsToMany(Voyager::modelClass('User'), 'user_roles')->get());
     }
 
     public function permissions()

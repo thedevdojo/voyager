@@ -11,27 +11,59 @@ use TCG\Voyager\Models\Role;
  */
 trait VoyagerUser
 {
+    protected $cache_permissions = [];
+
+    /**
+     * Return default User Role.
+     */
     public function role()
     {
         return $this->belongsTo(Voyager::modelClass('Role'));
     }
 
     /**
+     * Return alternative User Roles.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Voyager::modelClass('Role'), 'user_roles');
+    }
+
+    /**
+     * Return all User Roles, merging the default and alternative roles.
+     */
+    public function roles_all()
+    {
+        $this->loadRolesRelations();
+
+        return collect([$this->role])->merge($this->roles);
+    }
+
+    /**
      * Check if User has a Role(s) associated.
      *
-     * @param string|array $name The role to check.
+     * @param string|array $name The role(s) to check.
      *
      * @return bool
      */
     public function hasRole($name)
     {
-        if (!$this->relationLoaded('role')) {
-            $this->load('role');
+        $roles = $this->roles_all()->pluck('name')->toArray();
+
+        foreach ((is_array($name) ? $name : [$name]) as $role) {
+            if (in_array($role, $roles)) {
+                return true;
+            }
         }
 
-        return in_array($this->role->name, (is_array($name) ? $name : [$name]));
+        return false;
     }
 
+    /**
+     * Set default User Role
+     *
+     * @param string $name The role name to associate.
+     */
     public function setRole($name)
     {
         $role = Voyager::model('Role')->where('name', '=', $name)->first();
@@ -46,15 +78,9 @@ trait VoyagerUser
 
     public function hasPermission($name)
     {
-        if (!$this->relationLoaded('role')) {
-            $this->load('role');
-        }
+        $this->loadPermissionsCache();
 
-        if (!$this->role->relationLoaded('permissions')) {
-            $this->role->load('permissions');
-        }
-
-        return in_array($name, $this->role->permissions->pluck('key')->toArray());
+        return in_array($name, $this->cache_permissions);
     }
 
     public function hasPermissionOrFail($name)
@@ -73,5 +99,40 @@ trait VoyagerUser
         }
 
         return true;
+    }
+
+    private function loadRolesRelations()
+    {
+        if (!$this->relationLoaded('role')) {
+            $this->load('role');
+        }
+
+        if (!$this->relationLoaded('roles')) {
+            $this->load('roles');
+        }
+    }
+
+    private function loadPermissionsRelations()
+    {
+        $this->loadRolesRelations();
+
+        if (!$this->role->relationLoaded('permissions')) {
+            $this->role->load('permissions');
+        }
+
+        if (!$this->relationLoaded('roles.permissions')) {
+            $this->load('roles.permissions');
+        }
+    }
+
+    private function loadPermissionsCache()
+    {
+        $this->loadPermissionsRelations();
+
+        if (empty($this->cache_permissions)) {
+            $this->cache_permissions = $this->roles_all()
+                                            ->pluck('permissions')->flatten()
+                                            ->pluck('key')->unique()->toArray();
+        }
     }
 }
