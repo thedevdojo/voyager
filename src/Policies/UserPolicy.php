@@ -48,6 +48,9 @@ class UserPolicy extends BasePolicy
      */
     public function editRoles(User $user, $model)
     {
-        return $user->hasPermission('edit_users');
+        // Does this record belong to another user?
+        $another = $user->id != $model->id;
+
+        return $another && $user->hasPermission('edit_users');
     }
 }

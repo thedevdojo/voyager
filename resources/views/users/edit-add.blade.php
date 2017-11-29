@@ -104,35 +104,38 @@
                                 <input type="password" class="form-control" id="password" name="password" value="">
                             </div>
 
-                            <div class="form-group">
-                                <label for="avatar">{{ __('voyager.profile.avatar') }}</label>
-                                @if(isset($dataTypeContent->avatar))
-                                    <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Voyager::image( $dataTypeContent->avatar ) }}" style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
-                                @endif
-                                <input type="file" data-name="avatar" name="avatar">
-                            </div>
+                            @can('editRoles', $dataTypeContent)
+                                <div class="form-group">
+                                    <label for="name">{{ __('voyager.profile.role_default') }}</label>
+                                    @php
+                                        $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+
+                                        $row     = $dataTypeRows->where('field', 'user_belongsto_role_relationship')->first();
+                                        $options = json_decode($row->details);
+                                    @endphp
+                                    @include('voyager::formfields.relationship')
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">{{ __('voyager.generic.roles_additional') }}</label>
+                                    @php
+                                        $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();
+                                        $options = json_decode($row->details);
+                                    @endphp
+                                    @include('voyager::formfields.relationship')
+                                </div>
+                            @endcan
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="panel panel panel-bordered panel-warning">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon voyager-lock"></i> Roles</h3>
-                        </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.profile.role_default') }}</label>
-                                @php
-                                    $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
-                                    $row = $dataTypeRows->where('field', 'user_belongsto_role_relationship')->first();
-
-                                    $options = json_decode($row->details);
-                                @endphp
-                                @include('voyager::formfields.relationship')
-                            </div>
-                            <div class="form-group">
-                                <label for="name">{{ __('voyager.generic.roles_additional') }}</label>
+                                @if(isset($dataTypeContent->avatar))
+                                    <img src="{{ filter_var($dataTypeContent->avatar, FILTER_VALIDATE_URL) ? $dataTypeContent->avatar : Voyager::image( $dataTypeContent->avatar ) }}" style="width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:10px;" />
+                                @endif
+                                <input type="file" data-name="avatar" name="avatar">
                             </div>
                         </div>
                     </div>
