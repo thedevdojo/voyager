@@ -11,8 +11,6 @@ use TCG\Voyager\Models\Role;
  */
 trait VoyagerUser
 {
-    protected $cache_permissions = [];
-
     /**
      * Return default User Role.
      */
@@ -78,9 +76,13 @@ trait VoyagerUser
 
     public function hasPermission($name)
     {
-        $this->loadPermissionsCache();
+        $this->loadPermissionsRelations();
 
-        return in_array($name, $this->cache_permissions);
+        $_permissions = $this->roles_all()
+                              ->pluck('permissions')->flatten()
+                              ->pluck('key')->unique()->toArray();
+
+        return in_array($name, $_permissions);
     }
 
     public function hasPermissionOrFail($name)
@@ -122,17 +124,6 @@ trait VoyagerUser
 
         if (!$this->relationLoaded('roles.permissions')) {
             $this->load('roles.permissions');
-        }
-    }
-
-    private function loadPermissionsCache()
-    {
-        $this->loadPermissionsRelations();
-
-        if (empty($this->cache_permissions)) {
-            $this->cache_permissions = $this->roles_all()
-                                            ->pluck('permissions')->flatten()
-                                            ->pluck('key')->unique()->toArray();
         }
     }
 }
