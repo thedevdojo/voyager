@@ -9,19 +9,14 @@ class Role extends Model
 {
     protected $guarded = [];
 
-    public function usersDefault()
-    {
-        return $this->hasMany(Voyager::modelClass('User'))->select('*');
-    }
-
-    public function usersAlternative()
-    {
-        return $this->belongsToMany(Voyager::modelClass('User'), 'user_roles')->select('users.*');
-    }
-
     public function users()
     {
-        return $this->usersDefault()->union($this->usersAlternative()->toBase());
+        return $this->hasMany(Voyager::modelClass('User'))->select('*')->getQuery()
+                    ->union(
+                        $this->belongsToMany(Voyager::modelClass('User'), 'user_roles')
+                             ->select(Voyager::model('User')->getTable().'.*')
+                             ->getQuery()
+                    );
     }
 
     public function permissions()
