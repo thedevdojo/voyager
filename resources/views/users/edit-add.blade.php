@@ -72,7 +72,7 @@
                                     @include('voyager::formfields.relationship')
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">{{ __('voyager.generic.roles_additional') }}</label>
+                                    <label for="name">{{ __('voyager.profile.roles_additional') }}</label>
                                     @php
                                         $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();
                                         $options = json_decode($row->details);
