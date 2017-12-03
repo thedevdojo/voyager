@@ -7,8 +7,6 @@ class CreateMenuTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -26,7 +24,7 @@ class CreateMenuTable extends Migration
             $table->string('target')->default('_self');
             $table->string('icon_class')->nullable();
             $table->string('color')->nullable();
-            $table->integer('parent_id')->nullable();
+            $table->unsignedInteger('parent_id')->nullable();
             $table->integer('order');
             $table->timestamps();
         });
@@ -38,8 +36,6 @@ class CreateMenuTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
