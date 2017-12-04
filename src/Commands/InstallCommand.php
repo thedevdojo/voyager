@@ -101,7 +101,7 @@ class InstallCommand extends Command
         if (false === strpos($routes_contents, 'Voyager::routes()')) {
             $filesystem->append(
                 base_path('routes/web.php'),
-                "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
+                "\n\nVoyager::routes();\n\n"
             );
         }
 
