@@ -8,15 +8,13 @@ class CreatePagesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         // Create table for storing roles
         Schema::create('pages', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('author_id');
+            $table->unsignedInteger('author_id');
             $table->string('title');
             $table->text('excerpt')->nullable();
             $table->text('body')->nullable();
@@ -31,8 +29,6 @@ class CreatePagesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

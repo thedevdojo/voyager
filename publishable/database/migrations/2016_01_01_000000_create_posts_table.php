@@ -7,16 +7,14 @@ class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
         // Create table for storing roles
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('author_id');
-            $table->integer('category_id')->nullable();
+            $table->unsignedInteger('author_id');
+            $table->unsignedInteger('category_id')->nullable();
             $table->string('title');
             $table->string('seo_title')->nullable();
             $table->text('excerpt');
@@ -35,8 +33,6 @@ class CreatePostsTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {
