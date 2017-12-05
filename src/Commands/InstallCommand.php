@@ -122,8 +122,7 @@ class InstallCommand extends Command
             base_path('routes/web.php'),
             "\n\nVoyager::routes();\n\n"
         );
-
-
+        
         \Route::group(['prefix' => 'admin'], function () {
             \Voyager::routes();
         });
