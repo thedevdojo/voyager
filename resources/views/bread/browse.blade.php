@@ -53,7 +53,9 @@
                             <table id="dataTable" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                        @can('delete',app($dataType->model_name))
+                                            <th></th>
+                                        @endcan
                                         @foreach($dataType->browseRows as $row)
                                         <th>
                                             @if ($isServerSide)
@@ -78,9 +80,11 @@
                                 <tbody>
                                     @foreach($dataTypeContent as $data)
                                     <tr>
-                                        <td>
-                                            <input type="checkbox" name="row_id" id="checkbox_{{ $data->id }}" value="{{ $data->id }}">
-                                        </td>
+                                        @can('delete',app($dataType->model_name))
+                                            <td>
+                                                <input type="checkbox" name="row_id" id="checkbox_{{ $data->id }}" value="{{ $data->id }}">
+                                            </td>
+                                        @endcan
                                         @foreach($dataType->browseRows as $row)
                                             <td>
                                                 <?php $options = json_decode($row->details); ?>
