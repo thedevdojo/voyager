@@ -32,18 +32,18 @@
             addTimestamps() {
                 this.addColumn(this.makeColumn({
                     name: 'created_at',
-                    type: getDbType('timestamp')
+                    type: getDbType('datetime')
                 }));
 
                 this.addColumn(this.makeColumn({
                     name: 'updated_at',
-                    type: getDbType('timestamp')
+                    type: getDbType('datetime')
                 }));
             },
             addSoftDeletes() {
                 this.addColumn(this.makeColumn({
                     name: 'deleted_at',
-                    type: getDbType('timestamp')
+                    type: getDbType('datetime')
                 }));
             }
         }
