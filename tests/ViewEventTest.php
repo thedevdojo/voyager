@@ -38,7 +38,7 @@ class ViewEventTest extends TestCase
             $this->eventTrigered = true;
 
             $this->assertEquals('test', $name);
-            $this->assertTrue(isset($parameters['foo']));
+            $this->assertArrayHasKey('foo', $parameters);
             $this->assertEquals('bar', $parameters['foo']);
         });
 
