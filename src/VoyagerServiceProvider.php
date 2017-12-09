@@ -270,7 +270,15 @@ class VoyagerServiceProvider extends ServiceProvider
         // otherwise it will throw an error because no database
         // connection has been made yet.
         try {
-            if (Schema::hasTable('data_types')) {
+            $voyagerDBConn = config('voyager.database.connection');
+
+            if (empty($voyagerDBConn)) {
+                $hasDataTypeTable = Schema::hasTable('data_types');
+            } else {
+                $hasDataTypeTable = Schema::connection($voyagerDBConn)->hasTable('data_types');
+            }
+
+            if ($hasDataTypeTable) {
                 $dataType = VoyagerFacade::model('DataType');
                 $dataTypes = $dataType->get();
 
@@ -283,7 +291,6 @@ class VoyagerServiceProvider extends ServiceProvider
 
                     $this->policies[$dataType->model_name] = $policyClass;
                 }
-
                 $this->registerPolicies();
             }
         } catch (\PDOException $e) {
