@@ -1,5 +1,5 @@
 <?php
-//added
+
 namespace TCG\Voyager\FormFields;
 
 class TimeHandler extends AbstractHandler
