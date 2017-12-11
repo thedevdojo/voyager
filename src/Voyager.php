@@ -54,6 +54,9 @@ class Voyager
         return $this->models[$name];
     }
 
+    /**
+     * @deprecated deprecated since version 1.1
+     */
     public function useModel($name, $object)
     {
         if (is_string($object)) {

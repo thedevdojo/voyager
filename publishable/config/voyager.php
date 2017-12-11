@@ -29,20 +29,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Policies config
-    |--------------------------------------------------------------------------
-    |
-    | Here you can specify policies for certain models
-    |
-    */
-
-    'policies' => [
-        TCG\Voyager\Models\Setting::class  => TCG\Voyager\Policies\SettingPolicy::class,
-        TCG\Voyager\Models\MenuItem::class => TCG\Voyager\Policies\MenuItemPolicy::class,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | User config
     |--------------------------------------------------------------------------
     |

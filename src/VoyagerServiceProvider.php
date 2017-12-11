@@ -20,6 +20,8 @@ use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Policies\BasePolicy;
+use TCG\Voyager\Policies\MenuItemPolicy;
+use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
@@ -80,8 +82,6 @@ class VoyagerServiceProvider extends ServiceProvider
                 }
             });
         }
-
-        $this->policies = config('voyager.policies');
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
@@ -256,6 +256,12 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function registerGates()
     {
+        // Map policies that doesn't have BREAD
+        $this->policies = [
+            VoyagerFacade::modelClass('Setting')  => SettingPolicy::class,
+            VoyagerFacade::modelClass('MenuItem') => MenuItemPolicy::class,
+        ];
+
         // This try catch is necessary for the Package Auto-discovery
         // otherwise it will throw an error because no database
         // connection has been made yet.
