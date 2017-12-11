@@ -410,7 +410,9 @@ class VoyagerBaseController extends Controller
     public function deleteBreadImages($data, $rows)
     {
         foreach ($rows as $row) {
-            $this->deleteFileIfExists($data->{$row->field});
+            if ($data->{$row->field} != config('voyager.user.default_avatar')) {
+                $this->deleteFileIfExists($data->{$row->field});
+            }
 
             $options = json_decode($row->details);
 
