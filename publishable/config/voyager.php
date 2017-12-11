@@ -1,6 +1,46 @@
 <?php
 
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Factory config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify what classes should be returned when using e.g Voyager::model('Category')
+    |
+    */
+
+    'factory' => [
+        'models' => [
+            'Category'   => TCG\Voyager\Models\Category::class,
+            'DataRow'    => TCG\Voyager\Models\DataRow::class,
+            'DataType'   => TCG\Voyager\Models\DataType::class,
+            'Menu'       => TCG\Voyager\Models\Menu::class,
+            'MenuItem'   => TCG\Voyager\Models\MenuItem::class,
+            'Page'       => TCG\Voyager\Models\Page::class,
+            'Permission' => TCG\Voyager\Models\Permission::class,
+            'Post'       => TCG\Voyager\Models\Post::class,
+            'Role'       => TCG\Voyager\Models\Role::class,
+            'Setting'    => TCG\Voyager\Models\Setting::class,
+            'User'       => TCG\Voyager\Models\User::class,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Policies config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify policies for certain models
+    |
+    */
+
+    'policies' => [
+        TCG\Voyager\Models\Setting::class  => TCG\Voyager\Policies\SettingPolicy::class,
+        TCG\Voyager\Models\MenuItem::class => TCG\Voyager\Policies\MenuItemPolicy::class,
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | User config

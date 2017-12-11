@@ -11,17 +11,6 @@ use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
 use TCG\Voyager\FormFields\HandlerInterface;
-use TCG\Voyager\Models\Category;
-use TCG\Voyager\Models\DataRow;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\MenuItem;
-use TCG\Voyager\Models\Page;
-use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Models\Post;
-use TCG\Voyager\Models\Role;
-use TCG\Voyager\Models\Setting;
-use TCG\Voyager\Models\User;
 use TCG\Voyager\Traits\Translatable;
 
 class Voyager
@@ -42,25 +31,15 @@ class Voyager
 
     protected $viewLoadingEvents = [];
 
-    protected $models = [
-        'Category'   => Category::class,
-        'DataRow'    => DataRow::class,
-        'DataType'   => DataType::class,
-        'Menu'       => Menu::class,
-        'MenuItem'   => MenuItem::class,
-        'Page'       => Page::class,
-        'Permission' => Permission::class,
-        'Post'       => Post::class,
-        'Role'       => Role::class,
-        'Setting'    => Setting::class,
-        'User'       => User::class,
-    ];
+    protected $models = [];
 
     public $setting_cache = null;
 
     public function __construct()
     {
         $this->filesystem = app(Filesystem::class);
+
+        $this->models = config('voyager.factory.models');
 
         $this->findVersion();
     }
