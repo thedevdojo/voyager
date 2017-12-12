@@ -10,7 +10,7 @@ if (!function_exists('setting')) {
 if (!function_exists('menu')) {
     function menu($menuName, $type = null, array $options = [])
     {
-        return TCG\Voyager\Models\Menu::display($menuName, $type, $options);
+        return TCG\Voyager\Facades\Voyager::model('Menu')::display($menuName, $type, $options);
     }
 }
 
