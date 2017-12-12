@@ -97,8 +97,8 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (app()->version() >= 5.4) {
             $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
-            $this->loadTranslationsFrom(realpath(__DIR__ . '../publishable/lang'), 'voyager');
-            $this->loadMigrationsFrom(realpath(__DIR__ . '../publishable/database/migrations'));
+            $this->loadTranslationsFrom(realpath(__DIR__.'../publishable/lang'), 'voyager');
+            $this->loadMigrationsFrom(realpath(__DIR__.'../publishable/database/migrations'));
         } else {
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
         }
