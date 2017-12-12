@@ -95,14 +95,11 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
-        if (app()->version() >= 5.4) {
-            $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
+        $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
+        $this->loadMigrationsFrom(realpath(__DIR__.'/../publishable/database/migrations'));
 
-            if (config('app.env') == 'testing') {
-                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
-            }
-        } else {
-            $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        if (config('app.env') == 'testing') {
+            $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
         }
 
         $this->registerGates();
@@ -234,9 +231,6 @@ class VoyagerServiceProvider extends ServiceProvider
         $publishable = [
             'voyager_assets' => [
                 "{$publishablePath}/assets/" => public_path(config('voyager.assets_path')),
-            ],
-            'migrations' => [
-                "{$publishablePath}/database/migrations/" => database_path('migrations'),
             ],
             'seeds' => [
                 "{$publishablePath}/database/seeds/" => database_path('seeds'),
