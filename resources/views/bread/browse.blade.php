@@ -90,6 +90,13 @@
                                                 <?php $options = json_decode($row->details); ?>
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
+                                                @elseif($row->type == 'multiple_images')                                                    
+                                                    @if(json_decode($data->{$row->field}))
+                                                        <?php $images = json_decode($data->{$row->field}); ?>
+                                                        @foreach($images as $img)
+                                                            <img src="@if( !filter_var($img, FILTER_VALIDATE_URL)){{ Voyager::image($img) }}@else{{ $img }}@endif" style="width:100px">
+                                                        @endforeach
+                                                    @endif
                                                 @elseif($row->type == 'relationship')
                                                     @include('voyager::formfields.relationship', ['view' => 'browse'])
                                                 @elseif($row->type == 'select_multiple')
