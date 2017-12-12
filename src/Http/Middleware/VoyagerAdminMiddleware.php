@@ -18,7 +18,7 @@ class VoyagerAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (! Auth::guest()) {
+        if (!Auth::guest()) {
             auth()->user()->hasPermission('browse_admin') ? $next($request) : redirect('/');
         }
 

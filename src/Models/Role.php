@@ -20,7 +20,7 @@ class Role extends Model
         return $this->belongsToMany(Voyager::modelClass('Permission'));
     }
 
-    public static function getRelationship(int $id)
+    public static function getRelationship($id)
     {
         if (! isset(self::$relationships[$id])) {
             self::$relationships[$id] = self::find($id);
