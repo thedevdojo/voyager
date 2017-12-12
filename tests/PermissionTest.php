@@ -20,9 +20,9 @@ class PermissionTest extends TestCase
 
     public function testPermissionNotExisting()
     {
-        // This behavior should maybe be changed in v1.0 to throw a exception
-
-        $this->assertTrue(Voyager::can('test'));
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Permission does not exist');
+        Voyager::can('test');
     }
 
     public function testNotHavingPermission()
