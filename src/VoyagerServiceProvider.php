@@ -97,10 +97,8 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (app()->version() >= 5.4) {
             $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
-
-            if (config('app.env') == 'testing') {
-                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
-            }
+            $this->loadTranslationsFrom(realpath(__DIR__ . '../publishable/lang'), 'voyager');
+            $this->loadMigrationsFrom(realpath(__DIR__ . '../publishable/database/migrations'));
         } else {
             $router->middleware('admin.user', VoyagerAdminMiddleware::class);
         }
@@ -159,9 +157,9 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->fixMissingStorageSymlink();
         } elseif (!file_exists(public_path('storage')) && $storage_disk == 'public') {
             $alert = (new Alert('missing-storage-symlink', 'warning'))
-                ->title(__('voyager.error.symlink_missing_title'))
-                ->text(__('voyager.error.symlink_missing_text'))
-                ->button(__('voyager.error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
+                ->title(__('voyager::error.symlink_missing_title'))
+                ->text(__('voyager::error.symlink_missing_text'))
+                ->button(__('voyager::error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
 
             VoyagerFacade::addAlert($alert);
         }
@@ -173,12 +171,12 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (file_exists(public_path('storage'))) {
             $alert = (new Alert('fixed-missing-storage-symlink', 'success'))
-                ->title(__('voyager.error.symlink_created_title'))
-                ->text(__('voyager.error.symlink_created_text'));
+                ->title(__('voyager::error.symlink_created_title'))
+                ->text(__('voyager::error.symlink_created_text'));
         } else {
             $alert = (new Alert('failed-fixing-missing-storage-symlink', 'danger'))
-                ->title(__('voyager.error.symlink_failed_title'))
-                ->text(__('voyager.error.symlink_failed_text'));
+                ->title(__('voyager::error.symlink_failed_title'))
+                ->text(__('voyager::error.symlink_failed_text'));
         }
 
         VoyagerFacade::addAlert($alert);
@@ -248,7 +246,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
             'lang' => [
-                "{$publishablePath}/lang/" => base_path('resources/lang/'),
+                "{$publishablePath}/lang/" => resource_path('lang/vendor/voyager'),
             ],
         ];
 

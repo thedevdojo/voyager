@@ -1,0 +1,11 @@
+<?php
+
+return [
+    'avatar'        => 'Avatar',
+    'edit'          => 'Edit My Profile',
+    'edit_user'     => 'Edit User',
+    'password'      => 'Password',
+    'password_hint' => 'Leave empty to keep the same',
+    'role'          => 'Role',
+    'user_role'     => 'User Role',
+];

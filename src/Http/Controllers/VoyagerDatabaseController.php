@@ -102,7 +102,7 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                ->route('voyager.database.index')
-               ->with($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table->name])));
+               ->with($this->alertSuccess(__('voyager::database.success_create_table', ['table' => $table->name])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e))->withInput();
         }
@@ -122,7 +122,7 @@ class VoyagerDatabaseController extends Controller
         if (!SchemaManager::tableExists($table)) {
             return redirect()
                 ->route('voyager.database.index')
-                ->with($this->alertError(__('voyager.database.edit_table_not_exist')));
+                ->with($this->alertError(__('voyager::database.edit_table_not_exist')));
         }
 
         $db = $this->prepareDbManager('update', $table);
@@ -154,7 +154,7 @@ class VoyagerDatabaseController extends Controller
 
         return redirect()
                ->route('voyager.database.index')
-               ->with($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table['name']])));
+               ->with($this->alertSuccess(__('voyager::database.success_create_table', ['table' => $table['name']])));
     }
 
     protected function prepareDbManager($action, $table = '')
@@ -245,7 +245,7 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                 ->route('voyager.database.index')
-                ->with($this->alertSuccess(__('voyager.database.success_delete_table', ['table' => $table])));
+                ->with($this->alertSuccess(__('voyager::database.success_delete_table', ['table' => $table])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e));
         }
@@ -296,8 +296,8 @@ class VoyagerDatabaseController extends Controller
             $dataType = Voyager::model('DataType');
             $res = $dataType->updateDataType($request->all(), true);
             $data = $res
-                ? $this->alertSuccess(__('voyager.database.success_created_bread'))
-                : $this->alertError(__('voyager.database.error_creating_bread'));
+                ? $this->alertSuccess(__('voyager::database.success_created_bread'))
+                : $this->alertError(__('voyager::database.error_creating_bread'));
             if ($res) {
                 event(new BreadAdded($dataType, $data));
             }
@@ -338,8 +338,8 @@ class VoyagerDatabaseController extends Controller
 
             $res = $dataType->updateDataType($request->all(), true);
             $data = $res
-                ? $this->alertSuccess(__('voyager.database.success_update_bread', ['datatype' => $dataType->name]))
-                : $this->alertError(__('voyager.database.error_updating_bread'));
+                ? $this->alertSuccess(__('voyager::database.success_update_bread', ['datatype' => $dataType->name]))
+                : $this->alertError(__('voyager::database.error_updating_bread'));
             if ($res) {
                 event(new BreadUpdated($dataType, $data));
             }
@@ -349,7 +349,7 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()->route('voyager.database.index')->with($data);
         } catch (Exception $e) {
-            return back()->with($this->alertException($e, __('voyager.generic.update_failed')));
+            return back()->with($this->alertException($e, __('voyager::generic.update_failed')));
         }
     }
 
@@ -367,8 +367,8 @@ class VoyagerDatabaseController extends Controller
 
         $res = Voyager::model('DataType')->destroy($id);
         $data = $res
-            ? $this->alertSuccess(__('voyager.database.success_remove_bread', ['datatype' => $dataType->name]))
-            : $this->alertError(__('voyager.database.error_updating_bread'));
+            ? $this->alertSuccess(__('voyager::database.success_remove_bread', ['datatype' => $dataType->name]))
+            : $this->alertError(__('voyager::database.error_updating_bread'));
         if ($res) {
             event(new BreadDeleted($dataType, $data));
         }
