@@ -14,8 +14,7 @@
                     </li>
                 @endif
                 <?php $breadcrumb_url = url(''); ?>
-                <?php $admin_path_count = count(explode('/', config('voyager.prefix')))?>
-                @for($i = $admin_path_count + 1; $i <= count(Request::segments()); $i++)
+                @for($i = 1; $i <= count(Request::segments()); $i++)
                     <?php $breadcrumb_url .= '/' . Request::segment($i); ?>
                     @if(Request::segment($i) != ltrim(route('voyager.dashboard', [], false), '/') && !is_numeric(Request::segment($i)))
 

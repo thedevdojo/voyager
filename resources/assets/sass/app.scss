@@ -1002,9 +1002,7 @@ body.login-page .login-footer {
     max-width: 260px; } }
 
 .dataTables_wrapper .row {
-  margin-bottom: 0.5em;
-  margin-left: 0;
-  margin-right: 0; }
+  margin-bottom: 0.5em; }
 
 .dataTables_wrapper .top {
   margin-bottom: 6px;
@@ -4914,6 +4912,10 @@ float: left;
 
 .btn.btn-primary:hover{
   opacity:1;
+}
+
+.btn.btn-primary.active {
+    background: #0081CA;
 }
 
 .voyager .btn.btn-circle{

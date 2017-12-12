@@ -53,9 +53,7 @@
                             <table id="dataTable" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        @can('delete',app($dataType->model_name))
-                                            <th></th>
-                                        @endcan
+                                        <th></th>
                                         @foreach($dataType->browseRows as $row)
                                         <th>
                                             @if ($isServerSide)
@@ -80,11 +78,9 @@
                                 <tbody>
                                     @foreach($dataTypeContent as $data)
                                     <tr>
-                                        @can('delete',app($dataType->model_name))
-                                            <td>
-                                                <input type="checkbox" name="row_id" id="checkbox_{{ $data->id }}" value="{{ $data->id }}">
-                                            </td>
-                                        @endcan
+                                        <td>
+                                            <input type="checkbox" name="row_id" id="checkbox_{{ $data->id }}" value="{{ $data->id }}">
+                                        </td>
                                         @foreach($dataType->browseRows as $row)
                                             <td>
                                                 <?php $options = json_decode($row->details); ?>
@@ -199,9 +195,7 @@
                             </div>
                             <div class="pull-right">
                                 {{ $dataTypeContent->appends([
-                                    's' => $search->value,
-                                    'filter' => $search->filter,
-                                    'key' => $search->key,
+                                    's' => $search,
                                     'order_by' => $orderBy,
                                     'sort_order' => $sortOrder
                                 ])->links() }}

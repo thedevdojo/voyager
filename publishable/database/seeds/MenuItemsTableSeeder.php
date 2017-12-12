@@ -180,8 +180,7 @@ class MenuItemsTableSeeder extends Seeder
             $menuItem = MenuItem::firstOrNew([
                 'menu_id' => $menu->id,
                 'title'   => 'Compass',
-                'url'     => '',
-                'route'   => 'voyager.compass.index',
+                'url'     => route('voyager.compass.index', [], false),
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([
@@ -196,8 +195,7 @@ class MenuItemsTableSeeder extends Seeder
             $menuItem = MenuItem::firstOrNew([
                 'menu_id' => $menu->id,
                 'title'   => 'Hooks',
-                'url'     => '',
-                'route'   => 'voyager.hooks',
+                'url'     => route('voyager.hooks', [], false),
             ]);
             if (!$menuItem->exists) {
                 $menuItem->fill([

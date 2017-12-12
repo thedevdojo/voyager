@@ -305,7 +305,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        $this->authorize('add', app($dataType->model_name));
+        $this->authorize('edit', app($dataType->model_name));
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
@@ -423,9 +423,7 @@ class VoyagerBreadController extends Controller
     public function deleteBreadImages($data, $rows)
     {
         foreach ($rows as $row) {
-            if ($data->{$row->field} != config('voyager.user.default_avatar')) {
-                $this->deleteFileIfExists($data->{$row->field});
-            }
+            $this->deleteFileIfExists($data->{$row->field});
 
             $options = json_decode($row->details);
 
