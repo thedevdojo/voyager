@@ -319,7 +319,7 @@ class Voyager
         }
 
         if (!isset($this->users[$id])) {
-            $this->users[$id] = User::find($id);
+            $this->users[$id] = $this->model('User')->find($id);
         }
 
         return $this->users[$id];
