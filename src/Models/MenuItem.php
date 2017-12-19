@@ -4,6 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\Translatable;
 
 class MenuItem extends Model
@@ -22,13 +23,13 @@ class MenuItem extends Model
 
     public function children()
     {
-        return $this->hasMany('TCG\Voyager\Models\MenuItem', 'parent_id')
+        return $this->hasMany(Voyager::modelClass('MenuItem'), 'parent_id')
             ->with('children');
     }
 
     public function menu()
     {
-        return $this->belongsTo('TCG\Voyager\Models\Menu');
+        return $this->belongsTo(Voyager::modelClass('Menu'));
     }
 
     public function link($absolute = false)
