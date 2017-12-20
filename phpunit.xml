@@ -26,7 +26,7 @@
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_DEBUG" value="true"/>
-        <env name="APP_URL" value="voyager.dev"/>
+        <env name="APP_URL" value="http://localhost"/>
         <env name="APP_KEY" value="base64:M1igrxNfAWlVGyxxDholHqvVqvtPjAzCoJ+2/ILAVPw="/>
     </php>
 </phpunit>

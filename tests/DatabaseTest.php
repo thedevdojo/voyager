@@ -173,7 +173,7 @@ class DatabaseTest extends TestCase
         $newType = 'text';
         $oldType = $this->table['columns'][$column]['type']['name'];
 
-        $this->assertTrue($oldType != $newType);
+        $this->assertNotEquals($oldType, $newType);
 
         $this->table['columns'][$column]['type']['name'] = $newType;
 
