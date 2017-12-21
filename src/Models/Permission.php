@@ -10,7 +10,7 @@ class Permission extends Model
 
     public function roles()
     {
-        return $this->hasMany(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 
     public static function generateFor($table_name)
