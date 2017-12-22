@@ -161,7 +161,7 @@ class Voyager
     public function setting($key, $default = null)
     {
         if ($this->setting_cache === null) {
-            foreach (Setting::all() as $setting) {
+            foreach (self::model('Setting')::all() as $setting) {
                 $keys = explode('.', $setting->key);
                 @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
             }
@@ -304,7 +304,7 @@ class Voyager
         if (!$this->permissionsLoaded) {
             $this->permissionsLoaded = true;
 
-            $this->permissions = Permission::all();
+            $this->permissions = self::model('Permission')::all();
         }
     }
 
@@ -319,7 +319,7 @@ class Voyager
         }
 
         if (!isset($this->users[$id])) {
-            $this->users[$id] = User::find($id);
+            $this->users[$id] = self::model('User')::find($id);
         }
 
         return $this->users[$id];
