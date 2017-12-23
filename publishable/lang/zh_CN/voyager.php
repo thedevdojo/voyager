@@ -83,7 +83,7 @@ return [
         'timestamp'              => '时间戳',
         'title'                  => '标题',
         'type'                   => '类型',
-        'unsigned'               => '非负',
+        'unsigned'               => 'Unsigned',
         'unstick_sidebar'        => '取消固定侧边栏',
         'update'                 => '更新',
         'update_failed'          => '更新失败',
@@ -371,9 +371,9 @@ return [
         'footer_copyright2' => 'Made with rum and even more rum',
     ],
     'json' => [
-        'invalid'           => '无效的 JSON',
-        'invalid_message'   => '看起来您引入了一些无效的 JSON',
-        'valid'             => '有效的 JSON',
+        'invalid'           => 'JSON 无效',
+        'invalid_message'   => '看起来您引入的是一个无效的 JSON',
+        'valid'             => 'JSON 有效',
         'validation_errors' => '验证错误',
     ],
     'analytics' => [
@@ -388,7 +388,7 @@ return [
         'this_vs_last_year'      => '今年 VS 去年',
         'top_browsers'           => '使用最多的浏览器',
         'top_countries'          => '访问量最高的国家',
-        'various_visualizations' => 'Various visualizations',
+        'various_visualizations' => '复合图表',
     ],
     'error' => [
         'symlink_created_text'   => '我们刚刚为您创建了缺失的软连接。',
