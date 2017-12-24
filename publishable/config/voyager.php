@@ -219,7 +219,6 @@ return [
                 //'js/custom.js',
             ],
         ]
-
     ],
 
     'googlemaps' => [
