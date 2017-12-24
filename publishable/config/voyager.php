@@ -202,12 +202,24 @@ return [
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
 
     // Here you can specify additional assets you would like to be included in the master.blade
-    'additional_css' => [
-        //'css/custom.css',
-    ],
+    'additional_assets' => [
+        'login' => [
+            'css' => [
+                //'css/custom.css',
+            ],
+            'js' => [
+                //'js/custom.js',
+            ],
+        ],
+        'dashboard' => [
+            'css' => [
+                //'css/custom.css',
+            ],
+            'js' => [
+                //'js/custom.js',
+            ],
+        ]
 
-    'additional_js' => [
-        //'js/custom.js',
     ],
 
     'googlemaps' => [

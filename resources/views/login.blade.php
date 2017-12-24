@@ -30,6 +30,10 @@
         }
     </style>
 
+    @if(!empty(config('voyager.additional_assets.login.css')))<!-- Additional CSS -->
+    @foreach(config('voyager.additional_assets.login.css') as $css)<link rel="stylesheet" type="text/css" href="{{ asset($css) }}">@endforeach
+    @endif
+
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 </head>
 <body class="login">
@@ -133,5 +137,9 @@
     });
 
 </script>
+
+@if(!empty(config('voyager.additional_assets.login.js')))<!-- Additional Javascript -->
+    @foreach(config('voyager.additional_assets.login.js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
+@endif
 </body>
 </html>

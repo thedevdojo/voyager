@@ -35,8 +35,8 @@
         }
     </style>
 
-    @if(!empty(config('voyager.additional_css')))<!-- Additional CSS -->
-        @foreach(config('voyager.additional_css') as $css)<link rel="stylesheet" type="text/css" href="{{ asset($css) }}">@endforeach
+    @if(!empty(config('voyager.additional_assets.dashboard.css')))<!-- Additional CSS -->
+        @foreach(config('voyager.additional_assets.dashboard.css') as $css)<link rel="stylesheet" type="text/css" href="{{ asset($css) }}">@endforeach
     @endif
 
     @yield('head')
@@ -132,8 +132,8 @@ if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->a
 </script>
 @yield('javascript')
 
-@if(!empty(config('voyager.additional_js')))<!-- Additional Javascript -->
-    @foreach(config('voyager.additional_js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
+@if(!empty(config('voyager.additional_assets.dashboard.js')))<!-- Additional Javascript -->
+    @foreach(config('voyager.additional_assets.dashboard.js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
 @endif
 
 </body>
