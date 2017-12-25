@@ -236,7 +236,7 @@ class VoyagerBreadController extends Controller
                 $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
             } catch (\Exception $e) {
                 return back()->with([
-                    'message'    => 'Error updating entry: ' . $e->getMessage(),
+                    'message'    => 'Error updating entry: '.$e->getMessage(),
                     'alert-type' => 'error',
                 ]);
             }
@@ -326,7 +326,7 @@ class VoyagerBreadController extends Controller
                 $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
             } catch (\Exception $e) {
                 return back()->with([
-                    'message'    => 'Error storing entry: ' . $e->getMessage(),
+                    'message'    => 'Error storing entry: '.$e->getMessage(),
                     'alert-type' => 'error',
                 ]);
             }
