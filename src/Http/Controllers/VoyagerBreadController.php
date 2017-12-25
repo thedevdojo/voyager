@@ -232,7 +232,14 @@ class VoyagerBreadController extends Controller
         }
 
         if (!$request->ajax()) {
-            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+            try {
+                $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+            } catch (\Exception $e) {
+                return back()->with([
+                    'message'    => 'Error updating entry: ' . $e->getMessage(),
+                    'alert-type' => 'error',
+                ]);
+            }
 
             event(new BreadDataUpdated($dataType, $data));
 
@@ -315,7 +322,14 @@ class VoyagerBreadController extends Controller
         }
 
         if (!$request->ajax()) {
-            $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+            try {
+                $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+            } catch (\Exception $e) {
+                return back()->with([
+                    'message'    => 'Error storing entry: ' . $e->getMessage(),
+                    'alert-type' => 'error',
+                ]);
+            }
 
             event(new BreadDataAdded($dataType, $data));
 
