@@ -157,7 +157,7 @@ return [
         'image_does_not_exist'  => 'Gambar tidak tersedia',
         'image_removed'         => 'Gambar dihapus',
         'library'               => 'Media Library',
-        'loading'               => 'LOADING MEDIA FILE KAMU',
+        'loading'               => 'MENUNGGU MEDIA FILE KAMU',
         'move_file_folder'      => 'Pindah File/Folder',
         'new_file_folder'       => 'Nama File/Folder Baru',
         'new_folder_name'       => 'Nama Folder Baru',
