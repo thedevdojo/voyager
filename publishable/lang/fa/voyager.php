@@ -66,7 +66,7 @@ return [
         'password'               => 'کلمه عبور',
         'permissions'            => 'مجوزها',
         'profile'                => 'پروفایل',
-        'public_url'             => 'َURL عمومی',
+        'public_url'             => 'URL عمومی',
         'read'                   => 'خواندن',
         'rename'                 => 'تغییر نام',
         'required'               => 'ضروری',
