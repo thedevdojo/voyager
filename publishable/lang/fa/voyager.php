@@ -262,7 +262,7 @@ return [
         'icon_hint2'             => 'کلاس فونت Voyager',
         'model_class'            => 'نام کلاس مدل',
         'model_name'             => 'نام مدل',
-        'model_name_ph'          => 'ex. \App\User, if left empty will try and use the table name',
+        'model_name_ph'          => 'مثال. \App\User, if left empty will try and use the table name',
         'policy_class'           => 'نام کلاس خط مشی',
         'policy_name'            => 'نام خط مشی',
         'policy_name_ph'         => 'مثال. \App\Policies\UserPolicy, درصورتی که خالی رها شود از پیشفرض استفاده خواهد کرد',
