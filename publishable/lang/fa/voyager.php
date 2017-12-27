@@ -23,7 +23,7 @@ return [
         'bulk_delete'            => 'حذف دسته‌ای',
         'bulk_delete_confirm'    => 'بله، حذف این',
         'bulk_delete_nothing'    => 'شما چیزی برای حذف انتخاب نکرده اید',
-        'cancel'                 => 'لغو',
+        'cancel'                 => 'لغو کردن',
         'choose_type'            => 'انتخاب نوع',
         'click_here'             => 'اینجا کلیک کنید',
         'close'                  => 'بستن',
