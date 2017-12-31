@@ -127,9 +127,9 @@ abstract class Controller extends BaseController
             if (isset($options->validation)) {
                 if (isset($options->validation->rule)) {
                     if (!is_array($options->validation->rule)) {
-                        $rules[$row->display_name] = explode('|', $options->validation->rule);
+                        $rules[$row->field] = explode('|', $options->validation->rule);
                     } else {
-                        $rules[$row->display_name] = $options->validation->rule;
+                        $rules[$row->field] = $options->validation->rule;
                     }
                 }
 
