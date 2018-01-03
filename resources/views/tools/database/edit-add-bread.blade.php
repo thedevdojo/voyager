@@ -476,7 +476,7 @@
             var tbl = dropdown.data('table');
             var selected_value = dropdown.data('selected');
             if(tbl.length != 0){
-                $.get('{{ route('voyager.database.index', [], false) }}/' + tbl, function(data){
+                $.get('{{ route('voyager.database.index') }}/' + tbl, function(data){
                     $(dropdown).empty();
                     for (var option in data) {
                        $('<option/>', {
