@@ -9,12 +9,13 @@ trait Resizable
      *
      * @param string $type
      * @param string $attribute
+     *
      * @return string
      */
     public function thumbnail($type, $attribute = 'image')
     {
         // Return empty string if the field not found
-        if(!isset($this->attributes[$attribute])) {
+        if (!isset($this->attributes[$attribute])) {
             return '';
         }
 
