@@ -44,7 +44,7 @@
                                    class="btn-sm btn-warning browse_bread">
                                     <i class="voyager-plus"></i> {{ __('voyager.database.browse_bread') }}
                                 </a>
-                                <a href="{{ route('voyager.database.bread.edit', $table->name) }}"
+                                <a href="{{ route('voyager.bread.edit', $table->name) }}"
                                    class="btn-sm btn-default edit">
                                    {{ __('voyager.database.edit_bread') }}
                                 </a>
@@ -53,7 +53,7 @@
                                      {{ __('voyager.database.delete_bread') }}
                                 </div>
                             @else
-                                <a href="{{ route('voyager.database.bread.create', ['name' => $table->name]) }}"
+                                <a href="{{ route('voyager.bread.create', ['name' => $table->name]) }}"
                                    class="btn-sm btn-default">
                                     <i class="voyager-plus"></i> {{ __('voyager.database.add_bread') }}
                                 </a>
