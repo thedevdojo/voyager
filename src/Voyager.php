@@ -190,6 +190,7 @@ class Voyager
         require __DIR__.'/../routes/voyager.php';
     }
 
+    /** @deprecated */
     public function can($permission)
     {
         $this->loadPermissions();
@@ -210,6 +211,7 @@ class Voyager
         return true;
     }
 
+    /** @deprecated */
     public function canOrFail($permission)
     {
         if (!$this->can($permission)) {
@@ -219,6 +221,7 @@ class Voyager
         return true;
     }
 
+    /** @deprecated */
     public function canOrAbort($permission, $statusCode = 403)
     {
         if (!$this->can($permission)) {
@@ -299,6 +302,7 @@ class Voyager
         return in_array(Translatable::class, $traits);
     }
 
+    /** @deprecated */
     protected function loadPermissions()
     {
         if (!$this->permissionsLoaded) {
