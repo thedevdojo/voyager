@@ -5,7 +5,7 @@ declare(strict_types=1);
 if (!\function_exists('setting')) {
     function setting($key, $default = null)
     {
-        $setting = Cache::rememberForever('settings.'.$key, function () {
+        $setting = Cache::rememberForever('settings.'.$key, function () use ($key) {
             return TCG\Voyager\Facades\Voyager::setting($key, null);
         });
 
