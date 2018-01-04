@@ -221,9 +221,11 @@ abstract class Controller extends BaseController
                         $image = Image::make($file)->resize(
                             $resize_width,
                             $resize_height,
-                            function (Constraint $constraint) {
+                            function (Constraint $constraint) use ($options) {
                                 $constraint->aspectRatio();
-                                $constraint->upsize();
+                                if (!$options->upsize) {
+                                    $constraint->upsize();
+                                }
                             }
                         )->encode($file->getClientOriginalExtension(), 75);
 
@@ -247,9 +249,11 @@ abstract class Controller extends BaseController
                                     $image = Image::make($file)->resize(
                                         $thumb_resize_width,
                                         $thumb_resize_height,
-                                        function (Constraint $constraint) {
+                                        function (Constraint $constraint) use ($options) {
                                             $constraint->aspectRatio();
-                                            $constraint->upsize();
+                                            if (!$options->upsize) {
+                                                $constraint->upsize();
+                                            }
                                         }
                                     )->encode($file->getClientOriginalExtension(), 75);
                                 } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
@@ -342,9 +346,11 @@ abstract class Controller extends BaseController
                     $image = Image::make($file)->resize(
                         $resize_width,
                         $resize_height,
-                        function (Constraint $constraint) {
+                        function (Constraint $constraint) use ($options) {
                             $constraint->aspectRatio();
-                            $constraint->upsize();
+                            if (!$options->upsize) {
+                                $constraint->upsize();
+                            }
                         }
                     )->encode($file->getClientOriginalExtension(), 75);
 
@@ -374,9 +380,11 @@ abstract class Controller extends BaseController
                                 $image = Image::make($file)->resize(
                                     $thumb_resize_width,
                                     $thumb_resize_height,
-                                    function (Constraint $constraint) {
+                                    function (Constraint $constraint) use ($options) {
                                         $constraint->aspectRatio();
-                                        $constraint->upsize();
+                                        if (!$options->upsize) {
+                                            $constraint->upsize();
+                                        }
                                     }
                                 )->encode($file->getClientOriginalExtension(), 75);
                             } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
