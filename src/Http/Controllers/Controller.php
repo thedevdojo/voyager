@@ -212,6 +212,8 @@ abstract class Controller extends BaseController
                         $resize_height = null;
                     }
 
+                    $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
+
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('FY').'/';
@@ -227,7 +229,7 @@ abstract class Controller extends BaseController
                                     $constraint->upsize();
                                 }
                             }
-                        )->encode($file->getClientOriginalExtension(), 75);
+                        )->encode($file->getClientOriginalExtension(), $resize_quality);
 
                         Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
 
@@ -255,13 +257,13 @@ abstract class Controller extends BaseController
                                                 $constraint->upsize();
                                             }
                                         }
-                                    )->encode($file->getClientOriginalExtension(), 75);
+                                    )->encode($file->getClientOriginalExtension(), $resize_quality);
                                 } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                     $crop_width = $thumbnails->crop->width;
                                     $crop_height = $thumbnails->crop->height;
                                     $image = Image::make($file)
                                         ->fit($crop_width, $crop_height)
-                                        ->encode($file->getClientOriginalExtension(), 75);
+                                        ->encode($file->getClientOriginalExtension(), $resize_quality);
                                 }
 
                                 Storage::disk(config('voyager.storage.disk'))->put(
@@ -343,6 +345,8 @@ abstract class Controller extends BaseController
                         $resize_height = null;
                     }
 
+                    $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
+
                     $image = Image::make($file)->resize(
                         $resize_width,
                         $resize_height,
@@ -352,7 +356,7 @@ abstract class Controller extends BaseController
                                 $constraint->upsize();
                             }
                         }
-                    )->encode($file->getClientOriginalExtension(), 75);
+                    )->encode($file->getClientOriginalExtension(), $resize_quality);
 
                     if ($this->is_animated_gif($file)) {
                         Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
@@ -386,13 +390,13 @@ abstract class Controller extends BaseController
                                             $constraint->upsize();
                                         }
                                     }
-                                )->encode($file->getClientOriginalExtension(), 75);
+                                )->encode($file->getClientOriginalExtension(), $resize_quality);
                             } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                 $crop_width = $thumbnails->crop->width;
                                 $crop_height = $thumbnails->crop->height;
                                 $image = Image::make($file)
                                     ->fit($crop_width, $crop_height)
-                                    ->encode($file->getClientOriginalExtension(), 75);
+                                    ->encode($file->getClientOriginalExtension(), $resize_quality);
                             }
 
                             Storage::disk(config('voyager.storage.disk'))->put(
