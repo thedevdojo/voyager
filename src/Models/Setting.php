@@ -16,14 +16,15 @@ class Setting extends Model
     public $timestamps = false;
 
     /**
-     * Clear cache on value change
+     * Clear cache on value change.
      *
      * @param string $value
+     *
      * @return void
      */
     public function setValueAttribute($value)
     {
-        Cache::forget('settings.' . $this->key);
+        Cache::forget('settings.'.$this->key);
 
         $this->attributes['value'] = $value;
     }
