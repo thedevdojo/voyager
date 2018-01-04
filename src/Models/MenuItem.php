@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\Translatable;
+use TCG\Voyager\Traits\RelationshipCache;
 
 class MenuItem extends Model
 {
+    use RelationshipCache;
     use Translatable;
 
     protected $translatorMethods = [

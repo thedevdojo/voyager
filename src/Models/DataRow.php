@@ -3,9 +3,12 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use TCG\Voyager\Traits\RelationshipCache;
 
 class DataRow extends Model
 {
+    use RelationshipCache;
+
     protected $table = 'data_rows';
 
     protected $guarded = [];

@@ -5,9 +5,11 @@ namespace TCG\Voyager\Models;
 use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\Translatable;
+use TCG\Voyager\Traits\RelationshipCache;
 
 class Category extends Model
 {
+    use RelationshipCache;
     use Translatable;
 
     protected $translatable = ['slug', 'name'];

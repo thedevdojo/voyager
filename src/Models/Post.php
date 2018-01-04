@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\Resizable;
 use TCG\Voyager\Traits\Translatable;
+use TCG\Voyager\Traits\RelationshipCache;
 
 class Post extends Model
 {
+    use RelationshipCache;
     use Translatable;
     use Resizable;
 
