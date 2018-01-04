@@ -223,7 +223,7 @@ abstract class Controller extends BaseController
                             $resize_height,
                             function (Constraint $constraint) use ($options) {
                                 $constraint->aspectRatio();
-                                if (!$options->upsize) {
+                                if (isset($options->upsize) && !$options->upsize) {
                                     $constraint->upsize();
                                 }
                             }
@@ -251,7 +251,7 @@ abstract class Controller extends BaseController
                                         $thumb_resize_height,
                                         function (Constraint $constraint) use ($options) {
                                             $constraint->aspectRatio();
-                                            if (!$options->upsize) {
+                                            if (isset($options->upsize) && !$options->upsize) {
                                                 $constraint->upsize();
                                             }
                                         }
@@ -348,7 +348,7 @@ abstract class Controller extends BaseController
                         $resize_height,
                         function (Constraint $constraint) use ($options) {
                             $constraint->aspectRatio();
-                            if (!$options->upsize) {
+                            if (isset($options->upsize) && !$options->upsize) {
                                 $constraint->upsize();
                             }
                         }
@@ -382,7 +382,7 @@ abstract class Controller extends BaseController
                                     $thumb_resize_height,
                                     function (Constraint $constraint) use ($options) {
                                         $constraint->aspectRatio();
-                                        if (!$options->upsize) {
+                                        if (isset($options->upsize) && !$options->upsize) {
                                             $constraint->upsize();
                                         }
                                     }
