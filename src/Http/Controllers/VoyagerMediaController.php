@@ -283,26 +283,36 @@ class VoyagerMediaController extends Controller
             }
 
             // Check if valid json
-            if (is_null(@json_decode($data->{$field}))) {
+            if($field === 'image') {
+              if (is_null($data->{$field})) {
                 throw new Exception(__('voyager.json.invalid'), 500);
-            }
+              }
+              // Update field
+              $data->{$field} = null;
+              
+            } else {
+              if (is_null(@json_decode($data->{$field}))) {
+                throw new Exception(__('voyager.json.invalid'), 500);
+              }
 
-            // Decode field value
-            $fieldData = @json_decode($data->{$field}, true);
+              // Decode field value
+              $fieldData = @json_decode($data->{$field}, true);
 
-            // Flip keys and values
-            $fieldData = array_flip($fieldData);
+              // Flip keys and values
+              $fieldData = array_flip($fieldData);
 
-            // Check if image exists in array
-            if (!array_key_exists($image, $fieldData)) {
+              // Check if image exists in array
+              if (!array_key_exists($image, $fieldData)) {
                 throw new Exception(__('voyager.media.image_does_not_exist'), 400);
+              }
+
+              // Remove image from array
+              unset($fieldData[$image]);
+
+              // Generate json and update field
+              $data->{$field} = json_encode(array_values(array_flip($fieldData)));
             }
 
-            // Remove image from array
-            unset($fieldData[$image]);
-
-            // Generate json and update field
-            $data->{$field} = json_encode(array_values(array_flip($fieldData)));
             $data->save();
 
             return response()->json([
