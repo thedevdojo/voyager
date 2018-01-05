@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace TCG\Voyager\Models;
 
-use TCG\Voyager\Facades\Voyager;
 use Illuminate\Database\Eloquent\Model;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\RelationshipCache;
 
 class Role extends Model

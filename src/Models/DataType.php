@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Traits\Translatable;
 use TCG\Voyager\Traits\RelationshipCache;
+use TCG\Voyager\Traits\Translatable;
 
 class DataType extends Model
 {
