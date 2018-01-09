@@ -11,7 +11,11 @@
 				@php 
 					$relationshipData = (isset($data)) ? $data : $dataTypeContent;
 					$model = app($options->model);
-					$query = $model::getRelationship($relationshipData->{$options->column});
+					if (method_exists($model, 'getRelationship')) {
+						$query = $model::getRelationship($relationshipData->{$options->column});
+					} else {
+						$query = $model::find($relationshipData->{$options->column});
+					}
             	@endphp
 
             	@if(isset($query))

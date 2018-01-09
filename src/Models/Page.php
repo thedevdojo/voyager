@@ -4,11 +4,13 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Traits\HasRelationships;
 use TCG\Voyager\Traits\Translatable;
 
 class Page extends Model
 {
-    use Translatable;
+    use Translatable,
+        HasRelationships;
 
     protected $translatable = ['title', 'slug', 'body'];
 
