@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Traits;
 
-
 trait HasRelationships
 {
     protected static $relationships = [];
