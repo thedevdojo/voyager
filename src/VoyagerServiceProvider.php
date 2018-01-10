@@ -297,6 +297,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'checkbox',
             'color',
             'date',
+            'disabled',
             'file',
             'image',
             'multiple_images',

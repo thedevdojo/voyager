@@ -92,6 +92,10 @@ abstract class Controller extends BaseController
                 if ($row->type == 'password') {
                     $content = $data->{$row->field};
                 }
+
+                if ($row->type == 'disabled') {
+                    $content = $data->{$row->field};
+                }
             }
 
             if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
@@ -422,6 +426,9 @@ abstract class Controller extends BaseController
                     $lng = (float) ($coordinates['lng']);
                     $content = DB::raw('ST_GeomFromText(\'POINT('.$lat.' '.$lng.')\')');
                 }
+                break;
+
+            case 'disabled':
                 break;
 
             case 'relationship':
