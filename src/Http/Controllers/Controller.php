@@ -406,7 +406,7 @@ abstract class Controller extends BaseController
                     if (empty($request->input($row->field))) {
                         $content = null;
                     } else {
-                        $content = gmdate('Y-m-d H:i:s', strtotime($request->input($row->field)));
+                        $content = \Carbon\Carbon::parse($content);
                     }
                 }
                 break;
