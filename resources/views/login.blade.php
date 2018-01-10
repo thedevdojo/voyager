@@ -13,11 +13,11 @@
             background-image:url('{{ Voyager::image( Voyager::setting("admin.bg_image"), voyager_asset("images/bg.jpg") ) }}');
             background-color: {{ Voyager::setting("admin.bg_color", "#FFFFFF" ) }};
         }
-        .login-sidebar{
+        body.login .login-sidebar {
             border-top:5px solid {{ config('voyager.primary_color','#22A7F0') }};
         }
         @media (max-width: 767px) {
-            .login-sidebar {
+            body.login .login-sidebar {
                 border-top:0px !important;
                 border-left:5px solid {{ config('voyager.primary_color','#22A7F0') }};
             }
