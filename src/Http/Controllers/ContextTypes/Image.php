@@ -2,11 +2,9 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use StdObject;
+use Intervention\Image\Facades\Image as InterventionImage
 
 class Image extends BaseType
 {
@@ -60,7 +58,7 @@ class Image extends BaseType
                         $thumb_resize_height = intval($thumb_resize_height * $scale);
                     }
 
-                    $image = Image::make($file)->resize(
+                    $image = InterventionImage::make($file)->resize(
                         $thumb_resize_width,
                         $thumb_resize_height,
                         function (Constraint $constraint) {
@@ -71,7 +69,7 @@ class Image extends BaseType
                 } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                     $crop_width = $thumbnails->crop->width;
                     $crop_height = $thumbnails->crop->height;
-                    $image = Image::make($file)
+                    $image = InterventionImage::make($file)
                         ->fit($crop_width, $crop_height)
                         ->encode($file->getClientOriginalExtension(), 75);
                 }
