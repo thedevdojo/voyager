@@ -79,7 +79,16 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary save">{{ __('voyager.generic.save') }}</button>
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary save">{{ __('voyager.generic.save') }}</button>
+                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" class="save-new">{{ __('voyager.generic.save_new') }}</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </form>
 
@@ -179,6 +188,11 @@
                 $('#confirm_delete_modal').modal('hide');
             });
             $('[data-toggle="tooltip"]').tooltip();
+
+            $('.save-new').on('click', function() {
+                $(this).append('<input type="hidden" name="save_new" value="1" />');
+                $('.form-edit-add').submit();
+            })
         });
     </script>
 @stop

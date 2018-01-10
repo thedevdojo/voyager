@@ -236,12 +236,20 @@ class VoyagerBreadController extends Controller
 
             event(new BreadDataUpdated($dataType, $data));
 
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
-                    'alert-type' => 'success',
-                ]);
+            $message = [
+                'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                'alert-type' => 'success',
+            ];
+
+            if ($request->input('save_new')) {
+                return redirect()
+                    ->route("voyager.{$dataType->slug}.create")
+                    ->with($message);
+            } else {
+                return redirect()
+                    ->route("voyager.{$dataType->slug}.index")
+                    ->with($message);
+            }
         }
     }
 
@@ -319,12 +327,20 @@ class VoyagerBreadController extends Controller
 
             event(new BreadDataAdded($dataType, $data));
 
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                        'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
-                        'alert-type' => 'success',
-                    ]);
+            $message = [
+                'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
+                'alert-type' => 'success',
+            ];
+
+            if ($request->input('save_new')) {
+                return redirect()
+                    ->route("voyager.{$dataType->slug}.create")
+                    ->with($message);
+            } else {
+                return redirect()
+                    ->route("voyager.{$dataType->slug}.index")
+                    ->with($message);
+            }
         }
     }
 

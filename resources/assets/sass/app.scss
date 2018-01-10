@@ -4761,6 +4761,22 @@ float: left;
   transition:color 0.3s ease;
 }
 
+.btn-group .dropdown-menu {
+  padding: 5px 0;
+}
+
+.btn-group .dropdown-menu>li>a {
+  padding: 5px;
+}
+
+.btn-group .dropdown-menu .divider {
+  margin-top: 0;
+}
+
+.btn-group .dropdown-menu>li:last-child>a {
+  margin-bottom: 0;
+}
+
 .navbar .dropdown.profile .dropdown-menu .profile-body{
   padding-left:10px;
 }
