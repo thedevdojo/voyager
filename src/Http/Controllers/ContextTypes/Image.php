@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image as InterventionImage;
 
 class Image extends BaseType
@@ -26,7 +27,7 @@ class Image extends BaseType
             $resize_height = null;
         }
 
-        $image = Image::make($file)->resize(
+        $image = InterventionImage::make($file)->resize(
             $resize_width,
             $resize_height,
             function (Constraint $constraint) {
