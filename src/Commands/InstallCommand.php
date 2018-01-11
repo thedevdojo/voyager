@@ -69,7 +69,11 @@ class InstallCommand extends Command
         $this->call('hook:setup');
 
         $this->info('Publishing the Voyager assets, database, language, and config files');
-        $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
+
+        //Publish only relevant resources on install
+        $tags = ['voyager_assets', 'seeds', 'demo_content', 'config', 'lang'];
+
+        $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
