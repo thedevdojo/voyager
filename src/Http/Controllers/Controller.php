@@ -9,10 +9,18 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\Constraint;
-use Intervention\Image\Facades\Image;
+
 use TCG\Voyager\Events\FileDeleted;
+use TCG\Voyager\Http\Controllers\ContentTypes\Checkbox;
+use TCG\Voyager\Http\Controllers\ContentTypes\Coordinates;
+use TCG\Voyager\Http\Controllers\ContentTypes\File;
+use TCG\Voyager\Http\Controllers\ContentTypes\Image as ContentImage;
+use TCG\Voyager\Http\Controllers\ContentTypes\MultipleImage;
+use TCG\Voyager\Http\Controllers\ContentTypes\Password;
+use TCG\Voyager\Http\Controllers\ContentTypes\Relationship;
+use TCG\Voyager\Http\Controllers\ContentTypes\SelectMultiple;
+use TCG\Voyager\Http\Controllers\ContentTypes\Text;
+use TCG\Voyager\Http\Controllers\ContentTypes\Timestamp;
 use TCG\Voyager\Traits\AlertsMessages;
 use Validator;
 
@@ -22,7 +30,7 @@ abstract class Controller extends BaseController
         ValidatesRequests,
         AuthorizesRequests,
         AlertsMessages;
-
+    
     public function getSlug(Request $request)
     {
         if (isset($this->slug)) {
@@ -54,7 +62,7 @@ abstract class Controller extends BaseController
                 continue;
             }
 
-            $content = $this->getContentBasedOnType($request, $slug, $row);
+            $content = $this->getContentBasedOnType($request, $slug, $row, $options);
 
             if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
                 $row->field = @$options->column;
@@ -144,329 +152,40 @@ abstract class Controller extends BaseController
         return Validator::make($request, $rules, $messages);
     }
 
-    public function getContentBasedOnType(Request $request, $slug, $row)
+    public function getContentBasedOnType(Request $request, $slug, $row, $options)
     {
-        $content = null;
         switch ($row->type) {
             /********** PASSWORD TYPE **********/
             case 'password':
-                $pass_field = $request->input($row->field);
-
-                if (isset($pass_field) && !empty($pass_field)) {
-                    return bcrypt($request->input($row->field));
-                }
-
-                break;
-
+                return (new Password($request, $slug, $row, $options))->handle();
             /********** CHECKBOX TYPE **********/
             case 'checkbox':
-                $checkBoxRow = $request->input($row->field);
-
-                if (isset($checkBoxRow)) {
-                    return 1;
-                }
-
-                $content = 0;
-
-                break;
-
+                return (new Checkbox($request, $slug, $row, $options))->handle();
             /********** FILE TYPE **********/
             case 'file':
-                if ($files = $request->file($row->field)) {
-                    if (!is_array($files)) {
-                        $files = [$files];
-                    }
-                    $filesPath = [];
-                    foreach ($files as $key => $file) {
-                        $filename = Str::random(20);
-                        $path = $slug.'/'.date('FY').'/';
-                        $file->storeAs(
-                            $path,
-                            $filename.'.'.$file->getClientOriginalExtension(),
-                            config('voyager.storage.disk', 'public')
-                        );
-                        array_push($filesPath, [
-                            'download_link' => $path.$filename.'.'.$file->getClientOriginalExtension(),
-                            'original_name' => $file->getClientOriginalName(),
-                        ]);
-                    }
-
-                    return json_encode($filesPath);
-                }
+            return (new File($request, $slug, $row, $options))->handle();
             /********** MULTIPLE IMAGES TYPE **********/
             // no break
             case 'multiple_images':
-                if ($files = $request->file($row->field)) {
-                    /**
-                     * upload files.
-                     */
-                    $filesPath = [];
-
-                    $options = json_decode($row->details);
-
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
-                    } else {
-                        $resize_width = 1800;
-                        $resize_height = null;
-                    }
-
-                    foreach ($files as $key => $file) {
-                        $filename = Str::random(20);
-                        $path = $slug.'/'.date('FY').'/';
-                        array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
-                        $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
-
-                        $image = Image::make($file)->resize(
-                            $resize_width,
-                            $resize_height,
-                            function (Constraint $constraint) {
-                                $constraint->aspectRatio();
-                                $constraint->upsize();
-                            }
-                        )->encode($file->getClientOriginalExtension(), 75);
-
-                        Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
-
-                        if (isset($options->thumbnails)) {
-                            foreach ($options->thumbnails as $thumbnails) {
-                                if (isset($thumbnails->name) && isset($thumbnails->scale)) {
-                                    $scale = intval($thumbnails->scale) / 100;
-                                    $thumb_resize_width = $resize_width;
-                                    $thumb_resize_height = $resize_height;
-
-                                    if ($thumb_resize_width != null) {
-                                        $thumb_resize_width = $thumb_resize_width * $scale;
-                                    }
-
-                                    if ($thumb_resize_height != null) {
-                                        $thumb_resize_height = $thumb_resize_height * $scale;
-                                    }
-
-                                    $image = Image::make($file)->resize(
-                                        $thumb_resize_width,
-                                        $thumb_resize_height,
-                                        function (Constraint $constraint) {
-                                            $constraint->aspectRatio();
-                                            $constraint->upsize();
-                                        }
-                                    )->encode($file->getClientOriginalExtension(), 75);
-                                } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
-                                    $crop_width = $thumbnails->crop->width;
-                                    $crop_height = $thumbnails->crop->height;
-                                    $image = Image::make($file)
-                                        ->fit($crop_width, $crop_height)
-                                        ->encode($file->getClientOriginalExtension(), 75);
-                                }
-
-                                Storage::disk(config('voyager.storage.disk'))->put(
-                                    $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                    (string) $image,
-                                    'public'
-                                );
-                            }
-                        }
-                    }
-
-                    return json_encode($filesPath);
-                }
-                break;
-
+                return (new MultipleImage($request, $slug, $row, $options))->handle();
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
-                $content = $request->input($row->field);
-
-                if ($content === null) {
-                    $content = [];
-                } else {
-                    // Check if we need to parse the editablePivotFields to update fields in the corresponding pivot table
-                    $options = json_decode($row->details);
-                    if (isset($options->relationship) && !empty($options->relationship->editablePivotFields)) {
-                        $pivotContent = [];
-                        // Read all values for fields in pivot tables from the request
-                        foreach ($options->relationship->editablePivotFields as $pivotField) {
-                            if (!isset($pivotContent[$pivotField])) {
-                                $pivotContent[$pivotField] = [];
-                            }
-                            $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
-                        }
-                        // Create a new content array for updating pivot table
-                        $newContent = [];
-                        foreach ($content as $contentIndex => $contentValue) {
-                            $newContent[$contentValue] = [];
-                            foreach ($pivotContent as $pivotContentKey => $value) {
-                                $newContent[$contentValue][$pivotContentKey] = $value[$contentIndex];
-                            }
-                        }
-                        $content = $newContent;
-                    }
-                }
-
-                return json_encode($content);
-
+                return (new SelectMultiple($request, $slug, $row, $options))->handle();
             /********** IMAGE TYPE **********/
             case 'image':
-                if ($request->hasFile($row->field)) {
-                    $file = $request->file($row->field);
-                    $options = json_decode($row->details);
-
-                    $path = $slug.'/'.date('FY').'/';
-                    if (isset($options->preserveFileUploadName) && $options->preserveFileUploadName) {
-                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
-                        $filename_counter = 1;
-
-                        // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
-                        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
-                        }
-                    } else {
-                        $filename = Str::random(20);
-
-                        // Make sure the filename does not exist, if it does, just regenerate
-                        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                            $filename = Str::random(20);
-                        }
-                    }
-
-                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
-
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
-                    } else {
-                        $resize_width = 1800;
-                        $resize_height = null;
-                    }
-
-                    $image = Image::make($file)->resize(
-                        $resize_width,
-                        $resize_height,
-                        function (Constraint $constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        }
-                    )->encode($file->getClientOriginalExtension(), 75);
-
-                    if ($this->is_animated_gif($file)) {
-                        Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
-                        $fullPathStatic = $path.$filename.'-static.'.$file->getClientOriginalExtension();
-                        Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string) $image, 'public');
-                    } else {
-                        Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
-                    }
-
-                    if (isset($options->thumbnails)) {
-                        foreach ($options->thumbnails as $thumbnails) {
-                            if (isset($thumbnails->name) && isset($thumbnails->scale)) {
-                                $scale = intval($thumbnails->scale) / 100;
-                                $thumb_resize_width = $resize_width;
-                                $thumb_resize_height = $resize_height;
-
-                                if ($thumb_resize_width != null && $thumb_resize_width != 'null') {
-                                    $thumb_resize_width = intval($thumb_resize_width * $scale);
-                                }
-
-                                if ($thumb_resize_height != null && $thumb_resize_height != 'null') {
-                                    $thumb_resize_height = intval($thumb_resize_height * $scale);
-                                }
-
-                                $image = Image::make($file)->resize(
-                                    $thumb_resize_width,
-                                    $thumb_resize_height,
-                                    function (Constraint $constraint) {
-                                        $constraint->aspectRatio();
-                                        $constraint->upsize();
-                                    }
-                                )->encode($file->getClientOriginalExtension(), 75);
-                            } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
-                                $crop_width = $thumbnails->crop->width;
-                                $crop_height = $thumbnails->crop->height;
-                                $image = Image::make($file)
-                                    ->fit($crop_width, $crop_height)
-                                    ->encode($file->getClientOriginalExtension(), 75);
-                            }
-
-                            Storage::disk(config('voyager.storage.disk'))->put(
-                                $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                (string) $image,
-                                'public'
-                            );
-                        }
-                    }
-
-                    return $fullPath;
-                }
-                break;
-
+                return (new ContentImage($request, $slug, $row, $options))->handle();
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
-                $content = $request->input($row->field);
-                if (in_array($request->method(), ['PUT', 'POST'])) {
-                    if (empty($request->input($row->field))) {
-                        $content = null;
-                    } else {
-                        $content = \Carbon\Carbon::parse($content);
-                    }
-                }
-                break;
-
+                return (new Timestamp($request, $slug, $row, $options))->handle();
             /********** COORDINATES TYPE **********/
             case 'coordinates':
-                if (empty($coordinates = $request->input($row->field))) {
-                    $content = null;
-                } else {
-                    //DB::connection()->getPdo()->quote won't work as it quotes the
-                    // lat/lng, which leads to wrong Geometry type in POINT() MySQL constructor
-                    $lat = (float) ($coordinates['lat']);
-                    $lng = (float) ($coordinates['lng']);
-                    $content = DB::raw('ST_GeomFromText(\'POINT('.$lat.' '.$lng.')\')');
-                }
-                break;
-
+                return (new Coordinates($request, $slug, $row, $options))->handle();
             case 'relationship':
-                    return $request->input($row->field);
-                break;
-
+                return (new Relationship($request, $slug, $row, $options))->handle();
             /********** ALL OTHER TEXT TYPE **********/
             default:
-                $value = $request->input($row->field);
-                $options = json_decode($row->details);
-                if (isset($options->null)) {
-                    return $value == $options->null ? null : $value;
-                }
-
-                return $value;
+                return (new Text($request, $slug, $row, $options))->handle();
         }
-
-        return $content;
-    }
-
-    private function is_animated_gif($filename)
-    {
-        $raw = file_get_contents($filename);
-
-        $offset = 0;
-        $frames = 0;
-        while ($frames < 2) {
-            $where1 = strpos($raw, "\x00\x21\xF9\x04", $offset);
-            if ($where1 === false) {
-                break;
-            } else {
-                $offset = $where1 + 1;
-                $where2 = strpos($raw, "\x00\x2C", $offset);
-                if ($where2 === false) {
-                    break;
-                } else {
-                    if ($where1 + 8 == $where2) {
-                        $frames++;
-                    }
-                    $offset = $where2 + 1;
-                }
-            }
-        }
-
-        return $frames > 1;
     }
 
     public function deleteFileIfExists($path)
