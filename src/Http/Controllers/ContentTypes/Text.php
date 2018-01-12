@@ -2,10 +2,8 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-
 class Text extends BaseType
 {
-
     /**
      * @return null|string
      */

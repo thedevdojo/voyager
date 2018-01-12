@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-
 class SelectMultiple extends BaseType
 {
     public function handle()

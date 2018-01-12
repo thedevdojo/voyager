@@ -5,7 +5,7 @@ namespace TCG\Voyager\Http\Controllers\ContentTypes;
 class Checkbox extends BaseType
 {
     /**
-     * @return integer
+     * @return int
      */
     public function handle()
     {
