@@ -7,9 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
 use TCG\Voyager\Events\FileDeleted;
 use TCG\Voyager\Http\Controllers\ContentTypes\Checkbox;
 use TCG\Voyager\Http\Controllers\ContentTypes\Coordinates;
@@ -30,7 +28,7 @@ abstract class Controller extends BaseController
         ValidatesRequests,
         AuthorizesRequests,
         AlertsMessages;
-    
+
     public function getSlug(Request $request)
     {
         if (isset($this->slug)) {

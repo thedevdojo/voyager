@@ -22,8 +22,7 @@ class MultipleImage extends BaseType
 
         if (isset($this->options->resize) &&
             isset($this->options->resize->width) &&
-            isset($this->options->resize->height))
-        {
+            isset($this->options->resize->height)) {
             $resize_width = $this->options->resize->width;
             $resize_height = $this->options->resize->height;
         }

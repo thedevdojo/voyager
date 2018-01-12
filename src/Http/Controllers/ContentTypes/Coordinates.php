@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-
 use Illuminate\Support\Facades\DB;
 
 class Coordinates extends BaseType

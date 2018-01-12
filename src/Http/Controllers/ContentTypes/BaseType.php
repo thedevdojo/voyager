@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-
 use Illuminate\Http\Request;
 
 abstract class BaseType
@@ -29,6 +28,7 @@ abstract class BaseType
 
     /**
      * Password constructor.
+     *
      * @param Request $request
      * @param $slug
      * @param $row

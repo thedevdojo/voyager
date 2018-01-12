@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
@@ -13,7 +12,7 @@ class File extends BaseType
      */
     public function handle()
     {
-        if (! $this->request->has($this->row->field)) {
+        if (!$this->request->has($this->row->field)) {
             return json_encode([]);
         }
 
@@ -44,7 +43,7 @@ class File extends BaseType
      */
     protected function generatePath()
     {
-        return $this->slug . DIRECTORY_SEPARATOR . date('FY') . DIRECTORY_SEPARATOR;
+        return $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
     }
 
     /**
