@@ -160,6 +160,14 @@
                                                     <div class="readmore">{{ mb_strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? mb_substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                                 @elseif($row->type == 'coordinates')
                                                     @include('voyager::partials.coordinates-static-image')
+                                                @elseif($row->type == 'multiple_images')
+                                                    @php $images = json_decode($data->{$row->field}); @endphp
+                                                    @if($images)
+                                                        @php $images = array_slice($images, 0, 3); @endphp
+                                                        @foreach($images as $image)
+                                                            <img src="@if( !filter_var($image, FILTER_VALIDATE_URL)){{ Voyager::image( $image ) }}@else{{ $image }}@endif" style="width:50px">
+                                                        @endforeach
+                                                    @endif
                                                 @else
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
                                                     <span>{{ $data->{$row->field} }}</span>
