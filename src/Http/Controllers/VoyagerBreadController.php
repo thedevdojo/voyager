@@ -241,13 +241,13 @@ class VoyagerBreadController extends Controller
                 'alert-type' => 'success',
             ];
 
-            if ($request->input('save_new')) {
+            if ($request->input('save_close')) {
                 return redirect()
-                    ->route("voyager.{$dataType->slug}.create")
+                    ->route("voyager.{$dataType->slug}.index")
                     ->with($message);
             } else {
                 return redirect()
-                    ->route("voyager.{$dataType->slug}.index")
+                    ->route("voyager.{$dataType->slug}.edit", [$data->getKeyName() => $id])
                     ->with($message);
             }
         }
@@ -332,13 +332,13 @@ class VoyagerBreadController extends Controller
                 'alert-type' => 'success',
             ];
 
-            if ($request->input('save_new')) {
+            if ($request->input('save_close')) {
                 return redirect()
-                    ->route("voyager.{$dataType->slug}.create")
+                    ->route("voyager.{$dataType->slug}.index")
                     ->with($message);
             } else {
                 return redirect()
-                    ->route("voyager.{$dataType->slug}.index")
+                    ->route("voyager.{$dataType->slug}.edit", [$data->getKeyName() => $data->{$data->getKeyName()}])
                     ->with($message);
             }
         }
