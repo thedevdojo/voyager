@@ -13,7 +13,7 @@ trait VoyagerUser
 {
     public function role()
     {
-        return $this->hasOne(Voyager::modelClass('Role'), 'id', 'role_id');
+        return $this->belongsTo(Voyager::modelClass('Role'));
     }
 
     /**

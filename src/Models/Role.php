@@ -14,7 +14,7 @@ class Role extends Model
 
     public function users()
     {
-        return $this->belongsTo(Voyager::modelClass('User'), 'id', 'role_id');
+        return $this->hasMany(Voyager::modelClass('User'));
     }
 
     public function permissions()
