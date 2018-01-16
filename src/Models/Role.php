@@ -4,28 +4,21 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\HasRelationships;
 
 class Role extends Model
 {
+    use HasRelationships;
+
     protected $guarded = [];
-    protected static $relationships = [];
 
     public function users()
     {
-        return $this->belongsToMany(Voyager::modelClass('User'), 'user_roles');
+        return $this->hasMany(Voyager::modelClass('User'));
     }
 
     public function permissions()
     {
         return $this->belongsToMany(Voyager::modelClass('Permission'));
-    }
-
-    public static function getRelationship($id)
-    {
-        if (!isset(self::$relationships[$id])) {
-            self::$relationships[$id] = self::find($id);
-        }
-
-        return self::$relationships[$id];
     }
 }
