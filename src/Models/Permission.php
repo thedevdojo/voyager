@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\HasRelationships;
 
-
 class Permission extends Model
 {
     use HasRelationships;
