@@ -4,11 +4,13 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\HasRelationships;
 use TCG\Voyager\Traits\Translatable;
 
 class Category extends Model
 {
-    use Translatable;
+    use Translatable,
+        HasRelationships;
 
     protected $translatable = ['slug', 'name'];
 
