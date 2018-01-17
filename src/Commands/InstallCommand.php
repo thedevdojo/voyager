@@ -65,13 +65,10 @@ class InstallCommand extends Command
      */
     public function handle(Filesystem $filesystem)
     {
-        $this->info('Setting up the hooks');
-        $this->call('hook:setup');
-
         $this->info('Publishing the Voyager assets, database, language, and config files');
 
         //Publish only relevant resources on install
-        $tags = ['voyager_assets', 'seeds', 'demo_content', 'config', 'migrations'];
+        $tags = ['voyager_assets', 'seeds', 'demo_content', 'config', 'lang', 'migrations'];
 
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
@@ -119,6 +116,9 @@ class InstallCommand extends Command
         if ($this->option('with-dummy')) {
             $this->seed('VoyagerDummyDatabaseSeeder');
         }
+
+        $this->info('Setting up the hooks');
+        $this->call('hook:setup');
 
         $this->info('Adding the storage symlink to your public folder');
         $this->call('storage:link');
