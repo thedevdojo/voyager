@@ -50,6 +50,7 @@ class VoyagerBreadController extends Controller
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
             $query = $model::select('*');
+            $query->withoutGlobalScopes();
 
             $relationships = $this->getRelationships($dataType);
 
@@ -132,7 +133,7 @@ class VoyagerBreadController extends Controller
         $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
-            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+            $dataTypeContent = call_user_func([$model->with($relationships)->withoutGlobalScopes(), 'findOrFail'], $id);
         } else {
             // If Model doest exist, get data from table name
             $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
@@ -183,7 +184,7 @@ class VoyagerBreadController extends Controller
         $relationships = $this->getRelationships($dataType);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
+            ? app($dataType->model_name)->with($relationships)->withoutGlobalScopes()->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         foreach ($dataType->editRows as $key => $row) {
@@ -219,7 +220,8 @@ class VoyagerBreadController extends Controller
         // Compatibility with Model binding.
         $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        $ref = call_user_func([$dataType->model_name, 'withoutGlobalScopes']);
+        $data = call_user_func([$ref, 'findOrFail'], $id);
 
         // Check permission
         $this->authorize('edit', $data);
@@ -359,13 +361,22 @@ class VoyagerBreadController extends Controller
             $ids[] = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
         }
         foreach ($ids as $id) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $ref = call_user_func([$dataType->model_name, 'withoutGlobalScopes']);
+            $data = call_user_func([$ref, 'findOrFail'], $id);
             $this->cleanup($dataType, $data);
         }
 
         $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
 
-        $res = $data->destroy($ids);
+        $model = app($dataType->model_name);
+        $res = 0;
+
+        $data->newQueryWithoutScopes()->whereIn($model->getKeyName(), $ids)->each(function ($item) use (&$res) {
+            if ($item->delete()) {
+                $res++;
+            }
+        });
+        
         $data = $res
             ? [
                 'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
