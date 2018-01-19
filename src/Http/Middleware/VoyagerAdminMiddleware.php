@@ -23,11 +23,7 @@ class VoyagerAdminMiddleware
         }
 
         $urlLogin = route('voyager.login');
-        $urlIntended = $request->url();
-        if ($urlIntended == $urlLogin) {
-            $urlIntended = null;
-        }
 
-        return redirect($urlLogin)->with('url.intended', $urlIntended);
+        return redirect()->guest($urlLogin);
     }
 }
