@@ -29,7 +29,13 @@
 				<select class="form-control select2" name="{{ $options->column }}">
 					@php 
 						$model = app($options->model);
-	            		$query = $model::all();
+
+						// I think in any case user must only show the roles that less than his role
+	            		if ($model instanceof \TCG\Voyager\Models\Role && Auth::user()->role->order != 1){
+							$query = $model::where('order', '>', Auth::user()->role->order)->get();
+						}else{
+							$query = $model::all();
+						}
 	            	@endphp
 					@foreach($query as $relationshipData)
 						<option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$options->column} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
