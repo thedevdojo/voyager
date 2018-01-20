@@ -42,8 +42,8 @@ abstract class Controller extends BaseController
          * Prepare Translations and Transform data
          */
         $translations = is_bread_translatable($data)
-                        ? $data->prepareTranslations($request)
-                        : [];
+            ? $data->prepareTranslations($request)
+            : [];
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
@@ -135,7 +135,7 @@ abstract class Controller extends BaseController
 
                 if (isset($options->validation->messages)) {
                     foreach ($options->validation->messages as $key => $msg) {
-                        $messages[$row->display_name.'.'.$key] = $msg;
+                        $messages[$row->display_name . '.' . $key] = $msg;
                     }
                 }
             }
@@ -179,14 +179,14 @@ abstract class Controller extends BaseController
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug.'/'.date('FY').'/';
+                        $path = $slug . '/' . date('FY') . '/';
                         $file->storeAs(
                             $path,
-                            $filename.'.'.$file->getClientOriginalExtension(),
+                            $filename . '.' . $file->getClientOriginalExtension(),
                             config('voyager.storage.disk', 'public')
                         );
                         array_push($filesPath, [
-                            'download_link' => $path.$filename.'.'.$file->getClientOriginalExtension(),
+                            'download_link' => $path . $filename . '.' . $file->getClientOriginalExtension(),
                             'original_name' => $file->getClientOriginalName(),
                         ]);
                     }
@@ -203,31 +203,45 @@ abstract class Controller extends BaseController
                     $filesPath = [];
 
                     $options = json_decode($row->details);
-
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
+                    $resize_width = null;
+                    $resize_height = null;
+                    if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                        if (isset($options->resize->width))
+                            $resize_width = $options->resize->width;
+                        if (isset($options->resize->height))
+                            $resize_height = $options->resize->height;
                     } else {
                         $resize_width = 1800;
                         $resize_height = null;
                     }
 
+                    $quality = 90;
+                    if (isset($options->quality)) {
+                        $temp_quality = (int)$options->quality;
+                        if ($temp_quality > 0 && $temp_quality <= 100) {
+                            $quality = $temp_quality;
+                        }
+                    }
+
+
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug.'/'.date('FY').'/';
-                        array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
-                        $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                        $path = $slug . '/' . date('FY') . '/';
+                        array_push($filesPath, $path . $filename . '.' . $file->getClientOriginalExtension());
+                        $filePath = $path . $filename . '.' . $file->getClientOriginalExtension();
 
                         $image = Image::make($file)->resize(
                             $resize_width,
                             $resize_height,
-                            function (Constraint $constraint) {
+                            function (Constraint $constraint) use ($options) {
                                 $constraint->aspectRatio();
-                                $constraint->upsize();
+                                if (isset($options->upsize) && $options->upsize) {
+                                    $constraint->upsize();
+                                }
                             }
-                        )->encode($file->getClientOriginalExtension(), 75);
+                        )->encode($file->getClientOriginalExtension(), $quality);
 
-                        Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
+                        Storage::disk(config('voyager.storage.disk'))->put($filePath, (string)$image, 'public');
 
                         if (isset($options->thumbnails)) {
                             foreach ($options->thumbnails as $thumbnails) {
@@ -261,8 +275,8 @@ abstract class Controller extends BaseController
                                 }
 
                                 Storage::disk(config('voyager.storage.disk'))->put(
-                                    $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                    (string) $image,
+                                    $path . $filename . '-' . $thumbnails->name . '.' . $file->getClientOriginalExtension(),
+                                    (string)$image,
                                     'public'
                                 );
                             }
@@ -289,7 +303,7 @@ abstract class Controller extends BaseController
                             if (!isset($pivotContent[$pivotField])) {
                                 $pivotContent[$pivotField] = [];
                             }
-                            $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
+                            $pivotContent[$pivotField] = $request->input('pivot_' . $pivotField);
                         }
                         // Create a new content array for updating pivot table
                         $newContent = [];
@@ -311,49 +325,63 @@ abstract class Controller extends BaseController
                     $file = $request->file($row->field);
                     $options = json_decode($row->details);
 
-                    $path = $slug.'/'.date('FY').'/';
+                    $path = $slug . '/' . date('FY') . '/';
                     if (isset($options->preserveFileUploadName) && $options->preserveFileUploadName) {
-                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+                        $filename = basename($file->getClientOriginalName(), '.' . $file->getClientOriginalExtension());
                         $filename_counter = 1;
 
                         // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
-                        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+                        while (Storage::disk(config('voyager.storage.disk'))->exists($path . $filename . '.' . $file->getClientOriginalExtension())) {
+                            $filename = basename($file->getClientOriginalName(), '.' . $file->getClientOriginalExtension()) . (string)($filename_counter++);
                         }
                     } else {
                         $filename = Str::random(20);
 
                         // Make sure the filename does not exist, if it does, just regenerate
-                        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                        while (Storage::disk(config('voyager.storage.disk'))->exists($path . $filename . '.' . $file->getClientOriginalExtension())) {
                             $filename = Str::random(20);
                         }
                     }
 
-                    $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+                    $fullPath = $path . $filename . '.' . $file->getClientOriginalExtension();
 
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
+                    $resize_width = null;
+                    $resize_height = null;
+                    if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                        if (isset($options->resize->width))
+                            $resize_width = $options->resize->width;
+                        if (isset($options->resize->height))
+                            $resize_height = $options->resize->height;
                     } else {
                         $resize_width = 1800;
                         $resize_height = null;
                     }
 
+                    $quality = 90;
+                    if (isset($options->quality)) {
+                        $temp_quality = (int)$options->quality;
+                        if ($temp_quality > 0 && $temp_quality <= 100) {
+                            $quality = $temp_quality;
+                        }
+                    }
+
                     $image = Image::make($file)->resize(
                         $resize_width,
                         $resize_height,
-                        function (Constraint $constraint) {
+                        function (Constraint $constraint) use ($options) {
                             $constraint->aspectRatio();
-                            $constraint->upsize();
+                            if (isset($options->upsize) && $options->upsize) {
+                                $constraint->upsize();
+                            }
                         }
-                    )->encode($file->getClientOriginalExtension(), 75);
+                    )->encode($file->getClientOriginalExtension(), $quality);
 
                     if ($this->is_animated_gif($file)) {
                         Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
-                        $fullPathStatic = $path.$filename.'-static.'.$file->getClientOriginalExtension();
-                        Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string) $image, 'public');
+                        $fullPathStatic = $path . $filename . '-static.' . $file->getClientOriginalExtension();
+                        Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string)$image, 'public');
                     } else {
-                        Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
+                        Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string)$image, 'public');
                     }
 
                     if (isset($options->thumbnails)) {
@@ -388,8 +416,8 @@ abstract class Controller extends BaseController
                             }
 
                             Storage::disk(config('voyager.storage.disk'))->put(
-                                $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                (string) $image,
+                                $path . $filename . '-' . $thumbnails->name . '.' . $file->getClientOriginalExtension(),
+                                (string)$image,
                                 'public'
                             );
                         }
@@ -418,14 +446,14 @@ abstract class Controller extends BaseController
                 } else {
                     //DB::connection()->getPdo()->quote won't work as it quotes the
                     // lat/lng, which leads to wrong Geometry type in POINT() MySQL constructor
-                    $lat = (float) ($coordinates['lat']);
-                    $lng = (float) ($coordinates['lng']);
-                    $content = DB::raw('ST_GeomFromText(\'POINT('.$lat.' '.$lng.')\')');
+                    $lat = (float)($coordinates['lat']);
+                    $lng = (float)($coordinates['lng']);
+                    $content = DB::raw('ST_GeomFromText(\'POINT(' . $lat . ' ' . $lng . ')\')');
                 }
                 break;
 
             case 'relationship':
-                    return $request->input($row->field);
+                return $request->input($row->field);
                 break;
 
             /********** ALL OTHER TEXT TYPE **********/
