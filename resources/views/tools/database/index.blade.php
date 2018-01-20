@@ -46,16 +46,16 @@
                                 </a>
                                 <a href="{{ route('voyager.bread.edit', $table->name) }}"
                                    class="btn-sm btn-default edit">
-                                   {{ __('voyager.database.edit_bread') }}
+                                   {{ __('voyager.bread.edit_bread') }}
                                 </a>
                                 <div data-id="{{ $table->dataTypeId }}" data-name="{{ $table->name }}"
                                      class="btn-sm btn-danger delete" style="display:inline">
-                                     {{ __('voyager.database.delete_bread') }}
+                                     {{ __('voyager.bread.delete_bread') }}
                                 </div>
                             @else
                                 <a href="{{ route('voyager.bread.create', ['name' => $table->name]) }}"
                                    class="btn-sm btn-default">
-                                    <i class="voyager-plus"></i> {{ __('voyager.database.add_bread') }}
+                                    <i class="voyager-plus"></i> {{ __('voyager.bread.add_bread') }}
                                 </a>
                             @endif
                             </div>
