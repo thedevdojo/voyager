@@ -26,7 +26,7 @@ trait Resizable
         $ext = pathinfo($image, PATHINFO_EXTENSION);
 
         // We remove extension from file name so we can append thumbnail type
-        $name = rtrim($image, '.'.$ext);
+        $name = str_replace_last('.'.$ext, '', $image);
 
         // We merge original name + type + extension
         return $name.'-'.$type.'.'.$ext;
