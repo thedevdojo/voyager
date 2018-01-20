@@ -14,7 +14,7 @@ class RolesTableSeeder extends Seeder
         if (!$role->exists) {
             $role->fill([
                     'display_name' => 'Administrator',
-                    'order' => 1
+                    'order'        => 1,
                 ])->save();
         }
 
@@ -22,7 +22,7 @@ class RolesTableSeeder extends Seeder
         if (!$role->exists) {
             $role->fill([
                     'display_name' => 'Normal User',
-                    'order' => 2
+                    'order'        => 2,
                 ])->save();
         }
     }
