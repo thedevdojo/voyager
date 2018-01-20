@@ -55,7 +55,7 @@ class VoyagerRoleController extends VoyagerBreadController
 
             // Browse roles that greater than his role only except admin( order = 1)
             $user_role_order = Auth::user()->role->order;
-            if ($user_role_order != 1){
+            if ($user_role_order != 1) {
                 $query->where('order', '>', $user_role_order);
             }
 
