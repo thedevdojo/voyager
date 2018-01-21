@@ -16,7 +16,7 @@ class UserPolicy extends BasePolicy
      */
     public function read(User $user, $model)
     {
-        // Does this post belong to the current user?
+        // Does this record belong to the current user?
         $current = $user->id === $model->id;
 
         return $current || $this->checkPermission($user, $model, 'read');
@@ -32,9 +32,25 @@ class UserPolicy extends BasePolicy
      */
     public function edit(User $user, $model)
     {
-        // Does this post belong to the current user?
+        // Does this record belong to the current user?
         $current = $user->id === $model->id;
 
         return $current || $this->checkPermission($user, $model, 'edit');
+    }
+
+    /**
+     * Determine if the given user can change a user a role.
+     *
+     * @param \TCG\Voyager\Contracts\User $user
+     * @param  $model
+     *
+     * @return bool
+     */
+    public function editRoles(User $user, $model)
+    {
+        // Does this record belong to another user?
+        $another = $user->id != $model->id;
+
+        return $another && $user->hasPermission('edit_users');
     }
 }

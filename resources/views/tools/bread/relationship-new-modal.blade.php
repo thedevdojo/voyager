@@ -1,5 +1,5 @@
 <!-- !!! Add form action below -->
-<form role="form" action="{{ route('voyager.database.bread.relationship') }}" method="POST">
+<form role="form" action="{{ route('voyager.bread.relationship') }}" method="POST">
 	<div class="modal fade modal-danger modal-relationships" id="new_relationship_modal">
 		<div class="modal-dialog relationship-panel">
 		    <div class="model-content">
@@ -71,7 +71,7 @@
 				        		<p class="relationship-warn">{{ __('voyager.database.relationship.before_create') }}</p>
 				        	</div>
 				        @endif
-			        
+
 			        </div>
 			    </div>
 			    <div class="modal-footer">
