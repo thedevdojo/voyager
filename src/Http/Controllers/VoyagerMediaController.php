@@ -186,8 +186,10 @@ class VoyagerMediaController extends Controller
                 'image/svg+xml',
             ];
 
+
+            $file = $request->file->store($request->upload_path, $this->filesystem);
+
             if (in_array($request->file->getMimeType(), $allowedImageMimeTypes)) {
-                $file = $request->file->store($request->upload_path, $this->filesystem);
 
                 $image = Image::make($realPath.$file);
 
@@ -196,8 +198,6 @@ class VoyagerMediaController extends Controller
                 } else {
                     $image->orientate()->save($realPath.$file);
                 }
-            } else {
-                $file = $request->file->move($realPath, $request->file->getClientOriginalName());
             }
 
             $success = true;
