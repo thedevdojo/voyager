@@ -16,7 +16,7 @@ return [
         /*
          * Set the table name that you want to authenticate against
          */
-        'table' => 'user',
+        'table' => 'users',
 
         /*
          * Set the guard you wish to use. Use null for default laravel guard
