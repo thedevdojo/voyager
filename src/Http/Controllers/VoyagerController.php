@@ -18,7 +18,7 @@ class VoyagerController extends Controller
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard(config('voyager.auth.guard'))->logout();
 
         return redirect()->route('voyager.login');
     }

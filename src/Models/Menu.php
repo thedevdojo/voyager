@@ -62,8 +62,8 @@ class Menu extends Model
             $prefix = trim(route('voyager.dashboard', [], false), '/');
             $user_permissions = null;
 
-            if (!Auth::guest()) {
-                $user = Voyager::model('User')->find(Auth::id());
+            if (!Auth::guard(config('voyager.auth.guard'))->guest()) {
+                $user = Voyager::model('User')->find(Auth::guard(config('voyager.auth.guard'))->id());
                 $user_permissions = $user->role->permissions->pluck('key')->toArray();
             }
 

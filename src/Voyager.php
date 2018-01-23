@@ -315,7 +315,7 @@ class Voyager
     protected function getUser($id = null)
     {
         if (is_null($id)) {
-            $id = auth()->check() ? auth()->user()->id : null;
+            $id = auth()->guard(config('voyager.auth.guard'))->check() ? auth()->guard(config('voyager.auth.guard'))->user()->id : null;
         }
 
         if (is_null($id)) {
