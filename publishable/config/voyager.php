@@ -1,6 +1,29 @@
 <?php
 
 return [
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Voyager auth config
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify voyager auth configs that you want to use to login
+    | to the voyager admin.
+    |
+    */
+
+    'auth' => [
+        /*
+         * Set the table name that you want to authenticate against
+         */
+        'table' => 'user',
+        
+        /*
+         * Set the guard you wish to use. Use null for default laravel guard
+         */
+        'guard' => 'null',
+    ],
+    
     /*
     |--------------------------------------------------------------------------
     | User config
