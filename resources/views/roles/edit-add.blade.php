@@ -67,7 +67,7 @@
                                             <input type="checkbox" id="{{$table}}" class="permission-group">
                                             <label for="{{$table}}"><strong>{{title_case(str_replace('_',' ', $table))}}</strong></label>
                                             <ul>
-                                                @foreach($permission as $perm)Post
+                                                @foreach($permission as $perm)
                                                     @if(Auth::user()->role->order == 1 || key_exists($perm->key, $user_permissions))
                                                         <li>
                                                             <input type="checkbox" id="permission-{{$perm->id}}" name="permissions[]" class="the-permission" value="{{$perm->id}}" @if(in_array($perm->key, $role_permissions)) checked @endif>
