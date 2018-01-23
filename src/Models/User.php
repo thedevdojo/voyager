@@ -14,6 +14,16 @@ class User extends Authenticatable implements UserContract
         HasRelationships;
 
     protected $guarded = [];
+    
+    /**
+     * Override the getTable() method and get the database name from config.
+     *
+     * @var string
+     */
+    public function getTable()
+    {
+        return config('voyager.auth.table', 'user');
+    }
 
     public function getAvatarAttribute($value)
     {
