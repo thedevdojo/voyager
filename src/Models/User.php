@@ -14,7 +14,7 @@ class User extends Authenticatable implements UserContract
         HasRelationships;
 
     protected $guarded = [];
-    
+
     /**
      * Override the getTable() method and get the database name from config.
      *

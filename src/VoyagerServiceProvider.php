@@ -274,10 +274,10 @@ class VoyagerServiceProvider extends ServiceProvider
             if (Schema::hasTable('data_types')) {
                 $dataType = VoyagerFacade::model('DataType');
                 $dataTypes = $dataType->get();
-                
+
                 // Ensure that the gate will use the correct auth guard.
                 Auth::shouldUse(config('voyager.auth.guard'));
-                
+
                 foreach ($dataTypes as $dataType) {
                     $policyClass = BasePolicy::class;
                     if (isset($dataType->policy_name) && $dataType->policy_name !== ''
