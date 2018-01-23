@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -273,7 +274,10 @@ class VoyagerServiceProvider extends ServiceProvider
             if (Schema::hasTable('data_types')) {
                 $dataType = VoyagerFacade::model('DataType');
                 $dataTypes = $dataType->get();
-
+                
+                // Ensure that the gate will use the correct auth guard.
+                Auth::shouldUse(config('voyager.auth.guard'));
+                
                 foreach ($dataTypes as $dataType) {
                     $policyClass = BasePolicy::class;
                     if (isset($dataType->policy_name) && $dataType->policy_name !== ''
