@@ -4,7 +4,6 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerAuthController extends Controller
@@ -13,7 +12,7 @@ class VoyagerAuthController extends Controller
 
     public function login()
     {
-        if (Auth::guard(config('voyager.auth.guard'))->user()) {
+        if (voyager_auth()->user()) {
             return redirect()->route('voyager.dashboard');
         }
 
@@ -35,7 +34,7 @@ class VoyagerAuthController extends Controller
 
         $credentials = $this->credentials($request);
 
-        if (Auth::guard(config('voyager.auth.guard'))->attempt($credentials, $request->has('remember'))) {
+        if (voyager_auth()->attempt($credentials, $request->has('remember'))) {
             return $this->sendLoginResponse($request);
         }
 

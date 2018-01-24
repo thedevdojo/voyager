@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
@@ -62,8 +61,8 @@ class Menu extends Model
             $prefix = trim(route('voyager.dashboard', [], false), '/');
             $user_permissions = null;
 
-            if (!Auth::guard(config('voyager.auth.guard'))->guest()) {
-                $user = Voyager::model('User')->find(Auth::guard(config('voyager.auth.guard'))->id());
+            if (!voyager_auth()->guest()) {
+                $user = Voyager::model('User')->find(voyager_auth()->id());
                 $user_permissions = $user->role->permissions->pluck('key')->toArray();
             }
 

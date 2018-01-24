@@ -18,8 +18,8 @@ class VoyagerAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::guard(config('voyager.auth.guard'))->guest()) {
-            return auth()->guard(config('voyager.auth.guard'))->user()->hasPermission('browse_admin') ? $next($request) : redirect('/');
+        if (!voyager_auth()->guest()) {
+            return voyager_auth()->user()->hasPermission('browse_admin') ? $next($request) : redirect('/');
         }
 
         $urlLogin = route('voyager.login');

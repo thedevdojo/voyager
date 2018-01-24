@@ -4,7 +4,6 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\HasRelationships;
 use TCG\Voyager\Traits\Resizable;
@@ -25,8 +24,8 @@ class Post extends Model
     public function save(array $options = [])
     {
         // If no author has been assigned, assign the current user's id as the author of the post
-        if (!$this->author_id && Auth::guard(config('voyager.auth.guard'))->user()) {
-            $this->author_id = Auth::guard(config('voyager.auth.guard'))->user()->id;
+        if (!$this->author_id && voyager_auth()->user()) {
+            $this->author_id = voyager_auth()->user()->id;
         }
 
         parent::save();

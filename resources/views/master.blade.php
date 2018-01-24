@@ -54,9 +54,9 @@
 </div>
 
 <?php
-$user_avatar = Voyager::image(Auth::guard(config('voyager.auth.guard'))->user()->avatar);
-if ((substr(Auth::guard(config('voyager.auth.guard'))->user()->avatar, 0, 7) == 'http://') || (substr(Auth::guard(config('voyager.auth.guard'))->user()->avatar, 0, 8) == 'https://')) {
-    $user_avatar = Auth::guard(config('voyager.auth.guard'))->user()->avatar;
+$user_avatar = Voyager::image(voyager_auth()->user()->avatar);
+if ((substr(voyager_auth()->user()->avatar, 0, 7) == 'http://') || (substr(voyager_auth()->user()->avatar, 0, 8) == 'https://')) {
+    $user_avatar = voyager_auth()->user()->avatar;
 }
 ?>
 

@@ -32,7 +32,7 @@
         {
             foreach($item->children as $child)
             {
-                $hasChildren = $hasChildren || Auth::guard(config('voyager.auth.guard'))->user()->can('browse', $child);
+                $hasChildren = $hasChildren || voyager_auth()->user()->can('browse', $child);
 
                 if(url($child->link()) == url()->current())
                 {
@@ -50,7 +50,7 @@
         {
             $linkAttributes =  'href="' . url($href) .'"';
 
-            if(!Auth::guard(config('voyager.auth.guard'))->user()->can('browse', $item)) {
+            if(!voyager_auth()->user()->can('browse', $item)) {
                 continue;
             }
         }

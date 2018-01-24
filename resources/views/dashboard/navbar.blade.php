@@ -39,8 +39,8 @@
                     <li class="profile-img">
                         <img src="{{ $user_avatar }}" class="profile-img">
                         <div class="profile-body">
-                            <h5>{{ Auth::guard(config('voyager.auth.guard'))->user()->name }}</h5>
-                            <h6>{{ Auth::guard(config('voyager.auth.guard'))->user()->email }}</h6>
+                            <h5>{{ voyager_auth()->user()->name }}</h5>
+                            <h6>{{ voyager_auth()->user()->email }}</h6>
                         </div>
                     </li>
                     <li class="divider"></li>

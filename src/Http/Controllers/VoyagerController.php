@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
@@ -18,7 +17,7 @@ class VoyagerController extends Controller
 
     public function logout()
     {
-        Auth::guard(config('voyager.auth.guard'))->logout();
+        voyager_auth()->logout();
 
         return redirect()->route('voyager.login');
     }
