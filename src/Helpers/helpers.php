@@ -24,6 +24,6 @@ if (!function_exists('voyager_asset')) {
 if (!function_exists('voyager_auth')) {
     function voyager_auth()
     {
-        return \Auth::guard(config('voyager.auth.guard'));
+        return \Illuminate\Support\Facades\Auth::guard(config('voyager.auth.guard'));
     }
 }
