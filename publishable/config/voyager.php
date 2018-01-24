@@ -21,7 +21,7 @@ return [
         /*
          * Set the guard you wish to use. Use null for default laravel guard
          */
-        'guard' => 'null',
+        'guard' => null,
     ],
 
     /*
