@@ -127,7 +127,7 @@ class VoyagerRoleController extends VoyagerBreadController
 
         if (!$request->ajax()) {
             if ($request->input('order') < Auth::user()->role->order) {
-                return back()->with(['errors' => collect(["Order must be grater than your order - your order is " . Auth::user()->role->order])]);
+                return back()->with(['errors' => collect(['Order must be grater than your order - your order is '.Auth::user()->role->order])]);
             }
             $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
@@ -161,7 +161,7 @@ class VoyagerRoleController extends VoyagerBreadController
 
         if (!$request->ajax()) {
             if ($request->input('order') < Auth::user()->role->order) {
-                return back()->with(['errors' => collect(["Order must be grater than your order - your order is " . Auth::user()->role->order])]);
+                return back()->with(['errors' => collect(['Order must be grater than your order - your order is '.Auth::user()->role->order])]);
             }
             $data = new $dataType->model_name();
             $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
