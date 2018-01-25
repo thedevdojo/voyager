@@ -21,6 +21,7 @@ use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Models\MenuItem;
 use TCG\Voyager\Models\Setting;
+use TCG\Voyager\Models\User;
 use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
@@ -83,10 +84,11 @@ class VoyagerServiceProvider extends ServiceProvider
     public function boot(Router $router, Dispatcher $event)
     {
         if (config('voyager.user.add_default_role_on_register')) {
+            /** @var User $app_user */
             $app_user = config('voyager.user.namespace');
-            $app_user::created(function ($user) {
+            $app_user::created(function ($user) use ($app_user) {
                 if (is_null($user->role_id)) {
-                    VoyagerFacade::model('User')->findOrFail($user->id)
+                    $app_user::findOrFail($user->id)
                         ->setRole(config('voyager.user.default_role'))
                         ->save();
                 }
