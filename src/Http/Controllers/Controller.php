@@ -50,10 +50,13 @@ abstract class Controller extends BaseController
 
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
-            if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
-                continue;
-            }
-
+            // Accept  when row type is relationship 
+           if($row->type !== 'relationship'){
+               if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
+                   continue;
+               }
+           }
+            
             $content = $this->getContentBasedOnType($request, $slug, $row);
 
             if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
