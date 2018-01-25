@@ -336,13 +336,13 @@ return [
 
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
     'datatable' => [
-        'sEmptyTable'     => 'Não há registos para apresentar',
-        'sInfo'           => 'Mostrando de _START_ até _END_ de _TOTAL_ registos',
-        'sInfoEmpty'      => 'Mostrando de 0 até 0 de 0 registos',
-        'sInfoFiltered'   => '(filtrado de _MAX_ registos no total)',
+        'sEmptyTable'     => 'Não há registros para apresentar',
+        'sInfo'           => 'Mostrando de _START_ até _END_ de _TOTAL_ registros',
+        'sInfoEmpty'      => 'Mostrando de 0 até 0 de 0 registros',
+        'sInfoFiltered'   => '(filtrado de _MAX_ registros no total)',
         'sInfoPostFix'    => '',
         'sInfoThousands'  => ',',
-        'sLengthMenu'     => 'Mostrar _MENU_ registos',
+        'sLengthMenu'     => 'Mostrar _MENU_ registros',
         'sLoadingRecords' => 'A Carregar...',
         'sProcessing'     => 'A processar...',
         'sSearch'         => 'Procurar:',
