@@ -884,7 +884,7 @@ class DataRowsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'number',
-                'display_name' => 'Order',
+                'display_name' => 'Rank',
                 'required'     => 0,
                 'browse'       => 1,
                 'read'         => 1,
