@@ -176,9 +176,11 @@ class Voyager
         }
     }
 
-    public function image($file, $default = '')
+    public function image($file, $default = '', $name = '')
     {
         if (!empty($file)) {
+            if(!empty($name))
+                $file = preg_replace("/(\w+)\.(\w+)/","\\1-$name.\\2",$file);
             return Storage::disk(config('voyager.storage.disk'))->url($file);
         }
 
