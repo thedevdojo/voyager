@@ -116,7 +116,7 @@ abstract class Controller extends BaseController
         return $data;
     }
 
-    public function validateBread($request, $data)
+    public function validateBread($request, $data, $action = null)
     {
         $rules = [];
         $messages = [];
@@ -125,16 +125,25 @@ abstract class Controller extends BaseController
             $options = json_decode($row->details);
 
             if (isset($options->validation)) {
-                if (isset($options->validation->rule)) {
-                    if (!is_array($options->validation->rule)) {
-                        $rules[$row->display_name] = explode('|', $options->validation->rule);
+                $validationOptions = $options->validation;
+
+                // if store or update-specific validation is defined, use that instead
+                if ($action === 'store' && isset($options->validation->store)) {
+                    $validationOptions = $options->validation->store;
+                } elseif ($action === 'update' && isset($options->validation->update)) {
+                    $validationOptions = $options->validation->update;
+                }
+
+                if (isset($validationOptions->rule)) {
+                    if (!is_array($validationOptions->rule)) {
+                        $rules[$row->display_name] = explode('|', $validationOptions->rule);
                     } else {
-                        $rules[$row->display_name] = $options->validation->rule;
+                        $rules[$row->display_name] = $validationOptions->rule;
                     }
                 }
 
-                if (isset($options->validation->messages)) {
-                    foreach ($options->validation->messages as $key => $msg) {
+                if (isset($validationOptions->messages)) {
+                    foreach ($validationOptions->messages as $key => $msg) {
                         $messages[$row->display_name.'.'.$key] = $msg;
                     }
                 }
