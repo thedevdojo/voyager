@@ -97,7 +97,7 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                ->route('voyager.database.index')
-               ->with($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table->name])));
+               ->with($this->alertSuccess(__('voyager::voyager.database.success_create_table', ['table' => $table->name])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e))->withInput();
         }
@@ -117,7 +117,7 @@ class VoyagerDatabaseController extends Controller
         if (!SchemaManager::tableExists($table)) {
             return redirect()
                 ->route('voyager.database.index')
-                ->with($this->alertError(__('voyager.database.edit_table_not_exist')));
+                ->with($this->alertError(__('voyager::voyager.database.edit_table_not_exist')));
         }
 
         $db = $this->prepareDbManager('update', $table);
@@ -149,7 +149,7 @@ class VoyagerDatabaseController extends Controller
 
         return redirect()
                ->route('voyager.database.index')
-               ->with($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table['name']])));
+               ->with($this->alertSuccess(__('voyager::voyager.database.success_create_table', ['table' => $table['name']])));
     }
 
     protected function prepareDbManager($action, $table = '')
@@ -254,7 +254,7 @@ class VoyagerDatabaseController extends Controller
 
             return redirect()
                 ->route('voyager.database.index')
-                ->with($this->alertSuccess(__('voyager.database.success_delete_table', ['table' => $table])));
+                ->with($this->alertSuccess(__('voyager::voyager.database.success_delete_table', ['table' => $table])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e));
         }

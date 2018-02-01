@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
+@section('page_title', __('voyager::voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
 
 @section('css')
     <style>
@@ -53,7 +53,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i>
-        {{ __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
+        {{ __('voyager::voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
@@ -83,8 +83,8 @@
 
                         <div class="panel-heading">
                             <h3 class="panel-title">
-                                <i class="voyager-character"></i> {{ __('voyager.post.title') }}
-                                <span class="panel-desc"> {{ __('voyager.post.title_sub') }}</span>
+                                <i class="voyager-character"></i> {{ __('voyager::voyager.post.title') }}
+                                <span class="panel-desc"> {{ __('voyager::voyager.post.title_sub') }}</span>
                             </h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
@@ -95,14 +95,14 @@
                                 '_field_name'  => 'title',
                                 '_field_trans' => get_field_translations($dataTypeContent, 'title')
                             ])
-                            <input type="text" class="form-control" id="title" name="title" placeholder="{{ __('voyager.generic.title') }}" value="@if(isset($dataTypeContent->title)){{ $dataTypeContent->title }}@endif">
+                            <input type="text" class="form-control" id="title" name="title" placeholder="{{ __('voyager::voyager.generic.title') }}" value="@if(isset($dataTypeContent->title)){{ $dataTypeContent->title }}@endif">
                         </div>
                     </div>
 
                     <!-- ### CONTENT ### -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon wb-book"></i> {{ __('voyager.post.content') }}</h3>
+                            <h3 class="panel-title"><i class="icon wb-book"></i> {{ __('voyager::voyager.post.content') }}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-resize-full" data-toggle="panel-fullscreen" aria-hidden="true"></a>
                             </div>
@@ -117,7 +117,7 @@
                     <!-- ### EXCERPT ### -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">{!! __('voyager.post.excerpt') !!}</h3>
+                            <h3 class="panel-title">{!! __('voyager::voyager.post.excerpt') !!}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
@@ -178,14 +178,14 @@
                     <!-- ### DETAILS ### -->
                     <div class="panel panel panel-bordered panel-warning">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon wb-clipboard"></i> {{ __('voyager.post.details') }}</h3>
+                            <h3 class="panel-title"><i class="icon wb-clipboard"></i> {{ __('voyager::voyager.post.details') }}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.post.slug') }}</label>
+                                <label for="name">{{ __('voyager::voyager.post.slug') }}</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'slug',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'slug')
@@ -196,7 +196,7 @@
                                     value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.post.status') }}</label>
+                                <label for="name">{{ __('voyager::voyager.post.status') }}</label>
                                 <select class="form-control" name="status">
                                     <option value="PUBLISHED"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'PUBLISHED') selected="selected"@endif>{{ __('voyager.post.status_published') }}</option>
                                     <option value="DRAFT"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'DRAFT') selected="selected"@endif>{{ __('voyager.post.status_draft') }}</option>
@@ -204,7 +204,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.post.category') }}</label>
+                                <label for="name">{{ __('voyager::voyager.post.category') }}</label>
                                 <select class="form-control" name="category_id">
                                     @foreach(TCG\Voyager\Models\Category::all() as $category)
                                         <option value="{{ $category->id }}"@if(isset($dataTypeContent->category_id) && $dataTypeContent->category_id == $category->id) selected="selected"@endif>{{ $category->name }}</option>
@@ -212,7 +212,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.generic.featured') }}</label>
+                                <label for="name">{{ __('voyager::voyager.generic.featured') }}</label>
                                 <input type="checkbox" name="featured"@if(isset($dataTypeContent->featured) && $dataTypeContent->featured) checked="checked"@endif>
                             </div>
                         </div>
@@ -221,7 +221,7 @@
                     <!-- ### IMAGE ### -->
                     <div class="panel panel-bordered panel-primary">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon wb-image"></i> {{ __('voyager.post.image') }}</h3>
+                            <h3 class="panel-title"><i class="icon wb-image"></i> {{ __('voyager::voyager.post.image') }}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
@@ -237,14 +237,14 @@
                     <!-- ### SEO CONTENT ### -->
                     <div class="panel panel-bordered panel-info">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon wb-search"></i> {{ __('voyager.post.seo_content') }}</h3>
+                            <h3 class="panel-title"><i class="icon wb-search"></i> {{ __('voyager::voyager.post.seo_content') }}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.post.meta_description') }}</label>
+                                <label for="name">{{ __('voyager::voyager.post.meta_description') }}</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'meta_description',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'meta_description')
@@ -252,7 +252,7 @@
                                 <textarea class="form-control" name="meta_description">@if(isset($dataTypeContent->meta_description)){{ $dataTypeContent->meta_description }}@endif</textarea>
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.post.meta_keywords') }}</label>
+                                <label for="name">{{ __('voyager::voyager.post.meta_keywords') }}</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'meta_keywords',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'meta_keywords')
@@ -260,7 +260,7 @@
                                 <textarea class="form-control" name="meta_keywords">@if(isset($dataTypeContent->meta_keywords)){{ $dataTypeContent->meta_keywords }}@endif</textarea>
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.post.seo_title') }}</label>
+                                <label for="name">{{ __('voyager::voyager.post.seo_title') }}</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'seo_title',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'seo_title')
@@ -273,7 +273,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary pull-right">
-                @if(isset($dataTypeContent->id)){{ __('voyager.post.update') }}@else <i class="icon wb-plus-circle"></i> {{ __('voyager.post.new') }} @endif
+                @if(isset($dataTypeContent->id)){{ __('voyager::voyager.post.update') }}@else <i class="icon wb-plus-circle"></i> {{ __('voyager::voyager.post.new') }} @endif
             </button>
         </form>
 
