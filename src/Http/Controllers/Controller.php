@@ -204,9 +204,15 @@ abstract class Controller extends BaseController
 
                     $options = json_decode($row->details);
 
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
+                    $resize_width = null;
+                    $resize_height = null;
+                    if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                        if (isset($options->resize->width)) {
+                            $resize_width = $options->resize->width;
+                        }
+                        if (isset($options->resize->height)) {
+                            $resize_height = $options->resize->height;
+                        }
                     } else {
                         $resize_width = 1800;
                         $resize_height = null;
@@ -331,9 +337,15 @@ abstract class Controller extends BaseController
 
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
+                    $resize_width = null;
+                    $resize_height = null;
+                    if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                        if (isset($options->resize->width)) {
+                            $resize_width = $options->resize->width;
+                        }
+                        if (isset($options->resize->height)) {
+                            $resize_height = $options->resize->height;
+                        }
                     } else {
                         $resize_width = 1800;
                         $resize_height = null;
