@@ -13,7 +13,7 @@ class Image extends BaseType
     {
         $file = $this->request->file($this->row->field);
 
-        $path = getUploadPath($this->request, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
+        $path = getUploadPath($this->slug, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
 
         $filename = $this->generateFileName($file, $path);
 

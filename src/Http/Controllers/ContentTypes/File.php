@@ -43,7 +43,7 @@ class File extends BaseType
      */
     protected function generatePath()
     {
-        return getUploadPath($this->request, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
+        return getUploadPath($this->slug, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
     }
 
     /**

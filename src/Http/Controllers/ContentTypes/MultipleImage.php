@@ -29,7 +29,7 @@ class MultipleImage extends BaseType
 
         foreach ($files as $file) {
             $filename = Str::random(20);
-            $path = getUploadPath($this->request, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
+            $path = getUploadPath($this->slug, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
             array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
             $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
