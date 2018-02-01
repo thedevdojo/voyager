@@ -3,7 +3,7 @@
 if (!function_exists('getUploadPath')) {
 
     /**
-     * Return upload path
+     * Return upload path.
      *
      * @param Illuminate\Http\Request $request
      * @param string                  $path
@@ -24,15 +24,15 @@ if (!function_exists('getUploadPath')) {
                 $dir = str_replace('%', '', $dir);
 
                 if ($request->exists($dir)) {
-                    $_out .= $request->input($dir) . '/';
+                    $_out .= $request->input($dir).'/';
                 } elseif (strpos($dir, 'date:') !== false) {
-                    $_out .= date(str_replace('date:', '', $dir)) . '/';
+                    $_out .= date(str_replace('date:', '', $dir)).'/';
                 } else {
-                    throw new \Exception($dir . ' input is not exists');
+                    throw new \Exception($dir.' input is not exists');
                 }
 
             } else {
-                $_out .= $dir . '/';
+                $_out .= $dir.'/';
             }
         }
 
