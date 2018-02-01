@@ -15,26 +15,55 @@ class Image extends BaseType
 
         $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
 
+        if (isset($this->options->preserveFileUploadName) && $this->options->preserveFileUploadName) {
+            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+            $filename_counter = 1;
+
+            // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+            }
+        } else {
+            $filename = Str::random(20);
+
+            // Make sure the filename does not exist, if it does, just regenerate
+            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                $filename = Str::random(20);
+            }
+        }
+
         $filename = $this->generateFileName($file, $path);
 
-        $fullPath = "{$path}{$filename}.{$file->getClientOriginalExtension()}";
+        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-        if (isset($this->options->resize) && isset($this->options->resize->width) && isset($this->options->resize->height)) {
-            $resize_width = $this->options->resize->width;
-            $resize_height = $this->options->resize->height;
+        $resize_width = null;
+        $resize_height = null;
+        if (isset($this->options->resize) && (
+                isset($this->options->resize->width) || isset($this->options->resize->height)
+            )) {
+            if (isset($this->options->resize->width)) {
+                $resize_width = $this->options->resize->width;
+            }
+            if (isset($this->options->resize->height)) {
+                $resize_height = $this->options->resize->height;
+            }
         } else {
             $resize_width = 1800;
             $resize_height = null;
         }
+
+        $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
 
         $image = InterventionImage::make($file)->resize(
             $resize_width,
             $resize_height,
             function (Constraint $constraint) {
                 $constraint->aspectRatio();
-                $constraint->upsize();
+                if (isset($this->options->upsize) && !$this->options->upsize) {
+                    $constraint->upsize();
+                }
             }
-        )->encode($file->getClientOriginalExtension(), 75);
+        )->encode($file->getClientOriginalExtension(), $resize_quality);
 
         if ($this->is_animated_gif($file)) {
             Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
@@ -64,15 +93,17 @@ class Image extends BaseType
                         $thumb_resize_height,
                         function (Constraint $constraint) {
                             $constraint->aspectRatio();
-                            $constraint->upsize();
+                            if (isset($options->upsize) && !$this->options->upsize) {
+                                $constraint->upsize();
+                            }
                         }
-                    )->encode($file->getClientOriginalExtension(), 75);
+                    )->encode($file->getClientOriginalExtension(), $resize_quality);
                 } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                     $crop_width = $thumbnails->crop->width;
                     $crop_height = $thumbnails->crop->height;
                     $image = InterventionImage::make($file)
                         ->fit($crop_width, $crop_height)
-                        ->encode($file->getClientOriginalExtension(), 75);
+                        ->encode($file->getClientOriginalExtension(), $resize_quality);
                 }
 
                 Storage::disk(config('voyager.storage.disk'))->put(

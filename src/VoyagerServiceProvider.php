@@ -266,7 +266,7 @@ class VoyagerServiceProvider extends ServiceProvider
         try {
             if (Schema::hasTable('data_types')) {
                 $dataType = VoyagerFacade::model('DataType');
-                $dataTypes = $dataType->get();
+                $dataTypes = $dataType->select('policy_name', 'model_name')->get();
 
                 foreach ($dataTypes as $dataType) {
                     $policyClass = BasePolicy::class;

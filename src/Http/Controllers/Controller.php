@@ -122,10 +122,11 @@ abstract class Controller extends BaseController
         return $data;
     }
 
-    public function validateBread($request, $data)
+    public function validateBread($request, $data, $slug = null, $id = null)
     {
         $rules = [];
         $messages = [];
+        $is_update = $slug && $id;
 
         foreach ($data as $row) {
             $options = json_decode($row->details);
@@ -136,6 +137,14 @@ abstract class Controller extends BaseController
                         $rules[$row->display_name] = explode('|', $options->validation->rule);
                     } else {
                         $rules[$row->display_name] = $options->validation->rule;
+                    }
+
+                    if ($is_update) {
+                        foreach ($rules[$row->display_name] as &$role) {
+                            if (strpos(strtoupper($role), 'UNIQUE') !== false) {
+                                $role = \Illuminate\Validation\Rule::unique($slug)->ignore($id);
+                            }
+                        }
                     }
                 }
 
@@ -161,7 +170,7 @@ abstract class Controller extends BaseController
                 return (new Checkbox($request, $slug, $row, $options))->handle();
             /********** FILE TYPE **********/
             case 'file':
-            return (new File($request, $slug, $row, $options))->handle();
+                return (new File($request, $slug, $row, $options))->handle();
             /********** MULTIPLE IMAGES TYPE **********/
             // no break
             case 'multiple_images':
