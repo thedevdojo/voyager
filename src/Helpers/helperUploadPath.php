@@ -30,7 +30,6 @@ if (!function_exists('getUploadPath')) {
                 } else {
                     throw new \Exception($dir.' input is not exists');
                 }
-
             } else {
                 $_out .= $dir.'/';
             }
