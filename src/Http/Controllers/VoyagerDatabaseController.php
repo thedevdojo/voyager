@@ -91,14 +91,14 @@ class VoyagerDatabaseController extends Controller
                 }
 
                 Artisan::call('voyager:make:model', $params);
-
-                event(new TableAdded($table));
             } elseif (isset($request->create_migration) && $request->create_migration == 'on') {
                 Artisan::call('make:migration', [
                     'name'    => 'create_'.$table->name.'_table',
                     '--table' => $table->name,
                 ]);
             }
+            
+            event(new TableAdded($table));
 
             return redirect()
                ->route('voyager.database.index')
