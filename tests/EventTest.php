@@ -2,25 +2,24 @@
 
 namespace TCG\Voyager\Tests;
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use TCG\Voyager\Models\Role;
-use TCG\Voyager\Models\Page;
 use Illuminate\Support\Facades\Event;
-use TCG\Voyager\Models\DataType;
+use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Events\BreadAdded;
-use TCG\Voyager\Events\BreadUpdated;
-use TCG\Voyager\Events\BreadDeleted;
-use TCG\Voyager\Events\TableAdded;
-use TCG\Voyager\Events\TableUpdated;
-use TCG\Voyager\Events\TableDeleted;
 use TCG\Voyager\Events\BreadDataAdded;
-use TCG\Voyager\Events\BreadDataUpdated;
 use TCG\Voyager\Events\BreadDataDeleted;
+use TCG\Voyager\Events\BreadDataUpdated;
+use TCG\Voyager\Events\BreadDeleted;
 use TCG\Voyager\Events\BreadImagesDeleted;
+use TCG\Voyager\Events\BreadUpdated;
 use TCG\Voyager\Events\FileDeleted;
+use TCG\Voyager\Events\TableAdded;
+use TCG\Voyager\Events\TableDeleted;
+use TCG\Voyager\Events\TableUpdated;
+use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Models\Page;
 
 class EventTest extends TestCase
 {
@@ -39,12 +38,12 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post('/admin/database/bread', [
-            'name' => 'Toast',
-            'slug' => 'toast',
+            'name'                  => 'Toast',
+            'slug'                  => 'toast',
             'display_name_singular' => 'toast',
-            'display_name_plural' => 'toasts',
-            'icon' => 'fa fa-toast',
-            'description' => 'This is a toast',
+            'display_name_plural'   => 'toasts',
+            'icon'                  => 'fa fa-toast',
+            'description'           => 'This is a toast',
         ]);
 
         Event::assertDispatched(BreadAdded::class, function ($event) {
@@ -63,24 +62,24 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post('/admin/database/bread', [
-            'name' => 'Toast',
-            'slug' => 'toast',
+            'name'                  => 'Toast',
+            'slug'                  => 'toast',
             'display_name_singular' => 'toast',
-            'display_name_plural' => 'toasts',
-            'icon' => 'fa fa-toast',
-            'description' => 'This is a toast',
+            'display_name_plural'   => 'toasts',
+            'icon'                  => 'fa fa-toast',
+            'description'           => 'This is a toast',
         ]);
 
         Event::assertNotDispatched(BreadUpdated::class);
         $dataType = DataType::where('slug', 'toast')->firstOrFail();
 
         $this->put('/admin/database/bread/'.$dataType->id, [
-            'name' => 'Test',
-            'slug' => 'test',
+            'name'                  => 'Test',
+            'slug'                  => 'test',
             'display_name_singular' => 'test',
-            'display_name_plural' => 'tests',
-            'icon' => 'fa fa-test',
-            'description' => 'This is a test',
+            'display_name_plural'   => 'tests',
+            'icon'                  => 'fa fa-test',
+            'description'           => 'This is a test',
         ]);
 
         Event::assertDispatched(BreadUpdated::class, function ($event) {
@@ -99,12 +98,12 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post('/admin/database/bread', [
-            'name' => 'Toast',
-            'slug' => 'toast',
+            'name'                  => 'Toast',
+            'slug'                  => 'toast',
             'display_name_singular' => 'toast',
-            'display_name_plural' => 'toasts',
-            'icon' => 'fa fa-toast',
-            'description' => 'This is a toast',
+            'display_name_plural'   => 'toasts',
+            'icon'                  => 'fa fa-toast',
+            'description'           => 'This is a toast',
         ]);
 
         Event::assertNotDispatched(BreadDeleted::class);
@@ -121,8 +120,8 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post('/admin/pages', [
-            'title' => 'Toast',
-            'slug' => 'toasts',
+            'title'  => 'Toast',
+            'slug'   => 'toasts',
             'status' => 'active',
         ]);
 
@@ -135,8 +134,8 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post('/admin/pages', [
-            'title' => 'Toast',
-            'slug' => 'toasts',
+            'title'  => 'Toast',
+            'slug'   => 'toasts',
             'status' => 'active',
         ]);
 
@@ -145,8 +144,8 @@ class EventTest extends TestCase
         $page = Page::where('slug', 'toasts')->firstOrFail();
 
         $this->put('/admin/pages/'.$page->id, [
-            'title' => 'Test',
-            'slug' => 'tests',
+            'title'  => 'Test',
+            'slug'   => 'tests',
             'status' => 'pending',
         ]);
 
@@ -159,8 +158,8 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post('/admin/pages', [
-            'title' => 'Toast',
-            'slug' => 'toasts',
+            'title'  => 'Toast',
+            'slug'   => 'toasts',
             'status' => 'active',
         ]);
 
@@ -182,11 +181,11 @@ class EventTest extends TestCase
         $image = UploadedFile::fake()->image('test.png');
 
         $this->call('POST', '/admin/pages', [
-            'title' => 'Toast',
-            'slug' => 'toasts',
+            'title'  => 'Toast',
+            'slug'   => 'toasts',
             'status' => 'active',
         ], [], [
-        	'image' => $image,
+            'image' => $image,
         ]);
 
         Event::assertNotDispatched(BreadImagesDeleted::class);
@@ -207,11 +206,11 @@ class EventTest extends TestCase
         $image = UploadedFile::fake()->image('test.png');
 
         $this->call('POST', '/admin/pages', [
-            'title' => 'Toast',
-            'slug' => 'toasts',
+            'title'  => 'Toast',
+            'slug'   => 'toasts',
             'status' => 'active',
         ], [], [
-        	'image' => $image,
+            'image' => $image,
         ]);
 
         Event::assertNotDispatched(FileDeleted::class);
@@ -230,7 +229,7 @@ class EventTest extends TestCase
 
         $this->post('/admin/database', [
             'table' => [
-                'name' => 'test',
+                'name'    => 'test',
                 'columns' => [
                     [
                         'name' => 'id',
@@ -239,9 +238,9 @@ class EventTest extends TestCase
                         ],
                     ],
                 ],
-                'indexes' => [],
+                'indexes'     => [],
                 'foreignKeys' => [],
-                'options' => [],
+                'options'     => [],
             ],
         ]);
 
@@ -255,7 +254,7 @@ class EventTest extends TestCase
 
         $this->post('/admin/database', [
             'table' => [
-                'name' => 'test',
+                'name'    => 'test',
                 'columns' => [
                     [
                         'name' => 'id',
@@ -264,9 +263,9 @@ class EventTest extends TestCase
                         ],
                     ],
                 ],
-                'indexes' => [],
+                'indexes'     => [],
                 'foreignKeys' => [],
-                'options' => [],
+                'options'     => [],
             ],
         ]);
 
@@ -274,20 +273,20 @@ class EventTest extends TestCase
 
         $this->put('/admin/database/test', [
             'table' => json_encode([
-                'name' => 'test',
+                'name'    => 'test',
                 'oldName' => 'test',
                 'columns' => [
                     [
-                        'name' => 'id',
+                        'name'    => 'id',
                         'oldName' => 'id',
-                        'type' => [
+                        'type'    => [
                             'name' => 'integer',
                         ],
                     ],
                 ],
-                'indexes' => [],
+                'indexes'     => [],
                 'foreignKeys' => [],
-                'options' => [],
+                'options'     => [],
             ]),
         ]);
 
@@ -301,7 +300,7 @@ class EventTest extends TestCase
 
         $this->post('/admin/database', [
             'table' => [
-                'name' => 'test',
+                'name'    => 'test',
                 'columns' => [
                     [
                         'name' => 'id',
@@ -310,9 +309,9 @@ class EventTest extends TestCase
                         ],
                     ],
                 ],
-                'indexes' => [],
+                'indexes'     => [],
                 'foreignKeys' => [],
-                'options' => [],
+                'options'     => [],
             ],
         ]);
 
