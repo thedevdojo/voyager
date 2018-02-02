@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use TCG\Voyager\Events\FileDeleted;
 use TCG\Voyager\Traits\AlertsMessages;
 use Validator;
 
@@ -47,11 +48,17 @@ abstract class Controller extends BaseController
         foreach ($rows as $row) {
             $options = json_decode($row->details);
 
-            if ($row->type == 'relationship') {
-                $row->field = @$options->column;
+            // if the field for this row is absent from the request, continue
+            // checkboxes will be absent when unchecked, thus they are the exception
+            if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
+                continue;
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row);
+
+            if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
+                $row->field = @$options->column;
+            }
 
             /*
              * merge ex_images and upload images
@@ -72,6 +79,11 @@ abstract class Controller extends BaseController
                     $content = $data->{$row->field};
                 }
 
+                // If the multiple_images upload is null and it has a current image keep the current image
+                if ($row->type == 'multiple_images' && is_null($request->input($row->field)) && isset($data->{$row->field})) {
+                    $content = $data->{$row->field};
+                }
+
                 // If the file upload is null and it has a current file keep the current file
                 if ($row->type == 'file') {
                     $content = $data->{$row->field};
@@ -84,7 +96,7 @@ abstract class Controller extends BaseController
 
             if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
-                $multi_select[] = ['model' => $options->model, 'content' => $content];
+                $multi_select[] = ['model' => $options->model, 'content' => $content, 'table' => $options->pivot_table];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -98,16 +110,17 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->belongsToMany($sync_data['model'])->sync($sync_data['content']);
+            $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
         }
 
         return $data;
     }
 
-    public function validateBread($request, $data)
+    public function validateBread($request, $data, $slug = null, $id = null)
     {
         $rules = [];
         $messages = [];
+        $is_update = $slug && $id;
 
         foreach ($data as $row) {
             $options = json_decode($row->details);
@@ -115,15 +128,23 @@ abstract class Controller extends BaseController
             if (isset($options->validation)) {
                 if (isset($options->validation->rule)) {
                     if (!is_array($options->validation->rule)) {
-                        $rules[$row->field] = explode('|', $options->validation->rule);
+                        $rules[$row->display_name] = explode('|', $options->validation->rule);
                     } else {
-                        $rules[$row->field] = $options->validation->rule;
+                        $rules[$row->display_name] = $options->validation->rule;
+                    }
+
+                    if ($is_update) {
+                        foreach ($rules[$row->display_name] as &$role) {
+                            if (strpos(strtoupper($role), 'UNIQUE') !== false) {
+                                $role = \Illuminate\Validation\Rule::unique($slug)->ignore($id);
+                            }
+                        }
                     }
                 }
 
                 if (isset($options->validation->messages)) {
                     foreach ($options->validation->messages as $key => $msg) {
-                        $messages[$row->field.'.'.$key] = $msg;
+                        $messages[$row->display_name.'.'.$key] = $msg;
                     }
                 }
             }
@@ -167,7 +188,7 @@ abstract class Controller extends BaseController
                     $filesPath = [];
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $path = $slug.'/'.date('FY').'/';
                         $file->storeAs(
                             $path,
                             $filename.'.'.$file->getClientOriginalExtension(),
@@ -181,8 +202,8 @@ abstract class Controller extends BaseController
 
                     return json_encode($filesPath);
                 }
-            // no break
             /********** MULTIPLE IMAGES TYPE **********/
+            // no break
             case 'multiple_images':
                 if ($files = $request->file($row->field)) {
                     /**
@@ -192,25 +213,38 @@ abstract class Controller extends BaseController
 
                     $options = json_decode($row->details);
 
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
+                    $resize_width = null;
+                    $resize_height = null;
+                    if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                        if (isset($options->resize->width)) {
+                            $resize_width = $options->resize->width;
+                        }
+                        if (isset($options->resize->height)) {
+                            $resize_height = $options->resize->height;
+                        }
                     } else {
                         $resize_width = 1800;
                         $resize_height = null;
                     }
 
+                    $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
+
                     foreach ($files as $key => $file) {
                         $filename = Str::random(20);
-                        $path = $slug.'/'.date('F').date('Y').'/';
+                        $path = $slug.'/'.date('FY').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                        $image = Image::make($file)->resize($resize_width, $resize_height,
-                            function (Constraint $constraint) {
+                        $image = Image::make($file)->resize(
+                            $resize_width,
+                            $resize_height,
+                            function (Constraint $constraint) use ($options) {
                                 $constraint->aspectRatio();
-                                $constraint->upsize();
-                            })->encode($file->getClientOriginalExtension(), 75);
+                                if (isset($options->upsize) && !$options->upsize) {
+                                    $constraint->upsize();
+                                }
+                            }
+                        )->encode($file->getClientOriginalExtension(), $resize_quality);
 
                         Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
 
@@ -229,21 +263,28 @@ abstract class Controller extends BaseController
                                         $thumb_resize_height = $thumb_resize_height * $scale;
                                     }
 
-                                    $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
-                                        function (Constraint $constraint) {
+                                    $image = Image::make($file)->resize(
+                                        $thumb_resize_width,
+                                        $thumb_resize_height,
+                                        function (Constraint $constraint) use ($options) {
                                             $constraint->aspectRatio();
-                                            $constraint->upsize();
-                                        })->encode($file->getClientOriginalExtension(), 75);
+                                            if (isset($options->upsize) && !$options->upsize) {
+                                                $constraint->upsize();
+                                            }
+                                        }
+                                    )->encode($file->getClientOriginalExtension(), $resize_quality);
                                 } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                     $crop_width = $thumbnails->crop->width;
                                     $crop_height = $thumbnails->crop->height;
                                     $image = Image::make($file)
                                         ->fit($crop_width, $crop_height)
-                                        ->encode($file->getClientOriginalExtension(), 75);
+                                        ->encode($file->getClientOriginalExtension(), $resize_quality);
                                 }
 
-                                Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                    (string) $image, 'public'
+                                Storage::disk(config('voyager.storage.disk'))->put(
+                                    $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                                    (string) $image,
+                                    'public'
                                 );
                             }
                         }
@@ -283,7 +324,7 @@ abstract class Controller extends BaseController
                     }
                 }
 
-                return $content;
+                return json_encode($content);
 
             /********** IMAGE TYPE **********/
             case 'image':
@@ -291,31 +332,52 @@ abstract class Controller extends BaseController
                     $file = $request->file($row->field);
                     $options = json_decode($row->details);
 
-                    $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
-                    $filename_counter = 1;
+                    $path = $slug.'/'.date('FY').'/';
+                    if (isset($options->preserveFileUploadName) && $options->preserveFileUploadName) {
+                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+                        $filename_counter = 1;
 
-                    $path = $slug.'/'.date('F').date('Y').'/';
+                        // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+                        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+                        }
+                    } else {
+                        $filename = Str::random(20);
 
-                    // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
-                    while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                        $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+                        // Make sure the filename does not exist, if it does, just regenerate
+                        while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                            $filename = Str::random(20);
+                        }
                     }
 
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
+                    $resize_width = null;
+                    $resize_height = null;
+                    if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                        if (isset($options->resize->width)) {
+                            $resize_width = $options->resize->width;
+                        }
+                        if (isset($options->resize->height)) {
+                            $resize_height = $options->resize->height;
+                        }
                     } else {
                         $resize_width = 1800;
                         $resize_height = null;
                     }
 
-                    $image = Image::make($file)->resize($resize_width, $resize_height,
-                        function (Constraint $constraint) {
+                    $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
+
+                    $image = Image::make($file)->resize(
+                        $resize_width,
+                        $resize_height,
+                        function (Constraint $constraint) use ($options) {
                             $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })->encode($file->getClientOriginalExtension(), 75);
+                            if (isset($options->upsize) && !$options->upsize) {
+                                $constraint->upsize();
+                            }
+                        }
+                    )->encode($file->getClientOriginalExtension(), $resize_quality);
 
                     if ($this->is_animated_gif($file)) {
                         Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
@@ -340,21 +402,28 @@ abstract class Controller extends BaseController
                                     $thumb_resize_height = intval($thumb_resize_height * $scale);
                                 }
 
-                                $image = Image::make($file)->resize($thumb_resize_width, $thumb_resize_height,
-                                    function (Constraint $constraint) {
+                                $image = Image::make($file)->resize(
+                                    $thumb_resize_width,
+                                    $thumb_resize_height,
+                                    function (Constraint $constraint) use ($options) {
                                         $constraint->aspectRatio();
-                                        $constraint->upsize();
-                                    })->encode($file->getClientOriginalExtension(), 75);
+                                        if (isset($options->upsize) && !$options->upsize) {
+                                            $constraint->upsize();
+                                        }
+                                    }
+                                )->encode($file->getClientOriginalExtension(), $resize_quality);
                             } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                 $crop_width = $thumbnails->crop->width;
                                 $crop_height = $thumbnails->crop->height;
                                 $image = Image::make($file)
                                     ->fit($crop_width, $crop_height)
-                                    ->encode($file->getClientOriginalExtension(), 75);
+                                    ->encode($file->getClientOriginalExtension(), $resize_quality);
                             }
 
-                            Storage::disk(config('voyager.storage.disk'))->put($path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                                (string) $image, 'public'
+                            Storage::disk(config('voyager.storage.disk'))->put(
+                                $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
+                                (string) $image,
+                                'public'
                             );
                         }
                     }
@@ -366,7 +435,7 @@ abstract class Controller extends BaseController
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 $content = $request->input($row->field);
-                if ($request->isMethod('PUT')) {
+                if (in_array($request->method(), ['PUT', 'POST'])) {
                     if (empty($request->input($row->field))) {
                         $content = null;
                     } else {
@@ -437,6 +506,7 @@ abstract class Controller extends BaseController
     {
         if (Storage::disk(config('voyager.storage.disk'))->exists($path)) {
             Storage::disk(config('voyager.storage.disk'))->delete($path);
+            event(new FileDeleted($path));
         }
     }
 

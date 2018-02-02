@@ -8,6 +8,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
 use TCG\Voyager\FormFields\HandlerInterface;
 use TCG\Voyager\Models\Category;
@@ -160,7 +161,7 @@ class Voyager
     public function setting($key, $default = null)
     {
         if ($this->setting_cache === null) {
-            foreach (Setting::all() as $setting) {
+            foreach (self::model('Setting')->all() as $setting) {
                 $keys = explode('.', $setting->key);
                 @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
             }
@@ -189,6 +190,7 @@ class Voyager
         require __DIR__.'/../routes/voyager.php';
     }
 
+    /** @deprecated */
     public function can($permission)
     {
         $this->loadPermissions();
@@ -209,6 +211,7 @@ class Voyager
         return true;
     }
 
+    /** @deprecated */
     public function canOrFail($permission)
     {
         if (!$this->can($permission)) {
@@ -218,6 +221,7 @@ class Voyager
         return true;
     }
 
+    /** @deprecated */
     public function canOrAbort($permission, $statusCode = 403)
     {
         if (!$this->can($permission)) {
@@ -240,7 +244,7 @@ class Voyager
     public function alerts()
     {
         if (!$this->alertsCollected) {
-            event('voyager.alerts.collecting');
+            event(new AlertsCollection($this->alerts));
 
             $this->alertsCollected = true;
         }
@@ -298,12 +302,13 @@ class Voyager
         return in_array(Translatable::class, $traits);
     }
 
+    /** @deprecated */
     protected function loadPermissions()
     {
         if (!$this->permissionsLoaded) {
             $this->permissionsLoaded = true;
 
-            $this->permissions = Permission::all();
+            $this->permissions = self::model('Permission')->all();
         }
     }
 
@@ -318,7 +323,7 @@ class Voyager
         }
 
         if (!isset($this->users[$id])) {
-            $this->users[$id] = User::find($id);
+            $this->users[$id] = self::model('User')->find($id);
         }
 
         return $this->users[$id];

@@ -23,8 +23,8 @@ class CategoryTest extends TestCase
         $category = new Category();
 
         $category->fill([
-            'name'            => 'Test Title',
-            'slug'            => 'test-slug',
+            'name' => 'Test Title',
+            'slug' => 'test-slug',
         ]);
 
         // Act

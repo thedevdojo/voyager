@@ -176,17 +176,38 @@ class VoyagerMediaController extends Controller
     public function upload(Request $request)
     {
         try {
-            $path = $request->file->store($request->upload_path, $this->filesystem);
+            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+
+            $allowedImageMimeTypes = [
+                'image/jpeg',
+                'image/png',
+                'image/gif',
+                'image/bmp',
+                'image/svg+xml',
+            ];
+
+            if (in_array($request->file->getMimeType(), $allowedImageMimeTypes)) {
+                $file = $request->file->store($request->upload_path, $this->filesystem);
+
+                $image = Image::make($realPath.$file);
+
+                if ($request->file->getClientOriginalExtension() == 'gif') {
+                    copy($request->file->getRealPath(), $realPath.$file);
+                } else {
+                    $image->orientate()->save($realPath.$file);
+                }
+            } else {
+                $file = $request->file->move($realPath, $request->file->getClientOriginalName());
+            }
+
             $success = true;
             $message = __('voyager.media.success_uploaded_file');
-            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix().$path;
-            Image::make($realPath)->orientate()->save();
+            $path = preg_replace('/^public\//', '', $file);
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
+            $path = '';
         }
-
-        $path = preg_replace('/^public\//', '', $path);
 
         return response()->json(compact('success', 'message', 'path'));
     }
@@ -286,8 +307,8 @@ class VoyagerMediaController extends Controller
 
             return response()->json([
                'data' => [
-                   'status'     => 200,
-                   'message'    => __('voyager.media.image_removed'),
+                   'status'  => 200,
+                   'message' => __('voyager.media.image_removed'),
                ],
             ]);
         } catch (Exception $e) {
@@ -304,10 +325,46 @@ class VoyagerMediaController extends Controller
 
             return response()->json([
                 'data' => [
-                    'status'    => $code,
-                    'message'   => $message,
+                    'status'  => $code,
+                    'message' => $message,
                 ],
             ], $code);
         }
+    }
+
+    // Crop Image
+    public function crop(Request $request)
+    {
+        $createMode = $request->get('createMode') === 'true';
+        $x = $request->get('x');
+        $y = $request->get('y');
+        $height = $request->get('height');
+        $width = $request->get('width');
+
+        $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+        $originImagePath = $realPath.$request->upload_path.'/'.$request->originImageName;
+
+        try {
+            if ($createMode) {
+                // create a new image with the cpopped data
+                $fileNameParts = explode('.', $request->originImageName);
+                array_splice($fileNameParts, count($fileNameParts) - 1, 0, 'cropped_'.time());
+                $newImageName = implode('.', $fileNameParts);
+                $destImagePath = $realPath.$request->upload_path.'/'.$newImageName;
+            } else {
+                // override the original image
+                $destImagePath = $originImagePath;
+            }
+
+            Image::make($originImagePath)->crop($width, $height, $x, $y)->save($destImagePath);
+
+            $success = true;
+            $message = __('voyager.media.success_crop_image');
+        } catch (Exception $e) {
+            $success = false;
+            $message = $e->getMessage();
+        }
+
+        return response()->json(compact('success', 'message'));
     }
 }

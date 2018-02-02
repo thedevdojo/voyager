@@ -17,6 +17,20 @@ module.exports = function(){
 				},
 				imgIcon: function(path){
 					return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:100%; height:100%;';
+				},
+				dateFilter: function(date){
+					if(!date){
+						return null;
+					}
+					var date = new Date(date * 1000);
+
+					var month = "0" + (date.getMonth() + 1);
+					var minutes = "0" + date.getMinutes();
+					var seconds = "0" + date.getSeconds();
+					
+					var dateForamted = date.getFullYear() + '-' + month.substr(-2) + '-' + date.getDate() + ' ' + date.getHours() + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+					
+					return dateForamted;
 				}
 			}
 		});
@@ -69,10 +83,20 @@ module.exports = function(){
 
 
 				files.on("dblclick", "li .file_link", function(){
-					if (! $(this).children('.details').data('type') == 'folder') {
+					var type = manager.selected_file.type;
+
+					var imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+					
+					if (imageMimeTypes.indexOf(type) > -1) {
+						$('#imagemodal').modal('show');   
 						return false;
 					}
-					manager.folders.push( $(this).data('folder') );
+					
+					if (type !== "folder") {
+						return false;
+					}
+					
+					manager.folders.push(manager.selected_file.name);
 					getFiles(manager.folders);
 				});
 
@@ -86,6 +110,7 @@ module.exports = function(){
 
 				$('.breadcrumb').on("click", "li.media_breadcrumb", function(){
 					var index = $(this).data('index');
+					
 					manager.folders = manager.folders.splice(0, index);
 					getFiles(manager.folders);
 				});
@@ -124,34 +149,56 @@ module.exports = function(){
 				});
 
 				$(document).keydown(function(e) {
-					var isKeyControl = e.which >= 37 && e.which <= 40;
-					if (! isBrowsingFiles && isKeyControl) {
-						return false;
-					} else if (isKeyControl && isBrowsingFiles) {
-						e.preventDefault();
-					}
-					var curSelected = $('#files li .selected').data('index');
-					// left key
-					if( (e.which == 37 || e.which == 38) && parseInt(curSelected)) {
-						newSelected = parseInt(curSelected)-1;
-						setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
-					}
-					// right key
-					if( (e.which == 39 || e.which == 40) && parseInt(curSelected) < manager.files.items.length-1 ) {
-						newSelected = parseInt(curSelected)+1;
-						setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
-					}
-					// enter key
-					if(e.which == 13) {
-						if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
-							manager.folders.push( $('#files li .selected').data('folder') );
-							getFiles(manager.folders);
+					if(!$('.modal').hasClass('in')){
+						var isKeyControl = e.which >= 37 && e.which <= 40;
+						if (! isBrowsingFiles && isKeyControl) {
+							return false;
+						} else if (isKeyControl && isBrowsingFiles) {
+							e.preventDefault();
 						}
-						if($('#confirm_delete_modal').is(':visible')){
-							$('#confirm_delete').trigger('click');
+						var curSelected = $('#files li .selected').data('index');
+						// left key
+						if( (e.which == 37 || e.which == 38) && parseInt(curSelected)) {
+							newSelected = parseInt(curSelected)-1;
+							setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
+						}
+						// right key
+						if( (e.which == 39 || e.which == 40) && parseInt(curSelected) < manager.files.items.length-1 ) {
+							newSelected = parseInt(curSelected)+1;
+							setCurrentSelected( $('*[data-index="'+ newSelected + '"]') );
+						}
+						// enter key
+						if(e.which == 13) {
+							if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
+								var type = manager.selected_file.type;
+
+								var imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
+						
+								if (imageMimeTypes.indexOf(type) > -1) {
+									$('#imagemodal').modal('show');   
+									return false;
+								}
+								
+								if (type !== "folder") {
+									return false;
+								}
+								
+								manager.folders.push(manager.selected_file.name);
+								getFiles(manager.folders);
+							}
+							if($('#confirm_delete_modal').is(':visible')){
+								$('#confirm_delete').trigger('click');
+							}
+						}
+						// backspace key
+						if(e.which == 8) {
+							var index =  manager.folders.length - 1;
+							manager.folders = manager.folders.splice(0, index);
+							getFiles(manager.folders);
 						}
 					}
 				});
+				
 				//********** End Keypress Functionality **********//
 
 
@@ -256,6 +303,42 @@ module.exports = function(){
 						}
 					});
 				});
+				
+				// Crop Image
+				$('#crop').click(function(){
+					// Cleanup the previous cropper
+					if (typeof cropper !== 'undefined' && cropper instanceof Cropper) {
+						cropper.destroy();
+					}
+					$('#confirm_crop_modal').modal('show');
+				});
+
+				// Cropper must init after the modal shown
+				$('#confirm_crop_modal').on('shown.bs.modal', function (e) {
+					var croppingImage = document.getElementById('cropping-image');
+					cropper = new Cropper(croppingImage, {
+						crop: function(e) {
+							document.getElementById('new-image-width').innerText = Math.round(e.detail.width) + 'px';
+							document.getElementById('new-image-height').innerText = Math.round(e.detail.height) + 'px';
+							croppedData = {
+								x: Math.round(e.detail.x),
+								y: Math.round(e.detail.y),
+								height: Math.round(e.detail.height),
+								width: Math.round(e.detail.width)
+							};
+						}
+					});
+				});
+
+				$('#crop_btn').click(function(){
+					if (window.confirm($(this).data('confirm'))) {
+						cropImage(false);
+					}
+				});
+
+				$('#crop_and_create_btn').click(function(){
+					cropImage(true);
+				});
 
 				// $('#upload').click(function(){
 				// 	$('#upload_files_modal').modal('show');
@@ -320,7 +403,7 @@ module.exports = function(){
 					// Add the latest files to the folder dropdown
 					var all_folders = '';
 					$.post(options.baseUrl+'/media/directories', { folder_location:manager.folders, _token: CSRF_TOKEN }, function(data){
-						console.log(data);
+						//console.log(data);
 						manager.directories = data;
 					});
 
@@ -338,6 +421,26 @@ module.exports = function(){
 					var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 					return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 				}
+				
+				function cropImage(createMode) {
+					croppedData.originImageName = manager.selected_file.name
+					croppedData.upload_path = '/' + manager.folders.join('/')
+					croppedData.createMode = createMode
+	
+					var postData = Object.assign(croppedData, {_token: CSRF_TOKEN})
+					$.post(options.baseUrl+'/media/crop', postData, function(data){
+						console.log(data)
+						if(data.success == true){
+							toastr.success(data.message)
+							getFiles(manager.folders);
+							$('#confirm_crop_modal').modal('hide');
+						} else {
+							toastr.error(data.error, "Whoops!");
+						}
+					});
+				}
+				
+				
 			}
 		};
 

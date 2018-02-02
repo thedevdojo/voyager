@@ -171,7 +171,7 @@ class DataRowsTableSeeder extends Seeder
                         'forceUpdate' => true,
                     ],
                 ]),
-                'order'        => 8,
+                'order' => 8,
             ])->save();
         }
 
@@ -226,7 +226,7 @@ class DataRowsTableSeeder extends Seeder
                         'PENDING'   => 'pending',
                     ],
                 ]),
-                'order'        => 11,
+                'order' => 11,
             ])->save();
         }
 
@@ -358,7 +358,7 @@ class DataRowsTableSeeder extends Seeder
                         'origin' => 'title',
                     ],
                 ]),
-                'order'        => 6,
+                'order' => 6,
             ])->save();
         }
 
@@ -412,7 +412,7 @@ class DataRowsTableSeeder extends Seeder
                         'ACTIVE'   => 'ACTIVE',
                     ],
                 ]),
-                'order'        => 9,
+                'order' => 9,
             ])->save();
         }
 
@@ -700,9 +700,9 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 1,
                 'delete'       => 1,
                 'details'      => json_encode([
-                    'default'  => '',
-                    'null'     => '',
-                    'options'  => [
+                    'default' => '',
+                    'null'    => '',
+                    'options' => [
                         '' => '-- None --',
                     ],
                     'relationship' => [
@@ -710,7 +710,7 @@ class DataRowsTableSeeder extends Seeder
                         'label' => 'name',
                     ],
                 ]),
-                'order'        => 2,
+                'order' => 2,
             ])->save();
         }
 
@@ -728,7 +728,7 @@ class DataRowsTableSeeder extends Seeder
                 'details'      => json_encode([
                     'default' => 1,
                 ]),
-                'order'        => 3,
+                'order' => 3,
             ])->save();
         }
 
@@ -764,7 +764,7 @@ class DataRowsTableSeeder extends Seeder
                         'origin' => 'name',
                     ],
                 ]),
-                'order'        => 5,
+                'order' => 5,
             ])->save();
         }
 

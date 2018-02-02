@@ -220,7 +220,7 @@
         @if(config('voyager.show_dev_tips'))
         <div class="alert alert-info">
             <strong>{{ __('voyager.generic.how_to_use') }}:</strong>
-            <p>{{ __('voyager.settings.usage_help') }} <code>setting('section.key')</code></p>
+            <p>{{ __('voyager.settings.usage_help') }} <code>setting('group.key')</code></p>
         </div>
         @endif
     </div>
@@ -326,7 +326,7 @@
                                 <div class="col-md-2 no-padding-left-right">
                                     <select class="form-control group_select" name="{{ $setting->key }}_group">
                                         @foreach($groups as $group)
-                                        <option value="{{ $group }}" {!! $setting->group == $group ? 'selected' : '' !!}>{{ $group }}</group>
+                                        <option value="{{ $group }}" {!! $setting->group == $group ? 'selected' : '' !!}>{{ $group }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -381,7 +381,7 @@
                         <label for="group">{{ __('voyager.settings.group') }}</label>
                         <select class="form-control group_select group_select_new" name="group">
                             @foreach($groups as $group)
-                                <option value="{{ $group }}">{{ $group }}</group>
+                                <option value="{{ $group }}">{{ $group }}</option>
                             @endforeach
                         </select>
                     </div>
