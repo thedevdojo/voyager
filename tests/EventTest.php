@@ -177,7 +177,7 @@ class EventTest extends TestCase
     {
         Event::fake();
         Auth::loginUsingId(1);
-        Storage::fake();
+        Storage::fake(config('filesystems.default'));
 
         $image = UploadedFile::fake()->image('test.png');
 
@@ -202,7 +202,7 @@ class EventTest extends TestCase
     {
         Event::fake();
         Auth::loginUsingId(1);
-        Storage::fake();
+        Storage::fake(config('filesystems.default'));
 
         $image = UploadedFile::fake()->image('test.png');
 
