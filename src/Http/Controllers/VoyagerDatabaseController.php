@@ -97,7 +97,7 @@ class VoyagerDatabaseController extends Controller
                     '--table' => $table->name,
                 ]);
             }
-            
+
             event(new TableAdded($table));
 
             return redirect()
