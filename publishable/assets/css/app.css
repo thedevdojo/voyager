@@ -296,8 +296,8 @@ th {
 
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url("../fonts/glyphicons-halflings-regular.eot");
-  src: url("../fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+  src: url("../fonts/bootstrap/glyphicons-halflings-regular.eot");
+  src: url("../fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 
 .glyphicon {
@@ -12460,11 +12460,11 @@ div.FixedHeader_Cloned table {
 
 .toast-message a,
 .toast-message label {
-  color: #ffffff;
+  color: #FFFFFF;
 }
 
 .toast-message a:hover {
-  color: #cccccc;
+  color: #CCCCCC;
   text-decoration: none;
 }
 
@@ -12475,12 +12475,13 @@ div.FixedHeader_Cloned table {
   float: right;
   font-size: 20px;
   font-weight: bold;
-  color: #ffffff;
+  color: #FFFFFF;
   -webkit-text-shadow: 0 1px 0 #ffffff;
   text-shadow: 0 1px 0 #ffffff;
   opacity: 0.8;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   filter: alpha(opacity=80);
+  line-height: 1;
 }
 
 .toast-close-button:hover,
@@ -12491,6 +12492,12 @@ div.FixedHeader_Cloned table {
   opacity: 0.4;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
   filter: alpha(opacity=40);
+}
+
+.rtl .toast-close-button {
+  left: -0.3em;
+  float: left;
+  right: 0.3em;
 }
 
 /*Additional properties for button version
@@ -12570,13 +12577,19 @@ button.toast-close-button {
   background-position: 15px center;
   background-repeat: no-repeat;
   box-shadow: 0 0 12px #999999;
-  color: #ffffff;
+  color: #FFFFFF;
   opacity: 0.8;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   filter: alpha(opacity=80);
 }
 
-#toast-container > :hover {
+#toast-container > div.rtl {
+  direction: rtl;
+  padding: 15px 50px 15px 15px;
+  background-position: right 15px center;
+}
+
+#toast-container > div:hover {
   box-shadow: 0 0 12px #000000;
   opacity: 1;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
@@ -12619,19 +12632,19 @@ button.toast-close-button {
 }
 
 .toast-success {
-  background-color: #51a351;
+  background-color: #51A351;
 }
 
 .toast-error {
-  background-color: #bd362f;
+  background-color: #BD362F;
 }
 
 .toast-info {
-  background-color: #2f96b4;
+  background-color: #2F96B4;
 }
 
 .toast-warning {
-  background-color: #f89406;
+  background-color: #F89406;
 }
 
 .toast-progress {
@@ -12651,9 +12664,16 @@ button.toast-close-button {
     padding: 8px 8px 8px 50px;
     width: 11em;
   }
+  #toast-container > div.rtl {
+    padding: 8px 50px 8px 8px;
+  }
   #toast-container .toast-close-button {
     right: -0.2em;
     top: -0.2em;
+  }
+  #toast-container .rtl .toast-close-button {
+    left: -0.2em;
+    right: 0.2em;
   }
 }
 
@@ -12662,9 +12682,16 @@ button.toast-close-button {
     padding: 8px 8px 8px 50px;
     width: 18em;
   }
+  #toast-container > div.rtl {
+    padding: 8px 50px 8px 8px;
+  }
   #toast-container .toast-close-button {
     right: -0.2em;
     top: -0.2em;
+  }
+  #toast-container .rtl .toast-close-button {
+    left: -0.2em;
+    right: 0.2em;
   }
 }
 
@@ -12672,6 +12699,9 @@ button.toast-close-button {
   #toast-container > div {
     padding: 15px 15px 15px 50px;
     width: 25em;
+  }
+  #toast-container > div.rtl {
+    padding: 15px 50px 15px 15px;
   }
 }
 
@@ -13002,7 +13032,7 @@ button.toast-close-button {
 }
 
 /*!
- * Datepicker for Bootstrap v1.7.0 (https://github.com/uxsolutions/bootstrap-datepicker)
+ * Datepicker for Bootstrap v1.7.1 (https://github.com/uxsolutions/bootstrap-datepicker)
  *
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
