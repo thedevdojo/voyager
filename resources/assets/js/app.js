@@ -1,6 +1,7 @@
 window.jQuery = window.$ = $ = require('jquery');
 window.Vue = require('vue');
 window.perfectScrollbar = require('perfect-scrollbar/jquery')($);
+window.Cropper = require('cropperjs');
 window.toastr = require('./toastr');
 window.DataTable = require('./bootstrap-datatables');
 window.SimpleMDE = require('simplemde');
@@ -26,7 +27,6 @@ require('./voyager_tinymce');
 require('./voyager_ace_editor');
 window.helpers = require('./helpers.js');
 require('./load-remote.js');
-require('cropperjs');
 
 $(document).ready(function(){
 
