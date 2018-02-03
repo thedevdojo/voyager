@@ -125,7 +125,6 @@ Route::group(['as' => 'voyager.'], function () {
 
         Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');
 
-
         event(new RoutingAdminAfter());
     });
     event(new RoutingAfter());
