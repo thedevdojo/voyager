@@ -9,7 +9,7 @@ abstract class Postgresql extends Platform
     public static function getTypes(Collection $typeMapping)
     {
         // todo: need to create
-            // box, circle, line, lseg, path, pg_lsn, point, polygon
+        // box, circle, line, lseg, path, pg_lsn, point, polygon
 
         $typeMapping->forget([
             'smallint',
