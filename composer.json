@@ -24,7 +24,7 @@
         "larapack/voyager-hooks": "~1.0.5"
     },
     "require-dev": {
-        "phpunit/phpcov": "~3.0|dev-master",
+        "phpunit/phpcov": "~3.0|~4.0",
         "phpunit/phpunit": "~5.7.14|~6.1",
         "laravel/framework": "~5.4.36|~5.5.0",
         "orchestra/testbench": "~3.4.0|~3.5.0",
