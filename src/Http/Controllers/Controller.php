@@ -128,13 +128,13 @@ abstract class Controller extends BaseController
             if (isset($options->validation)) {
                 if (isset($options->validation->rule)) {
                     if (!is_array($options->validation->rule)) {
-                        $rules[$row->display_name] = explode('|', $options->validation->rule);
+                        $rules[$row->field] = explode('|', $options->validation->rule);
                     } else {
-                        $rules[$row->display_name] = $options->validation->rule;
+                        $rules[$row->field] = $options->validation->rule;
                     }
 
                     if ($is_update) {
-                        foreach ($rules[$row->display_name] as &$role) {
+                        foreach ($rules[$row->field] as &$role) {
                             if (strpos(strtoupper($role), 'UNIQUE') !== false) {
                                 $role = \Illuminate\Validation\Rule::unique($slug)->ignore($id);
                             }
