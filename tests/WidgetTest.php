@@ -16,7 +16,7 @@ class WidgetTest extends TestCase
         Auth::loginUsingId(1);
     }
 
-    public function testWidetsAreRegistered()
+    public function testWidgetsAreRegistered()
     {
         $dimmers = Facade::group('voyager::dimmers');
 
