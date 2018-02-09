@@ -8,14 +8,12 @@
         "issues": "https://github.com/the-control-group/voyager/issues",
         "source": "https://github.com/the-control-group/voyager"
     },
-    "authors": [
-        {
-            "name": "Tony Lea",
-            "email": "tony.lea@thecontrolgroup.com"
-        }
-    ],
+    "authors": [{
+        "name": "Tony Lea",
+        "email": "tony.lea@thecontrolgroup.com"
+    }],
     "require": {
-        "illuminate/support": "~5.4.0|~5.5.0",
+        "illuminate/support": "~5.4.0|~5.6.1",
         "intervention/image": "^2.4",
         "doctrine/dbal": "^2.5",
         "larapack/doctrine-support": "~0.1.4",
@@ -42,7 +40,7 @@
     "autoload-dev": {
         "psr-4": {
             "TCG\\Voyager\\Tests\\": "tests/"
-      }
+        }
     },
     "minimum-stability": "stable",
     "extra": {
