@@ -22205,6 +22205,7 @@ module.exports = function(module) {
 window.jQuery = window.$ = $ = __webpack_require__(2);
 window.Vue = __webpack_require__(89);
 window.perfectScrollbar = __webpack_require__(67)($);
+window.Cropper = __webpack_require__(62);
 window.toastr = __webpack_require__(30);
 window.DataTable = __webpack_require__(18);
 window.SimpleMDE = __webpack_require__(87);
@@ -22230,7 +22231,6 @@ __webpack_require__(32);
 __webpack_require__(31);
 window.helpers = __webpack_require__(21);
 __webpack_require__(24);
-__webpack_require__(62);
 
 $(document).ready(function () {
 
