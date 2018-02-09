@@ -2,6 +2,8 @@
 
 use TCG\Voyager\Events\Routing;
 use TCG\Voyager\Events\RoutingAdmin;
+use TCG\Voyager\Events\RoutingAdminAfter;
+use TCG\Voyager\Events\RoutingAfter;
 use TCG\Voyager\Models\DataType;
 
 /*
@@ -124,5 +126,8 @@ Route::group(['as' => 'voyager.'], function () {
             Route::get('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'index']);
             Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
         });
+
+        event(new RoutingAdminAfter());
     });
+    event(new RoutingAfter());
 });
