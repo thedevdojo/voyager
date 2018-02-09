@@ -1,20 +1,20 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.generic.view').' '.$dataType->display_name_singular)
+@section('page_title', __('voyager::voyager.generic.view').' '.$dataType->display_name_singular)
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> {{ __('voyager.generic.viewing') }} {{ ucfirst($dataType->display_name_singular) }} &nbsp;
+        <i class="{{ $dataType->icon }}"></i> {{ __('voyager::voyager.generic.viewing') }} {{ ucfirst($dataType->display_name_singular) }} &nbsp;
 
         @can('edit', $dataTypeContent)
         <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-            {{ __('voyager.generic.edit') }}
+            {{ __('voyager::voyager.generic.edit') }}
         </a>
         @endcan
         <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;
-            {{ __('voyager.generic.return_to_list') }}
+            {{ __('voyager::voyager.generic.return_to_list') }}
         </a>
     </h1>
     @include('voyager::multilingual.language-selector')
@@ -78,7 +78,7 @@
                                      {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
                                     @endforeach
                                 @endif
-                            @elseif($row->type == 'date')
+                            @elseif($row->type == 'date' || $row->type == 'timestamp')
                                 {{ $rowDetails && property_exists($rowDetails, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($rowDetails->format) : $dataTypeContent->{$row->field} }}
                             @elseif($row->type == 'checkbox')
                                 @if($rowDetails && property_exists($rowDetails, 'on') && property_exists($rowDetails, 'off'))
