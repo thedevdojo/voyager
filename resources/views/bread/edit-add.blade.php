@@ -148,6 +148,7 @@
             });
 
             $('.form-group').on('click', '.remove-multi-image', function (e) {
+                e.preventDefault();
                 $image = $(this).siblings('img');
 
                 params = {
