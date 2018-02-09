@@ -82,7 +82,7 @@ Start up a local development server with `php artisan serve` And, visit [http://
 
 If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
 
->**email:** `admin@admin.com`   
+>**email:** `admin@example.com`   
 >**password:** `password`
 
 NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
