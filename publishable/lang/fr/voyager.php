@@ -378,12 +378,12 @@ return [
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
     'datatable' => [
         'sEmptyTable'     => 'Aucune donnée disponible',
-        'sInfo'           => 'Affichage _START_ à _END_ de _TOTAL_ entréees',
-        'sInfoEmpty'      => 'Affichage 0 à 0 de 0 entréees',
-        'sInfoFiltered'   => '(filtré de _MAX_ entréees totales)',
+        'sInfo'           => 'Affichage _START_ à _END_ de _TOTAL_ entrées',
+        'sInfoEmpty'      => 'Affichage 0 à 0 de 0 entrées',
+        'sInfoFiltered'   => '(filtré de _MAX_ entrées totales)',
         'sInfoPostFix'    => '',
         'sInfoThousands'  => ' ',
-        'sLengthMenu'     => 'Afficher les entréees : _MENU_',
+        'sLengthMenu'     => 'Afficher les entrées : _MENU_',
         'sLoadingRecords' => 'Chargement...',
         'sProcessing'     => 'En traitement...',
         'sSearch'         => 'Recherche :',
