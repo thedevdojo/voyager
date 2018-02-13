@@ -134,27 +134,37 @@ $(document).ready(function () {
             data: data,
             processData: false,
             contentType: false,
+
             beforeSend: function () {
                 $("body").css("cursor", "progress");
-                $("div").removeClass("has-error");
+                $(".has-error").removeClass("has-error");
                 $(".help-block").remove();
             },
+
             success: function (d) {
                 $("body").css("cursor", "auto");
+                $.each(d.errors, function (inputName, errorMessage) {
 
-                $.each(d.errors, function (key, row) {
-                    //Scroll to first error
-                    if (Object.keys(d.errors).indexOf(key) === 0) {
+                    // This will work also for fields with brackets in the name, ie. name="image[]
+                    var $inputElement = $("[name='" + inputName + "']"),
+                        inputElementPosition = $inputElement.first().parent().offset().top,
+                        navbarHeight = $('nav.navbar').height();
+
+                    // Scroll to first error
+                    if (Object.keys(d.errors).indexOf(inputName) === 0) {
                         $('html, body').animate({
-                            scrollTop: $("[data-name='" + key + "']").parent().offset().top
-                            - $('nav.navbar').height() + 'px'
+                            scrollTop: inputElementPosition - navbarHeight + 'px'
                         }, 'fast');
                     }
 
-                    $("[data-name='" + key + "']").parent().addClass("has-error");
-                    $("[data-name='" + key + "']").parent().append("<span class='help-block' style='color:#f96868'>" + row + "</span>")
+                    // Hightlight and show the error message
+                    $inputElement.parent()
+                        .addClass("has-error")
+                        .append("<span class='help-block' style='color:#f96868'>" + errorMessage + "</span>")
+
                 });
             },
+
             error: function () {
                 $(form).unbind("submit").submit();
             }
