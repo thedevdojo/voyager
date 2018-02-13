@@ -175,21 +175,14 @@
                                             </td>
                                         @endforeach
                                         <td class="no-sort no-click" id="bread-actions">
-                                            @can('delete', $data)
-                                                <a href="javascript:;" title="{{ __('voyager.generic.delete') }}" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}" id="delete-{{ $data->{$data->getKeyName()} }}">
-                                                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete') }}</span>
+                                            @foreach(Voyager::actions() as $action)
+                                                @php $action = new $action($dataType, $data); @endphp                                          
+                                                @if ($action->shouldActionDisplayOnDataType())
+                                                <a href="{{ $action->getRoute() }}" title="{{ $action->getTitle() }}" {!! $action->convertAttributesToHtml() !!}>
+                                                    <i class="{{ $action->getIcon() }}"></i> <span class="hidden-xs hidden-sm">{{ $action->getTitle() }}</span>
                                                 </a>
-                                            @endcan
-                                            @can('edit', $data)
-                                                <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
-                                                    <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
-                                                </a>
-                                            @endcan
-                                            @can('read', $data)
-                                                <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
-                                                    <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
-                                                </a>
-                                            @endcan
+                                                @endif
+                                            @endforeach                                          
                                         </td>
                                     </tr>
                                     @endforeach
