@@ -10,7 +10,9 @@ interface ActionInterface
 
     public function getAttributes();
 
-    public function getRoute();
+    public function getRoute($key);
+
+    public function getDefaultRoute();
 
     public function getDataType();
 }
