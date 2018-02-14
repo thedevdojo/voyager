@@ -15,6 +15,9 @@ return [
         'default_role'                 => 'user',
         'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
+
+        // Where do we redirect he user after a successful login?
+        'redirect'                     => '/admin'
     ],
 
     /*
