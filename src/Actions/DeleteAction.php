@@ -23,7 +23,7 @@ class DeleteAction extends AbstractAction
         ];
     }
 
-    public function getRoute()
+    public function getDefaultRoute()
     {
         return 'javascript:;';
     }

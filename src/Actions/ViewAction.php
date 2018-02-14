@@ -21,7 +21,7 @@ class ViewAction extends AbstractAction
         ];
     }
 
-    public function getRoute()
+    public function getDefaultRoute()
     {
         return route('voyager.' . $this->dataType->slug . '.show', $this->data->{$this->data->getKeyName()});
     }

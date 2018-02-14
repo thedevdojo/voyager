@@ -21,7 +21,7 @@ class EditAction extends AbstractAction
         ];
     }
 
-    public function getRoute()
+    public function getDefaultRoute()
     {
         return route('voyager.' . $this->dataType->slug . '.edit', $this->data->{$this->data->getKeyName()});
     }
