@@ -107,7 +107,7 @@ class DataType extends Model
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
                     if (!$dataRow->save()) {
-                        throw new \Exception(__('voyager.database.field_safe_failed', ['field' => $field]));
+                        throw new \Exception(__('voyager::voyager.database.field_safe_failed', ['field' => $field]));
                     }
                 }
 
