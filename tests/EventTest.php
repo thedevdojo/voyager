@@ -2,13 +2,11 @@
 
 namespace TCG\Voyager\Tests;
 
-use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\Console\Output\BufferedOutput;
 use TCG\Voyager\Events\BreadAdded;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Events\BreadDataDeleted;
