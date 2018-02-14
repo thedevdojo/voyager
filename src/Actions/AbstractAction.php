@@ -18,6 +18,15 @@ abstract class AbstractAction implements ActionInterface
         return null;
     }
 
+    public function getRoute($key)
+    {
+        if (method_exists($this, $method = 'get' . ucfirst($key) . 'Route')) {
+            return $this->$method();
+        } else {
+            return $this->getDefaultRoute();
+        }
+    }
+
     public function getAttributes()
     {
         return [];
