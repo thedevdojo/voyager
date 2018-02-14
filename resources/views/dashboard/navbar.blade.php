@@ -4,7 +4,7 @@
             <button class="hamburger btn-link">
                 <span class="hamburger-inner"></span>
             </button>
-
+            @section('breadcrumbs')
             <ol class="breadcrumb hidden-xs">
                 @if(count(Request::segments()) == 1)
                     <li class="active"><i class="voyager-boat"></i> {{ __('voyager.generic.dashboard') }}</li>
@@ -29,6 +29,7 @@
                     @endif
                 @endfor
             </ol>
+            @show
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown profile">
