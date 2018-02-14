@@ -146,11 +146,6 @@ class Voyager
         return $this;
     }
 
-    public function addAction($action)
-    {
-        array_push($this->actions, $action);
-    }
-
     public function addAfterFormField($handler)
     {
         if (!$handler instanceof AfterHandlerInterface) {
@@ -162,11 +157,6 @@ class Voyager
         return $this;
     }
 
-    public function actions()
-    {
-        return $this->actions;
-    }
-
     public function formFields()
     {
         $connection = config('database.default');
@@ -175,6 +165,22 @@ class Voyager
         return collect($this->formFields)->filter(function ($after) use ($driver) {
             return $after->supports($driver);
         });
+    }
+
+    public function addAction($action)
+    {
+        array_push($this->actions, $action);
+    }
+
+    public function replaceAction($actionToReplace, $action)
+    {
+        $key = array_search($actionToReplace, $this->actions);
+        $this->actions[$key] = $action;
+    }
+
+    public function actions()
+    {
+        return $this->actions;
     }
 
     public function setting($key, $default = null)
