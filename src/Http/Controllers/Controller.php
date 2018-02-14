@@ -172,7 +172,6 @@ abstract class Controller extends BaseController
             case 'file':
                 return (new File($request, $slug, $row, $options))->handle();
             /********** MULTIPLE IMAGES TYPE **********/
-            // no break
             case 'multiple_images':
                 return (new MultipleImage($request, $slug, $row, $options))->handle();
             /********** SELECT MULTIPLE TYPE **********/
@@ -187,6 +186,7 @@ abstract class Controller extends BaseController
             /********** COORDINATES TYPE **********/
             case 'coordinates':
                 return (new Coordinates($request, $slug, $row, $options))->handle();
+            /********** RELATIONSHIPS TYPE **********/
             case 'relationship':
                 return (new Relationship($request, $slug, $row, $options))->handle();
             /********** ALL OTHER TEXT TYPE **********/

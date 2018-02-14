@@ -19,6 +19,6 @@ class Coordinates extends BaseType
         $lat = (float) $coordinates['lat'];
         $lng = (float) $coordinates['lng'];
 
-        return DB::raw("ST_GeomFromText(POINT({$lat} {$lng}))");
+        return DB::raw("ST_GeomFromText(POINT({$lng} {$lat}))");
     }
 }
