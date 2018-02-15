@@ -12,7 +12,7 @@
             <?php $selected_value = old($row->field); ?>
         @endif
 
-        <select class="form-control select2"  data-name="{{ $row->display_name }}" name="{{ $row->field }}">
+        <select class="form-control select2"  data-name="{{ $row->field }}" name="{{ $row->field }}">
             <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : null; ?>
 
             @if(isset($options->options))
@@ -60,7 +60,7 @@
     @endif
 @else
     <?php $selected_value = (isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field}))) ? old($row->field, $dataTypeContent->{$row->field}) : old($row->field); ?>
-    <select class="form-control select2" name="{{ $row->field }}">
+    <select class="form-control select2" data-name="{{ $row->field }}" name="{{ $row->field }}">
         <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : null; ?>
         @if(isset($options->options))
             @foreach($options->options as $key => $option)
