@@ -4699,11 +4699,6 @@ overflow-x: hidden;
   visibility: hidden;
 }
 
-.navbar .dropdown.profile:hover .dropdown-menu{
-  visibility: visible;
-  display:block;
-}
-
 .navbar .dropdown.profile .dropdown-menu h5, .navbar .dropdown.profile .dropdown-menu h6{
   float:left;
 }
@@ -4914,6 +4909,10 @@ float: left;
 
 .btn.btn-primary:hover{
   opacity:1;
+}
+
+.btn.btn-primary.active {
+    background: #0081CA;
 }
 
 .voyager .btn.btn-circle{
