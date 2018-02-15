@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
+@section('page_title', __('voyager::voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -9,7 +9,7 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i>
-        {{ __('voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
+        {{ __('voyager::voyager.generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
     </h1>
 @stop
 
@@ -40,19 +40,19 @@
 
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">{{ __('voyager.generic.name') }}</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('voyager.generic.name') }}"
+                                <label for="name">{{ __('voyager::voyager.generic.name') }}</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('voyager::voyager.generic.name') }}"
                                        value="@if(isset($dataTypeContent->name)){{ $dataTypeContent->name }}@endif">
                             </div>
 
                             <div class="form-group">
-                                <label for="email">{{ __('voyager.generic.email') }}</label>
-                                <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('voyager.generic.email') }}"
+                                <label for="email">{{ __('voyager::voyager.generic.email') }}</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('voyager::voyager.generic.email') }}"
                                        value="@if(isset($dataTypeContent->email)){{ $dataTypeContent->email }}@endif">
                             </div>
 
                             <div class="form-group">
-                                <label for="password">{{ __('voyager.generic.password') }}</label>
+                                <label for="password">{{ __('voyager::voyager.generic.password') }}</label>
                                 @if(isset($dataTypeContent->password))
                                     <br>
                                     <small>Leave empty to keep the same</small>
@@ -62,7 +62,7 @@
 
                             @can('editRoles', $dataTypeContent)
                                 <div class="form-group">
-                                    <label for="name">{{ __('voyager.profile.role_default') }}</label>
+                                    <label for="name">{{ __('voyager::voyager.profile.role_default') }}</label>
                                     @php
                                         $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
 
@@ -72,7 +72,7 @@
                                     @include('voyager::formfields.relationship')
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">{{ __('voyager.profile.roles_additional') }}</label>
+                                    <label for="name">{{ __('voyager::voyager.profile.roles_additional') }}</label>
                                     @php
                                         $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();
                                         $options = json_decode($row->details);
@@ -99,7 +99,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary pull-right save">
-                {{ __('voyager.generic.save') }}
+                {{ __('voyager::voyager.generic.save') }}
             </button>
         </form>
 
