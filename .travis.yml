@@ -22,6 +22,7 @@ matrix:
 cache:
   directories:
     - $HOME/.composer/cache
+    - node_modules
 
 services:
   - sqlite
