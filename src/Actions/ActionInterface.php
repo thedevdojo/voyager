@@ -8,6 +8,8 @@ interface ActionInterface
 
     public function getIcon();
 
+    public function getPolicy();
+
     public function getAttributes();
 
     public function getRoute($key);
