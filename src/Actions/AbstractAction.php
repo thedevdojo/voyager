@@ -15,12 +15,10 @@ abstract class AbstractAction implements ActionInterface
 
     public function getDataType()
     {
-        return null;
     }
 
     public function getPolicy()
     {
-        return null;
     }
 
     public function getRoute($key)
