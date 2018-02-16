@@ -106,7 +106,7 @@
         });
 
         $('td').on('click', '.delete', function (e) {
-            $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.index') }}' + '/' + $(e.target).data('id');
+            $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.index') }}' + '/' + $(this).data('id');
 
             $('#delete_modal').modal('show');
         });
