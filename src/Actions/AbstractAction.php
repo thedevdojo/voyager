@@ -18,6 +18,11 @@ abstract class AbstractAction implements ActionInterface
         return null;
     }
 
+    public function getPolicy()
+    {
+        return null;
+    }
+
     public function getRoute($key)
     {
         if (method_exists($this, $method = 'get' . ucfirst($key) . 'Route')) {
