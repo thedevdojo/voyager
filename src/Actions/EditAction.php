@@ -14,6 +14,11 @@ class EditAction extends AbstractAction
         return 'voyager-edit';
     }
 
+    public function getPolicy()
+    {
+        return 'edit';
+    }
+
     public function getAttributes()
     {
         return [

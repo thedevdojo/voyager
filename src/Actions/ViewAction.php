@@ -14,6 +14,11 @@ class ViewAction extends AbstractAction
         return 'voyager-eye';
     }
 
+    public function getPolicy()
+    {
+        return 'read';
+    }
+
     public function getAttributes()
     {
         return [

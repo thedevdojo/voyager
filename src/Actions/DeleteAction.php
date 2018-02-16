@@ -14,6 +14,11 @@ class DeleteAction extends AbstractAction
         return 'voyager-trash';
     }
 
+    public function getPolicy()
+    {
+        return 'delete';
+    }
+
     public function getAttributes()
     {
         return [
