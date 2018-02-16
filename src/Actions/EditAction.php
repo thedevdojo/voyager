@@ -22,12 +22,12 @@ class EditAction extends AbstractAction
     public function getAttributes()
     {
         return [
-            'class' => 'btn btn-sm btn-primary pull-right edit'
+            'class' => 'btn btn-sm btn-primary pull-right edit',
         ];
     }
 
     public function getDefaultRoute()
     {
-        return route('voyager.' . $this->dataType->slug . '.edit', $this->data->{$this->data->getKeyName()});
+        return route('voyager.'.$this->dataType->slug.'.edit', $this->data->{$this->data->getKeyName()});
     }
 }

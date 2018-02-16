@@ -22,12 +22,12 @@ class ViewAction extends AbstractAction
     public function getAttributes()
     {
         return [
-            'class' => 'btn btn-sm btn-warning pull-right edit'
+            'class' => 'btn btn-sm btn-warning pull-right edit',
         ];
     }
 
     public function getDefaultRoute()
     {
-        return route('voyager.' . $this->dataType->slug . '.show', $this->data->{$this->data->getKeyName()});
+        return route('voyager.'.$this->dataType->slug.'.show', $this->data->{$this->data->getKeyName()});
     }
 }

@@ -25,7 +25,7 @@ abstract class AbstractAction implements ActionInterface
 
     public function getRoute($key)
     {
-        if (method_exists($this, $method = 'get' . ucfirst($key) . 'Route')) {
+        if (method_exists($this, $method = 'get'.ucfirst($key).'Route')) {
             return $this->$method();
         } else {
             return $this->getDefaultRoute();
@@ -42,7 +42,7 @@ abstract class AbstractAction implements ActionInterface
         $result = '';
 
         foreach ($this->getAttributes() as $key => $attribute) {
-            $result .= $key . '="' . $attribute . '"';
+            $result .= $key.'="'.$attribute.'"';
         }
 
         return $result;
@@ -50,6 +50,6 @@ abstract class AbstractAction implements ActionInterface
 
     public function shouldActionDisplayOnDataType()
     {
-        return ($this->dataType->name === $this->getDataType() || $this->getDataType() === null);
+        return $this->dataType->name === $this->getDataType() || $this->getDataType() === null;
     }
 }
