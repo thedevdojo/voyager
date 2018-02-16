@@ -226,7 +226,7 @@
                 } else {
                     $('#delete_table_name').text(table);
 
-                    $('#delete_table_form')[0].action = '{{ route('voyager.database.destroy', ['database' => '__database']) }}' + '/' + table;
+                    $('#delete_table_form')[0].action = '{{ route('voyager.database.destroy', ['database' => '__database']) }}'.replace('__database', table)
                     $('#delete_modal').modal('show');
                 }
             });

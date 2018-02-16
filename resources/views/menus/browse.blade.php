@@ -106,7 +106,7 @@
         });
 
         $('td').on('click', '.delete', function (e) {
-            $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.index') }}' + '/' + $(this).data('id');
+            $('#delete_table_form')[0].action = '{{ route('voyager.database.destroy', ['database' => '__database']) }}'.replace('__database', table);
 
             $('#delete_modal').modal('show');
         });
