@@ -15,6 +15,7 @@ return [
         'default_role'                 => 'user',
         'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
+        'redirect'                     => '/admin',
     ],
 
     /*
@@ -94,18 +95,6 @@ return [
             'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
         ],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | The prefix you wish to use with your voyager installation
-    |--------------------------------------------------------------------------
-    |
-    | specify the domain prefix you would like your users to visit in order
-    | to view the Voyager admin panel
-    |
-    */
-
-    'prefix' => 'admin',
 
     /*
     |--------------------------------------------------------------------------

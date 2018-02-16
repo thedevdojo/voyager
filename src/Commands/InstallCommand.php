@@ -65,8 +65,12 @@ class InstallCommand extends Command
      */
     public function handle(Filesystem $filesystem)
     {
-        $this->info('Publishing the Voyager assets, database, language, and config files');
-        $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
+        $this->info('Publishing the Voyager assets, database, and config files');
+
+        //Publish only relevant resources on install
+        $tags = ['voyager_assets', 'seeds', 'demo_content', 'config'];
+
+        $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
