@@ -6,7 +6,7 @@ class ViewAction extends AbstractAction
 {
     public function getTitle()
     {
-        return __('voyager.generic.view');
+        return __('voyager::voyager.generic.view');
     }
 
     public function getIcon()
