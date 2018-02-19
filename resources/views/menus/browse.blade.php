@@ -106,9 +106,14 @@
         });
 
         $('td').on('click', '.delete', function (e) {
-            id = $(e.target).data('id');
 
-            $('#delete_form')[0].action += '/' + id;
+            var form = $('#delete_form')[0];
+
+            var deleteFormAction = form.action;
+
+            form.action = deleteFormAction.match(/\/[0-9]+$/)
+                ? deleteFormAction.replace(/([0-9]+$)/, $(this).data('id'))
+                : deleteFormAction + '/' + $(this).data('id');
 
             $('#delete_modal').modal('show');
         });
