@@ -166,7 +166,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 $this->fixMissingStorageSymlink();
             }
         } elseif ($storage_disk == 'public') {
-            if(!file_exists(public_path('storage')) ||
+            if (!file_exists(public_path('storage')) ||
                (file_exists(public_path('storage')) && readlink(public_path('storage')) == public_path('storage'))) {
                 $alert = (new Alert('missing-storage-symlink', 'warning'))
                     ->title(__('voyager.error.symlink_missing_title'))
