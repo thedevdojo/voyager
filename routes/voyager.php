@@ -1,5 +1,9 @@
 <?php
 
+use TCG\Voyager\Events\Routing;
+use TCG\Voyager\Events\RoutingAdmin;
+use TCG\Voyager\Events\RoutingAdminAfter;
+use TCG\Voyager\Events\RoutingAfter;
 use TCG\Voyager\Models\DataType;
 
 /*
@@ -13,7 +17,7 @@ use TCG\Voyager\Models\DataType;
 */
 
 Route::group(['as' => 'voyager.'], function () {
-    event('voyager.routing', app('router'));
+    event(new Routing());
 
     $namespacePrefix = '\\'.config('voyager.controllers.namespace').'\\';
 
@@ -21,7 +25,7 @@ Route::group(['as' => 'voyager.'], function () {
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
 
     Route::group(['middleware' => 'admin.user'], function () use ($namespacePrefix) {
-        event('voyager.admin.routing', app('router'));
+        event(new RoutingAdmin());
 
         // Main Admin and Logout Route
         Route::get('/', ['uses' => $namespacePrefix.'VoyagerController@index',   'as' => 'dashboard']);
@@ -120,5 +124,8 @@ Route::group(['as' => 'voyager.'], function () {
         });
 
         Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');
+
+        event(new RoutingAdminAfter());
     });
+    event(new RoutingAfter());
 });

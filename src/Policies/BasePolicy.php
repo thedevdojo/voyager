@@ -10,6 +10,8 @@ class BasePolicy
 {
     use HandlesAuthorization;
 
+    protected static $datatypes = [];
+
     /**
      * Handle all requested permission checks.
      *
@@ -43,8 +45,12 @@ class BasePolicy
      */
     protected function checkPermission(User $user, $model, $action)
     {
-        $dataType = Voyager::model('DataType');
-        $dataType = $dataType->where('model_name', get_class($model))->first();
+        if (!isset(self::$datatypes[get_class($model)])) {
+            $dataType = Voyager::model('DataType');
+            self::$datatypes[get_class($model)] = $dataType->where('model_name', get_class($model))->first();
+        }
+
+        $dataType = self::$datatypes[get_class($model)];
 
         return $user->hasPermission($action.'_'.$dataType->name);
     }
