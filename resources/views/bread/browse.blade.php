@@ -82,7 +82,7 @@
                                     <tr>
                                         @can('delete',app($dataType->model_name))
                                             <td>
-                                                <input type="checkbox" name="row_id" id="checkbox_{{ $data->id }}" value="{{ $data->id }}">
+                                                <input type="checkbox" name="row_id" id="checkbox_{{ $data->getKey() }}" value="{{ $data->getKey() }}">
                                             </td>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
