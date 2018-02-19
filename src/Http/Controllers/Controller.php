@@ -228,29 +228,31 @@ abstract class Controller extends BaseController
 
                     $options = json_decode($row->details);
 
-                    $resize_width = null;
-                    $resize_height = null;
-                    if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
-                        if (isset($options->resize->width)) {
-                            $resize_width = $options->resize->width;
-                        }
-                        if (isset($options->resize->height)) {
-                            $resize_height = $options->resize->height;
-                        }
-                    } else {
-                        $resize_width = 1800;
-                        $resize_height = null;
-                    }
-
-                    $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
-
                     foreach ($files as $key => $file) {
+                        $image = Image::make($file);
+
+                        $resize_width = null;
+                        $resize_height = null;
+                        if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                            if (isset($options->resize->width)) {
+                                $resize_width = $options->resize->width;
+                            }
+                            if (isset($options->resize->height)) {
+                                $resize_height = $options->resize->height;
+                            }
+                        } else {
+                            $resize_width = $image->width();
+                            $resize_height = $image->height();
+                        }
+
+                        $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
+
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('FY').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                        $image = Image::make($file)->resize(
+                        $image = $image->resize(
                             $resize_width,
                             $resize_height,
                             function (Constraint $constraint) use ($options) {
@@ -365,6 +367,8 @@ abstract class Controller extends BaseController
                         }
                     }
 
+                    $image = Image::make($file);
+
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
                     $resize_width = null;
@@ -377,13 +381,13 @@ abstract class Controller extends BaseController
                             $resize_height = $options->resize->height;
                         }
                     } else {
-                        $resize_width = 1800;
-                        $resize_height = null;
+                        $resize_width = $image->width();
+                        $resize_height = $image->height();
                     }
 
                     $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
 
-                    $image = Image::make($file)->resize(
+                    $image = $image->resize(
                         $resize_width,
                         $resize_height,
                         function (Constraint $constraint) use ($options) {
