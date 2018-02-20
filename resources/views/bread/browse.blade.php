@@ -27,7 +27,7 @@
                 <div class="panel panel-bordered">
                     <div class="panel-body">
                         @if ($isServerSide)
-                            <form method="get">
+                            <form method="get" class="form-search">
                                 <div id="search-input">
                                     <select id="search_key" name="key">
                                         @foreach($searchable as $key)
