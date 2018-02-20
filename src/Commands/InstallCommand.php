@@ -95,6 +95,7 @@ class InstallCommand extends Command
         $composer = $this->findComposer();
 
         $process = new Process($composer.' dump-autoload');
+        $process->setTimeout(null); //Setting timeout to null to prevent installation from stopping at a certain point in time
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Voyager routes to routes/web.php');

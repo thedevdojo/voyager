@@ -102,7 +102,7 @@
                     <!-- ### CONTENT ### -->
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title"><i class="icon wb-book"></i> {{ __('voyager::voyager.post.content') }}</h3>
+                            <h3 class="panel-title">{{ __('voyager::voyager.post.content') }}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-resize-full" data-toggle="panel-fullscreen" aria-hidden="true"></a>
                             </div>
@@ -111,7 +111,14 @@
                             '_field_name'  => 'body',
                             '_field_trans' => get_field_translations($dataTypeContent, 'body')
                         ])
-                        <textarea class="form-control richTextBox" id="richtextbody" name="body" style="border:0px;">@if(isset($dataTypeContent->body)){{ $dataTypeContent->body }}@endif</textarea>
+                        @php
+                            $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                            $row = $dataTypeRows->where('field', 'body')->first();
+                        @endphp
+                        
+                        <div class="panel-body">
+                            {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                        </div>
                     </div><!-- .panel -->
 
                     <!-- ### EXCERPT ### -->
