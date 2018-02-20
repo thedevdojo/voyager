@@ -11,110 +11,97 @@ class Image extends BaseType
 {
     public function handle()
     {
-        $file = $this->request->file($this->row->field);
+        if ($this->request->hasFile($this->row->field)) {
+            $file = $this->request->file($this->row->field);
 
-        $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+            $path = $this->slug . DIRECTORY_SEPARATOR . date('FY') . DIRECTORY_SEPARATOR;
 
-        if (isset($this->options->preserveFileUploadName) && $this->options->preserveFileUploadName) {
-            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
-            $filename_counter = 1;
+            $filename = $this->generateFileName($file, $path);
 
-            // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
-            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
-            }
-        } else {
-            $filename = Str::random(20);
+            $image = InterventionImage::make($file);
 
-            // Make sure the filename does not exist, if it does, just regenerate
-            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                $filename = Str::random(20);
-            }
-        }
+            $fullPath = $path . $filename . '.' . $file->getClientOriginalExtension();
 
-        $filename = $this->generateFileName($file, $path);
-
-        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
-
-        $resize_width = null;
-        $resize_height = null;
-        if (isset($this->options->resize) && (
-                isset($this->options->resize->width) || isset($this->options->resize->height)
-            )) {
-            if (isset($this->options->resize->width)) {
-                $resize_width = $this->options->resize->width;
-            }
-            if (isset($this->options->resize->height)) {
-                $resize_height = $this->options->resize->height;
-            }
-        } else {
-            $resize_width = 1800;
+            $resize_width = null;
             $resize_height = null;
-        }
-
-        $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
-
-        $image = InterventionImage::make($file)->resize(
-            $resize_width,
-            $resize_height,
-            function (Constraint $constraint) {
-                $constraint->aspectRatio();
-                if (isset($this->options->upsize) && !$this->options->upsize) {
-                    $constraint->upsize();
+            if (isset($this->options->resize) && (
+                    isset($this->options->resize->width) || isset($this->options->resize->height)
+                )) {
+                if (isset($this->options->resize->width)) {
+                    $resize_width = $this->options->resize->width;
                 }
+                if (isset($this->options->resize->height)) {
+                    $resize_height = $this->options->resize->height;
+                }
+            } else {
+                $resize_width = $image->width();
+                $resize_height = $image->height();
             }
-        )->encode($file->getClientOriginalExtension(), $resize_quality);
 
-        if ($this->is_animated_gif($file)) {
-            Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
-            $fullPathStatic = $path.$filename.'-static.'.$file->getClientOriginalExtension();
-            Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string) $image, 'public');
-        } else {
-            Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
-        }
+            $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
 
-        if (isset($this->options->thumbnails)) {
-            foreach ($this->options->thumbnails as $thumbnails) {
-                if (isset($thumbnails->name) && isset($thumbnails->scale)) {
-                    $scale = intval($thumbnails->scale) / 100;
-                    $thumb_resize_width = $resize_width;
-                    $thumb_resize_height = $resize_height;
-
-                    if ($thumb_resize_width != null && $thumb_resize_width != 'null') {
-                        $thumb_resize_width = intval($thumb_resize_width * $scale);
+            $image = $image->resize(
+                $resize_width,
+                $resize_height,
+                function (Constraint $constraint) {
+                    $constraint->aspectRatio();
+                    if (isset($this->options->upsize) && !$this->options->upsize) {
+                        $constraint->upsize();
                     }
+                }
+            )->encode($file->getClientOriginalExtension(), $resize_quality);
 
-                    if ($thumb_resize_height != null && $thumb_resize_height != 'null') {
-                        $thumb_resize_height = intval($thumb_resize_height * $scale);
-                    }
+            if ($this->is_animated_gif($file)) {
+                Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
+                $fullPathStatic = $path . $filename . '-static.' . $file->getClientOriginalExtension();
+                Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string)$image, 'public');
+            } else {
+                Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string)$image, 'public');
+            }
 
-                    $image = InterventionImage::make($file)->resize(
-                        $thumb_resize_width,
-                        $thumb_resize_height,
-                        function (Constraint $constraint) {
-                            $constraint->aspectRatio();
-                            if (isset($options->upsize) && !$this->options->upsize) {
-                                $constraint->upsize();
-                            }
+            if (isset($this->options->thumbnails)) {
+                foreach ($this->options->thumbnails as $thumbnails) {
+                    if (isset($thumbnails->name) && isset($thumbnails->scale)) {
+                        $scale = intval($thumbnails->scale) / 100;
+                        $thumb_resize_width = $resize_width;
+                        $thumb_resize_height = $resize_height;
+
+                        if ($thumb_resize_width != null && $thumb_resize_width != 'null') {
+                            $thumb_resize_width = intval($thumb_resize_width * $scale);
                         }
-                    )->encode($file->getClientOriginalExtension(), $resize_quality);
-                } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
-                    $crop_width = $thumbnails->crop->width;
-                    $crop_height = $thumbnails->crop->height;
-                    $image = InterventionImage::make($file)
-                        ->fit($crop_width, $crop_height)
-                        ->encode($file->getClientOriginalExtension(), $resize_quality);
+
+                        if ($thumb_resize_height != null && $thumb_resize_height != 'null') {
+                            $thumb_resize_height = intval($thumb_resize_height * $scale);
+                        }
+
+                        $image = InterventionImage::make($file)->resize(
+                            $thumb_resize_width,
+                            $thumb_resize_height,
+                            function (Constraint $constraint) {
+                                $constraint->aspectRatio();
+                                if (isset($options->upsize) && !$this->options->upsize) {
+                                    $constraint->upsize();
+                                }
+                            }
+                        )->encode($file->getClientOriginalExtension(), $resize_quality);
+                    } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
+                        $crop_width = $thumbnails->crop->width;
+                        $crop_height = $thumbnails->crop->height;
+                        $image = InterventionImage::make($file)
+                            ->fit($crop_width, $crop_height)
+                            ->encode($file->getClientOriginalExtension(), $resize_quality);
+                    }
+
+                    Storage::disk(config('voyager.storage.disk'))->put(
+                        $path . $filename . '-' . $thumbnails->name . '.' . $file->getClientOriginalExtension(),
+                        (string)$image,
+                        'public'
+                    );
                 }
-
-                Storage::disk(config('voyager.storage.disk'))->put(
-                    $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                    (string) $image,
-                    'public'
-                );
             }
-        }
 
-        return $fullPath;
+            return $fullPath;
+        }
     }
 
     /**
@@ -126,18 +113,18 @@ class Image extends BaseType
     protected function generateFileName($file, $path)
     {
         if (isset($this->options->preserveFileUploadName) && $this->options->preserveFileUploadName) {
-            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+            $filename = basename($file->getClientOriginalName(), '.' . $file->getClientOriginalExtension());
             $filename_counter = 1;
 
             // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
-            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+            while (Storage::disk(config('voyager.storage.disk'))->exists($path . $filename . '.' . $file->getClientOriginalExtension())) {
+                $filename = basename($file->getClientOriginalName(), '.' . $file->getClientOriginalExtension()) . (string)($filename_counter++);
             }
         } else {
             $filename = Str::random(20);
 
             // Make sure the filename does not exist, if it does, just regenerate
-            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+            while (Storage::disk(config('voyager.storage.disk'))->exists($path . $filename . '.' . $file->getClientOriginalExtension())) {
                 $filename = Str::random(20);
             }
         }
