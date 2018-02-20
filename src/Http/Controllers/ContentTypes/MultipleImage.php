@@ -17,32 +17,34 @@ class MultipleImage extends BaseType
         $filesPath = [];
         $files = $this->request->file($this->row->field);
 
-        $resize_width = null;
-        $resize_height = null;
-
-        if (isset($this->options->resize) && (
-                isset($this->options->resize->width) || isset($this->options->resize->height)
-            )) {
-            if (isset($this->options->resize->width)) {
-                $resize_width = $this->options->resize->width;
-            }
-            if (isset($this->options->resize->height)) {
-                $resize_height = $this->options->resize->height;
-            }
-        } else {
-            $resize_width = 1800;
-            $resize_height = null;
-        }
-
-        $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
-
         foreach ($files as $file) {
+            $image = Image::make($file);
+
+            $resize_width = null;
+            $resize_height = null;
+
+            if (isset($this->options->resize) && (
+                    isset($this->options->resize->width) || isset($this->options->resize->height)
+                )) {
+                if (isset($this->options->resize->width)) {
+                    $resize_width = $this->options->resize->width;
+                }
+                if (isset($this->options->resize->height)) {
+                    $resize_height = $this->options->resize->height;
+                }
+            } else {
+                $resize_width = $image->width();
+                $resize_height = $image->height();
+            }
+
+            $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
+
             $filename = Str::random(20);
             $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
             array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
             $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-            $image = Image::make($file)->resize(
+            $image = $image->resize(
                 $resize_width,
                 $resize_height,
                 function (Constraint $constraint) {
