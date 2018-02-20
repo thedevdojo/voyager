@@ -26,7 +26,7 @@
 
 			@else
 			
-				<select class="form-control select2" name="{{ $options->column }}">
+				<select class="form-control select2" name="{{ $relationshipField }}">
 					@php 
 						$model = app($options->model);
 	            		$query = $model::all();
