@@ -54,8 +54,7 @@ trait Translatable
         }
 
         $query->with(['translations' => function (Relation $query) use ($locale, $fallback) {
-            
-            $query->where(function($q) use ($locale, $fallback) {
+            $query->where(function ($q) use ($locale, $fallback) {
                 $q->where('locale', $locale);
 
                 if ($fallback !== false) {
@@ -88,7 +87,7 @@ trait Translatable
                 return;
             }
 
-            $query->where(function($q) use ($locales, $fallback) {
+            $query->where(function ($q) use ($locales, $fallback) {
                 if (is_array($locales)) {
                     $q->whereIn('locale', $locales);
                 } else {
