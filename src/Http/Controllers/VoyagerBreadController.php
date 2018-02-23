@@ -90,8 +90,8 @@ class VoyagerBreadController extends Controller
             $dataType = Voyager::model('DataType');
             $res = $dataType->updateDataType($request->all(), true);
             $data = $res
-                ? $this->alertSuccess(__('voyager.bread.success_created_bread'))
-                : $this->alertError(__('voyager.bread.error_creating_bread'));
+                ? $this->alertSuccess(__('voyager::voyager.bread.success_created_bread'))
+                : $this->alertError(__('voyager::voyager.bread.error_creating_bread'));
             if ($res) {
                 event(new BreadAdded($dataType, $data));
             }
@@ -147,8 +147,8 @@ class VoyagerBreadController extends Controller
 
             $res = $dataType->updateDataType($request->all(), true);
             $data = $res
-                ? $this->alertSuccess(__('voyager.bread.success_update_bread', ['datatype' => $dataType->name]))
-                : $this->alertError(__('voyager.bread.error_updating_bread'));
+                ? $this->alertSuccess(__('voyager::voyager.bread.success_update_bread', ['datatype' => $dataType->name]))
+                : $this->alertError(__('voyager::voyager.bread.error_updating_bread'));
             if ($res) {
                 event(new BreadUpdated($dataType, $data));
             }
@@ -158,7 +158,7 @@ class VoyagerBreadController extends Controller
 
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
-            return back()->with($this->alertException($e, __('voyager.generic.update_failed')));
+            return back()->with($this->alertException($e, __('voyager::voyager.generic.update_failed')));
         }
     }
 
@@ -183,8 +183,8 @@ class VoyagerBreadController extends Controller
 
         $res = Voyager::model('DataType')->destroy($id);
         $data = $res
-            ? $this->alertSuccess(__('voyager.bread.success_remove_bread', ['datatype' => $dataType->name]))
-            : $this->alertError(__('voyager.bread.error_updating_bread'));
+            ? $this->alertSuccess(__('voyager::voyager.bread.success_remove_bread', ['datatype' => $dataType->name]))
+            : $this->alertError(__('voyager::voyager.bread.error_updating_bread'));
         if ($res) {
             event(new BreadDeleted($dataType, $data));
         }

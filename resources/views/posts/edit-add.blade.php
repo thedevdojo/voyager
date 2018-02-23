@@ -205,9 +205,9 @@
                             <div class="form-group">
                                 <label for="name">{{ __('voyager::voyager.post.status') }}</label>
                                 <select class="form-control" name="status">
-                                    <option value="PUBLISHED"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'PUBLISHED') selected="selected"@endif>{{ __('voyager.post.status_published') }}</option>
-                                    <option value="DRAFT"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'DRAFT') selected="selected"@endif>{{ __('voyager.post.status_draft') }}</option>
-                                    <option value="PENDING"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'PENDING') selected="selected"@endif>{{ __('voyager.post.status_pending') }}</option>
+                                    <option value="PUBLISHED"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'PUBLISHED') selected="selected"@endif>{{ __('voyager::voyager.post.status_published') }}</option>
+                                    <option value="DRAFT"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'DRAFT') selected="selected"@endif>{{ __('voyager::voyager.post.status_draft') }}</option>
+                                    <option value="PENDING"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'PENDING') selected="selected"@endif>{{ __('voyager::voyager.post.status_pending') }}</option>
                                 </select>
                             </div>
                             <div class="form-group">
