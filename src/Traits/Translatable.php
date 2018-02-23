@@ -98,7 +98,7 @@ trait Translatable
                 if ($fallback !== false) {
                     $q->orWhere('locale', $fallback);
                 }
-            }
+            });
         }]);
     }
 
