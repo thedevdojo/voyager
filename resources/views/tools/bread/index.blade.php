@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.generic.viewing').' '.__('voyager.generic.bread'))
+@section('page_title', __('voyager::voyager.generic.viewing').' '.__('voyager::voyager.generic.bread'))
 
 @section('page_header')
     <h1 class="page-title">
@@ -18,8 +18,8 @@
                 <table class="table table-striped database-tables">
                     <thead>
                         <tr>
-                            <th>{{ __('voyager.database.table_name') }}</th>
-                            <th style="text-align:right">{{ __('voyager.bread.bread_crud_actions') }}</th>
+                            <th>{{ __('voyager::voyager.database.table_name') }}</th>
+                            <th style="text-align:right">{{ __('voyager::voyager.bread.bread_crud_actions') }}</th>
                         </tr>
                     </thead>
 
@@ -45,16 +45,16 @@
                                 </a>
                                 <a href="{{ route('voyager.bread.edit', $table->name) }}"
                                    class="btn btn-primary btn-sm edit">
-                                    <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
+                                    <i class="voyager-edit"></i> {{ __('voyager::voyager.generic.edit') }}
                                 </a>
                                 <a href="#delete-bread" data-id="{{ $table->dataTypeId }}" data-name="{{ $table->name }}"
                                      class="btn btn-danger btn-sm delete">
-                                    <i class="voyager-trash"></i> {{ __('voyager.generic.delete') }}
+                                    <i class="voyager-trash"></i> {{ __('voyager::voyager.generic.delete') }}
                                 </a>
                             @else
                                 <a href="{{ route('voyager.bread.create', ['name' => $table->name]) }}"
                                    class="_btn btn-default btn-sm pull-right">
-                                    <i class="voyager-plus"></i> {{ __('voyager.bread.add_bread') }}
+                                    <i class="voyager-plus"></i> {{ __('voyager::voyager.bread.add_bread') }}
                                 </a>
                             @endif
                         </td>
@@ -69,17 +69,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::voyager.generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i>  {!! __('voyager.bread.delete_bread_quest', ['table' => '<span id="delete_builder_name"></span>']) !!}</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i>  {!! __('voyager::voyager.bread.delete_bread_quest', ['table' => '<span id="delete_builder_name"></span>']) !!}</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.bread.delete', ['id' => null]) }}" id="delete_builder_form" method="POST">
                         {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="submit" class="btn btn-danger" value="{{ __('voyager.bread.delete_table_bread_conf') }}">
+                        <input type="submit" class="btn btn-danger" value="{{ __('voyager::voyager.bread.delete_table_bread_conf') }}">
                     </form>
-                    <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
+                    <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">{{ __('voyager::voyager.generic.cancel') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -89,7 +89,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::voyager.generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-data"></i> @{{ table.name }}</h4>
                 </div>
@@ -97,12 +97,12 @@
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>{{ __('voyager.database.field') }}</th>
-                            <th>{{ __('voyager.database.type') }}</th>
-                            <th>{{ __('voyager.database.null') }}</th>
-                            <th>{{ __('voyager.database.key') }}</th>
-                            <th>{{ __('voyager.database.default') }}</th>
-                            <th>{{ __('voyager.database.extra') }}</th>
+                            <th>{{ __('voyager::voyager.database.field') }}</th>
+                            <th>{{ __('voyager::voyager.database.type') }}</th>
+                            <th>{{ __('voyager::voyager.database.null') }}</th>
+                            <th>{{ __('voyager::voyager.database.key') }}</th>
+                            <th>{{ __('voyager::voyager.database.default') }}</th>
+                            <th>{{ __('voyager::voyager.database.extra') }}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -118,7 +118,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">{{ __('voyager.generic.close') }}</button>
+                    <button type="button" class="btn btn-outline pull-right" data-dismiss="modal">{{ __('voyager::voyager.generic.close') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
