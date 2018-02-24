@@ -16,7 +16,7 @@ require('./jquery-nestable');
 require('bootstrap');
 require('bootstrap-switch');
 require('select2');
-require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
+require('eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
 var brace = require('brace');
 require('brace/mode/json');
 require('brace/theme/github');
