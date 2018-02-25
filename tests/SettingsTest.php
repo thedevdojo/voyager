@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Tests;
 
+use TCG\Voyager\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 
 class SettingsTest extends TestCase
@@ -21,9 +22,19 @@ class SettingsTest extends TestCase
 
     public function testCanUpdateSettings()
     {
+        $key = 'site.title';
+        $newTitle = 'Just Another LaravelVoyager.com Site';
+
         $this->visit(route('voyager.settings.index'))
+             ->seeInField($key, Setting::where('key', '=', $key)->first()->value)
+             ->type($newTitle, $key)
              ->seeInElement('button', __('voyager::voyager.settings.save'))
              ->press(__('voyager::voyager.settings.save'))
              ->seePageIs(route('voyager.settings.index'));
+
+        $this->assertEquals(
+            Setting::where('key', '=', $key)->first()->value,
+            $newTitle
+        );
     }
 }
