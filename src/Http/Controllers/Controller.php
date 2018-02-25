@@ -174,7 +174,7 @@ abstract class Controller extends BaseController
         return Validator::make($request, $rules, $messages, $customAttributes);
     }
 
-    public function getContentBasedOnType(Request $request, $slug, $row, $options)
+    public function getContentBasedOnType(Request $request, $slug, $row, $options = null)
     {
         switch ($row->type) {
             /********** PASSWORD TYPE **********/
