@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Tests;
 
-use TCG\Voyager\Models\Setting;
 use Illuminate\Support\Facades\Auth;
+use TCG\Voyager\Models\Setting;
 
 class SettingsTest extends TestCase
 {
