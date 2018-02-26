@@ -36,7 +36,7 @@ class VoyagerSettingsController extends Controller
             }
         }
 
-        $active = (request()->session()->has('setting_tab'))? request()->session()->get('setting_tab') : old('setting_tab', key($settings));
+        $active = (request()->session()->has('setting_tab')) ? request()->session()->get('setting_tab') : old('setting_tab', key($settings));
 
         return Voyager::view('voyager::settings.index', compact('settings', 'groups', 'active'));
     }
