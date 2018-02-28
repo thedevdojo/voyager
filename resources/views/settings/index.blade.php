@@ -229,20 +229,21 @@
         <form action="{{ route('voyager.settings.update') }}" method="POST" enctype="multipart/form-data">
             {{ method_field("PUT") }}
             {{ csrf_field() }}
+            <input type="hidden" name="setting_tab" class="setting_tab" value="{{ $active }}" />
             <div class="panel">
 
                 <div class="page-content settings container-fluid">
                     <ul class="nav nav-tabs">
-                      @foreach($settings as $group => $setting)
-                      <li @if($loop->first) class="active" @endif>
-                          <a data-toggle="tab" href="#{{ str_slug($group) }}">{{ $group }}</a>
-                      </li>
-                      @endforeach
+                        @foreach($settings as $group => $setting)
+                            <li @if($group == $active) class="active" @endif>
+                                <a data-toggle="tab" href="#{{ str_slug($group) }}">{{ $group }}</a>
+                            </li>
+                        @endforeach
                     </ul>
 
                     <div class="tab-content">
                         @foreach($settings as $group => $group_settings)
-                        <div id="{{ str_slug($group) }}" class="tab-pane fade in @if($loop->first) active @endif">
+                        <div id="{{ str_slug($group) }}" class="tab-pane fade in @if($group == $active) active @endif">
                             @foreach($group_settings as $setting)
                             <div class="panel-heading">
                                 <h3 class="panel-title">
@@ -355,6 +356,7 @@
             <div class="panel-body">
                 <form action="{{ route('voyager.settings.store') }}" method="POST">
                     {{ csrf_field() }}
+                    <input type="hidden" name="setting_tab" class="setting_tab" value="{{ $active }}" />
                     <div class="col-md-3">
                         <label for="display_name">{{ __('voyager::voyager.generic.name') }}</label>
                         <input type="text" class="form-control" name="display_name" placeholder="{{ __('voyager::voyager.settings.help_name') }}" required="required">
@@ -455,6 +457,10 @@
             });
 
             $('.toggleswitch').bootstrapToggle();
+
+            $('[data-toggle="tab"]').click(function() {
+                $(".setting_tab").val($(this).html());
+            });
         });
     </script>
     <script type="text/javascript">

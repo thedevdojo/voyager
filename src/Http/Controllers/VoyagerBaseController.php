@@ -232,7 +232,7 @@ class VoyagerBaseController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                    'message'    => __('voyager::voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
                 ]);
         }
@@ -315,7 +315,7 @@ class VoyagerBaseController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                        'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
+                        'message'    => __('voyager::voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
         }
@@ -361,11 +361,11 @@ class VoyagerBaseController extends Controller
         $res = $data->destroy($ids);
         $data = $res
             ? [
-                'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
+                'message'    => __('voyager::voyager.generic.successfully_deleted')." {$displayName}",
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => __('voyager.generic.error_deleting')." {$displayName}",
+                'message'    => __('voyager::voyager.generic.error_deleting')." {$displayName}",
                 'alert-type' => 'error',
             ];
 
