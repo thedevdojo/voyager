@@ -81,7 +81,7 @@ class DataType extends Model
             DB::beginTransaction();
 
             // Prepare data
-            foreach (['generate_permissions', 'server_side'] as $field) {
+            foreach (['generate_permissions', 'generate_bread_controller', 'server_side'] as $field) {
                 if (!isset($requestData[$field])) {
                     $requestData[$field] = 0;
                 }
@@ -119,6 +119,41 @@ class DataType extends Model
                 // It seems everything was fine. Let's check if we need to generate permissions
                 if ($this->generate_permissions) {
                     Voyager::model('Permission')->generateFor($this->name);
+                }
+
+                // Generate/copy BREAD Controller
+                if ($requestData['generate_bread_controller']) {
+                    if (empty(trim($this->controller))) {
+                        throw new \Exception(__('validation.required_with', ['attribute' => __('voyager.database.controller_name'), 'values' => __('voyager.database.generate_bread_controller')]));
+                    }
+
+                    $controller_path = app_path('Http/Controllers/' . studly_case($this->controller) . '.php');
+                    $controller_path = (DIRECTORY_SEPARATOR === '\\')
+                          ? str_replace('/', '\\', $controller_path)
+                          : str_replace('\\', '/', $controller_path);
+
+                    $controller_namespace = 'App\Http\Controllers';
+                    $regexp = "/^(.*)\\\\([^\/]*)$/";
+                    if (preg_match($regexp, $this->controller)) {
+                        $controller_namespace .= '\\' . preg_replace($regexp, '$1', $this->controller);
+                    }
+                    $controller_class_name = class_basename($this->controller);
+
+                    if (realpath($controller_path)) {
+                        throw new \Exception(__('voyager.database.bread_controller_already_exists'));
+                    }else{
+                        // Create dir if needed
+                        if (!file_exists(preg_replace("/\/[^\/]*$/", '', $controller_path)) && !is_dir(preg_replace("/\/[^\/]*$/", '', $controller_path)))
+                            mkdir(preg_replace("/\/[^\/]*$/", '', $controller_path), 0755, true);
+
+                        // Get and modify content
+                        $controller_content = file_get_contents(base_path('vendor/tcg/voyager/src/Http/Controllers/VoyagerBreadController.php'));
+                        $controller_content = str_replace('namespace TCG\Voyager\Http\Controllers;', 'namespace ' .$controller_namespace. ';', $controller_content);
+                        $controller_content = str_replace('class VoyagerBreadController extends Controller', 'class ' .$controller_class_name. ' extends \TCG\Voyager\Http\Controllers\VoyagerBreadController', $controller_content);
+
+                        // Write to file
+                        file_put_contents($controller_path, $controller_content);
+                    }
                 }
 
                 DB::commit();

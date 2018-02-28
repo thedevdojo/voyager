@@ -337,6 +337,7 @@ class VoyagerDatabaseController extends Controller
                 : [];
 
             $res = $dataType->updateDataType($request->all(), true);
+
             $data = $res
                 ? $this->alertSuccess(__('voyager.database.success_update_bread', ['datatype' => $dataType->name]))
                 : $this->alertError(__('voyager.database.error_updating_bread'));
