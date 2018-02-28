@@ -36,7 +36,9 @@ class VoyagerSettingsController extends Controller
             }
         }
 
-        return Voyager::view('voyager::settings.index', compact('settings', 'groups'));
+        $active = (request()->session()->has('setting_tab')) ? request()->session()->get('setting_tab') : old('setting_tab', key($settings));
+
+        return Voyager::view('voyager::settings.index', compact('settings', 'groups', 'active'));
     }
 
     public function store(Request $request)
@@ -66,7 +68,9 @@ class VoyagerSettingsController extends Controller
         $request->merge(['value' => '']);
         $request->merge(['key' => $key]);
 
-        Voyager::model('Setting')->create($request->all());
+        Voyager::model('Setting')->create($request->except('setting_tab'));
+
+        request()->flashOnly('setting_tab');
 
         return back()->with([
             'message'    => __('voyager::voyager.settings.successfully_created'),
@@ -101,6 +105,8 @@ class VoyagerSettingsController extends Controller
             $setting->save();
         }
 
+        request()->flashOnly('setting_tab');
+
         return back()->with([
             'message'    => __('voyager::voyager.settings.successfully_saved'),
             'alert-type' => 'success',
@@ -112,7 +118,11 @@ class VoyagerSettingsController extends Controller
         // Check permission
         $this->authorize('delete', Voyager::model('Setting'));
 
+        $setting = Voyager::model('Setting')->find($id);
+
         Voyager::model('Setting')->destroy($id);
+
+        request()->session()->flash('setting_tab', $setting->group);
 
         return back()->with([
             'message'    => __('voyager::voyager.settings.successfully_deleted'),
@@ -152,6 +162,8 @@ class VoyagerSettingsController extends Controller
             ];
         }
 
+        request()->session()->flash('setting_tab', $setting->group);
+
         return back()->with($data);
     }
 
@@ -172,6 +184,8 @@ class VoyagerSettingsController extends Controller
             $setting->value = '';
             $setting->save();
         }
+
+        request()->session()->flash('setting_tab', $setting->group);
 
         return back()->with([
             'message'    => __('voyager::voyager.settings.successfully_removed', ['name' => $setting->display_name]),
@@ -211,6 +225,8 @@ class VoyagerSettingsController extends Controller
                 'alert-type' => 'success',
             ];
         }
+
+        request()->session()->flash('setting_tab', $setting->group);
 
         return back()->with($data);
     }
