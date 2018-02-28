@@ -421,7 +421,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.settings.delete', ['id' => '__id']) }}" id="delete_form" method="POST">
+                    <form action="{{ route('voyager.settings.delete', ['id' => '0']) }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager.settings.delete_confirm') }}">
@@ -446,11 +446,13 @@
                 }
             });
 
-            $('.voyager-trash').click(function () {
+            $('.panel-actions .voyager-trash').click(function () {
                 var display = $(this).data('display-name') + '/' + $(this).data('display-key');
-
+				var form = $('#delete_form')[0];
+				
                 $('#delete_setting_title').text(display);
-                $('#delete_form')[0].action = $('#delete_form')[0].action.replace('__id', $(this).data('id'));
+                form.action = form.action.match(/\/[0-9]+$/) ? form.action.replace(/([0-9]+$)/, $(this).data('id')) : form.action + '/' + $(this).data('id');
+
                 $('#delete_modal').modal('show');
             });
 
