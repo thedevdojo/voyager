@@ -130,9 +130,15 @@ return [
         'successfully_deleted' => 'Paramètres supprimés avec succès',
         'already_at_top'       => 'Déjà en haut de la liste',
         'already_at_bottom'    => 'Déjà en bas de la liste',
+        'key_already_exists'   => 'La clé :key déjà existe',
         'moved_order_up'       => 'Trier le paramètre :name en ordre croissant',
         'moved_order_down'     => 'Trier le paramètre :name en ordre décroissant',
         'successfully_removed' => 'Valeur :name supprimée avec succès',
+        'group_general'        => 'Général',
+        'group_admin'          => 'Administrateur',
+        'group_site'           => 'Site',
+        'group'                => 'Groupe',
+        'help_group'           => 'Groupe ce paramètre est affecté à',
     ],
 
     'media' => [
