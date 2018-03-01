@@ -125,7 +125,7 @@ return [
         'already_at_bottom'    => 'Zaten listenin en altında',
         'moved_order_up'       => ' :name ayarı yukarı taşındı',
         'moved_order_down'     => ' :name ayarı aşağı taşındı',
-        'key_already_exists'   => 'Anahtar :key zaten var',        
+        'key_already_exists'   => 'Anahtar :key zaten var',
         'successfully_removed' => ':name başarılı bir şekilde değeri silindi',
         'group_general'        => 'Genel',
         'group_admin'          => 'Admin',
