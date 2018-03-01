@@ -26,6 +26,7 @@ class CreateMenuTable extends Migration
             $table->string('target')->default('_self');
             $table->string('icon_class')->nullable();
             $table->string('color')->nullable();
+            $table->string('q')->nullable();
             $table->integer('parent_id')->nullable();
             $table->integer('order');
             $table->timestamps();
