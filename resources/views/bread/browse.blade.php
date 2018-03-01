@@ -231,7 +231,7 @@
                     <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager.generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.'.$dataType->slug.'.index') }}" id="delete_form" method="POST">
+                    <form action="#" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
@@ -279,17 +279,7 @@
 
         var deleteFormAction;
         $('td').on('click', '.delete', function (e) {
-            var form = $('#delete_form')[0];
-
-            if (!deleteFormAction) { // Save form action initial value
-                deleteFormAction = form.action;
-            }
-
-            form.action = deleteFormAction.match(/\/[0-9]+$/)
-                ? deleteFormAction.replace(/([0-9]+$)/, $(this).data('id'))
-                : deleteFormAction + '/' + $(this).data('id');
-            console.log(form.action);
-
+            $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
             $('#delete_modal').modal('show');
         });
     </script>
