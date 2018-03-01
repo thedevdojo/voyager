@@ -225,7 +225,7 @@ class VoyagerBreadController extends Controller
         $this->authorize('edit', $data);
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows);
+        $val = $this->validateBread($request->all(), $dataType->editRows, $slug, $id);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);

@@ -116,32 +116,56 @@ abstract class Controller extends BaseController
         return $data;
     }
 
-    public function validateBread($request, $data)
+    /**
+     * Validates bread POST request.
+     *
+     * @param \Illuminate\Http\Request $request The Request
+     * @param array                    $data    Field data
+     * @param string                   $slug    Slug
+     * @param int                      $id      Id of the record to update
+     *
+     * @return mixed
+     */
+    public function validateBread($request, $data, $slug = null, $id = null)
     {
         $rules = [];
         $messages = [];
+        $customAttributes = [];
+        $is_update = $slug && $id;
 
-        foreach ($data as $row) {
-            $options = json_decode($row->details);
+        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
-            if (isset($options->validation)) {
-                if (isset($options->validation->rule)) {
-                    if (!is_array($options->validation->rule)) {
-                        $rules[$row->display_name] = explode('|', $options->validation->rule);
-                    } else {
-                        $rules[$row->display_name] = $options->validation->rule;
+        foreach ($fieldsWithValidationRules as $field) {
+            $options = json_decode($field->details);
+            $fieldRules = $options->validation->rule;
+            $fieldName = $field->field;
+
+            // Show the field's display name on the error message
+            if (!empty($field->display_name)) {
+                $customAttributes[$fieldName] = $field->display_name;
+            }
+
+            // Get the rules for the current field whatever the format it is in
+            $rules[$fieldName] = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
+
+            // Fix Unique validation rule on Edit Mode
+            if ($is_update) {
+                foreach ($rules[$fieldName] as &$fieldRule) {
+                    if (strpos(strtoupper($fieldRule), 'UNIQUE') !== false) {
+                        $fieldRule = \Illuminate\Validation\Rule::unique($slug)->ignore($id);
                     }
                 }
+            }
 
-                if (isset($options->validation->messages)) {
-                    foreach ($options->validation->messages as $key => $msg) {
-                        $messages[$row->display_name.'.'.$key] = $msg;
-                    }
+            // Set custom validation messages if any
+            if (!empty($options->validation->messages)) {
+                foreach ($options->validation->messages as $key => $msg) {
+                    $messages["{$fieldName}.{$key}"] = $msg;
                 }
             }
         }
 
-        return Validator::make($request, $rules, $messages);
+        return Validator::make($request, $rules, $messages, $customAttributes);
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row)
@@ -204,28 +228,40 @@ abstract class Controller extends BaseController
 
                     $options = json_decode($row->details);
 
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
-                    } else {
-                        $resize_width = 1800;
-                        $resize_height = null;
-                    }
-
                     foreach ($files as $key => $file) {
+                        $image = Image::make($file);
+
+                        $resize_width = null;
+                        $resize_height = null;
+                        if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                            if (isset($options->resize->width)) {
+                                $resize_width = $options->resize->width;
+                            }
+                            if (isset($options->resize->height)) {
+                                $resize_height = $options->resize->height;
+                            }
+                        } else {
+                            $resize_width = $image->width();
+                            $resize_height = $image->height();
+                        }
+
+                        $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
+
                         $filename = Str::random(20);
                         $path = $slug.'/'.date('FY').'/';
                         array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
                         $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                        $image = Image::make($file)->resize(
+                        $image = $image->resize(
                             $resize_width,
                             $resize_height,
-                            function (Constraint $constraint) {
+                            function (Constraint $constraint) use ($options) {
                                 $constraint->aspectRatio();
-                                $constraint->upsize();
+                                if (isset($options->upsize) && !$options->upsize) {
+                                    $constraint->upsize();
+                                }
                             }
-                        )->encode($file->getClientOriginalExtension(), 75);
+                        )->encode($file->getClientOriginalExtension(), $resize_quality);
 
                         Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
 
@@ -247,17 +283,19 @@ abstract class Controller extends BaseController
                                     $image = Image::make($file)->resize(
                                         $thumb_resize_width,
                                         $thumb_resize_height,
-                                        function (Constraint $constraint) {
+                                        function (Constraint $constraint) use ($options) {
                                             $constraint->aspectRatio();
-                                            $constraint->upsize();
+                                            if (isset($options->upsize) && !$options->upsize) {
+                                                $constraint->upsize();
+                                            }
                                         }
-                                    )->encode($file->getClientOriginalExtension(), 75);
+                                    )->encode($file->getClientOriginalExtension(), $resize_quality);
                                 } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                     $crop_width = $thumbnails->crop->width;
                                     $crop_height = $thumbnails->crop->height;
                                     $image = Image::make($file)
                                         ->fit($crop_width, $crop_height)
-                                        ->encode($file->getClientOriginalExtension(), 75);
+                                        ->encode($file->getClientOriginalExtension(), $resize_quality);
                                 }
 
                                 Storage::disk(config('voyager.storage.disk'))->put(
@@ -329,24 +367,36 @@ abstract class Controller extends BaseController
                         }
                     }
 
+                    $image = Image::make($file);
+
                     $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-                    if (isset($options->resize) && isset($options->resize->width) && isset($options->resize->height)) {
-                        $resize_width = $options->resize->width;
-                        $resize_height = $options->resize->height;
+                    $resize_width = null;
+                    $resize_height = null;
+                    if (isset($options->resize) && (isset($options->resize->width) || isset($options->resize->height))) {
+                        if (isset($options->resize->width)) {
+                            $resize_width = $options->resize->width;
+                        }
+                        if (isset($options->resize->height)) {
+                            $resize_height = $options->resize->height;
+                        }
                     } else {
-                        $resize_width = 1800;
-                        $resize_height = null;
+                        $resize_width = $image->width();
+                        $resize_height = $image->height();
                     }
 
-                    $image = Image::make($file)->resize(
+                    $resize_quality = isset($options->quality) ? intval($options->quality) : 75;
+
+                    $image = $image->resize(
                         $resize_width,
                         $resize_height,
-                        function (Constraint $constraint) {
+                        function (Constraint $constraint) use ($options) {
                             $constraint->aspectRatio();
-                            $constraint->upsize();
+                            if (isset($options->upsize) && !$options->upsize) {
+                                $constraint->upsize();
+                            }
                         }
-                    )->encode($file->getClientOriginalExtension(), 75);
+                    )->encode($file->getClientOriginalExtension(), $resize_quality);
 
                     if ($this->is_animated_gif($file)) {
                         Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
@@ -374,17 +424,19 @@ abstract class Controller extends BaseController
                                 $image = Image::make($file)->resize(
                                     $thumb_resize_width,
                                     $thumb_resize_height,
-                                    function (Constraint $constraint) {
+                                    function (Constraint $constraint) use ($options) {
                                         $constraint->aspectRatio();
-                                        $constraint->upsize();
+                                        if (isset($options->upsize) && !$options->upsize) {
+                                            $constraint->upsize();
+                                        }
                                     }
-                                )->encode($file->getClientOriginalExtension(), 75);
+                                )->encode($file->getClientOriginalExtension(), $resize_quality);
                             } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                 $crop_width = $thumbnails->crop->width;
                                 $crop_height = $thumbnails->crop->height;
                                 $image = Image::make($file)
                                     ->fit($crop_width, $crop_height)
-                                    ->encode($file->getClientOriginalExtension(), 75);
+                                    ->encode($file->getClientOriginalExtension(), $resize_quality);
                             }
 
                             Storage::disk(config('voyager.storage.disk'))->put(
@@ -475,6 +527,25 @@ abstract class Controller extends BaseController
             Storage::disk(config('voyager.storage.disk'))->delete($path);
             event(new FileDeleted($path));
         }
+    }
+
+    /**
+     * Get fields having validation rules in proper format.
+     *
+     * @param array $fieldsConfig
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getFieldsWithValidationRules($fieldsConfig)
+    {
+        return $fieldsConfig->filter(function ($value) {
+            if (empty($value->details)) {
+                return false;
+            }
+            $decoded = json_decode($value->details, true);
+
+            return !empty($decoded['validation']['rule']);
+        });
     }
 
     // public function handleRelationshipContent($row, $content){

@@ -11,7 +11,11 @@
 				@php 
 					$relationshipData = (isset($data)) ? $data : $dataTypeContent;
 					$model = app($options->model);
-            		$query = $model::find($relationshipData->{$options->column});
+					if (method_exists($model, 'getRelationship')) {
+						$query = $model::getRelationship($relationshipData->{$options->column});
+					} else {
+						$query = $model::find($relationshipData->{$options->column});
+					}
             	@endphp
 
             	@if(isset($query))
@@ -139,7 +143,7 @@
 				<select class="form-control select2" name="{{ $relationshipField }}[]" multiple>
 					
 			            @php 
-					$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->key)->all() : array();
+					$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
 			                $relationshipOptions = app($options->model)->all();
 			            @endphp
 
