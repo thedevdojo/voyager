@@ -4455,6 +4455,19 @@ p#the_plugin_name{
   border-bottom: 1px solid #eeeeee;
 }
 
+.page-content {
+
+  &.browse {
+
+    .form-search {
+      position: relative;
+      z-index: 1;
+    }
+
+  }
+
+}
+
 .page-content > .row > [class*="col-"]:not(:first-child) {
   padding-left: 8px;
 }
