@@ -124,7 +124,7 @@ return [
         'successfully_deleted' => 'Configuração removida com sucesso',
         'already_at_top'       => 'Já chegou ao topo da lista',
         'already_at_bottom'    => 'Já chegou ao fundo da lista',
-        'key_already_exists'   => 'A chave :key já existe',        
+        'key_already_exists'   => 'A chave :key já existe',
         'moved_order_up'       => 'Configuração :name movida para cima',
         'moved_order_down'     => 'Configuração :name movida para baixo',
         'successfully_removed' => 'Valor :name removido com sucesso',
