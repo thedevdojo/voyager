@@ -129,7 +129,7 @@ class VoyagerMediaController extends Controller
         $source = "{$location}/{$source}";
         $destination = strpos($destination, '/../') !== false
             ? $this->directory.'/'.dirname($folderLocation).'/'.str_replace('/../', '', $destination)
-            : "{$location}/{$destination}";
+            : "/{$destination}";
 
         if (!file_exists($destination)) {
             if (Storage::disk($this->filesystem)->move($source, $destination)) {

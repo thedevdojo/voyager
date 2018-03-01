@@ -31,7 +31,7 @@
     <td>
         <select :value="index.type" @change="onIndexTypeChange"
                 :disabled="column.type.notSupportIndex"
-                class="form-control" tabindex="-1">
+                class="form-control">
             <option value=""></option>
             <option value="INDEX">{{ __('voyager.database.index') }}</option>
             <option value="UNIQUE">{{ __('voyager.database.unique') }}</option>
