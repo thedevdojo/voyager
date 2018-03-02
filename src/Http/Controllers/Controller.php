@@ -43,6 +43,7 @@ abstract class Controller extends BaseController
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $multi_select = [];
+        $has_many_relations = [];
 
         /*
          * Prepare Translations and Transform data
@@ -56,7 +57,12 @@ abstract class Controller extends BaseController
 
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
-            if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
+            // Same exception applies to hasMany relations
+            if (!$request->hasFile($row->field) &&
+                !$request->has($row->field) &&
+                $row->type !== 'checkbox' &&
+                ($row->type !== 'relationship' || $options->type !== 'hasMany')
+            ) {
                 continue;
             }
 
@@ -103,6 +109,16 @@ abstract class Controller extends BaseController
             if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
                 $multi_select[] = ['model' => $options->model, 'content' => $content, 'table' => $options->pivot_table];
+            } elseif ($row->type == 'relationship' && $options->type == 'hasMany') {
+                $ids = !empty($content) ? $content : [];
+                $has_many_relations[] = [
+                    'modelName'  => $options->model,
+                    'foreignKey' => $options->column,
+                    'localKey'   => $options->key,
+                    'ids'        => $ids,
+                    // assuming that the relation attribute is same as table name
+                    'attribute'  => $options->table,
+                ];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -113,6 +129,23 @@ abstract class Controller extends BaseController
         // Save translations
         if (count($translations) > 0) {
             $data->saveTranslations($translations);
+        }
+
+        // Set hasMany relations
+        foreach ($has_many_relations as $has_many) {
+            $model_name = $has_many['modelName'];
+            $foreign_key = $has_many['foreignKey'];
+            $local_id = $data->getKey();
+
+            // Unset previous relations
+            $model_name::where($foreign_key, '=', $local_id)
+                ->update([$foreign_key => null]);
+
+            // Set new relations
+            if (!empty($has_many['ids'])) {
+                $related_collection = $model_name::find($has_many['ids']);
+                $data->{$has_many['attribute']}()->saveMany($related_collection);
+            }
         }
 
         foreach ($multi_select as $sync_data) {

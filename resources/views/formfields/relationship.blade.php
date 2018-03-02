@@ -76,15 +76,19 @@
 	            		<p>{{ $string_values }}</p>
 	            	@endif
 	            @else
-	            	@if(empty($selected_values))
-		            	<p>No results</p>
-		            @else
-		            	<ul>
-			            	@foreach($selected_values as $selected_value)
-			            		<li>{{ $selected_value }}</li>
-			            	@endforeach
-			            </ul>
-			        @endif
+
+                    @php
+                        $model = app($options->model);
+                        $selected_values = $model::where($options->column, '=', $dataTypeContent->id)->get()->pluck($options->key)->toArray();
+                        $all = $model::all();
+                    @endphp
+
+                    <select autocomplete="off" class="form-control select2" name="{{ $relationshipField }}[]" multiple>
+                        @foreach($all as $relationshipOption)
+                            <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values)) selected @endif>{{ $relationshipOption->{$options->label} }}</option>
+                        @endforeach
+                    </select>
+
 	            @endif
 
 			@else
