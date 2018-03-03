@@ -216,14 +216,11 @@ class VoyagerBreadController extends Controller
     {
         $relationshipField = $this->getRelationshipField($request);
 
-        // Check permission
-        $this->authorize('add', app($dataType->model_name));
-
-        // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
-
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
+        if (!class_exists($request->relationship_model)) {
+            return back()->with([
+                'message'    => 'Model Class '.$request->relationship_model.' does not exist. Please create Model before creating relationship.',
+                'alert-type' => 'error',
+            ]);
         }
 
         try {
