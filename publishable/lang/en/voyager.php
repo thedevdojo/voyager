@@ -433,5 +433,6 @@ return [
         'symlink_missing_text'   => 'We could not find a storage symlink. This could cause problems with '.
                                     'loading media files from the browser.',
         'symlink_missing_title' => 'Missing storage symlink',
+        'role_rank'             => 'Rank must be higher than your rank - your rank is :rank',
     ],
 ];
