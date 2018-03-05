@@ -123,7 +123,7 @@ return [
         'successfully_deleted' => 'Başarıyla Ayar Silindi ',
         'already_at_top'       => 'Zaten Listenin en üstünde',
         'already_at_bottom'    => 'Zaten listenin en altında',
-        'key_already_exists'   => ':key anahtarı zaten mevcut',        
+        'key_already_exists'   => ':key anahtarı zaten mevcut',
         'moved_order_up'       => ' :name ayarı yukarı taşındı',
         'moved_order_down'     => ' :name ayarı aşağı taşındı ',
         'successfully_removed' => ' :name değeri başarılı bir şekilde kaldırıldı',
