@@ -127,6 +127,7 @@ return [
         'successfully_deleted' => 'Параметры успешно удалены',
         'already_at_top'       => 'Уже размещено вверху списка',
         'already_at_bottom'    => 'Уже размещено внизу списка',
+        'key_already_exists'   => 'ключ :key уже существует',
         'moved_order_up'       => 'Параметр :name перемещен вверх',
         'moved_order_down'     => 'Параметр :name перемещен вниз',
         'successfully_removed' => 'Успешно удалено значение параметра :name',

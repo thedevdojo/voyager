@@ -124,9 +124,15 @@ return [
         'successfully_deleted' => 'Configuração removida com sucesso',
         'already_at_top'       => 'Já chegou ao topo da lista',
         'already_at_bottom'    => 'Já chegou ao fundo da lista',
+        'key_already_exists'   => 'A chave :key já existe',
         'moved_order_up'       => 'Configuração :name movida para cima',
         'moved_order_down'     => 'Configuração :name movida para baixo',
         'successfully_removed' => 'Valor :name removido com sucesso',
+        'group_general'        => 'Geral',
+        'group_admin'          => 'Administrador',
+        'group_site'           => 'Site',
+        'group'                => 'Grupo',
+        'help_group'           => 'O grupo desta configuração é atribuído a',
     ],
 
     'media' => [
