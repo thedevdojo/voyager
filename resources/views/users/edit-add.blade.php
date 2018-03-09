@@ -55,7 +55,7 @@
                                 <label for="password">{{ __('voyager::voyager.generic.password') }}</label>
                                 @if(isset($dataTypeContent->password))
                                     <br>
-                                    <small>Leave empty to keep the same{{ __('voyager::voyager.profile.password_hint') }}</small>
+                                    <small>{{ __('voyager::voyager.profile.password_hint') }}</small>
                                 @endif
                                 <input type="password" class="form-control" id="password" name="password" value="">
                             </div>
