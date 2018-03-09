@@ -236,6 +236,7 @@ return [
         'already_exists_table'      => 'Таблица :table уже существует',
         'bread_crud_actions'        => 'BREAD/CRUD действия',
         'bread_info'                => 'BREAD информация',
+        'browse_bread'              => 'Просмотр',
         'column'                    => 'Столбец',
         'composite_warning'         => 'Предупреждение: этот столбец является частью составного индекса',
         'controller_name'           => 'Имя контроллера',
