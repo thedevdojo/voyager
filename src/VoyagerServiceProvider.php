@@ -254,6 +254,9 @@ class VoyagerServiceProvider extends ServiceProvider
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
+            'tests' => [
+                "{$publishablePath}/tests/" => base_path('tests'),
+            ]
         ];
 
         foreach ($publishable as $group => $paths) {
