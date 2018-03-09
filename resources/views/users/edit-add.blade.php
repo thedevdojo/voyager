@@ -62,7 +62,7 @@
 
                             @can('editRoles', $dataTypeContent)
                                 <div class="form-group">
-                                    <label for="name">{{ __('voyager::voyager.profile.role_default') }}</label>
+                                    <label for="default_role">{{ __('voyager::voyager.profile.role_default') }}</label>
                                     @php
                                         $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
 
@@ -72,7 +72,7 @@
                                     @include('voyager::formfields.relationship')
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">{{ __('voyager::voyager.profile.roles_additional') }}</label>
+                                    <label for="additional_roles">{{ __('voyager::voyager.profile.roles_additional') }}</label>
                                     @php
                                         $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();
                                         $options = json_decode($row->details);
