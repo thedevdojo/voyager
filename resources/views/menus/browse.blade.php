@@ -51,7 +51,7 @@
                                         @endcan
                                         @can('edit', $data)
                                             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" class="btn btn-sm btn-primary pull-right edit">
-                                                <i class="voyager-edit"></i> {{ __('voyager.generic.edit') }}
+                                                <i class="voyager-edit"></i> {{ __('voyager.generic.rename') }}
                                             </a>
                                         @endcan
                                         @can('edit', $data)
