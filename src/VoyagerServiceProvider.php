@@ -256,7 +256,7 @@ class VoyagerServiceProvider extends ServiceProvider
             ],
             'tests' => [
                 "{$publishablePath}/tests/" => base_path('tests'),
-            ]
+            ],
         ];
 
         foreach ($publishable as $group => $paths) {
