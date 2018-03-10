@@ -60,7 +60,7 @@
                                     @include('voyager::formfields.custom.' . $options->formfields_custom)
                                 @else
                                     <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@else{{ 'col-md-12' }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
-                                         {{ $row->slugify }}
+                                        {{ $row->slugify }}
                                         <label for="name">{{ $row->display_name }}</label>
                                         @include('voyager::multilingual.input-hidden-bread-edit-add')
                                         @if($row->type == 'relationship')
