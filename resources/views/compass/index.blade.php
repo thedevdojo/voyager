@@ -3,13 +3,13 @@
 @section('css')
 
     @include('voyager::compass.includes.styles')
-    
+
 @stop
 
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-compass"></i>
-        <p> {{ __('voyager::voyager.generic.compass') }}</p>
+        <p> {{ __('voyager::generic.compass') }}</p>
         <span class="page-description">Welcome to the Voyager Compass. Every good app needs a compass to point them in the right direction. In this section you will find many resources and administrative tasks to help guide you as you build out your application.</span>
     </h1>
 @stop
@@ -19,7 +19,7 @@
     <div id="gradient_bg"></div>
 
     <div class="container-fluid">
-        @include('voyager::alerts') 
+        @include('voyager::alerts')
     </div>
 
     <div class="page-content compass container-fluid">
@@ -114,10 +114,10 @@
     </script>
     <!-- JS for commands -->
     <script>
-        
+
         $(document).ready(function(){
             $('.command').click(function(){
-                $(this).find('.cmd_form').slideDown(); 
+                $(this).find('.cmd_form').slideDown();
                 $(this).addClass('more_args');
                 $(this).find('input[type="text"]').focus();
             });
