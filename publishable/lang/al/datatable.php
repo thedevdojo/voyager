@@ -1,5 +1,5 @@
 <?php
-
+// DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
 return [
 	'sEmptyTable'     => 'Nuk ka të dhëna të disponueshme në tabelë',
 	'sInfo'           => 'Duke shfaqur _START_ me _END_ të _TOTAL_ entries',
