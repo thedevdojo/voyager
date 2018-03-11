@@ -491,6 +491,6 @@ return [
             'title'                 => 'Fonts',
             'font_class'            => 'Voyager Fonts Class Mapping',
             'font_character'        => 'Voyager Fonts Character Mapping',
-        ]
+        ],
     ],
 ];
