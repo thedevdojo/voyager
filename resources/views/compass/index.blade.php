@@ -96,7 +96,6 @@
     </div>
 
 @stop
-
 @section('javascript')
     <script>
         $('document').ready(function(){
@@ -138,6 +137,7 @@
         $('#table-log').DataTable({
           "order": [1, 'desc'],
           "stateSave": true,
+          "language": {!! json_encode(__('voyager::voyager.datatable')) !!},
           "stateSaveCallback": function (settings, data) {
             window.localStorage.setItem("datatable", JSON.stringify(data));
           },
@@ -147,6 +147,7 @@
             return data;
           }
         });
+
         $('#delete-log, #delete-all-log').click(function () {
           return confirm('{{ __('voyager::voyager.generic.are_you_sure') }}');
         });
