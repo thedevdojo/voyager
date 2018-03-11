@@ -178,6 +178,13 @@ return [
         'crop_image'             => 'Crop Image',
         'success_crop_image'     => 'Successfully crop the image',
         'height'                 => 'Height: ',
+        'title'                  => 'Title',
+        'type'                   => 'Type',
+        'size'                   => 'Size',
+        'public_url'             => 'Public URL',
+        'last_modified'          => 'Last Modified',
+        'browser_video_support'  => 'Your browser does not support the video tag.',
+        'browser_audio_support'  => 'Your browser does not support the audio element.',
         'width'                  => 'Width: ',
     ],
 
