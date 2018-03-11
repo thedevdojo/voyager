@@ -211,6 +211,7 @@ return [
     ],
 
     'post' => [
+        'additional_fields'=> 'Additional Fields',
         'category'         => 'Post Category',
         'content'          => 'Post Content',
         'details'          => 'Post Details',
