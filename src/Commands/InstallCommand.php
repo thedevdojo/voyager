@@ -117,8 +117,7 @@ class InstallCommand extends Command
         if ($this->option('with-dummy')) {
 
             $this->info('Publishing dummy migrations');
-            $tags = ['migrations'];
-            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
+            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => ['migrations']]);
 
             $this->info('Migrating dummy tables');
             $this->call('migrate');
