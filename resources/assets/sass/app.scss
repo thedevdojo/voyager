@@ -1308,8 +1308,8 @@ table.dataTable.no-footer{
   display: block;
 }
 
-.modal-open .select2-container {
-  z-index: auto;
+.select2-container--open {
+  z-index: 999999;
 }
 
 .select2-container--default .select2-selection--single{
@@ -2148,10 +2148,6 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     left: 50%;
     border-right: 1px solid #efefef;
     border-bottom: 1px solid #efefef;
-}
-
-.select2-display-none{
-  z-index:999999 !important;
 }
 
 .breadcrumb li:last-child .arrow{
@@ -5159,11 +5155,6 @@ float: left;
 .dd .dd-handle .url{
   font-weight:normal;
   margin-left:10px;
-}
-
-.modal-open .select2-container{
-  z-index: 999999 !important;
-  width:100% !important;
 }
 
 .toggle-group .btn, .toggle-group .btn.btn-default{
@@ -8616,10 +8607,6 @@ limitations under the License.
     left: 50%;
     border-right: 1px solid #efefef;
     border-bottom: 1px solid #efefef;
-}
-
-.select2-display-none{
-  z-index:999999 !important;
 }
 
 .breadcrumb li:last-child .arrow{
