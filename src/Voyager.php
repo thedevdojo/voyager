@@ -331,6 +331,6 @@ class Voyager
 
     public function getLocales()
     {
-        return array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), array('..', '.'));
+        return array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), , ['..', '.']);
     }
 }

@@ -23,6 +23,7 @@ class VoyagerAdminMiddleware
             if (isset($user->locale)) {
                 app()->setLocale($user->locale);
             }
+
             return $user->hasPermission('browse_admin') ? $next($request) : redirect('/');
         }
 
