@@ -103,7 +103,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
         }
 
-        $this->loadMigrationsFrom(realpath(__DIR__.'/../publishable/database/migrations'));
+        $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
 
         $this->registerGates();
 
@@ -254,6 +254,10 @@ class VoyagerServiceProvider extends ServiceProvider
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
+            'migrations' => [
+                "{$publishablePath}/database/migrations/" => database_path('migrations'),
+            ],
+
         ];
 
         foreach ($publishable as $group => $paths) {
