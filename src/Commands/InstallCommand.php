@@ -68,7 +68,7 @@ class InstallCommand extends Command
         $this->info('Publishing the Voyager assets, database, and config files');
 
         //Publish only relevant resources on install
-        $tags = ['voyager_assets', 'seeds', 'demo_content', 'config', 'migrations'];
+        $tags = ['voyager_assets', 'seeds', 'demo_content', 'config'];
 
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
@@ -115,6 +115,15 @@ class InstallCommand extends Command
         $this->seed('VoyagerDatabaseSeeder');
 
         if ($this->option('with-dummy')) {
+
+            $this->info('Publishing dummy migrations');
+            $tags = ['migrations'];
+            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
+
+            $this->info('Migrating dummy tables');
+            $this->call('migrate');
+
+            $this->info('Seeding Dummy Data');
             $this->seed('VoyagerDummyDatabaseSeeder');
         }
 
