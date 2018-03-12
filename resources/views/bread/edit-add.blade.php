@@ -56,7 +56,7 @@
                                     $options = json_decode($row->details);
                                     $display_options = isset($options->display) ? $options->display : NULL;
                                 @endphp
-                                @if (isset($options->legend->text))
+                                @if (isset($options->legend) && isset($options->legend->text))
                                     <legend class="text-{{$options->legend->align or 'center'}}" style="background-color: {{$options->legend->bgcolor or '#f0f0f0'}};padding: 5px;">{{$options->legend->text}}</legend>
                                 @endif
                                 @if ($options && isset($options->formfields_custom))
