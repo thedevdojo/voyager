@@ -254,6 +254,9 @@ class VoyagerServiceProvider extends ServiceProvider
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
+            'dummy_config' => [
+                "{$publishablePath}/config/voyager_dummy.php" => config_path('voyager.php'),
+            ],
             'migrations' => [
                 "{$publishablePath}/database/migrations/" => database_path('migrations'),
             ],
