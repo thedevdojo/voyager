@@ -113,7 +113,6 @@ class InstallCommand extends Command
         $this->seed('VoyagerDatabaseSeeder');
 
         if ($this->option('with-dummy')) {
-
             $this->info('Publishing dummy migrations');
             $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => ['migrations', 'demo_content', 'dummy_config'], '--force' => true]);
 
