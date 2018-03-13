@@ -122,35 +122,59 @@ abstract class Controller extends BaseController
         return $data;
     }
 
-    public function validateBread($request, $data)
+    /**
+     * Validates bread POST request.
+     *
+     * @param \Illuminate\Http\Request $request The Request
+     * @param array                    $data    Field data
+     * @param string                   $slug    Slug
+     * @param int                      $id      Id of the record to update
+     *
+     * @return mixed
+     */
+    public function validateBread($request, $data, $slug = null, $id = null)
     {
         $rules = [];
         $messages = [];
+        $customAttributes = [];
+        $is_update = $slug && $id;
 
-        foreach ($data as $row) {
-            $options = json_decode($row->details);
+        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
-            if (isset($options->validation)) {
-                if (isset($options->validation->rule)) {
-                    if (!is_array($options->validation->rule)) {
-                        $rules[$row->display_name] = explode('|', $options->validation->rule);
-                    } else {
-                        $rules[$row->display_name] = $options->validation->rule;
+        foreach ($fieldsWithValidationRules as $field) {
+            $options = json_decode($field->details);
+            $fieldRules = $options->validation->rule;
+            $fieldName = $field->field;
+
+            // Show the field's display name on the error message
+            if (!empty($field->display_name)) {
+                $customAttributes[$fieldName] = $field->display_name;
+            }
+
+            // Get the rules for the current field whatever the format it is in
+            $rules[$fieldName] = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
+
+            // Fix Unique validation rule on Edit Mode
+            if ($is_update) {
+                foreach ($rules[$fieldName] as &$fieldRule) {
+                    if (strpos(strtoupper($fieldRule), 'UNIQUE') !== false) {
+                        $fieldRule = \Illuminate\Validation\Rule::unique($slug)->ignore($id);
                     }
                 }
+            }
 
-                if (isset($options->validation->messages)) {
-                    foreach ($options->validation->messages as $key => $msg) {
-                        $messages[$row->display_name.'.'.$key] = $msg;
-                    }
+            // Set custom validation messages if any
+            if (!empty($options->validation->messages)) {
+                foreach ($options->validation->messages as $key => $msg) {
+                    $messages["{$fieldName}.{$key}"] = $msg;
                 }
             }
         }
 
-        return Validator::make($request, $rules, $messages);
+        return Validator::make($request, $rules, $messages, $customAttributes);
     }
 
-    public function getContentBasedOnType(Request $request, $slug, $row, $options)
+    public function getContentBasedOnType(Request $request, $slug, $row, $options = null)
     {
         switch ($row->type) {
             /********** PASSWORD TYPE **********/
@@ -161,9 +185,8 @@ abstract class Controller extends BaseController
                 return (new Checkbox($request, $slug, $row, $options))->handle();
             /********** FILE TYPE **********/
             case 'file':
-            return (new File($request, $slug, $row, $options))->handle();
+                return (new File($request, $slug, $row, $options))->handle();
             /********** MULTIPLE IMAGES TYPE **********/
-            // no break
             case 'multiple_images':
                 return (new MultipleImage($request, $slug, $row, $options))->handle();
             /********** SELECT MULTIPLE TYPE **********/
@@ -178,6 +201,7 @@ abstract class Controller extends BaseController
             /********** COORDINATES TYPE **********/
             case 'coordinates':
                 return (new Coordinates($request, $slug, $row, $options))->handle();
+            /********** RELATIONSHIPS TYPE **********/
             case 'relationship':
                 return (new Relationship($request, $slug, $row, $options))->handle();
             /********** ALL OTHER TEXT TYPE **********/
@@ -192,6 +216,25 @@ abstract class Controller extends BaseController
             Storage::disk(config('voyager.storage.disk'))->delete($path);
             event(new FileDeleted($path));
         }
+    }
+
+    /**
+     * Get fields having validation rules in proper format.
+     *
+     * @param array $fieldsConfig
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getFieldsWithValidationRules($fieldsConfig)
+    {
+        return $fieldsConfig->filter(function ($value) {
+            if (empty($value->details)) {
+                return false;
+            }
+            $decoded = json_decode($value->details, true);
+
+            return !empty($decoded['validation']['rule']);
+        });
     }
 
     // public function handleRelationshipContent($row, $content){

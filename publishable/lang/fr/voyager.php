@@ -128,9 +128,15 @@ return [
         'successfully_deleted' => 'Paramètres supprimés avec succès',
         'already_at_top'       => 'Déjà en haut de la liste',
         'already_at_bottom'    => 'Déjà en bas de la liste',
+        'key_already_exists'   => 'La clé :key déjà existe',
         'moved_order_up'       => 'Trier le paramètre :name en ordre croissant',
         'moved_order_down'     => 'Trier le paramètre :name en ordre décroissant',
         'successfully_removed' => 'Valeur :name supprimée avec succès',
+        'group_general'        => 'Général',
+        'group_admin'          => 'Administrateur',
+        'group_site'           => 'Site',
+        'group'                => 'Groupe',
+        'help_group'           => 'Groupe ce paramètre est affecté à',
     ],
 
     'media' => [
@@ -383,12 +389,12 @@ return [
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
     'datatable' => [
         'sEmptyTable'     => 'Aucune donnée disponible',
-        'sInfo'           => 'Affichage _START_ à _END_ de _TOTAL_ entréees',
-        'sInfoEmpty'      => 'Affichage 0 à 0 de 0 entréees',
-        'sInfoFiltered'   => '(filtré de _MAX_ entréees totales)',
+        'sInfo'           => 'Affichage _START_ à _END_ de _TOTAL_ entrées',
+        'sInfoEmpty'      => 'Affichage 0 à 0 de 0 entrées',
+        'sInfoFiltered'   => '(filtré de _MAX_ entrées totales)',
         'sInfoPostFix'    => '',
         'sInfoThousands'  => ' ',
-        'sLengthMenu'     => 'Afficher les entréees : _MENU_',
+        'sLengthMenu'     => 'Afficher les entrées : _MENU_',
         'sLoadingRecords' => 'Chargement...',
         'sProcessing'     => 'En traitement...',
         'sSearch'         => 'Recherche :',

@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
+use Carbon\Carbon;
+
 class Timestamp extends BaseType
 {
     public function handle()
@@ -16,6 +18,6 @@ class Timestamp extends BaseType
             return;
         }
 
-        return gmdate('Y-m-d H:i:s', strtotime($content));
+        return Carbon::parse($content);
     }
 }

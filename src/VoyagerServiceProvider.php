@@ -96,11 +96,14 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
         $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
-        $this->loadMigrationsFrom(realpath(__DIR__.'/../publishable/database/migrations'));
+
+        $this->loadTranslationsFrom(realpath(__DIR__.'/../publishable/lang'), 'voyager');
 
         if (config('app.env') == 'testing') {
             $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
         }
+
+        $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
 
         $this->registerGates();
 
@@ -152,15 +155,25 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $storage_disk = (!empty(config('voyager.storage.disk'))) ? config('voyager.storage.disk') : 'public';
 
-        if (request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
-            $this->fixMissingStorageSymlink();
-        } elseif (!file_exists(public_path('storage')) && $storage_disk == 'public') {
-            $alert = (new Alert('missing-storage-symlink', 'warning'))
-                ->title(__('voyager.error.symlink_missing_title'))
-                ->text(__('voyager.error.symlink_missing_text'))
-                ->button(__('voyager.error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
+        if (request()->has('fix-missing-storage-symlink')) {
+            if (file_exists(public_path('storage'))) {
+                if (readlink(public_path('storage')) == public_path('storage')) {
+                    rename(public_path('storage'), 'storage_old');
+                }
+            }
 
-            VoyagerFacade::addAlert($alert);
+            if (!file_exists(public_path('storage'))) {
+                $this->fixMissingStorageSymlink();
+            }
+        } elseif ($storage_disk == 'public') {
+            if (!file_exists(public_path('storage')) ||
+               (file_exists(public_path('storage')) && readlink(public_path('storage')) == public_path('storage'))) {
+                $alert = (new Alert('missing-storage-symlink', 'warning'))
+                    ->title(__('voyager::voyager.error.symlink_missing_title'))
+                    ->text(__('voyager::voyager.error.symlink_missing_text'))
+                    ->button(__('voyager::voyager.error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
+                VoyagerFacade::addAlert($alert);
+            }
         }
     }
 
@@ -170,12 +183,12 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (file_exists(public_path('storage'))) {
             $alert = (new Alert('fixed-missing-storage-symlink', 'success'))
-                ->title(__('voyager.error.symlink_created_title'))
-                ->text(__('voyager.error.symlink_created_text'));
+                ->title(__('voyager::voyager.error.symlink_created_title'))
+                ->text(__('voyager::voyager.error.symlink_created_text'));
         } else {
             $alert = (new Alert('failed-fixing-missing-storage-symlink', 'danger'))
-                ->title(__('voyager.error.symlink_failed_title'))
-                ->text(__('voyager.error.symlink_failed_text'));
+                ->title(__('voyager::voyager.error.symlink_failed_title'))
+                ->text(__('voyager::voyager.error.symlink_failed_text'));
         }
 
         VoyagerFacade::addAlert($alert);
@@ -241,9 +254,10 @@ class VoyagerServiceProvider extends ServiceProvider
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
-            'lang' => [
-                "{$publishablePath}/lang/" => base_path('resources/lang/'),
+            'migrations' => [
+                "{$publishablePath}/database/migrations/" => database_path('migrations'),
             ],
+
         ];
 
         foreach ($publishable as $group => $paths) {
@@ -266,7 +280,7 @@ class VoyagerServiceProvider extends ServiceProvider
         try {
             if (Schema::hasTable('data_types')) {
                 $dataType = VoyagerFacade::model('DataType');
-                $dataTypes = $dataType->get();
+                $dataTypes = $dataType->select('policy_name', 'model_name')->get();
 
                 foreach ($dataTypes as $dataType) {
                     $policyClass = BasePolicy::class;

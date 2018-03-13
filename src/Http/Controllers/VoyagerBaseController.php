@@ -209,13 +209,16 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        // Compatibility with Model binding.
+        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
         // Check permission
         $this->authorize('edit', $data);
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows);
+        $val = $this->validateBread($request->all(), $dataType->editRows, $slug, $id);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
@@ -229,7 +232,7 @@ class VoyagerBaseController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                    'message'    => __('voyager::voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
                 ]);
         }
@@ -312,7 +315,7 @@ class VoyagerBaseController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                        'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
+                        'message'    => __('voyager::voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
         }
@@ -358,11 +361,11 @@ class VoyagerBaseController extends Controller
         $res = $data->destroy($ids);
         $data = $res
             ? [
-                'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
+                'message'    => __('voyager::voyager.generic.successfully_deleted')." {$displayName}",
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => __('voyager.generic.error_deleting')." {$displayName}",
+                'message'    => __('voyager::voyager.generic.error_deleting')." {$displayName}",
                 'alert-type' => 'error',
             ];
 

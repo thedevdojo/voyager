@@ -17,30 +17,43 @@ class MultipleImage extends BaseType
         $filesPath = [];
         $files = $this->request->file($this->row->field);
 
-        $resize_width = 1800;
-        $resize_height = null;
-
-        if (isset($this->options->resize) &&
-            isset($this->options->resize->width) &&
-            isset($this->options->resize->height)) {
-            $resize_width = $this->options->resize->width;
-            $resize_height = $this->options->resize->height;
-        }
-
         foreach ($files as $file) {
+            $image = Image::make($file);
+
+            $resize_width = null;
+            $resize_height = null;
+
+            if (isset($this->options->resize) && (
+                    isset($this->options->resize->width) || isset($this->options->resize->height)
+                )) {
+                if (isset($this->options->resize->width)) {
+                    $resize_width = $this->options->resize->width;
+                }
+                if (isset($this->options->resize->height)) {
+                    $resize_height = $this->options->resize->height;
+                }
+            } else {
+                $resize_width = $image->width();
+                $resize_height = $image->height();
+            }
+
+            $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
+
             $filename = Str::random(20);
             $path = getUploadPath($this->slug, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
             array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
             $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
-            $image = Image::make($file)->resize(
+            $image = $image->resize(
                 $resize_width,
                 $resize_height,
                 function (Constraint $constraint) {
                     $constraint->aspectRatio();
-                    $constraint->upsize();
+                    if (isset($this->options->upsize) && !$this->options->upsize) {
+                        $constraint->upsize();
+                    }
                 }
-            )->encode($file->getClientOriginalExtension(), 75);
+            )->encode($file->getClientOriginalExtension(), $resize_quality);
 
             Storage::disk(config('voyager.storage.disk'))->put($filePath, (string) $image, 'public');
 
@@ -64,15 +77,17 @@ class MultipleImage extends BaseType
                             $thumb_resize_height,
                             function (Constraint $constraint) {
                                 $constraint->aspectRatio();
-                                $constraint->upsize();
+                                if (isset($this->options->upsize) && !$this->options->upsize) {
+                                    $constraint->upsize();
+                                }
                             }
-                        )->encode($file->getClientOriginalExtension(), 75);
+                        )->encode($file->getClientOriginalExtension(), $resize_quality);
                     } elseif (isset($this->options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                         $crop_width = $thumbnails->crop->width;
                         $crop_height = $thumbnails->crop->height;
                         $image = Image::make($file)
                             ->fit($crop_width, $crop_height)
-                            ->encode($file->getClientOriginalExtension(), 75);
+                            ->encode($file->getClientOriginalExtension(), $resize_quality);
                     }
 
                     Storage::disk(config('voyager.storage.disk'))->put(

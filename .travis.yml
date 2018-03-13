@@ -22,6 +22,7 @@ matrix:
 cache:
   directories:
     - $HOME/.composer/cache
+    - node_modules
 
 services:
   - sqlite
@@ -31,6 +32,8 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
   - composer show laravel/framework
+  - npm install
+  - npm run dev
 
 script:
   - vendor/bin/phpunit
