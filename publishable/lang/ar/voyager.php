@@ -27,7 +27,6 @@ return [
 
     'menu_builder' => [
 
-
     ],
 
     'post' => [
@@ -50,7 +49,6 @@ return [
 
     ],
 
-    
     'datatable' => [
 
     ],
