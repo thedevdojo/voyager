@@ -144,7 +144,7 @@
                                                     <source :src="selected_file.path" type="video/mp4">
                                                     <source :src="selected_file.path" type="video/ogg">
                                                     <source :src="selected_file.path" type="video/webm">
-                                                    Your browser does not support the video tag.
+                                                    {{ __('voyager::media.browser_video_support') }}
                                                 </video>
                                             </template>
                                             <template v-if="selectedFileIs('audio')">
@@ -152,7 +152,7 @@
                                                 <audio controls style="width:100%; margin-top:5px;">
                                                     <source :src="selected_file.path" type="audio/ogg">
                                                     <source :src="selected_file.path" type="audio/mpeg">
-                                                    Your browser does not support the audio element.
+                                                    {{ __('voyager::media.browser_audio_support') }}
                                                 </audio>
                                             </template>
 											<template v-if="selectedFileIs('zip')">
@@ -170,18 +170,18 @@
                                     </div>
                                     <div class="detail_info">
                                         <div :class="selected_file.type">
-                                            <span><h4>Title:</h4>
+                                            <span><h4>{{ __('voyager::media.title') }}:</h4>
     							            <p>@{{selected_file.name}}</p></span>
-                                            <span><h4>Type:</h4>
+                                            <span><h4>{{ __('voyager::media.type') }}:</h4>
     							            <p>@{{selected_file.type}}</p></span>
 
                                             <template v-if="selected_file.type != 'folder'">
-    								            <span><h4>Size:</h4>
+    								            <span><h4>{{ __('voyager::media.size') }}:</h4>
     								            <p><span class="selected_file_count">@{{ selected_file.items }} item(s)</span><span
                                                     class="selected_file_size">@{{selected_file.size}}</span></p></span>
-                                                <span><h4>Public URL:</h4>
+                                                <span><h4>{{ __('voyager::media.public_url') }}:</h4>
     								            <p><a :href="selected_file.path" target="_blank">Click Here</a></p></span>
-                                                <span><h4>Last Modified:</h4>
+                                                <span><h4>{{ __('voyager::media.last_modified') }}:</h4>
     								            <p>@{{ dateFilter(selected_file.last_modified) }}</p></span>
                                             </template>
                                         </div>
