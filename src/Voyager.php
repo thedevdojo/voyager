@@ -8,6 +8,9 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\Actions\DeleteAction;
+use TCG\Voyager\Actions\EditAction;
+use TCG\Voyager\Actions\ViewAction;
 use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
 use TCG\Voyager\FormFields\HandlerInterface;
@@ -41,6 +44,12 @@ class Voyager
     protected $users = [];
 
     protected $viewLoadingEvents = [];
+
+    protected $actions = [
+        DeleteAction::class,
+        EditAction::class,
+        ViewAction::class,
+    ];
 
     protected $models = [
         'Category'   => Category::class,
@@ -156,6 +165,22 @@ class Voyager
         return collect($this->formFields)->filter(function ($after) use ($driver) {
             return $after->supports($driver);
         });
+    }
+
+    public function addAction($action)
+    {
+        array_push($this->actions, $action);
+    }
+
+    public function replaceAction($actionToReplace, $action)
+    {
+        $key = array_search($actionToReplace, $this->actions);
+        $this->actions[$key] = $action;
+    }
+
+    public function actions()
+    {
+        return $this->actions;
     }
 
     public function setting($key, $default = null)
