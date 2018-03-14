@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use TCG\Voyager\Models\Role;
+use TCG\Voyager\Models\User;
 
 class UserProfileTest extends TestCase
 {
@@ -126,6 +127,19 @@ class UserProfileTest extends TestCase
                  'users',
                  ['email' => 'another@email.com']
              );
+    }
+
+    public function testCanSetUserLocale()
+    {
+        $this->visit(route('voyager.profile'))
+             ->click(__('voyager::voyager.profile.edit'))
+             ->see(__('voyager::voyager.profile.edit_user'))
+             ->seePageIs($this->editPageForTheCurrentUser)
+             ->select('de', 'locale')
+             ->press(__('voyager::voyager.generic.save'));
+
+        $user = User::find(1);
+        $this->assertTrue(($user->locale == 'de'));
     }
 
     protected function newImagePath()

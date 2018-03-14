@@ -53,6 +53,7 @@ return [
         'key'                    => 'Key',
         'last_modified'          => 'Last modified',
         'length'                 => 'Length',
+        'locale'                 => 'Locale',
         'login'                  => 'Login',
         'media'                  => 'Media',
         'menu_builder'           => 'Menu Builder',
