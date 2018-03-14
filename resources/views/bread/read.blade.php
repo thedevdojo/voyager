@@ -107,7 +107,7 @@
                                     @endforeach
                                 @else
                                     <a href="/storage/{{ $dataTypeContent->{$row->field} }}">
-                                        Download
+                                        {{ __('voyager::voyager.generic.download') }}
                                     </a>
                                 @endif
                             @else

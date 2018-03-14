@@ -12,7 +12,7 @@
             <?php $selected_value = old($row->field); ?>
         @endif
 
-        <select class="form-control select2"  data-name="{{ $row->display_name }}" name="{{ $row->field }}">
+        <select class="form-control select2" name="{{ $row->field }}">
             <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : null; ?>
 
             @if(isset($options->options))
@@ -49,7 +49,7 @@
             }
             ?>
 
-            <optgroup label="Relationship">
+            <optgroup label="{{ __('voyager::voyager.database.relationship.relationship') }}">
             @foreach($relationshipOptions as $relationshipOption)
                 <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
             @endforeach

@@ -3,14 +3,14 @@
 @section('css')
 
     @include('voyager::compass.includes.styles')
-    
+
 @stop
 
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-compass"></i>
         <p> {{ __('voyager::voyager.generic.compass') }}</p>
-        <span class="page-description">Welcome to the Voyager Compass. Every good app needs a compass to point them in the right direction. In this section you will find many resources and administrative tasks to help guide you as you build out your application.</span>
+        <span class="page-description">{{ __('voyager::voyager.compass.welcome') }}</span>
     </h1>
 @stop
 
@@ -19,23 +19,23 @@
     <div id="gradient_bg"></div>
 
     <div class="container-fluid">
-        @include('voyager::alerts') 
+        @include('voyager::alerts')
     </div>
 
     <div class="page-content compass container-fluid">
         <ul class="nav nav-tabs">
-          <li @if(empty($active_tab) || (isset($active_tab) && $active_tab == 'resources')){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#resources"><i class="voyager-book"></i> Resources</a></li>
-          <li @if($active_tab == 'commands'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#commands"><i class="voyager-terminal"></i> Commands</a></li>
-          <li @if($active_tab == 'logs'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#logs"><i class="voyager-logbook"></i> Logs</a></li>
+          <li @if(empty($active_tab) || (isset($active_tab) && $active_tab == 'resources')){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#resources"><i class="voyager-book"></i> {{ __('voyager::voyager.compass.resources.title') }}</a></li>
+          <li @if($active_tab == 'commands'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#commands"><i class="voyager-terminal"></i> {{ __('voyager::voyager.compass.commands.title') }}</a></li>
+          <li @if($active_tab == 'logs'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#logs"><i class="voyager-logbook"></i> {{ __('voyager::voyager.compass.logs.title') }}</a></li>
         </ul>
 
         <div class="tab-content">
             <div id="resources" class="tab-pane fade in @if(empty($active_tab) || (isset($active_tab) && $active_tab == 'resources')){!! 'active' !!}@endif">
-                <h3><i class="voyager-book"></i> Resources <small>Voyager resources to help you find things quicker.</small></h3>
+                <h3><i class="voyager-book"></i> {{ __('voyager::voyager.compass.resources.title') }} <small>{{ __('voyager::voyager.compass.resources.text') }}</small></h3>
 
                 <div class="collapsible">
                     <div class="collapse-head" data-toggle="collapse" data-target="#links" aria-expanded="true" aria-controls="links">
-                        <h4>Links</h4>
+                        <h4>{{ __('voyager::voyager.compass.links.title') }}</h4>
                         <i class="voyager-angle-down"></i>
                         <i class="voyager-angle-up"></i>
                     </div>
@@ -43,17 +43,17 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <a href="https://laravelvoyager.com/docs" target="_blank" class="voyager-link" style="background-image:url('/vendor/tcg/voyager/assets/images/compass/documentation.jpg')">
-                                    <span class="resource_label"><i class="voyager-documentation"></i> <span class="copy">Documentation</span></span>
+                                    <span class="resource_label"><i class="voyager-documentation"></i> <span class="copy">{{ __('voyager::voyager.compass.links.documentation') }}</span></span>
                                 </a>
                             </div>
                             <div class="col-md-4">
                                 <a href="https://laravelvoyager.com" target="_blank" class="voyager-link" style="background-image:url('/vendor/tcg/voyager/assets/images/compass/voyager-home.jpg')">
-                                    <span class="resource_label"><i class="voyager-browser"></i> <span class="copy">Voyager Homepage</span></span>
+                                    <span class="resource_label"><i class="voyager-browser"></i> <span class="copy">{{ __('voyager::voyager.compass.links.voyager_homepage') }}</span></span>
                                 </a>
                             </div>
                             <div class="col-md-4">
                                 <a href="https://larapack.io" target="_blank" class="voyager-link" style="background-image:url('/vendor/tcg/voyager/assets/images/compass/hooks.jpg')">
-                                    <span class="resource_label"><i class="voyager-hook"></i> <span class="copy">Voyager Hooks</span></span>
+                                    <span class="resource_label"><i class="voyager-hook"></i> <span class="copy">{{ __('voyager::voyager.compass.links.voyager_hooks') }}</span></span>
                                 </a>
                             </div>
                         </div>
@@ -63,7 +63,7 @@
               <div class="collapsible">
 
                 <div class="collapse-head" data-toggle="collapse" data-target="#fonts" aria-expanded="true" aria-controls="fonts">
-                    <h4>Fonts</h4>
+                    <h4>{{ __('voyager::voyager.compass.fonts.title') }}</h4>
                     <i class="voyager-angle-down"></i>
                     <i class="voyager-angle-up"></i>
                 </div>
@@ -78,7 +78,7 @@
             </div>
 
           <div id="commands" class="tab-pane fade in @if($active_tab == 'commands'){!! 'active' !!}@endif">
-            <h3><i class="voyager-terminal"></i> Commands <small>Run Artisan Commands from Voyager.</small></h3>
+            <h3><i class="voyager-terminal"></i> {{ __('voyager::voyager.compass.commands.title') }} <small>{{ __('voyager::voyager.compass.commands.text') }}</small></h3>
             <div id="command_lists">
                 @include('voyager::compass.includes.commands')
             </div>
@@ -96,7 +96,6 @@
     </div>
 
 @stop
-
 @section('javascript')
     <script>
         $('document').ready(function(){
@@ -114,10 +113,10 @@
     </script>
     <!-- JS for commands -->
     <script>
-        
+
         $(document).ready(function(){
             $('.command').click(function(){
-                $(this).find('.cmd_form').slideDown(); 
+                $(this).find('.cmd_form').slideDown();
                 $(this).addClass('more_args');
                 $(this).find('input[type="text"]').focus();
             });
@@ -138,6 +137,7 @@
         $('#table-log').DataTable({
           "order": [1, 'desc'],
           "stateSave": true,
+          "language": {!! json_encode(__('voyager::voyager.datatable')) !!},
           "stateSaveCallback": function (settings, data) {
             window.localStorage.setItem("datatable", JSON.stringify(data));
           },
@@ -147,8 +147,9 @@
             return data;
           }
         });
+
         $('#delete-log, #delete-all-log').click(function () {
-          return confirm('Are you sure?');
+          return confirm('{{ __('voyager::voyager.generic.are_you_sure') }}');
         });
       });
     </script>

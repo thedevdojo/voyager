@@ -29,7 +29,7 @@ class WidgetTest extends TestCase
 
         $this->assertEquals(
             file_get_contents(__DIR__.'/rendered_widgets.html'),
-            (string) $dimmers->setSeparator("\n<hr>\n")->display()
+            (string) $dimmers->setSeparator(PHP_EOL.'<hr>'.PHP_EOL)->display()
         );
     }
 }

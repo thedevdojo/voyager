@@ -353,4 +353,9 @@ class Voyager
 
         return $this->users[$id];
     }
+
+    public function getLocales()
+    {
+        return array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), ['..', '.']);
+    }
 }
