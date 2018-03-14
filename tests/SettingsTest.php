@@ -28,8 +28,8 @@ class SettingsTest extends TestCase
         $this->visit(route('voyager.settings.index'))
              ->seeInField($key, Setting::where('key', '=', $key)->first()->value)
              ->type($newTitle, $key)
-             ->seeInElement('button', __('voyager::voyager.settings.save'))
-             ->press(__('voyager::voyager.settings.save'))
+             ->seeInElement('button', __('voyager::settings.save'))
+             ->press(__('voyager::settings.save'))
              ->seePageIs(route('voyager.settings.index'));
 
         $this->assertEquals(

@@ -6,7 +6,7 @@ class DeleteAction extends AbstractAction
 {
     public function getTitle()
     {
-        return __('voyager::voyager.generic.delete');
+        return __('voyager::generic.delete');
     }
 
     public function getIcon()

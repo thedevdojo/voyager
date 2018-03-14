@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.generic.viewing').' '.$dataType->display_name_plural)
+@section('page_title', __('voyager::generic.viewing').' '.$dataType->display_name_plural)
 
 @section('page_header')
     <div class="container-fluid">
@@ -9,7 +9,7 @@
         </h1>
         @can('add',app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success btn-add-new">
-                <i class="voyager-plus"></i> <span>{{ __('voyager.generic.add_new') }}</span>
+                <i class="voyager-plus"></i> <span>{{ __('voyager::generic.add_new') }}</span>
             </a>
         @endcan
         @can('delete',app($dataType->model_name))
@@ -39,7 +39,7 @@
                                         <option value="equals" @if($search->filter == "equals"){{ 'selected' }}@endif>=</option>
                                     </select>
                                     <div class="input-group col-md-12">
-                                        <input type="text" class="form-control" placeholder="{{ __('voyager::voyager.generic.search') }}" name="s" value="{{ $search->value }}">
+                                        <input type="text" class="form-control" placeholder="{{ __('voyager::generic.search') }}" name="s" value="{{ $search->value }}">
                                         <span class="input-group-btn">
                                             <button class="btn btn-info btn-lg" type="submit">
                                                 <i class="voyager-search"></i>
@@ -74,7 +74,7 @@
                                             @endif
                                         </th>
                                         @endforeach
-                                        <th class="actions">{{ __('voyager.generic.actions') }}</th>
+                                        <th class="actions">{{ __('voyager::generic.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -214,18 +214,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager.generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager::generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="#" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                                 value="{{ __('voyager.generic.delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
+                                 value="{{ __('voyager::generic.delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -249,7 +249,7 @@
                 var table = $('#dataTable').DataTable({!! json_encode(
                     array_merge([
                         "order" => [],
-                        "language" => __('voyager.datatable'),
+                        "language" => __('voyager::datatable'),
                     ],
                     config('voyager.dashboard.data_tables', []))
                 , true) !!});

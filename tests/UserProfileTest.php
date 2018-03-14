@@ -41,17 +41,17 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->seeInElement('h4', $this->user->name)
              ->seeInElement('.user-email', $this->user->email)
-             ->seeLink(__('voyager::voyager.profile.edit'));
+             ->seeLink(__('voyager::profile.edit'));
     }
 
     public function testCanEditUserName()
     {
         $this->visit(route('voyager.profile'))
-             ->click(__('voyager::voyager.profile.edit'))
-             ->see(__('voyager::voyager.profile.edit_user'))
+             ->click(__('voyager::profile.edit'))
+             ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
-             ->press(__('voyager::voyager.generic.save'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
@@ -62,11 +62,11 @@ class UserProfileTest extends TestCase
     public function testCanEditUserEmail()
     {
         $this->visit(route('voyager.profile'))
-             ->click(__('voyager::voyager.profile.edit'))
-             ->see(__('voyager::voyager.profile.edit_user'))
+             ->click(__('voyager::profile.edit'))
+             ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
-             ->press(__('voyager::voyager.generic.save'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
@@ -77,11 +77,11 @@ class UserProfileTest extends TestCase
     public function testCanEditUserPassword()
     {
         $this->visit(route('voyager.profile'))
-             ->click(__('voyager::voyager.profile.edit'))
-             ->see(__('voyager::voyager.profile.edit_user'))
+             ->click(__('voyager::profile.edit'))
+             ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
-             ->press(__('voyager::voyager.generic.save'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
@@ -91,11 +91,11 @@ class UserProfileTest extends TestCase
     public function testCanEditUserAvatar()
     {
         $this->visit(route('voyager.profile'))
-             ->click(__('voyager::voyager.profile.edit'))
-             ->see(__('voyager::voyager.profile.edit_user'))
+             ->click(__('voyager::profile.edit'))
+             ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
-             ->press(__('voyager::voyager.generic.save'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
              ->dontSeeInDatabase(
                  'users',
@@ -117,11 +117,11 @@ class UserProfileTest extends TestCase
         ])->get()->pluck('id')->all());
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
-             ->click(__('voyager::voyager.profile.edit'))
-             ->see(__('voyager::voyager.profile.edit_user'))
+             ->click(__('voyager::profile.edit'))
+             ->see(__('voyager::profile.edit_user'))
              ->seePageIs($editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
-             ->press(__('voyager::voyager.generic.save'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
                  'users',
@@ -132,11 +132,11 @@ class UserProfileTest extends TestCase
     public function testCanSetUserLocale()
     {
         $this->visit(route('voyager.profile'))
-             ->click(__('voyager::voyager.profile.edit'))
-             ->see(__('voyager::voyager.profile.edit_user'))
+             ->click(__('voyager::profile.edit'))
+             ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->select('de', 'locale')
-             ->press(__('voyager::voyager.generic.save'));
+             ->press(__('voyager::generic.save'));
 
         $user = User::find(1);
         $this->assertTrue(($user->locale == 'de'));

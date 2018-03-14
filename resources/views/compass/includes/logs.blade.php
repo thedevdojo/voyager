@@ -1,6 +1,6 @@
 
 <div class="col-sm-3 col-md-3 sidebar">
-  <h3><i class="voyager-logbook"></i> {{ __('voyager::voyager.compass.logs.title') }} <small>{{ __('voyager::voyager.compass.logs.text') }}.</small></h3>
+  <h3><i class="voyager-logbook"></i> {{ __('voyager::compass.logs.title') }} <small>{{ __('voyager::compass.logs.text') }}.</small></h3>
   <div class="list-group">
     @foreach($files as $file)
       <a href="?log={{ base64_encode($file) }}"
@@ -13,16 +13,16 @@
 <div class="col-sm-9 col-md-9 table-container">
   @if ($logs === null)
     <div>
-      {{ __('voyager::voyager.compass.logs.file_too_big') }}
+      {{ __('voyager::compass.logs.file_too_big') }}
     </div>
   @else
     <table id="table-log" class="table table-striped">
       <thead>
       <tr>
-        <th>{{ __('voyager::voyager.compass.logs.level') }}</th>
-        <th>{{ __('voyager::voyager.compass.logs.context') }}</th>
-        <th>{{ __('voyager::voyager.compass.logs.date') }}</th>
-        <th>{{ __('voyager::voyager.compass.logs.content') }}</th>
+        <th>{{ __('voyager::compass.logs.level') }}</th>
+        <th>{{ __('voyager::compass.logs.context') }}</th>
+        <th>{{ __('voyager::compass.logs.date') }}</th>
+        <th>{{ __('voyager::compass.logs.content') }}</th>
       </tr>
       </thead>
       <tbody>
@@ -53,13 +53,13 @@
   <div>
     @if($current_file)
       <a href="?download={{ base64_encode($current_file) }}"><span class="glyphicon glyphicon-download-alt"></span>
-        {{ __('voyager::voyager.compass.logs.download_file') }}</a>
+        {{ __('voyager::compass.logs.download_file') }}</a>
       -
       <a id="delete-log" href="?del={{ base64_encode($current_file) }}"><span
-            class="glyphicon glyphicon-trash"></span> {{ __('voyager::voyager.compass.logs.delete_file') }}</a>
+            class="glyphicon glyphicon-trash"></span> {{ __('voyager::compass.logs.delete_file') }}</a>
       @if(count($files) > 1)
         -
-        <a id="delete-all-log" href="?delall=true"><span class="glyphicon glyphicon-trash"></span> {{ __('voyager::voyager.compass.logs.delete_all_files') }}</a>
+        <a id="delete-all-log" href="?delall=true"><span class="glyphicon glyphicon-trash"></span> {{ __('voyager::compass.logs.delete_all_files') }}</a>
       @endif
     @endif
   </div>

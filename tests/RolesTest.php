@@ -26,28 +26,28 @@ class RolesTest extends TestCase
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
-        $this->press(__('voyager::voyager.generic.login'));
+        $this->press(__('voyager::generic.login'));
         $this->seePageIs(route('voyager.dashboard'));
 
         // Adding a New Role
         $this->visit(route('voyager.roles.create'));
         $this->type('superadmin', 'name');
         $this->type('Super Admin', 'display_name');
-        $this->press(__('voyager::voyager.generic.submit'));
+        $this->press(__('voyager::generic.submit'));
         $this->seePageIs(route('voyager.roles.index'));
         $this->seeInDatabase('roles', ['name' => 'superadmin']);
 
         // Editing a Role
         $this->visit(route('voyager.roles.edit', 2));
         $this->type('regular_user', 'name');
-        $this->press(__('voyager::voyager.generic.submit'));
+        $this->press(__('voyager::generic.submit'));
         $this->seePageIs(route('voyager.roles.index'));
         $this->seeInDatabase('roles', ['name' => 'regular_user']);
 
         // Editing a Role
         $this->visit(route('voyager.roles.edit', 2));
         $this->type('user', 'name');
-        $this->press(__('voyager::voyager.generic.submit'));
+        $this->press(__('voyager::generic.submit'));
         $this->seePageIs(route('voyager.roles.index'));
         $this->seeInDatabase('roles', ['name' => 'user']);
 

@@ -4,9 +4,9 @@
     <h1 class="page-title">
         <i class="voyager-data"></i>
         @if($db->action == 'update')
-            {{ __('voyager::voyager.database.editing_table', ['table' => $db->table->name]) }}
+            {{ __('voyager::database.editing_table', ['table' => $db->table->name]) }}
         @else
-            {{ __('voyager::voyager.database.create_new_table') }}
+            {{ __('voyager::database.create_new_table') }}
         @endif
     </h1>
 @stop
