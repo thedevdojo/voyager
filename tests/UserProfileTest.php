@@ -132,11 +132,11 @@ class UserProfileTest extends TestCase
     public function testCanSetUserLocale()
     {
         $this->visit(route('voyager.profile'))
-             ->click(__('voyager::voyager.profile.edit'))
-             ->see(__('voyager::voyager.profile.edit_user'))
+             ->click(__('voyager::profile.edit'))
+             ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->select('de', 'locale')
-             ->press(__('voyager::voyager.generic.save'));
+             ->press(__('voyager::generic.save'));
 
         $user = User::find(1);
         $this->assertTrue(($user->locale == 'de'));
