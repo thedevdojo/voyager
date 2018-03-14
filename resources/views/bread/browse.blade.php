@@ -39,7 +39,7 @@
                                         <option value="equals" @if($search->filter == "equals"){{ 'selected' }}@endif>=</option>
                                     </select>
                                     <div class="input-group col-md-12">
-                                        <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search->value }}">
+                                        <input type="text" class="form-control" placeholder="{{ __('voyager::voyager.generic.search') }}" name="s" value="{{ $search->value }}">
                                         <span class="input-group-btn">
                                             <button class="btn btn-info btn-lg" type="submit">
                                                 <i class="voyager-search"></i>

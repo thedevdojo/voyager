@@ -179,6 +179,13 @@ return [
         'crop_image'             => 'Crop Image',
         'success_crop_image'     => 'Successfully crop the image',
         'height'                 => 'Height: ',
+        'title'                  => 'Title',
+        'type'                   => 'Type',
+        'size'                   => 'Size',
+        'public_url'             => 'Public URL',
+        'last_modified'          => 'Last Modified',
+        'browser_video_support'  => 'Your browser does not support the video tag.',
+        'browser_audio_support'  => 'Your browser does not support the audio element.',
         'width'                  => 'Width: ',
     ],
 
@@ -212,6 +219,7 @@ return [
     ],
 
     'post' => [
+        'additional_fields'=> 'Additional Fields',
         'category'         => 'Post Category',
         'content'          => 'Post Content',
         'details'          => 'Post Details',
@@ -289,6 +297,7 @@ return [
         'delete_bread_before_table' => 'Please make sure to remove the BREAD on this table before deleting the table.',
         'delete_table_confirm'      => 'Yes, delete this table',
         'delete_table_question'     => 'Are you sure you want to delete the :table table?',
+        'editing_table'             => 'Editing :table table',
         'edit_table'                => 'Edit the :table table below',
         'edit_table_not_exist'      => 'The table you want to edit doesn\'t exist',
         'extra'                     => 'Extra',
@@ -439,5 +448,50 @@ return [
         'symlink_missing_button' => 'Fix it',
         'symlink_missing_text'   => 'We could not find a storage symlink. This could cause problems with loading media files from the browser.',
         'symlink_missing_title'  => 'Missing storage symlink',
+    ],
+
+    'compass' => [
+        'welcome'                => 'Welcome to the Voyager Compass. Every good app needs a compass to point them in the right direction.
+        In this section you will find many resources and administrative tasks to help guide you as you build out your application.',
+        'links'         => [
+            'title'                 => 'Links',
+            'documentation'         => 'Documentation',
+            'voyager_homepage'      => 'Voyager Homepage',
+            'voyager_hooks'         => 'Voyager Hooks',
+        ],
+        'commands'      => [
+            'title'                 => 'Commands',
+            'text'                  => 'Run Artisan Commands from Voyager.',
+            'clear_output'          => 'clear output',
+            'command_output'        => 'Artisan Command Output',
+            'additional_args'       => 'Additional Args?',
+            'run_command'           => 'Run Command',
+        ],
+        'resources'     => [
+            'title'                 => 'Resources',
+            'text'                  => 'Voyager resources to help you find things quicker.',
+
+        ],
+        'logs'          => [
+            'available_commands'    => 'Available commands',
+            'title'                 => 'Logs',
+            'text'                  => 'Your app logs',
+            'file_too_big'          => 'Log file >50M, please download it.',
+            'level'                 => 'Level',
+            'context'               => 'Context',
+            'date'                  => 'Date',
+            'content'               => 'Content',
+            'download_file'         => 'Download file',
+            'delete_file'           => 'Delete file',
+            'delete_all_files'      => 'Delete all files',
+            'delete_success'        => 'Successfully deleted log file:',
+            'delete_all_success'    => 'Successfully deleted all log files',
+
+        ],
+        'fonts'         => [
+            'title'                 => 'Fonts',
+            'font_class'            => 'Voyager Fonts Class Mapping',
+            'font_character'        => 'Voyager Fonts Character Mapping',
+        ],
     ],
 ];

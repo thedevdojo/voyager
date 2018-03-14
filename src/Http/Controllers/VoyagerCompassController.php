@@ -44,7 +44,7 @@ class VoyagerCompassController extends Controller
             app('files')->delete(LogViewer::pathToLogFile(base64_decode($this->request->input('del'))));
 
             return $this->redirect($this->request->url().'?logs=true')->with([
-                'message'    => 'Successfully deleted log file: '.base64_decode($this->request->input('del')),
+                'message'    => __('voyager::voyager.compass.commands.delete_success').' '.base64_decode($this->request->input('del')),
                 'alert-type' => 'success',
                 ]);
         } elseif ($this->request->has('delall')) {
@@ -54,7 +54,7 @@ class VoyagerCompassController extends Controller
             }
 
             return $this->redirect($this->request->url().'?logs=true')->with([
-                'message'    => 'Successfully deleted all log files',
+                'message'    => __('voyager::voyager.compass.commands.delete_all_success'),
                 'alert-type' => 'success',
                 ]);
         }
@@ -114,7 +114,7 @@ class VoyagerCompassController extends Controller
         $output = array_filter(explode("\n", $output));
 
         // Get the current index of: "Available commands:"
-        $index = array_search('Available commands:', $output);
+        $index = array_search(__('voyager::voyager.compass.commands.available_commands').':', $output);
 
         // Remove all commands that precede "Available commands:", and remove that
         // Element itself -1 for offset zero and -1 for the previous index (equals -2)

@@ -115,7 +115,7 @@
                             $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
                             $row = $dataTypeRows->where('field', 'body')->first();
                         @endphp
-                        
+
                         <div class="panel-body">
                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                         </div>
@@ -140,7 +140,7 @@
 
                     <div class="panel">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Additional Fields</h3>
+                            <h3 class="panel-title">{{ __('voyager::voyager.post.additional_fields') }}</h3>
                             <div class="panel-actions">
                                 <a class="panel-action voyager-angle-down" data-toggle="panel-collapse" aria-hidden="true"></a>
                             </div>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">{{ __('voyager::voyager.post.slug') }}</label>
+                                <label for="slug">{{ __('voyager::voyager.post.slug') }}</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'slug',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'slug')
@@ -203,7 +203,7 @@
                                     value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager::voyager.post.status') }}</label>
+                                <label for="status">{{ __('voyager::voyager.post.status') }}</label>
                                 <select class="form-control" name="status">
                                     <option value="PUBLISHED"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'PUBLISHED') selected="selected"@endif>{{ __('voyager::voyager.post.status_published') }}</option>
                                     <option value="DRAFT"@if(isset($dataTypeContent->status) && $dataTypeContent->status == 'DRAFT') selected="selected"@endif>{{ __('voyager::voyager.post.status_draft') }}</option>
@@ -211,7 +211,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager::voyager.post.category') }}</label>
+                                <label for="category_id">{{ __('voyager::voyager.post.category') }}</label>
                                 <select class="form-control" name="category_id">
                                     @foreach(TCG\Voyager\Models\Category::all() as $category)
                                         <option value="{{ $category->id }}"@if(isset($dataTypeContent->category_id) && $dataTypeContent->category_id == $category->id) selected="selected"@endif>{{ $category->name }}</option>
@@ -219,7 +219,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager::voyager.generic.featured') }}</label>
+                                <label for="featured">{{ __('voyager::voyager.generic.featured') }}</label>
                                 <input type="checkbox" name="featured"@if(isset($dataTypeContent->featured) && $dataTypeContent->featured) checked="checked"@endif>
                             </div>
                         </div>
@@ -251,7 +251,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="name">{{ __('voyager::voyager.post.meta_description') }}</label>
+                                <label for="meta_description">{{ __('voyager::voyager.post.meta_description') }}</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'meta_description',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'meta_description')
@@ -259,7 +259,7 @@
                                 <textarea class="form-control" name="meta_description">@if(isset($dataTypeContent->meta_description)){{ $dataTypeContent->meta_description }}@endif</textarea>
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager::voyager.post.meta_keywords') }}</label>
+                                <label for="meta_keywords">{{ __('voyager::voyager.post.meta_keywords') }}</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'meta_keywords',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'meta_keywords')
@@ -267,7 +267,7 @@
                                 <textarea class="form-control" name="meta_keywords">@if(isset($dataTypeContent->meta_keywords)){{ $dataTypeContent->meta_keywords }}@endif</textarea>
                             </div>
                             <div class="form-group">
-                                <label for="name">{{ __('voyager::voyager.post.seo_title') }}</label>
+                                <label for="seo_title">{{ __('voyager::voyager.post.seo_title') }}</label>
                                 @include('voyager::multilingual.input-hidden', [
                                     '_field_name'  => 'seo_title',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'seo_title')

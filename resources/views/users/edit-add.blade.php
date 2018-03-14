@@ -55,14 +55,14 @@
                                 <label for="password">{{ __('voyager::voyager.generic.password') }}</label>
                                 @if(isset($dataTypeContent->password))
                                     <br>
-                                    <small>Leave empty to keep the same</small>
+                                    <small>{{ __('voyager::voyager.profile.password_hint') }}</small>
                                 @endif
                                 <input type="password" class="form-control" id="password" name="password" value="">
                             </div>
 
                             @can('editRoles', $dataTypeContent)
                                 <div class="form-group">
-                                    <label for="name">{{ __('voyager::voyager.profile.role_default') }}</label>
+                                    <label for="default_role">{{ __('voyager::voyager.profile.role_default') }}</label>
                                     @php
                                         $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
 
@@ -72,7 +72,7 @@
                                     @include('voyager::formfields.relationship')
                                 </div>
                                 <div class="form-group">
-                                    <label for="name">{{ __('voyager::voyager.profile.roles_additional') }}</label>
+                                    <label for="additional_roles">{{ __('voyager::voyager.profile.roles_additional') }}</label>
                                     @php
                                         $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();
                                         $options = json_decode($row->details);

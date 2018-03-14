@@ -346,7 +346,7 @@
         </form>
 
         <div style="clear:both"></div>
-        
+
         @can('add', Voyager::model('Setting'))
         <div class="panel" style="margin-top:10px;">
             <div class="panel-heading new-setting">
@@ -366,7 +366,7 @@
                         <input type="text" class="form-control" name="key" placeholder="{{ __('voyager::voyager.settings.help_key') }}" required="required">
                     </div>
                     <div class="col-md-3">
-                        <label for="asdf">{{ __('voyager::voyager.generic.type') }}</label>
+                        <label for="type">{{ __('voyager::voyager.generic.type') }}</label>
                         <select name="type" class="form-control" required="required">
                             <option value="">{{ __('voyager::voyager.generic.choose_type') }}</option>
                             <option value="text">{{ __('voyager::voyager.form.type_textbox') }}</option>
