@@ -320,6 +320,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'select_multiple',
             'text',
             'text_area',
+            'time',
             'timestamp',
             'hidden',
             'coordinates',

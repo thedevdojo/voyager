@@ -129,7 +129,7 @@ return [
         'already_at_bottom'    => 'Вже розміщено внизу списку',
         'moved_order_up'       => 'Параметр :name переміщено догори',
         'moved_order_down'     => 'Параметр :name переміщено донизу',
-        'key_already_exists'   => 'Цей ключ :key вже існує',        
+        'key_already_exists'   => 'Цей ключ :key вже існує',
         'successfully_removed' => 'Успішно видалено значення параметру :name',
         'group_general'        => 'Основне',
         'group_admin'          => 'Адмін',
