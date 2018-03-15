@@ -7,9 +7,9 @@ use Illuminate\Filesystem\Filesystem;
 use Intervention\Image\ImageServiceProviderLaravel5;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
+use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Traits\Seedable;
 use TCG\Voyager\VoyagerServiceProvider;
-use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 
 class InstallCommand extends Command
 {
