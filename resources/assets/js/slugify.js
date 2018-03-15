@@ -99,11 +99,15 @@
                              : str.charAt(i);
                 }
 
-                str = _slug
+                /*str = _slug
                     .replace(/^\s+|\s+$/g, '')      // Trim
                     .replace(/[^-\u0600-۾\w\d\$\*\(\)\'\!\_]/g, _sep)   // Remove invalid chars
                     .replace(/\s+/g, _sep)          // Replace spaces with separator
-                    .replace(/\-\-+/g, _sep);       // Replace multiple separators with single
+                    .replace(/\-\-+/g, _sep);       // Replace multiple separators with single*/
+                str = _slug
+                .replace(/[^a-z0-9]/g, _sep)
+                .replace(new RegExp('\\'+_sep+'\\'+_sep+'+', 'g'), _sep)
+                .replace(new RegExp('^\\'+_sep+'+|\\'+_sep+'+$', 'g'), '');
 
                 return str;
             },
