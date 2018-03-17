@@ -65,9 +65,6 @@ class InstallCommand extends Command
      */
     public function handle(Filesystem $filesystem)
     {
-        $this->info('Setting up the hooks');
-        $this->call('hook:setup');
-
         $this->info('Publishing the Voyager assets, database, language, and config files');
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
@@ -94,6 +91,7 @@ class InstallCommand extends Command
         $composer = $this->findComposer();
 
         $process = new Process($composer.' dump-autoload');
+        $process->setTimeout(null); //Setting timeout to null to prevent installation from stopping at a certain point in time
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Voyager routes to routes/web.php');
@@ -115,6 +113,9 @@ class InstallCommand extends Command
         if ($this->option('with-dummy')) {
             $this->seed('VoyagerDummyDatabaseSeeder');
         }
+
+        $this->info('Setting up the hooks');
+        $this->call('hook:setup');
 
         $this->info('Adding the storage symlink to your public folder');
         $this->call('storage:link');

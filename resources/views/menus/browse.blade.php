@@ -82,7 +82,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.'.$dataType->slug.'.index') }}" id="delete_form" method="POST">
+                    <form action="#" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager.generic.delete_this_confirm') }} {{ $dataType->display_name_singular }}">
@@ -106,9 +106,7 @@
         });
 
         $('td').on('click', '.delete', function (e) {
-            id = $(e.target).data('id');
-
-            $('#delete_form')[0].action += '/' + id;
+            $('#delete_table_form')[0].action = '{{ route('voyager.database.destroy', ['database' => '__database']) }}'.replace('__database', table);
 
             $('#delete_modal').modal('show');
         });

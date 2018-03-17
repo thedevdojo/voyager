@@ -4455,6 +4455,19 @@ p#the_plugin_name{
   border-bottom: 1px solid #eeeeee;
 }
 
+.page-content {
+
+  &.browse {
+
+    .form-search {
+      position: relative;
+      z-index: 1;
+    }
+
+  }
+
+}
+
 .page-content > .row > [class*="col-"]:not(:first-child) {
   padding-left: 8px;
 }
@@ -4699,11 +4712,6 @@ overflow-x: hidden;
   visibility: hidden;
 }
 
-.navbar .dropdown.profile:hover .dropdown-menu{
-  visibility: visible;
-  display:block;
-}
-
 .navbar .dropdown.profile .dropdown-menu h5, .navbar .dropdown.profile .dropdown-menu h6{
   float:left;
 }
@@ -4914,6 +4922,10 @@ float: left;
 
 .btn.btn-primary:hover{
   opacity:1;
+}
+
+.btn.btn-primary.active {
+    background: #0081CA;
 }
 
 .voyager .btn.btn-circle{
@@ -9844,3 +9856,15 @@ div.cropper-container img {
 }
 
 /********** END Cropper Style **********/
+
+/********** SimpleMDE Style **********/
+
+.editor-toolbar.fullscreen {
+  z-index: 9999;
+}
+
+.CodeMirror-fullscreen {
+  z-index: 9999;
+}
+
+/********** END SimpleMDE Style **********/
