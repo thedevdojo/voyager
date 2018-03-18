@@ -16,16 +16,16 @@ class VoyagerSettingsController extends Controller
         $data = Voyager::model('Setting')->orderBy('order', 'ASC')->get();
 
         $settings = [];
-        $settings[__('voyager::voyager.settings.group_general')] = [];
+        $settings[__('voyager::settings.group_general')] = [];
         foreach ($data as $d) {
-            if ($d->group == '' || $d->group == __('voyager::voyager.settings.group_general')) {
-                $settings[__('voyager::voyager.settings.group_general')][] = $d;
+            if ($d->group == '' || $d->group == __('voyager::settings.group_general')) {
+                $settings[__('voyager::settings.group_general')][] = $d;
             } else {
                 $settings[$d->group][] = $d;
             }
         }
-        if (count($settings[__('voyager::voyager.settings.group_general')]) == 0) {
-            unset($settings[__('voyager::voyager.settings.group_general')]);
+        if (count($settings[__('voyager::settings.group_general')]) == 0) {
+            unset($settings[__('voyager::settings.group_general')]);
         }
 
         $groups_data = Voyager::model('Setting')->select('group')->distinct()->get();
@@ -51,7 +51,7 @@ class VoyagerSettingsController extends Controller
 
         if ($key_check > 0) {
             return back()->with([
-                'message'    => __('voyager::voyager.settings.key_already_exists', ['key' => $key]),
+                'message'    => __('voyager::settings.key_already_exists', ['key' => $key]),
                 'alert-type' => 'error',
             ]);
         }
@@ -73,7 +73,7 @@ class VoyagerSettingsController extends Controller
         request()->flashOnly('setting_tab');
 
         return back()->with([
-            'message'    => __('voyager::voyager.settings.successfully_created'),
+            'message'    => __('voyager::settings.successfully_created'),
             'alert-type' => 'success',
         ]);
     }
@@ -108,7 +108,7 @@ class VoyagerSettingsController extends Controller
         request()->flashOnly('setting_tab');
 
         return back()->with([
-            'message'    => __('voyager::voyager.settings.successfully_saved'),
+            'message'    => __('voyager::settings.successfully_saved'),
             'alert-type' => 'success',
         ]);
     }
@@ -125,7 +125,7 @@ class VoyagerSettingsController extends Controller
         request()->session()->flash('setting_tab', $setting->group);
 
         return back()->with([
-            'message'    => __('voyager::voyager.settings.successfully_deleted'),
+            'message'    => __('voyager::settings.successfully_deleted'),
             'alert-type' => 'success',
         ]);
     }
@@ -146,7 +146,7 @@ class VoyagerSettingsController extends Controller
                             ->where('group', $setting->group)
                             ->orderBy('order', 'DESC')->first();
         $data = [
-            'message'    => __('voyager::voyager.settings.already_at_top'),
+            'message'    => __('voyager::settings.already_at_top'),
             'alert-type' => 'error',
         ];
 
@@ -157,7 +157,7 @@ class VoyagerSettingsController extends Controller
             $previousSetting->save();
 
             $data = [
-                'message'    => __('voyager::voyager.settings.moved_order_up', ['name' => $setting->display_name]),
+                'message'    => __('voyager::settings.moved_order_up', ['name' => $setting->display_name]),
                 'alert-type' => 'success',
             ];
         }
@@ -188,7 +188,7 @@ class VoyagerSettingsController extends Controller
         request()->session()->flash('setting_tab', $setting->group);
 
         return back()->with([
-            'message'    => __('voyager::voyager.settings.successfully_removed', ['name' => $setting->display_name]),
+            'message'    => __('voyager::settings.successfully_removed', ['name' => $setting->display_name]),
             'alert-type' => 'success',
         ]);
     }
@@ -210,7 +210,7 @@ class VoyagerSettingsController extends Controller
                             ->where('group', $setting->group)
                             ->orderBy('order', 'ASC')->first();
         $data = [
-            'message'    => __('voyager::voyager.settings.already_at_bottom'),
+            'message'    => __('voyager::settings.already_at_bottom'),
             'alert-type' => 'error',
         ];
 
@@ -221,7 +221,7 @@ class VoyagerSettingsController extends Controller
             $previousSetting->save();
 
             $data = [
-                'message'    => __('voyager::voyager.settings.moved_order_down', ['name' => $setting->display_name]),
+                'message'    => __('voyager::settings.moved_order_down', ['name' => $setting->display_name]),
                 'alert-type' => 'success',
             ];
         }

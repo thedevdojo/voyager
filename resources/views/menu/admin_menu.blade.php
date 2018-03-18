@@ -57,7 +57,7 @@
     @endphp
 
     <li class="{{ implode(" ", $listItemClass) }}">
-        <a {!! $linkAttributes !!} target="{{ $item->target }}">
+        <a {!! $linkAttributes !!} target="{{ $item->target }}" style="color:{{ (isset($item->color) && $item->color != '#000000' ? $item->color : '') }}">
             <span class="icon {{ $item->icon_class }}"></span>
             <span class="title">{{ $transItem->title }}</span>
         </a>
