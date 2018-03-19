@@ -185,8 +185,8 @@ return [
     ],
 
     'menu_builder' => [
-        'color'                => 'Color in RGB or hex (optional)',
-        'color_ph'             => 'Color (ex. #ffffff or rgb(255, 255, 255)',
+        'color'                => 'Color in RGB or Hex (optional)',
+        'color_ph'             => 'Color, ex. #ffffff or rgb(255, 255, 255)',
         'create_new_item'      => 'Create a New Menu Item',
         'delete_item_confirm'  => 'Yes, Delete This Menu Item',
         'delete_item_question' => 'Are you sure you want to delete this menu item?',
@@ -224,7 +224,7 @@ return [
         'meta_keywords'    => 'Meta Keywords',
         'new'              => 'Create New Post',
         'seo_content'      => 'SEO Content',
-        'seo_title'        => 'Seo Title',
+        'seo_title'        => 'SEO Title',
         'slug'             => 'URL slug',
         'status'           => 'Post Status',
         'status_draft'     => 'draft',
@@ -402,9 +402,9 @@ return [
     ],
 
     'json' => [
-        'invalid'           => 'Invalid Json',
+        'invalid'           => 'Invalid JSON',
         'invalid_message'   => 'Seems like you introduced some invalid JSON.',
-        'valid'             => 'Valid Json',
+        'valid'             => 'Valid JSON',
         'validation_errors' => 'Validation errors',
     ],
 
