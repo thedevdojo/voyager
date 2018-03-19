@@ -1,4 +1,5 @@
 <?php
+
 // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
 return [
     'sEmptyTable'     => 'Taulu ei sisällä tietoja',

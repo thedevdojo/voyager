@@ -8,11 +8,11 @@ return [
     'destination_folder'     => 'Kohdekansio',
     'drag_drop_info'         => 'Raahaa ja tiputa tiedosto tai klikkaa alla lähettääksesi',
     'error_already_exists'   => 'Tämä kansio sisältää jo samannimisen tiedoston/kansion.',
-    'error_creating_dir'     => 'Valitettavasti jotain meni pieleen kansiota luodessa. ' .
+    'error_creating_dir'     => 'Valitettavasti jotain meni pieleen kansiota luodessa. '.
                                     'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
-    'error_deleting_file' => 'Valitettavasti jotain meni pieleen tiedostoa poistettaessa. ' .
+    'error_deleting_file' => 'Valitettavasti jotain meni pieleen tiedostoa poistettaessa. '.
                                     'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
-    'error_deleting_folder' => 'Valitettavasti jotain meni pieleen kansiota poistettaessa. ' .
+    'error_deleting_folder' => 'Valitettavasti jotain meni pieleen kansiota poistettaessa. '.
                                     'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
     'error_may_exist' => 'Tiedosto tai kansio saattaa jo olemassa samalla nimellä. Ole hyvä ja valitse toinen nimi '.
                                 'tai poista/uudelleennimeä toinen tiedosto.',
