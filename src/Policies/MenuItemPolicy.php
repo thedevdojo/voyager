@@ -31,7 +31,7 @@ class MenuItemPolicy extends BasePolicy
         }
 
         $regex = str_replace('/', '\/', preg_quote(route('voyager.dashboard')));
-        $slug = preg_replace('/' . $regex . '/', '', $model->link(true));
+        $slug = preg_replace('/'.$regex.'/', '', $model->link(true));
         $slug = str_replace('/', '', $slug);
 
         if ($str = self::$datatypes->get($slug)) {
@@ -43,10 +43,10 @@ class MenuItemPolicy extends BasePolicy
         }
 
         // If permission doesn't exist, we can't check it!
-        if (!self::$permissions->get('browse_' . $slug)) {
+        if (!self::$permissions->get('browse_'.$slug)) {
             return true;
         }
 
-        return $user->hasPermission('browse_' . $slug);
+        return $user->hasPermission('browse_'.$slug);
     }
 }
