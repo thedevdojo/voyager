@@ -45,7 +45,7 @@ class VoyagerSettingsController extends Controller
     {
         // Check permission
         $this->authorize('add', Voyager::model('Setting'));
-        
+
         $key = implode('.', [str_slug($request->input('group')), $request->input('key')]);
         $key_check = Voyager::model('Setting')->where('key', $key)->get()->count();
 
