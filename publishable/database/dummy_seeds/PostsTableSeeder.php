@@ -20,8 +20,8 @@ class PostsTableSeeder extends Seeder
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'posts',
-                'display_name_singular' => 'Post',
-                'display_name_plural'   => 'Posts',
+                'display_name_singular' => __('voyager::seeders.data_types.post.singular'),
+                'display_name_plural'   => __('voyager::seeders.data_types.post.plural'),
                 'icon'                  => 'voyager-news',
                 'model_name'            => 'TCG\\Voyager\\Models\\Post',
                 'policy_name'           => 'TCG\\Voyager\\Policies\\PostPolicy',
@@ -37,7 +37,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'number',
-                'display_name' => 'ID',
+                'display_name' => __('voyager::seeders.data_rows.id'),
                 'required'     => 1,
                 'browse'       => 0,
                 'read'         => 0,
@@ -53,7 +53,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text',
-                'display_name' => 'Author',
+                'display_name' => __('voyager::seeders.data_rows.author'),
                 'required'     => 1,
                 'browse'       => 0,
                 'read'         => 1,
@@ -69,7 +69,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text',
-                'display_name' => 'Category',
+                'display_name' => __('voyager::seeders.data_rows.category'),
                 'required'     => 1,
                 'browse'       => 0,
                 'read'         => 1,
@@ -85,7 +85,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text',
-                'display_name' => 'Title',
+                'display_name' => __('voyager::seeders.data_rows.title'),
                 'required'     => 1,
                 'browse'       => 1,
                 'read'         => 1,
@@ -101,7 +101,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text_area',
-                'display_name' => 'excerpt',
+                'display_name' => __('voyager::seeders.data_rows.excerpt'),
                 'required'     => 1,
                 'browse'       => 0,
                 'read'         => 1,
@@ -117,7 +117,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'rich_text_box',
-                'display_name' => 'Body',
+                'display_name' => __('voyager::seeders.data_rows.body'),
                 'required'     => 1,
                 'browse'       => 0,
                 'read'         => 1,
@@ -133,7 +133,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'image',
-                'display_name' => 'Post Image',
+                'display_name' => __('voyager::seeders.data_rows.post_image'),
                 'required'     => 0,
                 'browse'       => 1,
                 'read'         => 1,
@@ -173,7 +173,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text',
-                'display_name' => 'slug',
+                'display_name' => __('voyager::seeders.data_rows.slug'),
                 'required'     => 1,
                 'browse'       => 0,
                 'read'         => 1,
@@ -194,7 +194,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text_area',
-                'display_name' => 'meta_description',
+                'display_name' => __('voyager::seeders.data_rows.meta_description'),
                 'required'     => 1,
                 'browse'       => 0,
                 'read'         => 1,
@@ -210,7 +210,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text_area',
-                'display_name' => 'meta_keywords',
+                'display_name' => __('voyager::seeders.data_rows.meta_keywords'),
                 'required'     => 1,
                 'browse'       => 0,
                 'read'         => 1,
@@ -226,7 +226,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'select_dropdown',
-                'display_name' => 'status',
+                'display_name' => __('voyager::seeders.data_rows.status'),
                 'required'     => 1,
                 'browse'       => 1,
                 'read'         => 1,
@@ -249,7 +249,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'timestamp',
-                'display_name' => 'created_at',
+                'display_name' => __('voyager::seeders.data_rows.created_at'),
                 'required'     => 0,
                 'browse'       => 1,
                 'read'         => 1,
@@ -265,7 +265,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'timestamp',
-                'display_name' => 'updated_at',
+                'display_name' => __('voyager::seeders.data_rows.updated_at'),
                 'required'     => 0,
                 'browse'       => 0,
                 'read'         => 0,
@@ -281,7 +281,7 @@ class PostsTableSeeder extends Seeder
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text',
-                'display_name' => 'seo_title',
+                'display_name' => __('voyager::seeders.data_rows.seo_title'),
                 'required'     => 0,
                 'browse'       => 1,
                 'read'         => 1,
@@ -292,12 +292,11 @@ class PostsTableSeeder extends Seeder
                 'order'        => 14,
             ])->save();
         }
-
         $dataRow = $this->dataRow($postDataType, 'featured');
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'checkbox',
-                'display_name' => 'featured',
+                'display_name' => __('voyager::seeders.data_rows.featured'),
                 'required'     => 1,
                 'browse'       => 1,
                 'read'         => 1,
@@ -313,7 +312,7 @@ class PostsTableSeeder extends Seeder
         $menu = Menu::where('name', 'admin')->firstOrFail();
         $menuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
-            'title'   => 'Posts',
+            'title'   => __('voyager::seeders.menu_items.posts'),
             'url'     => '',
             'route'   => 'voyager.posts.index',
         ]);
