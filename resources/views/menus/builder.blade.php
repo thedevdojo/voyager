@@ -173,6 +173,7 @@
              * Add Menu
              */
             $('.add_item').click(function() {
+                $m_form.trigger('reset');
                 $m_modal.modal('show', {data: null});
             });
 
