@@ -20,3 +20,10 @@ if (!function_exists('voyager_asset')) {
         return asset(config('voyager.assets_path').'/'.$path, $secure);
     }
 }
+
+if (!function_exists('isRtl')) {
+    function isRtl()
+    {
+        return config('voyager.panel_direction', 'ltr') == 'rtl';
+    }
+}
