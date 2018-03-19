@@ -147,19 +147,19 @@ return [
         'destination_folder'     => 'Kohdekansio',
         'drag_drop_info'         => 'Raahaa ja tiputa tiedosto tai klikkaa alla lähettääksesi',
         'error_already_exists'   => 'Tämä kansio sisältää jo samannimisen tiedoston/kansion.',
-        'error_creating_dir'     => 'Valitettavasti jotain meni pieleen kansiota luodessa. ' .
-										'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
-        'error_deleting_file' => 'Valitettavasti jotain meni pieleen tiedostoa poistettaessa. ' .
-										'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
-        'error_deleting_folder' => 'Valitettavasti jotain meni pieleen kansiota poistettaessa. ' .
-	                                    'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
+        'error_creating_dir'     => 'Valitettavasti jotain meni pieleen kansiota luodessa. '.
+                                        'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
+        'error_deleting_file' => 'Valitettavasti jotain meni pieleen tiedostoa poistettaessa. '.
+                                        'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
+        'error_deleting_folder' => 'Valitettavasti jotain meni pieleen kansiota poistettaessa. '.
+                                        'Olkaa hyvä ja tarkastakaa tiedostojärjestelmän käyttöoikeudet.',
         'error_may_exist' => 'Tiedosto tai kansio saattaa jo olemassa samalla nimellä. Ole hyvä ja valitse toinen nimi '.
                                     'tai poista/uudelleennimeä toinen tiedosto.',
         'error_moving' => 'Valitettavasti tiedostoa/kansiota siirrossa on ongelmaa.'.
-	                                    'Ole hyvä varmista että sinulla riittävät käyttöoikeudet.',
+                                        'Ole hyvä varmista että sinulla riittävät käyttöoikeudet.',
         'error_uploading'       => 'Lähetys epäonnistui: Tuntematon virhe kohdattiin!',
         'folder_exists_already' => 'Valitettavasti kyseinen kansio on jo olemassa. '.
-	                                    'Ole hyvä ja poista kansio ensin jos haluat luoda sen uudestaan.',
+                                        'Ole hyvä ja poista kansio ensin jos haluat luoda sen uudestaan.',
         'image_does_not_exist'  => 'Kuvaa ei löytynyt',
         'image_removed'         => 'Kuva poistettiin',
         'library'               => 'Mediakirjasto',
@@ -211,7 +211,7 @@ return [
         'updated_order'        => 'Valikon järjestystä muutettiin onnistuneesti.',
         'url'                  => 'Valikkorivin verkko-osoite',
         'usage_hint'           => 'Voit esittää valikon missä kohdassa tahansa sivustollasi kutsumalla|Voit esittää '.
-	                                'tämän valikon missä kohdassa tahansa sivustollasi kutsumalla',
+                                    'tämän valikon missä kohdassa tahansa sivustollasi kutsumalla',
     ],
 
     'post' => [
@@ -359,15 +359,15 @@ return [
     'form' => [
         'field_password_keep'          => 'Jätä tyhjäksi jos et halua muuttaa',
         'field_select_dd_relationship' => 'Varmistathan että lisäät tarpeellisen riippuvuustiedon metodiin :method luokassa :class.',
-        'type_checkbox'       => 'Valintaruutu',
-        'type_codeeditor'     => 'Koodieditori',
-        'type_file'           => 'Tiedosto',
-        'type_image'          => 'Kuva',
-        'type_radiobutton'    => 'Vaihtoehtonappi',
-        'type_richtextbox'    => 'Rikastekstieditori',
-        'type_selectdropdown' => 'Alasvetolista',
-        'type_textarea'       => 'Tekstialue',
-        'type_textbox'        => 'Tekstilaatikko',
+        'type_checkbox'                => 'Valintaruutu',
+        'type_codeeditor'              => 'Koodieditori',
+        'type_file'                    => 'Tiedosto',
+        'type_image'                   => 'Kuva',
+        'type_radiobutton'             => 'Vaihtoehtonappi',
+        'type_richtextbox'             => 'Rikastekstieditori',
+        'type_selectdropdown'          => 'Alasvetolista',
+        'type_textarea'                => 'Tekstialue',
+        'type_textbox'                 => 'Tekstilaatikko',
     ],
 
     // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
@@ -412,8 +412,8 @@ return [
         'by_sessions'  => 'Istuntojen mukaan',
         'by_users'     => 'Käyttäjien mukaan',
         'no_client_id' => 'Näyttääksesi kävijätilastoja sinulla täytyy olla google analytics client id ja lisätä se '.
-	                                'asetusriviin avainnimeltään <code>google_analytics_client_id</code>.'.
-	                                ' Saat idn Google developer konsolista:',
+                                    'asetusriviin avainnimeltään <code>google_analytics_client_id</code>.'.
+                                    ' Saat idn Google developer konsolista:',
         'set_view'               => 'Valitse näkymä',
         'this_vs_last_week'      => 'Tämä viikko vs viime viikko',
         'this_vs_last_year'      => 'Tämä vuosi vs viime vuosi',
@@ -426,11 +426,11 @@ return [
         'symlink_created_text'  => 'Loimme sinulle juuri puuttuneen symlinkkauksen.',
         'symlink_created_title' => 'Puuttunut tiedostovaraston symlinkkaus luotu',
         'symlink_failed_text'   => 'Epäonnistuimme luodessa puuttunutta symlinkkiä sovelluksellesi. '.
-	                                'Näyttää siltä että hostausalustasi ei tue sitä.',
+                                    'Näyttää siltä että hostausalustasi ei tue sitä.',
         'symlink_failed_title'   => 'Puuttuneen symlinkkauksen luonti epäonnistui',
         'symlink_missing_button' => 'Korjaa asia',
         'symlink_missing_text'   => 'Emme löytäneet tiedostovaraston symlinkkausta. '.
-	                                'Tämä voi aiheuttaa ongelmia mediatiedostojen näyttämisen kanssa selaimessa.',
+                                    'Tämä voi aiheuttaa ongelmia mediatiedostojen näyttämisen kanssa selaimessa.',
         'symlink_missing_title' => 'Tiedostovaraston puuttuva symlinkkaus',
     ],
 ];
