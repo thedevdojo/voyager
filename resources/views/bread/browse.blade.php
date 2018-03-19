@@ -257,6 +257,7 @@
                     array_merge([
                         "order" => [],
                         "language" => __('voyager::datatable'),
+                        "columnDefs" => [['searchable' =>  false, 'targets' => -1 ]],
                     ],
                     config('voyager.dashboard.data_tables', []))
                 , true) !!});
