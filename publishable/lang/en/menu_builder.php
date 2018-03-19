@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'color'                => 'Color in RGB or hex (optional)',
-    'color_ph'             => 'Color (ex. #ffffff or rgb(255, 255, 255)',
+    'color'                => 'Color in RGB or Hex (optional)',
+    'color_ph'             => 'Color, ex. #ffffff or rgb(255, 255, 255)',
     'create_new_item'      => 'Create a New Menu Item',
     'delete_item_confirm'  => 'Yes, Delete This Menu Item',
     'delete_item_question' => 'Are you sure you want to delete this menu item?',

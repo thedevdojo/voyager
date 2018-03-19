@@ -6,6 +6,7 @@ return [
     'add_timestamps'            => 'Добавить метки времени',
     'already_exists'            => 'уже существует',
     'already_exists_table'      => 'Таблица :table уже существует',
+    'browse_bread'              => 'Просмотр',
     'column'                    => 'Столбец',
     'composite_warning'         => 'Предупреждение: этот столбец является частью составного индекса',
     'create_new_table'          => 'Создать новую таблицу',

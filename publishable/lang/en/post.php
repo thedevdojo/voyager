@@ -11,7 +11,7 @@ return [
     'meta_keywords'    => 'Meta Keywords',
     'new'              => 'Create New Post',
     'seo_content'      => 'SEO Content',
-    'seo_title'        => 'Seo Title',
+    'seo_title'        => 'SEO Title',
     'slug'             => 'URL slug',
     'status'           => 'Post Status',
     'status_draft'     => 'draft',

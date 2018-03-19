@@ -17,6 +17,7 @@ return [
     'delete_bread_before_table' => 'Please make sure to remove the BREAD on this table before deleting the table.',
     'delete_table_confirm'      => 'Yes, delete this table',
     'delete_table_question'     => 'Are you sure you want to delete the :table table?',
+    'editing_table'             => 'Editing table :table',
     'edit_table'                => 'Edit the :table table below',
     'edit_table_not_exist'      => 'The table you want to edit doesn\'t exist',
     'extra'                     => 'Extra',
