@@ -68,7 +68,7 @@ class DataRowsTableSeeder extends Seeder
             $dataRow->fill([
                 'type'         => 'password',
                 'display_name' => __('voyager::seeders.data_rows.password'),
-                'required'     => 0,
+                'required'     => 1,
                 'browse'       => 0,
                 'read'         => 0,
                 'edit'         => 1,
