@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'usage_help'           => 'يمكنك الحصول على قيمة أي إعداد في أي مكان في موقعك عن طريق استخدام',
+    'save'                 => 'احفظ الإعدادات',
+    'new'                  => 'إعداد جديد',
+    'help_name'            => 'اسم الإعداد مثال : Admin Title',
+    'help_key'             => 'مفتاح الإعداد مثال : admin_title',
+    'help_option'          => '(اختياري، ينطبق فقط على أنواع معينة مثل القائمة المنسدلة أو زر الاختيار)',
+    'add_new'              => 'إضافة إعداد جديد',
+    'delete_question'      => 'هل تريد بالتأكيد حذف الإعداد :setting ؟',
+    'delete_confirm'       => 'نعم، حذف هذا الإعداد',
+    'successfully_created' => 'تم إنشاء الإعدادات بنجاح',
+    'successfully_saved'   => 'تم حفظ الإعدادات بنجاح',
+    'successfully_deleted' => 'تم حذف الإعداد بنجاح',
+    'already_at_top'       => 'موجود بالفعل في أعلى القائمة',
+    'already_at_bottom'    => 'موجود بالفعل في أسفل القائمة',
+    'key_already_exists'   => 'المفتاح :key موجود بالفعل',
+    'moved_order_up'       => 'القيمة :name تم نقلها إلى أعلى',
+    'moved_order_down'     => 'القيمة :name تم نقلها إلى أسفل',
+    'successfully_removed' => 'تم إزالة :name بنجاح',
+    'group_general'        => 'عام',
+    'group_admin'          => 'الإدارة',
+    'group_site'           => 'الموقع',
+    'group'                => 'المجموعة',
+    'help_group'           => 'مجموعة هذا الإعداد تنتمي إلى',
+];
