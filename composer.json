@@ -48,7 +48,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TCG\\Voyager\\VoyagerServiceProvider"
+                "TCG\\Voyager\\VoyagerServiceProvider",
+                "TCG\\Voyager\\Providers\\VoyagerDummyServiceProvider"
             ]
         }
     }
