@@ -237,7 +237,18 @@
                                         @else
                                             <select name="field_input_type_{{ $data['field'] }}">
                                                 @foreach (Voyager::formFields() as $formField)
-                                                    <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
+                                                    @php
+                                                    if (
+                                                        (isset($dataRow->type) && $dataRow->type == $formField->getCodename())
+                                                        ||
+                                                        (!isset($dataRow->type) && $formField->getCodename() == 'text')
+                                                    ) {
+                                                        $selected = true;
+                                                    } else {
+                                                        $selected = false;
+                                                    }
+                                                    @endphp
+                                                    <option value="{{ $formField->getCodename() }}" {{ $selected ? 'selected' : '' }}>
                                                         {{ $formField->getName() }}
                                                     </option>
                                                 @endforeach

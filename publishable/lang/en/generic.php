@@ -10,6 +10,7 @@ return [
     'are_you_sure'           => 'Are you sure',
     'are_you_sure_delete'    => 'Are you sure you want to delete',
     'auto_increment'         => 'Auto Increment',
+    'bread'                  => 'BREAD',
     'browse'                 => 'Browse',
     'builder'                => 'Builder',
     'bulk_delete'            => 'Bulk Delete',
