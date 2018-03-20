@@ -14,8 +14,8 @@ class DataTypesTableSeeder extends Seeder
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'posts',
-                'display_name_singular' => 'Post',
-                'display_name_plural'   => 'Posts',
+                'display_name_singular' => __('voyager.seeders.data_types.post.singular'),
+                'display_name_plural'   => __('voyager.seeders.data_types.post.plural'),
                 'icon'                  => 'voyager-news',
                 'model_name'            => 'TCG\\Voyager\\Models\\Post',
                 'policy_name'           => 'TCG\\Voyager\\Policies\\PostPolicy',
@@ -29,8 +29,8 @@ class DataTypesTableSeeder extends Seeder
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'pages',
-                'display_name_singular' => 'Page',
-                'display_name_plural'   => 'Pages',
+                'display_name_singular' => __('voyager.seeders.data_types.page.singular'),
+                'display_name_plural'   => __('voyager.seeders.data_types.page.plural'),
                 'icon'                  => 'voyager-file-text',
                 'model_name'            => 'TCG\\Voyager\\Models\\Page',
                 'controller'            => '',
@@ -43,8 +43,8 @@ class DataTypesTableSeeder extends Seeder
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'users',
-                'display_name_singular' => 'User',
-                'display_name_plural'   => 'Users',
+                'display_name_singular' => __('voyager.seeders.data_types.user.singular'),
+                'display_name_plural'   => __('voyager.seeders.data_types.user.plural'),
                 'icon'                  => 'voyager-person',
                 'model_name'            => 'TCG\\Voyager\\Models\\User',
                 'policy_name'           => 'TCG\\Voyager\\Policies\\UserPolicy',
@@ -58,8 +58,8 @@ class DataTypesTableSeeder extends Seeder
         if (!$dataType->exists) {
             $dataType->fill([
                 'slug'                  => 'categories',
-                'display_name_singular' => 'Category',
-                'display_name_plural'   => 'Categories',
+                'display_name_singular' => __('voyager.seeders.data_types.category.singular'),
+                'display_name_plural'   => __('voyager.seeders.data_types.category.plural'),
                 'icon'                  => 'voyager-categories',
                 'model_name'            => 'TCG\\Voyager\\Models\\Category',
                 'controller'            => '',
@@ -72,8 +72,8 @@ class DataTypesTableSeeder extends Seeder
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'menus',
-                'display_name_singular' => 'Menu',
-                'display_name_plural'   => 'Menus',
+                'display_name_singular' => __('voyager.seeders.data_types.menu.singular'),
+                'display_name_plural'   => __('voyager.seeders.data_types.menu.plural'),
                 'icon'                  => 'voyager-list',
                 'model_name'            => 'TCG\\Voyager\\Models\\Menu',
                 'controller'            => '',
@@ -86,8 +86,8 @@ class DataTypesTableSeeder extends Seeder
         if (!$dataType->exists) {
             $dataType->fill([
                 'name'                  => 'roles',
-                'display_name_singular' => 'Role',
-                'display_name_plural'   => 'Roles',
+                'display_name_singular' => __('voyager.seeders.data_types.role.singular'),
+                'display_name_plural'   => __('voyager.seeders.data_types.role.plural'),
                 'icon'                  => 'voyager-lock',
                 'model_name'            => 'TCG\\Voyager\\Models\\Role',
                 'controller'            => '',

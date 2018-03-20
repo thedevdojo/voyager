@@ -345,7 +345,8 @@
         </form>
 
         <div style="clear:both"></div>
-
+        
+        @can('add', Voyager::model('Setting'))
         <div class="panel" style="margin-top:10px;">
             <div class="panel-heading new-setting">
                 <hr>
@@ -405,6 +406,7 @@
                 </form>
             </div>
         </div>
+        @endcan
     </div>
 
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
@@ -419,7 +421,7 @@
                     </h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.settings.delete', ['id' => '__id']) }}" id="delete_form" method="POST">
+                    <form action="#" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager.settings.delete_confirm') }}">
@@ -444,11 +446,12 @@
                 }
             });
 
-            $('.voyager-trash').click(function () {
+            $('.panel-actions .voyager-trash').click(function () {
                 var display = $(this).data('display-name') + '/' + $(this).data('display-key');
 
                 $('#delete_setting_title').text(display);
-                $('#delete_form')[0].action = $('#delete_form')[0].action.replace('__id', $(this).data('id'));
+
+                $('#delete_form')[0].action = '{{ route('voyager.settings.delete', [ 'id' => '__id' ]) }}'.replace('__id', $(this).data('id'));
                 $('#delete_modal').modal('show');
             });
 

@@ -1,4 +1,4 @@
-<script id="realtionship-edit-add" type="text/x-jquery-template">
+<script id="relationship-edit-add" type="text/x-jquery-template">
 <tr>
     <td>
         <select class="form-control select2" name="{{ $row->field }}[]">

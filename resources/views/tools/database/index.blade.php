@@ -117,7 +117,7 @@
                     <h4 class="modal-title"><i class="voyager-trash"></i> {!! __('voyager.database.delete_table_bread_quest', ['table' => '<span id="delete_table_name"></span>']) !!}</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.database.destroy', ['database' => '__database']) }}" id="delete_table_form" method="POST">
+                    <form action="#" id="delete_table_form" method="POST">
                         {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger pull-right" value="{{ __('voyager.database.delete_table_confirm') }}">
@@ -225,7 +225,8 @@
                     toastr.warning('{{ __('voyager.database.delete_bread_before_table') }}');
                 } else {
                     $('#delete_table_name').text(table);
-                    $('#delete_table_form')[0].action = $('#delete_table_form')[0].action.replace('__database', table);
+
+                    $('#delete_table_form')[0].action = '{{ route('voyager.database.destroy', ['database' => '__database']) }}'.replace('__database', table)
                     $('#delete_modal').modal('show');
                 }
             });

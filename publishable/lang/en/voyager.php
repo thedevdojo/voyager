@@ -185,8 +185,8 @@ return [
     ],
 
     'menu_builder' => [
-        'color'                => 'Color in RGB or hex (optional)',
-        'color_ph'             => 'Color (ex. #ffffff or rgb(255, 255, 255)',
+        'color'                => 'Color in RGB or Hex (optional)',
+        'color_ph'             => 'Color, ex. #ffffff or rgb(255, 255, 255)',
         'create_new_item'      => 'Create a New Menu Item',
         'delete_item_confirm'  => 'Yes, Delete This Menu Item',
         'delete_item_question' => 'Are you sure you want to delete this menu item?',
@@ -224,7 +224,7 @@ return [
         'meta_keywords'    => 'Meta Keywords',
         'new'              => 'Create New Post',
         'seo_content'      => 'SEO Content',
-        'seo_title'        => 'Seo Title',
+        'seo_title'        => 'SEO Title',
         'slug'             => 'URL slug',
         'status'           => 'Post Status',
         'status_draft'     => 'draft',
@@ -402,9 +402,9 @@ return [
     ],
 
     'json' => [
-        'invalid'           => 'Invalid Json',
+        'invalid'           => 'Invalid JSON',
         'invalid_message'   => 'Seems like you introduced some invalid JSON.',
-        'valid'             => 'Valid Json',
+        'valid'             => 'Valid JSON',
         'validation_errors' => 'Validation errors',
     ],
 
@@ -433,5 +433,96 @@ return [
         'symlink_missing_text'   => 'We could not find a storage symlink. This could cause problems with '.
                                     'loading media files from the browser.',
         'symlink_missing_title' => 'Missing storage symlink',
+    ],
+
+    'seeders' => [
+        'data_rows'  => [
+            'author'           => 'Author',
+            'avatar'           => 'Avatar',
+            'body'             => 'Body',
+            'category'         => 'Category',
+            'created_at'       => 'Created At',
+            'display_name'     => 'Display Name',
+            'email'            => 'Email',
+            'excerpt'          => 'Excerpt',
+            'featured'         => 'Featured',
+            'id'               => 'ID',
+            'meta_description' => 'Meta Description',
+            'meta_keywords'    => 'Meta Keywords',
+            'name'             => 'Name',
+            'order'            => 'Order',
+            'page_image'       => 'Page Image',
+            'parent'           => 'Parent',
+            'password'         => 'Password',
+            'post_image'       => 'Post Image',
+            'remember_token'   => 'Remember Token',
+            'role'             => 'Role',
+            'seo_title'        => 'SEO Title',
+            'slug'             => 'Slug',
+            'status'           => 'Status',
+            'title'            => 'Title',
+            'updated_at'       => 'Updated At',
+        ],
+        'data_types' => [
+            'category' => [
+                'singular' => 'Category',
+                'plural'   => 'Categories',
+            ],
+            'menu'     => [
+                'singular' => 'Menu',
+                'plural'   => 'Menus',
+            ],
+            'page'     => [
+                'singular' => 'Page',
+                'plural'   => 'Pages',
+            ],
+            'post'     => [
+                'singular' => 'Post',
+                'plural'   => 'Posts',
+            ],
+            'role'     => [
+                'singular' => 'Role',
+                'plural'   => 'Roles',
+            ],
+            'user'     => [
+                'singular' => 'User',
+                'plural'   => 'Users',
+            ],
+        ],
+        'menu_items' => [
+            'categories'   => 'Categories',
+            'compass'      => 'Compass',
+            'dashboard'    => 'Dashboard',
+            'database'     => 'Database',
+            'media'        => 'Media',
+            'menu_builder' => 'Menu Builder',
+            'pages'        => 'Pages',
+            'posts'        => 'Posts',
+            'roles'        => 'Roles',
+            'settings'     => 'Settings',
+            'tools'        => 'Tools',
+            'users'        => 'Users',
+        ],
+        'roles'      => [
+            'admin' => 'Administrator',
+            'user'  => 'Normal User',
+        ],
+        'settings'   => [
+            'admin' => [
+                'background_image'           => 'Admin Background Image',
+                'description'                => 'Admin Description',
+                'description_value'          => 'Welcome to Voyager. The Missing Admin for Laravel',
+                'google_analytics_client_id' => 'Google Analytics Client ID (used for admin dashboard)',
+                'icon_image'                 => 'Admin Icon Image',
+                'loader'                     => 'Admin Loader',
+                'title'                      => 'Admin Title',
+            ],
+            'site'  => [
+                'description'                  => 'Site Description',
+                'google_analytics_tracking_id' => 'Google Analytics Tracking ID',
+                'logo'                         => 'Site Logo',
+                'title'                        => 'Site Title',
+            ],
+        ],
     ],
 ];
