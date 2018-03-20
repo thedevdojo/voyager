@@ -8,6 +8,9 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use TCG\Voyager\Actions\DeleteAction;
+use TCG\Voyager\Actions\EditAction;
+use TCG\Voyager\Actions\ViewAction;
 use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
 use TCG\Voyager\FormFields\HandlerInterface;
@@ -41,6 +44,12 @@ class Voyager
     protected $users = [];
 
     protected $viewLoadingEvents = [];
+
+    protected $actions = [
+        DeleteAction::class,
+        EditAction::class,
+        ViewAction::class,
+    ];
 
     protected $models = [
         'Category'   => Category::class,
@@ -158,6 +167,22 @@ class Voyager
         });
     }
 
+    public function addAction($action)
+    {
+        array_push($this->actions, $action);
+    }
+
+    public function replaceAction($actionToReplace, $action)
+    {
+        $key = array_search($actionToReplace, $this->actions);
+        $this->actions[$key] = $action;
+    }
+
+    public function actions()
+    {
+        return $this->actions;
+    }
+
     public function setting($key, $default = null)
     {
         $globalCache = config('voyager.settings.cache', false);
@@ -196,7 +221,7 @@ class Voyager
     public function image($file, $default = '')
     {
         if (!empty($file)) {
-            return Storage::disk(config('voyager.storage.disk'))->url($file);
+            return str_replace('\\', '/', Storage::disk(config('voyager.storage.disk'))->url($file));
         }
 
         return $default;
@@ -344,5 +369,10 @@ class Voyager
         }
 
         return $this->users[$id];
+    }
+
+    public function getLocales()
+    {
+        return array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), ['..', '.']);
     }
 }
