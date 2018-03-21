@@ -21,7 +21,7 @@
   "dependencies": {
     "ace-builds": "^1.2.6",
     "animate.css": "^3.5.2",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.0.0",
     "bootstrap-datepicker": "^1.6.4",
     "bootstrap-datetimepicker": "0.0.7",
     "bootstrap-switch": "^3.3.4",
