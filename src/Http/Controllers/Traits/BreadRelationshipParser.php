@@ -18,6 +18,14 @@ trait BreadRelationshipParser
                 $options = json_decode($row->details);
                 $relationshipField = @$options->column;
                 $keyInCollection = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relationshipField)->toArray());
+                $originalDetails = '';
+                if ($dataType->{$bread_type.'Rows'}->has($keyInCollection)) {
+                    $originalDetails = $dataType->{$bread_type.'Rows'}->get($keyInCollection)->only('details')['details'];
+                }
+                if (!empty($originalDetails)) {
+                    $newDetails = (array) $options + (array) json_decode($originalDetails);
+                    $dataType->{$bread_type.'Rows'}->get($key)['details'] = json_encode($newDetails);
+                }
                 array_push($forget_keys, $keyInCollection);
             }
         }
