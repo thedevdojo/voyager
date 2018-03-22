@@ -233,7 +233,7 @@ class VoyagerDatabaseController extends Controller
     public function show($table)
     {
         Voyager::canOrFail('browse_database');
-        
+
         $additional_attributes = [];
         $model_name = Voyager::model('DataType')->where('name', $table)->pluck('model_name')->first();
         if (isset($model_name)) {
