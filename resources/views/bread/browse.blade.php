@@ -88,8 +88,10 @@
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
                                             <td>
-                                                <?php $options = json_decode($row->details); ?>
-                                                <?php $classes = !empty($options->browse->tbody->classes) ? implode(' ', $options->browse->tbody->classes) : '' ?>
+                                            @php
+                                                $options = json_decode($row->details);
+                                                $classes = !empty($options->browse->tbody->classes) ? implode(' ', $options->browse->tbody->classes) : '';
+                                            @endphp
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                                 @elseif($row->type == 'relationship')
