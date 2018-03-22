@@ -20,10 +20,10 @@ trait BreadRelationshipParser
                 $keyInCollection = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relationshipField)->toArray());
                 $originalDetails = '';
                 if ($dataType->{$bread_type.'Rows'}->has($keyInCollection)) {
-                    $originalDetails = $dataType->{$bread_type.'Rows'}->get($keyInCollection)->only('details')['details'];
+                    $originalDetails = $dataType->{$bread_type.'Rows'}->get($keyInCollection)->toArray();
                 }
-                if (!empty($originalDetails)) {
-                    $newDetails = (array) $options + (array) json_decode($originalDetails);
+                if (!empty($originalDetails['details'])) {
+                    $newDetails = (array) $options + (array) json_decode($originalDetails['details']);
                     $dataType->{$bread_type.'Rows'}->get($key)['details'] = json_encode($newDetails);
                 }
                 array_push($forget_keys, $keyInCollection);
