@@ -281,7 +281,7 @@ return [
         'model_name'                => 'Model Adı',
         'model_name_ph'             => 'ex. \App\User, Eğer boş ise tablo adını deneyin',
         'name_warning'              => 'Lütfen indeks eklemden önce kolon adı belirleyin',
-        'no_composites_warning'     => 'This table has composite indexes. Please note that they are not supported '.'at the moment. Be careful when trying to add/remove indexes.',
+        'no_composites_warning'     => 'Bu tabloya bileşik indeks bulunmaktadır. Bunlar şuan için desteklenmemektedir. '.'İndeks eklerken ve silerken dikkat ediniz.',
         'null'                      => 'Boş',
         'optional_details'          => 'İsteğe Bağlı Ayrıntılar',
         'policy_class'              => 'Policy Class İsmi',
