@@ -25,8 +25,8 @@ use TCG\Voyager\Models\Post;
 use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\User;
-use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Traits\Translatable;
+use TCG\Voyager\Models\Translation;
 
 class Voyager
 {
