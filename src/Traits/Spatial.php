@@ -40,7 +40,7 @@ trait Spatial
                         $coords[] = [
                             //left most returned array ($lngLat) value corresponds to lng and right most corresponds to lat
                             'lng' => $lngLat[0],
-                            'lat' => $lngLat[1]
+                            'lat' => $lngLat[1],
                         ];
                     }
                 }
