@@ -290,13 +290,13 @@ abstract class Controller extends BaseController
                                             }
                                         }
                                     )->encode($file->getClientOriginalExtension(), $resize_quality);
-                                } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
+                                } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                     $crop_width = $thumbnails->crop->width;
                                     $crop_height = $thumbnails->crop->height;
                                     $image = Image::make($file)
                                         ->fit($crop_width, $crop_height)
                                         ->encode($file->getClientOriginalExtension(), $resize_quality);
-                                } elseif (isset($options->thumbnails) && isset($thumbnails->resize) && (isset($thumbnails->resize->width) || isset($thumbnails->resize->height))) {
+                                } elseif (isset($thumbnails->resize) && (isset($thumbnails->resize->width) || isset($thumbnails->resize->height))) {
                                     $thumb_resize_width = null;
                                     $thumb_resize_height = null;
                                     if (isset($thumbnails->resize->width)) {
@@ -450,13 +450,13 @@ abstract class Controller extends BaseController
                                         }
                                     }
                                 )->encode($file->getClientOriginalExtension(), $resize_quality);
-                            } elseif (isset($options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
+                            } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                                 $crop_width = $thumbnails->crop->width;
                                 $crop_height = $thumbnails->crop->height;
                                 $image = Image::make($file)
                                     ->fit($crop_width, $crop_height)
                                     ->encode($file->getClientOriginalExtension(), $resize_quality);
-                            } elseif (isset($options->thumbnails) && isset($thumbnails->resize) && (isset($thumbnails->resize->width) || isset($thumbnails->resize->height))) {
+                            } elseif (isset(isset($thumbnails->resize) && (isset($thumbnails->resize->width) || isset($thumbnails->resize->height))) {
                                     $thumb_resize_width = null;
                                     $thumb_resize_height = null;
                                     if (isset($thumbnails->resize->width)) {
