@@ -54,11 +54,13 @@ trait Translatable
         }
 
         $query->with(['translations' => function (Relation $query) use ($locale, $fallback) {
-            $query->where('locale', $locale);
+            $query->where(function ($q) use ($locale, $fallback) {
+                $q->where('locale', $locale);
 
-            if ($fallback !== false) {
-                $query->orWhere('locale', $fallback);
-            }
+                if ($fallback !== false) {
+                    $q->orWhere('locale', $fallback);
+                }
+            });
         }]);
     }
 
@@ -85,15 +87,17 @@ trait Translatable
                 return;
             }
 
-            if (is_array($locales)) {
-                $query->whereIn('locale', $locales);
-            } else {
-                $query->where('locale', $locales);
-            }
+            $query->where(function ($q) use ($locales, $fallback) {
+                if (is_array($locales)) {
+                    $q->whereIn('locale', $locales);
+                } else {
+                    $q->where('locale', $locales);
+                }
 
-            if ($fallback !== false) {
-                $query->orWhere('locale', $fallback);
-            }
+                if ($fallback !== false) {
+                    $q->orWhere('locale', $fallback);
+                }
+            });
         }]);
     }
 

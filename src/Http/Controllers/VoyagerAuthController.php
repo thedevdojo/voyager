@@ -52,6 +52,6 @@ class VoyagerAuthController extends Controller
      */
     public function redirectTo()
     {
-        return route('voyager.dashboard');
+        return config('voyager.user.redirect', route('voyager.dashboard'));
     }
 }

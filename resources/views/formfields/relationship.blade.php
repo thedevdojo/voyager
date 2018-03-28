@@ -143,7 +143,7 @@
 				<select class="form-control select2" name="{{ $relationshipField }}[]" multiple>
 					
 			            @php 
-					$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->key)->all() : array();
+					$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
 			                $relationshipOptions = app($options->model)->all();
 			            @endphp
 
