@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager;
 
-use Arrilot\Widgets\Facade as Widget;
-use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
@@ -24,6 +22,7 @@ use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
+use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
@@ -46,7 +45,7 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $this->app->register(VoyagerEventServiceProvider::class);
         $this->app->register(ImageServiceProvider::class);
-        $this->app->register(WidgetServiceProvider::class);
+        $this->app->register(VoyagerDummyServiceProvider::class);
         $this->app->register(VoyagerHooksServiceProvider::class);
         $this->app->register(DoctrineSupportServiceProvider::class);
 
@@ -61,7 +60,6 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->registerAlertComponents();
         $this->registerFormFields();
-        $this->registerWidgets();
 
         $this->registerConfigs();
 
@@ -95,15 +93,15 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
-        if (app()->version() >= 5.4) {
-            $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
+        $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
 
-            if (config('app.env') == 'testing') {
-                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
-            }
-        } else {
-            $router->middleware('admin.user', VoyagerAdminMiddleware::class);
+        $this->loadTranslationsFrom(realpath(__DIR__.'/../publishable/lang'), 'voyager');
+
+        if (config('app.env') == 'testing') {
+            $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
         }
+
+        $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
 
         $this->registerGates();
 
@@ -157,7 +155,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (request()->has('fix-missing-storage-symlink')) {
             if (file_exists(public_path('storage'))) {
-                if (readlink(public_path('storage')) == public_path('storage')) {
+                if (@readlink(public_path('storage')) == public_path('storage')) {
                     rename(public_path('storage'), 'storage_old');
                 }
             }
@@ -166,12 +164,11 @@ class VoyagerServiceProvider extends ServiceProvider
                 $this->fixMissingStorageSymlink();
             }
         } elseif ($storage_disk == 'public') {
-            if (!file_exists(public_path('storage')) ||
-               (file_exists(public_path('storage')) && readlink(public_path('storage')) == public_path('storage'))) {
+            if (!file_exists(public_path('storage')) || @readlink(public_path('storage')) == public_path('storage')) {
                 $alert = (new Alert('missing-storage-symlink', 'warning'))
-                    ->title(__('voyager.error.symlink_missing_title'))
-                    ->text(__('voyager.error.symlink_missing_text'))
-                    ->button(__('voyager.error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
+                    ->title(__('voyager::error.symlink_missing_title'))
+                    ->text(__('voyager::error.symlink_missing_text'))
+                    ->button(__('voyager::error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
                 VoyagerFacade::addAlert($alert);
             }
         }
@@ -183,12 +180,12 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (file_exists(public_path('storage'))) {
             $alert = (new Alert('fixed-missing-storage-symlink', 'success'))
-                ->title(__('voyager.error.symlink_created_title'))
-                ->text(__('voyager.error.symlink_created_text'));
+                ->title(__('voyager::error.symlink_created_title'))
+                ->text(__('voyager::error.symlink_created_text'));
         } else {
             $alert = (new Alert('failed-fixing-missing-storage-symlink', 'danger'))
-                ->title(__('voyager.error.symlink_failed_title'))
-                ->text(__('voyager.error.symlink_failed_text'));
+                ->title(__('voyager::error.symlink_failed_title'))
+                ->text(__('voyager::error.symlink_failed_text'));
         }
 
         VoyagerFacade::addAlert($alert);
@@ -222,19 +219,6 @@ class VoyagerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register widget.
-     */
-    protected function registerWidgets()
-    {
-        $default_widgets = ['TCG\\Voyager\\Widgets\\UserDimmer', 'TCG\\Voyager\\Widgets\\PostDimmer', 'TCG\\Voyager\\Widgets\\PageDimmer'];
-        $widgets = config('voyager.dashboard.widgets', $default_widgets);
-
-        foreach ($widgets as $widget) {
-            Widget::group('voyager::dimmers')->addWidget($widget);
-        }
-    }
-
-    /**
      * Register the publishable files.
      */
     private function registerPublishableResources()
@@ -245,21 +229,13 @@ class VoyagerServiceProvider extends ServiceProvider
             'voyager_assets' => [
                 "{$publishablePath}/assets/" => public_path(config('voyager.assets_path')),
             ],
-            'migrations' => [
-                "{$publishablePath}/database/migrations/" => database_path('migrations'),
-            ],
             'seeds' => [
                 "{$publishablePath}/database/seeds/" => database_path('seeds'),
-            ],
-            'demo_content' => [
-                "{$publishablePath}/demo_content/" => storage_path('app/public'),
             ],
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
-            'lang' => [
-                "{$publishablePath}/lang/" => base_path('resources/lang/'),
-            ],
+
         ];
 
         foreach ($publishable as $group => $paths) {

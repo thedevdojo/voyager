@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'usage_help'           => 'Sie können den Wert jeder Einstellung überall auf der Seite erhalten durch den Aufruf von',
+    'save'                 => 'Einstellungen speichern',
+    'new'                  => 'Neue Einstellung',
+    'help_name'            => 'Einstellungs-Name z.B. Admin Titel',
+    'help_key'             => 'Einstellungs-Schlüssel z.B. title',
+    'help_option'          => '(optional, betrifft lediglich bestimmte Typen wie Dropdown Box oder Radio Button)',
+    'add_new'              => 'Neue Einstellung hinzufügen',
+    'delete_question'      => 'Wollen Sie die Einstellung :setting wirklich löschen?',
+    'delete_confirm'       => 'Ja, diese Einstellung löschen',
+    'successfully_created' => 'Einstellungen erfolgreich erstellt',
+    'successfully_saved'   => 'Einstellungen erfolgreich gespeichert',
+    'successfully_deleted' => 'Einstellungen erfolgreich gelöscht',
+    'already_at_top'       => 'Dies ist bereits an erster Stelle der Liste',
+    'already_at_bottom'    => 'Dies ist bereits an letzter Stelle der Liste',
+    'key_already_exists'   => 'Der Schlüssel :key existiert bereits',
+    'moved_order_up'       => 'Einstellung :name wurde nach oben geschoben',
+    'moved_order_down'     => 'Einstellung :name wurde nach unten geschoben',
+    'successfully_removed' => 'Wert :name wurde erfolgreich gelöscht',
+    'group_general'        => 'General',
+    'group_admin'          => 'Admin',
+    'group_site'           => 'Site',
+    'group'                => 'Gruppe',
+    'help_group'           => 'Diese Einstellung ist zugewiesen zu',
+];
