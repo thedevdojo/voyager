@@ -9,7 +9,7 @@
         </optgroup>
     </select>
     <div v-if="column.type.notSupported">
-        <small>{{ __('voyager.database.type_not_supported') }}</small>
+        <small>{{ __('voyager::database.type_not_supported') }}</small>
     </div>
 </div>
 
@@ -33,7 +33,7 @@
             }
         }
 
-        toastr.error("{{ __('voyager.database.unknown_type') }}: " + name);
+        toastr.error("{{ __('voyager::database.unknown_type') }}: " + name);
 
         // fallback to a default type
         return databaseTypes.Numbers[0];

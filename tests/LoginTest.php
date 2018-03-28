@@ -16,7 +16,7 @@ class LoginTest extends TestCase
         $this->visit(route('voyager.login'));
         $this->type('admin@admin.com', 'email');
         $this->type('password', 'password');
-        $this->press(__('voyager.generic.login'));
+        $this->press(__('voyager::generic.login'));
         $this->seePageIs(route('voyager.dashboard'));
     }
 
@@ -25,7 +25,7 @@ class LoginTest extends TestCase
         $this->visit(route('voyager.login'))
              ->type('john@Doe.com', 'email')
              ->type('pass', 'password')
-             ->press(__('voyager.generic.login'))
+             ->press(__('voyager::generic.login'))
              ->seePageIs(route('voyager.login'))
              ->see(__('auth.failed'))
              ->seeInField('email', 'john@Doe.com');
