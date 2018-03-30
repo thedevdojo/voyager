@@ -410,6 +410,7 @@
                 _session.setMode("ace/mode/json");
                 if (textarea.val()) {
                     _session.setValue(JSON.stringify(JSON.parse(textarea.val()), null, 4));
+                    textarea.val('');
                 }
 
                 _session.setMode("ace/mode/" + mode);
@@ -425,6 +426,8 @@
                         }
                         toastr.error('{{ __('voyager::json.invalid_message') }}', '{{ __('voyager::json.validation_errors') }}', {"preventDuplicates": true, "preventOpenDuplicates": true});
                     } else {
+                        // ev.preventDefault();
+                        // ev.stopPropagation();
                         if (_session.getValue()) {
                             // uglify JSON object and update textarea for submit purposes
                             textarea.val(JSON.stringify(JSON.parse(_session.getValue())));
