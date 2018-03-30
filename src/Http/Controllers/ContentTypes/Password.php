@@ -11,6 +11,7 @@ class Password extends BaseType
      */
     public function handle()
     {
-        return bcrypt($this->request->input($this->row->field));
+        return empty($this->request->input($this->row->field)) ? null : 
+    		bcrypt($this->request->input($this->row->field));
     }
 }
