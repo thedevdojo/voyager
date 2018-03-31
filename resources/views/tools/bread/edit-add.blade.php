@@ -410,7 +410,7 @@
                 _session.setMode("ace/mode/json");
                 if (textarea.val()) {
                     _session.setValue(JSON.stringify(JSON.parse(textarea.val()), null, 4));
-                    textarea.val('');
+                    // textarea.val('');
                 }
 
                 _session.setMode("ace/mode/" + mode);
@@ -429,6 +429,8 @@
                         if (_session.getValue()) {
                             // uglify JSON object and update textarea for submit purposes
                             textarea.val(JSON.stringify(JSON.parse(_session.getValue())));
+                        }else{
+                            textarea.val('');
                         }
                     }
                 });
