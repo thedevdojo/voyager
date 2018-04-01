@@ -51,7 +51,7 @@ class AdminCommand extends Command
         );
 
         // codegeek2014 #2896
-        if($user == null){
+        if(!$user){
             exit;
         }
 
