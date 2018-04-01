@@ -51,8 +51,7 @@ class AdminCommand extends Command
         );
 
         // codegeek2014 #2896
-        if($user == null)
-        {
+        if($user == null){
             exit;
         }
 
@@ -131,10 +130,9 @@ class AdminCommand extends Command
             }
 
             // codegeek2014 #2896
-            if( $password != $confirmPassword)
-            {
+            if( $password != $confirmPassword){
                 $this->info('Passwords donot match');
-                return null;
+                return;
             }
 
             $this->info('Creating admin account');
