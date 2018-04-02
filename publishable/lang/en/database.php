@@ -13,6 +13,7 @@ return [
     'composite_warning'         => 'Warning: this column is part of a composite index',
     'create_new_table'          => 'Create New Table',
     'create_your_new_table'     => 'Create Your New Table',
+    'create_model_table'        => 'Create model for this table?',
     'default'                   => 'Default',
     'delete_bread_before_table' => 'Please make sure to remove the BREAD on this table before deleting the table.',
     'delete_table_confirm'      => 'Yes, delete this table',

@@ -19,7 +19,6 @@ return [
     'success_update_bread'   => 'Successfully updated the :datatype BREAD',
     'controller_name'        => 'Controller Name',
     'create_migration'       => 'Create migration for this table?',
-    'create_model_table'     => 'Create model for this table?',
     'description'            => 'Description',
     'display_name'           => 'Display Name',
     'display_name_plural'    => 'Display Name (Plural)',
