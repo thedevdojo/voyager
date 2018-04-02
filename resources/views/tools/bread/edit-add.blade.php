@@ -153,7 +153,7 @@
 	  									<option value="">-- {{ __('voyager::generic.none') }} --</option>
 										@foreach($fieldOptions as $tbl)
 										<option value="{{ $tbl['field'] }}"
-										@if($dataType->order_column == $tbl['field']) selected @endif
+										@if(isset($dataType) && $dataType->order_column == $tbl['field']) selected @endif
 										>{{ $tbl['field'] }}</option>
 										@endforeach
 	  								</select>
@@ -169,7 +169,7 @@
 										<option value="">-- {{ __('voyager::generic.none') }} --</option>
 										@foreach($fieldOptions as $tbl)
 										<option value="{{ $tbl['field'] }}"
-										@if($dataType->order_display_column == $tbl['field']) selected @endif
+										@if(isset($dataType) && $dataType->order_display_column == $tbl['field']) selected @endif
 										>{{ $tbl['field'] }}</option>
 										@endforeach
 									</select>

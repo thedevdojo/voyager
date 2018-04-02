@@ -49,22 +49,6 @@ class MenuItemsTableSeeder extends Seeder
 
         $menuItem = MenuItem::firstOrNew([
             'menu_id' => $menu->id,
-            'title'   => __('voyager::seeders.menu_items.posts'),
-            'url'     => '',
-            'route'   => 'voyager.posts.index',
-        ]);
-        if (!$menuItem->exists) {
-            $menuItem->fill([
-                'target'     => '_self',
-                'icon_class' => 'voyager-news',
-                'color'      => null,
-                'parent_id'  => null,
-                'order'      => 6,
-            ])->save();
-        }
-
-        $menuItem = MenuItem::firstOrNew([
-            'menu_id' => $menu->id,
             'title'   => __('voyager::seeders.menu_items.users'),
             'url'     => '',
             'route'   => 'voyager.users.index',
@@ -76,38 +60,6 @@ class MenuItemsTableSeeder extends Seeder
                 'color'      => null,
                 'parent_id'  => null,
                 'order'      => 3,
-            ])->save();
-        }
-
-        $menuItem = MenuItem::firstOrNew([
-            'menu_id' => $menu->id,
-            'title'   => __('voyager::seeders.menu_items.categories'),
-            'url'     => '',
-            'route'   => 'voyager.categories.index',
-        ]);
-        if (!$menuItem->exists) {
-            $menuItem->fill([
-                'target'     => '_self',
-                'icon_class' => 'voyager-categories',
-                'color'      => null,
-                'parent_id'  => null,
-                'order'      => 8,
-            ])->save();
-        }
-
-        $menuItem = MenuItem::firstOrNew([
-            'menu_id' => $menu->id,
-            'title'   => __('voyager::seeders.menu_items.pages'),
-            'url'     => '',
-            'route'   => 'voyager.pages.index',
-        ]);
-        if (!$menuItem->exists) {
-            $menuItem->fill([
-                'target'     => '_self',
-                'icon_class' => 'voyager-file-text',
-                'color'      => null,
-                'parent_id'  => null,
-                'order'      => 7,
             ])->save();
         }
 

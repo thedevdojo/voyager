@@ -10,35 +10,6 @@ class DataTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        $dataType = $this->dataType('slug', 'posts');
-        if (!$dataType->exists) {
-            $dataType->fill([
-                'name'                  => 'posts',
-                'display_name_singular' => __('voyager::seeders.data_types.post.singular'),
-                'display_name_plural'   => __('voyager::seeders.data_types.post.plural'),
-                'icon'                  => 'voyager-news',
-                'model_name'            => 'TCG\\Voyager\\Models\\Post',
-                'policy_name'           => 'TCG\\Voyager\\Policies\\PostPolicy',
-                'controller'            => '',
-                'generate_permissions'  => 1,
-                'description'           => '',
-            ])->save();
-        }
-
-        $dataType = $this->dataType('slug', 'pages');
-        if (!$dataType->exists) {
-            $dataType->fill([
-                'name'                  => 'pages',
-                'display_name_singular' => __('voyager::seeders.data_types.page.singular'),
-                'display_name_plural'   => __('voyager::seeders.data_types.page.plural'),
-                'icon'                  => 'voyager-file-text',
-                'model_name'            => 'TCG\\Voyager\\Models\\Page',
-                'controller'            => '',
-                'generate_permissions'  => 1,
-                'description'           => '',
-            ])->save();
-        }
-
         $dataType = $this->dataType('slug', 'users');
         if (!$dataType->exists) {
             $dataType->fill([
@@ -48,20 +19,6 @@ class DataTypesTableSeeder extends Seeder
                 'icon'                  => 'voyager-person',
                 'model_name'            => 'TCG\\Voyager\\Models\\User',
                 'policy_name'           => 'TCG\\Voyager\\Policies\\UserPolicy',
-                'controller'            => '',
-                'generate_permissions'  => 1,
-                'description'           => '',
-            ])->save();
-        }
-
-        $dataType = $this->dataType('name', 'categories');
-        if (!$dataType->exists) {
-            $dataType->fill([
-                'slug'                  => 'categories',
-                'display_name_singular' => __('voyager::seeders.data_types.category.singular'),
-                'display_name_plural'   => __('voyager::seeders.data_types.category.plural'),
-                'icon'                  => 'voyager-categories',
-                'model_name'            => 'TCG\\Voyager\\Models\\Category',
                 'controller'            => '',
                 'generate_permissions'  => 1,
                 'description'           => '',
