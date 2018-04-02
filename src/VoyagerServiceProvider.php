@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager;
 
-use Arrilot\Widgets\Facade as Widget;
-use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
@@ -24,6 +22,7 @@ use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
+use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
@@ -46,7 +45,7 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $this->app->register(VoyagerEventServiceProvider::class);
         $this->app->register(ImageServiceProvider::class);
-        $this->app->register(WidgetServiceProvider::class);
+        $this->app->register(VoyagerDummyServiceProvider::class);
         $this->app->register(VoyagerHooksServiceProvider::class);
         $this->app->register(DoctrineSupportServiceProvider::class);
 
@@ -61,7 +60,6 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->registerAlertComponents();
         $this->registerFormFields();
-        $this->registerWidgets();
 
         $this->registerConfigs();
 
@@ -96,11 +94,14 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
         $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
-        $this->loadMigrationsFrom(realpath(__DIR__.'/../publishable/database/migrations'));
+
+        $this->loadTranslationsFrom(realpath(__DIR__.'/../publishable/lang'), 'voyager');
 
         if (config('app.env') == 'testing') {
             $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
         }
+
+        $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
 
         $this->registerGates();
 
@@ -152,15 +153,24 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $storage_disk = (!empty(config('voyager.storage.disk'))) ? config('voyager.storage.disk') : 'public';
 
-        if (request()->has('fix-missing-storage-symlink') && !file_exists(public_path('storage'))) {
-            $this->fixMissingStorageSymlink();
-        } elseif (!file_exists(public_path('storage')) && $storage_disk == 'public') {
-            $alert = (new Alert('missing-storage-symlink', 'warning'))
-                ->title(__('voyager.error.symlink_missing_title'))
-                ->text(__('voyager.error.symlink_missing_text'))
-                ->button(__('voyager.error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
+        if (request()->has('fix-missing-storage-symlink')) {
+            if (file_exists(public_path('storage'))) {
+                if (@readlink(public_path('storage')) == public_path('storage')) {
+                    rename(public_path('storage'), 'storage_old');
+                }
+            }
 
-            VoyagerFacade::addAlert($alert);
+            if (!file_exists(public_path('storage'))) {
+                $this->fixMissingStorageSymlink();
+            }
+        } elseif ($storage_disk == 'public') {
+            if (!file_exists(public_path('storage')) || @readlink(public_path('storage')) == public_path('storage')) {
+                $alert = (new Alert('missing-storage-symlink', 'warning'))
+                    ->title(__('voyager::error.symlink_missing_title'))
+                    ->text(__('voyager::error.symlink_missing_text'))
+                    ->button(__('voyager::error.symlink_missing_button'), '?fix-missing-storage-symlink=1');
+                VoyagerFacade::addAlert($alert);
+            }
         }
     }
 
@@ -170,12 +180,12 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (file_exists(public_path('storage'))) {
             $alert = (new Alert('fixed-missing-storage-symlink', 'success'))
-                ->title(__('voyager.error.symlink_created_title'))
-                ->text(__('voyager.error.symlink_created_text'));
+                ->title(__('voyager::error.symlink_created_title'))
+                ->text(__('voyager::error.symlink_created_text'));
         } else {
             $alert = (new Alert('failed-fixing-missing-storage-symlink', 'danger'))
-                ->title(__('voyager.error.symlink_failed_title'))
-                ->text(__('voyager.error.symlink_failed_text'));
+                ->title(__('voyager::error.symlink_failed_title'))
+                ->text(__('voyager::error.symlink_failed_text'));
         }
 
         VoyagerFacade::addAlert($alert);
@@ -209,19 +219,6 @@ class VoyagerServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register widget.
-     */
-    protected function registerWidgets()
-    {
-        $default_widgets = ['TCG\\Voyager\\Widgets\\UserDimmer', 'TCG\\Voyager\\Widgets\\PostDimmer', 'TCG\\Voyager\\Widgets\\PageDimmer'];
-        $widgets = config('voyager.dashboard.widgets', $default_widgets);
-
-        foreach ($widgets as $widget) {
-            Widget::group('voyager::dimmers')->addWidget($widget);
-        }
-    }
-
-    /**
      * Register the publishable files.
      */
     private function registerPublishableResources()
@@ -235,15 +232,10 @@ class VoyagerServiceProvider extends ServiceProvider
             'seeds' => [
                 "{$publishablePath}/database/seeds/" => database_path('seeds'),
             ],
-            'demo_content' => [
-                "{$publishablePath}/demo_content/" => storage_path('app/public'),
-            ],
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
             ],
-            'lang' => [
-                "{$publishablePath}/lang/" => base_path('resources/lang/'),
-            ],
+
         ];
 
         foreach ($publishable as $group => $paths) {
@@ -266,7 +258,7 @@ class VoyagerServiceProvider extends ServiceProvider
         try {
             if (Schema::hasTable('data_types')) {
                 $dataType = VoyagerFacade::model('DataType');
-                $dataTypes = $dataType->get();
+                $dataTypes = $dataType->select('policy_name', 'model_name')->get();
 
                 foreach ($dataTypes as $dataType) {
                     $policyClass = BasePolicy::class;
@@ -304,6 +296,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'select_multiple',
             'text',
             'text_area',
+            'time',
             'timestamp',
             'hidden',
             'coordinates',

@@ -16,7 +16,6 @@ class PermissionsTableSeeder extends Seeder
             'browse_database',
             'browse_media',
             'browse_compass',
-            'browse_hooks',
         ];
 
         foreach ($keys as $key) {
@@ -28,15 +27,9 @@ class PermissionsTableSeeder extends Seeder
 
         Permission::generateFor('menus');
 
-        Permission::generateFor('pages');
-
         Permission::generateFor('roles');
 
         Permission::generateFor('users');
-
-        Permission::generateFor('posts');
-
-        Permission::generateFor('categories');
 
         Permission::generateFor('settings');
     }

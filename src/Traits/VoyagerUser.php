@@ -120,9 +120,6 @@ trait VoyagerUser
 
         if (!$this->role->relationLoaded('permissions')) {
             $this->role->load('permissions');
-        }
-
-        if (!$this->relationLoaded('roles.permissions')) {
             $this->load('roles.permissions');
         }
     }
