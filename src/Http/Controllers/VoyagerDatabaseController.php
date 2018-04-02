@@ -234,7 +234,18 @@ class VoyagerDatabaseController extends Controller
     {
         Voyager::canOrFail('browse_database');
 
-        return response()->json(SchemaManager::describeTable($table));
+        $additional_attributes = [];
+        $model_name = Voyager::model('DataType')->where('name', $table)->pluck('model_name')->first();
+        if (isset($model_name)) {
+            $model = app($model_name);
+            if (isset($model->additional_attributes)) {
+                foreach ($model->additional_attributes as $attribute) {
+                    $additional_attributes[$attribute] = [];
+                }
+            }
+        }
+
+        return response()->json(collect(SchemaManager::describeTable($table))->merge($additional_attributes));
     }
 
     /**
