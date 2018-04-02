@@ -155,7 +155,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         if (request()->has('fix-missing-storage-symlink')) {
             if (file_exists(public_path('storage'))) {
-                if (readlink(public_path('storage')) == public_path('storage')) {
+                if (@readlink(public_path('storage')) == public_path('storage')) {
                     rename(public_path('storage'), 'storage_old');
                 }
             }
@@ -164,8 +164,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 $this->fixMissingStorageSymlink();
             }
         } elseif ($storage_disk == 'public') {
-            if (!file_exists(public_path('storage')) ||
-               (file_exists(public_path('storage')) && readlink(public_path('storage')) == public_path('storage'))) {
+            if (!file_exists(public_path('storage')) || @readlink(public_path('storage')) == public_path('storage')) {
                 $alert = (new Alert('missing-storage-symlink', 'warning'))
                     ->title(__('voyager::error.symlink_missing_title'))
                     ->text(__('voyager::error.symlink_missing_text'))
