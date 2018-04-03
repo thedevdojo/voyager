@@ -9,6 +9,6 @@ class Checkbox extends BaseType
      */
     public function handle()
     {
-        return (int) ($this->request->input($this->row->field) == 'on') ? true : false;
+        return (int) ($this->request->input($this->row->field) == 'on');
     }
 }
