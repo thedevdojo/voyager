@@ -177,9 +177,20 @@ abstract class Controller extends BaseController
                         $files = [$files];
                     }
                     $filesPath = [];
+                    $options = json_decode($row->details);
+                    $path = $slug.'/'.date('FY').'/';
                     foreach ($files as $key => $file) {
-                        $filename = Str::random(20);
-                        $path = $slug.'/'.date('FY').'/';
+                        if (isset($options->preserveFileUploadName) && $options->preserveFileUploadName) {
+                            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+                            $filename_counter = 1;
+
+                            // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+                            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                                $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+                            }
+                        } else {
+                            $filename = Str::random(20);
+                        }
                         $file->storeAs(
                             $path,
                             $filename.'.'.$file->getClientOriginalExtension(),
