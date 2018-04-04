@@ -14,6 +14,7 @@ return [
         'add'                    => 'Ekle',
         'add_folder'             => 'Klasör ekle',
         'add_new'                => 'Yeni Ekle',
+        'bulk_delete'            => 'Toplu Sil',
         'all_done'               => 'Hepsi tamam',
         'are_you_sure'           => 'Emin misin',
         'are_you_sure_delete'    => 'Silmek istediğine emin misin',
