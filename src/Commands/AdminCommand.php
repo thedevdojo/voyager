@@ -50,8 +50,8 @@ class AdminCommand extends Command
             $this->option('create')
         );
 
-        // the user not returned 
-        if(!$user){
+        // the user not returned
+        if (!$user) {
             exit;
         }
 
@@ -122,7 +122,7 @@ class AdminCommand extends Command
         if ($create) {
             $name = $this->ask('Enter the admin name');
             $password = $this->secret('Enter admin password');
-            $confirmPassword = $this->secret('Confirm Password'); 
+            $confirmPassword = $this->secret('Confirm Password');
 
             // Ask for email if there wasnt set one
             if (!$email) {
@@ -130,7 +130,7 @@ class AdminCommand extends Command
             }
 
             // Passwords don't match
-            if( $password != $confirmPassword){
+            if ($password != $confirmPassword) {
                 $this->info('Passwords donot match');
                 return;
             }
