@@ -129,10 +129,9 @@ class AdminCommand extends Command
                 $email = $this->ask('Enter the admin email');
             }
 
-            // Passwords donot match
+            // Passwords don't match
             if ($password != $confirmPassword) {
-                $this->info('Passwords donot match');
-                
+                $this->info("Passwords don't match");
                 return;
             }
 
