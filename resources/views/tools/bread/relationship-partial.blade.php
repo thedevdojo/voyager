@@ -81,6 +81,13 @@
             <label class="relationship_key" style="@if($relationshipDetails->type == 'belongsTo' || $relationshipDetails->type == 'belongsToMany'){{ 'display:block' }}@endif">{{ __('voyager::database.relationship.store_the') }} <span class="label_table_name"></span></label>
             <select name="relationship_key_{{ $relationship['field'] }}" class="rowDrop select2 relationship_key" style="@if($relationshipDetails->type == 'belongsTo' || $relationshipDetails->type == 'belongsToMany'){{ 'display:block' }}@endif" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="@if(isset($relationshipDetails->key)){{ $relationshipDetails->key }}@endif">
             </select>
+            <br>
+            <label class="relationship_taggable" style="@if($relationshipDetails->type == 'belongsToMany'){{ 'display:block' }}@endif">
+                {{__('voyager::database.relationship.allow_tagging')}}
+            </label>
+            <span class="relationship_taggable" style="@if($relationshipDetails->type == 'belongsToMany'){{ 'display:block' }}@endif">
+                <input type="checkbox" name="relationship_taggable_{{ $relationship['field'] }}" class="toggleswitch" data-on="{{ __('voyager::generic.yes') }}" data-off="{{ __('voyager::generic.no') }}" {{$relationshipDetails->taggable == 'on' ? 'checked' : ''}}>
+            </span>
         </div>
     </div>
     <input type="hidden" value="0" name="field_required_{{ $relationship['field'] }}" checked="checked">

@@ -307,10 +307,14 @@ class VoyagerBaseController extends Controller
             return response()->json(['errors' => $val->messages()]);
         }
 
-        if (!$request->ajax()) {
+        if (!$request->has('_validate')) {
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
             event(new BreadDataAdded($dataType, $data));
+
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'data' => $data]);
+            }
 
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
