@@ -15,6 +15,7 @@ class CoordinatesHandler extends AbstractHandler
     {
         $points = getCoordinates($dataTypeContent);
         $point = isset($points[$row->field]) ? $points[$row->field] : null;
+
         return view('voyager::formfields.coordinates', [
             'row'             => $row,
             'options'         => $options,

@@ -33,11 +33,11 @@ trait Spatial
 
         if (!empty($this->spatial)) {
             foreach ($this->spatial as $column) {
-                if (in_array($column,$this->spatial)) {
+                if (in_array($column, $this->spatial)) {
                     $coords[$column] = null;
                     $clear = trim(preg_replace('/[a-zA-Z\(\)]/', '', $this->getLocation($column)));
                     if (!empty($clear)) {
-                        foreach (explode(',',$clear) as $point) {
+                        foreach (explode(',', $clear) as $point) {
                             list($lng, $lat) = explode(' ', $point);
                             $coords[$column] = [
                                 'lat' => $lat,
