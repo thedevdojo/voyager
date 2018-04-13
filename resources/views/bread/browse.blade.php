@@ -87,7 +87,7 @@
                                 <tbody>
                                     @foreach($dataTypeContent as $data)
                                     @php
-                                        $points = $data->getCoordinates();
+                                        $points = getCoordinates($data);
                                     @endphp
                                     <tr>
                                         @can('delete',app($dataType->model_name))

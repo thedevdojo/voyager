@@ -20,3 +20,10 @@ if (!function_exists('voyager_asset')) {
         return asset(config('voyager.assets_path').'/'.$path, $secure);
     }
 }
+
+if (!function_exists('getCoordinates')) {
+    function getCoordinates($model)
+    {
+        return method_exists($model, 'getCoordinates') ? $model->getCoordinates() : [];
+    }
+}

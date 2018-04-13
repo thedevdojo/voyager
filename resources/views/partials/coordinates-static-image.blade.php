@@ -1,1 +1,1 @@
-<img src="https://maps.googleapis.com/maps/api/staticmap?zoom={{ config('voyager.googlemaps.zoom') }}&size=400x100&maptype=roadmap&markers=color:red%7C{{ $point['lat'] }},{{ $point['lng'] }}&center={{ $point['lat'] }},{{ $point['lng'] }}&key={{ config('voyager.googlemaps.key') }}"/>
+<img src="https://maps.googleapis.com/maps/api/staticmap?zoom={{ config('voyager.googlemaps.zoom') }}&size=400x100&maptype=roadmap&markers=color:red%7C&{{ $point['lat'] }},{{ $point['lng'] }}&center={{ $point['lat'] }},{{ $point['lng'] }}&key={{ config('voyager.googlemaps.key') }}"/>

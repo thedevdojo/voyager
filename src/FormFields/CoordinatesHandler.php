@@ -13,14 +13,14 @@ class CoordinatesHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        $points = $dataTypeContent->getCoordinates();
+        $points = getCoordinates($dataTypeContent);
         $point = isset($points[$row->field]) ? $points[$row->field] : null;
         return view('voyager::formfields.coordinates', [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,
             'dataTypeContent' => $dataTypeContent,
-            'point' => $point,
+            'point'           => $point,
         ]);
     }
 }

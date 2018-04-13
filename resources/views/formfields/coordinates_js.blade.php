@@ -7,7 +7,7 @@
 <script type="application/javascript">
     function initMap() {
         var map = center = marker = [];
-        @foreach($dataTypeContent->getCoordinates() as $column => $point)
+        @foreach(getCoordinates($dataTypeContent) as $column => $point)
             @if($point)
                 center['{{$column}}'] = {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}};
             @else
