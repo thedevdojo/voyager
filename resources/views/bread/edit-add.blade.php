@@ -184,4 +184,6 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
+
+    @includeWhen($dataTypeContent->getCoordinates(), 'voyager::formfields.coordinates_js', ['drag_marker' => true])
 @stop

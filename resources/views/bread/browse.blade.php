@@ -79,6 +79,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach($dataTypeContent as $data)
+                                    @php
+                                        $points = $data->getCoordinates();
+                                    @endphp
                                     <tr>
                                         @can('delete',app($dataType->model_name))
                                             <td>
@@ -159,7 +162,10 @@
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
                                                     <div class="readmore">{{ mb_strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? mb_substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                                 @elseif($row->type == 'coordinates')
-                                                    @include('voyager::partials.coordinates-static-image')
+                                                    @php
+                                                        $point = isset($points[$row->field]) ? $points[$row->field] : null;
+                                                    @endphp
+                                                    @includeWhen($point, 'voyager::partials.coordinates-static-image')
                                                 @elseif($row->type == 'multiple_images')
                                                     @php $images = json_decode($data->{$row->field}); @endphp
                                                     @if($images)

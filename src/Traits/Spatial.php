@@ -31,16 +31,19 @@ trait Spatial
     {
         $coords = [];
 
-        if (!empty($this->spatial)) {
-            foreach ($this->spatial as $column) {
-                $clear = trim(preg_replace('/[a-zA-Z\(\)]/', '', $this->getLocation($column)));
-                if (!empty($clear)) {
-                    foreach (explode(',', $clear) as $point) {
-                        list($lat, $lng) = explode(' ', $point);
-                        $coords[] = [
-                            'lat' => $lat,
-                            'lng' => $lng,
-                        ];
+        if (!empty($this->spatial)){
+            foreach($this->spatial as $column){
+                if(in_array($column,$this->spatial)){
+                    $coords[$column] = null;
+                    $clear = trim(preg_replace('/[a-zA-Z\(\)]/','',$this->getLocation($column)));
+                    if(!empty($clear)){
+                        foreach(explode(',',$clear) as $point){
+                            list($lat,$lng) = explode(' ',$point);
+                            $coords[$column] = [
+                                'lat' => $lat,
+                                'lng' => $lng,
+                            ];
+                        }
                     }
                 }
             }
