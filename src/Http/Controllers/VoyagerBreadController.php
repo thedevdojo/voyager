@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,12 +89,12 @@ class VoyagerBreadController extends Controller
     {
         try {
             $dataType = Voyager::model('DataType');
-            $res = $dataType->updateDataType($request->all(), true);
+            $res = $dataType->updateDataType($request_data = $request->all(), true);
             $data = $res
                 ? $this->alertSuccess(__('voyager::bread.success_created_bread'))
                 : $this->alertError(__('voyager::bread.error_creating_bread'));
             if ($res) {
-                event(new BreadAdded($dataType, $data));
+                event(new BreadAdded($dataType, $data, $request_data));
             }
 
             return redirect()->route('voyager.bread.index')->with($data);
@@ -145,12 +146,12 @@ class VoyagerBreadController extends Controller
                 ? $dataType->prepareTranslations($request)
                 : [];
 
-            $res = $dataType->updateDataType($request->all(), true);
+            $res = $dataType->updateDataType($request_data = $request->all(), true);
             $data = $res
                 ? $this->alertSuccess(__('voyager::bread.success_update_bread', ['datatype' => $dataType->name]))
                 : $this->alertError(__('voyager::bread.error_updating_bread'));
             if ($res) {
-                event(new BreadUpdated($dataType, $data));
+                event(new BreadUpdated($dataType, $data, $request_data));
             }
 
             // Save translations if applied
@@ -271,7 +272,7 @@ class VoyagerBreadController extends Controller
                 'message'    => 'Successfully created new relationship for '.$request->relationship_table,
                 'alert-type' => 'success',
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
 
             return back()->with([

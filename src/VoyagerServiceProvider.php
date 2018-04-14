@@ -43,6 +43,10 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if (!defined('VOYAGER_PATH')) {
+            define('VOYAGER_PATH', realpath(__DIR__ . '/../'));
+        }
+
         $this->app->register(VoyagerEventServiceProvider::class);
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(VoyagerDummyServiceProvider::class);

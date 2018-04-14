@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Support\Facades\File;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
@@ -81,6 +82,19 @@ class TestCase extends OrchestraTestCase
 
     protected function install()
     {
+        $path = __DIR__ . '/../vendor/orchestra/testbench-core/laravel/database/migrations';
+
+        if (File::exists($path)) {
+            $files = File::allFiles($path);
+
+            foreach ($files as $file) {
+                /** @var \Symfony\Component\Finder\SplFileInfo $file */
+                if ($file->getExtension() == 'php') {
+                    File::delete($file->getRealPath());
+                }
+            }
+        }
+
         if (app()->version() >= 5.4) {
             $migrator = app('migrator');
 
@@ -89,6 +103,8 @@ class TestCase extends OrchestraTestCase
             }
 
             $migrator->run([realpath(__DIR__.'/migrations')]);
+
+            $this->artisan('migrate:reset');
 
             $this->artisan('migrate', ['--path' => realpath(__DIR__.'/migrations')]);
         }

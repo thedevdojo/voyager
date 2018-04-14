@@ -139,10 +139,11 @@ class VoyagerDatabaseController extends Controller
         $table = json_decode($request->table, true);
 
         try {
+            $tableOriginal = SchemaManager::listTableDetails($table['oldName']);
             DatabaseUpdater::update($table);
             // TODO: synch BREAD with Table
             // $this->cleanOldAndCreateNew($request->original_name, $request->name);
-            event(new TableUpdated($table));
+            event(new TableUpdated($table, array_merge($tableOriginal->toArray(), ['oldName' => $table['name']])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e))->withInput();
         }
@@ -260,12 +261,15 @@ class VoyagerDatabaseController extends Controller
         Voyager::canOrFail('browse_database');
 
         try {
+            $table = SchemaManager::listTableDetails($table);
+
             SchemaManager::dropTable($table);
+
             event(new TableDeleted($table));
 
             return redirect()
                 ->route('voyager.database.index')
-                ->with($this->alertSuccess(__('voyager::database.success_delete_table', ['table' => $table])));
+                ->with($this->alertSuccess(__('voyager::database.success_delete_table', ['table' => $table->getName()])));
         } catch (Exception $e) {
             return back()->with($this->alertException($e));
         }

@@ -13,11 +13,16 @@ class BreadAdded
 
     public $data;
 
-    public function __construct(DataType $dataType, $data)
+    public $request_data;
+
+
+    public function __construct(DataType $dataType, $data, $request_data)
     {
         $this->dataType = $dataType;
 
         $this->data = $data;
+
+        $this->request_data = $request_data;
 
         event(new BreadChanged($dataType, $data, 'Added'));
     }

@@ -14,6 +14,6 @@ class TableDeleted
     {
         $this->name = $name;
 
-        event(new TableChanged($name, 'Deleted'));
+        event(new TableChanged($name->name, 'Deleted'));
     }
 }

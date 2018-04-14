@@ -10,9 +10,12 @@ class TableUpdated
 
     public $name;
 
-    public function __construct(array $name)
+    public $originalTable;
+
+    public function __construct(array $name, array $originalTable)
     {
         $this->name = $name;
+        $this->originalTable = $originalTable;
 
         event(new TableChanged($name['name'], 'Updated'));
     }
