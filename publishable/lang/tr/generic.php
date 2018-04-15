@@ -12,6 +12,7 @@ return [
     'auto_increment'         => 'Otomatik artan',
     'browse'                 => 'İncelemek',
     'builder'                => 'Kurucu',
+    'bulk_delete'            => 'Toplu Sil',
     'cancel'                 => 'İptal',
     'choose_type'            => 'Tip seçin',
     'click_here'             => 'Buraya tıklayın',
