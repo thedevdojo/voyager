@@ -95,7 +95,7 @@ class VoyagerBreadController extends Controller
             if ($res) {
                 event(new BreadAdded($dataType, $data));
             }
-            
+
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
             return redirect()->route('voyager.bread.index')->with($this->alertException($e, 'Saving Failed'));
