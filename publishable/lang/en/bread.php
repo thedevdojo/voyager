@@ -14,6 +14,7 @@ return [
     'error_creating_bread'   => 'Sorry it appears there may have been a problem creating this BREAD',
     'error_removing_bread'   => 'Sorry it appears there was a problem removing this BREAD',
     'error_updating_bread'   => 'Sorry it appears there may have been a problem updating this BREAD',
+    'error_tagging'          => 'Sorry it appears there may have been a problem creating the record. Please make sure your table has defaults for other fields.',
     'success_created_bread'  => 'Successfully created new BREAD',
     'success_remove_bread'   => 'Successfully removed BREAD from :datatype',
     'success_update_bread'   => 'Successfully updated the :datatype BREAD',

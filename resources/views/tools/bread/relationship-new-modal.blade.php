@@ -62,9 +62,13 @@
 				                    <p class="relationship_key"><strong>{{ __('voyager::database.relationship.store_the') }} <span class="label_table_name"></span>: </strong>
 				                        <select name="relationship_key" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="">
 				                        </select>
+									</p>
+
+									<p class="relationship_taggable"><strong>{{ __('voyager::database.relationship.allow_tagging') }}:</strong> <br>
+										<input type="checkbox" name="relationship_taggable" class="toggleswitch" data-on="{{ __('voyager::generic.yes') }}" data-off="{{ __('voyager::generic.no') }}">
 				                    </p>
 				                </div>
-				            </div>
+							</div>
 				        @else
 				        	<div class="col-md-12">
 				        		<h5><i class="voyager-rum-1"></i> {{ __('voyager::database.relationship.easy_there') }}</h5>
