@@ -22,7 +22,7 @@ class ViewAction extends AbstractAction
     public function getAttributes()
     {
         return [
-            'class' => 'btn btn-sm btn-warning pull-right edit',
+            'class' => 'btn btn-sm btn-warning pull-right view',
         ];
     }
 
