@@ -26,6 +26,7 @@ use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Traits\Translatable;
+use TCG\Voyager\Models\Translation;
 
 class Voyager
 {
@@ -52,17 +53,18 @@ class Voyager
     ];
 
     protected $models = [
-        'Category'   => Category::class,
-        'DataRow'    => DataRow::class,
-        'DataType'   => DataType::class,
-        'Menu'       => Menu::class,
-        'MenuItem'   => MenuItem::class,
-        'Page'       => Page::class,
-        'Permission' => Permission::class,
-        'Post'       => Post::class,
-        'Role'       => Role::class,
-        'Setting'    => Setting::class,
-        'User'       => User::class,
+        'Category'    => Category::class,
+        'DataRow'     => DataRow::class,
+        'DataType'    => DataType::class,
+        'Menu'        => Menu::class,
+        'MenuItem'    => MenuItem::class,
+        'Page'        => Page::class,
+        'Permission'  => Permission::class,
+        'Post'        => Post::class,
+        'Role'        => Role::class,
+        'Setting'     => Setting::class,
+        'User'        => User::class,
+        'Translation' => Translation::class,
     ];
 
     public $setting_cache = null;
