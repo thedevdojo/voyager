@@ -51,7 +51,7 @@ class DatabaseTest extends TestCase
     public function test_table_created_successfully()
     {
         // Test correct response
-        $this->assertSessionHasAll($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $this->table['name']])));
+        $this->assertSessionHasAll($this->alertSuccess(__('voyager::database.success_create_table', ['table' => $this->table['name']])));
         $this->assertRedirectedToRoute('voyager.database.index');
 
         // Test table exists
@@ -109,7 +109,7 @@ class DatabaseTest extends TestCase
         $this->delete(route('voyager.database.destroy', $this->table['name']));
 
         // Test correct response
-        $this->assertSessionHasAll($this->alertSuccess(__('voyager.database.success_delete_table', ['table' => $this->table['name']])));
+        $this->assertSessionHasAll($this->alertSuccess(__('voyager::database.success_delete_table', ['table' => $this->table['name']])));
         $this->assertRedirectedToRoute('voyager.database.index');
 
         $this->assertFalse(SchemaManager::tableExists($this->table['name']));
@@ -252,7 +252,7 @@ class DatabaseTest extends TestCase
         ]);
 
         // Test correct response
-        $this->assertSessionHasAll($this->alertSuccess(__('voyager.database.success_create_table', ['table' => $table['name']])));
+        $this->assertSessionHasAll($this->alertSuccess(__('voyager::database.success_create_table', ['table' => $table['name']])));
         $this->assertRedirectedToRoute('voyager.database.index');
 
         return SchemaManager::listTableDetails($table['name']);

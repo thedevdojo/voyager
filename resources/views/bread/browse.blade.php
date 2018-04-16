@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.generic.viewing').' '.$dataType->display_name_plural)
+@section('page_title', __('voyager::generic.viewing').' '.$dataType->display_name_plural)
 
 @section('page_header')
     <div class="container-fluid">
@@ -9,11 +9,18 @@
         </h1>
         @can('add',app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success btn-add-new">
-                <i class="voyager-plus"></i> <span>{{ __('voyager.generic.add_new') }}</span>
+                <i class="voyager-plus"></i> <span>{{ __('voyager::generic.add_new') }}</span>
             </a>
         @endcan
         @can('delete',app($dataType->model_name))
             @include('voyager::partials.bulk-delete')
+        @endcan
+        @can('edit',app($dataType->model_name))
+        @if(isset($dataType->order_column) && isset($dataType->order_display_column))
+            <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary">
+                <i class="voyager-list"></i> <span>{{ __('voyager::bread.order') }}</span>
+            </a>
+        @endif
         @endcan
         @include('voyager::multilingual.language-selector')
     </div>
@@ -39,7 +46,7 @@
                                         <option value="equals" @if($search->filter == "equals"){{ 'selected' }}@endif>=</option>
                                     </select>
                                     <div class="input-group col-md-12">
-                                        <input type="text" class="form-control" placeholder="Search" name="s" value="{{ $search->value }}">
+                                        <input type="text" class="form-control" placeholder="{{ __('voyager::generic.search') }}" name="s" value="{{ $search->value }}">
                                         <span class="input-group-btn">
                                             <button class="btn btn-info btn-lg" type="submit">
                                                 <i class="voyager-search"></i>
@@ -74,7 +81,7 @@
                                             @endif
                                         </th>
                                         @endforeach
-                                        <th class="actions">{{ __('voyager.generic.actions') }}</th>
+                                        <th class="actions">{{ __('voyager::generic.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -175,21 +182,9 @@
                                             </td>
                                         @endforeach
                                         <td class="no-sort no-click" id="bread-actions">
-                                            @can('delete', $data)
-                                                <a href="javascript:;" title="{{ __('voyager.generic.delete') }}" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}" id="delete-{{ $data->{$data->getKeyName()} }}">
-                                                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete') }}</span>
-                                                </a>
-                                            @endcan
-                                            @can('edit', $data)
-                                                <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
-                                                    <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
-                                                </a>
-                                            @endcan
-                                            @can('read', $data)
-                                                <a href="{{ route('voyager.'.$dataType->slug.'.show', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
-                                                    <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
-                                                </a>
-                                            @endcan
+                                            @foreach(Voyager::actions() as $action)
+                                                @include('voyager::bread.partials.actions', ['action' => $action])
+                                            @endforeach
                                         </td>
                                     </tr>
                                     @endforeach
@@ -199,7 +194,7 @@
                         @if ($isServerSide)
                             <div class="pull-left">
                                 <div role="status" class="show-res" aria-live="polite">{{ trans_choice(
-                                    'voyager.generic.showing_entries', $dataTypeContent->total(), [
+                                    'voyager::generic.showing_entries', $dataTypeContent->total(), [
                                         'from' => $dataTypeContent->firstItem(),
                                         'to' => $dataTypeContent->lastItem(),
                                         'all' => $dataTypeContent->total()
@@ -226,18 +221,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager.generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager::generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="#" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
-                        <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                                 value="{{ __('voyager.generic.delete_confirm') }}">
+                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager::generic.delete_confirm') }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -261,7 +255,8 @@
                 var table = $('#dataTable').DataTable({!! json_encode(
                     array_merge([
                         "order" => [],
-                        "language" => __('voyager.datatable'),
+                        "language" => __('voyager::datatable'),
+                        "columnDefs" => [['searchable' =>  false, 'targets' => -1 ]],
                     ],
                     config('voyager.dashboard.data_tables', []))
                 , true) !!});

@@ -8,7 +8,8 @@ use TCG\Voyager\Models\DataType;
 
 class MenuItemPolicy extends BasePolicy
 {
-    protected static $datatypes = [];
+    protected static $datatypes = null;
+    protected static $permissions = null;
 
     /**
      * Check if user has an associated permission.
@@ -21,14 +22,19 @@ class MenuItemPolicy extends BasePolicy
      */
     protected function checkPermission(User $user, $model, $action)
     {
+        if (self::$permissions == null) {
+            self::$permissions = Voyager::model('Permission')->all();
+        }
+
+        if (self::$datatypes == null) {
+            self::$datatypes = DataType::all();
+        }
+
         $regex = str_replace('/', '\/', preg_quote(route('voyager.dashboard')));
         $slug = preg_replace('/'.$regex.'/', '', $model->link(true));
         $slug = str_replace('/', '', $slug);
 
-        if (!isset(self::$datatypes[$slug])) {
-            self::$datatypes[$slug] = DataType::where('slug', $slug)->first();
-        }
-        if ($str = self::$datatypes[$slug]) {
+        if ($str = self::$datatypes->get($slug)) {
             $slug = $str->name;
         }
 
@@ -37,7 +43,7 @@ class MenuItemPolicy extends BasePolicy
         }
 
         // If permission doesn't exist, we can't check it!
-        if (!Voyager::model('Permission')->where('key', 'browse_'.$slug)->exists()) {
+        if (!self::$permissions->contains('key', 'browse_'.$slug)) {
             return true;
         }
 
