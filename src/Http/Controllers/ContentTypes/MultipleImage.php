@@ -40,7 +40,7 @@ class MultipleImage extends BaseType
             $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
 
             $filename = Str::random(20);
-            $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+            $path = getUploadPath($this->slug, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
             array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
             $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 

@@ -43,7 +43,7 @@ class File extends BaseType
      */
     protected function generatePath()
     {
-        return $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+        return getUploadPath($this->slug, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
     }
 
     /**

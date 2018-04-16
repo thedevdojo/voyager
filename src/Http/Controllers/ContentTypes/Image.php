@@ -14,7 +14,7 @@ class Image extends BaseType
         if ($this->request->hasFile($this->row->field)) {
             $file = $this->request->file($this->row->field);
 
-            $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+            $path = getUploadPath($this->slug, config('voyager.storage.path', '%slug%/%date:F%/%date:Y%/'));
 
             $filename = $this->generateFileName($file, $path);
 

@@ -68,6 +68,7 @@ return [
 
     'storage' => [
         'disk' => 'public',
+        'path' => '%slug%/%date:FY%/',
     ],
 
     /*
