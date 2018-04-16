@@ -47,10 +47,10 @@ class VoyagerBaseController extends Controller
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
-            $model = app($dataType->model_name);
-            $query = $model::select('*');
-
             $relationships = $this->getRelationships($dataType);
+
+            $model = app($dataType->model_name);
+            $query = $model::select('*')->with($relationships);
 
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
@@ -64,13 +64,13 @@ class VoyagerBaseController extends Controller
             if ($orderBy && in_array($orderBy, $dataType->fields())) {
                 $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'DESC';
                 $dataTypeContent = call_user_func([
-                    $query->with($relationships)->orderBy($orderBy, $querySortOrder),
+                    $query->orderBy($orderBy, $querySortOrder),
                     $getter,
                 ]);
             } elseif ($model->timestamps) {
                 $dataTypeContent = call_user_func([$query->latest($model::CREATED_AT), $getter]);
             } else {
-                $dataTypeContent = call_user_func([$query->with($relationships)->orderBy($model->getKeyName(), 'DESC'), $getter]);
+                $dataTypeContent = call_user_func([$query->orderBy($model->getKeyName(), 'DESC'), $getter]);
             }
 
             // Replace relationships' keys for labels and create READ links if a slug is provided.
