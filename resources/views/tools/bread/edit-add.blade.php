@@ -428,6 +428,8 @@
                         if (_session.getValue()) {
                             // uglify JSON object and update textarea for submit purposes
                             textarea.val(JSON.stringify(JSON.parse(_session.getValue())));
+                        }else{
+                            textarea.val('');
                         }
                     }
                 });
