@@ -100,10 +100,9 @@
                 }
 
                 str = _slug
-                    .replace(/^\s+|\s+$/g, '')      // Trim
-                    .replace(/[^-\u0600-۾\w\d\$\*\(\)\'\!\_]/g, _sep)   // Remove invalid chars
-                    .replace(/\s+/g, _sep)          // Replace spaces with separator
-                    .replace(/\-\-+/g, _sep);       // Replace multiple separators with single
+                .replace(/[^a-z0-9]/g, _sep)
+                .replace(new RegExp('\\'+_sep+'\\'+_sep+'+', 'g'), _sep)
+                .replace(new RegExp('^\\'+_sep+'+|\\'+_sep+'+$', 'g'), '');
 
                 return str;
             },
@@ -111,6 +110,7 @@
             _load_char_maps: function() {
                 return $.extend(
                             this._map_latin(),
+                            this._map_arabic(),
                             this._map_greek(),
                             this._map_turkish(),
                             this._map_russian(),
@@ -135,6 +135,50 @@
                     'o', 'ô': 'o', 'õ': 'o', 'ö': 'o', 'ő': 'o', 'ø': 'o', 'ù': 'u', 'ú': 'u',
                     'û': 'u', 'ü': 'u', 'ű': 'u', 'ý': 'y', 'þ': 'th', 'ÿ': 'y'
                 };
+            },
+                        _map_arabic:  function() {
+              return {
+                'ا': 'a',
+                'أ': 'a',
+                'إ': 'i',
+                'آ': 'aa',
+                'ؤ': 'u',
+                'ئ': 'e',
+                'ء': 'a',
+                'ب': 'b',
+                'ت': 't',
+                'ث': 'th',
+                'ج': 'j',
+                'ح': 'h',
+                'خ': 'kh',
+                'د': 'd',
+                'ذ': 'th',
+                'ر': 'r',
+                'ز': 'z',
+                'س': 's',
+                'ش': 'sh',
+                'ص': 's',
+                'ض': 'dh',
+                'ط': 't',
+                'ظ': 'z',
+                'ع': 'a',
+                'غ': 'gh',
+                'ف': 'f',
+                'ق': 'q',
+                'ك': 'k',
+                'ل': 'l',
+                'م': 'm',
+                'ن': 'n',
+                'ه': 'h',
+                'و': 'w',
+                'ي': 'y',
+                'ى': 'a',
+                'ة': 'h',
+                'ﻻ': 'la',
+                'ﻷ': 'laa',
+                'ﻹ': 'lai',
+                'ﻵ': 'laa',
+              };
             },
             _map_greek: function() {
                 return {

@@ -4,18 +4,17 @@
             <button class="hamburger btn-link">
                 <span class="hamburger-inner"></span>
             </button>
-
+            @section('breadcrumbs')
             <ol class="breadcrumb hidden-xs">
                 @if(count(Request::segments()) == 1)
-                    <li class="active"><i class="voyager-boat"></i> {{ __('voyager.generic.dashboard') }}</li>
+                    <li class="active"><i class="voyager-boat"></i> {{ __('voyager::generic.dashboard') }}</li>
                 @else
                     <li class="active">
-                        <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> {{ __('voyager.generic.dashboard') }}</a>
+                        <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> {{ __('voyager::generic.dashboard') }}</a>
                     </li>
                 @endif
                 <?php $breadcrumb_url = url(''); ?>
-                <?php $admin_path_count = count(explode('/', config('voyager.prefix')))?>
-                @for($i = $admin_path_count + 1; $i <= count(Request::segments()); $i++)
+                @for($i = 1; $i <= count(Request::segments()); $i++)
                     <?php $breadcrumb_url .= '/' . Request::segment($i); ?>
                     @if(Request::segment($i) != ltrim(route('voyager.dashboard', [], false), '/') && !is_numeric(Request::segment($i)))
 
@@ -30,6 +29,7 @@
                     @endif
                 @endfor
             </ol>
+            @show
         </div>
         <ul class="nav navbar-nav @if (config('voyager.multilingual.rtl')) navbar-left @else navbar-right @endif">
             <li class="dropdown profile">

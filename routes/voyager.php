@@ -2,6 +2,8 @@
 
 use TCG\Voyager\Events\Routing;
 use TCG\Voyager\Events\RoutingAdmin;
+use TCG\Voyager\Events\RoutingAdminAfter;
+use TCG\Voyager\Events\RoutingAfter;
 use TCG\Voyager\Models\DataType;
 
 /*
@@ -38,6 +40,8 @@ Route::group(['as' => 'voyager.'], function () {
                                  ? $dataType->controller
                                  : $namespacePrefix.'VoyagerBaseController';
 
+                Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
+                Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.order');
                 Route::resource($dataType->slug, $breadController);
             }
         } catch (\InvalidArgumentException $e) {
@@ -124,5 +128,8 @@ Route::group(['as' => 'voyager.'], function () {
             Route::get('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'index']);
             Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
         });
+
+        event(new RoutingAdminAfter());
     });
+    event(new RoutingAfter());
 });

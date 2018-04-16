@@ -19,17 +19,16 @@ class VoyagerAdminMiddleware
     public function handle($request, Closure $next)
     {
         if (!Auth::guest()) {
-            $user = Voyager::model('User')->find(Auth::id());
+            $user = auth()->user();
+            if (isset($user->locale)) {
+                app()->setLocale($user->locale);
+            }
 
             return $user->hasPermission('browse_admin') ? $next($request) : redirect('/');
         }
 
         $urlLogin = route('voyager.login');
-        $urlIntended = $request->url();
-        if ($urlIntended == $urlLogin) {
-            $urlIntended = null;
-        }
 
-        return redirect($urlLogin)->with('url.intended', $urlIntended);
+        return redirect()->guest($urlLogin);
     }
 }

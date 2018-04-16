@@ -209,13 +209,16 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        // Compatibility with Model binding.
+        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
         // Check permission
         $this->authorize('edit', $data);
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows);
+        $val = $this->validateBread($request->all(), $dataType->editRows, $slug, $id);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
@@ -229,7 +232,7 @@ class VoyagerBaseController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                    'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                    'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
                 ]);
         }
@@ -304,15 +307,19 @@ class VoyagerBaseController extends Controller
             return response()->json(['errors' => $val->messages()]);
         }
 
-        if (!$request->ajax()) {
+        if (!$request->has('_validate')) {
             $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
             event(new BreadDataAdded($dataType, $data));
 
+            if ($request->ajax()) {
+                return response()->json(['success' => true, 'data' => $data]);
+            }
+
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                        'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
+                        'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
         }
@@ -358,11 +365,11 @@ class VoyagerBaseController extends Controller
         $res = $data->destroy($ids);
         $data = $res
             ? [
-                'message'    => __('voyager.generic.successfully_deleted')." {$displayName}",
+                'message'    => __('voyager::generic.successfully_deleted')." {$displayName}",
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => __('voyager.generic.error_deleting')." {$displayName}",
+                'message'    => __('voyager::generic.error_deleting')." {$displayName}",
                 'alert-type' => 'error',
             ];
 
@@ -432,6 +439,69 @@ class VoyagerBaseController extends Controller
 
         if ($rows->count() > 0) {
             event(new BreadImagesDeleted($data, $rows));
+        }
+    }
+
+    /**
+     * Order BREAD items.
+     *
+     * @param string $table
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function order(Request $request)
+    {
+        $slug = $this->getSlug($request);
+
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        // Check permission
+        $this->authorize('edit', app($dataType->model_name));
+
+        if (!isset($dataType->order_column) || !isset($dataType->order_display_column)) {
+            return redirect()
+            ->route("voyager.{$dataType->slug}.index")
+            ->with([
+                'message'    => __('voyager::bread.ordering_not_set'),
+                'alert-type' => 'error',
+            ]);
+        }
+
+        $model = app($dataType->model_name);
+        $results = $model->orderBy($dataType->order_column)->get();
+
+        $display_column = $dataType->order_display_column;
+
+        $view = 'voyager::bread.order';
+
+        if (view()->exists("voyager::$slug.order")) {
+            $view = "voyager::$slug.order";
+        }
+
+        return Voyager::view($view, compact(
+            'dataType',
+            'display_column',
+            'results'
+        ));
+    }
+
+    public function update_order(Request $request)
+    {
+        $slug = $this->getSlug($request);
+
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        // Check permission
+        $this->authorize('edit', app($dataType->model_name));
+
+        $model = app($dataType->model_name);
+
+        $order = json_decode($request->input('order'));
+        $column = $dataType->order_column;
+        foreach ($order as $key => $item) {
+            $i = $model->findOrFail($item->id);
+            $i->$column = ($key + 1);
+            $i->save();
         }
     }
 }

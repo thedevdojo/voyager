@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
+use League\Flysystem\Plugin\ListWith;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerMediaController extends Controller
@@ -57,11 +58,11 @@ class VoyagerMediaController extends Controller
         $error = '';
 
         if (Storage::disk($this->filesystem)->exists($new_folder)) {
-            $error = __('voyager.media.folder_exists_already');
+            $error = __('voyager::media.folder_exists_already');
         } elseif (Storage::disk($this->filesystem)->makeDirectory($new_folder)) {
             $success = true;
         } else {
-            $error = __('voyager.media.error_creating_dir');
+            $error = __('voyager::media.error_creating_dir');
         }
 
         return compact('success', 'error');
@@ -85,11 +86,11 @@ class VoyagerMediaController extends Controller
 
         if ($type == 'folder') {
             if (!Storage::disk($this->filesystem)->deleteDirectory($fileFolder)) {
-                $error = __('voyager.media.error_deleting_folder');
+                $error = __('voyager::media.error_deleting_folder');
                 $success = false;
             }
         } elseif (!Storage::disk($this->filesystem)->delete($fileFolder)) {
-            $error = __('voyager.media.error_deleting_file');
+            $error = __('voyager::media.error_deleting_file');
             $success = false;
         }
 
@@ -129,16 +130,16 @@ class VoyagerMediaController extends Controller
         $source = "{$location}/{$source}";
         $destination = strpos($destination, '/../') !== false
             ? $this->directory.'/'.dirname($folderLocation).'/'.str_replace('/../', '', $destination)
-            : "{$location}/{$destination}";
+            : "/{$destination}";
 
         if (!file_exists($destination)) {
             if (Storage::disk($this->filesystem)->move($source, $destination)) {
                 $success = true;
             } else {
-                $error = __('voyager.media.error_moving');
+                $error = __('voyager::media.error_moving');
             }
         } else {
-            $error = __('voyager.media.error_already_exists');
+            $error = __('voyager::media.error_already_exists');
         }
 
         return compact('success', 'error');
@@ -163,10 +164,10 @@ class VoyagerMediaController extends Controller
             if (Storage::disk($this->filesystem)->move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
                 $success = true;
             } else {
-                $error = __('voyager.media.error_moving');
+                $error = __('voyager::media.error_moving');
             }
         } else {
-            $error = __('voyager.media.error_may_exist');
+            $error = __('voyager::media.error_may_exist');
         }
 
         return compact('success', 'error');
@@ -201,7 +202,7 @@ class VoyagerMediaController extends Controller
             }
 
             $success = true;
-            $message = __('voyager.media.success_uploaded_file');
+            $message = __('voyager::media.success_uploaded_file');
             $path = preg_replace('/^public\//', '', $file);
         } catch (Exception $e) {
             $success = false;
@@ -215,37 +216,30 @@ class VoyagerMediaController extends Controller
     private function getFiles($dir)
     {
         $files = [];
-        $storageFiles = Storage::disk($this->filesystem)->files($dir);
-        $storageFolders = Storage::disk($this->filesystem)->directories($dir);
+        $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
+        $storageItems = $storage->listWith(['mimetype'], $dir);
 
-        foreach ($storageFiles as $file) {
-            if (empty(pathinfo($file, PATHINFO_FILENAME)) && config('voyager.hidden_files')) {
+        foreach ($storageItems as $item) {
+            if ($item['type'] == 'dir') {
                 $files[] = [
-                    'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
-                    'type'          => Storage::disk($this->filesystem)->mimeType($file),
-                    'path'          => Storage::disk($this->filesystem)->url($file),
-                    'size'          => Storage::disk($this->filesystem)->size($file),
-                    'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
+                    'name'          => $item['basename'],
+                    'type'          => 'folder',
+                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'items'         => '',
+                    'last_modified' => '',
                 ];
-            } elseif (!empty(pathinfo($file, PATHINFO_FILENAME))) {
+            } else {
+                if (empty(pathinfo($item['path'], PATHINFO_FILENAME)) && !config('voyager.hidden_files')) {
+                    continue;
+                }
                 $files[] = [
-                    'name'          => strpos($file, '/') > 1 ? str_replace('/', '', strrchr($file, '/')) : $file,
-                    'type'          => Storage::disk($this->filesystem)->mimeType($file),
-                    'path'          => Storage::disk($this->filesystem)->url($file),
-                    'size'          => Storage::disk($this->filesystem)->size($file),
-                    'last_modified' => Storage::disk($this->filesystem)->lastModified($file),
+                    'name'          => $item['basename'],
+                    'type'          => isset($item['mimetype']) ? $item['mimetype'] : 'file',
+                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'size'          => $item['size'],
+                    'last_modified' => $item['timestamp'],
                 ];
             }
-        }
-
-        foreach ($storageFolders as $folder) {
-            $files[] = [
-                'name'          => strpos($folder, '/') > 1 ? str_replace('/', '', strrchr($folder, '/')) : $folder,
-                'type'          => 'folder',
-                'path'          => Storage::disk($this->filesystem)->url($folder),
-                'items'         => '',
-                'last_modified' => '',
-            ];
         }
 
         return $files;
@@ -279,12 +273,12 @@ class VoyagerMediaController extends Controller
 
             // Check if field exists
             if (!isset($data->{$field})) {
-                throw new Exception(__('voyager.generic.field_does_not_exist'), 400);
+                throw new Exception(__('voyager::generic.field_does_not_exist'), 400);
             }
 
             // Check if valid json
             if (is_null(@json_decode($data->{$field}))) {
-                throw new Exception(__('voyager.json.invalid'), 500);
+                throw new Exception(__('voyager::json.invalid'), 500);
             }
 
             // Decode field value
@@ -295,7 +289,7 @@ class VoyagerMediaController extends Controller
 
             // Check if image exists in array
             if (!array_key_exists($image, $fieldData)) {
-                throw new Exception(__('voyager.media.image_does_not_exist'), 400);
+                throw new Exception(__('voyager::media.image_does_not_exist'), 400);
             }
 
             // Remove image from array
@@ -308,12 +302,12 @@ class VoyagerMediaController extends Controller
             return response()->json([
                'data' => [
                    'status'  => 200,
-                   'message' => __('voyager.media.image_removed'),
+                   'message' => __('voyager::media.image_removed'),
                ],
             ]);
         } catch (Exception $e) {
             $code = 500;
-            $message = __('voyager.generic.internal_error');
+            $message = __('voyager::generic.internal_error');
 
             if ($e->getCode()) {
                 $code = $e->getCode();
@@ -359,7 +353,7 @@ class VoyagerMediaController extends Controller
             Image::make($originImagePath)->crop($width, $height, $x, $y)->save($destImagePath);
 
             $success = true;
-            $message = __('voyager.media.success_crop_image');
+            $message = __('voyager::media.success_crop_image');
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
