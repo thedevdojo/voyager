@@ -27,7 +27,7 @@ class MenuItemPolicy extends BasePolicy
         }
 
         if (self::$datatypes == null) {
-            self::$datatypes = DataType::all();
+            self::$datatypes = DataType::all()->keyBy('slug');
         }
 
         $regex = str_replace('/', '\/', preg_quote(route('voyager.dashboard')));
