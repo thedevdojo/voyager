@@ -268,6 +268,10 @@
 
             @if ($isModelTranslatable)
                 $('.side-body').multilingual();
+                //Reinitialise the multilingual features when they change tab
+                $('#dataTable').on('draw.dt', function(){
+                    $('.side-body').data('multilingual').init();
+                })
             @endif
         });
 
