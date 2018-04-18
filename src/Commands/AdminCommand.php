@@ -50,6 +50,11 @@ class AdminCommand extends Command
             $this->option('create')
         );
 
+        // the user not returned
+        if (!$user) {
+            exit;
+        }
+
         // Get or create role
         $role = $this->getAdministratorRole();
 
@@ -117,10 +122,18 @@ class AdminCommand extends Command
         if ($create) {
             $name = $this->ask('Enter the admin name');
             $password = $this->secret('Enter admin password');
+            $confirmPassword = $this->secret('Confirm Password');
 
             // Ask for email if there wasnt set one
             if (!$email) {
                 $email = $this->ask('Enter the admin email');
+            }
+
+            // Passwords don't match
+            if ($password != $confirmPassword) {
+                $this->info("Passwords don't match");
+
+                return;
             }
 
             $this->info('Creating admin account');

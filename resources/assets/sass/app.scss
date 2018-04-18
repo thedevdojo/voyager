@@ -1735,7 +1735,7 @@ table.dataTable.no-footer{
               display:flex;
             }
         }
-        label{
+        & > label{
             height: 38px;
             background: #f1f1f1;
             padding: 7px 12px;
@@ -1804,7 +1804,7 @@ table.dataTable.no-footer{
             border: 1px solid #f1f1f1;
             margin-left: 10px;
         }
-        .relationship_key{
+        .relationship_key, .relationship_taggable{
           display:none;
         }
         .select2{
@@ -3170,7 +3170,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
             margin-right: 5px;
         }
     }
-    label{
+    :not(.toggle-group) > label {
         height: 38px;
         background: #f1f1f1;
         padding: 7px 12px;
@@ -3311,7 +3311,8 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     .relationship_details_more{
         position:relative;
         margin-bottom:0px;
-        label{
+
+        :not(.toggle-group) > label {
             height: 38px;
             background: #f1f1f1;
             padding: 7px 12px;
@@ -3327,7 +3328,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
         .select2-container--default .select2-selection--single{
             border:1px solid #f1f1f1;
         }
-        .relationship_key{
+        .relationship_key, .relationship_taggable{
           display:none;
         }
         .well{

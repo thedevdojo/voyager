@@ -68,6 +68,7 @@ return [
         'selection_details'    => 'Selection Details',
         'display_the'          => 'Display the',
         'store_the'            => 'Store the',
+        'allow_tagging'        => 'Allow Tagging',
         'easy_there'           => 'Easy there Captain',
         'before_create'        => 'Before you can create a new relationship you will need to create the BREAD first.<br> Then, return back to edit the BREAD and you will be able to add relationships.<br> Thanks.',
         'cancel'               => 'Cancel',
