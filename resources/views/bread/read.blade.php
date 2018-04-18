@@ -99,7 +99,7 @@
                             @elseif($row->type == 'color')
                                 <span class="badge badge-lg" style="background-color: {{ $dataTypeContent->{$row->field} }}">{{ $dataTypeContent->{$row->field} }}</span>
                             @elseif($row->type == 'coordinates')
-                                @include('voyager::partials.coordinates')
+                                <div class="map" id="map_{{$row->field}}"></div>
                             @elseif($row->type == 'rich_text_box')
                                 @include('voyager::multilingual.input-hidden-bread-read')
                                 <p>{!! $dataTypeContent->{$row->field} !!}</p>
@@ -180,4 +180,5 @@
         });
 
     </script>
+    @includeWhen($dataTypeContent->getCoordinates(), 'voyager::formfields.coordinates_js')
 @stop
