@@ -180,5 +180,5 @@
         });
 
     </script>
-    @includeWhen($dataTypeContent->getCoordinates(), 'voyager::formfields.coordinates_js')
+    @includeWhen(getCoordinates($dataTypeContent), 'voyager::formfields.coordinates_js')
 @stop
