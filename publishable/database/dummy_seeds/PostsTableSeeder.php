@@ -185,6 +185,9 @@ class PostsTableSeeder extends Seeder
                         'origin'      => 'title',
                         'forceUpdate' => true,
                     ],
+                    'validation' => [
+                        'rule'  => 'unique:posts,slug',
+                    ],
                 ]),
                 'order' => 8,
             ])->save();

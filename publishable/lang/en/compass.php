@@ -23,7 +23,6 @@ return [
 
     ],
     'logs'          => [
-        'available_commands'    => 'Available commands',
         'title'                 => 'Logs',
         'text'                  => 'Your app logs',
         'file_too_big'          => 'Log file >50M, please download it.',
