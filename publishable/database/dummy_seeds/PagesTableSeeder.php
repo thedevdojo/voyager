@@ -129,6 +129,9 @@ class PagesTableSeeder extends Seeder
                     'slugify' => [
                         'origin' => 'title',
                     ],
+                    'validation' => [
+                        'rule'  => 'unique:pages,slug',
+                    ],
                 ]),
                 'order' => 6,
             ])->save();
