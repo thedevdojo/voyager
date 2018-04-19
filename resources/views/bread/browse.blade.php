@@ -61,7 +61,9 @@
                                 <thead>
                                     <tr>
                                         @can('delete',app($dataType->model_name))
-                                            <th></th>
+                                            <th>
+                                                <input type="checkbox" class="select_all">
+                                            </th>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
                                         <th>
@@ -273,6 +275,9 @@
                     $('.side-body').data('multilingual').init();
                 })
             @endif
+            $('.select_all').on('click', function(e) {
+                $('input[name="row_id"]').prop('checked', $(this).prop('checked'));
+            });
         });
 
 
