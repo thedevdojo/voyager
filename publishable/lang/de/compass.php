@@ -1,4 +1,5 @@
 <?php
+
 return [
     'welcome'                => 'Willkommen beim Voyager Kompass. Jede gute App braucht einen Kompass um einen in die richtige Richtung zu lenken.
     In dieser Sektion finden Sie viele Ressourcen und administrative Ausgaben die Ihnen beim Bauen Ihrer App helfen.',
