@@ -29,7 +29,7 @@ class UserProfileTest extends TestCase
 
         $this->user = Auth::loginUsingId(1);
 
-        $this->editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $this->user->id]);
+        $this->editProfilePageForTheCurrentUser = route('voyager.users.editProfile', ['user' => $this->user->id]);
 
         $this->listOfUsers = route('voyager.users.index');
 
@@ -49,7 +49,7 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->editProfilePageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
@@ -64,7 +64,7 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->editProfilePageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
@@ -79,7 +79,7 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->editProfilePageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers);
@@ -93,7 +93,7 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->editProfilePageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
@@ -106,7 +106,7 @@ class UserProfileTest extends TestCase
     public function testCanEditUserEmailWithEditorPermissions()
     {
         $user = factory(\TCG\Voyager\Models\User::class)->create();
-        $editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $user->id]);
+        $editProfilePageForTheCurrentUser = route('voyager.users.editProfile', ['user' => $user->id]);
         $roleId = $user->role_id;
         $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
@@ -119,7 +119,7 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
-             ->seePageIs($editPageForTheCurrentUser)
+             ->seePageIs($editProfilePageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
@@ -134,7 +134,7 @@ class UserProfileTest extends TestCase
         $this->visit(route('voyager.profile'))
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
-             ->seePageIs($this->editPageForTheCurrentUser)
+             ->seePageIs($this->editProfilePageForTheCurrentUser)
              ->select('de', 'locale')
              ->press(__('voyager::generic.save'));
 
