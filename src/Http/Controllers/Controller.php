@@ -103,7 +103,7 @@ abstract class Controller extends BaseController
                     $content = $data->{$row->field};
                 }
 
-                if ($row->field == 'role_id' && $slug == 'users') {
+                if ($row->field == 'role_id' && in_array('TCG\Voyager\Traits\VoyagerUser', class_uses($data, false))) {
                     $content = $data->role_id;
                 }
             }
