@@ -112,7 +112,7 @@
                                         <br/>
                                     @endforeach
                                 @else
-                                    <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) ?: '' }}">
+                                    <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($row->field) ?: '' }}">
                                         {{ __('voyager::generic.download') }}
                                     </a>
                                 @endif
