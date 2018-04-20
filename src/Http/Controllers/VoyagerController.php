@@ -84,7 +84,7 @@ class VoyagerController extends Controller
     public function editProfile(Request $request, $id)
     {
         if ($id == auth()->user()->id) {
-            $voyagerBaseController = new VoyagerBaseController;
+            $voyagerBaseController = new VoyagerBaseController();
             return $voyagerBaseController->edit($request, $id);
         } else {
             abort(404);
@@ -105,7 +105,7 @@ class VoyagerController extends Controller
                 $params['user_belongstomany_role_relationship'] = $roles;
                 $request->replace($params);
             }
-            $voyagerBaseController = new VoyagerBaseController;
+            $voyagerBaseController = new VoyagerBaseController();
             return $voyagerBaseController->update($request, $id);
         } else {
             abort(403);
