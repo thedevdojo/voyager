@@ -79,6 +79,8 @@ class VoyagerController extends Controller
     {
         if ($id == auth()->user()->id) {
             return Voyager::view('voyager::profile');
+        } else {
+            abort(404);
         }
     }
 
