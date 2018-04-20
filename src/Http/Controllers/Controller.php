@@ -61,6 +61,9 @@ abstract class Controller extends BaseController
                 // if no content is provided, that means the relationships need to be removed
                 if (isset($options->type) && $options->type !== 'belongsToMany') {
                     continue;
+                } elseif ($row->field == 'user_belongstomany_role_relationship' &&
+                         @$data->id == auth()->user()->id) {
+                    continue;
                 }
             }
 
