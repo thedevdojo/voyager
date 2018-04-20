@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'usage_help'           => 'Puteți folosi valoarea fiecărei setări, oriunde pe site apelând',
+    'save'                 => 'Salvează setările',
+    'new'                  => 'Setare nouă',
+    'help_name'            => 'Numele setării (ex: Titlu Admin)',
+    'help_key'             => 'Cheia setării (ex: admin_title)',
+    'help_option'          => '(opțional, se aplică doar la unele tipuri, cum ar fi dropdown sau buton radio)',
+    'add_new'              => 'Adăugați setare nouă',
+    'delete_question'      => 'Sunteți sigur că doriți să ștergeți setarea :setting?',
+    'delete_confirm'       => 'Da, șterge această setare',
+    'successfully_created' => 'Setare creată cu succes',
+    'successfully_saved'   => 'Setare salvată cu succes',
+    'successfully_deleted' => 'Setare ștearsă cu succes',
+    'already_at_top'       => 'Deja este prima în listă',
+    'already_at_bottom'    => 'Deja este ultima în listă',
+    'moved_order_up'       => 'Setarea :name a fost mutată mai sus',
+    'moved_order_down'     => 'Setarea :name a fost mutată mai jos',
+    'successfully_removed' => 'Valoarea :name a fost ștearsă cu succes',
+    'group_general'        => 'General',
+    'group_admin'          => 'Admin',
+    'group_site'           => 'Site',
+    'group'                => 'Grup',
+    'help_group'           => 'Atașați această setare la grupul',
+];

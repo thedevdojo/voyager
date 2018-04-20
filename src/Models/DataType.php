@@ -28,6 +28,12 @@ class DataType extends Model
         'description',
         'generate_permissions',
         'server_side',
+        'order_column',
+        'order_display_column',
+    ];
+
+    protected $casts = [
+        'details' => 'array',
     ];
 
     public function rows()
@@ -107,7 +113,7 @@ class DataType extends Model
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
                     if (!$dataRow->save()) {
-                        throw new \Exception(__('voyager.database.field_safe_failed', ['field' => $field]));
+                        throw new \Exception(__('voyager::database.field_safe_failed', ['field' => $field]));
                     }
                 }
 
@@ -177,6 +183,7 @@ class DataType extends Model
                         'label'       => $requestData['relationship_label_'.$relationship],
                         'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
                         'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
+                        'taggable'    => $requestData['relationship_taggable_'.$relationship] ?? '0',
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
@@ -222,5 +229,25 @@ class DataType extends Model
         if (method_exists($model, 'adminFields')) {
             return $model->adminFields();
         }
+    }
+
+    public function getOrderColumnAttribute()
+    {
+        return $this->details['order_column'];
+    }
+
+    public function setOrderColumnAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['order_column' => $value]);
+    }
+
+    public function getOrderDisplayColumnAttribute()
+    {
+        return $this->details['order_display_column'];
+    }
+
+    public function setOrderDisplayColumnAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
     }
 }
