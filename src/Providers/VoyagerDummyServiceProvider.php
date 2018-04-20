@@ -24,7 +24,7 @@ class VoyagerDummyServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register widget.
+     * Register the dashboard widgets.
      */
     protected function registerWidgets()
     {
