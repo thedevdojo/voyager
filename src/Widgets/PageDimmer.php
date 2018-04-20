@@ -35,4 +35,14 @@ class PageDimmer extends AbstractWidget
             'image' => voyager_asset('images/widget-backgrounds/03.jpg'),
         ]));
     }
+
+    /**
+     * Get the related model of this widget.
+     *
+     * @return \TCG\Voyager\Models\Page
+    */
+    public function getRelatedModel()
+    {
+        return Voyager::model('Page');
+    }
 }

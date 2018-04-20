@@ -35,4 +35,14 @@ class PostDimmer extends AbstractWidget
             'image' => voyager_asset('images/widget-backgrounds/02.jpg'),
         ]));
     }
+
+    /**
+     * Get the related model of this widget.
+     *
+     * @return \TCG\Voyager\Models\Post
+    */
+    public function getRelatedModel()
+    {
+        return Voyager::model('Post');
+    }
 }

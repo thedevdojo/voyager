@@ -35,4 +35,14 @@ class UserDimmer extends AbstractWidget
             'image' => voyager_asset('images/widget-backgrounds/01.jpg'),
         ]));
     }
+
+    /**
+     * Get the related model of this widget.
+     *
+     * @return \TCG\Voyager\Models\User
+    */
+    public function getRelatedModel()
+    {
+        return Voyager::model('User');
+    }
 }
