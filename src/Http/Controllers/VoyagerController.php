@@ -68,8 +68,47 @@ class VoyagerController extends Controller
         return "<script> parent.helpers.setImageValue('".Voyager::image($fullFilename)."'); </script>";
     }
 
-    public function profile()
+    public function profile(Request $request)
     {
-        return Voyager::view('voyager::profile');
+        $id = auth()->user()->id;
+        return redirect()->route('voyager.users.showProfile', $id);
+    }
+
+    public function showProfile(Request $request, $id)
+    {
+        if ($id == auth()->user()->id) {
+            return Voyager::view('voyager::profile');
+        }
+    }
+
+    public function editProfile(Request $request, $id)
+    {
+        if ($id == auth()->user()->id) {
+            $voyagerBaseController = new VoyagerBaseController;
+            return $voyagerBaseController->edit($request, $id);
+        } else {
+            abort(404);
+        }
+    }
+
+    public function updateProfile(Request $request, $id)
+    {
+        if ($id == auth()->user()->id) {
+            // If can't edit users can't change his own role but need to preserve roles set
+            if (!auth::user()->hasPermission('edit_users')) {
+                $role = Voyager::model('Role');
+                $roles = auth::user()->belongsToMany($role, 'user_roles')
+                            ->pluck($role->getTable().'.'.$role->getKeyName())
+                            ->all();
+                $params = $request->all();
+                $params['role_id'] = Auth::user()->role_id;
+                $params['user_belongstomany_role_relationship'] = $roles;
+                $request->replace($params);
+            }
+            $voyagerBaseController = new VoyagerBaseController;
+            return $voyagerBaseController->update($request, $id);
+        } else {
+            abort(403);
+        }
     }
 }

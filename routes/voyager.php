@@ -129,6 +129,16 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
         });
 
+        //Profile
+        Route::group([
+            'as'     => 'users.',
+            'prefix' => 'profile',
+        ], function () use ($namespacePrefix) {
+            Route::get('/{id}', ['uses' => $namespacePrefix.'VoyagerController@showProfile', 'as' => 'showProfile']);
+            Route::get('/{id}/edit', ['uses' => $namespacePrefix.'VoyagerController@editProfile', 'as' => 'editProfile']);
+            Route::put('/{id}', ['uses' => $namespacePrefix.'VoyagerController@updateProfile', 'as' => 'updateProfile']);
+        });
+
         event(new RoutingAdminAfter());
     });
     event(new RoutingAfter());
