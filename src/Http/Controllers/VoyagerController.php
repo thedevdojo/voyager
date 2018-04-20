@@ -71,6 +71,7 @@ class VoyagerController extends Controller
     public function profile(Request $request)
     {
         $id = auth()->user()->id;
+
         return redirect()->route('voyager.users.showProfile', $id);
     }
 
@@ -85,6 +86,7 @@ class VoyagerController extends Controller
     {
         if ($id == auth()->user()->id) {
             $voyagerBaseController = new VoyagerBaseController();
+
             return $voyagerBaseController->edit($request, $id);
         } else {
             abort(404);
@@ -100,12 +102,15 @@ class VoyagerController extends Controller
                 $roles = auth::user()->belongsToMany($role, 'user_roles')
                             ->pluck($role->getTable().'.'.$role->getKeyName())
                             ->all();
+
                 $params = $request->all();
                 $params['role_id'] = Auth::user()->role_id;
                 $params['user_belongstomany_role_relationship'] = $roles;
+
                 $request->replace($params);
             }
             $voyagerBaseController = new VoyagerBaseController();
+
             return $voyagerBaseController->update($request, $id);
         } else {
             abort(403);
