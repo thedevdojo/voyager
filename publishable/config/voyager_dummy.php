@@ -113,6 +113,11 @@ return [
         'enabled' => false,
 
         /*
+         * Set whether or not the admin layout default is RTL.
+         */
+        'rtl' => false,
+
+        /*
          * Select default language
          */
         'default' => 'en',
@@ -171,11 +176,19 @@ return [
     |
     */
 
-    // When a BREAD is added, create the Menu item using the BREAD properties.
-    'add_bread_menu_item' => true,
+    'bread' => [
+        // When a BREAD is added, create the Menu item using the BREAD properties.
+        'add_menu_item' => true,
 
-    // When a BREAD is added, create the related Permission.
-    'add_bread_permission' => true,
+        // which menu add item to
+        'default_menu' => 'admin',
+
+        // When a BREAD is added, create the related Permission.
+        'add_permission' => true,
+
+        // which role add premissions to
+        'default_role' => 'admin',
+    ],
 
     /*
     |--------------------------------------------------------------------------

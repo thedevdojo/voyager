@@ -42,7 +42,7 @@ window.onload = function () {
     // Bulk delete listener
     $bulkDeleteBtn.click(function () {
         var ids = [];
-        var $checkedBoxes = $('#dataTable input[type=checkbox]:checked');
+        var $checkedBoxes = $('#dataTable input[type=checkbox]:checked').not('.select_all');
         var count = $checkedBoxes.length;
         if (count) {
             // Reset input value

@@ -58,9 +58,10 @@
 </div>
 
 <?php
-$user_avatar = Voyager::image(Auth::user()->avatar);
-if ((substr(Auth::user()->avatar, 0, 7) == 'http://') || (substr(Auth::user()->avatar, 0, 8) == 'https://')) {
+if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->avatar, 'https://')) {
     $user_avatar = Auth::user()->avatar;
+} else {
+    $user_avatar = Voyager::image(Auth::user()->avatar);
 }
 ?>
 
