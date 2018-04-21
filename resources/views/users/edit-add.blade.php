@@ -14,20 +14,9 @@
 @stop
 
 @section('content')
-@php
-    if (isset($dataTypeContent->id)) {
-        if (auth()->user()->hasPermission('edit_users')) {
-            $action = route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id);
-        } else {
-            $action = route('voyager.'.$dataType->slug.'.updateProfile', $dataTypeContent->id);
-        }
-    } else {
-        $action = route('voyager.'.$dataType->slug.'.store');
-    }
-@endphp
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="{{ $action }}"
+              action="@if(!is_null($dataTypeContent->getKey())){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             @if(isset($dataTypeContent->id))
@@ -71,7 +60,7 @@
                                 <input type="password" class="form-control" id="password" name="password" value="" autocomplete="new-password">
                             </div>
 
-                            @if(auth()->user()->hasPermission('edit_users'))
+                            @can('edit', app($dataType->model_name))
                                 <div class="form-group">
                                     <label for="default_role">{{ __('voyager::profile.role_default') }}</label>
                                     @php
@@ -90,7 +79,7 @@
                                     @endphp
                                     @include('voyager::formfields.relationship')
                                 </div>
-                            @endif
+                            @endcan
                             @php
                             if (isset($dataTypeContent->locale)) {
                                 $selected_locale = $dataTypeContent->locale;
