@@ -20,7 +20,7 @@ class TestCase extends OrchestraTestCase
 
         if (app()->version() < 5.4) {
             $this->loadMigrationsFrom([
-                '--realpath' => realpath(__DIR__.'/migrations'),
+                '--realpath' => realpath(__DIR__.'/database/migrations'),
             ]);
         }
 
@@ -88,9 +88,9 @@ class TestCase extends OrchestraTestCase
                 $this->artisan('migrate:install');
             }
 
-            $migrator->run([realpath(__DIR__.'/migrations')]);
+            $migrator->run([realpath(__DIR__.'/database/migrations')]);
 
-            $this->artisan('migrate', ['--path' => realpath(__DIR__.'/migrations')]);
+            $this->artisan('migrate', ['--path' => realpath(__DIR__.'/database/migrations')]);
         }
 
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
