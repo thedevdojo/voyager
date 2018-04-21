@@ -8,7 +8,6 @@ use TCG\Voyager\Facades\Voyager;
 
 class VoyagerUserController extends VoyagerBaseController
 {
-
     public function profile(Request $request)
     {
         return Voyager::view('voyager::profile');
@@ -28,7 +27,7 @@ class VoyagerUserController extends VoyagerBaseController
 
             $request->replace($params);
         }
+
         return parent::update($request, $id);
     }
-
 }
