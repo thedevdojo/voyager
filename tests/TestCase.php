@@ -9,11 +9,17 @@ use Illuminate\Foundation\Exceptions\Handler;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
+use Illuminate\Contracts\Http\Kernel;
 
 class TestCase extends OrchestraTestCase
 {
     protected $withDummy = true;
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
@@ -35,8 +41,8 @@ class TestCase extends OrchestraTestCase
             );
         }
 
-        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
-        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
+        $this->app->make(Kernel::class)->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+        $this->app->make(Kernel::class)->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
 
         $this->install();
     }
