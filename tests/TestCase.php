@@ -6,10 +6,10 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
-use Illuminate\Contracts\Http\Kernel;
 
 class TestCase extends OrchestraTestCase
 {
@@ -41,8 +41,8 @@ class TestCase extends OrchestraTestCase
             );
         }
 
-        $this->app->make(Kernel::class)->pushMiddleware('Illuminate\Session\Middleware\StartSession');
-        $this->app->make(Kernel::class)->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
+        $this->app->make(KernelContract::class)->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+        $this->app->make(KernelContract::class)->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
 
         $this->install();
     }
