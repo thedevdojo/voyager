@@ -341,7 +341,7 @@
             <div class="modal-content">
                 <div class="modal-content">
                     <div class="filePicker modal-body">
-                        @include('media.filepicker')
+                        @include('voyager::media.filemanager')
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -367,7 +367,7 @@
                 if(targetId !== undefined){
                     $(this).find('.filePicker.modal-body').append(`<input type="hidden" id="target_input" value="${targetId}">`);
                     $(this).find('.filePicker.modal-body').append(`<input type="hidden" id="target_image" value="${imageElementId}">`);
-                    }
+                }
             });
 
             $('#filePicker').on('hide.bs.modal', function (event) {
