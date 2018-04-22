@@ -101,6 +101,12 @@ class Image extends BaseType
             }
 
             return $fullPath;
+        } else {
+            $fullPath = $this->request->input($this->row->field);
+            $fileExists = Storage::disk(config('voyager.storage.disk'))->exists($fullPath);
+            if($fileExists){
+                return $fullPath;
+            }
         }
     }
 

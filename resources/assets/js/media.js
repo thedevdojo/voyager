@@ -88,6 +88,25 @@ module.exports = function(){
 					var imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
 					
 					if (imageMimeTypes.indexOf(type) > -1) {
+
+						//********** Add filePicker Functionality **********//
+						var targetInputId = $('#target_input')[0];
+						if(targetInputId){
+							var relativePath = manager.selected_file.path.replace(options.siteUrl + '/storage', "");
+							var $inputElement = $(targetInputId.value);
+
+							var $overlay = $inputElement.siblings('.overlay');
+							var $actionText = $overlay.find('p.image-action');							
+							$actionText.text( $actionText.text().replace($overlay.data('add'), $overlay.data('update')) );
+
+							$inputElement.val(relativePath);
+							$inputElement.prev('img').attr('src', manager.selected_file.path);
+
+							$('#filePicker').modal('hide');  
+							return false;
+						}
+						//********** End filePicker Functionality **********//
+
 						$('#imagemodal').modal('show');   
 						return false;
 					}
@@ -445,7 +464,8 @@ module.exports = function(){
 		};
 
 		var media = new VoyagerMedia({
-		    baseUrl: document.getElementById('base_url').value
+				baseUrl: document.getElementById('base_url').value,
+				siteUrl: document.getElementById('site_url').value
 		});
 		$(function () {
 		    media.init();

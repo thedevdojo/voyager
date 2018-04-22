@@ -47,6 +47,43 @@
             overflow-x: hidden;
             min-height: 100%;
         }
+
+        /* Image widget */
+        .image-wrapper.add-edit{
+            position: relative;
+            text-align: center;
+        }
+
+        .image-wrapper.add-edit .overlay{
+            position: absolute;
+            color: #eee;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.3);
+            transition: background-color 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content:center;
+            cursor: pointer;
+            font-size: 25px;
+            line-height: 1;
+        }
+
+        .image-wrapper.add-edit .overlay:hover{
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .image-wrapper.add-edit .overlay i{
+            opacity: 0.7;
+            font-size: 150%;
+        }
+
+        .image-wrapper.add-edit .overlay p{
+            opacity: 0.7;
+        }
+        /* End Image widget */
     </style>
 @stop
 
@@ -234,10 +271,16 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            @if(isset($dataTypeContent->image))
-                                <img src="{{ filter_var($dataTypeContent->image, FILTER_VALIDATE_URL) ? $dataTypeContent->image : Voyager::image( $dataTypeContent->image ) }}" style="width:100%" />
-                            @endif
-                            <input type="file" name="image">
+                            <div class="image-wrapper add-edit">
+                                <img id="post-image" src="{{ filter_var($dataTypeContent->image, FILTER_VALIDATE_URL) ? $dataTypeContent->image : Voyager::image( $dataTypeContent->image ) }}" style="width: 100%; min-height: 150px; background: #eee"  />
+                                <input id="post-image-input" type="hidden" name="image" value="{{ $dataTypeContent->image }}"> 
+
+                                @php $add = __('voyager::generic.add'); $update = __('voyager::generic.update'); @endphp
+                                <div class="overlay" data-toggle="modal" data-target="#filePicker" data-target-input="#post-image-input" data-image-element="#post-image" data-add="{{$add}}" data-update="{{$update}}">
+                                    <i class="voyager-images"></i>
+                                    <p class="image-action">@if(isset($dataTypeContent->image)){{ $update }}@else{{ $add }}@endif Image</p>
+                                </div>
+                            </div> 
                         </div>
                     </div>
 
@@ -291,6 +334,22 @@
             <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
         </form>
     </div>
+
+    <!-- File Picker Modal-->
+    <div id="filePicker" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="filePicker modal-body">
+                        @include('media.filepicker')
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('javascript')
@@ -298,9 +357,22 @@
         $('document').ready(function () {
             $('#slug').slugify();
 
-        @if ($isModelTranslatable)
-            $('.side-body').multilingual({"editing": true});
-        @endif
+            @if ($isModelTranslatable)
+                $('.side-body').multilingual({"editing": true});
+            @endif
+
+            $('#filePicker').on('show.bs.modal', function (event) {
+                var targetId = $(event.relatedTarget).data('target-input');
+                var imageElementId = $(event.relatedTarget).data('image-element');
+                if(targetId !== undefined){
+                    $(this).find('.filePicker.modal-body').append(`<input type="hidden" id="target_input" value="${targetId}">`);
+                    $(this).find('.filePicker.modal-body').append(`<input type="hidden" id="target_image" value="${imageElementId}">`);
+                    }
+            });
+
+            $('#filePicker').on('hide.bs.modal', function (event) {
+                $('#target_input, #target_image').remove();
+            });
         });
     </script>
 @stop

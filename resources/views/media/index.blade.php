@@ -392,6 +392,7 @@
 
     <input type="hidden" id="storage_path" value="{{ storage_path() }}">
     <input type="hidden" id="base_url" value="{{ route('voyager.dashboard') }}">
+    <input type="hidden" id="site_url" value="{{ URL::to('/') }}">
 
 @stop
 
