@@ -224,7 +224,7 @@ class Voyager
 
         // Check if permission exist
         $exist = $this->permissions->where('key', $permission)->first();
-
+        
         // Permission not found
         if (!$exist) {
             throw new \Exception('Permission does not exist', 400);
@@ -242,7 +242,7 @@ class Voyager
     public function canOrFail($permission)
     {
         if (!$this->can($permission)) {
-            throw new UnauthorizedHttpException(null);
+            throw new UnauthorizedHttpException('Unauthorized', 403);
         }
 
         return true;
