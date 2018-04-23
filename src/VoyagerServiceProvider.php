@@ -97,7 +97,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/../publishable/lang'), 'voyager');
 
-        if(config('voyager.load_migrations') {
+        if(config('voyager.load_migrations')) {
             if (config('app.env') == 'testing') {
                 $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
             }
