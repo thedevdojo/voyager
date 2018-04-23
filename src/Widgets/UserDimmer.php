@@ -44,6 +44,6 @@ class UserDimmer extends AbstractWidget
     */
     public function isAccessible()
     {
-        return \Auth::user()->can('browse', Voyager::model('User'));
+        return Auth::user()->can('browse', Voyager::model('User'));
     }
 }

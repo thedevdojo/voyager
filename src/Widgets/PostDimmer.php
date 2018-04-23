@@ -44,6 +44,6 @@ class PostDimmer extends AbstractWidget
     */
     public function isAccessible()
     {
-        return \Auth::user()->can('browse', Voyager::model('Post'));
+        return Auth::user()->can('browse', Voyager::model('Post'));
     }
 }
