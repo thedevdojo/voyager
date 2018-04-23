@@ -29,7 +29,7 @@ if (!function_exists('voyager_asset')) {
 if (!function_exists('voyagerLink')) {
     function voyagerLink($path)
     {
-        $def= config('app.locale');;
+        $def= config('app.fallback_locale');;
         $lang= \App::getLocale();
         if($lang!=$def){
           $prefix = $lang."/";
