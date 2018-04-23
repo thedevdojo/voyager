@@ -154,16 +154,6 @@ class TestCase extends OrchestraTestCase
 
         return $this->assertSee($text);
     }
-
-    /**
-     * Register package related model factories.
-     *
-     * @return void
-     */
-    protected function registerPackageFactories()
-    {
-        $this->withFactories(realpath(__DIR__.'/database/factories'));
-    }
 }
 
 class DisabledTestException extends Handler
