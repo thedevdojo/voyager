@@ -1,12 +1,9 @@
 @php
 $dimmers = \Arrilot\Widgets\Facade::group('voyager::dimmers');
 
-// Loop over the defined dashboard widgets. Get the related model and remove the
-// widget from the group if the current user hasn't the permission to read it.
+// Remove all the inaccessible widgets from the `voyager::dimmers` group.
 foreach (config('voyager.dashboard.widgets', []) as $widgetClass) {
-    $relatedModel = app($widgetClass)->getRelatedModel();
-
-    if (! Auth::user()->can('browse', $relatedModel)) {
+    if (!app($widgetClass)->isAccessible()) {
         $dimmers->removeByName($widgetClass);
     }
 }

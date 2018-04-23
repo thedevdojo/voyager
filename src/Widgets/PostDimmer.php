@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Widgets;
 
+use Illuminate\Support\Facades\Auth;
 use Arrilot\Widgets\AbstractWidget;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
@@ -37,12 +38,12 @@ class PostDimmer extends AbstractWidget
     }
 
     /**
-     * Get the related model of this widget.
+     * Determine if the widget is accessible.
      *
-     * @return \TCG\Voyager\Models\Post
+     * @return bool
     */
-    public function getRelatedModel()
+    public function isAccessible()
     {
-        return Voyager::model('Post');
+        return \Auth::user()->can('browse', Voyager::model('Post'));
     }
 }
