@@ -20,3 +20,30 @@ if (!function_exists('voyager_asset')) {
         return asset(config('voyager.assets_path').'/'.$path, $secure);
     }
 }
+
+
+
+// support mutli language on frontend 
+// usage {{voyagerLink('url-to-cool-thing')}}
+
+if (!function_exists('voyagerLink')) {
+    function voyagerLink($path)
+    {
+        $def= config('app.locale');;
+        $lang= \App::getLocale();
+        if($lang!=$def){
+          $prefix = $lang."/";
+        }else{
+          $prefix = "";
+        }
+
+        if($path==""){
+          if($prefix)
+          return   '/'.$prefix.'/';
+          else
+          return '/';
+         }
+
+        return   '/'.$prefix.$path."/";
+    }
+}
