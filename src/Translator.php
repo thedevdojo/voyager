@@ -4,7 +4,7 @@ namespace TCG\Voyager;
 
 use ArrayAccess;
 use Illuminate\Database\Eloquent\Model;
-use TCG\Voyager\Facades\Voyager;
+//use TCG\Voyager\Facades\Voyager;
 
 class Translator implements ArrayAccess
 {
