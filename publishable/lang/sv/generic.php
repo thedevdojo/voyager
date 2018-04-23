@@ -88,7 +88,7 @@ return [
     'updated_order'         => 'Ordning uppdaterad',
     'upload'                => 'Ladda upp',
     'url'                   => 'URL',
-    'view'                  => 'Vy',
+    'view'                  => 'Visa',
     'viewing'               => 'Visar',
     'yes'                   => 'Ja',
     'yes_please'            => 'Ja, Tack',
