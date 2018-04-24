@@ -6,6 +6,7 @@ use Arrilot\Widgets\Facade;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Models\User;
 
 class WidgetTest extends TestCase
 {
@@ -15,20 +16,28 @@ class WidgetTest extends TestCase
 
         $this->install();
 
-        Auth::loginUsingId(1);
+        $this->withFactories(__DIR__.'/database/factories');
 
-        Config::set('voyager.dashboard.widgets', [
-            'TCG\\Voyager\\Widgets\\UserDimmer',
-            'TCG\\Voyager\\Widgets\\PostDimmer',
-            'TCG\\Voyager\\Widgets\\PageDimmer',
-        ]);
+        Auth::loginUsingId(1);
     }
 
-    public function testWidgetsAreRegistered()
+    public function testVoyagerFacadeReturnsDimmers()
     {
         $dimmers = Voyager::dimmers();
 
         $this->assertEquals(3, $dimmers->count());
+    }
+
+    public function testVoyagerFacadeReturnsOnlyDimmersThatAreAccessible()
+    {
+        // Since this user contains a random role without any permissions, we
+        // can use it to check if the widgets are being added to the group.
+        $user = factory(User::class)->create();
+        Auth::loginUsingId($user->id);
+
+        $dimmers = Voyager::dimmers();
+
+        $this->assertEquals(0, $dimmers->count());
     }
 
     public function testWidgetRenders()
