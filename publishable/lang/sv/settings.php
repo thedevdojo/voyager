@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'usage_help'            => 'Du kan hämta värdet från varje inställning genom att anropa',
+    'save'                  => 'Spara Inställningar',
+    'new'                   => 'Ny Inställning',
+    'help_name'             => 'Namn på inställning t ex: Admin Titel',
+    'help_key'              => 'Inställningens nyckel tex: admin_title',
+    'help_option'           => '(frivillig, gäller bara visa typer som rullgardinsmeny eller radioknapp)',
+    'add_new'               => 'Lägg Till Ny Inställning',
+    'delete_question'       => 'Är du säker du vill radera inställningen :setting?',
+    'delete_confirm'        => 'Ja, Radera Denna Inställning',
+    'successfully_created'  => 'Ny Inställning Skapad',
+    'successfully_saved'    => 'Inställning Sparad',
+    'successfully_deleted'  => 'Inställning Radera',
+    'already_at_top'        => 'Denna ligger redan först i listan',
+    'already_at_bottom'     => 'Denna ligger redan sist i listan',
+    'key_already_exists'    => 'Nyckeln :key finns redan',
+    'moved_order_up'        => 'Flyttat :name inställning upp',
+    'moved_order_down'      => 'Flytta :name inställning ned',
+    'successfully_removed'  => 'Värdet :name raderat',
+    'group_general'         => 'Allämnt',
+    'group_admin'           => 'Admin',
+    'group_site'            => 'Sajt',
+    'group'                 => 'Grupp',
+    'help_group'            => 'Grupp somm denna är inställning tilldelas',
+];
