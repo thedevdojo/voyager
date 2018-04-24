@@ -7,8 +7,6 @@ use TCG\Voyager\Facades\Voyager;
 
 class DashboardTest extends TestCase
 {
-    protected $withDummy = true;
-
     public function setUp()
     {
         parent::setUp();
