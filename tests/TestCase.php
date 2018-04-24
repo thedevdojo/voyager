@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Contracts\Http\Kernel as KernelContract;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
@@ -14,13 +15,18 @@ class TestCase extends OrchestraTestCase
 {
     protected $withDummy = true;
 
+    /**
+     * Setup the test environment.
+     *
+     * @return void
+     */
     public function setUp()
     {
         parent::setUp();
 
         if (app()->version() < 5.4) {
             $this->loadMigrationsFrom([
-                '--realpath' => realpath(__DIR__.'/migrations'),
+                '--realpath' => realpath(__DIR__.'/database/migrations'),
             ]);
         }
 
@@ -35,8 +41,8 @@ class TestCase extends OrchestraTestCase
             );
         }
 
-        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
-        $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
+        $this->app->make(KernelContract::class)->pushMiddleware('Illuminate\Session\Middleware\StartSession');
+        $this->app->make(KernelContract::class)->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
 
         $this->install();
     }
@@ -88,9 +94,9 @@ class TestCase extends OrchestraTestCase
                 $this->artisan('migrate:install');
             }
 
-            $migrator->run([realpath(__DIR__.'/migrations')]);
+            $migrator->run([realpath(__DIR__.'/database/migrations')]);
 
-            $this->artisan('migrate', ['--path' => realpath(__DIR__.'/migrations')]);
+            $this->artisan('migrate', ['--path' => realpath(__DIR__.'/database/migrations')]);
         }
 
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
