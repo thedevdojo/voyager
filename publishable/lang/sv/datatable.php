@@ -13,7 +13,7 @@ return [
     'sProcessing'       => 'Bearbetar...',
     'sSearch'           => 'Sök:',
     'sZeroRecords'      => 'Inga rader hittades',
-    'oPaginate' => [
+    'oPaginate'         => [
         'sFirst'    => 'Första',
         'sLast'     => 'Sista',
         'sNext'     => 'Nästa',
