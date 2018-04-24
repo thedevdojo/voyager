@@ -42,7 +42,7 @@ class UserDimmer extends AbstractWidget
      *
      * @return bool
      */
-    public function isAccessible()
+    public function shouldBeDisplayed()
     {
         return Auth::user()->can('browse', Voyager::model('User'));
     }
