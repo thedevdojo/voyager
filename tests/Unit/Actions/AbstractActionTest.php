@@ -10,7 +10,7 @@ use TCG\Voyager\Models\User;
 class AbstractActionTest extends TestCase
 {
     /**
-     * A dummy user DataType instance.
+     * The users DataType instance.
      *
      * @var \TCG\Voyager\Models\DataType
      */
