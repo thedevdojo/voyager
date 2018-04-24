@@ -93,7 +93,7 @@ class AbstractActionTest extends TestCase
         $this->assertTrue($stub->shouldActionDisplayOnDataType());
     }
 
-    public function testShouldActionDisplayOnDataTypeReturnsTrueWithCustomDataType()
+    public function testTrueIsReturnedIfDataTypeMatchesTheOneWhereTheActionWasCreatedFor()
     {
         $stub = $this->getMockBuilder(AbstractAction::class)
             ->setConstructorArgs([$this->userDataType, $this->user])
@@ -107,7 +107,7 @@ class AbstractActionTest extends TestCase
         $this->assertTrue($stub->shouldActionDisplayOnDataType());
     }
 
-    public function testFalseIsReturnedIfActionShouldOnlyBeDisplayedForASpecificDataType()
+    public function testFalseIsReturnedIfDataTypeDoesNotMatchesTheOneWhereTheActionWasCreatedFor()
     {
         $stub = $this->getMockBuilder(AbstractAction::class)
             ->setConstructorArgs([$this->userDataType, $this->user])
