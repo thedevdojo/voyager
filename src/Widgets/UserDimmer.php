@@ -38,7 +38,7 @@ class UserDimmer extends AbstractWidget
     }
 
     /**
-     * Determine if the widget is accessible for the logged in user.
+     * Determine if the widget should be displayed.
      *
      * @return bool
      */
