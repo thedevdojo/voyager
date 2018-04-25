@@ -57,7 +57,7 @@ abstract class Controller extends BaseController
             if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
                 $row->field = @$options->column;
             }
-            
+
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
             if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
