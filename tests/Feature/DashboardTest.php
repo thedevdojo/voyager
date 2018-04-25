@@ -53,12 +53,9 @@ class DashboardTest extends TestCase
     }
 
     /**
-     * Test Accessible Dashboard Widgets.
-     *
-     * This test will make sure the user will only see widgets that he should
-     * see.
+     * UserDimmer widget isn't displayed without the right permissions.
      */
-    public function testOnlyShouldDisplayWidgetsAreBeingShownOnDashboardPage()
+    public function testUserDimmerWidgetIsNotShownWithoutTheRightPermissions()
     {
         // We must first login and visit the dashboard page.
         $user = \Auth::loginUsingId(1);
@@ -67,10 +64,6 @@ class DashboardTest extends TestCase
         $user->role->permissions()->detach(
             $user->role->permissions()->where('key', 'browse_users')->first()
         );
-        // Remove `browse_pages` permission
-        $user->role->permissions()->detach(
-            $user->role->permissions()->where('key', 'browse_pages')->first()
-        );
 
         $this->visit(route('voyager.dashboard'))
             ->see(__('voyager::generic.dashboard'));
@@ -78,15 +71,46 @@ class DashboardTest extends TestCase
         // Test UserDimmer widget
         $this->dontSee('<h4>1 '.trans_choice('voyager::dimmer.user', 1).'</h4>')
              ->dontSee(__('voyager::dimmer.user_link_text'));
+    }
+
+    /**
+     * PostDimmer widget isn't displayed without the right permissions.
+     */
+    public function testPostDimmerWidgetIsNotShownWithoutTheRightPermissions()
+    {
+        // We must first login and visit the dashboard page.
+        $user = \Auth::loginUsingId(1);
+
+        // Remove `browse_users` permission
+        $user->role->permissions()->detach(
+            $user->role->permissions()->where('key', 'browse_posts')->first()
+        );
+
+        $this->visit(route('voyager.dashboard'))
+            ->see(__('voyager::generic.dashboard'));
 
         // Test PostDimmer widget
-        $this->see(trans_choice('voyager::dimmer.post', 4))
-             ->click(__('voyager::dimmer.post_link_text'))
-             ->seePageIs(route('voyager.posts.index'))
-             ->click(__('voyager::generic.dashboard'))
-             ->seePageIs(route('voyager.dashboard'));
+        $this->dontSee('<h4>1 '.trans_choice('voyager::dimmer.post', 1).'</h4>')
+             ->dontSee(__('voyager::dimmer.post_link_text'));
+    }
 
-        // Test UserDimmer widget
+    /**
+     * PageDimmer widget isn't displayed without the right permissions.
+     */
+    public function testPageDimmerWidgetIsNotShownWithoutTheRightPermissions()
+    {
+        // We must first login and visit the dashboard page.
+        $user = \Auth::loginUsingId(1);
+
+        // Remove `browse_users` permission
+        $user->role->permissions()->detach(
+            $user->role->permissions()->where('key', 'browse_pages')->first()
+        );
+
+        $this->visit(route('voyager.dashboard'))
+            ->see(__('voyager::generic.dashboard'));
+
+        // Test PageDimmer widget
         $this->dontSee('<h4>1 '.trans_choice('voyager::dimmer.page', 1).'</h4>')
              ->dontSee(__('voyager::dimmer.page_link_text'));
     }
