@@ -184,6 +184,7 @@ class DataType extends Model
                         'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
                         'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
                         'taggable'    => $requestData['relationship_taggable_'.$relationship] ?? '0',
+                        'taggable'    => isset($requestData['relationship_taggable_'.$relationship]) ? $requestData['relationship_taggable_'.$relationship] : '0',
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
