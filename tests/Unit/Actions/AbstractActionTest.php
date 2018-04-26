@@ -33,6 +33,10 @@ class AbstractActionTest extends TestCase
         $this->user = factory(User::class)->create();
     }
 
+    /**
+     * This test checks that `getRoute` method calls the `getDefaultRoute`
+     * method if the given key is empty.
+     */
     public function testGetRouteWithEmptyKey()
     {
         $stub = $this->getMockBuilder(AbstractAction::class)
@@ -49,6 +53,10 @@ class AbstractActionTest extends TestCase
         $this->assertTrue($stub->getRoute($this->userDataType->name));
     }
 
+    /**
+     * This test checks that `getRoute` method calls the expected method when a
+     * key is given.
+     */
     public function testGetRouteWithCustomKey()
     {
         $stub = $this->getMockBuilder(AbstractAction::class)
@@ -66,6 +74,10 @@ class AbstractActionTest extends TestCase
         $this->assertTrue($stub->getRoute('custom'));
     }
 
+    /**
+     * This test checks that `getAttributes` method will give us the expected
+     * output.
+     */
     public function testConvertAttributesToHtml()
     {
         $stub = $this->getMockBuilder(AbstractAction::class)
@@ -84,6 +96,10 @@ class AbstractActionTest extends TestCase
         $this->assertEquals('class="class1 class2"data-id="5"id="delete-5"', $stub->convertAttributesToHtml());
     }
 
+    /**
+     * This test checks that `shouldActionDisplayOnDataType` method returns true
+     * if the action should be displayed for every data type.
+     */
     public function testShouldActionDisplayOnDataTypeWithDefaultDataType()
     {
         $stub = $this->getMockBuilder(AbstractAction::class)
@@ -93,6 +109,10 @@ class AbstractActionTest extends TestCase
         $this->assertTrue($stub->shouldActionDisplayOnDataType());
     }
 
+    /**
+     * This test checks that `shouldActionDisplayOnDataType` method returns true
+     * if the action should only be displayed for a specific data type.
+     */
     public function testTrueIsReturnedIfDataTypeMatchesTheOneWhereTheActionWasCreatedFor()
     {
         $stub = $this->getMockBuilder(AbstractAction::class)
@@ -107,6 +127,10 @@ class AbstractActionTest extends TestCase
         $this->assertTrue($stub->shouldActionDisplayOnDataType());
     }
 
+    /**
+     * This test checks that `shouldActionDisplayOnDataType` method returns false
+     * if the action should only be displayed for a specific data type.
+     */
     public function testFalseIsReturnedIfDataTypeDoesNotMatchesTheOneWhereTheActionWasCreatedFor()
     {
         $stub = $this->getMockBuilder(AbstractAction::class)
@@ -116,7 +140,7 @@ class AbstractActionTest extends TestCase
 
         $stub->expects($this->any())
              ->method('getDataType')
-             ->will($this->returnValue('not users'));
+             ->will($this->returnValue('not users')); // different data type
 
         $this->assertFalse($stub->shouldActionDisplayOnDataType());
     }
