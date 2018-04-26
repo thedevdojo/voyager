@@ -1,7 +1,14 @@
 @php
 $dimmers = \Arrilot\Widgets\Facade::group('voyager::dimmers');
-$count = $dimmers->count();
 
+// Remove all the inaccessible widgets from the `voyager::dimmers` group.
+foreach (config('voyager.dashboard.widgets', []) as $widgetClass) {
+    if (!app($widgetClass)->isAccessible()) {
+        $dimmers->removeByName($widgetClass);
+    }
+}
+
+$count = $dimmers->count();
 $classes = [
     'col-xs-12',
     'col-sm-'.($count >= 2 ? '6' : '12'),

@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Widgets;
 
+use Illuminate\Support\Facades\Auth;
 use Arrilot\Widgets\AbstractWidget;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
@@ -34,5 +35,15 @@ class PageDimmer extends AbstractWidget
             ],
             'image' => voyager_asset('images/widget-backgrounds/03.jpg'),
         ]));
+    }
+
+    /**
+     * Determine if the widget is accessible.
+     *
+     * @return bool
+    */
+    public function isAccessible()
+    {
+        return Auth::user()->can('browse', Voyager::model('Page'));
     }
 }
