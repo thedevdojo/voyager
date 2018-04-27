@@ -28,7 +28,6 @@ class AddUserRoleRelationship extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['role_id']);
-            $table->integer('role_id')->change();
         });
     }
 }
