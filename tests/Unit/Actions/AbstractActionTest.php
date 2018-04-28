@@ -3,9 +3,9 @@
 namespace TCG\Voyager\Tests\Unit\Actions;
 
 use TCG\Voyager\Actions\AbstractAction;
-use TCG\Voyager\Tests\TestCase;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\User;
+use TCG\Voyager\Tests\TestCase;
 
 class AbstractActionTest extends TestCase
 {
