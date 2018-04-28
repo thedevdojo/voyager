@@ -7,6 +7,7 @@ use Illuminate\Filesystem\Filesystem;
 use Intervention\Image\ImageServiceProviderLaravel5;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
+use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Traits\Seedable;
 use TCG\Voyager\VoyagerServiceProvider;
 
@@ -65,8 +66,12 @@ class InstallCommand extends Command
      */
     public function handle(Filesystem $filesystem)
     {
-        $this->info('Publishing the Voyager assets, database, language, and config files');
-        $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class]);
+        $this->info('Publishing the Voyager assets, database, and config files');
+
+        //Publish only relevant resources on install
+        $tags = ['voyager_assets', 'seeds'];
+
+        $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
@@ -111,7 +116,17 @@ class InstallCommand extends Command
         $this->seed('VoyagerDatabaseSeeder');
 
         if ($this->option('with-dummy')) {
+            $this->info('Publishing dummy content');
+            $tags = ['dummy_seeds', 'dummy_content', 'dummy_config', 'dummy_migrations'];
+            $this->call('vendor:publish', ['--provider' => VoyagerDummyServiceProvider::class, '--tag' => $tags]);
+
+            $this->info('Migrating dummy tables');
+            $this->call('migrate');
+
+            $this->info('Seeding dummy data');
             $this->seed('VoyagerDummyDatabaseSeeder');
+        } else {
+            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => 'config']);
         }
 
         $this->info('Setting up the hooks');

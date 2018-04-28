@@ -15,6 +15,7 @@ return [
         'default_role'                 => 'user',
         'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
+        'redirect'                     => '/admin',
     ],
 
     /*
@@ -97,18 +98,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | The prefix you wish to use with your voyager installation
-    |--------------------------------------------------------------------------
-    |
-    | specify the domain prefix you would like your users to visit in order
-    | to view the Voyager admin panel
-    |
-    */
-
-    'prefix' => 'admin',
-
-    /*
-    |--------------------------------------------------------------------------
     | Multilingual configuration
     |--------------------------------------------------------------------------
     |
@@ -122,6 +111,11 @@ return [
          * Set whether or not the multilingual is supported by the BREAD input.
          */
         'enabled' => false,
+
+        /*
+         * Set whether or not the admin layout default is RTL.
+         */
+        'rtl' => false,
 
         /*
          * Select default language
@@ -166,9 +160,7 @@ return [
         ],
 
         'widgets' => [
-            'TCG\\Voyager\\Widgets\\UserDimmer',
-            'TCG\\Voyager\\Widgets\\PostDimmer',
-            'TCG\\Voyager\\Widgets\\PageDimmer',
+
         ],
 
     ],
@@ -182,11 +174,19 @@ return [
     |
     */
 
-    // When a BREAD is added, create the Menu item using the BREAD properties.
-    'add_bread_menu_item' => true,
+    'bread' => [
+        // When a BREAD is added, create the Menu item using the BREAD properties.
+        'add_menu_item' => true,
 
-    // When a BREAD is added, create the related Permission.
-    'add_bread_permission' => true,
+        // which menu add item to
+        'default_menu' => 'admin',
+
+        // When a BREAD is added, create the related Permission.
+        'add_permission' => true,
+
+        // which role add premissions to
+        'default_role' => 'admin',
+    ],
 
     /*
     |--------------------------------------------------------------------------

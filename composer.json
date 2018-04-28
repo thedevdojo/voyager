@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "illuminate/support": "~5.4.0|~5.5.0",
+        "illuminate/support": "~5.4.0|~5.5.0|~5.6.0",
         "intervention/image": "^2.4",
         "doctrine/dbal": "^2.5",
         "larapack/doctrine-support": "~0.1.4",
@@ -25,13 +25,13 @@
     },
     "require-dev": {
         "phpunit/phpcov": "~3.0|~4.0",
-        "phpunit/phpunit": "~5.7.14|~6.1",
-        "laravel/framework": "~5.4.36|~5.5.0",
-        "orchestra/testbench": "~3.4.0|~3.5.0",
-        "orchestra/database": "~3.4.0|~3.5.0",
-        "orchestra/testbench-core": "~3.4.0|~3.5.0",
+        "phpunit/phpunit": "~5.7.14|~6.1|~7.0",
+        "laravel/framework": "~5.4.36|~5.5.0|~5.6.0",
+        "orchestra/testbench": "~3.4.0|~3.5.0|~3.6.0",
+        "orchestra/database": "~3.4.0|~3.5.0|~3.6.0",
+        "orchestra/testbench-core": "~3.4.0|~3.5.0|~3.6.0",
         "laravel/browser-kit-testing": "~1.0.0|~2.0.0",
-        "orchestra/testbench-browser-kit": "~3.4.0|~3.5.0",
+        "orchestra/testbench-browser-kit": "~3.4.0|~3.5.0|~3.6.0",
         "codeclimate/php-test-reporter": "dev-master"
     },
     "autoload": {
@@ -48,7 +48,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TCG\\Voyager\\VoyagerServiceProvider"
+                "TCG\\Voyager\\VoyagerServiceProvider",
+                "TCG\\Voyager\\Providers\\VoyagerDummyServiceProvider"
             ]
         }
     }
