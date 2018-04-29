@@ -9,7 +9,7 @@ return [
     'type_file'           => 'Bestand',
     'type_image'          => 'Afbeelding',
     'type_radiobutton'    => 'Keuzerondje',
-    'type_richtextbox'    => 'Uitgebreide tekstvak',
+    'type_richtextbox'    => 'Rijke tekstvak',
     'type_selectdropdown' => 'Uitschuifkeuzelijst',
     'type_textarea'       => 'Tekstvak',
     'type_textbox'        => 'Tekstveld',
