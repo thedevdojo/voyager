@@ -17,7 +17,7 @@ trait VoyagerUser
         parent::boot();
 
         static::saving(function ($user) {
-            if (!Auth::user()->can('editRoles', $user) && $user->getKey() == Auth::user()->getKey()) {
+            if (Auth::user() && !Auth::user()->can('editRoles', $user) && $user->getKey() == Auth::user()->getKey()) {
                 $user->role_id = $user->getOriginal('role_id');
                 $user->roles()->sync(Auth::user()->roles);
             }
