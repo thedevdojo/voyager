@@ -7,13 +7,6 @@ use TCG\Voyager\Models\Category;
 
 class CategoryTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->install();
-    }
-
     /** @test */
     public function can_create_a_category_with_logged_in_user_auto_assigned()
     {
