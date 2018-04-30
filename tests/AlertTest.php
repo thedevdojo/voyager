@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Tests\Unit;
+namespace TCG\Voyager\Tests;
 
 use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Alert;
