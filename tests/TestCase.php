@@ -16,7 +16,11 @@ class TestCase extends OrchestraTestCase
     {
         parent::setUp();
 
-        $this->loadLaravelMigrations();
+        if (app()->version() < 5.4) {
+            $this->loadMigrationsFrom([
+                '--realpath' => realpath(__DIR__.'/database/migrations'),
+            ]);
+        }
 
         if (!is_dir(base_path('routes'))) {
             mkdir(base_path('routes'));
@@ -75,6 +79,18 @@ class TestCase extends OrchestraTestCase
 
     protected function install()
     {
+        if (app()->version() >= 5.4) {
+            $migrator = app('migrator');
+
+            if (!$migrator->repositoryExists()) {
+                $this->artisan('migrate:install');
+            }
+
+            $migrator->run([realpath(__DIR__.'/database/migrations')]);
+
+            $this->artisan('migrate', ['--path' => realpath(__DIR__.'/database/migrations')]);
+        }
+
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
 
         app(VoyagerServiceProvider::class, ['app' => $this->app])->registerGates();
