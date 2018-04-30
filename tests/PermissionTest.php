@@ -13,8 +13,6 @@ class PermissionTest extends TestCase
     {
         parent::setUp();
 
-        $this->install();
-
         Auth::loginUsingId(1);
     }
 

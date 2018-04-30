@@ -11,8 +11,6 @@ class WidgetTest extends TestCase
     {
         parent::setUp();
 
-        $this->install();
-
         Auth::loginUsingId(1);
     }
 

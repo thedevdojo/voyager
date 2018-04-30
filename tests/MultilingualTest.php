@@ -11,13 +11,9 @@ use TCG\Voyager\Translator\Collection;
 
 class MultilingualTest extends TestCase
 {
-    protected $withDummy = true;
-
     public function setUp()
     {
         parent::setUp();
-
-        $this->install();
 
         // Add another language
         config()->set('voyager.multilingual.locales', ['en', 'da']);

@@ -7,15 +7,6 @@ use TCG\Voyager\Facades\Voyager;
 
 class DashboardTest extends TestCase
 {
-    protected $withDummy = true;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->install();
-    }
-
     public function testWeHaveAccessToTheMainSections()
     {
         // We must first login and visit the dashboard page.

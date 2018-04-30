@@ -19,13 +19,9 @@ class UserProfileTest extends TestCase
 
     protected $listOfUsers;
 
-    protected $withDummy = true;
-
     public function setUp()
     {
         parent::setUp();
-
-        $this->install();
 
         $this->user = Auth::loginUsingId(1);
 

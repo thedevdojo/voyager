@@ -9,13 +9,9 @@ class SettingsTest extends TestCase
 {
     protected $user;
 
-    protected $withDummy = true;
-
     public function setUp()
     {
         parent::setUp();
-
-        $this->install();
 
         $this->user = Auth::loginUsingId(1);
     }

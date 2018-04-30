@@ -4,15 +4,6 @@ namespace TCG\Voyager\Tests;
 
 class RouteTest extends TestCase
 {
-    protected $withDummy = true;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->install();
-    }
-
     /**
      * A basic functional test example.
      *
