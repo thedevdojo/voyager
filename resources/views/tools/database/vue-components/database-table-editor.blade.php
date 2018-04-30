@@ -54,10 +54,9 @@
                 </thead>
                 <tbody>
                     <database-column
-                        v-for="(column, index) in table.columns"
+                        v-for="column in table.columns"
                         :column="column"
                         :index="getColumnsIndex(column.name)"
-                        :key="index"
                         @columnNameUpdated="renameColumn"
                         @columnDeleted="deleteColumn"
                         @indexAdded="addIndex"
