@@ -61,9 +61,6 @@ abstract class Controller extends BaseController
                 // if no content is provided, that means the relationships need to be removed
                 if (isset($options->type) && $options->type !== 'belongsToMany') {
                     continue;
-                } elseif ($row->field == 'user_belongstomany_role_relationship' &&
-                         @$data->id == auth()->user()->id) {
-                    continue;
                 }
             }
 
@@ -105,10 +102,6 @@ abstract class Controller extends BaseController
                 if ($row->type == 'password') {
                     $content = $data->{$row->field};
                 }
-
-                if ($row->field == 'role_id' && in_array('TCG\Voyager\Traits\VoyagerUser', class_uses($data, false))) {
-                    $content = $data->role_id;
-                }
             }
 
             if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
@@ -119,8 +112,6 @@ abstract class Controller extends BaseController
             }
         }
 
-        $data->save();
-
         // Save translations
         if (count($translations) > 0) {
             $data->saveTranslations($translations);
@@ -129,6 +120,8 @@ abstract class Controller extends BaseController
         foreach ($multi_select as $sync_data) {
             $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
         }
+
+        $data->save();
 
         return $data;
     }
