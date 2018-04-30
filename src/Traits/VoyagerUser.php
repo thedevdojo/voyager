@@ -15,7 +15,10 @@ trait VoyagerUser
     protected static function boot()
     {
         parent::boot();
-
+        /*
+         * @todo: This is a temporary fix for #3010 and #2451.
+         * Change this with a proper solution in a major/minor version
+         */
         static::saving(function ($user) {
             if (Auth::user() && !Auth::user()->can('editRoles', $user) && $user->getKey() == Auth::user()->getKey()) {
                 $user->role_id = $user->getOriginal('role_id');
