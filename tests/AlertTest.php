@@ -2,10 +2,8 @@
 
 namespace TCG\Voyager\Tests;
 
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Alert;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Tests\TestCase;
 
 class AlertTest extends TestCase
 {
