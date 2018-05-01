@@ -139,6 +139,7 @@
 	            @endif
 
 			@else
+				<input type="hidden" name="{{ $relationshipField }}" value=""/>
 				<select
 					class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2 @endif" 
 					name="{{ $relationshipField }}[]" multiple
