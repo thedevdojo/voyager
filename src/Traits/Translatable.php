@@ -312,11 +312,11 @@ trait Translatable
             );
 
             // Remove field hidden input
-            unset($request[$field.'_i18n']);
+            $request[$field.'_i18n'] = '';
         }
 
         // Remove language selector input
-        unset($request['i18n_selector']);
+        $request['i18n_selector'] = '';
 
         return $translations;
     }
