@@ -105,7 +105,7 @@ class DataType extends Model
                         $dataRow->{$check} = isset($requestData["field_{$check}_{$field}"]);
                     }
 
-                    $dataRow->required = $requestData['field_required_'.$field];
+                    $dataRow->required = boolval($requestData['field_required_'.$field]);
                     $dataRow->field = $requestData['field_'.$field];
                     $dataRow->type = $requestData['field_input_type_'.$field];
                     $dataRow->details = $requestData['field_details_'.$field];
