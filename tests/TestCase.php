@@ -15,7 +15,7 @@ class TestCase extends OrchestraTestCase
     {
         parent::setUp();
 
-        $this->loadLaravelMigrations([]);
+        $this->loadLaravelMigrations();
 
         if (!is_dir(base_path('routes'))) {
             mkdir(base_path('routes'));
