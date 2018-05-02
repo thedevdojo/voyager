@@ -178,7 +178,7 @@ class DataRowsTableSeeder extends Seeder
         $dataRow = $this->dataRow($userDataType, 'locale');
         if (!$dataRow->exists) {
             $dataRow->fill([
-                'type'         => 'text',
+                'type'         => 'hidden',
                 'display_name' => 'Locale',
                 'required'     => 0,
                 'browse'       => 1,
