@@ -333,6 +333,10 @@
         padding-right: 0px;
     }
 
+    [dir="rtl"]  .voyager .navbar .dropdown.profile{
+        float: left;
+    }
+
     [dir="rtl"] .app-container .content-container .side-body {
         margin-right: 10px;
     }
