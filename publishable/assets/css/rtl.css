@@ -327,6 +327,21 @@
     margin-right: 0;
 }
 
+@media (max-width: 768px) {
+    [dir="rtl"] .navbar {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    [dir="rtl"] .app-container .content-container .side-body {
+        margin-right: 10px;
+    }
+
+    [dir="rtl"] .app-container .side-body .container-fluid {
+        padding-left: 0;
+    }
+}
+
 @media (min-width: 992px) {
     [dir="rtl"] .col-md-1, [dir="rtl"] .col-md-10, [dir="rtl"] .col-md-11,
     [dir="rtl"] .col-md-12, [dir="rtl"] .col-md-2, [dir="rtl"] .col-md-3,
