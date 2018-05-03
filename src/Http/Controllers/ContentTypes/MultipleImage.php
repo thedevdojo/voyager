@@ -18,6 +18,10 @@ class MultipleImage extends BaseType
         $files = $this->request->file($this->row->field);
 
         foreach ($files as $file) {
+            if (! $file->isValid()) {
+                continue;
+            }
+
             $image = Image::make($file);
 
             $resize_width = null;
