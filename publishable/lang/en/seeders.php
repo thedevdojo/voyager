@@ -55,6 +55,7 @@ return [
         ],
     ],
     'menu_items' => [
+        'bread'        => 'BREAD',
         'categories'   => 'Categories',
         'compass'      => 'Compass',
         'dashboard'    => 'Dashboard',
