@@ -327,6 +327,21 @@
     margin-right: 0;
 }
 
+
+[dir="rtl"] .voyager .alert {
+    border-right: 5px solid rgba(0,0,0,.1);
+    border-left: none;
+}
+
+[dir="rtl"] .dd-list .dd-list {
+    padding-left: 0px;
+    padding-right: 30px;
+}
+
+[dir="rtl"] .dd-item > button {
+    float: right;
+}
+
 @media (max-width: 768px) {
     [dir="rtl"] .navbar {
         padding-left: 0px;
