@@ -276,13 +276,13 @@
     float: right;
 }
 
-[dir="rtl"]  .voyager .navbar .navbar-nav .dropdown-menu, [dir="rtl"] .voyager .navbar.navbar-default .navbar-nav .dropdown-menu {
+[dir="rtl"]  .voyager .navbar .navbar-nav .dropdown-menu {
     left: 0;
     right: auto !important;
     position: absolute !important;
 }
 
-[dir="rtl"]  .voyager .navbar .navbar-nav li.dropdown.open .dropdown-menu, [dir="rtl"] .voyager .navbar.navbar-default .navbar-nav li.dropdown.open .dropdown-menu {
+[dir="rtl"]  .voyager .navbar .navbar-nav li.dropdown.open .dropdown-menu {
     display: block;
 }
 
