@@ -18,7 +18,7 @@ class MultipleImage extends BaseType
         $files = $this->request->file($this->row->field);
 
         foreach ($files as $file) {
-            if (! $file->isValid()) {
+            if (!$file->isValid()) {
                 continue;
             }
 
