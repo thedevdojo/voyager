@@ -213,7 +213,7 @@
 }
 
 [dir="rtl"] .app-container .content-container .side-menu .navbar-nav li.dropdown > a:after {
-    right: auto;
+    right: auto !important;
     left: 1em;
 }
 
