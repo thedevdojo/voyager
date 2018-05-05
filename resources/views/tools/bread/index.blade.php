@@ -33,7 +33,7 @@
                                    {{ $table->name }}
                                 </a>
                                 <i class="voyager-data"
-                                   style="font-size:25px; position:absolute; margin-left:10px; margin-top:-3px;"></i>
+                                   style="font-size:25px; margin:-3px 5px 0;"></i>
                             </p>
                         </td>
 
