@@ -21,7 +21,6 @@ class VoyagerProfileController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Compatibility with Model binding.
         $id = Auth::user()->id;
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
