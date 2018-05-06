@@ -193,6 +193,11 @@
     text-align: right;
 }
 
+[dir="rtl"] .panel-title.panel-icon i {
+    margin-right: 0;
+    margin-left: 5px;
+}
+
 [dir="rtl"] .panel-actions{
     left: 30px;
     right: auto;

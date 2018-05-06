@@ -1977,9 +1977,9 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     i{
         margin-right: 5px;
         font-size: 22px;
-        position: absolute;
-        top: 18px;
-        left: 20px;
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
     }
 }
 
