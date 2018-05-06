@@ -27,6 +27,11 @@ $(document).ready(function(){
         if (typeof tinymce_init_callback !== "undefined") {
             tinymce_init_callback(editor);
         }
+    },
+    setup: function (editor) {
+        if (typeof tinymce_setup_callback !== "undefined") {
+            tinymce_setup_callback(editor);
+        }
     }
   });
 
