@@ -32,7 +32,8 @@ Route::group(['as' => 'voyager.'], function () {
         Route::post('logout', ['uses' => $namespacePrefix.'VoyagerController@logout',  'as' => 'logout']);
         Route::post('upload', ['uses' => $namespacePrefix.'VoyagerController@upload',  'as' => 'upload']);
 
-        Route::get('profile', ['uses' => $namespacePrefix.'VoyagerController@profile', 'as' => 'profile']);
+        Route::get('profile', ['uses' => $namespacePrefix.'VoyagerProfileController@index', 'as' => 'profile']);
+        Route::put('profile', ['uses' => $namespacePrefix.'VoyagerProfileController@update', 'as' => 'profile.update']);
 
         try {
             foreach (DataType::all() as $dataType) {

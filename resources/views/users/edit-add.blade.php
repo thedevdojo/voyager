@@ -14,9 +14,16 @@
 @stop
 
 @section('content')
+    @php
+        if(isset($dataTypeContent->id)){
+            $route = ($dataTypeContent->id == Auth::user()->id) ? route('voyager.profile.update') : route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id);
+        }else{
+            $route = route('voyager.'.$dataType->slug.'.store');
+        }
+    @endphp
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="{{ (isset($dataTypeContent->id)) ? route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) : route('voyager.'.$dataType->slug.'.store') }}"
+              action="{{ $route }}"
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             @if(isset($dataTypeContent->id))
