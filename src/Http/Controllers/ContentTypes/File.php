@@ -3,8 +3,8 @@
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class File extends BaseType
 {
