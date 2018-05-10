@@ -68,8 +68,8 @@ class VoyagerController extends Controller
         return "<script> parent.helpers.setImageValue('".Voyager::image($fullFilename)."'); </script>";
     }
 
-    public function profile()
-    {
-        return Voyager::view('voyager::profile');
-    }
+    // public function profile()
+    // {
+    //     return Voyager::view('voyager::profile');
+    // }
 }
