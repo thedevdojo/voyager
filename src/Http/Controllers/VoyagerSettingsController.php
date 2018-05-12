@@ -86,6 +86,7 @@ class VoyagerSettingsController extends Controller
         $settings = Voyager::model('Setting')->all();
 
         foreach ($settings as $setting) {
+
             $content = $this->getContentBasedOnType($request, 'settings', (object) [
                 'type'    => $setting->type,
                 'field'   => str_replace('.', '_', $setting->key),
@@ -93,9 +94,13 @@ class VoyagerSettingsController extends Controller
                 'group'   => $setting->group,
             ]);
 
-            $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
+            if ($setting->type == 'image' && $content == null) {
+                continue;
+            }
 
-            $setting->group = $request->input(str_replace('.', '_', $setting->key).'_group');
+            $key = preg_replace('/^' . str_slug($setting->group) . './i', '', $setting->key);
+
+            $setting->group = $request->input(str_replace('.', '_', $setting->key) . '_group');
             $setting->key = implode('.', [str_slug($setting->group), $key]);
             $setting->value = $content;
             $setting->save();
@@ -138,9 +143,9 @@ class VoyagerSettingsController extends Controller
 
         $swapOrder = $setting->order;
         $previousSetting = Voyager::model('Setting')
-                            ->where('order', '<', $swapOrder)
-                            ->where('group', $setting->group)
-                            ->orderBy('order', 'DESC')->first();
+            ->where('order', '<', $swapOrder)
+            ->where('group', $setting->group)
+            ->orderBy('order', 'DESC')->first();
         $data = [
             'message'    => __('voyager::settings.already_at_top'),
             'alert-type' => 'error',
@@ -202,9 +207,9 @@ class VoyagerSettingsController extends Controller
         $swapOrder = $setting->order;
 
         $previousSetting = Voyager::model('Setting')
-                            ->where('order', '>', $swapOrder)
-                            ->where('group', $setting->group)
-                            ->orderBy('order', 'ASC')->first();
+            ->where('order', '>', $swapOrder)
+            ->where('group', $setting->group)
+            ->orderBy('order', 'ASC')->first();
         $data = [
             'message'    => __('voyager::settings.already_at_bottom'),
             'alert-type' => 'error',
