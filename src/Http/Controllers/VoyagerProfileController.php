@@ -3,8 +3,8 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Events\BreadDataUpdated;
+use TCG\Voyager\Facades\Voyager;
 
 class VoyagerProfileController extends Controller
 {
@@ -29,7 +29,7 @@ class VoyagerProfileController extends Controller
 
         //Verify if user tries to modify his own role
         if ($request->has('role_id')) {
-            $request->merge(['role_id' => $request->user()->role->id ]);
+            $request->merge(['role_id' => $request->user()->role->id]);
         }
 
         if($request->has('user_belongstomany_role_relationship')){
