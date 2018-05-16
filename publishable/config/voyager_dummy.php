@@ -13,7 +13,7 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => null,
+        'namespace'                    => App\User::class,
         'default_avatar'               => 'users/default.png',
         'redirect'                     => '/admin',
     ],
