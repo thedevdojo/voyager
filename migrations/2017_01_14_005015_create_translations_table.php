@@ -16,10 +16,10 @@ class CreateTranslationsTable extends Migration
         Schema::create('translations', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('table_name');
-            $table->string('column_name');
+            $table->string('table_name')->charset('latin1')->collate('latin1_general_ci');
+            $table->string('column_name')->charset('latin1')->collate('latin1_general_ci');
             $table->integer('foreign_key')->unsigned();
-            $table->string('locale');
+            $table->string('locale')->charset('latin1')->collate('latin1_general_ci');
 
             $table->text('value');
 
