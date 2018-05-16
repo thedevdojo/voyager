@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Traits;
 
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Role;
@@ -11,6 +12,21 @@ use TCG\Voyager\Models\Role;
  */
 trait VoyagerUser
 {
+    protected static function boot()
+    {
+        parent::boot();
+        /*
+         * @todo: This is a temporary fix for #3010 and #2451.
+         * Change this with a proper solution in a major/minor version
+         */
+        static::saving(function ($user) {
+            if (Auth::user() && !Auth::user()->can('editRoles', $user) && $user->getKey() == Auth::user()->getKey()) {
+                $user->role_id = $user->getOriginal('role_id');
+                $user->roles()->sync(Auth::user()->roles);
+            }
+        });
+    }
+
     /**
      * Return default User Role.
      */

@@ -59,7 +59,7 @@ abstract class Controller extends BaseController
             if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
                 // if the field is a belongsToMany relationship, don't remove it
                 // if no content is provided, that means the relationships need to be removed
-                if ((isset($options->type) && $options->type !== 'belongsToMany') || $row->field !== 'user_belongsto_role_relationship') {
+                if (isset($options->type) && $options->type !== 'belongsToMany') {
                     continue;
                 }
             }
@@ -112,8 +112,6 @@ abstract class Controller extends BaseController
             }
         }
 
-        $data->save();
-
         // Save translations
         if (count($translations) > 0) {
             $data->saveTranslations($translations);
@@ -122,6 +120,8 @@ abstract class Controller extends BaseController
         foreach ($multi_select as $sync_data) {
             $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
         }
+
+        $data->save();
 
         return $data;
     }
