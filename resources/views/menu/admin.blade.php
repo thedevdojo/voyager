@@ -15,7 +15,7 @@
                 data-icon_class="{{ $item->icon_class }}"
                 data-color="{{ $item->color }}"
                 data-route="{{ $item->route }}"
-                data-parameters="{{ htmlspecialchars(json_encode($item->parameters)) }}"
+                data-parameters="{{ json_encode($item->parameters) }}"
             >
                 <i class="voyager-edit"></i> {{ __('voyager::generic.edit') }}
             </div>
