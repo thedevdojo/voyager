@@ -25,6 +25,10 @@ class VoyagerUserController extends VoyagerBaseController
             $params['role_id'] = Auth::user()->role_id;
             $params['user_belongstomany_role_relationship'] = $roles;
 
+            if (!empty($params['user_belongsto_role_relationship'])) {
+                unset($params['user_belongsto_role_relationship']);
+	    }
+
             $request->replace($params);
         }
 
