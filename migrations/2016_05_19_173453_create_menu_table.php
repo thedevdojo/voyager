@@ -14,7 +14,7 @@ class CreateMenuTable extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name', 100)->unique();
             $table->timestamps();
         });
 
@@ -22,10 +22,10 @@ class CreateMenuTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('menu_id')->nullable();
             $table->string('title');
-            $table->string('url');
-            $table->string('target')->default('_self');
-            $table->string('icon_class')->nullable();
-            $table->string('color')->nullable();
+            $table->string('url')->charset('latin1')->collate('latin1_general_ci');
+            $table->string('target')->charset('latin1')->collate('latin1_general_ci')->default('_self');
+            $table->string('icon_class')->charset('latin1')->collate('latin1_general_ci')->nullable();
+            $table->string('color')->charset('latin1')->collate('latin1_general_ci')->nullable();
             $table->integer('parent_id')->nullable();
             $table->integer('order');
             $table->timestamps();
