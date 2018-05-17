@@ -25,7 +25,7 @@
                 @include('voyager::multilingual.input-hidden', [
                     'isModelTranslatable' => true,
                     '_field_name'         => 'title'.$item->id,
-                    '_field_trans'        => htmlspecialchars(json_encode($item->getTranslationsOf('title')))
+                    '_field_trans'        => json_encode($item->getTranslationsOf('title'))
                 ])
             @endif
             <span>{{ $item->title }}</span> <small class="url">{{ $item->link() }}</small>
