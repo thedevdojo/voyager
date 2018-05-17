@@ -27,7 +27,7 @@ class VoyagerUserController extends VoyagerBaseController
 
             if (!empty($params['user_belongsto_role_relationship'])) {
                 unset($params['user_belongsto_role_relationship']);
-	    }
+            }
 
             $request->replace($params);
         }
