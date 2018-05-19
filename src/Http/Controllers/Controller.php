@@ -120,6 +120,11 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
+            if (!is_array($sync_data['content'])) {
+                $content = explode(',', $sync_data['content']);
+            } else {
+                $content = $sync_data['content'];
+            }
             $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
         }
 
