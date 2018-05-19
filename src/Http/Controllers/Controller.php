@@ -125,7 +125,7 @@ abstract class Controller extends BaseController
             } else {
                 $content = $sync_data['content'];
             }
-            $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
+            $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($content);
         }
 
         return $data;
