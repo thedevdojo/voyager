@@ -216,20 +216,6 @@ class VoyagerBaseController extends Controller
 
         // Check permission
         $this->authorize('edit', $data);
-        
-        // Init array of IDs
-        $ids = [];
-        if (empty($id)) {
-            // Bulk delete, get IDs from POST
-            $ids = explode(',', $request->ids);
-        } else {
-            // Single item delete, get ID from URL
-            $ids[] = $id;
-        }
-        foreach ($ids as $id) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-            $this->cleanup($dataType, $data);
-        }
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id);
