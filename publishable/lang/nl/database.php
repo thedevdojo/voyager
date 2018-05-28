@@ -79,4 +79,5 @@ return [
     'url_slug'              => 'URL Slug (moet uniek zijn)',
     'url_slug_ph'           => 'URL slug (bijv. posts)',
     'visibility'            => 'Zichtbaarheid',
+    'is_translatable'       => 'Do you wish install translations?',
 ];

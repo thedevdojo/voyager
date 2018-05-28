@@ -92,4 +92,5 @@ return [
     'viewing'                => 'در حال مشاهده',
     'yes'                    => 'بله',
     'yes_please'             => 'بله، لطفا',
+    'is_translatable'        => 'Translatate?',
 ];

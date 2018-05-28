@@ -84,4 +84,5 @@ return [
     'viewing'                => 'İnceleme',
     'yes'                    => 'Evet',
     'yes_please'             => 'Evet, lütfen',
+    'is_translatable'        => 'Translatate?',
 ];

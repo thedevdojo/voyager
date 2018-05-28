@@ -88,4 +88,5 @@ return [
     'viewing'                => 'Duke parë',
     'yes'                    => 'Po',
     'yes_please'             => 'Po, Ju lutem',
+    'is_translatable'        => 'Translatate?',
 ];

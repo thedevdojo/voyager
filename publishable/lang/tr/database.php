@@ -76,4 +76,5 @@ return [
     'url_slug'              => 'Link yazısı (benzersiz olmalı)',
     'url_slug_ph'           => 'Link yazısı (ex. gonderi)',
     'visibility'            => 'Görünür',
+    'is_translatable'           => 'Do you wish install translations?',
 ];

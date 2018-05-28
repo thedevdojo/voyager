@@ -57,6 +57,7 @@ return [
     'url_slug'                  => 'URL Slug (debe ser único)',
     'url_slug_ph'               => 'URL slug (ej posts)',
     'visibility'                => 'Visibilidad',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'Relación',
         'relationships'        => 'Relaciones',

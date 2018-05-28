@@ -79,6 +79,7 @@ return [
     'url_slug'                  => 'URL Slug (muss einzigartig sein)',
     'url_slug_ph'               => 'URL Slug (z.B. posts)',
     'visibility'                => 'Sichtbarkeit',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'Beziehung',
         'relationships'        => 'Beziehungen',

@@ -78,4 +78,5 @@ return [
     'url_slug'                  => 'URL Slug (пвинен бути унікальним)',
     'url_slug_ph'               => 'URL slug (наприклад, posts)',
     'visibility'                => 'Видимість',
+    'is_translatable'           => 'Do you wish install translations?',
 ];

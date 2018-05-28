@@ -55,6 +55,7 @@ return [
     'url_slug'                      => 'URL Permalänk (måste vara unik)',
     'url_slug_ph'                   => 'URL Permalänk (t ex. posts)',
     'visibility'                    => 'Synlighet',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'                  => [
         'relationship'         => 'Relation',
         'relationships'        => 'Relation',

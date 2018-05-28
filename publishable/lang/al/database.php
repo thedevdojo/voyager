@@ -85,4 +85,5 @@ return [
     'url_slug'              => 'Slug URL (duhet të jetë unik)',
     'url_slug_ph'           => 'Slug URL (ex posts)',
     'visibility'            => 'Shikueshmëria',
+    'is_translatable'           => 'Do you wish install translations?',
 ];

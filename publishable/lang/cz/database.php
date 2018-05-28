@@ -79,6 +79,7 @@ return [
     'url_slug'                  => 'URL Slug (musí být unikátní)',
     'url_slug_ph'               => 'URL slug (např. posts)',
     'visibility'                => 'Viditelnost',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'Vztah',
         'relationships'        => 'Vztahy',

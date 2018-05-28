@@ -79,6 +79,7 @@ return [
     'url_slug'                  => 'Skrót URL (musi być niepowtarzalny)',
     'url_slug_ph'               => 'Skrót URL (np. wpisy)',
     'visibility'                => 'Widoczność',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'Relacja',
         'relationships'        => 'Relacje',

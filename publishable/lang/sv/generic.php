@@ -92,4 +92,5 @@ return [
     'viewing'                => 'Visar',
     'yes'                    => 'Ja',
     'yes_please'             => 'Ja, Tack',
+    'is_translatable'        => 'Translatate?',
 ];

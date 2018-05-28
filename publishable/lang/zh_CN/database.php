@@ -44,6 +44,7 @@ return [
     'unknown_type'              => '未知类型',
     'update_table'              => '更新表',
     'visibility'                => '可见性',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => '关系',
         'relationships'        => '关系',

@@ -87,4 +87,5 @@ return [
     'viewing'                => 'Zobrazení',
     'yes'                    => 'Ano',
     'yes_please'             => 'Ano, prosím',
+    'is_translatable'        => 'Translatate?',
 ];

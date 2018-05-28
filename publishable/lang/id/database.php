@@ -79,6 +79,7 @@ return [
     'url_slug'                  => 'URL Slug (harus unique)',
     'url_slug_ph'               => 'URL slug (cth. posts)',
     'visibility'                => 'Visibility',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'Relationship',
         'relationships'        => 'Relationships',

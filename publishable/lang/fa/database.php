@@ -55,6 +55,7 @@ return [
     'url_slug'                  => 'نامک برای استفاده در آدرس (باید یکتا باشد)',
     'url_slug_ph'               => 'نامک در آدرس (مثال posts)',
     'visibility'                => 'وضعیت نمایش',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'ارتباط',
         'relationships'        => 'ارتباطات',

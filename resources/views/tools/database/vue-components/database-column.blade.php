@@ -44,6 +44,10 @@
         <database-column-default :column="column"></database-column-default>
     </td>
 
+    <td id="column_is_translatable" style="display: none;">
+        <input v-model="column.is_translatable" type="checkbox">
+    </td>
+    
     <td>
         <div class="btn btn-danger delete-row" @click="deleteColumn"><i class="voyager-trash"></i></div>
     </td>

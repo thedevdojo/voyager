@@ -78,6 +78,7 @@ return [
     'url_slug'                  => 'URL Slug (trebuie să fie unic)',
     'url_slug_ph'               => 'URL slug (ex:, posts)',
     'visibility'                => 'Vizibilitate',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'Relație',
         'relationships'        => 'Relații',

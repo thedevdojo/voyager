@@ -42,4 +42,5 @@ return [
     'unknown_type'              => 'Неизвестный тип',
     'update_table'              => 'Обновить таблицу',
     'visibility'                => 'Видимость',
+    'is_translatable'           => 'Do you wish install translations?',
 ];

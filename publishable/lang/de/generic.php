@@ -91,4 +91,5 @@ return [
     'viewing'                => 'Zeige',
     'yes'                    => 'Ja',
     'yes_please'             => 'Ja, Bitte',
+    'is_translatable'        => 'Translatate?',
 ];

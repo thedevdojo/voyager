@@ -87,4 +87,5 @@ return [
     'viewing'                => 'Visualizzando',
     'yes'                    => 'Sì',
     'yes_please'             => 'Sì, Per favore',
+    'is_translatable'        => 'Translatate?',
 ];

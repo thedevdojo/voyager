@@ -23,6 +23,7 @@
                     unsigned: false,
                     autoincrement: false,
                     notnull: false,
+                    is_translatable: false,
                     default: null
                 }, options);
             },

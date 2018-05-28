@@ -26,6 +26,11 @@
                            data-on="{{ __('voyager::generic.yes_please') }}" data-off="{{ __('voyager::generic.no_thanks') }}">
                 </div>
             --}}
+            <div class="col-md-3 col-sm-4 col-xs-6" id="is_translatable_model_div">
+                <label for="is_translatable_model">{{ __('voyager.database.is_translatable') }}</label><br>
+                <input type="checkbox" name="is_translatable_model" data-toggle="toggle"
+                       data-on="{{ __('voyager.generic.yes_please') }}" data-off="{{ __('voyager.generic.no_thanks') }}">
+            </div>
         @endif
         </div><!-- .panel-body .row -->
 
@@ -49,6 +54,7 @@
                     <th>{{ __('voyager::generic.auto_increment') }}</th>
                     <th>{{ __('voyager::generic.index') }}</th>
                     <th>{{ __('voyager::generic.default') }}</th>
+                    <th id="column_is_translatable">{{ __('voyager.generic.is_translatable') }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -94,6 +100,57 @@
 @include('voyager::tools.database.vue-components.database-table-helper-buttons')
 
 <script>
+
+    $(document).ready(function() {
+        hideIsTranslatableOption();
+        hideColumnIsTranslatableField();
+
+        $('input[name=create_model]').change(function() {
+            if(this.checked) {
+                showIsTranslatableOption();
+            }
+            else{
+                hideIsTranslatableOption();
+            }     
+        });
+
+        $('input[name=is_translatable_model]').change(function() {
+            if(this.checked) {
+                showColumnIsTranslatableField();
+            }
+            else{
+                hideColumnIsTranslatableField();
+            }     
+        });
+    });
+
+    function hideIsTranslatableOption(){
+        hideColumnIsTranslatableField();
+        if(!$('#is_translatable_model_div').find(".toggle").hasClass( "off" )){
+            $('#is_translatable_model_div').find(".toggle").click();
+        }
+        $('#is_translatable_model_div').css('display', 'none');
+    }
+
+    function showIsTranslatableOption(){
+        $('#is_translatable_model_div').css('display', 'block');
+    }
+
+    function hideColumnIsTranslatableField(){
+        $("[id*='column_is_translatable']").each( function( index, element ){
+            $( this ).css('display', 'none');
+            if($( this ).children().length > 0){
+                $( this ).children().first().prop('checked', false)
+            }
+        });
+    }
+
+    function showColumnIsTranslatableField(){
+        $("[id*='column_is_translatable']").each( function( index, element ){
+            $( this ).css('display', 'table-cell');
+        });
+    }
+
     Vue.component('database-table-editor', {
         props: {
             table: {

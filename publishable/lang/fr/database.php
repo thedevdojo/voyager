@@ -62,6 +62,7 @@ return [
     'url_slug'                  => 'URL Slug (doit être unique)',
     'url_slug_ph'               => 'URL slug (exemple : articles)',
     'visibility'                => 'Visibilité',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'Relation (Relationship)',
         'relationships'        => 'Relations (Relationships)',

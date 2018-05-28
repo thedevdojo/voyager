@@ -79,6 +79,7 @@ return [
     'url_slug'                  => 'Sivupolun slugi (täytyy olla uniikki)',
     'url_slug_ph'               => 'Sivupolun slugi (esim. kirjoitukset)',
     'visibility'                => 'Näkyvyys',
+    'is_translatable'           => 'Do you wish install translations?',
     'relationship'              => [
         'relationship'         => 'Riippuvuussuhde',
         'relationships'        => 'Riippuvuussuhteet',

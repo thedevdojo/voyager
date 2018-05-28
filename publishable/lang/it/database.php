@@ -56,4 +56,5 @@ return [
     'url_slug'                  => 'URL Slug (deve essere unico)',
     'url_slug_ph'               => 'URL slug (ex. articoli)',
     'visibility'                => 'Visibilità',
+    'is_translatable'           => 'Do you wish install translations?',
 ];

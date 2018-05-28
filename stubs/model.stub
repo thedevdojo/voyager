@@ -4,8 +4,12 @@ namespace DummyNamespace;
 
 use Illuminate\Database\Eloquent\Model;
 //DummySDTraitInclude
+//DummyTranslatableTraitInclude
 
 class DummyClass extends Model
 {
     //DummySDTrait
+    //DummyTranslatableTrait
+
+    //DummyTranslatableFields
 }
