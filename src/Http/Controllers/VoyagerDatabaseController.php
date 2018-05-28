@@ -73,6 +73,10 @@ class VoyagerDatabaseController extends Controller
 
             if (isset($request->create_model) && $request->create_model == 'on') {
                 $modelNamespace = config('voyager.models.namespace', app()->getNamespace());
+                
+                $params = [
+                    'name' => $modelNamespace.Str::studly(Str::singular($table->name)),
+                ];
 
                 if (isset($request->is_translatable_model) && $request->is_translatable_model == 'on'){
                     
