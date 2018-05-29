@@ -1034,6 +1034,14 @@ table.dataTable.no-footer{
   border-bottom:1px solid #f1f1f1;
 }
 
+table th .no-sort::after { 
+    display: none !important; 
+}
+table th .no-sort { 
+    pointer-events: none !important; 
+    cursor: default !important; 
+}
+
 .code-preview {
   width: 100%;
   min-height: 400px; }
