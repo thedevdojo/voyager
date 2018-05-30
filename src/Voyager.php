@@ -27,6 +27,7 @@ use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Traits\Translatable;
+use Arrilot\Widgets\Facade as Widget;
 
 class Voyager
 {
@@ -183,6 +184,27 @@ class Voyager
     public function actions()
     {
         return $this->actions;
+    }
+
+    /**
+     * Get a collection of the dashboard widgets.
+     *
+     * @return \Arrilot\Widgets\WidgetGroup
+     */
+    public function dimmers()
+    {
+        $widgetClasses = config('voyager.dashboard.widgets');
+        $dimmers = Widget::group('voyager::dimmers');
+
+        foreach ($widgetClasses as $widgetClass) {
+            $widget = app($widgetClass);
+
+            if ($widget->shouldBeDisplayed()) {
+                $dimmers->addWidget($widgetClass);
+            }
+        }
+
+        return $dimmers;
     }
 
     public function setting($key, $default = null)
