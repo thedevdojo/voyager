@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager;
 
+use Arrilot\Widgets\Facade as Widget;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
@@ -27,7 +28,6 @@ use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Traits\Translatable;
-use Arrilot\Widgets\Facade as Widget;
 
 class Voyager
 {

@@ -2,9 +2,8 @@
 
 namespace TCG\Voyager\Tests\Unit;
 
-use TCG\Voyager\Facades\Voyager;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Tests\TestCase;
 
 class VoyagerTest extends TestCase
