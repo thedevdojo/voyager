@@ -199,7 +199,7 @@ class Voyager
         foreach ($widgetClasses as $widgetClass) {
             $widget = app($widgetClass);
 
-            if (is_callable([$widget, 'shouldBeDisplayed']) && $widget->shouldBeDisplayed()) {
+            if ($widget->shouldBeDisplayed()) {
                 $dimmers->addWidget($widgetClass);
             }
         }
