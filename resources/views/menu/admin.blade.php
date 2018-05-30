@@ -15,7 +15,7 @@
                 data-icon_class="{{ $item->icon_class }}"
                 data-color="{{ $item->color }}"
                 data-route="{{ $item->route }}"
-                data-parameters="{{ htmlspecialchars(json_encode($item->parameters)) }}"
+                data-parameters="{{ json_encode($item->parameters) }}"
             >
                 <i class="voyager-edit"></i> {{ __('voyager::generic.edit') }}
             </div>
@@ -25,7 +25,7 @@
                 @include('voyager::multilingual.input-hidden', [
                     'isModelTranslatable' => true,
                     '_field_name'         => 'title'.$item->id,
-                    '_field_trans'        => htmlspecialchars(json_encode($item->getTranslationsOf('title')))
+                    '_field_trans'        => json_encode($item->getTranslationsOf('title'))
                 ])
             @endif
             <span>{{ $item->title }}</span> <small class="url">{{ $item->link() }}</small>
