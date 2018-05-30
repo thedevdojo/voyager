@@ -84,8 +84,9 @@ class VoyagerSettingsController extends Controller
         $this->authorize('edit', Voyager::model('Setting'));
 
         $settings = Voyager::model('Setting')->all();
-
+        
         foreach ($settings as $setting) {
+            
             $content = $this->getContentBasedOnType($request, 'settings', (object) [
                 'type'    => $setting->type,
                 'field'   => str_replace('.', '_', $setting->key),
@@ -93,9 +94,13 @@ class VoyagerSettingsController extends Controller
                 'group'   => $setting->group,
             ]);
 
-            $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
+            if ($setting->type == 'image' && $content == null) {
+                continue;
+            }
 
-            $setting->group = $request->input(str_replace('.', '_', $setting->key).'_group');
+            $key = preg_replace('/^' . str_slug($setting->group) . './i', '', $setting->key);
+
+            $setting->group = $request->input(str_replace('.', '_', $setting->key) . '_group');
             $setting->key = implode('.', [str_slug($setting->group), $key]);
             $setting->value = $content;
             $setting->save();
