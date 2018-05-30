@@ -1,26 +1,26 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager.generic.view').' '.$dataType->display_name_singular)
+@section('page_title', __('voyager::generic.view').' '.$dataType->display_name_singular)
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> {{ __('voyager.generic.viewing') }} {{ ucfirst($dataType->display_name_singular) }} &nbsp;
+        <i class="{{ $dataType->icon }}"></i> {{ __('voyager::generic.viewing') }} {{ ucfirst($dataType->display_name_singular) }} &nbsp;
 
         @can('edit', $dataTypeContent)
         <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
             <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-            {{ __('voyager.generic.edit') }}
+            {{ __('voyager::generic.edit') }}
         </a>
         @endcan
         @can('delete', $dataTypeContent)
-            <a href="javascript:;" title="{{ __('voyager.generic.delete') }}" class="btn btn-danger delete" data-id="{{ $dataTypeContent->getKey() }}" id="delete-{{ $dataTypeContent->getKey() }}">
-                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.delete') }}</span>
+            <a href="javascript:;" title="{{ __('voyager::generic.delete') }}" class="btn btn-danger delete" data-id="{{ $dataTypeContent->getKey() }}" id="delete-{{ $dataTypeContent->getKey() }}">
+                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.delete') }}</span>
             </a>
         @endcan
 
         <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
             <span class="glyphicon glyphicon-list"></span>&nbsp;
-            {{ __('voyager.generic.return_to_list') }}
+            {{ __('voyager::generic.return_to_list') }}
         </a>
     </h1>
     @include('voyager::multilingual.language-selector')
@@ -106,14 +106,14 @@
                             @elseif($row->type == 'file')
                                 @if(json_decode($dataTypeContent->{$row->field}))
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
-                                        <a href="/storage/{{ $file->download_link or '' }}">
-                                            {{ $file->original_name or '' }}
+                                        <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) ?: '' }}">
+                                            {{ $file->original_name ?: '' }}
                                         </a>
                                         <br/>
                                     @endforeach
                                 @else
-                                    <a href="/storage/{{ $dataTypeContent->{$row->field} }}">
-                                        Download
+                                    <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($row->field) ?: '' }}">
+                                        {{ __('voyager::generic.download') }}
                                     </a>
                                 @endif
                             @else
@@ -135,18 +135,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager.generic.close') }}"><span
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span
                                 aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager.generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
+                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager::generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.'.$dataType->slug.'.index') }}" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                               value="{{ __('voyager.generic.delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
+                               value="{{ __('voyager::generic.delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
                     </form>
-                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
+                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

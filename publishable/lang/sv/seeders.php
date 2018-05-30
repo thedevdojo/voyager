@@ -1,0 +1,92 @@
+<?php
+
+return [
+    'data_rows' => [
+        'author'           => 'Författare',
+        'avatar'           => 'Avatar',
+        'body'             => 'Brödtext',
+        'category'         => 'Kategori',
+        'created_at'       => 'Skapad',
+        'display_name'     => 'Visningnamn',
+        'email'            => 'Epost',
+        'excerpt'          => 'Utdrag',
+        'featured'         => 'Utvald',
+        'id'               => 'ID',
+        'meta_description' => 'Meta Beskrivning',
+        'meta_keywords'    => 'Meta Keywords',
+        'name'             => 'Name',
+        'order'            => 'Order',
+        'page_image'       => 'Page Image',
+        'parent'           => 'Parent',
+        'password'         => 'Password',
+        'post_image'       => 'Post Image',
+        'remember_token'   => 'Remember Token',
+        'role'             => 'Role',
+        'seo_title'        => 'SEO Title',
+        'slug'             => 'Slug',
+        'status'           => 'Status',
+        'title'            => 'Title',
+        'updated_at'       => 'Updated At',
+    ],
+    'data_types' => [
+        'category' => [
+            'singular'  => 'Kategori',
+            'plural'    => 'Kategorier',
+        ],
+        'menu' => [
+            'singular'  => 'Meny',
+            'plural'    => 'Menyer',
+        ],
+        'page' => [
+            'singular'  => 'Sida',
+            'plural'    => 'Sidor',
+        ],
+        'post' => [
+            'singular'  => 'Inlägg',
+            'plural'    => 'Inlägg',
+        ],
+        'role' => [
+            'singular'  => 'Roll',
+            'plural'    => 'Roller',
+        ],
+        'user' => [
+            'singular'  => 'Användare',
+            'plural'    => 'Användare',
+        ],
+    ],
+    'menu_items' => [
+        'categories'    => 'Kategorier',
+        'compass'       => 'Kompass',
+        'dashboard'     => 'Skrivbord',
+        'database'      => 'Databas',
+        'media'         => 'Media',
+        'menu_builder'  => 'Menubyggare',
+        'pages'         => 'Sidor',
+        'posts'         => 'Inlägg',
+        'roles'         => 'Roller',
+        'settings'      => 'Inställningar',
+        'tools'         => 'Verktyg',
+        'users'         => 'Användare',
+    ],
+    'roles' => [
+        'admin'         => 'Administratör',
+        'user'          => 'Normal Användare',
+    ],
+    'settings' => [
+        'admin' => [
+            'background_image'           => 'Admin Backgroundsbild',
+            'description'                => 'Admin Beskrivning',
+            'description_value'          => 'Välkommen till Voyager. Den saknade kontrollpanelen för Laravel',
+            'google_analytics_client_id' => 'Google Analytics Klient ID (används på admins skrivbord)',
+            'icon_image'                 => 'Admin Ikon Bild',
+            'loader'                     => 'Admin Laddare',
+            'title'                      => 'Admin Titel',
+        ],
+        'site' => [
+            'description'                  => 'Beskrivning av sajten',
+            'google_analytics_tracking_id' => 'Google Analytics Språnings-ID',
+            'logo'                         => 'Logotyp för sajt',
+            'title'                        => 'Sajten titel',
+        ],
+    ],
+];
