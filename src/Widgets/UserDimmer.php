@@ -3,11 +3,10 @@
 namespace TCG\Voyager\Widgets;
 
 use Illuminate\Support\Facades\Auth;
-use Arrilot\Widgets\AbstractWidget;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 
-class UserDimmer extends AbstractWidget
+class UserDimmer extends BaseDimmer
 {
     /**
      * The configuration array.
