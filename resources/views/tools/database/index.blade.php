@@ -21,7 +21,7 @@
                     <thead>
                         <tr>
                             <th>{{ __('voyager::database.table_name') }}</th>
-                            <th style="text-align:right">{{ __('voyager::database.table_actions') }}</th>
+                            <th style="text-align:right no-sort">{{ __('voyager::database.table_actions') }}</th>
                         </tr>
                     </thead>
 
@@ -61,7 +61,7 @@
                             </div>
                         </td>
 
-                        <td class="actions">
+                        <td class="actions bread-actions">
                             <a class="btn btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
                                data-table="{{ $table->name }}">
                                <i class="voyager-trash"></i> {{ __('voyager::generic.delete') }}
