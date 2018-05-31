@@ -228,7 +228,7 @@ class VoyagerBaseController extends Controller
         $this->authorize('edit', $data);
 
         // Check if a redirect overload has been defined
-        if($request->input('redirect')) {
+        if ($request->input('redirect')) {
             $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
         }
 
@@ -318,7 +318,7 @@ class VoyagerBaseController extends Controller
         $this->authorize('add', app($dataType->model_name));
 
         // Check if a redirect overload has been defined
-        if($request->input('redirect')) {
+        if ($request->input('redirect')) {
             $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
         }
 
