@@ -228,7 +228,9 @@ class VoyagerBaseController extends Controller
         $this->authorize('edit', $data);
 
         // Check if a redirect overload has been defined
-        $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        if($request->input('redirect')) {
+            $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        }
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id);
@@ -316,7 +318,9 @@ class VoyagerBaseController extends Controller
         $this->authorize('add', app($dataType->model_name));
 
         // Check if a redirect overload has been defined
-        $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        if($request->input('redirect')) {
+            $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        }
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
@@ -530,6 +534,7 @@ class VoyagerBaseController extends Controller
 
     /**
      * @param $dataType
+     *
      * @return mixed
      */
     public function handleRedirect($dataType)
@@ -537,7 +542,7 @@ class VoyagerBaseController extends Controller
         $session_key = "bread-redirect-{$dataType->slug}";
         $redirect_url = session()->pull($session_key);
 
-        if(is_null($redirect_url)) {
+        if (is_null($redirect_url)) {
             $redirect_url = route("voyager.{$dataType->slug}.index");
         }
 
