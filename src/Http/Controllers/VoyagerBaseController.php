@@ -125,6 +125,9 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        // Compatibility with Model binding.
+        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+
         $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
@@ -173,6 +176,9 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        // Compatibility with Model binding.
+        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+
         $relationships = $this->getRelationships($dataType);
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
@@ -189,6 +195,9 @@ class VoyagerBaseController extends Controller
 
         // Check permission
         $this->authorize('edit', $dataTypeContent);
+
+        // Check if a redirect overload has been defined
+        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -217,6 +226,9 @@ class VoyagerBaseController extends Controller
         // Check permission
         $this->authorize('edit', $data);
 
+        // Check if a redirect overload has been defined
+        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id);
 
@@ -229,8 +241,7 @@ class VoyagerBaseController extends Controller
 
             event(new BreadDataUpdated($dataType, $data));
 
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
+            return $this->handleRedirect($dataType)
                 ->with([
                     'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
@@ -259,6 +270,9 @@ class VoyagerBaseController extends Controller
 
         // Check permission
         $this->authorize('add', app($dataType->model_name));
+
+        // Check if a redirect overload has been defined
+        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
@@ -300,6 +314,9 @@ class VoyagerBaseController extends Controller
         // Check permission
         $this->authorize('add', app($dataType->model_name));
 
+        // Check if a redirect overload has been defined
+        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
 
@@ -316,9 +333,8 @@ class VoyagerBaseController extends Controller
                 return response()->json(['success' => true, 'data' => $data]);
             }
 
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
+            return $this->handleRedirect($dataType)
+                        ->with([
                         'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
                     ]);
@@ -343,8 +359,14 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        // Compatibility with Model binding.
+        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+
         // Check permission
         $this->authorize('delete', app($dataType->model_name));
+
+        // Check if a redirect overload has been defined
+        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
 
         // Init array of IDs
         $ids = [];
@@ -377,7 +399,7 @@ class VoyagerBaseController extends Controller
             event(new BreadDataDeleted($dataType, $data));
         }
 
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+        return $this->handleRedirect($dataType)->with($data);
     }
 
     /**
@@ -503,5 +525,21 @@ class VoyagerBaseController extends Controller
             $i->$column = ($key + 1);
             $i->save();
         }
+    }
+
+    /**
+     * @param $dataType
+     * @return mixed
+     */
+    public function handleRedirect($dataType)
+    {
+        $session_key = "bread-redirect-{$dataType->slug}";
+        $redirect_url = session()->pull($session_key);
+
+        if(is_null($redirect_url)) {
+            $redirect_url = route("voyager.{$dataType->slug}.index");
+        }
+
+        return redirect()->to($redirect_url);
     }
 }
