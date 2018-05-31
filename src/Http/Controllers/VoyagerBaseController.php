@@ -198,7 +198,7 @@ class VoyagerBaseController extends Controller
         $this->authorize('edit', $dataTypeContent);
 
         // Check if a redirect overload has been defined
-        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
@@ -228,7 +228,7 @@ class VoyagerBaseController extends Controller
         $this->authorize('edit', $data);
 
         // Check if a redirect overload has been defined
-        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id);
@@ -273,7 +273,7 @@ class VoyagerBaseController extends Controller
         $this->authorize('add', app($dataType->model_name));
 
         // Check if a redirect overload has been defined
-        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
                             ? new $dataType->model_name()
@@ -316,7 +316,7 @@ class VoyagerBaseController extends Controller
         $this->authorize('add', app($dataType->model_name));
 
         // Check if a redirect overload has been defined
-        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->addRows);
@@ -367,7 +367,7 @@ class VoyagerBaseController extends Controller
         $this->authorize('delete', app($dataType->model_name));
 
         // Check if a redirect overload has been defined
-        $request->session->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
+        $request->session()->put("bread-redirect-{$dataType->slug}", $request->input('redirect'));
 
         // Init array of IDs
         $ids = [];
