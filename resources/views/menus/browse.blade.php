@@ -28,7 +28,7 @@
                                 @foreach($dataType->browseRows as $rows)
                                 <th>{{ $rows->display_name }}</th>
                                 @endforeach
-                                <th class="actions">{{ __('voyager::generic.actions') }}</th>
+                                <th class="actions no-sort">{{ __('voyager::generic.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -43,7 +43,7 @@
                                         @endif
                                     </td>
                                     @endforeach
-                                    <td class="no-sort no-click bread-actions">
+                                    <td class="bread-actions">
                                         @can('delete', $data)
                                             <div class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->{$data->getKeyName()} }}">
                                                 <i class="voyager-trash"></i> {{ __('voyager::generic.delete') }}
