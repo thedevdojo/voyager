@@ -108,7 +108,6 @@
                             </div>
                         </div>
 
-
                         <div class="panel-body">
                             @include('voyager::multilingual.input-hidden', [
                                 '_field_name'  => 'body',
