@@ -61,7 +61,7 @@
                             </div>
                         </td>
 
-                        <td class="actions bread-actions">
+                        <td class="actions">
                             <a class="btn btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
                                data-table="{{ $table->name }}">
                                <i class="voyager-trash"></i> {{ __('voyager::generic.delete') }}
