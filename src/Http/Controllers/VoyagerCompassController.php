@@ -62,8 +62,8 @@ class VoyagerCompassController extends Controller
         $artisan_output = '';
 
         if ($request->isMethod('post')) {
-            $command = $request->command;
-            $args = $request->args;
+            $command = escapeshellcmd($request->command);
+            $args = escapeshellarg($request->args);
             $args = (isset($args)) ? ' '.$args : '';
 
             try {
