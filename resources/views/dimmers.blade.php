@@ -1,7 +1,6 @@
 @php
-$dimmers = \Arrilot\Widgets\Facade::group('voyager::dimmers');
+$dimmers = Voyager::dimmers();
 $count = $dimmers->count();
-
 $classes = [
     'col-xs-12',
     'col-sm-'.($count >= 2 ? '6' : '12'),
