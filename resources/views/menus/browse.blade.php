@@ -100,7 +100,8 @@
         $(document).ready(function () {
             $('#dataTable').DataTable({
                 "order": [],
-                "language": {!! json_encode(__('voyager::datatable'), true) !!}
+                "language": {!! json_encode(__('voyager::datatable'), true) !!},
+                "columnDefs": [{"targets": -1, "searchable":  false, "orderable": false}]
                 @if(config('dashboard.data_tables.responsive')), responsive: true @endif
             });
         });
