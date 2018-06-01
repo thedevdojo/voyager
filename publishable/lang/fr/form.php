@@ -8,8 +8,8 @@ return [
     'type_file'                    => 'Fichier',
     'type_image'                   => 'Image',
     'type_radiobutton'             => 'Bouton radio',
-    'type_richtextbox'             => 'Champ texte enrichie',
+    'type_richtextbox'             => 'Champ texte enrichi',
     'type_selectdropdown'          => 'Menu déroulant',
-    'type_textarea'                => 'Aire de texte',
+    'type_textarea'                => 'Zone de texte',
     'type_textbox'                 => 'Champ texte',
 ];

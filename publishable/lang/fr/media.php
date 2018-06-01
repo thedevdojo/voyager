@@ -36,5 +36,12 @@ return [
     'crop_image'             => 'Rogner l\image',
     'success_crop_image'     => 'L\'image a bien été rognée',
     'height'                 => 'Hauteur : ',
+    'title'                  => 'Titre',
+    'type'                   => 'Type',
+    'size'                   => 'Taille',
+    'public_url'             => 'URL Publique',
+    'last_modified'          => 'Dernière modification',
+    'browser_video_support'  => 'Votre navigateur ne supporte pas le tag vidéo.',
+    'browser_audio_support'  => 'Votre navigateur ne supporte pas l\'élément audio.',
     'width'                  => 'Largeur : ',
 ];
