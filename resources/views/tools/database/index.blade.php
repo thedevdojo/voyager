@@ -21,7 +21,7 @@
                     <thead>
                         <tr>
                             <th>{{ __('voyager::database.table_name') }}</th>
-                            <th style="text-align:right no-sort">{{ __('voyager::database.table_actions') }}</th>
+                            <th style="text-align:right">{{ __('voyager::database.table_actions') }}</th>
                         </tr>
                     </thead>
 
