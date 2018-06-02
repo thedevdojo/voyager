@@ -3,45 +3,51 @@
 @section('page_title', __('voyager::generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
 
 @section('css')
-<style>
-.panel .mce-panel {
-	border-left-color: #fff;
-	border-right-color: #fff;
-}
-.panel .mce-toolbar,
-.panel .mce-statusbar {
-	padding-left: 20px;
-}
-.panel .mce-edit-area,
-.panel .mce-edit-area iframe,
-.panel .mce-edit-area iframe html {
-	padding: 0 10px;
-	min-height: 350px;
-}
-.mce-content-body {
-	color: #555;
-	font-size: 14px;
-}
-.panel.is-fullscreen .mce-statusbar {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	z-index: 200000;
-}
-.panel.is-fullscreen .mce-tinymce {
-	height:100%;
-}
-.panel.is-fullscreen .mce-edit-area,
-.panel.is-fullscreen .mce-edit-area iframe,
-.panel.is-fullscreen .mce-edit-area iframe html {
-	height: 100%;
-	position: absolute;
-	width: 99%;
-	overflow-y: scroll;
-	overflow-x: hidden;
-	min-height: 100%;
-}
-</style>
+    <style>
+        .panel .mce-panel {
+            border-left-color: #fff;
+            border-right-color: #fff;
+        }
+
+        .panel .mce-toolbar,
+        .panel .mce-statusbar {
+            padding-left: 20px;
+        }
+
+        .panel .mce-edit-area,
+        .panel .mce-edit-area iframe,
+        .panel .mce-edit-area iframe html {
+            padding: 0 10px;
+            min-height: 350px;
+        }
+
+        .mce-content-body {
+            color: #555;
+            font-size: 14px;
+        }
+
+        .panel.is-fullscreen .mce-statusbar {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 200000;
+        }
+
+        .panel.is-fullscreen .mce-tinymce {
+            height:100%;
+        }
+
+        .panel.is-fullscreen .mce-edit-area,
+        .panel.is-fullscreen .mce-edit-area iframe,
+        .panel.is-fullscreen .mce-edit-area iframe html {
+            height: 100%;
+            position: absolute;
+            width: 99%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            min-height: 100%;
+        }
+    </style>
 @stop
 
 @section('page_header')
@@ -101,16 +107,16 @@
                                 <a class="panel-action voyager-resize-full" data-toggle="panel-fullscreen" aria-hidden="true"></a>
                             </div>
                         </div>
-                        @include('voyager::multilingual.input-hidden', [
-                            '_field_name'  => 'body',
-                            '_field_trans' => get_field_translations($dataTypeContent, 'body')
-                        ])
-                        @php
-                            $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
-                            $row = $dataTypeRows->where('field', 'body')->first();
-                        @endphp
 
                         <div class="panel-body">
+                            @include('voyager::multilingual.input-hidden', [
+                                '_field_name'  => 'body',
+                                '_field_trans' => get_field_translations($dataTypeContent, 'body')
+                            ])
+                            @php
+                                $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                                $row = $dataTypeRows->where('field', 'body')->first();
+                            @endphp
                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                         </div>
                     </div><!-- .panel -->
@@ -308,42 +314,42 @@
 @stop
 
 @section('javascript')
-<script>
-$('document').ready(function () {
-	$('#slug').slugify();
+	<script>
+	$('document').ready(function () {
+		$('#slug').slugify();
 
-	@if ($isModelTranslatable)
-		$('.side-body').multilingual({"editing": true});
-	@endif
+        @if ($isModelTranslatable)
+            $('.side-body').multilingual({"editing": true});
+        @endif
 
-	$('.form-group').on('click', '.remove-multi-image', function (e) {
-		e.preventDefault();
-		$image = $(this).siblings('img');
-		params = {
-			slug:   '{{ $dataType->slug }}',
-			image:  $image.data('image'),
-			id:     $image.data('id'),
-			field:  $image.parent().data('field-name'),
-			_token: '{{ csrf_token() }}'
-		}
-		$('.confirm_delete_name').text($image.data('image'));
-		$('#confirm_delete_modal').modal('show');
-	});
-
-	$('#confirm_delete').on('click', function(){
-		$.post('{{ route('voyager.media.remove') }}', params, function (response) {
-			if ( response
-			&& response.data
-			&& response.data.status
-			&& response.data.status == 200 ) {
-				toastr.success(response.data.message);
-				$image.parent().fadeOut(300, function() { $(this).remove(); })
-			} else {
-				toastr.error("Error removing image.");
+		$('.form-group').on('click', '.remove-multi-image', function (e) {
+			e.preventDefault();
+			$image = $(this).siblings('img');
+			params = {
+				slug:   '{{ $dataType->slug }}',
+				image:  $image.data('image'),
+				id:     $image.data('id'),
+				field:  $image.parent().data('field-name'),
+				_token: '{{ csrf_token() }}'
 			}
+			$('.confirm_delete_name').text($image.data('image'));
+			$('#confirm_delete_modal').modal('show');
 		});
-		$('#confirm_delete_modal').modal('hide');
+
+		$('#confirm_delete').on('click', function(){
+			$.post('{{ route('voyager.media.remove') }}', params, function (response) {
+				if ( response
+				&& response.data
+				&& response.data.status
+				&& response.data.status == 200 ) {
+					toastr.success(response.data.message);
+					$image.parent().fadeOut(300, function() { $(this).remove(); })
+				} else {
+					toastr.error("Error removing image.");
+				}
+			});
+			$('#confirm_delete_modal').modal('hide');
+		});
 	});
-});
-</script>
+	</script>
 @stop
