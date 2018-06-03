@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use TCG\Voyager\Facades\Voyager;
+use Illuminate\Support\Facades\App;
 
 class VoyagerCompassController extends Controller
 {
@@ -63,11 +64,19 @@ class VoyagerCompassController extends Controller
 
         if ($request->isMethod('post')) {
             $command = escapeshellcmd($request->command);
-            $args = escapeshellarg($request->args);
-            $args = (isset($args)) ? ' '.$args : '';
+            $args = (isset($request->args)) ? ' '.escapeshellarg($request->args) : '';
 
             try {
-                $process = new Process('cd '.base_path().' && php artisan '.$command.$args);
+                if (App::environment('testing')) {
+                    // hard to mess with base_path from Orchestral
+                    // without causing trouble on other tests.
+                    // Stepping back to the main application
+                    $path = realpath(base_path('../../../../../../../'));
+                } else {
+                    $path = base_path();
+                }
+
+                $process = new Process('cd '.$path.' && php artisan ' . $command . $args);
                 $process->run();
 
                 if (!$process->isSuccessful()) {
