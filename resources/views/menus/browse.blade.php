@@ -28,7 +28,7 @@
                                 @foreach($dataType->browseRows as $rows)
                                 <th>{{ $rows->display_name }}</th>
                                 @endforeach
-                                <th class="actions">{{ __('voyager::generic.actions') }}</th>
+                                <th class="actions text-right">{{ __('voyager::generic.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -100,7 +100,8 @@
         $(document).ready(function () {
             $('#dataTable').DataTable({
                 "order": [],
-                "language": {!! json_encode(__('voyager::datatable'), true) !!}
+                "language": {!! json_encode(__('voyager::datatable'), true) !!},
+                "columnDefs": [{"targets": -1, "searchable":  false, "orderable": false}]
                 @if(config('dashboard.data_tables.responsive')), responsive: true @endif
             });
         });
