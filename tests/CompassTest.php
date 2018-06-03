@@ -60,4 +60,27 @@ class CompassTest extends TestCase
         ])->see('General error');
     }
 
+    public function testFailDownloadingNonLogFile()
+    {
+        // Trying to reach a file with an aboslute file path,
+        // eg. this try to grab the .env in the base project
+        $log = base64_encode(
+            realpath(base_path('../../../../../../../.env')));
+
+        $response = $this->get(route('voyager.compass.index').'?download='.$log);
+
+        $this->assertResponseStatus(500);
+    }
+
+    public function testDownloadLogFile()
+    {
+        $logsPath = storage_path('logs/laravel.log');
+        file_put_contents($logsPath, 'testing');
+        
+        $log = base64_encode('laravel.log');
+
+        $response = $this->get(route('voyager.compass.index') . '?download=' . $log);
+
+        $this->assertResponseStatus(200);
+    }
 }
