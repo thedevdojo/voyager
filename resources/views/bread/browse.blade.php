@@ -83,7 +83,7 @@
                                             @endif
                                         </th>
                                         @endforeach
-                                        <th class="actions">{{ __('voyager::generic.actions') }}</th>
+                                        <th class="actions text-right">{{ __('voyager::generic.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -124,7 +124,7 @@
                                                     @if($data->{$row->field . '_page_slug'})
                                                         <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $options->options->{$data->{$row->field}} !!}</a>
                                                     @else
-                                                        {!! $options->options->{$data->{$row->field}} !!}
+                                                        {!! $options->options->{$data->{$row->field}} or '' !!}
                                                     @endif
 
 
@@ -258,7 +258,7 @@
                     array_merge([
                         "order" => [],
                         "language" => __('voyager::datatable'),
-                        "columnDefs" => [['searchable' =>  false, 'targets' => -1 ]],
+                        "columnDefs" => [['targets' => -1, 'searchable' =>  false, 'orderable' => false]],
                     ],
                     config('voyager.dashboard.data_tables', []))
                 , true) !!});
