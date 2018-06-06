@@ -26,9 +26,11 @@ trait Resizable
     }
 
     /**
-     * Generate thumbnail URL
+     * Generate thumbnail URL.
+     *
      * @param $image
      * @param $type
+     *
      * @return string
      */
     public function get_thumbnail($image, $type)
