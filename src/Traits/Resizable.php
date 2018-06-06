@@ -22,6 +22,19 @@ trait Resizable
         // We take image from posts field
         $image = $this->attributes[$attribute];
 
+        return $this->get_thumbnail($image, $type);
+    }
+
+    /**
+     * Generate thumbnail URL.
+     *
+     * @param $image
+     * @param $type
+     *
+     * @return string
+     */
+    public function get_thumbnail($image, $type)
+    {
         // We need to get extension type ( .jpeg , .png ...)
         $ext = pathinfo($image, PATHINFO_EXTENSION);
 
