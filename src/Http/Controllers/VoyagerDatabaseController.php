@@ -69,7 +69,10 @@ class VoyagerDatabaseController extends Controller
             $conn = 'database.connections.'.config('database.default');
             Type::registerCustomPlatformTypes();
 
-            $table = json_decode($request->table, true);
+            $table = $request->table;
+            if (!is_array($request->table)) {
+                $table = json_decode($request->table, true);
+            }
             $table['options']['collate'] = config($conn.'.collation', 'utf8mb4_unicode_ci');
             $table['options']['charset'] = config($conn.'.charset', 'utf8mb4');
             $table = Table::make($table);
