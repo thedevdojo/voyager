@@ -4493,6 +4493,13 @@ p#the_plugin_name{
     padding-right:0px;
 }
 
+.page-content .form-edit-add ul.permissions {
+    list-style-type: none;
+    li {
+        list-style-type: none;
+    }
+}
+
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title{
   text-transform: uppercase;
   position:relative;
