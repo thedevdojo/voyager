@@ -83,8 +83,30 @@
 
                         <div class="panel-footer">
                             <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
+                            <button type="button" class="btn btn-danger js-delete">{{ __('voyager::generic.delete') }}</button>
                         </div>
                     </form>
+
+                    {{-- Single delete modal --}}
+                    <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager::generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="#" id="delete_form" method="POST">
+                                        {{ method_field("DELETE") }}
+                                        {{ csrf_field() }}
+                                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager::generic.delete_confirm') }}">
+                                    </form>
+                                    <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
 
                     <iframe id="form_target" name="form_target" style="display:none"></iframe>
                     <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="post"
@@ -116,8 +138,9 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
-                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ __('voyager::generic.delete_confirm') }}
-                    </button>
+                    @can('delete', $dataTypeContent)
+                        <button type="button" class="btn btn-danger js-delete" data-id="{{ $dataTypeContent->getKey() }}"><i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.delete') }}</span></button>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -164,6 +187,11 @@
 
                 $('.confirm_delete_name').text($image.data('image'));
                 $('#confirm_delete_modal').modal('show');
+            });
+
+            $('.js-delete').on('click', function (e) {
+                $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
+                $('#delete_modal').modal('show');
             });
 
             $('#confirm_delete').on('click', function(){

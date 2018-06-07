@@ -16,11 +16,11 @@
             @include('voyager::partials.bulk-delete')
         @endcan
         @can('edit',app($dataType->model_name))
-        @if(isset($dataType->order_column) && isset($dataType->order_display_column))
-            <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary">
-                <i class="voyager-list"></i> <span>{{ __('voyager::bread.order') }}</span>
-            </a>
-        @endif
+            @if(isset($dataType->order_column) && isset($dataType->order_display_column))
+                <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary">
+                    <i class="voyager-list"></i> <span>{{ __('voyager::bread.order') }}</span>
+                </a>
+            @endif
         @endcan
         @include('voyager::multilingual.language-selector')
     </div>
@@ -38,7 +38,7 @@
                                 <div id="search-input">
                                     <select id="search_key" name="key">
                                         @foreach($searchable as $key)
-                                                <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
+                                            <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
                                         @endforeach
                                     </select>
                                     <select id="filter" name="filter">
@@ -66,29 +66,29 @@
                                             </th>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
-                                        <th>
-                                            @if ($isServerSide)
-                                                <a href="{{ $row->sortByUrl() }}">
-                                            @endif
-                                            {{ $row->display_name }}
-                                            @if ($isServerSide)
-                                                @if ($row->isCurrentSortField())
-                                                    @if (!isset($_GET['sort_order']) || $_GET['sort_order'] == 'asc')
-                                                        <i class="voyager-angle-up pull-right"></i>
-                                                    @else
-                                                        <i class="voyager-angle-down pull-right"></i>
-                                                    @endif
+                                            <th>
+                                                @if ($isServerSide)
+                                                    <a href="{{ $row->sortByUrl() }}">
+                                                        @endif
+                                                        {{ $row->display_name }}
+                                                        @if ($isServerSide)
+                                                            @if ($row->isCurrentSortField())
+                                                                @if (!isset($_GET['sort_order']) || $_GET['sort_order'] == 'asc')
+                                                                    <i class="voyager-angle-up pull-right"></i>
+                                                                @else
+                                                                    <i class="voyager-angle-down pull-right"></i>
+                                                                @endif
+                                                            @endif
+                                                    </a>
                                                 @endif
-                                                </a>
-                                            @endif
-                                        </th>
+                                            </th>
                                         @endforeach
                                         <th class="actions text-right">{{ __('voyager::generic.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($dataTypeContent as $data)
-                                    <tr>
+                                @foreach($dataTypeContent as $data)
+                                    <tr class="js-row" data-id="{{ $data->getKey() }}" >
                                         @can('delete',app($dataType->model_name))
                                             <td>
                                                 <input type="checkbox" name="row_id" id="checkbox_{{ $data->getKey() }}" value="{{ $data->getKey() }}">
@@ -106,16 +106,16 @@
 
                                                         @foreach($data->{$row->field} as $item)
                                                             @if($item->{$row->field . '_page_slug'})
-                                                            <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
+                                                                <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
                                                             @else
-                                                            {{ $item->{$row->field} }}
+                                                                {{ $item->{$row->field} }}
                                                             @endif
                                                         @endforeach
 
                                                         {{-- $data->{$row->field}->implode($options->relationship->label, ', ') --}}
                                                     @elseif(property_exists($options, 'options'))
                                                         @foreach($data->{$row->field} as $item)
-                                                         {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                                            {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
                                                         @endforeach
                                                     @endif
 
@@ -131,16 +131,16 @@
                                                 @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
                                                     <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $data->{$row->field} }}
+                                                    {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $data->{$row->field} }}
                                                 @elseif($row->type == 'checkbox')
                                                     @if($options && property_exists($options, 'on') && property_exists($options, 'off'))
                                                         @if($data->{$row->field})
-                                                        <span class="label label-info">{{ $options->on }}</span>
+                                                            <span class="label label-info">{{ $options->on }}</span>
                                                         @else
-                                                        <span class="label label-primary">{{ $options->off }}</span>
+                                                            <span class="label label-primary">{{ $options->off }}</span>
                                                         @endif
                                                     @else
-                                                    {{ $data->{$row->field} }}
+                                                        {{ $data->{$row->field} }}
                                                     @endif
                                                 @elseif($row->type == 'color')
                                                     <span class="badge badge-lg" style="background-color: {{ $data->{$row->field} }}">{{ $data->{$row->field} }}</span>
@@ -189,7 +189,7 @@
                                             @endforeach
                                         </td>
                                     </tr>
-                                    @endforeach
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -241,20 +241,20 @@
 @stop
 
 @section('css')
-@if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-<link rel="stylesheet" href="{{ voyager_asset('lib/css/responsive.dataTables.min.css') }}">
-@endif
+    @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
+        <link rel="stylesheet" href="{{ voyager_asset('lib/css/responsive.dataTables.min.css') }}">
+    @endif
 @stop
 
 @section('javascript')
-    <!-- DataTables -->
-    @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-        <script src="{{ voyager_asset('lib/js/dataTables.responsive.min.js') }}"></script>
-    @endif
-    <script>
-        $(document).ready(function () {
-            @if (!$dataType->server_side)
-                var table = $('#dataTable').DataTable({!! json_encode(
+<!-- DataTables -->
+@if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
+    <script src="{{ voyager_asset('lib/js/dataTables.responsive.min.js') }}"></script>
+@endif
+<script>
+    $(document).ready(function () {
+                @if (!$dataType->server_side)
+        var table = $('#dataTable').DataTable({!! json_encode(
                     array_merge([
                         "order" => [],
                         "language" => __('voyager::datatable'),
@@ -262,29 +262,37 @@
                     ],
                     config('voyager.dashboard.data_tables', []))
                 , true) !!});
-            @else
-                $('#search-input select').select2({
-                    minimumResultsForSearch: Infinity
-                });
-            @endif
-
-            @if ($isModelTranslatable)
-                $('.side-body').multilingual();
-                //Reinitialise the multilingual features when they change tab
-                $('#dataTable').on('draw.dt', function(){
-                    $('.side-body').data('multilingual').init();
-                })
-            @endif
-            $('.select_all').on('click', function(e) {
-                $('input[name="row_id"]').prop('checked', $(this).prop('checked'));
-            });
+        @else
+        $('#search-input select').select2({
+            minimumResultsForSearch: Infinity
         });
+        @endif
 
-
-        var deleteFormAction;
-        $('td').on('click', '.delete', function (e) {
-            $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
-            $('#delete_modal').modal('show');
+        @if ($isModelTranslatable)
+        $('.side-body').multilingual();
+        //Reinitialise the multilingual features when they change tab
+        $('#dataTable').on('draw.dt', function(){
+            $('.side-body').data('multilingual').init();
+        })
+        @endif
+        $('.select_all').on('click', function(e) {
+            $('input[name="row_id"]').prop('checked', $(this).prop('checked'));
         });
-    </script>
+    });
+
+
+    var deleteFormAction;
+    $('td').on('click', '.delete', function (e) {
+        $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
+        $('#delete_modal').modal('show');
+    });
+
+    $('tr.js-row').on('dblclick', function (e) {
+        var doubleClickLocation = "{{lcfirst($dataType->display_name_plural)}}" + "/" + $(this).data('id');
+        @can('edit', app($dataType->model_name))
+            doubleClickLocation += "/edit";
+        @endcan
+            location.href = doubleClickLocation;
+    });
+</script>
 @stop
