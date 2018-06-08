@@ -6,10 +6,10 @@
 @endif
 
 @foreach($commands as $command)
-	<div class="command" data-command="{{ $command->name }}">
-		<code>php artisan {{ $command->name }}</code>
-		<small>{{ $command->description }}</small><i class="voyager-terminal"></i>
-		<form action="{{ route('voyager.compass.post') }}" class="cmd_form" method="POST">
+    <div class="command" data-command="{{ $command->name }}">
+        <code>php artisan {{ $command->name }}</code>
+        <small>{{ $command->description }}</small><i class="voyager-terminal"></i>
+        <form action="{{ route('voyager.compass.post') }}" class="cmd_form" method="POST">
             {{ csrf_field() }}
             <input type="text" name="args" autofocus class="form-control" placeholder="{{ __('voyager::compass.commands.additional_args') }}">
             <input type="submit" class="btn btn-primary pull-right delete-confirm"
@@ -17,5 +17,5 @@
             <input type="hidden" name="command" id="hidden_cmd" value="{{ $command->name }}">
         </form>
 
-	</div>
+    </div>
 @endforeach
