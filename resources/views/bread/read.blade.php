@@ -65,7 +65,7 @@
                             @elseif($row->type == 'select_dropdown' && property_exists($rowDetails, 'options') &&
                                     !empty($rowDetails->options->{$dataTypeContent->{$row->field}})
                             )
-                                {{ $rowDetails->options->{$dataTypeContent->{$row->field}} }}
+                                <?php echo $rowDetails->options->{$dataTypeContent->{$row->field}};?>
                             @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
                                 <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
                             @elseif($row->type == 'select_multiple')
