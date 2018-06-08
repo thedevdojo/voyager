@@ -44,6 +44,7 @@ $(document).ready(function () {
     $('.dd').nestable({
         maxDepth: 1
     });
+
     /**
     * Reorder items
     */
