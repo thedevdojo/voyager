@@ -136,9 +136,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager::generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
@@ -177,7 +175,6 @@
             form.action = deleteFormAction.match(/\/[0-9]+$/)
                 ? deleteFormAction.replace(/([0-9]+$)/, $(this).data('id'))
                 : deleteFormAction + '/' + $(this).data('id');
-            console.log(form.action);
 
             $('#delete_modal').modal('show');
         });
