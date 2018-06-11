@@ -26,7 +26,7 @@ class VoyagerAdminMiddleware
             }
 
             if (isset($user->base_direction)) {
-                config()->set('voyager.multilingual.rtl', $user->base_direction === 'RTL');
+                config()->set('voyager.multilingual.rtl', $user->base_direction === 'rtl');
             }
 
             return $user->hasPermission('browse_admin') ? $next($request) : redirect('/');

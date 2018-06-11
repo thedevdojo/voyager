@@ -106,7 +106,7 @@
                                 }
                             @endphp
                             <div class="form-group">
-                                <label for="locale">Base Direction</label>
+                                <label for="base_direction">Base Direction</label>
                                 <select class="form-control select2" id="base_direction" name="base_direction">
                                     @foreach (Voyager::getBaseDirections() as $baseDirection)
                                     <option value="{{ $baseDirection }}"
