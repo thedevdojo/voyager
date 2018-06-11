@@ -97,6 +97,24 @@
                                     @endforeach
                                 </select>
                             </div>
+
+                            @php
+                                if (isset($dataTypeContent->base_direction)) {
+                                    $selectedBaseDirection = $dataTypeContent->base_direction;
+                                } else {
+                                    $selectedBaseDirection = config('voyager.user.default_base_direction', 'LTR');
+                                }
+                            @endphp
+                            @dump($dataTypeContent->settings)
+                            <div class="form-group">
+                                <label for="locale">Base Direction</label>
+                                <select class="form-control select2" id="base_direction" name="base_direction">
+                                    @foreach (Voyager::getBaseDirections() as $baseDirection)
+                                    <option value="{{ $baseDirection }}"
+                                    {{ ($baseDirection == $selectedBaseDirection ? 'selected' : '') }}>{{ $baseDirection }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
