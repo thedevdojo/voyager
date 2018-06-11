@@ -191,6 +191,22 @@ class DataRowsTableSeeder extends Seeder
             ])->save();
         }
 
+        $dataRow = $this->dataRow($userDataType, 'base_direction');
+        if (!$dataRow->exists) {
+            $dataRow->fill([
+                'type'         => 'text',
+                'display_name' => 'Base Direction',
+                'required'     => 0,
+                'browse'       => 0,
+                'read'         => 1,
+                'edit'         => 1,
+                'add'          => 1,
+                'delete'       => 0,
+                'details'      => '',
+                'order'        => 13,
+            ])->save();
+        }
+
         $dataRow = $this->dataRow($userDataType, 'settings');
         if (!$dataRow->exists) {
             $dataRow->fill([
@@ -203,7 +219,7 @@ class DataRowsTableSeeder extends Seeder
                 'add'          => 0,
                 'delete'       => 0,
                 'details'      => '',
-                'order'        => 12,
+                'order'        => 14,
             ])->save();
         }
 
