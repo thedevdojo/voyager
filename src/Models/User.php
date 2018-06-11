@@ -16,8 +16,8 @@ class User extends Authenticatable implements UserContract
     /**
      * Base directions.
      */
-    const BASE_DIRECTION_LTR = 'LTR';
-    const BASE_DIRECTION_RTL = 'RTL';
+    const BASE_DIRECTION_LTR = 'ltr';
+    const BASE_DIRECTION_RTL = 'rtl';
 
     /**
      * Collection of base directions.
@@ -78,7 +78,7 @@ class User extends Authenticatable implements UserContract
     public function setBaseDirectionAttribute($direction)
     {
         // Throw error if given direction is not a valid base direction
-        if (! in_array(strtoupper($direction), self::$baseDirections)) {
+        if (! in_array(strtolower($direction), self::$baseDirections)) {
             return;
         }
 
