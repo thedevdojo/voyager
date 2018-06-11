@@ -13,7 +13,7 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        // available directions: `ltr` or `rtl`
+        // Available directions: `ltr` or `rtl`.
         'default_base_direction'       => 'ltr',
         // Set `namespace` to `null` to use `config('auth.providers.users.model')` value
         // Set `namespace` to a class to override auth user model.
