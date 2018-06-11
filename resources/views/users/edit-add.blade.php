@@ -105,7 +105,6 @@
                                     $selectedBaseDirection = config('voyager.user.default_base_direction', 'LTR');
                                 }
                             @endphp
-                            @dump($dataTypeContent->settings)
                             <div class="form-group">
                                 <label for="locale">Base Direction</label>
                                 <select class="form-control select2" id="base_direction" name="base_direction">
