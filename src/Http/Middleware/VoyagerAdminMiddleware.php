@@ -20,8 +20,13 @@ class VoyagerAdminMiddleware
     {
         if (!Auth::guest()) {
             $user = auth()->user();
+
             if (isset($user->locale)) {
                 app()->setLocale($user->locale);
+            }
+
+            if (isset($user->base_direction)) {
+                config()->set('voyager.multilingual.rtl', $user->base_direction === 'RTL');
             }
 
             return $user->hasPermission('browse_admin') ? $next($request) : redirect('/');
