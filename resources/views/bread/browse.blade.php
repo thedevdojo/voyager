@@ -88,7 +88,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($dataTypeContent as $data)
-                                    <tr class="js-row" data-id="{{ $data->getKey() }}" >
+                                    <tr class="js-bread-data-row" data-id="{{ $data->getKey() }}" >
                                         @can('delete',app($dataType->model_name))
                                             <td>
                                                 <input type="checkbox" name="row_id" id="checkbox_{{ $data->getKey() }}" value="{{ $data->getKey() }}">
@@ -287,7 +287,7 @@
         $('#delete_modal').modal('show');
     });
 
-    $('tr.js-row').on('dblclick', function (e) {
+    $('tr.js-bread-data-row').on('dblclick', function (e) {
         var doubleClickLocation = "{{lcfirst($dataType->display_name_plural)}}" + "/" + $(this).data('id');
         @can('edit', app($dataType->model_name))
             doubleClickLocation += "/edit";

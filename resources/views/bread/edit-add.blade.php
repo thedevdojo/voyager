@@ -83,7 +83,9 @@
 
                         <div class="panel-footer">
                             <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
-                            <button type="button" class="btn btn-danger js-delete">{{ __('voyager::generic.delete') }}</button>
+                            @can('delete', $dataTypeContent)
+                            <button type="button" class="btn btn-danger js-delete-bread-data-row">{{ __('voyager::generic.delete') }}</button>
+                            @endcan
                         </div>
                     </form>
 
@@ -138,9 +140,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
-                    @can('delete', $dataTypeContent)
-                        <button type="button" class="btn btn-danger js-delete" data-id="{{ $dataTypeContent->getKey() }}"><i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.delete') }}</span></button>
-                    @endcan
+                    <button type="button" class="btn btn-danger js-delete-bread-data-row" data-id="{{ $dataTypeContent->getKey() }}"><i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.delete') }}</span></button>
                 </div>
             </div>
         </div>
@@ -189,8 +189,8 @@
                 $('#confirm_delete_modal').modal('show');
             });
 
-            $('.js-delete').on('click', function (e) {
-                $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
+            $('.js-delete-bread-data-row').on('click', function (e) {
+                $('#delete_form').get(0).action = '{{ route('voyager.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
                 $('#delete_modal').modal('show');
             });
 
