@@ -13,6 +13,22 @@ class User extends Authenticatable implements UserContract
     use VoyagerUser,
         HasRelationships;
 
+    /**
+     * Base directions.
+     */
+    const BASE_DIRECTION_LTR = 'LTR';
+    const BASE_DIRECTION_RTL = 'RTL';
+
+    /**
+     * Collection of base directions.
+     *
+     * @var array
+     */
+    public static $baseDirections = [
+        self::BASE_DIRECTION_LTR,
+        self::BASE_DIRECTION_RTL
+    ];
+
     protected $guarded = [];
 
     protected $casts = [
@@ -41,5 +57,31 @@ class User extends Authenticatable implements UserContract
     public function getLocaleAttribute()
     {
         return $this->settings['locale'];
+    }
+
+    /**
+     * Get the user's base direction.
+     *
+     * @return string
+     */
+    public function getBaseDirectionAttribute()
+    {
+        return $this->settings['base_direction'];
+    }
+
+    /**
+     * Set the user's base direction.
+     *
+     * @param string $direction
+     * @return void
+     */
+    public function setBaseDirectionAttribute($direction)
+    {
+        // Throw error if given direction is not a valid base direction
+        if (! in_array(strtoupper($direction), self::$baseDirections)) {
+            return;
+        }
+
+        $this->attributes['settings'] = collect($this->settings)->merge(['base_direction' => $direction]);
     }
 }
