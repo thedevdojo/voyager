@@ -382,4 +382,14 @@ class Voyager
     {
         return array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), ['..', '.']);
     }
+
+    /**
+     * Get a collection of available base directions.
+     *
+     * @return array
+     */
+    public function getBaseDirections()
+    {
+        return User::$baseDirections;
+    }
 }
