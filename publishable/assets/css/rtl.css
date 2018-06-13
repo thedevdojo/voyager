@@ -24,6 +24,11 @@
     text-align: right;
 }
 
+[dir="rtl"] body.login .login-sidebar input[name="email"],
+[dir="rtl"] body.login .login-sidebar input[name="password"] {
+    text-align: left;
+}
+
 /*other app pages*/
 
 [dir="rtl"] .site-footer-right {
