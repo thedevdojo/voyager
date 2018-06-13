@@ -14,7 +14,11 @@
     @endif
     <style>
         body {
+            @if (config('voyager.multilingual.rtl'))
+            background-image:url('{{ Voyager::image( Voyager::setting("admin.bg_image"), voyager_asset("images/bg-rtl.jpg") ) }}');
+            @else
             background-image:url('{{ Voyager::image( Voyager::setting("admin.bg_image"), voyager_asset("images/bg.jpg") ) }}');
+            @endif
             background-color: {{ Voyager::setting("admin.bg_color", "#FFFFFF" ) }};
         }
         body.login .login-sidebar {
