@@ -112,7 +112,7 @@ abstract class Controller extends BaseController
             }
         }
 
-        $data->save();
+        $data->setTable($slug)->save();
 
         // Save translations
         if (count($translations) > 0) {
