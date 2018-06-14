@@ -186,8 +186,8 @@ class DataType extends Model
                         'taggable'    => isset($requestData['relationship_taggable_'.$relationship]) ? $requestData['relationship_taggable_'.$relationship] : '0',
                     ];
 
-                    $field_details = json_decode($requestData['field_details_' . $relationship_column], true) ?? false;
-                    $requestData['field_details_' . $relationship] = json_encode(
+                    $field_details = json_decode($requestData['field_details_'.$relationship_column], true) ?? false;
+                    $requestData['field_details_'.$relationship] = json_encode(
                         ($field_details) ? array_merge($relationshipDetails, $field_details) : $relationshipDetails
                     );
                 }
