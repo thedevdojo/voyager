@@ -8,7 +8,7 @@ return [
     'sInfoFiltered'   => '(نتایج از مجموع _MAX_ مورد، موجود)',
     'sInfoPostFix'    => '',
     'sInfoThousands'  => ',',
-    'sLengthMenu'     => 'Show _MENU_ entries',
+    'sLengthMenu'     => 'نمایش ورودی‌های _MENU_',
     'sLoadingRecords' => 'درحال بارگزاری...',
     'sProcessing'     => 'درحال پردازش...',
     'sSearch'         => 'جستجو:',
