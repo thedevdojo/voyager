@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'additional_fields'=> 'Дополнительные поля',    
+    'additional_fields'=> 'Дополнительные поля',
     'category'         => 'Категория сообщения',
     'content'          => 'Текст сообщения',
     'details'          => 'Свойства',
