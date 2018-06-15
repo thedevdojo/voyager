@@ -136,12 +136,12 @@ abstract class Controller extends BaseController
      *
      * @return mixed
      */
-    public function validateBread($request, $data, $slug = null, $id = null)
+    public function validateBread($request, $data, $name = null, $id = null)
     {
         $rules = [];
         $messages = [];
         $customAttributes = [];
-        $is_update = $slug && $id;
+        $is_update = $name && $id;
 
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
@@ -162,7 +162,7 @@ abstract class Controller extends BaseController
             if ($is_update) {
                 foreach ($rules[$fieldName] as &$fieldRule) {
                     if (strpos(strtoupper($fieldRule), 'UNIQUE') !== false) {
-                        $fieldRule = \Illuminate\Validation\Rule::unique($slug)->ignore($id);
+                        $fieldRule = \Illuminate\Validation\Rule::unique($name)->ignore($id);
                     }
                 }
             }

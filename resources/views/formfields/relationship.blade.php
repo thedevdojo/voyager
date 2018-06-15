@@ -29,8 +29,13 @@
 				<select class="form-control select2" name="{{ $options->column }}">
 					@php 
 						$model = app($options->model);
-	            		$query = $model::all();
-	            	@endphp
+						$query = $model::all();
+					@endphp
+
+					@if($row->required === 0)
+						<option value="">{{__('voyager::generic.none')}}</option>
+					@endif
+					
 					@foreach($query as $relationshipData)
 						<option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$options->column} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
 					@endforeach
@@ -150,9 +155,13 @@
 				>
 					
 			            @php 
-					$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
+							$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
 			                $relationshipOptions = app($options->model)->all();
-			            @endphp
+						@endphp
+						
+						@if($row->required === 0)
+							<option value="">{{__('voyager::generic.none')}}</option>
+						@endif
 
 			            @foreach($relationshipOptions as $relationshipOption)
 			                <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
