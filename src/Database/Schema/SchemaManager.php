@@ -152,8 +152,6 @@ abstract class SchemaManager
                 }
             }
         }
-
-        return null;
     }
 
     public static function getRemoteDatabasesTableNames()
