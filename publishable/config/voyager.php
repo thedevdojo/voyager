@@ -11,7 +11,7 @@ return [
     */
 
     'remote_databases_connections' => [
-        'mysql_api',
+//        'mysql_api',
     ],
 
     /*
