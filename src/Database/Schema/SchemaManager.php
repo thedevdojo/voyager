@@ -143,10 +143,10 @@ abstract class SchemaManager
 
     public static function getConnectionNameByTable($table)
     {
-        $remoteDatabaseContections = config('voyager.remote_databases_connections') ?? null;
+        $remoteDatabaseConnections = config('voyager.remote_databases_connections') ?? null;
 
-        if($remoteDatabaseContections){
-            foreach ($remoteDatabaseContections as $conn) {
+        if ($remoteDatabaseConnections){
+            foreach ($remoteDatabaseConnections as $conn) {
                 if (static::tableExists($table, $conn))
                 {
                     return $connection = $conn;
@@ -159,11 +159,11 @@ abstract class SchemaManager
 
     public static function getRemoteDatabasesTableNames()
     {
-        $remoteDatabaseContections = config('voyager.remote_databases_connections') ?? null;
+        $remoteDatabaseConnections = config('voyager.remote_databases_connections') ?? null;
         $remoteDatabasesTables = [];
 
-        if($remoteDatabaseContections){
-            foreach ($remoteDatabaseContections as $conn) {
+        if ($remoteDatabaseConnections){
+            foreach ($remoteDatabaseConnections as $conn) {
                 $remoteDatabasesTables = array_merge($remoteDatabasesTables, static::manager($conn)->listTableNames());
             }
         }
