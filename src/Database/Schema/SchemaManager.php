@@ -16,30 +16,30 @@ abstract class SchemaManager
         return static::manager()->$method(...$args);
     }
 
-    public static function manager()
+    public static function manager($connection = null)
     {
-        return DB::connection()->getDoctrineSchemaManager();
+        return DB::connection($connection)->getDoctrineSchemaManager();
     }
 
-    public static function getDatabaseConnection()
+    public static function getDatabaseConnection($connection = null)
     {
-        return DB::connection()->getDoctrineConnection();
+        return DB::connection($connection)->getDoctrineConnection();
     }
 
-    public static function tableExists($table)
+    public static function tableExists($table, $connection = null)
     {
         if (!is_array($table)) {
             $table = [$table];
         }
 
-        return static::manager()->tablesExist($table);
+        return static::manager($connection)->tablesExist($table);
     }
 
-    public static function listTables()
+    public static function listTables($connection = null)
     {
         $tables = [];
 
-        foreach (static::manager()->listTableNames() as $tableName) {
+        foreach (static::manager($connection)->listTableNames() as $tableName) {
             $tables[$tableName] = static::listTableDetails($tableName);
         }
 
@@ -51,16 +51,16 @@ abstract class SchemaManager
      *
      * @return \TCG\Voyager\Database\Schema\Table
      */
-    public static function listTableDetails($tableName)
+    public static function listTableDetails($tableName, $connection = null)
     {
-        $columns = static::manager()->listTableColumns($tableName);
+        $columns = static::manager($connection)->listTableColumns($tableName);
 
         $foreignKeys = [];
-        if (static::manager()->getDatabasePlatform()->supportsForeignKeyConstraints()) {
-            $foreignKeys = static::manager()->listTableForeignKeys($tableName);
+        if (static::manager($connection)->getDatabasePlatform()->supportsForeignKeyConstraints()) {
+            $foreignKeys = static::manager($connection)->listTableForeignKeys($tableName);
         }
 
-        $indexes = static::manager()->listTableIndexes($tableName);
+        $indexes = static::manager($connection)->listTableIndexes($tableName);
 
         return new Table($tableName, $columns, $indexes, $foreignKeys, false, []);
     }
@@ -72,11 +72,11 @@ abstract class SchemaManager
      *
      * @return \Illuminate\Support\Collection
      */
-    public static function describeTable($tableName)
+    public static function describeTable($tableName, $connection = null)
     {
         Type::registerCustomPlatformTypes();
 
-        $table = static::listTableDetails($tableName);
+        $table = static::listTableDetails($tableName, $connection);
 
         return collect($table->columns)->map(function ($column) use ($table) {
             $columnArr = Column::toArray($column);
@@ -103,29 +103,29 @@ abstract class SchemaManager
         });
     }
 
-    public static function listTableColumnNames($tableName)
+    public static function listTableColumnNames($tableName, $connection = null)
     {
         Type::registerCustomPlatformTypes();
 
         $columnNames = [];
 
-        foreach (static::manager()->listTableColumns($tableName) as $column) {
+        foreach (static::manager($connection)->listTableColumns($tableName) as $column) {
             $columnNames[] = $column->getName();
         }
 
         return $columnNames;
     }
 
-    public static function createTable($table)
+    public static function createTable($table, $connection = null)
     {
         if (!($table instanceof DoctrineTable)) {
             $table = Table::make($table);
         }
 
-        static::manager()->createTable($table);
+        static::manager($connection)->createTable($table);
     }
 
-    public static function getDoctrineTable($table)
+    public static function getDoctrineTable($table, $connection = null)
     {
         $table = trim($table);
 
@@ -133,11 +133,41 @@ abstract class SchemaManager
             throw SchemaException::tableDoesNotExist($table);
         }
 
-        return static::manager()->listTableDetails($table);
+        return static::manager($connection)->listTableDetails($table);
     }
 
     public static function getDoctrineColumn($table, $column)
     {
         return static::getDoctrineTable($table)->getColumn($column);
+    }
+
+    public static function getConnectionNameByTable($table)
+    {
+        $remoteDatabaseContections = config('voyager.remote_databases_connections') ?? null;
+
+        if($remoteDatabaseContections){
+            foreach ($remoteDatabaseContections as $conn) {
+                if (static::tableExists($table, $conn))
+                {
+                    return $connection = $conn;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public static function getRemoteDatabasesTableNames()
+    {
+        $remoteDatabaseContections = config('voyager.remote_databases_connections') ?? null;
+        $remoteDatabasesTables = [];
+
+        if($remoteDatabaseContections){
+            foreach ($remoteDatabaseContections as $conn) {
+                $remoteDatabasesTables = array_merge($remoteDatabasesTables, static::manager($conn)->listTableNames());
+            }
+        }
+
+        return $remoteDatabasesTables;
     }
 }

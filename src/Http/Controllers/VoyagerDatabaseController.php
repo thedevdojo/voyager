@@ -27,6 +27,8 @@ class VoyagerDatabaseController extends Controller
 
         $dataTypes = Voyager::model('DataType')->select('id', 'name', 'slug')->get()->keyBy('name')->toArray();
 
+        $remoteDatabasesTables = SchemaManager::getRemoteDatabasesTableNames();
+
         $tables = array_map(function ($table) use ($dataTypes) {
             $table = [
                 'name'       => $table,
@@ -35,7 +37,7 @@ class VoyagerDatabaseController extends Controller
             ];
 
             return (object) $table;
-        }, SchemaManager::listTableNames());
+        }, array_merge(SchemaManager::listTableNames(), $remoteDatabasesTables));
 
         return Voyager::view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
     }

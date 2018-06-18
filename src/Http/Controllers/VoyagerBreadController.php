@@ -26,6 +26,8 @@ class VoyagerBreadController extends Controller
 
         $dataTypes = Voyager::model('DataType')->select('id', 'name', 'slug')->get()->keyBy('name')->toArray();
 
+        $remoteDatabasesTables = SchemaManager::getRemoteDatabasesTableNames();
+
         $tables = array_map(function ($table) use ($dataTypes) {
             $table = [
                 'name'       => $table,
@@ -34,7 +36,7 @@ class VoyagerBreadController extends Controller
             ];
 
             return (object) $table;
-        }, SchemaManager::listTableNames());
+        }, array_merge(SchemaManager::listTableNames(), $remoteDatabasesTables));
 
         return Voyager::view('voyager::tools.bread.index')->with(compact('dataTypes', 'tables'));
     }
@@ -51,8 +53,10 @@ class VoyagerBreadController extends Controller
     {
         Voyager::canOrFail('browse_bread');
 
+        $connection = SchemaManager::getConnectionNameByTable($table);
+
         $data = $this->prepopulateBreadInfo($table);
-        $data['fieldOptions'] = SchemaManager::describeTable($table);
+        $data['fieldOptions'] = SchemaManager::describeTable($table, $connection);
 
         return Voyager::view('voyager::tools.bread.edit-add', $data);
     }
@@ -88,7 +92,10 @@ class VoyagerBreadController extends Controller
     {
         try {
             $dataType = Voyager::model('DataType');
-            $res = $dataType->updateDataType($request->all(), true);
+
+            $connection = SchemaManager::getConnectionNameByTable($request->get('name'));
+
+            $res = $dataType->updateDataType($request->all(), true, $connection);
             $data = $res
                 ? $this->alertSuccess(__('voyager::bread.success_created_bread'))
                 : $this->alertError(__('voyager::bread.error_creating_bread'));
@@ -113,9 +120,11 @@ class VoyagerBreadController extends Controller
     {
         Voyager::canOrFail('browse_bread');
 
+        $connection = SchemaManager::getConnectionNameByTable($table);
+
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
-        $fieldOptions = SchemaManager::describeTable($dataType->name);
+        $fieldOptions = SchemaManager::describeTable($table, $connection);
 
         $isModelTranslatable = is_bread_translatable($dataType);
         $tables = SchemaManager::listTableNames();
@@ -140,12 +149,15 @@ class VoyagerBreadController extends Controller
         try {
             $dataType = Voyager::model('DataType')->find($id);
 
+            $connection = SchemaManager::getConnectionNameByTable($request->get('name'));
+
             // Prepare Translations and Transform data
             $translations = is_bread_translatable($dataType)
                 ? $dataType->prepareTranslations($request)
                 : [];
 
-            $res = $dataType->updateDataType($request->all(), true);
+            $res = $dataType->updateDataType($request->all(), true, $connection);
+
             $data = $res
                 ? $this->alertSuccess(__('voyager::bread.success_update_bread', ['datatype' => $dataType->name]))
                 : $this->alertError(__('voyager::bread.error_updating_bread'));

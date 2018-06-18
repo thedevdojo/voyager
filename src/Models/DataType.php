@@ -81,7 +81,7 @@ class DataType extends Model
         $this->attributes['server_side'] = $value ? 1 : 0;
     }
 
-    public function updateDataType($requestData, $throw = false)
+    public function updateDataType($requestData, $throw = false, $connection = null)
     {
         try {
             DB::beginTransaction();
@@ -94,7 +94,7 @@ class DataType extends Model
             }
 
             if ($this->fill($requestData)->save()) {
-                $fields = $this->fields(array_get($requestData, 'name'));
+                $fields = $this->fields(array_get($requestData, 'name'), $connection);
 
                 $requestData = $this->getRelationships($requestData, $fields);
 
@@ -142,13 +142,13 @@ class DataType extends Model
         return false;
     }
 
-    public function fields($name = null)
+    public function fields($name = null, $connection = null)
     {
         if (is_null($name)) {
             $name = $this->name;
         }
 
-        $fields = SchemaManager::listTableColumnNames($name);
+        $fields = SchemaManager::listTableColumnNames($name, $connection);
 
         if ($extraFields = $this->extraFields()) {
             foreach ($extraFields as $field) {
