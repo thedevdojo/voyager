@@ -147,8 +147,7 @@ abstract class SchemaManager
 
         if ($remoteDatabaseConnections) {
             foreach ($remoteDatabaseConnections as $conn) {
-                if (static::tableExists($table, $conn))
-                {
+                if (static::tableExists($table, $conn)) {
                     return $connection = $conn;
                 }
             }
