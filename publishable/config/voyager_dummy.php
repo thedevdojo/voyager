@@ -10,7 +10,7 @@ return [
     |
     */
 
-    'remote_database_connections' => [
+    'remote_databases_connections' => [
         'mysql_api',
     ],
 
