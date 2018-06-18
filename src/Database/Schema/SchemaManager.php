@@ -145,7 +145,7 @@ abstract class SchemaManager
     {
         $remoteDatabaseConnections = config('voyager.remote_databases_connections') ?? null;
 
-        if ($remoteDatabaseConnections){
+        if ($remoteDatabaseConnections) {
             foreach ($remoteDatabaseConnections as $conn) {
                 if (static::tableExists($table, $conn))
                 {
@@ -162,7 +162,7 @@ abstract class SchemaManager
         $remoteDatabaseConnections = config('voyager.remote_databases_connections') ?? null;
         $remoteDatabasesTables = [];
 
-        if ($remoteDatabaseConnections){
+        if ($remoteDatabaseConnections) {
             foreach ($remoteDatabaseConnections as $conn) {
                 $remoteDatabasesTables = array_merge($remoteDatabasesTables, static::manager($conn)->listTableNames());
             }
