@@ -138,7 +138,8 @@
             $('.form-group input[type=date]').each(function (idx, elt) {
                 if (elt.type != 'date' || elt.hasAttribute('data-datepicker')) {
                     elt.type = 'text';
-                    $(elt).datetimepicker($(elt).data('datepicker'));
+                    var options = $(elt).data('datetimepicker-options');
+                    $(elt).datetimepicker(options);
                 }
             });
 
