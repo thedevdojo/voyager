@@ -191,6 +191,22 @@ class DataRowsTableSeeder extends Seeder
             ])->save();
         }
 
+        $dataRow = $this->dataRow($userDataType, 'settings');
+        if (!$dataRow->exists) {
+            $dataRow->fill([
+                'type'         => 'hidden',
+                'display_name' => 'Settings',
+                'required'     => 0,
+                'browse'       => 0,
+                'read'         => 0,
+                'edit'         => 0,
+                'add'          => 0,
+                'delete'       => 0,
+                'details'      => '',
+                'order'        => 12,
+            ])->save();
+        }
+
         $dataRow = $this->dataRow($menuDataType, 'id');
         if (!$dataRow->exists) {
             $dataRow->fill([
