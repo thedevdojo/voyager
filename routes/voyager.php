@@ -33,6 +33,7 @@ Route::group(['as' => 'voyager.'], function () {
         Route::post('upload', ['uses' => $namespacePrefix.'VoyagerController@upload',  'as' => 'upload']);
 
         Route::get('profile', ['uses' => $namespacePrefix.'VoyagerProfileController@index', 'as' => 'profile']);
+        Route::get('profile/edit', ['uses' => $namespacePrefix.'VoyagerProfileController@edit', 'as' => 'profile.edit']);
         Route::put('profile', ['uses' => $namespacePrefix.'VoyagerProfileController@update', 'as' => 'profile.update']);
 
         try {

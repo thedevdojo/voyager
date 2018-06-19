@@ -16,12 +16,9 @@
 @section('content')
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="{{ (isset($dataTypeContent->id)) ? route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) : route('voyager.'.$dataType->slug.'.store') }}"
+              action="{{ route('voyager.profile.update') }}"
               method="POST" enctype="multipart/form-data" autocomplete="off">
-            <!-- PUT Method if we are editing -->
-            @if(isset($dataTypeContent->id))
-                {{ method_field("PUT") }}
-            @endif
+            {{ method_field("PUT") }}
             {{ csrf_field() }}
 
             <div class="row">

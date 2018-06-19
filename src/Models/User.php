@@ -13,7 +13,7 @@ class User extends Authenticatable implements UserContract
     use VoyagerUser,
         HasRelationships;
 
-    protected $guarded = [];
+    protected $profileGuarded = ['role_id', 'user_belongstomany_role_relationship', 'user_belongsto_role_relationship'];
 
     protected $casts = [
         'settings' => 'array',
@@ -41,5 +41,10 @@ class User extends Authenticatable implements UserContract
     public function getLocaleAttribute()
     {
         return $this->settings['locale'];
+    }
+
+    public function getProfileGuardedAttribute()
+    {
+        return $this->profileGuarded;
     }
 }
