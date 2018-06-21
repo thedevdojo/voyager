@@ -26,6 +26,5 @@ return [
     'successfully_updated' => 'Opción de menú actualizada exitosamente.',
     'updated_order'        => 'Orde actualizado exitosamente.',
     'url'                  => 'URL para a opción de menú',
-    'usage_hint'           => 'Pode xerar un menú en calqueira lugar do seu sitio chamando a|Pode mostrar '.
-                              'este menú en calqueira lugar do seu sitio chamando a',
+    'usage_hint'           => 'Pode xerar un menú en calqueira lugar do seu sitio chamando a|Pode mostrar este menú en calqueira lugar do seu sitio chamando a',
 ];
