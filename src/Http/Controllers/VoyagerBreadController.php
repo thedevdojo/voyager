@@ -127,7 +127,10 @@ class VoyagerBreadController extends Controller
         $fieldOptions = SchemaManager::describeTable($table, $connection);
 
         $isModelTranslatable = is_bread_translatable($dataType);
-        $tables = SchemaManager::listTableNames();
+
+        $remoteDatabasesTables = SchemaManager::getRemoteDatabasesTableNames();
+        $tables = array_merge(SchemaManager::listTableNames(), $remoteDatabasesTables);
+
         $dataTypeRelationships = Voyager::model('DataRow')->where('data_type_id', '=', $dataType->id)->where('type', '=', 'relationship')->get();
 
         return Voyager::view('voyager::tools.bread.edit-add', compact('dataType', 'fieldOptions', 'isModelTranslatable', 'tables', 'dataTypeRelationships'));
