@@ -1,0 +1,93 @@
+<?php
+
+return [
+    'data_rows'  => [
+        'author'           => 'Yazar',
+        'avatar'           => 'Avatar',
+        'body'             => 'Body',
+        'category'         => 'Kategori',
+        'created_at'       => 'Oluşturulma Zamanı',
+        'display_name'     => 'Görüntüleme Adı',
+        'email'            => 'Email',
+        'excerpt'          => 'Alıntı',
+        'featured'         => 'Öne Çıkarılmış',
+        'id'               => 'ID',
+        'meta_description' => 'Meta Açıklaması',
+        'meta_keywords'    => 'Meta Anahtar Kelimeleri',
+        'name'             => 'Ad',
+        'order'            => 'Sıra',
+        'page_image'       => 'Sayfa Görseli',
+        'parent'           => 'Üst',
+        'password'         => 'Şifre',
+        'post_image'       => 'Gönderi Görseli',
+        'remember_token'   => 'Remember Token',
+        'role'             => 'Rol',
+        'seo_title'        => 'SEO Başlığı',
+        'slug'             => 'Slug',
+        'status'           => 'Durum',
+        'title'            => 'Başlık',
+        'updated_at'       => 'Güncelleme Zamanı',
+    ],
+    'data_types' => [
+        'category' => [
+            'singular' => 'Kategori',
+            'plural'   => 'Kategoriler',
+        ],
+        'menu'     => [
+            'singular' => 'Menü',
+            'plural'   => 'Menüler',
+        ],
+        'page'     => [
+            'singular' => 'Sayfa',
+            'plural'   => 'Sayfalar',
+        ],
+        'post'     => [
+            'singular' => 'Gönderi',
+            'plural'   => 'Gönderiler',
+        ],
+        'role'     => [
+            'singular' => 'Rol',
+            'plural'   => 'Roller',
+        ],
+        'user'     => [
+            'singular' => 'Kullanıcı',
+            'plural'   => 'Kullanıcılar',
+        ],
+    ],
+    'menu_items' => [
+        'bread'        => 'BREAD',
+        'categories'   => 'Kategoriler',
+        'compass'      => 'Compass',
+        'dashboard'    => 'Dashboard',
+        'database'     => 'Veritabanı',
+        'media'        => 'Medya',
+        'menu_builder' => 'Menü Oluşturucu',
+        'pages'        => 'Sayfalar',
+        'posts'        => 'Gönderiler',
+        'roles'        => 'Roller',
+        'settings'     => 'Ayarlar',
+        'tools'        => 'Araçlar',
+        'users'        => 'Kullanıcılar',
+    ],
+    'roles'      => [
+        'admin' => 'Yönetici',
+        'user'  => 'Normal Kullanıcı',
+    ],
+    'settings'   => [
+        'admin' => [
+            'background_image'           => 'Yönetici Arkaplan Görseli',
+            'description'                => 'Yönetici Açıklaması',
+            'description_value'          => 'Voyager\'e hoş geldiniz.. Laravel\'in kayıp yöneticisi',
+            'google_analytics_client_id' => 'Google Analytics İstemci Kimliği (Client ID) (Yönetici paneli için kullanılacak)',
+            'icon_image'                 => 'Yönetici İkon Görseli',
+            'loader'                     => 'Yönetici Loader',
+            'title'                      => 'Yönetici Başlığı',
+        ],
+        'site'  => [
+            'description'                  => 'Site Açıklaması',
+            'google_analytics_tracking_id' => 'Google Analytics Takip Kimliği (Tracking ID)',
+            'logo'                         => 'Site Logosu',
+            'title'                        => 'Site Başlığı',
+        ],
+    ],
+];
