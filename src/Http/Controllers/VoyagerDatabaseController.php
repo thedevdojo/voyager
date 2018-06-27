@@ -86,11 +86,11 @@ class VoyagerDatabaseController extends Controller
                 ];
 
                 if (isset($request->is_translatable_model) && $request->is_translatable_model == 'on') {
-                    $translatable_fields=[];
+                    $translatable_fields = [];
                     
                     foreach (json_decode($request->table)->columns as $column) {
                         if (isset($column->is_translatable) && $column->is_translatable == true) {
-                            $translatable_fields[]=$column->name;
+                            $translatable_fields[] = $column->name;
                         }
                     }
 
