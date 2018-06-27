@@ -76,7 +76,6 @@ class MakeModelCommand extends ModelMakeCommand
      */
     protected function addTraitTranslatable(&$stub)
     {
-
         $traitIncl = $trait = $translatablefields = '';
 
         if ($this->option('traitTranslatable')) {
