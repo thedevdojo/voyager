@@ -92,5 +92,5 @@ return [
     'locale'                 => 'Langue',
     'none'                   => 'Aucun',
     'updated_order'          => 'Ordre mis à jour',
-    'is_translatable'        => 'Translatate?',
+    'is_translatable'        => 'Traduire?',
 ];
