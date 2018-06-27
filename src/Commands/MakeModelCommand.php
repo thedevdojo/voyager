@@ -90,7 +90,7 @@ class MakeModelCommand extends ModelMakeCommand
 
         return $this;
     }
-    
+
     /**
      * Get the console command options.
      *
@@ -100,7 +100,7 @@ class MakeModelCommand extends ModelMakeCommand
     {
         $options = [
             ['softdelete', 'd', InputOption::VALUE_NONE, 'Add soft-delete field to Model'],
-            ['traitTranslatable', null, InputOption::VALUE_NONE, 'Add Translatable trait to Model.']
+            ['traitTranslatable', null, InputOption::VALUE_NONE, 'Add Translatable trait to Model.'],
         ];
 
         return array_merge($options, parent::getOptions());
