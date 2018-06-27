@@ -23,7 +23,7 @@ return [
     'delete_bread_before_table' => 'Ju lutemi sigurohuni që të hiqni BREAD në këtë '
     .'tabelë përpara se të fshini tabelën.',
     'delete_table_bread_conf'   => 'Po, hiq BREAD',
-    'delete_table_bread_quest'   => 'Jeni i sigurt që dëshironi të fshini BREAD për: tabelën e tabelës?',
+    'delete_table_bread_quest'  => 'Jeni i sigurt që dëshironi të fshini BREAD për: tabelën e tabelës?',
     'delete_table_confirm'      => 'Po, fshij këtë tabelë',
     'delete_table_question'     => 'A jeni i sigurt që doni të fshini: tabelën e tabelës?',
     'description'               => 'Përshkrimi',
