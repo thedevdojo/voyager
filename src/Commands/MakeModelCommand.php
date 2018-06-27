@@ -82,11 +82,7 @@ class MakeModelCommand extends ModelMakeCommand
         if ($this->option('traitTranslatable')) {
             $traitIncl = 'use TCG\Voyager\Traits\Translatable;';
             $trait = 'use Translatable;';
-            $translatablefields='protected $translatable = [';
-            foreach ($this->option('traitTranslatable') as $index => $field) {
-                $translatablefields.='"'.$field.'",';
-            }
-            $translatablefields.='];';
+            $translatablefields = 'protected $translatable = ["'.implode($this->option('traitTranslatable'), '", "').'"]';
         }
 
         $stub = str_replace('//DummyTranslatableTraitInclude', $traitIncl, $stub);
