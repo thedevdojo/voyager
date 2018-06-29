@@ -177,3 +177,4 @@ class VoyagerMenuController extends Controller
 
         return $trans;
     }
+}
