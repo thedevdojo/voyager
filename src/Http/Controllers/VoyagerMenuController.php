@@ -3,21 +3,10 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerMenuController extends Controller
 {
-    public function flushCache()
-    {
-        // Tagging not supported in file/database caches
-        if (config('cache.default') === 'file' || config('cache.default') === 'database') {
-            Cache::flush();
-        } else {
-            Cache::tags(['voyager-menu'])->flush();
-        }
-    }
-
     public function builder($id)
     {
         $menu = Voyager::model('Menu')->findOrFail($id);
@@ -38,8 +27,6 @@ class VoyagerMenuController extends Controller
         $item->deleteAttributeTranslation('title');
 
         $item->destroy($id);
-
-        $this->flushCache();
 
         return redirect()
             ->route('voyager.menus.builder', [$menu])
@@ -76,8 +63,6 @@ class VoyagerMenuController extends Controller
             $menuItem->setAttributeTranslations('title', $trans, true);
         }
 
-        $this->flushCache();
-
         return redirect()
             ->route('voyager.menus.builder', [$data['menu_id']])
             ->with([
@@ -106,8 +91,6 @@ class VoyagerMenuController extends Controller
 
         $menuItem->update($data);
 
-        $this->flushCache();
-
         return redirect()
             ->route('voyager.menus.builder', [$menuItem->menu_id])
             ->with([
@@ -135,8 +118,6 @@ class VoyagerMenuController extends Controller
                 $this->orderMenu($menuItem->children, $item->id);
             }
         }
-
-        $this->flushCache();
     }
 
     protected function prepareParameters($parameters)
