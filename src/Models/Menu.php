@@ -105,7 +105,7 @@ class Menu extends Model
 
         $menu_html = new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, [
-                'items' => $menu->parent_items->sortBy('order'),
+                'items'   => $menu->parent_items->sortBy('order'),
                 'options' => $options,
             ])->render()
         );
