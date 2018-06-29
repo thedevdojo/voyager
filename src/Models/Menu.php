@@ -3,8 +3,8 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
@@ -29,7 +29,7 @@ class Menu extends Model
     }
 
     /**
-     * Returns the menu's cache key
+     * Returns the menu's cache key.
      */
     protected static function cacheKey()
     {
@@ -106,7 +106,7 @@ class Menu extends Model
         $menu_html = new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, [
                 'items' => $menu->parent_items->sortBy('order'),
-                'options' => $options
+                'options' => $options,
             ])->render()
         );
 
