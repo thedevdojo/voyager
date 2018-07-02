@@ -7,20 +7,20 @@
         <h1 class="page-title">
             <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
         </h1>
-        @can('add',app($dataType->model_name))
+        @can('add', app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success btn-add-new">
                 <i class="voyager-plus"></i> <span>{{ __('voyager::generic.add_new') }}</span>
             </a>
         @endcan
-        @can('delete',app($dataType->model_name))
+        @can('delete', app($dataType->model_name))
             @include('voyager::partials.bulk-delete')
         @endcan
-        @can('edit',app($dataType->model_name))
-        @if(isset($dataType->order_column) && isset($dataType->order_display_column))
-            <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary">
-                <i class="voyager-list"></i> <span>{{ __('voyager::bread.order') }}</span>
-            </a>
-        @endif
+        @can('edit', app($dataType->model_name))
+            @if(isset($dataType->order_column) && isset($dataType->order_display_column))
+                <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary">
+                    <i class="voyager-list"></i> <span>{{ __('voyager::bread.order') }}</span>
+                </a>
+            @endif
         @endcan
         @include('voyager::multilingual.language-selector')
     </div>
@@ -38,7 +38,7 @@
                                 <div id="search-input">
                                     <select id="search_key" name="key">
                                         @foreach($searchable as $key)
-                                                <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
+                                            <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
                                         @endforeach
                                     </select>
                                     <select id="filter" name="filter">
@@ -106,13 +106,12 @@
 
                                                         @foreach($data->{$row->field} as $item)
                                                             @if($item->{$row->field . '_page_slug'})
-                                                            <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
+                                                                <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
                                                             @else
-                                                            {{ $item->{$row->field} }}
+                                                                {{ $item->{$row->field} }}
                                                             @endif
                                                         @endforeach
 
-                                                        {{-- $data->{$row->field}->implode($options->relationship->label, ', ') --}}
                                                     @elseif(property_exists($options, 'options'))
                                                         @foreach($data->{$row->field} as $item)
                                                          {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
@@ -127,17 +126,16 @@
                                                         {!! $options->options->{$data->{$row->field}} or '' !!}
                                                     @endif
 
-
                                                 @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
                                                     <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $data->{$row->field} }}
+                                                    {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $data->{$row->field} }}
                                                 @elseif($row->type == 'checkbox')
                                                     @if($options && property_exists($options, 'on') && property_exists($options, 'off'))
                                                         @if($data->{$row->field})
-                                                        <span class="label label-info">{{ $options->on }}</span>
+                                                            <span class="label label-info">{{ $options->on }}</span>
                                                         @else
-                                                        <span class="label label-primary">{{ $options->off }}</span>
+                                                            <span class="label label-primary">{{ $options->off }}</span>
                                                         @endif
                                                     @else
                                                     {{ $data->{$row->field} }}
@@ -223,13 +221,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span
-                                aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager::generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="#" id="delete_form" method="POST">
-                        {{ method_field("DELETE") }}
+                        {{ method_field('DELETE') }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager::generic.delete_confirm') }}">
                     </form>
@@ -242,7 +239,7 @@
 
 @section('css')
 @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-<link rel="stylesheet" href="{{ voyager_asset('lib/css/responsive.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ voyager_asset('lib/css/responsive.dataTables.min.css') }}">
 @endif
 @stop
 
