@@ -31,7 +31,7 @@ class Menu extends Model
     /**
      * Returns the menu's cache key.
      */
-    protected static function cacheKey()
+    protected static function cacheKey($menuName, $type = null, array $options = [])
     {
         return sprintf(
             '%s_%s_%s',
