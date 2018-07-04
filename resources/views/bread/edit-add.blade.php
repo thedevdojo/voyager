@@ -116,8 +116,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
-                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ __('voyager::generic.delete_confirm') }}
-                    </button>
+                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ __('voyager::generic.delete_confirm') }}</button>
                 </div>
             </div>
         </div>
@@ -127,8 +126,8 @@
 
 @section('javascript')
     <script>
-        var params = {}
-        var $image
+        var params = {};
+        var $image;
 
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();

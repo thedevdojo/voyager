@@ -95,11 +95,6 @@ class TestCase extends OrchestraTestCase
 
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
 
-        config()->set(
-            'voyager',
-            require __DIR__.'/../publishable/config/voyager.php'
-        );
-
         app(VoyagerServiceProvider::class, ['app' => $this->app])->registerGates();
 
         if (file_exists(base_path('routes/web.php'))) {

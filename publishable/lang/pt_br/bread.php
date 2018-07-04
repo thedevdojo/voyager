@@ -32,10 +32,17 @@ return [
     'model_class'            => 'Nome da Classe do Model',
     'model_name'             => 'Nome do Model',
     'model_name_ph'          => 'ex. \App\User, se vazio irá tentar usar o nome da tabela',
-    'policy_class'           => 'Policy Class Name',
+    'order'                  => 'Ordenar',
+    'order_column'           => 'Ordenar pela coluna',
+    'order_column_ph'        => 'A coluna na qual a ordenação será salva',
+    'order_ident_column'     => 'Mostrar ordenação pela coluna',
+    'order_ident_column_ph'  => 'A colina que será exibida na página de ordenação',
+    'ordering_not_set'       => 'Você deve definir primeiro a ordem',
+    'policy_class'           => 'Nome da Classe Policy',
     'policy_name'            => 'Nome da Policy',
     'policy_name_ph'         => 'ex. \App\Policies\UserPolicy, se vazio irá tentar usar o pré definido',
     'server_pagination'      => 'Paginação no Servidor',
     'url_slug'               => 'URL Slug (único)', //todo find suitable translation
     'url_slug_ph'            => 'URL slug (ex. posts)', //todo find suitable translation
+    'updated_order'          => 'Ordenação atualizada.',
 ];
