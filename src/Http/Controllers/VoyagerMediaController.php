@@ -186,7 +186,20 @@ class VoyagerMediaController extends Controller
                 'image/bmp',
                 'image/svg+xml',
             ];
-            $file = $request->file->store($request->upload_path, $this->filesystem);
+
+            $baseOriginalFilename = basename($request->file->getClientOriginalName());
+
+            if (config('voyager.media.keep_filename')
+                && !Storage::disk($this->filesystem)->exists("{$request->upload_path}/{$baseOriginalFilename}")
+            ) {
+                $file = $request->file->storeAs(
+                    $request->upload_path,
+                    $baseOriginalFilename,
+                    $this->filesystem
+                );
+            } else {
+                $file = $request->file->store($request->upload_path, $this->filesystem);
+            }
 
             if (in_array($request->file->getMimeType(), $allowedImageMimeTypes)) {
                 $image = Image::make($realPath.$file);
