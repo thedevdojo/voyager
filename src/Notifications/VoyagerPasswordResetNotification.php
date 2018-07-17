@@ -18,6 +18,7 @@ class VoyagerPasswordResetNotification extends Notification
      * Create a notification instance.
      *
      * @param string $token
+     *
      * @return void
      */
     public function __construct($token)
@@ -29,6 +30,7 @@ class VoyagerPasswordResetNotification extends Notification
      * Get the notification's channels.
      *
      * @param mixed $notifiable
+     *
      * @return array|string
      */
     public function via($notifiable)
@@ -40,6 +42,7 @@ class VoyagerPasswordResetNotification extends Notification
      * Build the mail representation of the notification.
      *
      * @param mixed $notifiable
+     *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)

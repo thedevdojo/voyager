@@ -19,9 +19,10 @@ class VoyagerGuestMiddlewareTest extends TestCase
 
         $middleware = new VoyagerGuestMiddleware();
 
-        $response = $middleware->handle($request, function() {});
+        $response = $middleware->handle($request, function() {
+        });
 
-        $this->assertEquals($response->getStatusCode(),302);
+        $this->assertEquals($response->getStatusCode(), 302);
     }
 
     /**
@@ -33,7 +34,8 @@ class VoyagerGuestMiddlewareTest extends TestCase
 
         $middleware = new VoyagerGuestMiddleware();
 
-        $response = $middleware->handle($request, function() {});
+        $response = $middleware->handle($request, function() {
+        });
 
         $this->assertEquals($response, null);
     }
