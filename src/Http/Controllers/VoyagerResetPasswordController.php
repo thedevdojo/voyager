@@ -14,11 +14,11 @@ class VoyagerResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $redirectTo = '/admin/login';
 
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('voyager.guest');
     }
 
     /**
