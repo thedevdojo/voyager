@@ -65,8 +65,9 @@
 
                 <p>{{ __('voyager::login.signin_below') }}</p>
 
-                <form action="{{ route('voyager.password.reset', $token) }}" method="POST">
+                <form action="{{ route('voyager.password.reset.submit') }}" method="POST">
                     {{ csrf_field() }}
+                    <input type="hidden" name="token" value="{{ $token }}">
                     <div class="form-group form-group-default" id="emailGroup">
                         <label>{{ __('voyager::generic.email') }}</label>
                         <div class="controls">
@@ -90,7 +91,7 @@
 
                     <button type="submit" class="btn btn-block login-button">
                         <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager::login.loggingin') }}...</span>
-                        <span class="signin">{{ __('voyager::generic.login') }}</span>
+                        <span class="signin">{{ __('voyager::auth.reset_password') }}</span>
                     </button>
 
                 </form>

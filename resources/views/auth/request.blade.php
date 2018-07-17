@@ -63,7 +63,7 @@
 
             <div class="login-container">
 
-                <p>{{ __('voyager::login.signin_below') }}</p>
+                <p>{{ __('voyager::auth.request_password') }}</p>
 
                 <form action="{{ route('voyager.password.email') }}" method="POST">
                     {{ csrf_field() }}
@@ -76,7 +76,7 @@
 
                     <button type="submit" class="btn btn-block login-button">
                         <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager::login.loggingin') }}...</span>
-                        <span class="signin">{{ __('voyager::generic.login') }}</span>
+                        <span class="signin">{{ __('voyager::auth.request_password') }}</span>
                     </button>
 
                 </form>
