@@ -60,6 +60,7 @@ return [
     'not_null'               => 'Not Null',
     'options'                => 'Options',
     'password'               => 'Password',
+    'password_confirm'       => 'Confirm Password',
     'permissions'            => 'Permissions',
     'profile'                => 'Profile',
     'public_url'             => 'Public URL',
