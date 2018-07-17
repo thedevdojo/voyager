@@ -25,6 +25,6 @@ class VoyagerForgottenPasswordController extends Controller
      */
     public function showLinkRequestForm()
     {
-        return view('voyager::auth.reset');
+        return view('voyager::auth.request');
     }
 }
