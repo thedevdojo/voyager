@@ -25,10 +25,10 @@ Route::group(['as' => 'voyager.'], function () {
     Route::post('login', ['uses' => $namespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
 
     // Password Reset Routes...
-    Route::get('password/reset', $namespacePrefix.'VoyagerForgottenPasswordController@showLinkRequestForm')->name('password.request');
-    Route::post('password/email', $namespacePrefix.'VoyagerForgottenPasswordController@sendResetLinkEmail')->name('password.email');
-    Route::get('password/reset/{token}', $namespacePrefix.'VoyagerResetPasswordController@showResetForm')->name('password.reset');
-    Route::post('password/reset', $namespacePrefix.'VoyagerResetPasswordController@reset')->name('password.reset.submit');
+    Route::get('password/reset', ['uses' => $namespacePrefix.'VoyagerForgottenPasswordController@showLinkRequestForm', 'as' => 'password.request']);
+    Route::post('password/email', ['uses' => $namespacePrefix.'VoyagerForgottenPasswordController@sendResetLinkEmail', 'as' => 'password.email']);
+    Route::get('password/reset/{token}', ['uses' => $namespacePrefix.'VoyagerResetPasswordController@showResetForm', 'as' => 'password.reset']);
+    Route::post('password/reset', ['uses' => $namespacePrefix.'VoyagerResetPasswordController@reset', 'as' => 'password.reset.submit']);
 
     Route::group(['middleware' => 'admin.user'], function () use ($namespacePrefix) {
         event(new RoutingAdmin());

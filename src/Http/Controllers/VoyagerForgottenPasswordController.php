@@ -15,7 +15,7 @@ class VoyagerForgottenPasswordController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('voyager.guest');
+//        $this->middleware('voyager.guest');
     }
 
     /**
