@@ -520,8 +520,9 @@ class VoyagerBaseController extends Controller
         $query = app($model)->limit($perpage)->offset($offset);
 
         // Adds search filter
-        if (!empty($search))
+        if (!empty($search)) {
             $query = $query->where($label, 'like', '%$search%');
+        }            
 
         // Loads data
         $results = $query->pluck($label, $key);
@@ -530,12 +531,14 @@ class VoyagerBaseController extends Controller
         $json_results = [];
         $json_pagination = (object)['more' => true];
 
-        foreach ($results as $result_key => $result_value)
+        foreach ($results as $result_key => $result_value) {
             $json_results[] = ['id' => $result_key, 'text' => $result_value];
+        }            
 
         // Check if it's the last chunk of data
-        if (count($results) < $perpage)
+        if (count($results) < $perpage) {
             $json_pagination->more = false;
+        }            
 
         $json = (object)['results' => $json_results, 'pagination' => $json_pagination];
 
