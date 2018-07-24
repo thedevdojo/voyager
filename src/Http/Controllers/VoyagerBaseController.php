@@ -508,12 +508,12 @@ class VoyagerBaseController extends Controller
     // Loads data with pagination and infinite scrolling for relationship formfields
     public function select2ajax(Request $request)
     {
-        $search = $request["search"];
-        $page = $request["page"];
-        $model = str_replace("\\\\", "\\", $request["model"]); // removes double backslashes
-        $key = $request["key"];
-        $label = $request["label"];
-        $perpage = $request["perpage"];
+        $search = $request['search'];
+        $page = $request['page'];
+        $model = str_replace('\\\\', '\\', $request['model']); // removes double backslashes
+        $key = $request['key'];
+        $label = $request['label'];
+        $perpage = $request['perpage'];
         $offset = (intval($page) - 1) * intval($perpage);
 
         // Builds the query
@@ -521,23 +521,23 @@ class VoyagerBaseController extends Controller
 
         // Adds search filter
         if(!empty($search))
-            $query = $query->where($label, "like", "%$search%");
+            $query = $query->where($label, 'like', '%$search%');
 
         // Loads data
         $results = $query->pluck($label, $key);
 
         // Creates JSON
         $json_results = [];
-        $json_pagination = (object)["more" => true];
+        $json_pagination = (object)['more' => true];
 
         foreach($results as $result_key => $result_value)
-            $json_results[] = ["id" => $result_key, "text" => $result_value];
+            $json_results[] = ['id' => $result_key, 'text' => $result_value];
 
         // Check if it's the last chunk of data
         if(count($results) < $perpage)
             $json_pagination->more = false;
 
-        $json = (object)["results" => $json_results, "pagination" => $json_pagination];
+        $json = (object)['results' => $json_results, 'pagination' => $json_pagination];
 
         return response()->json($json);
     }
