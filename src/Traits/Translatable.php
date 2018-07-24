@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Translator;
+use TCG\Voyager\Models\Translation;
 
 trait Translatable
 {
@@ -242,6 +243,75 @@ trait Translatable
         }
 
         return $response;
+    }
+
+    /**
+     * Gets Entry if has translated field via scope
+     * 
+     * @example  $Class->whereTranslation('de', 'title', zuhause) 
+     * 
+     * @param builder       $query
+     * @param string|array  $locale     {required} locale(s) you are looking for the field
+     * @param string        $field      {required} the field your looking to find a value in
+     * @param string        $operator   {required} value you are looking for or a relation modifier
+     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator
+     * @param bool          $default    {optional} fi true checks for $value is in default language before checking translations.
+     *
+     * @return Builder|null
+     * 
+     */
+    public function scopeWhereTranslation(Builder $query, $locales, string $field, string $operator, string $value = null, bool $default = false){
+        return $query->whereTranslation( $locales, $field, $operator, $value, $default );
+    }
+
+    /**
+     * Gets Entry if has translated field.
+     * 
+     * @example  Class::whereTranslation(['de', 'iu'], 'title','zuhause', true) 
+     * 
+     * @param string|array  $locale     {required} locale(s) you are looking for the field
+     * @param string        $field      {required} the field your looking to find a value in
+     * @param string        $operator   {required} value you are looking for or a relation modifier
+     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator
+     * @param bool          $default    {optional} fi true checks for $value is in default database before checking translations.
+     *
+     * @return Builder|null
+     * 
+     */
+    public static function whereTranslation( $locales, string $field, string $operator, string $value = null, bool $default = false )
+    {
+        if( !is_array( $locales )){
+            $locales = [$locales];
+        }
+        if ( !isset( $value ) ) {
+            $value = $operator;
+            $operator = '=';
+        }
+        if($default){
+            $default = self::where( $field, $value );
+            if( $default->first() ){
+                return $default;
+            }
+        }
+        
+        $self = new static;
+        $table = ( isset($self->table) ) ? $self->table : studly_case( str_plural ( class_basename( $self ) ) );
+        foreach( $locales as $locale )
+        {
+            $translated = self::whereIn( 'id', 
+            Translation::where( 'table_name', $table )
+                        ->where( 'column_name', $field )
+                        ->where( 'value', $operator, $value )
+                        ->when( isset( $locale ), function ( $query ) use ( $locale ) {
+                            return $query->where( 'locale', $locale );
+                        })
+                        ->pluck( 'foreign_key' )
+            );
+            if($translated->first()){
+                return $translated;
+            }
+        }
+        return;
     }
 
     public function hasTranslatorMethod($name)
