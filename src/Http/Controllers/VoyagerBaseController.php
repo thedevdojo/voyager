@@ -504,7 +504,7 @@ class VoyagerBaseController extends Controller
             $i->save();
         }
     }
-    
+
     // Loads data with pagination and infinite scrolling for relationship formfields
     public function select2ajax(Request $request)
     {
@@ -522,7 +522,7 @@ class VoyagerBaseController extends Controller
         // Adds search filter
         if (!empty($search)) {
             $query = $query->where($label, 'like', '%$search%');
-        }            
+        }
 
         // Loads data
         $results = $query->pluck($label, $key);
@@ -533,12 +533,12 @@ class VoyagerBaseController extends Controller
 
         foreach ($results as $result_key => $result_value) {
             $json_results[] = ['id' => $result_key, 'text' => $result_value];
-        }            
+        }
 
         // Check if it's the last chunk of data
         if (count($results) < $perpage) {
             $json_pagination->more = false;
-        }            
+        }
 
         $json = (object) ['results' => $json_results, 'pagination' => $json_pagination];
 
