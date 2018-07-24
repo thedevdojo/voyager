@@ -37,7 +37,7 @@
 						<option value="">{{__('voyager::generic.none')}}</option>
 					@endif
 					
-					@if($selected_value)
+					@if(count($selected_value) > 0)
 						<option value="{{ $dataTypeContent->{$options->column} }}" selected="selected">{{ $selected_value[$dataTypeContent->{$options->column}] }}</option>
 					@endif
 				</select>
