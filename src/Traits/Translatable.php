@@ -246,9 +246,9 @@ trait Translatable
     }
 
     /**
-     * Gets Entry if has translated field via scope
+     * Gets Entry if has translated field field with value via scope
      * 
-     * @example  $Class->whereTranslation('de', 'title', zuhause) 
+     * @example  $class->whereTranslation('de', 'title', zuhause) 
      * 
      * @param builder       $query
      * @param string|array  $locale     {required} locale(s) you are looking for the field
@@ -265,9 +265,12 @@ trait Translatable
     }
 
     /**
-     * Gets Entry if has translated field.
+     * Gets Entry if has translated field with value.
      * 
-     * @example  Class::whereTranslation(['de', 'iu'], 'title','zuhause', true) 
+     * @example  Class::whereTranslation(['de', 'iu'], 'title', 'zuhause', '=', true)
+     * 
+     * @author reageek <https://github.com/reageek> && emptynick <https://github.com/emptynick>
+     * @todo refactor out of static if you wish.
      * 
      * @param string|array  $locale     {required} locale(s) you are looking for the field
      * @param string        $field      {required} the field your looking to find a value in
@@ -295,19 +298,20 @@ trait Translatable
         }
         
         $self = new static;
-        $table = ( isset($self->table) ) ? $self->table : studly_case( str_plural ( class_basename( $self ) ) );
+        $table = ( isset($self->table) ) ? $self->table : studly_case( str_plural ( class_basename( $self ) ) ); //dsicern table name if not set.
         foreach( $locales as $locale )
         {
             $translated = self::whereIn( 'id', 
-            Translation::where( 'table_name', $table )
-                        ->where( 'column_name', $field )
-                        ->where( 'value', $operator, $value )
-                        ->when( isset( $locale ), function ( $query ) use ( $locale ) {
-                            return $query->where( 'locale', $locale );
-                        })
-                        ->pluck( 'foreign_key' )
+                Translation::where( 'table_name', $table )
+                            ->where( 'column_name', $field )
+                            ->where( 'value', $operator, $value )
+                            ->when( isset( $locale ), function ( $query ) use ( $locale ) {
+                                return $query->where( 'locale', $locale );
+                            })
+                            ->pluck( 'foreign_key' )
             );
             if($translated->first()){
+                //We have a field that has value!
                 return $translated;
             }
         }
