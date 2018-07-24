@@ -5,6 +5,7 @@ namespace TCG\Voyager\Traits;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Translator;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\DataType;
 
