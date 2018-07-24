@@ -529,7 +529,7 @@ class VoyagerBaseController extends Controller
 
         // Creates JSON
         $json_results = [];
-        $json_pagination = (object)['more' => true];
+        $json_pagination = (object) ['more' => true];
 
         foreach ($results as $result_key => $result_value) {
             $json_results[] = ['id' => $result_key, 'text' => $result_value];
@@ -540,7 +540,7 @@ class VoyagerBaseController extends Controller
             $json_pagination->more = false;
         }            
 
-        $json = (object)['results' => $json_results, 'pagination' => $json_pagination];
+        $json = (object) ['results' => $json_results, 'pagination' => $json_pagination];
 
         return response()->json($json);
     }
