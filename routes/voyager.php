@@ -130,7 +130,7 @@ Route::group(['as' => 'voyager.'], function () {
         });
         
         // Select2 Ajax Route
-        Route::get('select2ajax', ['uses' => $namespacePrefix.'VoyagerBreadController@select2ajax',  'as' => 'select2ajax']);
+        Route::get('select2ajax', ['uses' => $namespacePrefix.'VoyagerBaseController@select2ajax',  'as' => 'select2ajax']);
 
         event(new RoutingAdminAfter());
     });
