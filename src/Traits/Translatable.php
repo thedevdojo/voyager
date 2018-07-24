@@ -246,15 +246,15 @@ trait Translatable
     }
 
     /**
-     * Gets Entry if has translated field field with value via scope
+     * Gets Entry if has translated field field with value via scope.
      * 
      * @example  $class->whereTranslation('de', 'title', zuhause) 
      * 
      * @param builder       $query
-     * @param string|array  $locale     {required} locale(s) you are looking for the field
-     * @param string        $field      {required} the field your looking to find a value in
-     * @param string        $operator   {required} value you are looking for or a relation modifier
-     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator
+     * @param string|array  $locale     {required} locale(s) you are looking for the field.
+     * @param string        $field      {required} the field your looking to find a value in.
+     * @param string        $operator   {required} value you are looking for or a relation modifier.
+     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator.
      * @param bool          $default    {optional} fi true checks for $value is in default language before checking translations.
      *
      * @return Builder|null
@@ -269,14 +269,14 @@ trait Translatable
      * 
      * @example  Class::whereTranslation(['de', 'iu'], 'title', 'zuhause', '=', true)
      * 
-     * @author reageek <https://github.com/reageek> && emptynick <https://github.com/emptynick>
+     * @author reageek <https://github.com/reageek> && emptynick <https://github.com/emptynick>.
      * @todo refactor out of static if you wish.
      * 
-     * @param string|array  $locale     {required} locale(s) you are looking for the field
-     * @param string        $field      {required} the field your looking to find a value in
-     * @param string        $operator   {required} value you are looking for or a relation modifier
-     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator
-     * @param bool          $default    {optional} fi true checks for $value is in default database before checking translations.
+     * @param string|array  $locale     {required} locale(s) you are looking for the field.
+     * @param string        $field      {required} the field your looking to find a value in.
+     * @param string        $operator   {required} value you are looking for or a relation modifier such as LIKE, =, etc.
+     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator.
+     * @param bool          $default    {optional} if true checks for $value is in default database before checking translations.
      *
      * @return Builder|null
      * 
@@ -293,12 +293,13 @@ trait Translatable
         if($default){
             $default = self::where( $field, $value );
             if( $default->first() ){
+                //Found in default database model
                 return $default;
             }
         }
-        
         $self = new static;
-        $table = ( isset($self->table) ) ? $self->table : studly_case( str_plural ( class_basename( $self ) ) ); //dsicern table name if not set.
+        $table = ( isset($self->table) ) ? $self->table : studly_case( str_plural ( class_basename( $self ) ) ); //discern table name
+        //Loop through Locales supplied.
         foreach( $locales as $locale )
         {
             $translated = self::whereIn( 'id', 
@@ -315,6 +316,7 @@ trait Translatable
                 return $translated;
             }
         }
+        //found nothing. Return nothing.
         return;
     }
 
