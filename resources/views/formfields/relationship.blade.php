@@ -159,7 +159,6 @@
 						@php 
 							// Loads the pre-selected values (key/value pairs)
 							$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->label, $options->table.'.'.$options->key)->all() : array();
-							Log::debug($selected_values);
 						@endphp
 						
 						@if($row->required === 0)
