@@ -248,7 +248,7 @@ trait Translatable
     /**
      * Gets Entry if has translated field field with value via scope.
      * 
-     * @example  $class->whereTranslation('de', 'title', zuhause) 
+     * @example  $class->whereTranslation('de', 'title', 'zuhause') 
      * 
      * @param builder       $query
      * @param string|array  $locale     {required} locale(s) you are looking for the field.
