@@ -189,7 +189,7 @@
 $(document).ready(function () {
 	$('.select2ajax').select2({
 		ajax: {
-			url: '{{route("select2ajax")}}',
+			url: '{{route("voyager.select2ajax")}}',
 			dataType: 'json',
 			delay: 500,
 			data: function (params) {
