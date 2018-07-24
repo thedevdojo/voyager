@@ -128,7 +128,7 @@ Route::group(['as' => 'voyager.'], function () {
             Route::get('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'index']);
             Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
         });
-        
+
         // Select2 Ajax Route
         Route::get('select2ajax', ['uses' => $namespacePrefix.'VoyagerBaseController@select2ajax',  'as' => 'select2ajax']);
 
