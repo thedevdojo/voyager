@@ -37,7 +37,7 @@
                     @endif
 
                     @foreach($query as $relationshipData)
-                        <option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$options->column} == $relationshipData->{$options->key}){{ 'selected="selected"' }}@endif>{{ $relationshipData->{$options->label} }}</option>
+                        <option value="{{ $relationshipData->{$options->key} }}" @if($dataTypeContent->{$options->column} == $relationshipData->{$options->key}){{ 'selected' }}@endif>{{ $relationshipData->{$options->label} }}</option>
                     @endforeach
                 </select>
 
@@ -73,7 +73,7 @@
                 @if($view == 'browse')
                     @php
                         $string_values = implode(", ", $selected_values);
-                        if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
+                        if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
                         <p>No results</p>
@@ -124,7 +124,7 @@
                 @if($view == 'browse')
                     @php
                         $string_values = implode(", ", $selected_values);
-                        if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
+                        if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
                         <p>No results</p>
@@ -164,7 +164,7 @@
                         @endif
 
                         @foreach($relationshipOptions as $relationshipOption)
-                            <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
+                            <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values)){{ 'selected' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
                         @endforeach
 
                 </select>
