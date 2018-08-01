@@ -118,7 +118,7 @@
 
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : array();
+                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->label)->all() : array();
                 @endphp
 
                 @if($view == 'browse')
