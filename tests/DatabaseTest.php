@@ -238,10 +238,10 @@ class DatabaseTest extends TestCase
         $dbTable->dropPrimaryKey();
         $dbTable->addIndex(['id'], 'id_index');
 
+        $dbTable = $this->update_table($dbTable->toArray());
+
         $this->assertFalse($dbTable->hasIndex('primary'));
         $this->assertTrue($dbTable->hasIndex('id_index'));
-
-        $dbTable = $this->update_table($dbTable->toArray());
     }
 
     protected function update_table(array $table)
