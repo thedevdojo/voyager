@@ -235,8 +235,8 @@ class DatabaseTest extends TestCase
 
         $this->assertTrue($dbTable->hasIndex('primary'));
 
-        $dbTable->addIndex(['id'], 'id_index');
         $dbTable->dropPrimaryKey();
+        $dbTable->addIndex(['id'], 'id_index');
 
         $this->assertFalse($dbTable->hasIndex('primary'));
         $this->assertTrue($dbTable->hasIndex('id_index'));
