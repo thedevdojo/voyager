@@ -240,6 +240,8 @@ class DatabaseTest extends TestCase
 
         $this->assertFalse($dbTable->hasIndex('primary'));
         $this->assertTrue($dbTable->hasIndex('id_index'));
+
+        $dbTable = $this->update_table($dbTable->toArray());
     }
 
     protected function update_table(array $table)
