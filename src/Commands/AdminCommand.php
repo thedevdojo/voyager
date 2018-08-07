@@ -116,7 +116,7 @@ class AdminCommand extends Command
     {
         $email = $this->argument('email');
 
-        $model = config('voyager.user.namespace', 'App\\User');
+        $model = config('voyager.user.namespace') ?: config('auth.providers.users.model');
 
         // If we need to create a new user go ahead and create it
         if ($create) {

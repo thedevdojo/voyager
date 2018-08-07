@@ -72,7 +72,7 @@
 				        @else
 				        	<div class="col-md-12">
 				        		<h5><i class="voyager-rum-1"></i> {{ __('voyager::database.relationship.easy_there') }}</h5>
-				        		<p class="relationship-warn">{{ __('voyager::database.relationship.before_create') }}</p>
+				        		<p class="relationship-warn">{!! __('voyager::database.relationship.before_create') !!}</p>
 				        	</div>
 				        @endif
 
