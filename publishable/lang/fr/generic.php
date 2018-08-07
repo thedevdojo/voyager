@@ -80,11 +80,16 @@ return [
     'unsigned'               => 'Non signé (unsigned)',
     'unstick_sidebar'        => 'Dé-ancrer la barre latérale',
     'update'                 => 'Mise à jour',
-    'update_failed'          => 'Echèc de la mise à jour',
+    'update_failed'          => 'Échec de la mise à jour',
     'upload'                 => 'Télécharger',
     'url'                    => 'URL',
     'view'                   => 'Vue',
     'viewing'                => 'Affichage',
     'yes'                    => 'Oui',
     'yes_please'             => 'Oui SVP',
-];
+    'bread'                  => null,
+    'drag_drop_info'         => 'Drag and drop les objets ci-dessous pour les réarranger.',
+    'locale'                 => 'Langue',
+    'none'                   => 'Aucun',
+    'updated_order'          => 'Ordre mis à jour',
+    ];

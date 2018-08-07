@@ -64,7 +64,7 @@ class Menu extends Model
 
             if (!Auth::guest()) {
                 $user = Voyager::model('User')->find(Auth::id());
-                $user_permissions = $user->role->permissions->pluck('key')->toArray();
+                $user_permissions = $user->role ? $user->role->permissions->pluck('key')->toArray() : [];
             }
 
             $options->user = (object) compact('permissions', 'dataTypes', 'prefix', 'user_permissions');

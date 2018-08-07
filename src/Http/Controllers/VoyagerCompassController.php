@@ -114,7 +114,7 @@ class VoyagerCompassController extends Controller
         $output = array_filter(explode("\n", $output));
 
         // Get the current index of: "Available commands:"
-        $index = array_search(__('voyager::compass.commands.available_commands').':', $output);
+        $index = array_search('Available commands:', $output);
 
         // Remove all commands that precede "Available commands:", and remove that
         // Element itself -1 for offset zero and -1 for the previous index (equals -2)

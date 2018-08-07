@@ -13,7 +13,11 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => App\User::class,
+        // Set `namespace` to `null` to use `config('auth.providers.users.model')` value
+        // Set `namespace` to a class to override auth user model.
+        // However make sure the appointed class must ready to use before installing voyager.
+        // Otherwise `php artisan voyager:install` will fail with class not found error.
+        'namespace'                    => null,
         'default_avatar'               => 'users/default.png',
         'redirect'                     => '/admin',
     ],
@@ -113,6 +117,11 @@ return [
         'enabled' => false,
 
         /*
+         * Set whether or not the admin layout default is RTL.
+         */
+        'rtl' => false,
+
+        /*
          * Select default language
          */
         'default' => 'en',
@@ -169,11 +178,19 @@ return [
     |
     */
 
-    // When a BREAD is added, create the Menu item using the BREAD properties.
-    'add_bread_menu_item' => true,
+    'bread' => [
+        // When a BREAD is added, create the Menu item using the BREAD properties.
+        'add_menu_item' => true,
 
-    // When a BREAD is added, create the related Permission.
-    'add_bread_permission' => true,
+        // which menu add item to
+        'default_menu' => 'admin',
+
+        // When a BREAD is added, create the related Permission.
+        'add_permission' => true,
+
+        // which role add premissions to
+        'default_role' => 'admin',
+    ],
 
     /*
     |--------------------------------------------------------------------------

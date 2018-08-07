@@ -241,6 +241,7 @@ class VoyagerBreadController extends Controller
                 'label'       => $request->relationship_label,
                 'pivot_table' => $request->relationship_pivot,
                 'pivot'       => ($request->relationship_type == 'belongsToMany') ? '1' : '0',
+                'taggable'    => $request->relationship_taggable,
             ]);
 
             $newRow = new DataRow();

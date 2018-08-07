@@ -28,7 +28,7 @@
                                 @foreach($dataType->browseRows as $rows)
                                 <th>{{ $rows->display_name }}</th>
                                 @endforeach
-                                <th class="actions">{{ __('voyager::generic.actions') }}</th>
+                                <th class="actions text-right">{{ __('voyager::generic.actions') }}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -100,13 +100,14 @@
         $(document).ready(function () {
             $('#dataTable').DataTable({
                 "order": [],
-                "language": {!! json_encode(__('voyager::datatable'), true) !!}
+                "language": {!! json_encode(__('voyager::datatable'), true) !!},
+                "columnDefs": [{"targets": -1, "searchable":  false, "orderable": false}]
                 @if(config('dashboard.data_tables.responsive')), responsive: true @endif
             });
         });
 
         $('td').on('click', '.delete', function (e) {
-            $('#delete_table_form')[0].action = '{{ route('voyager.database.destroy', ['database' => '__database']) }}'.replace('__database', table);
+            $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.destroy', ['menu' => '__menu']) }}'.replace('__menu', $(this).data('id'));
 
             $('#delete_modal').modal('show');
         });

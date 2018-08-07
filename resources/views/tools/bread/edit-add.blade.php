@@ -153,7 +153,7 @@
 	  									<option value="">-- {{ __('voyager::generic.none') }} --</option>
 										@foreach($fieldOptions as $tbl)
 										<option value="{{ $tbl['field'] }}"
-										@if($dataType->order_column == $tbl['field']) selected @endif
+										@if(isset($dataType) && $dataType->order_column == $tbl['field']) selected @endif
 										>{{ $tbl['field'] }}</option>
 										@endforeach
 	  								</select>
@@ -169,7 +169,7 @@
 										<option value="">-- {{ __('voyager::generic.none') }} --</option>
 										@foreach($fieldOptions as $tbl)
 										<option value="{{ $tbl['field'] }}"
-										@if($dataType->order_display_column == $tbl['field']) selected @endif
+										@if(isset($dataType) && $dataType->order_display_column == $tbl['field']) selected @endif
 										>{{ $tbl['field'] }}</option>
 										@endforeach
 									</select>
@@ -428,6 +428,8 @@
                         if (_session.getValue()) {
                             // uglify JSON object and update textarea for submit purposes
                             textarea.val(JSON.stringify(JSON.parse(_session.getValue())));
+                        }else{
+                            textarea.val('');
                         }
                     }
                 });
@@ -475,18 +477,21 @@
                     $(this).parent().parent().find('.relationshipField').show();
                     $(this).parent().parent().find('.relationshipPivot').hide();
                     $(this).parent().parent().find('.relationship_key').show();
+                    $(this).parent().parent().find('.relationship_taggable').hide();
                     $(this).parent().parent().find('.hasOneMany').removeClass('flexed');
                     $(this).parent().parent().find('.belongsTo').addClass('flexed');
                 } else if($(this).val() == 'hasOne' || $(this).val() == 'hasMany'){
                     $(this).parent().parent().find('.relationshipField').show();
                     $(this).parent().parent().find('.relationshipPivot').hide();
                     $(this).parent().parent().find('.relationship_key').hide();
+                    $(this).parent().parent().find('.relationship_taggable').hide();
                     $(this).parent().parent().find('.hasOneMany').addClass('flexed');
                     $(this).parent().parent().find('.belongsTo').removeClass('flexed');
                 } else {
                     $(this).parent().parent().find('.relationshipField').hide();
                     $(this).parent().parent().find('.relationshipPivot').css('display', 'flex');
                     $(this).parent().parent().find('.relationship_key').hide();
+                    $(this).parent().parent().find('.relationship_taggable').show();
                 }
             });
 

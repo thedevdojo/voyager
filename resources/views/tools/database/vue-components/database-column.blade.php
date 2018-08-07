@@ -13,7 +13,7 @@
     </td>
 
     <td>
-        <input v-model.number="column.length" type="number" min="0">
+        <input v-model.number="column.length" :type="lengthInputType" min="0">
     </td>
 
     <td>
@@ -57,6 +57,11 @@
 
 <script>
     Vue.component('database-column', {
+        data: function() {
+            return {
+                lengthInputType: 'number'
+            }
+        },
         props: {
             column: {
                 type: Object,
@@ -91,6 +96,8 @@
                 this.column.default = null;
 
                 this.column.type = type;
+
+                this.setLengthInputType();
             },
             onIndexTypeChange(event) {
                 if (this.column.name == '') {
@@ -102,7 +109,18 @@
                     old: this.index,
                     newType: event.target.value
                 });
+            },
+            setLengthInputType() {
+                var name = this.column.type.name;
+                if (name == 'double' || name == 'float' || name == 'decimal') {
+                    this.lengthInputType = 'text';
+                } else {
+                    this.lengthInputType = 'number';
+                }
             }
-        }
+        },
+        mounted() {
+            this.setLengthInputType();
+        },
     });
 </script>

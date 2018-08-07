@@ -61,7 +61,9 @@
                                 <thead>
                                     <tr>
                                         @can('delete',app($dataType->model_name))
-                                            <th></th>
+                                            <th>
+                                                <input type="checkbox" class="select_all">
+                                            </th>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
                                         <th>
@@ -81,7 +83,7 @@
                                             @endif
                                         </th>
                                         @endforeach
-                                        <th class="actions">{{ __('voyager::generic.actions') }}</th>
+                                        <th class="actions text-right">{{ __('voyager::generic.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -122,7 +124,7 @@
                                                     @if($data->{$row->field . '_page_slug'})
                                                         <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $options->options->{$data->{$row->field}} !!}</a>
                                                     @else
-                                                        {!! $options->options->{$data->{$row->field}} !!}
+                                                        {!! $options->options->{$data->{$row->field}} or '' !!}
                                                     @endif
 
 
@@ -194,7 +196,7 @@
                         @if ($isServerSide)
                             <div class="pull-left">
                                 <div role="status" class="show-res" aria-live="polite">{{ trans_choice(
-                                    'voyager.generic.showing_entries', $dataTypeContent->total(), [
+                                    'voyager::generic.showing_entries', $dataTypeContent->total(), [
                                         'from' => $dataTypeContent->firstItem(),
                                         'to' => $dataTypeContent->lastItem(),
                                         'all' => $dataTypeContent->total()
@@ -229,8 +231,7 @@
                     <form action="#" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
                         {{ csrf_field() }}
-                        <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                                 value="{{ __('voyager::generic.delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
+                        <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager::generic.delete_confirm') }}">
                     </form>
                     <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
                 </div>
@@ -257,7 +258,7 @@
                     array_merge([
                         "order" => [],
                         "language" => __('voyager::datatable'),
-                        "columnDefs" => [['searchable' =>  false, 'targets' => -1 ]],
+                        "columnDefs" => [['targets' => -1, 'searchable' =>  false, 'orderable' => false]],
                     ],
                     config('voyager.dashboard.data_tables', []))
                 , true) !!});
@@ -269,7 +270,14 @@
 
             @if ($isModelTranslatable)
                 $('.side-body').multilingual();
+                //Reinitialise the multilingual features when they change tab
+                $('#dataTable').on('draw.dt', function(){
+                    $('.side-body').data('multilingual').init();
+                })
             @endif
+            $('.select_all').on('click', function(e) {
+                $('input[name="row_id"]').prop('checked', $(this).prop('checked'));
+            });
         });
 
 

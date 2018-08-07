@@ -57,7 +57,11 @@ abstract class Controller extends BaseController
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
             if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
-                continue;
+                // if the field is a belongsToMany relationship, don't remove it
+                // if no content is provided, that means the relationships need to be removed
+                if ((isset($options->type) && $options->type !== 'belongsToMany') || $row->field !== 'user_belongsto_role_relationship') {
+                    continue;
+                }
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row, $options);
@@ -132,12 +136,12 @@ abstract class Controller extends BaseController
      *
      * @return mixed
      */
-    public function validateBread($request, $data, $slug = null, $id = null)
+    public function validateBread($request, $data, $name = null, $id = null)
     {
         $rules = [];
         $messages = [];
         $customAttributes = [];
-        $is_update = $slug && $id;
+        $is_update = $name && $id;
 
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
@@ -158,7 +162,7 @@ abstract class Controller extends BaseController
             if ($is_update) {
                 foreach ($rules[$fieldName] as &$fieldRule) {
                     if (strpos(strtoupper($fieldRule), 'UNIQUE') !== false) {
-                        $fieldRule = \Illuminate\Validation\Rule::unique($slug)->ignore($id);
+                        $fieldRule = \Illuminate\Validation\Rule::unique($name)->ignore($id);
                     }
                 }
             }
