@@ -25,13 +25,6 @@ class EventTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->install();
-    }
-
     public function testBreadAddedEvent()
     {
         Event::fake();
