@@ -182,6 +182,9 @@
                                             </td>
                                         @endforeach
                                         <td class="no-sort no-click" id="bread-actions">
+                                            @if(! view()->exists("voyager::{$dataType->slug}.partials.browse-actions"))
+                                                @include("voyager::{$dataType->slug}.partials.browse-actions")
+                                            @endif
                                             @foreach(Voyager::actions() as $action)
                                                 @include('voyager::bread.partials.actions', ['action' => $action])
                                             @endforeach
