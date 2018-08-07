@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Providers;
 
-use Arrilot\Widgets\Facade as Widget;
 use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,24 +14,10 @@ class VoyagerDummyServiceProvider extends ServiceProvider
     {
         $this->app->register(WidgetServiceProvider::class);
 
-        $this->registerWidgets();
         $this->registerConfigs();
 
         if ($this->app->runningInConsole()) {
             $this->registerPublishableResources();
-        }
-    }
-
-    /**
-     * Register widget.
-     */
-    protected function registerWidgets()
-    {
-        $default_widgets = ['TCG\\Voyager\\Widgets\\UserDimmer', 'TCG\\Voyager\\Widgets\\PostDimmer', 'TCG\\Voyager\\Widgets\\PageDimmer'];
-        $widgets = config('voyager.dashboard.widgets', $default_widgets);
-
-        foreach ($widgets as $widget) {
-            Widget::group('voyager::dimmers')->addWidget($widget);
         }
     }
 
