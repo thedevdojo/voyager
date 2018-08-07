@@ -11,7 +11,7 @@ return [
     'sLengthMenu'     => ' _MENU_ kayıtlarını göster',
     'sLoadingRecords' => 'Yükleniyor...',
     'sProcessing'     => 'İşleniyor...',
-    'sSearch'         => 'Search:',
+    'sSearch'         => 'Ara:',
     'sZeroRecords'    => 'Eşleşen bir kayıt bulunmamakta',
     'oPaginate'       => [
         'sFirst'    => 'İlk',

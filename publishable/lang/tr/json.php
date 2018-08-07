@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'invalid'           => 'Geçersiz Json',
-    'invalid_message'   => 'Doğru olmıyan bir JSON gibi görünüyor',
-    'valid'             => 'Doğru Json',
-    'validation_errors' => 'Doğrulama hatası',
+    'invalid'           => 'Geçersiz JSON',
+    'invalid_message'   => 'Geçersiz bir JSON gibi görünüyor',
+    'valid'             => 'Geçerli JSON',
+    'validation_errors' => 'Doğrulama Hatası',
 ];
