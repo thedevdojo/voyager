@@ -7,10 +7,10 @@
         <i class="{{ $dataType->icon }}"></i> {{ __('voyager::generic.viewing') }} {{ ucfirst($dataType->display_name_singular) }} &nbsp;
 
         @can('edit', $dataTypeContent)
-        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
-            <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-            {{ __('voyager::generic.edit') }}
-        </a>
+            <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
+                <span class="glyphicon glyphicon-pencil"></span>&nbsp;
+                {{ __('voyager::generic.edit') }}
+            </a>
         @endcan
         @can('delete', $dataTypeContent)
             <a href="javascript:;" title="{{ __('voyager::generic.delete') }}" class="btn btn-danger delete" data-id="{{ $dataTypeContent->getKey() }}" id="delete-{{ $dataTypeContent->getKey() }}">
@@ -34,11 +34,12 @@
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
                     <!-- form start -->
                     @foreach($dataType->readRows as $row)
-                        @php $rowDetails = json_decode($row->details);
-                         if($rowDetails === null){
-                                $rowDetails=new stdClass();
-                                $rowDetails->options=new stdClass();
-                         }
+                        @php
+                            $rowDetails = json_decode($row->details);
+                            if ($rowDetails === null) {
+                                $rowDetails = new stdClass();
+                                $rowDetails->options = new stdClass();
+                            }
                         @endphp
 
                         <div class="panel-heading" style="border-bottom:0;">
@@ -64,7 +65,6 @@
                             @elseif($row->type == 'select_dropdown' && property_exists($rowDetails, 'options') &&
                                     !empty($rowDetails->options->{$dataTypeContent->{$row->field}})
                             )
-
                                 <?php echo $rowDetails->options->{$dataTypeContent->{$row->field}};?>
                             @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
                                 <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
@@ -73,15 +73,15 @@
 
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                                         @if($item->{$row->field . '_page_slug'})
-                                        <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
+                                            <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
                                         @else
-                                        {{ $item->{$row->field}  }}
+                                            {{ $item->{$row->field}  }}
                                         @endif
                                     @endforeach
 
                                 @elseif(property_exists($rowDetails, 'options'))
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
-                                     {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                        {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
                                     @endforeach
                                 @endif
                             @elseif($row->type == 'date' || $row->type == 'timestamp')
@@ -130,18 +130,18 @@
             </div>
         </div>
     </div>
+
     {{-- Single delete modal --}}
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span
-                                aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{{ __('voyager::generic.close') }}"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager::generic.delete_question') }} {{ strtolower($dataType->display_name_singular) }}?</h4>
                 </div>
                 <div class="modal-footer">
                     <form action="{{ route('voyager.'.$dataType->slug.'.index') }}" id="delete_form" method="POST">
-                        {{ method_field("DELETE") }}
+                        {{ method_field('DELETE') }}
                         {{ csrf_field() }}
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
                                value="{{ __('voyager::generic.delete_confirm') }} {{ strtolower($dataType->display_name_singular) }}">
@@ -155,26 +155,26 @@
 
 @section('javascript')
     @if ($isModelTranslatable)
-    <script>
-        $(document).ready(function () {
-            $('.side-body').multilingual();
-        });
-    </script>
-    <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
+        <script>
+            $(document).ready(function () {
+                $('.side-body').multilingual();
+            });
+        </script>
+        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
     @endif
     <script>
         var deleteFormAction;
         $('.delete').on('click', function (e) {
             var form = $('#delete_form')[0];
 
-            if (!deleteFormAction) { // Save form action initial value
+            if (!deleteFormAction) {
+                // Save form action initial value
                 deleteFormAction = form.action;
             }
 
             form.action = deleteFormAction.match(/\/[0-9]+$/)
                 ? deleteFormAction.replace(/([0-9]+$)/, $(this).data('id'))
                 : deleteFormAction + '/' + $(this).data('id');
-            console.log(form.action);
 
             $('#delete_modal').modal('show');
         });
