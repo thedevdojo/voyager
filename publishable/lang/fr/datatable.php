@@ -5,7 +5,7 @@ return [
     'sEmptyTable'     => 'Aucune donnée disponible',
     'sInfo'           => 'Affichage _START_ à _END_ de _TOTAL_ entrées',
     'sInfoEmpty'      => 'Affichage 0 à 0 de 0 entrées',
-    'sInfoFiltered'   => '(filtré de _MAX_ entrées totales)',
+    'sInfoFiltered'   => '(filtré sur _MAX_ entrées totales)',
     'sInfoPostFix'    => '',
     'sInfoThousands'  => ' ',
     'sLengthMenu'     => 'Afficher les entrées : _MENU_',
@@ -20,7 +20,7 @@ return [
         'sPrevious' => 'Précedent',
     ],
     'oAria' => [
-        'sSortAscending'  => ': Trier la colonne en ordre croissant',
-        'sSortDescending' => ': Trier la colonne en ordre décroissant',
+        'sSortAscending'  => ': Trier la colonne par ordre croissant',
+        'sSortDescending' => ': Trier la colonne par ordre décroissant',
     ],
 ];
