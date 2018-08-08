@@ -17,24 +17,28 @@ class UserProfileTest extends TestCase
 
     protected $editPageForTheCurrentUser;
 
-    protected $listOfUsers;
+    protected $profilePageForTheCurrentUser;
+
+    protected $withDummy = true;
 
     public function setUp()
     {
         parent::setUp();
 
+        $this->install();
+
         $this->user = Auth::loginUsingId(1);
 
-        $this->editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $this->user->id]);
+        $this->editPageForTheCurrentUser = route('voyager.profile.edit');
 
-        $this->listOfUsers = route('voyager.users.index');
+        $this->profilePageForTheCurrentUser = route('voyager.profile');
 
         $this->withFactories(__DIR__.'/database/factories');
     }
 
     public function testCanSeeTheUserInfoOnHisProfilePage()
     {
-        $this->visit(route('voyager.profile'))
+        $this->visit($this->profilePageForTheCurrentUser)
              ->seeInElement('h4', $this->user->name)
              ->seeInElement('.user-email', $this->user->email)
              ->seeLink(__('voyager::profile.edit'));
@@ -42,13 +46,13 @@ class UserProfileTest extends TestCase
 
     public function testCanEditUserName()
     {
-        $this->visit(route('voyager.profile'))
+        $this->visit($this->profilePageForTheCurrentUser)
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('New Awesome Name', 'name')
              ->press(__('voyager::generic.save'))
-             ->seePageIs($this->listOfUsers)
+             ->seePageIs($this->profilePageForTheCurrentUser)
              ->seeInDatabase(
                  'users',
                  ['name' => 'New Awesome Name']
@@ -57,13 +61,13 @@ class UserProfileTest extends TestCase
 
     public function testCanEditUserEmail()
     {
-        $this->visit(route('voyager.profile'))
+        $this->visit($this->profilePageForTheCurrentUser)
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager::generic.save'))
-             ->seePageIs($this->listOfUsers)
+             ->seePageIs($this->profilePageForTheCurrentUser)
              ->seeInDatabase(
                  'users',
                  ['email' => 'another@email.com']
@@ -72,13 +76,13 @@ class UserProfileTest extends TestCase
 
     public function testCanEditUserPassword()
     {
-        $this->visit(route('voyager.profile'))
+        $this->visit($this->profilePageForTheCurrentUser)
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->type('voyager-rocks', 'password')
              ->press(__('voyager::generic.save'))
-             ->seePageIs($this->listOfUsers);
+             ->seePageIs($this->profilePageForTheCurrentUser);
 
         $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('voyager-rocks', $updatedPassword));
@@ -86,13 +90,13 @@ class UserProfileTest extends TestCase
 
     public function testCanEditUserAvatar()
     {
-        $this->visit(route('voyager.profile'))
+        $this->visit($this->profilePageForTheCurrentUser)
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
              ->attach($this->newImagePath(), 'avatar')
              ->press(__('voyager::generic.save'))
-             ->seePageIs($this->listOfUsers)
+             ->seePageIs($this->profilePageForTheCurrentUser)
              ->dontSeeInDatabase(
                  'users',
                  ['id' => 1, 'avatar' => 'user/default.png']
@@ -102,7 +106,6 @@ class UserProfileTest extends TestCase
     public function testCanEditUserEmailWithEditorPermissions()
     {
         $user = factory(\TCG\Voyager\Models\User::class)->create();
-        $editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $user->id]);
         $roleId = $user->role_id;
         $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
@@ -112,13 +115,13 @@ class UserProfileTest extends TestCase
             'browse_users',
         ])->get()->pluck('id')->all());
         Auth::onceUsingId($user->id);
-        $this->visit(route('voyager.profile'))
+        $this->visit($this->profilePageForTheCurrentUser)
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
-             ->seePageIs($editPageForTheCurrentUser)
+             ->seePageIs($this->editPageForTheCurrentUser)
              ->type('another@email.com', 'email')
              ->press(__('voyager::generic.save'))
-             ->seePageIs($this->listOfUsers)
+             ->seePageIs($this->profilePageForTheCurrentUser)
              ->seeInDatabase(
                  'users',
                  ['email' => 'another@email.com']
@@ -127,7 +130,7 @@ class UserProfileTest extends TestCase
 
     public function testCanSetUserLocale()
     {
-        $this->visit(route('voyager.profile'))
+        $this->visit($this->profilePageForTheCurrentUser)
              ->click(__('voyager::profile.edit'))
              ->see(__('voyager::profile.edit_user'))
              ->seePageIs($this->editPageForTheCurrentUser)
