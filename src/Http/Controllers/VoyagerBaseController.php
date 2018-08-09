@@ -53,9 +53,7 @@ class VoyagerBaseController extends Controller
             $query = $model::select('*')->with($relationships);
 
             // If a column has a relationship associated with it, we do not want to show that field
-            // Commented-out as this hides the `id` field in all BREAD operations.
-            // TODO: Make a config var for this (and the other operations as well).
-//            $this->removeRelationshipField($dataType, 'browse');
+            $this->removeRelationshipField($dataType, 'browse');
 
             if ($search->value && $search->key && $search->filter) {
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
@@ -140,9 +138,7 @@ class VoyagerBaseController extends Controller
         $dataTypeContent = $this->resolveRelations($dataTypeContent, $dataType, true);
 
         // If a column has a relationship associated with it, we do not want to show that field
-        // Commented-out as this hides the `id` field in all BREAD operations.
-        // TODO: Make a config var for this (and the other operations as well).
-//        $this->removeRelationshipField($dataType, 'read');
+        $this->removeRelationshipField($dataType, 'read');
 
         // Check permission
         $this->authorize('read', $dataTypeContent);
@@ -189,9 +185,7 @@ class VoyagerBaseController extends Controller
         }
 
         // If a column has a relationship associated with it, we do not want to show that field
-        // Commented-out as this hides the `id` field in all BREAD operations.
-        // TODO: Make a config var for this (and the other operations as well).
-//        $this->removeRelationshipField($dataType, 'edit');
+        $this->removeRelationshipField($dataType, 'edit');
 
         // Check permission
         $this->authorize('edit', $dataTypeContent);
@@ -276,9 +270,7 @@ class VoyagerBaseController extends Controller
         }
 
         // If a column has a relationship associated with it, we do not want to show that field
-        // Commented-out as this hides the `id` field in all BREAD operations.
-        // TODO: Make a config var for this (and the other operations as well).
-//        $this->removeRelationshipField($dataType, 'add');
+        $this->removeRelationshipField($dataType, 'add');
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
