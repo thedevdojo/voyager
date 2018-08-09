@@ -511,7 +511,7 @@ class VoyagerBaseController extends Controller
         $slug = $this->getSlug($request);
         $page = $request->input('page');
         $on_page = 50;
-        $search = $request->input('search',false);
+        $search = $request->input('search', false);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
         $relationships = $this->getRelationships($dataType);
@@ -519,33 +519,30 @@ class VoyagerBaseController extends Controller
         //$this->authorize('edit', $dataTypeContent);
 
         foreach ($dataType->editRows as $key => $row) {
-            if($row->field === $request->input('type')){
+            if ($row->field === $request->input('type')) {
                 $details = json_decode($row->details);
                 $options = $details;
                 //$selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
                 $total_count = app($options->model)->count();
                 $skip = $on_page * ($page - 1);
-			    if($search) {
-			        $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->where($options->label,'LIKE','%' . $search . '%')->get();
-                }else{
+                if ($search) {
+                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->where($options->label, 'LIKE', '%'.$search.'%')->get();
+                } else {
                     $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
                 }
                 $ret = [];
 
-                foreach($relationshipOptions as $relationshipOption){
-                   $ret[] = [
-                       'id' => $relationshipOption->{$options->key},
-                       'text' => $relationshipOption->{$options->label}
+                foreach ($relationshipOptions as $relationshipOption) {
+                    $ret[] = [
+                       'id'   => $relationshipOption->{$options->key},
+                       'text' => $relationshipOption->{$options->label},
                     ];
                 }
 
-                return response()->json(['results' => $ret, 'pagination' => ["more" => ($total_count > ($skip + $on_page))]]);
+                return response()->json(['results' => $ret, 'pagination' => ['more' => ($total_count > ($skip + $on_page))]]);
             }
-
         }
 
         return response()->setStatusCode(404);
-
     }
-
 }
