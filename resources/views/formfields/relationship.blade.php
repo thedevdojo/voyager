@@ -26,10 +26,13 @@
 
             @else
 
-                <select class="form-control select2" name="{{ $options->column }}">
+                <select class="form-control select2-ajax" name="{{ $options->column }}"
+                data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
+				data-get-items-field="{{$row->field}}"
+                >
                     @php
                         $model = app($options->model);
-                        $query = $model::all();
+						$query = $model::where($options->key,$dataTypeContent->{$options->column})->get();
                     @endphp
 
                     @if($row->required === 0)
@@ -145,8 +148,11 @@
 
             @else
                 <select
-                    class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2 @endif"
+                    class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2-ajax @endif"
                     name="{{ $relationshipField }}[]" multiple
+                    data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
+					data-get-items-field="{{$row->field}}"
+
                     @if(isset($options->taggable) && $options->taggable == 'on')
                         data-route="{{ route('voyager.'.str_slug($options->table).'.store') }}"
                         data-label="{{$options->label}}"
@@ -156,7 +162,7 @@
 
                         @php
                             $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
-                            $relationshipOptions = app($options->model)->all();
+			                $relationshipOptions = app($options->model)->whereIn($options->key,$selected_values)->get();
                         @endphp
 
                         @if($row->required === 0)
