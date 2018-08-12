@@ -39,7 +39,7 @@ return [
         ],
         'page'     => [
             'singular' => 'Статья',
-            'plural'   => 'Стратьи',
+            'plural'   => 'Статьи',
         ],
         'post'     => [
             'singular' => 'Сообщение',
