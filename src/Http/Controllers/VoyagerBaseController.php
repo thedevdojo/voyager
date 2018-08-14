@@ -260,10 +260,16 @@ class VoyagerBaseController extends Controller
 
         // Check permission
         $this->authorize('add', app($dataType->model_name));
-
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-                            ? new $dataType->model_name()
-                            : false;
+        
+        // Prefill fields
+        if ($request->has('prefill')) {
+            $prefillObject = unserialize(base64_decode($request->get('prefill')));
+            $dataTypeContent = $prefillObject;
+        } else {
+            $dataTypeContent = (strlen($dataType->model_name) != 0)
+                                ? new $dataType->model_name()
+                                : false;
+        }
 
         foreach ($dataType->addRows as $key => $row) {
             $details = json_decode($row->details);
