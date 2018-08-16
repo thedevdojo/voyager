@@ -63,6 +63,10 @@
 
             <div class="login-container">
 
+                @if(Session::has('status'))
+                    <div class="alert alert-success"> {{ Session::get('status') }}</div>
+                @endif
+
                 <p>{{ __('voyager::auth.request_password') }}</p>
 
                 <form action="{{ route('voyager.password.email') }}" method="POST">

@@ -27,4 +27,9 @@ class VoyagerForgottenPasswordController extends Controller
     {
         return view('voyager::auth.request');
     }
+
+    protected function sendResetLinkResponse($response)
+    {
+        return back()->with('status', trans('voyager::auth.password_sent'));
+    }
 }
