@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Tests\Feature;
 
 use http\Env\Request;
-use TCG\Voyager\Http\Middleware\VoyagerGuestMiddleware;
 use TCG\Voyager\Tests\TestCase;
 
 class ResetPasswordTest extends TestCase
