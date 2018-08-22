@@ -16,7 +16,7 @@ trait BreadRelationshipParser
         foreach ($dataType->{$bread_type.'Rows'} as $key => $row) {
             if ($row->type == 'relationship') {
                 $options = json_decode($row->details);
-                if ( $options->type == 'belongsTo' ) {
+                if ($options->type == 'belongsTo') {
                     $relationshipField = @$options->column;
                     $keyInCollection = key($dataType->{$bread_type . 'Rows'}->where('field', '=', $relationshipField)->toArray());
                     array_push($forget_keys, $keyInCollection);
