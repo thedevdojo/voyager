@@ -160,7 +160,7 @@
 
                         @php
                             $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
-                                return $item->{$options->label};
+                                return $item->{$options->key};
                             })->all() : array();
                             $relationshipOptions = app($options->model)->all();
                         @endphp
