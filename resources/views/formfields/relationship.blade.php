@@ -70,7 +70,8 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-                    $selected_values = $model::where($options->column, '=', $relationshipData->id)->pluck($options->label)->all();
+                    $selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->pluck($options->label)->all();
+                    //$selected_values = $model::where($options->column, '=', $relationshipData->id)->pluck($options->label)->all();
                 @endphp
 
                 @if($view == 'browse')
@@ -121,7 +122,8 @@
 
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : array();
+                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->pluck($options->label)->all() : array();
+                    //$selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : array();
                 @endphp
 
                 @if($view == 'browse')
