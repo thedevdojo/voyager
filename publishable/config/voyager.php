@@ -235,6 +235,6 @@ return [
     'settings' => [
         // Enables Laravel cache method for
         // storing cache values between requests
-        'cache' => false
-    ]
+        'cache' => false,
+    ],
 ];

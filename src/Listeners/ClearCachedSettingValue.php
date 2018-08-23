@@ -18,9 +18,10 @@ class ClearCachedSettingValue
     }
 
     /**
-     * handle
+     * handle.
      *
      * @param SettingUpdated $event
+     *
      * @return void
      */
     public function handle(SettingUpdated $event)

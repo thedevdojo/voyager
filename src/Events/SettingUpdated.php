@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Events;
 
-use TCG\Voyager\Models\Setting;
 use Illuminate\Queue\SerializesModels;
+use TCG\Voyager\Models\Setting;
 
 class SettingUpdated
 {
