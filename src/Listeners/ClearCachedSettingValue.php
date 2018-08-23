@@ -1,8 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Listeners;
+namespace TCG\Voyager\Listeners;
 
 use Cache;
 use TCG\Voyager\Events\SettingUpdated;

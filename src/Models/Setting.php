@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace TCG\Voyager\Models;
 
 use TCG\Voyager\Events\SettingUpdated;
