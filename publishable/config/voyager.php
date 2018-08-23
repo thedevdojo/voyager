@@ -223,4 +223,18 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Model specific settings
+    |--------------------------------------------------------------------------
+    |
+    | Here you change some model specific settings
+    |
+    */
+
+    'settings' => [
+        // Enables Laravel cache method for
+        // storing cache values between requests
+        'cache' => false
+    ]
 ];
