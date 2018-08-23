@@ -38,7 +38,7 @@ class Image extends BaseType
                 $resize_height = $image->height();
             }
 
-            $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
+            $resize_quality = isset($this->options->quality) ? intval($this->options->quality) : 75;
 
             $image = $image->resize(
                 $resize_width,
