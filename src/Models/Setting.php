@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Models;
 
-use TCG\Voyager\Events\SettingUpdated;
 use Illuminate\Database\Eloquent\Model;
+use TCG\Voyager\Events\SettingUpdated;
 
 class Setting extends Model
 {
@@ -14,6 +14,6 @@ class Setting extends Model
     public $timestamps = false;
 
     protected $dispatchesEvents = [
-        'updating' => SettingUpdated::class
+        'updating' => SettingUpdated::class,
     ];
 }
