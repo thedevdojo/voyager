@@ -4,7 +4,7 @@ namespace TCG\Voyager\Providers;
 
 use Illuminate\Support\Facades\Event;
 use TCG\Voyager\Events\SettingUpdated;
-use App\Listeners\ClearCachedSettingValue;
+use TCG\Voyager\Listeners\ClearCachedSettingValue;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class VoyagerEventServiceProvider extends ServiceProvider
