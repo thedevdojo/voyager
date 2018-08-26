@@ -82,7 +82,9 @@
                                 @elseif(property_exists($rowDetails, 'options'))
                                     @if (count(json_decode($dataTypeContent->{$row->field})) > 0)
                                         @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
-                                            {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                            @if (@$rowDetails->options->{$item})
+                                                {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                            @endif
                                         @endforeach
                                     @else
                                         {{ __('voyager::generic.none') }}
