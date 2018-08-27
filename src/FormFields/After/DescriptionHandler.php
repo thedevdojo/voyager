@@ -8,6 +8,11 @@ class DescriptionHandler extends AbstractHandler
 
     public function visible($row, $dataType, $dataTypeContent, $options)
     {
+        $trans = 'voyager.help.'.$dataType->name.'.'.$row->field;
+        if(__($trans) !== $trans) {
+            return true;
+        }
+
         if (!isset($options->description)) {
             return false;
         }
@@ -17,10 +22,17 @@ class DescriptionHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
+        if(isset($options->description)) {
+            $helpText = $options->description;
+        } else {
+            $helpText = __('voyager.help.'.$dataType->name.'.'.$row->field);
+        }
+
         return '<span class="glyphicon glyphicon-question-sign"
                                         aria-hidden="true"
                                         data-toggle="tooltip"
-                                        data-placement="right"
-                                        title="'.$options->description.'"></span>';
+                                        data-placement="auto"
+                                        data-html="true"
+                                        title="'.$helpText.'"></span>';
     }
 }
