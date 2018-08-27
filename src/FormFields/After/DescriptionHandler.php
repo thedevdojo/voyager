@@ -9,7 +9,7 @@ class DescriptionHandler extends AbstractHandler
     public function visible($row, $dataType, $dataTypeContent, $options)
     {
         $trans = 'voyager.help.'.$dataType->name.'.'.$row->field;
-        if(__($trans) !== $trans) {
+        if (__($trans) !== $trans) {
             return true;
         }
 
@@ -22,7 +22,7 @@ class DescriptionHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        if(isset($options->description)) {
+        if (isset($options->description)) {
             $helpText = $options->description;
         } else {
             $helpText = __('voyager.help.'.$dataType->name.'.'.$row->field);
