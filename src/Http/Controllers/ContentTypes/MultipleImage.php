@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-use Intervention\Image\Facades\Image as InterventionImage;
-use Intervention\Image\Constraint;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Constraint;
+use Intervention\Image\Facades\Image as InterventionImage;
 
 class MultipleImage extends BaseType
 {
