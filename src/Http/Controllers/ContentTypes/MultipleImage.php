@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image as InterventionImage;
+use Intervention\Image\Constraint;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class MultipleImage extends BaseType
 {
@@ -37,7 +37,7 @@ class MultipleImage extends BaseType
                 $resize_height = $image->height();
             }
 
-            $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
+            $resize_quality = isset($this->options->quality) ? intval($this->options->quality) : 75;
 
             $filename = Str::random(20);
             $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
