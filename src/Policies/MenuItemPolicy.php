@@ -43,10 +43,10 @@ class MenuItemPolicy extends BasePolicy
         }
 
         // If permission doesn't exist, we can't check it!
-        if (!self::$permissions->contains('key', 'browse_'.$slug)) {
+        if (!self::$permissions->contains('key', $action.'_'.$slug)) {
             return true;
         }
 
-        return $user->hasPermission('browse_'.$slug);
+        return $user->hasPermission($action.'_'.$slug);
     }
 }
