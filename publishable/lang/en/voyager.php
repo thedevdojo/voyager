@@ -494,6 +494,7 @@ return [
             'compass'      => 'Compass',
             'dashboard'    => 'Dashboard',
             'database'     => 'Database',
+            'bread'     => 'Bread',
             'media'        => 'Media',
             'menu_builder' => 'Menu Builder',
             'pages'        => 'Pages',
