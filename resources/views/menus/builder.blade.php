@@ -174,6 +174,7 @@
              */
             $('.add_item').click(function() {
                 $m_form.trigger('reset');
+                $m_form.find("input[type=submit]").val('{{ __('voyager::generic.add') }}');
                 $m_modal.modal('show', {data: null});
             });
 
@@ -181,6 +182,7 @@
              * Edit Menu
              */
             $('.item_actions').on('click', '.edit', function (e) {
+                $m_form.find("input[type=submit]").val('{{ __('voyager::generic.update') }}');
                 $m_modal.modal('show', {data: $(e.currentTarget)});
             });
 
