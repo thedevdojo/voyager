@@ -44,7 +44,6 @@
             "TCG\\Voyager\\Tests\\": "tests/"
       }
     },
-    "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
