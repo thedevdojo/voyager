@@ -23,7 +23,6 @@ $atype = (isset($options->atype)) ? "type=$options->atype" : "";
 $target = (isset($options->target)) ? "target=$options->target" : "";
 $aclass = (isset($options->aclass)) ? "class=$options->aclass" : "";
 $imgclass = (isset($options->imgclass)) ? "class=$options->imgclass" : "";
-$download = (isset($options->download)) ? "download" : "";
 $hideurl = (isset($options->hideurl)) ? true : false;
 @endphp
 <a name="{{ $row->field }}" href="{{ $data->{$row->field} }}"
