@@ -98,7 +98,7 @@
                                             <td>
                                                 <?php $options = json_decode($row->details); ?>
                                                 @if($row->type == 'link')
-                                                    @include('bread.formfields.browse.link')
+                                                    @include('views.bread.formfields.browse.link')
                                                 @elseif($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                                 @elseif($row->type == 'relationship')
