@@ -280,6 +280,7 @@ class VoyagerServiceProvider extends ServiceProvider
     protected function registerFormFields()
     {
         $formFields = [
+            'link',
             'checkbox',
             'color',
             'date',
