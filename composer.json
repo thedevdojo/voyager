@@ -14,7 +14,7 @@
             "email": "tony.lea@thecontrolgroup.com"
         }
     ],
-    "minimum-stability": "dev-test",
+    "minimum-stability": "dev",
     "require": {
         "illuminate/support": "~5.4.0|~5.5.0|~5.6.0",
         "intervention/image": "^2.4",
