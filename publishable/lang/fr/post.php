@@ -1,14 +1,15 @@
 <?php
 
 return [
+    'additional_fields'=> 'Champs additionnels',
     'category'         => 'Catégorie de l\'article',
     'content'          => 'Contenu de l\'article',
     'details'          => 'Détails de l\'article',
     'excerpt'          => 'Extrait <small>courte description de l\'article</small>',
     'image'            => 'Image de l\'article',
-    'meta_description' => 'Meta déscription',
+    'meta_description' => 'Meta description',
     'meta_keywords'    => 'Meta mots clés',
-    'new'              => 'Créé un nouvel article',
+    'new'              => 'Créer un nouvel article',
     'seo_content'      => 'Contenu SEO',
     'seo_title'        => 'Titre SEO',
     'slug'             => 'Slug URL',

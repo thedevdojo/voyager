@@ -149,16 +149,16 @@
                                           data-toggle="tooltip"
                                           data-placement="right"
                                           title="{{ __('voyager::bread.order_column_ph') }}"></span>
-									<select name="order_column" class="select2 form-control">
-	  									<option value="">-- {{ __('voyager::generic.none') }} --</option>
-										@foreach($fieldOptions as $tbl)
-										<option value="{{ $tbl['field'] }}"
-										@if(isset($dataType) && $dataType->order_column == $tbl['field']) selected @endif
-										>{{ $tbl['field'] }}</option>
-										@endforeach
-	  								</select>
+                                    <select name="order_column" class="select2 form-control">
+                                          <option value="">-- {{ __('voyager::generic.none') }} --</option>
+                                        @foreach($fieldOptions as $tbl)
+                                        <option value="{{ $tbl['field'] }}"
+                                        @if(isset($dataType) && $dataType->order_column == $tbl['field']) selected @endif
+                                        >{{ $tbl['field'] }}</option>
+                                        @endforeach
+                                      </select>
                                 </div>
-								<div class="col-md-6 form-group">
+                                <div class="col-md-6 form-group">
                                     <label for="order_display_column">{{ __('voyager::bread.order_ident_column') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
@@ -166,13 +166,13 @@
                                           data-placement="right"
                                           title="{{ __('voyager::bread.order_ident_column_ph') }}"></span>
                                     <select name="order_display_column" class="select2 form-control">
-										<option value="">-- {{ __('voyager::generic.none') }} --</option>
-										@foreach($fieldOptions as $tbl)
-										<option value="{{ $tbl['field'] }}"
-										@if(isset($dataType) && $dataType->order_display_column == $tbl['field']) selected @endif
-										>{{ $tbl['field'] }}</option>
-										@endforeach
-									</select>
+                                        <option value="">-- {{ __('voyager::generic.none') }} --</option>
+                                        @foreach($fieldOptions as $tbl)
+                                        <option value="{{ $tbl['field'] }}"
+                                        @if(isset($dataType) && $dataType->order_display_column == $tbl['field']) selected @endif
+                                        >{{ $tbl['field'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">
