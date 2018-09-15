@@ -10,7 +10,7 @@ class Relationship extends BaseType
     public function handle()
     {
         $content = $this->request->input($this->row->field);
-        for ($i=0; $i<sizeof($content); $i++) {
+        for ($i = 0; $i < count($content); $i++) {
             if ($content[$i] === null) {
                 unset($content[$i]);
             }
