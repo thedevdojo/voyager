@@ -5,14 +5,16 @@ namespace TCG\Voyager\Http\Controllers\ContentTypes;
 class Relationship extends BaseType
 {
     /**
-     * @return string
+     * @return array
      */
     public function handle()
     {
         $content = $this->request->input($this->row->field);
-        for ($i = 0; $i < count($content); $i++) {
-            if ($content[$i] === null) {
-                unset($content[$i]);
+        if (is_array($content)) {
+            for ($i = 0; $i < count($content); $i++) {
+                if ($content[$i] === null) {
+                    unset($content[$i]);
+                }
             }
         }
         return $content;
