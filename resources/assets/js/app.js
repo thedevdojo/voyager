@@ -25,6 +25,7 @@ window.TinyMCE = window.tinymce = require('./tinymce');
 require('./multilingual');
 require('./voyager_tinymce');
 require('./voyager_ace_editor');
+require('formdata-polyfill');
 window.helpers = require('./helpers.js');
 
 $(document).ready(function () {
