@@ -9,6 +9,12 @@ class Relationship extends BaseType
      */
     public function handle()
     {
-        return $this->request->input($this->row->field);
+        $content = $this->request->input($this->row->field);
+        for ($i=0; $i<sizeof($content); $i++) {
+            if ($content[$i] === null) {
+                unset($content[$i]);
+            }
+        }
+        return $content;
     }
 }
