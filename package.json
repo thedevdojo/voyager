@@ -32,6 +32,7 @@
     "datatables.net": "^1.10.15",
     "datetimepicker": "^0.1.38",
     "dropzone": "^5.0.1",
+    "formdata-polyfill": "^3.0.12",
     "highlight": "^0.2.4",
     "icheck": "^1.0.2",
     "jquery-match-height": "^0.7.2",
