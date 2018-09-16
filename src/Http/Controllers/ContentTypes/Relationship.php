@@ -17,6 +17,7 @@ class Relationship extends BaseType
                 }
             }
         }
+
         return $content;
     }
 }
