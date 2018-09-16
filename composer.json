@@ -14,7 +14,6 @@
             "email": "tony.lea@thecontrolgroup.com"
         }
     ],
-    "minimum-stability": "stable",
     "require": {
         "illuminate/support": "~5.4.0|~5.5.0|~5.6.0|~5.7.0",
         "intervention/image": "^2.4",
@@ -45,6 +44,7 @@
             "TCG\\Voyager\\Tests\\": "tests/"
       }
     },
+    "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
