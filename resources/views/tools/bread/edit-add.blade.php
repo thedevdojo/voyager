@@ -175,6 +175,24 @@
                                     </select>
                                 </div>
                             </div>
+                             <div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="default_search_key">{{ __('voyager::bread.default_search_key') }}</label>
+                                    <span class="voyager-question"
+                                          aria-hidden="true"
+                                          data-toggle="tooltip"
+                                          data-placement="right"
+                                          title="{{ __('voyager::bread.default_search_key_ph') }}"></span>
+                                    <select name="default_search_key" class="select2 form-control">
+                                        <option value="">-- {{ __('voyager::generic.none') }} --</option>
+                                        @foreach($fieldOptions as $tbl)
+                                        <option value="{{ $tbl['field'] }}"
+                                        @if(isset($dataType) && $dataType->default_search_key == $tbl['field']) selected @endif
+                                        >{{ $tbl['field'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="description">{{ __('voyager::bread.description') }}</label>
                                 <textarea class="form-control" name="description"

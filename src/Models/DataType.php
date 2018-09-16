@@ -30,6 +30,7 @@ class DataType extends Model
         'server_side',
         'order_column',
         'order_display_column',
+        'default_search_key',
     ];
 
     protected $casts = [
@@ -249,5 +250,15 @@ class DataType extends Model
     public function setOrderDisplayColumnAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
+    }
+
+    public function getDefaultSearchKeyAttribute()
+    {
+        return $this->details['default_search_key'];
+    }
+
+    public function setDefaultSearchKeyAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['default_search_key' => $value]);
     }
 }

@@ -37,6 +37,8 @@ return [
     'order_column_ph'        => 'The column where the order is stored',
     'order_ident_column'     => 'Order display column',
     'order_ident_column_ph'  => 'The column which is displayed in the order page',
+    'default_search_key'     => 'Default Server-side Search field',
+    'default_search_key_ph'  => 'Pre-select this column as the default key in server-side search',
     'ordering_not_set'       => 'You have to define ordering first',
     'policy_class'           => 'Policy Class Name',
     'policy_name'            => 'Policy Name',
