@@ -80,9 +80,15 @@
                                     @endforeach
 
                                 @elseif(property_exists($rowDetails, 'options'))
-                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
-                                        {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
-                                    @endforeach
+                                    @if (count(json_decode($dataTypeContent->{$row->field})) > 0)
+                                        @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
+                                            @if (@$rowDetails->options->{$item})
+                                                {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        {{ __('voyager::generic.none') }}
+                                    @endif
                                 @endif
                             @elseif($row->type == 'date' || $row->type == 'timestamp')
                                 {{ $rowDetails && property_exists($rowDetails, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($rowDetails->format) : $dataTypeContent->{$row->field} }}
