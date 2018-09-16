@@ -23,4 +23,5 @@ return [
         'sSortAscending'  => ': 以升序排列此列',
         'sSortDescending' => ': 以降序排列此列',
     ],
+    'index'           => '普通',
 ];

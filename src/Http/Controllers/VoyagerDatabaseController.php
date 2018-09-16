@@ -177,6 +177,7 @@ class VoyagerDatabaseController extends Controller
                 'unsigned'      => true,
                 'notnull'       => true,
                 'autoincrement' => true,
+                'comment'       => 'ID',
             ]);
 
             $db->table->setPrimaryKey(['id'], 'primary');
