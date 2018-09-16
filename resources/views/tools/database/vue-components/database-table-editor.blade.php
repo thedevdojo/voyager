@@ -49,6 +49,7 @@
                     <th>{{ __('voyager::generic.auto_increment') }}</th>
                     <th>{{ __('voyager::generic.index') }}</th>
                     <th>{{ __('voyager::generic.default') }}</th>
+                    <th>{{ __('voyager::generic.comment') }}</th>
                     <th></th>
                 </tr>
                 </thead>

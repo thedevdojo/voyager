@@ -13,7 +13,7 @@
     </td>
 
     <td>
-        <input v-model.number="column.length" :type="lengthInputType" min="0">
+        <input v-model.number="column.length" :type="lengthInputType" min="0" class="form-control">
     </td>
 
     <td>
@@ -42,6 +42,10 @@
 
     <td>
         <database-column-default :column="column"></database-column-default>
+    </td>
+
+    <td>
+        <input type="text" v-model="column.comment" class="form-control">
     </td>
 
     <td>
