@@ -19,8 +19,6 @@ class DatabaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->install();
-
         // todo: make sure tests are isolated and do not effect other ones
         // todo: interract with Table object directly instead of array?
         // todo: maybe perform the updates using one call to update_table?

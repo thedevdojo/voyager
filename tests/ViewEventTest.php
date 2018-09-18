@@ -12,8 +12,6 @@ class ViewEventTest extends TestCase
     {
         parent::setUp();
 
-        $this->install();
-
         $this->disableExceptionHandling();
 
         // Add test view
