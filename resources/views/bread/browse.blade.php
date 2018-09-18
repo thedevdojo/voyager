@@ -129,7 +129,7 @@
                                                     @if($data->{$row->field . '_page_slug'})
                                                         <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $options->options->{$data->{$row->field}} !!}</a>
                                                     @else
-                                                        {!! $options->options->{$data->{$row->field}} or '' !!}
+                                                        {!! isset($options->options->{$data->{$row->field}}) ?  $options->options->{$data->{$row->field}} : '' !!}
                                                     @endif
 
                                                 @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
