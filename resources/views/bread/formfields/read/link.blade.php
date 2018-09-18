@@ -37,7 +37,7 @@ $hideurl = (isset($options->hideurl)) ? true : false;
   >
   @if( !empty($icon) && ($type == "image" || $type == "google") )
     <img src="{{ $icon }}" {{ imgclass }} />
-  @elseif( ( !empty($icon) && $type == "fa" ) )
+  @elseif( ( !empty($icon) && $type == "fa"  && !empty($data->{$row->field}))  )
     <span class="fa fa-{{ $icon }}"></span>
   @endif
   @if(!$hideurl)
