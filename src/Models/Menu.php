@@ -83,8 +83,14 @@ class Menu extends Model
             $options->locale = app()->getLocale();
         }
 
+        $items = $menu->parent_items->sortBy('order');
+
+        if ($type === '_json') {
+            return $items;
+        }
+
         return new \Illuminate\Support\HtmlString(
-            \Illuminate\Support\Facades\View::make($type, ['items' => $menu->parent_items->sortBy('order'), 'options' => $options])->render()
+            \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render()
         );
     }
 }
