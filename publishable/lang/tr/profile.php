@@ -2,10 +2,10 @@
 
 return [
     'avatar'        => 'Avatar',
-    'edit'          => 'Profilimi düzenle',
-    'edit_user'     => 'Kullanıcıyı düzenle',
+    'edit'          => 'Profilimi Düzenle',
+    'edit_user'     => 'Kullanıcıyı Düzenle',
     'password'      => 'Şifre',
-    'password_hint' => 'Aynı şifre ise boş bırakın',
+    'password_hint' => 'Şifrenin aynı kalması için boş bırakın',
     'role'          => 'Rol',
     'user_role'     => 'Kullanıcı Rolü',
 ];

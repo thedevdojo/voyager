@@ -15,6 +15,7 @@ use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 class VoyagerBaseController extends Controller
 {
     use BreadRelationshipParser;
+
     //***************************************
     //               ____
     //              |  _ \
