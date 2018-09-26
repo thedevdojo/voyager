@@ -524,13 +524,17 @@ class VoyagerBaseController extends Controller
         foreach ($dataType->editRows as $key => $row) {
             if ($row->field === $request->input('type')) {
                 $options = json_decode($row->details);
-                $total_count = app($options->model)->count();
                 $skip = $on_page * ($page - 1);
+
+                // If search query, use LIKE to filter on label results
                 if ($search) {
+                    $total_count = app($options->model)->where($options->label, 'LIKE','%' . $search . '%')->count();
                     $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->where($options->label, 'LIKE','%' . $search . '%')->get();
                 } else {
+                    $total_count = app($options->model)->count();
                     $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
                 }
+
                 $results = [];
                 foreach($relationshipOptions as $relationshipOption) {
                     $results[] = [
@@ -538,6 +542,7 @@ class VoyagerBaseController extends Controller
                         'text' => $relationshipOption->{$options->label}
                     ];
                 }
+
                 return response()->json([
                     'results' => $results,
                     'pagination' => [
@@ -546,6 +551,8 @@ class VoyagerBaseController extends Controller
                 ]);
             }
         }
-        return response()->setStatusCode(404);
+
+        // No result found, return empty array
+        return response()->json([], 404);
     }
 }
