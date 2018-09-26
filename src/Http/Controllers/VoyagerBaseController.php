@@ -526,28 +526,30 @@ class VoyagerBaseController extends Controller
                 $options = json_decode($row->details);
                 $skip = $on_page * ($page - 1);
 
-                // If search query, use LIKE to filter on label results
+                // If search query, use LIKE to filter results depending on field label
                 if ($search) {
-                    $total_count = app($options->model)->where($options->label, 'LIKE','%' . $search . '%')->count();
-                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->where($options->label, 'LIKE','%' . $search . '%')->get();
+                    $total_count = app($options->model)->where($options->label, 'LIKE', '%'.$search.'%')->count();
+                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)
+                        ->where($options->label, 'LIKE', '%'.$search.'%')
+                        ->get();
                 } else {
                     $total_count = app($options->model)->count();
                     $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
                 }
 
                 $results = [];
-                foreach($relationshipOptions as $relationshipOption) {
+                foreach ($relationshipOptions as $relationshipOption) {
                     $results[] = [
-                        'id' => $relationshipOption->{$options->key},
-                        'text' => $relationshipOption->{$options->label}
+                        'id'   => $relationshipOption->{$options->key},
+                        'text' => $relationshipOption->{$options->label},
                     ];
                 }
 
                 return response()->json([
-                    'results' => $results,
+                    'results'    => $results,
                     'pagination' => [
-                        'more' => ($total_count > ($skip + $on_page))
-                    ]
+                        'more' => ($total_count > ($skip + $on_page)),
+                    ],
                 ]);
             }
         }
