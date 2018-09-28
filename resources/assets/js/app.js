@@ -162,19 +162,8 @@ $(document).ready(function () {
 
         var url = $(this).attr('action');
         var form = $(this);
-        var data = new FormData();
-
-        // Safari 11.1 Bug
-        // Filter out empty file just before the Ajax request
-        // https://stackoverflow.com/questions/49672992/ajax-request-fails-when-sending-formdata-including-empty-file-input-in-safari
-        for (i = 0; i < this.elements.length; i++) {
-            if (this.elements[i].type == 'file') {
-                if (this.elements[i].value == '') {
-                    continue;
-                }
-            }
-            data.append(this.elements[i].name, this.elements[i].value)
-        }
+        //get all form data 
+        var data = new FormData(form[0]);
 
         data.set('_validate', '1');
 
