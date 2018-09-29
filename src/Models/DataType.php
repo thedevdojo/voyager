@@ -196,12 +196,10 @@ class DataType extends Model
 
     public function fieldOptions()
     {
-        $table = $this->name;
-
         // Get ordered BREAD fields
         $orderedFields = $this->rows()->pluck('field')->toArray();
 
-        $_fieldOptions = SchemaManager::describeTable($table)->toArray();
+        $_fieldOptions = SchemaManager::describeTable(app($this->model_name)->getTable())->toArray();
 
         $fieldOptions = [];
         $f_size = count($orderedFields);

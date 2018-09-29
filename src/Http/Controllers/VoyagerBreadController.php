@@ -51,8 +51,10 @@ class VoyagerBreadController extends Controller
     {
         Voyager::canOrFail('browse_bread');
 
+        $dataType = Voyager::model('DataType')->whereName($table)->first();
+
         $data = $this->prepopulateBreadInfo($table);
-        $data['fieldOptions'] = SchemaManager::describeTable($table);
+        $data['fieldOptions'] = SchemaManager::describeTable(app($dataType->model_name)->getTable());
 
         return Voyager::view('voyager::tools.bread.edit-add', $data);
     }
@@ -115,7 +117,7 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
-        $fieldOptions = SchemaManager::describeTable($dataType->name);
+        $fieldOptions = SchemaManager::describeTable(app($dataType->model_name)->getTable());
 
         $isModelTranslatable = is_bread_translatable($dataType);
         $tables = SchemaManager::listTableNames();
