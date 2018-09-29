@@ -94,7 +94,7 @@ class DataType extends Model
             }
 
             if ($this->fill($requestData)->save()) {
-                $fields = $this->fields(array_get($requestData, 'name'));
+                $fields = $this->fields(app($this->model_name)->getTable());
 
                 $requestData = $this->getRelationships($requestData, $fields);
 
