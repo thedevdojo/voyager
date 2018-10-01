@@ -94,7 +94,10 @@ class DataType extends Model
             }
 
             if ($this->fill($requestData)->save()) {
-                $fields = $this->fields(app($this->model_name)->getTable());
+                $fields = $this->fields((strlen($this->model_name) != 0)
+                    ? app($this->model_name)->getTable()
+                    : array_get($requestData, 'name')
+                );
 
                 $requestData = $this->getRelationships($requestData, $fields);
 
@@ -199,7 +202,10 @@ class DataType extends Model
         // Get ordered BREAD fields
         $orderedFields = $this->rows()->pluck('field')->toArray();
 
-        $_fieldOptions = SchemaManager::describeTable(app($this->model_name)->getTable())->toArray();
+        $_fieldOptions = SchemaManager::describeTable((strlen($this->model_name) != 0)
+            ? app($this->model_name)->getTable()
+            : $this->name
+        )->toArray();
 
         $fieldOptions = [];
         $f_size = count($orderedFields);
