@@ -54,7 +54,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
         $data = $this->prepopulateBreadInfo($table);
-        $data['fieldOptions'] = SchemaManager::describeTable((strlen($dataType->model_name) != 0)
+        $data['fieldOptions'] = SchemaManager::describeTable((isset($dataType) && strlen($dataType->model_name) != 0)
             ? app($dataType->model_name)->getTable()
             : $table
         );
