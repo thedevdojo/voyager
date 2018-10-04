@@ -2,11 +2,11 @@
 
 namespace TCG\Voyager\Traits;
 
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Translator;
-use Exception;
 
 trait Translatable
 {
@@ -302,8 +302,8 @@ trait Translatable
         $transFields = $this->getTranslatableAttributes();
 
         foreach ($transFields as $field) {
-            if (!$request->input($field . '_i18n')) {
-                throw new Exception("Invalid Translatable field " . $field);
+            if (!$request->input($field.'_i18n')) {
+                throw new Exception("Invalid Translatable field ".$field);
             }
 
             $trans = json_decode($request->input($field.'_i18n'), true);
