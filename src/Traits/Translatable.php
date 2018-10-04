@@ -303,7 +303,7 @@ trait Translatable
 
         foreach ($transFields as $field) {
             if (!$request->input($field.'_i18n')) {
-                throw new Exception("Invalid Translatable field ".$field);
+                throw new Exception('Invalid Translatable field'.$field);
             }
 
             $trans = json_decode($request->input($field.'_i18n'), true);
