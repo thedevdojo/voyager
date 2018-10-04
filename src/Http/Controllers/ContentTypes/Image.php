@@ -24,32 +24,53 @@ class Image extends BaseType
 
             $resize_width = null;
             $resize_height = null;
-            if (isset($this->options->resize) && (
+            $resize_quality = isset($this->options->quality) ? intval($this->options->quality) : 75;
+            
+            if (isset($this->options->fit) && isset($this->options->fit->width)) {
+                $resize_width = $this->options->fit->width;
+                
+                if (isset($this->options->fit->height)) {
+                    $resize_height = $this->options->fit->height;
+                } else {
+                    $resize_height = $this->options->fit->width;
+                }
+                
+                $image = $image->fit(
+                    $resize_width,
+                    $resize_height,
+                    function (Constraint $constraint) {
+                        if (isset($this->options->upsize) && !$this->options->upsize) {
+                            $constraint->upsize();
+                        }
+                    }
+                )->encode($file->getClientOriginalExtension(), $resize_quality);
+                
+            } else {
+                if (isset($this->options->resize) && (
                     isset($this->options->resize->width) || isset($this->options->resize->height)
                 )) {
-                if (isset($this->options->resize->width)) {
-                    $resize_width = $this->options->resize->width;
-                }
-                if (isset($this->options->resize->height)) {
-                    $resize_height = $this->options->resize->height;
-                }
-            } else {
-                $resize_width = $image->width();
-                $resize_height = $image->height();
-            }
-
-            $resize_quality = isset($this->options->quality) ? intval($this->options->quality) : 75;
-
-            $image = $image->resize(
-                $resize_width,
-                $resize_height,
-                function (Constraint $constraint) {
-                    $constraint->aspectRatio();
-                    if (isset($this->options->upsize) && !$this->options->upsize) {
-                        $constraint->upsize();
+                    if (isset($this->options->resize->width)) {
+                        $resize_width = $this->options->resize->width;
                     }
+                    if (isset($this->options->resize->height)) {
+                        $resize_height = $this->options->resize->height;
+                    }
+                } else {
+                    $resize_width = $image->width();
+                    $resize_height = $image->height();
                 }
-            )->encode($file->getClientOriginalExtension(), $resize_quality);
+                
+                $image = $image->resize(
+                    $resize_width,
+                    $resize_height,
+                    function (Constraint $constraint) {
+                        $constraint->aspectRatio();
+                        if (isset($this->options->upsize) && !$this->options->upsize) {
+                            $constraint->upsize();
+                        }
+                    }
+                )->encode($file->getClientOriginalExtension(), $resize_quality);
+            }
 
             if ($this->is_animated_gif($file)) {
                 Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
