@@ -513,7 +513,7 @@ class VoyagerBaseController extends Controller
     }
 
     /**
-     * Ajax loading of relations
+     * Ajax loading of relations.
      *
      * @param Request $request
      *
