@@ -513,6 +513,8 @@ class VoyagerBaseController extends Controller
     }
 
     /**
+     * Ajax loading of relations
+     *
      * @param Request $request
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
