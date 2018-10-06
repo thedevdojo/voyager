@@ -41,10 +41,10 @@ class VoyagerBaseController extends Controller
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
-        $search = (object)[
-            'value' => $request->get('s'),
-            'key' => $request->get('key'),
-            'filter' => $request->get('filter')
+        $search = (object) [
+            'value'  => $request->get('s'),
+            'key'    => $request->get('key'),
+            'filter' => $request->get('filter'),
         ];
         $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
         $orderBy = $request->get('order_by');
@@ -62,7 +62,7 @@ class VoyagerBaseController extends Controller
 
             if ($search->value && $search->key && $search->filter) {
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
-                $search_value = ($search->filter == 'equals') ? $search->value : '%' . $search->value . '%';
+                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
                 $query->where($search->key, $search_filter, $search_value);
             }
 
@@ -237,7 +237,7 @@ class VoyagerBaseController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                    'message' => __('voyager::generic.successfully_updated') . " {$dataType->display_name_singular}",
+                    'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
                 ]);
         }
@@ -324,7 +324,7 @@ class VoyagerBaseController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                    'message' => __('voyager::generic.successfully_added_new') . " {$dataType->display_name_singular}",
+                    'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
                 ]);
         }
@@ -370,11 +370,11 @@ class VoyagerBaseController extends Controller
         $res = $data->destroy($ids);
         $data = $res
             ? [
-                'message' => __('voyager::generic.successfully_deleted') . " {$displayName}",
+                'message'    => __('voyager::generic.successfully_deleted')." {$displayName}",
                 'alert-type' => 'success',
             ]
             : [
-                'message' => __('voyager::generic.error_deleting') . " {$displayName}",
+                'message'    => __('voyager::generic.error_deleting')." {$displayName}",
                 'alert-type' => 'error',
             ];
 
@@ -433,13 +433,13 @@ class VoyagerBaseController extends Controller
             if (isset($options->thumbnails)) {
                 foreach ($options->thumbnails as $thumbnail) {
                     $ext = explode('.', $data->{$row->field});
-                    $extension = '.' . $ext[count($ext) - 1];
+                    $extension = '.'.$ext[count($ext) - 1];
 
                     $path = str_replace($extension, '', $data->{$row->field});
 
                     $thumb_name = $thumbnail->name;
 
-                    $this->deleteFileIfExists($path . '-' . $thumb_name . $extension);
+                    $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
                 }
             }
         }
@@ -469,7 +469,7 @@ class VoyagerBaseController extends Controller
             return redirect()
                 ->route("voyager.{$dataType->slug}.index")
                 ->with([
-                    'message' => __('voyager::bread.ordering_not_set'),
+                    'message'    => __('voyager::bread.ordering_not_set'),
                     'alert-type' => 'error',
                 ]);
         }
@@ -514,6 +514,7 @@ class VoyagerBaseController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function relation(Request $request)
@@ -534,7 +535,7 @@ class VoyagerBaseController extends Controller
                 $skip = $on_page * ($page - 1);
                 if ($search) {
                     $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->where($options->label,
-                        'LIKE', '%' . $search . '%')->get();
+                        'LIKE', '%'.$search.'%')->get();
                 } else {
                     $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
                 }
@@ -542,14 +543,14 @@ class VoyagerBaseController extends Controller
 
                 foreach ($relationshipOptions as $relationshipOption) {
                     $ret[] = [
-                        'id' => $relationshipOption->{$options->key},
+                        'id'   => $relationshipOption->{$options->key},
                         'text' => $relationshipOption->{$options->label},
                     ];
                 }
 
                 return response()->json([
-                    'results' => $ret,
-                    'pagination' => ['more' => ($total_count > ($skip + $on_page))]
+                    'results'    => $ret,
+                    'pagination' => ['more' => ($total_count > ($skip + $on_page))],
                 ]);
             }
         }
