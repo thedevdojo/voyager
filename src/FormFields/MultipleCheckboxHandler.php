@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: drudge
- * Date: 10/8/18
- * Time: 10:04 PM
- */
 
 namespace TCG\Voyager\FormFields;
-
 
 class MultipleCheckboxHandler extends AbstractHandler
 {
