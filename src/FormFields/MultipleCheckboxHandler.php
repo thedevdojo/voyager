@@ -15,5 +15,4 @@ class MultipleCheckboxHandler extends AbstractHandler
             'dataTypeContent' => $dataTypeContent,
         ]);
     }
-
 }
