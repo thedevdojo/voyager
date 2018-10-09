@@ -188,7 +188,7 @@ abstract class Controller extends BaseController
             /********** CHECKBOX TYPE **********/
             case 'checkbox':
                 return (new Checkbox($request, $slug, $row, $options))->handle();
-            /********** Multiple CHECKBOX TYPE **********/
+            /********** MULTIPLE CHECKBOX TYPE **********/
             case 'multiple_checkbox':
                 return (new MultipleCheckbox($request, $slug, $row, $options))->handle();
             /********** FILE TYPE **********/
