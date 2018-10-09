@@ -116,10 +116,7 @@
                                                         @if (count(json_decode($data->{$row->field})) > 0)
                                                             @foreach(json_decode($data->{$row->field}) as $item)
                                                                 @if (@$options->options->{$item})
-                                                                    {{
-                                                                        $options->options->{$item} .
-                                                                        (!$loop->last ? ', ' : '')
-                                                                    }}
+                                                                    {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
                                                                 @endif
                                                             @endforeach
                                                         @else
