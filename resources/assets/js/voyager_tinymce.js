@@ -19,7 +19,7 @@ $(document).ready(function(){
               $('#upload_file').trigger('click');
             }
         },
-    toolbar: 'styleselect bold italic underline | forecolor backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | link image table youtube giphy | code',
+    toolbar: 'link image table youtube giphy | code',
     convert_urls: false,
     image_caption: true,
     image_title: true,
