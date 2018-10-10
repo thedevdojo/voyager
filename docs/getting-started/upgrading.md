@@ -72,7 +72,7 @@ Then make sure the other fields are like below:
 
 The BREAD and Database section in Voyager has been separated into two sections. So in order to get access to the BREAD section using the menu, make sure to add the following menu item:
 
-![Menu Item](https://github.com/emptynick/voyager/tree/8427b44a7d17f291dc1875af30604bd44330ce13/docs/_images/upgrade-menu-item.png)
+![](../.gitbook/assets/ef5f210-menu-item.png)
 
 However, you might still not be able to see it, because it requires permission, so go ahead and create a new row in the `permissions` table with the `key` being `browse_bread`, leave the `table_name` to be `null`.
 
