@@ -4,7 +4,7 @@ As of the latest version you can now add additional CSS and JS files to the voya
 
 This is all handled via the `voyager.php` config, if you have not started with a fresh install of `0.11.10+` you will need to manually add this to your config.
 
-```text
+```php
     // Here you can specify additional assets you would like to be included in the master.blade
     'additional_css' => [
         //'css/custom.css',

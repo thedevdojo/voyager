@@ -2,7 +2,7 @@
 
 The Settings section allows you to add any site wide settings you would like. You can add an image upload setting for your site logo or a text box for the main headline on your homepage.
 
-![Settings](https://github.com/emptynick/voyager/tree/735a22e97d81b204cc668c421aa06e1268182ed9/docs/_images/settings.png)
+![](../.gitbook/assets/7c40566-screen_shot_2017-09-17_at_7.54.06_pm.png)
 
 In this new version you have the ability to add different groups for different settings. So, if you created a new setting inside of the `site` group and it had a key of `title` you would then be able to reference that setting any where on your site by doing the following:
 

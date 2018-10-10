@@ -2,11 +2,11 @@
 
 Voyager has some awesome database tools which allow you to Add/Edit/Delete or view current database tables. The other cool part of Voyager is that you can add BREAD or \(Browse, Read, Edit, Add, & Delete\) functionality to any of your tables.
 
-![Databases](https://github.com/emptynick/voyager/tree/735a22e97d81b204cc668c421aa06e1268182ed9/docs/_images/databases.png)
+![](../.gitbook/assets/3eb2f8e-database-manager.png)
 
-Inside of your admin panel you can visit Tools-&gt;Database and you'll be able to view all your current tables in your database. You may also click on 'Create a New Table' to create a new table in your database.
+Inside of your admin panel you can visit Tools-&gt;Database and you'll be able to view all your current tables in your database. You may also click on 'Create a New Table' to create a new table in your database. All newly created tables will use the charset defined in your [default database connection](https://laravel.com/docs/database#configuration).
 
-![Database Manager](https://github.com/emptynick/voyager/tree/735a22e97d81b204cc668c421aa06e1268182ed9/docs/_images/database-manager.png)
+![](../.gitbook/assets/a08485b-add-new-table.png)
 
 If you click the table name you can view the current schema. Additionally you can click on the View, Edit, or Delete buttons to perform that action for that table.
 

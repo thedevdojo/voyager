@@ -1,6 +1,6 @@
 # Enabling Soft-Delete
 
-This is only to assist with enabling soft-deletion for your models within Voyager. Please refer to the [Laravel documentation](https://laravel.com/docs/5.5/eloquent#soft-deleting) for specifics.
+This is only to assist with enabling soft-deletion for your models within Voyager. Please refer to the [Laravel documentation](https://laravel.com/docs/eloquent#soft-deleting) for specifics.
 
 ## Table Configurations in Voyager
 
@@ -42,5 +42,5 @@ class Documento extends Model
 }
 ```
 
-And from now on, every time you delete a record from that table, it won't actually be deleted, only the 'deleted\_at' column will be written with the current timestamp.
+And from now on, every time you delete a record from that table, it won't actually be deleted, only the `deleted_at`\` column will be written with the current timestamp.
 

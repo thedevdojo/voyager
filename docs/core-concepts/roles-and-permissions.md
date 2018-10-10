@@ -4,11 +4,11 @@ Voyager comes with Roles and Permissions out of the box. Each _User_ has a _Role
 
 Inside of the dashboard you can choose to Add, Edit, or delete the current Roles. Additionally when you click to edit a particular role you can specify the BREAD permissions.
 
-![Role](https://github.com/emptynick/voyager/tree/735a22e97d81b204cc668c421aa06e1268182ed9/docs/_images/role.png)
+![](../.gitbook/assets/bc4d3cf-screen_shot_2017-09-17_at_5.26.49_pm.png)
 
 New in version 1.0, we've changed Voyager's authorization system to be [more in line with Laravel](https://laravel.com/docs/5.5/authorization#authorizing-actions-using-policies)! This means that you can check for permissions in the following ways:
 
-```text
+```php
 // via user object
 $canViewPost = $user->can('read', $post);
 $canViewPost = Auth::user()->can('read', $post);
@@ -19,7 +19,7 @@ $canViewPost = $this->authorize('read', $post);
 
 You may also choose to use the Voyager facade and pass the permission as a string:
 
-```text
+```php
 $canBrowsePost = Voyager::can('browse_posts');
 $canViewPost = Voyager::can('read_posts');
 $canEditPost = Voyager::can('edit_posts');
@@ -50,8 +50,10 @@ Additionally you can `Generate permissions` for every BREAD type you create. Thi
 
 As an example, perhaps we are creating a new BREAD type from a `products` table. If we choose to `Generate permissions` for our `products` table. Our permission keys will be `browse_products`, `read_products`, `edit_products`, `add_products` and `delete_products`.
 
-!&gt; **Notice**  
+{% hint style="info" %}
+**Notice**  
 If a menu item is associated with any kind of BREAD, then it will check for the `browse` permission, for example for the `Posts` BREAD menu item, it will check for the `browse_posts` permission. If the user does not have the required permission, that menu item will be hidden.
+{% endhint %}
 
 ## Using Permissions in your Blade Template files
 

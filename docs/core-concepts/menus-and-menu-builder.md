@@ -6,11 +6,11 @@ You can view your current Menus by clicking on the _Tools-&gt;Menu Builder_ butt
 
 When you are ready to add menu items to your menu you can click on the builder button of the corresponding menu:
 
-![Menus](https://github.com/emptynick/voyager/tree/735a22e97d81b204cc668c421aa06e1268182ed9/docs/_images/menus.jpg)
+![](../.gitbook/assets/2d6b798-menu-1.jpg)
 
 This will take you to the Menu Builder where you can add, edit, and delete menu items.
 
-![Menu Builder](https://github.com/emptynick/voyager/tree/735a22e97d81b204cc668c421aa06e1268182ed9/docs/_images/menu-builder.jpg)
+![](../.gitbook/assets/f26f660-menu-2-done.jpg)
 
 After creating and configuring your menu, you can easily implement that menu in your application. Say that we have a menu called `main`. Inside of any view file we could now output the menu by using the following code:
 
@@ -26,7 +26,7 @@ menu('main', 'bootstrap');
 
 Taking it one more step further you can even specify your own view and stylize your menu however you would like. Say for instance that we had a file located at `resources/views/my_menu.blade.php`, which contained the following code:
 
-```text
+```markup
 <ul>
     @foreach($items as $menu_item)
         <li><a href="{{ $menu_item->link() }}">{{ $menu_item->title }}</a></li>
