@@ -1,30 +1,37 @@
-# Summary
-​
+# Table of contents
+
+* [Introduction](introduction.md)
+
 ## Getting started
-* [What is Voyager](what-is-voyager.md)
-* [Installation](installation.md)
-* [Upgrading](upgrading.md)
-* [Configurations](configurations.md)
+
+* [What is Voyager](getting-started/what-is-voyager.md)
+* [Installation](getting-started/installation.md)
+* [Upgrading](getting-started/upgrading.md)
+* [Configurations](getting-started/configurations.md)
 
 ## Core concepts
-* [Routing](routing.md)
-* [Media Manager](media-manager.md)
-* [Menus and Menu Builder](menus-and-menu-builder.md)
-* [Database Manager](database-manager.md)
-* [BREAD Builder](bread-builder.md)
-* [Settings](settings.md)
-* [Compass](compass.md)
-* [Roles and Permissions](roles-and-permissions.md)
-* [Helper methods](helper-methods.md)
+
+* [Routing](core-concepts/routing.md)
+* [Media Manager](core-concepts/media-manager.md)
+* [Menus and Menu Builder](core-concepts/menus-and-menu-builder.md)
+* [Database Manager](core-concepts/database-manager.md)
+* [BREAD Builder](core-concepts/bread-builder.md)
+* [Settings](core-concepts/settings.md)
+* [Compass](core-concepts/compass.md)
+* [Roles and Permissions](core-concepts/roles-and-permissions.md)
+* [Helper methods](core-concepts/helper-methods.md)
 
 ## Customization
-* [Overriding Views](overriding-views.md)
-* [Using custom HTTP controllers](custom-http-controllers.md)
-* [Overriding Routes](overriding-routes.md)
-* [Additional CSS and JS](additional-css-js.md)
-* [Enabling Soft-Delete](enabling-soft-delete.md)
-* [Custom relationship attributes](custom-realtionship-attributes.md)
-* [TinyMCE](tinymce.md)
+
+* [Overriding Views](customization/overriding-views.md)
+* [Using custom HTTP controllers](customization/custom-http-controllers.md)
+* [Overriding Routes](customization/overriding-routes.md)
+* [Additional CSS and JS](customization/additional-css-js.md)
+* [Enabling Soft-Delete](customization/enabling-soft-delete.md)
+* [Custom relationship attributes](customization/custom-realtionship-attributes.md)
+* [TinyMCE](customization/tinymce.md)
 
 ## Troubleshooting
-* [Using HTTPS on yours site](using-https.md)
+
+* [Using HTTPS on yours site](troubleshooting/using-https.md)
+

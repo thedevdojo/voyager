@@ -18,3 +18,4 @@ You can use your own Controller by extending Voyager's Controllers. To do it, fi
 ```
 
 then run `php artisan voyager:controllers`, voyager will now use the child controllers which will be created at `App/Http/Controllers/Voyager`
+

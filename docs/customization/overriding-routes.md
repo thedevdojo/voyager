@@ -2,7 +2,7 @@
 
 You can override any Voyager routes by writing the routes you want to overwrite below `Voyager::routes()`. For example if you want to override your post LoginController:
 
-```
+```text
 Route::group(['prefix' => 'admin'], function () {
    Voyager::routes();
 
@@ -10,3 +10,4 @@ Route::group(['prefix' => 'admin'], function () {
    Route::post('login', ['uses' => 'MyAuthController@postLogin', 'as' => 'postlogin']);
 });
 ```
+
