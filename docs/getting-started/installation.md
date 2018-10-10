@@ -16,8 +16,10 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-!&gt; **Using Laravel 5.4?**  
-If you are installing with Laravel 5.4 you will need to [add the Service Provider manually](https://github.com/emptynick/voyager/tree/8427b44a7d17f291dc1875af30604bd44330ce13/installation?id=adding-the-service-provider/README.md). Otherwise, if you are on 5.5 this happens automatically thanks to package auto-discovery.
+{% hint style="info" %}
+**Using Laravel 5.4?**  
+If you are installing with Laravel 5.4 you will need to [add the Service Provider manually](installation.md#adding-the-service-provider). Otherwise, if you are on 5.5 this happens automatically thanks to package auto-discovery.
+{% endhint %}
 
 Finally, we can install Voyager. You can choose to install Voyager with dummy data or without the dummy data. The dummy data will include 1 admin account \(if no users already exist\), 1 demo page, 4 demo posts, 2 categories and 7 settings.
 
@@ -33,8 +35,10 @@ If you prefer installing it with the dummy data run the following command:
 php artisan voyager:install --with-dummy
 ```
 
-!&gt;**Specified key was too long error**  
+{% hint style="info" %}
+**Specified key was too long error**  
 If you see this error message you have an outdated version of MySQL, use the following solution: [https://laravel-news.com/laravel-5-4-key-too-long-error](https://laravel-news.com/laravel-5-4-key-too-long-error)
+{% endhint %}
 
 And we're all good to go!
 
@@ -45,8 +49,10 @@ If you installed with the dummy data, a user has been created for you with the f
 > **email:** `admin@admin.com`  
 > **password:** `password`
 
-!&gt; **Quick note**  
+{% hint style="info" %}
+**Quick note**  
 A dummy user is **only** created if there are no current users in your database.
+{% endhint %}
 
 If you did not go with the dummy user, you may wish to assign admin priveleges to an existing user. This can easily be done by running this command:
 
@@ -64,7 +70,7 @@ And you will be prompted for the users name and password.
 
 ## Advanced
 
-This section is meant for users who are installing Voyager on an already existing Laravel installation or for users who want to perform a manual install. If this is not the case, you should go back to the [installation](https://github.com/emptynick/voyager/tree/8427b44a7d17f291dc1875af30604bd44330ce13/installation/README.md) documentation or skip this section.
+This section is meant for users who are installing Voyager on an already existing Laravel installation or for users who want to perform a manual install. If this is not the case, you should go back to the [installation](installation.md) documentation or skip this section.
 
 The first thing you should do is publish the assets that come with Voyager. You can do that by running the following commands:
 
@@ -75,8 +81,10 @@ php artisan vendor:publish --provider=ImageServiceProviderLaravel5
 
 ## Adding the Service Provider
 
-!&gt; **This is only required if you are using Laravel 5.4!**  
+{% hint style="info" %}
+**This is only required if you are using Laravel 5.4!**  
 If you are on Laravel 5.5+ you can skip this step.
+{% endhint %}
 
 To add the Voyager Service Provider open up your application `config/app.php` file and add `TCG\Voyager\VoyagerServiceProvider::class,` in the `providers` array like so:
 
