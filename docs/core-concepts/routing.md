@@ -2,7 +2,7 @@
 
 After running the voyager installer you will see a few new routes that have been added to your `routes/web.php` file which look like the following:
 
-```text
+```php
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
@@ -22,6 +22,8 @@ As an example, if we have a `products` table and we specified the slug to be `pr
 URL/admin/products
 ```
 
-!&gt; **Notice**  
+{% hint style="info" %}
+**Notice**  
 You may not see a link to your newly created routes or BREAD inside your admin menu. To create a new link in your admin menu visit the documentation for the menu section.
+{% endhint %}
 
