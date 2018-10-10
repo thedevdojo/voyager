@@ -6,5 +6,5 @@ Hm Hm \(cough\)… I mean… Arrgg! Ye young scallywag! What say we learn how to
 
 ![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.png)
 
-Before installing Voyager you may want to take a quick moment to learn what is is and what it isn't, we'll do that in the next section. Click [here](https://github.com/emptynick/voyager/tree/8427b44a7d17f291dc1875af30604bd44330ce13/what-is-voyager/README.md) to continue.
+Before installing Voyager you may want to take a quick moment to learn what is is and what it isn't, we'll do that in the next section.
 
