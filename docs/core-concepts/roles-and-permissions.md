@@ -29,7 +29,7 @@ $canDeletePost = Voyager::can('delete_posts');
 
 The value of each check will return a boolean whether or not the user has that certain permission. However you might wish to throw a forbidden exception if the user does not have a certain permission. This can be done using the `canOrFail` method:
 
-```text
+```php
 Voyager::canOrFail('browse_admin');
 ```
 
@@ -59,25 +59,19 @@ If a menu item is associated with any kind of BREAD, then it will check for the 
 
 You can also check for permissions using blade syntax. Let's say for instance that you want to check if a user can `browse_posts`, simple enough we can use the following syntax:
 
-```text
+```php
 @can('browse', $post)
-
     I can browse posts
-
 @endcan
 ```
 
 Or perhaps you need to run an else condition for a permission. That's simple enough:
 
-```text
+```php
 @can('browse', $post)
-
     I can browse posts
-
 @else
-
     I cannot browse posts
-
 @endcan
 ```
 

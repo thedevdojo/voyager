@@ -33,7 +33,7 @@ Find out how to use these additional details below:
 
 ### Text \(Text Box, Text Area, Rich Textbox and Hidden\)
 
-```javascript
+```php
 {
     "default" : "Default text"
 }
@@ -43,7 +43,7 @@ Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In th
 
 ### Check Box
 
-```javascript
+```php
 {
     "on" : "On Text",
     "off" : "Off Text",
@@ -55,7 +55,7 @@ In Voyager a Check Box is converted into a toggle switch, and as you can see abo
 
 ### Drop Down
 
-```javascript
+```php
 {
     "default" : "option1",
     "options" : {
@@ -69,7 +69,7 @@ When specifying that an input type should be a dropdown you will need to specify
 
 ### Radio Button
 
-```javascript
+```php
 {
     "default" : "radio1",
     "options" : {
@@ -83,7 +83,7 @@ The Radio button is exactly the same as the dropdown. You can specify a `default
 
 ### Image
 
-```javascript
+```php
 {
     "resize": {
         "width": "1000",
@@ -123,7 +123,7 @@ The image input has many options. By default if you do not specify any options n
 
 ### Date & Timestamp
 
-```javascript
+```php
 {
     "format" : "%Y-%m-%d"
 }
@@ -135,7 +135,7 @@ The date & timestamp input field is where you can input a date. In the JSON abov
 
 All types can include a description in order to help your future self or other users using your Voyager admin panel to understand exactly what a specific BREAD input field is for, this can be defined in the `Optional Details` JSON input field:
 
-```text
+```php
 {
     "description": "A helpful description text here for your future self."
 }
@@ -145,7 +145,7 @@ All types can include a description in order to help your future self or other u
 
 Inside of the _Optional Details_ section for each row in your BREAD you can also specify validation rules with some simple JSON. Here is an example of how to add a validation rule or _required_ and _max length of 12_
 
-```text
+```php
 {
     "validation": {
         "rule": "required|max:12"
@@ -155,7 +155,7 @@ Inside of the _Optional Details_ section for each row in your BREAD you can also
 
 Additionally, you may wish to add some custom error messages which can be accomplished like so:
 
-```text
+```php
 {
     "validation": {
         "rule": "required|max:12",
@@ -169,7 +169,7 @@ Additionally, you may wish to add some custom error messages which can be accomp
 
 Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
 
-```text
+```php
 {
     "validation": {
         "rules": [
@@ -186,7 +186,7 @@ Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
 
 Using the bread builder you may wish to automatically generate slugs of a certain input. Lets say you have some posts, which have a title and a slug. If you want to automatically generate the slug from the title attribute, you may include the following _Optional Details_:
 
-```text
+```php
 {
     "slugify": {
         "origin": "title",
@@ -226,7 +226,7 @@ You might want to save an input field into the database as a `null` value instea
 
 Simply enough, inside the BREAD you can include the following _Optional Details_ for the field:
 
-```text
+```php
 {
     "null": ""
 }
@@ -234,7 +234,7 @@ Simply enough, inside the BREAD you can include the following _Optional Details_
 
 This will turn an empty string into a `null` value. However you might want to be able to add both an empty string and a `null` value to the database for that field. However you have to choose a replacement for the `null` value, but it can be anything you wish. For example, if you want a field to change a string \(ex. `Nothing`\) into a `null` value you could include the following _Optional Details_ for that field:
 
-```text
+```php
 {
     "null": "Nothing"
 }
@@ -246,7 +246,7 @@ Now entering `Nothing` into the field will end up as a `null` value in the datab
 
 There are also a few options that you can include to change the way your BREAD is displayed. You can add a `display` key to your json object and change the width of the particular field and even specify a custom ID.
 
-```text
+```php
 {
     "display": {
         "width": "3",
@@ -259,7 +259,7 @@ The width is displayed on a 12-grid system. Setting it with a width of 3 will sp
 
 The **id** will let you specify a custom id wrapper around your element. example:
 
-```text
+```markup
 <div id="custom_id">
     <!-- Your field element -->
 </div>
