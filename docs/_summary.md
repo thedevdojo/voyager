@@ -20,6 +20,7 @@
 * [Compass](core-concepts/compass.md)
 * [Roles and Permissions](core-concepts/roles-and-permissions.md)
 * [Helper methods](core-concepts/helper-methods.md)
+* [Multilanguage](core-concepts/multilanguage.md)
 
 ## Customization
 
