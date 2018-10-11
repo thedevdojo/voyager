@@ -21,6 +21,7 @@ class DeleteBreadMenuItem
      * Create a MenuItem for a given BREAD.
      *
      * @param BreadDeleted $bread
+     *
      * @return void
      */
     public function handle(BreadDeleted $bread)

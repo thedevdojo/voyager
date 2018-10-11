@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Listeners;
 
-use TCG\Voyager\Events\BreadAdded;
 use TCG\Voyager\Events\BreadDeleted;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Permission;
@@ -24,6 +23,7 @@ class DeleteBreadPermission
      * Create Permission for a given BREAD.
      *
      * @param BreadDeleted $bread
+     *
      * @return void
      */
     public function handle(BreadDeleted $bread)
