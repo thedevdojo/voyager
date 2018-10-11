@@ -29,8 +29,6 @@ class DeleteBreadPermission
     public function handle(BreadDeleted $bread)
     {
         if (config('voyager.bread.add_permission') && file_exists(base_path('routes/web.php'))) {
-            // Create permission
-            //
             // Permission::generateFor(snake_case($bread->dataType->slug));
             $role = Role::where('name', config('voyager.bread.default_role'))->firstOrFail();
 
