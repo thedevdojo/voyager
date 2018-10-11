@@ -180,6 +180,8 @@ Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
 }
 ```
 
+ You can find a list of all available validation rules in the [Laravel docs](https://laravel.com/docs/validation#available-validation-rules).
+
 ## Generating Slugs
 
 Using the bread builder you may wish to automatically generate slugs of a certain input. Lets say you have some posts, which have a title and a slug. If you want to automatically generate the slug from the title attribute, you may include the following _Optional Details_:
@@ -206,7 +208,7 @@ Using the BREAD builder you can easily create Relationships between tables. At t
 If you have not yet created the BREAD for the table yet, it will need to be created first and then you can come back after creating the BREAD to add the relationship. Otherwise you'll end up with a notification which looks like the following.
 {% endhint %}
 
-![](../.gitbook/assets/7b4f796-screen_shot_2017-09-18_at_3.34.18_pm%20%281%29.png)
+![](../.gitbook/assets/7b4f796-screen_shot_2017-09-18_at_3.34.18_pm-1.png)
 
 So, after the BREAD has already been created you will then be able to create a new relationship. After you click on the 'Create a Relationship' button. You will see a new Modal window that looks like the following:
 
