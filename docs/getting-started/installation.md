@@ -35,7 +35,7 @@ If you prefer installing it with the dummy data run the following command:
 php artisan voyager:install --with-dummy
 ```
 
-{% hint style="info" %}
+{% hint style="danger" %}
 **Specified key was too long error**  
 If you see this error message you have an outdated version of MySQL, use the following solution: [https://laravel-news.com/laravel-5-4-key-too-long-error](https://laravel-news.com/laravel-5-4-key-too-long-error)
 {% endhint %}
