@@ -32,20 +32,20 @@ The `voyager.php` configuration file has had a few changes. The `prefix` key has
 
 Multi-roles is a new feature come by in v1.1 that allows you to have multiple roles and one primary role. You can fetch the user's primary role like normally using this:
 
-```text
+```php
 $user->role->name // Name of primary role
 ```
 
 But now you can also use the new belongsToMany roles relationship to fetch all extra roles:
 
-```text
+```php
 $user->roles() // gets all extra roles relationship
 $user->roles()->get() // gets all extra as a collection
 ```
 
 Besides that there is a helper to get all the roles, both the primary and the extra roles:
 
-```text
+```php
 $user->roles_all() // collection of all roles
 ```
 
