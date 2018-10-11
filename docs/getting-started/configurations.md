@@ -36,9 +36,11 @@ Below we will take a deep dive into the configuration file and give a detailed d
 
 You can specify the default `controller` namespace of Voyager. If you ever wish to override any of the core functionality of Voyager you can do so by duplicating the Voyager controllers and specifying the location of your custom controllers.
 
-!&gt; **Overwrite a single controller**  
+{% hint style="info" %}
+**Overwrite a single controller**  
 If you only want to overwrite a single controller, you might consider adding the following piece of code to your `AppServiceProvider` class in the `register` method.  
 `$this->app->bind(VoyagerBreadController::class, MyBreadController::class);`
+{% endhint %}
 
 ## Model
 
@@ -62,7 +64,9 @@ You can specify the namespace or location of your models. This is used when crea
 
 You may wish to specify a different asset path. If your site lives in a subfolder you may need to include that directory to the beginning of the path. This may also be used in case you wish to duplicate the published assets and customize your own.
 
-> Note: When upgrading to new version of voyager the assets located in the /vendor/tcg/voyager/assets directory may need to be overwritten, so if you wish to customize any styles you will want to duplicate that directory and specify the new location of your asset\_path.
+{% hint style="info" %}
+When upgrading to new version of voyager the assets located in the `/vendor/tcg/voyager/assets` directory may need to be overwritten, so if you wish to customize any styles you will want to duplicate that directory and specify the new location of your asset\_path.
+{% endhint %}
 
 ## Storage
 
