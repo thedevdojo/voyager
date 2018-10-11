@@ -4,7 +4,7 @@ This is only to assist with enabling soft-deletion for your models within Voyage
 
 ## Table Configurations in Voyager
 
-If when creating a table using the Database Manager you've selected the 'Add Soft Deletes' button and then when adding the BREAD functionality to that table you've added a Model Name, you only have to edit your Model file to fully enable Soft-Delete on that table.
+When creating a table using the Database Manager you've selected the 'Add Soft Deletes' button and then when adding the BREAD functionality to that table you've added a Model Name, you only have to edit your Model file to fully enable Soft-Delete on that table.
 
 ## Editing the Table's Model
 
@@ -42,5 +42,5 @@ class Documento extends Model
 }
 ```
 
-And from now on, every time you delete a record from that table, it won't actually be deleted, only the `deleted_at`\` column will be written with the current timestamp.
+And from now on, every time you delete a record from that table, it won't actually be deleted, only the `deleted_at` column will be written with the current timestamp.
 
