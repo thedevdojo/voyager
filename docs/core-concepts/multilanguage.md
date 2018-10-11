@@ -68,7 +68,7 @@ echo $post->title;
 echo $post->getTranslatedAttribute('title', 'locale', 'fallbackLocale');
 ```
 
-> If you do not define locale, the current application locale will be used. You can pass in your own locale as a string. If you do not define fallbackLocale, the current application fallback locale will be used. You can pass your own locale as a string. If you want to turn the fallback locale off, pass false. If no values are found for the model for a specific attribute, either for the locale or the fallback, it will set that attribute to null.
+If you do not define locale, the current application locale will be used. You can pass in your own locale as a string. If you do not define fallbackLocale, the current application fallback locale will be used. You can pass your own locale as a string. If you want to turn the fallback locale off, pass false. If no values are found for the model for a specific attribute, either for the locale or the fallback, it will set that attribute to null.
 
 ### Translate the whole model
 
@@ -83,7 +83,7 @@ $posts = $posts->translate('locale', 'fallbackLocale');
 echo $posts[0]->title;
 ```
 
-> If you do not define `locale`, the current application locale will be used. You can pass in your own locale as a string. If you do not define `fallbackLocale`, the current application fallback locale will be used. You can pass in your own locale as a string. If you want to turn the fallback locale off, pass false. If no values are found for the model for a specific attribute, either for the locale or the fallback, it will set that attribute to null.
+If you do not define locale, the current application locale will be used. You can pass in your own locale as a string. If you do not define fallbackLocale, the current application fallback locale will be used. You can pass in your own locale as a string. If you want to turn the fallback locale off, pass false. If no values are found for the model for a specific attribute, either for the locale or the fallback, it will set that attribute to null.
 
 ### Check if model is translatable
 
@@ -107,5 +107,5 @@ $post->title = 'foobar';
 $post->save();
 ```
 
-> This will update or create the translation for title of the post with the locale da. Please note that if a modified attribute is not translatable, then it will make the changes directly to the model itself. Meaning that it will overwrite the attribute in the language set as default.
+This will update or create the translation for title of the post with the locale da. Please note that if a modified attribute is not translatable, then it will make the changes directly to the model itself. Meaning that it will overwrite the attribute in the language set as default.
 
