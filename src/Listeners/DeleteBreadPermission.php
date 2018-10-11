@@ -20,7 +20,7 @@ class DeleteBreadPermission
     }
 
     /**
-     * Create Permission for a given BREAD.
+     * Delete Permission for a given BREAD.
      *
      * @param BreadDeleted $bread
      *

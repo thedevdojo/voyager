@@ -18,7 +18,7 @@ class DeleteBreadMenuItem
     }
 
     /**
-     * Create a MenuItem for a given BREAD.
+     * Delete a MenuItem for a given BREAD.
      *
      * @param BreadDeleted $bread
      *
