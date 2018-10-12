@@ -73,7 +73,7 @@
                 @if($view == 'browse')
                     @php
                         $string_values = implode(", ", $selected_values);
-                        if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
+                        if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
                         <p>No results</p>
