@@ -53,22 +53,26 @@ abstract class Controller extends BaseController
 
         foreach ($rows as $row) {
             $options = json_decode($row->details);
+            
+            if ($row->type == 'relationship' && $options->type == 'belongsTo') {
+                $row->field = @$options->column;
+            }
 
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
             if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
                 // if the field is a belongsToMany relationship, don't remove it
                 // if no content is provided, that means the relationships need to be removed
-                if ((isset($options->type) && $options->type !== 'belongsToMany') || $row->field !== 'user_belongsto_role_relationship') {
+                if (isset($options->type)) {
+                    if ($options->type !== 'belongsToMany') {
+                        continue;
+                    }
+                } else {
                     continue;
                 }
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row, $options);
-
-            if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
-                $row->field = @$options->column;
-            }
 
             /*
              * merge ex_images and upload images
