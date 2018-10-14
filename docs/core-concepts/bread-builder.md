@@ -2,7 +2,7 @@
 
 When adding or editing the current BREAD for a database table you will first see the BREAD info which allows you to set the Display Names, slug, icon, Model and Controller Namespace, Policy Name. You can also choose if you would like to Generate permissions for that BREAD type.
 
-![](../.gitbook/assets/8d28805-bread_details.png)
+![](../.gitbook/assets/bread_details.png)
 
 When you scroll down you will see each of the rows that are associated with that table where you can select where in your views you want to see each of those fields:
 
@@ -12,7 +12,7 @@ When you scroll down you will see each of the rows that are associated with that
 * ADD \(field will be visible when you choose to create a new data type\)
 * DELETE \(doesn't pertain to delete so this can be checked or unchecked\)
 
-![](../.gitbook/assets/174c4ee-screen_shot_2017-09-17_at_5.20.21_pm.png)
+![](../.gitbook/assets/bread_fields.png)
 
 You may also choose to specify what form type you want to use for each field. This can be a TextBox, TextArea, Checkbox, Image, and many other types of form elements.
 
@@ -201,18 +201,18 @@ This will automatically generate the slug from the input of the `title` field. I
 
 Using the BREAD builder you can easily create Relationships between tables. At the bottom of the page you will see a new button that says 'Create Relationship'
 
-![](../.gitbook/assets/b6275df-rel.png)
+![](../.gitbook/assets/bread-relationship.png)
 
 {% hint style="info" %}
 **Notice**  
 If you have not yet created the BREAD for the table yet, it will need to be created first and then you can come back after creating the BREAD to add the relationship. Otherwise you'll end up with a notification which looks like the following.
 {% endhint %}
 
-![](../.gitbook/assets/7b4f796-screen_shot_2017-09-18_at_3.34.18_pm-1.png)
+![](../.gitbook/assets/bread_relationship_no_bread.png)
 
 So, after the BREAD has already been created you will then be able to create a new relationship. After you click on the 'Create a Relationship' button. You will see a new Modal window that looks like the following:
 
-![](../.gitbook/assets/a832ca9-screen_shot_2017-09-18_at_3.30.20_pm.png)
+![](../.gitbook/assets/bread_relationship_form.png)
 
 You will first specify which type of relationship this is going to be, then you will select the table you are referencing and which Namespace that belongs to that table. You will then select which row combines those tables.
 
@@ -264,4 +264,3 @@ The **id** will let you specify a custom id wrapper around your element. example
     <!-- Your field element -->
 </div>
 ```
-
