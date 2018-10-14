@@ -180,7 +180,7 @@ Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
 }
 ```
 
-You can find a list of all available validation rules in the [Laravel docs](https://laravel.com/docs/validation#available-validation-rules).
+ You can find a list of all available validation rules in the [Laravel docs](https://laravel.com/docs/validation#available-validation-rules).
 
 ## Generating Slugs
 
@@ -201,7 +201,7 @@ This will automatically generate the slug from the input of the `title` field. I
 
 Using the BREAD builder you can easily create Relationships between tables. At the bottom of the page you will see a new button that says 'Create Relationship'
 
-![](https://github.com/emptynick/voyager/tree/481ce432d3659830b78d2afd6d0e300796515c37/docs/.gitbook/assets/bread-relationship.png)
+![](../.gitbook/assets/bread-relationship.png)
 
 {% hint style="info" %}
 **Notice**  
@@ -264,4 +264,3 @@ The **id** will let you specify a custom id wrapper around your element. example
     <!-- Your field element -->
 </div>
 ```
-

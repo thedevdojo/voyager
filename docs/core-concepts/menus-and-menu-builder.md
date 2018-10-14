@@ -41,4 +41,3 @@ menu('main', 'my_menu');
 ```
 
 And your custom menu will now be output.
-

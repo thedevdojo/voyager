@@ -36,4 +36,3 @@
 
 * [Using HTTPS on yours site](troubleshooting/using-https.md)
 * [Missing required parameter](troubleshooting/missing-required-parameter.md)
-
