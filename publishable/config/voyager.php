@@ -98,6 +98,7 @@ return [
         'tables' => [
             'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
         ],
+        'autoload_migrations' => true,
     ],
 
     /*

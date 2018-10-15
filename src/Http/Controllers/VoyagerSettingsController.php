@@ -97,6 +97,10 @@ class VoyagerSettingsController extends Controller
                 continue;
             }
 
+            if ($setting->type == 'file' && $content == json_encode([])) {
+                continue;
+            }
+
             $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
 
             $setting->group = $request->input(str_replace('.', '_', $setting->key).'_group');
