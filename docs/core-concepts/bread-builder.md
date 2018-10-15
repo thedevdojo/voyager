@@ -201,7 +201,7 @@ This will automatically generate the slug from the input of the `title` field. I
 
 Using the BREAD builder you can easily create Relationships between tables. At the bottom of the page you will see a new button that says 'Create Relationship'
 
-![](../.gitbook/assets/bread-relationship.png)
+![](../.gitbook/assets/bread_relationship.png)
 
 {% hint style="info" %}
 **Notice**  
