@@ -201,7 +201,7 @@ This will automatically generate the slug from the input of the `title` field. I
 
 Using the BREAD builder you can easily create Relationships between tables. At the bottom of the page you will see a new button that says 'Create Relationship'
 
-![](https://github.com/emptynick/voyager/tree/f0d16019f3b01eaae42fd7fcf49afcd1d571ebea/docs/.gitbook/assets/bread-relationship.png)
+![](../.gitbook/assets/bread-relationship.png)
 
 {% hint style="info" %}
 **Notice**  
@@ -264,4 +264,3 @@ The **id** will let you specify a custom id wrapper around your element. example
     <!-- Your field element -->
 </div>
 ```
-
