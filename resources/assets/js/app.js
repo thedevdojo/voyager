@@ -16,7 +16,7 @@ require('./jquery-nestable');
 require('bootstrap');
 require('bootstrap-switch');
 require('select2');
-require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
+require('eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
 var brace = require('brace');
 require('brace/mode/json');
 require('brace/theme/github');
@@ -25,6 +25,7 @@ window.TinyMCE = window.tinymce = require('./tinymce');
 require('./multilingual');
 require('./voyager_tinymce');
 require('./voyager_ace_editor');
+require('formdata-polyfill');
 window.helpers = require('./helpers.js');
 
 $(document).ready(function () {
