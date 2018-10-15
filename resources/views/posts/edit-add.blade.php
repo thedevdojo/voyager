@@ -199,7 +199,7 @@
                                 ])
                                 <input type="text" class="form-control" id="slug" name="slug"
                                     placeholder="slug"
-                                    {{!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}}
+                                    {!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}
                                     value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">

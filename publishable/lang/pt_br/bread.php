@@ -36,7 +36,7 @@ return [
     'order_column'           => 'Ordenar pela coluna',
     'order_column_ph'        => 'A coluna na qual a ordenação será salva',
     'order_ident_column'     => 'Mostrar ordenação pela coluna',
-    'order_ident_column_ph'  => 'A colina que será exibida na página de ordenação',
+    'order_ident_column_ph'  => 'A coluna que será exibida na página de ordenação',
     'ordering_not_set'       => 'Você deve definir primeiro a ordem',
     'policy_class'           => 'Nome da Classe Policy',
     'policy_name'            => 'Nome da Policy',

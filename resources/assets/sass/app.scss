@@ -12,6 +12,7 @@
 @import "node_modules/simplemde/dist/simplemde.min";
 @import "node_modules/dropzone/dist/dropzone";
 @import "node_modules/cropperjs/dist/cropper";
+@import "node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker";
 @import "fonts";
 
 /********** LOGIN STYLES ***********/
@@ -5098,6 +5099,7 @@ float: left;
 
 .app-container  .side-menu .panel.widget .avatar{
     width: 36px;
+    height: 36px;
     float: left;
     margin-left: 12px;
     border: 0px;
