@@ -2,7 +2,7 @@
 
 When adding or editing the current BREAD for a database table you will first see the BREAD info which allows you to set the Display Names, slug, icon, Model and Controller Namespace, Policy Name. You can also choose if you would like to Generate permissions for that BREAD type.
 
-![](../.gitbook/assets/bread_details.png)
+![](../.gitbook/assets/bread_details%20%281%29.png)
 
 When you scroll down you will see each of the rows that are associated with that table where you can select where in your views you want to see each of those fields:
 
@@ -12,7 +12,7 @@ When you scroll down you will see each of the rows that are associated with that
 * ADD \(field will be visible when you choose to create a new data type\)
 * DELETE \(doesn't pertain to delete so this can be checked or unchecked\)
 
-![](../.gitbook/assets/bread_fields.png)
+![](../.gitbook/assets/bread_fields%20%282%29.png)
 
 You may also choose to specify what form type you want to use for each field. This can be a TextBox, TextArea, Checkbox, Image, and many other types of form elements.
 
@@ -180,7 +180,7 @@ Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
 }
 ```
 
- You can find a list of all available validation rules in the [Laravel docs](https://laravel.com/docs/validation#available-validation-rules).
+You can find a list of all available validation rules in the [Laravel docs](https://laravel.com/docs/validation#available-validation-rules).
 
 ## Generating Slugs
 
@@ -201,14 +201,14 @@ This will automatically generate the slug from the input of the `title` field. I
 
 Using the BREAD builder you can easily create Relationships between tables. At the bottom of the page you will see a new button that says 'Create Relationship'
 
-![](../.gitbook/assets/bread-relationship.png)
+![](https://github.com/emptynick/voyager/tree/453fe000237b460397dc190f7376c7b5575413c4/docs/.gitbook/assets/bread-relationship.png)
 
 {% hint style="info" %}
 **Notice**  
 If you have not yet created the BREAD for the table yet, it will need to be created first and then you can come back after creating the BREAD to add the relationship. Otherwise you'll end up with a notification which looks like the following.
 {% endhint %}
 
-![](../.gitbook/assets/bread_relationship_no_bread.png)
+![](../.gitbook/assets/bread_relationship_no_bread%20%281%29.png)
 
 So, after the BREAD has already been created you will then be able to create a new relationship. After you click on the 'Create a Relationship' button. You will see a new Modal window that looks like the following:
 
@@ -264,3 +264,4 @@ The **id** will let you specify a custom id wrapper around your element. example
     <!-- Your field element -->
 </div>
 ```
+
