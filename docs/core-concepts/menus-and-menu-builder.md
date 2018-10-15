@@ -10,7 +10,7 @@ When you are ready to add menu items to your menu you can click on the builder b
 
 This will take you to the Menu Builder where you can add, edit, and delete menu items.
 
-![](../.gitbook/assets/menu_2.jpg)
+![](../.gitbook/assets/menu_2%20%281%29.jpg)
 
 After creating and configuring your menu, you can easily implement that menu in your application. Say that we have a menu called `main`. Inside of any view file we could now output the menu by using the following code:
 
@@ -41,3 +41,4 @@ menu('main', 'my_menu');
 ```
 
 And your custom menu will now be output.
+
