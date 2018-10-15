@@ -31,6 +31,7 @@
 * [Enabling Soft-Delete](customization/enabling-soft-delete.md)
 * [Custom relationship attributes](customization/custom-realtionship-attributes.md)
 * [TinyMCE](customization/tinymce.md)
+* [Adding custom Formfields](customization/adding-custom-formfields.md)
 
 ## Troubleshooting
 
