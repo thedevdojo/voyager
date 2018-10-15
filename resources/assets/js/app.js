@@ -197,7 +197,7 @@ $(document).ready(function () {
                 $.each(d.errors, function (inputName, errorMessage) {
 
                     // This will work also for fields with brackets in the name, ie. name="image[]
-                    var $inputElement = $("[name='" + inputName + "']"),
+                    var $inputElement = $("[name='" + inputName + "'], [name='" + inputName + "[]']"),
                         inputElementPosition = $inputElement.first().parent().offset().top,
                         navbarHeight = $('nav.navbar').height();
 
