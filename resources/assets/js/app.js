@@ -174,7 +174,10 @@ $(document).ready(function () {
                     continue;
                 }
             }
-            data.append(this.elements[i].name, this.elements[i].value)
+            // Add checkboxes only if they are checked
+            if(e.currentTarget.elements[i].type != 'checkbox' || e.currentTarget.elements[i].checked) {
+                data.append(this.elements[i].name, this.elements[i].value);
+            }
         }
 
         data.set('_validate', '1');
