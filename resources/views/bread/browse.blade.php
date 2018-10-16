@@ -113,9 +113,15 @@
                                                         @endforeach
 
                                                     @elseif(property_exists($options, 'options'))
-                                                        @foreach($data->{$row->field} as $item)
-                                                         {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
-                                                        @endforeach
+                                                        @if (count(json_decode($data->{$row->field})) > 0)
+                                                            @foreach(json_decode($data->{$row->field}) as $item)
+                                                                @if (@$options->options->{$item})
+                                                                    {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            {{ __('voyager::generic.none') }}
+                                                        @endif
                                                     @endif
 
                                                 @elseif($row->type == 'select_dropdown' && property_exists($options, 'options'))
@@ -123,7 +129,7 @@
                                                     @if($data->{$row->field . '_page_slug'})
                                                         <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $options->options->{$data->{$row->field}} !!}</a>
                                                     @else
-                                                        {!! $options->options->{$data->{$row->field}} or '' !!}
+                                                        {!! isset($options->options->{$data->{$row->field}}) ?  $options->options->{$data->{$row->field}} : '' !!}
                                                     @endif
 
                                                 @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
