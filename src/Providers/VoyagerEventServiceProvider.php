@@ -19,7 +19,6 @@ class VoyagerEventServiceProvider extends ServiceProvider
         ],
         'TCG\Voyager\Events\BreadDeleted' => [
             'TCG\Voyager\Listeners\DeleteBreadMenuItem',
-            'TCG\Voyager\Listeners\DeleteBreadPermission',
         ],
     ];
 

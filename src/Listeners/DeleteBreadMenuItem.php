@@ -26,7 +26,7 @@ class DeleteBreadMenuItem
      */
     public function handle(BreadDeleted $bread)
     {
-        if (config('voyager.bread.add_menu_item') && file_exists(base_path('routes/web.php'))) {
+        if (config('voyager.bread.add_menu_item')) {
             $menuItem = MenuItem::where(['title' => $bread->dataType->display_name_plural]);
 
             if ($menuItem->exists()) {
