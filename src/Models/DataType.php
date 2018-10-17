@@ -242,21 +242,25 @@ class DataType extends Model
 
     public function getOrderColumnAttribute()
     {
-        return $this->details['order_column'];
+        return $this->details->order_column;
     }
 
     public function setOrderColumnAttribute($value)
     {
-        $this->attributes['details'] = collect($this->details)->merge(['order_column' => $value]);
+        $details = $this->attributes['details'];
+        $details->order_column = $value;
+        $this->attributes['details'] = $details;
     }
 
     public function getOrderDisplayColumnAttribute()
     {
-        return $this->details['order_display_column'];
+        return $this->details->order_display_column;
     }
 
     public function setOrderDisplayColumnAttribute($value)
     {
-        $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
+        $details = $this->attributes['details'];
+        $details->order_display_column = $value;
+        $this->attributes['details'] = $details;
     }
 }
