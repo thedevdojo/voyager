@@ -16,6 +16,11 @@ class DataRow extends Model
         'details' => 'array'
     ];
 
+    public function setDetailsAttribute($value)
+    {
+        $this->attributes['details'] = (object) $value;
+    }
+
     public function rowBefore()
     {
         $previous = self::where('data_type_id', '=', $this->data_type_id)->where('order', '=', ($this->order - 1))->first();

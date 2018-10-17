@@ -36,6 +36,11 @@ class DataType extends Model
         'details' => 'array',
     ];
 
+    public function setDetailsAttribute($value)
+    {
+        $this->attributes['details'] = (object) $value;
+    }
+
     public function rows()
     {
         return $this->hasMany(Voyager::modelClass('DataRow'))->orderBy('order');
