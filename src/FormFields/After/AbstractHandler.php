@@ -19,7 +19,7 @@ abstract class AbstractHandler implements HandlerInterface
             $row,
             $dataType,
             $dataTypeContent,
-            (object)$row->details
+            (object) $row->details
         );
 
         return $this->render($content);

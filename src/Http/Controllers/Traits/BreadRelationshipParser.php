@@ -15,7 +15,7 @@ trait BreadRelationshipParser
         $forget_keys = [];
         foreach ($dataType->{$bread_type.'Rows'} as $key => $row) {
             if ($row->type == 'relationship') {
-                $options = (object)$row->details;
+                $options = (object) $row->details;
                 if ($options->type == 'belongsTo') {
                     $relationshipField = @$options->column;
                     $keyInCollection = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relationshipField)->toArray());
@@ -41,7 +41,7 @@ trait BreadRelationshipParser
         $relationships = [];
 
         $dataType->browseRows->each(function ($item) use (&$relationships) {
-            $details = (object)$item->details;
+            $details = (object) $item->details;
             if (isset($details->relationship) && isset($item->field)) {
                 $relation = $details->relationship;
                 if (isset($relation->method)) {
@@ -116,7 +116,7 @@ trait BreadRelationshipParser
                 }
 
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
-                $relationData = ((object)($bread_data->details))->relationship;
+                $relationData = ((object) ($bread_data->details))->relationship;
 
                 if ($bread_data->type == 'select_multiple') {
                     $relationItems = [];

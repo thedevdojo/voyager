@@ -52,7 +52,7 @@ abstract class Controller extends BaseController
                         : [];
 
         foreach ($rows as $row) {
-            $options = (object)$row->details;
+            $options = (object) $row->details;
 
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
@@ -146,7 +146,7 @@ abstract class Controller extends BaseController
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
         foreach ($fieldsWithValidationRules as $field) {
-            $options = (object)$field->details;
+            $options = (object) $field->details;
             $fieldRules = $options->validation->rule;
             $fieldName = $field->field;
 
@@ -235,7 +235,7 @@ abstract class Controller extends BaseController
             if (empty($value->details)) {
                 return false;
             }
-            $decoded = (object)$value->details;
+            $decoded = (object) $value->details;
 
             return !empty($decoded->validation->rule);
         });

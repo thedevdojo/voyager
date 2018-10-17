@@ -13,7 +13,7 @@ class DataRow extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'details' => 'array'
+        'details' => 'array',
     ];
 
     public function rowBefore()
@@ -28,7 +28,7 @@ class DataRow extends Model
 
     public function relationshipField()
     {
-        $options = (object)$this->details;
+        $options = (object) $this->details;
 
         return @$options->column;
     }
