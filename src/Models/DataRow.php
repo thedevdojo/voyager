@@ -16,9 +16,9 @@ class DataRow extends Model
         'details' => 'array'
     ];
 
-    public function setDetailsAttribute($value)
+    public function getDetailsAttribute($value)
     {
-        $this->attributes['details'] = (object) $value;
+        return (object) $value;
     }
 
     public function rowBefore()
