@@ -181,7 +181,7 @@ class VoyagerBaseController extends Controller
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         foreach ($dataType->editRows as $key => $row) {
-            $details = (object)$row->details;
+            $details = (object) $row->details;
             $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
         }
 
@@ -266,7 +266,7 @@ class VoyagerBaseController extends Controller
                             : false;
 
         foreach ($dataType->addRows as $key => $row) {
-            $details = (object)$row->details;
+            $details = (object) $row->details;
             $dataType->addRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
         }
 
@@ -424,7 +424,7 @@ class VoyagerBaseController extends Controller
                 $this->deleteFileIfExists($data->{$row->field});
             }
 
-            $options = (object)$row->details;
+            $options = (object) $row->details;
 
             if (isset($options->thumbnails)) {
                 foreach ($options->thumbnails as $thumbnail) {

@@ -131,7 +131,7 @@ class Voyager
 
     public function afterFormFields($row, $dataType, $dataTypeContent)
     {
-        $options = (object)$row->details;
+        $options = (object) $row->details;
 
         return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent, $options) {
             return $after->visible($row, $dataType, $dataTypeContent, $options);
