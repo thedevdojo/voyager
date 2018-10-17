@@ -52,7 +52,7 @@ abstract class Controller extends BaseController
                         : [];
 
         foreach ($rows as $row) {
-            $options = json_decode($row->details);
+            $options = (object)$row->details;
 
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
@@ -146,7 +146,7 @@ abstract class Controller extends BaseController
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
         foreach ($fieldsWithValidationRules as $field) {
-            $options = json_decode($field->details);
+            $options = (object)$field->details;
             $fieldRules = $options->validation->rule;
             $fieldName = $field->field;
 
@@ -235,51 +235,9 @@ abstract class Controller extends BaseController
             if (empty($value->details)) {
                 return false;
             }
-            $decoded = json_decode($value->details, true);
+            $decoded = (object)$value->details;
 
-            return !empty($decoded['validation']['rule']);
+            return !empty($decoded->validation->rule);
         });
     }
-
-    // public function handleRelationshipContent($row, $content){
-
-    //     $options = json_decode($row->details);
-
-    //     switch ($options->type) {
-    //         /********** PASSWORD TYPE **********/
-    //         case 'belongsToMany':
-
-    //             // $pivotContent = [];
-    //             // // Read all values for fields in pivot tables from the request
-    //             // foreach ($options->relationship->editablePivotFields as $pivotField) {
-    //             //     if (!isset($pivotContent[$pivotField])) {
-    //             //         $pivotContent[$pivotField] = [];
-    //             //     }
-    //             //     $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
-    //             // }
-    //             // // Create a new content array for updating pivot table
-    //             // $newContent = [];
-    //             // foreach ($content as $contentIndex => $contentValue) {
-    //             //     $newContent[$contentValue] = [];
-    //             //     foreach ($pivotContent as $pivotContentKey => $value) {
-    //             //         $newContent[$contentValue][$pivotContentKey] = $value[$contentIndex];
-    //             //     }
-    //             // }
-    //             // $content = $newContent;
-
-    //                 return [1];
-
-    //             break;
-
-    //         case 'hasMany':
-
-    //         default:
-
-    //             return $content;
-
-    //     }
-
-    //     return $content;
-
-    // }
 }

@@ -96,7 +96,7 @@
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
                                             <td>
-                                                <?php $options = json_decode($row->details); ?>
+                                                <?php $options = (object)$row->details;//(!empty($row->details) ? (object)$row->details : new stdClass()) ?>
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                                 @elseif($row->type == 'relationship')
@@ -156,8 +156,8 @@
                                                     <div class="readmore">{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                                 @elseif($row->type == 'file' && !empty($data->{$row->field}) )
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
-                                                    @if(json_decode($data->{$row->field}))
-                                                        @foreach(json_decode($data->{$row->field}) as $file)
+                                                    @if($data->{$row->field})
+                                                        @foreach($data->{$row->field} as $file)
                                                             <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) ?: '' }}" target="_blank">
                                                                 {{ $file->original_name ?: '' }}
                                                             </a>
@@ -174,7 +174,7 @@
                                                 @elseif($row->type == 'coordinates')
                                                     @include('voyager::partials.coordinates-static-image')
                                                 @elseif($row->type == 'multiple_images')
-                                                    @php $images = json_decode($data->{$row->field}); @endphp
+                                                    @php $images = $data->{$row->field}; @endphp
                                                     @if($images)
                                                         @php $images = array_slice($images, 0, 3); @endphp
                                                         @foreach($images as $image)

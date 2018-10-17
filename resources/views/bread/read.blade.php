@@ -35,11 +35,7 @@
                     <!-- form start -->
                     @foreach($dataType->readRows as $row)
                         @php
-                            $rowDetails = json_decode($row->details);
-                            if ($rowDetails === null) {
-                                $rowDetails = new stdClass();
-                                $rowDetails->options = new stdClass();
-                            }
+                            $rowDetails = (object)$row->details;
                         @endphp
 
                         <div class="panel-heading" style="border-bottom:0;">
