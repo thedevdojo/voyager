@@ -28,9 +28,7 @@ class DataRow extends Model
 
     public function relationshipField()
     {
-        $options = (object)$this->details;
-
-        return @$options->column;
+        return @$this->details->column;
     }
 
     /**

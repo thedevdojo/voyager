@@ -52,22 +52,20 @@ abstract class Controller extends BaseController
                         : [];
 
         foreach ($rows as $row) {
-            $options = (object)$row->details;
-
             // if the field for this row is absent from the request, continue
             // checkboxes will be absent when unchecked, thus they are the exception
             if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
                 // if the field is a belongsToMany relationship, don't remove it
                 // if no content is provided, that means the relationships need to be removed
-                if ((isset($options->type) && $options->type !== 'belongsToMany') || $row->field !== 'user_belongsto_role_relationship') {
+                if ((isset($row->details->type) && $row->details->type !== 'belongsToMany') || $row->field !== 'user_belongsto_role_relationship') {
                     continue;
                 }
             }
 
-            $content = $this->getContentBasedOnType($request, $slug, $row, $options);
+            $content = $this->getContentBasedOnType($request, $slug, $row, $row->details);
 
-            if ($row->type == 'relationship' && $options->type != 'belongsToMany') {
-                $row->field = @$options->column;
+            if ($row->type == 'relationship' && $row->details->type != 'belongsToMany') {
+                $row->field = @$row->details->column;
             }
 
             /*
@@ -104,9 +102,9 @@ abstract class Controller extends BaseController
                 }
             }
 
-            if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
+            if ($row->type == 'relationship' && $row->details->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
-                $multi_select[] = ['model' => $options->model, 'content' => $content, 'table' => $options->pivot_table];
+                $multi_select[] = ['model' => $row->details->model, 'content' => $content, 'table' => $row->details->pivot_table];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -146,8 +144,7 @@ abstract class Controller extends BaseController
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
         foreach ($fieldsWithValidationRules as $field) {
-            $options = (object)$field->details;
-            $fieldRules = $options->validation->rule;
+            $fieldRules = $field->details->validation->rule;
             $fieldName = $field->field;
 
             // Show the field's display name on the error message
@@ -168,8 +165,8 @@ abstract class Controller extends BaseController
             }
 
             // Set custom validation messages if any
-            if (!empty($options->validation->messages)) {
-                foreach ($options->validation->messages as $key => $msg) {
+            if (!empty($field->details->validation->messages)) {
+                foreach ($field->details->validation->messages as $key => $msg) {
                     $messages["{$fieldName}.{$key}"] = $msg;
                 }
             }
@@ -235,9 +232,8 @@ abstract class Controller extends BaseController
             if (empty($value->details)) {
                 return false;
             }
-            $decoded = (object)$value->details;
 
-            return !empty($decoded->validation->rule);
+            return !empty($value->details->validation->rule);
         });
     }
 }
