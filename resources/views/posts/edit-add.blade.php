@@ -154,7 +154,7 @@
                             @foreach($dataTypeRows as $row)
                                 @if(!in_array($row->field, $exclude))
                                     @php
-                                        $options = json_decode($row->details);
+                                        $options = (object)$row->details;
                                         $display_options = isset($options->display) ? $options->display : NULL;
                                     @endphp
                                     @if ($options && isset($options->formfields_custom))
