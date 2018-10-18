@@ -156,7 +156,7 @@
                                     @php
                                         $display_options = isset($row->details->display) ? $row->details->display : NULL;
                                     @endphp
-                                    @if ($row->details && isset($row->details->formfields_custom))
+                                    @if (isset($row->details->formfields_custom))
                                         @include('voyager::formfields.custom.' . $row->details->formfields_custom)
                                     @else
                                         <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>

@@ -83,9 +83,9 @@
                                     @endif
                                 @endif
                             @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                {{ $row->details && property_exists($row->details, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($row->details->format) : $dataTypeContent->{$row->field} }}
+                                {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($row->details->format) : $dataTypeContent->{$row->field} }}
                             @elseif($row->type == 'checkbox')
-                                @if($row->details && property_exists($row->details, 'on') && property_exists($row->details, 'off'))
+                                @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                     @if($dataTypeContent->{$row->field})
                                     <span class="label label-info">{{ $row->details->on }}</span>
                                     @else

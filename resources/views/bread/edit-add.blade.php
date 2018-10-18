@@ -55,10 +55,10 @@
                                 @php
                                     $display_options = isset($row->details->display) ? $row->details->display : NULL;
                                 @endphp
-                                @if ($row->details && isset($row->details->legend) && isset($row->details->legend->text))
+                                @if (isset($row->details->legend) && isset($row->details->legend->text))
                                     <legend class="text-{{isset($row->details->legend->align) ? $row->details->legend->align : 'center'}}" style="background-color: {{isset($row->details->legend->bgcolor) ? $row->details->legend->bgcolor : '#f0f0f0'}};padding: 5px;">{{$row->details->legend->text}}</legend>
                                 @endif
-                                @if ($row->details && isset($row->details->formfields_custom))
+                                @if (isset($row->details->formfields_custom))
                                     @include('voyager::formfields.custom.' . $row->details->formfields_custom)
                                 @else
                                     <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ isset($display_options->width) ? $display_options->width : 12 }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>

@@ -134,9 +134,9 @@
                                                 @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
                                                     <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                    {{ $row->details && property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
+                                                    {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
                                                 @elseif($row->type == 'checkbox')
-                                                    @if($row->details && property_exists($row->details, 'on') && property_exists($row->details, 'off'))
+                                                    @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                                         @if($data->{$row->field})
                                                             <span class="label label-info">{{ $row->details->on }}</span>
                                                         @else
@@ -155,8 +155,8 @@
                                                     <div class="readmore">{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                                 @elseif($row->type == 'file' && !empty($data->{$row->field}) )
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
-                                                    @if($data->{$row->field})
-                                                        @foreach($data->{$row->field} as $file)
+                                                    @if(json_decode($data->{$row->field}))
+                                                        @foreach(json_decode($data->{$row->field}) as $file)
                                                             <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) ?: '' }}" target="_blank">
                                                                 {{ $file->original_name ?: '' }}
                                                             </a>
@@ -173,7 +173,7 @@
                                                 @elseif($row->type == 'coordinates')
                                                     @include('voyager::partials.coordinates-static-image')
                                                 @elseif($row->type == 'multiple_images')
-                                                    @php $images = $data->{$row->field}; @endphp
+                                                    @php $images = json_decode($data->{$row->field}); @endphp
                                                     @if($images)
                                                         @php $images = array_slice($images, 0, 3); @endphp
                                                         @foreach($images as $image)
