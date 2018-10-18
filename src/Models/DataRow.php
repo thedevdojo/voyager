@@ -61,6 +61,6 @@ class DataRow extends Model
     }
 
     public function getDetailsAttribute($value) {
-        return json_decode(empty($value) ? $value : '{}');
+        return json_decode(!empty($value) ? $value : '{}');
     }
 }
