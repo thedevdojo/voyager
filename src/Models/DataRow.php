@@ -56,11 +56,13 @@ class DataRow extends Model
         return url()->current().'?'.http_build_query($params);
     }
 
-    public function setDetailsAttribute($value) {
+    public function setDetailsAttribute($value)
+    {
         $this->attributes['details'] = json_encode($value);
     }
 
-    public function getDetailsAttribute($value) {
+    public function getDetailsAttribute($value)
+    {
         return json_decode(!empty($value) ? $value : '{}');
     }
 }

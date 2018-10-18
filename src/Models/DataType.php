@@ -232,12 +232,14 @@ class DataType extends Model
         }
     }
 
-    public function setDetailsAttribute($value) {
+    public function setDetailsAttribute($value)
+    {
         $this->attributes['details'] = json_encode($value);
     }
 
-    public function getDetailsAttribute($value) {
-        return json_decode(empty($value) ? $value : '{}');
+    public function getDetailsAttribute($value)
+    {
+        return json_decode(!empty($value) ? $value : '{}');
     }
 
     public function getOrderColumnAttribute()
