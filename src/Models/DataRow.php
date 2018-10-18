@@ -12,10 +12,6 @@ class DataRow extends Model
 
     public $timestamps = false;
 
-    protected $casts = [
-        'details' => 'object',
-    ];
-
     public function rowBefore()
     {
         $previous = self::where('data_type_id', '=', $this->data_type_id)->where('order', '=', ($this->order - 1))->first();
@@ -58,5 +54,13 @@ class DataRow extends Model
         $params['order_by'] = $this->field;
 
         return url()->current().'?'.http_build_query($params);
+    }
+
+    public function setDetailsAttribute($value) {
+        $this->attributes['details'] = json_encode($value);
+    }
+
+    public function getDetailsAttribute($value) {
+        return json_decode(empty($value) ? $value : '{}');
     }
 }

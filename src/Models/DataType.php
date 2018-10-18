@@ -33,10 +33,6 @@ class DataType extends Model
         'details',
     ];
 
-    protected $casts = [
-        'details' => 'object',
-    ];
-
     public function rows()
     {
         return $this->hasMany(Voyager::modelClass('DataRow'))->orderBy('order');
@@ -236,6 +232,14 @@ class DataType extends Model
         }
     }
 
+    public function setDetailsAttribute($value) {
+        $this->attributes['details'] = json_encode($value);
+    }
+
+    public function getDetailsAttribute($value) {
+        return json_decode(empty($value) ? $value : '{}');
+    }
+
     public function getOrderColumnAttribute()
     {
         return isset($this->details->order_column) ? $this->details->order_column : null;
@@ -243,9 +247,7 @@ class DataType extends Model
 
     public function setOrderColumnAttribute($value)
     {
-        $details = $this->attributes['details'];
-        $details->order_column = $value;
-        $this->attributes['details'] = $details;
+        $this->attributes['details'] = collect($this->details)->merge(['order_column' => $value]);
     }
 
     public function getOrderDisplayColumnAttribute()
@@ -255,8 +257,6 @@ class DataType extends Model
 
     public function setOrderDisplayColumnAttribute($value)
     {
-        $details = $this->attributes['details'];
-        $details->order_display_column = $value;
-        $this->attributes['details'] = $details;
+        $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
     }
 }
