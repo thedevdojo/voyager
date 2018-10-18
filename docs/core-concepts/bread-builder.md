@@ -180,7 +180,7 @@ Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
 }
 ```
 
- You can find a list of all available validation rules in the [Laravel docs](https://laravel.com/docs/validation#available-validation-rules).
+You can find a list of all available validation rules in the [Laravel docs](https://laravel.com/docs/validation#available-validation-rules).
 
 ## Generating Slugs
 
@@ -264,3 +264,4 @@ The **id** will let you specify a custom id wrapper around your element. example
     <!-- Your field element -->
 </div>
 ```
+
