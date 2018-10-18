@@ -44,7 +44,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 1,
             ])->save();
         }
@@ -60,7 +59,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 0,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 2,
             ])->save();
         }
@@ -76,7 +74,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 3,
             ])->save();
         }
@@ -92,7 +89,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 4,
             ])->save();
         }
@@ -108,7 +104,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 5,
             ])->save();
         }
@@ -124,7 +119,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 6,
             ])->save();
         }
@@ -140,7 +134,7 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => json_encode([
+                'details'      => [
                     'resize' => [
                         'width'  => '1000',
                         'height' => 'null',
@@ -164,7 +158,7 @@ class PostsTableSeeder extends Seeder
                             ],
                         ],
                     ],
-                ]),
+                ],
                 'order' => 7,
             ])->save();
         }
@@ -180,7 +174,7 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => json_encode([
+                'details'      => [
                     'slugify' => [
                         'origin'      => 'title',
                         'forceUpdate' => true,
@@ -188,7 +182,7 @@ class PostsTableSeeder extends Seeder
                     'validation' => [
                         'rule'  => 'unique:posts,slug',
                     ],
-                ]),
+                ],
                 'order' => 8,
             ])->save();
         }
@@ -204,7 +198,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 9,
             ])->save();
         }
@@ -220,7 +213,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 10,
             ])->save();
         }
@@ -236,14 +228,14 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => json_encode([
+                'details'      => [
                     'default' => 'DRAFT',
                     'options' => [
                         'PUBLISHED' => 'published',
                         'DRAFT'     => 'draft',
                         'PENDING'   => 'pending',
                     ],
-                ]),
+                ],
                 'order' => 11,
             ])->save();
         }
@@ -259,7 +251,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 12,
             ])->save();
         }
@@ -275,7 +266,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 13,
             ])->save();
         }
@@ -291,7 +281,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 14,
             ])->save();
         }
@@ -306,7 +295,6 @@ class PostsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 15,
             ])->save();
         }
