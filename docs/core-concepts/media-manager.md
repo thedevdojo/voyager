@@ -10,3 +10,4 @@ You may also drag and drop files onto the 'upload' button to upload multiple fil
 **Notice on File Upload Size**  
 If you are getting an error when trying to upload large files, this may be a setting that needs to be changed in your PHP. Be sure to check `max_file_upload` and `file_upload_size`
 {% endhint %}
+

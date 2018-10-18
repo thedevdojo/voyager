@@ -240,7 +240,7 @@ class VoyagerBreadController extends Controller
             }
 
             // Build the relationship details
-            $relationshipDetails = json_encode([
+            $relationshipDetails = [
                 'model'       => $request->relationship_model,
                 'table'       => $request->relationship_table,
                 'type'        => $request->relationship_type,
@@ -250,7 +250,7 @@ class VoyagerBreadController extends Controller
                 'pivot_table' => $request->relationship_pivot,
                 'pivot'       => ($request->relationship_type == 'belongsToMany') ? '1' : '0',
                 'taggable'    => $request->relationship_taggable,
-            ]);
+            ];
 
             $newRow = new DataRow();
 
