@@ -30,16 +30,12 @@ class DataType extends Model
         'server_side',
         'order_column',
         'order_display_column',
+        'details',
     ];
 
     protected $casts = [
-        'details' => 'array',
+        'details' => 'object'
     ];
-
-    public function getDetailsAttribute($value)
-    {
-        return (object) $value;
-    }
 
     public function rows()
     {
@@ -242,7 +238,7 @@ class DataType extends Model
 
     public function getOrderColumnAttribute()
     {
-        return $this->details->order_column;
+        return isset($this->details->order_column) ? $this->details->order_column : null;
     }
 
     public function setOrderColumnAttribute($value)
@@ -254,7 +250,7 @@ class DataType extends Model
 
     public function getOrderDisplayColumnAttribute()
     {
-        return $this->details->order_display_column;
+        return isset($this->details->order_display_column) ? $this->details->order_display_column : null;
     }
 
     public function setOrderDisplayColumnAttribute($value)

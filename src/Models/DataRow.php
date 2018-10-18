@@ -13,13 +13,8 @@ class DataRow extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'details' => 'array'
+        'details' => 'object'
     ];
-
-    public function getDetailsAttribute($value)
-    {
-        return (object) $value;
-    }
 
     public function rowBefore()
     {
