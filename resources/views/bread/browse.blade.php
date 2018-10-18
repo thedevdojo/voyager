@@ -134,13 +134,13 @@
                                                 @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
                                                     <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                    {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $data->{$row->field} }}
+                                                    {{ $row->details && property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
                                                 @elseif($row->type == 'checkbox')
-                                                    @if($options && property_exists($options, 'on') && property_exists($options, 'off'))
+                                                    @if($row->details && property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                                         @if($data->{$row->field})
-                                                            <span class="label label-info">{{ $options->on }}</span>
+                                                            <span class="label label-info">{{ $row->details->on }}</span>
                                                         @else
-                                                            <span class="label label-primary">{{ $options->off }}</span>
+                                                            <span class="label label-primary">{{ $row->details->off }}</span>
                                                         @endif
                                                     @else
                                                     {{ $data->{$row->field} }}
