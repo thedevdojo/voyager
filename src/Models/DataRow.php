@@ -13,7 +13,7 @@ class DataRow extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'details' => 'object'
+        'details' => 'object',
     ];
 
     public function rowBefore()

@@ -34,7 +34,7 @@ class DataType extends Model
     ];
 
     protected $casts = [
-        'details' => 'object'
+        'details' => 'object',
     ];
 
     public function rows()
