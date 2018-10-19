@@ -14,13 +14,13 @@ This will take you to the Menu Builder where you can add, edit, and delete menu 
 
 After creating and configuring your menu, you can easily implement that menu in your application. Say that we have a menu called `main`. Inside of any view file we could now output the menu by using the following code:
 
-```text
+```php
 menu('main');
 ```
 
 This will output your menu in an unstyled unordered list. If you do use bootstrap to stylize your web app you can pass a second argument to the menu display method telling it that you want to stylize the menu with bootstrap styles like so:
 
-```text
+```php
 menu('main', 'bootstrap');
 ```
 
@@ -36,8 +36,19 @@ Taking it one more step further you can even specify your own view and stylize y
 
 Then anywhere you wanted to display your menu you can now call:
 
-```text
+```php
 menu('main', 'my_menu');
 ```
 
 And your custom menu will now be output.
+
+### Menu as JSON
+
+If you dont want to render your menu but get an array instead, you can pass `_json` as the second parameter. For example:
+
+```php
+menu('main', '_json')
+```
+
+This will give you a collection of menu-items.
+

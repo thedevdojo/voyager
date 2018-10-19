@@ -41,6 +41,6 @@ if (!function_exists('isFieldSlugAutoGenerator')) {
             return;
         }
 
-        return isBreadSlugAutoGenerator(json_decode($_row->details));
+        return isBreadSlugAutoGenerator($_row->details);
     }
 }

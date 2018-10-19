@@ -72,7 +72,7 @@ abstract class Controller extends BaseController
                 }
             }
 
-            $content = $this->getContentBasedOnType($request, $slug, $row, $options);
+            $content = $this->getContentBasedOnType($request, $slug, $row, $row->details);
 
             /*
              * merge ex_images and upload images
@@ -108,9 +108,9 @@ abstract class Controller extends BaseController
                 }
             }
 
-            if ($row->type == 'relationship' && $options->type == 'belongsToMany') {
+            if ($row->type == 'relationship' && $row->details->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
-                $multi_select[] = ['model' => $options->model, 'content' => $content, 'table' => $options->pivot_table];
+                $multi_select[] = ['model' => $row->details->model, 'content' => $content, 'table' => $row->details->pivot_table];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -150,8 +150,7 @@ abstract class Controller extends BaseController
         $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
 
         foreach ($fieldsWithValidationRules as $field) {
-            $options = json_decode($field->details);
-            $fieldRules = $options->validation->rule;
+            $fieldRules = $field->details->validation->rule;
             $fieldName = $field->field;
 
             // Show the field's display name on the error message
@@ -172,8 +171,8 @@ abstract class Controller extends BaseController
             }
 
             // Set custom validation messages if any
-            if (!empty($options->validation->messages)) {
-                foreach ($options->validation->messages as $key => $msg) {
+            if (!empty($field->details->validation->messages)) {
+                foreach ($field->details->validation->messages as $key => $msg) {
                     $messages["{$fieldName}.{$key}"] = $msg;
                 }
             }
@@ -239,51 +238,8 @@ abstract class Controller extends BaseController
             if (empty($value->details)) {
                 return false;
             }
-            $decoded = json_decode($value->details, true);
 
-            return !empty($decoded['validation']['rule']);
+            return !empty($value->details->validation->rule);
         });
     }
-
-    // public function handleRelationshipContent($row, $content){
-
-    //     $options = json_decode($row->details);
-
-    //     switch ($options->type) {
-    //         /********** PASSWORD TYPE **********/
-    //         case 'belongsToMany':
-
-    //             // $pivotContent = [];
-    //             // // Read all values for fields in pivot tables from the request
-    //             // foreach ($options->relationship->editablePivotFields as $pivotField) {
-    //             //     if (!isset($pivotContent[$pivotField])) {
-    //             //         $pivotContent[$pivotField] = [];
-    //             //     }
-    //             //     $pivotContent[$pivotField] = $request->input('pivot_'.$pivotField);
-    //             // }
-    //             // // Create a new content array for updating pivot table
-    //             // $newContent = [];
-    //             // foreach ($content as $contentIndex => $contentValue) {
-    //             //     $newContent[$contentValue] = [];
-    //             //     foreach ($pivotContent as $pivotContentKey => $value) {
-    //             //         $newContent[$contentValue][$pivotContentKey] = $value[$contentIndex];
-    //             //     }
-    //             // }
-    //             // $content = $newContent;
-
-    //                 return [1];
-
-    //             break;
-
-    //         case 'hasMany':
-
-    //         default:
-
-    //             return $content;
-
-    //     }
-
-    //     return $content;
-
-    // }
 }

@@ -24,9 +24,7 @@ class DataRow extends Model
 
     public function relationshipField()
     {
-        $options = json_decode($this->details);
-
-        return @$options->column;
+        return @$this->details->column;
     }
 
     /**
@@ -56,5 +54,15 @@ class DataRow extends Model
         $params['order_by'] = $this->field;
 
         return url()->current().'?'.http_build_query($params);
+    }
+
+    public function setDetailsAttribute($value)
+    {
+        $this->attributes['details'] = json_encode($value);
+    }
+
+    public function getDetailsAttribute($value)
+    {
+        return json_decode(!empty($value) ? $value : '{}');
     }
 }
