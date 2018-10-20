@@ -1,4 +1,4 @@
-@php $relationshipDetails = json_decode($relationship['details']); @endphp
+@php $relationshipDetails = $relationship['details']; @endphp
 <div class="row row-dd row-dd-relationship">
     <div class="col-xs-2">
         <h4><i class="voyager-heart"></i><strong>{{ $relationship->display_name }}</strong></h4>

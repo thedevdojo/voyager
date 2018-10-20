@@ -181,8 +181,7 @@ class VoyagerBaseController extends Controller
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         foreach ($dataType->editRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+            $dataType->editRows[$key]['col_width'] = isset($row->details->width) ? $row->details->width : 100;
         }
 
         // If a column has a relationship associated with it, we do not want to show that field
@@ -266,8 +265,7 @@ class VoyagerBaseController extends Controller
                             : false;
 
         foreach ($dataType->addRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataType->addRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+            $dataType->addRows[$key]['col_width'] = isset($row->details->width) ? $row->details->width : 100;
         }
 
         // If a column has a relationship associated with it, we do not want to show that field
@@ -401,8 +399,10 @@ class VoyagerBaseController extends Controller
 
         // Delete Files
         foreach ($dataType->deleteRows->where('type', 'file') as $row) {
-            foreach (json_decode($data->{$row->field}) as $file) {
-                $this->deleteFileIfExists($file->download_link);
+            if (isset($data->{$row->field})) {
+                foreach (json_decode($data->{$row->field}) as $file) {
+                    $this->deleteFileIfExists($file->download_link);
+                }
             }
         }
     }
@@ -422,10 +422,8 @@ class VoyagerBaseController extends Controller
                 $this->deleteFileIfExists($data->{$row->field});
             }
 
-            $options = json_decode($row->details);
-
-            if (isset($options->thumbnails)) {
-                foreach ($options->thumbnails as $thumbnail) {
+            if (isset($row->details->thumbnails)) {
+                foreach ($row->details->thumbnails as $thumbnail) {
                     $ext = explode('.', $data->{$row->field});
                     $extension = '.'.$ext[count($ext) - 1];
 
