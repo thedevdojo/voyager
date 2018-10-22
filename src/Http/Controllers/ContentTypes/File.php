@@ -13,7 +13,10 @@ class File extends BaseType
      */
     public function handle()
     {
-
+        if (!$this->request->hasFile($this->row->field)) {
+            return json_encode([]);
+        }
+        
         $files = Arr::wrap($this->request->file($this->row->field));
 
         $filesPath = [];
