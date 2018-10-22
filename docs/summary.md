@@ -24,7 +24,7 @@
 
 ## Customization
 
-* [Overriding files](customization/overriding-views.md)
+* [Overriding files](customization/overriding-files.md)
 * [Overriding Routes](customization/overriding-routes.md)
 * [Additional CSS and JS](customization/additional-css-js.md)
 * [Enabling Soft-Delete](customization/enabling-soft-delete.md)
