@@ -1,6 +1,11 @@
 # Configurations
 
-With the installation of Voyager you will find a new configuration file located at `config/voyager.php`. In this file you can find various options to change the configuration of your Voyager installation.
+With the installation of Voyager you will find a new configuration file located at `config/voyager.php`.  
+In this file you can find various options to change the configuration of your Voyager installation.
+
+{% hint style="info" %}
+If you cache your configuration files please make sure to run `php artisan config:clear` after you changed something.
+{% endhint %}
 
 Below we will take a deep dive into the configuration file and give a detailed description of each configuration set.
 
@@ -94,16 +99,6 @@ By default Voyager is going to use the `public` local storage. You can additiona
 
 You may wish to hide some database tables in the Voyager database section. In the database config you can choose which tables would like to hide.
 
-## Prefix
-
-```php
-<?php
-
-'prefix' => 'admin',
-```
-
-In this config you can specify an alternate prefix for visiting Voyager. Instead of visiting `/admin` perhaps you want to visit `/backend` to visit the Voyager admin.
-
 ## Multilingual
 
 ```php
@@ -120,6 +115,8 @@ In this config you can specify an alternate prefix for visiting Voyager. Instead
 ```
 
 You can specify whether or not you want to **enable** mutliple languages. You can then specify your **default** language and all the support languages \(**locales**\)
+
+Read more about multilanguage [here](../core-concepts/multilanguage.md).
 
 ## Dashboard
 
@@ -191,15 +188,11 @@ In the Voyager admin there are developer tips or notifications that will show yo
 
 You can add your own custom stylesheets that will be included in the Voyager admin dashboard. This means you could technically create a whole new theme for Voyager by adding your own custom stylesheet.
 
-## Additional stylesheets
+Read more [here](../customization/additional-css-js.md).
 
-```php
-<?php
-
-'additional_css' => [
-    //'css/custom.css',
-],
-```
+{% hint style="info" %}
+The path will be passed to Laravels [asset](https://laravel.com/docs/helpers#method-asset) function.
+{% endhint %}
 
 ## Additional Javascript
 
@@ -212,6 +205,8 @@ You can add your own custom stylesheets that will be included in the Voyager adm
 ```
 
 The same goes for this configuration. You can add your own javascript that will be executed in the Voyager admin dashboard. Add as many javascript files as needed.
+
+Read more [here](../customization/additional-css-js.md).
 
 ## Google Maps
 
@@ -230,5 +225,5 @@ The same goes for this configuration. You can add your own javascript that will 
 
 There is a new data type called **coordinates** that allow you to add a google map as a datatype. The user can then drag and drop a pin in the Google Maps to save a longitude and latitude value in the database.
 
-In this config you can set the default Google Maps Keys and center location. This call also be added to your .env file.
+In this config you can set the default Google Maps Keys and center location. This can also be added to your .env file.
 
