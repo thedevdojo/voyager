@@ -16,7 +16,7 @@ class File extends BaseType
         if (!$this->request->hasFile($this->row->field)) {
             return json_encode([]);
         }
-        
+
         $files = Arr::wrap($this->request->file($this->row->field));
 
         $filesPath = [];
