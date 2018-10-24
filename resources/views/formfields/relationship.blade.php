@@ -19,7 +19,7 @@
                 @endphp
 
                 @if(isset($query))
-                    <p>{{ $query->{$options->label} }}</p>
+                    <p>{!! $query->{$options->label} !!}</p>
                 @else
                     <p>No results</p>
                 @endif
