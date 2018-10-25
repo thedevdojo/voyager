@@ -19,7 +19,14 @@
                 @endphp
 
                 @if(isset($query))
-                    <p>{{ $query->{$options->label} }}</p>
+                    @php
+                        $dataType=Voyager::model('DataType')::where('model_name',$options->model)->first();
+                    @endphp
+                    @if(!empty($dataType))
+                        <a href="{{ route('voyager.'.$dataType->slug.'.edit', $query->{$options->key}) }}">{{ $query->{$options->label} }}</a>
+                    @else
+                        <p>{{ $query->{$options->label} }}</p>
+                    @endif
                 @else
                     <p>No results</p>
                 @endif
