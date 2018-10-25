@@ -31,10 +31,7 @@ class DataType extends Model
         'order_column',
         'order_display_column',
         'default_search_key',
-    ];
-
-    protected $casts = [
-        'details' => 'array',
+        'details'
     ];
 
     public function rows()
@@ -95,7 +92,10 @@ class DataType extends Model
             }
 
             if ($this->fill($requestData)->save()) {
-                $fields = $this->fields(array_get($requestData, 'name'));
+                $fields = $this->fields((strlen($this->model_name) != 0)
+                    ? app($this->model_name)->getTable()
+                    : array_get($requestData, 'name')
+                );
 
                 $requestData = $this->getRelationships($requestData, $fields);
 
@@ -109,7 +109,7 @@ class DataType extends Model
                     $dataRow->required = boolval($requestData['field_required_'.$field]);
                     $dataRow->field = $requestData['field_'.$field];
                     $dataRow->type = $requestData['field_input_type_'.$field];
-                    $dataRow->details = $requestData['field_details_'.$field];
+                    $dataRow->details = json_decode($requestData['field_details_'.$field]);
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
@@ -197,12 +197,13 @@ class DataType extends Model
 
     public function fieldOptions()
     {
-        $table = $this->name;
-
         // Get ordered BREAD fields
         $orderedFields = $this->rows()->pluck('field')->toArray();
 
-        $_fieldOptions = SchemaManager::describeTable($table)->toArray();
+        $_fieldOptions = SchemaManager::describeTable((strlen($this->model_name) != 0)
+            ? app($this->model_name)->getTable()
+            : $this->name
+        )->toArray();
 
         $fieldOptions = [];
         $f_size = count($orderedFields);
@@ -232,9 +233,19 @@ class DataType extends Model
         }
     }
 
+    public function setDetailsAttribute($value)
+    {
+        $this->attributes['details'] = json_encode($value);
+    }
+
+    public function getDetailsAttribute($value)
+    {
+        return json_decode(!empty($value) ? $value : '{}');
+    }
+
     public function getOrderColumnAttribute()
     {
-        return $this->details['order_column'];
+        return isset($this->details->order_column) ? $this->details->order_column : null;
     }
 
     public function setOrderColumnAttribute($value)
@@ -244,7 +255,7 @@ class DataType extends Model
 
     public function getOrderDisplayColumnAttribute()
     {
-        return $this->details['order_display_column'];
+        return isset($this->details->order_display_column) ? $this->details->order_display_column : null;
     }
 
     public function setOrderDisplayColumnAttribute($value)
