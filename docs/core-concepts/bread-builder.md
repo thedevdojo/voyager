@@ -265,3 +265,18 @@ The **id** will let you specify a custom id wrapper around your element. example
 </div>
 ```
 
+## Ordering Bread Items
+
+You can order your BREAD items with drag-and-drop.  
+For this you need to change the settings for your BREAD first:
+
+![](../.gitbook/assets/bread_settings_order.png)
+
+**Order column** is the field in your table where the order is stored as an integer.  
+**Order display column** is the field which is shown in the drag-drop list.
+
+After this you can go to your BREAD-browse page and you will see a button **Order.**  
+Clicking this button will bring you to the page where you can re-arrange your items:
+
+![](../.gitbook/assets/bread_order.png)
+
