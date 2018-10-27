@@ -39,11 +39,9 @@ Route::group(['as' => 'voyager.'], function () {
                 $breadController = $dataType->controller
                                  ? $dataType->controller
                                  : $namespacePrefix.'VoyagerBreadController';
-
                 Route::resource($dataType->slug, $breadController);
                 // images order
                 Route::post($dataType->slug.'/sortImages',['uses' => $breadController.'@sortImages', 'as' => $dataType->slug.'.sortImages']);
-
             }
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
