@@ -459,7 +459,7 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
         $this->authorize('edit', app($dataType->model_name));
         $model = app($dataType->model_name);
-        $item = $model->where('id',$id)->firstOrFail();
+        $item = $model->where('id', $id)->firstOrFail();
         $item->{$field} = json_encode($images);
         $item->save();
     }
