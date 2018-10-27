@@ -41,6 +41,9 @@ Route::group(['as' => 'voyager.'], function () {
                                  : $namespacePrefix.'VoyagerBreadController';
 
                 Route::resource($dataType->slug, $breadController);
+                // images order
+                Route::post($dataType->slug.'/sortImages',['uses' => $breadController.'@sortImages', 'as' => $dataType->slug.'.sortImages']);
+
             }
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
@@ -66,6 +69,7 @@ Route::group(['as' => 'voyager.'], function () {
                 Route::delete('{id}', ['uses' => $namespacePrefix.'VoyagerMenuController@delete_menu', 'as' => 'destroy']);
                 Route::post('/', ['uses' => $namespacePrefix.'VoyagerMenuController@add_item',    'as' => 'add']);
                 Route::put('/', ['uses' => $namespacePrefix.'VoyagerMenuController@update_item', 'as' => 'update']);
+
             });
         });
 

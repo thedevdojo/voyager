@@ -127,6 +127,29 @@
         var params = {}
         var $image
 
+        $(document).ready(function () {
+
+    if($(".dd").length){
+    $('.dd').nestable({
+      maxDepth: 1
+    });
+    /**
+    * Reorder items
+    */
+    $('.dd').on('change', function (e) {
+
+      $.post('{{ route('voyager.'.$dataType->slug.'.sortImages') }}', {
+        order: JSON.stringify($('.dd').nestable('serialize')),
+        _token: '{{ csrf_token() }}'
+      }, function (data) {
+        toastr.success("{{ __('voyager::bread.updated_order') }}");
+      });
+
+    });
+  }
+
+              });
+
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
 
