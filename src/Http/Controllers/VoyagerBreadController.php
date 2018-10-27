@@ -448,8 +448,8 @@ class VoyagerBreadController extends Controller
         }
     }
 
-
-    public function sortImages(request $request){
+    public function sortImages(request $request)
+    {
       $input=$request->all();
       $data =collect(json_decode($input['order']));
       $id = json_decode($input['order'],true)[0]['id'];
@@ -462,6 +462,5 @@ class VoyagerBreadController extends Controller
       $item  =$model->where("id",$id)->firstOrFail();
       $item->{$field} = json_encode($images);
       $item->save();
-
     }
 }
