@@ -17,7 +17,7 @@ class Post extends Model
 }
 ```
 
-Then you can call the thumbnail function in your view or anywhere you like.
+#### Display a single image
 
 ```php
 @foreach($posts as $post)
@@ -30,6 +30,17 @@ Or you can specify the optional image field name \(attribute\), default to `imag
 ```php
 @foreach($posts as $post)
     <img src="{{Voyager::image($post->thumbnail('small', 'photo'))}}" />
+@endforeach
+```
+
+#### Display multiple images
+
+```php
+@foreach($posts as $post)
+    $images = json_decode($post->images);
+    @foreach($images as $image)
+        <img src="{{ Voyager::image($post->getThumbnail($image, 'small')) }}" />
+    @endforeach
 @endforeach
 ```
 
