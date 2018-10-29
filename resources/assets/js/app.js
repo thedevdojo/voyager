@@ -8,7 +8,6 @@ window.SimpleMDE = require('simplemde');
 window.tooltip = require('./bootstrap-tooltip');
 window.MediaManager = require('./media');
 require('dropzone');
-require('./readmore');
 require('./jquery-match-height');
 require('./bootstrap-toggle');
 require('./jquery-cookie');
@@ -37,12 +36,6 @@ $(document).ready(function () {
     $('.side-menu').perfectScrollbar();
 
     $('#voyager-loader').fadeOut();
-    $('.readmore').readmore({
-        collapsedHeight: 60,
-        embedCSS: true,
-        lessLink: '<a href="#" class="readm-link">Read Less</a>',
-        moreLink: '<a href="#" class="readm-link">Read More</a>',
-    });
 
     $(".hamburger, .navbar-expand-toggle").on('click', function () {
         appContainer.toggleClass("expanded");
