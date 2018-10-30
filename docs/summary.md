@@ -24,14 +24,14 @@
 
 ## Customization
 
-* [Overriding Views](customization/overriding-views.md)
-* [Using custom HTTP controllers](customization/custom-http-controllers.md)
+* [Overriding files](customization/overriding-files.md)
 * [Overriding Routes](customization/overriding-routes.md)
 * [Additional CSS and JS](customization/additional-css-js.md)
 * [Enabling Soft-Delete](customization/enabling-soft-delete.md)
 * [Custom relationship attributes](customization/custom-realtionship-attributes.md)
 * [TinyMCE](customization/tinymce.md)
 * [Adding custom Formfields](customization/adding-custom-formfields.md)
+* [Coordinates](customization/coordinates.md)
 
 ## Troubleshooting
 
