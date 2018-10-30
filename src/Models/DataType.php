@@ -273,7 +273,7 @@ class DataType extends Model
     {
         $this->attributes['details'] = collect($this->details)->merge(['nasted_realtion' => $value]);
     }
-    
+
     public function getNastedRealtionColumnAttribute()
     {
         return isset($this->details->nasted_realtion_column) ? $this->details->nasted_realtion_column : null;
