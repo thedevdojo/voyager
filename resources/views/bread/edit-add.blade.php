@@ -82,6 +82,7 @@
 
                         <div class="panel-footer">
                             <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
+                            @yield('submit-buttons')
                         </div>
                     </form>
 
