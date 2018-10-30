@@ -266,11 +266,11 @@ class DataType extends Model
 
     public function getNastedRealtionAttribute()
     {
-        return isset($this->details->nasted_realtion) ? $this->details->nasted_realtion : "off";
+        return isset($this->details->nasted_realtion) ? $this->details->nasted_realtion : 'off';
     }
 
     public function setNastedRealtionAttribute($value)
-    { 
+    {
         $this->attributes['details'] = collect($this->details)->merge(['nasted_realtion' => $value]);
     }
     public function getNastedRealtionColumnAttribute()
