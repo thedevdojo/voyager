@@ -54,13 +54,13 @@ class VoyagerBaseController extends Controller
             $query = $model::select('*')->with($relationships);
 
             // check if have Nasted realtion and select only needed
-            $isnasted = $dataType->nasted_realtion ;
-            $nasted_column = $dataType->nasted_realtion_column ;
+            $isnasted = $dataType->nasted_realtion;
+            $nasted_column = $dataType->nasted_realtion_column;
             $parentID = $request->get('parent', null);
-             if($isnasted=="on" && $nasted_column){
-              if($parentID){
-                $query->where($nasted_column,$parentID);
-              }else{
+             if ($isnasted=='on' && $nasted_column) {
+              if ($parentID) {
+                $query->where($nasted_column, $parentID);
+              } else {
                 $query->whereNull($nasted_column);
               }
             }
