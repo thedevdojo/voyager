@@ -30,6 +30,8 @@ class DataType extends Model
         'server_side',
         'order_column',
         'order_display_column',
+        'nasted_realtion',
+        'nasted_realtion_column',
         'details',
     ];
 
@@ -261,4 +263,24 @@ class DataType extends Model
     {
         $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
     }
+
+    public function getNastedRealtionAttribute()
+    {
+        return isset($this->details->nasted_realtion) ? $this->details->nasted_realtion : "off";
+    }
+
+    public function setNastedRealtionAttribute($value)
+    { 
+        $this->attributes['details'] = collect($this->details)->merge(['nasted_realtion' => $value]);
+    }
+    public function getNastedRealtionColumnAttribute()
+    {
+        return isset($this->details->nasted_realtion_column) ? $this->details->nasted_realtion_column : null;
+    }
+
+    public function setNastedRealtionColumnAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['nasted_realtion_column' => $value]);
+    }
+
 }

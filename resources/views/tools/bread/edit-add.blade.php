@@ -175,6 +175,37 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="row clearfix">
+                                <div class="col-md-6 form-group">
+                                    <label for="nasted_realtion">{{ __('voyager::bread.nasted_realtion') }}</label>
+                                    <span class="voyager-question"
+                                          aria-hidden="true"
+                                          data-toggle="tooltip"
+                                          data-placement="right"
+                                          title="{{ __('voyager::bread.nasted_realtion_ph') }}"></span>
+                                          <br>
+                                          <input type="hidden" name="nasted_realtion" value="off">
+                                          <input type="checkbox" name="nasted_realtion" class="toggleswitch"
+                                                 data-on="{{ __('voyager::generic.yes') }}" @if(isset($dataType)) @if($dataType->nasted_realtion=="on") checked="checked"   @endif   @endif
+                                                 data-off="{{ __('voyager::generic.no') }}">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="nasted_realtion_column">{{ __('voyager::bread.nasted_realtion_column') }}</label>
+                                    <span class="voyager-question"
+                                          aria-hidden="true"
+                                          data-toggle="tooltip"
+                                          data-placement="right"
+                                          title="{{ __('voyager::bread.nasted_realtion_column_ph') }}"></span>
+                                    <select name="nasted_realtion_column" class="select2 form-control">
+                                        <option value="">-- {{ __('voyager::generic.none') }} --</option>
+                                        @foreach($fieldOptions as $tbl)
+                                        <option value="{{ $tbl['field'] }}"
+                                        @if(isset($dataType) && $dataType->nasted_realtion_column == $tbl['field']) selected @endif
+                                        >{{ $tbl['field'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="description">{{ __('voyager::bread.description') }}</label>
                                 <textarea class="form-control" name="description"

@@ -95,7 +95,7 @@
                                             </td>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
-                                            
+
                                             <td>
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
@@ -191,6 +191,13 @@
                                             @foreach(Voyager::actions() as $action)
                                                 @include('voyager::bread.partials.actions', ['action' => $action])
                                             @endforeach
+
+                                            @if($dataType->nasted_realtion=="on" && $dataType->nasted_realtion_column)
+                                            <a href="{{route('voyager.'.$dataType->slug.'.index')}}/?parent={{ $data->getKey() }}" style="margin-right: 5px;line-height: 16px;" class="btn btn-sm btn-info pull-right view" title="parent">
+                                                <i class="voyager-list-add"></i>
+                                                <span class="hidden-xs hidden-sm">{{ __('voyager::bread.manage_sub') }}</span>
+                                            </a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

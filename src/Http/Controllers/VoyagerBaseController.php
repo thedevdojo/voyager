@@ -53,6 +53,18 @@ class VoyagerBaseController extends Controller
             $model = app($dataType->model_name);
             $query = $model::select('*')->with($relationships);
 
+            // check if have Nasted realtion and select only needed
+            $isnasted = $dataType->nasted_realtion ;
+            $nasted_column = $dataType->nasted_realtion_column ;
+            $parentID = $request->get('parent', null);
+             if($isnasted=="on" && $nasted_column){
+              if($parentID){
+                $query->where($nasted_column,$parentID);
+              }else{
+                $query->whereNull($nasted_column);
+              }
+            }
+
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
 
@@ -519,5 +531,5 @@ class VoyagerBaseController extends Controller
     $item->{$field} = json_encode($images);
     $item->save();
     }
-    
+
 }
