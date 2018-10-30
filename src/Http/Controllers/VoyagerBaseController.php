@@ -63,7 +63,7 @@ class VoyagerBaseController extends Controller
                 } else {
                     $query->whereNull($nasted_column);
                 }
-             }
+            }
 
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
