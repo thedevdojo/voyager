@@ -335,4 +335,5 @@ class VoyagerBreadController extends Controller
                 'alert-type' => 'success',
             ]);
     }
+    
 }
