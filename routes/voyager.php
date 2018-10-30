@@ -43,6 +43,8 @@ Route::group(['as' => 'voyager.'], function () {
                 Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
                 Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.order');
                 Route::resource($dataType->slug, $breadController);
+                // images order
+                Route::post($dataType->slug.'/sortImages', $breadController.'@sortImages')->name($dataType->slug.'.sortImages');
             }
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);

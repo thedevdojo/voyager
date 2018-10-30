@@ -66,7 +66,7 @@
                                         <label for="name">{{ $row->display_name }}</label>
                                         @include('voyager::multilingual.input-hidden-bread-edit-add')
                                         @if($row->type == 'relationship')
-                                            @include('voyager::formfields.relationship', ['options' => $row->details])      
+                                            @include('voyager::formfields.relationship', ['options' => $row->details])
                                         @else
                                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                         @endif
@@ -182,5 +182,25 @@
             });
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+          $(document).ready(function() {
+              if ($(".dd").length) {
+                  $('.dd').nestable({
+                      maxDepth: 1
+                  });
+                  /**
+                   * Reorder items
+                   */
+                  $('.dd').on('change', function(e) {
+                      $.post('{{ route('voyager.'.$dataType->slug.'.sortImages') }}', {
+                              order: JSON.stringify($('.dd').nestable('serialize')),
+                              _token: '{{ csrf_token() }}'
+                          },
+                          function(data) {
+                              toastr.success("{{ __('voyager::bread.updated_order') }}");
+                          });
+                  });
+              }
+          });
     </script>
 @stop

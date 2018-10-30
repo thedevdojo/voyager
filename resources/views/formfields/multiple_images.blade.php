@@ -2,12 +2,16 @@
 @if(isset($dataTypeContent->{$row->field}))
     <?php $images = json_decode($dataTypeContent->{$row->field}); ?>
     @if($images != null)
+    <div class="dd">
+      <ol class="dd-list">
         @foreach($images as $image)
-            <div class="img_settings_container" data-field-name="{{ $row->field }}" style="float:left;padding-right:15px;">
-                <img src="{{ Voyager::image( $image ) }}" data-image="{{ $image }}" data-id="{{ $dataTypeContent->getKey() }}" style="max-width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:5px;">
+            <li   class="img_settings_container dd-item" data-id="{{ $dataTypeContent->id }}"  data-image="{{ $image }}" data-field-name="{{ $row->field }}">
+                <img class="dd-handle" src="{{ Voyager::image( $image ) }}" data-image="{{ $image }}" data-id="{{ $dataTypeContent->id }}" style="max-width:100px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:5px;">
                 <a href="#" class="voyager-x remove-multi-image"></a>
-            </div>
+            </li>
         @endforeach
+      </ol>
+    </div>
     @endif
 @endif
 <div class="clearfix"></div>

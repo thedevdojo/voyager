@@ -503,4 +503,21 @@ class VoyagerBaseController extends Controller
             $i->save();
         }
     }
+
+    public function sortImages(request $request)
+    {
+    $input = $request->all();
+    $data = collect(json_decode($input['order']));
+    $id = json_decode($input['order'], true)[0]['id'];
+    $field = json_decode($input['order'], true)[0]['fieldName'];
+    $images = $data->pluck('image');
+    $slug = $this->getSlug($request);
+    $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+    $this->authorize('edit', app($dataType->model_name));
+    $model = app($dataType->model_name);
+    $item = $model->where('id', $id)->firstOrFail();
+    $item->{$field} = json_encode($images);
+    $item->save();
+    }
+    
 }
