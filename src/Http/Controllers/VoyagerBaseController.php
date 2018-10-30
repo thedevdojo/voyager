@@ -519,5 +519,4 @@ class VoyagerBaseController extends Controller
         $item->{$field} = json_encode($images);
         $item->save();
     }
-    
 }
