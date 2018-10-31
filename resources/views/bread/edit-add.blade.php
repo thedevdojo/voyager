@@ -66,7 +66,7 @@
                                         <label for="name">{{ $row->display_name }}</label>
                                         @include('voyager::multilingual.input-hidden-bread-edit-add')
                                         @if($row->type == 'relationship')
-                                            @include('voyager::formfields.relationship', ['options' => $row->details])      
+                                            @include('voyager::formfields.relationship', ['options' => $row->details])
                                         @else
                                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                         @endif
@@ -81,7 +81,9 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
+                            @section('submit-buttons')
+                                <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
+                            @stop
                             @yield('submit-buttons')
                         </div>
                     </form>
