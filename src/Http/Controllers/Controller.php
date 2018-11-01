@@ -162,6 +162,11 @@ abstract class Controller extends BaseController
                         $fieldRule = \Illuminate\Validation\Rule::unique($name)->ignore($id);
                     }
                 }
+
+                //Fix Image Validation Rule on Edit mode.
+                if (!isset($request[$fieldName]) && $field->type === 'image') {
+                    unset($rules[$fieldName]);
+                }
             }
 
             // Set custom validation messages if any
