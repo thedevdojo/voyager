@@ -99,9 +99,11 @@
                                                 @includeFirst([
                                                         "voyager::{$dataType->slug}.columns.custom.{$row->field}",
                                                         "voyager::{$dataType->slug}.columns.{$row->type}",
+                                                        "voyager::{$dataType->slug}.columns.fallback",
                                                         "voyager::bread.columns.custom.{$row->field}",
-                                                        "voyager::bread.columns.{$row->type}"
-                                                    ]);
+                                                        "voyager::bread.columns.{$row->type}",
+                                                        "voyager::bread.columns.fallback",
+                                                    ])
                                             </td>
                                         @endforeach
                                         <td class="no-sort no-click" id="bread-actions">
