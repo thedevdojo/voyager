@@ -186,6 +186,10 @@ class DataType extends Model
                         'taggable'    => isset($requestData['relationship_taggable_'.$relationship]) ? $requestData['relationship_taggable_'.$relationship] : '0',
                     ];
 
+                    if (isset($requestData['relationship_formfields_custom_'.$relationship])) {
+                        $relationshipDetails['formfields_custom'] = $requestData['relationship_formfields_custom_'.$relationship];
+                    }
+
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
                 }
             }
