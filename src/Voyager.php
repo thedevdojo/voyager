@@ -2,12 +2,13 @@
 
 namespace TCG\Voyager;
 
+use Arrilot\Widgets\Facade as Widget;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
 use TCG\Voyager\Actions\ViewAction;
@@ -130,10 +131,8 @@ class Voyager
 
     public function afterFormFields($row, $dataType, $dataTypeContent)
     {
-        $options = json_decode($row->details);
-
-        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent, $options) {
-            return $after->visible($row, $dataType, $dataTypeContent, $options);
+        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent) {
+            return $after->visible($row, $dataType, $dataTypeContent, $row->details);
         });
     }
 
@@ -183,6 +182,27 @@ class Voyager
     public function actions()
     {
         return $this->actions;
+    }
+
+    /**
+     * Get a collection of the dashboard widgets.
+     *
+     * @return \Arrilot\Widgets\WidgetGroup
+     */
+    public function dimmers()
+    {
+        $widgetClasses = config('voyager.dashboard.widgets');
+        $dimmers = Widget::group('voyager::dimmers');
+
+        foreach ($widgetClasses as $widgetClass) {
+            $widget = app($widgetClass);
+
+            if ($widget->shouldBeDisplayed()) {
+                $dimmers->addWidget($widgetClass);
+            }
+        }
+
+        return $dimmers;
     }
 
     public function setting($key, $default = null)
@@ -242,7 +262,7 @@ class Voyager
     public function canOrFail($permission)
     {
         if (!$this->can($permission)) {
-            throw new UnauthorizedHttpException(null);
+            throw new AccessDeniedHttpException();
         }
 
         return true;
