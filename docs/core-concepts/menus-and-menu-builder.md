@@ -6,7 +6,7 @@ You can view your current Menus by clicking on the _Tools-&gt;Menu Builder_ butt
 
 When you are ready to add menu items to your menu you can click on the builder button of the corresponding menu:
 
-![](../.gitbook/assets/menu_1.jpg)
+![](../.gitbook/assets/menu_1%20%281%29.jpg)
 
 This will take you to the Menu Builder where you can add, edit, and delete menu items.
 

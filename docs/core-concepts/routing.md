@@ -8,7 +8,7 @@ Route::group(['prefix' => 'admin'], function () {
 });
 ```
 
-This is where the voyager routes will be rendered. You can change the `admin` prefix if you desire, or set any other route configuration you need, such as `middleware` or `domain`.
+This is where the Voyager routes will be rendered. You can change the `admin` prefix if you desire, or set any other route configuration you need, such as `middleware` or `domain`.
 
 When creating a new BREAD type and specifying a slug for that BREAD, you can then visit that route from the following link:
 
@@ -24,6 +24,6 @@ URL/admin/products
 
 {% hint style="info" %}
 **Notice**  
-You may not see a link to your newly created routes or BREAD inside your admin menu. To create a new link in your admin menu visit the documentation for the menu section.
+You may not see a link to your newly created routes or BREAD inside your admin menu. To create a new link in your admin menu visit the documentation for the [menu section](menus-and-menu-builder.md).
 {% endhint %}
 
