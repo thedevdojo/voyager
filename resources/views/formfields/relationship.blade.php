@@ -1,7 +1,10 @@
-@section("formfield_relationship")
+@if (!isset($action))
     @php
-        $view = $action;
+        $action = isset($view) ? $view : null;
     @endphp
+@endif
+
+@section("formfield_relationship")
 
     @if(isset($options->model) && isset($options->type))
 
@@ -11,7 +14,7 @@
 
             @if($options->type == 'belongsTo')
 
-                @if(isset($view) && ($view == 'browse' || $view == 'read'))
+                @if(isset($action) && ($action == 'browse' || $action == 'read'))
 
                     @php
                         $relationshipData = (isset($data)) ? $data : $dataTypeContent;
@@ -67,7 +70,7 @@
 
             @elseif($options->type == 'hasMany')
 
-                @if(isset($view) && ($view == 'browse' || $view == 'read'))
+                @if(isset($action) && ($action == 'browse' || $action == 'read'))
 
                     @php
                         $relationshipData = (isset($data)) ? $data : $dataTypeContent;
@@ -77,7 +80,7 @@
                         })->all();
                     @endphp
 
-                    @if($view == 'browse')
+                    @if($action == 'browse')
                         @php
                             $string_values = implode(", ", $selected_values);
                             if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
@@ -121,7 +124,7 @@
 
             @elseif($options->type == 'belongsToMany')
 
-                @if(isset($view) && ($view == 'browse' || $view == 'read'))
+                @if(isset($action) && ($action == 'browse' || $action == 'read'))
 
                     @php
                         $relationshipData = (isset($data)) ? $data : $dataTypeContent;
@@ -130,7 +133,7 @@
                         })->all() : array();
                     @endphp
 
-                    @if($view == 'browse')
+                    @if($action == 'browse')
                         @php
                             $string_values = implode(", ", $selected_values);
                             if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
@@ -225,11 +228,5 @@
     @overwrite
 @endif
 
-
-@if (!isset($action))
-    @php
-        $action = $view;
-    @endphp
-@endif
 
 @yield("formfield_{$action}")
