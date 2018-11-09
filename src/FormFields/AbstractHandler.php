@@ -25,6 +25,27 @@ abstract class AbstractHandler implements HandlerInterface
         return $this->render($content);
     }
 
+    protected function getViewFileList($dataType, $action)
+    {
+        return [
+            "voyager::{$dataType->slug}.formfields.{$this->codename}.{$action}",
+            "voyager::formfields.{$this->codename}.{$action}",
+            "voyager::{$dataType->slug}.formfields.{$this->codename}",
+            "voyager::formfields.{$this->codename}",
+        ];
+    }
+
+    public function createContent($row, $dataType, $dataTypeContent, $options, $action)
+    {
+        return view()->first($this->getViewFileList($dataType, $action), [
+            'row'             => $row,
+            'options'         => $options,
+            'dataType'        => $dataType,
+            'dataTypeContent' => $dataTypeContent,
+            'action'          => $action,
+        ]);
+    }
+
     public function supports($driver)
     {
         if (empty($this->supports)) {

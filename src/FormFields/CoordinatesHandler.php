@@ -10,15 +10,4 @@ class CoordinatesHandler extends AbstractHandler
     ];
 
     protected $codename = 'coordinates';
-
-    public function createContent($row, $dataType, $dataTypeContent, $options, $action)
-    {
-        return view('voyager::formfields.coordinates', [
-            'row'             => $row,
-            'options'         => $options,
-            'dataType'        => $dataType,
-            'dataTypeContent' => $dataTypeContent,
-            'action'          => $action,
-        ]);
-    }
 }
