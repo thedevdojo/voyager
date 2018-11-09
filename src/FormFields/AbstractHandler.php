@@ -25,12 +25,13 @@ abstract class AbstractHandler implements HandlerInterface
         return $this->render($content);
     }
 
-    protected function firstView($views) {
+    protected function firstView($views)
+    {
         $view = collect($views)->first(function ($view) {
             return view()->exists($view);
         });
 
-        if (! $view) {
+        if (!$view) {
             throw new InvalidArgumentException('None of the views in the given array exist.');
         }
 
