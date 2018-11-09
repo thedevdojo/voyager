@@ -7,7 +7,7 @@ return [
     'no_client_id' => 'Näyttääksesi kävijätilastoja sinulla täytyy olla google analytics client id ja lisätä se '.
                                 'asetusriviin avainnimeltään <code>google_analytics_client_id</code>.'.
                                 ' Saat idn Google developer konsolista:',
-    'set_view'               => 'Valitse näkymä',
+    'select_view'            => 'Valitse näkymä',
     'this_vs_last_week'      => 'Tämä viikko vs viime viikko',
     'this_vs_last_year'      => 'Tämä vuosi vs viime vuosi',
     'top_browsers'           => 'Suosituimmat selaimet',

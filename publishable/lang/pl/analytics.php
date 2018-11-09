@@ -7,7 +7,7 @@ return [
     'no_client_id' => 'Aby wyświetlić statystyki, musisz uzyskać identyfikator klienta Google Analytics i '.
                       'dodać go do ustawień, jako klucz <code>google_analytics_client_id'.
                       '</code>. Zdobądź klucz w konsoli Google Developer:',
-    'set_view'               => 'Wybierz widok',
+    'select_view'            => 'Wybierz widok',
     'this_vs_last_week'      => 'Ten tydzień vs w poprzedni tydzień',
     'this_vs_last_year'      => 'Ten rok vs poprzedni rok',
     'top_browsers'           => 'Top przeglądarki',
