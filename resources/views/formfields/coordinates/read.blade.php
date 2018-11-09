@@ -1,0 +1,2 @@
+
+        @include('voyager::partials.coordinates')
