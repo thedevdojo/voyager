@@ -6,13 +6,14 @@ class NumberHandler extends AbstractHandler
 {
     protected $codename = 'number';
 
-    public function createContent($row, $dataType, $dataTypeContent, $options)
+    public function createContent($row, $dataType, $dataTypeContent, $options, $action)
     {
         return view('voyager::formfields.number', [
             'row'             => $row,
             'options'         => $options,
             'dataType'        => $dataType,
             'dataTypeContent' => $dataTypeContent,
+            'action'          => $action,
         ]);
     }
 }

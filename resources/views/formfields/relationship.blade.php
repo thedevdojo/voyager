@@ -1,3 +1,9 @@
+@if ($action)
+    @php
+        $view = $action
+    @endphp
+@endif
+
 @if(isset($options->model) && isset($options->type))
 
     @if(class_exists($options->model))
@@ -67,9 +73,9 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-            		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
-            			return $item->{$options->label};
-            		})->all();
+                    $selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
+                        return $item->{$options->label};
+                    })->all();
                 @endphp
 
                 @if($view == 'browse')
@@ -121,8 +127,8 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
-            			return $item->{$options->label};
-            		})->all() : array();
+                        return $item->{$options->label};
+                    })->all() : array();
                 @endphp
 
                 @if($view == 'browse')
@@ -149,29 +155,29 @@
 
             @else
                 <select
-                    class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2 @endif"
-                    name="{{ $relationshipField }}[]" multiple
-                    @if(isset($options->taggable) && $options->taggable == 'on')
+                        class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2 @endif"
+                        name="{{ $relationshipField }}[]" multiple
+                        @if(isset($options->taggable) && $options->taggable == 'on')
                         data-route="{{ route('voyager.'.str_slug($options->table).'.store') }}"
                         data-label="{{$options->label}}"
                         data-error-message="{{__('voyager::bread.error_tagging')}}"
-                    @endif
+                        @endif
                 >
 
-                        @php
-                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
-                                return $item->{$options->key};
-                            })->all() : array();
-                            $relationshipOptions = app($options->model)->all();
-                        @endphp
+                    @php
+                        $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
+                            return $item->{$options->key};
+                        })->all() : array();
+                        $relationshipOptions = app($options->model)->all();
+                    @endphp
 
-                        @if($row->required === 0)
-                            <option value="">{{__('voyager::generic.none')}}</option>
-                        @endif
+                    @if($row->required === 0)
+                        <option value="">{{__('voyager::generic.none')}}</option>
+                    @endif
 
-                        @foreach($relationshipOptions as $relationshipOption)
-                            <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
-                        @endforeach
+                    @foreach($relationshipOptions as $relationshipOption)
+                        <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>
+                    @endforeach
 
                 </select>
 

@@ -12,13 +12,14 @@ abstract class AbstractHandler implements HandlerInterface
     protected $codename;
     protected $supports = [];
 
-    public function handle($row, $dataType, $dataTypeContent)
+    public function handle($row, $dataType, $dataTypeContent, $action)
     {
         $content = $this->createContent(
             $row,
             $dataType,
             $dataTypeContent,
-            $row->details
+            $row->details,
+            $action
         );
 
         return $this->render($content);

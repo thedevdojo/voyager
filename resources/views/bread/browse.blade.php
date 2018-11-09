@@ -96,14 +96,15 @@
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
                                             <td>
-                                                @includeFirst([
-                                                        "voyager::{$dataType->slug}.columns.custom.{$row->field}",
-                                                        "voyager::{$dataType->slug}.columns.{$row->type}",
-                                                        "voyager::{$dataType->slug}.columns.fallback",
-                                                        "voyager::bread.columns.custom.{$row->field}",
-                                                        "voyager::bread.columns.{$row->type}",
-                                                        "voyager::bread.columns.fallback",
-                                                    ])
+                                                @if (isset($row->details->formfields_custom))
+                                                    @include('voyager::formfields.custom.' . $row->details->formfields_custom, ['dataTypeContent' => $data, 'options' => $row->details, 'action' => 'browse'])
+                                                @else
+                                                    @if($row->type == 'relationship')
+                                                        @include('voyager::formfields.relationship', ['dataTypeContent' => $data, 'options' => $row->details, 'action' => 'browse'])
+                                                    @else
+                                                        {!! app('voyager')->formField($row, $dataType, $data, 'browse') !!}
+                                                    @endif
+                                                @endif
                                             </td>
                                         @endforeach
                                         <td class="no-sort no-click" id="bread-actions">
