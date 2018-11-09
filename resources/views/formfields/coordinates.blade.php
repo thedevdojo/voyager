@@ -1,58 +1,81 @@
-@if ($action == 'browse')
+@if ($action == 'edit' || $action == 'add')
+    @section("formfield_edit_add")
+        <style>
+            #map {
+                height: 400px;
+                width: 100%;
+            }
+        </style>
+        @forelse($dataTypeContent->getCoordinates() as $point)
+            <input type="hidden" name="{{ $row->field }}[lat]" value="{{ $point['lat'] }}" id="lat"/>
+            <input type="hidden" name="{{ $row->field }}[lng]" value="{{ $point['lng'] }}" id="lng"/>
+        @empty
+            <input type="hidden" name="{{ $row->field }}[lat]" value="{{ config('voyager.googlemaps.center.lat') }}" id="lat"/>
+            <input type="hidden" name="{{ $row->field }}[lng]" value="{{ config('voyager.googlemaps.center.lng') }}" id="lng"/>
+        @endforelse
 
-    @include('voyager::partials.coordinates-static-image', ['data' => $dataTypeContent])
+        <script type="application/javascript">
+            function initMap() {
+                        @forelse($dataTypeContent->getCoordinates() as $point)
+                var center = {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}};
+                        @empty
+                var center = {lat: {{ config('voyager.googlemaps.center.lat') }}, lng: {{ config('voyager.googlemaps.center.lng') }}};
+                        @endforelse
+                var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: {{ config('voyager.googlemaps.zoom') }},
+                        center: center
+                    });
+                var markers = [];
+                        @forelse($dataTypeContent->getCoordinates() as $point)
+                var marker = new google.maps.Marker({
+                        position: {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}},
+                        map: map,
+                        draggable: true
+                    });
+                markers.push(marker);
+                        @empty
+                var marker = new google.maps.Marker({
+                        position: center,
+                        map: map,
+                        draggable: true
+                    });
+                @endforelse
 
-@else
-
-
-    <style>
-        #map {
-            height: 400px;
-            width: 100%;
-        }
-    </style>
-    @forelse($dataTypeContent->getCoordinates() as $point)
-        <input type="hidden" name="{{ $row->field }}[lat]" value="{{ $point['lat'] }}" id="lat"/>
-        <input type="hidden" name="{{ $row->field }}[lng]" value="{{ $point['lng'] }}" id="lng"/>
-    @empty
-        <input type="hidden" name="{{ $row->field }}[lat]" value="{{ config('voyager.googlemaps.center.lat') }}" id="lat"/>
-        <input type="hidden" name="{{ $row->field }}[lng]" value="{{ config('voyager.googlemaps.center.lng') }}" id="lng"/>
-    @endforelse
-
-    <script type="application/javascript">
-        function initMap() {
-                    @forelse($dataTypeContent->getCoordinates() as $point)
-            var center = {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}};
-                    @empty
-            var center = {lat: {{ config('voyager.googlemaps.center.lat') }}, lng: {{ config('voyager.googlemaps.center.lng') }}};
-                    @endforelse
-            var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: {{ config('voyager.googlemaps.zoom') }},
-                    center: center
+                google.maps.event.addListener(marker,'dragend',function(event) {
+                    document.getElementById('lat').value = this.position.lat();
+                    document.getElementById('lng').value = this.position.lng();
                 });
-            var markers = [];
-                    @forelse($dataTypeContent->getCoordinates() as $point)
-            var marker = new google.maps.Marker({
-                    position: {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}},
-                    map: map,
-                    draggable: true
-                });
-            markers.push(marker);
-                    @empty
-            var marker = new google.maps.Marker({
-                    position: center,
-                    map: map,
-                    draggable: true
-                });
-            @endforelse
-
-            google.maps.event.addListener(marker,'dragend',function(event) {
-                document.getElementById('lat').value = this.position.lat();
-                document.getElementById('lng').value = this.position.lng();
-            });
-        }
-    </script>
-    <div id="map"/>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('voyager.googlemaps.key') }}&callback=initMap"></script>
-
+            }
+        </script>
+        <div id="map"/>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('voyager.googlemaps.key') }}&callback=initMap"></script>
+    @overwrite
 @endif
+
+{{--  Render BREA[D] --}}
+
+@if ($action == 'browse')
+    @section("formfield_browse")
+        @include('voyager::partials.coordinates-static-image', ['data' => $dataTypeContent])
+    @overwrite
+@endif
+
+@if ($action == 'read')
+    @section("formfield_read")
+        @include('voyager::partials.coordinates')
+    @overwrite
+@endif
+
+@if ($action == 'edit')
+    @section("formfield_edit")
+        @yield("formfield_edit_add")
+    @overwrite
+@endif
+
+@if ($action == 'add')
+    @section("formfield_add")
+        @yield("formfield_edit_add")
+    @overwrite
+@endif
+
+@yield("formfield_{$action}")

@@ -117,7 +117,7 @@
                                 $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
                                 $row = $dataTypeRows->where('field', 'body')->first();
                             @endphp
-                            {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                            {!! app('voyager')->formField($row, $dataType, $dataTypeContent, !is_null($dataTypeContent->getKey()) ? 'edit' : 'add') !!}
                         </div>
                     </div><!-- .panel -->
 
@@ -166,7 +166,7 @@
                                             @if($row->type == 'relationship')
                                                 @include('voyager::formfields.relationship')
                                             @else
-                                                {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                                {!! app('voyager')->formField($row, $dataType, $dataTypeContent, !is_null($dataTypeContent->getKey()) ? 'edit' : 'add') !!}
                                             @endif
 
                                             @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
