@@ -220,6 +220,22 @@ You can also specify which columns you would like to see in the dropdown or the 
 
 Now, you can easily create `belongsTo`, `belongsToMany`, `hasOne`, and `hasMany` relationships directly in Voyager.
 
+## Tagging
+
+Tagging gives you the possibility to add new items to a Belongs-To-Many relationship directly when editing or adding a BREAD.
+
+To activate this function, you simply have to enable `Tagging` in the relationship details
+
+![](../.gitbook/assets/tagging.jpg)
+
+After that you can enter a free-text into the select and hit enter to save a new relationship.
+
+{% hint style="info" %}
+**Be aware:**
+
+This only stores the `display-column` so you have to make sure that all other fields are either nullable or have a default value.
+{% endhint %}
+
 ## Null Values
 
 You might want to save an input field into the database as a `null` value instead of an empty string.
@@ -278,5 +294,5 @@ For this you need to change the settings for your BREAD first:
 After this you can go to your BREAD-browse page and you will see a button **Order.**  
 Clicking this button will bring you to the page where you can re-arrange your items:
 
-![](../.gitbook/assets/bread_order.png)
+![](../.gitbook/assets/bread_order%20%281%29.png)
 
