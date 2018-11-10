@@ -8,7 +8,6 @@ window.SimpleMDE = require('simplemde');
 window.tooltip = require('./bootstrap-tooltip');
 window.MediaManager = require('./media');
 require('dropzone');
-require('./readmore');
 require('./jquery-match-height');
 require('./bootstrap-toggle');
 require('./jquery-cookie');
@@ -16,7 +15,7 @@ require('./jquery-nestable');
 require('bootstrap');
 require('bootstrap-switch');
 require('select2');
-require('bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
+require('eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
 var brace = require('brace');
 require('brace/mode/json');
 require('brace/theme/github');
@@ -25,6 +24,7 @@ window.TinyMCE = window.tinymce = require('./tinymce');
 require('./multilingual');
 require('./voyager_tinymce');
 require('./voyager_ace_editor');
+require('formdata-polyfill');
 window.helpers = require('./helpers.js');
 
 $(document).ready(function () {
@@ -36,12 +36,6 @@ $(document).ready(function () {
     $('.side-menu').perfectScrollbar();
 
     $('#voyager-loader').fadeOut();
-    $('.readmore').readmore({
-        collapsedHeight: 60,
-        embedCSS: true,
-        lessLink: '<a href="#" class="readm-link">Read Less</a>',
-        moreLink: '<a href="#" class="readm-link">Read More</a>',
-    });
 
     $(".hamburger, .navbar-expand-toggle").on('click', function () {
         appContainer.toggleClass("expanded");
@@ -185,7 +179,10 @@ $(document).ready(function () {
                     continue;
                 }
             }
-            data.append(this.elements[i].name, this.elements[i].value)
+            // Add checkboxes only if they are checked
+            if(e.currentTarget.elements[i].type != 'checkbox' || e.currentTarget.elements[i].checked) {
+                data.append(this.elements[i].name, this.elements[i].value);
+            }
         }
 
         data.set('_validate', '1');
