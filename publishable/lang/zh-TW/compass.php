@@ -1,10 +1,9 @@
 <?php
 
 return [
-    'welcome'                => '歡迎來到 Voyager Compass。每個應用都需要一個指南針來指向正確的方向。
-     在本節中，您將找到許多資源和管理任務，以幫助您在建立應用時為您提供方向。',
+    'welcome'       => '歡迎來到 Voyager 指南針。每個應用都需要一個指南針來指向正確的方向。在本節中，您將找到許多資源和管理任務，以幫助您在建立應用時為您提供方向。',
     'links'         => [
-        'title'                 => '連接',
+        'title'                 => '連結',
         'documentation'         => '文件',
         'voyager_homepage'      => 'Voyager 官網',
         'voyager_hooks'         => 'Voyager Hooks',
@@ -23,9 +22,9 @@ return [
 
     ],
     'logs'          => [
-        'title'                 => 'Logs',
-        'text'                  => '您的 app logs',
-        'file_too_big'          => 'Log file 大於 50MB，請下載',
+        'title'                 => '日誌',
+        'text'                  => '您的應用日誌',
+        'file_too_big'          => '日誌檔案大於 50MB，請下載',
         'level'                 => '等級',
         'context'               => '內容',
         'date'                  => '日期',
@@ -33,13 +32,13 @@ return [
         'download_file'         => '下載檔案',
         'delete_file'           => '刪除檔案',
         'delete_all_files'      => '刪除所有檔案',
-        'delete_success'        => '成功刪除日誌檔:',
-        'delete_all_success'    => '成功刪除所有日誌檔',
+        'delete_success'        => '成功刪除日誌:',
+        'delete_all_success'    => '成功刪除所有日誌',
 
     ],
     'fonts'         => [
-        'title'                 => '字體',
-        'font_class'            => 'Voyager Fonts Class Mapping',
-        'font_character'        => 'Voyager Fonts Character Mapping',
+        'title'                 => '圖標',
+        'font_class'            => 'Voyager 圖標列表',
+        'font_character'        => 'Voyager 圖標字元對照表',
     ],
 ];

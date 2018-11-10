@@ -2,7 +2,7 @@
 
 // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
 return [
-    'sEmptyTable'     => '暫時沒有內容哦',
+    'sEmptyTable'     => '暫時沒有內容',
     'sInfo'           => '顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項',
     'sInfoEmpty'      => '顯示第 0 至 0 項結果，共 0 項',
     'sInfoFiltered'   => '(由 _MAX_ 項結果過濾)',
@@ -11,7 +11,7 @@ return [
     'sLengthMenu'     => '顯示 _MENU_ 項結果',
     'sLoadingRecords' => '載入中...',
     'sProcessing'     => '處理中...',
-    'sSearch'         => '搜索：',
+    'sSearch'         => '搜尋：',
     'sZeroRecords'    => '沒有匹配結果',
     'oPaginate'       => [
         'sFirst'    => '首頁',
