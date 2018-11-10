@@ -1,6 +1,6 @@
 # BREAD Builder
 
-When adding or editing the current BREAD for a database table you will first see the BREAD info which allows you to set the Display Names, slug, icon, Model and Controller Namespace, Policy Name. You can also choose if you would like to Generate permissions for that BREAD type.
+When adding or editing the current BREAD for a database table you will first see the BREAD info which allows you to set the Display Names, slug, icon, `Model` and Controller Namespace, Policy Name. You can also choose if you would like to Generate permissions for that BREAD type.
 
 ![](../.gitbook/assets/bread_details%20%281%29.png)
 
@@ -12,7 +12,7 @@ When you scroll down you will see each of the rows that are associated with that
 * ADD \(field will be visible when you choose to create a new data type\)
 * DELETE \(doesn't pertain to delete so this can be checked or unchecked\)
 
-![](../.gitbook/assets/bread_fields%20%281%29.png)
+![](../.gitbook/assets/bread_fields.png)
 
 You may also choose to specify what form type you want to use for each field. This can be a TextBox, TextArea, Checkbox, Image, and many other types of form elements.
 
@@ -201,18 +201,18 @@ This will automatically generate the slug from the input of the `title` field. I
 
 Using the BREAD builder you can easily create Relationships between tables. At the bottom of the page you will see a new button that says 'Create Relationship'
 
-![](../.gitbook/assets/bread_relationship.png)
+![](../.gitbook/assets/bread_relationship%20%281%29.png)
 
 {% hint style="info" %}
 **Notice**  
 If you have not yet created the BREAD for the table yet, it will need to be created first and then you can come back after creating the BREAD to add the relationship. Otherwise you'll end up with a notification which looks like the following.
 {% endhint %}
 
-![](../.gitbook/assets/bread_relationship_no_bread%20%281%29.png)
+![](../.gitbook/assets/bread_relationship_no_bread%20%282%29.png)
 
 So, after the BREAD has already been created you will then be able to create a new relationship. After you click on the 'Create a Relationship' button. You will see a new Modal window that looks like the following:
 
-![](../.gitbook/assets/bread_relationship_form.png)
+![](../.gitbook/assets/bread_relationship_form%20%282%29.png)
 
 You will first specify which type of relationship this is going to be, then you will select the table you are referencing and which Namespace that belongs to that table. You will then select which row combines those tables.
 
@@ -286,7 +286,7 @@ The **id** will let you specify a custom id wrapper around your element. example
 You can order your BREAD items with drag-and-drop.  
 For this you need to change the settings for your BREAD first:
 
-![](../.gitbook/assets/bread_settings_order.png)
+![](../.gitbook/assets/bread_settings_order%20%281%29.png)
 
 **Order column** is the field in your table where the order is stored as an integer.  
 **Order display column** is the field which is shown in the drag-drop list.
@@ -294,5 +294,5 @@ For this you need to change the settings for your BREAD first:
 After this you can go to your BREAD-browse page and you will see a button **Order.**  
 Clicking this button will bring you to the page where you can re-arrange your items:
 
-![](../.gitbook/assets/bread_order%20%281%29.png)
+![](../.gitbook/assets/bread_order%20%282%29.png)
 
