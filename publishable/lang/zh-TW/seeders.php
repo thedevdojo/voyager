@@ -58,7 +58,7 @@ return [
         'bread'        => 'BREAD',
         'categories'   => '分類',
         'compass'      => '指南針',
-        'dashboard'    => '控制面板',
+        'dashboard'    => '儀表板',
         'database'     => '資料庫',
         'media'        => '媒體',
         'menu_builder' => '側邊欄管理',

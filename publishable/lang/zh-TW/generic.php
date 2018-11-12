@@ -23,7 +23,7 @@ return [
     'compass'                => '指南針',
     'created_at'             => '建立於',
     'custom'                 => '自定義',
-    'dashboard'              => '控制面板',
+    'dashboard'              => '儀表板',
     'database'               => '資料庫',
     'default'                => '預設值',
     'delete'                 => '刪除',

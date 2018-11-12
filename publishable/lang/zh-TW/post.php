@@ -2,7 +2,7 @@
 
 return [
     'additional_fields' => '附加欄位',
-    'category'          => '分類目錄',
+    'category'          => '分類',
     'content'           => '文章內容',
     'details'           => '文章詳細信息',
     'excerpt'           => '文章摘要 <small>對該篇文章的簡短描述</small>',
