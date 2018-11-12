@@ -298,7 +298,7 @@ trait Translatable
             }
         }
         $self = new static;
-        $table = ( isset($self->table) ) ? $self->table : studly_case( str_plural ( class_basename( $self ) ) ); //discern table name
+        $table = $self->getTable();
         //Loop through Locales supplied.
         foreach( $locales as $locale )
         {
