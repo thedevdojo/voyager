@@ -281,7 +281,7 @@ trait Translatable
      * @return Builder|null
      * 
      */
-    public static function whereTranslation( $locales, string $field, string $operator, string $value = null, bool $default = false )
+    public static function whereTranslation( $locales, $field, $operator, $value = null, $default = false )
     {
         if( !is_array( $locales )){
             $locales = [$locales];
