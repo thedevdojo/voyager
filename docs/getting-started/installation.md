@@ -88,16 +88,10 @@ class User extends \TCG\Voyager\Models\User {
 }
 ```
 
-If you already by example use JWTAuth as Auth system, you're facing the problem that you already extends `Illuminate\Foundation\Auth\User`. In this case, you need to implement The Voyager User Contract and use The Voyager User [Trait](https://www.culttt.com/2014/06/25/php-traits/) in your class like this:
+If you already by exemple use JWTAuth as Auth system, you're facing the problem that you already extends `Illuminate\Foundation\Auth\User`. Just replace it by the `TCG\Voyager\Models\User` wich already extends the foundation one. Then in the case of JWTAuth, just implement the JWRSubject:
 ```php
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use TCG\Voyager\Contracts\User as VoyagerUserContract;
-use TCG\Voyager\Traits\VoyagerUser as VoyagerUserTrait;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-
-class User extends Authenticatable implements JWTSubject, VoyagerUserContract
+class User extends \TCG\Voyager\Models\User implements JWTSubject
 {
-    use VoyagerUserTrait;
     // ...
 }
 ```
