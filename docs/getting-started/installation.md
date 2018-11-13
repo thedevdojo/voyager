@@ -89,14 +89,7 @@ class User extends \TCG\Voyager\Models\User
 }
 ```
 
-If you already by exemple use JWTAuth as Auth system, you're facing the problem that you already extends `Illuminate\Foundation\Auth\User`. Just replace it by the `TCG\Voyager\Models\User` wich already extends the foundation one. Then in the case of JWTAuth, just implement the JWRSubject:
-```php
-class User extends \TCG\Voyager\Models\User implements Tymon\JWTAuth\Contracts\JWTSubject
-{
-    // ...
-}
-```
-In any other case, if you already extended an other personal class, you could use Voyager User Trait and Contract this way:
+In the case where you need to extend from another class (i.e. if another package requires it), then Voyager allows you to use Voyager User Trait and Contract this way:
 ```php
 use TCG\Voyager\Contracts\User as VoyagerUserContract;
 use TCG\Voyager\Traits\VoyagerUser as VoyagerUserTrait;
@@ -104,6 +97,20 @@ use TCG\Voyager\Traits\VoyagerUser as VoyagerUserTrait;
 class User extends MySuperClass implements VoyagerUserContract
 {
     use VoyagerUserTrait;
+    // ...
+}
+```
+
+In the case you should extend `Illuminate\Foundation\Auth\User` (by exemple if you use [JWTAuth](https://github.com/tymondesigns/jwt-auth) as Auth system), you don't need to extend it as `TCG\Voyager\Models\User` already extends the foundation one as you can see in `TCG\Voyager\Models\User`:
+```php
+<?php
+namespace TCG\Voyager\Models;
+
+use Illuminate\Foundation\Auth\User as Authenticatable;
+// ...
+
+class User extends Authenticatable implements UserContract
+{
     // ...
 }
 ```
