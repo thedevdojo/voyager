@@ -95,7 +95,17 @@ class User extends \TCG\Voyager\Models\User implements JWTSubject
     // ...
 }
 ```
+In any other case, if you already extended an other personal class, you could use Voyager User Trait and Contract this way:
+```php
+use TCG\Voyager\Contracts\User as VoyagerUserContract;
+use TCG\Voyager\Traits\VoyagerUser as VoyagerUserTrait;
 
+class User extends MySuperClass implements VoyagerUserContract
+{
+    use VoyagerUserTrait;
+    // ...
+}
+```
 
 ## Adding the Service Provider
 
