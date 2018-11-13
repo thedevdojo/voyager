@@ -83,14 +83,15 @@ php artisan vendor:publish --provider=ImageServiceProviderLaravel5
 ### Modify your user Model
 If you want to use your user model to log in to Voyager, you need to extend the Voyager User Model:
 ```php
-class User extends \TCG\Voyager\Models\User {
+class User extends \TCG\Voyager\Models\User
+{
     // ...
 }
 ```
 
 If you already by exemple use JWTAuth as Auth system, you're facing the problem that you already extends `Illuminate\Foundation\Auth\User`. Just replace it by the `TCG\Voyager\Models\User` wich already extends the foundation one. Then in the case of JWTAuth, just implement the JWRSubject:
 ```php
-class User extends \TCG\Voyager\Models\User implements JWTSubject
+class User extends \TCG\Voyager\Models\User implements Tymon\JWTAuth\Contracts\JWTSubject
 {
     // ...
 }
