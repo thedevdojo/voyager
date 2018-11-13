@@ -72,12 +72,36 @@ And you will be prompted for the users name and password.
 
 This section is meant for users who are installing Voyager on an already existing Laravel installation or for users who want to perform a manual install. If this is not the case, you should go back to the [installation](installation.md) documentation or skip this section.
 
+### Publish assets
 The first thing you should do is publish the assets that come with Voyager. You can do that by running the following commands:
 
 ```bash
 php artisan vendor:publish --provider=VoyagerServiceProvider
 php artisan vendor:publish --provider=ImageServiceProviderLaravel5
 ```
+
+### Modify your user Model
+If you want to use your user model to log in to Voyager, you need to extend the Voyager User Model:
+```php
+class User extends \TCG\Voyager\Models\User {
+    // ...
+}
+```
+
+If you already by example use JWTAuth as Auth system, you're facing the problem that you already extends `Illuminate\Foundation\Auth\User`. In this case, you need to implement The Voyager User Contract and use The Voyager User [Trait](https://www.culttt.com/2014/06/25/php-traits/) in your class like this:
+```php
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use TCG\Voyager\Contracts\User as VoyagerUserContract;
+use TCG\Voyager\Traits\VoyagerUser as VoyagerUserTrait;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class User extends Authenticatable implements JWTSubject, VoyagerUserContract
+{
+    use VoyagerUserTrait;
+    // ...
+}
+```
+
 
 ## Adding the Service Provider
 
