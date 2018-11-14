@@ -58,7 +58,7 @@ class DataRow extends Model
 
     public function setDetailsAttribute($value)
     {
-        $this->attributes['details'] = json_encode($value);
+        $this->attributes['details'] = is_object(@json_decode($value)) ? $value : json_encode($value);
     }
 
     public function getDetailsAttribute($value)
