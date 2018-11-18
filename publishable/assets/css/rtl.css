@@ -325,3 +325,26 @@
         float: right;
     }
 }
+
+
+[dir="rtl"] .app-container .content-container .navbar-top,
+[dir="rtl"] .app-container .side-body,
+[dir="rtl"] .app-container.expanded .content-container .navbar-top {
+    transition: all .5s cubic-bezier(.19,1,.22,1);
+    height: 77px;
+}
+
+[dir="rtl"] .voyager .navbar .navbar-nav .dropdown-menu,
+[dir="rtl"] .voyager .navbar.navbar-default .navbar-nav .dropdown-menu {
+    background-color: #fff;
+    display: block;
+}
+
+
+
+[dir="rtl"] .voyager .navbar.navbar-default>.container-fluid:after,
+[dir="rtl"] .voyager .navbar>.container-fluid {
+    border-bottom:0;
+    width: 99.5%;
+    height: 1px;
+}
