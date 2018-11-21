@@ -11,6 +11,7 @@ use TCG\Voyager\Events\BreadDataUpdated;
 use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VoyagerBaseController extends Controller
 {
@@ -45,6 +46,8 @@ class VoyagerBaseController extends Controller
         $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
         $orderBy = $request->get('order_by');
         $sortOrder = $request->get('sort_order', null);
+        $usesSoftDeletes = false;
+        $showSoftDeleted = false;
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
@@ -52,6 +55,16 @@ class VoyagerBaseController extends Controller
 
             $model = app($dataType->model_name);
             $query = $model::select('*')->with($relationships);
+
+            // Use withTrashed() if model uses SoftDeletes and if toggle is selected
+            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+                $usesSoftDeletes = true;
+
+                if ($request->get('showSoftDeleted')) {
+                    $showSoftDeleted = true;
+                    $query = $query->withTrashed();
+                }
+            }
 
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
@@ -104,7 +117,9 @@ class VoyagerBaseController extends Controller
             'orderBy',
             'sortOrder',
             'searchable',
-            'isServerSide'
+            'isServerSide',
+            'usesSoftDeletes',
+            'showSoftDeleted'
         ));
     }
 
