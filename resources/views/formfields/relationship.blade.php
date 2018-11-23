@@ -57,7 +57,7 @@
             @if(isset($query))
                 <p>{{ $query->{$options->label} }}</p>
             @else
-                <p>None results</p>
+                <p>No results</p>
             @endif
 
         @elseif($options->type == 'hasMany')
