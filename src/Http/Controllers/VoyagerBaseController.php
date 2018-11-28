@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
@@ -12,7 +13,6 @@ use TCG\Voyager\Events\BreadDataUpdated;
 use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VoyagerBaseController extends Controller
 {
