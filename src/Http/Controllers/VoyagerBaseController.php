@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Events\BreadDataDeleted;
+use TCG\Voyager\Events\BreadDataRestored;
 use TCG\Voyager\Events\BreadDataUpdated;
 use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
@@ -141,10 +142,21 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
+        $isSoftDeleted = false;
+
         $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
+
+            // Use withTrashed() if model uses SoftDeletes and if toggle is selected
+            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+                $model = $model->withTrashed();
+            }
+
             $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+            if ($dataTypeContent->deleted_at) {
+                $isSoftDeleted = true;
+            }
         } else {
             // If Model doest exist, get data from table name
             $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
@@ -168,7 +180,7 @@ class VoyagerBaseController extends Controller
             $view = "voyager::$slug.read";
         }
 
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'isSoftDeleted'));
     }
 
     //***************************************
@@ -191,9 +203,19 @@ class VoyagerBaseController extends Controller
 
         $relationships = $this->getRelationships($dataType);
 
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
-            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+        if (strlen($dataType->model_name) != 0) {
+            $model = app($dataType->model_name);
+
+            // Use withTrashed() if model uses SoftDeletes and if toggle is selected
+            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+                $model = $model->withTrashed();
+            }
+
+            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+        } else {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
+        }
 
         foreach ($dataType->editRows as $key => $row) {
             $dataType->editRows[$key]['col_width'] = isset($row->details->width) ? $row->details->width : 100;
@@ -227,7 +249,12 @@ class VoyagerBaseController extends Controller
         // Compatibility with Model binding.
         $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        $model = app($dataType->model_name);
+        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            $data = $model->withTrashed()->findOrFail($id);
+        } else {
+            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        }
 
         // Check permission
         $this->authorize('edit', $data);
@@ -371,7 +398,11 @@ class VoyagerBaseController extends Controller
         }
         foreach ($ids as $id) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-            $this->cleanup($dataType, $data);
+
+            $model = app($dataType->model_name);
+            if (!($model && in_array(SoftDeletes::class, class_uses($model)))) {
+                $this->cleanup($dataType, $data);
+            }
         }
 
         $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
@@ -384,6 +415,39 @@ class VoyagerBaseController extends Controller
             ]
             : [
                 'message'    => __('voyager::generic.error_deleting')." {$displayName}",
+                'alert-type' => 'error',
+            ];
+
+        if ($res) {
+            event(new BreadDataDeleted($dataType, $data));
+        }
+
+        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+    }
+
+    public function restore(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        // Check permission
+        $this->authorize('delete', app($dataType->model_name));
+
+        // Get record
+        $model = call_user_func([$dataType->model_name, 'withTrashed']);
+        $data = $model->findOrFail($id);
+
+        $displayName = $dataType->display_name_singular;
+
+        $res = $data->restore($id);
+        $data = $res
+            ? [
+                'message'    => __('voyager::generic.successfully_restored')." {$displayName}",
+                'alert-type' => 'success',
+            ]
+            : [
+                'message'    => __('voyager::generic.error_restored')." {$displayName}",
                 'alert-type' => 'error',
             ];
 
@@ -482,6 +546,9 @@ class VoyagerBaseController extends Controller
         }
 
         $model = app($dataType->model_name);
+        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            $model = $model->withTrashed();
+        }
         $results = $model->orderBy($dataType->order_column)->get();
 
         $display_column = $dataType->order_display_column;
@@ -509,6 +576,9 @@ class VoyagerBaseController extends Controller
         $this->authorize('edit', app($dataType->model_name));
 
         $model = app($dataType->model_name);
+        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            $model = $model->withTrashed();
+        }
 
         $order = json_decode($request->input('order'));
         $column = $dataType->order_column;

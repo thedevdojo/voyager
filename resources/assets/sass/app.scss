@@ -4343,7 +4343,7 @@ table a.btn-sm{
   display:block;
 }
 
-.delete, .edit{
+.delete, .restore, .edit{
   margin-left:5px;
   cursor:pointer;
 }
@@ -4941,6 +4941,9 @@ float: left;
   border-width:1px;
   border-color:rgba(255, 255, 255, 0);
   color:#fff;
+}
+.voyager .btn.btn-default.btn-sm, .voyager .btn.btn-default.btn-sm:hover{
+  color:inherit;
 }
 
 .btn-primary.focus, .btn-primary:focus, .btn-primary:hover, .btn-primary:active {
