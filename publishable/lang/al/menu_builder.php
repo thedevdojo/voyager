@@ -1,0 +1,31 @@
+<?php
+
+return [
+    'color'                => 'Ngjyra në RGB ose magji (opsionale)',
+    'color_ph'             => 'Ngjyra (ex. #ffffff ose rgb (255, 255, 255)',
+    'create_new_item'      => 'Krijo një artikull të ri të menysë',
+    'delete_item_confirm'  => 'Po, fshini këtë artikull menu',
+    'delete_item_question' => 'A jeni i sigurt që doni ta fshini këtë artikull të menusë?',
+    'drag_drop_info'       => 'Zvarriteni dhe hiqni menunë Artikujt e mëposhtëm për të riorganizuar ato.',
+    'dynamic_route'        => 'Rruga dinamike',
+    'edit_item'            => 'Modifiko artikullin e menysë',
+    'icon_class'           => 'Klasa e Font Icon për Item Menu (Përdorni një',
+    'icon_class2'          => 'Klasa e Fonteve Voyager)',
+    'icon_class_ph'        => 'Klasa e ikonave (opsionale)',
+    'item_route'           => 'Rruga për artikullin e menysë',
+    'item_title'           => 'Titulli i artikullit të menysë',
+    'link_type'            => 'Lloji i lidhjes',
+    'new_menu_item'        => 'Artikulli i ri i menysë',
+    'open_in'              => 'Hapni',
+    'open_new'             => 'New Tab / Window',
+    'open_same'            => 'Same Tab / Window',
+    'route_parameter'      => 'Parametrat e rrugës (nëse ka)',
+    'static_url'           => 'URL statik',
+    'successfully_created' => 'Krijoi me sukses artikullin e ri të menysë.',
+    'successfully_deleted' => 'U zhduk me sukses artikullin e menysë.',
+    'successfully_updated' => 'U përditësua me sukses artikulli i menusë.',
+    'updated_order'        => 'Rendi i menysë i përditësuar me sukses.',
+    'url'                  => 'URL për artikullin e menysë',
+    'usage_hint'           => 'Ju mund të nxjerrni një menu kudo në faqen tuaj duke '
+    .'telefonuar Mund të dalni  këtë menu diku në faqen tënde duke telefonuar',
+];

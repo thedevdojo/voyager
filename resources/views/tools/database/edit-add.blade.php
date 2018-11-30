@@ -1,12 +1,17 @@
 @extends('voyager::master')
+@if($db->action == 'update')
+    @section('page_title', __('voyager::database.editing_table', ['table' => $db->table->name]))
+@else
+    @section('page_title', __('voyager::database.create_new_table'))
+@endif
 
 @section('page_header')
     <h1 class="page-title">
         <i class="voyager-data"></i>
         @if($db->action == 'update')
-            {{ "Editing {$db->table->name} table" }}
+            {{ __('voyager::database.editing_table', ['table' => $db->table->name]) }}
         @else
-            {{ 'New Table' }}
+            {{ __('voyager::database.create_new_table') }}
         @endif
     </h1>
 @stop

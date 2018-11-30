@@ -2,12 +2,16 @@
 
 namespace TCG\Voyager;
 
+use Arrilot\Widgets\Facade as Widget;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use TCG\Voyager\Actions\DeleteAction;
+use TCG\Voyager\Actions\EditAction;
+use TCG\Voyager\Actions\ViewAction;
 use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
 use TCG\Voyager\FormFields\HandlerInterface;
@@ -21,6 +25,7 @@ use TCG\Voyager\Models\Permission;
 use TCG\Voyager\Models\Post;
 use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\Setting;
+use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Traits\Translatable;
 
@@ -42,18 +47,25 @@ class Voyager
 
     protected $viewLoadingEvents = [];
 
+    protected $actions = [
+        DeleteAction::class,
+        EditAction::class,
+        ViewAction::class,
+    ];
+
     protected $models = [
-        'Category'   => Category::class,
-        'DataRow'    => DataRow::class,
-        'DataType'   => DataType::class,
-        'Menu'       => Menu::class,
-        'MenuItem'   => MenuItem::class,
-        'Page'       => Page::class,
-        'Permission' => Permission::class,
-        'Post'       => Post::class,
-        'Role'       => Role::class,
-        'Setting'    => Setting::class,
-        'User'       => User::class,
+        'Category'    => Category::class,
+        'DataRow'     => DataRow::class,
+        'DataType'    => DataType::class,
+        'Menu'        => Menu::class,
+        'MenuItem'    => MenuItem::class,
+        'Page'        => Page::class,
+        'Permission'  => Permission::class,
+        'Post'        => Post::class,
+        'Role'        => Role::class,
+        'Setting'     => Setting::class,
+        'User'        => User::class,
+        'Translation' => Translation::class,
     ];
 
     public $setting_cache = null;
@@ -119,10 +131,8 @@ class Voyager
 
     public function afterFormFields($row, $dataType, $dataTypeContent)
     {
-        $options = json_decode($row->details);
-
-        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent, $options) {
-            return $after->visible($row, $dataType, $dataTypeContent, $options);
+        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent) {
+            return $after->visible($row, $dataType, $dataTypeContent, $row->details);
         });
     }
 
@@ -158,6 +168,43 @@ class Voyager
         });
     }
 
+    public function addAction($action)
+    {
+        array_push($this->actions, $action);
+    }
+
+    public function replaceAction($actionToReplace, $action)
+    {
+        $key = array_search($actionToReplace, $this->actions);
+        $this->actions[$key] = $action;
+    }
+
+    public function actions()
+    {
+        return $this->actions;
+    }
+
+    /**
+     * Get a collection of the dashboard widgets.
+     *
+     * @return \Arrilot\Widgets\WidgetGroup
+     */
+    public function dimmers()
+    {
+        $widgetClasses = config('voyager.dashboard.widgets');
+        $dimmers = Widget::group('voyager::dimmers');
+
+        foreach ($widgetClasses as $widgetClass) {
+            $widget = app($widgetClass);
+
+            if ($widget->shouldBeDisplayed()) {
+                $dimmers->addWidget($widgetClass);
+            }
+        }
+
+        return $dimmers;
+    }
+
     public function setting($key, $default = null)
     {
         if ($this->setting_cache === null) {
@@ -179,7 +226,7 @@ class Voyager
     public function image($file, $default = '')
     {
         if (!empty($file)) {
-            return Storage::disk(config('voyager.storage.disk'))->url($file);
+            return str_replace('\\', '/', Storage::disk(config('voyager.storage.disk'))->url($file));
         }
 
         return $default;
@@ -215,7 +262,7 @@ class Voyager
     public function canOrFail($permission)
     {
         if (!$this->can($permission)) {
-            throw new UnauthorizedHttpException(null);
+            throw new AccessDeniedHttpException();
         }
 
         return true;
@@ -327,5 +374,10 @@ class Voyager
         }
 
         return $this->users[$id];
+    }
+
+    public function getLocales()
+    {
+        return array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), ['..', '.']);
     }
 }

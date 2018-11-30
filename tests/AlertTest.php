@@ -2,21 +2,11 @@
 
 namespace TCG\Voyager\Tests;
 
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Alert;
 use TCG\Voyager\Facades\Voyager;
 
 class AlertTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->install();
-
-        Auth::loginUsingId(1);
-    }
-
     public function testAlertsAreRegistered()
     {
         $alert = (new Alert('test', 'warning'))
@@ -24,7 +14,7 @@ class AlertTest extends TestCase
 
         Voyager::addAlert($alert);
 
-        $alerts = app('voyager')->alerts();
+        $alerts = Voyager::alerts();
 
         $this->assertCount(1, $alerts);
     }
@@ -36,7 +26,7 @@ class AlertTest extends TestCase
             ->text('Text')
             ->button('Button', 'http://example.com', 'danger'));
 
-        $alerts = app('voyager')->alerts();
+        $alerts = Voyager::alerts();
 
         $this->assertEquals('<strong>Title</strong>', $alerts[0]->components[0]->render());
         $this->assertEquals('<p>Text</p>', $alerts[0]->components[1]->render());

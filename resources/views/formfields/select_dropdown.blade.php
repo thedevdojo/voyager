@@ -2,7 +2,7 @@
 
     {{-- If this is a relationship and the method does not exist, show a warning message --}}
     @if( !method_exists( $dataType->model_name, camel_case($row->field) ) )
-        <p class="label label-warning"><i class="voyager-warning"></i> {{ __('voyager.form.field_select_dd_relationship', ['method' => camel_case($row->field).'()', 'class' => $dataType->model_name]) }}</p>
+        <p class="label label-warning"><i class="voyager-warning"></i> {{ __('voyager::form.field_select_dd_relationship', ['method' => camel_case($row->field).'()', 'class' => $dataType->model_name]) }}</p>
     @endif
 
     @if( method_exists( $dataType->model_name, camel_case($row->field) ) )
@@ -16,7 +16,7 @@
             <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : null; ?>
 
             @if(isset($options->options))
-                <optgroup label="{{ __('voyager.generic.custom') }}">
+                <optgroup label="{{ __('voyager::generic.custom') }}">
                 @foreach($options->options as $key => $option)
                     <option value="{{ ($key == '_empty_' ? '' : $key) }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if((string)$selected_value == (string)$key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
                 @endforeach
@@ -49,7 +49,7 @@
             }
             ?>
 
-            <optgroup label="Relationship">
+            <optgroup label="{{ __('voyager::database.relationship.relationship') }}">
             @foreach($relationshipOptions as $relationshipOption)
                 <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
             @endforeach

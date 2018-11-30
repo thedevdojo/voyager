@@ -28,6 +28,9 @@ class DataType extends Model
         'description',
         'generate_permissions',
         'server_side',
+        'order_column',
+        'order_display_column',
+        'details',
     ];
 
     public function rows()
@@ -88,7 +91,10 @@ class DataType extends Model
             }
 
             if ($this->fill($requestData)->save()) {
-                $fields = $this->fields(array_get($requestData, 'name'));
+                $fields = $this->fields((strlen($this->model_name) != 0)
+                    ? app($this->model_name)->getTable()
+                    : array_get($requestData, 'name')
+                );
 
                 $requestData = $this->getRelationships($requestData, $fields);
 
@@ -99,15 +105,15 @@ class DataType extends Model
                         $dataRow->{$check} = isset($requestData["field_{$check}_{$field}"]);
                     }
 
-                    $dataRow->required = $requestData['field_required_'.$field];
+                    $dataRow->required = boolval($requestData['field_required_'.$field]);
                     $dataRow->field = $requestData['field_'.$field];
                     $dataRow->type = $requestData['field_input_type_'.$field];
-                    $dataRow->details = $requestData['field_details_'.$field];
+                    $dataRow->details = json_decode($requestData['field_details_'.$field]);
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
                     if (!$dataRow->save()) {
-                        throw new \Exception(__('voyager.database.field_safe_failed', ['field' => $field]));
+                        throw new \Exception(__('voyager::database.field_safe_failed', ['field' => $field]));
                     }
                 }
 
@@ -177,6 +183,7 @@ class DataType extends Model
                         'label'       => $requestData['relationship_label_'.$relationship],
                         'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
                         'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
+                        'taggable'    => isset($requestData['relationship_taggable_'.$relationship]) ? $requestData['relationship_taggable_'.$relationship] : '0',
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
@@ -189,12 +196,13 @@ class DataType extends Model
 
     public function fieldOptions()
     {
-        $table = $this->name;
-
         // Get ordered BREAD fields
         $orderedFields = $this->rows()->pluck('field')->toArray();
 
-        $_fieldOptions = SchemaManager::describeTable($table)->toArray();
+        $_fieldOptions = SchemaManager::describeTable((strlen($this->model_name) != 0)
+            ? app($this->model_name)->getTable()
+            : $this->name
+        )->toArray();
 
         $fieldOptions = [];
         $f_size = count($orderedFields);
@@ -222,5 +230,35 @@ class DataType extends Model
         if (method_exists($model, 'adminFields')) {
             return $model->adminFields();
         }
+    }
+
+    public function setDetailsAttribute($value)
+    {
+        $this->attributes['details'] = json_encode($value);
+    }
+
+    public function getDetailsAttribute($value)
+    {
+        return json_decode(!empty($value) ? $value : '{}');
+    }
+
+    public function getOrderColumnAttribute()
+    {
+        return isset($this->details->order_column) ? $this->details->order_column : null;
+    }
+
+    public function setOrderColumnAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['order_column' => $value]);
+    }
+
+    public function getOrderDisplayColumnAttribute()
+    {
+        return isset($this->details->order_display_column) ? $this->details->order_display_column : null;
+    }
+
+    public function setOrderDisplayColumnAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
     }
 }

@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'usage_help'           => 'Kamu dapat menggunakan value dari setiap pengaturan dimanapun di website dengan memanggil',
+    'save'                 => 'Simpan Pengaturan',
+    'new'                  => 'Pengaturan Baru',
+    'help_name'            => 'Nama pengaturan cth: Judul Admin',
+    'help_key'             => 'Key pengaturan cth: judul_admin',
+    'help_option'          => '(optional, hanya berlaku untuk tipe tertentu seperti dropdown box atau radio button)',
+    'add_new'              => 'Buat Pengaturan Baru',
+    'delete_question'      => 'Apakah kamu yakin untuk menghapus pengaturan :setting?',
+    'delete_confirm'       => 'Ya, hapus pengaturan ini',
+    'successfully_created' => 'Berhasil membuat pengaturan',
+    'successfully_saved'   => 'Berhasil menyimpan pengaturan',
+    'successfully_deleted' => 'Berhasil menghapus pengaturan',
+    'already_at_top'       => 'Ini sudah berada pada daftar teratas',
+    'already_at_bottom'    => 'Ini sudah berada pada daftar terbawah',
+    'key_already_exists'   => 'Key :key telah digunakan',
+    'moved_order_up'       => 'Pindah pengaturan :name keatas',
+    'moved_order_down'     => 'Pindah pengaturan :name kebawah',
+    'successfully_removed' => 'Berhasil menghapus :name',
+    'group_general'        => 'General',
+    'group_admin'          => 'Admin',
+    'group_site'           => 'Site',
+    'group'                => 'Grup',
+    'help_group'           => 'Grup dimana pengaturan ini berlaku',
+];

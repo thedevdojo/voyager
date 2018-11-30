@@ -22,7 +22,12 @@ $(document).ready(function(){
     toolbar: 'styleselect bold italic underline | forecolor backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | link image table youtube giphy | code',
     convert_urls: false,
     image_caption: true,
-    image_title: true
+    image_title: true,
+    init_instance_callback: function (editor) {
+        if (typeof tinymce_init_callback !== "undefined") {
+            tinymce_init_callback(editor);
+        }
+    }
   });
 
 });

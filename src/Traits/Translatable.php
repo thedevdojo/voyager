@@ -5,7 +5,7 @@ namespace TCG\Voyager\Traits;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use TCG\Voyager\Models\Translation;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Translator;
 
 trait Translatable
@@ -31,7 +31,7 @@ trait Translatable
      */
     public function translations()
     {
-        return $this->hasMany(Translation::class, 'foreign_key', $this->getKeyName())
+        return $this->hasMany(Voyager::model('Translation'), 'foreign_key', $this->getKeyName())
             ->where('table_name', $this->getTable())
             ->whereIn('locale', config('voyager.multilingual.locales', []));
     }

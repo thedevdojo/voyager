@@ -2,10 +2,7 @@
 
 namespace TCG\Voyager\Tests;
 
-use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Database\Migrations\Migrator;
-use Illuminate\Foundation\Exceptions\Handler;
 use Orchestra\Testbench\BrowserKit\TestCase as OrchestraTestCase;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\VoyagerServiceProvider;
@@ -18,11 +15,7 @@ class TestCase extends OrchestraTestCase
     {
         parent::setUp();
 
-        if (app()->version() < 5.4) {
-            $this->loadMigrationsFrom([
-                '--realpath' => realpath(__DIR__.'/migrations'),
-            ]);
-        }
+        $this->loadLaravelMigrations();
 
         if (!is_dir(base_path('routes'))) {
             mkdir(base_path('routes'));
@@ -37,6 +30,8 @@ class TestCase extends OrchestraTestCase
 
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
+
+        $this->install();
     }
 
     protected function getPackageProviders($app)
@@ -79,26 +74,13 @@ class TestCase extends OrchestraTestCase
 
     protected function install()
     {
-        if (app()->version() >= 5.4) {
-            $migrator = app('migrator');
-
-            if (!$migrator->repositoryExists()) {
-                $this->artisan('migrate:install');
-            }
-
-            $migrator->run([realpath(__DIR__.'/migrations')]);
-
-            $this->artisan('migrate', ['--path' => realpath(__DIR__.'/migrations')]);
-        }
-
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
 
-        config()->set(
-            'voyager',
-            require __DIR__.'/../publishable/config/voyager.php'
-        );
-
         app(VoyagerServiceProvider::class, ['app' => $this->app])->registerGates();
+
+        if (file_exists(base_path('routes/web.php'))) {
+            require base_path('routes/web.php');
+        }
     }
 
     public function disableExceptionHandling()
@@ -141,21 +123,5 @@ class TestCase extends OrchestraTestCase
         }
 
         return $this->assertSee($text);
-    }
-}
-
-class DisabledTestException extends Handler
-{
-    public function __construct()
-    {
-    }
-
-    public function report(Exception $e)
-    {
-    }
-
-    public function render($request, Exception $e)
-    {
-        throw $e;
     }
 }

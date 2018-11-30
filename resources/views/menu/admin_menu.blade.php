@@ -43,7 +43,7 @@
                 continue;
             }
 
-            $linkAttributes = 'href="#' . str_slug($transItem->title, '-') .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
+            $linkAttributes = 'href="#' . $transItem->id .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
             array_push($listItemClass, 'dropdown');
         }
         else
@@ -57,12 +57,12 @@
     @endphp
 
     <li class="{{ implode(" ", $listItemClass) }}">
-        <a {!! $linkAttributes !!} target="{{ $item->target }}">
+        <a {!! $linkAttributes !!} target="{{ $item->target }}" style="color:{{ (isset($item->color) && $item->color != '#000000' ? $item->color : '') }}">
             <span class="icon {{ $item->icon_class }}"></span>
             <span class="title">{{ $transItem->title }}</span>
         </a>
         @if($hasChildren)
-            <div id="{{ str_slug($transItem->title, '-') }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
+            <div id="{{ $transItem->id }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
                 <div class="panel-body">
                     @include('voyager::menu.admin_menu', ['items' => $item->children, 'options' => $options, 'innerLoop' => true])
                 </div>

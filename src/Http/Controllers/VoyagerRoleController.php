@@ -5,7 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager;
 
-class VoyagerRoleController extends VoyagerBreadController
+class VoyagerRoleController extends VoyagerBaseController
 {
     // POST BR(E)AD
     public function update(Request $request, $id)
@@ -33,7 +33,7 @@ class VoyagerRoleController extends VoyagerBreadController
             return redirect()
             ->route("voyager.{$dataType->slug}.index")
             ->with([
-                'message'    => __('voyager.generic.successfully_updated')." {$dataType->display_name_singular}",
+                'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
                 ]);
         }
@@ -65,7 +65,7 @@ class VoyagerRoleController extends VoyagerBreadController
             return redirect()
             ->route("voyager.{$dataType->slug}.index")
             ->with([
-                'message'    => __('voyager.generic.successfully_added_new')." {$dataType->display_name_singular}",
+                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
                 ]);
         }

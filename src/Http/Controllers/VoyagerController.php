@@ -55,13 +55,13 @@ class VoyagerController extends Controller
 
             // move uploaded file from temp to uploads directory
             if (Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public')) {
-                $status = __('voyager.media.success_uploading');
+                $status = __('voyager::media.success_uploading');
                 $fullFilename = $fullPath;
             } else {
-                $status = __('voyager.media.error_uploading');
+                $status = __('voyager::media.error_uploading');
             }
         } else {
-            $status = __('voyager.media.uploading_wrong_type');
+            $status = __('voyager::media.uploading_wrong_type');
         }
 
         // echo out script that TinyMCE can handle and update the image in the editor

@@ -15,6 +15,10 @@ class User extends Authenticatable implements UserContract
 
     protected $guarded = [];
 
+    protected $casts = [
+        'settings' => 'array',
+    ];
+
     public function getAvatarAttribute($value)
     {
         if (is_null($value)) {
@@ -27,5 +31,15 @@ class User extends Authenticatable implements UserContract
     public function setCreatedAtAttribute($value)
     {
         $this->attributes['created_at'] = Carbon::parse($value)->format('Y-m-d H:i:s');
+    }
+
+    public function setLocaleAttribute($value)
+    {
+        $this->attributes['settings'] = collect($this->settings)->merge(['locale' => $value]);
+    }
+
+    public function getLocaleAttribute()
+    {
+        return $this->settings['locale'];
     }
 }
