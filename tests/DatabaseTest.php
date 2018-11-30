@@ -91,8 +91,6 @@ class DatabaseTest extends TestCase
 
         $this->can_add_index();
 
-        $this->can_change_index();
-
         $this->can_rename_column();
 
         $this->can_drop_column();
@@ -225,21 +223,6 @@ class DatabaseTest extends TestCase
 
         $this->assertTrue($dbTable->hasIndex($indexName));
         $this->assertTrue($dbTable->getIndex($indexName)->isUnique());
-    }
-
-    protected function can_change_index()
-    {
-        $dbTable = SchemaManager::listTableDetails($this->table['name']);
-
-        $this->assertTrue($dbTable->hasIndex('primary'));
-
-        $dbTable->dropPrimaryKey();
-        $dbTable->addIndex(['id'], 'id_index');
-
-        $dbTable = $this->update_table($dbTable->toArray());
-
-        $this->assertFalse($dbTable->hasIndex('primary'));
-        $this->assertTrue($dbTable->hasIndex('id_index'));
     }
 
     protected function update_table(array $table)
