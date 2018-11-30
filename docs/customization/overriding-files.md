@@ -28,7 +28,7 @@ class VoyagerCategoriesController extends \TCG\Voyager\Http\Controllers\VoyagerB
 
 After that go to the BREAD-settings and fill in the Controller Name with your fully-qualified class-name:
 
-![](../.gitbook/assets/bread_controller%20%281%29.png)
+![](../.gitbook/assets/bread_controller.png)
 
 You can now override all methods from the [VoyagerBaseController](https://github.com/the-control-group/voyager/blob/1.1/src/Http/Controllers/VoyagerBaseController.php)
 
@@ -95,4 +95,3 @@ class DataRow extends \TCG\Voyager\Models\DataRow
     // ...
 }
 ```
-
