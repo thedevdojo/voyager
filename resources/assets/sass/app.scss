@@ -12,6 +12,7 @@
 @import "node_modules/simplemde/dist/simplemde.min";
 @import "node_modules/dropzone/dist/dropzone";
 @import "node_modules/cropperjs/dist/cropper";
+@import "node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker";
 @import "fonts";
 
 /********** LOGIN STYLES ***********/
@@ -4493,6 +4494,13 @@ p#the_plugin_name{
     padding-right:0px;
 }
 
+.page-content .form-edit-add ul.permissions {
+    list-style-type: none;
+    li {
+        list-style-type: none;
+    }
+}
+
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title{
   text-transform: uppercase;
   position:relative;
@@ -5091,6 +5099,7 @@ float: left;
 
 .app-container  .side-menu .panel.widget .avatar{
     width: 36px;
+    height: 36px;
     float: left;
     margin-left: 12px;
     border: 0px;

@@ -71,7 +71,7 @@ return [
     */
 
     'storage' => [
-        'disk' => 'public',
+        'disk' => env('FILESYSTEM_DRIVER', 'public'),
     ],
 
     /*
@@ -98,6 +98,7 @@ return [
         'tables' => [
             'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
         ],
+        'autoload_migrations' => true,
     ],
 
     /*
@@ -223,4 +224,18 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Model specific settings
+    |--------------------------------------------------------------------------
+    |
+    | Here you change some model specific settings
+    |
+    */
+
+    'settings' => [
+        // Enables Laravel cache method for
+        // storing cache values between requests
+        'cache' => false,
+    ],
 ];
