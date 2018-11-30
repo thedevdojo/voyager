@@ -295,4 +295,3 @@ After this you can go to your BREAD-browse page and you will see a button **Orde
 Clicking this button will bring you to the page where you can re-arrange your items:
 
 ![](../.gitbook/assets/bread_order.png)
-
