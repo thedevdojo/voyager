@@ -51,9 +51,9 @@ class VoyagerBaseController extends Controller
             $orderColumn = [[ $index, 'desc' ]];
             if (!$sortOrder && isset($dataType->order_direction)) {
                 $sortOrder = $dataType->order_direction;
-                $orderColumn = [[ $index, strtolower($dataType->order_direction) ]];
+                $orderColumn = [[$index, strtolower($dataType->order_direction)]];
             } else {
-                $orderColumn = [[ $index, 'desc' ]];
+                $orderColumn = [[$index, 'desc']];
             }
         }
 
