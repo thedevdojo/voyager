@@ -51,7 +51,7 @@ class VoyagerBaseController extends Controller
             $orderColumn = [[$index, 'desc']];
             if (!$sortOrder && isset($dataType->order_direction)) {
                 $sortOrder = $dataType->order_direction;
-                $orderColumn = [[$index, strtolower($dataType->order_direction)]];
+                $orderColumn = [[$index, $dataType->order_direction]];
             } else {
                 $orderColumn = [[$index, 'desc']];
             }
@@ -74,7 +74,7 @@ class VoyagerBaseController extends Controller
             }
 
             if ($orderBy && in_array($orderBy, $dataType->fields())) {
-                $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'DESC';
+                $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
                 $dataTypeContent = call_user_func([
                     $query->orderBy($orderBy, $querySortOrder),
                     $getter,

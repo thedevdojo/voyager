@@ -265,7 +265,7 @@ class DataType extends Model
 
     public function getOrderDirectionAttribute()
     {
-        return isset($this->details->order_direction) ? $this->details->order_direction : 'ASC';
+        return isset($this->details->order_direction) ? $this->details->order_direction : 'desc';
     }
 
     public function setOrderDirectionAttribute($value)
