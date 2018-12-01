@@ -13,7 +13,7 @@ class File extends BaseType
      */
     public function handle()
     {
-        if (!$this->request->has($this->row->field)) {
+        if (!$this->request->hasFile($this->row->field)) {
             return json_encode([]);
         }
 
