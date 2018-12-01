@@ -479,7 +479,7 @@ class VoyagerBaseController extends Controller
         }
 
         $model = app($dataType->model_name);
-        $results = $model->orderBy($dataType->order_column)->get();
+        $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
 
         $display_column = $dataType->order_display_column;
 

@@ -177,10 +177,10 @@
                                 <div class="col-md-4 form-group">
                                     <label for="order_direction">{{ __('voyager::bread.order_direction') }}</label>
                                     <select name="order_direction" class="select2 form-control">
-                                        <option value="asc" @if(isset($dataType) && $dataType->order_direction == 'ASC') selected @endif>
+                                        <option value="asc" @if(isset($dataType) && $dataType->order_direction == 'asc') selected @endif>
                                             {{ __('voyager::generic.ascending') }}
                                         </option>
-                                        <option value="desc" @if(isset($dataType) && $dataType->order_direction == 'DESC') selected @endif>
+                                        <option value="desc" @if(isset($dataType) && $dataType->order_direction == 'desc') selected @endif>
                                             {{ __('voyager::generic.descending') }}
                                         </option>
                                     </select>
