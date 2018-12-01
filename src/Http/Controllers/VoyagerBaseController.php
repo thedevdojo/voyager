@@ -48,7 +48,7 @@ class VoyagerBaseController extends Controller
         $orderColumn = [];
         if ($orderBy) {
             $index = $dataType->browseRows->where('field', $orderBy)->keys()->first() + 1;
-            $orderColumn = [[ $index, 'desc' ]];
+            $orderColumn = [[$index, 'desc']];
             if (!$sortOrder && isset($dataType->order_direction)) {
                 $sortOrder = $dataType->order_direction;
                 $orderColumn = [[$index, strtolower($dataType->order_direction)]];
