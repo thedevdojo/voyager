@@ -24,7 +24,7 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 <hr>
 
-Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.4, 5.5 and 5.6!
+Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.4, 5.5, 5.6 and 5.7!
 
 ## Installation Steps
 
