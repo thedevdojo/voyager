@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'usage_help'           => 'Pode obter o valor de cada configuração em qualquer lugar em seu site, executando',
+    'usage_help'           => 'Pode obter o valor de cada configuração em qualquer secção do seu site, executando',
     'save'                 => 'Guardar configurações',
     'new'                  => 'Nova configuração',
     'help_name'            => 'Nome da configuração ex: Título do Administrador',

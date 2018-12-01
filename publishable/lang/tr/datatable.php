@@ -2,13 +2,13 @@
 
 // DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n
 return [
-    'sEmptyTable'     => 'Tablo yok',
-    'sInfo'           => '_START_ ile _END_ arasında _TOTAL_ kadar kayıt görüntülendi',
-    'sInfoEmpty'      => '0 ile 0 arasında 0 kadar kayıt görüntülendi',
-    'sInfoFiltered'   => '( _MAX_ toplam bu kadar kayıt filtrelendi)',
+    'sEmptyTable'     => 'Tabloda veri bulunmuyor',
+    'sInfo'           => '_START_ ile _END_ arasında _TOTAL_ kadar kayıt görüntüleniyor',
+    'sInfoEmpty'      => '0 ile 0 arasında 0 kadar kayıt görüntüleniyor',
+    'sInfoFiltered'   => '( Toplam _MAX_  kadar kayıt filtrelendi)',
     'sInfoPostFix'    => '',
     'sInfoThousands'  => ',',
-    'sLengthMenu'     => ' _MENU_ kayıtlarını göster',
+    'sLengthMenu'     => '_MENU_ kayıtlarını göster',
     'sLoadingRecords' => 'Yükleniyor...',
     'sProcessing'     => 'İşleniyor...',
     'sSearch'         => 'Ara:',
