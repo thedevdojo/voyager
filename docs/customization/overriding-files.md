@@ -95,3 +95,5 @@ class DataRow extends \TCG\Voyager\Models\DataRow
     // ...
 }
 ```
+
+Additionally, you will want to update `Model name` field at the Edit BREAD information. In case of `Page` we have to change `TCG\Voyager\Models\Page` to `App\Page` at the BREAD edit information page to make the right extending hierarchy of the classes and propreties overriding.
