@@ -38,7 +38,7 @@ return [
     'featured'               => '特色',
     'field_does_not_exist'   => '字段不存在',
     'how_to_use'             => '如何使用',
-    'index'                  => 'INDEX',
+    'index'                  => '索引',
     'internal_error'         => '内部错误',
     'items'                  => '项目',
     'keep_sidebar_open'      => '保持边栏处在打开状态',

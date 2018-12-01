@@ -71,13 +71,16 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-                    $selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->pluck($options->label)->all();
+
+            		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
+            			return $item->{$options->label};
+            		})->all();
                 @endphp
 
                 @if($view == 'browse')
                     @php
                         $string_values = implode(", ", $selected_values);
-                        if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
+                        if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
                         <p>No results</p>
@@ -122,13 +125,16 @@
 
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->pluck($options->label)->all() : array();
+
+                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
+            			return $item->{$options->label};
+            		})->all() : array();
                 @endphp
 
                 @if($view == 'browse')
                     @php
                         $string_values = implode(", ", $selected_values);
-                        if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
+                        if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
                         <p>No results</p>
@@ -161,8 +167,10 @@
                 >
 
                         @php
-                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
-                            $relationshipOptions = app($options->model)->whereIn($options->key, $selected_values)->get();
+                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
+                                return $item->{$options->key};
+                            })->all() : array();
+                            $relationshipOptions = app($options->model)->all();
                         @endphp
 
                         @if($row->required === 0)

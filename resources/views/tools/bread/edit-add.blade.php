@@ -298,7 +298,13 @@
                                         <div class="alert alert-danger validation-error">
                                             {{ __('voyager::json.invalid') }}
                                         </div>
-                                        <textarea id="json-input-{{ $data['field'] }}" class="resizable-editor" data-editor="json" name="field_details_{{ $data['field'] }}">@if(isset($dataRow->details)){{ $dataRow->details }}@endif</textarea>
+                                        <textarea id="json-input-{{ json_encode($data['field']) }}" class="resizable-editor" data-editor="json" name="field_details_{{ $data['field'] }}">
+                                            @if(isset($dataRow->details))
+                                                {{ json_encode($dataRow->details) }}
+                                            @else
+                                                {}
+                                            @endif
+                                        </textarea>
                                     </div>
                                 </div>
 
