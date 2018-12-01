@@ -142,7 +142,7 @@
                                 </div>
                             </div>
                             <div class="row clearfix">
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-4 form-group">
                                     <label for="order_column">{{ __('voyager::bread.order_column') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
@@ -158,7 +158,7 @@
                                         @endforeach
                                       </select>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-4 form-group">
                                     <label for="order_display_column">{{ __('voyager::bread.order_ident_column') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
@@ -172,6 +172,17 @@
                                         @if(isset($dataType) && $dataType->order_display_column == $tbl['field']) selected @endif
                                         >{{ $tbl['field'] }}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="order_direction">{{ __('voyager::bread.order_direction') }}</label>
+                                    <select name="order_direction" class="select2 form-control">
+                                        <option value="ASC" @if(isset($dataType) && $dataType->order_direction == 'ASC') selected @endif>
+                                            {{ __('voyager::generic.ascending') }}
+                                        </option>
+                                        <option value="DESC" @if(isset($dataType) && $dataType->order_direction == 'DESC') selected @endif>
+                                            {{ __('voyager::generic.descending') }}
+                                        </option>
                                     </select>
                                 </div>
                             </div>

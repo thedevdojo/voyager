@@ -72,7 +72,7 @@
                                             @endif
                                             {{ $row->display_name }}
                                             @if ($isServerSide)
-                                                @if ($row->isCurrentSortField())
+                                                @if ($row->isCurrentSortField() || ($row->field == $dataType->details->order_column && $orderBy == $row->field))
                                                     @if (!isset($_GET['sort_order']) || $_GET['sort_order'] == 'asc')
                                                         <i class="voyager-angle-up pull-right"></i>
                                                     @else
@@ -95,7 +95,7 @@
                                             </td>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
-                                            
+
                                             <td>
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
@@ -259,7 +259,7 @@
             @if (!$dataType->server_side)
                 var table = $('#dataTable').DataTable({!! json_encode(
                     array_merge([
-                        "order" => [],
+                        "order" => $orderColumn,
                         "language" => __('voyager::datatable'),
                         "columnDefs" => [['targets' => -1, 'searchable' =>  false, 'orderable' => false]],
                     ],

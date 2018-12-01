@@ -33,6 +33,7 @@ return [
     'model_name'             => 'Model Name',
     'model_name_ph'          => 'ex. \App\User, if left empty will try and use the table name',
     'order'                  => 'Order',
+    'order_direction'        => 'Order direction',
     'order_column'           => 'Order column',
     'order_column_ph'        => 'The column where the order is stored',
     'order_ident_column'     => 'Order display column',
