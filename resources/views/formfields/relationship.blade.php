@@ -32,7 +32,7 @@
                         $query = $model::all();
                     @endphp
 
-                    @if($row->required === 0)
+                    @if(!$row->required)
                         <option value="">{{__('voyager::generic.none')}}</option>
                     @endif
 
@@ -165,7 +165,7 @@
                             $relationshipOptions = app($options->model)->all();
                         @endphp
 
-                        @if($row->required === 0)
+                        @if(!$row->required)
                             <option value="">{{__('voyager::generic.none')}}</option>
                         @endif
 
