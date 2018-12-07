@@ -576,14 +576,15 @@ class VoyagerBaseController extends Controller
         $this->authorize('edit', app($dataType->model_name));
 
         $model = app($dataType->model_name);
-        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
-            $model = $model->withTrashed();
-        }
 
         $order = json_decode($request->input('order'));
         $column = $dataType->order_column;
         foreach ($order as $key => $item) {
-            $i = $model->findOrFail($item->id);
+            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+                $i = $model->withTrashed()->findOrFail($item->id);
+            } else {
+                $i = $model->findOrFail($item->id);
+            }
             $i->$column = ($key + 1);
             $i->save();
         }
