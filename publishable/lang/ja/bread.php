@@ -42,6 +42,7 @@ return [
     'policy_name'            => 'ポリシー名',
     'policy_name_ph'         => '例: \App\Policies\UserPolicy, 空にするとデフォルトのポリシーが使われます',
     'server_pagination'      => 'サーバーサイド ページネーション',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URLスラッグ (必ずユニークにしてください)',
     'url_slug_ph'            => 'URLスラッグ (例: posts)',
 ];
