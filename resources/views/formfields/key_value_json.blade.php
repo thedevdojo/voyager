@@ -1,7 +1,6 @@
 @php
     if($dataTypeContent->{$row->field}){
         $old_parameters = json_decode($dataTypeContent->{$row->field});
-        $keys = array_keys((array)$old_parameters);
     }
     $end_id = 0;
 @endphp
