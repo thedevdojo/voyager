@@ -19,6 +19,7 @@ use TCG\Voyager\Http\Controllers\ContentTypes\Relationship;
 use TCG\Voyager\Http\Controllers\ContentTypes\SelectMultiple;
 use TCG\Voyager\Http\Controllers\ContentTypes\Text;
 use TCG\Voyager\Http\Controllers\ContentTypes\Timestamp;
+use TCG\Voyager\Http\Controllers\ContentTypes\KeyValueJson;
 use TCG\Voyager\Traits\AlertsMessages;
 use Validator;
 
@@ -205,6 +206,9 @@ abstract class Controller extends BaseController
             /********** RELATIONSHIPS TYPE **********/
             case 'relationship':
                 return (new Relationship($request, $slug, $row, $options))->handle();
+            /********** KeyValueJSON TYPE **********/
+            case 'key_value_json':
+                return (new KeyValueJson($request, $slug, $row, $options))->handle();
             /********** ALL OTHER TEXT TYPE **********/
             default:
                 return (new Text($request, $slug, $row, $options))->handle();
