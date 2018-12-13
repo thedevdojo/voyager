@@ -63,7 +63,7 @@
         new_row.setAttribute('row-id', parseInt(this.parentNode.parentNode.getAttribute('row-id'))+1)
         
         this.classList.remove('btn-success');
-        this.innerHTML = '-';
+        this.innerHTML = '<i class="voyager-trash"></i>';
         new_row.querySelector('.btn-success').onclick = this.onclick;
         this.onclick = removeRow;
         this.parentNode.parentNode.parentNode.appendChild(new_row);
