@@ -20,6 +20,6 @@ class KeyValueJson extends BaseType
             }
         }
 
-        return json_encode($new_parameters);        
+        return json_encode($new_parameters);
     }
 }
