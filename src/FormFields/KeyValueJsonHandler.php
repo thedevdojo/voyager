@@ -15,5 +15,4 @@ class KeyValueJsonHandler extends AbstractHandler
             'dataTypeContent' => $dataTypeContent,
         ]);
     }
-    
 }
