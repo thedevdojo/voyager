@@ -16,7 +16,7 @@ class KeyValueJson extends BaseType
         $new_parameters = [];
         foreach ($key_value_json as $key => $value) {
             if ($key_value_json[$key]['key']) {
-                $new_parameters[$key_value_json[$key]['key']] = $key_value_json[$key]['value'];
+                $new_parameters[] = $key_value_json[$key];
             }
         }
 

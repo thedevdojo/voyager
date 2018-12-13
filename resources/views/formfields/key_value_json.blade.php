@@ -12,10 +12,10 @@
     @foreach($old_parameters as $parameter)
         <div class="form-group row" row-id="{{$loop->index}}">
             <div class="col-xs-3" style="margin-bottom:0;">
-                <input type="text" class="form-control" name="{{ $row->field }}[{{$loop->index}}][key]" value="{{ $keys[$loop->index] }}" id="key"/>
+                <input type="text" class="form-control" name="{{ $row->field }}[{{$loop->index}}][key]" value="{{ $parameter->key }}" id="key"/>
             </div>
             <div class="col-xs-3" style="margin-bottom:0;">
-                <input type="text" class="form-control" name="{{ $row->field }}[{{$loop->index}}][value]" value="{{ $parameter }}" id="value"/>
+                <input type="text" class="form-control" name="{{ $row->field }}[{{$loop->index}}][value]" value="{{ $parameter->value }}" id="value"/>
             </div>
             
             <div class="col-xs-1" style="margin-bottom:0;">
