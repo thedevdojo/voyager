@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager\Http\Controllers\ContentTypes;
 
-use Illuminate\Support\Facades\DB;
-
 class KeyValueJson extends BaseType
 {
     /**
@@ -15,14 +13,13 @@ class KeyValueJson extends BaseType
             return;
         }
 
-        $new_parameters = array();
+        $new_parameters = [];
         foreach ($key_value_json as $key => $value) {
-            if($key_value_json[$key]['key']){
+            if($key_value_json[$key]['key']) {
                 $new_parameters[] = $key_value_json[$key];
             }
         }
-        return json_encode($new_parameters);   
         
+        return json_encode($new_parameters);        
     }
-
 }
