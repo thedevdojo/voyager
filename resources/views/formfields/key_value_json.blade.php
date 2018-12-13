@@ -1,6 +1,7 @@
 @php
     if($dataTypeContent->{$row->field}){
         $old_parameters = json_decode($dataTypeContent->{$row->field});
+        $keys = array_keys((array)$old_parameters);
         $count = count((array)$old_parameters);
     }
     $end_id = 0;
@@ -12,10 +13,10 @@
     @foreach($old_parameters as $parameter)
         <div class="form-group row" row-id="{{$loop->index}}">
             <div class="col-xs-3" style="margin-bottom:0;">
-                <input type="text" class="form-control" name="{{ $row->field }}[{{$loop->index}}][key]" value="{{ $parameter->key }}" id="key"/>
+                <input type="text" class="form-control" name="{{ $row->field }}[{{$loop->index}}][key]" value="{{ $keys[$loop->index] }}" id="key"/>
             </div>
             <div class="col-xs-3" style="margin-bottom:0;">
-                <input type="text" class="form-control" name="{{ $row->field }}[{{$loop->index}}][value]" value="{{ $parameter->value }}" id="value"/>
+                <input type="text" class="form-control" name="{{ $row->field }}[{{$loop->index}}][value]" value="{{ $parameter }}" id="value"/>
             </div>
             
             <div class="col-xs-1" style="margin-bottom:0;">
