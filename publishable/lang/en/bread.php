@@ -35,6 +35,7 @@ return [
     'order'                  => 'Order',
     'order_column'           => 'Order column',
     'order_column_ph'        => 'The column where the order is stored',
+    'order_direction'        => 'Order direction',
     'order_ident_column'     => 'Order display column',
     'order_ident_column_ph'  => 'The column which is displayed in the order page',
     'ordering_not_set'       => 'You have to define ordering first',
