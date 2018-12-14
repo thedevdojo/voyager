@@ -262,7 +262,7 @@ trait Translatable
      *
      */
     public function scopeWhereTranslation(Builder $query, $field, $operator, $value = null, $locales = null, $default = true){
-       return $query->whereTranslation($field, $operator, $value, $locales, $default)
+       return $query->whereTranslation($field, $operator, $value, $locales, $default);
    }
 
     /**
