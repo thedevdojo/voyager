@@ -258,7 +258,7 @@
                     <!-- End Move File Modal -->
 
                     <!-- Image Modal -->
-                    <div class="modal fade" id="imagemodal">
+                    <div class="modal fade" id="imagemodal" v-if="selected_file.type != 'folder'">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
