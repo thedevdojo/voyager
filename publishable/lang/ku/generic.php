@@ -58,6 +58,7 @@ return [
     'no_thanks'              => 'نەخێر سوپاس',
     'none'                   => 'هیچیان',
     'not_null'               => 'نییە Null',
+    'no_results'             => 'No results',
     'options'                => 'هەڵبژاردەکان',
     'password'               => 'ووشەی نهێنی',
     'permissions'            => 'ڕێگەپێدان',
