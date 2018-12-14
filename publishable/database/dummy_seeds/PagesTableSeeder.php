@@ -45,7 +45,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 1,
             ])->save();
         }
@@ -61,7 +60,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 2,
             ])->save();
         }
@@ -77,7 +75,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 3,
             ])->save();
         }
@@ -93,7 +90,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 4,
             ])->save();
         }
@@ -109,7 +105,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 5,
             ])->save();
         }
@@ -125,14 +120,14 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => json_encode([
+                'details'      => [
                     'slugify' => [
                         'origin' => 'title',
                     ],
                     'validation' => [
                         'rule'  => 'unique:pages,slug',
                     ],
-                ]),
+                ],
                 'order' => 6,
             ])->save();
         }
@@ -148,7 +143,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 7,
             ])->save();
         }
@@ -164,7 +158,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 8,
             ])->save();
         }
@@ -180,13 +173,13 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => json_encode([
+                'details'      => [
                     'default' => 'INACTIVE',
                     'options' => [
                         'INACTIVE' => 'INACTIVE',
                         'ACTIVE'   => 'ACTIVE',
                     ],
-                ]),
+                ],
                 'order' => 9,
             ])->save();
         }
@@ -202,7 +195,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 10,
             ])->save();
         }
@@ -218,7 +210,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 11,
             ])->save();
         }
@@ -234,7 +225,6 @@ class PagesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 12,
             ])->save();
         }

@@ -5,7 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\Facades\Image;
 use League\Flysystem\Plugin\ListWith;
 use TCG\Voyager\Facades\Voyager;
 
