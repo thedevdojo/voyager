@@ -248,44 +248,45 @@ trait Translatable
 
     /**
      * Gets Entry if has translated field field with value via scope.
-     * 
-     * @example  $class->whereTranslation('de', 'title', 'zuhause') 
-     * 
+     *
+     * @example  $class->whereTranslation('de', 'title', 'zuhause')
+     *
      * @param builder       $query
-     * @param string|array  $locale     {required} locale(s) you are looking for the field.
      * @param string        $field      {required} the field your looking to find a value in.
      * @param string        $operator   {required} value you are looking for or a relation modifier.
      * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator.
-     * @param bool          $default    {optional} fi true checks for $value is in default language before checking translations.
+     * @param string|array  $locales    {optional} locale(s) you are looking for the field.
+     * @param bool          $default    {optional} if true checks for $value is in default language before checking translations.
      *
      * @return Builder|null
-     * 
+     *
      */
-    public function scopeWhereTranslation(Builder $query, $locales, $field, $operator, $value = null, $default = false){
-    public function scopeWhereTranslation($field, $operator, $value = null, $locales = null, $default = true)
-    {
-        return $query->whereTranslation($field, $operator, $value, $locales, $default);
-    }
+    public function scopeWhereTranslation(Builder $query, $field, $operator, $value = null, $locales = null, $default = true){
+       return $query->whereTranslation($field, $operator, $value, $locales, $default)
+   }
 
     /**
      * Gets Entry if has translated field with value.
-     * 
+     *
      * @example  Class::whereTranslation(['de', 'iu'], 'title', 'zuhause', '=', true)
-     * 
+     *
      * @author reageek <https://github.com/reageek> && emptynick <https://github.com/emptynick>.
      * @todo refactor out of static if you wish.
-     * 
-     * @param string|array  $locale     {required} locale(s) you are looking for the field.
+     *
      * @param string        $field      {required} the field your looking to find a value in.
      * @param string        $operator   {required} value you are looking for or a relation modifier such as LIKE, =, etc.
      * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator.
+     * @param string|array  $locales    {optional} locale(s) you are looking for the field.
      * @param bool          $default    {optional} if true checks for $value is in default database before checking translations.
      *
      * @return Builder|null
-     * 
+     *
      */
     public static function whereTranslation($field, $operator, $value = null, $locales = null, $default = true)
     {
+        if($locales && !is_array($locales)) {
+            $locales = [$locales];
+        }
         if ( !isset( $value ) ) {
             $value = $operator;
             $operator = '=';
