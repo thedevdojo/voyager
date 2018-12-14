@@ -301,7 +301,7 @@ class VoyagerMediaController extends Controller
 
                 // Check if file was found in array
                 if (is_null($key) || $key === false) {
-                    throw new Exception(__('voyager::media.image_does_not_exist'), 400);
+                    throw new Exception(__('voyager::media.file_does_not_exist'), 400);
                 }
 
                 // Remove file from array
@@ -318,7 +318,7 @@ class VoyagerMediaController extends Controller
             return response()->json([
                'data' => [
                    'status'  => 200,
-                   'message' => __('voyager::media.image_removed'),
+                   'message' => __('voyager::media.file_removed'),
                ],
             ]);
         } catch (Exception $e) {
