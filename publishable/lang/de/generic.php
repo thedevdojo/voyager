@@ -59,6 +59,7 @@ return [
     'none'                   => 'Keine',
     'no_results'             => 'Keine Ergebnisse',
     'not_null'               => 'Not Null',
+    'no_results'             => 'Keine Ergebnisse',
     'options'                => 'Optionen',
     'password'               => 'Passwort',
     'permissions'            => 'Rechte',

@@ -60,6 +60,7 @@ return [
     'no_thanks'              => 'No Thanks',
     'none'                   => 'None',
     'not_null'               => 'Not Null',
+    'no_results'             => 'No results',
     'options'                => 'Options',
     'password'               => 'Password',
     'permissions'            => 'Permissions',
