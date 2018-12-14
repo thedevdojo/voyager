@@ -261,7 +261,9 @@ trait Translatable
      * 
      */
     public function scopeWhereTranslation(Builder $query, $locales, $field, $operator, $value = null, $default = false){
-        return $query->whereTranslation( $locales, $field, $operator, $value, $default );
+    public function scopeWhereTranslation($field, $operator, $value = null, $locales = null, $default = true)
+    {
+        return $query->whereTranslation($field, $operator, $value, $locales, $default);
     }
 
     /**
@@ -281,11 +283,8 @@ trait Translatable
      * @return Builder|null
      * 
      */
-    public static function whereTranslation( $locales, $field, $operator, $value = null, $default = false )
+    public static function whereTranslation($field, $operator, $value = null, $locales = null, $default = true)
     {
-        if( !is_array( $locales )){
-            $locales = [$locales];
-        }
         if ( !isset( $value ) ) {
             $value = $operator;
             $operator = '=';
@@ -299,22 +298,19 @@ trait Translatable
         }
         $self = new static;
         $table = $self->getTable();
-        //Loop through Locales supplied.
-        foreach( $locales as $locale )
-        {
-            $translated = self::whereIn( 'id', 
-                Translation::where( 'table_name', $table )
-                            ->where( 'column_name', $field )
-                            ->where( 'value', $operator, $value )
-                            ->when( isset( $locale ), function ( $query ) use ( $locale ) {
-                                return $query->where( 'locale', $locale );
-                            })
-                            ->pluck( 'foreign_key' )
-            );
-            if($translated->first()){
-                //We have a field that has value!
-                return $translated;
-            }
+
+        $translated = self::whereIn( 'id',
+            Translation::where( 'table_name', $table )
+                        ->where( 'column_name', $field )
+                        ->where( 'value', $operator, $value )
+                        ->when($locales, function ( $query ) use ( $locales ) {
+                            return $query->whereIn( 'locale', $locales );
+                        })
+                        ->pluck( 'foreign_key' )
+        );
+        if($translated->first()){
+            //We have a field that has value!
+            return $translated;
         }
         //found nothing. Return nothing.
         return;
