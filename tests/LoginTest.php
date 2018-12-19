@@ -4,20 +4,13 @@ namespace TCG\Voyager\Tests;
 
 class LoginTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->install();
-    }
-
     public function testSuccessfulLoginWithDefaultCredentials()
     {
-        $this->visit(route('voyager.login'));
-        $this->type('admin@admin.com', 'email');
-        $this->type('password', 'password');
-        $this->press(__('voyager::generic.login'));
-        $this->seePageIs(route('voyager.dashboard'));
+        $this->visit(route('voyager.login'))
+             ->type('admin@admin.com', 'email')
+             ->type('password', 'password')
+             ->press(__('voyager::generic.login'))
+             ->seePageIs(route('voyager.dashboard'));
     }
 
     public function testShowAnErrorMessageWhenITryToLoginWithWrongCredentials()

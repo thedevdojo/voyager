@@ -107,16 +107,16 @@
                                 <a class="panel-action voyager-resize-full" data-toggle="panel-fullscreen" aria-hidden="true"></a>
                             </div>
                         </div>
-                        @include('voyager::multilingual.input-hidden', [
-                            '_field_name'  => 'body',
-                            '_field_trans' => get_field_translations($dataTypeContent, 'body')
-                        ])
-                        @php
-                            $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
-                            $row = $dataTypeRows->where('field', 'body')->first();
-                        @endphp
 
                         <div class="panel-body">
+                            @include('voyager::multilingual.input-hidden', [
+                                '_field_name'  => 'body',
+                                '_field_trans' => get_field_translations($dataTypeContent, 'body')
+                            ])
+                            @php
+                                $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                                $row = $dataTypeRows->where('field', 'body')->first();
+                            @endphp
                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                         </div>
                     </div><!-- .panel -->
@@ -154,11 +154,10 @@
                             @foreach($dataTypeRows as $row)
                                 @if(!in_array($row->field, $exclude))
                                     @php
-                                        $options = json_decode($row->details);
-                                        $display_options = isset($options->display) ? $options->display : NULL;
+                                        $display_options = isset($row->details->display) ? $row->details->display : NULL;
                                     @endphp
-                                    @if ($options && isset($options->formfields_custom))
-                                        @include('voyager::formfields.custom.' . $options->formfields_custom)
+                                    @if (isset($row->details->formfields_custom))
+                                        @include('voyager::formfields.custom.' . $row->details->formfields_custom)
                                     @else
                                         <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                                             {{ $row->slugify }}
@@ -199,7 +198,7 @@
                                 ])
                                 <input type="text" class="form-control" id="slug" name="slug"
                                     placeholder="slug"
-                                    {{!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}}
+                                    {!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}
                                     value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">

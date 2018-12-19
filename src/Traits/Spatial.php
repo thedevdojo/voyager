@@ -15,7 +15,7 @@ trait Spatial
      */
     public function getLocation($column)
     {
-        $model = self::select(DB::Raw('ST_AsText('.$column.') AS '.$column))
+        $model = self::select(DB::raw('ST_AsText('.$column.') AS '.$column))
             ->where('id', $this->id)
             ->first();
 

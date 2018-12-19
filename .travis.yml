@@ -37,9 +37,6 @@ before_script:
 
 script:
   - vendor/bin/phpunit
-  
+
 addons:
  code_climate
-
-after_success:
-  - vendor/bin/test-reporter
