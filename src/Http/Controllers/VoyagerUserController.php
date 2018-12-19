@@ -16,20 +16,11 @@ class VoyagerUserController extends VoyagerBaseController
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
-        if (!Auth::user()->can('edit', Voyager::model('User')) && $id == Auth::user()->id) {
-            // If can't edit users can still edit its own profile but can't change roles
-            // we need to preserve roles already set
-            $roles = Auth::user()->roles->pluck('id')->toArray();
-
-            $params = $request->all();
-            $params['role_id'] = Auth::user()->role_id;
-            $params['user_belongstomany_role_relationship'] = $roles;
-
-            if (!empty($params['user_belongsto_role_relationship'])) {
-                unset($params['user_belongsto_role_relationship']);
-            }
-
-            $request->replace($params);
+        if (Auth::user()->getKey() == $id) {
+            $request->merge([
+                'role_id'                              => Auth::user()->role_id,
+                'user_belongstomany_role_relationship' => Auth::user()->roles->pluck('id')->toArray(),
+            ]);
         }
 
         return parent::update($request, $id);
