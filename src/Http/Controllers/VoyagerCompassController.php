@@ -6,6 +6,7 @@ use Artisan;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Process\Process;
 use TCG\Voyager\Facades\Voyager;
 
@@ -22,6 +23,10 @@ class VoyagerCompassController extends Controller
     {
         // Check permission
         Voyager::canOrFail('browse_compass');
+        //Check if app is not local
+        if (!\App::environment('local') && !config('voyager.compass_in_production', false)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $message = '';
         $active_tab = '';
@@ -149,6 +154,13 @@ class VoyagerCompassController extends Controller
 
     private function download($data)
     {
+        // Check permission
+        Voyager::canOrFail('browse_compass');
+        //Check if app is not local
+        if (!\App::environment('local') && !config('voyager.compass_in_production', false)) {
+            throw new AccessDeniedHttpException();
+        }
+
         if (function_exists('response')) {
             return response()->download($data);
         }

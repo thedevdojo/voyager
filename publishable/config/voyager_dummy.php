@@ -222,4 +222,6 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
+     // Activate compass when environment is NOT local
+     'compass_in_production' => false,
 ];
