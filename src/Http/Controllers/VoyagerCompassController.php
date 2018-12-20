@@ -154,13 +154,6 @@ class VoyagerCompassController extends Controller
 
     private function download($data)
     {
-        // Check permission
-        Voyager::canOrFail('browse_compass');
-        //Check if app is not local
-        if (!\App::environment('local') && !config('voyager.compass_in_production', false)) {
-            throw new AccessDeniedHttpException();
-        }
-
         if (function_exists('response')) {
             return response()->download($data);
         }
