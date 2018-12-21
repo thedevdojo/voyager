@@ -54,6 +54,7 @@ return [
     'no'                     => '否',
     'no_thanks'              => '不，谢谢',
     'not_null'               => '非空',
+    'no_results'             => 'No results',
     'options'                => '选项',
     'password'               => '密码',
     'permissions'            => '权限',
