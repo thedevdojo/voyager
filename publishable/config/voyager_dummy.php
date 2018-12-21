@@ -222,4 +222,13 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
+     // The allowed mimetypes to be uploaded through the media-manager.
+    'allowed_mimetypes' => '*', //All types can be uploaded
+    /*'allowed_mimetypes' => [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/bmp',
+      'video/mp4',
+    ],*/
 ];

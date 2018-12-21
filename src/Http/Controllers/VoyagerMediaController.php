@@ -179,16 +179,20 @@ class VoyagerMediaController extends Controller
         try {
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
 
-            $allowedImageMimeTypes = [
+            $imageMimeTypes = [
                 'image/jpeg',
                 'image/png',
                 'image/gif',
                 'image/bmp',
                 'image/svg+xml',
             ];
-            $file = $request->file->store($request->upload_path, $this->filesystem);
+            $allowedMimeTypes = config('voyager.allowed_mimetypes', '*');
+            if ($allowedMimeTypes != '*' && (is_array($allowedMimeTypes) && !in_array($request->file->getMimeType(), $allowedMimeTypes))) {
+                throw new Exception(__('voyager::generic.mimetype_not_allowed'));
+            }
 
-            if (in_array($request->file->getMimeType(), $allowedImageMimeTypes)) {
+            $file = $request->file->store($request->upload_path, $this->filesystem);
+            if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
                 $image = Image::make($realPath.$file);
 
                 if ($request->file->getClientOriginalExtension() == 'gif') {
