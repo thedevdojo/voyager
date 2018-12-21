@@ -330,7 +330,6 @@
 [dir="rtl"] .app-container .content-container .navbar-top,
 [dir="rtl"] .app-container .side-body,
 [dir="rtl"] .app-container.expanded .content-container .navbar-top {
-    transition: all .5s cubic-bezier(.19,1,.22,1);
     height: 60px;
 }
 
