@@ -58,6 +58,7 @@ return [
     'no_thanks'              => 'いいえ',
     'none'                   => 'なし',
     'not_null'               => 'Not Null',
+    'no_results'             => 'No results',
     'options'                => 'オプション',
     'password'               => 'パスワード',
     'permissions'            => 'パーミッション',

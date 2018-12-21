@@ -4,8 +4,8 @@ namespace TCG\Voyager\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use TCG\Voyager\Events\SettingUpdated;
-use TCG\Voyager\Listeners\ClearCachedSettingValue;
+use TCG\Voyager\Events;
+use TCG\Voyager\Listeners;
 
 class VoyagerEventServiceProvider extends ServiceProvider
 {
@@ -15,12 +15,15 @@ class VoyagerEventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'TCG\Voyager\Events\BreadAdded' => [
-            'TCG\Voyager\Listeners\AddBreadMenuItem',
-            'TCG\Voyager\Listeners\AddBreadPermission',
+        Events\BreadAdded::class => [
+            Listeners\AddBreadMenuItem::class,
+            Listeners\AddBreadPermission::class,
         ],
-        SettingUpdated::class => [
-            ClearCachedSettingValue::class,
+        Events\BreadDeleted::class => [
+            Listeners\DeleteBreadMenuItem::class,
+        ],
+        Events\SettingUpdated::class => [
+            Listeners\ClearCachedSettingValue::class,
         ],
     ];
 
