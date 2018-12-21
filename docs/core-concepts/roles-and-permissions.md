@@ -4,7 +4,7 @@ Voyager comes with Roles and Permissions out of the box. Each _User_ has a _Role
 
 Inside of the dashboard you can choose to Add, Edit, or delete the current Roles. Additionally when you click to edit a particular role you can specify the BREAD permissions.
 
-![](../.gitbook/assets/role.png)
+![](../.gitbook/assets/role%20%281%29.png)
 
 New in version 1.0, we've changed Voyager's authorization system to be [more in line with Laravel](https://laravel.com/docs/5.5/authorization#authorizing-actions-using-policies)! This means that you can check for permissions in the following ways:
 
