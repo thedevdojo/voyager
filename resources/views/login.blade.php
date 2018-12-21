@@ -18,19 +18,19 @@
             background-color: {{ Voyager::setting("admin.bg_color", "#FFFFFF" ) }};
         }
         body.login .login-sidebar {
-            border-top:5px solid {{ config('voyager.primary_color','#22A7F0') }};
+            border-top: 5px solid {{ config('voyager.primary_color', '#22A7F0') }};
         }
         @media (max-width: 767px) {
             body.login .login-sidebar {
-                border-top:0px !important;
-                border-left:5px solid {{ config('voyager.primary_color','#22A7F0') }};
+                border-top: 0 !important;
+                border-left: 5px solid {{ config('voyager.primary_color', '#22A7F0') }};
             }
         }
-        body.login .form-group-default.focused{
-            border-color:{{ config('voyager.primary_color','#22A7F0') }};
+        body.login .form-group-default.focused {
+            border-color:{{ config('voyager.primary_color', '#22A7F0') }};
         }
-        .login-button, .bar:before, .bar:after{
-            background:{{ config('voyager.primary_color','#22A7F0') }};
+        .login-button, .bar:before, .bar:after {
+            background:{{ config('voyager.primary_color', '#22A7F0') }};
         }
     </style>
 
@@ -86,22 +86,26 @@
                         <span class="signin">{{ __('voyager::generic.login') }}</span>
                     </button>
 
-              </form>
+                </form>
 
-              <div style="clear:both"></div>
+                <div style="clear:both;"></div>
 
-              @if(!$errors->isEmpty())
-              <div class="alert alert-red">
-                <ul class="list-unstyled">
-                    @foreach($errors->all() as $err)
-                    <li>{{ $err }}</li>
-                    @endforeach
-                </ul>
-              </div>
-              @endif
+                {{-- GO HOMEPAGE BUTTON --}}
+                <a href="{{ url('/') }}" class="btn btn-success" style="padding:2px 38px;border-radius:2px;font-size:1.6rem;">
+                    <span class="icon voyager-home"></span>
+                </a>
+
+                @if(!$errors->isEmpty())
+                    <div class="alert alert-red">
+                        <ul class="list-unstyled">
+                            @foreach($errors->all() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
             </div> <!-- .login-container -->
-
         </div> <!-- .login-sidebar -->
     </div> <!-- .row -->
 </div> <!-- .container-fluid -->
@@ -135,7 +139,6 @@
     password.addEventListener('focusout', function(e){
        document.getElementById('passwordGroup').classList.remove("focused");
     });
-
 </script>
 </body>
 </html>
