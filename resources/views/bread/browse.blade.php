@@ -68,12 +68,12 @@
                                         @foreach($dataType->browseRows as $row)
                                         <th>
                                             @if ($isServerSide)
-                                                <a href="{{ $row->sortByUrl($orderBy, $sortOrder) }}">
+                                                <a href="{{ $row->sortByUrl() }}">
                                             @endif
                                             {{ $row->display_name }}
                                             @if ($isServerSide)
-                                                @if ($row->isCurrentSortField($orderBy))
-                                                    @if ($sortOrder == 'asc')
+                                                @if ($row->isCurrentSortField())
+                                                    @if (!isset($_GET['sort_order']) || $_GET['sort_order'] == 'asc')
                                                         <i class="voyager-angle-up pull-right"></i>
                                                     @else
                                                         <i class="voyager-angle-down pull-right"></i>
@@ -104,13 +104,17 @@
                                                 @elseif($row->type == 'select_multiple')
                                                     @if(property_exists($row->details, 'relationship'))
 
-                                                        @foreach($data->{$row->field} as $item)
+                                                        {{{--
+                                                            закоментировал, какая-то грубая ошибка
+                                                            @foreach($data->{$row->field} as $item)
                                                             @if($item->{$row->field . '_page_slug'})
                                                                 <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
                                                             @else
                                                                 {{ $item->{$row->field} }}
                                                             @endif
-                                                        @endforeach
+                                                        @endforeach */
+                                                         --}}}
+
 
                                                     @elseif(property_exists($row->details, 'options'))
                                                         @if (count(json_decode($data->{$row->field})) > 0)
@@ -259,7 +263,7 @@
             @if (!$dataType->server_side)
                 var table = $('#dataTable').DataTable({!! json_encode(
                     array_merge([
-                        "order" => $orderColumn,
+                        "order" => [],
                         "language" => __('voyager::datatable'),
                         "columnDefs" => [['targets' => -1, 'searchable' =>  false, 'orderable' => false]],
                     ],
