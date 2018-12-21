@@ -22,7 +22,7 @@ class SelectMultiple extends BaseType
                 if (!isset($pivotContent[$pivotField])) {
                     $pivotContent[$pivotField] = [];
                 }
-                $pivotContent[$pivotField] = $this->request->input('pivot_' . $pivotField);
+                $pivotContent[$pivotField] = $this->request->input('pivot_'.$pivotField);
             }
             // Create a new content array for updating pivot table
             $newContent = [];
