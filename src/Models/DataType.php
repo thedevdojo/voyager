@@ -266,7 +266,7 @@ class DataType extends Model
 
     public function getDefaultSearchKeyAttribute()
     {
-        return isset($this->details['default_search_key']) ? $this->details['default_search_key'] : null;
+        return isset($this->details->default_search_key) ? $this->details->default_search_key : null;
     }
 
     public function setDefaultSearchKeyAttribute($value)
