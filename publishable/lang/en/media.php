@@ -14,6 +14,8 @@ return [
     'error_may_exist'        => 'File or Folder may already exist with that name. Please choose another name or delete the other file.',
     'error_moving'           => 'Sorry there seems to be a problem moving that file/folder, please make sure you have the correct permissions.',
     'error_uploading'        => 'Upload Fail: Unknown error occurred!',
+    'file_does_not_exist'    => 'File does not exist',
+    'file_removed'           => 'File removed',
     'folder_exists_already'  => 'Sorry that folder already exists, please delete that folder if you wish to re-create it',
     'image_does_not_exist'   => 'Image does not exist',
     'image_removed'          => 'Image removed',

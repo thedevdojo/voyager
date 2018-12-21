@@ -33,7 +33,7 @@ class VoyagerMenuController extends Controller
     {
         $item = Voyager::model('MenuItem')->findOrFail($id);
 
-        $this->authorize('delete', $item->menu);
+        $this->authorize('delete', $item);
 
         $item->deleteAttributeTranslation('title');
 

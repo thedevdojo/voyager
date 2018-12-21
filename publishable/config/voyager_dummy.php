@@ -13,7 +13,7 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => App\User::class,
+        'namespace'                    => null,
         'default_avatar'               => 'users/default.png',
         'redirect'                     => '/admin',
     ],
@@ -67,7 +67,7 @@ return [
     */
 
     'storage' => [
-        'disk' => 'public',
+        'disk' => env('FILESYSTEM_DRIVER', 'public'),
     ],
 
     /*
@@ -94,6 +94,7 @@ return [
         'tables' => [
             'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
         ],
+        'autoload_migrations' => true,
     ],
 
     /*
@@ -221,4 +222,18 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
+    // Activate compass when environment is NOT local
+    'compass_in_production' => false,
+
+    // The allowed mimetypes to be uploaded through the media-manager.
+    'allowed_mimetypes' => '*', //All types can be uploaded
+    /*
+    'allowed_mimetypes' => [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/bmp',
+      'video/mp4',
+    ],
+    */
 ];

@@ -2,12 +2,13 @@
 
 namespace TCG\Voyager;
 
+use Arrilot\Widgets\Facade as Widget;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
 use TCG\Voyager\Actions\ViewAction;
@@ -130,10 +131,8 @@ class Voyager
 
     public function afterFormFields($row, $dataType, $dataTypeContent)
     {
-        $options = json_decode($row->details);
-
-        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent, $options) {
-            return $after->visible($row, $dataType, $dataTypeContent, $options);
+        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent) {
+            return $after->visible($row, $dataType, $dataTypeContent, $row->details);
         });
     }
 
@@ -185,12 +184,50 @@ class Voyager
         return $this->actions;
     }
 
+    /**
+     * Get a collection of the dashboard widgets.
+     *
+     * @return \Arrilot\Widgets\WidgetGroup
+     */
+    public function dimmers()
+    {
+        $widgetClasses = config('voyager.dashboard.widgets');
+        $dimmers = Widget::group('voyager::dimmers');
+
+        foreach ($widgetClasses as $widgetClass) {
+            $widget = app($widgetClass);
+
+            if ($widget->shouldBeDisplayed()) {
+                $dimmers->addWidget($widgetClass);
+            }
+        }
+
+        return $dimmers;
+    }
+
     public function setting($key, $default = null)
     {
+        $globalCache = config('voyager.settings.cache', false);
+
+        if ($globalCache && Cache::tags('settings')->has($key)) {
+            return Cache::tags('settings')->get($key);
+        }
+
         if ($this->setting_cache === null) {
+            if ($globalCache) {
+                // A key is requested that is not in the cache
+                // this is a good opportunity to update all keys
+                // albeit not strictly necessary
+                Cache::tags('settings')->flush();
+            }
+
             foreach (self::model('Setting')->all() as $setting) {
                 $keys = explode('.', $setting->key);
                 @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+
+                if ($globalCache) {
+                    Cache::tags('settings')->forever($setting->key, $setting->value);
+                }
             }
         }
 
@@ -242,7 +279,7 @@ class Voyager
     public function canOrFail($permission)
     {
         if (!$this->can($permission)) {
-            throw new UnauthorizedHttpException(null);
+            throw new AccessDeniedHttpException();
         }
 
         return true;
