@@ -35,6 +35,7 @@ return [
     'order'                  => 'Order',
     'order_column'           => 'Order column',
     'order_column_ph'        => 'The column where the order is stored',
+    'order_direction'        => 'Order direction',
     'order_ident_column'     => 'Order display column',
     'order_ident_column_ph'  => 'The column which is displayed in the order page',
     'default_search_key'     => 'Default Server-side Search field',
@@ -44,6 +45,7 @@ return [
     'policy_name'            => 'Policy Name',
     'policy_name_ph'         => 'ex. \App\Policies\UserPolicy, if left empty will try and use the default',
     'server_pagination'      => 'Server-side Pagination',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URL Slug (must be unique)',
     'url_slug_ph'            => 'URL slug (ex. posts)',
 ];

@@ -30,8 +30,9 @@ class DataType extends Model
         'server_side',
         'order_column',
         'order_display_column',
+        'order_direction',
         'default_search_key',
-        'details'
+        'details',
     ];
 
     public function rows()
@@ -271,5 +272,15 @@ class DataType extends Model
     public function setDefaultSearchKeyAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['default_search_key' => $value]);
+    }
+
+    public function getOrderDirectionAttribute()
+    {
+        return isset($this->details->order_direction) ? $this->details->order_direction : 'desc';
+    }
+
+    public function setOrderDirectionAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['order_direction' => $value]);
     }
 }
