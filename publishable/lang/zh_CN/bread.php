@@ -36,6 +36,7 @@ return [
     'policy_name'            => '策略名称',
     'policy_name_ph'         => '例如：\App\Policies\UserPolicy,如果留空将使用默认的策略',
     'server_pagination'      => '服务器端分页',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URL Slug（必须是唯一的）',
     'url_slug_ph'            => 'URL Slug（例如文章）',
 ];

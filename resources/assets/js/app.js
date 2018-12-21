@@ -96,6 +96,18 @@ $(document).ready(function () {
     $(".side-menu .nav .dropdown").on('show.bs.collapse', function () {
         return $(".side-menu .nav .dropdown .collapse").collapse('hide');
     });
+    
+    $('.panel-collapse').on('hide.bs.collapse', function(e) {
+        var target = $(event.target);
+        if (!target.is('a')) {
+            target = target.parent();
+        }
+        if (!target.hasClass('collapsed')) {
+            return;
+        }
+        e.stopPropagation();
+        e.preventDefault();
+    });
 
     $(document).on('click', '.panel-heading a.panel-action[data-toggle="panel-collapse"]', function (e) {
         e.preventDefault();

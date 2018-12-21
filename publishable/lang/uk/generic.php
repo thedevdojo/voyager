@@ -54,6 +54,7 @@ return [
     'no'                     => 'Ні',
     'no_thanks'              => 'Ні, дякую',
     'not_null'               => 'Не Null',
+    'no_results'             => 'No results',
     'options'                => 'Параметри',
     'password'               => 'Пароль',
     'permissions'            => 'Права доступу',

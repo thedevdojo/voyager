@@ -58,6 +58,7 @@ return [
     'no_thanks'              => 'خیر متشکرم',
     'none'                   => 'هیچ',
     'not_null'               => 'Not Null',
+    'no_results'             => 'No results',
     'options'                => 'گزینه‌ها',
     'password'               => 'پسورد',
     'permissions'            => 'مجوزها',

@@ -42,6 +42,7 @@ return [
     'policy_name'            => 'Policy Name',
     'policy_name_ph'         => 'ex. \App\Policies\UserPolicy, se se deixa baleiro empregarase o predeterminado',
     'server_pagination'      => 'Paxinación do lado do servidor',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URL Slug (debe ser único)',
     'url_slug_ph'            => 'URL slug (ex. posts)',
 ];
