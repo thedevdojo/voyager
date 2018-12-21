@@ -164,7 +164,7 @@
                                             <label for="name">{{ $row->display_name }}</label>
                                             @include('voyager::multilingual.input-hidden-bread-edit-add')
                                             @if($row->type == 'relationship')
-                                                @include('voyager::formfields.relationship')
+                                                @include('voyager::formfields.relationship', ['options' => $row->details])
                                             @else
                                                 {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                             @endif
@@ -290,6 +290,24 @@
             <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
         </form>
     </div>
+    <div class="modal fade modal-danger" id="confirm_delete_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::generic.are_you_sure') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>{{ __('voyager::generic.are_you_sure_delete') }} '<span class="confirm_delete_name"></span>'</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ __('voyager::generic.delete_confirm') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('javascript')
@@ -300,6 +318,38 @@
         @if ($isModelTranslatable)
             $('.side-body').multilingual({"editing": true});
         @endif
+
+        $('.side-body input[data-slug-origin]').each(function(i, el) {
+               $(el).slugify();
+           });
+            $('.form-group').on('click', '.remove-multi-image', function (e) {
+               e.preventDefault();
+               $image = $(this).siblings('img');
+                params = {
+                   slug:   '{{ $dataType->slug }}',
+                   image:  $image.data('image'),
+                   id:     $image.data('id'),
+                   field:  $image.parent().data('field-name'),
+                   _token: '{{ csrf_token() }}'
+               }
+                $('.confirm_delete_name').text($image.data('image'));
+               $('#confirm_delete_modal').modal('show');
+           });
+            $('#confirm_delete').on('click', function(){
+               $.post('{{ route('voyager.media.remove') }}', params, function (response) {
+                   if ( response
+                       && response.data
+                       && response.data.status
+                       && response.data.status == 200 ) {
+                        toastr.success(response.data.message);
+                       $image.parent().fadeOut(300, function() { $(this).remove(); })
+                   } else {
+                       toastr.error("Error removing image.");
+                   }
+               });
+                $('#confirm_delete_modal').modal('hide');
+           });
+           $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 @stop
