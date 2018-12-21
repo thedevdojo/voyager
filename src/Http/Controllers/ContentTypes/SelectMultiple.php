@@ -6,6 +6,7 @@ class SelectMultiple extends BaseType
 {
     public function handle()
     {
+
         $content = $this->request->input($this->row->field, []);
 
         if (true === empty($content)) {
