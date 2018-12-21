@@ -24,7 +24,8 @@ use Validator;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs,
+    use
+        DispatchesJobs,
         ValidatesRequests,
         AuthorizesRequests,
         AlertsMessages;
@@ -48,8 +49,8 @@ abstract class Controller extends BaseController
          * Prepare Translations and Transform data
          */
         $translations = is_bread_translatable($data)
-                        ? $data->prepareTranslations($request)
-                        : [];
+            ? $data->prepareTranslations($request)
+            : [];
 
         foreach ($rows as $row) {
             // if the field for this row is absent from the request, continue
@@ -62,7 +63,8 @@ abstract class Controller extends BaseController
                 }
             }
 
-            $content = $this->getContentBasedOnType($request, $slug, $row, $row->details);
+            $content = $this->getContentBasedOnType($request, $slug, $row, $row->details, $data);
+
 
             if ($row->type == 'relationship' && $row->details->type != 'belongsToMany') {
                 $row->field = @$row->details->column;
@@ -175,39 +177,39 @@ abstract class Controller extends BaseController
         return Validator::make($request, $rules, $messages, $customAttributes);
     }
 
-    public function getContentBasedOnType(Request $request, $slug, $row, $options = null)
+    public function getContentBasedOnType(Request $request, $slug, $row, $options = null, $data)
     {
         switch ($row->type) {
             /********** PASSWORD TYPE **********/
             case 'password':
-                return (new Password($request, $slug, $row, $options))->handle();
+                return (new Password($request, $slug, $row, $options, $data))->handle();
             /********** CHECKBOX TYPE **********/
             case 'checkbox':
-                return (new Checkbox($request, $slug, $row, $options))->handle();
+                return (new Checkbox($request, $slug, $row, $options, $data))->handle();
             /********** FILE TYPE **********/
             case 'file':
-                return (new File($request, $slug, $row, $options))->handle();
+                return (new File($request, $slug, $row, $options, $data))->handle();
             /********** MULTIPLE IMAGES TYPE **********/
             case 'multiple_images':
-                return (new MultipleImage($request, $slug, $row, $options))->handle();
+                return (new MultipleImage($request, $slug, $row, $options, $data))->handle();
             /********** SELECT MULTIPLE TYPE **********/
             case 'select_multiple':
-                return (new SelectMultiple($request, $slug, $row, $options))->handle();
+                return (new SelectMultiple($request, $slug, $row, $options, $data))->handle();
             /********** IMAGE TYPE **********/
             case 'image':
-                return (new ContentImage($request, $slug, $row, $options))->handle();
+                return (new ContentImage($request, $slug, $row, $options, $data))->handle();
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
-                return (new Timestamp($request, $slug, $row, $options))->handle();
+                return (new Timestamp($request, $slug, $row, $options, $data))->handle();
             /********** COORDINATES TYPE **********/
             case 'coordinates':
-                return (new Coordinates($request, $slug, $row, $options))->handle();
+                return (new Coordinates($request, $slug, $row, $options, $data))->handle();
             /********** RELATIONSHIPS TYPE **********/
             case 'relationship':
-                return (new Relationship($request, $slug, $row, $options))->handle();
+                return (new Relationship($request, $slug, $row, $options, $data))->handle();
             /********** ALL OTHER TEXT TYPE **********/
             default:
-                return (new Text($request, $slug, $row, $options))->handle();
+                return (new Text($request, $slug, $row, $options, $data))->handle();
         }
     }
 

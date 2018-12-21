@@ -25,6 +25,10 @@ abstract class BaseType
      * @var
      */
     protected $options;
+    /**
+     * @var instance of model
+     */
+    protected $data;
 
     /**
      * Password constructor.
@@ -33,12 +37,13 @@ abstract class BaseType
      * @param $slug
      * @param $row
      */
-    public function __construct(Request $request, $slug, $row, $options)
+    public function __construct(Request $request, $slug, $row, $options, $data)
     {
         $this->request = $request;
         $this->slug = $slug;
         $this->row = $row;
         $this->options = $options;
+        $this->data = $data;
     }
 
     /**

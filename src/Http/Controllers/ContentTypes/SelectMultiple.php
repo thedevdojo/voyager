@@ -6,10 +6,11 @@ class SelectMultiple extends BaseType
 {
     public function handle()
     {
+
         $content = $this->request->input($this->row->field, []);
 
         if (true === empty($content)) {
-            return json_encode([]);
+            return $this->prepareResponse([]);
         }
 
         // Check if we need to parse the editablePivotFields to update fields in the corresponding pivot table
@@ -21,7 +22,7 @@ class SelectMultiple extends BaseType
                 if (!isset($pivotContent[$pivotField])) {
                     $pivotContent[$pivotField] = [];
                 }
-                $pivotContent[$pivotField] = $this->request->input('pivot_'.$pivotField);
+                $pivotContent[$pivotField] = $this->request->input('pivot_' . $pivotField);
             }
             // Create a new content array for updating pivot table
             $newContent = [];
@@ -34,6 +35,23 @@ class SelectMultiple extends BaseType
             $content = $newContent;
         }
 
-        return json_encode($content);
+        return $this->prepareResponse($content);
+    }
+
+     /*
+     * prepare response for saving data from request into database (before return)
+     * if Model has casts and cast is json or array, we don't need json_encode
+     */
+    protected function prepareResponse($response)
+    {
+
+        $casts = $this->data->getCasts();
+        if ($casts[$this->row->field]) {
+            $cast = $casts[$this->row->field];
+            if (in_array($cast, ['json', 'array']) !== false)
+                return $response;
+        }
+
+        return json_encode($response);
     }
 }
