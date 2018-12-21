@@ -239,13 +239,18 @@ return [
         'cache' => false,
     ],
 
+    // Activate compass when environment is NOT local
+    'compass_in_production' => false,
+
     // The allowed mimetypes to be uploaded through the media-manager.
-   'allowed_mimetypes' => '*', //All types can be uploaded
-   /*'allowed_mimetypes' => [
-     'image/jpeg',
-     'image/png',
-     'image/gif',
-     'image/bmp',
-     'video/mp4',
-   ],*/
+    'allowed_mimetypes' => '*', //All types can be uploaded
+    /*
+    'allowed_mimetypes' => [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/bmp',
+      'video/mp4',
+    ],
+    */
 ];

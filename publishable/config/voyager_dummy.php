@@ -222,13 +222,18 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
-     // The allowed mimetypes to be uploaded through the media-manager.
+    // Activate compass when environment is NOT local
+    'compass_in_production' => false,
+
+    // The allowed mimetypes to be uploaded through the media-manager.
     'allowed_mimetypes' => '*', //All types can be uploaded
-    /*'allowed_mimetypes' => [
+    /*
+    'allowed_mimetypes' => [
       'image/jpeg',
       'image/png',
       'image/gif',
       'image/bmp',
       'video/mp4',
-    ],*/
+    ],
+    */
 ];
