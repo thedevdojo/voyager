@@ -249,14 +249,17 @@ class VoyagerMediaController extends Controller
             // GET THE SLUG, ex. 'posts', 'pages', etc.
             $slug = $request->get('slug');
 
-            // GET image name
-            $image = $request->get('image');
+            // GET file name
+            $filename = $request->get('filename');
 
             // GET record id
             $id = $request->get('id');
 
             // GET field name
             $field = $request->get('field');
+
+            // GET multi value
+            $multi = $request->get('multi');
 
             // GET THE DataType based on the slug
             $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -273,33 +276,49 @@ class VoyagerMediaController extends Controller
                 throw new Exception(__('voyager::generic.field_does_not_exist'), 400);
             }
 
-            // Check if valid json
-            if (is_null(@json_decode($data->{$field}))) {
-                throw new Exception(__('voyager::json.invalid'), 500);
+            if (@json_decode($multi)) {
+                // Check if valid json
+                if (is_null(@json_decode($data->{$field}))) {
+                    throw new Exception(__('voyager::json.invalid'), 500);
+                }
+
+                // Decode field value
+                $fieldData = @json_decode($data->{$field}, true);
+                $key = null;
+
+                // Check if we're dealing with a nested array for the case of multiple files
+                if (is_array($fieldData[0])) {
+                    foreach ($fieldData as $index=>$file) {
+                        $file = array_flip($file);
+                        if (array_key_exists($filename, $file)) {
+                            $key = $index;
+                            break;
+                        }
+                    }
+                } else {
+                    $key = array_search($filename, $fieldData);
+                }
+
+                // Check if file was found in array
+                if (is_null($key) || $key === false) {
+                    throw new Exception(__('voyager::media.file_does_not_exist'), 400);
+                }
+
+                // Remove file from array
+                unset($fieldData[$key]);
+
+                // Generate json and update field
+                $data->{$field} = empty($fieldData) ? null : json_encode(array_values($fieldData));
+            } else {
+                $data->{$field} = null;
             }
 
-            // Decode field value
-            $fieldData = @json_decode($data->{$field}, true);
-
-            // Flip keys and values
-            $fieldData = array_flip($fieldData);
-
-            // Check if image exists in array
-            if (!array_key_exists($image, $fieldData)) {
-                throw new Exception(__('voyager::media.image_does_not_exist'), 400);
-            }
-
-            // Remove image from array
-            unset($fieldData[$image]);
-
-            // Generate json and update field
-            $data->{$field} = json_encode(array_values(array_flip($fieldData)));
             $data->save();
 
             return response()->json([
                'data' => [
                    'status'  => 200,
-                   'message' => __('voyager::media.image_removed'),
+                   'message' => __('voyager::media.file_removed'),
                ],
             ]);
         } catch (Exception $e) {
