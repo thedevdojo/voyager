@@ -19,14 +19,14 @@ class VoyagerMediaController extends Controller
 
     public function __construct()
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $this->filesystem = config('voyager.storage.disk');
     }
 
     public function index()
     {
-        // Check permission
-        Voyager::canOrFail('browse_media');
-
         return Voyager::view('voyager::media.index');
     }
 
