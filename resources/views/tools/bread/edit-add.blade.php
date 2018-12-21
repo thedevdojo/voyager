@@ -176,7 +176,7 @@
                                 </div>
                             </div>
                             <div class="row clearfix">
-                                <div class="col-md-4 form-group">
+                                <div class="col-md-3 form-group">
                                     <label for="order_column">{{ __('voyager::bread.order_column') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
@@ -192,7 +192,7 @@
                                         @endforeach
                                       </select>
                                 </div>
-                                <div class="col-md-4 form-group">
+                                <div class="col-md-3 form-group">
                                     <label for="order_display_column">{{ __('voyager::bread.order_ident_column') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
@@ -208,7 +208,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-md-4 form-group">
+                                <div class="col-md-3 form-group">
                                     <label for="order_direction">{{ __('voyager::bread.order_direction') }}</label>
                                     <select name="order_direction" class="select2 form-control">
                                         <option value="asc" @if(isset($dataType) && $dataType->order_direction == 'asc') selected @endif>
@@ -219,9 +219,7 @@
                                         </option>
                                     </select>
                                 </div>
-                            </div>
-                             <div class="row clearfix">
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-3 form-group">
                                     <label for="default_search_key">{{ __('voyager::bread.default_search_key') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
