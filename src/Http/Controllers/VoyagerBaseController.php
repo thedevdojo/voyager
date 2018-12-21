@@ -533,7 +533,7 @@ class VoyagerBaseController extends Controller
 
         foreach ($dataType->editRows as $key => $row) {
             if ($row->field === $request->input('type')) {
-                $options = json_decode($row->details);
+                $options = $row->details;
                 $skip = $on_page * ($page - 1);
 
                 // If search query, use LIKE to filter results depending on field label
