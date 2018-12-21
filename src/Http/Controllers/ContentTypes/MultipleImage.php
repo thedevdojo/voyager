@@ -5,7 +5,7 @@ namespace TCG\Voyager\Http\Controllers\ContentTypes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Facades\Image as InterventionImage;
 
 class MultipleImage extends BaseType
 {
@@ -22,7 +22,7 @@ class MultipleImage extends BaseType
         }
 
         foreach ($files as $file) {
-            $image = Image::make($file);
+            $image = InterventionImage::make($file);
 
             $resize_width = null;
             $resize_height = null;
@@ -41,7 +41,7 @@ class MultipleImage extends BaseType
                 $resize_height = $image->height();
             }
 
-            $resize_quality = isset($options->quality) ? intval($this->options->quality) : 75;
+            $resize_quality = isset($this->options->quality) ? intval($this->options->quality) : 75;
 
             $filename = Str::random(20);
             $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
@@ -76,7 +76,7 @@ class MultipleImage extends BaseType
                             $thumb_resize_height = $thumb_resize_height * $scale;
                         }
 
-                        $image = Image::make($file)->resize(
+                        $image = InterventionImage::make($file)->resize(
                             $thumb_resize_width,
                             $thumb_resize_height,
                             function (Constraint $constraint) {
@@ -89,7 +89,7 @@ class MultipleImage extends BaseType
                     } elseif (isset($this->options->thumbnails) && isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                         $crop_width = $thumbnails->crop->width;
                         $crop_height = $thumbnails->crop->height;
-                        $image = Image::make($file)
+                        $image = InterventionImage::make($file)
                             ->fit($crop_width, $crop_height)
                             ->encode($file->getClientOriginalExtension(), $resize_quality);
                     }

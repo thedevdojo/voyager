@@ -14,7 +14,7 @@ class Permission extends Model
 
     public function roles()
     {
-        return $this->hasMany(Voyager::modelClass('Role'));
+        return $this->belongsToMany(Voyager::modelClass('Role'));
     }
 
     public static function generateFor($table_name)
