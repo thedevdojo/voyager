@@ -8,9 +8,8 @@ In the first tab you will see a few link resources and you will see all the font
 
 In the Command section you can actually run some artisan commands directly from Voyager.
 
-![](../.gitbook/assets/compass_2%20%281%29.png)
+![](../.gitbook/assets/compass_2.png)
 
 And Lastly, under the Logs tab you will be able to view all your application logs.
 
-![](../.gitbook/assets/compass_3%20%281%29.png)
-
+![](../.gitbook/assets/compass_3.png)

@@ -43,6 +43,7 @@ return [
     'policy_name'            => 'Nom de la Policy',
     'policy_name_ph'         => 'ex. \App\Policies\UserPolicy, si laissée vide, va tenter d\'utiliser la valeur par défaut',
     'server_pagination'      => 'Pagination côté serveur',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URL Slug (doit être unique)',
     'url_slug_ph'            => 'URL slug (exemple : articles)',
 ];

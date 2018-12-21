@@ -58,6 +58,7 @@ return [
     'no_thanks'              => 'Hayır Teşekkürler',
     'none'                   => 'None',
     'not_null'               => 'Not Null',
+    'no_results'             => 'No results',
     'options'                => 'Seçenekler',
     'password'               => 'Parola',
     'permissions'            => 'İzinler',
