@@ -58,6 +58,7 @@ return [
     'no_thanks'              => '不，謝謝',
     'none'                   => '無',
     'not_null'               => '非空',
+    'no_results'             => 'No results',
     'options'                => '選項',
     'password'               => '密碼',
     'permissions'            => '權限',

@@ -43,8 +43,19 @@ class VoyagerBaseController extends Controller
 
         $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
         $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
-        $orderBy = $request->get('order_by');
+        $orderBy = $request->get('order_by', $dataType->order_column);
         $sortOrder = $request->get('sort_order', null);
+        $orderColumn = [];
+        if ($orderBy) {
+            $index = $dataType->browseRows->where('field', $orderBy)->keys()->first() + 1;
+            $orderColumn = [[$index, 'desc']];
+            if (!$sortOrder && isset($dataType->order_direction)) {
+                $sortOrder = $dataType->order_direction;
+                $orderColumn = [[$index, $dataType->order_direction]];
+            } else {
+                $orderColumn = [[$index, 'desc']];
+            }
+        }
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
@@ -63,7 +74,7 @@ class VoyagerBaseController extends Controller
             }
 
             if ($orderBy && in_array($orderBy, $dataType->fields())) {
-                $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'DESC';
+                $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
                 $dataTypeContent = call_user_func([
                     $query->orderBy($orderBy, $querySortOrder),
                     $getter,
@@ -102,6 +113,7 @@ class VoyagerBaseController extends Controller
             'isModelTranslatable',
             'search',
             'orderBy',
+            'orderColumn',
             'sortOrder',
             'searchable',
             'isServerSide'
@@ -467,7 +479,7 @@ class VoyagerBaseController extends Controller
         }
 
         $model = app($dataType->model_name);
-        $results = $model->orderBy($dataType->order_column)->get();
+        $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
 
         $display_column = $dataType->order_display_column;
 
