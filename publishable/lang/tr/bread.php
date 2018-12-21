@@ -42,6 +42,7 @@ return [
     'policy_name'            => 'Policy İsmi',
     'policy_name_ph'         => 'ör. \App\Policies\UserPolicy, eğer boş bırakılırsa varsayılan kullanılacak',
     'server_pagination'      => 'Server-side Sayfalama',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'Kısa ad (URL - eşsiz olmalı)',
     'url_slug_ph'            => 'Kısa ad (URL - ör. posts)',
 ];

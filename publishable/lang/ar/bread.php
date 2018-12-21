@@ -36,6 +36,7 @@ return [
     'policy_name'            => 'AR:Policy Name',
     'policy_name_ph'         => 'AR:ex. \App\Policies\UserPolicy, if left empty will try and use the default',
     'server_pagination'      => 'ترقيم الصفحات من جانب الخادم',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'رابط URL (يجب أن يكون فريد)',
     'url_slug_ph'            => 'رابط URL (مثل posts)',
 ];
