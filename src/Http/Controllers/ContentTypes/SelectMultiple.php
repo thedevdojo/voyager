@@ -22,7 +22,7 @@ class SelectMultiple extends BaseType
                 if (!isset($pivotContent[$pivotField])) {
                     $pivotContent[$pivotField] = [];
                 }
-                $pivotContent[$pivotField] = $this->request->input('pivot_'.$pivotField);
+                $pivotContent[$pivotField] = $this->request->input('pivot_' . $pivotField);
             }
             // Create a new content array for updating pivot table
             $newContent = [];
@@ -45,11 +45,13 @@ class SelectMultiple extends BaseType
     protected function prepareResponse($response)
     {
 
-        $casts = $this->data->getCasts();
-        if ($casts[$this->row->field]) {
-            $cast = $casts[$this->row->field];
-            if (in_array($cast, ['json', 'array']) !== false)
-                return $response;
+        if ($this->data) {
+            $casts = $this->data->getCasts();
+            if ($casts[$this->row->field]) {
+                $cast = $casts[$this->row->field];
+                if (in_array($cast, ['json', 'array']) !== false)
+                    return $response;
+            }
         }
 
         return json_encode($response);
