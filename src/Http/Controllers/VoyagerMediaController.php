@@ -19,19 +19,22 @@ class VoyagerMediaController extends Controller
 
     public function __construct()
     {
-        // Check permission
-        Voyager::canOrFail('browse_media');
-
         $this->filesystem = config('voyager.storage.disk');
     }
 
     public function index()
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         return Voyager::view('voyager::media.index');
     }
 
     public function files(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $folder = $request->folder;
 
         if ($folder == '/') {
@@ -53,6 +56,9 @@ class VoyagerMediaController extends Controller
     // New Folder with 5.3
     public function new_folder(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $new_folder = $request->new_folder;
         $success = false;
         $error = '';
@@ -71,6 +77,9 @@ class VoyagerMediaController extends Controller
     // Delete File or Folder with 5.3
     public function delete_file_folder(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $folderLocation = $request->folder_location;
         $fileFolder = $request->file_folder;
         $type = $request->type;
@@ -100,6 +109,9 @@ class VoyagerMediaController extends Controller
     // GET ALL DIRECTORIES Working with Laravel 5.3
     public function get_all_dirs(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $folderLocation = $request->folder_location;
 
         if (is_array($folderLocation)) {
@@ -116,6 +128,9 @@ class VoyagerMediaController extends Controller
     // NEEDS TESTING
     public function move_file(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $source = $request->source;
         $destination = $request->destination;
         $folderLocation = $request->folder_location;
@@ -148,6 +163,9 @@ class VoyagerMediaController extends Controller
     // RENAME FILE WORKING with 5.3
     public function rename_file(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $folderLocation = $request->folder_location;
         $filename = $request->filename;
         $newFilename = $request->new_filename;
@@ -176,6 +194,9 @@ class VoyagerMediaController extends Controller
     // Upload Working with 5.3
     public function upload(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         try {
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
 
@@ -216,6 +237,9 @@ class VoyagerMediaController extends Controller
 
     private function getFiles($dir)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $files = [];
         $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
         $storageItems = $storage->listWith(['mimetype'], $dir);
@@ -249,6 +273,9 @@ class VoyagerMediaController extends Controller
     // REMOVE FILE
     public function remove(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         try {
             // GET THE SLUG, ex. 'posts', 'pages', etc.
             $slug = $request->get('slug');
@@ -349,6 +376,9 @@ class VoyagerMediaController extends Controller
     // Crop Image
     public function crop(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $createMode = $request->get('createMode') === 'true';
         $x = $request->get('x');
         $y = $request->get('y');
