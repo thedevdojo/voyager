@@ -9,7 +9,7 @@ window.tooltip = require('./bootstrap-tooltip');
 window.MediaManager = require('./media');
 require('dropzone');
 require('jquery-match-height');
-require('./bootstrap-toggle');
+require('bootstrap-toggle');
 require('./jquery-cookie');
 require('./jquery-nestable');
 require('bootstrap');
