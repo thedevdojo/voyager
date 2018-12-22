@@ -31,6 +31,7 @@ class DataType extends Model
         'order_column',
         'order_display_column',
         'order_direction',
+        'default_search_key',
         'details',
     ];
 
@@ -261,6 +262,16 @@ class DataType extends Model
     public function setOrderDisplayColumnAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
+    }
+
+    public function getDefaultSearchKeyAttribute()
+    {
+        return isset($this->details->default_search_key) ? $this->details->default_search_key : null;
+    }
+
+    public function setDefaultSearchKeyAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['default_search_key' => $value]);
     }
 
     public function getOrderDirectionAttribute()

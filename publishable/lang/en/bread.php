@@ -6,6 +6,8 @@ return [
     'bread_info'             => 'BREAD info',
     'controller_name_hint'   => 'ex. PageController, if left empty will use the BREAD Controller',
     'create_bread_for_table' => 'Create BREAD for :table table',
+    'default_search_key'     => 'Default server-side search field',
+    'default_search_key_ph'  => 'The field will be pre-selected for server-side searching',
     'delete_bread'           => 'Delete BREAD',
     'delete_bread_conf'      => 'Yes, remove the BREAD',
     'delete_bread_quest'     => 'Are you sure you want to delete the BREAD for the :table table?',

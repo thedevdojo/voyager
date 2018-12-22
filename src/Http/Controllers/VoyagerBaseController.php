@@ -101,6 +101,9 @@ class VoyagerBaseController extends Controller
         // Check if server side pagination is enabled
         $isServerSide = isset($dataType->server_side) && $dataType->server_side;
 
+        // Check if a default search key is set
+        $defaultSearchKey = isset($dataType->default_search_key) ? $dataType->default_search_key : null;
+
         $view = 'voyager::bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
@@ -116,7 +119,8 @@ class VoyagerBaseController extends Controller
             'orderColumn',
             'sortOrder',
             'searchable',
-            'isServerSide'
+            'isServerSide',
+            'defaultSearchKey'
         ));
     }
 
