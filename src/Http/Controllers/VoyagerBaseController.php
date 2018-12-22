@@ -482,7 +482,7 @@ class VoyagerBaseController extends Controller
         $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
 
         $display_column = $dataType->order_display_column;
-        
+
         $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->whereField($display_column)->first();
 
         $view = 'voyager::bread.order';
