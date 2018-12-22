@@ -36,6 +36,7 @@ return [
     'policy_name'            => 'Nome da Policy',
     'policy_name_ph'         => 'ex. \App\Policies\UserPolicy, se vazio irá tentar usar o pré definido',
     'server_pagination'      => 'Paginação no Servidor',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URL Slug (único)',
     'url_slug_ph'            => 'URL slug (ex. posts)',
 ];

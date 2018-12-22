@@ -42,6 +42,7 @@ return [
     'policy_name'            => 'ناوی ڕێوشوێن (Policy)',
     'policy_name_ph'         => 'نمونە. \App\Policies\UserPolicy, ئەگەر بە بەتاڵی جێبهێڵدرێت ناوی بنەڕەتی بەکاردەهێنرێت',
     'server_pagination'      => 'پەڕەکردنی بەشی-سێرڤەر',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'لینک (دەبێت تاقانە بێت)',
     'url_slug_ph'            => 'لینک (نمونە. posts)',
 ];
