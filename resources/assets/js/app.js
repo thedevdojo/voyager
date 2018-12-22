@@ -48,6 +48,32 @@ $(document).ready(function () {
     });
 
     $('select.select2').select2({width: '100%'});
+    $('select.select2-ajax').each(function() {
+        $(this).select2({
+            width: '100%',
+            ajax: {
+                url: $(this).data('get-items-route'),
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        type: $(this).data('get-items-field'),
+                        page: params.page || 1
+                    }
+                    return query;
+                }
+            }
+        });
+
+        $(this).on('select2:select',function(e){
+            var data = e.params.data;
+            $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected','selected');;
+        });
+
+        $(this).on('select2:unselect',function(e){
+            var data = e.params.data;
+            $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected',false);;
+        });
+    });
     $('select.select2-taggable').select2({
         width: '100%',
         tags: true,
