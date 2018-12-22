@@ -487,6 +487,8 @@ class VoyagerBaseController extends Controller
 
         $display_column = $dataType->order_display_column;
 
+        $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->whereField($display_column)->first();
+
         $view = 'voyager::bread.order';
 
         if (view()->exists("voyager::$slug.order")) {
@@ -496,6 +498,7 @@ class VoyagerBaseController extends Controller
         return Voyager::view($view, compact(
             'dataType',
             'display_column',
+            'dataRow',
             'results'
         ));
     }
