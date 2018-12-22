@@ -10,7 +10,7 @@ window.MediaManager = require('./media');
 require('dropzone');
 require('jquery-match-height');
 require('bootstrap-toggle');
-require('./jquery-nestable');
+require('nestable2');
 require('bootstrap');
 require('bootstrap-switch');
 require('select2');
