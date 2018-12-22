@@ -5,7 +5,6 @@ window.Cropper = require('cropperjs');
 window.toastr = require('toastr');
 window.DataTable = require('./bootstrap-datatables');
 window.SimpleMDE = require('simplemde');
-window.tooltip = require('./bootstrap-tooltip');
 window.MediaManager = require('./media');
 require('dropzone');
 require('jquery-match-height');
