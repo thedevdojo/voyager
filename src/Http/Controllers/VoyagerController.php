@@ -77,7 +77,7 @@ class VoyagerController extends Controller
             $mime = '';
             if (ends_with($path, '.js')) {
                 $mime = 'text/javascript';
-            } else if (ends_with($path, '.css')) {
+            } elseif (ends_with($path, '.css')) {
                 $mime = 'text/css';
             } else {
                 $mime = File::mimeType($path);
