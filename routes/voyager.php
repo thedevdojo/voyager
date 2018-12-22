@@ -130,10 +130,11 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
         });
 
-        //Asset Routes
-        Route::get('assets/{path}', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'assets'])->where('path', '(.*)');
-
         event(new RoutingAdminAfter());
     });
+
+    //Asset Routes
+    Route::get('assets/{path}', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'assets'])->where('path', '(.*)');
+
     event(new RoutingAfter());
 });
