@@ -46,6 +46,7 @@ module.exports = function(){
 			var options = $.extend(true, defaults, o);
 			this.init = function(){
 				$("#upload").dropzone({
+			     	timeout: 180000,
 					url: options.baseUrl+"/media/upload",
 					previewsContainer: "#uploadPreview",
 					totaluploadprogress: function(uploadProgress, totalBytes, totalBytesSent){
@@ -54,7 +55,6 @@ module.exports = function(){
 							$('#uploadProgress').delay(1500).slideUp(function(){
 								$('#uploadProgress .progress-bar').css('width', '0%');
 							});
-
 						}
 					},
 					processing: function(){

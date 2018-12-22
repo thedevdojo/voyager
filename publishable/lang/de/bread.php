@@ -43,6 +43,7 @@ return [
     'policy_name'            => 'Policy Name',
     'policy_name_ph'         => 'Bspw. \App\Policies\UserPolicy, falls leer gelassen wird versucht den Default Wert zu Verwenden.',
     'server_pagination'      => 'Serverseitige Pagination',
+    'updated_order'          => 'Reihenfolge erfolgreich geändert',
     'url_slug'               => 'URL Slug (muss unique sein)',
     'url_slug_ph'            => 'URL slug (z. B. posts)',
 ];

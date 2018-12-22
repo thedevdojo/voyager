@@ -126,7 +126,7 @@ class InstallCommand extends Command
             $this->info('Seeding dummy data');
             $this->seed('VoyagerDummyDatabaseSeeder');
         } else {
-            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => 'config']);
+            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => ['config', 'voyager_avatar']]);
         }
 
         $this->info('Setting up the hooks');

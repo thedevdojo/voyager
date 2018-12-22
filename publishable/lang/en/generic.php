@@ -53,6 +53,7 @@ return [
     'login'                  => 'Login',
     'media'                  => 'Media',
     'menu_builder'           => 'Menu Builder',
+    'mimetype_not_allowed'   => 'This mimetype is not allowed',
     'move'                   => 'Move',
     'name'                   => 'Name',
     'new'                    => 'New',
