@@ -2,7 +2,7 @@ window.jQuery = window.$ = $ = require('jquery');
 window.Vue = require('vue');
 window.perfectScrollbar = require('perfect-scrollbar/jquery')($);
 window.Cropper = require('cropperjs');
-window.toastr = require('./toastr');
+window.toastr = require('toastr');
 window.DataTable = require('./bootstrap-datatables');
 window.SimpleMDE = require('simplemde');
 window.tooltip = require('./bootstrap-tooltip');
@@ -57,7 +57,7 @@ $(document).ready(function () {
             if (term === '') {
                 return null;
             }
-        
+
             return {
                 id: term,
                 text: term,
@@ -70,7 +70,7 @@ $(document).ready(function () {
         var label = $el.data('label');
         var errorMessage = $el.data('error-message');
         var newTag = e.params.args.data.newTag;
-        
+
         if (!newTag) return;
 
         $el.select2('close');
@@ -96,7 +96,7 @@ $(document).ready(function () {
     $(".side-menu .nav .dropdown").on('show.bs.collapse', function () {
         return $(".side-menu .nav .dropdown .collapse").collapse('hide');
     });
-    
+
     $('.panel-collapse').on('hide.bs.collapse', function(e) {
         var target = $(event.target);
         if (!target.is('a')) {
