@@ -45,5 +45,5 @@
         });
     }
 </script>
-<div id="map"/>
+<div id="map"></div>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('voyager.googlemaps.key') }}&callback=initMap"></script>
