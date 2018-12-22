@@ -10,7 +10,6 @@ window.MediaManager = require('./media');
 require('dropzone');
 require('jquery-match-height');
 require('bootstrap-toggle');
-require('./jquery-cookie');
 require('./jquery-nestable');
 require('bootstrap');
 require('bootstrap-switch');
