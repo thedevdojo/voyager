@@ -41,7 +41,7 @@
     "perfect-scrollbar": "^0.7.1",
     "select2": "^4.0.3",
     "simplemde": "^1.11.2",
-    "tinymce": "^4.6.3",
+    "tinymce": "^4.9.2",
     "toastr": "^2.1.2",
     "vue": "^2.3.4"
   }
