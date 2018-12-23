@@ -58,17 +58,11 @@
                                     !empty($row->details->options->{$dataTypeContent->{$row->field}})
                             )
                                 <?php echo $row->details->options->{$dataTypeContent->{$row->field}};?>
-                            @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
-                                <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
                             @elseif($row->type == 'select_multiple')
                                 @if(property_exists($row->details, 'relationship'))
 
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
-                                        @if($item->{$row->field . '_page_slug'})
-                                            <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
-                                        @else
-                                            {{ $item->{$row->field}  }}
-                                        @endif
+                                        {{ $item->{$row->field}  }}
                                     @endforeach
 
                                 @elseif(property_exists($row->details, 'options'))
