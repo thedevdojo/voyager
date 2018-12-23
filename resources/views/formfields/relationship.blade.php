@@ -27,7 +27,7 @@
                 @if(isset($query))
                     <p>{{ $query->{$options->label} }}</p>
                 @else
-                    <p>No results</p>
+                    <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
 
             @else
@@ -38,7 +38,7 @@
                         $query = $model::all();
                     @endphp
 
-                    @if($row->required === 0)
+                    @if(!$row->required)
                         <option value="">{{__('voyager::generic.none')}}</option>
                     @endif
 
@@ -63,7 +63,7 @@
             @if(isset($query))
                 <p>{{ $query->{$options->label} }}</p>
             @else
-                <p>None results</p>
+                <p>{{ __('voyager::generic.no_results') }}</p>
             @endif
 
         @elseif($options->type == 'hasMany')
@@ -84,13 +84,13 @@
                         if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
-                        <p>No results</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <p>{{ $string_values }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
-                        <p>No results</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <ul>
                             @foreach($selected_values as $selected_value)
@@ -115,7 +115,7 @@
                     </ul>
 
                 @else
-                    <p>No results</p>
+                    <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
 
             @endif
@@ -137,13 +137,13 @@
                         if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
-                        <p>No results</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <p>{{ $string_values }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
-                        <p>No results</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <ul>
                             @foreach($selected_values as $selected_value)
@@ -171,9 +171,9 @@
                         $relationshipOptions = app($options->model)->all();
                     @endphp
 
-                    @if($row->required === 0)
-                        <option value="">{{__('voyager::generic.none')}}</option>
-                    @endif
+                        @if(!$row->required)
+                            <option value="">{{__('voyager::generic.none')}}</option>
+                        @endif
 
                     @foreach($relationshipOptions as $relationshipOption)
                         <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->label} }}</option>

@@ -1,11 +1,19 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager::bread.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]))
+@if (isset($dataType->id))
+    @section('page_title', __('voyager::bread.edit_bread_for_table', ['table' => $dataType->name]))
+@else
+    @section('page_title', __('voyager::bread.create_bread_for_table', ['table' => $table]))
+@endif
 
 @section('page_header')
     <div class="page-title">
         <i class="voyager-data"></i>
-        {{ __('voyager::bread.edit_bread_for_table', ['table' => (isset($dataType->id) ? @$dataType->name : $table)]) }}
+        @if (isset($dataType->id))
+            {{ __('voyager::bread.edit_bread_for_table', ['table' => $dataType->name]) }}
+        @else
+            {{ __('voyager::bread.create_bread_for_table', ['table' => $table]) }}
+        @endif
     </div>
     @php
         $isModelTranslatable = (!isset($isModelTranslatable) || !isset($dataType)) ? false : $isModelTranslatable;
@@ -16,6 +24,32 @@
     @include('voyager::multilingual.language-selector')
 @stop
 
+@section('breadcrumbs')
+<ol class="breadcrumb hidden-xs">
+    <li class="active">
+        <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> {{ __('voyager::generic.dashboard') }}</a>
+    </li>
+    <li class="active">
+        <a href="{{ route('voyager.bread.index') }}">
+            {{ __('voyager::generic.bread') }}
+        </a>
+    </li>
+    <li class="active">
+        @if(isset($dataType->id))
+        <a href="{{ route('voyager.bread.edit', $table) }}">
+            {{ $dataType->display_name_singular }}
+        </a>
+        @else
+        <a href="{{ route('voyager.bread.create', ['name' => $table]) }}">
+            {{ $display_name }}
+        </a>
+        @endif
+    </li>
+    <li>
+        {{ isset($dataType->id) ? __('voyager::generic.edit') : __('voyager::generic.add') }}
+    </li>
+</ol>
+@endsection
 
 @section('content')
     <div class="page-content container-fluid" id="voyagerBreadEditAdd">
@@ -142,7 +176,7 @@
                                 </div>
                             </div>
                             <div class="row clearfix">
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-3 form-group">
                                     <label for="order_column">{{ __('voyager::bread.order_column') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
@@ -158,7 +192,7 @@
                                         @endforeach
                                       </select>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-3 form-group">
                                     <label for="order_display_column">{{ __('voyager::bread.order_ident_column') }}</label>
                                     <span class="voyager-question"
                                           aria-hidden="true"
@@ -170,6 +204,33 @@
                                         @foreach($fieldOptions as $tbl)
                                         <option value="{{ $tbl['field'] }}"
                                         @if(isset($dataType) && $dataType->order_display_column == $tbl['field']) selected @endif
+                                        >{{ $tbl['field'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label for="order_direction">{{ __('voyager::bread.order_direction') }}</label>
+                                    <select name="order_direction" class="select2 form-control">
+                                        <option value="asc" @if(isset($dataType) && $dataType->order_direction == 'asc') selected @endif>
+                                            {{ __('voyager::generic.ascending') }}
+                                        </option>
+                                        <option value="desc" @if(isset($dataType) && $dataType->order_direction == 'desc') selected @endif>
+                                            {{ __('voyager::generic.descending') }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label for="default_search_key">{{ __('voyager::bread.default_search_key') }}</label>
+                                    <span class="voyager-question"
+                                          aria-hidden="true"
+                                          data-toggle="tooltip"
+                                          data-placement="right"
+                                          title="{{ __('voyager::bread.default_search_key_ph') }}"></span>
+                                    <select name="default_search_key" class="select2 form-control">
+                                        <option value="">-- {{ __('voyager::generic.none') }} --</option>
+                                        @foreach($fieldOptions as $tbl)
+                                        <option value="{{ $tbl['field'] }}"
+                                        @if(isset($dataType) && $dataType->default_search_key == $tbl['field']) selected @endif
                                         >{{ $tbl['field'] }}</option>
                                         @endforeach
                                     </select>

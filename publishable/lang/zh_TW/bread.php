@@ -42,6 +42,7 @@ return [
     'policy_name'            => 'Policy 名',
     'policy_name_ph'         => '例如 \App\Policies\UserPolicy，如果留空則嘗試使用預設值',
     'server_pagination'      => '伺服器端分頁',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URL Slug（必須是唯一的）',
     'url_slug_ph'            => 'URL Slug（例如文章）',
 ];
