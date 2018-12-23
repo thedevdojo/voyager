@@ -43,6 +43,7 @@ return [
     'policy_name'               => 'Policy Namn',
     'policy_name_ph'            => 't ex. \App\Policies\UserPolicy, om tom används förinställt värde',
     'server_pagination'         => 'Paginering på servern',
+    'updated_order'             => 'Order updated successfully',
     'url_slug'                  => 'URL Permalänk (måste vara unik)',
     'url_slug_ph'               => 'URL Permalänk (t ex. posts)',
 ];
