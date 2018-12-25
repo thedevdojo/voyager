@@ -7,10 +7,11 @@ module.exports = function(){
 		  		folders: [],
 		  		selected_file: '',
 		  		directories: [],
+		  		is_loading: true,
 			},
 			methods: {
 				selectedFileIs: function(val){
-					if(typeof(this.selected_file.type) != 'undefined' && this.selected_file.type.includes(val)){
+					if(this.selected_file && typeof(this.selected_file.type) != 'undefined' && this.selected_file.type.includes(val)){
 						return true;
 					}
 					return false;
@@ -169,7 +170,7 @@ module.exports = function(){
 						}
 						// enter key
 						if(e.which == 13) {
-							if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
+							if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') && !is_loading) {
 								var type = manager.selected_file.type;
 
 								var imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -383,6 +384,7 @@ module.exports = function(){
 				});
 
 				function getFiles(folders){
+					is_loading = true;
 					if(folders != '/'){
 						var folder_location = '/' + folders.join('/');
 					} else {
@@ -398,6 +400,7 @@ module.exports = function(){
 								manager.files.items[i].size = bytesToSize(manager.files.items[i].size);
 							}
 						}
+						is_loading = false;
 					});
 
 					// Add the latest files to the folder dropdown
@@ -429,7 +432,6 @@ module.exports = function(){
 	
 					var postData = Object.assign(croppedData, {_token: CSRF_TOKEN})
 					$.post(options.baseUrl+'/media/crop', postData, function(data){
-						console.log(data)
 						if(data.success == true){
 							toastr.success(data.message)
 							getFiles(manager.folders);
