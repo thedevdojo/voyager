@@ -115,7 +115,7 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
         }
 
-        $this->registerGates();
+        $this->loadAuth();
 
         $this->registerViewComposers();
 
@@ -262,8 +262,10 @@ class VoyagerServiceProvider extends ServiceProvider
         );
     }
 
-    public function registerGates()
+    public function loadAuth()
     {
+        // DataType Policies
+
         // This try catch is necessary for the Package Auto-discovery
         // otherwise it will throw an error because no database
         // connection has been made yet.
@@ -288,7 +290,7 @@ class VoyagerServiceProvider extends ServiceProvider
             Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
         }
 
-        // Static Gates
+        // Gates
         foreach ($this->gates as $gate) {
             Gate::define($gate, function ($user) use ($gate) {
                 return $user->hasPermission($gate);
