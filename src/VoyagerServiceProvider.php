@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -36,6 +37,10 @@ class VoyagerServiceProvider extends ServiceProvider
     protected $policies = [
         Setting::class  => SettingPolicy::class,
         MenuItem::class => MenuItemPolicy::class,
+    ];
+
+    protected $gates = [
+        'browse_media'
     ];
 
     /**
@@ -276,6 +281,13 @@ class VoyagerServiceProvider extends ServiceProvider
             }
         } catch (\PDOException $e) {
             Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
+        }
+
+        // Static Gates
+        foreach ($this->gates as $gate) {
+            Gate::define($gate, function ($user) use ($gate) {
+                return $user->hasPermission($gate);
+            });
         }
     }
 
