@@ -133,7 +133,7 @@
                                     <i class="voyager-cursor"></i>
                                     <p>{{ __('voyager::media.nothing_selected') }}</p>
                                 </div>
-                                <div class="right_details">
+                                <div class="right_details" v-if="selected_file">
                                     <div class="detail_img">
                                         <div :class="selected_file.type">
                                             <template v-if="selectedFileIs('image')">
@@ -232,7 +232,7 @@
                     <!-- End Move File Modal -->
 
                     <!-- Rename File Modal -->
-                    <div class="modal fade modal-warning" id="rename_file_modal">
+                    <div class="modal fade modal-warning" id="rename_file_modal" v-if="selected_file">
                         <div class="modal-dialog">
                             <div class="modal-content">
 
