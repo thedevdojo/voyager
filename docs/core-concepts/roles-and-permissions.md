@@ -17,22 +17,6 @@ $canViewPost = Auth::user()->can('read', $post);
 $canViewPost = $this->authorize('read', $post);
 ```
 
-You may also choose to use the Voyager facade and pass the permission as a string:
-
-```php
-$canBrowsePost = Voyager::can('browse_posts');
-$canViewPost = Voyager::can('read_posts');
-$canEditPost = Voyager::can('edit_posts');
-$canAddPost = Voyager::can('add_posts');
-$canDeletePost = Voyager::can('delete_posts');
-```
-
-The value of each check will return a boolean whether or not the user has that certain permission. However you might wish to throw a forbidden exception if the user does not have a certain permission. This can be done using the `canOrFail` method:
-
-```php
-Voyager::canOrFail('browse_admin');
-```
-
 Out of the box there are some permissions you can use by default:
 
 * `browse_admin`: Whether or not the user may browse the Voyager admin panel.
