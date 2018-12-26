@@ -54,6 +54,7 @@ return [
     'no'                     => 'Nu',
     'no_thanks'              => 'Nu, mulțumesc',
     'not_null'               => 'Nu-i Null',
+    'no_results'             => 'No results',
     'options'                => 'Opțiuni',
     'password'               => 'Parolă',
     'permissions'            => 'Permisiuni',

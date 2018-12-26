@@ -67,9 +67,4 @@ class VoyagerController extends Controller
         // echo out script that TinyMCE can handle and update the image in the editor
         return "<script> parent.helpers.setImageValue('".Voyager::image($fullFilename)."'); </script>";
     }
-
-    public function profile()
-    {
-        return Voyager::view('voyager::profile');
-    }
 }

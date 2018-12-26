@@ -68,12 +68,12 @@
                                         @foreach($dataType->browseRows as $row)
                                         <th>
                                             @if ($isServerSide)
-                                                <a href="{{ $row->sortByUrl() }}">
+                                                <a href="{{ $row->sortByUrl($orderBy, $sortOrder) }}">
                                             @endif
                                             {{ $row->display_name }}
                                             @if ($isServerSide)
-                                                @if ($row->isCurrentSortField())
-                                                    @if (!isset($_GET['sort_order']) || $_GET['sort_order'] == 'asc')
+                                                @if ($row->isCurrentSortField($orderBy))
+                                                    @if ($sortOrder == 'asc')
                                                         <i class="voyager-angle-up pull-right"></i>
                                                     @else
                                                         <i class="voyager-angle-down pull-right"></i>
@@ -95,7 +95,7 @@
                                             </td>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
-                                            
+
                                             <td>
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
@@ -124,6 +124,17 @@
                                                         @endif
                                                     @endif
 
+                                                    @elseif($row->type == 'multiple_checkbox' && property_exists($row->details, 'options'))
+                                                        @if (@count(json_decode($data->{$row->field})) > 0)
+                                                            @foreach(json_decode($data->{$row->field}) as $item)
+                                                                @if (@$row->details->options->{$item})
+                                                                    {{ $row->details->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                                                @endif
+                                                            @endforeach
+                                                        @else
+                                                            {{ __('voyager::generic.none') }}
+                                                        @endif
+
                                                 @elseif($row->type == 'select_dropdown' && property_exists($row->details, 'options'))
 
                                                     @if($data->{$row->field . '_page_slug'})
@@ -150,10 +161,10 @@
                                                     <span class="badge badge-lg" style="background-color: {{ $data->{$row->field} }}">{{ $data->{$row->field} }}</span>
                                                 @elseif($row->type == 'text')
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
-                                                    <div class="readmore">{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                    <div>{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                                 @elseif($row->type == 'text_area')
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
-                                                    <div class="readmore">{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+                                                    <div>{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                                                 @elseif($row->type == 'file' && !empty($data->{$row->field}) )
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
                                                     @if(json_decode($data->{$row->field}))
@@ -170,7 +181,7 @@
                                                     @endif
                                                 @elseif($row->type == 'rich_text_box')
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
-                                                    <div class="readmore">{{ mb_strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? mb_substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
+                                                    <div>{{ mb_strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? mb_substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
                                                 @elseif($row->type == 'coordinates')
                                                     @include('voyager::partials.coordinates-static-image')
                                                 @elseif($row->type == 'multiple_images')
@@ -259,7 +270,7 @@
             @if (!$dataType->server_side)
                 var table = $('#dataTable').DataTable({!! json_encode(
                     array_merge([
-                        "order" => [],
+                        "order" => $orderColumn,
                         "language" => __('voyager::datatable'),
                         "columnDefs" => [['targets' => -1, 'searchable' =>  false, 'orderable' => false]],
                     ],

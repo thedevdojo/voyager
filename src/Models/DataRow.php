@@ -32,9 +32,9 @@ class DataRow extends Model
      *
      * @return bool True if this is the current filter, false otherwise
      */
-    public function isCurrentSortField()
+    public function isCurrentSortField($orderBy)
     {
-        return isset($_GET['order_by']) && $_GET['order_by'] == $this->field;
+        return $orderBy == $this->field;
     }
 
     /**
@@ -42,11 +42,11 @@ class DataRow extends Model
      *
      * @return string Built URL
      */
-    public function sortByUrl()
+    public function sortByUrl($orderBy, $sortOrder)
     {
-        $params = $_GET;
-        $isDesc = isset($params['sort_order']) && $params['sort_order'] != 'asc';
-        if ($this->isCurrentSortField() && $isDesc) {
+        $params = [];
+        $isDesc = $sortOrder != 'asc';
+        if ($this->isCurrentSortField($orderBy) && $isDesc) {
             $params['sort_order'] = 'asc';
         } else {
             $params['sort_order'] = 'desc';

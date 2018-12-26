@@ -97,11 +97,13 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/../publishable/lang'), 'voyager');
 
-        if (config('app.env') == 'testing') {
-            $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
-        }
+        if (config('voyager.database.autoload_migrations', true)) {
+            if (config('app.env') == 'testing') {
+                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
+            }
 
-        $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
+            $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
+        }
 
         $this->registerGates();
 
@@ -229,6 +231,9 @@ class VoyagerServiceProvider extends ServiceProvider
             'voyager_assets' => [
                 "{$publishablePath}/assets/" => public_path(config('voyager.assets_path')),
             ],
+            'voyager_avatar' => [
+                "{$publishablePath}/dummy_content/users/" => storage_path('app/public/users'),
+            ],
             'seeds' => [
                 "{$publishablePath}/database/seeds/" => database_path('seeds'),
             ],
@@ -281,6 +286,7 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $formFields = [
             'checkbox',
+            'multiple_checkbox',
             'color',
             'date',
             'file',

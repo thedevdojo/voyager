@@ -40,7 +40,7 @@
                         <p>{{ $query->{$options->label} }}</p>
                     @endif
                 @else
-                    <p>{{ __('voyager::generic.none') }}</p>
+                    <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
 
             @else
@@ -51,7 +51,7 @@
                         $query = $model::all();
                     @endphp
 
-                    @if($row->required === 0)
+                    @if(!$row->required)
                         <option value="">{{__('voyager::generic.none')}}</option>
                     @endif
 
@@ -84,7 +84,7 @@
                     <p>{{ $query->{$options->label} }}</p>
                 @endif
             @else
-                <p>{{ __('voyager::generic.none') }}</p>
+                <p>{{ __('voyager::generic.no_results') }}</p>
             @endif
 
         @elseif($options->type == 'hasMany')
@@ -103,13 +103,13 @@
                         if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
-                        <p>{{ __('voyager::generic.none') }}</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <p>{{ $string_values }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
-                        <p>{{ __('voyager::generic.none') }}</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <div class="list-group">
                             @foreach($selected_values as $selected_value)
@@ -140,7 +140,7 @@
                     </div>
 
                 @else
-                    <p>{{ __('voyager::generic.none') }}</p>
+                    <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
 
             @endif
@@ -160,13 +160,13 @@
                         if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
-                        <p>{{ __('voyager::generic.none') }}</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <p>{{ $string_values }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
-                        <p>{{ __('voyager::generic.none') }}</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <div class="list-group">
                             @foreach($selected_values as $selected_value)
