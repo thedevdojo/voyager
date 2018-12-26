@@ -9,26 +9,21 @@ use TCG\Voyager\Models\Role;
 
 class PermissionTest extends TestCase
 {
+    protected $user;
+
     public function setUp()
     {
         parent::setUp();
 
         Auth::loginUsingId(1);
-    }
-
-    public function testPermissionNotExisting()
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Permission does not exist');
-
-        Voyager::can('test');
+        $this->user = Auth::user();
     }
 
     public function testNotHavingPermission()
     {
         Permission::create(['key' => 'test']);
 
-        $this->assertFalse(Voyager::can('test'));
+        $this->assertFalse($this->user->hasPermission('test'));
     }
 
     public function testHavingPermission()
@@ -37,6 +32,6 @@ class PermissionTest extends TestCase
             ->permissions()
             ->create(['key' => 'test']);
 
-        $this->assertTrue(Voyager::can('test'));
+        $this->assertTrue($this->user->hasPermission('test'));
     }
 }
