@@ -57,6 +57,7 @@ return [
     'no_thanks'              => 'Não Obrigado',
     'none'                   => 'Nenhum',
     'not_null'               => 'Não Nulo',
+    'no_results'             => 'No results',
     'options'                => 'Opções',
     'password'               => 'Senha',
     'permissions'            => 'Permissões',

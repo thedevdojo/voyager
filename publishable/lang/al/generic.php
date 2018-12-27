@@ -54,6 +54,7 @@ return [
     'no'                   => 'Jo',
     'no_thanks'            => 'Jo faleminderit',
     'not_null'             => 'Jo Null',
+    'no_results'           => 'No results',
     'options'              => 'Opsionet',
     'password'             => 'Fjalëkalimi',
     'permissions'          => 'Lejet',

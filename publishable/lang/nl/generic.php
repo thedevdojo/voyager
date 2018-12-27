@@ -54,6 +54,7 @@ return [
     'no'                     => 'Nee',
     'no_thanks'              => 'Nee bedankt',
     'not_null'               => 'Niet Null',
+    'no_results'             => 'No results',
     'options'                => 'Opties',
     'password'               => 'Wachtwoord',
     'permissions'            => 'Permissies',

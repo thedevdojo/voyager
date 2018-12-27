@@ -58,6 +58,7 @@ return [
     'no_thanks'              => 'Нет, спасибо',
     'none'                   => 'Отсутствует',
     'not_null'               => 'Не Null',
+    'no_results'             => 'No results',
     'options'                => 'Параметры',
     'password'               => 'Пароль',
     'permissions'            => 'Права доступа',

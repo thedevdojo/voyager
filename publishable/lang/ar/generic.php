@@ -54,6 +54,7 @@ return [
     'no'                     => 'لا',
     'no_thanks'              => 'لا شكراً',
     'not_null'               => 'غير فارغة',
+    'no_results'             => 'No results',
     'options'                => 'خيارات',
     'password'               => 'كلمه السر',
     'permissions'            => 'الصلاحيات',

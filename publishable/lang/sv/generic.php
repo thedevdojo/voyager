@@ -58,6 +58,7 @@ return [
     'no_thanks'              => 'Nej tack',
     'none'                   => 'Ingen',
     'not_null'               => 'Inte Null',
+    'no_results'             => 'No results',
     'options'                => 'Alternativ',
     'password'               => 'Lösenord',
     'permissions'            => 'Behörigheter',

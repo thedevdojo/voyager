@@ -54,6 +54,7 @@ return [
     'no'                     => 'Ei',
     'no_thanks'              => 'Ei kiitos',
     'not_null'               => 'Ei Null-arvo',
+    'no_results'             => 'No results',
     'options'                => 'Valinnat',
     'password'               => 'Salasana',
     'permissions'            => 'Käyttöoikeus',

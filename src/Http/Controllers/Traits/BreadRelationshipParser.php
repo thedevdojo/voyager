@@ -15,10 +15,11 @@ trait BreadRelationshipParser
         $forget_keys = [];
         foreach ($dataType->{$bread_type.'Rows'} as $key => $row) {
             if ($row->type == 'relationship') {
-                $options = json_decode($row->details);
-                $relationshipField = @$options->column;
-                $keyInCollection = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relationshipField)->toArray());
-                array_push($forget_keys, $keyInCollection);
+                if ($row->details->type == 'belongsTo') {
+                    $relationshipField = @$row->details->column;
+                    $keyInCollection = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relationshipField)->toArray());
+                    array_push($forget_keys, $keyInCollection);
+                }
             }
         }
 
@@ -39,9 +40,8 @@ trait BreadRelationshipParser
         $relationships = [];
 
         $dataType->browseRows->each(function ($item) use (&$relationships) {
-            $details = json_decode($item->details);
-            if (isset($details->relationship) && isset($item->field)) {
-                $relation = $details->relationship;
+            if (isset($item->details->relationship) && isset($item->field)) {
+                $relation = $item->details->relationship;
                 if (isset($relation->method)) {
                     $method = $relation->method;
                     $this->relation_field[$method] = $item->field;
@@ -114,7 +114,7 @@ trait BreadRelationshipParser
                 }
 
                 $bread_data = $dataType->browseRows->where('field', $field)->first();
-                $relationData = json_decode($bread_data->details)->relationship;
+                $relationData = $bread_data->details->relationship;
 
                 if ($bread_data->type == 'select_multiple') {
                     $relationItems = [];

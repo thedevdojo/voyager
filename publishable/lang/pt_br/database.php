@@ -5,7 +5,7 @@ return [
     'add_new_column'            => 'Adicionar Nova Coluna',
     'add_softdeletes'           => 'Adicionar Soft Deletes',
     'add_timestamps'            => 'Adicionar Timestamps',
-    'already_exists'            => 'já existe',
+    'already_exists'            => 'Já existe',
     'already_exists_table'      => 'A Tabela :table já existe',
     'bread_crud_actions'        => 'Ações BREAD/CRUD',
     'bread_info'                => 'Informação do BREAD',
