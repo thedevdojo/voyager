@@ -105,11 +105,7 @@
                                                     @if(property_exists($row->details, 'relationship'))
 
                                                         @foreach($data->{$row->field} as $item)
-                                                            @if($item->{$row->field . '_page_slug'})
-                                                                <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
-                                                            @else
-                                                                {{ $item->{$row->field} }}
-                                                            @endif
+                                                            {{ $item->{$row->field} }}
                                                         @endforeach
 
                                                     @elseif(property_exists($row->details, 'options'))
@@ -126,14 +122,8 @@
 
                                                 @elseif($row->type == 'select_dropdown' && property_exists($row->details, 'options'))
 
-                                                    @if($data->{$row->field . '_page_slug'})
-                                                        <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $row->details->options->{$data->{$row->field}} !!}</a>
-                                                    @else
-                                                        {!! isset($row->details->options->{$data->{$row->field}}) ?  $row->details->options->{$data->{$row->field}} : '' !!}
-                                                    @endif
+                                                    {!! isset($row->details->options->{$data->{$row->field}}) ?  $row->details->options->{$data->{$row->field}} : '' !!}
 
-                                                @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
-                                                    <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
                                                     {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
                                                 @elseif($row->type == 'checkbox')
