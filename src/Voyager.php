@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
 use TCG\Voyager\Actions\ViewAction;
