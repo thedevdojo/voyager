@@ -140,7 +140,7 @@
                                                 <img :src="selected_file.path"/>
                                             </template>
                                             <template v-if="selectedFileIs('video')">
-                                                <video width="100%" height="auto" controls>
+                                                <video width="100%" height="auto" ref="videoplayer" controls>
                                                     <source :src="selected_file.path" type="video/mp4">
                                                     <source :src="selected_file.path" type="video/ogg">
                                                     <source :src="selected_file.path" type="video/webm">
@@ -149,7 +149,7 @@
                                             </template>
                                             <template v-if="selectedFileIs('audio')">
                                                 <i class="voyager-music"></i>
-                                                <audio controls style="width:100%; margin-top:5px;">
+                                                <audio controls style="width:100%; margin-top:5px;" ref="audioplayer">
                                                     <source :src="selected_file.path" type="audio/ogg">
                                                     <source :src="selected_file.path" type="audio/mpeg">
                                                     {{ __('voyager::media.browser_audio_support') }}
