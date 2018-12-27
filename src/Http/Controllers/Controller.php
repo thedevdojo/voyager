@@ -113,7 +113,9 @@ abstract class Controller extends BaseController
 
         if (isset($data->additional_attributes)) {
             foreach ($data->additional_attributes as $attr) {
-                $data->{$attr} = $request->{$attr};
+                if ($request->has($attr)) {
+                    $data->{$attr} = $request->{$attr};
+                }
             }
         }
 
