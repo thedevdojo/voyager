@@ -229,25 +229,19 @@ class VoyagerBaseController extends Controller
         // Check permission
         $this->authorize('edit', $data);
 
-        // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id);
+        // Validate fields
+        $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id)->validate();
 
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
-        }
+        $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
-        if (!$request->ajax()) {
-            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+        event(new BreadDataUpdated($dataType, $data));
 
-            event(new BreadDataUpdated($dataType, $data));
-
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                    'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
-                    'alert-type' => 'success',
-                ]);
-        }
+        return redirect()
+            ->route("voyager.{$dataType->slug}.index")
+            ->with([
+                'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
+                'alert-type' => 'success',
+            ]);
     }
 
     //***************************************
@@ -312,28 +306,22 @@ class VoyagerBaseController extends Controller
         $this->authorize('add', app($dataType->model_name));
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
+        $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
 
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
+        $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+
+        event(new BreadDataAdded($dataType, $data));
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'data' => $data]);
         }
 
-        if (!$request->has('_validate')) {
-            $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
-
-            event(new BreadDataAdded($dataType, $data));
-
-            if ($request->ajax()) {
-                return response()->json(['success' => true, 'data' => $data]);
-            }
-
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                        'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
-                        'alert-type' => 'success',
-                    ]);
-        }
+        return redirect()
+            ->route("voyager.{$dataType->slug}.index")
+            ->with([
+                    'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
+                    'alert-type' => 'success',
+                ]);
     }
 
     //***************************************
