@@ -8,15 +8,17 @@
               {{ $file->original_name ?: '' }}
             </a>
             <a href="#" class="voyager-x remove-multi-file"></a>
+            <input type="hidden" name="{{ $row->field }}[]" value="{{ $file->download_link }}">
           </div>
         @endforeach
-    @else
+    @elseif ($dataTypeContent->{$row->field} != '' && $dataTypeContent->{$row->field} != '[]')
       <div data-field-name="{{ $row->field }}">
         <a class="fileType" target="_blank"
           href="{{ Storage::disk(config('voyager.storage.disk'))->url($dataTypeContent->{$row->field}) }}"
           data-file-name="{{ $dataTypeContent->{$row->field} }}" data-id="{{ $dataTypeContent->id }}">>
           Download
         </a>
+        <input type="hidden" name="{{ $row->field }}[]" value="{{ $dataTypeContent->{$row->field} }}">
         <a href="#" class="voyager-x remove-single-file"></a>
       </div>
     @endif

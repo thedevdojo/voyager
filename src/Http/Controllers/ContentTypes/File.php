@@ -13,30 +13,28 @@ class File extends BaseType
      */
     public function handle()
     {
-        if (!$this->request->hasFile($this->row->field)) {
-            return json_encode([]);
+        if ($this->request->hasFile($this->row->field)) {
+            $files = Arr::wrap($this->request->file($this->row->field));
+
+            $filesPath = [];
+            $path = $this->generatePath();
+
+            foreach ($files as $file) {
+                $filename = $this->generateFileName($file, $path);
+                $file->storeAs(
+                    $path,
+                    $filename.'.'.$file->getClientOriginalExtension(),
+                    config('voyager.storage.disk', 'public')
+                );
+
+                array_push($filesPath, [
+                    'download_link' => $path.$filename.'.'.$file->getClientOriginalExtension(),
+                    'original_name' => $file->getClientOriginalName(),
+                ]);
+            }
+
+            return json_encode($filesPath);
         }
-
-        $files = Arr::wrap($this->request->file($this->row->field));
-
-        $filesPath = [];
-        $path = $this->generatePath();
-
-        foreach ($files as $file) {
-            $filename = $this->generateFileName($file, $path);
-            $file->storeAs(
-                $path,
-                $filename.'.'.$file->getClientOriginalExtension(),
-                config('voyager.storage.disk', 'public')
-            );
-
-            array_push($filesPath, [
-                'download_link' => $path.$filename.'.'.$file->getClientOriginalExtension(),
-                'original_name' => $file->getClientOriginalName(),
-            ]);
-        }
-
-        return json_encode($filesPath);
     }
 
     /**

@@ -72,7 +72,7 @@ abstract class Controller extends BaseController
             /*
              * merge ex_images and upload images
              */
-            if ($row->type == 'multiple_images' && !is_null($content)) {
+            if (($row->type == 'multiple_images' || $row->type == 'file') && !is_null($content)) {
                 if (isset($data->{$row->field})) {
                     $ex_files = json_decode($data->{$row->field}, true);
                     if (!is_null($ex_files)) {
