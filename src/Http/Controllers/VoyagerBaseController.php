@@ -459,7 +459,7 @@ class VoyagerBaseController extends Controller
                 'alert-type' => 'success',
             ]
             : [
-                'message'    => __('voyager::generic.error_restored')." {$displayName}",
+                'message'    => __('voyager::generic.error_restoring')." {$displayName}",
                 'alert-type' => 'error',
             ];
 
