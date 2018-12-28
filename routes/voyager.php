@@ -37,7 +37,7 @@ Route::group(['as' => 'voyager.'], function () {
         try {
             foreach (DataType::all() as $dataType) {
                 $breadController = $dataType->controller
-                                 ? $dataType->controller
+                                 ? str_start($dataType->controller, '\\')
                                  : $namespacePrefix.'VoyagerBaseController';
 
                 Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
