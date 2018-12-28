@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
 use TCG\Voyager\Actions\ViewAction;
@@ -252,47 +251,6 @@ class Voyager
     public function routes()
     {
         require __DIR__.'/../routes/voyager.php';
-    }
-
-    /** @deprecated */
-    public function can($permission)
-    {
-        $this->loadPermissions();
-
-        // Check if permission exist
-        $exist = $this->permissions->where('key', $permission)->first();
-
-        // Permission not found
-        if (!$exist) {
-            throw new \Exception('Permission does not exist', 400);
-        }
-
-        $user = $this->getUser();
-        if ($user == null || !$user->hasPermission($permission)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /** @deprecated */
-    public function canOrFail($permission)
-    {
-        if (!$this->can($permission)) {
-            throw new AccessDeniedHttpException();
-        }
-
-        return true;
-    }
-
-    /** @deprecated */
-    public function canOrAbort($permission, $statusCode = 403)
-    {
-        if (!$this->can($permission)) {
-            return abort($statusCode);
-        }
-
-        return true;
     }
 
     public function getVersion()
