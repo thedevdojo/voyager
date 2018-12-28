@@ -4,6 +4,7 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
@@ -28,6 +29,19 @@ class Menu extends Model
     }
 
     /**
+     * Returns the menu's cache key.
+     */
+    protected static function cacheKey($menuName, $type = null, array $options = [])
+    {
+        return sprintf(
+            '%s_%s_%s',
+            $menuName,
+            $type,
+            md5(serialize($options))
+        );
+    }
+
+    /**
      * Display menu.
      *
      * @param string      $menuName
@@ -38,6 +52,12 @@ class Menu extends Model
      */
     public static function display($menuName, $type = null, array $options = [])
     {
+        $cacheKey = self::cacheKey($menuName, $type, $options);
+
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
         // GET THE MENU - sort collection in blade
         $menu = static::where('name', '=', $menuName)
             ->with(['parent_items.children' => function ($q) {
@@ -89,8 +109,17 @@ class Menu extends Model
             return $items;
         }
 
-        return new \Illuminate\Support\HtmlString(
+        $menu_html = new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render()
         );
+
+        // Tagging not supported in file/database caches
+        if (config('cache.default') === 'file' || config('cache.default') === 'database') {
+            Cache::forever($cacheKey, $menu_html);
+        } else {
+            Cache::tags(['voyager-menu'])->forever($cacheKey, $menu_html);
+        }
+
+        return $menu_html;
     }
 }

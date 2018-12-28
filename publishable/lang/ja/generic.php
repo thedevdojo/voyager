@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'アクション',
     'actions'                => 'アクション',
     'add'                    => '追加',

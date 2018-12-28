@@ -17,6 +17,6 @@ if (!function_exists('menu')) {
 if (!function_exists('voyager_asset')) {
     function voyager_asset($path, $secure = null)
     {
-        return asset(config('voyager.assets_path').'/'.$path, $secure);
+        return route('voyager.assets', $path);
     }
 }

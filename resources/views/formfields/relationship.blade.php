@@ -17,11 +17,7 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-                    if (method_exists($model, 'getRelationship')) {
-                        $query = $model::getRelationship($relationshipData->{$options->column});
-                    } else {
-                        $query = $model::find($relationshipData->{$options->column});
-                    }
+                    $query = $model::find($relationshipData->{$options->column});
                 @endphp
 
                 @if(isset($query))
@@ -32,10 +28,14 @@
 
             @else
 
-                <select class="form-control select2" name="{{ $options->column }}">
+                <select
+                    class="form-control select2-ajax" name="{{ $options->column }}"
+                    data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
+                    data-get-items-field="{{$row->field}}"
+                >
                     @php
                         $model = app($options->model);
-                        $query = $model::all();
+                        $query = $model::where($options->key, $dataTypeContent->{$options->column})->get();
                     @endphp
 
                     @if(!$row->required)
@@ -73,9 +73,10 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-                    $selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
-                        return $item->{$options->label};
-                    })->all();
+
+            		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
+            			return $item->{$options->label};
+            		})->all();
                 @endphp
 
                 @if($action == 'browse')
@@ -126,6 +127,7 @@
 
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
+
                     $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
                         return $item->{$options->label};
                     })->all() : array();
@@ -155,9 +157,11 @@
 
             @else
                 <select
-                        class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2 @endif"
-                        name="{{ $relationshipField }}[]" multiple
-                        @if(isset($options->taggable) && $options->taggable == 'on')
+                    class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2-ajax @endif"
+                    name="{{ $relationshipField }}[]" multiple
+                    data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
+                    data-get-items-field="{{$row->field}}"
+                    @if(isset($options->taggable) && $options->taggable == 'on')
                         data-route="{{ route('voyager.'.str_slug($options->table).'.store') }}"
                         data-label="{{$options->label}}"
                         data-error-message="{{__('voyager::bread.error_tagging')}}"
