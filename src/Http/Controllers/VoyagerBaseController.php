@@ -158,7 +158,6 @@ class VoyagerBaseController extends Controller
 
         $isSoftDeleted = false;
 
-        $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
 
