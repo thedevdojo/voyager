@@ -305,7 +305,7 @@ class VoyagerBaseController extends Controller
         // Check permission
         $this->authorize('add', app($dataType->model_name));
 
-        // Validate fields with ajax
+        // Validate fields
         $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
 
         $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
