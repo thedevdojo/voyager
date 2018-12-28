@@ -107,11 +107,6 @@ return [
         'enabled' => false,
 
         /*
-         * Set whether or not the admin layout default is RTL.
-         */
-        'rtl' => false,
-
-        /*
          * Select default language
          */
         'default' => 'en',
