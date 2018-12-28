@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
+use TCG\Voyager\Actions\RestoreAction;
 use TCG\Voyager\Actions\ViewAction;
 use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
@@ -48,6 +49,7 @@ class Voyager
 
     protected $actions = [
         DeleteAction::class,
+        RestoreAction::class,
         EditAction::class,
         ViewAction::class,
     ];
