@@ -22,7 +22,7 @@ class VoyagerCompassController extends Controller
     public function index(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('browse_compass');
+        $this->authorize('browse_compass');
         //Check if app is not local
         if (!\App::environment('local') && !config('voyager.compass_in_production', false)) {
             throw new AccessDeniedHttpException();

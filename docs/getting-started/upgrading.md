@@ -69,6 +69,10 @@ You can now define an array of mimetypes which are allowed to be uploaded throug
 ],*/
 ```
 
+### Deprecation
+`can`, `canOrAbort`, `canOrFail` in the Voyager facade were all removed in favor of Policies and Gates.  
+Please refer to the [Laravel documentation](https://laravel.com/docs/authorization).
+
 ### **Final Steps**
 
 Next, you may want to be sure that you have all the latest published assets. To re-publish the voyager assets you can run the following command:

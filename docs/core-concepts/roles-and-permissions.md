@@ -4,9 +4,9 @@ Voyager comes with Roles and Permissions out of the box. Each _User_ has a _Role
 
 Inside of the dashboard you can choose to Add, Edit, or delete the current Roles. Additionally when you click to edit a particular role you can specify the BREAD permissions.
 
-![](../.gitbook/assets/role%20%281%29.png)
+![](../.gitbook/assets/role.png)
 
-New in version 1.0, we've changed Voyager's authorization system to be [more in line with Laravel](https://laravel.com/docs/5.5/authorization#authorizing-actions-using-policies)! This means that you can check for permissions in the following ways:
+New in version 1.0, we've changed Voyager's authorization system to be [more in line with Laravel](https://laravel.com/docs/authorization#authorizing-actions-using-policies)! This means that you can check for permissions in the following ways:
 
 ```php
 // via user object
@@ -15,22 +15,6 @@ $canViewPost = Auth::user()->can('read', $post);
 
 // via controller
 $canViewPost = $this->authorize('read', $post);
-```
-
-You may also choose to use the Voyager facade and pass the permission as a string:
-
-```php
-$canBrowsePost = Voyager::can('browse_posts');
-$canViewPost = Voyager::can('read_posts');
-$canEditPost = Voyager::can('edit_posts');
-$canAddPost = Voyager::can('add_posts');
-$canDeletePost = Voyager::can('delete_posts');
-```
-
-The value of each check will return a boolean whether or not the user has that certain permission. However you might wish to throw a forbidden exception if the user does not have a certain permission. This can be done using the `canOrFail` method:
-
-```php
-Voyager::canOrFail('browse_admin');
 ```
 
 Out of the box there are some permissions you can use by default:
@@ -76,4 +60,3 @@ Or perhaps you need to run an else condition for a permission. That's simple eno
 ```
 
 Couldn't be easier, right ;\)
-
