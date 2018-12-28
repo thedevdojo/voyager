@@ -63,10 +63,8 @@ class VoyagerBaseController extends Controller
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
-            $relationships = $this->getRelationships($dataType);
-
             $model = app($dataType->model_name);
-            $query = $model::select('*')->with($relationships);
+            $query = $model::select('*');
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
             if ($model && in_array(SoftDeletes::class, class_uses($model))) {
@@ -168,8 +166,7 @@ class VoyagerBaseController extends Controller
             if ($model && in_array(SoftDeletes::class, class_uses($model))) {
                 $model = $model->withTrashed();
             }
-
-            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+            $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
             if ($dataTypeContent->deleted_at) {
                 $isSoftDeleted = true;
             }
@@ -227,7 +224,7 @@ class VoyagerBaseController extends Controller
                 $model = $model->withTrashed();
             }
 
-            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+            $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
         } else {
             // If Model doest exist, get data from table name
             $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
