@@ -76,7 +76,7 @@ class TestCase extends OrchestraTestCase
     {
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
 
-        app(VoyagerServiceProvider::class, ['app' => $this->app])->registerGates();
+        app(VoyagerServiceProvider::class, ['app' => $this->app])->loadAuth();
 
         if (file_exists(base_path('routes/web.php'))) {
             require base_path('routes/web.php');
