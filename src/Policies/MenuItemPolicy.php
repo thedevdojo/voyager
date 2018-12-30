@@ -40,13 +40,19 @@ class MenuItemPolicy extends BasePolicy
 
         if ($slug == '') {
             $slug = 'admin';
+        } elseif ($slug == 'compass' && !\App::environment('local') && !config('voyager.compass_in_production', false)) {
+            return false;
+        }
+
+        if (empty($action)) {
+            $action = 'browse';
         }
 
         // If permission doesn't exist, we can't check it!
-        if (!self::$permissions->contains('key', 'browse_'.$slug)) {
+        if (!self::$permissions->contains('key', $action.'_'.$slug)) {
             return true;
         }
 
-        return $user->hasPermission('browse_'.$slug);
+        return $user->hasPermission($action.'_'.$slug);
     }
 }

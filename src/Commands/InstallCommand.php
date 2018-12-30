@@ -69,7 +69,7 @@ class InstallCommand extends Command
         $this->info('Publishing the Voyager assets, database, and config files');
 
         // Publish only relevant resources on install
-        $tags = ['voyager_assets', 'seeds'];
+        $tags = ['seeds'];
 
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
@@ -126,7 +126,7 @@ class InstallCommand extends Command
             $this->info('Seeding dummy data');
             $this->seed('VoyagerDummyDatabaseSeeder');
         } else {
-            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => 'config']);
+            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => ['config', 'voyager_avatar']]);
         }
 
         $this->info('Setting up the hooks');

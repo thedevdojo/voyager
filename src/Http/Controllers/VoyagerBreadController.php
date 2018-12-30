@@ -22,7 +22,7 @@ class VoyagerBreadController extends Controller
 {
     public function index()
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         $dataTypes = Voyager::model('DataType')->select('id', 'name', 'slug')->get()->keyBy('name')->toArray();
 
@@ -49,10 +49,15 @@ class VoyagerBreadController extends Controller
      */
     public function create(Request $request, $table)
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
+
+        $dataType = Voyager::model('DataType')->whereName($table)->first();
 
         $data = $this->prepopulateBreadInfo($table);
-        $data['fieldOptions'] = SchemaManager::describeTable($table);
+        $data['fieldOptions'] = SchemaManager::describeTable((isset($dataType) && strlen($dataType->model_name) != 0)
+            ? app($dataType->model_name)->getTable()
+            : $table
+        );
 
         return Voyager::view('voyager::tools.bread.edit-add', $data);
     }
@@ -86,6 +91,8 @@ class VoyagerBreadController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('browse_bread');
+
         try {
             $dataType = Voyager::model('DataType');
             $res = $dataType->updateDataType($request->all(), true);
@@ -111,11 +118,14 @@ class VoyagerBreadController extends Controller
      */
     public function edit($table)
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
-        $fieldOptions = SchemaManager::describeTable($dataType->name);
+        $fieldOptions = SchemaManager::describeTable((strlen($dataType->model_name) != 0)
+            ? app($dataType->model_name)->getTable()
+            : $dataType->name
+        );
 
         $isModelTranslatable = is_bread_translatable($dataType);
         $tables = SchemaManager::listTableNames();
@@ -134,7 +144,7 @@ class VoyagerBreadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         try {
@@ -171,7 +181,7 @@ class VoyagerBreadController extends Controller
      */
     public function destroy($id)
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = Voyager::model('DataType')->find($id);
@@ -232,7 +242,7 @@ class VoyagerBreadController extends Controller
             }
 
             // Build the relationship details
-            $relationshipDetails = json_encode([
+            $relationshipDetails = [
                 'model'       => $request->relationship_model,
                 'table'       => $request->relationship_table,
                 'type'        => $request->relationship_type,
@@ -242,7 +252,7 @@ class VoyagerBreadController extends Controller
                 'pivot_table' => $request->relationship_pivot,
                 'pivot'       => ($request->relationship_type == 'belongsToMany') ? '1' : '0',
                 'taggable'    => $request->relationship_taggable,
-            ]);
+            ];
 
             $newRow = new DataRow();
 

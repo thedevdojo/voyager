@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'Действие',
     'actions'                => 'Доступные действия',
     'add'                    => 'Добавить',
@@ -58,6 +59,7 @@ return [
     'no_thanks'              => 'Нет, спасибо',
     'none'                   => 'Отсутствует',
     'not_null'               => 'Не Null',
+    'no_results'             => 'No results',
     'options'                => 'Параметры',
     'password'               => 'Пароль',
     'permissions'            => 'Права доступа',

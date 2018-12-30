@@ -133,14 +133,14 @@
                                     <i class="voyager-cursor"></i>
                                     <p>{{ __('voyager::media.nothing_selected') }}</p>
                                 </div>
-                                <div class="right_details">
+                                <div class="right_details" v-if="selected_file">
                                     <div class="detail_img">
                                         <div :class="selected_file.type">
                                             <template v-if="selectedFileIs('image')">
                                                 <img :src="selected_file.path"/>
                                             </template>
                                             <template v-if="selectedFileIs('video')">
-                                                <video width="100%" height="auto" controls>
+                                                <video width="100%" height="auto" ref="videoplayer" controls>
                                                     <source :src="selected_file.path" type="video/mp4">
                                                     <source :src="selected_file.path" type="video/ogg">
                                                     <source :src="selected_file.path" type="video/webm">
@@ -149,7 +149,7 @@
                                             </template>
                                             <template v-if="selectedFileIs('audio')">
                                                 <i class="voyager-music"></i>
-                                                <audio controls style="width:100%; margin-top:5px;">
+                                                <audio controls style="width:100%; margin-top:5px;" ref="audioplayer">
                                                     <source :src="selected_file.path" type="audio/ogg">
                                                     <source :src="selected_file.path" type="audio/mpeg">
                                                     {{ __('voyager::media.browser_audio_support') }}
@@ -232,7 +232,7 @@
                     <!-- End Move File Modal -->
 
                     <!-- Rename File Modal -->
-                    <div class="modal fade modal-warning" id="rename_file_modal">
+                    <div class="modal fade modal-warning" id="rename_file_modal" v-if="selected_file">
                         <div class="modal-dialog">
                             <div class="modal-content">
 
@@ -258,7 +258,7 @@
                     <!-- End Move File Modal -->
 
                     <!-- Image Modal -->
-                    <div class="modal fade" id="imagemodal">
+                    <div class="modal fade" id="imagemodal" v-if="selectedFileIs('image')">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
