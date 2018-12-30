@@ -17,9 +17,9 @@
                 @endphp
 
                 @if(isset($query))
-                    @if (isset($options->slug) and isset($query->id))
+                    @if (isset($options->slug))
                         <p>
-                            <a href="{{ route('voyager.'. $options->slug .'.show', ['id' => $query->id]) }}" target="_blank">
+                            <a href="{{ route('voyager.'. $options->slug .'.show', ['id' => $query->getKey()]) }}" target="_blank">
                                 {{ $query->{$options->label} }}
                             </a>
                         </p>
@@ -61,9 +61,9 @@
             @endphp
 
             @if(isset($query))
-                @if (isset($options->slug) and isset($query->id))
+                @if (isset($options->slug))
                     <p>
-                        <a href="{{ route('voyager.'. $options->slug .'.show', ['id' => $query->id]) }}" target="_blank">
+                        <a href="{{ route('voyager.'. $options->slug .'.show', ['id' => $query->getKey()]) }}" target="_blank">
                             {{ $query->{$options->label} }}
                         </a>
                     </p>
@@ -82,10 +82,10 @@
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
             		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
-            			return [
-            			    'label' => $item->{$options->label},
-                            'id' => $item->id ?? null
-                        ];
+            			return array(
+                            'label' => $item->{$options->label},
+                            'id' => $item->getKey()
+            			);
             		})->all();
                 @endphp
 
@@ -147,10 +147,10 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
-            			return [
+            			return array(
                             'label' => $item->{$options->label},
-                            'id' => $item->id ?? null
-            			];
+                            'id' => $item->getKey()
+            			);
             		})->all() : array();
                 @endphp
 
