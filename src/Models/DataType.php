@@ -187,7 +187,7 @@ class DataType extends Model
                     ];
 
                     // Get slug of relationship table for update
-                    $dataType = DataType::where(['name' => $relationshipDetails['table']])->first();
+                    $dataType = self::where(['name' => $relationshipDetails['table']])->first();
 
                     if ($dataType) {
                         $relationshipDetails['slug'] = $dataType->slug;
