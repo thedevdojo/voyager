@@ -50,7 +50,7 @@
             },
             getType() {
                 let type = this.getOption('type');
-                
+
                 if (type) {
                     return type;
                 }

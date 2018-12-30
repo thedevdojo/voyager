@@ -36,7 +36,7 @@
                             <button type="button" class="btn btn-default" id="delete"><i class="voyager-trash"></i>
                                 {{ __('voyager::generic.delete') }}
                             </button>
-							<button v-show="selectedFileIs('image')" type="button" class="btn btn-default" id="crop"><i class="voyager-crop"></i>
+                            <button v-show="selectedFileIs('image')" type="button" class="btn btn-default" id="crop"><i class="voyager-crop"></i>
                                 {{ __('voyager::media.crop') }}
                             </button>
                         </div>
@@ -56,7 +56,7 @@
                                 <li class="media_breadcrumb" data-folder="/" data-index="0"><span class="arrow"></span><strong>{{ __('voyager::media.library') }}</strong></li>
                                 <template v-for="(folder, index) in folders">
                                     <li v-bind:data-folder="folder" v-bind:data-index="index+1"
-									v-bind:class="{media_breadcrumb: index !== folders.length - 1}"><span
+                                    v-bind:class="{media_breadcrumb: index !== folders.length - 1}"><span
                                                 class="arrow"></span>@{{ folder }}</li>
 
                                 </template>
@@ -82,7 +82,7 @@
                                                 <template v-if="file.type.includes('audio')">
                                                     <i class="icon voyager-music"></i>
                                                 </template>
-												<template v-if="file.type.includes('zip')">
+                                                <template v-if="file.type.includes('zip')">
                                                     <i class="icon voyager-archive"></i>
                                                 </template>
                                                 <template v-if="file.type == 'folder'">
@@ -133,14 +133,14 @@
                                     <i class="voyager-cursor"></i>
                                     <p>{{ __('voyager::media.nothing_selected') }}</p>
                                 </div>
-                                <div class="right_details">
+                                <div class="right_details" v-if="selected_file">
                                     <div class="detail_img">
                                         <div :class="selected_file.type">
                                             <template v-if="selectedFileIs('image')">
                                                 <img :src="selected_file.path"/>
                                             </template>
                                             <template v-if="selectedFileIs('video')">
-                                                <video width="100%" height="auto" controls>
+                                                <video width="100%" height="auto" ref="videoplayer" controls>
                                                     <source :src="selected_file.path" type="video/mp4">
                                                     <source :src="selected_file.path" type="video/ogg">
                                                     <source :src="selected_file.path" type="video/webm">
@@ -148,14 +148,14 @@
                                                 </video>
                                             </template>
                                             <template v-if="selectedFileIs('audio')">
-												<i class="voyager-music"></i>
-                                                <audio controls style="width:100%; margin-top:5px;">
+                                                <i class="voyager-music"></i>
+                                                <audio controls style="width:100%; margin-top:5px;" ref="audioplayer">
                                                     <source :src="selected_file.path" type="audio/ogg">
                                                     <source :src="selected_file.path" type="audio/mpeg">
                                                     {{ __('voyager::media.browser_audio_support') }}
                                                 </audio>
                                             </template>
-											<template v-if="selectedFileIs('zip')">
+                                            <template v-if="selectedFileIs('zip')">
                                                 <i class="voyager-archive"></i>
                                             </template>
                                             <template v-if="selected_file.type == 'folder'">
@@ -171,18 +171,18 @@
                                     <div class="detail_info">
                                         <div :class="selected_file.type">
                                             <span><h4>{{ __('voyager::media.title') }}:</h4>
-    							            <p>@{{selected_file.name}}</p></span>
+                                            <p>@{{selected_file.name}}</p></span>
                                             <span><h4>{{ __('voyager::media.type') }}:</h4>
-    							            <p>@{{selected_file.type}}</p></span>
+                                            <p>@{{selected_file.type}}</p></span>
 
                                             <template v-if="selected_file.type != 'folder'">
-    								            <span><h4>{{ __('voyager::media.size') }}:</h4>
-    								            <p><span class="selected_file_count">@{{ selected_file.items }} item(s)</span><span
+                                                <span><h4>{{ __('voyager::media.size') }}:</h4>
+                                                <p><span class="selected_file_count">@{{ selected_file.items }} item(s)</span><span
                                                     class="selected_file_size">@{{selected_file.size}}</span></p></span>
                                                 <span><h4>{{ __('voyager::media.public_url') }}:</h4>
-    								            <p><a :href="selected_file.path" target="_blank">Click Here</a></p></span>
+                                                <p><a :href="selected_file.path" target="_blank">Click Here</a></p></span>
                                                 <span><h4>{{ __('voyager::media.last_modified') }}:</h4>
-    								            <p>@{{ dateFilter(selected_file.last_modified) }}</p></span>
+                                                <p>@{{ dateFilter(selected_file.last_modified) }}</p></span>
                                             </template>
                                         </div>
                                     </div>
@@ -232,7 +232,7 @@
                     <!-- End Move File Modal -->
 
                     <!-- Rename File Modal -->
-                    <div class="modal fade modal-warning" id="rename_file_modal">
+                    <div class="modal fade modal-warning" id="rename_file_modal" v-if="selected_file">
                         <div class="modal-dialog">
                             <div class="modal-content">
 
@@ -257,27 +257,27 @@
                     </div>
                     <!-- End Move File Modal -->
 
-					<!-- Image Modal -->
-					<div class="modal fade" id="imagemodal">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
+                    <!-- Image Modal -->
+                    <div class="modal fade" id="imagemodal" v-if="selectedFileIs('image')">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 </div>
-								<div class="modal-body">
-									<img :src="selected_file.path" class="img img-responsive" style="margin: 0 auto;">
-								</div>
+                                <div class="modal-body">
+                                    <img :src="selected_file.path" class="img img-responsive" style="margin: 0 auto;">
+                                </div>
 
-								<div class="modal-footer text-left">
-									<small class="image-title">@{{ selected_file.name }}</small>
-								</div>
+                                <div class="modal-footer text-left">
+                                    <small class="image-title">@{{ selected_file.name }}</small>
+                                </div>
 
-							</div>
-						</div>
-					</div>
-					<!-- End Image Modal -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Image Modal -->
 
-					<!-- Crop Image Modal -->
+                    <!-- Crop Image Modal -->
                     <div class="modal fade modal-warning" id="confirm_crop_modal">
                         <div class="modal-dialog">
                             <div class="modal-content">

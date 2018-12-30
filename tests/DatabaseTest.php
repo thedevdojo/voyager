@@ -19,8 +19,6 @@ class DatabaseTest extends TestCase
     {
         parent::setUp();
 
-        $this->install();
-
         // todo: make sure tests are isolated and do not effect other ones
         // todo: interract with Table object directly instead of array?
         // todo: maybe perform the updates using one call to update_table?
@@ -92,8 +90,6 @@ class DatabaseTest extends TestCase
         $this->can_change_column_options();
 
         $this->can_add_index();
-
-        $this->can_change_index();
 
         $this->can_rename_column();
 
@@ -227,21 +223,6 @@ class DatabaseTest extends TestCase
 
         $this->assertTrue($dbTable->hasIndex($indexName));
         $this->assertTrue($dbTable->getIndex($indexName)->isUnique());
-    }
-
-    protected function can_change_index()
-    {
-        $dbTable = SchemaManager::listTableDetails($this->table['name']);
-
-        $this->assertTrue($dbTable->hasIndex('primary'));
-
-        $dbTable->dropPrimaryKey();
-        $dbTable->addIndex(['id'], 'id_index');
-
-        $dbTable = $this->update_table($dbTable->toArray());
-
-        $this->assertFalse($dbTable->hasIndex('primary'));
-        $this->assertTrue($dbTable->hasIndex('id_index'));
     }
 
     protected function update_table(array $table)

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'Aktion',
     'actions'                => 'Aktionen',
     'add'                    => 'Hinzufügen',
@@ -9,6 +10,7 @@ return [
     'all_done'               => 'Alles erledigt',
     'are_you_sure'           => 'Sind Sie sicher',
     'are_you_sure_delete'    => 'Sind Sie sicher dass Sie löschen möchten',
+    'ascending'              => 'Aufsteigend',
     'auto_increment'         => 'Automatische Werterhöhung',
     'browse'                 => 'Browse',
     'builder'                => 'Builder',
@@ -29,6 +31,7 @@ return [
     'delete_confirm'         => 'Ja, löschen!',
     'delete_question'        => 'Wirklich löschen',
     'delete_this_confirm'    => 'Ja, löschen',
+    'descending'             => 'Absteigend',
     'deselect_all'           => 'Alles abwählen',
     'download'               => 'Herunterladen',
     'drag_drop_info'         => 'Ändern Sie die Reihenfolge der Elemente durch Drag und Drop.',
@@ -49,6 +52,7 @@ return [
     'login'                  => 'Login',
     'media'                  => 'Medien',
     'menu_builder'           => 'Menü Editor',
+    'mimetype_not_allowed'   => 'Dieser Medientyp ist nicht erlaubt',
     'move'                   => 'Verschieben',
     'name'                   => 'Name',
     'new'                    => 'Neu',
@@ -57,6 +61,7 @@ return [
     'none'                   => 'Keine',
     'no_results'             => 'Keine Ergebnisse',
     'not_null'               => 'Not Null',
+    'no_results'             => 'Keine Ergebnisse',
     'options'                => 'Optionen',
     'password'               => 'Passwort',
     'permissions'            => 'Rechte',
