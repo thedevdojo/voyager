@@ -137,7 +137,7 @@ class VoyagerSettingsController extends Controller
     public function move_up($id)
     {
         // Check permission
-        Voyager::canOrFail('edit_settings');
+        $this->authorize('edit', Voyager::model('Setting'));
 
         $setting = Voyager::model('Setting')->find($id);
 
@@ -200,7 +200,7 @@ class VoyagerSettingsController extends Controller
     public function move_down($id)
     {
         // Check permission
-        Voyager::canOrFail('edit_settings');
+        $this->authorize('edit', Voyager::model('Setting'));
 
         $setting = Voyager::model('Setting')->find($id);
 
