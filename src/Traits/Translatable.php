@@ -247,31 +247,10 @@ trait Translatable
     }
 
     /**
-     * Gets Entry if has translated field field with value via scope.
+     * Get entries filtered by translated value
      *
-     * @example  $class->whereTranslation('de', 'title', 'zuhause')
-     *
-     * @param builder       $query
-     * @param string        $field      {required} the field your looking to find a value in.
-     * @param string        $operator   {required} value you are looking for or a relation modifier.
-     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator.
-     * @param string|array  $locales    {optional} locale(s) you are looking for the field.
-     * @param bool          $default    {optional} if true checks for $value is in default language before checking translations.
-     *
-     * @return Builder|null
-     *
-     */
-    public function scopeWhereTranslation(Builder $query, $field, $operator, $value = null, $locales = null, $default = true){
-       return $query->whereTranslation($field, $operator, $value, $locales, $default);
-   }
-
-    /**
-     * Gets Entry if has translated field with value.
-     *
-     * @example  Class::whereTranslation(['de', 'iu'], 'title', 'zuhause', '=', true)
-     *
-     * @author reageek <https://github.com/reageek> && emptynick <https://github.com/emptynick>.
-     * @todo refactor out of static if you wish.
+     * @example  Class::whereTranslation('title', '=', 'zuhause', ['de', 'iu'])
+     * @example  $query->whereTranslation('title', '=', 'zuhause', ['de', 'iu'])
      *
      * @param string        $field      {required} the field your looking to find a value in.
      * @param string        $operator   {required} value you are looking for or a relation modifier such as LIKE, =, etc.
@@ -279,43 +258,37 @@ trait Translatable
      * @param string|array  $locales    {optional} locale(s) you are looking for the field.
      * @param bool          $default    {optional} if true checks for $value is in default database before checking translations.
      *
-     * @return Builder|null
+     * @return Builder
      *
      */
-    public static function whereTranslation($field, $operator, $value = null, $locales = null, $default = true)
+    public static function scopeWhereTranslation($query, $field, $operator, $value = null, $locales = null, $default = true)
     {
-        if($locales && !is_array($locales)) {
+        if ($locales && !is_array($locales)) {
             $locales = [$locales];
         }
-        if ( !isset( $value ) ) {
+        if (!isset($value)) {
             $value = $operator;
             $operator = '=';
         }
-        if($default){
-            $default = self::where( $field, $value );
-            if( $default->first() ){
-                //Found in default database model
-                return $default;
+        if ($default) {
+            $clone = clone $query;
+            $default = $clone->where($field, $operator, $value);
+            if ($default->first()) {
+                return $clone;
             }
         }
+
         $self = new static;
         $table = $self->getTable();
 
-        $translated = self::whereIn( 'id',
-            Translation::where( 'table_name', $table )
-                        ->where( 'column_name', $field )
-                        ->where( 'value', $operator, $value )
-                        ->when($locales, function ( $query ) use ( $locales ) {
-                            return $query->whereIn( 'locale', $locales );
-                        })
-                        ->pluck( 'foreign_key' )
+        return $query->whereIn($self->getKeyName(), Translation::where('table_name', $table)
+            ->where('column_name', $field)
+            ->where('value', $operator, $value)
+            ->when(!is_null($locales), function ($query) use ($locales) {
+                return $query->whereIn('locale', $locales);
+            })
+            ->pluck('foreign_key')
         );
-        if($translated->first()){
-            //We have a field that has value!
-            return $translated;
-        }
-        //found nothing. Return nothing.
-        return;
     }
 
     public function hasTranslatorMethod($name)
