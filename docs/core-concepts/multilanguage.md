@@ -9,7 +9,6 @@ First you need to define some `locales` in your `config/voyager.php` file and `e
 ```php
 'multilingual' => [
         'enabled' => true,
-        'rtl' => false,
         'default' => 'en',
         'locales' => [
             'en',
