@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'Acción',
     'actions'                => 'Acciones',
     'add'                    => 'Añadir',
@@ -31,6 +32,7 @@ return [
     'delete_this_confirm'    => 'Sí, eliminar esto',
     'deselect_all'           => 'Deseleccionar todo',
     'download'               => 'Descargar',
+    'drag_drop_info'         => 'Arrastre los Items debajo para reacomodarlos.',
     'edit'                   => 'Editar',
     'email'                  => 'Email',
     'error_deleting'         => 'Lo siento, parece que se ha producido un problema al eliminar',
@@ -54,6 +56,8 @@ return [
     'no'                     => 'No',
     'no_thanks'              => 'No, gracias',
     'not_null'               => 'No nulo',
+    'no_results'             => 'No results',
+    'none'                   => 'Ninguno',
     'options'                => 'Opciones',
     'password'               => 'Contraseña',
     'permissions'            => 'Permisos',
@@ -81,6 +85,7 @@ return [
     'unstick_sidebar'        => 'Despegar la barra lateral',
     'update'                 => 'Actualizar',
     'update_failed'          => 'Actualización fallida',
+    'updated_order'          => 'Orden actualizado',
     'upload'                 => 'Subir',
     'url'                    => 'URL',
     'view'                   => 'Ver',

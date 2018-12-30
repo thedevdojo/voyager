@@ -93,6 +93,14 @@ class VoyagerSettingsController extends Controller
                 'group'   => $setting->group,
             ]);
 
+            if ($setting->type == 'image' && $content == null) {
+                continue;
+            }
+
+            if ($setting->type == 'file' && $content == json_encode([])) {
+                continue;
+            }
+
             $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
 
             $setting->group = $request->input(str_replace('.', '_', $setting->key).'_group');
@@ -129,7 +137,7 @@ class VoyagerSettingsController extends Controller
     public function move_up($id)
     {
         // Check permission
-        Voyager::canOrFail('edit_settings');
+        $this->authorize('edit', Voyager::model('Setting'));
 
         $setting = Voyager::model('Setting')->find($id);
 
@@ -192,7 +200,7 @@ class VoyagerSettingsController extends Controller
     public function move_down($id)
     {
         // Check permission
-        Voyager::canOrFail('edit_settings');
+        $this->authorize('edit', Voyager::model('Setting'));
 
         $setting = Voyager::model('Setting')->find($id);
 

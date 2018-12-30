@@ -7,10 +7,11 @@ module.exports = function(){
 		  		folders: [],
 		  		selected_file: '',
 		  		directories: [],
+		  		is_loading: true,
 			},
 			methods: {
 				selectedFileIs: function(val){
-					if(typeof(this.selected_file.type) != 'undefined' && this.selected_file.type.includes(val)){
+					if(this.selected_file && typeof(this.selected_file.type) != 'undefined' && this.selected_file.type.includes(val)){
 						return true;
 					}
 					return false;
@@ -27,12 +28,23 @@ module.exports = function(){
 					var month = "0" + (date.getMonth() + 1);
 					var minutes = "0" + date.getMinutes();
 					var seconds = "0" + date.getSeconds();
-					
+
 					var dateForamted = date.getFullYear() + '-' + month.substr(-2) + '-' + date.getDate() + ' ' + date.getHours() + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-					
+
 					return dateForamted;
 				}
-			}
+			},
+            watch: {
+                selected_file: function (val) {
+                    this.$nextTick(() => {
+                        if (this.selectedFileIs('audio')) {
+                            this.$refs.audioplayer.load();
+                        } else if (this.selectedFileIs('video')) {
+                            this.$refs.videoplayer.load();
+                        }
+                    });
+                },
+            }
 		});
 
 
@@ -46,6 +58,7 @@ module.exports = function(){
 			var options = $.extend(true, defaults, o);
 			this.init = function(){
 				$("#upload").dropzone({
+			     	timeout: 180000,
 					url: options.baseUrl+"/media/upload",
 					previewsContainer: "#uploadPreview",
 					totaluploadprogress: function(uploadProgress, totalBytes, totalBytesSent){
@@ -54,7 +67,6 @@ module.exports = function(){
 							$('#uploadProgress').delay(1500).slideUp(function(){
 								$('#uploadProgress .progress-bar').css('width', '0%');
 							});
-
 						}
 					},
 					processing: function(){
@@ -86,16 +98,16 @@ module.exports = function(){
 					var type = manager.selected_file.type;
 
 					var imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
-					
+
 					if (imageMimeTypes.indexOf(type) > -1) {
-						$('#imagemodal').modal('show');   
+						$('#imagemodal').modal('show');
 						return false;
 					}
-					
+
 					if (type !== "folder") {
 						return false;
 					}
-					
+
 					manager.folders.push(manager.selected_file.name);
 					getFiles(manager.folders);
 				});
@@ -110,7 +122,7 @@ module.exports = function(){
 
 				$('.breadcrumb').on("click", "li.media_breadcrumb", function(){
 					var index = $(this).data('index');
-					
+
 					manager.folders = manager.folders.splice(0, index);
 					getFiles(manager.folders);
 				});
@@ -122,7 +134,7 @@ module.exports = function(){
 					$('.breadcrumb-container .toggle .icon').toggleClass('fa-toggle-right').toggleClass('fa-toggle-left');
 				});
 
-				
+
 				//********** Add Keypress Functionality **********//
 				var isBrowsingFiles = null,
 				fileBrowserActive = function(el){
@@ -169,20 +181,20 @@ module.exports = function(){
 						}
 						// enter key
 						if(e.which == 13) {
-							if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') ) {
+							if (!$('#new_folder_modal').is(':visible') && !$('#move_file_modal').is(':visible') && !$('#confirm_delete_modal').is(':visible') && !is_loading) {
 								var type = manager.selected_file.type;
 
 								var imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
-						
+
 								if (imageMimeTypes.indexOf(type) > -1) {
-									$('#imagemodal').modal('show');   
+									$('#imagemodal').modal('show');
 									return false;
 								}
-								
+
 								if (type !== "folder") {
 									return false;
 								}
-								
+
 								manager.folders.push(manager.selected_file.name);
 								getFiles(manager.folders);
 							}
@@ -198,7 +210,7 @@ module.exports = function(){
 						}
 					}
 				});
-				
+
 				//********** End Keypress Functionality **********//
 
 
@@ -303,7 +315,7 @@ module.exports = function(){
 						}
 					});
 				});
-				
+
 				// Crop Image
 				$('#crop').click(function(){
 					// Cleanup the previous cropper
@@ -383,6 +395,7 @@ module.exports = function(){
 				});
 
 				function getFiles(folders){
+					is_loading = true;
 					if(folders != '/'){
 						var folder_location = '/' + folders.join('/');
 					} else {
@@ -398,6 +411,7 @@ module.exports = function(){
 								manager.files.items[i].size = bytesToSize(manager.files.items[i].size);
 							}
 						}
+						is_loading = false;
 					});
 
 					// Add the latest files to the folder dropdown
@@ -421,15 +435,14 @@ module.exports = function(){
 					var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 					return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 				}
-				
+
 				function cropImage(createMode) {
 					croppedData.originImageName = manager.selected_file.name
 					croppedData.upload_path = '/' + manager.folders.join('/')
 					croppedData.createMode = createMode
-	
+
 					var postData = Object.assign(croppedData, {_token: CSRF_TOKEN})
 					$.post(options.baseUrl+'/media/crop', postData, function(data){
-						console.log(data)
 						if(data.success == true){
 							toastr.success(data.message)
 							getFiles(manager.folders);
@@ -439,8 +452,8 @@ module.exports = function(){
 						}
 					});
 				}
-				
-				
+
+
 			}
 		};
 

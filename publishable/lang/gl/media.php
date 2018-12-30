@@ -8,19 +8,13 @@ return [
     'destination_folder'     => 'Carpeta de destino',
     'drag_drop_info'         => 'Arrastre e solte arquivos ou faga clic abaixo para cargar',
     'error_already_exists'   => 'Síntoo, xa hai un arquivo/carpeta existente con ese nome nesa carpeta.',
-    'error_creating_dir'     => 'Síntoo, algo parece que foi mal coa creación da carpeta,'.
-                                'por favor revise os seus permisos',
-    'error_deleting_file'    => 'Síntoo, algo parece que foi mal co borrado do arquivo,'.
-                                'por favor revise os permisos',
-    'error_deleting_folder'  => 'Síntoo, algo parece que fallou ao eliminar esta carpeta,'.
-                                'por favor revise os seus permisos',
-    'error_may_exist'        => 'Pode que xa exista un arquivo ou carpeta con ese nome. Por favor, elixe otro nome ou '.
-                                'borre o outro arquivo.',
-    'error_moving'           => 'Síntoo, parece que hai un problema ao mover ese arquivo/carpeta, por favor '.
-                                'asegúrese de ter os permisos correctos.',
+    'error_creating_dir'     => 'Síntoo, algo parece que foi mal coa creación da carpeta, por favor revise os seus permisos',
+    'error_deleting_file'    => 'Síntoo, algo parece que foi mal co borrado do arquivo, por favor revise os permisos',
+    'error_deleting_folder'  => 'Síntoo, algo parece que fallou ao eliminar esta carpeta, por favor revise os seus permisos',
+    'error_may_exist'        => 'Pode que xa exista un arquivo ou carpeta con ese nome. Por favor, elixe otro nome ou borre o outro arquivo.',
+    'error_moving'           => 'Síntoo, parece que hai un problema ao mover ese arquivo/carpeta, por favor asegúrese de ter os permisos correctos.',
     'error_uploading'        => 'Carga errada: Ocurriu un erro descoñecido!',
-    'folder_exists_already'  => 'Síntoo, a carpeta xa existe, por favor, elimine esa carpeta se desexa '.
-                                'creala novamente',
+    'folder_exists_already'  => 'Síntoo, a carpeta xa existe, por favor, elimine esa carpeta se desexa creala novamente',
     'image_does_not_exist'   => 'A imaxe non existe',
     'image_removed'          => 'Imaxe eliminada',
     'library'                => 'Mediateca',
@@ -42,5 +36,12 @@ return [
     'crop_image'             => 'Recortar imaxe',
     'success_crop_image'     => 'Imaxe recortada con éxito',
     'height'                 => 'Alto: ',
+    'title'                  => 'Título',
+    'type'                   => 'Tipo',
+    'size'                   => 'Tamaño',
+    'public_url'             => 'URL pública',
+    'last_modified'          => 'Última modificación',
+    'browser_video_support'  => 'O teu navegador non soporta esta etiqueta de vídeo.',
+    'browser_audio_support'  => 'O teu navegador non soporta este elemento de audio.',
     'width'                  => 'Ancho: ',
 ];
