@@ -32,6 +32,9 @@ class VoyagerMediaController extends Controller
 
     public function files(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $folder = $request->folder;
 
         if ($folder == '/') {
@@ -53,6 +56,9 @@ class VoyagerMediaController extends Controller
     // New Folder with 5.3
     public function new_folder(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $new_folder = $request->new_folder;
         $success = false;
         $error = '';
@@ -71,6 +77,9 @@ class VoyagerMediaController extends Controller
     // Delete File or Folder with 5.3
     public function delete_file_folder(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $folderLocation = $request->folder_location;
         $fileFolder = $request->file_folder;
         $type = $request->type;
@@ -100,6 +109,9 @@ class VoyagerMediaController extends Controller
     // GET ALL DIRECTORIES Working with Laravel 5.3
     public function get_all_dirs(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $folderLocation = $request->folder_location;
 
         if (is_array($folderLocation)) {
@@ -116,6 +128,9 @@ class VoyagerMediaController extends Controller
     // NEEDS TESTING
     public function move_file(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $source = $request->source;
         $destination = $request->destination;
         $folderLocation = $request->folder_location;
@@ -148,6 +163,9 @@ class VoyagerMediaController extends Controller
     // RENAME FILE WORKING with 5.3
     public function rename_file(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $folderLocation = $request->folder_location;
         $filename = $request->filename;
         $newFilename = $request->new_filename;
@@ -176,6 +194,9 @@ class VoyagerMediaController extends Controller
     // Upload Working with 5.3
     public function upload(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         try {
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
 
@@ -212,6 +233,9 @@ class VoyagerMediaController extends Controller
 
     private function getFiles($dir)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $files = [];
         $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
         $storageItems = $storage->listWith(['mimetype'], $dir);
@@ -245,18 +269,24 @@ class VoyagerMediaController extends Controller
     // REMOVE FILE
     public function remove(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         try {
             // GET THE SLUG, ex. 'posts', 'pages', etc.
             $slug = $request->get('slug');
 
-            // GET image name
-            $image = $request->get('image');
+            // GET file name
+            $filename = $request->get('filename');
 
             // GET record id
             $id = $request->get('id');
 
             // GET field name
             $field = $request->get('field');
+
+            // GET multi value
+            $multi = $request->get('multi');
 
             // GET THE DataType based on the slug
             $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -273,33 +303,49 @@ class VoyagerMediaController extends Controller
                 throw new Exception(__('voyager::generic.field_does_not_exist'), 400);
             }
 
-            // Check if valid json
-            if (is_null(@json_decode($data->{$field}))) {
-                throw new Exception(__('voyager::json.invalid'), 500);
+            if (@json_decode($multi)) {
+                // Check if valid json
+                if (is_null(@json_decode($data->{$field}))) {
+                    throw new Exception(__('voyager::json.invalid'), 500);
+                }
+
+                // Decode field value
+                $fieldData = @json_decode($data->{$field}, true);
+                $key = null;
+
+                // Check if we're dealing with a nested array for the case of multiple files
+                if (is_array($fieldData[0])) {
+                    foreach ($fieldData as $index=>$file) {
+                        $file = array_flip($file);
+                        if (array_key_exists($filename, $file)) {
+                            $key = $index;
+                            break;
+                        }
+                    }
+                } else {
+                    $key = array_search($filename, $fieldData);
+                }
+
+                // Check if file was found in array
+                if (is_null($key) || $key === false) {
+                    throw new Exception(__('voyager::media.file_does_not_exist'), 400);
+                }
+
+                // Remove file from array
+                unset($fieldData[$key]);
+
+                // Generate json and update field
+                $data->{$field} = empty($fieldData) ? null : json_encode(array_values($fieldData));
+            } else {
+                $data->{$field} = null;
             }
 
-            // Decode field value
-            $fieldData = @json_decode($data->{$field}, true);
-
-            // Flip keys and values
-            $fieldData = array_flip($fieldData);
-
-            // Check if image exists in array
-            if (!array_key_exists($image, $fieldData)) {
-                throw new Exception(__('voyager::media.image_does_not_exist'), 400);
-            }
-
-            // Remove image from array
-            unset($fieldData[$image]);
-
-            // Generate json and update field
-            $data->{$field} = json_encode(array_values(array_flip($fieldData)));
             $data->save();
 
             return response()->json([
                'data' => [
                    'status'  => 200,
-                   'message' => __('voyager::media.image_removed'),
+                   'message' => __('voyager::media.file_removed'),
                ],
             ]);
         } catch (Exception $e) {
@@ -326,6 +372,9 @@ class VoyagerMediaController extends Controller
     // Crop Image
     public function crop(Request $request)
     {
+        // Check permission
+        Voyager::canOrFail('browse_media');
+
         $createMode = $request->get('createMode') === 'true';
         $x = $request->get('x');
         $y = $request->get('y');

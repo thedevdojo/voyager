@@ -59,10 +59,8 @@ class VoyagerBaseController extends Controller
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
-            $relationships = $this->getRelationships($dataType);
-
             $model = app($dataType->model_name);
-            $query = $model::select('*')->with($relationships);
+            $query = $model::select('*');
 
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
@@ -101,6 +99,9 @@ class VoyagerBaseController extends Controller
         // Check if server side pagination is enabled
         $isServerSide = isset($dataType->server_side) && $dataType->server_side;
 
+        // Check if a default search key is set
+        $defaultSearchKey = isset($dataType->default_search_key) ? $dataType->default_search_key : null;
+
         $view = 'voyager::bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
@@ -116,7 +117,8 @@ class VoyagerBaseController extends Controller
             'orderColumn',
             'sortOrder',
             'searchable',
-            'isServerSide'
+            'isServerSide',
+            'defaultSearchKey'
         ));
     }
 
@@ -138,10 +140,9 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        $relationships = $this->getRelationships($dataType);
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
-            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+            $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
         } else {
             // If Model doest exist, get data from table name
             $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
@@ -186,10 +187,8 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        $relationships = $this->getRelationships($dataType);
-
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
+            ? app($dataType->model_name)->findOrFail($id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         foreach ($dataType->editRows as $key => $row) {
@@ -483,6 +482,8 @@ class VoyagerBaseController extends Controller
 
         $display_column = $dataType->order_display_column;
 
+        $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->whereField($display_column)->first();
+
         $view = 'voyager::bread.order';
 
         if (view()->exists("voyager::$slug.order")) {
@@ -492,6 +493,7 @@ class VoyagerBaseController extends Controller
         return Voyager::view($view, compact(
             'dataType',
             'display_column',
+            'dataRow',
             'results'
         ));
     }
