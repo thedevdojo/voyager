@@ -30,8 +30,6 @@ class DataType extends Model
         'server_side',
         'order_column',
         'order_display_column',
-        'order_direction',
-        'default_search_key',
         'details',
     ];
 
@@ -188,6 +186,13 @@ class DataType extends Model
                         'taggable'    => isset($requestData['relationship_taggable_'.$relationship]) ? $requestData['relationship_taggable_'.$relationship] : '0',
                     ];
 
+                    // Get slug of relationship table for update
+                    $dataType = DataType::where(['name' => $relationshipDetails['table']])->first();
+
+                    if ($dataType) {
+                        $relationshipDetails['slug'] = $dataType->slug;
+                    }
+
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
                 }
             }
@@ -262,25 +267,5 @@ class DataType extends Model
     public function setOrderDisplayColumnAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
-    }
-
-    public function getDefaultSearchKeyAttribute()
-    {
-        return isset($this->details->default_search_key) ? $this->details->default_search_key : null;
-    }
-
-    public function setDefaultSearchKeyAttribute($value)
-    {
-        $this->attributes['details'] = collect($this->details)->merge(['default_search_key' => $value]);
-    }
-
-    public function getOrderDirectionAttribute()
-    {
-        return isset($this->details->order_direction) ? $this->details->order_direction : 'desc';
-    }
-
-    public function setOrderDirectionAttribute($value)
-    {
-        $this->attributes['details'] = collect($this->details)->merge(['order_direction' => $value]);
     }
 }

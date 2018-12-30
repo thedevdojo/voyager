@@ -3,16 +3,7 @@
     @if(class_exists($options->model))
 
         @php
-
             $relationshipField = $row->field;
-
-            $slug = null;
-            $dataType = \TCG\Voyager\Models\DataType::where(['name' => $options->table])->first();
-
-            if ($dataType) {
-                $slug = $dataType->slug;
-            }
-
         @endphp
 
         @if($options->type == 'belongsTo')
@@ -26,9 +17,9 @@
                 @endphp
 
                 @if(isset($query))
-                    @if ($slug and isset($query->id))
+                    @if (isset($options->slug) and isset($query->id))
                         <p>
-                            <a href="{{ route('voyager.'. $slug .'.show', ['id' => $query->id]) }}" target="_blank">
+                            <a href="{{ route('voyager.'. $options->slug .'.show', ['id' => $query->id]) }}" target="_blank">
                                 {{ $query->{$options->label} }}
                             </a>
                         </p>
@@ -70,9 +61,9 @@
             @endphp
 
             @if(isset($query))
-                @if ($slug and isset($query->id))
+                @if (isset($options->slug) and isset($query->id))
                     <p>
-                        <a href="{{ route('voyager.'. $slug .'.show', ['id' => $query->id]) }}" target="_blank">
+                        <a href="{{ route('voyager.'. $options->slug .'.show', ['id' => $query->id]) }}" target="_blank">
                             {{ $query->{$options->label} }}
                         </a>
                     </p>
@@ -90,16 +81,21 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-            		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->all();
+            		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
+            			return [
+            			    'label' => $item->{$options->label},
+                            'id' => $item->id ?? null
+                        ];
+            		})->all();
                 @endphp
 
                 @if($view == 'browse')
                     @if(empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
-                        @foreach(array_slice($selected_values, 0, 4) as $value)
+                        @foreach(array_slice($selected_values, 0, 4) as $selected_value)
                             <span class="badge label label-default">
-                                {{ $value->{$options->label} }}
+                                {{ $selected_value['label'] }}
                             </span>
                         @endforeach
                         @if (count($selected_values) > 4)
@@ -112,12 +108,12 @@
                     @else
                         <div class="list-group">
                             @foreach($selected_values as $selected_value)
-                                @if ($slug and isset($selected_value->id))
-                                    <a href="{{ route('voyager.'. $slug .'.show', ['id' => $selected_value->id]) }}" class="list-group-item list-group-item-action" target="_blank">
-                                        {{ $selected_value->{$options->label} }}
+                                @if (isset($options->slug) and $selected_value['id'])
+                                    <a href="{{ route('voyager.'. $options->slug .'.show', ['id' => $selected_value['id']]) }}" class="list-group-item list-group-item-action" target="_blank">
+                                        {{ $selected_value['label'] }}
                                     </a>
                                 @else
-                                    <div class="list-group-item">{{ $selected_value }}</div>
+                                    <div class="list-group-item">{{ $selected_value['label'] }}</div>
                                 @endif
                             @endforeach
                         </div>
@@ -150,16 +146,21 @@
 
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->all() : array();
+                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
+            			return [
+                            'label' => $item->{$options->label},
+                            'id' => $item->id ?? null
+            			];
+            		})->all() : array();
                 @endphp
 
                 @if($view == 'browse')
                     @if(empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
-                        @foreach(array_slice($selected_values, 0, 4) as $value)
+                        @foreach(array_slice($selected_values, 0, 4) as $selected_value)
                             <span class="badge label label-default">
-                                {{ $value->{$options->label} }}
+                                {{ $selected_value['label'] }}
                             </span>
                         @endforeach
                         @if (count($selected_values) > 4)
@@ -172,9 +173,9 @@
                     @else
                         <div class="list-group">
                             @foreach($selected_values as $selected_value)
-                                @if ($slug and isset($selected_value->id))
-                                    <a href="{{ route('voyager.'. $slug .'.show', ['id' => $selected_value->id]) }}" class="list-group-item list-group-item-action" target="_blank">
-                                        {{ $selected_value->{$options->label} }}
+                                @if (isset($options->slug) and $selected_value['id'])
+                                    <a href="{{ route('voyager.'. $options->slug .'.show', ['id' => $selected_value['id']]) }}" class="list-group-item list-group-item-action" target="_blank">
+                                        {{ $selected_value['label'] }}
                                     </a>
                                 @else
                                     <div class="list-group-item">{{ $selected_value }}</div>
