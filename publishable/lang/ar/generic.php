@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'true',
     'action'                 => 'إجراء',
     'actions'                => 'الإجراءات',
     'add'                    => 'إضافة',

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'Aktion',
     'actions'                => 'Aktionen',
     'add'                    => 'Hinzufügen',
@@ -51,6 +52,7 @@ return [
     'login'                  => 'Login',
     'media'                  => 'Medien',
     'menu_builder'           => 'Menü Editor',
+    'mimetype_not_allowed'   => 'Dieser Medientyp ist nicht erlaubt',
     'move'                   => 'Verschieben',
     'name'                   => 'Name',
     'new'                    => 'Neu',

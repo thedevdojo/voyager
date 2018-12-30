@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => '操作',
     'actions'                => '操作',
     'add'                    => '添加',

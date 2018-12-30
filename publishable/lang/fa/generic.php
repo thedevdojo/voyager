@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'true',
     'action'                 => 'فعالیت',
     'actions'                => 'فعالیت ها',
     'add'                    => 'افزودن',
