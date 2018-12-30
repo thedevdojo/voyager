@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
+use TCG\Voyager\Actions\RestoreAction;
 use TCG\Voyager\Actions\ViewAction;
 use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
@@ -49,6 +49,7 @@ class Voyager
 
     protected $actions = [
         DeleteAction::class,
+        RestoreAction::class,
         EditAction::class,
         ViewAction::class,
     ];
@@ -131,10 +132,8 @@ class Voyager
 
     public function afterFormFields($row, $dataType, $dataTypeContent)
     {
-        $options = json_decode($row->details);
-
-        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent, $options) {
-            return $after->visible($row, $dataType, $dataTypeContent, $options);
+        return collect($this->afterFormFields)->filter(function ($after) use ($row, $dataType, $dataTypeContent) {
+            return $after->visible($row, $dataType, $dataTypeContent, $row->details);
         });
     }
 
@@ -209,10 +208,27 @@ class Voyager
 
     public function setting($key, $default = null)
     {
+        $globalCache = config('voyager.settings.cache', false);
+
+        if ($globalCache && Cache::tags('settings')->has($key)) {
+            return Cache::tags('settings')->get($key);
+        }
+
         if ($this->setting_cache === null) {
+            if ($globalCache) {
+                // A key is requested that is not in the cache
+                // this is a good opportunity to update all keys
+                // albeit not strictly necessary
+                Cache::tags('settings')->flush();
+            }
+
             foreach (self::model('Setting')->all() as $setting) {
                 $keys = explode('.', $setting->key);
                 @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+
+                if ($globalCache) {
+                    Cache::tags('settings')->forever($setting->key, $setting->value);
+                }
             }
         }
 
@@ -237,47 +253,6 @@ class Voyager
     public function routes()
     {
         require __DIR__.'/../routes/voyager.php';
-    }
-
-    /** @deprecated */
-    public function can($permission)
-    {
-        $this->loadPermissions();
-
-        // Check if permission exist
-        $exist = $this->permissions->where('key', $permission)->first();
-
-        // Permission not found
-        if (!$exist) {
-            throw new \Exception('Permission does not exist', 400);
-        }
-
-        $user = $this->getUser();
-        if ($user == null || !$user->hasPermission($permission)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /** @deprecated */
-    public function canOrFail($permission)
-    {
-        if (!$this->can($permission)) {
-            throw new AccessDeniedHttpException();
-        }
-
-        return true;
-    }
-
-    /** @deprecated */
-    public function canOrAbort($permission, $statusCode = 403)
-    {
-        if (!$this->can($permission)) {
-            return abort($statusCode);
-        }
-
-        return true;
     }
 
     public function getVersion()

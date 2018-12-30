@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'Toiminto',
     'actions'                => 'Toiminnot',
     'add'                    => 'Lisää',
@@ -54,6 +55,7 @@ return [
     'no'                     => 'Ei',
     'no_thanks'              => 'Ei kiitos',
     'not_null'               => 'Ei Null-arvo',
+    'no_results'             => 'No results',
     'options'                => 'Valinnat',
     'password'               => 'Salasana',
     'permissions'            => 'Käyttöoikeus',

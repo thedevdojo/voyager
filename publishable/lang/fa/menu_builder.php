@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'color'                => 'رنگ بر حسب RGB یا HEX (دلبخواه)',
-    'color_ph'             => 'رنگ، مثال: #ffffff یا rgb(255,255,255) (دلبخواه)',
+    'color'                => 'رنگ بر حسب RGB یا HEX (دلخواه)',
+    'color_ph'             => 'رنگ، مثال: #ffffff یا rgb(255,255,255) (دلخواه)',
     'create_new_item'      => 'ایجاد آیتم منو',
     'delete_item_confirm'  => 'بله این آیتم منو را حذف کن',
     'delete_item_question' => 'آیا از حذف این آیتم منو اطمینان دارید?',
@@ -11,7 +11,7 @@ return [
     'edit_item'            => 'ویرایش آیتم منو',
     'icon_class'           => 'کلاس آیکون این آیتم منو (استفاده از',
     'icon_class2'          => 'کلاس Voyager Font</a>)',
-    'icon_class_ph'        => 'کلاس آیکون (دلبخواه)',
+    'icon_class_ph'        => 'کلاس آیکون (دلخواه)',
     'item_route'           => 'نامک برای آیتم منو',
     'item_title'           => 'عنوان آیتم منو',
     'link_type'            => 'نوع لینک',

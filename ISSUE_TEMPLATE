@@ -1,9 +1,17 @@
-- Laravel Version: #.#.#
-- Voyager Version: #.#.#
-- PHP Version:
-- Database Driver & Version:
+<!---
+IF YOU'RE POSTING A QUESTION ABOUT HOW TO USE VOYAGER, PLEASE CONSIDER ASKING IN SLACK FIRST
 
-### Description:
+PLEASE CONSIDER USING ONE OF THE DEFINED TEMPLATES INSTEAD
+--->
+## Version information
+<!--- The following information is strongly encouraged --->
+ - Laravel: v#.#.#
+ - Voyager: v#.#.#
+ - PHP: #.#
+ - Database: [type] [version] (e.g. MySQL 8.0)
 
+## Description:
+A clear and concise description of what the problem is.  Please also explain why this doesn't fit into the defined issue templates
 
-### Steps To Reproduce:
+## Additional context
+Add any other context or screenshots about the feature request here.

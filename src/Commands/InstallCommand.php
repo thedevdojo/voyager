@@ -68,8 +68,8 @@ class InstallCommand extends Command
     {
         $this->info('Publishing the Voyager assets, database, and config files');
 
-        //Publish only relevant resources on install
-        $tags = ['voyager_assets', 'seeds'];
+        // Publish only relevant resources on install
+        $tags = ['seeds'];
 
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
@@ -96,7 +96,7 @@ class InstallCommand extends Command
         $composer = $this->findComposer();
 
         $process = new Process($composer.' dump-autoload');
-        $process->setTimeout(null); //Setting timeout to null to prevent installation from stopping at a certain point in time
+        $process->setTimeout(null); // Setting timeout to null to prevent installation from stopping at a certain point in time
         $process->setWorkingDirectory(base_path())->run();
 
         $this->info('Adding Voyager routes to routes/web.php');
@@ -126,7 +126,7 @@ class InstallCommand extends Command
             $this->info('Seeding dummy data');
             $this->seed('VoyagerDummyDatabaseSeeder');
         } else {
-            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => 'config']);
+            $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => ['config', 'voyager_avatar']]);
         }
 
         $this->info('Setting up the hooks');
