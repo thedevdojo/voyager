@@ -270,13 +270,6 @@ trait Translatable
             $value = $operator;
             $operator = '=';
         }
-        if ($default) {
-            $clone = clone $query;
-            $default = $clone->where($field, $operator, $value);
-            if ($default->first()) {
-                return $clone;
-            }
-        }
 
         $self = new static;
         $table = $self->getTable();
@@ -288,7 +281,9 @@ trait Translatable
                 return $query->whereIn('locale', $locales);
             })
             ->pluck('foreign_key')
-        );
+        )->when($default, function ($query) use ($field, $operator, $value) {
+            return $query->orWhere($field, $operator, $value);
+        });
     }
 
     public function hasTranslatorMethod($name)
