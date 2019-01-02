@@ -4344,7 +4344,7 @@ table a.btn-sm{
   display:block;
 }
 
-.delete, .edit{
+.delete, .restore, .edit{
   margin-left:5px;
   cursor:pointer;
 }
@@ -4492,6 +4492,13 @@ p#the_plugin_name{
 
 .page-content.col-md-12{
     padding-right:0px;
+}
+
+.page-content .form-edit-add ul.permissions {
+    list-style-type: none;
+    li {
+        list-style-type: none;
+    }
 }
 
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title{
@@ -4943,6 +4950,9 @@ float: left;
   border-color:rgba(255, 255, 255, 0);
   color:#fff;
 }
+.voyager .btn.btn-default.btn-sm, .voyager .btn.btn-default.btn-sm:hover{
+  color:inherit;
+}
 
 .btn-primary.focus, .btn-primary:focus, .btn-primary:hover, .btn-primary:active {
     opacity:1;
@@ -5092,6 +5102,7 @@ float: left;
 
 .app-container  .side-menu .panel.widget .avatar{
     width: 36px;
+    height: 36px;
     float: left;
     margin-left: 12px;
     border: 0px;
