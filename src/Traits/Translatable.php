@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Translator;
+use TCG\Voyager\Models\Translation;
 
 trait Translatable
 {
@@ -243,6 +244,46 @@ trait Translatable
         }
 
         return $response;
+    }
+
+    /**
+     * Get entries filtered by translated value
+     *
+     * @example  Class::whereTranslation('title', '=', 'zuhause', ['de', 'iu'])
+     * @example  $query->whereTranslation('title', '=', 'zuhause', ['de', 'iu'])
+     *
+     * @param string        $field      {required} the field your looking to find a value in.
+     * @param string        $operator   {required} value you are looking for or a relation modifier such as LIKE, =, etc.
+     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator.
+     * @param string|array  $locales    {optional} locale(s) you are looking for the field.
+     * @param bool          $default    {optional} if true checks for $value is in default database before checking translations.
+     *
+     * @return Builder
+     *
+     */
+    public static function scopeWhereTranslation($query, $field, $operator, $value = null, $locales = null, $default = true)
+    {
+        if ($locales && !is_array($locales)) {
+            $locales = [$locales];
+        }
+        if (!isset($value)) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        $self = new static;
+        $table = $self->getTable();
+
+        return $query->whereIn($self->getKeyName(), Translation::where('table_name', $table)
+            ->where('column_name', $field)
+            ->where('value', $operator, $value)
+            ->when(!is_null($locales), function ($query) use ($locales) {
+                return $query->whereIn('locale', $locales);
+            })
+            ->pluck('foreign_key')
+        )->when($default, function ($query) use ($field, $operator, $value) {
+            return $query->orWhere($field, $operator, $value);
+        });
     }
 
     public function hasTranslatorMethod($name)
