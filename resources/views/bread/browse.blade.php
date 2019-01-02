@@ -38,7 +38,7 @@
                                 <div id="search-input">
                                     <select id="search_key" name="key">
                                         @foreach($searchable as $key)
-                                            <option value="{{ $key }}" @if($search->key == $key){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
+                                            <option value="{{ $key }}" @if($search->key == $key || $key == $defaultSearchKey){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
                                         @endforeach
                                     </select>
                                     <select id="filter" name="filter">
@@ -68,12 +68,12 @@
                                         @foreach($dataType->browseRows as $row)
                                         <th>
                                             @if ($isServerSide)
-                                                <a href="{{ $row->sortByUrl() }}">
+                                                <a href="{{ $row->sortByUrl($orderBy, $sortOrder) }}">
                                             @endif
                                             {{ $row->display_name }}
                                             @if ($isServerSide)
-                                                @if ($row->isCurrentSortField())
-                                                    @if (!isset($_GET['sort_order']) || $_GET['sort_order'] == 'asc')
+                                                @if ($row->isCurrentSortField($orderBy))
+                                                    @if ($sortOrder == 'asc')
                                                         <i class="voyager-angle-up pull-right"></i>
                                                     @else
                                                         <i class="voyager-angle-down pull-right"></i>
@@ -95,28 +95,24 @@
                                             </td>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
+
                                             <td>
-                                                <?php $options = json_decode($row->details); ?>
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                                 @elseif($row->type == 'relationship')
-                                                    @include('voyager::formfields.relationship', ['view' => 'browse'])
+                                                    @include('voyager::formfields.relationship', ['view' => 'browse','options' => $row->details])
                                                 @elseif($row->type == 'select_multiple')
-                                                    @if(property_exists($options, 'relationship'))
+                                                    @if(property_exists($row->details, 'relationship'))
 
                                                         @foreach($data->{$row->field} as $item)
-                                                            @if($item->{$row->field . '_page_slug'})
-                                                                <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field} }}</a>@if(!$loop->last), @endif
-                                                            @else
-                                                                {{ $item->{$row->field} }}
-                                                            @endif
+                                                            {{ $item->{$row->field} }}
                                                         @endforeach
 
-                                                    @elseif(property_exists($options, 'options'))
+                                                    @elseif(property_exists($row->details, 'options'))
                                                         @if (count(json_decode($data->{$row->field})) > 0)
                                                             @foreach(json_decode($data->{$row->field}) as $item)
-                                                                @if (@$options->options->{$item})
-                                                                    {{ $options->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                                                @if (@$row->details->options->{$item})
+                                                                    {{ $row->details->options->{$item} . (!$loop->last ? ', ' : '') }}
                                                                 @endif
                                                             @endforeach
                                                         @else
@@ -124,24 +120,18 @@
                                                         @endif
                                                     @endif
 
-                                                @elseif($row->type == 'select_dropdown' && property_exists($options, 'options'))
+                                                @elseif($row->type == 'select_dropdown' && property_exists($row->details, 'options'))
 
-                                                    @if($data->{$row->field . '_page_slug'})
-                                                        <a href="{{ $data->{$row->field . '_page_slug'} }}">{!! $options->options->{$data->{$row->field}} !!}</a>
-                                                    @else
-                                                        {!! isset($options->options->{$data->{$row->field}}) ?  $options->options->{$data->{$row->field}} : '' !!}
-                                                    @endif
+                                                    {!! isset($row->details->options->{$data->{$row->field}}) ?  $row->details->options->{$data->{$row->field}} : '' !!}
 
-                                                @elseif($row->type == 'select_dropdown' && $data->{$row->field . '_page_slug'})
-                                                    <a href="{{ $data->{$row->field . '_page_slug'} }}">{{ $data->{$row->field} }}</a>
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                    {{ $options && property_exists($options, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($options->format) : $data->{$row->field} }}
+                                                    {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
                                                 @elseif($row->type == 'checkbox')
-                                                    @if($options && property_exists($options, 'on') && property_exists($options, 'off'))
+                                                    @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                                         @if($data->{$row->field})
-                                                            <span class="label label-info">{{ $options->on }}</span>
+                                                            <span class="label label-info">{{ $row->details->on }}</span>
                                                         @else
-                                                            <span class="label label-primary">{{ $options->off }}</span>
+                                                            <span class="label label-primary">{{ $row->details->off }}</span>
                                                         @endif
                                                     @else
                                                     {{ $data->{$row->field} }}
@@ -259,7 +249,7 @@
             @if (!$dataType->server_side)
                 var table = $('#dataTable').DataTable({!! json_encode(
                     array_merge([
-                        "order" => [],
+                        "order" => $orderColumn,
                         "language" => __('voyager::datatable'),
                         "columnDefs" => [['targets' => -1, 'searchable' =>  false, 'orderable' => false]],
                     ],

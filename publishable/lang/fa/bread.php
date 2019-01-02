@@ -42,6 +42,7 @@ return [
     'policy_name'            => 'نام policy',
     'policy_name_ph'         => 'مانند \App\Policies\UserPolicy, اگر خالی گذاشته شود از مقدار پیشفرض استفاده می‌شود.',
     'server_pagination'      => 'صفحه بندی سمت سرور',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'نامک برای آدرس (باید یکتا باشد)',
     'url_slug_ph'            => 'نامک برای آدرس. مثال: posts',
 ];
