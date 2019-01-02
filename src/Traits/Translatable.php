@@ -6,8 +6,8 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Translator;
 use TCG\Voyager\Models\Translation;
+use TCG\Voyager\Translator;
 
 trait Translatable
 {
@@ -247,19 +247,18 @@ trait Translatable
     }
 
     /**
-     * Get entries filtered by translated value
+     * Get entries filtered by translated value.
      *
      * @example  Class::whereTranslation('title', '=', 'zuhause', ['de', 'iu'])
      * @example  $query->whereTranslation('title', '=', 'zuhause', ['de', 'iu'])
      *
-     * @param string        $field      {required} the field your looking to find a value in.
-     * @param string        $operator   {required} value you are looking for or a relation modifier such as LIKE, =, etc.
-     * @param string        $value      {optional} value you are looking for. Only use if you supplied an operator.
-     * @param string|array  $locales    {optional} locale(s) you are looking for the field.
-     * @param bool          $default    {optional} if true checks for $value is in default database before checking translations.
+     * @param string       $field    {required} the field your looking to find a value in.
+     * @param string       $operator {required} value you are looking for or a relation modifier such as LIKE, =, etc.
+     * @param string       $value    {optional} value you are looking for. Only use if you supplied an operator.
+     * @param string|array $locales  {optional} locale(s) you are looking for the field.
+     * @param bool         $default  {optional} if true checks for $value is in default database before checking translations.
      *
      * @return Builder
-     *
      */
     public static function scopeWhereTranslation($query, $field, $operator, $value = null, $locales = null, $default = true)
     {
@@ -271,7 +270,7 @@ trait Translatable
             $operator = '=';
         }
 
-        $self = new static;
+        $self = new static();
         $table = $self->getTable();
 
         return $query->whereIn($self->getKeyName(), Translation::where('table_name', $table)
