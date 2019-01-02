@@ -35,7 +35,6 @@
     "formdata-polyfill": "^3.0.12",
     "icheck": "^1.0.2",
     "jquery-match-height": "^0.7.2",
-    "moment": "^2.22.2",
     "nestable2": "^1.6.0",
     "node-sass": "^4.11.0",
     "perfect-scrollbar": "^0.7.1",
