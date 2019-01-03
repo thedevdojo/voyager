@@ -37,11 +37,6 @@
         .voyager .breadcrumb a{
             color:{{ config('voyager.primary_color','#22A7F0') }};
         }
-        @if(config('voyager.multilingual.rtl'))
-        .navbar .dropdown.profile.open .dropdown-menu {
-            display: block;
-        }
-        @endif
     </style>
 
     @if(!empty(config('voyager.additional_css')))<!-- Additional CSS -->
