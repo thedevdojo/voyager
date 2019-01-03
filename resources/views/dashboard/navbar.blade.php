@@ -56,7 +56,7 @@
                                 @if(isset($item['icon_class']) && !empty($item['icon_class']))
                                 <i class="{!! $item['icon_class'] !!}"></i>
                                 @endif
-                                {{$name}}
+                                {{__($name)}}
                             </button>
                         </form>
                         @else
@@ -64,7 +64,7 @@
                             @if(isset($item['icon_class']) && !empty($item['icon_class']))
                             <i class="{!! $item['icon_class'] !!}"></i>
                             @endif
-                            {{$name}}
+                            {{__($name)}}
                         </a>
                         @endif
                     </li>
