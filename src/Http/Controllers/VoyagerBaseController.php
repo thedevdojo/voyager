@@ -2,11 +2,13 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Events\BreadDataDeleted;
+use TCG\Voyager\Events\BreadDataRestored;
 use TCG\Voyager\Events\BreadDataUpdated;
 use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
@@ -15,6 +17,7 @@ use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 class VoyagerBaseController extends Controller
 {
     use BreadRelationshipParser;
+
     //***************************************
     //               ____
     //              |  _ \
@@ -42,15 +45,36 @@ class VoyagerBaseController extends Controller
 
         $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
         $searchable = $dataType->server_side ? array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray()) : '';
-        $orderBy = $request->get('order_by');
+        $orderBy = $request->get('order_by', $dataType->order_column);
         $sortOrder = $request->get('sort_order', null);
+        $usesSoftDeletes = false;
+        $showSoftDeleted = false;
+        $orderColumn = [];
+        if ($orderBy) {
+            $index = $dataType->browseRows->where('field', $orderBy)->keys()->first() + 1;
+            $orderColumn = [[$index, 'desc']];
+            if (!$sortOrder && isset($dataType->order_direction)) {
+                $sortOrder = $dataType->order_direction;
+                $orderColumn = [[$index, $dataType->order_direction]];
+            } else {
+                $orderColumn = [[$index, 'desc']];
+            }
+        }
 
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
-            $relationships = $this->getRelationships($dataType);
-
             $model = app($dataType->model_name);
-            $query = $model::select('*')->with($relationships);
+            $query = $model::select('*');
+
+            // Use withTrashed() if model uses SoftDeletes and if toggle is selected
+            if ($model && in_array(SoftDeletes::class, class_uses($model)) && \Auth::user()->can('delete', app($dataType->model_name))) {
+                $usesSoftDeletes = true;
+
+                if ($request->get('showSoftDeleted')) {
+                    $showSoftDeleted = true;
+                    $query = $query->withTrashed();
+                }
+            }
 
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
@@ -62,7 +86,7 @@ class VoyagerBaseController extends Controller
             }
 
             if ($orderBy && in_array($orderBy, $dataType->fields())) {
-                $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'DESC';
+                $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
                 $dataTypeContent = call_user_func([
                     $query->orderBy($orderBy, $querySortOrder),
                     $getter,
@@ -89,6 +113,9 @@ class VoyagerBaseController extends Controller
         // Check if server side pagination is enabled
         $isServerSide = isset($dataType->server_side) && $dataType->server_side;
 
+        // Check if a default search key is set
+        $defaultSearchKey = isset($dataType->default_search_key) ? $dataType->default_search_key : null;
+
         $view = 'voyager::bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
@@ -101,9 +128,13 @@ class VoyagerBaseController extends Controller
             'isModelTranslatable',
             'search',
             'orderBy',
+            'orderColumn',
             'sortOrder',
             'searchable',
-            'isServerSide'
+            'isServerSide',
+            'defaultSearchKey',
+            'usesSoftDeletes',
+            'showSoftDeleted'
         ));
     }
 
@@ -125,10 +156,19 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        $relationships = $this->getRelationships($dataType);
+        $isSoftDeleted = false;
+
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
-            $dataTypeContent = call_user_func([$model->with($relationships), 'findOrFail'], $id);
+
+            // Use withTrashed() if model uses SoftDeletes and if toggle is selected
+            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+                $model = $model->withTrashed();
+            }
+            $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
+            if ($dataTypeContent->deleted_at) {
+                $isSoftDeleted = true;
+            }
         } else {
             // If Model doest exist, get data from table name
             $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
@@ -152,7 +192,7 @@ class VoyagerBaseController extends Controller
             $view = "voyager::$slug.read";
         }
 
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable', 'isSoftDeleted'));
     }
 
     //***************************************
@@ -173,15 +213,22 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        $relationships = $this->getRelationships($dataType);
+        if (strlen($dataType->model_name) != 0) {
+            $model = app($dataType->model_name);
 
-        $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->with($relationships)->findOrFail($id)
-            : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
+            // Use withTrashed() if model uses SoftDeletes and if toggle is selected
+            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+                $model = $model->withTrashed();
+            }
+
+            $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
+        } else {
+            // If Model doest exist, get data from table name
+            $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
+        }
 
         foreach ($dataType->editRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataType->editRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+            $dataType->editRows[$key]['col_width'] = isset($row->details->width) ? $row->details->width : 100;
         }
 
         // If a column has a relationship associated with it, we do not want to show that field
@@ -212,13 +259,18 @@ class VoyagerBaseController extends Controller
         // Compatibility with Model binding.
         $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        $model = app($dataType->model_name);
+        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            $data = $model->withTrashed()->findOrFail($id);
+        } else {
+            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        }
 
         // Check permission
         $this->authorize('edit', $data);
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows, $slug, $id);
+        $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id);
 
         if ($val->fails()) {
             return response()->json(['errors' => $val->messages()]);
@@ -265,8 +317,7 @@ class VoyagerBaseController extends Controller
                             : false;
 
         foreach ($dataType->addRows as $key => $row) {
-            $details = json_decode($row->details);
-            $dataType->addRows[$key]['col_width'] = isset($details->width) ? $details->width : 100;
+            $dataType->addRows[$key]['col_width'] = isset($row->details->width) ? $row->details->width : 100;
         }
 
         // If a column has a relationship associated with it, we do not want to show that field
@@ -357,7 +408,11 @@ class VoyagerBaseController extends Controller
         }
         foreach ($ids as $id) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-            $this->cleanup($dataType, $data);
+
+            $model = app($dataType->model_name);
+            if (!($model && in_array(SoftDeletes::class, class_uses($model)))) {
+                $this->cleanup($dataType, $data);
+            }
         }
 
         $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
@@ -375,6 +430,39 @@ class VoyagerBaseController extends Controller
 
         if ($res) {
             event(new BreadDataDeleted($dataType, $data));
+        }
+
+        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+    }
+
+    public function restore(Request $request, $id)
+    {
+        $slug = $this->getSlug($request);
+
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        // Check permission
+        $this->authorize('delete', app($dataType->model_name));
+
+        // Get record
+        $model = call_user_func([$dataType->model_name, 'withTrashed']);
+        $data = $model->findOrFail($id);
+
+        $displayName = $dataType->display_name_singular;
+
+        $res = $data->restore($id);
+        $data = $res
+            ? [
+                'message'    => __('voyager::generic.successfully_restored')." {$displayName}",
+                'alert-type' => 'success',
+            ]
+            : [
+                'message'    => __('voyager::generic.error_restoring')." {$displayName}",
+                'alert-type' => 'error',
+            ];
+
+        if ($res) {
+            event(new BreadDataRestored($dataType, $data));
         }
 
         return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
@@ -400,8 +488,10 @@ class VoyagerBaseController extends Controller
 
         // Delete Files
         foreach ($dataType->deleteRows->where('type', 'file') as $row) {
-            foreach (json_decode($data->{$row->field}) as $file) {
-                $this->deleteFileIfExists($file->download_link);
+            if (isset($data->{$row->field})) {
+                foreach (json_decode($data->{$row->field}) as $file) {
+                    $this->deleteFileIfExists($file->download_link);
+                }
             }
         }
     }
@@ -421,10 +511,8 @@ class VoyagerBaseController extends Controller
                 $this->deleteFileIfExists($data->{$row->field});
             }
 
-            $options = json_decode($row->details);
-
-            if (isset($options->thumbnails)) {
-                foreach ($options->thumbnails as $thumbnail) {
+            if (isset($row->details->thumbnails)) {
+                foreach ($row->details->thumbnails as $thumbnail) {
                     $ext = explode('.', $data->{$row->field});
                     $extension = '.'.$ext[count($ext) - 1];
 
@@ -468,9 +556,14 @@ class VoyagerBaseController extends Controller
         }
 
         $model = app($dataType->model_name);
-        $results = $model->orderBy($dataType->order_column)->get();
+        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            $model = $model->withTrashed();
+        }
+        $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
 
         $display_column = $dataType->order_display_column;
+
+        $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->whereField($display_column)->first();
 
         $view = 'voyager::bread.order';
 
@@ -481,6 +574,7 @@ class VoyagerBaseController extends Controller
         return Voyager::view($view, compact(
             'dataType',
             'display_column',
+            'dataRow',
             'results'
         ));
     }
@@ -499,9 +593,65 @@ class VoyagerBaseController extends Controller
         $order = json_decode($request->input('order'));
         $column = $dataType->order_column;
         foreach ($order as $key => $item) {
-            $i = $model->findOrFail($item->id);
+            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+                $i = $model->withTrashed()->findOrFail($item->id);
+            } else {
+                $i = $model->findOrFail($item->id);
+            }
             $i->$column = ($key + 1);
             $i->save();
         }
+    }
+
+    /**
+     * Get BREAD relations data.
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    public function relation(Request $request)
+    {
+        $slug = $this->getSlug($request);
+        $page = $request->input('page');
+        $on_page = 50;
+        $search = $request->input('search', false);
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        foreach ($dataType->editRows as $key => $row) {
+            if ($row->field === $request->input('type')) {
+                $options = $row->details;
+                $skip = $on_page * ($page - 1);
+
+                // If search query, use LIKE to filter results depending on field label
+                if ($search) {
+                    $total_count = app($options->model)->where($options->label, 'LIKE', '%'.$search.'%')->count();
+                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)
+                        ->where($options->label, 'LIKE', '%'.$search.'%')
+                        ->get();
+                } else {
+                    $total_count = app($options->model)->count();
+                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
+                }
+
+                $results = [];
+                foreach ($relationshipOptions as $relationshipOption) {
+                    $results[] = [
+                        'id'   => $relationshipOption->{$options->key},
+                        'text' => $relationshipOption->{$options->label},
+                    ];
+                }
+
+                return response()->json([
+                    'results'    => $results,
+                    'pagination' => [
+                        'more' => ($total_count > ($skip + $on_page)),
+                    ],
+                ]);
+            }
+        }
+
+        // No result found, return empty array
+        return response()->json([], 404);
     }
 }

@@ -144,16 +144,16 @@
                                 <a class="panel-action voyager-resize-full" data-toggle="panel-fullscreen" aria-hidden="true"></a>
                             </div>
                         </div>
-                        @include('voyager::multilingual.input-hidden', [
-                            '_field_name'  => 'body',
-                            '_field_trans' => get_field_translations($dataTypeContent, 'body')
-                        ])
-                        @php
-                            $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
-                            $row = $dataTypeRows->where('field', 'body')->first();
-                        @endphp
 
                         <div class="panel-body">
+                            @include('voyager::multilingual.input-hidden', [
+                                '_field_name'  => 'body',
+                                '_field_trans' => get_field_translations($dataTypeContent, 'body')
+                            ])
+                            @php
+                                $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                                $row = $dataTypeRows->where('field', 'body')->first();
+                            @endphp
                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                         </div>
                     </div><!-- .panel -->
@@ -191,18 +191,17 @@
                             @foreach($dataTypeRows as $row)
                                 @if(!in_array($row->field, $exclude))
                                     @php
-                                        $options = json_decode($row->details);
-                                        $display_options = isset($options->display) ? $options->display : NULL;
+                                        $display_options = isset($row->details->display) ? $row->details->display : NULL;
                                     @endphp
-                                    @if ($options && isset($options->formfields_custom))
-                                        @include('voyager::formfields.custom.' . $options->formfields_custom)
+                                    @if (isset($row->details->formfields_custom))
+                                        @include('voyager::formfields.custom.' . $row->details->formfields_custom)
                                     @else
                                         <div class="form-group @if($row->type == 'hidden') hidden @endif @if(isset($display_options->width)){{ 'col-md-' . $display_options->width }}@endif" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                                             {{ $row->slugify }}
                                             <label for="name">{{ $row->display_name }}</label>
                                             @include('voyager::multilingual.input-hidden-bread-edit-add')
                                             @if($row->type == 'relationship')
-                                                @include('voyager::formfields.relationship')
+                                                @include('voyager::formfields.relationship', ['options' => $row->details])
                                             @else
                                                 {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                             @endif
@@ -236,7 +235,7 @@
                                 ])
                                 <input type="text" class="form-control" id="slug" name="slug"
                                     placeholder="slug"
-                                    {{!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}}
+                                    {!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}
                                     value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
                             </div>
                             <div class="form-group">
@@ -273,14 +272,14 @@
                         <div class="panel-body">
                             <div class="image-wrapper add-edit">
                                 <img id="post-image" src="{{ filter_var($dataTypeContent->image, FILTER_VALIDATE_URL) ? $dataTypeContent->image : Voyager::image( $dataTypeContent->image ) }}" style="width: 100%; min-height: 150px; background: #eee"  />
-                                <input id="post-image-input" type="hidden" name="image" value="{{ $dataTypeContent->image }}"> 
+                                <input id="post-image-input" type="hidden" name="image" value="{{ $dataTypeContent->image }}">
 
                                 @php $add = __('voyager::generic.add'); $update = __('voyager::generic.update'); @endphp
                                 <div class="overlay" data-toggle="modal" data-target="#filePicker" data-target-input="#post-image-input" data-image-element="#post-image" data-add="{{$add}}" data-update="{{$update}}">
                                     <i class="voyager-images"></i>
                                     <p class="image-action">@if(isset($dataTypeContent->image)){{ $update }}@else{{ $add }}@endif Image</p>
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
 
@@ -334,6 +333,24 @@
             <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
         </form>
     </div>
+    <div class="modal fade modal-danger" id="confirm_delete_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::generic.are_you_sure') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>{{ __('voyager::generic.are_you_sure_delete') }} '<span class="confirm_delete_name"></span>'</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ __('voyager::generic.delete_confirm') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- File Picker Modal-->
     <div id="filePicker" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -357,22 +374,54 @@
         $('document').ready(function () {
             $('#slug').slugify();
 
-            @if ($isModelTranslatable)
-                $('.side-body').multilingual({"editing": true});
-            @endif
+        @if ($isModelTranslatable)
+            $('.side-body').multilingual({"editing": true});
+        @endif
 
-            $('#filePicker').on('show.bs.modal', function (event) {
-                var targetId = $(event.relatedTarget).data('target-input');
-                var imageElementId = $(event.relatedTarget).data('image-element');
-                if(targetId !== undefined){
-                    $(this).find('.filePicker.modal-body').append(`<input type="hidden" id="target_input" value="${targetId}">`);
-                    $(this).find('.filePicker.modal-body').append(`<input type="hidden" id="target_image" value="${imageElementId}">`);
-                }
-            });
+        $('#filePicker').on('show.bs.modal', function (event) {
+            var targetId = $(event.relatedTarget).data('target-input');
+            var imageElementId = $(event.relatedTarget).data('image-element');
+            if(targetId !== undefined){
+                $(this).find('.filePicker.modal-body').append(`<input type="hidden" id="target_input" value="${targetId}">`);
+                $(this).find('.filePicker.modal-body').append(`<input type="hidden" id="target_image" value="${imageElementId}">`);
+            }
+        });
 
-            $('#filePicker').on('hide.bs.modal', function (event) {
-                $('#target_input, #target_image').remove();
-            });
+        $('#filePicker').on('hide.bs.modal', function (event) {
+            $('#target_input, #target_image').remove();
+        });
+
+        $('.side-body input[data-slug-origin]').each(function(i, el) {
+               $(el).slugify();
+           });
+            $('.form-group').on('click', '.remove-multi-image', function (e) {
+               e.preventDefault();
+               $image = $(this).siblings('img');
+                params = {
+                   slug:   '{{ $dataType->slug }}',
+                   image:  $image.data('image'),
+                   id:     $image.data('id'),
+                   field:  $image.parent().data('field-name'),
+                   _token: '{{ csrf_token() }}'
+               }
+                $('.confirm_delete_name').text($image.data('image'));
+               $('#confirm_delete_modal').modal('show');
+           });
+            $('#confirm_delete').on('click', function(){
+               $.post('{{ route('voyager.media.remove') }}', params, function (response) {
+                   if ( response
+                       && response.data
+                       && response.data.status
+                       && response.data.status == 200 ) {
+                        toastr.success(response.data.message);
+                       $image.parent().fadeOut(300, function() { $(this).remove(); })
+                   } else {
+                       toastr.error("Error removing image.");
+                   }
+               });
+                $('#confirm_delete_modal').modal('hide');
+           });
+           $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 @stop

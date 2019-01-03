@@ -119,6 +119,7 @@
                             this._map_polish(),
                             this._map_vietnam(),
                             this._map_latvian(),
+                            this._map_lithuanian(),
                             this._map_currency(),
                             this._map_symbols()
                         );
@@ -254,6 +255,13 @@
                     'ā':'a', 'č':'c', 'ē':'e', 'ģ':'g', 'ī':'i', 'ķ':'k', 'ļ':'l', 'ņ':'n',
                     'š':'s', 'ū':'u', 'ž':'z', 'Ā':'A', 'Č':'C', 'Ē':'E', 'Ģ':'G', 'Ī':'i',
                     'Ķ':'k', 'Ļ':'L', 'Ņ':'N', 'Š':'S', 'Ū':'u', 'Ž':'Z'
+                };
+            },
+            _map_lithuanian: function() {
+                return {
+                    'ą':'a', 'č':'c', 'ę':'e', 'ė':'e', 'į':'i', 'š':'s', 'ų':'u', 'ū':'u',
+                    'ž':'z', 'Ą':'A', 'Č':'C', 'Ę':'E', 'Ė':'E', 'Į':'I', 'Š':'S', 'Ų':'U',
+                    'Ū':'U', 'Ž':'Z',
                 };
             },
             _map_currency: function() {

@@ -2,6 +2,6 @@
 
 return [
     'loggingin'    => 'Giriş yap',
-    'signin_below' => ' Below: oturum aç',
-    'welcome'      => "Voyager a hoş geldiniz , Laravel'in aranan yönetim paneli",
+    'signin_below' => 'Oturum açın',
+    'welcome'      => 'Voyager\'a hoş geldiniz , Laravel\'in Aranan Yönetim Paneli',
 ];

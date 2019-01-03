@@ -13,7 +13,11 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => App\User::class,
+        // Set `namespace` to `null` to use `config('auth.providers.users.model')` value
+        // Set `namespace` to a class to override auth user model.
+        // However make sure the appointed class must ready to use before installing voyager.
+        // Otherwise `php artisan voyager:install` will fail with class not found error.
+        'namespace'                    => null,
         'default_avatar'               => 'users/default.png',
         'redirect'                     => '/admin',
     ],
@@ -48,17 +52,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Path to the Voyager Assets
-    |--------------------------------------------------------------------------
-    |
-    | Here you can specify the location of the voyager assets path
-    |
-    */
-
-    'assets_path' => '/vendor/tcg/voyager/assets',
-
-    /*
-    |--------------------------------------------------------------------------
     | Storage Config
     |--------------------------------------------------------------------------
     |
@@ -67,7 +60,7 @@ return [
     */
 
     'storage' => [
-        'disk' => 'public',
+        'disk' => env('FILESYSTEM_DRIVER', 'public'),
     ],
 
     /*
@@ -94,6 +87,7 @@ return [
         'tables' => [
             'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
         ],
+        'autoload_migrations' => true,
     ],
 
     /*
@@ -111,11 +105,6 @@ return [
          * Set whether or not the multilingual is supported by the BREAD input.
          */
         'enabled' => false,
-
-        /*
-         * Set whether or not the admin layout default is RTL.
-         */
-        'rtl' => false,
 
         /*
          * Select default language
@@ -219,4 +208,33 @@ return [
          'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
      ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Model specific settings
+    |--------------------------------------------------------------------------
+    |
+    | Here you change some model specific settings
+    |
+    */
+
+    'settings' => [
+        // Enables Laravel cache method for
+        // storing cache values between requests
+        'cache' => false,
+    ],
+
+    // Activate compass when environment is NOT local
+    'compass_in_production' => false,
+
+    // The allowed mimetypes to be uploaded through the media-manager.
+    'allowed_mimetypes' => '*', //All types can be uploaded
+    /*
+    'allowed_mimetypes' => [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/bmp',
+      'video/mp4',
+    ],
+    */
 ];
