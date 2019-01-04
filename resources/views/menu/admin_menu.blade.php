@@ -20,7 +20,7 @@
         $href = $item->link();
 
         // Current page
-        if(url($href) == url()->current()) {
+        if(url($href) == url()->current() && $item->children->isEmpty()) {
             array_push($listItemClass, 'active');
         }
 
