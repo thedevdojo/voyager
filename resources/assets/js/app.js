@@ -2,16 +2,16 @@ window.jQuery = window.$ = $ = require('jquery');
 window.Vue = require('vue');
 window.perfectScrollbar = require('perfect-scrollbar/jquery')($);
 window.Cropper = require('cropperjs');
-window.toastr = require('./toastr');
-window.DataTable = require('./bootstrap-datatables');
+window.Cropper = 'default' in window.Cropper ? window.Cropper['default'] : window.Cropper;
+window.toastr = require('toastr');
+window.DataTable = require('datatables');
+require('datatables-bootstrap3-plugin/media/js/datatables-bootstrap3');
 window.SimpleMDE = require('simplemde');
-window.tooltip = require('./bootstrap-tooltip');
 window.MediaManager = require('./media');
 require('dropzone');
-require('./jquery-match-height');
-require('./bootstrap-toggle');
-require('./jquery-cookie');
-require('./jquery-nestable');
+require('jquery-match-height');
+require('bootstrap-toggle');
+require('nestable2');
 require('bootstrap');
 require('bootstrap-switch');
 require('select2');
@@ -20,7 +20,7 @@ var brace = require('brace');
 require('brace/mode/json');
 require('brace/theme/github');
 require('./slugify');
-window.TinyMCE = window.tinymce = require('./tinymce');
+window.TinyMCE = window.tinymce = require('tinymce');
 require('./multilingual');
 require('./voyager_tinymce');
 require('./voyager_ace_editor');
@@ -83,7 +83,7 @@ $(document).ready(function () {
             if (term === '') {
                 return null;
             }
-        
+
             return {
                 id: term,
                 text: term,
@@ -96,7 +96,7 @@ $(document).ready(function () {
         var label = $el.data('label');
         var errorMessage = $el.data('error-message');
         var newTag = e.params.args.data.newTag;
-        
+
         if (!newTag) return;
 
         $el.select2('close');
@@ -122,7 +122,7 @@ $(document).ready(function () {
     $(".side-menu .nav .dropdown").on('show.bs.collapse', function () {
         return $(".side-menu .nav .dropdown .collapse").collapse('hide');
     });
-    
+
     $('.panel-collapse').on('hide.bs.collapse', function(e) {
         var target = $(event.target);
         if (!target.is('a')) {
