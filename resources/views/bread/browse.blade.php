@@ -100,7 +100,11 @@
                                             </td>
                                         @endcan
                                         @foreach($dataType->browseRows as $row)
-
+                                            @php
+                                            if ($data->{$row->field.'_browse'}) {
+                                                $data->{$row->field} = $data->{$row->field.'_browse'};
+                                            }
+                                            @endphp
                                             <td>
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
