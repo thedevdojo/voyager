@@ -145,10 +145,7 @@
             @endif
 
 
-            $('.dd').nestable({
-                expandBtnHTML: '',
-                collapseBtnHTML: ''
-            });
+            $('.dd').nestable({/* config options */});
 
 
             /**
