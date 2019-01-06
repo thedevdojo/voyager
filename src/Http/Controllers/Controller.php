@@ -58,7 +58,11 @@ abstract class Controller extends BaseController
             if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
                 // if the field is a belongsToMany relationship, don't remove it
                 // if no content is provided, that means the relationships need to be removed
-                if (isset($row->details->type) && $row->details->type !== 'belongsToMany') {
+                if ((isset($row->details->type) && $row->details->type === 'belongsTo')) {
+                    $data->{$row->details->column} = $request->get($row->details->column);
+
+                    continue;
+                } elseif (isset($row->details->type) && $row->details->type !== 'belongsToMany') {
                     continue;
                 }
             }
