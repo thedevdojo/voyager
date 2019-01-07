@@ -20,3 +20,15 @@ if (!function_exists('voyager_asset')) {
         return route('voyager.assets', $path);
     }
 }
+
+if (!function_exists('get_file_name')) {
+    function get_file_name($name)
+    {
+        preg_match('/(_)([0-9])+$/', $name, $matches);
+        if (count($matches) == 3) {
+            return str_replace_last($matches[0], '', $name).'_'.(intval($matches[2]) + 1);
+        } else {
+            return $name.'_1';
+        }
+    }
+}
