@@ -9,7 +9,6 @@ First you need to define some `locales` in your `config/voyager.php` file and `e
 ```php
 'multilingual' => [
         'enabled' => true,
-        'rtl' => false,
         'default' => 'en',
         'locales' => [
             'en',
@@ -109,3 +108,22 @@ $post->save();
 
 This will update or create the translation for title of the post with the locale da. Please note that if a modified attribute is not translatable, then it will make the changes directly to the model itself. Meaning that it will overwrite the attribute in the language set as default.
 
+### Query translatable Models
+
+To search for a translated value, you can use the `whereTranslation` method.  
+For example, to search for the slug of a post, you'd use
+```php
+$page = Page::whereTranslation('slug', 'my-translated-slug');
+// Is the same as
+$page = Page::whereTranslation('slug', '=', 'my-translated-slug');
+// Search only locale en, de and the default locale
+$page = Page::whereTranslation('slug', '=', 'my-translated-slug', ['en', 'de']);
+// Search only locale en and de
+$page = Page::whereTranslation('slug', '=', 'my-translated-slug', ['en', 'de'], false);
+```
+`whereTranslation` accepts the following parameter:
+- `field` the field you want to search in
+- `operator` the operator. Defaults to `=`. Also can be the value (Same as [where](https://laravel.com/docs/queries#where-clauses))
+- `value` the value you want to search for
+- `locales` the locales you want to search in as an array. Leave as `null` if you want to search all locales
+- `default` also search in the default value/locale. Defaults to true.
