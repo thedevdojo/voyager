@@ -19,10 +19,6 @@
                 <i class="voyager-move"></i>
                 {{ __('voyager::generic.move') }}
             </button>
-            <button :disabled="selected_files.length != 1" type="button" class="btn btn-default">
-                <i class="voyager-character"></i>
-                {{ __('voyager::generic.rename') }}
-            </button>
             <button type="button" class="btn btn-default">
                 <i class="voyager-trash"></i>
                 {{ __('voyager::generic.delete') }}
@@ -290,7 +286,20 @@
                 this.getFiles();
             },
             rename: function(object) {
-                console.log(object.target.value);
+                var vm = this;
+                $.post('{{ route('voyager.media.rename_file') }}', {
+                    folder_location: vm.getCurrentPath(),
+                    filename: vm.selected_file.name,
+                    new_filename: object.target.value,
+                    _token: '{{ csrf_token() }}'
+                }, function(data){
+					if (data.success == true) {
+						toastr.success('Successfully renamed file/folder', "Sweet Success!");
+						vm.getFiles();
+					} else {
+						toastr.error(data.error, "Whoops!");
+					}
+				});
             },
             bytesToSize: function(bytes) {
 				var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
