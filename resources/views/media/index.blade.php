@@ -12,7 +12,7 @@
                     <h3><i class="voyager-images"></i> {{ __('voyager::generic.media') }}</h3>
                 </div>
                 <div class="clear"></div>
-                <div id="media-manager">
+                <div id="filemanager">
                     <media-manager></media-manager>
                 </div>
             </div><!-- .row -->
@@ -24,7 +24,7 @@
     @include('voyager::media.manager')
     <script>
     new Vue({
-        el: '#media-manager'
+        el: '#filemanager'
     });
     </script>
 @endsection
