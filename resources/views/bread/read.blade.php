@@ -40,6 +40,11 @@
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
                     <!-- form start -->
                     @foreach($dataType->readRows as $row)
+                        @php
+                        if ($dataTypeContent->{$row->field.'_read'}) {
+                            $dataTypeContent->{$row->field} = $dataTypeContent->{$row->field.'_read'};
+                        }
+                        @endphp
                         <div class="panel-heading" style="border-bottom:0;">
                             <h3 class="panel-title">{{ $row->display_name }}</h3>
                         </div>
