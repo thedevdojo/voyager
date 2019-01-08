@@ -2234,10 +2234,6 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
   min-height:230px;
 }
 
-.flex #left #no_files{
-  display:none;
-}
-
 .flex #left #no_files h3{
   text-align: center;
     margin-top: 55px;
@@ -2255,7 +2251,6 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 }
 
 #right .right_none_selected{
-  display:none;
   text-align:center;
 }
 
@@ -2434,12 +2429,8 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
   padding:10px;
 }
 
-.detail_info .selected_file_count, .detail_info.folder .selected_file_size{
+.detail_info.folder .selected_file_size{
   display:none;
-}
-
-.detail_info .folder .selected_file_count{
-  display:block;
 }
 
 .detail_info span{
@@ -2451,7 +2442,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
   color:#4DA7E8;
 }
 
-.detail_info .selected_file_count, .detail_info .selected_file_size{
+.detail_info .selected_file_size{
   padding-top:0;
 }
 
