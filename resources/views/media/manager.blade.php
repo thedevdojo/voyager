@@ -15,7 +15,7 @@
             <i class="voyager-refresh"></i>
         </button>
         <div class="btn-group offset-right">
-            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move_files_modal">
+            <button type="button" v-if="showFolders" class="btn btn-default" data-toggle="modal" data-target="#move_files_modal">
                 <i class="voyager-move"></i>
                 {{ __('voyager::generic.move') }}
             </button>
@@ -49,7 +49,7 @@
         <div class="flex">
             <div id="left">
                 <ul id="files">
-                    <li v-for="(file) in files" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)">
+                    <li v-for="(file) in files" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)" v-if="filter(file)">
                         <div :class="'file_link ' + (isFileSelected(file) ? 'selected' : '')">
                             <div class="link_icon">
                                 <template v-if="fileIs(file, 'image')">
@@ -230,7 +230,7 @@
                 <div class="modal-body">
                     <h4>{{ __('voyager::media.destination_folder') }}</h4>
                     <select class="form-control">
-                        <option v-if="current_folder != basePath" value="/../">../</option>
+                        <option v-if="current_folder != basePath && showFolders" value="/../">../</option>
                         <option v-for="file in files" v-if="file.type == 'folder' && !selected_files.includes(file)" :value="file.name">@{{ file.name }}</option>
                     </select>
                 </div>
@@ -287,6 +287,20 @@
                 type: Boolean,
                 default: true
             },
+            maxSelectedFiles: {
+                type: Number,
+                default: 0
+            },
+            showFolders: {
+                type: Boolean,
+                default: true
+            },
+            allowedTypes: {
+                type: Array,
+                default: function() {
+                    return []
+                }
+            },
             preSelect: {
                 type: Boolean,
                 default: true,
@@ -310,7 +324,12 @@
                 var vm = this;
                 vm.is_loading = true;
                 $.post('{{ route('voyager.media.files') }}', { folder: vm.current_folder, _token: '{{ csrf_token() }}' }, function(data) {
-                    vm.files = data;
+
+                    for (var i = 0, file; file = data[i]; i++) {
+                        if (vm.filter(file)) {
+                            vm.files.push(file);
+                        }
+                    }
                     vm.selected_files = [];
                     if (vm.preSelect && data.length > 0) {
                         vm.selected_files.push(data[0]);
@@ -341,8 +360,17 @@
                     }
 
                     for (var i = start; i < end; i++) {
+                        if (this.maxSelectedFiles > 0 && this.selected_files.length > this.maxSelectedFiles) {
+                            toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
+                            return;
+                        }
                         this.selected_files.push(this.files[i]);
                     }
+                }
+
+                if (this.maxSelectedFiles > 0 && this.selected_files.length >= this.maxSelectedFiles) {
+                    toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
+                    return;
                 }
 
                 this.selected_files.push(file);
@@ -391,6 +419,27 @@
                 }
 
                 this.getFiles();
+            },
+            filter: function(file) {
+                if (this.allowedTypes.length > 0) {
+                    if (file.type != 'folder') {
+                        for (var i = 0, type; type = this.allowedTypes[i]; i++) {
+                            if (file.type.includes(type)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                if (file.type == 'folder' && this.showFolders) {
+                    return true;
+                }
+
+                if (this.allowedTypes.length == 0) {
+                    return true;
+                }
+
+                return false;
             },
             renameFile: function(object) {
                 var vm = this;
