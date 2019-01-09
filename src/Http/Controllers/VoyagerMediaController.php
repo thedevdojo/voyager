@@ -124,13 +124,13 @@ class VoyagerMediaController extends Controller
         // Check permission
         $this->authorize('browse_media');
         $path = str_replace('//', '/', str_finish($request->path, '/'));
-        if (strpos($destination, '/../') !== false) {
-            // Todo: check how to do this.
-            // Take path, remove the last folder
-            $dest = str_replace('//', '/', str_finish($request->destination, '/'));
-        } else {
-            $dest = str_replace('//', '/', str_finish($request->destination, '/'));
+        $dest = str_replace('//', '/', str_finish($request->destination, '/'));
+        if (strpos($dest, '/../') !== false) {
+            $dest = substr($path, 0, -1);
+            $dest = substr($dest, 0, strripos($dest, '/') + 1);
         }
+        $dest = str_replace('//', '/', str_finish($dest, '/'));
+
         $success = true;
         $error = '';
 

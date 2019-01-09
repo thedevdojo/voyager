@@ -49,7 +49,7 @@
         <div class="flex">
             <div id="left">
                 <ul id="files">
-                    <li v-for="(file) in files" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file, $event)">
+                    <li v-for="(file) in files" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)">
                         <div :class="'file_link ' + (isFileSelected(file) ? 'selected' : '')">
                             <div class="link_icon">
                                 <template v-if="fileIs(file, 'image')">
@@ -227,7 +227,7 @@
                 <div class="modal-body">
                     <h4>{{ __('voyager::media.destination_folder') }}</h4>
                     <select class="form-control">
-                        <option v-if="true" value="/../">../</option>
+                        <option v-if="current_folder != basePath" value="/../">../</option>
                         <option v-for="file in files" v-if="file.type == 'folder' && !selected_files.includes(file)" :value="file.name">@{{ file.name }}</option>
                     </select>
                 </div>
@@ -287,8 +287,30 @@
 				});
             },
             selectFile: function(file, e) {
-                if (!e.ctrlKey || !this.allowMultiSelect) {
+                if ((!e.ctrlKey && !e.shiftKey) || !this.allowMultiSelect) {
                     this.selected_files = [];
+                }
+
+                if (e.shiftKey && this.allowMultiSelect && this.selected_files.length == 1) {
+                    var start = 0;
+                    for (var i = 0, cfile; cfile = this.files[i]; i++) {
+                        if (cfile === this.selected_file) {
+                            start = i;
+                            break;
+                        }
+                    }
+
+                    var end = 0;
+                    for (var i = 0, cfile; cfile = this.files[i]; i++) {
+                        if (cfile === file) {
+                            end = i;
+                            break;
+                        }
+                    }
+
+                    for (var i = start; i < end; i++) {
+                        this.selected_files.push(this.files[i]);
+                    }
                 }
 
                 this.selected_files.push(file);
@@ -304,7 +326,7 @@
                     });
                 }
             },
-            openFile: function(file, e) {
+            openFile: function(file) {
                 if (file.type == 'folder') {
                     this.current_folder += "/"+file.name;
                     this.getFiles();
@@ -417,6 +439,35 @@
         mounted: function() {
             this.getFiles();
             var vm = this;
+
+            //Key events
+            window.onkeydown = function(evt) {
+                evt = evt || window.event;
+                if (evt.keyCode == 39) {
+                    for (var i = 0, file; file = vm.files[i]; i++) {
+                        if (file === vm.selected_file) {
+                            i = i + 1; // increase i by one
+                            i = i % vm.files.length;
+                            vm.selectFile(vm.files[i], evt);
+                            break;
+                        }
+                    }
+                } else if (evt.keyCode == 37) {
+                    for (var i = 0, file; file = vm.files[i]; i++) {
+                        if (file === vm.selected_file) {
+                            if (i === 0) {
+                                i = vm.files.length;
+                            }
+                            i = i - 1;
+                            vm.selectFile(vm.files[i], evt);
+                            break;
+                        }
+                    }
+                } else if (evt.keyCode == 13) {
+                    vm.openFile(vm.selected_file, null);
+                }
+            };
+            //Dropzone
             $("#upload").dropzone({
                 timeout: 180000,
                 url: '{{ route('voyager.media.upload') }}',
