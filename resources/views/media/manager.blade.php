@@ -278,10 +278,10 @@
                 var vm = this;
                 vm.is_loading = true;
                 $.post('{{ route('voyager.media.files') }}', { folder: vm.current_folder, _token: '{{ csrf_token() }}' }, function(data) {
-                    vm.files = data.items;
+                    vm.files = data;
                     vm.selected_files = [];
-                    if (vm.preSelect && data.items.length > 0) {
-                        vm.selected_files.push(data.items[0]);
+                    if (vm.preSelect && data.length > 0) {
+                        vm.selected_files.push(data[0]);
                     }
 					vm.is_loading = false;
 				});
@@ -340,7 +340,7 @@
             },
             renameFile: function(object) {
                 var vm = this;
-                $.post('{{ route('voyager.media.rename_file') }}', {
+                $.post('{{ route('voyager.media.rename') }}', {
                     folder_location: vm.getCurrentPath(),
                     filename: vm.selected_file.name,
                     new_filename: object.target.value,
@@ -356,7 +356,7 @@
             },
             deleteFiles: function() {
                 var vm = this;
-                $.post('{{ route('voyager.media.delete_file_folder') }}', {
+                $.post('{{ route('voyager.media.delete') }}', {
                     path: vm.current_folder,
                     files: vm.selected_files,
                     _token: '{{ csrf_token() }}'
@@ -376,7 +376,7 @@
                 var vm = this;
                 var destination = $(e.path).parent('.modal-content').find('select').first().val();
                 $('#move_files_modal').modal('hide');
-				$.post('{{ route('voyager.media.move_file') }}', {
+				$.post('{{ route('voyager.media.move') }}', {
                     path: vm.current_folder,
                     files: vm.selected_files,
                     destination: destination,
