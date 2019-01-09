@@ -311,6 +311,10 @@
                 type: Boolean,
                 default: true
             },
+            allowFolderSelect: {
+                type: Boolean,
+                default: true,
+            },
             maxSelectedFiles: {
                 type: Number,
                 default: 0
@@ -416,12 +420,21 @@
                             toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
                             return;
                         }
+                        if (!this.allowFolderSelect && this.files[i].type == 'folder') {
+                            toastr.error("You can't select a folder");
+                            return;
+                        }
                         this.selected_files.push(this.files[i]);
                     }
                 }
 
                 if (this.maxSelectedFiles > 0 && this.selected_files.length >= this.maxSelectedFiles) {
                     toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
+                    return;
+                }
+
+                if (!this.allowFolderSelect && file.type == 'folder') {
+                    toastr.error("You can't select a folder");
                     return;
                 }
 
