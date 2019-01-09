@@ -39,7 +39,7 @@ class Menu extends Model
     public static function display($menuName, $type = null, array $options = [])
     {
         // GET THE MENU - sort collection in blade
-        $menu = \Cache::remember('voyager_menu_'.$menuName, (60 * 24 * 39), function () use ($menuName) {
+        $menu = \Cache::remember('voyager_menu_'.$menuName, (60 * 24 * 30), function () use ($menuName) {
             return static::where('name', '=', $menuName)
             ->with(['parent_items.children' => function ($q) {
                 $q->orderBy('order');
