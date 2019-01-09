@@ -190,7 +190,7 @@ class VoyagerMediaController extends Controller
         try {
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
 
-            $allowedMimeTypes = config('voyager.allowed_mimetypes', '*');
+            $allowedMimeTypes = config('voyager.media.allowed_mimetypes', '*');
             if ($allowedMimeTypes != '*' && (is_array($allowedMimeTypes) && !in_array($request->file->getMimeType(), $allowedMimeTypes))) {
                 throw new Exception(__('voyager::generic.mimetype_not_allowed'));
             }

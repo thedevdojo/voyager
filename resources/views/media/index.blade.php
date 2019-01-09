@@ -13,7 +13,7 @@
                 </div>
                 <div class="clear"></div>
                 <div id="filemanager">
-                    <media-manager></media-manager>
+                    <media-manager base-path="{{ config('voyager.media.path', '/') }}"></media-manager>
                 </div>
             </div><!-- .row -->
         </div><!-- .col-md-12 -->

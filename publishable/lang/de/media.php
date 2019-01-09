@@ -15,6 +15,7 @@ return [
     'error_moving'           => 'Beim Versuch diese Datei bzw. Ordner zu verschieben ist ein Fehler aufgetreten. Stellen Sie sicher, dass Sie ausreichende Zugriffsrechte dafür haben.',
     'error_uploading'        => 'Hochladen fehlgeschlagen: Unbekannter Fehler aufgetreten!',
     'folder_exists_already'  => 'Dieser Ordner existiert bereits. Bitte löschen Sie diesen Ordner falls Sie ihn neu anlegen möchten',
+    'files_selected'         => 'Dateien/Ordner ausgewählt',
     'image_does_not_exist'   => 'Bild existiert nicht',
     'image_removed'          => 'Bild entfernt',
     'library'                => 'Medien Bibliothek',

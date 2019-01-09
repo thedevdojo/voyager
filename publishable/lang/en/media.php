@@ -16,6 +16,7 @@ return [
     'error_uploading'        => 'Upload Fail: Unknown error occurred!',
     'file_does_not_exist'    => 'File does not exist',
     'file_removed'           => 'File removed',
+    'files_selected'         => 'files/folder selected',
     'folder_exists_already'  => 'Sorry that folder already exists, please delete that folder if you wish to re-create it',
     'image_does_not_exist'   => 'Image does not exist',
     'image_removed'          => 'Image removed',
