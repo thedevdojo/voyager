@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use League\Flysystem\Plugin\ListWith;
@@ -197,8 +198,22 @@ class VoyagerMediaController extends Controller
         // Check permission
         $this->authorize('browse_media');
 
+        $extension = $request->file->getClientOriginalExtension();
+        $name = str_replace_last('.'.$extension, '', $request->file->getClientOriginalName());
+
         try {
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+
+            $allowedMimeTypes = config('voyager.allowed_mimetypes', '*');
+            if ($allowedMimeTypes != '*' && (is_array($allowedMimeTypes) && !in_array($request->file->getMimeType(), $allowedMimeTypes))) {
+                throw new Exception(__('voyager::generic.mimetype_not_allowed'));
+            }
+
+            while (Storage::disk($this->filesystem)->exists(str_finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
+                $name = get_file_name($name);
+            }
+
+            $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
 
             $imageMimeTypes = [
                 'image/jpeg',
@@ -207,12 +222,6 @@ class VoyagerMediaController extends Controller
                 'image/bmp',
                 'image/svg+xml',
             ];
-            $allowedMimeTypes = config('voyager.allowed_mimetypes', '*');
-            if ($allowedMimeTypes != '*' && (is_array($allowedMimeTypes) && !in_array($request->file->getMimeType(), $allowedMimeTypes))) {
-                throw new Exception(__('voyager::generic.mimetype_not_allowed'));
-            }
-
-            $file = $request->file->store($request->upload_path, $this->filesystem);
             if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
                 $image = Image::make($realPath.$file);
 

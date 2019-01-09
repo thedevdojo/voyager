@@ -1,6 +1,6 @@
 @section('admin-menu')
 <ul class="nav navbar-nav">
-    <li v-for="(item, i) in items" class="">Hallo @{{ i }}</li>
+    <li v-for="(item, i) in items" class="">@{{ i }}</li>
 </ul>
 @endsection
 <script>
