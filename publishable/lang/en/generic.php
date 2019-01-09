@@ -9,7 +9,7 @@ return [
     'add_new'                => 'Add New',
     'all_done'               => 'All done',
     'are_you_sure'           => 'Are you sure',
-    'are_you_sure_delete'    => 'Are you sure you want to delete',
+    'are_you_sure_delete'    => 'Are you sure you want to delete the following file(s)?',
     'ascending'              => 'Ascending',
     'auto_increment'         => 'Auto Increment',
     'bread'                  => 'BREAD',

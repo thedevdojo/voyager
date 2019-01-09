@@ -15,11 +15,11 @@
             <i class="voyager-refresh"></i>
         </button>
         <div class="btn-group offset-right">
-            <button type="button" class="btn btn-default">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#move_files_modal">
                 <i class="voyager-move"></i>
                 {{ __('voyager::generic.move') }}
             </button>
-            <button type="button" class="btn btn-default">
+            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#confirm_delete_modal">
                 <i class="voyager-trash"></i>
                 {{ __('voyager::generic.delete') }}
             </button>
@@ -136,7 +136,7 @@
                         <div class="detail_info">
                             <span>
                                 <h4>{{ __('voyager::media.title') }}:</h4>
-                                <input type="text" class="form-control" :value="selected_file.name" @keyup.enter="rename">
+                                <input type="text" class="form-control" :value="selected_file.name" @keyup.enter="renameFile">
                             </span>
                             <span>
                                 <h4>{{ __('voyager::media.type') }}:</h4>
@@ -186,7 +186,60 @@
         </div>
     </div>
     <!-- End Image Modal -->
+    <!-- Delete File Modal -->
+    <div class="modal fade modal-danger" id="confirm_delete_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::generic.are_you_sure') }}</h4>
+                </div>
 
+                <div class="modal-body">
+                    <h4>{{ __('voyager::generic.are_you_sure_delete') }}</h4>
+                    <ul>
+                        <li v-for="file in selected_files">@{{ file.name }}</li>
+                    </ul>
+                    <h5 class="folder_warning">
+                        <i class="voyager-warning"></i> {{ __('voyager::media.delete_folder_question') }}
+                    </h5>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                    <button type="button" class="btn btn-danger" v-on:click="deleteFiles">{{ __('voyager::generic.delete_confirm') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Delete File Modal -->
+    <!-- Move Files Modal -->
+    <div class="modal fade modal-warning" id="move_files_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="voyager-move"></i> {{ __('voyager::media.move_file_folder') }}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <h4>{{ __('voyager::media.destination_folder') }}</h4>
+                    <select class="form-control">
+                        <option v-if="true" value="/../">../</option>
+                        <option v-for="file in files" v-if="file.type == 'folder' && !selected_files.includes(file)" :value="file.name">@{{ file.name }}</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                    <button type="button" class="btn btn-warning" v-on:click="moveFiles">{{ __('voyager::generic.move') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Move File Modal -->
 </div>
 @endsection
 
@@ -285,7 +338,7 @@
 
                 this.getFiles();
             },
-            rename: function(object) {
+            renameFile: function(object) {
                 var vm = this;
                 $.post('{{ route('voyager.media.rename_file') }}', {
                     folder_location: vm.getCurrentPath(),
@@ -295,6 +348,42 @@
                 }, function(data){
 					if (data.success == true) {
 						toastr.success('Successfully renamed file/folder', "Sweet Success!");
+						vm.getFiles();
+					} else {
+						toastr.error(data.error, "Whoops!");
+					}
+				});
+            },
+            deleteFiles: function() {
+                var vm = this;
+                $.post('{{ route('voyager.media.delete_file_folder') }}', {
+                    path: vm.current_folder,
+                    files: vm.selected_files,
+                    _token: '{{ csrf_token() }}'
+                }, function(data){
+					if(data.success == true){
+						toastr.success('', "Sweet Success!");
+						vm.getFiles();
+						$('#confirm_delete_modal').modal('hide');
+					} else {
+						toastr.error(data.error, "Whoops!");
+                        vm.getFiles();
+						$('#confirm_delete_modal').modal('hide');
+					}
+				});
+            },
+            moveFiles: function(e) {
+                var vm = this;
+                var destination = $(e.path).parent('.modal-content').find('select').first().val();
+                $('#move_files_modal').modal('hide');
+				$.post('{{ route('voyager.media.move_file') }}', {
+                    path: vm.current_folder,
+                    files: vm.selected_files,
+                    destination: destination,
+                    _token: '{{ csrf_token() }}'
+                }, function(data){
+					if(data.success == true){
+						toastr.success('Successfully moved file/folder', "Sweet Success!");
 						vm.getFiles();
 					} else {
 						toastr.error(data.error, "Whoops!");

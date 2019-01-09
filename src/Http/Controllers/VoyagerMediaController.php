@@ -80,28 +80,21 @@ class VoyagerMediaController extends Controller
     {
         // Check permission
         $this->authorize('browse_media');
-
-        $folderLocation = $request->folder_location;
-        $fileFolder = $request->file_folder;
-        $type = $request->type;
+        $path = str_replace('//', '/', str_finish($request->path, '/'));
         $success = true;
         $error = '';
 
-        if (is_array($folderLocation)) {
-            $folderLocation = rtrim(implode('/', $folderLocation), '/');
-        }
-
-        $location = "{$this->directory}/{$folderLocation}";
-        $fileFolder = "{$location}/{$fileFolder}";
-
-        if ($type == 'folder') {
-            if (!Storage::disk($this->filesystem)->deleteDirectory($fileFolder)) {
-                $error = __('voyager::media.error_deleting_folder');
+        foreach ($request->get('files') as $file) {
+            $file_path = $path.$file['name'];
+            if ($file['type'] == 'folder') {
+                if (!Storage::disk($this->filesystem)->deleteDirectory($file_path)) {
+                    $error = __('voyager::media.error_deleting_folder');
+                    $success = false;
+                }
+            } elseif (!Storage::disk($this->filesystem)->delete($file_path)) {
+                $error = __('voyager::media.error_deleting_file');
                 $success = false;
             }
-        } elseif (!Storage::disk($this->filesystem)->delete($fileFolder)) {
-            $error = __('voyager::media.error_deleting_file');
-            $success = false;
         }
 
         return compact('success', 'error');
@@ -131,31 +124,27 @@ class VoyagerMediaController extends Controller
     {
         // Check permission
         $this->authorize('browse_media');
-
-        $source = $request->source;
-        $destination = $request->destination;
-        $folderLocation = $request->folder_location;
-        $success = false;
+        $path = str_replace('//', '/', str_finish($request->path, '/'));
+        if (strpos($destination, '/../') !== false) {
+            // Todo: check how to do this.
+            // Take path, remove the last folder
+            $dest = str_replace('//', '/', str_finish($request->destination, '/'));
+        } else {
+            $dest = str_replace('//', '/', str_finish($request->destination, '/'));
+        }
+        $success = true;
         $error = '';
 
-        if (is_array($folderLocation)) {
-            $folderLocation = rtrim(implode('/', $folderLocation), '/');
-        }
-
-        $location = "{$this->directory}/{$folderLocation}";
-        $source = "{$location}/{$source}";
-        $destination = strpos($destination, '/../') !== false
-            ? $this->directory.'/'.dirname($folderLocation).'/'.str_replace('/../', '', $destination)
-            : "/{$destination}";
-
-        if (!file_exists($destination)) {
-            if (Storage::disk($this->filesystem)->move($source, $destination)) {
-                $success = true;
-            } else {
-                $error = __('voyager::media.error_moving');
+        foreach ($request->get('files') as $file) {
+            $old_path = $path.$file['name'];
+            $new_path = $dest.$file['name'];
+            try {
+                Storage::disk($this->filesystem)->move($old_path, $new_path);
+            } catch (\Exception $ex) {
+                $success = false;
+                $error = $ex->getMessage();
+                return compact('success', 'error');
             }
-        } else {
-            $error = __('voyager::media.error_already_exists');
         }
 
         return compact('success', 'error');
