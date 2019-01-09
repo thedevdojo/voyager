@@ -39,11 +39,13 @@ class Menu extends Model
     public static function display($menuName, $type = null, array $options = [])
     {
         // GET THE MENU - sort collection in blade
-        $menu = static::where('name', '=', $menuName)
+        $menu = \Cache::remember('voyager_menu_'.$menuName, (60 * 24 * 39), function () use ($menuName) {
+            return static::where('name', '=', $menuName)
             ->with(['parent_items.children' => function ($q) {
                 $q->orderBy('order');
             }])
             ->first();
+        });
 
         // Check for Menu Existence
         if (!isset($menu)) {
@@ -92,5 +94,13 @@ class Menu extends Model
         return new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render()
         );
+    }
+
+    public function save(array $options = [])
+    {
+        //Remove from cache
+        \Cache::forget('voyager_menu_'.$this->name);
+
+        parent::save();
     }
 }
