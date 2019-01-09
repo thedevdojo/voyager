@@ -23,7 +23,7 @@
                 <i class="voyager-trash"></i>
                 {{ __('voyager::generic.delete') }}
             </button>
-            <button :disabled="selected_files.length != 1 || !fileIs(selected_file, 'image')" type="button" class="btn btn-default">
+            <button :disabled="selected_files.length != 1 || !fileIs(selected_file, 'image')" type="button" class="btn btn-default" data-toggle="modal" data-target="#crop_modal">
                 <i class="voyager-crop"></i>
                 {{ __('voyager::media.crop') }}
             </button>
@@ -167,6 +167,7 @@
             </div>
         </div>
     </div>
+
     <!-- Image Modal -->
     <div class="modal fade" id="imagemodal" v-if="selected_file && fileIs(selected_file, 'image')">
         <div class="modal-dialog">
@@ -186,6 +187,7 @@
         </div>
     </div>
     <!-- End Image Modal -->
+
     <!-- Delete File Modal -->
     <div class="modal fade modal-danger" id="confirm_delete_modal">
         <div class="modal-dialog">
@@ -214,6 +216,7 @@
         </div>
     </div>
     <!-- End Delete File Modal -->
+
     <!-- Move Files Modal -->
     <div class="modal fade modal-warning" id="move_files_modal">
         <div class="modal-dialog">
@@ -240,6 +243,35 @@
         </div>
     </div>
     <!-- End Move File Modal -->
+
+    <!-- Crop Image Modal -->
+    <div class="modal fade modal-warning" id="crop_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::media.crop_image') }}</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="crop-container">
+                        <img id="cropping-image" v-if="selected_files.length == 1 && fileIs(selected_file, 'image')" class="img img-responsive" :src="selected_file.path + '?' + selected_file.last_modified" />
+                    </div>
+                    <div class="new-image-info">
+                        {{ __('voyager::media.width') }} <span id="new-image-width"></span>, {{ __('voyager::media.height') }}<span id="new-image-height"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                    <button type="button" class="btn btn-warning" v-on:click="crop(false)">{{ __('voyager::media.crop') }}</button>
+                    <button type="button" class="btn btn-warning" v-on:click="crop(true)">{{ __('voyager::media.crop_and_create') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Crop Image Modal -->
 </div>
 @endsection
 
@@ -412,6 +444,29 @@
 					}
 				});
             },
+            crop: function(mode) {
+                if (!mode) {
+                    if (!window.confirm('{{ __('voyager::media.crop_override_confirm') }}')) {
+						return;
+					}
+                }
+
+                croppedData.originImageName = this.selected_file.name;
+				croppedData.upload_path = this.current_folder;
+				croppedData.createMode = mode;
+
+                var vm = this;
+				var postData = Object.assign(croppedData, { _token: '{{ csrf_token() }}' })
+				$.post('{{ route('voyager.media.crop') }}', postData, function(data) {
+					if (data.success) {
+						toastr.success(data.message);
+						vm.getFiles();
+						$('#crop_modal').modal('hide');
+					} else {
+						toastr.error(data.error, "Whoops!");
+					}
+				});
+            },
             bytesToSize: function(bytes) {
 				var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 				if (bytes == 0) return '0 Bytes';
@@ -501,6 +556,26 @@
                     vm.getFiles();
                 }
             });
+
+            //Cropper
+            $('#crop_modal').on('shown.bs.modal', function (e) {
+                if (typeof cropper !== 'undefined' && cropper instanceof Cropper) {
+					cropper.destroy();
+				}
+				var croppingImage = document.getElementById('cropping-image');
+				cropper = new Cropper(croppingImage, {
+					crop: function(e) {
+						document.getElementById('new-image-width').innerText = Math.round(e.detail.width) + 'px';
+						document.getElementById('new-image-height').innerText = Math.round(e.detail.height) + 'px';
+						croppedData = {
+							x: Math.round(e.detail.x),
+							y: Math.round(e.detail.y),
+							height: Math.round(e.detail.height),
+							width: Math.round(e.detail.width)
+						};
+					}
+				});
+			});
         },
     });
 </script>

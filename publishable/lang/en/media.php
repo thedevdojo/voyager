@@ -36,7 +36,7 @@ return [
     'crop_and_create'        => 'Crop & Create',
     'crop_override_confirm'  => 'It will override the original image, are you sure?',
     'crop_image'             => 'Crop Image',
-    'success_crop_image'     => 'Successfully crop the image',
+    'success_crop_image'     => 'Successfully cropped the image',
     'height'                 => 'Height: ',
     'title'                  => 'Title',
     'type'                   => 'Type',
