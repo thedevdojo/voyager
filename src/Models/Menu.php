@@ -102,7 +102,7 @@ class Menu extends Model
             // Resolve URL/Route
             $item->href = $item->link();
 
-            if (url($item->href) == url()->current()) {
+            if (url($item->href) == url()->current() || (url()->current() != route('voyager.dashboard') && starts_with(url()->current(), str_finish(url($item->href), '/')))) {
                 $item->active = true;
             }
 
