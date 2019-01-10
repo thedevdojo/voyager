@@ -60,14 +60,8 @@ class Menu extends Model
         $items = $menu->parent_items->sortBy('order');
 
         if ($menuName == 'admin' && $type == '_json') {
-            $items = $items->transform(function($item) {
-                $item->title = $item->getTranslatedAttribute('title');
-                return $item;
-            });
-
-            $items = $items->filter(function($item) {
-                return true;
-            });
+            $items = static::processItems($items);
+            debug($items);
         }
 
         if ($type == 'admin') {
@@ -99,5 +93,36 @@ class Menu extends Model
         \Cache::forget('voyager_menu_'.$this->name);
 
         parent::save();
+    }
+
+    private static function processItems($items)
+    {
+        $items = $items->transform(function($item) {
+            // Translate title
+            $item->title = $item->getTranslatedAttribute('title');
+            // Resolve URL/Route
+            $item->href = $item->link();
+
+            if(url($item->href) == url()->current()) {
+                $item->active = true;
+            }
+
+            if ($item->children->count() > 0) {
+                $item->children = static::processItems($item->children);
+
+                if (!$item->children->where('active')->isEmpty()) {
+                    $item->active = true;
+                }
+            }
+
+            return $item;
+        });
+
+        // Filter items by permission
+        $items = $items->filter(function($item) {
+            return !$item->children->isEmpty() || Auth::user()->can('browse', $item);
+        });
+
+        return $items->values();
     }
 }
