@@ -61,7 +61,6 @@ class Menu extends Model
 
         if ($menuName == 'admin' && $type == '_json') {
             $items = static::processItems($items);
-            debug($items);
         }
 
         if ($type == 'admin') {
