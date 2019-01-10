@@ -110,7 +110,7 @@ class Menu extends Model
             if ($item->children->count() > 0) {
                 $item->children = static::processItems($item->children);
 
-                if (!$item->children->where('active')->isEmpty()) {
+                if (!$item->children->where('active', true)->isEmpty()) {
                     $item->active = true;
                 }
             }
