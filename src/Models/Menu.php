@@ -97,13 +97,13 @@ class Menu extends Model
 
     private static function processItems($items)
     {
-        $items = $items->transform(function($item) {
+        $items = $items->transform(function ($item) {
             // Translate title
             $item->title = $item->getTranslatedAttribute('title');
             // Resolve URL/Route
             $item->href = $item->link();
 
-            if(url($item->href) == url()->current()) {
+            if (url($item->href) == url()->current()) {
                 $item->active = true;
             }
 
@@ -119,7 +119,7 @@ class Menu extends Model
         });
 
         // Filter items by permission
-        $items = $items->filter(function($item) {
+        $items = $items->filter(function ($item) {
             return !$item->children->isEmpty() || Auth::user()->can('browse', $item);
         });
 

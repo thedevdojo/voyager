@@ -7,7 +7,6 @@ use TCG\Voyager\Facades\Voyager;
 
 class VoyagerMenuController extends Controller
 {
-
     public function builder($id)
     {
         $menu = Voyager::model('Menu')->findOrFail($id);
