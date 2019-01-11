@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use League\Flysystem\Plugin\ListWith;
-use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Events\MediaFileAdded;
+use TCG\Voyager\Facades\Voyager;
 
 class VoyagerMediaController extends Controller
 {

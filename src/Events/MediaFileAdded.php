@@ -4,7 +4,7 @@ namespace TCG\Voyager\Events;
 
 use Illuminate\Queue\SerializesModels;
 
-class MediaFileAdded 
+class MediaFileAdded
 {
     use SerializesModels;
 

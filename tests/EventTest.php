@@ -15,10 +15,10 @@ use TCG\Voyager\Events\BreadDeleted;
 use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Events\BreadUpdated;
 use TCG\Voyager\Events\FileDeleted;
+use TCG\Voyager\Events\MediaFileAdded;
 use TCG\Voyager\Events\TableAdded;
 use TCG\Voyager\Events\TableDeleted;
 use TCG\Voyager\Events\TableUpdated;
-use TCG\Voyager\Events\MediaFileAdded;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Page;
 
@@ -315,6 +315,7 @@ class EventTest extends TestCase
 
         Event::assertDispatched(TableDeleted::class);
     }
+
     public function testMediaFileAddedEvent()
     {
         Event::fake();
