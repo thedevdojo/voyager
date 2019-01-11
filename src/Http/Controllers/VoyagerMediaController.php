@@ -238,7 +238,6 @@ class VoyagerMediaController extends Controller
             $path = preg_replace('/^public\//', '', $file);
 
             event(new MediaFileAdded($path));
-
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
