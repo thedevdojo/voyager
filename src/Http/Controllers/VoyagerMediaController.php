@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use League\Flysystem\Plugin\ListWith;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Events\MediaFileAdded;
 
 class VoyagerMediaController extends Controller
 {
@@ -235,6 +236,9 @@ class VoyagerMediaController extends Controller
             $success = true;
             $message = __('voyager::media.success_uploaded_file');
             $path = preg_replace('/^public\//', '', $file);
+
+            event(new MediaFileAdded($path));
+
         } catch (Exception $e) {
             $success = false;
             $message = $e->getMessage();
