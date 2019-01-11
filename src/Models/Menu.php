@@ -105,7 +105,7 @@ class Menu extends Model
             if (url($item->href) == url()->current() && $item->href != '') {
                 // The current URL is exactly the URL of the menu-item
                 $item->active = true;
-            } else if (starts_with(url()->current(), str_finish(url($item->href), '/'))) {
+            } elseif (starts_with(url()->current(), str_finish(url($item->href), '/'))) {
                 // The current URL is "below" the menu-item URL. For example "admin/posts/1/edit" => "admin/posts"
                 $item->active = true;
             }
@@ -113,7 +113,7 @@ class Menu extends Model
             if (($item->href == '' || url($item->href) == route('voyager.dashboard')) && $item->children->count() > 0) {
                 // Exclude sub-menus
                 $item->active = false;
-            } else if (url($item->href) == route('voyager.dashboard') && url()->current() != route('voyager.dashboard')) {
+            } elseif (url($item->href) == route('voyager.dashboard') && url()->current() != route('voyager.dashboard')) {
                 // Exclude dashboard
                 $item->active = false;
             }
