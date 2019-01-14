@@ -139,11 +139,13 @@ class VoyagerMediaController extends Controller
         foreach ($request->get('files') as $file) {
             $old_path = $path.$file['name'];
             $new_path = $dest.$file['name'];
+
             try {
                 Storage::disk($this->filesystem)->move($old_path, $new_path);
             } catch (\Exception $ex) {
                 $success = false;
                 $error = $ex->getMessage();
+
                 return compact('success', 'error');
             }
         }
