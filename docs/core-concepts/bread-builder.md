@@ -151,7 +151,7 @@ The date & timestamp input field is where you can input a date. In the JSON abov
 
 The media picker formfield allows you to upload/delete/select files directly from the media-manager.  
 You can customize the behaviour with the following options:
-- `base_path` the start-path relative to the filesystem
+- `base_path` the start-path relative to the filesystem. Make sure the path exists!
 - `max` the maximum of files a user can select
 - `min` the minimum of files that are required
 - `show_folder` show subfolders or not
