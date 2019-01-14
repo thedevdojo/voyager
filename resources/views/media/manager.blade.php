@@ -1,6 +1,42 @@
 @section('media-manager')
 <div>
-    <div id="toolbar">
+    <div v-if="hidden_element">
+        <ul id="files">
+            <li v-for="file in getSelectedFiles()" v-on:dblclick="removeFileFromInput(file)">
+                <div class="file_link selected" aria-hidden="true" data-toggle="tooltip" data-placement="auto" :title="file">
+                    <div class="link_icon">
+                        <template v-if="fileIs(file, 'image')">
+                            <div class="img_icon" :style="imgIcon('{{ Storage::disk(config('voyager.storage.disk'))->url('') }}'+file)"></div>
+                        </template>
+                        <template v-else-if="fileIs(file, 'video')">
+                            <i class="icon voyager-video"></i>
+                        </template>
+                        <template v-else-if="fileIs(file, 'audio')">
+                            <i class="icon voyager-music"></i>
+                        </template>
+                        <template v-else-if="fileIs(file, 'zip')">
+                            <i class="icon voyager-archive"></i>
+                        </template>
+                        <template v-else-if="fileIs(file, 'folder')">
+                            <i class="icon voyager-folder"></i>
+                        </template>
+                        <template v-else>
+                            <i class="icon voyager-file-text"></i>
+                        </template>
+                    </div>
+                    <div class="details">
+                        <div class="folder">
+                            <h4>@{{ file }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <button class="btn btn-primary" v-if="!expanded" v-on:click.prevent="expanded = true">
+            <i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}
+        </button>
+    </div>
+    <div id="toolbar" v-if="showToolbar && expanded">
         <div class="btn-group offset-right">
             <button type="button" class="btn btn-primary" id="upload" v-if="allowUpload">
                 <i class="voyager-upload"></i>
@@ -14,12 +50,15 @@
         <button type="button" class="btn btn-default" v-on:click="getFiles()">
             <i class="voyager-refresh"></i>
         </button>
+        <button type="button" class="btn btn-default" v-if="hidden_element && expanded" v-on:click="expanded = false">
+            <i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}
+        </button>
         <div class="btn-group offset-right">
             <button type="button" v-if="showFolders && allowMove" class="btn btn-default" data-toggle="modal" data-target="#move_files_modal">
                 <i class="voyager-move"></i>
                 {{ __('voyager::generic.move') }}
             </button>
-            <button type="button" v-if="allowDelete" class="btn btn-default" data-toggle="modal" data-target="#confirm_delete_modal">
+            <button type="button" v-if="allowDelete" :disabled="selected_files.length == 0" class="btn btn-default" data-toggle="modal" data-target="#confirm_delete_modal">
                 <i class="voyager-trash"></i>
                 {{ __('voyager::generic.delete') }}
             </button>
@@ -33,7 +72,7 @@
     <div id="uploadProgress" class="progress active progress-striped" v-if="allowUpload">
         <div class="progress-bar progress-bar-success" style="width: 0"></div>
     </div>
-    <div id="content">
+    <div id="content" v-if="expanded">
         <div class="breadcrumb-container">
             <ol class="breadcrumb filemanager">
                 <li class="media_breadcrumb" v-on:click="setCurrentPath(-1)">
@@ -136,7 +175,7 @@
                         <div class="detail_info">
                             <span>
                                 <h4>{{ __('voyager::media.title') }}:</h4>
-                                <input v-if="allowRename" type="text" class="form-control" :value="selected_file.name" @keyup.enter="renameFile">
+                                <input v-if="allowRename" type="text" class="form-control" :value="selected_file.name" @keyup.enter.prevent="renameFile">
                                 <p v-else>@{{ selected_file.name }}</p>
                             </span>
                             <span>
@@ -311,15 +350,19 @@
                 type: Boolean,
                 default: true
             },
-            allowFolderSelect: {
-                type: Boolean,
-                default: true,
-            },
             maxSelectedFiles: {
                 type: Number,
                 default: 0
             },
+            minSelectedFiles: {
+                type: Number,
+                default: 0
+            },
             showFolders: {
+                type: Boolean,
+                default: true
+            },
+            showToolbar: {
                 type: Boolean,
                 default: true
             },
@@ -347,10 +390,6 @@
                 type: Boolean,
                 default: true
             },
-            allowCreateFolder: {
-                type: Boolean,
-                default: true
-            },
             allowedTypes: {
                 type: Array,
                 default: function() {
@@ -360,6 +399,10 @@
             preSelect: {
                 type: Boolean,
                 default: true,
+            },
+            element: {
+                type: String,
+                default: ""
             }
         },
         data: function() {
@@ -368,6 +411,8 @@
 		  		selected_files: [],
                 files: [],
 		  		is_loading: true,
+                hidden_element: null,
+                expanded: true,
             };
         },
         computed: {
@@ -416,26 +461,8 @@
                     }
 
                     for (var i = start; i < end; i++) {
-                        if (this.maxSelectedFiles > 0 && this.selected_files.length > this.maxSelectedFiles) {
-                            toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
-                            return;
-                        }
-                        if (!this.allowFolderSelect && this.files[i].type == 'folder') {
-                            toastr.error("You can't select a folder");
-                            return;
-                        }
                         this.selected_files.push(this.files[i]);
                     }
-                }
-
-                if (this.maxSelectedFiles > 0 && this.selected_files.length >= this.maxSelectedFiles) {
-                    toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
-                    return;
-                }
-
-                if (!this.allowFolderSelect && file.type == 'folder') {
-                    toastr.error("You can't select a folder");
-                    return;
                 }
 
                 this.selected_files.push(file);
@@ -455,17 +482,30 @@
                 if (file.type == 'folder') {
                     this.current_folder += "/"+file.name;
                     this.getFiles();
-                } else if (this.fileIs(this.selected_file, 'image')) {
-                    $('#imagemodal').modal('show');
+                } else if (this.hidden_element) {
+                    this.addFileToInput(file);
                 } else {
-                    // ...
+                    if (this.fileIs(this.selected_file, 'image')) {
+                        $('#imagemodal').modal('show');
+                    } else {
+                        // ...
+                    }
                 }
             },
             isFileSelected: function(file) {
                 return this.selected_files.includes(file);
             },
             fileIs: function(file, type) {
-                return file.type.includes(type);
+                if (typeof file === 'string') {
+                    if (type == 'image') {
+                        return this.endsWithAny(['jpg', 'jpeg', 'png', 'bmp'], file);
+                    }
+                    //Todo: add other types
+                } else {
+                    return file.type.includes(type);
+                }
+
+                return false;
 			},
             getCurrentPath: function() {
                 var path = this.current_folder.replace(this.basePath, '').split('/').filter(function (el) {
@@ -498,19 +538,57 @@
 
                 if (file.type == 'folder' && this.showFolders) {
                     return true;
+                } else if (file.type == 'folder' && !this.showFolders) {
+                    return false;
                 }
-
                 if (this.allowedTypes.length == 0) {
                     return true;
                 }
 
                 return false;
             },
+            addFileToInput: function(file) {
+                if (file.type != 'folder') {
+                    if (this.maxSelectedFiles > 1) {
+                        var content = JSON.parse(this.hidden_element.value);
+                        if (content.length >= this.maxSelectedFiles) {
+                            toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
+                        } else if (content.indexOf(file.relative_path) === -1) {
+                            content.push(file.relative_path);
+                            this.hidden_element.value = JSON.stringify(content);
+                        }
+                    } else {
+                        this.hidden_element.value = file.relative_path;
+                    }
+                }
+            },
+            removeFileFromInput: function(path) {
+                if (this.maxSelectedFiles > 1) {
+                    var content = JSON.parse(this.hidden_element.value);
+                    if (content.indexOf(path) !== -1) {
+                        content.splice(content.indexOf(path), 1);
+                        this.hidden_element.value = JSON.stringify(content);
+                        this.$forceUpdate();
+                    }
+                } else {
+                    this.hidden_element.value = '';
+                }
+            },
+            getSelectedFiles: function() {
+                if (this.maxSelectedFiles == 1) {
+                    var content = {};
+                    content.push(this.hidden_element.value);
+                    return content;
+                } else {
+                    return JSON.parse(this.hidden_element.value);
+                }
+            },
             renameFile: function(object) {
-                if (!this.allowRename) {
+                object.preventDefault();
+                var vm = this;
+                if (!this.allowRename || vm.selected_file.name == object.target.value) {
                     return;
                 }
-                var vm = this;
                 $.post('{{ route('voyager.media.rename') }}', {
                     folder_location: vm.getCurrentPath(),
                     filename: vm.selected_file.name,
@@ -617,6 +695,7 @@
 				return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 			},
             imgIcon: function(path) {
+                path = path.replace(/\\/g,"/");
 				return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:100%; height:100%;';
 			},
             dateFilter: function(date) {
@@ -633,15 +712,33 @@
 
                 return dateFormated;
             },
+            endsWithAny: function(suffixes, string) {
+                return suffixes.some(function (suffix) {
+                    return string.endsWith(suffix);
+                });
+            }
         },
         mounted: function() {
             this.getFiles();
             var vm = this;
 
+            if (this.element != '') {
+                this.hidden_element = document.querySelector(this.element);
+                if (!this.hidden_element) {
+                    console.error('Element "'+this.element+'" could not be found.');
+                } else {
+                    this.expanded = false;
+                    if (this.maxSelectedFiles > 1 && this.hidden_element.value == '') {
+                        this.hidden_element.value = '[]';
+                    }
+                }
+            }
+
             //Key events
-            window.onkeydown = function(evt) {
+            this.onkeydown = function(evt) {
                 evt = evt || window.event;
                 if (evt.keyCode == 39) {
+                    evt.preventDefault();
                     for (var i = 0, file; file = vm.files[i]; i++) {
                         if (file === vm.selected_file) {
                             i = i + 1; // increase i by one
@@ -651,6 +748,7 @@
                         }
                     }
                 } else if (evt.keyCode == 37) {
+                    evt.preventDefault();
                     for (var i = 0, file; file = vm.files[i]; i++) {
                         if (file === vm.selected_file) {
                             if (i === 0) {
@@ -662,11 +760,15 @@
                         }
                     }
                 } else if (evt.keyCode == 13) {
-                    vm.openFile(vm.selected_file, null);
+                    evt.preventDefault();
+                    if (evt.target.tagName != 'INPUT') {
+                        vm.openFile(vm.selected_file, null);
+                    }
                 }
             };
+
             //Dropzone
-            if (this.allowUpload) {
+            if (this.allowUpload && !$("#upload").hasClass('dz-clickable')) {
                 $("#upload").dropzone({
                     timeout: 180000,
                     url: '{{ route('voyager.media.upload') }}',
@@ -723,6 +825,26 @@
     				});
     			});
             }
+
+            $(document).ready(function () {
+                //Todo: this is currently not working because Ajax-validation fires first
+                $(".form-edit-add").submit(function (e) {
+                    if (vm.hidden_element) {
+                        if (vm.maxSelectedFiles > 1) {
+                            var content = JSON.parse(vm.hidden_element.value);
+                            if (content.length < vm.minSelectedFiles) {
+                                e.preventDefault();
+                                toastr.error("You must select at least "+vm.minSelectedFiles+" file(s)");
+                            }
+                        } else {
+                            if (vm.minSelectedFiles > 0 && vm.hidden_element.value == '') {
+                                e.preventDefault();
+                                toastr.error("You must select at least one file");
+                            }
+                        }
+                    }
+                });
+            });
         },
     });
 </script>

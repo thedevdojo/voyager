@@ -54,6 +54,7 @@ class VoyagerMediaController extends Controller
                     'name'          => $item['basename'],
                     'type'          => 'folder',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'relative_path' => $item['path'],
                     'items'         => '',
                     'last_modified' => '',
                 ];
@@ -65,6 +66,7 @@ class VoyagerMediaController extends Controller
                     'name'          => $item['basename'],
                     'type'          => isset($item['mimetype']) ? $item['mimetype'] : 'file',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'relative_path' => $item['path'],
                     'size'          => $item['size'],
                     'last_modified' => $item['timestamp'],
                 ];

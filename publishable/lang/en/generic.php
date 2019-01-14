@@ -64,6 +64,7 @@ return [
     'none'                   => 'None',
     'not_null'               => 'Not Null',
     'no_results'             => 'No results',
+    'open'                   => 'Open',
     'options'                => 'Options',
     'password'               => 'Password',
     'permissions'            => 'Permissions',

@@ -191,6 +191,20 @@
                                                             <img src="@if( !filter_var($image, FILTER_VALIDATE_URL)){{ Voyager::image( $image ) }}@else{{ $image }}@endif" style="width:50px">
                                                         @endforeach
                                                     @endif
+                                                @elseif($row->type == 'media_picker')
+                                                    @php $files = json_decode($data->{$row->field}); @endphp
+                                                    @if ($files)
+                                                        <ul>
+                                                        @foreach (array_slice($files, 0, 3) as $file)
+                                                            <li>{{ $file }}</li>
+                                                        @endforeach
+                                                        </ul>
+                                                        @if (count($files) > 3)
+                                                            And {{ (count($files) - 3) }} more
+                                                        @endif
+                                                    @else
+                                                        0 files
+                                                    @endif
                                                 @else
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
                                                     <span>{{ $data->{$row->field} }}</span>

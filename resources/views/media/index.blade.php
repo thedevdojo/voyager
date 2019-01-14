@@ -21,10 +21,9 @@
 @stop
 
 @section('javascript')
-    @include('voyager::media.manager')
-    <script>
-    new Vue({
-        el: '#filemanager'
-    });
-    </script>
+<script>
+new Vue({
+    el: '#filemanager'
+});
+</script>
 @endsection
