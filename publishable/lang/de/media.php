@@ -4,6 +4,7 @@ return [
     'add_new_folder'         => 'Neuen Ordner hinzufügen',
     'audio_support'          => 'Ihr Browser unterstützt das Audio Element nicht.',
     'create_new_folder'      => 'Neuen Ordner erstellen',
+    'delete_question'        => 'Sind Sie sicher dass Sie die folgenden Dateien löschen möchten?',
     'delete_folder_question' => 'Das Löschen eines Ordners wird alle darin enthaltenen Dateien und Ordnder löschen.',
     'destination_folder'     => 'Ziel Ordner',
     'drag_drop_info'         => 'Dateien mit Drag und Drop hineinziehen oder unten klicken um hochzuladen',

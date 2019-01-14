@@ -9,7 +9,7 @@ return [
     'add_new'                => 'Neu hinzufügen',
     'all_done'               => 'Alles erledigt',
     'are_you_sure'           => 'Sind Sie sicher',
-    'are_you_sure_delete'    => 'Sind Sie sicher dass Sie die folgenden Dateien löschen möchten?',
+    'are_you_sure_delete'    => 'Sind Sie sicher dass Sie löschen möchten',
     'ascending'              => 'Aufsteigend',
     'auto_increment'         => 'Automatische Werterhöhung',
     'browse'                 => 'Browse',

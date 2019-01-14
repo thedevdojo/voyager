@@ -261,7 +261,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <h4>{{ __('voyager::generic.are_you_sure_delete') }}</h4>
+                    <h4>{{ __('voyager::media.delete_question') }}</h4>
                     <ul>
                         <li v-for="file in selected_files">@{{ file.name }}</li>
                     </ul>

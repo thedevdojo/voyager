@@ -5,6 +5,7 @@ return [
     'audio_support'          => 'Your browser does not support the audio element.',
     'create_new_folder'      => 'Create New Folder',
     'delete_folder_question' => 'Deleting a folder will remove all files and folders contained inside',
+    'delete_question'        => 'Are you sure you want to delete the following file(s)?',
     'destination_folder'     => 'Destination Folder',
     'drag_drop_info'         => 'Drag and drop files or click below to upload',
     'error_already_exists'   => 'Sorry there is already a file/folder with that existing name in that folder.',
