@@ -1,3 +1,17 @@
+@php
+$content = '';
+if (isset($row->details->max) && $row->details->max == 1) {
+    $content = "'".$dataTypeContent->{$row->field}."'";
+} else {
+    json_decode($dataTypeContent->{$row->field});
+    if (json_last_error() == JSON_ERROR_NONE) {
+        $content = json_encode($dataTypeContent->{$row->field});
+    } else {
+        $content = json_encode('[]');
+    }
+}
+@endphp
+
 <div id="media_picker_{{ $row->field }}">
     <media-manager
         base-path="{{ isset($row->details->base_path) ? $row->details->base_path : '/' }}"
@@ -18,7 +32,7 @@
         :show-expand-button="true"
         :element="'input[name=&quot;{{ $row->field }}&quot;]'"
     ></media-manager>
-    <input type="hidden" :value="{{ isset($row->details->max) && $row->details->max > 1 ? json_encode($dataTypeContent->{$row->field}) : $dataTypeContent->{$row->field} }}" name="{{ $row->field }}">
+    <input type="hidden" :value="{{ $content }}" name="{{ $row->field }}">
 </div>
 @push('javascript')
 <script>

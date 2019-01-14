@@ -194,13 +194,25 @@
                                                 @elseif($row->type == 'media_picker')
                                                     @php $files = json_decode($data->{$row->field}); @endphp
                                                     @if ($files)
-                                                        <ul>
-                                                        @foreach (array_slice($files, 0, 3) as $file)
-                                                            <li>{{ $file }}</li>
-                                                        @endforeach
-                                                        </ul>
+                                                        @if (property_exists($row->details, 'show_as_images') && $row->details->show_as_images)
+                                                            @foreach (array_slice($files, 0, 3) as $file)
+                                                            <img src="@if( !filter_var($file, FILTER_VALIDATE_URL)){{ Voyager::image( $file ) }}@else{{ $file }}@endif" style="width:50px">
+                                                            @endforeach
+                                                        @else
+                                                            <ul>
+                                                            @foreach (array_slice($files, 0, 3) as $file)
+                                                                <li>{{ $file }}</li>
+                                                            @endforeach
+                                                            </ul>
+                                                        @endif
                                                         @if (count($files) > 3)
                                                             And {{ (count($files) - 3) }} more
+                                                        @endif
+                                                    @elseif ($data->{$row->field} != '')
+                                                        @if (property_exists($row->details, 'show_as_images') && $row->details->show_as_images)
+                                                            <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:50px">
+                                                        @else
+                                                            {{ $data->{$row->field} }}
                                                         @endif
                                                     @else
                                                         0 files

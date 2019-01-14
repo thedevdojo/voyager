@@ -549,16 +549,16 @@
             },
             addFileToInput: function(file) {
                 if (file.type != 'folder') {
-                    if (this.maxSelectedFiles > 1) {
+                    if (this.maxSelectedFiles == 1) {
+                        this.hidden_element.value = file.relative_path;
+                    } else {
                         var content = JSON.parse(this.hidden_element.value);
-                        if (content.length >= this.maxSelectedFiles) {
+                        if (content.length >= this.maxSelectedFiles && this.maxSelectedFiles > 0) {
                             toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
                         } else if (content.indexOf(file.relative_path) === -1) {
                             content.push(file.relative_path);
                             this.hidden_element.value = JSON.stringify(content);
                         }
-                    } else {
-                        this.hidden_element.value = file.relative_path;
                     }
                 }
             },
@@ -576,8 +576,11 @@
             },
             getSelectedFiles: function() {
                 if (this.maxSelectedFiles == 1) {
-                    var content = {};
-                    content.push(this.hidden_element.value);
+                    var content = [];
+                    if (this.hidden_element.value != '') {
+                        content.push(this.hidden_element.value);
+                    }
+
                     return content;
                 } else {
                     return JSON.parse(this.hidden_element.value);
