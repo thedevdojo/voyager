@@ -42,7 +42,7 @@
                 <i class="voyager-upload"></i>
                 {{ __('voyager::generic.upload') }}
             </button>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_dir_modal">
+            <button type="button" class="btn btn-primary" v-if="allowCreateFolder" data-toggle="modal" data-target="#create_dir_modal">
                 <i class="voyager-folder"></i>
                 {{ __('voyager::generic.add_folder') }}
             </button>

@@ -13,7 +13,16 @@
                 </div>
                 <div class="clear"></div>
                 <div id="filemanager">
-                    <media-manager base-path="{{ config('voyager.media.path', '/') }}"></media-manager>
+                    <media-manager
+                        base-path="{{ config('voyager.media.path', '/') }}"
+                        :show-folders="{{ config('voyager.media.show_folders', true) ? 'true' : 'false' }}"
+                        :allow-upload="{{ config('voyager.media.allow_upload', true) ? 'true' : 'false' }}"
+                        :allow-move="{{ config('voyager.media.allow_move', true) ? 'true' : 'false' }}"
+                        :allow-delete="{{ config('voyager.media.allow_delete', true) ? 'true' : 'false' }}"
+                        :allow-create-folder="{{ config('voyager.media.allow_create_folder', true) ? 'true' : 'false' }}"
+                        :allow-rename="{{ config('voyager.media.allow_rename', true) ? 'true' : 'false' }}"
+                        :allow-crop="{{ config('voyager.media.allow_crop', true) ? 'true' : 'false' }}"
+                        ></media-manager>
                 </div>
             </div><!-- .row -->
         </div><!-- .col-md-12 -->

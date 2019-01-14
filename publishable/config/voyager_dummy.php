@@ -222,6 +222,12 @@ return [
         ],
         */
        //Path for media-manager. Relative to the filesystem.
-       'path' => '/',
+       'path'                => '/',
+       'show_folders'        => true,
+       'allow_upload'        => true,
+       'allow_move'          => true,
+       'allow_delete'        => true,
+       'allow_create_folder' => true,
+       'allow_rename'        => true,
    ],
 ];
