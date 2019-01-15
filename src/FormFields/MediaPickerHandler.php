@@ -12,6 +12,9 @@ class MediaPickerHandler extends AbstractHandler
         if (isset($options->max) && $options->max == 1) {
             $content = "'".$dataTypeContent->{$row->field}."'";
         } else {
+            if (is_array($dataTypeContent->{$row->field})) {
+                $dataTypeContent->{$row->field} = json_encode($dataTypeContent->{$row->field});
+            }
             json_decode($dataTypeContent->{$row->field});
             if (json_last_error() == JSON_ERROR_NONE) {
                 $content = json_encode($dataTypeContent->{$row->field});
