@@ -206,7 +206,7 @@
                                                             </ul>
                                                         @endif
                                                         @if (count($files) > 3)
-                                                            And {{ (count($files) - 3) }} more
+                                                            {{ __('voyager::media.files_more', ['count' => (count($files) - 3)]) }}
                                                         @endif
                                                     @elseif ($data->{$row->field} != '')
                                                         @if (property_exists($row->details, 'show_as_images') && $row->details->show_as_images)
@@ -215,7 +215,7 @@
                                                             {{ $data->{$row->field} }}
                                                         @endif
                                                     @else
-                                                        0 files
+                                                        {{ trans_choice('voyager::media.files', 0) }}
                                                     @endif
                                                 @else
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
