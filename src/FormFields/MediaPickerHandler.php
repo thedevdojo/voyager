@@ -14,6 +14,8 @@ class MediaPickerHandler extends AbstractHandler
         } else {
             if (is_array($dataTypeContent->{$row->field})) {
                 $dataTypeContent->{$row->field} = json_encode($dataTypeContent->{$row->field});
+            } elseif (get_class($dataTypeContent->{$row->field}) == 'Illuminate\Support\Collection') {
+                $dataTypeContent->{$row->field} = $dataTypeContent->{$row->field}->toJson();
             }
             json_decode($dataTypeContent->{$row->field});
             if (json_last_error() == JSON_ERROR_NONE) {
