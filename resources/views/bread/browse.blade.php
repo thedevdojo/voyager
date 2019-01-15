@@ -192,7 +192,13 @@
                                                         @endforeach
                                                     @endif
                                                 @elseif($row->type == 'media_picker')
-                                                    @php $files = json_decode($data->{$row->field}); @endphp
+                                                    @php
+                                                        if (is_array($data->{$row->field})) {
+                                                            $files = $data->{$row->field};
+                                                        } else {
+                                                            $files = json_decode($data->{$row->field});
+                                                        }
+                                                    @endphp
                                                     @if ($files)
                                                         @if (property_exists($row->details, 'show_as_images') && $row->details->show_as_images)
                                                             @foreach (array_slice($files, 0, 3) as $file)
