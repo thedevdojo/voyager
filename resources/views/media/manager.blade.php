@@ -32,8 +32,9 @@
                 </div>
             </li>
         </ul>
-        <button class="btn btn-primary" v-if="!expanded" v-on:click.prevent="expanded = true">
-            <i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}
+        <button class="btn btn-sm btn-default" v-on:click.prevent="expanded = !expanded" style="width:100%">
+            <div v-if="!expanded"><i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}</div>
+            <div v-if="expanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
         </button>
     </div>
     <div id="toolbar" v-if="showToolbar && expanded">
@@ -49,9 +50,6 @@
         </div>
         <button type="button" class="btn btn-default" v-on:click="getFiles()">
             <i class="voyager-refresh"></i>
-        </button>
-        <button type="button" class="btn btn-default" v-if="hidden_element && expanded" v-on:click="expanded = false">
-            <i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}
         </button>
         <div class="btn-group offset-right">
             <button type="button" v-if="showFolders && allowMove" class="btn btn-default" data-toggle="modal" data-target="#move_files_modal">
