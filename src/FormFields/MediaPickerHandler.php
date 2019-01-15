@@ -8,11 +8,23 @@ class MediaPickerHandler extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
+        $content = '';
+        if (isset($options->max) && $options->max == 1) {
+            $content = "'".$dataTypeContent->{$row->field}."'";
+        } else {
+            json_decode($dataTypeContent->{$row->field});
+            if (json_last_error() == JSON_ERROR_NONE) {
+                $content = json_encode($dataTypeContent->{$row->field});
+            } else {
+                $content = json_encode('[]');
+            }
+        }
+
         return view('voyager::formfields.media_picker', [
-            'row'             => $row,
-            'options'         => $options,
-            'dataType'        => $dataType,
-            'dataTypeContent' => $dataTypeContent,
+            'row'      => $row,
+            'options'  => $options,
+            'dataType' => $dataType,
+            'content'  => $content,
         ]);
     }
 }
