@@ -76,6 +76,7 @@
 
                     <div class="form-group form-group-default" id="passwordGroup">
                         <label>{{ __('voyager::generic.password') }}</label>
+                        <p>test change</p>
                         <div class="controls">
                             <input type="password" name="password" placeholder="{{ __('voyager::generic.password') }}" class="form-control" required>
                         </div>
