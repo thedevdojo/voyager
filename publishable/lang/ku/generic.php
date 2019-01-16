@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'true',
     'action'                 => 'فرمان',
     'actions'                => 'فرمانەکان',
     'add'                    => 'دانان',
