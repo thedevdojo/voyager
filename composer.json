@@ -21,7 +21,8 @@
         "larapack/doctrine-support": "~0.1.4",
         "arrilot/laravel-widgets": "^3.7",
         "league/flysystem": "~1.0.41",
-        "larapack/voyager-hooks": "~1.0.5"
+        "larapack/voyager-hooks": "~1.0.5",
+        "ext-json": "*"
     },
     "require-dev": {
         "phpunit/phpcov": "~3.0|~4.0",
