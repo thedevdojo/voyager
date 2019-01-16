@@ -320,7 +320,7 @@ class Translator implements ArrayAccess, JsonSerializable
 
     public function jsonSerialize()
     {
-        return array_map(function($array) {
+        return array_map(function ($array) {
             return $array['value'];
         }, $this->getRawAttributes());
     }
