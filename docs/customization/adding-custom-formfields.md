@@ -36,7 +36,6 @@ Next, we will create the view specified above.
        class="form-control"
        name="{{ $row->field }}"
        data-name="{{ $row->display_name }}"
-       type="number"
        @if($row->required == 1) required @endif
              step="any"
        placeholder="{{ isset($options->placeholder)? old($row->field, $options->placeholder): $row->display_name }}"
