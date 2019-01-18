@@ -13,9 +13,9 @@ trait BreadRelationshipParser
         $forget_keys = [];
         foreach ($dataType->{$bread_type.'Rows'} as $key => $row) {
             if ($row->type == 'relationship') {
-                if ($row->details->type == 'belongsTo') {
+                if (json_decode($row->details)->type == 'belongsTo') {
                     $relationshipField = @$row->details->column;
-                    $keyInCollection = key($dataType->{$bread_type.'Rows'}->where('field', '=', $relationshipField)->toArray());
+                    $keyInCollection = key($dataType->{$bread_type . 'Rows'}->where('field', '=', $relationshipField)->toArray());
                     array_push($forget_keys, $keyInCollection);
                 }
             }
