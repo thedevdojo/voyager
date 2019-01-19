@@ -4,7 +4,7 @@ use TCG\Voyager\Events\Routing;
 use TCG\Voyager\Events\RoutingAdmin;
 use TCG\Voyager\Events\RoutingAdminAfter;
 use TCG\Voyager\Events\RoutingAfter;
-use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Facades\Voyager;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ Route::group(['as' => 'voyager.'], function () {
         Route::get('profile', ['uses' => $namespacePrefix.'VoyagerController@profile', 'as' => 'profile']);
 
         try {
-            foreach (DataType::all() as $dataType) {
+            foreach (Voyager::model('DataType')::all() as $dataType) {
                 $breadController = $dataType->controller
                                  ? $dataType->controller
                                  : $namespacePrefix.'VoyagerBaseController';
