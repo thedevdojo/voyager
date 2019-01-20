@@ -4,11 +4,7 @@ namespace TCG\Voyager\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use TCG\Voyager\Models\Post;
-use TCG\Voyager\Models\Role;
-use TCG\Voyager\Models\User;
 
 class SearchTest extends TestCase
 {
@@ -29,16 +25,16 @@ class SearchTest extends TestCase
         $post->featured = 1;
         $post->save();
         $params = [
-            'key' => 'featured',
+            'key'    => 'featured',
             'filter' => 'equals',
-            's' => '0',
+            's'      => '0',
         ];
-        $this->visit(route('voyager.posts.index') . '?' . http_build_query($params))
+        $this->visit(route('voyager.posts.index').'?'.http_build_query($params))
             ->dontSee($post->title)
             ->see(Post::where('featured', 0)->first()->title);
 
         $params['s'] = 1;
-        $this->visit(route('voyager.posts.index') . '?' . http_build_query($params))
+        $this->visit(route('voyager.posts.index').'?'.http_build_query($params))
             ->see($post->title)
             ->dontSee(Post::where('featured', 0)->first()->title);
     }
