@@ -1,36 +1,15 @@
 # Upgrading
 
-## Upgrading 1.1 to 1.x
+## Upgrading 1.1 to 1.2
 
 ### Update your Composer.json
+To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration inside of your composer.json to:
 
-To update to the latest version inside of your composer.json file make sure to update the version of voyager inside the require declaration inside of your composer.json to:
+`tcg/voyager": "1.2.*`
 
-```text
-{
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/the-control-group/voyager.git"
-        }
-    ],
+And then run composer update
 
-    "require": {
-        "tcg/voyager": "1.x-dev"
-    }
-}
-```
-
-And then run `composer update`
-
-Or simply run:
-
-```text
-composer require tcg/voyager:1.x-dev
-```
-
-### Update Configuration {#update-configuration}
-
+### Update Configuration
 The `voyager.php` configuration file has had a few changes.
 
 ```php
@@ -69,23 +48,26 @@ You can now define an array of mimetypes which are allowed to be uploaded throug
 ],*/
 ```
 
+Compass is now switched off automatically when the environment is not `local`.  
+This can be overriden by the following new config-key:
+```php
+'compass_in_production' => true,
+```
+
 ### Deprecation
 `can`, `canOrAbort`, `canOrFail` in the Voyager facade were all removed in favor of Policies and Gates.  
 Please refer to the [Laravel documentation](https://laravel.com/docs/authorization).
 
-### **Final Steps**
+### User BREAD
+The User BREAD now has its own controller.
+Please update your User BREAD to use `TCG\Voyager\Http\Controllers\VoyagerUserController` as the controller:
+![](../.gitbook/assets/upgrade_controller.jpg)
 
-Next, you may want to be sure that you have all the latest published assets. To re-publish the voyager assets you can run the following command:
-
-```text
-php artisan vendor:publish --tag=voyager_assets --force
-```
-
-Then you may wish to clear your view cache by running the following command:
-
-```text
-php artisan view:clear
-```
+### Final Steps
+Voyager changed its way on how to load assets.  
+Assets don't get published anymore, instead they are loaded directly from the package.  
+Because of that, you can safely remove everything from your `public/vendor/tcg/voyager` folder.  
+Also you can remove the `assets_path` config-key from `config/voyager.php`.
 
 ## Troubleshooting
 
