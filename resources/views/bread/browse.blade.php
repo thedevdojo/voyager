@@ -140,7 +140,7 @@
                                                             {{ __('voyager::generic.none') }}
                                                         @endif
 
-                                                @elseif($row->type == 'select_dropdown' && property_exists($row->details, 'options'))
+                                                @elseif(($row->type == 'select_dropdown' || $row->type == 'radio_btn') && property_exists($row->details, 'options'))
 
                                                     {!! isset($row->details->options->{$data->{$row->field}}) ?  $row->details->options->{$data->{$row->field}} : '' !!}
 
