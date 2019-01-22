@@ -828,7 +828,6 @@
             }
 
             $(document).ready(function () {
-                //Todo: this is currently not working because Ajax-validation fires first
                 $(".form-edit-add").submit(function (e) {
                     if (vm.hidden_element) {
                         if (vm.maxSelectedFiles > 1) {
