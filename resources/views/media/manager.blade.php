@@ -1,8 +1,8 @@
 @section('media-manager')
 <div>
-    <div v-if="hidden_element">
-        <ul id="files">
-            <li v-for="file in getSelectedFiles()" v-on:dblclick="removeFileFromInput(file)">
+    <div v-if="hidden_element" class="dd">
+        <ol id="files" class="dd-list">
+            <li v-for="file in getSelectedFiles()" class="dd-item" :data-url="file">
                 <div class="file_link selected" aria-hidden="true" data-toggle="tooltip" data-placement="auto" :title="file">
                     <div class="link_icon">
                         <template v-if="fileIs(file, 'image')">
@@ -29,9 +29,10 @@
                             <h4>@{{ file }}</h4>
                         </div>
                     </div>
+                    <i class="voyager-x dd-nodrag" v-on:click="removeFileFromInput(file)"></i>
                 </div>
             </li>
-        </ul>
+        </ol>
         <button class="btn btn-sm btn-default" v-on:click.prevent="expanded = !expanded" style="width:100%">
             <div v-if="!expanded"><i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}</div>
             <div v-if="expanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
@@ -842,6 +843,22 @@
                                 toastr.error("You must select at least one file");
                             }
                         }
+                    }
+                });
+
+                //Nestable
+                $('.dd').nestable({
+                    maxDepth: 1,
+                    handleClass: 'file_link',
+                    collapseBtnHTML: '',
+                    expandBtnHTML: '',
+                    callback: function(l, e) {
+                        var new_content = [];
+                        var object = $('.dd').nestable('serialize');
+                        for (var key in object) {
+                            new_content.push(object[key].url);
+                        }
+                        vm.hidden_element.value = JSON.stringify(new_content);
                     }
                 });
             });
