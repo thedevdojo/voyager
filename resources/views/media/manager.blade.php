@@ -788,7 +788,7 @@
                     },
                     sending: function(file, xhr, formData) {
                         formData.append("_token", '{{ csrf_token() }}');
-                        formData.append("upload_path", vm.getCurrentPath());
+                        formData.append("upload_path", vm.current_folder);
                     },
                     success: function(e, res) {
                         if (res.success) {
