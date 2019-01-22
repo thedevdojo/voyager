@@ -25,6 +25,8 @@ return [
     'image_removed'          => 'Bild entfernt',
     'library'                => 'Medien Bibliothek',
     'loading'                => 'LADE IHRE MEDIEN DATEIEN',
+    'max_files_select'       => 'Sie können nur eine Datei auswählen|Sie können maximal :count Dateien auswählen',
+    'min_files_select'       => 'Sie müssen mindestens eine Datei auswählen|Sie müssen mindestens :count Dateien auswählen',
     'move_file_folder'       => 'Datei/Ordner verschieben',
     'new_file_folder'        => 'Datei/Ordner anlegen',
     'new_folder_name'        => 'Name des neuen Ordners',

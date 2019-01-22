@@ -86,6 +86,8 @@ return [
     'successfully_deleted'   => 'Successfully Deleted',
     'successfully_restored'  => 'Successfully Restored',
     'successfully_updated'   => 'Successfully Updated',
+    'successfully_created'   => 'Successfully created',
+    'sweet_success'          => 'Sweet Success!',
     'timestamp'              => 'Timestamp',
     'title'                  => 'Title',
     'type'                   => 'Type',
@@ -99,6 +101,7 @@ return [
     'url'                    => 'URL',
     'view'                   => 'View',
     'viewing'                => 'Viewing',
+    'whoopsie'               => 'Whoopsie!',
     'yes'                    => 'Yes',
     'yes_please'             => 'Yes, Please',
 ];

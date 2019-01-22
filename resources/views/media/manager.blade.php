@@ -552,9 +552,18 @@
                         this.hidden_element.value = file.relative_path;
                     } else {
                         var content = JSON.parse(this.hidden_element.value);
+                        if (content.indexOf(file.relative_path) !== -1) {
+                            return;
+                        }
                         if (content.length >= this.maxSelectedFiles && this.maxSelectedFiles > 0) {
-                            toastr.error("You can select a maximum of "+this.maxSelectedFiles+" files");
-                        } else if (content.indexOf(file.relative_path) === -1) {
+                            var msg_sing = "{{ trans_choice('voyager::media.max_files_select', 1) }}";
+                            var msg_plur = "{{ trans_choice('voyager::media.max_files_select', 2) }}";
+                            if (this.maxSelectedFiles == 1) {
+                                toastr.error(msg_sing);
+                            } else {
+                                toastr.error(msg_plur.replace('2', this.maxSelectedFiles));
+                            }
+                        } else {
                             content.push(file.relative_path);
                             this.hidden_element.value = JSON.stringify(content);
                         }
@@ -598,10 +607,10 @@
                     _token: '{{ csrf_token() }}'
                 }, function(data){
 					if (data.success == true) {
-						toastr.success('Successfully renamed file/folder', "Sweet Success!");
+						toastr.success('{{ __('voyager.media.success_renamed') }}', "{{ __('voyager::generic.sweet_success') }}");
 						vm.getFiles();
 					} else {
-						toastr.error(data.error, "Whoops!");
+						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
 				});
             },
@@ -613,10 +622,10 @@
                 var name = $(e.path).parent('.modal-content').find('input').first().val();
                 $.post('{{ route('voyager.media.new_folder') }}', { new_folder: vm.current_folder+'/'+name, _token: '{{ csrf_token() }}' }, function(data) {
 					if(data.success == true){
-						toastr.success('Successfully created ' + name, "Sweet Success!");
+						toastr.success('{{ __('voyager::generic.successfully_created') }} ' + name, "{{ __('voyager::generic.sweet_success') }}");
 						vm.getFiles();
 					} else {
-						toastr.error(data.error, "Whoops!");
+						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
 					$(e.path).parent('.modal-content').find('input').first().val('');
 					$('#create_dir_modal').modal('hide');
@@ -633,11 +642,11 @@
                     _token: '{{ csrf_token() }}'
                 }, function(data){
 					if(data.success == true){
-						toastr.success('', "Sweet Success!");
+						toastr.success('', "{{ __('voyager::generic.sweet_success') }}");
 						vm.getFiles();
 						$('#confirm_delete_modal').modal('hide');
 					} else {
-						toastr.error(data.error, "Whoops!");
+						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
                         vm.getFiles();
 						$('#confirm_delete_modal').modal('hide');
 					}
@@ -657,10 +666,10 @@
                     _token: '{{ csrf_token() }}'
                 }, function(data){
 					if(data.success == true){
-						toastr.success('Successfully moved file/folder', "Sweet Success!");
+						toastr.success('{{ __('voyager.media.success_moved') }}', "{{ __('voyager::generic.sweet_success') }}");
 						vm.getFiles();
 					} else {
-						toastr.error(data.error, "Whoops!");
+						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
 				});
             },
@@ -686,7 +695,7 @@
 						vm.getFiles();
 						$('#crop_modal').modal('hide');
 					} else {
-						toastr.error(data.error, "Whoops!");
+						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
 				});
             },
@@ -792,13 +801,13 @@
                     },
                     success: function(e, res) {
                         if (res.success) {
-                            toastr.success(res.message, "Sweet Success!");
+                            toastr.success(res.message, "{{ __('voyager::generic.sweet_success') }}");
                         } else {
-                            toastr.error(res.message, "Whoopsie!");
+                            toastr.error(res.message, "{{ __('voyager::generic.whoopsie') }}");
                         }
                     },
                     error: function(e, res, xhr) {
-                        toastr.error(res, "Whoopsie");
+                        toastr.error(res, "{{ __('voyager::generic.whoopsie') }}");
                     },
                     queuecomplete: function() {
                         vm.getFiles();
@@ -835,12 +844,18 @@
                             var content = JSON.parse(vm.hidden_element.value);
                             if (content.length < vm.minSelectedFiles) {
                                 e.preventDefault();
-                                toastr.error("You must select at least "+vm.minSelectedFiles+" file(s)");
+                                var msg_sing = "{{ trans_choice('voyager::media.min_files_select', 1) }}";
+                                var msg_plur = "{{ trans_choice('voyager::media.min_files_select', 2) }}";
+                                if (vm.minSelectedFiles == 1) {
+                                    toastr.error(msg_sing);
+                                } else {
+                                    toastr.error(msg_plur.replace('2', vm.minSelectedFiles));
+                                }
                             }
                         } else {
                             if (vm.minSelectedFiles > 0 && vm.hidden_element.value == '') {
                                 e.preventDefault();
-                                toastr.error("You must select at least one file");
+                                toastr.error("{{ trans_choice('voyager::media.min_files_select', 1) }}");
                             }
                         }
                     }
