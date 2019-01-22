@@ -853,12 +853,14 @@
                     collapseBtnHTML: '',
                     expandBtnHTML: '',
                     callback: function(l, e) {
-                        var new_content = [];
-                        var object = $('.dd').nestable('serialize');
-                        for (var key in object) {
-                            new_content.push(object[key].url);
+                        if (vm.allowMultiSelect) {
+                            var new_content = [];
+                            var object = $('.dd').nestable('serialize');
+                            for (var key in object) {
+                                new_content.push(object[key].url);
+                            }
+                            vm.hidden_element.value = JSON.stringify(new_content);
                         }
-                        vm.hidden_element.value = JSON.stringify(new_content);
                     }
                 });
             });
