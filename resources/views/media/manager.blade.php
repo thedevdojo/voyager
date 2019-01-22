@@ -33,10 +33,10 @@
                 </div>
             </li>
         </ol>
-        <button class="btn btn-sm btn-default" v-on:click.prevent="expanded = !expanded" style="width:100%">
+        <div class="btn btn-sm btn-default" v-on:click="expanded = !expanded;" style="width:100%">
             <div v-if="!expanded"><i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}</div>
             <div v-if="expanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
-        </button>
+        </div>
     </div>
     <div id="toolbar" v-if="showToolbar" :style="expanded ? 'display:block' : 'display:none'">
         <div class="btn-group offset-right">
@@ -174,7 +174,7 @@
                         <div class="detail_info">
                             <span>
                                 <h4>{{ __('voyager::media.title') }}:</h4>
-                                <input v-if="allowRename" type="text" class="form-control" :value="selected_file.name" @keyup.enter.prevent="renameFile">
+                                <input v-if="allowRename" type="text" class="form-control" :value="selected_file.name" @keydown.enter.prevent="renameFile">
                                 <p v-else>@{{ selected_file.name }}</p>
                             </span>
                             <span>
@@ -595,19 +595,18 @@
                 }
             },
             renameFile: function(object) {
-                object.preventDefault();
                 var vm = this;
                 if (!this.allowRename || vm.selected_file.name == object.target.value) {
                     return;
                 }
                 $.post('{{ route('voyager.media.rename') }}', {
-                    folder_location: vm.getCurrentPath(),
+                    folder_location: vm.current_folder,
                     filename: vm.selected_file.name,
                     new_filename: object.target.value,
                     _token: '{{ csrf_token() }}'
                 }, function(data){
 					if (data.success == true) {
-						toastr.success('{{ __('voyager.media.success_renamed') }}', "{{ __('voyager::generic.sweet_success') }}");
+						toastr.success('{{ __('voyager::media.success_renamed') }}', "{{ __('voyager::generic.sweet_success') }}");
 						vm.getFiles();
 					} else {
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
@@ -666,7 +665,7 @@
                     _token: '{{ csrf_token() }}'
                 }, function(data){
 					if(data.success == true){
-						toastr.success('{{ __('voyager.media.success_moved') }}', "{{ __('voyager::generic.sweet_success') }}");
+						toastr.success('{{ __('voyager::media.success_moved') }}', "{{ __('voyager::generic.sweet_success') }}");
 						vm.getFiles();
 					} else {
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
@@ -771,6 +770,7 @@
                         }
                     }
                 } else if (evt.keyCode == 13) {
+                    console.log(2);
                     evt.preventDefault();
                     if (evt.target.tagName != 'INPUT') {
                         vm.openFile(vm.selected_file, null);
@@ -839,6 +839,7 @@
 
             $(document).ready(function () {
                 $(".form-edit-add").submit(function (e) {
+                    console.log(e);
                     if (vm.hidden_element) {
                         if (vm.maxSelectedFiles > 1) {
                             var content = JSON.parse(vm.hidden_element.value);
