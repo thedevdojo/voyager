@@ -37,7 +37,7 @@
             <div v-if="expanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
         </button>
     </div>
-    <div id="toolbar" v-if="showToolbar && expanded">
+    <div id="toolbar" v-if="showToolbar" :style="expanded ? 'display:block' : 'display:none'">
         <div class="btn-group offset-right">
             <button type="button" class="btn btn-primary" id="upload" v-if="allowUpload">
                 <i class="voyager-upload"></i>
@@ -70,7 +70,7 @@
     <div id="uploadProgress" class="progress active progress-striped" v-if="allowUpload">
         <div class="progress-bar progress-bar-success" style="width: 0"></div>
     </div>
-    <div id="content" v-if="expanded">
+    <div id="content" :style="expanded ? 'display:block' : 'display:none'">
         <div class="breadcrumb-container">
             <ol class="breadcrumb filemanager">
                 <li class="media_breadcrumb" v-on:click="setCurrentPath(-1)">
