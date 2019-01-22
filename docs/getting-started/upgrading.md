@@ -36,16 +36,29 @@ Also, the option
 
 was added. This allows you to exclude Voyagers migration-files from loading when running `php artisan migrate`.
 
-You can now define an array of mimetypes which are allowed to be uploaded through the media-manager.
+The media-manager got some new configuration-options:
 ```php
-'allowed_mimetypes' => '*', //All types can be uploaded
-/*'allowed_mimetypes' => [
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-  'image/bmp',
-  'video/mp4',
-],*/
+'media' => [
+    // The allowed mimetypes to be uploaded through the media-manager.
+    'allowed_mimetypes' => '*', //All types can be uploaded
+
+    /*'allowed_mimetypes' => [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/bmp',
+        'video/mp4',
+    ],*/
+
+    //Path for media-manager. Relative to the filesystem.
+    'path'                => '/',
+    'show_folders'        => true,
+    'allow_upload'        => true,
+    'allow_move'          => true,
+    'allow_delete'        => true,
+    'allow_create_folder' => true,
+    'allow_rename'        => true,
+],
 ```
 
 Compass is now switched off automatically when the environment is not `local`.  
