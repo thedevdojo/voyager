@@ -33,6 +33,8 @@
                 </div>
             </li>
         </ol>
+    </div>
+    <div v-if="hidden_element">
         <div class="btn btn-sm btn-default" v-on:click="expanded = !expanded;" style="width:100%">
             <div v-if="!expanded"><i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}</div>
             <div v-if="expanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
@@ -779,21 +781,24 @@
             };
 
             //Dropzone
-            if (this.allowUpload && !$("#upload").hasClass('dz-clickable')) {
-                $("#upload").dropzone({
+            var dropzone = $(vm.$el).first().find('#upload').first();
+            var progress = $(vm.$el).first().find('#uploadProgress').first();
+            var progress_bar = $(vm.$el).first().find('#uploadProgress .progress-bar').first();
+            if (this.allowUpload && !dropzone.hasClass('dz-clickable')) {
+                dropzone.dropzone({
                     timeout: 180000,
                     url: '{{ route('voyager.media.upload') }}',
                     previewsContainer: "#uploadPreview",
                     totaluploadprogress: function(uploadProgress, totalBytes, totalBytesSent) {
-                        $('#uploadProgress .progress-bar').css('width', uploadProgress + '%');
+                        progress_bar.css('width', uploadProgress + '%');
     					if (uploadProgress == 100) {
-    						$('#uploadProgress').delay(1500).slideUp(function(){
-    							$('#uploadProgress .progress-bar').css('width', '0%');
+    						progress.delay(1500).slideUp(function(){
+    							progress_bar.css('width', '0%');
     						});
     					}
                     },
                     processing: function(){
-                        $('#uploadProgress').fadeIn();
+                        progress.fadeIn();
                     },
                     sending: function(file, xhr, formData) {
                         formData.append("_token", '{{ csrf_token() }}');
@@ -839,7 +844,6 @@
 
             $(document).ready(function () {
                 $(".form-edit-add").submit(function (e) {
-                    console.log(e);
                     if (vm.hidden_element) {
                         if (vm.maxSelectedFiles > 1) {
                             var content = JSON.parse(vm.hidden_element.value);
@@ -868,6 +872,7 @@
                     handleClass: 'file_link',
                     collapseBtnHTML: '',
                     expandBtnHTML: '',
+                    emptyClass : '',
                     callback: function(l, e) {
                         if (vm.allowMultiSelect) {
                             var new_content = [];
