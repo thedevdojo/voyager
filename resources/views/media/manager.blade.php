@@ -347,6 +347,10 @@
                 type: String,
                 default: '/'
             },
+            filename: {
+                type: String,
+                default: null
+            },
             allowMultiSelect: {
                 type: Boolean,
                 default: true
@@ -801,6 +805,7 @@
                     sending: function(file, xhr, formData) {
                         formData.append("_token", '{{ csrf_token() }}');
                         formData.append("upload_path", vm.current_folder);
+                        formData.append("filename", vm.filename);
                     },
                     success: function(e, res) {
                         if (res.success) {

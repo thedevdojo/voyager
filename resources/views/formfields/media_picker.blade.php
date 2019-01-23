@@ -3,6 +3,7 @@
         <div id="media_picker_{{ $row->field }}">
             <media-manager
                 base-path="{{ isset($options->base_path) ? $options->base_path : '/'.$dataType->slug.'/' }}"
+                filename="{{ isset($options->rename) ? $options->rename : 'null' }}"
                 :allow-multi-select="{{ isset($options->max) && $options->max > 1 ? 'true' : 'false' }}"
                 :max-selected-files="{{ isset($options->max) ? $options->max : 0 }}"
                 :min-selected-files="{{ isset($options->min) ? $options->min : 0 }}"

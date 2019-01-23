@@ -32,6 +32,11 @@ class MediaPickerHandler extends AbstractHandler
                     return \Carbon\Carbon::now()->format($date[1]);
                 }, $options->base_path);
             }
+            if (str_contains($options->base_path, '{random:')) {
+                $options->base_path = preg_replace_callback('/\{random:([0-9]+)\}/', function ($random) {
+                    return str_random($random[1]);
+                }, $options->base_path);
+            }
             if (!$dataTypeContent->getKey()) {
                 $uuid = (string) Str::uuid();
                 $options->base_path = str_replace('{pk}', $uuid, $options->base_path);

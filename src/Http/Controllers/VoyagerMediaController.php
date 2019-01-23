@@ -200,8 +200,23 @@ class VoyagerMediaController extends Controller
                 throw new Exception(__('voyager::generic.mimetype_not_allowed'));
             }
 
-            while (Storage::disk($this->filesystem)->exists(str_finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
-                $name = get_file_name($name);
+            if (!$request->has('filename') || $request->get('filename') == 'null') {
+                while (Storage::disk($this->filesystem)->exists(str_finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
+                    $name = get_file_name($name);
+                }
+            } else {
+                $name = str_replace('{uid}', \Auth::user()->getKey(), $request->get('filename'));
+                if (str_contains($name, '{date:')) {
+                    $name = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
+                        return \Carbon\Carbon::now()->format($date[1]);
+                    }, $name);
+                }
+                if (str_contains($name, '{random:')) {
+                    $name = preg_replace_callback('/\{random:([0-9]+)\}/', function ($random) {
+                        return str_random($random[1]);
+                    }, $name);
+                }
+                $name .= '.'.$extension;
             }
 
             $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
