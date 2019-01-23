@@ -153,6 +153,7 @@ The media picker formfield allows you to upload/delete/select files directly fro
 You can customize the behaviour with the following options:
 - `base_path` the start-path relative to the filesystem.
 - `show_as_images` shows stored data as images
+- `delete_files` boolean value if the files should be deleted when the entry is deleted. This will also delete the file if it is used in other entries!
 - `max` the maximum of files a user can select
 - `min` the minimum of files that are required
 - `show_folder` show subfolders or not
