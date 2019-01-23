@@ -772,7 +772,6 @@
                         }
                     }
                 } else if (evt.keyCode == 13) {
-                    console.log(2);
                     evt.preventDefault();
                     if (evt.target.tagName != 'INPUT') {
                         vm.openFile(vm.selected_file, null);
