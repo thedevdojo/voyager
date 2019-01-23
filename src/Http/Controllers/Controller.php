@@ -137,7 +137,7 @@ abstract class Controller extends BaseController
             $new_path = str_replace($uuid, $data->getKey(), $old_path);
             $folder_path = substr($old_path, 0, strpos($old_path, $uuid)).$uuid;
 
-            $rows->where('type', 'media_picker')->each(function($row) use ($data, $uuid) {
+            $rows->where('type', 'media_picker')->each(function ($row) use ($data, $uuid) {
                 $data->{$row->field} = str_replace($uuid, $data->getKey(), $data->{$row->field});
             });
             $data->save();
