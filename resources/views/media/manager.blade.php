@@ -253,7 +253,7 @@
     <!-- End New Folder Modal -->
 
     <!-- Delete File Modal -->
-    <div class="modal fade modal-danger" _id="'confirm_delete_modal_'+this._uid" v-if="allowDelete">
+    <div class="modal fade modal-danger" :id="'confirm_delete_modal_'+this._uid" v-if="allowDelete">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -629,7 +629,7 @@
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
 					$(e.path).parent('.modal-content').find('input').first().val('');
-					$('#create_dir_modal').modal('hide');
+					$('#create_dir_modal_'+vm._uid).modal('hide');
 				});
             },
             deleteFiles: function() {
@@ -645,11 +645,11 @@
 					if(data.success == true){
 						toastr.success('', "{{ __('voyager::generic.sweet_success') }}");
 						vm.getFiles();
-						$('#confirm_delete_modal').modal('hide');
+						$('#confirm_delete_modal_'+vm._uid).modal('hide');
 					} else {
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
                         vm.getFiles();
-						$('#confirm_delete_modal').modal('hide');
+						$('#confirm_delete_modal_'+vm._uid).modal('hide');
 					}
 				});
             },
@@ -659,7 +659,7 @@
                 }
                 var vm = this;
                 var destination = $(e.path).parent('.modal-content').find('select').first().val();
-                $('#move_files_modal').modal('hide');
+                $('#move_files_modal_'+vm._uid).modal('hide');
 				$.post('{{ route('voyager.media.move') }}', {
                     path: vm.current_folder,
                     files: vm.selected_files,
