@@ -46,7 +46,7 @@
                 <i class="voyager-upload"></i>
                 {{ __('voyager::generic.upload') }}
             </button>
-            <button type="button" class="btn btn-primary" v-if="allowCreateFolder" data-toggle="modal" data-target="#create_dir_modal">
+            <button type="button" class="btn btn-primary" v-if="allowCreateFolder" data-toggle="modal" :data-target="'#create_dir_modal_'+this._uid">
                 <i class="voyager-folder"></i>
                 {{ __('voyager::generic.add_folder') }}
             </button>
@@ -55,15 +55,15 @@
             <i class="voyager-refresh"></i>
         </button>
         <div class="btn-group offset-right">
-            <button type="button" v-if="showFolders && allowMove" class="btn btn-default" data-toggle="modal" data-target="#move_files_modal">
+            <button type="button" v-if="showFolders && allowMove" class="btn btn-default" data-toggle="modal" :data-target="'#move_files_modal_'+this._uid">
                 <i class="voyager-move"></i>
                 {{ __('voyager::generic.move') }}
             </button>
-            <button type="button" v-if="allowDelete" :disabled="selected_files.length == 0" class="btn btn-default" data-toggle="modal" data-target="#confirm_delete_modal">
+            <button type="button" v-if="allowDelete" :disabled="selected_files.length == 0" class="btn btn-default" data-toggle="modal" :data-target="'#confirm_delete_modal_'+this._uid">
                 <i class="voyager-trash"></i>
                 {{ __('voyager::generic.delete') }}
             </button>
-            <button v-if="allowCrop" :disabled="selected_files.length != 1 || !fileIs(selected_file, 'image')" type="button" class="btn btn-default" data-toggle="modal" data-target="#crop_modal">
+            <button v-if="allowCrop" :disabled="selected_files.length != 1 || !fileIs(selected_file, 'image')" type="button" class="btn btn-default" data-toggle="modal" :data-target="'#crop_modal_'+this._uid">
                 <i class="voyager-crop"></i>
                 {{ __('voyager::media.crop') }}
             </button>
@@ -210,7 +210,7 @@
     </div>
 
     <!-- Image Modal -->
-    <div class="modal fade" id="imagemodal" v-if="selected_file && fileIs(selected_file, 'image')">
+    <div class="modal fade" :id="'imagemodal_'+this._uid" v-if="selected_file && fileIs(selected_file, 'image')">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -230,7 +230,7 @@
     <!-- End Image Modal -->
 
     <!-- New Folder Modal -->
-    <div class="modal fade modal-info" id="create_dir_modal">
+    <div class="modal fade modal-info" :id="'create_dir_modal_'+this._uid">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -253,7 +253,7 @@
     <!-- End New Folder Modal -->
 
     <!-- Delete File Modal -->
-    <div class="modal fade modal-danger" id="confirm_delete_modal" v-if="allowDelete">
+    <div class="modal fade modal-danger" _id="'confirm_delete_modal_'+this._uid" v-if="allowDelete">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -282,7 +282,7 @@
     <!-- End Delete File Modal -->
 
     <!-- Move Files Modal -->
-    <div class="modal fade modal-warning" id="move_files_modal" v-if="allowMove">
+    <div class="modal fade modal-warning" :id="'move_files_modal_'+this._uid" v-if="allowMove">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -309,7 +309,7 @@
     <!-- End Move File Modal -->
 
     <!-- Crop Image Modal -->
-    <div class="modal fade modal-warning" id="crop_modal" v-if="allowCrop">
+    <div class="modal fade modal-warning" :id="'crop_modal_'+this._uid" v-if="allowCrop">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -320,10 +320,10 @@
 
                 <div class="modal-body">
                     <div class="crop-container">
-                        <img id="cropping-image" v-if="selected_files.length == 1 && fileIs(selected_file, 'image')" class="img img-responsive" :src="selected_file.path + '?' + selected_file.last_modified" />
+                        <img :id="'cropping-image_'+this._uid" v-if="selected_files.length == 1 && fileIs(selected_file, 'image')" class="img img-responsive" :src="selected_file.path + '?' + selected_file.last_modified" />
                     </div>
                     <div class="new-image-info">
-                        {{ __('voyager::media.width') }} <span id="new-image-width"></span>, {{ __('voyager::media.height') }}<span id="new-image-height"></span>
+                        {{ __('voyager::media.width') }} <span :id="'new-image-width_'+this._uid"></span>, {{ __('voyager::media.height') }}<span :id="'new-image-height_'+this._uid"></span>
                     </div>
                 </div>
 
@@ -778,7 +778,6 @@
                     }
                 }
             };
-
             //Dropzone
             var dropzone = $(vm.$el).first().find('#upload').first();
             var progress = $(vm.$el).first().find('#uploadProgress').first();
@@ -821,15 +820,16 @@
 
             //Cropper
             if (this.allowCrop) {
-                $('#crop_modal').on('shown.bs.modal', function (e) {
+                var cropper = $(vm.$el).first().find('#crop_modal_'+vm._uid).first();
+                cropper.on('shown.bs.modal', function (e) {
                     if (typeof cropper !== 'undefined' && cropper instanceof Cropper) {
     					cropper.destroy();
     				}
-    				var croppingImage = document.getElementById('cropping-image');
+    				var croppingImage = document.getElementById('cropping-image_'+vm._uid);
     				cropper = new Cropper(croppingImage, {
     					crop: function(e) {
-    						document.getElementById('new-image-width').innerText = Math.round(e.detail.width) + 'px';
-    						document.getElementById('new-image-height').innerText = Math.round(e.detail.height) + 'px';
+    						document.getElementById('new-image-width_'+vm._uid).innerText = Math.round(e.detail.width) + 'px';
+    						document.getElementById('new-image-height_'+vm._uid).innerText = Math.round(e.detail.height) + 'px';
     						croppedData = {
     							x: Math.round(e.detail.x),
     							y: Math.round(e.detail.y),
