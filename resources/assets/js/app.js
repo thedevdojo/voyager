@@ -63,7 +63,7 @@ $(document).ready(function () {
             if (term === '') {
                 return null;
             }
-        
+
             return {
                 id: term,
                 text: term,
@@ -76,7 +76,7 @@ $(document).ready(function () {
         var label = $el.data('label');
         var errorMessage = $el.data('error-message');
         var newTag = e.params.args.data.newTag;
-        
+
         if (!newTag) return;
 
         $el.select2('close');
@@ -157,8 +157,18 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
+
+    var submitting = false;
+
     $(".form-edit-add").submit(function (e) {
         e.preventDefault();
+
+        if(submitting){
+            return false;
+        }
+
+        submitting = true;
+        $(".form-edit-add").find('button[type=submit]').attr("disabled", "disabled");
 
         var url = $(this).attr('action');
         var form = $(this);
@@ -176,7 +186,8 @@ $(document).ready(function () {
             data.append(this.elements[i].name, this.elements[i].value)
         }
 
-        data.set('_validate', '1');
+        // fixed IE 11 set method error
+        data.append('_validate', '1');
 
         $.ajax({
             url: url,
@@ -194,31 +205,42 @@ $(document).ready(function () {
 
             success: function (d) {
                 $("body").css("cursor", "auto");
-                $.each(d.errors, function (inputName, errorMessage) {
+                // if have error will support next submit
+                if(d.errors.length > 0){
+                    $.each(d.errors, function (inputName, errorMessage) {
 
-                    // This will work also for fields with brackets in the name, ie. name="image[]
-                    var $inputElement = $("[name='" + inputName + "']"),
-                        inputElementPosition = $inputElement.first().parent().offset().top,
-                        navbarHeight = $('nav.navbar').height();
+                        // This will work also for fields with brackets in the name, ie. name="image[]
+                        var $inputElement = $("[name='" + inputName + "']"),
+                            inputElementPosition = $inputElement.first().parent().offset().top,
+                            navbarHeight = $('nav.navbar').height();
 
-                    // Scroll to first error
-                    if (Object.keys(d.errors).indexOf(inputName) === 0) {
-                        $('html, body').animate({
-                            scrollTop: inputElementPosition - navbarHeight + 'px'
-                        }, 'fast');
-                    }
+                        // Scroll to first error
+                        if (Object.keys(d.errors).indexOf(inputName) === 0) {
+                            $('html, body').animate({
+                                scrollTop: inputElementPosition - navbarHeight + 'px'
+                            }, 'fast');
+                        }
 
-                    // Hightlight and show the error message
-                    $inputElement.parent()
-                        .addClass("has-error")
-                        .append("<span class='help-block' style='color:#f96868'>" + errorMessage + "</span>")
+                        // Hightlight and show the error message
+                        $inputElement.parent()
+                            .addClass("has-error")
+                            .append("<span class='help-block' style='color:#f96868'>" + errorMessage + "</span>")
 
-                });
+                    });
+
+                    submitting = false;
+                    $(".form-edit-add").find('button[type=submit]').removeAttr("disabled");
+                }
             },
 
-            error: function () {
-                $(form).unbind("submit").submit();
+            error: function (xhr,status,error) {
+                if(status == 'parsererror'){
+                    $(form).unbind("submit").submit();
+                    $(form).attr('disabled',true);
+                }
             }
         });
+
+        return false;
     });
 });
