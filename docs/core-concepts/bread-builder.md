@@ -172,6 +172,14 @@ The `base_path` can contain the following placeholders:
 - `{pk}` the primary-key of the entry
 - `{uid}` the user-id of the current logged-in user
 - `{date:format}` the current date in the format defined in `format`. For example `{date:d.m.Y}`
+
+So a `base_path` can, for example, look like the following:
+```
+{
+    "base_path": "/my-bread/{pk}/{date:Y}/{date:m}/"
+}
+```
+
 ## Description
 
 All types can include a description in order to help your future self or other users using your Voyager admin panel to understand exactly what a specific BREAD input field is for, this can be defined in the `Optional Details` JSON input field:
