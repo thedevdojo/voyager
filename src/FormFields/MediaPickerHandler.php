@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\FormFields;
 
+use Illuminate\Support\Str;
+
 class MediaPickerHandler extends AbstractHandler
 {
     protected $codename = 'media_picker';
@@ -20,6 +22,23 @@ class MediaPickerHandler extends AbstractHandler
                 $content = json_encode($dataTypeContent->{$row->field});
             } else {
                 $content = json_encode('[]');
+            }
+        }
+
+        if (isset($options->base_path)) {
+            $options->base_path = str_replace('{uid}', \Auth::user()->getKey(), $options->base_path);
+            if (str_contains($options->base_path, '{date:')) {
+                $options->base_path = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
+                    return \Carbon\Carbon::now()->format($date[1]);
+                }, $options->base_path);
+            }
+            if (!$dataTypeContent->getKey()) {
+                $uuid = (string)Str::uuid();
+                $options->base_path = str_replace('{pk}', $uuid, $options->base_path);
+                \Session::put($dataType->slug.'_path', $options->base_path);
+                \Session::put($dataType->slug.'_uuid', $uuid);
+            } else {
+                $options->base_path = str_replace('{pk}', $dataTypeContent->getKey(), $options->base_path);
             }
         }
 

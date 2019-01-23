@@ -151,7 +151,7 @@ The date & timestamp input field is where you can input a date. In the JSON abov
 
 The media picker formfield allows you to upload/delete/select files directly from the media-manager.  
 You can customize the behaviour with the following options:
-- `base_path` the start-path relative to the filesystem. Make sure the path exists!
+- `base_path` the start-path relative to the filesystem.
 - `show_as_images` shows stored data as images
 - `max` the maximum of files a user can select
 - `min` the minimum of files that are required
@@ -167,6 +167,11 @@ You can customize the behaviour with the following options:
 `["image", "audio", "video"]`  
 or  
 `["image/jpeg", "image/png", "image/bmp"]`
+
+The `base_path` can contain the following placeholders:
+- `{pk}` the primary-key of the entry
+- `{uid}` the user-id of the current logged-in user
+- `{date:format}` the current date in the format defined in `format`. For example `{date:d.m.Y}`
 ## Description
 
 All types can include a description in order to help your future self or other users using your Voyager admin panel to understand exactly what a specific BREAD input field is for, this can be defined in the `Optional Details` JSON input field:
