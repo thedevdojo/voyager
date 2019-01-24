@@ -43,8 +43,9 @@
                                 <img class="img-responsive"
                                      src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'multiple_images')
-                                @if(json_decode($dataTypeContent->{$row->field}))
-                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
+                                @if(is_array($dataTypeContent->{$row->field}) || json_decode($dataTypeContent->{$row->field}))
+                                    <?php $images = is_array($dataTypeContent->{$row->field}) ? $dataTypeContent->{$row->field} : json_decode($dataTypeContent->{$row->field}); ?>
+                                    @foreach($images as $file)
                                         <img class="img-responsive"
                                              src="{{ filter_var($file, FILTER_VALIDATE_URL) ? $file : Voyager::image($file) }}">
                                     @endforeach

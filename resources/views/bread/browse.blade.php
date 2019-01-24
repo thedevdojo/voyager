@@ -164,7 +164,7 @@
                                                 @elseif($row->type == 'coordinates')
                                                     @include('voyager::partials.coordinates-static-image')
                                                 @elseif($row->type == 'multiple_images')
-                                                    @php $images = json_decode($data->{$row->field}); @endphp
+                                                    @php $images = is_array($data->{$row->field}) ? $data->{$row->field} : json_decode($data->{$row->field}); @endphp
                                                     @if($images)
                                                         @php $images = array_slice($images, 0, 3); @endphp
                                                         @foreach($images as $image)
