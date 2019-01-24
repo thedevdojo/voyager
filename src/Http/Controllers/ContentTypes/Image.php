@@ -79,7 +79,7 @@ class Image extends BaseType
                             $thumb_resize_height,
                             function (Constraint $constraint) {
                                 $constraint->aspectRatio();
-                                if (isset($options->upsize) && !$this->options->upsize) {
+                                if (isset($this->options->upsize) && !$this->options->upsize) {
                                     $constraint->upsize();
                                 }
                             }
