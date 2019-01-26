@@ -419,7 +419,7 @@ class VoyagerBaseController extends Controller
             event(new BreadDataDeleted($dataType, $data));
         }
 
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+        return redirect($request->header('referer') ?: route("voyager.{$dataType->slug}.index"))->with($data);
     }
 
     public function restore(Request $request, $id)

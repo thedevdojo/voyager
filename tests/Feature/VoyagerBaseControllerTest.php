@@ -62,4 +62,30 @@ class VoyagerBaseControllerTest extends TestCase
         $post->refresh();
         $this->assertEquals('DRAFT', $post->status);
     }
+
+    public function testDeleteRedirectToReferer()
+    {
+        $post = Post::first();
+
+        $params = [
+            'page' => '1',
+        ];
+        $referer = route('voyager.posts.index').'?'.http_build_query($params);
+        $this->post(route('voyager.posts.index')."/{$post->id}", [
+            '_method' => 'DELETE',
+        ], [
+            'referer' => $referer,
+        ])->assertRedirectedTo($referer);
+        $this->assertEmpty(Post::find($post->id));
+    }
+
+    public function testDeleteRedirectToIndex()
+    {
+        $post = Post::first();
+
+        $this->post(route('voyager.posts.index')."/{$post->id}", [
+            '_method' => 'DELETE',
+        ])->assertRedirectedTo(route('voyager.posts.index'));
+        $this->assertEmpty(Post::find($post->id));
+    }
 }
