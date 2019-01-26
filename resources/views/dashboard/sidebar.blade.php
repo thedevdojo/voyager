@@ -29,7 +29,8 @@
             </div>
 
         </div>
-
-        {!! menu('admin', 'admin_menu') !!}
+        <div id="adminmenu">
+            <admin-menu :items="{{ menu('admin', '_json') }}"></admin-menu>
+        </div>
     </nav>
 </div>
