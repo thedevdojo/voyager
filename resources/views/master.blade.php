@@ -131,10 +131,15 @@ if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->av
     } else {
         toastr.error("toastr alert-type " + alertType + " is unknown");
     }
-
     @endif
 </script>
 @include('voyager::media.manager')
+@include('voyager::menu.admin_menu')
+<script>
+new Vue({
+    el: '#adminmenu',
+});
+</script>
 @yield('javascript')
 @stack('javascript')
 @if(!empty(config('voyager.additional_js')))<!-- Additional Javascript -->
