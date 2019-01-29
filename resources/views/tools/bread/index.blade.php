@@ -4,7 +4,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-bread"></i> BREAD
+        <i class="voyager-bread"></i> {{ __('voyager::generic.bread') }}
     </h1>
 @stop
 
