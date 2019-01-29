@@ -47,7 +47,7 @@ Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In th
 {
     "on" : "On Text",
     "off" : "Off Text",
-    "checked" : "true"
+    "checked" : true
 }
 ```
 
