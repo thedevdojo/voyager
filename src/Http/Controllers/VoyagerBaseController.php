@@ -170,6 +170,9 @@ class VoyagerBaseController extends Controller
             if ($model && in_array(SoftDeletes::class, class_uses($model))) {
                 $model = $model->withTrashed();
             }
+            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucFirst($dataType->scope))) {
+                $model = $model->{$dataType->scope}();
+            }
             $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
             if ($dataTypeContent->deleted_at) {
                 $isSoftDeleted = true;
@@ -225,7 +228,9 @@ class VoyagerBaseController extends Controller
             if ($model && in_array(SoftDeletes::class, class_uses($model))) {
                 $model = $model->withTrashed();
             }
-
+            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucFirst($dataType->scope))) {
+                $model = $model->{$dataType->scope}();
+            }
             $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
         } else {
             // If Model doest exist, get data from table name
@@ -265,6 +270,9 @@ class VoyagerBaseController extends Controller
         $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
 
         $model = app($dataType->model_name);
+        if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucFirst($dataType->scope))) {
+            $model = $model->{$dataType->scope}();
+        }
         if ($model && in_array(SoftDeletes::class, class_uses($model))) {
             $data = $model->withTrashed()->findOrFail($id);
         } else {
@@ -433,6 +441,9 @@ class VoyagerBaseController extends Controller
 
         // Get record
         $model = call_user_func([$dataType->model_name, 'withTrashed']);
+        if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucFirst($dataType->scope))) {
+            $model = $model->{$dataType->scope}();
+        }
         $data = $model->findOrFail($id);
 
         $displayName = $dataType->display_name_singular;
