@@ -64,7 +64,12 @@ class VoyagerBaseController extends Controller
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
-            $query = $model::select('*');
+
+            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucFirst($dataType->scope))) {
+                $query = $model->{$dataType->scope}();
+            } else {
+                $query = $model::select('*');
+            }
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
             if ($model && in_array(SoftDeletes::class, class_uses($model)) && \Auth::user()->can('delete', app($dataType->model_name))) {
