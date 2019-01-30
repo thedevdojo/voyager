@@ -26,6 +26,7 @@
 
 * [Overriding files](customization/overriding-files.md)
 * [Overriding Routes](customization/overriding-routes.md)
+* [Overriding Formfields](customization/overriding-formfields.md)
 * [Additional CSS and JS](customization/additional-css-js.md)
 * [Enabling Soft-Delete](customization/enabling-soft-delete.md)
 * [Custom relationship attributes](customization/custom-realtionship-attributes.md)
