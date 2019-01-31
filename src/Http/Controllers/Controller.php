@@ -167,7 +167,7 @@ abstract class Controller extends BaseController
             if ($id && property_exists($field->details->validation, 'edit')) {
                 $action_rules = $field->details->validation->edit->rule;
                 $rules[$fieldName] = array_merge($rules[$fieldName], (is_array($action_rules) ? $action_rules : explode('|', $action_rules)));
-            } elseif (property_exists($field->details->validation, 'add')) {
+            } elseif (!$id && property_exists($field->details->validation, 'add')) {
                 $action_rules = $field->details->validation->add->rule;
                 $rules[$fieldName] = array_merge($rules[$fieldName], (is_array($action_rules) ? $action_rules : explode('|', $action_rules)));
             }
