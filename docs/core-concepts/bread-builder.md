@@ -157,7 +157,7 @@ You can customize the behaviour with the following options:
 - `delete_files` boolean value if the files should be deleted when the entry is deleted. This will also delete the file if it is used in other entries!
 - `max` the maximum of files a user can select
 - `min` the minimum of files that are required
-- `show_folder` show subfolders or not
+- `show_folders` show subfolders or not
 - `show_toolbar` hide the whole toolbar
 - `allow_upload` allow users to upload new files
 - `allow_move` let users move files
