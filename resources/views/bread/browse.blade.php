@@ -4,9 +4,12 @@
 
 @section('page_header')
     <div class="container-fluid">
-        <h1 class="page-title">
-            <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
-        </h1>
+        @section('browse-page-title')
+            <h1 class="page-title">
+                <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
+            </h1>
+        @show
+
         @include('voyager::bread.partials.browse_actions')
         @include('voyager::multilingual.language-selector')
     </div>
