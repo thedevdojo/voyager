@@ -24,8 +24,11 @@
 
                 <select class="form-control select2" name="{{ $options->column }}">
                     @php
+                        $relationshipListMethod = camel_case($options->column) . 'List';
                         $model = app($options->model);
-                        $query = $model::all();
+                        $query = method_exists($dataTypeContent, $relationshipListMethod)
+                                ? $dataTypeContent->$relationshipListMethod()
+                                : $model::all();
                     @endphp
 
                     @if(!$row->required)
