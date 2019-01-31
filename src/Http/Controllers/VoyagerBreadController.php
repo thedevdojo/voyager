@@ -214,6 +214,7 @@ class VoyagerBreadController extends Controller
     public function getModelScopes($model_name)
     {
         $reflection = new ReflectionClass($model_name);
+
         return collect($reflection->getMethods())->filter(function ($method) {
             return starts_with($method->name, 'scope');
         })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
