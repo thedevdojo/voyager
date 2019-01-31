@@ -296,3 +296,21 @@ After this you can go to your BREAD-browse page and you will see a button **Orde
 Clicking this button will bring you to the page where you can re-arrange your items:
 
 ![](../.gitbook/assets/bread_order.png)
+
+## Scope browse-results
+
+If you want to filter the browse results for a BREAD you can do so by creating a [Scope](https://laravel.com/docs/eloquent#local-scopes) in your model.
+For example if you want to only show posts that were created by the current user, define a Scope like the following:
+```php
+<?php
+public function scopeCurrentUser($query)
+{
+    return $query->where('author_id', Auth::user()->id);
+}
+```
+
+Next, go to the BREAD-settings for `posts` and look for the `Scope` input and select `currentUser`:
+
+![](../.gitbook/assets/bread_scope.jpg)
+
+After hitting `Submit` you will only see your own posts.
