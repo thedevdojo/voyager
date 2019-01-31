@@ -11,10 +11,11 @@ use TCG\Voyager\Events\BreadDataUpdated;
 use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
+use TCG\Voyager\Http\Controllers\Traits\CustomizableBread;
 
 class VoyagerBaseController extends Controller
 {
-    use BreadRelationshipParser;
+    use BreadRelationshipParser, CustomizableBread;
 
     //***************************************
     //               ____
@@ -60,7 +61,7 @@ class VoyagerBaseController extends Controller
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
-            $query = $model::select('*');
+            $query = $this->getQueryForIndex($request, $dataType);
 
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
@@ -141,8 +142,7 @@ class VoyagerBaseController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         if (strlen($dataType->model_name) != 0) {
-            $model = app($dataType->model_name);
-            $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
+            $dataTypeContent = $this->getDataForShow($request, $dataType, $id);
         } else {
             // If Model doest exist, get data from table name
             $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
@@ -188,7 +188,7 @@ class VoyagerBaseController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->findOrFail($id)
+            ? $this->getDataForEdit($request, $dataType, $id)
             : DB::table($dataType->name)->where('id', $id)->first(); // If Model doest exist, get data from table name
 
         foreach ($dataType->editRows as $key => $row) {
@@ -223,7 +223,7 @@ class VoyagerBaseController extends Controller
         // Compatibility with Model binding.
         $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
 
-        $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+        $data = $this->getDataForUpdate($request, $dataType, $id);
 
         // Check permission
         $this->authorize('edit', $data);
@@ -241,7 +241,7 @@ class VoyagerBaseController extends Controller
             event(new BreadDataUpdated($dataType, $data));
 
             return redirect()
-                ->route("voyager.{$dataType->slug}.index")
+                ->to($this->getRedirectRoute($request, $dataType, $data))
                 ->with([
                     'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
                     'alert-type' => 'success',
@@ -272,7 +272,7 @@ class VoyagerBaseController extends Controller
         $this->authorize('add', app($dataType->model_name));
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-                            ? new $dataType->model_name()
+                            ? $this->getDataForCreate($request, $dataType)
                             : false;
 
         foreach ($dataType->addRows as $key => $row) {
@@ -318,7 +318,8 @@ class VoyagerBaseController extends Controller
         }
 
         if (!$request->has('_validate')) {
-            $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
+            $data = $this->insertUpdateData($request, $slug, $dataType->addRows,
+                    $this->getDataForStore($request, $dataType));
 
             event(new BreadDataAdded($dataType, $data));
 
@@ -327,7 +328,7 @@ class VoyagerBaseController extends Controller
             }
 
             return redirect()
-                ->route("voyager.{$dataType->slug}.index")
+                ->to($this->getRedirectRoute($request, $dataType, $data))
                 ->with([
                         'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
                         'alert-type' => 'success',
@@ -365,8 +366,9 @@ class VoyagerBaseController extends Controller
             // Single item delete, get ID from URL
             $ids[] = $id;
         }
-        foreach ($ids as $id) {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
+        $records = $this->getQueryForDestroy($request, $dataType, $ids)->get();
+        foreach ($records as $data) {
             $this->cleanup($dataType, $data);
         }
 
@@ -387,7 +389,7 @@ class VoyagerBaseController extends Controller
             event(new BreadDataDeleted($dataType, $data));
         }
 
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+        return redirect()->to($this->getRedirectRoute($request, $dataType, $records))->with($data);
     }
 
     /**
@@ -470,15 +472,14 @@ class VoyagerBaseController extends Controller
 
         if (!isset($dataType->order_column) || !isset($dataType->order_display_column)) {
             return redirect()
-            ->route("voyager.{$dataType->slug}.index")
+            ->to($this->getRedirectRoute($request, $dataType))
             ->with([
                 'message'    => __('voyager::bread.ordering_not_set'),
                 'alert-type' => 'error',
             ]);
         }
 
-        $model = app($dataType->model_name);
-        $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
+        $results = $this->getQueryForOrder($request, $dataType)->get();
 
         $display_column = $dataType->order_display_column;
 
