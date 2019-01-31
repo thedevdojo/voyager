@@ -167,15 +167,31 @@ Additionally, you may wish to add some custom error messages which can be accomp
 }
 ```
 
-Since `v0.10.13` you can do the `required` and `max:12` rule the following way:
+You can also can define multiple rules the following way:
 
 ```php
 {
     "validation": {
-        "rules": [
+        "rule": [
             "required",
             "max:12"
         ]
+    }
+}
+```
+
+### Action specific rules
+You can define separated validation rules for edit and add:
+```
+{
+    "validation": {
+        "rule": "required",
+        "edit": {
+            "rule": "sometimes|min:3"
+        },
+        "add": {
+            "rule": "min:3"
+        }
     }
 }
 ```
