@@ -59,6 +59,10 @@
                                         </span>
                                     </div>
                                 </div>
+                                @if (Request::has('sort_order') && Request::has('order_by'))
+                                    <input type="hidden" name="sort_order" value="{{ Request::get('sort_order') }}">
+                                    <input type="hidden" name="order_by" value="{{ Request::get('order_by') }}">
+                                @endif
                             </form>
                         @endif
                         <div class="table-responsive">
