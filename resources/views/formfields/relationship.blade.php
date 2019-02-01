@@ -25,10 +25,9 @@
                 <select class="form-control select2" name="{{ $options->column }}">
                     @php
                         $relationshipListMethod = camel_case($options->column) . 'List';
-                        $model = app($options->model);
                         $query = method_exists($dataTypeContent, $relationshipListMethod)
                                 ? $dataTypeContent->$relationshipListMethod()
-                                : $model::all();
+                                : app($options->model)->all();
                     @endphp
 
                     @if(!$row->required)
@@ -161,7 +160,11 @@
                             $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
                                 return $item->{$options->key};
                             })->all() : array();
-                            $relationshipOptions = app($options->model)->all();
+
+                            $relationshipListMethod = camel_case($options->column) . 'List';
+                            $relationshipOptions = method_exists($dataTypeContent, $relationshipListMethod)
+                                    ? $dataTypeContent->$relationshipListMethod()
+                                    : app($options->model)->all();
                         @endphp
 
                         @if(!$row->required)
