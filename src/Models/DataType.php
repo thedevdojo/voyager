@@ -181,6 +181,7 @@ class DataType extends Model
                         'table'       => $requestData['relationship_table_'.$relationship],
                         'type'        => $requestData['relationship_type_'.$relationship],
                         'column'      => $relationship_column,
+                        'method'      => $requestData['relationship_method_'.$relationship],
                         'key'         => $requestData['relationship_key_'.$relationship],
                         'label'       => $requestData['relationship_label_'.$relationship],
                         'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],

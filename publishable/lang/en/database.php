@@ -83,5 +83,6 @@ return [
         'delete'               => 'Delete',
         'create'               => 'Create a Relationship',
         'namespace'            => 'Model Namespace (ex. App\Category)',
+        'method'               => 'Method (optional, eg. :table->method)',
     ],
 ];
