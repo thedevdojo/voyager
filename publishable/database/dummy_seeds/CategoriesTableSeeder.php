@@ -44,7 +44,6 @@ class CategoriesTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 1,
             ])->save();
         }
@@ -60,7 +59,7 @@ class CategoriesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => json_encode([
+                'details'      => [
                     'default' => '',
                     'null'    => '',
                     'options' => [
@@ -70,7 +69,7 @@ class CategoriesTableSeeder extends Seeder
                         'key'   => 'id',
                         'label' => 'name',
                     ],
-                ]),
+                ],
                 'order' => 2,
             ])->save();
         }
@@ -86,9 +85,9 @@ class CategoriesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => json_encode([
+                'details'      => [
                     'default' => 1,
-                ]),
+                ],
                 'order' => 3,
             ])->save();
         }
@@ -104,7 +103,6 @@ class CategoriesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => '',
                 'order'        => 4,
             ])->save();
         }
@@ -120,11 +118,11 @@ class CategoriesTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'details'      => json_encode([
+                'details'      => [
                     'slugify' => [
                         'origin' => 'name',
                     ],
-                ]),
+                ],
                 'order' => 5,
             ])->save();
         }
@@ -140,7 +138,6 @@ class CategoriesTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 6,
             ])->save();
         }
@@ -156,7 +153,6 @@ class CategoriesTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'details'      => '',
                 'order'        => 7,
             ])->save();
         }

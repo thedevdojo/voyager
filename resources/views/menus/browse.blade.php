@@ -25,8 +25,8 @@
                         <table id="dataTable" class="table table-hover">
                             <thead>
                             <tr>
-                                @foreach($dataType->browseRows as $rows)
-                                <th>{{ $rows->display_name }}</th>
+                                @foreach($dataType->browseRows as $row)
+                                <th>{{ $row->display_name }}</th>
                                 @endforeach
                                 <th class="actions text-right">{{ __('voyager::generic.actions') }}</th>
                             </tr>

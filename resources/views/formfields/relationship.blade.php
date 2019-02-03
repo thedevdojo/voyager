@@ -11,17 +11,13 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-                    if (method_exists($model, 'getRelationship')) {
-                        $query = $model::getRelationship($relationshipData->{$options->column});
-                    } else {
-                        $query = $model::find($relationshipData->{$options->column});
-                    }
+                    $query = $model::find($relationshipData->{$options->column});
                 @endphp
 
                 @if(isset($query))
                     <p>{{ $query->{$options->label} }}</p>
                 @else
-                    <p>No results</p>
+                    <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
 
             @else
@@ -32,7 +28,7 @@
                         $query = $model::all();
                     @endphp
 
-                    @if($row->required === 0)
+                    @if(!$row->required)
                         <option value="">{{__('voyager::generic.none')}}</option>
                     @endif
 
@@ -57,7 +53,7 @@
             @if(isset($query))
                 <p>{{ $query->{$options->label} }}</p>
             @else
-                <p>None results</p>
+                <p>{{ __('voyager::generic.no_results') }}</p>
             @endif
 
         @elseif($options->type == 'hasMany')
@@ -67,22 +63,24 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-                    $selected_values = $model::where($options->column, '=', $relationshipData->id)->pluck($options->label)->all();
+            		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
+            			return $item->{$options->label};
+            		})->all();
                 @endphp
 
                 @if($view == 'browse')
                     @php
                         $string_values = implode(", ", $selected_values);
-                        if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
+                        if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
-                        <p>No results</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <p>{{ $string_values }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
-                        <p>No results</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <ul>
                             @foreach($selected_values as $selected_value)
@@ -107,7 +105,7 @@
                     </ul>
 
                 @else
-                    <p>No results</p>
+                    <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
 
             @endif
@@ -118,22 +116,24 @@
 
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->pluck($options->label)->all() : array();
+                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
+            			return $item->{$options->label};
+            		})->all() : array();
                 @endphp
 
                 @if($view == 'browse')
                     @php
                         $string_values = implode(", ", $selected_values);
-                        if(strlen($string_values) > 25){ $string_values = substr($string_values, 0, 25) . '...'; }
+                        if(mb_strlen($string_values) > 25){ $string_values = mb_substr($string_values, 0, 25) . '...'; }
                     @endphp
                     @if(empty($selected_values))
-                        <p>No results</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <p>{{ $string_values }}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
-                        <p>No results</p>
+                        <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
                         <ul>
                             @foreach($selected_values as $selected_value)
@@ -155,11 +155,13 @@
                 >
 
                         @php
-                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->pluck($options->table.'.'.$options->key)->all() : array();
+                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
+                                return $item->{$options->key};
+                            })->all() : array();
                             $relationshipOptions = app($options->model)->all();
                         @endphp
 
-                        @if($row->required === 0)
+                        @if(!$row->required)
                             <option value="">{{__('voyager::generic.none')}}</option>
                         @endif
 

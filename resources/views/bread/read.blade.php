@@ -13,7 +13,7 @@
             </a>
         @endcan
         @can('delete', $dataTypeContent)
-            <a href="javascript:;" title="{{ __('voyager::generic.delete') }}" class="btn btn-danger delete" data-id="{{ $dataTypeContent->getKey() }}" id="delete-{{ $dataTypeContent->getKey() }}">
+            <a href="javascript:;" title="{{ __('voyager::generic.delete') }}" class="btn btn-danger" data-id="{{ $dataTypeContent->getKey() }}" id="delete-{{ $dataTypeContent->getKey() }}">
                 <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.delete') }}</span>
             </a>
         @endcan
@@ -34,14 +34,6 @@
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
                     <!-- form start -->
                     @foreach($dataType->readRows as $row)
-                        @php
-                            $rowDetails = json_decode($row->details);
-                            if ($rowDetails === null) {
-                                $rowDetails = new stdClass();
-                                $rowDetails->options = new stdClass();
-                            }
-                        @endphp
-
                         <div class="panel-heading" style="border-bottom:0;">
                             <h3 class="panel-title">{{ $row->display_name }}</h3>
                         </div>
@@ -61,29 +53,23 @@
                                          src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
                                 @endif
                             @elseif($row->type == 'relationship')
-                                 @include('voyager::formfields.relationship', ['view' => 'read', 'options' => $rowDetails])
-                            @elseif($row->type == 'select_dropdown' && property_exists($rowDetails, 'options') &&
-                                    !empty($rowDetails->options->{$dataTypeContent->{$row->field}})
+                                 @include('voyager::formfields.relationship', ['view' => 'read', 'options' => $row->details])
+                            @elseif($row->type == 'select_dropdown' && property_exists($row->details, 'options') &&
+                                    !empty($row->details->options->{$dataTypeContent->{$row->field}})
                             )
-                                <?php echo $rowDetails->options->{$dataTypeContent->{$row->field}};?>
-                            @elseif($row->type == 'select_dropdown' && $dataTypeContent->{$row->field . '_page_slug'})
-                                <a href="{{ $dataTypeContent->{$row->field . '_page_slug'} }}">{{ $dataTypeContent->{$row->field}  }}</a>
+                                <?php echo $row->details->options->{$dataTypeContent->{$row->field}};?>
                             @elseif($row->type == 'select_multiple')
-                                @if(property_exists($rowDetails, 'relationship'))
+                                @if(property_exists($row->details, 'relationship'))
 
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
-                                        @if($item->{$row->field . '_page_slug'})
-                                            <a href="{{ $item->{$row->field . '_page_slug'} }}">{{ $item->{$row->field}  }}</a>@if(!$loop->last), @endif
-                                        @else
-                                            {{ $item->{$row->field}  }}
-                                        @endif
+                                        {{ $item->{$row->field}  }}
                                     @endforeach
 
-                                @elseif(property_exists($rowDetails, 'options'))
+                                @elseif(property_exists($row->details, 'options'))
                                     @if (count(json_decode($dataTypeContent->{$row->field})) > 0)
                                         @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
-                                            @if (@$rowDetails->options->{$item})
-                                                {{ $rowDetails->options->{$item} . (!$loop->last ? ', ' : '') }}
+                                            @if (@$row->details->options->{$item})
+                                                {{ $row->details->options->{$item} . (!$loop->last ? ', ' : '') }}
                                             @endif
                                         @endforeach
                                     @else
@@ -91,13 +77,13 @@
                                     @endif
                                 @endif
                             @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                {{ $rowDetails && property_exists($rowDetails, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($rowDetails->format) : $dataTypeContent->{$row->field} }}
+                                {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($row->details->format) : $dataTypeContent->{$row->field} }}
                             @elseif($row->type == 'checkbox')
-                                @if($rowDetails && property_exists($rowDetails, 'on') && property_exists($rowDetails, 'off'))
+                                @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                     @if($dataTypeContent->{$row->field})
-                                    <span class="label label-info">{{ $rowDetails->on }}</span>
+                                    <span class="label label-info">{{ $row->details->on }}</span>
                                     @else
-                                    <span class="label label-primary">{{ $rowDetails->off }}</span>
+                                    <span class="label label-primary">{{ $row->details->off }}</span>
                                     @endif
                                 @else
                                 {{ $dataTypeContent->{$row->field} }}

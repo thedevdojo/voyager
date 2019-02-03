@@ -43,6 +43,7 @@ return [
     'policy_name'            => 'Политика',
     'policy_name_ph'         => 'например \App\Policies\UserPolicy, если оставить пустым - попытается использовать политику по умолчанию',
     'server_pagination'      => 'Пагинация на стороне сервера',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URL Slug (должен быть уникальным)',
     'url_slug_ph'            => 'URL slug (например, posts)',
 ];
