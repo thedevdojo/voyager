@@ -224,7 +224,7 @@ class VoyagerMediaController extends Controller
                 'image/svg+xml',
             ];
             if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
-                $image = Image::make($realPath.$file);
+                $image = Image::make($request->file->getRealPath());
 
                 if ($request->file->getClientOriginalExtension() == 'gif') {
                     copy($request->file->getRealPath(), $realPath.$file);
