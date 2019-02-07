@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -214,8 +215,6 @@ class VoyagerMediaController extends Controller
                 $name = get_file_name($name);
             }
 
-            $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
-
             $imageMimeTypes = [
                 'image/jpeg',
                 'image/png',
@@ -223,14 +222,21 @@ class VoyagerMediaController extends Controller
                 'image/bmp',
                 'image/svg+xml',
             ];
+
             if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
                 $image = Image::make($request->file->getRealPath());
 
-                if ($request->file->getClientOriginalExtension() == 'gif') {
-                    copy($request->file->getRealPath(), $realPath.$file);
-                } else {
-                    $image->orientate()->save($realPath.$file);
+                if (strtolower($request->file->getClientOriginalExtension()) !== 'gif') {
+                    $rotatedPath = $request->file->getRealPath() . 'rotated';
+                    $image->orientate()->save($rotatedPath);
+                    $request->file = new UploadedFile($rotatedPath, basename($rotatedPath), $request->file->getMimeType(), null, false);
                 }
+            }
+
+            $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
+
+            if (isset($rotatedPath)) {
+                unlink($rotatedPath);
             }
 
             $success = true;
@@ -331,7 +337,7 @@ class VoyagerMediaController extends Controller
 
                 // Check if we're dealing with a nested array for the case of multiple files
                 if (is_array($fieldData[0])) {
-                    foreach ($fieldData as $index=>$file) {
+                    foreach ($fieldData as $index => $file) {
                         $file = array_flip($file);
                         if (array_key_exists($filename, $file)) {
                             $key = $index;
