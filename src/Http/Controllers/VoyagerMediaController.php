@@ -227,7 +227,7 @@ class VoyagerMediaController extends Controller
                 $image = Image::make($request->file->getRealPath());
 
                 if (strtolower($request->file->getClientOriginalExtension()) !== 'gif') {
-                    $rotatedPath = $request->file->getRealPath() . 'rotated';
+                    $rotatedPath = $request->file->getRealPath().'rotated';
                     $image->orientate()->save($rotatedPath);
                     $request->file = new UploadedFile($rotatedPath, basename($rotatedPath), $request->file->getMimeType(), null, false);
                 }
