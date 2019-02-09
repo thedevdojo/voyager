@@ -48,6 +48,18 @@ class Post extends Model
     }
 
     /**
+     * Scope a query to only Featured scopes.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFeatured(Builder $query)
+    {
+        return $query->where('featured', true);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function category()
