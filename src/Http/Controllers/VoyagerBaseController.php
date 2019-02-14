@@ -42,12 +42,11 @@ class VoyagerBaseController extends Controller
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
         $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
-        $searchable = '';
-        $searchNames = array();
-        if($dataType->server_side){
+        $searchNames = [];
+        if ($dataType->server_side) {
             $searchable = array_keys(SchemaManager::describeTable(app($dataType->model_name)->getTable())->toArray());
-            $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get(); 
-            foreach($searchable as $key => $value){
+            $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get();
+            foreach ($searchable as $key => $value) {
                 $displayName = $dataRow->where('field', $value)->pluck('display_name')->first();
                 $searchNames[$value] = $displayName ? $displayName : ucwords(str_replace('_', ' ', $value));
             }
