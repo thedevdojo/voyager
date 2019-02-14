@@ -38,6 +38,6 @@ class User extends Authenticatable implements UserContract
 
     public function getLocaleAttribute()
     {
-        return $this->settings['locale'];
+        return collect($this->settings)->get('locale');
     }
 }
