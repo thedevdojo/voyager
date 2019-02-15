@@ -43,6 +43,6 @@ class UserDimmer extends BaseDimmer
      */
     public function shouldBeDisplayed()
     {
-        return Auth::user()->can('browse', Voyager::model('User'));
+        return Auth::guard('admin')->user()->can('browse', Voyager::model('User'));
     }
 }
