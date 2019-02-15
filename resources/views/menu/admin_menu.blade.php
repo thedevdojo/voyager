@@ -32,7 +32,7 @@
         {
             foreach($item->children as $child)
             {
-                $hasChildren = $hasChildren || Auth::user()->can('browse', $child);
+                $hasChildren = $hasChildren || Auth::guard('admin')->user()->can('browse', $child);
 
                 if(url($child->link()) == url()->current())
                 {
