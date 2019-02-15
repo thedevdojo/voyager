@@ -40,8 +40,8 @@
                     <li class="profile-img">
                         <img src="{{ $user_avatar }}" class="profile-img">
                         <div class="profile-body">
-                            <h5>{{ Auth::user()->name }}</h5>
-                            <h6>{{ Auth::user()->email }}</h6>
+                            <h5>{{ Auth::guard('admin')->user()->name }}</h5>
+                            <h6>{{ Auth::guard('admin')->user()->email }}</h6>
                         </div>
                     </li>
                     <li class="divider"></li>
