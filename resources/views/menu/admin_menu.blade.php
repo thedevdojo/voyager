@@ -50,7 +50,7 @@
         {
             $linkAttributes =  'href="' . url($href) .'"';
 
-            if(!Auth::user()->can('browse', $item)) {
+            if(!Auth::guard('admin')->user()->can('browse', $item)) {
                 continue;
             }
         }
