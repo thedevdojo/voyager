@@ -11,8 +11,6 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
 
-
-
     <!-- App CSS -->
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
 
@@ -58,10 +56,10 @@
 </div>
 
 <?php
-if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->avatar, 'https://')) {
-    $user_avatar = Auth::user()->avatar;
+if (starts_with(Auth::guard('admin')->user()->avatar, 'http://') || starts_with(Auth::guard('admin')->user()->avatar, 'https://')) {
+    $user_avatar = Auth::guard('admin')->user()->avatar;
 } else {
-    $user_avatar = Voyager::image(Auth::user()->avatar);
+    $user_avatar = Voyager::image(Auth::guard('admin')->user()->avatar);
 }
 ?>
 
