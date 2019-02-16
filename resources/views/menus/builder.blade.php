@@ -274,7 +274,7 @@
              */
             $('.item_actions').on('click', '.delete', function (e) {
                 id = $(e.currentTarget).data('id');
-                $('#delete_form')[0].action = $('#delete_form')[0].action.replace("__id",id);
+                $('#delete_form')[0].action = $('#delete_form')[0].action.replace("/[^\/]*$/",id);
                 $('#delete_modal').modal('show');
             });
 
