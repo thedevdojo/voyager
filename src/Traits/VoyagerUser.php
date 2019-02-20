@@ -117,6 +117,9 @@ trait VoyagerUser
     private function loadPermissionsRelations()
     {
         $this->loadRolesRelations();
+        
+        if(!$this->role)
+            $this->role = Role::find( Auth::user()->role_id );
 
         if (!$this->role->relationLoaded('permissions')) {
             $this->role->load('permissions');
