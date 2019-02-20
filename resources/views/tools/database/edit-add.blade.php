@@ -16,6 +16,26 @@
     </h1>
 @stop
 
+@section('breadcrumbs')
+<ol class="breadcrumb hidden-xs">
+    <li>
+        <a href="{{ route('voyager.dashboard')}}"><i class="voyager-boat"></i> {{ __('voyager::generic.dashboard') }}</a>
+    </li>
+    <li>
+        <a href="{{ route('voyager.database.index') }}">
+            {{ __('voyager::generic.database') }}
+        </a>
+    </li>
+
+    @if($db->action == 'update')
+    <li class="active">{{ __('voyager::generic.edit') }}</li>
+    <li class="active">{{ $db->table->name }}</li>
+    @else
+    <li class="active">{{ __('voyager::generic.add') }}</li>
+    @endif
+</ol>
+@endsection
+
 @section('content')
 
     <div class="page-content container-fluid">
