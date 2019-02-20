@@ -17,6 +17,8 @@ class User extends Authenticatable implements UserContract
         'settings' => 'array',
     ];
 
+    public $additional_attributes = ['locale'];
+
     public function getAvatarAttribute($value)
     {
         if (is_null($value)) {
