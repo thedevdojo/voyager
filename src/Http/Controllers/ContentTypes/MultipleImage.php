@@ -22,6 +22,10 @@ class MultipleImage extends BaseType
         }
 
         foreach ($files as $file) {
+            if (!$file->isValid()) {
+                continue;
+            }
+
             $image = InterventionImage::make($file);
 
             $resize_width = null;

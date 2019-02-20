@@ -32,9 +32,9 @@
 * [TinyMCE](customization/tinymce.md)
 * [Adding custom Formfields](customization/adding-custom-formfields.md)
 * [Coordinates](customization/coordinates.md)
+* [BREAD accessors](customization/bread-accessors.md)
 
 ## Troubleshooting
 
 * [Using HTTPS on yours site](troubleshooting/using-https.md)
 * [Missing required parameter](troubleshooting/missing-required-parameter.md)
-
