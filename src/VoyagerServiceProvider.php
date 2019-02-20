@@ -25,6 +25,7 @@ use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
+use TCG\Voyager\Traits\VoyagerUser;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -64,6 +65,10 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->app->singleton('voyager', function () {
             return new Voyager();
+        });
+
+        $this->app->singleton('VoyagerUser', function () {
+            return \Auth::user();
         });
 
         $this->loadHelpers();

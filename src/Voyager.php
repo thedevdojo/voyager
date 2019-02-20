@@ -339,7 +339,7 @@ class Voyager
     protected function getUser($id = null)
     {
         if (is_null($id)) {
-            $id = auth()->check() ? auth()->user()->id : null;
+            $id = auth()->check() ? app('VoyagerUser')->id : null;
         }
 
         if (is_null($id)) {

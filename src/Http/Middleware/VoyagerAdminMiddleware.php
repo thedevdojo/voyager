@@ -19,7 +19,7 @@ class VoyagerAdminMiddleware
     public function handle($request, Closure $next)
     {
         if (!Auth::guest()) {
-            $user = auth()->user();
+            $user = app('VoyagerUser');
             if (isset($user->locale)) {
                 app()->setLocale($user->locale);
             }
