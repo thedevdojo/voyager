@@ -67,6 +67,28 @@ This can be overriden by the following new config-key:
 'compass_in_production' => true,
 ```
 
+The top dropdown-items can now be translated by providing a language-key:
+```php
+<?php
+
+'navbar_items' => [
+    'voyager::generic.profile' => [
+        'route'      => 'voyager.profile',
+        'classes'    => 'class-full-of-rum',
+        'icon_class' => 'voyager-person',
+    ],
+    'voyager::generic.home' => [
+        'route'        => '/',
+        'icon_class'   => 'voyager-home',
+        'target_blank' => true,
+    ],
+    'voyager::generic.logout' => [
+        'route'      => 'voyager.logout',
+        'icon_class' => 'voyager-power',
+    ],
+],
+```
+
 ### Deprecation
 `can`, `canOrAbort`, `canOrFail` in the Voyager facade were all removed in favor of Policies and Gates.  
 Please refer to the [Laravel documentation](https://laravel.com/docs/authorization).
