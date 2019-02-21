@@ -335,7 +335,7 @@ class VoyagerBaseController extends Controller
                     ]);
             } else {
                 $request['enabled'] = 1;
-                $message = trans('messages.success.added', ['type' => trans_choice('general.customers', 1)]);
+                $message = __('voyager::generic.successfully_added_new');
                 return response()->json([
                     'success' => true,
                     'error' => false,
