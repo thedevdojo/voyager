@@ -128,17 +128,17 @@ return [
     'dashboard' => [
         // Add custom list items to navbar's dropdown
         'navbar_items' => [
-            'Profile' => [
+            'voyager::generic.profile' => [
                 'route'      => 'voyager.profile',
                 'classes'    => 'class-full-of-rum',
                 'icon_class' => 'voyager-person',
             ],
-            'Home' => [
+            'voyager::generic.home' => [
                 'route'        => '/',
                 'icon_class'   => 'voyager-home',
                 'target_blank' => true,
             ],
-            'Logout' => [
+            'voyager::generic.logout' => [
                 'route'      => 'voyager.logout',
                 'icon_class' => 'voyager-power',
             ],

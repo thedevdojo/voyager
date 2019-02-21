@@ -277,7 +277,7 @@
              */
             $('.item_actions').on('click', '.delete', function (e) {
                 id = $(e.currentTarget).data('id');
-                $('#delete_form')[0].action = $('#delete_form')[0].action.replace("__id",id);
+                $('#delete_form')[0].action = '{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '']) }}/' + id;
                 $('#delete_modal').modal('show');
             });
 
