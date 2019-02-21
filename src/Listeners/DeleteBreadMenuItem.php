@@ -3,7 +3,7 @@
 namespace TCG\Voyager\Listeners;
 
 use TCG\Voyager\Events\BreadDeleted;
-use TCG\Voyager\Models\MenuItem;
+use TCG\Voyager\Facades\Voyager;
 
 class DeleteBreadMenuItem
 {
@@ -27,7 +27,7 @@ class DeleteBreadMenuItem
     public function handle(BreadDeleted $bread)
     {
         if (config('voyager.bread.add_menu_item')) {
-            $menuItem = MenuItem::where('route', 'voyager.'.$bread->dataType->slug.'.index');
+            $menuItem = Voyager::model('MenuItem')->where('route', 'voyager.'.$bread->dataType->slug.'.index');
 
             if ($menuItem->exists()) {
                 $menuItem->delete();
