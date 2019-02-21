@@ -1,4 +1,4 @@
-const { mix } = require('laravel-mix');
+let mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,7 +11,9 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.options({
-    	processCssUrls: false
-	}).sass('resources/assets/sass/app.scss', 'publishable/assets/css')
-	  .js('resources/assets/js/app.js', 'publishable/assets/js');
+mix.options({ processCssUrls: false }).sass('resources/assets/sass/app.scss', 'publishable/assets/css', { implementation: require('node-sass') })
+.js('resources/assets/js/app.js', 'publishable/assets/js')
+.copy('node_modules/tinymce/plugins', 'publishable/assets/js/plugins')
+.copy('node_modules/tinymce/skins', 'publishable/assets/js/skins')
+.copy('resources/assets/js/skins', 'publishable/assets/js/skins')
+.copy('node_modules/tinymce/themes/modern', 'publishable/assets/js/themes/modern');

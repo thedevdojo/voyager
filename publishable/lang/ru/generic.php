@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'Действие',
     'actions'                => 'Доступные действия',
     'add'                    => 'Добавить',

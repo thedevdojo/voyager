@@ -4,7 +4,7 @@ use TCG\Voyager\Events\Routing;
 use TCG\Voyager\Events\RoutingAdmin;
 use TCG\Voyager\Events\RoutingAdminAfter;
 use TCG\Voyager\Events\RoutingAfter;
-use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Facades\Voyager;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,16 +32,18 @@ Route::group(['as' => 'voyager.'], function () {
         Route::post('logout', ['uses' => $namespacePrefix.'VoyagerController@logout',  'as' => 'logout']);
         Route::post('upload', ['uses' => $namespacePrefix.'VoyagerController@upload',  'as' => 'upload']);
 
-        Route::get('profile', ['uses' => $namespacePrefix.'VoyagerController@profile', 'as' => 'profile']);
+        Route::get('profile', ['uses' => $namespacePrefix.'VoyagerUserController@profile', 'as' => 'profile']);
 
         try {
-            foreach (DataType::all() as $dataType) {
+            foreach (Voyager::model('DataType')::all() as $dataType) {
                 $breadController = $dataType->controller
-                                 ? $dataType->controller
+                                 ? str_start($dataType->controller, '\\')
                                  : $namespacePrefix.'VoyagerBaseController';
 
                 Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
                 Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.order');
+                Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
+                Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
                 Route::resource($dataType->slug, $breadController);
             }
         } catch (\InvalidArgumentException $e) {
@@ -131,5 +133,9 @@ Route::group(['as' => 'voyager.'], function () {
 
         event(new RoutingAdminAfter());
     });
+
+    //Asset Routes
+    Route::get('assets/{path}', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'assets'])->where('path', '(.*)');
+
     event(new RoutingAfter());
 });
