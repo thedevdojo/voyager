@@ -82,7 +82,7 @@ Route::group(['as' => 'voyager.'], function () {
             Route::delete('{id}', ['uses' => $namespacePrefix.'VoyagerSettingsController@delete',       'as' => 'delete']);
             Route::get('{id}/move_up', ['uses' => $namespacePrefix.'VoyagerSettingsController@move_up',      'as' => 'move_up']);
             Route::get('{id}/move_down', ['uses' => $namespacePrefix.'VoyagerSettingsController@move_down',    'as' => 'move_down']);
-            Route::put('{id}/delete_value', ['uses' => $namespacePrefix.'VoyagerSettingsController@delete_value', 'as' => 'delete_value']);
+            Route::get('{id}/delete_value', ['uses' => $namespacePrefix.'VoyagerSettingsController@delete_value', 'as' => 'delete_value']);
         });
 
         // Admin Media
@@ -127,6 +127,14 @@ Route::group(['as' => 'voyager.'], function () {
         ], function () use ($namespacePrefix) {
             Route::get('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'index']);
             Route::post('/', ['uses' => $namespacePrefix.'VoyagerCompassController@index',  'as' => 'post']);
+        });
+
+        Route::group([
+            'as' => 'modals.',
+            'prefix' => 'modals'
+        ], function () use ($namespacePrefix) {
+            Route::get('{table}/create', ['uses' => $namespacePrefix.'VoyagerModalsController@create',     'as' => 'create']);
+            Route::post('/', ['uses' => $namespacePrefix.'VoyagerModalsController@store',   'as' => 'store']);
         });
 
         event(new RoutingAdminAfter());

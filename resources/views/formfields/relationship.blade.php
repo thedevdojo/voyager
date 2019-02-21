@@ -22,7 +22,7 @@
 
             @else
 
-                <select class="form-control select2" name="{{ $options->column }}">
+                <select class="form-control select2" name="{{ $options->column }}" id="{{ $row->field }}">
                     @php
                         $model = app($options->model);
                         $query = $model::all();
@@ -146,7 +146,7 @@
             @else
                 <select
                     class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2 @endif"
-                    name="{{ $relationshipField }}[]" multiple
+                    name="{{ $relationshipField }}[]" id="{{ $row->field }}" multiple
                     @if(isset($options->taggable) && $options->taggable == 'on')
                         data-route="{{ route('voyager.'.str_slug($options->table).'.store') }}"
                         data-label="{{$options->label}}"
