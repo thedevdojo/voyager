@@ -66,8 +66,8 @@ class VoyagerServiceProvider extends ServiceProvider
             return new Voyager();
         });
 
-        $this->app->singleton('VoyagerUser', function () {
-            return \Auth::user();
+        $this->app->singleton('VoyagerAuth', function () {
+            return auth();
         });
 
         $this->loadHelpers();

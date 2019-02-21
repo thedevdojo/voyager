@@ -18,8 +18,8 @@ class VoyagerUserController extends VoyagerBaseController
     {
         if (app('VoyagerUser')->getKey() == $id) {
             $request->merge([
-                'role_id'                              => app('VoyagerUser')->role_id,
-                'user_belongstomany_role_relationship' => app('VoyagerUser')->roles->pluck('id')->toArray(),
+                'role_id'                              => app('VoyagerAuth')->user()->role_id,
+                'user_belongstomany_role_relationship' => app('VoyagerAuth')->user()->roles->pluck('id')->toArray(),
             ]);
         }
 

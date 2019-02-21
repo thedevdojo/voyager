@@ -58,10 +58,10 @@
 </div>
 
 <?php
-if (starts_with(app('VoyagerUser')->avatar, 'http://') || starts_with(app('VoyagerUser')->avatar, 'https://')) {
-    $user_avatar = app('VoyagerUser')->avatar;
+if (starts_with(app('VoyagerAuth')->user()->avatar, 'http://') || starts_with(app('VoyagerAuth')->user()->avatar, 'https://')) {
+    $user_avatar = app('VoyagerAuth')->user()->avatar;
 } else {
-    $user_avatar = Voyager::image(app('VoyagerUser')->avatar);
+    $user_avatar = Voyager::image(app('VoyagerAuth')->user()->avatar);
 }
 ?>
 
