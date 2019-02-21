@@ -4,8 +4,6 @@ namespace TCG\Voyager\Listeners;
 
 use TCG\Voyager\Events\BreadAdded;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\Menu;
-use TCG\Voyager\Models\MenuItem;
 
 class AddBreadMenuItem
 {
@@ -31,9 +29,9 @@ class AddBreadMenuItem
         if (config('voyager.bread.add_menu_item') && file_exists(base_path('routes/web.php'))) {
             require base_path('routes/web.php');
 
-            $menu = Menu::where('name', config('voyager.bread.default_menu'))->firstOrFail();
+            $menu = Voyager::model('Menu')->where('name', config('voyager.bread.default_menu'))->firstOrFail();
 
-            $menuItem = MenuItem::firstOrNew([
+            $menuItem = Voyager::model('MenuItem')->firstOrNew([
                 'menu_id' => $menu->id,
                 'title'   => $bread->dataType->display_name_plural,
                 'url'     => '',
