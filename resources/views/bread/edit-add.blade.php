@@ -66,6 +66,7 @@
                                         <label for="name">{{ $row->display_name }}</label>
                                         @include('voyager::multilingual.input-hidden-bread-edit-add')
                                         @if($row->type == 'relationship')
+                                            <button type="button" onclick="addModel('{{ $row->details->table }}')" id="button-{{ $row->details->table }}" class="btn btn-primary save"><i class="voyager-plus"></i></button>
                                             @include('voyager::formfields.relationship', ['options' => $row->details])
                                         @else
                                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
@@ -149,6 +150,15 @@
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
 
+            @if (old('item'))
+            $('#name').trigger('change');
+            @endif
+            $('.input-price').trigger('focusout');
+            //Date picker
+            $('#name').select2({
+                placeholder: "{{ trans('general.form.select.field', ['field' => trans_choice('general.$dataType->slug', 1)]) }}"
+            });
+
             //Init datepicker for date fields if data-datepicker attribute defined
             //or if browser does not handle date inputs
             $('.form-group input[type=date]').each(function (idx, elt) {
@@ -189,5 +199,19 @@
             });
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+        function addModel(column) {
+            var link = "/admin/modals/"+column+"/create"
+            $.ajax({
+                url: link,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(json) {
+                    if (json['success']) {
+                        $('body').append(json['html']);
+                    }
+                }
+            });
+        }
     </script>
 @stop
