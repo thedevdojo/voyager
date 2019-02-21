@@ -14,9 +14,6 @@ use TCG\Voyager\Events\BreadAdded;
 use TCG\Voyager\Events\BreadDeleted;
 use TCG\Voyager\Events\BreadUpdated;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\DataRow;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Permission;
 
 class VoyagerBreadController extends Controller
 {
@@ -254,7 +251,8 @@ class VoyagerBreadController extends Controller
                 'taggable'    => $request->relationship_taggable,
             ];
 
-            $newRow = new DataRow();
+            $className = Voyager::modelClass('DataRow');
+            $newRow = new $className();
 
             $newRow->data_type_id = $request->data_type_id;
             $newRow->field = $relationshipField;

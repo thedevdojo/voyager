@@ -4,7 +4,6 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
@@ -29,19 +28,6 @@ class Menu extends Model
     }
 
     /**
-     * Returns the menu's cache key.
-     */
-    protected static function cacheKey($menuName, $type = null, array $options = [])
-    {
-        return sprintf(
-            '%s_%s_%s',
-            $menuName,
-            $type,
-            md5(serialize($options))
-        );
-    }
-
-    /**
      * Display menu.
      *
      * @param string      $menuName
@@ -52,18 +38,14 @@ class Menu extends Model
      */
     public static function display($menuName, $type = null, array $options = [])
     {
-        $cacheKey = self::cacheKey($menuName, $type, $options);
-
-        if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
-        }
-
         // GET THE MENU - sort collection in blade
-        $menu = static::where('name', '=', $menuName)
+        $menu = \Cache::remember('voyager_menu_'.$menuName, (60 * 24 * 30), function () use ($menuName) {
+            return static::where('name', '=', $menuName)
             ->with(['parent_items.children' => function ($q) {
                 $q->orderBy('order');
             }])
             ->first();
+        });
 
         // Check for Menu Existence
         if (!isset($menu)) {
@@ -75,21 +57,13 @@ class Menu extends Model
         // Convert options array into object
         $options = (object) $options;
 
-        // Set static vars values for admin menus
-        if (in_array($type, ['admin', 'admin_menu'])) {
-            $permissions = Voyager::model('Permission')->all();
-            $dataTypes = Voyager::model('DataType')->all();
-            $prefix = trim(route('voyager.dashboard', [], false), '/');
-            $user_permissions = null;
+        $items = $menu->parent_items->sortBy('order');
 
-            if (!Auth::guest()) {
-                $user = Voyager::model('User')->find(Auth::id());
-                $user_permissions = $user->role ? $user->role->permissions->pluck('key')->toArray() : [];
-            }
+        if ($menuName == 'admin' && $type == '_json') {
+            $items = static::processItems($items);
+        }
 
-            $options->user = (object) compact('permissions', 'dataTypes', 'prefix', 'user_permissions');
-
-            // change type to blade template name - TODO funky names, should clean up later
+        if ($type == 'admin') {
             $type = 'voyager::menu.'.$type;
         } else {
             if (is_null($type)) {
@@ -103,23 +77,63 @@ class Menu extends Model
             $options->locale = app()->getLocale();
         }
 
-        $items = $menu->parent_items->sortBy('order');
-
         if ($type === '_json') {
             return $items;
         }
 
-        $menu_html = new \Illuminate\Support\HtmlString(
+        return new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render()
         );
+    }
 
-        // Tagging not supported in file/database caches
-        if (config('cache.default') === 'file' || config('cache.default') === 'database') {
-            Cache::forever($cacheKey, $menu_html);
-        } else {
-            Cache::tags(['voyager-menu'])->forever($cacheKey, $menu_html);
-        }
+    public function save(array $options = [])
+    {
+        //Remove from cache
+        \Cache::forget('voyager_menu_'.$this->name);
 
-        return $menu_html;
+        parent::save();
+    }
+
+    private static function processItems($items)
+    {
+        $items = $items->transform(function ($item) {
+            // Translate title
+            $item->title = $item->getTranslatedAttribute('title');
+            // Resolve URL/Route
+            $item->href = $item->link();
+
+            if (url($item->href) == url()->current() && $item->href != '') {
+                // The current URL is exactly the URL of the menu-item
+                $item->active = true;
+            } elseif (starts_with(url()->current(), str_finish(url($item->href), '/'))) {
+                // The current URL is "below" the menu-item URL. For example "admin/posts/1/edit" => "admin/posts"
+                $item->active = true;
+            }
+
+            if (($item->href == '' || url($item->href) == route('voyager.dashboard')) && $item->children->count() > 0) {
+                // Exclude sub-menus
+                $item->active = false;
+            } elseif (url($item->href) == route('voyager.dashboard') && url()->current() != route('voyager.dashboard')) {
+                // Exclude dashboard
+                $item->active = false;
+            }
+
+            if ($item->children->count() > 0) {
+                $item->children = static::processItems($item->children);
+
+                if (!$item->children->where('active', true)->isEmpty()) {
+                    $item->active = true;
+                }
+            }
+
+            return $item;
+        });
+
+        // Filter items by permission
+        $items = $items->filter(function ($item) {
+            return !$item->children->isEmpty() || Auth::user()->can('browse', $item);
+        });
+
+        return $items->values();
     }
 }
