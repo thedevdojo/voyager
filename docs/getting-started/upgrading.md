@@ -89,6 +89,8 @@ The top dropdown-items can now be translated by providing a language-key:
 ],
 ```
 
+If you were using casts in your user-model previously, please remove the array-cast of `settings`.
+
 ### Deprecation
 `can`, `canOrAbort`, `canOrFail` in the Voyager facade were all removed in favor of Policies and Gates.  
 Please refer to the [Laravel documentation](https://laravel.com/docs/authorization).
