@@ -32,7 +32,6 @@
     "datetimepicker": "^0.1.38",
     "dropzone": "^5.0.1",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
-    "formdata-polyfill": "^3.0.12",
     "icheck": "^1.0.2",
     "jquery-match-height": "^0.7.2",
     "nestable2": "^1.6.0",

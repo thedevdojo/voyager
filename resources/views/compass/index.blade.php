@@ -42,7 +42,7 @@
                     <div class="collapse-content collapse in" id="links">
                         <div class="row">
                             <div class="col-md-4">
-                                <a href="https://laravelvoyager.com/docs" target="_blank" class="voyager-link" style="background-image:url('{{ voyager_asset('images/compass/documentation.jpg') }}')">
+                                <a href="https://docs.laravelvoyager.com" target="_blank" class="voyager-link" style="background-image:url('{{ voyager_asset('images/compass/documentation.jpg') }}')">
                                     <span class="resource_label"><i class="voyager-documentation"></i> <span class="copy">{{ __('voyager::compass.links.documentation') }}</span></span>
                                 </a>
                             </div>
