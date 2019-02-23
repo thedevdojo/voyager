@@ -36,7 +36,7 @@ class User extends Authenticatable implements UserContract
 
     public function getSettingsAttribute($value)
     {
-        return $value ? (array)json_decode($value) : [];
+        return (array)json_decode($value);
     }
 
     public function setLocaleAttribute($value)
@@ -46,6 +46,6 @@ class User extends Authenticatable implements UserContract
 
     public function getLocaleAttribute()
     {
-        return $this->settings['locale'];
+        return $this->settings['locale'] ? $this->settings['locale'] : app()->getLocale();
     }
 }
