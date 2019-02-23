@@ -31,21 +31,21 @@ class User extends Authenticatable implements UserContract
 
     public function setSettingsAttribute($value)
     {
-        $this->attributes['settings'] = json_encode($value);
+        $this->attributes['settings'] = $value->toJson();
     }
 
     public function getSettingsAttribute($value)
     {
-        return (array)json_decode($value);
+        return collect(json_decode($value));
     }
 
     public function setLocaleAttribute($value)
     {
-        $this->attributes['settings'] = collect($this->settings)->merge(['locale' => $value]);
+        $this->settings = $this->settings->merge(['locale' => $value]);
     }
 
     public function getLocaleAttribute()
     {
-        return $this->settings['locale'] ? $this->settings['locale'] : app()->getLocale();
+        return $this->settings->get('locale');
     }
 }
