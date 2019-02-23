@@ -22,6 +22,9 @@ class VoyagerEventServiceProvider extends ServiceProvider
         Events\BreadDeleted::class => [
             Listeners\DeleteBreadMenuItem::class,
         ],
+        Events\SettingUpdated::class => [
+            Listeners\ClearCachedSettingValue::class,
+        ],
     ];
 
     /**
