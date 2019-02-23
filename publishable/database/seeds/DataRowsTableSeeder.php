@@ -186,21 +186,6 @@ class DataRowsTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataRow = $this->dataRow($userDataType, 'locale');
-        if (!$dataRow->exists) {
-            $dataRow->fill([
-                'type'         => 'text',
-                'display_name' => 'Locale',
-                'required'     => 0,
-                'browse'       => 1,
-                'read'         => 1,
-                'edit'         => 1,
-                'add'          => 1,
-                'delete'       => 0,
-                'order'        => 12,
-            ])->save();
-        }
-
         $dataRow = $this->dataRow($userDataType, 'settings');
         if (!$dataRow->exists) {
             $dataRow->fill([

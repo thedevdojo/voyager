@@ -42,7 +42,7 @@ menu('main', 'my_menu');
 
 And your custom menu will now be output.
 
-### Menu as JSON
+## Menu as JSON
 
 If you dont want to render your menu but get an array instead, you can pass `_json` as the second parameter. For example:
 

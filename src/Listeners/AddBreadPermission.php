@@ -4,8 +4,6 @@ namespace TCG\Voyager\Listeners;
 
 use TCG\Voyager\Events\BreadAdded;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\Permission;
-use TCG\Voyager\Models\Role;
 
 class AddBreadPermission
 {
@@ -32,10 +30,10 @@ class AddBreadPermission
             // Create permission
             //
             // Permission::generateFor(snake_case($bread->dataType->slug));
-            $role = Role::where('name', config('voyager.bread.default_role'))->firstOrFail();
+            $role = Voyager::model('Role')->where('name', config('voyager.bread.default_role'))->firstOrFail();
 
             // Get permission for added table
-            $permissions = Permission::where(['table_name' => $bread->dataType->name])->get()->pluck('id')->all();
+            $permissions = Voyager::model('Permission')->where(['table_name' => $bread->dataType->name])->get()->pluck('id')->all();
 
             // Assign permission to admin
             $role->permissions()->attach($permissions);

@@ -1,1 +1,1204 @@
-tinymce.PluginManager.add("image",function(e){function t(e,t){function n(e,n){r.parentNode&&r.parentNode.removeChild(r),t({width:e,height:n})}var r=document.createElement("img");r.onload=function(){n(Math.max(r.width,r.clientWidth),Math.max(r.height,r.clientHeight))},r.onerror=function(){n()};var i=r.style;i.visibility="hidden",i.position="fixed",i.bottom=i.left=0,i.width=i.height="auto",document.body.appendChild(r),r.src=e}function n(e,t,n){function r(e,n){return n=n||[],tinymce.each(e,function(e){var i={text:e.text||e.title};e.menu?i.menu=r(e.menu):(i.value=e.value,t(i)),n.push(i)}),n}return r(e,n||[])}function r(t){return function(){var n=e.settings.image_list;"string"==typeof n?tinymce.util.XHR.send({url:n,success:function(e){t(tinymce.util.JSON.parse(e))}}):"function"==typeof n?n(t):t(n)}}function i(r){function i(){var e,t,n,r;e=f.find("#width")[0],t=f.find("#height")[0],e&&t&&(n=e.value(),r=t.value(),f.find("#constrain")[0].checked()&&h&&g&&n&&r&&(h!=n?(r=Math.round(n/h*r),isNaN(r)||t.value(r)):(n=Math.round(r/g*n),isNaN(n)||e.value(n))),h=n,g=r)}function o(){function t(t){function n(){t.onload=t.onerror=null,e.selection&&(e.selection.select(t),e.nodeChanged())}t.onload=function(){y.width||y.height||!x||C.setAttribs(t,{width:t.clientWidth,height:t.clientHeight}),n()},t.onerror=n}var n,r;u(),i(),y=tinymce.extend(y,f.toJSON()),y.alt||(y.alt=""),y.title||(y.title=""),""===y.width&&(y.width=null),""===y.height&&(y.height=null),y.style||(y.style=null),y={src:y.src,alt:y.alt,title:y.title,width:y.width,height:y.height,style:y.style,caption:y.caption,"class":y["class"]},e.undoManager.transact(function(){function i(t){return e.schema.getTextBlockElements()[t.nodeName]}if(!y.src)return void(p&&(C.remove(p),e.focus(),e.nodeChanged()));if(""===y.title&&(y.title=null),p?C.setAttribs(p,y):(y.id="__mcenew",e.focus(),e.selection.setContent(C.createHTML("img",y)),p=C.get("__mcenew"),C.setAttrib(p,"id",null)),e.editorUpload.uploadImagesAuto(),y.caption===!1&&C.is(p.parentNode,"figure.image")&&(n=p.parentNode,C.insertAfter(p,n),C.remove(n)),y.caption!==!0)t(p);else if(!C.is(p.parentNode,"figure.image")){r=p,p=p.cloneNode(!0),n=C.create("figure",{"class":"image"}),n.appendChild(p),n.appendChild(C.create("figcaption",{contentEditable:!0},"Caption")),n.contentEditable=!1;var o=C.getParent(r,i);o?C.split(o,r,n):C.replace(n,r),e.selection.select(n)}})}function a(e){return e&&(e=e.replace(/px$/,"")),e}function s(n){var r,i,o,a=n.meta||{};v&&v.value(e.convertURL(this.value(),"src")),tinymce.each(a,function(e,t){f.find("#"+t).value(e)}),a.width||a.height||(r=e.convertURL(this.value(),"src"),i=e.settings.image_prepend_url,o=new RegExp("^(?:[a-z]+:)?//","i"),i&&!o.test(r)&&r.substring(0,i.length)!==i&&(r=i+r),this.value(r),t(e.documentBaseURI.toAbsolute(this.value()),function(e){e.width&&e.height&&x&&(h=e.width,g=e.height,f.find("#width").value(h),f.find("#height").value(g))}))}function l(e){e.meta=f.toJSON()}function c(e){if(e.margin){var t=e.margin.split(" ");switch(t.length){case 1:e["margin-top"]=e["margin-top"]||t[0],e["margin-right"]=e["margin-right"]||t[0],e["margin-bottom"]=e["margin-bottom"]||t[0],e["margin-left"]=e["margin-left"]||t[0];break;case 2:e["margin-top"]=e["margin-top"]||t[0],e["margin-right"]=e["margin-right"]||t[1],e["margin-bottom"]=e["margin-bottom"]||t[0],e["margin-left"]=e["margin-left"]||t[1];break;case 3:e["margin-top"]=e["margin-top"]||t[0],e["margin-right"]=e["margin-right"]||t[1],e["margin-bottom"]=e["margin-bottom"]||t[2],e["margin-left"]=e["margin-left"]||t[1];break;case 4:e["margin-top"]=e["margin-top"]||t[0],e["margin-right"]=e["margin-right"]||t[1],e["margin-bottom"]=e["margin-bottom"]||t[2],e["margin-left"]=e["margin-left"]||t[3]}delete e.margin}return e}function u(){function t(e){return e.length>0&&/^[0-9]+$/.test(e)&&(e+="px"),e}if(e.settings.image_advtab){var n=f.toJSON(),r=C.parseStyle(n.style);r=c(r),n.vspace&&(r["margin-top"]=r["margin-bottom"]=t(n.vspace)),n.hspace&&(r["margin-left"]=r["margin-right"]=t(n.hspace)),n.border&&(r["border-width"]=t(n.border)),f.find("#style").value(C.serializeStyle(C.parseStyle(C.serializeStyle(r))))}}function d(){if(e.settings.image_advtab){var t=f.toJSON(),n=C.parseStyle(t.style);f.find("#vspace").value(""),f.find("#hspace").value(""),n=c(n),(n["margin-top"]&&n["margin-bottom"]||n["margin-right"]&&n["margin-left"])&&(n["margin-top"]===n["margin-bottom"]?f.find("#vspace").value(a(n["margin-top"])):f.find("#vspace").value(""),n["margin-right"]===n["margin-left"]?f.find("#hspace").value(a(n["margin-right"])):f.find("#hspace").value("")),n["border-width"]&&f.find("#border").value(a(n["border-width"])),f.find("#style").value(C.serializeStyle(C.parseStyle(C.serializeStyle(n))))}}var f,p,m,h,g,v,b,y={},C=e.dom,x=e.settings.image_dimensions!==!1;p=e.selection.getNode(),m=C.getParent(p,"figure.image"),m&&(p=C.select("img",m)[0]),p&&("IMG"!=p.nodeName||p.getAttribute("data-mce-object")||p.getAttribute("data-mce-placeholder"))&&(p=null),p&&(h=C.getAttrib(p,"width"),g=C.getAttrib(p,"height"),y={src:C.getAttrib(p,"src"),alt:C.getAttrib(p,"alt"),title:C.getAttrib(p,"title"),"class":C.getAttrib(p,"class"),width:h,height:g,caption:!!m}),r&&(v={type:"listbox",label:"Image list",values:n(r,function(t){t.value=e.convertURL(t.value||t.url,"src")},[{text:"None",value:""}]),value:y.src&&e.convertURL(y.src,"src"),onselect:function(e){var t=f.find("#alt");(!t.value()||e.lastControl&&t.value()==e.lastControl.text())&&t.value(e.control.text()),f.find("#src").value(e.control.value()).fire("change")},onPostRender:function(){v=this}}),e.settings.image_class_list&&(b={name:"class",type:"listbox",label:"Class",values:n(e.settings.image_class_list,function(t){t.value&&(t.textStyle=function(){return e.formatter.getCssText({inline:"img",classes:[t.value]})})})});var w=[{name:"src",type:"filepicker",filetype:"image",label:"Source",autofocus:!0,onchange:s,onbeforecall:l},v];e.settings.image_description!==!1&&w.push({name:"alt",type:"textbox",label:"Image description"}),e.settings.image_title&&w.push({name:"title",type:"textbox",label:"Image Title"}),x&&w.push({type:"container",label:"Dimensions",layout:"flex",direction:"row",align:"center",spacing:5,items:[{name:"width",type:"textbox",maxLength:5,size:3,onchange:i,ariaLabel:"Width"},{type:"label",text:"x"},{name:"height",type:"textbox",maxLength:5,size:3,onchange:i,ariaLabel:"Height"},{name:"constrain",type:"checkbox",checked:!0,text:"Constrain proportions"}]}),w.push(b),e.settings.image_caption&&tinymce.Env.ceFalse&&w.push({name:"caption",type:"checkbox",label:"Caption"}),e.settings.image_advtab?(p&&(p.style.marginLeft&&p.style.marginRight&&p.style.marginLeft===p.style.marginRight&&(y.hspace=a(p.style.marginLeft)),p.style.marginTop&&p.style.marginBottom&&p.style.marginTop===p.style.marginBottom&&(y.vspace=a(p.style.marginTop)),p.style.borderWidth&&(y.border=a(p.style.borderWidth)),y.style=e.dom.serializeStyle(e.dom.parseStyle(e.dom.getAttrib(p,"style")))),f=e.windowManager.open({title:"Insert/edit image",data:y,bodyType:"tabpanel",body:[{title:"General",type:"form",items:w},{title:"Advanced",type:"form",pack:"start",items:[{label:"Style",name:"style",type:"textbox",onchange:d},{type:"form",layout:"grid",packV:"start",columns:2,padding:0,alignH:["left","right"],defaults:{type:"textbox",maxWidth:50,onchange:u},items:[{label:"Vertical space",name:"vspace"},{label:"Horizontal space",name:"hspace"},{label:"Border",name:"border"}]}]}],onSubmit:o})):f=e.windowManager.open({title:"Insert/edit image",data:y,body:w,onSubmit:o})}e.on("preInit",function(){function t(e){var t=e.attr("class");return t&&/\bimage\b/.test(t)}function n(e){return function(n){function r(t){t.attr("contenteditable",e?"true":null)}for(var i,o=n.length;o--;)i=n[o],t(i)&&(i.attr("contenteditable",e?"false":null),tinymce.each(i.getAll("figcaption"),r))}}e.parser.addNodeFilter("figure",n(!0)),e.serializer.addNodeFilter("figure",n(!1))}),e.addButton("image",{icon:"image",tooltip:"Insert/edit image",onclick:r(i),stateSelector:"img:not([data-mce-object],[data-mce-placeholder]),figure.image"}),e.addMenuItem("image",{icon:"image",text:"Image",onclick:r(i),context:"insert",prependToContext:!0}),e.addCommand("mceImage",r(i))});
+(function () {
+var image = (function () {
+    'use strict';
+
+    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+
+    var hasDimensions = function (editor) {
+      return editor.settings.image_dimensions === false ? false : true;
+    };
+    var hasAdvTab = function (editor) {
+      return editor.settings.image_advtab === true ? true : false;
+    };
+    var getPrependUrl = function (editor) {
+      return editor.getParam('image_prepend_url', '');
+    };
+    var getClassList = function (editor) {
+      return editor.getParam('image_class_list');
+    };
+    var hasDescription = function (editor) {
+      return editor.settings.image_description === false ? false : true;
+    };
+    var hasImageTitle = function (editor) {
+      return editor.settings.image_title === true ? true : false;
+    };
+    var hasImageCaption = function (editor) {
+      return editor.settings.image_caption === true ? true : false;
+    };
+    var getImageList = function (editor) {
+      return editor.getParam('image_list', false);
+    };
+    var hasUploadUrl = function (editor) {
+      return editor.getParam('images_upload_url', false);
+    };
+    var hasUploadHandler = function (editor) {
+      return editor.getParam('images_upload_handler', false);
+    };
+    var getUploadUrl = function (editor) {
+      return editor.getParam('images_upload_url');
+    };
+    var getUploadHandler = function (editor) {
+      return editor.getParam('images_upload_handler');
+    };
+    var getUploadBasePath = function (editor) {
+      return editor.getParam('images_upload_base_path');
+    };
+    var getUploadCredentials = function (editor) {
+      return editor.getParam('images_upload_credentials');
+    };
+    var Settings = {
+      hasDimensions: hasDimensions,
+      hasAdvTab: hasAdvTab,
+      getPrependUrl: getPrependUrl,
+      getClassList: getClassList,
+      hasDescription: hasDescription,
+      hasImageTitle: hasImageTitle,
+      hasImageCaption: hasImageCaption,
+      getImageList: getImageList,
+      hasUploadUrl: hasUploadUrl,
+      hasUploadHandler: hasUploadHandler,
+      getUploadUrl: getUploadUrl,
+      getUploadHandler: getUploadHandler,
+      getUploadBasePath: getUploadBasePath,
+      getUploadCredentials: getUploadCredentials
+    };
+
+    var Global = typeof window !== 'undefined' ? window : Function('return this;')();
+
+    var path = function (parts, scope) {
+      var o = scope !== undefined && scope !== null ? scope : Global;
+      for (var i = 0; i < parts.length && o !== undefined && o !== null; ++i)
+        o = o[parts[i]];
+      return o;
+    };
+    var resolve = function (p, scope) {
+      var parts = p.split('.');
+      return path(parts, scope);
+    };
+
+    var unsafe = function (name, scope) {
+      return resolve(name, scope);
+    };
+    var getOrDie = function (name, scope) {
+      var actual = unsafe(name, scope);
+      if (actual === undefined || actual === null)
+        throw name + ' not available on this browser';
+      return actual;
+    };
+    var Global$1 = { getOrDie: getOrDie };
+
+    function FileReader () {
+      var f = Global$1.getOrDie('FileReader');
+      return new f();
+    }
+
+    var global$1 = tinymce.util.Tools.resolve('tinymce.util.Promise');
+
+    var global$2 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+
+    var global$3 = tinymce.util.Tools.resolve('tinymce.util.XHR');
+
+    var parseIntAndGetMax = function (val1, val2) {
+      return Math.max(parseInt(val1, 10), parseInt(val2, 10));
+    };
+    var getImageSize = function (url, callback) {
+      var img = document.createElement('img');
+      function done(width, height) {
+        if (img.parentNode) {
+          img.parentNode.removeChild(img);
+        }
+        callback({
+          width: width,
+          height: height
+        });
+      }
+      img.onload = function () {
+        var width = parseIntAndGetMax(img.width, img.clientWidth);
+        var height = parseIntAndGetMax(img.height, img.clientHeight);
+        done(width, height);
+      };
+      img.onerror = function () {
+        done(0, 0);
+      };
+      var style = img.style;
+      style.visibility = 'hidden';
+      style.position = 'fixed';
+      style.bottom = style.left = '0px';
+      style.width = style.height = 'auto';
+      document.body.appendChild(img);
+      img.src = url;
+    };
+    var buildListItems = function (inputList, itemCallback, startItems) {
+      function appendItems(values, output) {
+        output = output || [];
+        global$2.each(values, function (item) {
+          var menuItem = { text: item.text || item.title };
+          if (item.menu) {
+            menuItem.menu = appendItems(item.menu);
+          } else {
+            menuItem.value = item.value;
+            itemCallback(menuItem);
+          }
+          output.push(menuItem);
+        });
+        return output;
+      }
+      return appendItems(inputList, startItems || []);
+    };
+    var removePixelSuffix = function (value) {
+      if (value) {
+        value = value.replace(/px$/, '');
+      }
+      return value;
+    };
+    var addPixelSuffix = function (value) {
+      if (value.length > 0 && /^[0-9]+$/.test(value)) {
+        value += 'px';
+      }
+      return value;
+    };
+    var mergeMargins = function (css) {
+      if (css.margin) {
+        var splitMargin = css.margin.split(' ');
+        switch (splitMargin.length) {
+        case 1:
+          css['margin-top'] = css['margin-top'] || splitMargin[0];
+          css['margin-right'] = css['margin-right'] || splitMargin[0];
+          css['margin-bottom'] = css['margin-bottom'] || splitMargin[0];
+          css['margin-left'] = css['margin-left'] || splitMargin[0];
+          break;
+        case 2:
+          css['margin-top'] = css['margin-top'] || splitMargin[0];
+          css['margin-right'] = css['margin-right'] || splitMargin[1];
+          css['margin-bottom'] = css['margin-bottom'] || splitMargin[0];
+          css['margin-left'] = css['margin-left'] || splitMargin[1];
+          break;
+        case 3:
+          css['margin-top'] = css['margin-top'] || splitMargin[0];
+          css['margin-right'] = css['margin-right'] || splitMargin[1];
+          css['margin-bottom'] = css['margin-bottom'] || splitMargin[2];
+          css['margin-left'] = css['margin-left'] || splitMargin[1];
+          break;
+        case 4:
+          css['margin-top'] = css['margin-top'] || splitMargin[0];
+          css['margin-right'] = css['margin-right'] || splitMargin[1];
+          css['margin-bottom'] = css['margin-bottom'] || splitMargin[2];
+          css['margin-left'] = css['margin-left'] || splitMargin[3];
+        }
+        delete css.margin;
+      }
+      return css;
+    };
+    var createImageList = function (editor, callback) {
+      var imageList = Settings.getImageList(editor);
+      if (typeof imageList === 'string') {
+        global$3.send({
+          url: imageList,
+          success: function (text) {
+            callback(JSON.parse(text));
+          }
+        });
+      } else if (typeof imageList === 'function') {
+        imageList(callback);
+      } else {
+        callback(imageList);
+      }
+    };
+    var waitLoadImage = function (editor, data, imgElm) {
+      function selectImage() {
+        imgElm.onload = imgElm.onerror = null;
+        if (editor.selection) {
+          editor.selection.select(imgElm);
+          editor.nodeChanged();
+        }
+      }
+      imgElm.onload = function () {
+        if (!data.width && !data.height && Settings.hasDimensions(editor)) {
+          editor.dom.setAttribs(imgElm, {
+            width: imgElm.clientWidth,
+            height: imgElm.clientHeight
+          });
+        }
+        selectImage();
+      };
+      imgElm.onerror = selectImage;
+    };
+    var blobToDataUri = function (blob) {
+      return new global$1(function (resolve, reject) {
+        var reader = FileReader();
+        reader.onload = function () {
+          resolve(reader.result);
+        };
+        reader.onerror = function () {
+          reject(reader.error.message);
+        };
+        reader.readAsDataURL(blob);
+      });
+    };
+    var Utils = {
+      getImageSize: getImageSize,
+      buildListItems: buildListItems,
+      removePixelSuffix: removePixelSuffix,
+      addPixelSuffix: addPixelSuffix,
+      mergeMargins: mergeMargins,
+      createImageList: createImageList,
+      waitLoadImage: waitLoadImage,
+      blobToDataUri: blobToDataUri
+    };
+
+    var global$4 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+
+    var hasOwnProperty = Object.prototype.hasOwnProperty;
+    var shallow = function (old, nu) {
+      return nu;
+    };
+    var baseMerge = function (merger) {
+      return function () {
+        var objects = new Array(arguments.length);
+        for (var i = 0; i < objects.length; i++)
+          objects[i] = arguments[i];
+        if (objects.length === 0)
+          throw new Error('Can\'t merge zero objects');
+        var ret = {};
+        for (var j = 0; j < objects.length; j++) {
+          var curObject = objects[j];
+          for (var key in curObject)
+            if (hasOwnProperty.call(curObject, key)) {
+              ret[key] = merger(ret[key], curObject[key]);
+            }
+        }
+        return ret;
+      };
+    };
+    var merge = baseMerge(shallow);
+
+    var DOM = global$4.DOM;
+    var getHspace = function (image) {
+      if (image.style.marginLeft && image.style.marginRight && image.style.marginLeft === image.style.marginRight) {
+        return Utils.removePixelSuffix(image.style.marginLeft);
+      } else {
+        return '';
+      }
+    };
+    var getVspace = function (image) {
+      if (image.style.marginTop && image.style.marginBottom && image.style.marginTop === image.style.marginBottom) {
+        return Utils.removePixelSuffix(image.style.marginTop);
+      } else {
+        return '';
+      }
+    };
+    var getBorder = function (image) {
+      if (image.style.borderWidth) {
+        return Utils.removePixelSuffix(image.style.borderWidth);
+      } else {
+        return '';
+      }
+    };
+    var getAttrib = function (image, name$$1) {
+      if (image.hasAttribute(name$$1)) {
+        return image.getAttribute(name$$1);
+      } else {
+        return '';
+      }
+    };
+    var getStyle = function (image, name$$1) {
+      return image.style[name$$1] ? image.style[name$$1] : '';
+    };
+    var hasCaption = function (image) {
+      return image.parentNode !== null && image.parentNode.nodeName === 'FIGURE';
+    };
+    var setAttrib = function (image, name$$1, value) {
+      image.setAttribute(name$$1, value);
+    };
+    var wrapInFigure = function (image) {
+      var figureElm = DOM.create('figure', { class: 'image' });
+      DOM.insertAfter(figureElm, image);
+      figureElm.appendChild(image);
+      figureElm.appendChild(DOM.create('figcaption', { contentEditable: true }, 'Caption'));
+      figureElm.contentEditable = 'false';
+    };
+    var removeFigure = function (image) {
+      var figureElm = image.parentNode;
+      DOM.insertAfter(image, figureElm);
+      DOM.remove(figureElm);
+    };
+    var toggleCaption = function (image) {
+      if (hasCaption(image)) {
+        removeFigure(image);
+      } else {
+        wrapInFigure(image);
+      }
+    };
+    var normalizeStyle = function (image, normalizeCss) {
+      var attrValue = image.getAttribute('style');
+      var value = normalizeCss(attrValue !== null ? attrValue : '');
+      if (value.length > 0) {
+        image.setAttribute('style', value);
+        image.setAttribute('data-mce-style', value);
+      } else {
+        image.removeAttribute('style');
+      }
+    };
+    var setSize = function (name$$1, normalizeCss) {
+      return function (image, name$$1, value) {
+        if (image.style[name$$1]) {
+          image.style[name$$1] = Utils.addPixelSuffix(value);
+          normalizeStyle(image, normalizeCss);
+        } else {
+          setAttrib(image, name$$1, value);
+        }
+      };
+    };
+    var getSize = function (image, name$$1) {
+      if (image.style[name$$1]) {
+        return Utils.removePixelSuffix(image.style[name$$1]);
+      } else {
+        return getAttrib(image, name$$1);
+      }
+    };
+    var setHspace = function (image, value) {
+      var pxValue = Utils.addPixelSuffix(value);
+      image.style.marginLeft = pxValue;
+      image.style.marginRight = pxValue;
+    };
+    var setVspace = function (image, value) {
+      var pxValue = Utils.addPixelSuffix(value);
+      image.style.marginTop = pxValue;
+      image.style.marginBottom = pxValue;
+    };
+    var setBorder = function (image, value) {
+      var pxValue = Utils.addPixelSuffix(value);
+      image.style.borderWidth = pxValue;
+    };
+    var setBorderStyle = function (image, value) {
+      image.style.borderStyle = value;
+    };
+    var getBorderStyle = function (image) {
+      return getStyle(image, 'borderStyle');
+    };
+    var isFigure = function (elm) {
+      return elm.nodeName === 'FIGURE';
+    };
+    var defaultData = function () {
+      return {
+        src: '',
+        alt: '',
+        title: '',
+        width: '',
+        height: '',
+        class: '',
+        style: '',
+        caption: false,
+        hspace: '',
+        vspace: '',
+        border: '',
+        borderStyle: ''
+      };
+    };
+    var getStyleValue = function (normalizeCss, data) {
+      var image = document.createElement('img');
+      setAttrib(image, 'style', data.style);
+      if (getHspace(image) || data.hspace !== '') {
+        setHspace(image, data.hspace);
+      }
+      if (getVspace(image) || data.vspace !== '') {
+        setVspace(image, data.vspace);
+      }
+      if (getBorder(image) || data.border !== '') {
+        setBorder(image, data.border);
+      }
+      if (getBorderStyle(image) || data.borderStyle !== '') {
+        setBorderStyle(image, data.borderStyle);
+      }
+      return normalizeCss(image.getAttribute('style'));
+    };
+    var create = function (normalizeCss, data) {
+      var image = document.createElement('img');
+      write(normalizeCss, merge(data, { caption: false }), image);
+      setAttrib(image, 'alt', data.alt);
+      if (data.caption) {
+        var figure = DOM.create('figure', { class: 'image' });
+        figure.appendChild(image);
+        figure.appendChild(DOM.create('figcaption', { contentEditable: true }, 'Caption'));
+        figure.contentEditable = 'false';
+        return figure;
+      } else {
+        return image;
+      }
+    };
+    var read = function (normalizeCss, image) {
+      return {
+        src: getAttrib(image, 'src'),
+        alt: getAttrib(image, 'alt'),
+        title: getAttrib(image, 'title'),
+        width: getSize(image, 'width'),
+        height: getSize(image, 'height'),
+        class: getAttrib(image, 'class'),
+        style: normalizeCss(getAttrib(image, 'style')),
+        caption: hasCaption(image),
+        hspace: getHspace(image),
+        vspace: getVspace(image),
+        border: getBorder(image),
+        borderStyle: getStyle(image, 'borderStyle')
+      };
+    };
+    var updateProp = function (image, oldData, newData, name$$1, set) {
+      if (newData[name$$1] !== oldData[name$$1]) {
+        set(image, name$$1, newData[name$$1]);
+      }
+    };
+    var normalized = function (set, normalizeCss) {
+      return function (image, name$$1, value) {
+        set(image, value);
+        normalizeStyle(image, normalizeCss);
+      };
+    };
+    var write = function (normalizeCss, newData, image) {
+      var oldData = read(normalizeCss, image);
+      updateProp(image, oldData, newData, 'caption', function (image, _name, _value) {
+        return toggleCaption(image);
+      });
+      updateProp(image, oldData, newData, 'src', setAttrib);
+      updateProp(image, oldData, newData, 'alt', setAttrib);
+      updateProp(image, oldData, newData, 'title', setAttrib);
+      updateProp(image, oldData, newData, 'width', setSize('width', normalizeCss));
+      updateProp(image, oldData, newData, 'height', setSize('height', normalizeCss));
+      updateProp(image, oldData, newData, 'class', setAttrib);
+      updateProp(image, oldData, newData, 'style', normalized(function (image, value) {
+        return setAttrib(image, 'style', value);
+      }, normalizeCss));
+      updateProp(image, oldData, newData, 'hspace', normalized(setHspace, normalizeCss));
+      updateProp(image, oldData, newData, 'vspace', normalized(setVspace, normalizeCss));
+      updateProp(image, oldData, newData, 'border', normalized(setBorder, normalizeCss));
+      updateProp(image, oldData, newData, 'borderStyle', normalized(setBorderStyle, normalizeCss));
+    };
+
+    var normalizeCss = function (editor, cssText) {
+      var css = editor.dom.styles.parse(cssText);
+      var mergedCss = Utils.mergeMargins(css);
+      var compressed = editor.dom.styles.parse(editor.dom.styles.serialize(mergedCss));
+      return editor.dom.styles.serialize(compressed);
+    };
+    var getSelectedImage = function (editor) {
+      var imgElm = editor.selection.getNode();
+      var figureElm = editor.dom.getParent(imgElm, 'figure.image');
+      if (figureElm) {
+        return editor.dom.select('img', figureElm)[0];
+      }
+      if (imgElm && (imgElm.nodeName !== 'IMG' || imgElm.getAttribute('data-mce-object') || imgElm.getAttribute('data-mce-placeholder'))) {
+        return null;
+      }
+      return imgElm;
+    };
+    var splitTextBlock = function (editor, figure) {
+      var dom = editor.dom;
+      var textBlock = dom.getParent(figure.parentNode, function (node) {
+        return editor.schema.getTextBlockElements()[node.nodeName];
+      }, editor.getBody());
+      if (textBlock) {
+        return dom.split(textBlock, figure);
+      } else {
+        return figure;
+      }
+    };
+    var readImageDataFromSelection = function (editor) {
+      var image = getSelectedImage(editor);
+      return image ? read(function (css) {
+        return normalizeCss(editor, css);
+      }, image) : defaultData();
+    };
+    var insertImageAtCaret = function (editor, data) {
+      var elm = create(function (css) {
+        return normalizeCss(editor, css);
+      }, data);
+      editor.dom.setAttrib(elm, 'data-mce-id', '__mcenew');
+      editor.focus();
+      editor.selection.setContent(elm.outerHTML);
+      var insertedElm = editor.dom.select('*[data-mce-id="__mcenew"]')[0];
+      editor.dom.setAttrib(insertedElm, 'data-mce-id', null);
+      if (isFigure(insertedElm)) {
+        var figure = splitTextBlock(editor, insertedElm);
+        editor.selection.select(figure);
+      } else {
+        editor.selection.select(insertedElm);
+      }
+    };
+    var syncSrcAttr = function (editor, image) {
+      editor.dom.setAttrib(image, 'src', image.getAttribute('src'));
+    };
+    var deleteImage = function (editor, image) {
+      if (image) {
+        var elm = editor.dom.is(image.parentNode, 'figure.image') ? image.parentNode : image;
+        editor.dom.remove(elm);
+        editor.focus();
+        editor.nodeChanged();
+        if (editor.dom.isEmpty(editor.getBody())) {
+          editor.setContent('');
+          editor.selection.setCursorLocation();
+        }
+      }
+    };
+    var writeImageDataToSelection = function (editor, data) {
+      var image = getSelectedImage(editor);
+      write(function (css) {
+        return normalizeCss(editor, css);
+      }, data, image);
+      syncSrcAttr(editor, image);
+      if (isFigure(image.parentNode)) {
+        var figure = image.parentNode;
+        splitTextBlock(editor, figure);
+        editor.selection.select(image.parentNode);
+      } else {
+        editor.selection.select(image);
+        Utils.waitLoadImage(editor, data, image);
+      }
+    };
+    var insertOrUpdateImage = function (editor, data) {
+      var image = getSelectedImage(editor);
+      if (image) {
+        if (data.src) {
+          writeImageDataToSelection(editor, data);
+        } else {
+          deleteImage(editor, image);
+        }
+      } else if (data.src) {
+        insertImageAtCaret(editor, data);
+      }
+    };
+
+    var updateVSpaceHSpaceBorder = function (editor) {
+      return function (evt) {
+        var dom = editor.dom;
+        var rootControl = evt.control.rootControl;
+        if (!Settings.hasAdvTab(editor)) {
+          return;
+        }
+        var data = rootControl.toJSON();
+        var css = dom.parseStyle(data.style);
+        rootControl.find('#vspace').value('');
+        rootControl.find('#hspace').value('');
+        css = Utils.mergeMargins(css);
+        if (css['margin-top'] && css['margin-bottom'] || css['margin-right'] && css['margin-left']) {
+          if (css['margin-top'] === css['margin-bottom']) {
+            rootControl.find('#vspace').value(Utils.removePixelSuffix(css['margin-top']));
+          } else {
+            rootControl.find('#vspace').value('');
+          }
+          if (css['margin-right'] === css['margin-left']) {
+            rootControl.find('#hspace').value(Utils.removePixelSuffix(css['margin-right']));
+          } else {
+            rootControl.find('#hspace').value('');
+          }
+        }
+        if (css['border-width']) {
+          rootControl.find('#border').value(Utils.removePixelSuffix(css['border-width']));
+        } else {
+          rootControl.find('#border').value('');
+        }
+        if (css['border-style']) {
+          rootControl.find('#borderStyle').value(css['border-style']);
+        } else {
+          rootControl.find('#borderStyle').value('');
+        }
+        rootControl.find('#style').value(dom.serializeStyle(dom.parseStyle(dom.serializeStyle(css))));
+      };
+    };
+    var updateStyle = function (editor, win) {
+      win.find('#style').each(function (ctrl) {
+        var value = getStyleValue(function (css) {
+          return normalizeCss(editor, css);
+        }, merge(defaultData(), win.toJSON()));
+        ctrl.value(value);
+      });
+    };
+    var makeTab = function (editor) {
+      return {
+        title: 'Advanced',
+        type: 'form',
+        pack: 'start',
+        items: [
+          {
+            label: 'Style',
+            name: 'style',
+            type: 'textbox',
+            onchange: updateVSpaceHSpaceBorder(editor)
+          },
+          {
+            type: 'form',
+            layout: 'grid',
+            packV: 'start',
+            columns: 2,
+            padding: 0,
+            defaults: {
+              type: 'textbox',
+              maxWidth: 50,
+              onchange: function (evt) {
+                updateStyle(editor, evt.control.rootControl);
+              }
+            },
+            items: [
+              {
+                label: 'Vertical space',
+                name: 'vspace'
+              },
+              {
+                label: 'Border width',
+                name: 'border'
+              },
+              {
+                label: 'Horizontal space',
+                name: 'hspace'
+              },
+              {
+                label: 'Border style',
+                type: 'listbox',
+                name: 'borderStyle',
+                width: 90,
+                maxWidth: 90,
+                onselect: function (evt) {
+                  updateStyle(editor, evt.control.rootControl);
+                },
+                values: [
+                  {
+                    text: 'Select...',
+                    value: ''
+                  },
+                  {
+                    text: 'Solid',
+                    value: 'solid'
+                  },
+                  {
+                    text: 'Dotted',
+                    value: 'dotted'
+                  },
+                  {
+                    text: 'Dashed',
+                    value: 'dashed'
+                  },
+                  {
+                    text: 'Double',
+                    value: 'double'
+                  },
+                  {
+                    text: 'Groove',
+                    value: 'groove'
+                  },
+                  {
+                    text: 'Ridge',
+                    value: 'ridge'
+                  },
+                  {
+                    text: 'Inset',
+                    value: 'inset'
+                  },
+                  {
+                    text: 'Outset',
+                    value: 'outset'
+                  },
+                  {
+                    text: 'None',
+                    value: 'none'
+                  },
+                  {
+                    text: 'Hidden',
+                    value: 'hidden'
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+    };
+    var AdvTab = { makeTab: makeTab };
+
+    var doSyncSize = function (widthCtrl, heightCtrl) {
+      widthCtrl.state.set('oldVal', widthCtrl.value());
+      heightCtrl.state.set('oldVal', heightCtrl.value());
+    };
+    var doSizeControls = function (win, f) {
+      var widthCtrl = win.find('#width')[0];
+      var heightCtrl = win.find('#height')[0];
+      var constrained = win.find('#constrain')[0];
+      if (widthCtrl && heightCtrl && constrained) {
+        f(widthCtrl, heightCtrl, constrained.checked());
+      }
+    };
+    var doUpdateSize = function (widthCtrl, heightCtrl, isContrained) {
+      var oldWidth = widthCtrl.state.get('oldVal');
+      var oldHeight = heightCtrl.state.get('oldVal');
+      var newWidth = widthCtrl.value();
+      var newHeight = heightCtrl.value();
+      if (isContrained && oldWidth && oldHeight && newWidth && newHeight) {
+        if (newWidth !== oldWidth) {
+          newHeight = Math.round(newWidth / oldWidth * newHeight);
+          if (!isNaN(newHeight)) {
+            heightCtrl.value(newHeight);
+          }
+        } else {
+          newWidth = Math.round(newHeight / oldHeight * newWidth);
+          if (!isNaN(newWidth)) {
+            widthCtrl.value(newWidth);
+          }
+        }
+      }
+      doSyncSize(widthCtrl, heightCtrl);
+    };
+    var syncSize = function (win) {
+      doSizeControls(win, doSyncSize);
+    };
+    var updateSize = function (win) {
+      doSizeControls(win, doUpdateSize);
+    };
+    var createUi = function () {
+      var recalcSize = function (evt) {
+        updateSize(evt.control.rootControl);
+      };
+      return {
+        type: 'container',
+        label: 'Dimensions',
+        layout: 'flex',
+        align: 'center',
+        spacing: 5,
+        items: [
+          {
+            name: 'width',
+            type: 'textbox',
+            maxLength: 5,
+            size: 5,
+            onchange: recalcSize,
+            ariaLabel: 'Width'
+          },
+          {
+            type: 'label',
+            text: 'x'
+          },
+          {
+            name: 'height',
+            type: 'textbox',
+            maxLength: 5,
+            size: 5,
+            onchange: recalcSize,
+            ariaLabel: 'Height'
+          },
+          {
+            name: 'constrain',
+            type: 'checkbox',
+            checked: true,
+            text: 'Constrain proportions'
+          }
+        ]
+      };
+    };
+    var SizeManager = {
+      createUi: createUi,
+      syncSize: syncSize,
+      updateSize: updateSize
+    };
+
+    var onSrcChange = function (evt, editor) {
+      var srcURL, prependURL, absoluteURLPattern;
+      var meta = evt.meta || {};
+      var control = evt.control;
+      var rootControl = control.rootControl;
+      var imageListCtrl = rootControl.find('#image-list')[0];
+      if (imageListCtrl) {
+        imageListCtrl.value(editor.convertURL(control.value(), 'src'));
+      }
+      global$2.each(meta, function (value, key) {
+        rootControl.find('#' + key).value(value);
+      });
+      if (!meta.width && !meta.height) {
+        srcURL = editor.convertURL(control.value(), 'src');
+        prependURL = Settings.getPrependUrl(editor);
+        absoluteURLPattern = new RegExp('^(?:[a-z]+:)?//', 'i');
+        if (prependURL && !absoluteURLPattern.test(srcURL) && srcURL.substring(0, prependURL.length) !== prependURL) {
+          srcURL = prependURL + srcURL;
+        }
+        control.value(srcURL);
+        Utils.getImageSize(editor.documentBaseURI.toAbsolute(control.value()), function (data) {
+          if (data.width && data.height && Settings.hasDimensions(editor)) {
+            rootControl.find('#width').value(data.width);
+            rootControl.find('#height').value(data.height);
+            SizeManager.syncSize(rootControl);
+          }
+        });
+      }
+    };
+    var onBeforeCall = function (evt) {
+      evt.meta = evt.control.rootControl.toJSON();
+    };
+    var getGeneralItems = function (editor, imageListCtrl) {
+      var generalFormItems = [
+        {
+          name: 'src',
+          type: 'filepicker',
+          filetype: 'image',
+          label: 'Source',
+          autofocus: true,
+          onchange: function (evt) {
+            onSrcChange(evt, editor);
+          },
+          onbeforecall: onBeforeCall
+        },
+        imageListCtrl
+      ];
+      if (Settings.hasDescription(editor)) {
+        generalFormItems.push({
+          name: 'alt',
+          type: 'textbox',
+          label: 'Image description'
+        });
+      }
+      if (Settings.hasImageTitle(editor)) {
+        generalFormItems.push({
+          name: 'title',
+          type: 'textbox',
+          label: 'Image Title'
+        });
+      }
+      if (Settings.hasDimensions(editor)) {
+        generalFormItems.push(SizeManager.createUi());
+      }
+      if (Settings.getClassList(editor)) {
+        generalFormItems.push({
+          name: 'class',
+          type: 'listbox',
+          label: 'Class',
+          values: Utils.buildListItems(Settings.getClassList(editor), function (item) {
+            if (item.value) {
+              item.textStyle = function () {
+                return editor.formatter.getCssText({
+                  inline: 'img',
+                  classes: [item.value]
+                });
+              };
+            }
+          })
+        });
+      }
+      if (Settings.hasImageCaption(editor)) {
+        generalFormItems.push({
+          name: 'caption',
+          type: 'checkbox',
+          label: 'Caption'
+        });
+      }
+      return generalFormItems;
+    };
+    var makeTab$1 = function (editor, imageListCtrl) {
+      return {
+        title: 'General',
+        type: 'form',
+        items: getGeneralItems(editor, imageListCtrl)
+      };
+    };
+    var MainTab = {
+      makeTab: makeTab$1,
+      getGeneralItems: getGeneralItems
+    };
+
+    var url = function () {
+      return Global$1.getOrDie('URL');
+    };
+    var createObjectURL = function (blob) {
+      return url().createObjectURL(blob);
+    };
+    var revokeObjectURL = function (u) {
+      url().revokeObjectURL(u);
+    };
+    var URL = {
+      createObjectURL: createObjectURL,
+      revokeObjectURL: revokeObjectURL
+    };
+
+    var global$5 = tinymce.util.Tools.resolve('tinymce.ui.Factory');
+
+    function XMLHttpRequest () {
+      var f = Global$1.getOrDie('XMLHttpRequest');
+      return new f();
+    }
+
+    var noop = function () {
+    };
+    var pathJoin = function (path1, path2) {
+      if (path1) {
+        return path1.replace(/\/$/, '') + '/' + path2.replace(/^\//, '');
+      }
+      return path2;
+    };
+    function Uploader (settings) {
+      var defaultHandler = function (blobInfo, success, failure, progress) {
+        var xhr, formData;
+        xhr = XMLHttpRequest();
+        xhr.open('POST', settings.url);
+        xhr.withCredentials = settings.credentials;
+        xhr.upload.onprogress = function (e) {
+          progress(e.loaded / e.total * 100);
+        };
+        xhr.onerror = function () {
+          failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+        };
+        xhr.onload = function () {
+          var json;
+          if (xhr.status < 200 || xhr.status >= 300) {
+            failure('HTTP Error: ' + xhr.status);
+            return;
+          }
+          json = JSON.parse(xhr.responseText);
+          if (!json || typeof json.location !== 'string') {
+            failure('Invalid JSON: ' + xhr.responseText);
+            return;
+          }
+          success(pathJoin(settings.basePath, json.location));
+        };
+        formData = new FormData();
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
+        xhr.send(formData);
+      };
+      var uploadBlob = function (blobInfo, handler) {
+        return new global$1(function (resolve, reject) {
+          try {
+            handler(blobInfo, resolve, reject, noop);
+          } catch (ex) {
+            reject(ex.message);
+          }
+        });
+      };
+      var isDefaultHandler = function (handler) {
+        return handler === defaultHandler;
+      };
+      var upload = function (blobInfo) {
+        return !settings.url && isDefaultHandler(settings.handler) ? global$1.reject('Upload url missing from the settings.') : uploadBlob(blobInfo, settings.handler);
+      };
+      settings = global$2.extend({
+        credentials: false,
+        handler: defaultHandler
+      }, settings);
+      return { upload: upload };
+    }
+
+    var onFileInput = function (editor) {
+      return function (evt) {
+        var Throbber = global$5.get('Throbber');
+        var rootControl = evt.control.rootControl;
+        var throbber = new Throbber(rootControl.getEl());
+        var file = evt.control.value();
+        var blobUri = URL.createObjectURL(file);
+        var uploader = Uploader({
+          url: Settings.getUploadUrl(editor),
+          basePath: Settings.getUploadBasePath(editor),
+          credentials: Settings.getUploadCredentials(editor),
+          handler: Settings.getUploadHandler(editor)
+        });
+        var finalize = function () {
+          throbber.hide();
+          URL.revokeObjectURL(blobUri);
+        };
+        throbber.show();
+        return Utils.blobToDataUri(file).then(function (dataUrl) {
+          var blobInfo = editor.editorUpload.blobCache.create({
+            blob: file,
+            blobUri: blobUri,
+            name: file.name ? file.name.replace(/\.[^\.]+$/, '') : null,
+            base64: dataUrl.split(',')[1]
+          });
+          return uploader.upload(blobInfo).then(function (url) {
+            var src = rootControl.find('#src');
+            src.value(url);
+            rootControl.find('tabpanel')[0].activateTab(0);
+            src.fire('change');
+            finalize();
+            return url;
+          });
+        }).catch(function (err) {
+          editor.windowManager.alert(err);
+          finalize();
+        });
+      };
+    };
+    var acceptExts = '.jpg,.jpeg,.png,.gif';
+    var makeTab$2 = function (editor) {
+      return {
+        title: 'Upload',
+        type: 'form',
+        layout: 'flex',
+        direction: 'column',
+        align: 'stretch',
+        padding: '20 20 20 20',
+        items: [
+          {
+            type: 'container',
+            layout: 'flex',
+            direction: 'column',
+            align: 'center',
+            spacing: 10,
+            items: [
+              {
+                text: 'Browse for an image',
+                type: 'browsebutton',
+                accept: acceptExts,
+                onchange: onFileInput(editor)
+              },
+              {
+                text: 'OR',
+                type: 'label'
+              }
+            ]
+          },
+          {
+            text: 'Drop an image here',
+            type: 'dropzone',
+            accept: acceptExts,
+            height: 100,
+            onchange: onFileInput(editor)
+          }
+        ]
+      };
+    };
+    var UploadTab = { makeTab: makeTab$2 };
+
+    function curry(fn) {
+      var initialArgs = [];
+      for (var _i = 1; _i < arguments.length; _i++) {
+        initialArgs[_i - 1] = arguments[_i];
+      }
+      return function () {
+        var restArgs = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+          restArgs[_i] = arguments[_i];
+        }
+        var all = initialArgs.concat(restArgs);
+        return fn.apply(null, all);
+      };
+    }
+
+    var submitForm = function (editor, evt) {
+      var win = evt.control.getRoot();
+      SizeManager.updateSize(win);
+      editor.undoManager.transact(function () {
+        var data = merge(readImageDataFromSelection(editor), win.toJSON());
+        insertOrUpdateImage(editor, data);
+      });
+      editor.editorUpload.uploadImagesAuto();
+    };
+    function Dialog (editor) {
+      function showDialog(imageList) {
+        var data = readImageDataFromSelection(editor);
+        var win, imageListCtrl;
+        if (imageList) {
+          imageListCtrl = {
+            type: 'listbox',
+            label: 'Image list',
+            name: 'image-list',
+            values: Utils.buildListItems(imageList, function (item) {
+              item.value = editor.convertURL(item.value || item.url, 'src');
+            }, [{
+                text: 'None',
+                value: ''
+              }]),
+            value: data.src && editor.convertURL(data.src, 'src'),
+            onselect: function (e) {
+              var altCtrl = win.find('#alt');
+              if (!altCtrl.value() || e.lastControl && altCtrl.value() === e.lastControl.text()) {
+                altCtrl.value(e.control.text());
+              }
+              win.find('#src').value(e.control.value()).fire('change');
+            },
+            onPostRender: function () {
+              imageListCtrl = this;
+            }
+          };
+        }
+        if (Settings.hasAdvTab(editor) || Settings.hasUploadUrl(editor) || Settings.hasUploadHandler(editor)) {
+          var body = [MainTab.makeTab(editor, imageListCtrl)];
+          if (Settings.hasAdvTab(editor)) {
+            body.push(AdvTab.makeTab(editor));
+          }
+          if (Settings.hasUploadUrl(editor) || Settings.hasUploadHandler(editor)) {
+            body.push(UploadTab.makeTab(editor));
+          }
+          win = editor.windowManager.open({
+            title: 'Insert/edit image',
+            data: data,
+            bodyType: 'tabpanel',
+            body: body,
+            onSubmit: curry(submitForm, editor)
+          });
+        } else {
+          win = editor.windowManager.open({
+            title: 'Insert/edit image',
+            data: data,
+            body: MainTab.getGeneralItems(editor, imageListCtrl),
+            onSubmit: curry(submitForm, editor)
+          });
+        }
+        SizeManager.syncSize(win);
+      }
+      function open() {
+        Utils.createImageList(editor, showDialog);
+      }
+      return { open: open };
+    }
+
+    var register = function (editor) {
+      editor.addCommand('mceImage', Dialog(editor).open);
+    };
+    var Commands = { register: register };
+
+    var hasImageClass = function (node) {
+      var className = node.attr('class');
+      return className && /\bimage\b/.test(className);
+    };
+    var toggleContentEditableState = function (state) {
+      return function (nodes) {
+        var i = nodes.length, node;
+        var toggleContentEditable = function (node) {
+          node.attr('contenteditable', state ? 'true' : null);
+        };
+        while (i--) {
+          node = nodes[i];
+          if (hasImageClass(node)) {
+            node.attr('contenteditable', state ? 'false' : null);
+            global$2.each(node.getAll('figcaption'), toggleContentEditable);
+          }
+        }
+      };
+    };
+    var setup = function (editor) {
+      editor.on('preInit', function () {
+        editor.parser.addNodeFilter('figure', toggleContentEditableState(true));
+        editor.serializer.addNodeFilter('figure', toggleContentEditableState(false));
+      });
+    };
+    var FilterContent = { setup: setup };
+
+    var register$1 = function (editor) {
+      editor.addButton('image', {
+        icon: 'image',
+        tooltip: 'Insert/edit image',
+        onclick: Dialog(editor).open,
+        stateSelector: 'img:not([data-mce-object],[data-mce-placeholder]),figure.image'
+      });
+      editor.addMenuItem('image', {
+        icon: 'image',
+        text: 'Image',
+        onclick: Dialog(editor).open,
+        context: 'insert',
+        prependToContext: true
+      });
+    };
+    var Buttons = { register: register$1 };
+
+    global.add('image', function (editor) {
+      FilterContent.setup(editor);
+      Buttons.register(editor);
+      Commands.register(editor);
+    });
+    function Plugin () {
+    }
+
+    return Plugin;
+
+}());
+})();

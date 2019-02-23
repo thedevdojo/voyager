@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -36,6 +37,15 @@ class VoyagerServiceProvider extends ServiceProvider
     protected $policies = [
         Setting::class  => SettingPolicy::class,
         MenuItem::class => MenuItemPolicy::class,
+    ];
+
+    protected $gates = [
+        'browse_admin',
+        'browse_bread',
+        'browse_database',
+        'browse_media',
+        'browse_compass',
+        'browse_hooks',
     ];
 
     /**
@@ -97,13 +107,15 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/../publishable/lang'), 'voyager');
 
-        if (config('app.env') == 'testing') {
-            $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
+        if (config('voyager.database.autoload_migrations', true)) {
+            if (config('app.env') == 'testing') {
+                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
+            }
+
+            $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
         }
 
-        $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
-
-        $this->registerGates();
+        $this->loadAuth();
 
         $this->registerViewComposers();
 
@@ -226,9 +238,6 @@ class VoyagerServiceProvider extends ServiceProvider
         $publishablePath = dirname(__DIR__).'/publishable';
 
         $publishable = [
-            'voyager_assets' => [
-                "{$publishablePath}/assets/" => public_path(config('voyager.assets_path')),
-            ],
             'voyager_avatar' => [
                 "{$publishablePath}/dummy_content/users/" => storage_path('app/public/users'),
             ],
@@ -253,13 +262,15 @@ class VoyagerServiceProvider extends ServiceProvider
         );
     }
 
-    public function registerGates()
+    public function loadAuth()
     {
+        // DataType Policies
+
         // This try catch is necessary for the Package Auto-discovery
         // otherwise it will throw an error because no database
         // connection has been made yet.
         try {
-            if (Schema::hasTable('data_types')) {
+            if (Schema::hasTable(VoyagerFacade::model('DataType')->getTable())) {
                 $dataType = VoyagerFacade::model('DataType');
                 $dataTypes = $dataType->select('policy_name', 'model_name')->get();
 
@@ -276,7 +287,14 @@ class VoyagerServiceProvider extends ServiceProvider
                 $this->registerPolicies();
             }
         } catch (\PDOException $e) {
-            Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
+            Log::error('No Database connection yet in VoyagerServiceProvider loadAuth()');
+        }
+
+        // Gates
+        foreach ($this->gates as $gate) {
+            Gate::define($gate, function ($user) use ($gate) {
+                return $user->hasPermission($gate);
+            });
         }
     }
 
@@ -284,6 +302,7 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $formFields = [
             'checkbox',
+            'multiple_checkbox',
             'color',
             'date',
             'file',
