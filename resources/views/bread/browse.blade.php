@@ -17,7 +17,7 @@
         @endcan
         @can('edit', app($dataType->model_name))
             @if(isset($dataType->order_column) && isset($dataType->order_display_column))
-                <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary">
+                <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary btn-add-new">
                     <i class="voyager-list"></i> <span>{{ __('voyager::bread.order') }}</span>
                 </a>
             @endif
@@ -27,6 +27,11 @@
                 <input type="checkbox" @if ($showSoftDeleted) checked @endif id="show_soft_deletes" data-toggle="toggle" data-on="{{ __('voyager::bread.soft_deletes_off') }}" data-off="{{ __('voyager::bread.soft_deletes_on') }}">
             @endif
         @endcan
+        @foreach(Voyager::actions() as $action)
+            @if (method_exists($action, 'massAction'))
+                @include('voyager::bread.partials.actions', ['action' => $action, 'data' => null])
+            @endif
+        @endforeach
         @include('voyager::multilingual.language-selector')
     </div>
 @stop
@@ -199,7 +204,9 @@
                                         @endforeach
                                         <td class="no-sort no-click" id="bread-actions">
                                             @foreach(Voyager::actions() as $action)
-                                                @include('voyager::bread.partials.actions', ['action' => $action])
+                                                @if (!method_exists($action, 'massAction'))
+                                                    @include('voyager::bread.partials.actions', ['action' => $action])
+                                                @endif
                                             @endforeach
                                         </td>
                                     </tr>
@@ -323,5 +330,14 @@
                 })
             })
         @endif
+        $('input[name="row_id"]').on('change', function () {
+            var ids = [];
+            $('input[name="row_id"]').each(function() {
+                if ($(this).is(':checked')) {
+                    ids.push($(this).val());
+                }
+            });
+            $('.selected_ids').val(ids);
+        });
     </script>
 @stop

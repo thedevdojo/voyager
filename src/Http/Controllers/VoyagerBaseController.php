@@ -585,6 +585,15 @@ class VoyagerBaseController extends Controller
         }
     }
 
+    public function action(Request $request)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        $action = new $request->action($dataType, null);
+        return $action->massAction(explode(',', $request->ids), $request->headers->get('referer'));
+    }
+
     /**
      * Get BREAD relations data.
      *
