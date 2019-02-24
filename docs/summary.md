@@ -34,6 +34,7 @@
 * [Adding custom Formfields](customization/adding-custom-formfields.md)
 * [Coordinates](customization/coordinates.md)
 * [BREAD accessors](customization/bread-accessors.md)
+* [Custom guard](customization/custom-guard.md)
 * [Action buttons](customization/action-buttons.md)
 
 ## Troubleshooting

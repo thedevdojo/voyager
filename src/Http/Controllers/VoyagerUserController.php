@@ -16,10 +16,10 @@ class VoyagerUserController extends VoyagerBaseController
     // POST BR(E)AD
     public function update(Request $request, $id)
     {
-        if (Auth::user()->getKey() == $id) {
+        if (app('VoyagerAuth')->user()->getKey() == $id) {
             $request->merge([
-                'role_id'                              => Auth::user()->role_id,
-                'user_belongstomany_role_relationship' => Auth::user()->roles->pluck('id')->toArray(),
+                'role_id'                              => app('VoyagerAuth')->user()->role_id,
+                'user_belongstomany_role_relationship' => app('VoyagerAuth')->user()->roles->pluck('id')->toArray(),
             ]);
         }
 
