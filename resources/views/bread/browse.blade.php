@@ -17,7 +17,7 @@
         @endcan
         @can('edit', app($dataType->model_name))
             @if(isset($dataType->order_column) && isset($dataType->order_display_column))
-                <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary">
+                <a href="{{ route('voyager.'.$dataType->slug.'.order') }}" class="btn btn-primary btn-add-new">
                     <i class="voyager-list"></i> <span>{{ __('voyager::bread.order') }}</span>
                 </a>
             @endif
@@ -27,6 +27,11 @@
                 <input type="checkbox" @if ($showSoftDeleted) checked @endif id="show_soft_deletes" data-toggle="toggle" data-on="{{ __('voyager::bread.soft_deletes_off') }}" data-off="{{ __('voyager::bread.soft_deletes_on') }}">
             @endif
         @endcan
+        @foreach(Voyager::actions() as $action)
+            @if (method_exists($action, 'massAction'))
+                @include('voyager::bread.partials.actions', ['action' => $action, 'data' => null])
+            @endif
+        @endforeach
         @include('voyager::multilingual.language-selector')
     </div>
 @stop
@@ -59,6 +64,10 @@
                                         </span>
                                     </div>
                                 </div>
+                                @if (Request::has('sort_order') && Request::has('order_by'))
+                                    <input type="hidden" name="sort_order" value="{{ Request::get('sort_order') }}">
+                                    <input type="hidden" name="order_by" value="{{ Request::get('order_by') }}">
+                                @endif
                             </form>
                         @endif
                         <div class="table-responsive">
@@ -106,7 +115,9 @@
                                             }
                                             @endphp
                                             <td>
-                                                @if($row->type == 'image')
+                                                @if (isset($row->details->view))
+                                                    @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $data->{$row->field}, 'action' => 'browse'])
+                                                @elseif($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                                 @elseif($row->type == 'relationship')
                                                     @include('voyager::formfields.relationship', ['view' => 'browse','options' => $row->details])
@@ -118,7 +129,7 @@
                                                         @endforeach
 
                                                     @elseif(property_exists($row->details, 'options'))
-                                                        @if (count(json_decode($data->{$row->field})) > 0)
+                                                        @if (!empty(json_decode($data->{$row->field})))
                                                             @foreach(json_decode($data->{$row->field}) as $item)
                                                                 @if (@$row->details->options->{$item})
                                                                     {{ $row->details->options->{$item} . (!$loop->last ? ', ' : '') }}
@@ -140,7 +151,7 @@
                                                             {{ __('voyager::generic.none') }}
                                                         @endif
 
-                                                @elseif($row->type == 'select_dropdown' && property_exists($row->details, 'options'))
+                                                @elseif(($row->type == 'select_dropdown' || $row->type == 'radio_btn') && property_exists($row->details, 'options'))
 
                                                     {!! isset($row->details->options->{$data->{$row->field}}) ?  $row->details->options->{$data->{$row->field}} : '' !!}
 
@@ -233,7 +244,9 @@
                                         @endforeach
                                         <td class="no-sort no-click" id="bread-actions">
                                             @foreach(Voyager::actions() as $action)
-                                                @include('voyager::bread.partials.actions', ['action' => $action])
+                                                @if (!method_exists($action, 'massAction'))
+                                                    @include('voyager::bread.partials.actions', ['action' => $action])
+                                                @endif
                                             @endforeach
                                         </td>
                                     </tr>
@@ -357,5 +370,14 @@
                 })
             })
         @endif
+        $('input[name="row_id"]').on('change', function () {
+            var ids = [];
+            $('input[name="row_id"]').each(function() {
+                if ($(this).is(':checked')) {
+                    ids.push($(this).val());
+                }
+            });
+            $('.selected_ids').val(ids);
+        });
     </script>
 @stop
