@@ -202,6 +202,40 @@
                                                             <img src="@if( !filter_var($image, FILTER_VALIDATE_URL)){{ Voyager::image( $image ) }}@else{{ $image }}@endif" style="width:50px">
                                                         @endforeach
                                                     @endif
+                                                @elseif($row->type == 'media_picker')
+                                                    @php
+                                                        if (is_array($data->{$row->field})) {
+                                                            $files = $data->{$row->field};
+                                                        } else {
+                                                            $files = json_decode($data->{$row->field});
+                                                        }
+                                                    @endphp
+                                                    @if ($files)
+                                                        @if (property_exists($row->details, 'show_as_images') && $row->details->show_as_images)
+                                                            @foreach (array_slice($files, 0, 3) as $file)
+                                                            <img src="@if( !filter_var($file, FILTER_VALIDATE_URL)){{ Voyager::image( $file ) }}@else{{ $file }}@endif" style="width:50px">
+                                                            @endforeach
+                                                        @else
+                                                            <ul>
+                                                            @foreach (array_slice($files, 0, 3) as $file)
+                                                                <li>{{ $file }}</li>
+                                                            @endforeach
+                                                            </ul>
+                                                        @endif
+                                                        @if (count($files) > 3)
+                                                            {{ __('voyager::media.files_more', ['count' => (count($files) - 3)]) }}
+                                                        @endif
+                                                    @elseif (is_array($files) && count($files) == 0)
+                                                        {{ trans_choice('voyager::media.files', 0) }}
+                                                    @elseif ($data->{$row->field} != '')
+                                                        @if (property_exists($row->details, 'show_as_images') && $row->details->show_as_images)
+                                                            <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:50px">
+                                                        @else
+                                                            {{ $data->{$row->field} }}
+                                                        @endif
+                                                    @else
+                                                        {{ trans_choice('voyager::media.files', 0) }}
+                                                    @endif
                                                 @else
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
                                                     <span>{{ $data->{$row->field} }}</span>

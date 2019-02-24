@@ -492,6 +492,23 @@ class VoyagerBaseController extends Controller
                 }
             }
         }
+
+        // Delete media-picker files
+        $dataType->rows->where('type', 'media_picker')->where('details.delete_files', true)->each(function ($row) use ($data) {
+            $content = $data->{$row->field};
+            if (isset($content)) {
+                if (!is_array($content)) {
+                    $content = json_decode($content);
+                }
+                if (is_array($content)) {
+                    foreach ($content as $file) {
+                        $this->deleteFileIfExists($file);
+                    }
+                } else {
+                    $this->deleteFileIfExists($content);
+                }
+            }
+        });
     }
 
     /**

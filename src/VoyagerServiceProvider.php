@@ -312,6 +312,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'file',
             'image',
             'multiple_images',
+            'media_picker',
             'number',
             'password',
             'radio_btn',

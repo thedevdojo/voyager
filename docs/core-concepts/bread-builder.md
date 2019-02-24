@@ -131,6 +131,58 @@ The image input has many options. By default if you do not specify any options n
 
 The date & timestamp input field is where you can input a date. In the JSON above you can specify the `format` value of the output of the date. It allows you to display a formatted `date` in browse and read views, using Carbon's `formatLocalized()` method
 
+### Media Picker
+
+```php
+{
+    "max": 10,
+    "min": 0,
+    "show_folders": true,
+    "show_toolbar": true,
+    "allow_upload": true,
+    "allow_move": true,
+    "allow_delete": true,
+    "allow_create_folder": true,
+    "allow_rename": true,
+    "allow_crop": true,
+    "allowed": []
+}
+```
+
+The media picker formfield allows you to upload/delete/select files directly from the media-manager.  
+You can customize the behaviour with the following options:
+- `base_path` the start-path relative to the filesystem.
+- `rename` renames the uploaded files to a given name
+- `show_as_images` shows stored data as images
+- `delete_files` boolean value if the files should be deleted when the entry is deleted. This will also delete the file if it is used in other entries!
+- `max` the maximum of files a user can select
+- `min` the minimum of files that are required
+- `show_folders` show subfolders or not
+- `show_toolbar` hide the whole toolbar
+- `allow_upload` allow users to upload new files
+- `allow_move` let users move files
+- `allow_delete` allow users to delete files
+- `allow_create_folder` let users create new folders
+- `allow_rename` rename files
+- `allow_crop` let users crop images
+- `allowed` an object of mimetypes that are displayed. For example  
+`["image", "audio", "video"]`  
+or  
+`["image/jpeg", "image/png", "image/bmp"]`
+
+The `base_path` and `rename` can contain the following placeholders:
+- `{pk}` the primary-key of the entry (only for `base_path`)
+- `{uid}` the user-id of the current logged-in user
+- `{date:format}` the current date in the format defined in `format`. For example `{date:d.m.Y}`
+- `{random:10}` random string with N characters
+
+So a `base_path` can, for example, look like the following:
+```
+{
+    "base_path": "/my-bread/{pk}/{date:Y}/{date:m}/"
+}
+```
+
 ## Description
 
 All types can include a description in order to help your future self or other users using your Voyager admin panel to understand exactly what a specific BREAD input field is for, this can be defined in the `Optional Details` JSON input field:

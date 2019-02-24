@@ -45,17 +45,38 @@ class VoyagerMediaController extends Controller
 
         $dir = $this->directory.$folder;
 
-        return response()->json([
-            'name'          => 'files',
-            'type'          => 'folder',
-            'path'          => $dir,
-            'folder'        => $folder,
-            'items'         => $this->getFiles($dir),
-            'last_modified' => 'asdf',
-        ]);
+        $files = [];
+        $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
+        $storageItems = $storage->listWith(['mimetype'], $dir);
+
+        foreach ($storageItems as $item) {
+            if ($item['type'] == 'dir') {
+                $files[] = [
+                    'name'          => $item['basename'],
+                    'type'          => 'folder',
+                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'relative_path' => $item['path'],
+                    'items'         => '',
+                    'last_modified' => '',
+                ];
+            } else {
+                if (empty(pathinfo($item['path'], PATHINFO_FILENAME)) && !config('voyager.hidden_files')) {
+                    continue;
+                }
+                $files[] = [
+                    'name'          => $item['basename'],
+                    'type'          => isset($item['mimetype']) ? $item['mimetype'] : 'file',
+                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'relative_path' => $item['path'],
+                    'size'          => $item['size'],
+                    'last_modified' => $item['timestamp'],
+                ];
+            }
+        }
+
+        return response()->json($files);
     }
 
-    // New Folder with 5.3
     public function new_folder(Request $request)
     {
         // Check permission
@@ -76,94 +97,64 @@ class VoyagerMediaController extends Controller
         return compact('success', 'error');
     }
 
-    // Delete File or Folder with 5.3
-    public function delete_file_folder(Request $request)
+    public function delete(Request $request)
     {
         // Check permission
         $this->authorize('browse_media');
 
-        $folderLocation = $request->folder_location;
-        $fileFolder = $request->file_folder;
-        $type = $request->type;
+        $path = str_replace('//', '/', str_finish($request->path, '/'));
         $success = true;
         $error = '';
 
-        if (is_array($folderLocation)) {
-            $folderLocation = rtrim(implode('/', $folderLocation), '/');
-        }
-
-        $location = "{$this->directory}/{$folderLocation}";
-        $fileFolder = "{$location}/{$fileFolder}";
-
-        if ($type == 'folder') {
-            if (!Storage::disk($this->filesystem)->deleteDirectory($fileFolder)) {
-                $error = __('voyager::media.error_deleting_folder');
+        foreach ($request->get('files') as $file) {
+            $file_path = $path.$file['name'];
+            if ($file['type'] == 'folder') {
+                if (!Storage::disk($this->filesystem)->deleteDirectory($file_path)) {
+                    $error = __('voyager::media.error_deleting_folder');
+                    $success = false;
+                }
+            } elseif (!Storage::disk($this->filesystem)->delete($file_path)) {
+                $error = __('voyager::media.error_deleting_file');
                 $success = false;
             }
-        } elseif (!Storage::disk($this->filesystem)->delete($fileFolder)) {
-            $error = __('voyager::media.error_deleting_file');
-            $success = false;
         }
 
         return compact('success', 'error');
     }
 
-    // GET ALL DIRECTORIES Working with Laravel 5.3
-    public function get_all_dirs(Request $request)
+    public function move(Request $request)
     {
         // Check permission
         $this->authorize('browse_media');
-
-        $folderLocation = $request->folder_location;
-
-        if (is_array($folderLocation)) {
-            $folderLocation = rtrim(implode('/', $folderLocation), '/');
+        $path = str_replace('//', '/', str_finish($request->path, '/'));
+        $dest = str_replace('//', '/', str_finish($request->destination, '/'));
+        if (strpos($dest, '/../') !== false) {
+            $dest = substr($path, 0, -1);
+            $dest = substr($dest, 0, strripos($dest, '/') + 1);
         }
+        $dest = str_replace('//', '/', str_finish($dest, '/'));
 
-        $location = "{$this->directory}/{$folderLocation}";
-
-        return response()->json(
-            str_replace($location, '', Storage::disk($this->filesystem)->directories($location))
-        );
-    }
-
-    // NEEDS TESTING
-    public function move_file(Request $request)
-    {
-        // Check permission
-        $this->authorize('browse_media');
-
-        $source = $request->source;
-        $destination = $request->destination;
-        $folderLocation = $request->folder_location;
-        $success = false;
+        $success = true;
         $error = '';
 
-        if (is_array($folderLocation)) {
-            $folderLocation = rtrim(implode('/', $folderLocation), '/');
-        }
+        foreach ($request->get('files') as $file) {
+            $old_path = $path.$file['name'];
+            $new_path = $dest.$file['name'];
 
-        $location = "{$this->directory}/{$folderLocation}";
-        $source = "{$location}/{$source}";
-        $destination = strpos($destination, '/../') !== false
-            ? $this->directory.'/'.dirname($folderLocation).'/'.str_replace('/../', '', $destination)
-            : "/{$destination}";
+            try {
+                Storage::disk($this->filesystem)->move($old_path, $new_path);
+            } catch (\Exception $ex) {
+                $success = false;
+                $error = $ex->getMessage();
 
-        if (!file_exists($destination)) {
-            if (Storage::disk($this->filesystem)->move($source, $destination)) {
-                $success = true;
-            } else {
-                $error = __('voyager::media.error_moving');
+                return compact('success', 'error');
             }
-        } else {
-            $error = __('voyager::media.error_already_exists');
         }
 
         return compact('success', 'error');
     }
 
-    // RENAME FILE WORKING with 5.3
-    public function rename_file(Request $request)
+    public function rename(Request $request)
     {
         // Check permission
         $this->authorize('browse_media');
@@ -193,7 +184,6 @@ class VoyagerMediaController extends Controller
         return compact('success', 'error');
     }
 
-    // Upload Working with 5.3
     public function upload(Request $request)
     {
         // Check permission
@@ -205,13 +195,28 @@ class VoyagerMediaController extends Controller
         try {
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
 
-            $allowedMimeTypes = config('voyager.allowed_mimetypes', '*');
+            $allowedMimeTypes = config('voyager.media.allowed_mimetypes', '*');
             if ($allowedMimeTypes != '*' && (is_array($allowedMimeTypes) && !in_array($request->file->getMimeType(), $allowedMimeTypes))) {
                 throw new Exception(__('voyager::generic.mimetype_not_allowed'));
             }
 
-            while (Storage::disk($this->filesystem)->exists(str_finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
-                $name = get_file_name($name);
+            if (!$request->has('filename') || $request->get('filename') == 'null') {
+                while (Storage::disk($this->filesystem)->exists(str_finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
+                    $name = get_file_name($name);
+                }
+            } else {
+                $name = str_replace('{uid}', \Auth::user()->getKey(), $request->get('filename'));
+                if (str_contains($name, '{date:')) {
+                    $name = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
+                        return \Carbon\Carbon::now()->format($date[1]);
+                    }, $name);
+                }
+                if (str_contains($name, '{random:')) {
+                    $name = preg_replace_callback('/\{random:([0-9]+)\}/', function ($random) {
+                        return str_random($random[1]);
+                    }, $name);
+                }
+                $name .= '.'.$extension;
             }
 
             $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
@@ -247,42 +252,6 @@ class VoyagerMediaController extends Controller
         return response()->json(compact('success', 'message', 'path'));
     }
 
-    private function getFiles($dir)
-    {
-        // Check permission
-        $this->authorize('browse_media');
-
-        $files = [];
-        $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
-        $storageItems = $storage->listWith(['mimetype'], $dir);
-
-        foreach ($storageItems as $item) {
-            if ($item['type'] == 'dir') {
-                $files[] = [
-                    'name'          => $item['basename'],
-                    'type'          => 'folder',
-                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
-                    'items'         => '',
-                    'last_modified' => '',
-                ];
-            } else {
-                if (empty(pathinfo($item['path'], PATHINFO_FILENAME)) && !config('voyager.hidden_files')) {
-                    continue;
-                }
-                $files[] = [
-                    'name'          => $item['basename'],
-                    'type'          => isset($item['mimetype']) ? $item['mimetype'] : 'file',
-                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
-                    'size'          => $item['size'],
-                    'last_modified' => $item['timestamp'],
-                ];
-            }
-        }
-
-        return $files;
-    }
-
-    // REMOVE FILE
     public function remove(Request $request)
     {
         // Check permission
@@ -385,7 +354,6 @@ class VoyagerMediaController extends Controller
         }
     }
 
-    // Crop Image
     public function crop(Request $request)
     {
         // Check permission
