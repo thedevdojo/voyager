@@ -40,11 +40,6 @@ class Voyager
     protected $formFields = [];
     protected $afterFormFields = [];
 
-    protected $permissionsLoaded = false;
-    protected $permissions = [];
-
-    protected $users = [];
-
     protected $viewLoadingEvents = [];
 
     protected $actions = [
@@ -324,33 +319,6 @@ class Voyager
         $traits = class_uses_recursive(get_class($model));
 
         return in_array(Translatable::class, $traits);
-    }
-
-    /** @deprecated */
-    protected function loadPermissions()
-    {
-        if (!$this->permissionsLoaded) {
-            $this->permissionsLoaded = true;
-
-            $this->permissions = self::model('Permission')->all();
-        }
-    }
-
-    protected function getUser($id = null)
-    {
-        if (is_null($id)) {
-            $id = auth()->check() ? auth()->user()->id : null;
-        }
-
-        if (is_null($id)) {
-            return;
-        }
-
-        if (!isset($this->users[$id])) {
-            $this->users[$id] = self::model('User')->find($id);
-        }
-
-        return $this->users[$id];
     }
 
     public function getLocales()

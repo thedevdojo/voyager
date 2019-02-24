@@ -50,7 +50,9 @@
                         </div>
 
                         <div class="panel-body" style="padding-top:0;">
-                            @if($row->type == "image")
+                            @if (isset($row->details->view))
+                                @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => 'read'])
+                            @elseif($row->type == "image")
                                 <img class="img-responsive"
                                      src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'multiple_images')
@@ -77,7 +79,7 @@
                                     @endforeach
 
                                 @elseif(property_exists($row->details, 'options'))
-                                    @if (count(json_decode($dataTypeContent->{$row->field})) > 0)
+                                    @if (!empty(json_decode($data->{$row->field})))
                                         @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                                             @if (@$row->details->options->{$item})
                                                 {{ $row->details->options->{$item} . (!$loop->last ? ', ' : '') }}

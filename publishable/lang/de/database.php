@@ -105,7 +105,7 @@ return [
         'add'                  => 'Hinzufügen',
         'delete'               => 'Löschen',
         'create'               => 'Beziehung erstellen',
-        'namespace'            => 'Model Namespace (z.B. App\Category)',
+        'namespace'            => 'Vollständig angegebener Model-Name (z.B. App\Category)',
         'cant_create'          => 'Konnte Beziehung nicht herstellen weil :model nicht existiert.',
     ],
 ];
