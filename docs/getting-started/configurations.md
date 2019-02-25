@@ -94,10 +94,12 @@ By default Voyager is going to use the `public` local storage. You can additiona
     'tables' => [
         'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
     ],
+    'autoload_migrations' => true,
 ],
 ```
 
-You may wish to hide some database tables in the Voyager database section. In the database config you can choose which tables would like to hide.
+You may wish to hide some database tables in the Voyager database section. In the database config you can choose which tables would like to hide.  
+`autoload_migrations` allows you to exclude Voyagers migration-files from loading when running `php artisan migrate`.
 
 ## Multilingual
 
