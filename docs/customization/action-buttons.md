@@ -75,3 +75,17 @@ public function shouldActionDisplayOnDataType()
     return $this->dataType->slug == 'posts';
 }
 ```
+
+# Mass Actions
+
+Mass actions are called for multiple instances of a model.  
+If you want your action to be a mass action, just implement the following method:
+```php
+<?php
+
+public function massAction($ids, $comingFrom)
+{
+    // Do something with the IDs
+    return redirect($comingFrom);
+}
+```
