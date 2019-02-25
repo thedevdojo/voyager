@@ -62,6 +62,7 @@ return [
     'no_results'             => 'Keine Ergebnisse',
     'not_null'               => 'Not Null',
     'no_results'             => 'Keine Ergebnisse',
+    'open'                   => 'Öffnen',
     'options'                => 'Optionen',
     'password'               => 'Passwort',
     'permissions'            => 'Rechte',

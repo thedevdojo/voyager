@@ -132,17 +132,17 @@ return [
     'dashboard' => [
         // Add custom list items to navbar's dropdown
         'navbar_items' => [
-            'Profile' => [
+            'voyager::generic.profile' => [
                 'route'      => 'voyager.profile',
                 'classes'    => 'class-full-of-rum',
                 'icon_class' => 'voyager-person',
             ],
-            'Home' => [
+            'voyager::generic.home' => [
                 'route'        => '/',
                 'icon_class'   => 'voyager-home',
                 'target_blank' => true,
             ],
-            'Logout' => [
+            'voyager::generic.logout' => [
                 'route'      => 'voyager.logout',
                 'icon_class' => 'voyager-power',
             ],
@@ -226,15 +226,25 @@ return [
     // Activate compass when environment is NOT local
     'compass_in_production' => false,
 
-    // The allowed mimetypes to be uploaded through the media-manager.
-    'allowed_mimetypes' => '*', //All types can be uploaded
-    /*
-    'allowed_mimetypes' => [
-      'image/jpeg',
-      'image/png',
-      'image/gif',
-      'image/bmp',
-      'video/mp4',
-    ],
-    */
+    'media' => [
+        // The allowed mimetypes to be uploaded through the media-manager.
+        'allowed_mimetypes' => '*', //All types can be uploaded
+        /*
+        'allowed_mimetypes' => [
+          'image/jpeg',
+          'image/png',
+          'image/gif',
+          'image/bmp',
+          'video/mp4',
+        ],
+        */
+       //Path for media-manager. Relative to the filesystem.
+       'path'                => '/',
+       'show_folders'        => true,
+       'allow_upload'        => true,
+       'allow_move'          => true,
+       'allow_delete'        => true,
+       'allow_create_folder' => true,
+       'allow_rename'        => true,
+   ],
 ];

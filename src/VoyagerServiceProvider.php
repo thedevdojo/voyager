@@ -67,6 +67,10 @@ class VoyagerServiceProvider extends ServiceProvider
             return new Voyager();
         });
 
+        $this->app->singleton('VoyagerAuth', function () {
+            return auth();
+        });
+
         $this->loadHelpers();
 
         $this->registerAlertComponents();
@@ -272,7 +276,7 @@ class VoyagerServiceProvider extends ServiceProvider
         // otherwise it will throw an error because no database
         // connection has been made yet.
         try {
-            if (Schema::hasTable('data_types')) {
+            if (Schema::hasTable(VoyagerFacade::model('DataType')->getTable())) {
                 $dataType = VoyagerFacade::model('DataType');
                 $dataTypes = $dataType->select('policy_name', 'model_name')->get();
 
@@ -310,6 +314,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'file',
             'image',
             'multiple_images',
+            'media_picker',
             'number',
             'password',
             'radio_btn',

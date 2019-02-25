@@ -34,6 +34,7 @@ class InstallCommand extends Command
     protected function getOptions()
     {
         return [
+            ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production', null],
             ['with-dummy', null, InputOption::VALUE_NONE, 'Install with dummy data', null],
         ];
     }
@@ -75,7 +76,7 @@ class InstallCommand extends Command
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
-        $this->call('migrate');
+        $this->call('migrate', ['--force' => $this->option('force')]);
 
         $this->info('Attempting to set Voyager User model as parent to App\User');
         if (file_exists(app_path('User.php'))) {

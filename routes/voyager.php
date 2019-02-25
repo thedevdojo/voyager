@@ -4,7 +4,7 @@ use TCG\Voyager\Events\Routing;
 use TCG\Voyager\Events\RoutingAdmin;
 use TCG\Voyager\Events\RoutingAdminAfter;
 use TCG\Voyager\Events\RoutingAfter;
-use TCG\Voyager\Models\DataType;
+use TCG\Voyager\Facades\Voyager;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,12 +41,13 @@ Route::group(['as' => 'voyager.'], function () {
         Route::get('profile', ['uses' => $namespacePrefix.'VoyagerUserController@profile', 'as' => 'profile']);
 
         try {
-            foreach (DataType::all() as $dataType) {
+            foreach (Voyager::model('DataType')::all() as $dataType) {
                 $breadController = $dataType->controller
-                                 ? $dataType->controller
+                                 ? str_start($dataType->controller, '\\')
                                  : $namespacePrefix.'VoyagerBaseController';
 
                 Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
+                Route::post($dataType->slug.'/action', $breadController.'@action')->name($dataType->slug.'.action');
                 Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.order');
                 Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
                 Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
@@ -90,7 +91,7 @@ Route::group(['as' => 'voyager.'], function () {
             Route::delete('{id}', ['uses' => $namespacePrefix.'VoyagerSettingsController@delete',       'as' => 'delete']);
             Route::get('{id}/move_up', ['uses' => $namespacePrefix.'VoyagerSettingsController@move_up',      'as' => 'move_up']);
             Route::get('{id}/move_down', ['uses' => $namespacePrefix.'VoyagerSettingsController@move_down',    'as' => 'move_down']);
-            Route::get('{id}/delete_value', ['uses' => $namespacePrefix.'VoyagerSettingsController@delete_value', 'as' => 'delete_value']);
+            Route::put('{id}/delete_value', ['uses' => $namespacePrefix.'VoyagerSettingsController@delete_value', 'as' => 'delete_value']);
         });
 
         // Admin Media
@@ -101,10 +102,9 @@ Route::group(['as' => 'voyager.'], function () {
             Route::get('/', ['uses' => $namespacePrefix.'VoyagerMediaController@index',              'as' => 'index']);
             Route::post('files', ['uses' => $namespacePrefix.'VoyagerMediaController@files',              'as' => 'files']);
             Route::post('new_folder', ['uses' => $namespacePrefix.'VoyagerMediaController@new_folder',         'as' => 'new_folder']);
-            Route::post('delete_file_folder', ['uses' => $namespacePrefix.'VoyagerMediaController@delete_file_folder', 'as' => 'delete_file_folder']);
-            Route::post('directories', ['uses' => $namespacePrefix.'VoyagerMediaController@get_all_dirs',       'as' => 'get_all_dirs']);
-            Route::post('move_file', ['uses' => $namespacePrefix.'VoyagerMediaController@move_file',          'as' => 'move_file']);
-            Route::post('rename_file', ['uses' => $namespacePrefix.'VoyagerMediaController@rename_file',        'as' => 'rename_file']);
+            Route::post('delete_file_folder', ['uses' => $namespacePrefix.'VoyagerMediaController@delete', 'as' => 'delete']);
+            Route::post('move_file', ['uses' => $namespacePrefix.'VoyagerMediaController@move',          'as' => 'move']);
+            Route::post('rename_file', ['uses' => $namespacePrefix.'VoyagerMediaController@rename',        'as' => 'rename']);
             Route::post('upload', ['uses' => $namespacePrefix.'VoyagerMediaController@upload',             'as' => 'upload']);
             Route::post('remove', ['uses' => $namespacePrefix.'VoyagerMediaController@remove',             'as' => 'remove']);
             Route::post('crop', ['uses' => $namespacePrefix.'VoyagerMediaController@crop',             'as' => 'crop']);

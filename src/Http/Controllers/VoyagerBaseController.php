@@ -64,10 +64,15 @@ class VoyagerBaseController extends Controller
         // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
-            $query = $model::select('*');
+
+            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+                $query = $model->{$dataType->scope}();
+            } else {
+                $query = $model::select('*');
+            }
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
-            if ($model && in_array(SoftDeletes::class, class_uses($model)) && \Auth::user()->can('delete', app($dataType->model_name))) {
+            if ($model && in_array(SoftDeletes::class, class_uses($model)) && app('VoyagerAuth')->user()->can('delete', app($dataType->model_name))) {
                 $usesSoftDeletes = true;
 
                 if ($request->get('showSoftDeleted')) {
@@ -79,7 +84,7 @@ class VoyagerBaseController extends Controller
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
 
-            if ($search->value && $search->key && $search->filter) {
+            if ($search->value != '' && $search->key && $search->filter) {
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
                 $query->where($search->key, $search_filter, $search_value);
@@ -165,6 +170,9 @@ class VoyagerBaseController extends Controller
             if ($model && in_array(SoftDeletes::class, class_uses($model))) {
                 $model = $model->withTrashed();
             }
+            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+                $model = $model->{$dataType->scope}();
+            }
             $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
             if ($dataTypeContent->deleted_at) {
                 $isSoftDeleted = true;
@@ -220,7 +228,9 @@ class VoyagerBaseController extends Controller
             if ($model && in_array(SoftDeletes::class, class_uses($model))) {
                 $model = $model->withTrashed();
             }
-
+            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+                $model = $model->{$dataType->scope}();
+            }
             $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
         } else {
             // If Model doest exist, get data from table name
@@ -260,6 +270,9 @@ class VoyagerBaseController extends Controller
         $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
 
         $model = app($dataType->model_name);
+        if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+            $model = $model->{$dataType->scope}();
+        }
         if ($model && in_array(SoftDeletes::class, class_uses($model))) {
             $data = $model->withTrashed()->findOrFail($id);
         } else {
@@ -270,24 +283,17 @@ class VoyagerBaseController extends Controller
         $this->authorize('edit', $data);
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id);
+        $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id)->validate();
+        $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
 
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
-        }
+        event(new BreadDataUpdated($dataType, $data));
 
-        if (!$request->ajax()) {
-            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-
-            event(new BreadDataUpdated($dataType, $data));
-
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                    'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
-                    'alert-type' => 'success',
-                ]);
-        }
+        return redirect()
+        ->route("voyager.{$dataType->slug}.index")
+        ->with([
+            'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
+            'alert-type' => 'success',
+        ]);
     }
 
     //***************************************
@@ -352,28 +358,17 @@ class VoyagerBaseController extends Controller
         $this->authorize('add', app($dataType->model_name));
 
         // Validate fields with ajax
-        $val = $this->validateBread($request->all(), $dataType->addRows);
+        $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
+        $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
 
-        if ($val->fails()) {
-            return response()->json(['errors' => $val->messages()]);
-        }
+        event(new BreadDataAdded($dataType, $data));
 
-        if (!$request->has('_validate')) {
-            $data = $this->insertUpdateData($request, $slug, $dataType->addRows, new $dataType->model_name());
-
-            event(new BreadDataAdded($dataType, $data));
-
-            if ($request->ajax()) {
-                return response()->json(['success' => true, 'data' => $data]);
-            }
-
-            return redirect()
-                ->route("voyager.{$dataType->slug}.index")
-                ->with([
-                        'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
-                        'alert-type' => 'success',
-                    ]);
-        }
+        return redirect()
+        ->route("voyager.{$dataType->slug}.index")
+        ->with([
+                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
+                'alert-type' => 'success',
+            ]);
     }
 
     //***************************************
@@ -446,6 +441,9 @@ class VoyagerBaseController extends Controller
 
         // Get record
         $model = call_user_func([$dataType->model_name, 'withTrashed']);
+        if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+            $model = $model->{$dataType->scope}();
+        }
         $data = $model->findOrFail($id);
 
         $displayName = $dataType->display_name_singular;
@@ -494,6 +492,23 @@ class VoyagerBaseController extends Controller
                 }
             }
         }
+
+        // Delete media-picker files
+        $dataType->rows->where('type', 'media_picker')->where('details.delete_files', true)->each(function ($row) use ($data) {
+            $content = $data->{$row->field};
+            if (isset($content)) {
+                if (!is_array($content)) {
+                    $content = json_decode($content);
+                }
+                if (is_array($content)) {
+                    foreach ($content as $file) {
+                        $this->deleteFileIfExists($file);
+                    }
+                } else {
+                    $this->deleteFileIfExists($content);
+                }
+            }
+        });
     }
 
     /**
@@ -601,6 +616,15 @@ class VoyagerBaseController extends Controller
             $i->$column = ($key + 1);
             $i->save();
         }
+    }
+
+    public function action(Request $request)
+    {
+        $slug = $this->getSlug($request);
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+        $action = new $request->action($dataType, null);
+        return $action->massAction(explode(',', $request->ids), $request->headers->get('referer'));
     }
 
     /**

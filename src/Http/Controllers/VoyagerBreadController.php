@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use ReflectionClass;
 use TCG\Voyager\Database\Schema\Column;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
@@ -14,9 +15,6 @@ use TCG\Voyager\Events\BreadAdded;
 use TCG\Voyager\Events\BreadDeleted;
 use TCG\Voyager\Events\BreadUpdated;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\DataRow;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Permission;
 
 class VoyagerBreadController extends Controller
 {
@@ -130,8 +128,12 @@ class VoyagerBreadController extends Controller
         $isModelTranslatable = is_bread_translatable($dataType);
         $tables = SchemaManager::listTableNames();
         $dataTypeRelationships = Voyager::model('DataRow')->where('data_type_id', '=', $dataType->id)->where('type', '=', 'relationship')->get();
+        $scopes = [];
+        if ($dataType->model_name != '') {
+            $scopes = $this->getModelScopes($dataType->model_name);
+        }
 
-        return Voyager::view('voyager::tools.bread.edit-add', compact('dataType', 'fieldOptions', 'isModelTranslatable', 'tables', 'dataTypeRelationships'));
+        return Voyager::view('voyager::tools.bread.edit-add', compact('dataType', 'fieldOptions', 'isModelTranslatable', 'tables', 'dataTypeRelationships', 'scopes'));
     }
 
     /**
@@ -206,6 +208,17 @@ class VoyagerBreadController extends Controller
         return redirect()->route('voyager.bread.index')->with($data);
     }
 
+    public function getModelScopes($model_name)
+    {
+        $reflection = new ReflectionClass($model_name);
+
+        return collect($reflection->getMethods())->filter(function ($method) {
+            return starts_with($method->name, 'scope');
+        })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
+            return lcfirst(str_replace_first('scope', '', $method->name));
+        });
+    }
+
     // ************************************************************
     //  _____      _       _   _                 _     _
     // |  __ \    | |     | | (_)               | |   (_)
@@ -254,7 +267,8 @@ class VoyagerBreadController extends Controller
                 'taggable'    => $request->relationship_taggable,
             ];
 
-            $newRow = new DataRow();
+            $className = Voyager::modelClass('DataRow');
+            $newRow = new $className();
 
             $newRow->data_type_id = $request->data_type_id;
             $newRow->field = $relationshipField;

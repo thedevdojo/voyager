@@ -45,6 +45,7 @@ return [
     'policy_name'            => 'Policy Name',
     'policy_name_ph'         => 'ex. \App\Policies\UserPolicy, if left empty will try and use the default',
     'server_pagination'      => 'Server-side Pagination',
+    'scope'                  => 'Scope',
     'soft_deletes_on'        => 'Show Deleted',
     'soft_deletes_off'       => 'Hide Deleted',
     'updated_order'          => 'Order updated successfully',

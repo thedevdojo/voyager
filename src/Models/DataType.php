@@ -32,6 +32,7 @@ class DataType extends Model
         'order_display_column',
         'order_direction',
         'default_search_key',
+        'scope',
         'details',
     ];
 
@@ -282,5 +283,15 @@ class DataType extends Model
     public function setOrderDirectionAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['order_direction' => $value]);
+    }
+
+    public function getScopeAttribute()
+    {
+        return isset($this->details->scope) ? $this->details->scope : null;
+    }
+
+    public function setScopeAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['scope' => $value]);
     }
 }

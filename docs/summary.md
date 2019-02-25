@@ -26,15 +26,18 @@
 
 * [Overriding files](customization/overriding-files.md)
 * [Overriding Routes](customization/overriding-routes.md)
+* [Overriding Formfields](customization/overriding-formfields.md)
 * [Additional CSS and JS](customization/additional-css-js.md)
 * [Enabling Soft-Delete](customization/enabling-soft-delete.md)
 * [Custom relationship attributes](customization/custom-realtionship-attributes.md)
 * [TinyMCE](customization/tinymce.md)
 * [Adding custom Formfields](customization/adding-custom-formfields.md)
 * [Coordinates](customization/coordinates.md)
+* [BREAD accessors](customization/bread-accessors.md)
+* [Custom guard](customization/custom-guard.md)
+* [Action buttons](customization/action-buttons.md)
 
 ## Troubleshooting
 
 * [Using HTTPS on yours site](troubleshooting/using-https.md)
 * [Missing required parameter](troubleshooting/missing-required-parameter.md)
-

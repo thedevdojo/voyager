@@ -4,7 +4,6 @@ namespace TCG\Voyager\Traits;
 
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\Role;
 use TCG\Voyager\Notifications\VoyagerPasswordResetNotification;
 
 /**

@@ -82,6 +82,6 @@ return [
         'add'                  => 'Add',
         'delete'               => 'Delete',
         'create'               => 'Create a Relationship',
-        'namespace'            => 'Model Namespace (ex. App\Category)',
+        'namespace'            => 'Fully Qualified Model Name (ex. App\Category)',
     ],
 ];

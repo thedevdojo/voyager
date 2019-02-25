@@ -130,6 +130,24 @@ abstract class Controller extends BaseController
             $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
         }
 
+        // Rename folders for newly created data through media-picker
+        if ($request->session()->has($slug.'_path') || $request->session()->has($slug.'_uuid')) {
+            $old_path = $request->session()->get($slug.'_path');
+            $uuid = $request->session()->get($slug.'_uuid');
+            $new_path = str_replace($uuid, $data->getKey(), $old_path);
+            $folder_path = substr($old_path, 0, strpos($old_path, $uuid)).$uuid;
+
+            $rows->where('type', 'media_picker')->each(function ($row) use ($data, $uuid) {
+                $data->{$row->field} = str_replace($uuid, $data->getKey(), $data->{$row->field});
+            });
+            $data->save();
+
+            Storage::disk(config('voyager.storage.disk'))->move($old_path, $new_path);
+            Storage::disk(config('voyager.storage.disk'))->deleteDirectory($folder_path);
+
+            $request->session()->forget([$slug.'_path', $slug.'_uuid']);
+        }
+
         return $data;
     }
 
@@ -164,6 +182,13 @@ abstract class Controller extends BaseController
             // Get the rules for the current field whatever the format it is in
             $rules[$fieldName] = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
 
+            if ($id && property_exists($field->details->validation, 'edit')) {
+                $action_rules = $field->details->validation->edit->rule;
+                $rules[$fieldName] = array_merge($rules[$fieldName], (is_array($action_rules) ? $action_rules : explode('|', $action_rules)));
+            } elseif (!$id && property_exists($field->details->validation, 'add')) {
+                $action_rules = $field->details->validation->add->rule;
+                $rules[$fieldName] = array_merge($rules[$fieldName], (is_array($action_rules) ? $action_rules : explode('|', $action_rules)));
+            }
             // Fix Unique validation rule on Edit Mode
             if ($is_update) {
                 foreach ($rules[$fieldName] as &$fieldRule) {

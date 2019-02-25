@@ -236,11 +236,26 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="description">{{ __('voyager::bread.description') }}</label>
-                                <textarea class="form-control" name="description"
-                                          placeholder="{{ __('voyager::bread.description') }}"
-                                    >@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
+                            <div class="row clearfix">
+                                @if (isset($scopes) && isset($dataType))
+                                    <div class="col-md-3 form-group">
+                                        <label for="scope">{{ __('voyager::bread.scope') }}</label>
+                                        <select name="scope" class="select2 form-control">
+                                            <option value="">-- {{ __('voyager::generic.none') }} --</option>
+                                            @foreach($scopes as $scope)
+                                            <option value="{{ $scope }}"
+                                            @if($dataType->scope == $scope) selected @endif
+                                            >{{ $scope }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                                <div class="col-md-9 form-group">
+                                    <label for="description">{{ __('voyager::bread.description') }}</label>
+                                    <textarea class="form-control" name="description"
+                                              placeholder="{{ __('voyager::bread.description') }}"
+                                        >@if(isset($dataType->description)){{ $dataType->description }}@endif</textarea>
+                                </div>
                             </div>
                         </div><!-- .panel-body -->
                     </div><!-- .panel -->
@@ -273,7 +288,7 @@
                                 @endphp
 
                                 @if(isset($dataType->id))
-                                    <?php $dataRow = TCG\Voyager\Models\DataRow::where('data_type_id', '=',
+                                    <?php $dataRow = Voyager::model('DataRow')->where('data_type_id', '=',
                                             $dataType->id)->where('field', '=', $data['field'])->first(); ?>
                                 @endif
 

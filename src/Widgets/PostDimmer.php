@@ -43,6 +43,6 @@ class PostDimmer extends BaseDimmer
      */
     public function shouldBeDisplayed()
     {
-        return Auth::user()->can('browse', Voyager::model('Post'));
+        return app('VoyagerAuth')->user()->can('browse', Voyager::model('Post'));
     }
 }
