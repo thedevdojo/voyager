@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Events\MenuDisplay;
@@ -40,7 +41,7 @@ class Menu extends Model
     public static function display($menuName, $type = null, array $options = [])
     {
         // GET THE MENU - sort collection in blade
-        $menu = \Cache::remember('voyager_menu_'.$menuName, \Carbon::now()->addDays(30), function () use ($menuName) {
+        $menu = \Cache::remember('voyager_menu_'.$menuName, Carbon::now()->addDays(30), function () use ($menuName) {
             return static::where('name', '=', $menuName)
             ->with(['parent_items.children' => function ($q) {
                 $q->orderBy('order');
