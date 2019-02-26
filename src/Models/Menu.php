@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
@@ -105,7 +106,7 @@ class Menu extends Model
             if (url($item->href) == url()->current() && $item->href != '') {
                 // The current URL is exactly the URL of the menu-item
                 $item->active = true;
-            } elseif (starts_with(url()->current(), str_finish(url($item->href), '/'))) {
+            } elseif (starts_with(url()->current(), Str::finish(url($item->href), '/'))) {
                 // The current URL is "below" the menu-item URL. For example "admin/posts/1/edit" => "admin/posts"
                 $item->active = true;
             }
