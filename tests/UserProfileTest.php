@@ -19,7 +19,7 @@ class UserProfileTest extends TestCase
 
     protected $listOfUsers;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

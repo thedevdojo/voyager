@@ -15,6 +15,8 @@ class LoginTest extends TestCase
 
     public function testShowAnErrorMessageWhenITryToLoginWithWrongCredentials()
     {
+        session()->setPreviousUrl(route('voyager.login'));
+
         $this->visit(route('voyager.login'))
              ->type('john@Doe.com', 'email')
              ->type('pass', 'password')
