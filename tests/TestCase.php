@@ -41,7 +41,7 @@ class TestCase extends OrchestraTestCase
         ];
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         //parent::tearDown();
 
