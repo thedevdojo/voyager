@@ -6,6 +6,7 @@ use Arrilot\Widgets\Facade as Widget;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Actions\DeleteAction;
@@ -102,7 +103,7 @@ class Voyager
 
     public function view($name, array $parameters = [])
     {
-        foreach (array_get($this->viewLoadingEvents, $name, []) as $event) {
+        foreach (Arr::get($this->viewLoadingEvents, $name, []) as $event) {
             $event($name, $parameters);
         }
 

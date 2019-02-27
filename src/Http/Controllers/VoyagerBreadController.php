@@ -215,7 +215,7 @@ class VoyagerBreadController extends Controller
         return collect($reflection->getMethods())->filter(function ($method) {
             return starts_with($method->name, 'scope');
         })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
-            return lcfirst(str_replace_first('scope', '', $method->name));
+            return lcfirst(Str::replaceFirst('scope', '', $method->name));
         });
     }
 
@@ -319,7 +319,7 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->find($request->data_type_id);
 
-        $field = str_singular($dataType->name).'_'.$request->relationship_type.'_'.str_singular($request->relationship_table).'_relationship';
+        $field = Str::singular($dataType->name).'_'.$request->relationship_type.'_'.Str::singular($request->relationship_table).'_relationship';
 
         $relationshipFieldOriginal = $relationshipField = strtolower($field);
 

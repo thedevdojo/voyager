@@ -27,14 +27,14 @@ class MediaPickerHandler extends AbstractHandler
 
         if (isset($options->base_path)) {
             $options->base_path = str_replace('{uid}', \Auth::user()->getKey(), $options->base_path);
-            if (str_contains($options->base_path, '{date:')) {
+            if (Str::contains($options->base_path, '{date:')) {
                 $options->base_path = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                     return \Carbon\Carbon::now()->format($date[1]);
                 }, $options->base_path);
             }
-            if (str_contains($options->base_path, '{random:')) {
+            if (Str::contains($options->base_path, '{random:')) {
                 $options->base_path = preg_replace_callback('/\{random:([0-9]+)\}/', function ($random) {
-                    return str_random($random[1]);
+                    return Str::random($random[1]);
                 }, $options->base_path);
             }
             if (!$dataTypeContent->getKey()) {

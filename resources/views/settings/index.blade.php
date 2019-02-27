@@ -236,14 +236,14 @@
                     <ul class="nav nav-tabs">
                         @foreach($settings as $group => $setting)
                             <li @if($group == $active) class="active" @endif>
-                                <a data-toggle="tab" href="#{{ str_slug($group) }}">{{ $group }}</a>
+                                <a data-toggle="tab" href="#{{ \Illuminate\Support\Str::slug($group) }}">{{ $group }}</a>
                             </li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
                         @foreach($settings as $group => $group_settings)
-                        <div id="{{ str_slug($group) }}" class="tab-pane fade in @if($group == $active) active @endif">
+                        <div id="{{ \Illuminate\Support\Str::slug($group) }}" class="tab-pane fade in @if($group == $active) active @endif">
                             @foreach($group_settings as $setting)
                             <div class="panel-heading">
                                 <h3 class="panel-title">

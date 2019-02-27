@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -102,7 +103,7 @@ class VoyagerMediaController extends Controller
         // Check permission
         $this->authorize('browse_media');
 
-        $path = str_replace('//', '/', str_finish($request->path, '/'));
+        $path = str_replace('//', '/', Str::finish($request->path, '/'));
         $success = true;
         $error = '';
 
@@ -126,13 +127,13 @@ class VoyagerMediaController extends Controller
     {
         // Check permission
         $this->authorize('browse_media');
-        $path = str_replace('//', '/', str_finish($request->path, '/'));
-        $dest = str_replace('//', '/', str_finish($request->destination, '/'));
+        $path = str_replace('//', '/', Str::finish($request->path, '/'));
+        $dest = str_replace('//', '/', Str::finish($request->destination, '/'));
         if (strpos($dest, '/../') !== false) {
             $dest = substr($path, 0, -1);
             $dest = substr($dest, 0, strripos($dest, '/') + 1);
         }
-        $dest = str_replace('//', '/', str_finish($dest, '/'));
+        $dest = str_replace('//', '/', Str::finish($dest, '/'));
 
         $success = true;
         $error = '';
@@ -190,7 +191,7 @@ class VoyagerMediaController extends Controller
         $this->authorize('browse_media');
 
         $extension = $request->file->getClientOriginalExtension();
-        $name = str_replace_last('.'.$extension, '', $request->file->getClientOriginalName());
+        $name = Str::replaceLast('.'.$extension, '', $request->file->getClientOriginalName());
 
         try {
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
@@ -201,19 +202,19 @@ class VoyagerMediaController extends Controller
             }
 
             if (!$request->has('filename') || $request->get('filename') == 'null') {
-                while (Storage::disk($this->filesystem)->exists(str_finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
+                while (Storage::disk($this->filesystem)->exists(Str::finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
                     $name = get_file_name($name);
                 }
             } else {
                 $name = str_replace('{uid}', \Auth::user()->getKey(), $request->get('filename'));
-                if (str_contains($name, '{date:')) {
+                if (Str::contains($name, '{date:')) {
                     $name = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                         return \Carbon\Carbon::now()->format($date[1]);
                     }, $name);
                 }
-                if (str_contains($name, '{random:')) {
+                if (Str::contains($name, '{random:')) {
                     $name = preg_replace_callback('/\{random:([0-9]+)\}/', function ($random) {
-                        return str_random($random[1]);
+                        return Str::random($random[1]);
                     }, $name);
                 }
                 $name .= '.'.$extension;

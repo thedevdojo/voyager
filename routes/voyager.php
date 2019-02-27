@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Str;
 use TCG\Voyager\Events\Routing;
 use TCG\Voyager\Events\RoutingAdmin;
 use TCG\Voyager\Events\RoutingAdminAfter;
@@ -37,7 +38,7 @@ Route::group(['as' => 'voyager.'], function () {
         try {
             foreach (Voyager::model('DataType')::all() as $dataType) {
                 $breadController = $dataType->controller
-                                 ? str_start($dataType->controller, '\\')
+                                 ? Str::start($dataType->controller, '\\')
                                  : $namespacePrefix.'VoyagerBaseController';
 
                 Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');

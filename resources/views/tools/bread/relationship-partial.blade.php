@@ -27,7 +27,7 @@
     </div>
     <div class="col-xs-4">
         <div class="voyager-relationship-details-btn">
-            <i class="voyager-angle-down"></i><i class="voyager-angle-up"></i> 
+            <i class="voyager-angle-down"></i><i class="voyager-angle-up"></i>
             <span class="open_text">{{ __('voyager::database.relationship.open') }}</span>
             <span class="close_text">{{ __('voyager::database.relationship.close') }}</span>
             {{ __('voyager::database.relationship.relationship_details') }}
@@ -36,7 +36,7 @@
     <div class="col-md-12 voyager-relationship-details">
         <a href="{{ route('voyager.bread.delete_relationship', $relationship['id']) }}" class="delete_relationship"><i class="voyager-trash"></i> {{ __('voyager::database.relationship.delete') }}</a>
         <div class="relationship_details_content">
-            <p class="relationship_table_select">{{ str_singular(ucfirst($table)) }}</p>
+            <p class="relationship_table_select">{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</p>
             <select class="relationship_type select2" name="relationship_type_{{ $relationship['field'] }}">
                 <option value="hasOne" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasOne'){{ 'selected="selected"' }}@endif>{{ __('voyager::database.relationship.has_one') }}</option>
                 <option value="hasMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasMany'){{ 'selected="selected"' }}@endif>{{ __('voyager::database.relationship.has_many') }}</option>
@@ -52,7 +52,7 @@
         </div>
             <div class="relationshipField">
                 <div class="relationship_details_content margin_top belongsTo @if($relationshipDetails->type == 'belongsTo'){{ 'flexed' }}@endif">
-                    <label>{{ __('voyager::database.relationship.which_column_from') }} <span>{{ str_singular(ucfirst($table)) }}</span> {{ __('voyager::database.relationship.is_used_to_reference') }} <span class="label_table_name"></span>?</label>
+                    <label>{{ __('voyager::database.relationship.which_column_from') }} <span>{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</span> {{ __('voyager::database.relationship.is_used_to_reference') }} <span class="label_table_name"></span>?</label>
                     <select name="relationship_column_belongs_to_{{ $relationship['field'] }}" class="new_relationship_field select2">
                         @foreach($fieldOptions as $data)
                             <option value="{{ $data['field'] }}" @if($relationshipDetails->column == $data['field']){{ 'selected="selected"' }}@endif>{{ $data['field'] }}</option>
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="relationship_details_content margin_top hasOneMany @if($relationshipDetails->type == 'hasOne' || $relationshipDetails->type == 'hasMany'){{ 'flexed' }}@endif">
-                    <label>{{ __('voyager::database.relationship.which_column_from') }} <span class="label_table_name"></span> {{ __('voyager::database.relationship.is_used_to_reference') }} <span>{{ str_singular(ucfirst($table)) }}</span>?</label>
+                    <label>{{ __('voyager::database.relationship.which_column_from') }} <span class="label_table_name"></span> {{ __('voyager::database.relationship.is_used_to_reference') }} <span>{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</span>?</label>
                     <select name="relationship_column_{{ $relationship['field'] }}" class="new_relationship_field select2 rowDrop" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="{{ $relationshipDetails->column }}">
                     </select>
                 </div>
@@ -70,7 +70,7 @@
             <label>{{ __('voyager::database.relationship.pivot_table') }}:</label>
             <select name="relationship_pivot_table_{{ $relationship['field'] }}" class="select2">
                 @foreach($tables as $tbl)
-                    <option value="{{ $tbl }}" @if(isset($relationshipDetails->pivot_table) && $relationshipDetails->pivot_table == $tbl){{ 'selected="selected"' }}@endif>{{ str_singular(ucfirst($tbl)) }}</option>
+                    <option value="{{ $tbl }}" @if(isset($relationshipDetails->pivot_table) && $relationshipDetails->pivot_table == $tbl){{ 'selected="selected"' }}@endif>{{ \Illuminate\Support\Str::singular(ucfirst($tbl)) }}</option>
                 @endforeach
             </select>
         </div>

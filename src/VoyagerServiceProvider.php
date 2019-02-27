@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -161,7 +162,7 @@ class VoyagerServiceProvider extends ServiceProvider
         } else {
             $currentRouteAction = null;
         }
-        $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
+        $routeName = is_array($currentRouteAction) ? Arr::get($currentRouteAction, 'as') : null;
 
         if ($routeName != 'voyager.dashboard') {
             return;
