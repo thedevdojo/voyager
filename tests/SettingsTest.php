@@ -18,6 +18,8 @@ class SettingsTest extends TestCase
 
     public function testCanUpdateSettings()
     {
+        session()->setPreviousUrl(route('voyager.settings.index'));
+
         $key = 'site.title';
         $newTitle = 'Just Another LaravelVoyager.com Site';
 
