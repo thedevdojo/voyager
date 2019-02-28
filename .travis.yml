@@ -29,8 +29,6 @@ cache:
 services:
   - sqlite
 
-before_install: pecl install gd
-
 before_script:
   - travis_retry composer self-update
   - composer require "illuminate/support:${LARAVEL_VERSION}"
