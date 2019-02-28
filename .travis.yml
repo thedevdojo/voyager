@@ -29,6 +29,8 @@ cache:
 services:
   - sqlite
 
+before_install: echo "extension = gd.so" >> ~/.phpenv/versions/$(phpenv 7.4snapshot)/etc/php.ini
+
 before_script:
   - travis_retry composer self-update
   - composer require "illuminate/support:${LARAVEL_VERSION}"
