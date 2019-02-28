@@ -31,7 +31,7 @@ abstract class Type extends DoctrineType
 
     public static function toArray(DoctrineType $type)
     {
-        $customTypeOptions = isset($type->customOptions) ? $type->customOptions : [];
+        $customTypeOptions = $type->customOptions ?? [];
 
         return array_merge([
             'name' => $type->getName(),

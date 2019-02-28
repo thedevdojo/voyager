@@ -79,7 +79,7 @@
                                 <div class="col-md-6 form-group">
                                     <label for="name">{{ __('voyager::database.table_name') }}</label>
                                     <input type="text" class="form-control" readonly name="name" placeholder="{{ __('generic_name') }}"
-                                           value="@if(isset($dataType->name)){{ $dataType->name }}@else{{ $table }}@endif">
+                                           value="{{ $dataType->name ?? $table }}">
                                 </div>
                             </div>
                             <div class="row clearfix">
@@ -96,7 +96,7 @@
                                            name="display_name_singular"
                                            id="display_name_singular"
                                            placeholder="{{ __('voyager::bread.display_name_singular') }}"
-                                           value="@if(isset($dataType->display_name_singular)){{ $dataType->display_name_singular }}@else{{ $display_name }}@endif">
+                                           value="{{ $dataType->display_name_singular ?? $display_name }}">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="display_name_plural">{{ __('voyager::bread.display_name_plural') }}</label>

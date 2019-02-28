@@ -153,7 +153,7 @@
 
                                                 @elseif(($row->type == 'select_dropdown' || $row->type == 'radio_btn') && property_exists($row->details, 'options'))
 
-                                                    {!! isset($row->details->options->{$data->{$row->field}}) ?  $row->details->options->{$data->{$row->field}} : '' !!}
+                                                    {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
 
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
                                                     {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}

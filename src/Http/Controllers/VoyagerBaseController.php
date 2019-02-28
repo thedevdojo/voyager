@@ -119,7 +119,7 @@ class VoyagerBaseController extends Controller
         $isServerSide = isset($dataType->server_side) && $dataType->server_side;
 
         // Check if a default search key is set
-        $defaultSearchKey = isset($dataType->default_search_key) ? $dataType->default_search_key : null;
+        $defaultSearchKey = $dataType->default_search_key ?? null;
 
         $view = 'voyager::bread.browse';
 
@@ -323,7 +323,7 @@ class VoyagerBaseController extends Controller
                             : false;
 
         foreach ($dataType->addRows as $key => $row) {
-            $dataType->addRows[$key]['col_width'] = isset($row->details->width) ? $row->details->width : 100;
+            $dataType->addRows[$key]['col_width'] = $row->details->width ?? 100;
         }
 
         // If a column has a relationship associated with it, we do not want to show that field
