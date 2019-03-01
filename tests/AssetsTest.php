@@ -6,9 +6,15 @@ use Illuminate\Support\Facades\Auth;
 
 class AssetsTest extends TestCase
 {
-    public function testCanLoadAssets()
+    public function testCanLoadVoyagerCss()
     {
         $response = $this->call('GET', voyager_asset('css/app.css'));
+        $this->assertEquals(200, $response->status());
+    }
+
+    public function testCanLoadVoyagerJs()
+    {
+        $response = $this->call('GET', voyager_asset('js/app.js'));
         $this->assertEquals(200, $response->status());
     }
 

@@ -27,12 +27,11 @@ class SettingsTest extends TestCase
              ->type($newTitle, $key)
              ->seeInElement('button', __('voyager::settings.save'))
              ->press(__('voyager::settings.save'))
-             ->seePageIs(route('voyager.settings.index'));
-
-        $this->assertEquals(
-            Setting::where('key', '=', $key)->first()->value,
-            $newTitle
-        );
+             ->seePageIs(route('voyager.settings.index'))
+             ->seeInDatabase('settings', [
+                'key'   => $key,
+                'value' => $newTitle,
+             ]);
     }
 
     public function testCanCreateSetting()
@@ -43,15 +42,13 @@ class SettingsTest extends TestCase
              ->select('text', 'type')
              ->select('Site', 'group')
              ->press(__('voyager::settings.add_new'))
-             ->seePageIs(route('voyager.settings.index'));
-
-         $this->assertTrue(null !==
-             Setting::where('display_name', 'New Setting')
-                    ->where('key', 'site.new_setting')
-                    ->where('type', 'text')
-                    ->where('group', 'Site')
-                    ->first()
-        );
+             ->seePageIs(route('voyager.settings.index'))
+             ->seeInDatabase('settings', [
+                'display_name' => 'New Setting',
+                'key'          => 'site.new_setting',
+                'type'         => 'text',
+                'group'        => 'Site'
+             ]);
 
     }
 
@@ -61,7 +58,9 @@ class SettingsTest extends TestCase
 
         $this->call('DELETE', route('voyager.settings.delete', $setting->id));
 
-        $this->assertTrue(null === Setting::find($setting->id));
+        $this->notSeeInDatabase('settings', [
+           'id'    => $setting->id,
+        ]);
     }
 
 
@@ -72,7 +71,10 @@ class SettingsTest extends TestCase
 
         $this->call('PUT', route('voyager.settings.delete_value', $setting->id));
 
-        $this->assertTrue(Setting::find($setting->id)->value == null);
+        $this->seeInDatabase('settings', [
+           'id'    => $setting->id,
+           'value' => ''
+        ]);
     }
 
     public function testCanMoveSettingUp()
@@ -81,7 +83,10 @@ class SettingsTest extends TestCase
 
         $this->call('GET', route('voyager.settings.move_up', $setting->id));
 
-        $this->assertFalse(Setting::find($setting->id)->order == $setting->order);
+        $this->seeInDatabase('settings', [
+           'id'    => $setting->id,
+           'order' => ($setting->order - 1),
+        ]);
     }
 
     public function testCanMoveSettingDown()
@@ -90,6 +95,9 @@ class SettingsTest extends TestCase
 
         $this->call('GET', route('voyager.settings.move_down', $setting->id));
 
-        $this->assertFalse(Setting::find($setting->id)->order == $setting->order);
+        $this->seeInDatabase('settings', [
+           'id'    => $setting->id,
+           'order' => ($setting->order + 1),
+        ]);
     }
 }

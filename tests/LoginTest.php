@@ -28,6 +28,14 @@ class LoginTest extends TestCase
              ->seeInField('email', 'john@Doe.com');
     }
 
+    public function testRedirectIfLoggedIn()
+    {
+        Auth::loginUsingId(1);
+
+        $this->visit(route('voyager.login'))
+             ->seePageIs(route('voyager.dashboard'));
+    }
+
     public function testCanLogout()
     {
         Auth::loginUsingId(1);
