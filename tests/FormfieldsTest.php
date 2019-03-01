@@ -4,8 +4,10 @@ namespace TCG\Voyager\Tests;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Models\Category;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
 
@@ -56,6 +58,84 @@ class FormfieldsTest extends TestCase
              ->press(__('voyager::generic.save'))
              ->seeRouteIs('voyager.categories.index')
              ->see('Edited Text');
+    }
+
+    public function testFormfieldHidden()
+    {
+        $this->createBreadForFormfield('text', 'hidden', json_encode([
+            'default' => 'Default Text'
+        ]));
+
+        $this->visitRoute('voyager.categories.create')
+             ->see('Default Text')
+             ->type('New Text', 'hidden')
+             ->press(__('voyager::generic.save'))
+             ->seeRouteIs('voyager.categories.index')
+             ->see('New Text')
+             ->click(__('voyager::generic.edit'))
+             ->seeRouteIs('voyager.categories.edit', ['id' => 1])
+             ->type('Edited Text', 'hidden')
+             ->press(__('voyager::generic.save'))
+             ->seeRouteIs('voyager.categories.index')
+             ->see('Edited Text');
+    }
+
+    public function testFormfieldPassword()
+    {
+        $this->createBreadForFormfield('text', 'password');
+
+        $t = $this->visitRoute('voyager.categories.create')
+        ->type('newpassword', 'password')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index');
+        $this->assertTrue(Hash::check('newpassword', Category::first()->password));
+
+        $t->click(__('voyager::generic.edit'))
+        ->seeRouteIs('voyager.categories.edit', ['id' => 1])
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index');
+        $this->assertTrue(Hash::check('newpassword', Category::first()->password));
+    }
+
+    public function testFormfieldNumber()
+    {
+        $this->createBreadForFormfield('integer', 'number', json_encode([
+            'default' => 1
+        ]));
+
+        $this->visitRoute('voyager.categories.create')
+             ->see('1')
+             ->type('2', 'number')
+             ->press(__('voyager::generic.save'))
+             ->seeRouteIs('voyager.categories.index')
+             ->see('2')
+             ->click(__('voyager::generic.edit'))
+             ->seeRouteIs('voyager.categories.edit', ['id' => 1])
+             ->type('3', 'number')
+             ->press(__('voyager::generic.save'))
+             ->seeRouteIs('voyager.categories.index')
+             ->see('3');
+    }
+
+    public function testFormfieldCheckbox()
+    {
+        $this->createBreadForFormfield('boolean', 'checkbox', json_encode([
+            'on' => 'Active',
+            'off' => 'Inactive',
+        ]));
+
+        $this->visitRoute('voyager.categories.create')
+             ->see('Inactive')
+             ->check('checkbox')
+             ->press(__('voyager::generic.save'))
+             ->seeRouteIs('voyager.categories.index')
+             ->see('Active')
+             ->click(__('voyager::generic.edit'))
+             ->seeRouteIs('voyager.categories.edit', ['id' => 1])
+             ->uncheck('checkbox')
+             ->press(__('voyager::generic.save'))
+             ->seeRouteIs('voyager.categories.index')
+             ->see('Inactive');
     }
 
     private function createBreadForFormfield($type, $name, $options = '')
