@@ -14,12 +14,11 @@ class SettingsTest extends TestCase
         parent::setUp();
 
         $this->user = Auth::loginUsingId(1);
+        session()->setPreviousUrl(route('voyager.settings.index'));
     }
 
     public function testCanUpdateSettings()
     {
-        session()->setPreviousUrl(route('voyager.settings.index'));
-
         $key = 'site.title';
         $newTitle = 'Just Another LaravelVoyager.com Site';
 
@@ -34,5 +33,63 @@ class SettingsTest extends TestCase
             Setting::where('key', '=', $key)->first()->value,
             $newTitle
         );
+    }
+
+    public function testCanCreateSetting()
+    {
+        $this->visitRoute('voyager.settings.index')
+             ->type('New Setting', 'display_name')
+             ->type('new_setting', 'key')
+             ->select('text', 'type')
+             ->select('Site', 'group')
+             ->press(__('voyager::settings.add_new'))
+             ->seePageIs(route('voyager.settings.index'));
+
+         $this->assertTrue(null !==
+             Setting::where('display_name', 'New Setting')
+                    ->where('key', 'site.new_setting')
+                    ->where('type', 'text')
+                    ->where('group', 'Site')
+                    ->first()
+        );
+
+    }
+
+    public function testCanDeleteSetting()
+    {
+        $setting = Setting::firstOrFail();
+
+        $this->call('DELETE', route('voyager.settings.delete', $setting->id));
+
+        $this->assertTrue(null === Setting::find($setting->id));
+    }
+
+
+    public function testCanDeleteSettingsValue()
+    {
+        $setting = Setting::firstOrFail();
+        $this->assertFalse(Setting::find($setting->id)->value == null);
+
+        $this->call('PUT', route('voyager.settings.delete_value', $setting->id));
+
+        $this->assertTrue(Setting::find($setting->id)->value == null);
+    }
+
+    public function testCanMoveSettingUp()
+    {
+        $setting = Setting::where('order', '!=', 1)->first();
+
+        $this->call('GET', route('voyager.settings.move_up', $setting->id));
+
+        $this->assertFalse(Setting::find($setting->id)->order == $setting->order);
+    }
+
+    public function testCanMoveSettingDown()
+    {
+        $setting = Setting::where('order', '!=', 1)->first();
+
+        $this->call('GET', route('voyager.settings.move_down', $setting->id));
+
+        $this->assertFalse(Setting::find($setting->id)->order == $setting->order);
     }
 }
