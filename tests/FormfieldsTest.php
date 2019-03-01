@@ -264,6 +264,52 @@ class FormfieldsTest extends TestCase
         ->see('#00FF00');
     }
 
+    public function testFormfieldRadiobtn()
+    {
+        $this->createBreadForFormfield('text', 'radio_btn', json_encode([
+            'default' => 'radio1',
+            'options' => [
+                'radio1' => 'Foo',
+                'radio2' => 'Bar'
+            ]
+        ]));
+
+        $this->visitRoute('voyager.categories.create')
+        ->select('radio1', 'radio_btn')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->see('Foo')
+        ->click(__('voyager::generic.edit'))
+        ->seeRouteIs('voyager.categories.edit', ['id' => 1])
+        ->select('radio2', 'radio_btn')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->see('Bar');
+    }
+
+    public function testFormfieldSelectDropdown()
+    {
+        $this->createBreadForFormfield('text', 'select_dropdown', json_encode([
+            'default' => 'radio1',
+            'options' => [
+                'option1' => 'Foo',
+                'option2' => 'Bar'
+            ]
+        ]));
+
+        $this->visitRoute('voyager.categories.create')
+        ->select('option1', 'select_dropdown')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->see('Foo')
+        ->click(__('voyager::generic.edit'))
+        ->seeRouteIs('voyager.categories.edit', ['id' => 1])
+        ->select('option2', 'select_dropdown')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->see('Bar');
+    }
+
     private function createBreadForFormfield($type, $name, $options = '')
     {
         Schema::dropIfExists('categories');
