@@ -134,7 +134,7 @@
                                 '_field_name'  => 'excerpt',
                                 '_field_trans' => get_field_translations($dataTypeContent, 'excerpt')
                             ])
-                            <textarea class="form-control" name="excerpt">{{ $dataTypeContent->excerpt ? '' }}</textarea>
+                            <textarea class="form-control" name="excerpt">{{ $dataTypeContent->excerpt ?? '' }}</textarea>
                         </div>
                     </div>
 
