@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'true',
     'action'                 => 'فعالیت',
     'actions'                => 'فعالیت ها',
     'add'                    => 'افزودن',
@@ -58,6 +59,7 @@ return [
     'no_thanks'              => 'خیر متشکرم',
     'none'                   => 'هیچ',
     'not_null'               => 'Not Null',
+    'no_results'             => 'No results',
     'options'                => 'گزینه‌ها',
     'password'               => 'پسورد',
     'permissions'            => 'مجوزها',

@@ -5,19 +5,15 @@ namespace TCG\Voyager\Models;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use TCG\Voyager\Contracts\User as UserContract;
-use TCG\Voyager\Traits\HasRelationships;
 use TCG\Voyager\Traits\VoyagerUser;
 
 class User extends Authenticatable implements UserContract
 {
-    use VoyagerUser,
-        HasRelationships;
+    use VoyagerUser;
 
     protected $guarded = [];
 
-    protected $casts = [
-        'settings' => 'array',
-    ];
+    public $additional_attributes = ['locale'];
 
     public function getAvatarAttribute($value)
     {
@@ -33,13 +29,23 @@ class User extends Authenticatable implements UserContract
         $this->attributes['created_at'] = Carbon::parse($value)->format('Y-m-d H:i:s');
     }
 
+    public function setSettingsAttribute($value)
+    {
+        $this->attributes['settings'] = $value->toJson();
+    }
+
+    public function getSettingsAttribute($value)
+    {
+        return collect(json_decode($value));
+    }
+
     public function setLocaleAttribute($value)
     {
-        $this->attributes['settings'] = collect($this->settings)->merge(['locale' => $value]);
+        $this->settings = $this->settings->merge(['locale' => $value]);
     }
 
     public function getLocaleAttribute()
     {
-        return $this->settings['locale'];
+        return $this->settings->get('locale');
     }
 }

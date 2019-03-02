@@ -1,74 +1,47 @@
+@section('admin-menu')
 <ul class="nav navbar-nav">
-
-@php
-    if (Voyager::translatable($items)) {
-        $items = $items->load('translations');
-    }
-@endphp
-
-@foreach ($items as $item)
-    @php
-        $listItemClass = [];
-        $styles = null;
-        $linkAttributes = null;
-        $transItem = $item;
-
-        if (Voyager::translatable($item)) {
-            $transItem = $item->translate($options->locale);
-        }
-
-        $href = $item->link();
-
-        // Current page
-        if(url($href) == url()->current()) {
-            array_push($listItemClass, 'active');
-        }
-
-        $permission = '';
-        $hasChildren = false;
-
-        // With Children Attributes
-        if(!$item->children->isEmpty())
-        {
-            foreach($item->children as $child)
-            {
-                $hasChildren = $hasChildren || Auth::user()->can('browse', $child);
-
-                if(url($child->link()) == url()->current())
-                {
-                    array_push($listItemClass, 'active');
-                }
-            }
-            if (!$hasChildren) {
-                continue;
-            }
-
-            $linkAttributes = 'href="#' . $transItem->id .'-dropdown-element" data-toggle="collapse" aria-expanded="'. (in_array('active', $listItemClass) ? 'true' : 'false').'"';
-            array_push($listItemClass, 'dropdown');
-        }
-        else
-        {
-            $linkAttributes =  'href="' . url($href) .'"';
-
-            if(!Auth::user()->can('browse', $item)) {
-                continue;
-            }
-        }
-    @endphp
-
-    <li class="{{ implode(" ", $listItemClass) }}">
-        <a {!! $linkAttributes !!} target="{{ $item->target }}" style="color:{{ (isset($item->color) && $item->color != '#000000' ? $item->color : '') }}">
-            <span class="icon {{ $item->icon_class }}"></span>
-            <span class="title">{{ $transItem->title }}</span>
+    <li v-for="(item, i) in items" :class="classes(item)">
+        <a :target="item.target" :href="item.children.length > 0 ? '#'+item.id+'-dropdown-element' : item.href" :style="'color:'+color(item)" v-bind:data-toggle="item.children.length > 0 ? 'collapse' : false" :aria-expanded="item.children.length > 0 ? String(item.active) : false">
+            <span :class="'icon '+item.icon_class"></span>
+            <span class="title">@{{ item.title }}</span>
         </a>
-        @if($hasChildren)
-            <div id="{{ $transItem->id }}-dropdown-element" class="panel-collapse collapse {{ (in_array('active', $listItemClass) ? 'in' : '') }}">
-                <div class="panel-body">
-                    @include('voyager::menu.admin_menu', ['items' => $item->children, 'options' => $options, 'innerLoop' => true])
-                </div>
+        <div v-if="item.children.length > 0" :id="item.id+'-dropdown-element'" :class="'panel-collapse collapse' + (item.active ? ' in' : ' ')">
+            <div class="panel-body">
+                <admin-menu :items="item.children"></admin-menu>
             </div>
-        @endif
+        </div>
     </li>
-@endforeach
-
 </ul>
+@endsection
+<script>
+Vue.component('admin-menu', {
+    template: `@yield('admin-menu')`,
+    props: {
+        items: {
+            type: Array,
+            default: [],
+        }
+    },
+    methods: {
+        classes: function(item) {
+            var classes = [];
+            if (item.children.length > 0) {
+                classes.push('dropdown');
+            }
+            if (item.active) {
+                classes.push('active');
+            }
+
+
+            return classes.join(' ');
+        },
+        color: function(item) {
+            if (item.color && item.color != '#000000') {
+                return item.color;
+            }
+
+            return '';
+        }
+    }
+});
+</script>

@@ -36,6 +36,7 @@ return [
     'policy_name'            => 'Nome Policy',
     'policy_name_ph'         => 'es. \App\Policies\UserPolicy, se lasciato vuoto proverà ad usare quella di default',
     'server_pagination'      => 'Paginazione lato Server',
+    'updated_order'          => 'Order updated successfully',
     'url_slug'               => 'URL Slug (deve essere unico)',
     'url_slug_ph'            => 'URL slug (ex. articoli)',
 ];

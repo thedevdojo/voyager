@@ -17,6 +17,18 @@ if (!function_exists('menu')) {
 if (!function_exists('voyager_asset')) {
     function voyager_asset($path, $secure = null)
     {
-        return asset(config('voyager.assets_path').'/'.$path, $secure);
+        return route('voyager.assets', $path);
+    }
+}
+
+if (!function_exists('get_file_name')) {
+    function get_file_name($name)
+    {
+        preg_match('/(_)([0-9])+$/', $name, $matches);
+        if (count($matches) == 3) {
+            return Illuminate\Support\Str::replaceLast($matches[0], '', $name).'_'.(intval($matches[2]) + 1);
+        } else {
+            return $name.'_1';
+        }
     }
 }

@@ -115,4 +115,12 @@ class MenuItem extends Model
 
         return $order;
     }
+
+    public function save(array $options = [])
+    {
+        //Remove from cache
+        \Cache::forget('voyager_menu_'.$this->menu->name);
+
+        parent::save();
+    }
 }

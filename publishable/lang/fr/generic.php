@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'Action',
     'actions'                => 'Actions',
     'add'                    => 'Ajouter',
@@ -9,6 +10,7 @@ return [
     'all_done'               => 'Terminé',
     'are_you_sure'           => 'Etes-vous sûr',
     'are_you_sure_delete'    => 'Etes-vous sûr que vous voulez supprimer',
+    'ascending'              => 'Ascendant',
     'auto_increment'         => 'Incrémentation automatique',
     'browse'                 => 'Naviguer',
     'builder'                => 'Constructeur',
@@ -29,6 +31,7 @@ return [
     'delete_confirm'         => 'Oui, supprimer !',
     'delete_question'        => 'Êtes-vous sûr de vouloir supprimer',
     'delete_this_confirm'    => 'Oui, le supprimer',
+    'descending'             => 'Descendant',
     'deselect_all'           => 'Tout désélectionner',
     'download'               => 'Télécharger',
     'edit'                   => 'Editer',
@@ -54,6 +57,7 @@ return [
     'no'                     => 'Non',
     'no_thanks'              => 'Non merci',
     'not_null'               => 'Pas nul',
+    'no_results'             => 'No results',
     'options'                => 'Options',
     'password'               => 'Mot de passe',
     'permissions'            => 'Permissions',

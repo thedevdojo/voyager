@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
@@ -30,10 +31,10 @@ class DataType extends Model
         'server_side',
         'order_column',
         'order_display_column',
-    ];
-
-    protected $casts = [
-        'details' => 'array',
+        'order_direction',
+        'default_search_key',
+        'scope',
+        'details',
     ];
 
     public function rows()
@@ -96,7 +97,7 @@ class DataType extends Model
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields((strlen($this->model_name) != 0)
                     ? app($this->model_name)->getTable()
-                    : array_get($requestData, 'name')
+                    : Arr::get($requestData, 'name')
                 );
 
                 $requestData = $this->getRelationships($requestData, $fields);
@@ -111,7 +112,7 @@ class DataType extends Model
                     $dataRow->required = boolval($requestData['field_required_'.$field]);
                     $dataRow->field = $requestData['field_'.$field];
                     $dataRow->type = $requestData['field_input_type_'.$field];
-                    $dataRow->details = $requestData['field_details_'.$field];
+                    $dataRow->details = json_decode($requestData['field_details_'.$field]);
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
@@ -235,9 +236,19 @@ class DataType extends Model
         }
     }
 
+    public function setDetailsAttribute($value)
+    {
+        $this->attributes['details'] = json_encode($value);
+    }
+
+    public function getDetailsAttribute($value)
+    {
+        return json_decode(!empty($value) ? $value : '{}');
+    }
+
     public function getOrderColumnAttribute()
     {
-        return $this->details['order_column'];
+        return isset($this->details->order_column) ? $this->details->order_column : null;
     }
 
     public function setOrderColumnAttribute($value)
@@ -247,11 +258,41 @@ class DataType extends Model
 
     public function getOrderDisplayColumnAttribute()
     {
-        return $this->details['order_display_column'];
+        return isset($this->details->order_display_column) ? $this->details->order_display_column : null;
     }
 
     public function setOrderDisplayColumnAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['order_display_column' => $value]);
+    }
+
+    public function getDefaultSearchKeyAttribute()
+    {
+        return isset($this->details->default_search_key) ? $this->details->default_search_key : null;
+    }
+
+    public function setDefaultSearchKeyAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['default_search_key' => $value]);
+    }
+
+    public function getOrderDirectionAttribute()
+    {
+        return isset($this->details->order_direction) ? $this->details->order_direction : 'desc';
+    }
+
+    public function setOrderDirectionAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['order_direction' => $value]);
+    }
+
+    public function getScopeAttribute()
+    {
+        return isset($this->details->scope) ? $this->details->scope : null;
+    }
+
+    public function setScopeAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['scope' => $value]);
     }
 }

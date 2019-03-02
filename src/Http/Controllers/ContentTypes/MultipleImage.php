@@ -17,7 +17,15 @@ class MultipleImage extends BaseType
         $filesPath = [];
         $files = $this->request->file($this->row->field);
 
+        if (!$files) {
+            return;
+        }
+
         foreach ($files as $file) {
+            if (!$file->isValid()) {
+                continue;
+            }
+
             $image = InterventionImage::make($file);
 
             $resize_width = null;
@@ -64,11 +72,11 @@ class MultipleImage extends BaseType
                         $thumb_resize_width = $resize_width;
                         $thumb_resize_height = $resize_height;
 
-                        if ($thumb_resize_width != null) {
+                        if ($thumb_resize_width != null && $thumb_resize_width != 'null') {
                             $thumb_resize_width = $thumb_resize_width * $scale;
                         }
 
-                        if ($thumb_resize_height != null) {
+                        if ($thumb_resize_height != null && $thumb_resize_height != 'null') {
                             $thumb_resize_height = $thumb_resize_height * $scale;
                         }
 

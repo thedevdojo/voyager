@@ -4,7 +4,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="voyager-bread"></i> BREAD
+        <i class="voyager-bread"></i> {{ __('voyager::generic.bread') }}
     </h1>
 @stop
 
@@ -41,7 +41,7 @@
                             @if($table->dataTypeId)
                                 <a href="{{ route('voyager.' . $table->slug . '.index') }}"
                                    class="btn btn-warning btn-sm browse_bread" style="margin-right: 0;">
-                                    <i class="voyager-plus"></i> Browse
+                                    <i class="voyager-plus"></i> {{ __('voyager::generic.browse') }}
                                 </a>
                                 <a href="{{ route('voyager.bread.edit', $table->name) }}"
                                    class="btn btn-primary btn-sm edit">
