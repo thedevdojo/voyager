@@ -26,7 +26,7 @@
                     </div>
                     <div class="details">
                         <div class="folder">
-                            <h4>@{{ file }}</h4>
+                            <h4>@{{ getFileName(file) }}</h4>
                         </div>
                     </div>
                     <i class="voyager-x dd-nodrag" v-on:click="removeFileFromInput(file)"></i>
@@ -710,6 +710,10 @@
 				var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 				return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 			},
+            getFileName: function(name) {
+                var name = name.split('/');
+                return name[name.length -1];
+            },
             imgIcon: function(path) {
                 path = path.replace(/\\/g,"/");
 				return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:100%; height:100%;';
