@@ -295,7 +295,7 @@
                     <h4>{{ __('voyager::media.destination_folder') }}</h4>
                     <select class="form-control">
                         <option v-if="current_folder != basePath && showFolders" value="/../">../</option>
-                        <option v-for="file in files" v-if="file.type == 'folder' && !selected_files.includes(file)" :value="file.name">@{{ file.name }}</option>
+                        <option v-for="file in files" v-if="file.type == 'folder' && !selected_files.includes(file)" :value="current_folder+'/'+file.name">@{{ file.name }}</option>
                     </select>
                 </div>
 
@@ -577,7 +577,7 @@
                 }
             },
             removeFileFromInput: function(path) {
-                if (this.maxSelectedFiles > 1) {
+                if (this.maxSelectedFiles > 1 || this.maxSelectedFiles == 0) {
                     var content = JSON.parse(this.hidden_element.value);
                     if (content.indexOf(path) !== -1) {
                         content.splice(content.indexOf(path), 1);
