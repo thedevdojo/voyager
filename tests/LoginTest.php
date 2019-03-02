@@ -44,4 +44,18 @@ class LoginTest extends TestCase
              ->press(__('voyager::generic.logout'))
              ->seePageIs(route('voyager.login'));
     }
+
+    public function testGetsLockedOutAfterFiveAttempts()
+    {
+        session()->setPreviousUrl(route('voyager.login'));
+
+        for ($i = 0; $i <= 5; $i++) {
+            $t = $this->visit(route('voyager.login'))
+                 ->type('john@Doe.com', 'email')
+                 ->type('pass', 'password')
+                 ->press(__('voyager::generic.login'));
+        }
+
+        $t->see(__('auth.throttle', ['seconds' => 60]));
+    }
 }
