@@ -89,6 +89,9 @@ The Radio button is exactly the same as the dropdown. You can specify a `default
         "width": "1000",
         "height": null
     },
+    "fit": {
+        "width": "1000"
+    },
     "quality" : "70%",
     "upsize" : true,
     "thumbnails": [
@@ -114,6 +117,8 @@ The Radio button is exactly the same as the dropdown. You can specify a `default
 The image input has many options. By default if you do not specify any options no problem... Your image will still be uploaded. But, if you want to resize an image, set the quality of the image, or specify thumbnails for the uploaded image you will need to specify those details.
 
 **resize** If you want to specify a size you will need to include that in the `resize` object. If you set either **height** or **width** to null it will keep the aspect ratio based on the width or height that is set. So, for the example above the `width` is set to `1000` pixels and since the `height` is set to `null` it will resize the image width to 1000 pixels and resize the height based on the current aspect ratio.
+
+**fit** Combines cropping and resizing. You have to provide `width` but don't have to provide `height`.
 
 **quality** If you wish to compress the image with a percentage quality you can specify that percentage in the `quality` key. Typically between 70 and 100% there is little notice of image quality, but the image size may be dramatically lower.
 
