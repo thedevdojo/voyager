@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
@@ -32,6 +33,7 @@ class DataType extends Model
         'order_display_column',
         'order_direction',
         'default_search_key',
+        'scope',
         'details',
     ];
 
@@ -95,7 +97,7 @@ class DataType extends Model
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields((strlen($this->model_name) != 0)
                     ? app($this->model_name)->getTable()
-                    : array_get($requestData, 'name')
+                    : Arr::get($requestData, 'name')
                 );
 
                 $requestData = $this->getRelationships($requestData, $fields);
@@ -282,5 +284,15 @@ class DataType extends Model
     public function setOrderDirectionAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['order_direction' => $value]);
+    }
+
+    public function getScopeAttribute()
+    {
+        return isset($this->details->scope) ? $this->details->scope : null;
+    }
+
+    public function setScopeAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['scope' => $value]);
     }
 }

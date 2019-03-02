@@ -7,7 +7,7 @@
             @section('breadcrumbs')
             <ol class="breadcrumb hidden-xs">
                 @php
-                $segments = array_filter(explode('/', str_replace(route('voyager.dashboard'), '', Request::fullUrl())));
+                $segments = array_filter(explode('/', str_replace(route('voyager.dashboard'), '', Request::url())));
                 $url = route('voyager.dashboard');
                 @endphp
                 @if(count($segments) == 0)
@@ -41,8 +41,8 @@
                     <li class="profile-img">
                         <img src="{{ $user_avatar }}" class="profile-img">
                         <div class="profile-body">
-                            <h5>{{ Auth::user()->name }}</h5>
-                            <h6>{{ Auth::user()->email }}</h6>
+                            <h5>{{ app('VoyagerAuth')->user()->name }}</h5>
+                            <h6>{{ app('VoyagerAuth')->user()->email }}</h6>
                         </div>
                     </li>
                     <li class="divider"></li>

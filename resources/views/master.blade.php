@@ -58,10 +58,10 @@
 </div>
 
 <?php
-if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->avatar, 'https://')) {
-    $user_avatar = Auth::user()->avatar;
+if (starts_with(app('VoyagerAuth')->user()->avatar, 'http://') || starts_with(app('VoyagerAuth')->user()->avatar, 'https://')) {
+    $user_avatar = app('VoyagerAuth')->user()->avatar;
 } else {
-    $user_avatar = Voyager::image(Auth::user()->avatar);
+    $user_avatar = Voyager::image(app('VoyagerAuth')->user()->avatar);
 }
 ?>
 
@@ -113,7 +113,6 @@ if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->av
 
 <script type="text/javascript" src="{{ voyager_asset('js/app.js') }}"></script>
 
-
 <script>
     @if(Session::has('alerts'))
         let alerts = {!! json_encode(Session::get('alerts')) !!};
@@ -134,6 +133,7 @@ if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->av
     }
     @endif
 </script>
+@include('voyager::media.manager')
 @include('voyager::menu.admin_menu')
 <script>
 new Vue({
@@ -141,7 +141,7 @@ new Vue({
 });
 </script>
 @yield('javascript')
-
+@stack('javascript')
 @if(!empty(config('voyager.additional_js')))<!-- Additional Javascript -->
     @foreach(config('voyager.additional_js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
 @endif

@@ -24,13 +24,13 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 <hr>
 
-Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.4, 5.5, 5.6 and 5.7!
+Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.4, 5.5, 5.6, 5.7 and 5.8!
 
 ## Installation Steps
 
 ### 1. Require the Package
 
-After creating your new Laravel application you can include the Voyager package with the following command: 
+After creating your new Laravel application you can include the Voyager package with the following command:
 
 ```bash
 composer require tcg/voyager

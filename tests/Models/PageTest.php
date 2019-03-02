@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Tests;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Models\Page;
 
@@ -51,9 +52,9 @@ class PageTest extends TestCase
             'meta_keywords'    => 'Test Meta Keywords',
         ];
 
-        $inactive = (new Page($data + ['slug' => str_random(8), 'status' => Page::STATUS_INACTIVE]));
+        $inactive = (new Page($data + ['slug' => Str::random(8), 'status' => Page::STATUS_INACTIVE]));
         $inactive->save();
-        $active = (new Page($data + ['slug' => str_random(8), 'status' => Page::STATUS_ACTIVE]));
+        $active = (new Page($data + ['slug' => Str::random(8), 'status' => Page::STATUS_ACTIVE]));
         $active->save();
 
         // Act

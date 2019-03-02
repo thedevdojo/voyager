@@ -68,17 +68,6 @@ php artisan voyager:admin your@email.com --create
 
 And you will be prompted for the users name and password.
 
-## Advanced
-
-This section is meant for users who are installing Voyager on an already existing Laravel installation or for users who want to perform a manual install. If this is not the case, you should go back to the [installation](installation.md) documentation or skip this section.
-
-The first thing you should do is publish the assets that come with Voyager. You can do that by running the following commands:
-
-```bash
-php artisan vendor:publish --provider=VoyagerServiceProvider
-php artisan vendor:publish --provider=ImageServiceProviderLaravel5
-```
-
 ## Adding the Service Provider
 
 {% hint style="info" %}
@@ -104,3 +93,48 @@ To add the Voyager Service Provider open up your application `config/app.php` fi
 ],
 ```
 
+## Advanced
+
+This section is meant for users who are installing Voyager on an already existing Laravel installation or for users who want to perform a manual install. If this is not the case, you should go back to the [installation](installation.md) documentation or skip this section.
+
+The first thing you should do is publish the assets that come with Voyager. You can do that by running the following commands:
+
+```bash
+php artisan vendor:publish --provider=VoyagerServiceProvider
+php artisan vendor:publish --provider=ImageServiceProviderLaravel5
+```
+
+Next, call `php artisan migrate` to migrate all Voyager table.
+{% hint style="info" %}
+If you want to change migrations, for example to use a different table for users, don't migrate.
+Instead copy Voyagers migrations to `database/migrations`, make your changes, turn off the config option `database.autoload_migrations` and then migrate.
+{% endhint %}
+
+Now, open your User-Model (usually `app/User.php`) and make the class extend `\TCG\Voyager\Models\User` instead of `Authenticatable`.
+```php
+<?php
+
+class User extends \TCG\Voyager\Models\User
+{
+    // ...
+}
+```
+
+The next step is to add Voyagers routes to your `routes/web.php` file:
+```php
+<?php
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
+```
+
+Now run  
+`php artisan db:seed --class=VoyagerDatabaseSeeder`  
+to seed some necessary data to your database,  
+`php artisan hook:setup`  
+to install the hooks system, and  
+`php artisan storage:link`  
+to create the storage symlink to your public folder.
+
+After that, run `composer dump-autoload` to finish your installation!

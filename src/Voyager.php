@@ -6,6 +6,7 @@ use Arrilot\Widgets\Facade as Widget;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Actions\DeleteAction;
@@ -39,11 +40,6 @@ class Voyager
 
     protected $formFields = [];
     protected $afterFormFields = [];
-
-    protected $permissionsLoaded = false;
-    protected $permissions = [];
-
-    protected $users = [];
 
     protected $viewLoadingEvents = [];
 
@@ -107,7 +103,7 @@ class Voyager
 
     public function view($name, array $parameters = [])
     {
-        foreach (array_get($this->viewLoadingEvents, $name, []) as $event) {
+        foreach (Arr::get($this->viewLoadingEvents, $name, []) as $event) {
             $event($name, $parameters);
         }
 
@@ -324,33 +320,6 @@ class Voyager
         $traits = class_uses_recursive(get_class($model));
 
         return in_array(Translatable::class, $traits);
-    }
-
-    /** @deprecated */
-    protected function loadPermissions()
-    {
-        if (!$this->permissionsLoaded) {
-            $this->permissionsLoaded = true;
-
-            $this->permissions = self::model('Permission')->all();
-        }
-    }
-
-    protected function getUser($id = null)
-    {
-        if (is_null($id)) {
-            $id = auth()->check() ? auth()->user()->id : null;
-        }
-
-        if (is_null($id)) {
-            return;
-        }
-
-        if (!isset($this->users[$id])) {
-            $this->users[$id] = self::model('User')->find($id);
-        }
-
-        return $this->users[$id];
     }
 
     public function getLocales()
