@@ -698,7 +698,7 @@
 					if (data.success) {
 						toastr.success(data.message);
 						vm.getFiles();
-						$('#crop_modal').modal('hide');
+						$('#crop_modal_'+vm._uid).modal('hide');
 					} else {
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
