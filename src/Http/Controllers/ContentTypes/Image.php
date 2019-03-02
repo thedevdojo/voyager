@@ -24,17 +24,17 @@ class Image extends BaseType
 
             $resize_width = null;
             $resize_height = null;
-            $resize_quality = isset($this->options->quality) ? intval($this->options->quality) : 75;
-            
+            $resize_quality = intval($this->options->quality ?? 75);
+
             if (isset($this->options->fit) && isset($this->options->fit->width)) {
                 $resize_width = $this->options->fit->width;
-                
+
                 if (isset($this->options->fit->height)) {
                     $resize_height = $this->options->fit->height;
                 } else {
                     $resize_height = $this->options->fit->width;
                 }
-                
+
                 $image = $image->fit(
                     $resize_width,
                     $resize_height,
@@ -44,7 +44,7 @@ class Image extends BaseType
                         }
                     }
                 )->encode($file->getClientOriginalExtension(), $resize_quality);
-                
+
             } else {
                 if (isset($this->options->resize) && (
                     isset($this->options->resize->width) || isset($this->options->resize->height)
@@ -59,7 +59,7 @@ class Image extends BaseType
                     $resize_width = $image->width();
                     $resize_height = $image->height();
                 }
-                
+
                 $image = $image->resize(
                     $resize_width,
                     $resize_height,
