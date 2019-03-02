@@ -141,12 +141,14 @@ abstract class Controller extends BaseController
                 $data->{$row->field} = str_replace($uuid, $data->getKey(), $data->{$row->field});
             });
             $data->save();
-            try {
-                $request->session()->forget([$slug.'_path', $slug.'_uuid']);
+            if ($old_path != $new_path) {
+                try {
+                    $request->session()->forget([$slug.'_path', $slug.'_uuid']);
 
-                Storage::disk(config('voyager.storage.disk'))->move($old_path, $new_path);
-                Storage::disk(config('voyager.storage.disk'))->deleteDirectory($folder_path);
-            } catch (Exception $e) { }
+                    Storage::disk(config('voyager.storage.disk'))->move($old_path, $new_path);
+                    Storage::disk(config('voyager.storage.disk'))->deleteDirectory($folder_path);
+                } catch (Exception $e) { }
+            }
         }
 
         return $data;
