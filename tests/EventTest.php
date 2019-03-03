@@ -128,13 +128,12 @@ class EventTest extends TestCase
         Event::fake();
         Auth::loginUsingId(1);
 
-        $this->visitRoute('voyager.pages.create')
-             ->type('Toast', 'title')
-             ->type('toast', 'slug')
-             ->type('Body', 'body')
-             ->type('Body', 'meta_description')
-             ->select('ACTIVE', 'status')
-             ->press(__('voyager::generic.save'));
+        $this->post(route('voyager.pages.store'), [
+            'author_id' => 1,
+            'title'     => 'Toast',
+            'slug'      => 'toasts',
+            'status'    => 'ACTIVE',
+       ]);
 
         Event::assertNotDispatched(BreadDataUpdated::class);
 
@@ -322,7 +321,7 @@ class EventTest extends TestCase
         Event::assertDispatched(TableDeleted::class);
     }
 
-    /*public function testMediaFileAddedEvent()
+    public function testMediaFileAddedEvent()
     {
         Event::fake();
         Auth::loginUsingId(1);
@@ -333,5 +332,5 @@ class EventTest extends TestCase
         $this->json('POST', route('voyager.media.upload'), ['file'=>$image]);
 
         Event::assertDispatched(MediaFileAdded::class);
-    }*/
+    }
 }
