@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Tests;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,7 +24,8 @@ class FormfieldsTest extends TestCase
     public function testFormfieldText()
     {
         $this->createBreadForFormfield('text', 'text', json_encode([
-            'default' => 'Default Text'
+            'default' => 'Default Text',
+            'null'    => "NULL"
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -37,7 +39,15 @@ class FormfieldsTest extends TestCase
         ->type('Edited Text', 'text')
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
-        ->see('Edited Text');
+        ->see('Edited Text')
+        ->click(__('voyager::generic.edit'))
+        ->seeRouteIs('voyager.categories.edit', ['id' => 1])
+        ->type('NULL', 'text')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->seeInDatabase('categories', [
+            'text' => null
+        ]);
     }
 
     public function testFormfieldTextbox()
@@ -244,7 +254,15 @@ class FormfieldsTest extends TestCase
         ->type('2018-12-31 23:59:59', 'timestamp')
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
-        ->see('2018-12-31 23:59:59');
+        ->see('2018-12-31 23:59:59')
+        ->click(__('voyager::generic.edit'))
+        ->seeRouteIs('voyager.categories.edit', ['id' => 1])
+        ->type('', 'timestamp')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->seeInDatabase('categories', [
+            'timestamp' => null,
+        ]);
     }
 
     public function testFormfieldColor()
@@ -310,12 +328,46 @@ class FormfieldsTest extends TestCase
         ->see('Bar');
     }
 
+    public function testFormfieldFile()
+    {
+        $this->createBreadForFormfield('text', 'file');
+        $file = UploadedFile::fake()->create('test.txt', 1);
+        $this->visitRoute('voyager.categories.create')
+        ->attach([$file->getPathName()], 'file[]')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->visitRoute('voyager.categories.create')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->seeInDatabase('categories', [
+            'file' => '[]'
+        ]);
+    }
+
+    public function testFormfieldFilePreserve()
+    {
+        $this->createBreadForFormfield('text', 'file', json_encode([
+            'preserveFileUploadName' => true
+        ]));
+        $file = UploadedFile::fake()->create('test.txt', 1);
+        $this->visitRoute('voyager.categories.create')
+        ->attach([$file->getPathName()], 'file[]')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->visitRoute('voyager.categories.create')
+        ->press(__('voyager::generic.save'))
+        ->seeRouteIs('voyager.categories.index')
+        ->seeInDatabase('categories', [
+            'file' => '[]'
+        ]);
+    }
+
     private function createBreadForFormfield($type, $name, $options = '')
     {
         Schema::dropIfExists('categories');
         Schema::create('categories', function ($table) use ($type, $name) {
             $table->bigIncrements('id');
-            $table->{$type}($name);
+            $table->{$type}($name)->nullable();
             $table->timestamps();
         });
 
