@@ -36,6 +36,12 @@ class LoginTest extends TestCase
              ->seePageIs(route('voyager.dashboard'));
     }
 
+    public function testRedirectIfNotLoggedIn()
+    {
+        $this->visit(route('voyager.profile'))
+             ->seePageIs(route('voyager.login'));
+    }
+
     public function testCanLogout()
     {
         Auth::loginUsingId(1);

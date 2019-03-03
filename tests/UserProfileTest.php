@@ -136,6 +136,7 @@ class UserProfileTest extends TestCase
 
         $user = User::find(1);
         $this->assertTrue(($user->locale == 'de'));
+        $this->visitRoute('voyager.dashboard');
     }
 
     protected function newImagePath()
