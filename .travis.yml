@@ -37,4 +37,4 @@ before_script:
   - npm run dev
 
 script:
-  - vendor/bin/phpunit --no-coverage
+  - vendor/bin/phpunit
