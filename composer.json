@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
+        "illuminate/support": "5.8.*",
         "intervention/image": "^2.4",
         "doctrine/dbal": "^2.5",
         "larapack/doctrine-support": "~0.1.4",
@@ -30,8 +30,7 @@
         "laravel/framework": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
         "orchestra/testbench": "~3.0",
         "laravel/browser-kit-testing": "~2.0.0|~3.0.0|~4.0.0|~5.0.0|~5.1",
-        "orchestra/testbench-browser-kit": "~3.5|~3.6|~3.7|~3.8",
-        "orchestra/testbench-dusk": "3.5.x-dev|3.6.x-dev|3.7.x-dev|3.8.x-dev"
+        "orchestra/testbench-browser-kit": "~3.5|~3.6|~3.7|~3.8"
     },
     "autoload": {
         "psr-4": {
