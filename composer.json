@@ -30,7 +30,8 @@
         "laravel/framework": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
         "orchestra/testbench": "~3.0",
         "laravel/browser-kit-testing": "~2.0.0|~3.0.0|~4.0.0|~5.0.0|~5.1",
-        "orchestra/testbench-browser-kit": "~3.5|~3.6|~3.7|~3.8"
+        "orchestra/testbench-browser-kit": "~3.5|~3.6|~3.7|~3.8",
+        "orchestra/testbench-dusk": "3.5.x-dev|3.6.x-dev|3.7.x-dev|3.8.x-dev"
     },
     "autoload": {
         "psr-4": {
