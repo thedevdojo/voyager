@@ -217,7 +217,6 @@ class VoyagerMediaController extends Controller
                         return Str::random($random[1]);
                     }, $name);
                 }
-                $name .= '.'.$extension;
             }
 
             $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);

@@ -26,7 +26,7 @@
                     </div>
                     <div class="details">
                         <div class="folder">
-                            <h4>@{{ file }}</h4>
+                            <h4>@{{ getFileName(file) }}</h4>
                         </div>
                     </div>
                     <i class="voyager-x dd-nodrag" v-on:click="removeFileFromInput(file)"></i>
@@ -295,7 +295,7 @@
                     <h4>{{ __('voyager::media.destination_folder') }}</h4>
                     <select class="form-control">
                         <option v-if="current_folder != basePath && showFolders" value="/../">../</option>
-                        <option v-for="file in files" v-if="file.type == 'folder' && !selected_files.includes(file)" :value="file.name">@{{ file.name }}</option>
+                        <option v-for="file in files" v-if="file.type == 'folder' && !selected_files.includes(file)" :value="current_folder+'/'+file.name">@{{ file.name }}</option>
                     </select>
                 </div>
 
@@ -554,7 +554,7 @@
             },
             addFileToInput: function(file) {
                 if (file.type != 'folder') {
-                    if (this.maxSelectedFiles == 1) {
+                    if (!this.allowMultiSelect) {
                         this.hidden_element.value = file.relative_path;
                     } else {
                         var content = JSON.parse(this.hidden_element.value);
@@ -577,7 +577,7 @@
                 }
             },
             removeFileFromInput: function(path) {
-                if (this.maxSelectedFiles > 1) {
+                if (this.allowMultiSelect) {
                     var content = JSON.parse(this.hidden_element.value);
                     if (content.indexOf(path) !== -1) {
                         content.splice(content.indexOf(path), 1);
@@ -589,7 +589,7 @@
                 }
             },
             getSelectedFiles: function() {
-                if (this.maxSelectedFiles == 1) {
+                if (!this.allowMultiSelect) {
                     var content = [];
                     if (this.hidden_element.value != '') {
                         content.push(this.hidden_element.value);
@@ -698,7 +698,7 @@
 					if (data.success) {
 						toastr.success(data.message);
 						vm.getFiles();
-						$('#crop_modal').modal('hide');
+						$('#crop_modal_'+vm._uid).modal('hide');
 					} else {
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
@@ -710,6 +710,10 @@
 				var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
 				return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 			},
+            getFileName: function(name) {
+                var name = name.split('/');
+                return name[name.length -1];
+            },
             imgIcon: function(path) {
                 path = path.replace(/\\/g,"/");
 				return 'background-size: cover; background-image: url("' + path + '"); background-repeat:no-repeat; background-position:center center;display:inline-block; width:100%; height:100%;';
