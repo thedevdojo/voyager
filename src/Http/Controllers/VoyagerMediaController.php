@@ -66,7 +66,7 @@ class VoyagerMediaController extends Controller
                 }
                 $files[] = [
                     'name'          => $item['basename'],
-                    'type'          => isset($item['mimetype']) ? $item['mimetype'] : 'file',
+                    'type'          => $item['mimetype'] ?? 'file',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
                     'relative_path' => $item['path'],
                     'size'          => $item['size'],

@@ -37,16 +37,16 @@ abstract class Index
         }
 
         // Set the name
-        $name = isset($index['name']) ? trim($index['name']) : '';
+        $name = trim($index['name'] ?? '');
         if (empty($name)) {
-            $table = isset($index['table']) ? $index['table'] : null;
+            $table = $index['table'] ?? null;
             $name = static::createName($columns, $type, $table);
         } else {
             $name = Identifier::validate($name, 'Index');
         }
 
-        $flags = isset($index['flags']) ? $index['flags'] : [];
-        $options = isset($index['options']) ? $index['options'] : [];
+        $flags = $index['flags'] ?? [];
+        $options = $index['options'] ?? [];
 
         return new DoctrineIndex($name, $columns, $isUnique, $isPrimary, $flags, $options);
     }
