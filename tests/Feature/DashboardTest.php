@@ -8,7 +8,7 @@ use TCG\Voyager\Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
