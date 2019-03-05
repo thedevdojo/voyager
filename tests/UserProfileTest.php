@@ -19,7 +19,7 @@ class UserProfileTest extends TestCase
 
     protected $listOfUsers;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -136,6 +136,11 @@ class UserProfileTest extends TestCase
 
         $user = User::find(1);
         $this->assertTrue(($user->locale == 'de'));
+
+        // Validate that app()->setLocale() is called
+        Auth::loginUsingId($user->id);
+        $this->visitRoute('voyager.dashboard');
+        $this->assertTrue(($user->locale == $this->app->getLocale()));
     }
 
     protected function newImagePath()
