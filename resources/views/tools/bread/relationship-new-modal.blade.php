@@ -27,7 +27,7 @@
 				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl){{ 'selected="selected"' }}@endif>{{ \Illuminate\Support\Str::singular(ucfirst($tbl)) }}</option>
 				                    @endforeach
 				                </select>
-				                <span><input type="text" class="form-control" name="relationship_model" placeholder="{{ __('voyager::database.relationship.namespace') }}" value="@if(isset($relationshipDetails->model)){{ $relationshipDetails->model }}@endif"></span>
+				                <span><input type="text" class="form-control" name="relationship_model" placeholder="{{ __('voyager::database.relationship.namespace') }}" value="{{ $relationshipDetails->model ?? ''}}"></span>
 				            </div>
 				            <div class="col-md-12 relationship_details relationshipField">
 				            	<div class="belongsTo">
@@ -89,6 +89,6 @@
 		    </div>
 		</div>
 	</div>
-	<input type="hidden" value="@if(isset($dataType->id)){{ $dataType->id }}@endif" name="data_type_id">
+	<input type="hidden" value="{{ $dataType->id ?? '' }}" name="data_type_id">
 	{{ csrf_field() }}
 </form>

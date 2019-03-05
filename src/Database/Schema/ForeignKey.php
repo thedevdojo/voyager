@@ -17,7 +17,7 @@ abstract class ForeignKey
         $localColumns = $foreignKey['localColumns'];
         $foreignTable = $foreignKey['foreignTable'];
         $foreignColumns = $foreignKey['foreignColumns'];
-        $options = isset($foreignKey['options']) ? $foreignKey['options'] : [];
+        $options = $foreignKey['options'] ?? [];
 
         // Set the name
         $name = isset($foreignKey['name']) ? trim($foreignKey['name']) : '';

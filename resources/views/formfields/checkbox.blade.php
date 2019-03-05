@@ -7,7 +7,7 @@
         filter_var($options->checked, FILTER_VALIDATE_BOOLEAN) ? true: false; ?>
 @endif
 
-<?php $class = isset($options->class) ? $options->class : "toggleswitch"; ?>
+<?php $class = $options->class ?? "toggleswitch"; ?>
 
 @if(isset($options->on) && isset($options->off))
     <input type="checkbox" name="{{ $row->field }}" class="{{ $class }}"

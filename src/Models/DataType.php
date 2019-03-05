@@ -187,7 +187,7 @@ class DataType extends Model
                         'label'       => $requestData['relationship_label_'.$relationship],
                         'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
                         'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
-                        'taggable'    => isset($requestData['relationship_taggable_'.$relationship]) ? $requestData['relationship_taggable_'.$relationship] : '0',
+                        'taggable'    => $requestData['relationship_taggable_'.$relationship] ?? '0',
                     ];
 
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
@@ -248,7 +248,7 @@ class DataType extends Model
 
     public function getOrderColumnAttribute()
     {
-        return isset($this->details->order_column) ? $this->details->order_column : null;
+        return $this->details->order_column ?? null;
     }
 
     public function setOrderColumnAttribute($value)
@@ -258,7 +258,7 @@ class DataType extends Model
 
     public function getOrderDisplayColumnAttribute()
     {
-        return isset($this->details->order_display_column) ? $this->details->order_display_column : null;
+        return $this->details->order_display_column ?? null;
     }
 
     public function setOrderDisplayColumnAttribute($value)
@@ -268,7 +268,7 @@ class DataType extends Model
 
     public function getDefaultSearchKeyAttribute()
     {
-        return isset($this->details->default_search_key) ? $this->details->default_search_key : null;
+        return $this->details->default_search_key ?? null;
     }
 
     public function setDefaultSearchKeyAttribute($value)
@@ -278,7 +278,7 @@ class DataType extends Model
 
     public function getOrderDirectionAttribute()
     {
-        return isset($this->details->order_direction) ? $this->details->order_direction : 'desc';
+        return $this->details->order_direction ?? 'desc';
     }
 
     public function setOrderDirectionAttribute($value)
@@ -288,7 +288,7 @@ class DataType extends Model
 
     public function getScopeAttribute()
     {
-        return isset($this->details->scope) ? $this->details->scope : null;
+        return $this->details->scope ?? null;
     }
 
     public function setScopeAttribute($value)
