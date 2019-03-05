@@ -114,9 +114,10 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post(route('voyager.pages.store'), [
-            'title'  => 'Toast',
-            'slug'   => 'toasts',
-            'status' => 'active',
+            'author_id' => 1,
+            'title'     => 'Toast',
+            'slug'      => 'toasts',
+            'status'    => 'ACTIVE',
         ]);
 
         Event::assertDispatched(BreadDataAdded::class);
@@ -128,10 +129,11 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post(route('voyager.pages.store'), [
-            'title'  => 'Toast',
-            'slug'   => 'toasts',
-            'status' => 'active',
-        ]);
+            'author_id' => 1,
+            'title'     => 'Toast',
+            'slug'      => 'toasts',
+            'status'    => 'ACTIVE',
+       ]);
 
         Event::assertNotDispatched(BreadDataUpdated::class);
 
@@ -140,7 +142,7 @@ class EventTest extends TestCase
         $this->put(route('voyager.pages.update', [$page->id]), [
             'title'  => 'Test',
             'slug'   => 'tests',
-            'status' => 'pending',
+            'status' => 'INACTIVE',
         ]);
 
         Event::assertDispatched(BreadDataUpdated::class);
@@ -152,9 +154,10 @@ class EventTest extends TestCase
         Auth::loginUsingId(1);
 
         $this->post(route('voyager.pages.store'), [
-            'title'  => 'Toast',
-            'slug'   => 'toasts',
-            'status' => 'active',
+            'author_id' => 1,
+            'title'     => 'Toast',
+            'slug'      => 'toasts',
+            'status'    => 'ACTIVE',
         ]);
 
         Event::assertNotDispatched(BreadDataDeleted::class);
@@ -175,9 +178,10 @@ class EventTest extends TestCase
         $image = UploadedFile::fake()->image('test.png');
 
         $this->call('POST', route('voyager.pages.store'), [
-            'title'  => 'Toast',
-            'slug'   => 'toasts',
-            'status' => 'active',
+            'author_id' => 1,
+            'title'     => 'Toast',
+            'slug'      => 'toasts',
+            'status'    => 'ACTIVE',
         ], [], [
             'image' => $image,
         ]);
@@ -200,9 +204,10 @@ class EventTest extends TestCase
         $image = UploadedFile::fake()->image('test.png');
 
         $this->call('POST', route('voyager.pages.store'), [
-            'title'  => 'Toast',
-            'slug'   => 'toasts',
-            'status' => 'active',
+            'author_id' => 1,
+            'title'     => 'Toast',
+            'slug'      => 'toasts',
+            'status'    => 'ACTIVE',
         ], [], [
             'image' => $image,
         ]);

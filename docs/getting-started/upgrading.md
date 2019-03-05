@@ -2,6 +2,10 @@
 
 ## Upgrading 1.1 to 1.2
 
+### Laravel and PHP versions
+Support for Laravel 5.4 was dropped in Voyager 1.2 and therefore the minimum PHP version is now 7.1.  
+Please update your versions accordingly!
+
 ### Update your Composer.json
 To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration inside of your composer.json to:
 
