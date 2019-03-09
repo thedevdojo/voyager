@@ -6030,7 +6030,7 @@ var modern = (function () {
       div.innerHTML = html;
       if (!div.hasChildNodes() || div.childNodes.length > 1) {
         console.error('HTML does not have a single root node', html);
-        throw 'HTML must have a single root node';
+        throw new Error('HTML must have a single root node');
       }
       return fromDom(div.childNodes[0]);
     };
@@ -6045,8 +6045,9 @@ var modern = (function () {
       return fromDom(node);
     };
     var fromDom = function (node) {
-      if (node === null || node === undefined)
+      if (node === null || node === undefined) {
         throw new Error('Node cannot be null or undefined');
+      }
       return { dom: constant(node) };
     };
     var fromPoint = function (docElm, x, y) {
@@ -6477,7 +6478,8 @@ var modern = (function () {
     };
 
     var regularContains = function (e1, e2) {
-      var d1 = e1.dom(), d2 = e2.dom();
+      var d1 = e1.dom();
+      var d2 = e2.dom();
       return d1 === d2 ? false : d1.contains(d2);
     };
     var ieContains = function (e1, e2) {

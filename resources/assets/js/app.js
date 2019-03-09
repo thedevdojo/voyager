@@ -122,7 +122,7 @@ $(document).ready(function () {
     });
 
     $('.panel-collapse').on('hide.bs.collapse', function(e) {
-        var target = $(event.target);
+        var target = $(e.target);
         if (!target.is('a')) {
             target = target.parent();
         }

@@ -245,7 +245,7 @@ var visualchars = (function () {
       div.innerHTML = html;
       if (!div.hasChildNodes() || div.childNodes.length > 1) {
         console.error('HTML does not have a single root node', html);
-        throw 'HTML must have a single root node';
+        throw new Error('HTML must have a single root node');
       }
       return fromDom(div.childNodes[0]);
     };
@@ -260,8 +260,9 @@ var visualchars = (function () {
       return fromDom(node);
     };
     var fromDom = function (node) {
-      if (node === null || node === undefined)
+      if (node === null || node === undefined) {
         throw new Error('Node cannot be null or undefined');
+      }
       return { dom: constant(node) };
     };
     var fromPoint = function (docElm, x, y) {
@@ -412,6 +413,20 @@ var visualchars = (function () {
     };
     var Keyboard = { setup: setup };
 
+    var isEnabledByDefault = function (editor) {
+      return editor.getParam('visualchars_default_state', false);
+    };
+    var Settings = { isEnabledByDefault: isEnabledByDefault };
+
+    var setup$1 = function (editor, toggleState) {
+      editor.on('init', function () {
+        var valueForToggling = !Settings.isEnabledByDefault(editor);
+        toggleState.set(valueForToggling);
+        Actions.toggleVisualChars(editor, toggleState);
+      });
+    };
+    var Bindings = { setup: setup$1 };
+
     var toggleActiveState = function (editor) {
       return function (e) {
         var ctrl = e.control;
@@ -442,6 +457,7 @@ var visualchars = (function () {
       Commands.register(editor, toggleState);
       register$1(editor);
       Keyboard.setup(editor, toggleState);
+      Bindings.setup(editor, toggleState);
       return Api.get(toggleState);
     });
     function Plugin () {
