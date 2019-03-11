@@ -81,6 +81,13 @@
                         </div>
                     </div>
 
+                    <div class="form-group form-group-default" id="rememberMeGroup">
+                        <label>{{ __('voyager::generic.remember_me') }}</label>
+                        <div class="controls">
+                            <input type="checkbox" name="remember" value="1">
+                        </div>
+                    </div>
+                    
                     <button type="submit" class="btn btn-block login-button">
                         <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager::login.loggingin') }}...</span>
                         <span class="signin">{{ __('voyager::generic.login') }}</span>
