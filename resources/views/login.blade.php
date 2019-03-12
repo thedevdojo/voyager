@@ -32,6 +32,9 @@
         .login-button, .bar:before, .bar:after{
             background:{{ config('voyager.primary_color','#22A7F0') }};
         }
+        .remember-me-text{
+            padding:0 5px;
+        }
     </style>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
@@ -81,10 +84,9 @@
                         </div>
                     </div>
 
-                    <div class="form-group form-group-default" id="rememberMeGroup">
-                        <label>{{ __('voyager::generic.remember_me') }}</label>
+                    <div class="form-group" id="rememberMeGroup">
                         <div class="controls">
-                            <input type="checkbox" name="remember" value="1">
+                        <input type="checkbox" name="remember" value="1"><span class="remember-me-text">{{ __('voyager::generic.remember_me') }}</span>
                         </div>
                     </div>
                     
