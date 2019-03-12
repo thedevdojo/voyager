@@ -444,7 +444,7 @@
 				});
             },
             selectFile: function(file, e) {
-                if ((!e.ctrlKey && !e.shiftKey) || !this.allowMultiSelect) {
+                if ((!e.ctrlKey && !e.metaKey && !e.shiftKey) || !this.allowMultiSelect) {
                     this.selected_files = [];
                 }
 
@@ -470,7 +470,10 @@
                     }
                 }
 
-                this.selected_files.push(file);
+                var index = this.selected_files.indexOf(file);
+                if (index === -1) {
+                    this.selected_files.push(file);
+                }
 
                 if (this.selected_files.length == 1) {
                     var vm = this;
