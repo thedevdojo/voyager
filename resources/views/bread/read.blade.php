@@ -79,7 +79,7 @@
                                     @endforeach
 
                                 @elseif(property_exists($row->details, 'options'))
-                                    @if (!empty(json_decode($data->{$row->field})))
+                                    @if (!empty(json_decode($dataTypeContent->{$row->field})))
                                         @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                                             @if (@$row->details->options->{$item})
                                                 {{ $row->details->options->{$item} . (!$loop->last ? ', ' : '') }}
