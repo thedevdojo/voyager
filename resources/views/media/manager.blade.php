@@ -398,7 +398,7 @@
             allowedTypes: {
                 type: Array,
                 default: function() {
-                    return []
+                    return [];
                 }
             },
             preSelect: {
@@ -693,7 +693,7 @@
 				croppedData.createMode = mode;
 
                 var vm = this;
-				var postData = Object.assign(croppedData, { _token: '{{ csrf_token() }}' })
+                var postData = Object.assign(croppedData, { _token: '{{ csrf_token() }}' });
 				$.post('{{ route('voyager.media.crop') }}', postData, function(data) {
 					if (data.success) {
 						toastr.success(data.message);
