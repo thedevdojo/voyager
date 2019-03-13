@@ -689,7 +689,7 @@
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
 
-                    this.modals.move_files.destination = '';
+                    vm.modals.move_files.destination = '';
 				});
             },
             crop: function(mode) {
