@@ -11,9 +11,9 @@
 
 ## BREAD
 
-* [Something](getting-started/configurations.md)
-    ### Formfields
-    * [Something else](getting-started/configurations.md)
+* [Introduction](bread/introduction.md)
+* [Formfields](bread/formfields.md)
+    * [Something](bread/formfields/something.md)
 
 ## Core concepts
 
@@ -21,7 +21,6 @@
 * [Media Manager](core-concepts/media-manager.md)
 * [Menus and Menu Builder](core-concepts/menus-and-menu-builder.md)
 * [Database Manager](core-concepts/database-manager.md)
-* [BREAD Builder](core-concepts/bread-builder.md)
 * [Settings](core-concepts/settings.md)
 * [Compass](core-concepts/compass.md)
 * [Roles and Permissions](core-concepts/roles-and-permissions.md)
