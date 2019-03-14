@@ -503,7 +503,7 @@
                     this.addFileToInput(file);
                 } else {
                     if (this.fileIs(this.selected_file, 'image')) {
-                        $('#imagemodal').modal('show');
+                        $('#imagemodal_' + this._uid).modal('show');
                     } else {
                         // ...
                     }
