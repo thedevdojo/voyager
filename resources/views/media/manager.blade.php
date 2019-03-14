@@ -294,7 +294,7 @@
                 <div class="modal-body">
                     <h4>{{ __('voyager::media.destination_folder') }}</h4>
                     <select class="form-control" v-model="modals.move_files.destination">
-                        <option value="" disabled>Select Destination</option>
+                        <option value="" disabled>{{ __('voyager::media.destination_folder') }}</option>
                         <option v-if="current_folder != basePath && showFolders" value="/../">../</option>
                         <option v-for="file in files" v-if="file.type == 'folder' && !selected_files.includes(file)" :value="current_folder+'/'+file.name">@{{ file.name }}</option>
                     </select>
