@@ -17,7 +17,7 @@ class NumberFormField extends AbstractHandler
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
-        return view('formfields.number', [
+        return view('voyager::formfields.number', [
             'row' => $row,
             'options' => $options,
             'dataType' => $dataType,
