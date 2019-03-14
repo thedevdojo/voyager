@@ -15,6 +15,7 @@
 * [Relationships](bread/relationships.md)
 * [Formfields](bread/formfields.md)
     * [Something](bread/formfields/something.md)
+    * [Media Picker](bread/formfields/media-picker.md)
 
 ## Core concepts
 
