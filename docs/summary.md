@@ -12,9 +12,8 @@
 ## BREAD
 
 * [Something](getting-started/configurations.md)
-
-### Formfields
-* [Something else](getting-started/configurations.md)
+    ### Formfields
+    * [Something else](getting-started/configurations.md)
 
 ## Core concepts
 
