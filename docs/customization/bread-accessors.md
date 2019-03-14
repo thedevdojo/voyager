@@ -1,7 +1,8 @@
 # BREAD accessors
 
-Sometimes you want to format an attribute only for one (or some) of the BREAD-actions.  
+Sometimes you want to format an attribute only for one \(or some\) of the BREAD-actions.  
 For example if you have a `name` field and on the browse-page you want to display something when the field is empty, you define the following in your model:
+
 ```php
 <?php
 
@@ -33,3 +34,4 @@ public function getNameAddAttribute()
     //
 }
 ```
+

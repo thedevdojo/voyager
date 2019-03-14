@@ -13,9 +13,9 @@
 
 * [Introduction](bread/introduction.md)
 * [Relationships](bread/relationships.md)
-* [Formfields](bread/formfields.md)
-    * [Something](bread/formfields/something.md)
-    * [Media Picker](bread/formfields/media-picker.md)
+* [Formfields](bread/formfields/README.md)
+  * [Something](bread/formfields/something.md)
+  * [Media Picker](bread/formfields/media-picker.md)
 
 ## Core concepts
 
@@ -48,3 +48,4 @@
 
 * [Using HTTPS on yours site](troubleshooting/using-https.md)
 * [Missing required parameter](troubleshooting/missing-required-parameter.md)
+

@@ -1,8 +1,8 @@
-# BREAD Builder
+# Introduction
 
 When adding or editing the current BREAD for a database table you will first see the BREAD info which allows you to set the Display Names, slug, icon, `Model` and Controller Namespace, Policy Name. You can also choose if you would like to Generate permissions for that BREAD type.
 
-![](../.gitbook/assets/bread_details.png)
+![](../.gitbook/assets/bread_details%20%281%29.png)
 
 When you scroll down you will see each of the rows that are associated with that table where you can select where in your views you want to see each of those fields:
 
@@ -58,8 +58,10 @@ You can also can define multiple rules the following way:
 ```
 
 ### Action specific rules
+
 You can define separated validation rules for edit and add:
-```
+
+```text
 {
     "validation": {
         "rule": "required",
@@ -169,8 +171,8 @@ Clicking this button will bring you to the page where you can re-arrange your it
 
 ## Scope browse-results
 
-If you want to filter the browse results for a BREAD you can do so by creating a [Scope](https://laravel.com/docs/eloquent#local-scopes) in your model.
-For example if you want to only show posts that were created by the current user, define a Scope like the following:
+If you want to filter the browse results for a BREAD you can do so by creating a [Scope](https://laravel.com/docs/eloquent#local-scopes) in your model. For example if you want to only show posts that were created by the current user, define a Scope like the following:
+
 ```php
 <?php
 public function scopeCurrentUser($query)
@@ -181,6 +183,7 @@ public function scopeCurrentUser($query)
 
 Next, go to the BREAD-settings for `posts` and look for the `Scope` input and select `currentUser`:
 
-![](../.gitbook/assets/bread_scope.jpg)
+![](../.gitbook/assets/bread_scope%20%281%29.jpg)
 
 After hitting `Submit` you will only see your own posts.
+

@@ -1,5 +1,4 @@
-
-## Additional Field Options
+# Something
 
 When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box that allows you to include additional details or options for your datatype. This textarea accepts JSON and it applies to the following types of inputs:
 
@@ -12,7 +11,7 @@ When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box
 
 Find out how to use these additional details below:
 
-### Text \(Text Box, Text Area, Rich Textbox and Hidden\)
+## Text \(Text Box, Text Area, Rich Textbox and Hidden\)
 
 ```php
 {
@@ -22,7 +21,7 @@ Find out how to use these additional details below:
 
 Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In the JSON above you can specify the `default` value of the input.
 
-### Check Box
+## Check Box
 
 ```php
 {
@@ -34,7 +33,7 @@ Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In th
 
 In Voyager a Check Box is converted into a toggle switch, and as you can see above the `on` key will contain the value when the toggle switch is on, and the `off` will contain the value that is set when the switch is off. If `checked` is set to _true_ the checkbox will be toggle on; otherwise by default it will be off.
 
-### Drop Down
+## Drop Down
 
 ```php
 {
@@ -48,7 +47,7 @@ In Voyager a Check Box is converted into a toggle switch, and as you can see abo
 
 When specifying that an input type should be a dropdown you will need to specify the values of that dropdown. In the JSON above you can specify the `default` value of the dropdown if it does not have a value. Additionally, in the `options` object you will specify the _value_ of the option on the **left** and the _text_ to be displayed on the **right**.
 
-### Radio Button
+## Radio Button
 
 ```php
 {
@@ -62,7 +61,7 @@ When specifying that an input type should be a dropdown you will need to specify
 
 The Radio button is exactly the same as the dropdown. You can specify a `default` if one has not been set and in the `options` object you will specify the _value_ of the option on the **left** and the _text_ to be displayed on the **right**.
 
-### Image
+## Image
 
 ```php
 {
@@ -102,7 +101,7 @@ The image input has many options. By default if you do not specify any options n
 
 **thumbnails** Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image \(as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg\). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the _resize_ width and height if specified.
 
-### Date & Timestamp
+## Date & Timestamp
 
 ```php
 {
@@ -111,3 +110,4 @@ The image input has many options. By default if you do not specify any options n
 ```
 
 The date & timestamp input field is where you can input a date. In the JSON above you can specify the `format` value of the output of the date. It allows you to display a formatted `date` in browse and read views, using Carbon's `formatLocalized()` method
+

@@ -18,3 +18,4 @@ Or inside of any blade template like:
 ```
 
 So, now you can add all kinds of settings in Voyager and reference them in your application.
+

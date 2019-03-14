@@ -9,3 +9,4 @@ All types can include a description in order to help your future self or other u
     "description": "A helpful description text here for your future self."
 }
 ```
+
