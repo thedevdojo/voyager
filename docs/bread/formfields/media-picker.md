@@ -19,27 +19,135 @@ You can customize the behaviour with the following options:
 }
 ```
 
-* `base_path` the start-path relative to the filesystem.
-* `rename` renames the uploaded files to a given name
-* `show_as_images` shows stored data as images
-* `delete_files` boolean value if the files should be deleted when the entry is deleted. This will also delete the file if it is used in other entries!
-* `max` the maximum of files a user can select
-* `min` the minimum of files that are required
-* `show_folders` show subfolders or not
-* `show_toolbar` hide the whole toolbar
-* `allow_upload` allow users to upload new files
-* `allow_move` let users move files
-* `allow_delete` allow users to delete files
-* `allow_create_folder` let users create new folders
-* `allow_rename` rename files
-* `allow_crop` let users crop images
-* `allowed` an object of mimetypes that are displayed. For example  
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Name</th>
+      <th style="text-align:left">Description</th>
+      <th style="text-align:left">Type</th>
+      <th style="text-align:left">Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">base_path</td>
+      <td style="text-align:left">The start path relative to the filesystem</td>
+      <td style="text-align:left">String</td>
+      <td style="text-align:left">/bread-slug/</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">rename</td>
+      <td style="text-align:left">Renamed uploaded files to a given string/expression</td>
+      <td style="text-align:left">String</td>
+      <td style="text-align:left">Original name</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">delete_files</td>
+      <td style="text-align:left">
+        <p>Delete files if the BREAD entry is deleted.</p>
+        <p>Use with caution!</p>
+      </td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">false</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">show_as_images</td>
+      <td style="text-align:left">Shows stored data as images when browsing</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">false</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">min</td>
+      <td style="text-align:left">The minimum amount of files that can be selected</td>
+      <td style="text-align:left">int</td>
+      <td style="text-align:left">0</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">max</td>
+      <td style="text-align:left">
+        <p>The maximum amount of files that can be selected.</p>
+        <p>0 means infinite</p>
+      </td>
+      <td style="text-align:left">int</td>
+      <td style="text-align:left">0</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">show_folders</td>
+      <td style="text-align:left">Show subfolders</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">show_toolbar</td>
+      <td style="text-align:left">Shows/hides the whole toolbar</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">false</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">allow_upload</td>
+      <td style="text-align:left">Allow users to upload new files</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">allow_move</td>
+      <td style="text-align:left">Allow users to move files/folders</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">allow_delete</td>
+      <td style="text-align:left">Allow users to delete files</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">allow_create_folder</td>
+      <td style="text-align:left">Allow users to create new folders</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">allow_rename</td>
+      <td style="text-align:left">
+        <p>Allow users to rename files.</p>
+        <p>Use with caution!</p>
+      </td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">allow_crop</td>
+      <td style="text-align:left">Allow users to crop images</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">allowed</td>
+      <td style="text-align:left">
+        <p>The allowed types to be uploaded/selected.</p>
+        <p>Empty object means all types.</p>
+        <p>Files with other types won&apos;t be displayed.</p>
+      </td>
+      <td style="text-align:left">Object</td>
+      <td style="text-align:left">[]</td>
+    </tr>
+  </tbody>
+</table>### Allowed types
 
-  `["image", "audio", "video"]`  
+If you want your users to only be able to upload specific file-types you can do so by passing an object with mime-types to the \`allowed\` prop, for example:
 
-  or  
+```text
+["image", "audio", "video"]
+```
 
-  `["image/jpeg", "image/png", "image/bmp"]`
+or
+
+```text
+["image/jpeg", "image/png", "image/bmp"]
+```
+
+### Expressions
 
 The `base_path` and `rename` can contain the following placeholders:
 
@@ -55,8 +163,4 @@ So a `base_path` can, for example, look like the following:
     "base_path": "/my-bread/{pk}/{date:Y}/{date:m}/"
 }
 ```
-
-| Name | Description | Type |
-| :--- | :--- | :--- |
-| base\_path | The start path relative to the filesystem | String |
 
