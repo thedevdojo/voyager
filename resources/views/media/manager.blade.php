@@ -458,6 +458,7 @@
                 }
 
                 if (e.shiftKey && this.allowMultiSelect && this.selected_files.length == 1) {
+                    var index = null;
                     var start = 0;
                     for (var i = 0, cfile; cfile = this.files[i]; i++) {
                         if (cfile === this.selected_file) {
@@ -475,11 +476,14 @@
                     }
 
                     for (var i = start; i < end; i++) {
-                        this.selected_files.push(this.files[i]);
+                        index = this.selected_files.indexOf(this.files[i]);
+                        if (index === -1) {
+                            this.selected_files.push(this.files[i]);
+                        }
                     }
                 }
 
-                var index = this.selected_files.indexOf(file);
+                index = this.selected_files.indexOf(file);
                 if (index === -1) {
                     this.selected_files.push(file);
                 }
