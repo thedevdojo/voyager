@@ -71,6 +71,7 @@ return [
     'public_url'             => 'الرابط URL المنشور',
     'read'                   => 'معاينة',
     'rename'                 => 'إعادة تسمية',
+    'remember_me'            => 'تذكرني',
     'required'               => 'مطلوب',
     'return_to_list'         => 'العودة إلى القائمة',
     'route'                  => 'Route الرابط',

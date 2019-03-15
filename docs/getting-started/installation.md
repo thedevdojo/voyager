@@ -3,7 +3,7 @@
 Voyager is super easy to install. After creating your new Laravel application you can include the Voyager package with the following command:
 
 ```bash
-composer require tcg/voyager:1.x-dev
+composer require tcg/voyager
 ```
 
 Next make sure to create a new database and add your database credentials to your .env file, you will also want to add your application URL in the `APP_URL` variable:
