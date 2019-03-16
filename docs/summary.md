@@ -15,8 +15,11 @@
 * [Relationships](bread/relationships.md)
 * [Formfields](bread/formfields/introduction.md)
   * [Check Box](bread/formfields/checkbox.md)
+  * [Date & Time](bread/formfields/date-time.md)
   * [Drop Down](bread/formfields/dropdown.md)
+  * [Images](bread/formfields/images.md)
   * [Media Picker](bread/formfields/media-picker.md)
+  * [Radio Button](bread/formfields/radiobutton.md)
 
 ## Core concepts
 
