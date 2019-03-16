@@ -20,7 +20,7 @@ Each field also has additional details or options that can be included. These ty
 
 ## Validation
 
-Inside of the _Optional Details_ section for each row in your BREAD you can also specify validation rules with some simple JSON. Here is an example of how to add a validation rule or _required_ and _max length of 12_
+Inside of the _Optional Details_ section for each row in your BREAD you can also specify validation rules with some simple JSON. Here is an example of how to add a validation rule for _required_ and _max length of 12_
 
 ```php
 {
@@ -44,7 +44,7 @@ Additionally, you may wish to add some custom error messages which can be accomp
 }
 ```
 
-You can also can define multiple rules the following way:
+You can also define multiple rules the following way:
 
 ```php
 {
@@ -59,7 +59,7 @@ You can also can define multiple rules the following way:
 
 ### Action specific rules
 
-You can define separated validation rules for edit and add:
+You can define separate validation rules for edit and add:
 
 ```text
 {
@@ -186,4 +186,3 @@ Next, go to the BREAD-settings for `posts` and look for the `Scope` input and se
 ![](../.gitbook/assets/bread_scope%20%281%29.jpg)
 
 After hitting `Submit` you will only see your own posts.
-
