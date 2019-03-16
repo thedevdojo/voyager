@@ -17,7 +17,7 @@ if (!function_exists('menu')) {
 if (!function_exists('voyager_asset')) {
     function voyager_asset($path, $secure = null)
     {
-        return route('voyager.assets', $path);
+        return route('voyager.assets').'?path='.urlencode($path);
     }
 }
 
