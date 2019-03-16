@@ -74,6 +74,7 @@ return [
     'public_url'             => 'Public URL',
     'read'                   => 'Read',
     'rename'                 => 'Rename',
+    'remember_me'            => 'Remember me',
     'required'               => 'Required',
     'return_to_list'         => 'Return to List',
     'route'                  => 'Route',
