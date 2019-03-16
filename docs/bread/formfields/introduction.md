@@ -33,32 +33,6 @@ Find out how to use these additional details below:
 
 Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In the JSON above you can specify the `default` value of the input.
 
-## Check Box
-
-```php
-{
-    "on" : "On Text",
-    "off" : "Off Text",
-    "checked" : true
-}
-```
-
-In Voyager a Check Box is converted into a toggle switch, and as you can see above the `on` key will contain the value when the toggle switch is on, and the `off` will contain the value that is set when the switch is off. If `checked` is set to _true_ the checkbox will be toggle on; otherwise by default it will be off.
-
-## Drop Down
-
-```php
-{
-    "default" : "option1",
-    "options" : {
-        "option1": "Option 1 Text",
-        "option2": "Option 2 Text"
-    }
-}
-```
-
-When specifying that an input type should be a dropdown you will need to specify the values of that dropdown. In the JSON above you can specify the `default` value of the dropdown if it does not have a value. Additionally, in the `options` object you will specify the _value_ of the option on the **left** and the _text_ to be displayed on the **right**.
-
 ## Radio Button
 
 ```php

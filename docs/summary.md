@@ -14,6 +14,8 @@
 * [Introduction](bread/introduction.md)
 * [Relationships](bread/relationships.md)
 * [Formfields](bread/formfields/introduction.md)
+  * [Check Box](bread/formfields/checkbox.md)
+  * [Drop Down](bread/formfields/dropdown.md)
   * [Media Picker](bread/formfields/media-picker.md)
 
 ## Core concepts
