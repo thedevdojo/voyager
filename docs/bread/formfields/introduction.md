@@ -1,3 +1,15 @@
+# Formfields
+
+## Description
+
+All types can include a description in order to help your future self or other users using your Voyager admin panel to understand exactly what a specific BREAD input field is for, this can be defined in the `Optional Details` JSON input field:
+
+```php
+{
+    "description": "A helpful description text here for your future self."
+}
+```
+
 # Something
 
 When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box that allows you to include additional details or options for your datatype. This textarea accepts JSON and it applies to the following types of inputs:
@@ -110,4 +122,3 @@ The image input has many options. By default if you do not specify any options n
 ```
 
 The date & timestamp input field is where you can input a date. In the JSON above you can specify the `format` value of the output of the date. It allows you to display a formatted `date` in browse and read views, using Carbon's `formatLocalized()` method
-
