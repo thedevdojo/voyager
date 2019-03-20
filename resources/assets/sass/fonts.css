@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "voyager";
-  src:url("../fonts/voyager.eot");
-  src:url("../fonts/voyager.eot?#iefix") format("embedded-opentype"),
-    url("../fonts/voyager.woff") format("woff"),
-    url("../fonts/voyager.ttf") format("truetype"),
-    url("../fonts/voyager.svg#voyager") format("svg");
+  src:url("assets?path=fonts/voyager.eot");
+  src:url("assets?path=fonts/voyager.eot?#iefix") format("embedded-opentype"),
+    url("assets?path=fonts/voyager.woff") format("woff"),
+    url("assets?path=fonts/voyager.ttf") format("truetype"),
+    url("assets?path=fonts/voyager.svg#voyager") format("svg");
   font-weight: normal;
   font-style: normal;
 
