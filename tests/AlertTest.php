@@ -45,8 +45,8 @@ class AlertTest extends TestCase
             ->text('Foobar')
             ->button('Link', 'http://example.org'));
 
-        $this->assertEquals(
-            file_get_contents(__DIR__.'/rendered_alerts.html'),
+        $this->assertXmlStringEqualsXmlFile(
+            __DIR__.'/rendered_alerts.html',
             view('voyager::alerts')->render()
         );
     }
