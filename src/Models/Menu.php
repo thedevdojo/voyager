@@ -133,6 +133,13 @@ class Menu extends Model
         // Filter items by permission
         $items = $items->filter(function ($item) {
             return !$item->children->isEmpty() || app('VoyagerAuth')->user()->can('browse', $item);
+        })->filter(function ($item) {
+            // Filter out empty menu-items
+            if ($item->href == '' && $item->children->count() == 0) {
+                return false;
+            }
+
+            return true;
         });
 
         return $items->values();
