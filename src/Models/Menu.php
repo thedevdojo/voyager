@@ -134,7 +134,7 @@ class Menu extends Model
             return !$item->children->isEmpty() || app('VoyagerAuth')->user()->can('browse', $item);
         })->filter(function ($item) {
             // Filter out empty menu-items
-            if ($item->href == '' && $item->children->count() == 0) {
+            if ($item->url == '' && $item->route == '' && $item->children->count() == 0) {
                 return false;
             }
 
