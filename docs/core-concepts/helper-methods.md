@@ -1,6 +1,6 @@
 # Helper methods
 
-Voyager has several helper functions that are ready to use. Here you can find the list of available function that may speed up your development.
+Voyager has a list of helper functions that are ready to use that may speed up your development.
 
 ## Thumbnails URL
 
