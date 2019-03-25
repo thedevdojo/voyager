@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Tests;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
@@ -25,7 +24,7 @@ class FormfieldsTest extends TestCase
     {
         $this->createBreadForFormfield('text', 'text', json_encode([
             'default' => 'Default Text',
-            'null'    => "NULL"
+            'null'    => 'NULL',
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -46,14 +45,14 @@ class FormfieldsTest extends TestCase
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
         ->seeInDatabase('categories', [
-            'text' => null
+            'text' => null,
         ]);
     }
 
     public function testFormfieldTextbox()
     {
         $this->createBreadForFormfield('text', 'text_area', json_encode([
-            'default' => 'Default Text'
+            'default' => 'Default Text',
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -73,7 +72,7 @@ class FormfieldsTest extends TestCase
     public function testFormfieldCodeeditor()
     {
         $this->createBreadForFormfield('text', 'code_editor', json_encode([
-            'default' => 'Default Text'
+            'default' => 'Default Text',
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -127,7 +126,7 @@ class FormfieldsTest extends TestCase
     public function testFormfieldHidden()
     {
         $this->createBreadForFormfield('text', 'hidden', json_encode([
-            'default' => 'Default Text'
+            'default' => 'Default Text',
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -164,7 +163,7 @@ class FormfieldsTest extends TestCase
     public function testFormfieldNumber()
     {
         $this->createBreadForFormfield('integer', 'number', json_encode([
-            'default' => 1
+            'default' => 1,
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -184,7 +183,7 @@ class FormfieldsTest extends TestCase
     public function testFormfieldCheckbox()
     {
         $this->createBreadForFormfield('boolean', 'checkbox', json_encode([
-            'on' => 'Active',
+            'on'  => 'Active',
             'off' => 'Inactive',
         ]));
 
@@ -222,7 +221,7 @@ class FormfieldsTest extends TestCase
     public function testFormfieldDate()
     {
         $this->createBreadForFormfield('date', 'date', json_encode([
-            'format' => '%Y-%m-%d'
+            'format' => '%Y-%m-%d',
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -241,7 +240,7 @@ class FormfieldsTest extends TestCase
     public function testFormfieldTimestamp()
     {
         $this->createBreadForFormfield('timestamp', 'timestamp', json_encode([
-            'format' => '%F %T'
+            'format' => '%F %T',
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -288,8 +287,8 @@ class FormfieldsTest extends TestCase
             'default' => 'radio1',
             'options' => [
                 'radio1' => 'Foo',
-                'radio2' => 'Bar'
-            ]
+                'radio2' => 'Bar',
+            ],
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -311,8 +310,8 @@ class FormfieldsTest extends TestCase
             'default' => 'radio1',
             'options' => [
                 'option1' => 'Foo',
-                'option2' => 'Bar'
-            ]
+                'option2' => 'Bar',
+            ],
         ]));
 
         $this->visitRoute('voyager.categories.create')
@@ -340,14 +339,14 @@ class FormfieldsTest extends TestCase
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
         ->seeInDatabase('categories', [
-            'file' => '[]'
+            'file' => '[]',
         ]);
     }
 
     public function testFormfieldFilePreserve()
     {
         $this->createBreadForFormfield('text', 'file', json_encode([
-            'preserveFileUploadName' => true
+            'preserveFileUploadName' => true,
         ]));
         $file = UploadedFile::fake()->create('test.txt', 1);
         $this->visitRoute('voyager.categories.create')
@@ -358,7 +357,7 @@ class FormfieldsTest extends TestCase
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
         ->seeInDatabase('categories', [
-            'file' => '[]'
+            'file' => '[]',
         ]);
     }
 

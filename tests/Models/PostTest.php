@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Tests;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Models\Category;
 use TCG\Voyager\Models\Post;
@@ -23,7 +22,7 @@ class PostTest extends TestCase
             'body'             => 'Test Body',
             'meta_description' => 'Test Description',
             'meta_keywords'    => 'Test Meta Keywords',
-        ]);;
+        ]);
 
         $post->save();
 
