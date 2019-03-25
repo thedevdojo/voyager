@@ -4,7 +4,6 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 

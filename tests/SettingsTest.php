@@ -47,9 +47,8 @@ class SettingsTest extends TestCase
                 'display_name' => 'New Setting',
                 'key'          => 'site.new_setting',
                 'type'         => 'text',
-                'group'        => 'Site'
+                'group'        => 'Site',
              ]);
-
     }
 
     public function testCanDeleteSetting()
@@ -63,7 +62,6 @@ class SettingsTest extends TestCase
         ]);
     }
 
-
     public function testCanDeleteSettingsValue()
     {
         $setting = Setting::firstOrFail();
@@ -73,7 +71,7 @@ class SettingsTest extends TestCase
 
         $this->seeInDatabase('settings', [
            'id'    => $setting->id,
-           'value' => ''
+           'value' => '',
         ]);
     }
 
