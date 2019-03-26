@@ -319,7 +319,12 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->find($request->data_type_id);
 
-        $field = Str::singular($dataType->name).'_'.$request->relationship_type.'_'.Str::singular($request->relationship_table).'_relationship';
+        $relationship_column = $request->relationship_column_belongs_to;
+        if ($request->relationship_type == 'hasOne' || $request->relationship_type == 'hasMany') {
+            $relationship_column = $request->relationship_column;
+        }
+
+        $field = Str::singular($dataType->name).'_'.$request->relationship_type.'_'.Str::singular($request->relationship_table).'_relationship_'.$relationship_column;
 
         $relationshipFieldOriginal = $relationshipField = strtolower($field);
 
@@ -329,7 +334,7 @@ class VoyagerBreadController extends Controller
         while (isset($existingRow->id)) {
             $relationshipField = $relationshipFieldOriginal.'_'.$index;
             $existingRow = Voyager::model('DataRow')->where('field', '=', $relationshipField)->first();
-            $index += 1;
+            $index++;
         }
 
         return $relationshipField;
