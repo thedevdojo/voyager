@@ -1,4 +1,11 @@
-@php $relationshipDetails = $relationship['details']; @endphp
+@php
+    $relationshipDetails = $relationship['details']; 
+    $adv_details = new \StdClass;
+    foreach (get_object_vars($relationshipDetails) as $key=>$value) {
+        if(!in_array($key,["model", "table", "type", "column", "key", "label", "pivot_table", "pivot", "taggable"])) $adv_details->$key = $value;
+    }
+
+@endphp
 <div class="row row-dd row-dd-relationship">
     <div class="col-xs-2">
         <h4><i class="voyager-heart"></i><strong>{{ $relationship->display_name }}</strong></h4>
@@ -26,6 +33,12 @@
         <input type="text" name="field_display_name_{{ $relationship['field'] }}" class="form-control relationship_display_name" value="{{ $relationship['display_name'] }}">
     </div>
     <div class="col-xs-4">
+        <div style="margin-bottom:20px;">
+            <div class="alert alert-danger validation-error">
+                {{ __('voyager::json.invalid') }}
+            </div>
+            <textarea id="json-input-{{ $relationship['field'] }}" class="resizable-editor" data-editor="json" name="relationship_details_{{ $relationship['field'] }}">{{ json_encode($adv_details) }}</textarea>
+        </div>
         <div class="voyager-relationship-details-btn">
             <i class="voyager-angle-down"></i><i class="voyager-angle-up"></i>
             <span class="open_text">{{ __('voyager::database.relationship.open') }}</span>
