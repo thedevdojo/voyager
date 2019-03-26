@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Str;
 use TCG\Voyager\Models\DataRow;
 use TCG\Voyager\Models\DataType;
-use Illuminate\Support\Str;
 
 class UpdateDataRowsFieldValues extends Migration
 {
@@ -14,7 +14,7 @@ class UpdateDataRowsFieldValues extends Migration
      */
     public function up()
     {
-        $records = TCG\Voyager\Models\DataRow::where('type','relationship')->get();
+        $records = DataRow::where('type', 'relationship')->get();
         foreach ($records as $rec) {
             $dataType = DataType::find($rec->data_type_id);
             $field = Str::singular($dataType->name).'_'.$rec->details->type.'_'.Str::singular($rec->details->table).'_relationship_'.$rec->details->column;
@@ -35,10 +35,10 @@ class UpdateDataRowsFieldValues extends Migration
      */
     public function down()
     {
-        $records = DataRow::where('type','relationship')->get();
+        $records = DataRow::where('type', 'relationship')->get();
         foreach ($records as $rec) {
        
-            if (property_exists($rec->details,'_fallback_field')) {
+            if (property_exists($rec->details, '_fallback_field')) {
                 $field = $rec->details->_fallback_field;
             
                 $a = $rec->details;
