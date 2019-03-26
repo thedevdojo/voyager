@@ -122,7 +122,9 @@ class DataType extends Model
                         if (is_object($relationship_details)) {
                             $dataRowDetails = $dataRow->details;
                             foreach ($relationship_details as $key=>$value) {
-                                if (!isset($dataRowDetails->$key)) $dataRowDetails->$key = $value;
+                                if (!isset($dataRowDetails->$key)) {
+                                    $dataRowDetails->$key = $value;
+                                }
                             }
                             $dataRow->details = $dataRowDetails;
                         }
