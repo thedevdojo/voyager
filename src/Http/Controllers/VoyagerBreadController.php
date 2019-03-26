@@ -103,7 +103,7 @@ class VoyagerBreadController extends Controller
             }
 
             // Cache route list to add the new slug
-            Artisan:call('optimize');
+            Artisan::call('optimize');
             
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
@@ -173,7 +173,7 @@ class VoyagerBreadController extends Controller
             $dataType->saveTranslations($translations);
 
             // Cache route list to add the new slug if applied
-            Artisan:call('optimize');
+            Artisan::call('optimize');
                         
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
