@@ -104,7 +104,7 @@ class VoyagerBreadController extends Controller
 
             // Cache route list to add the new slug
             Artisan::call('optimize');
-            
+
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
             return redirect()->route('voyager.bread.index')->with($this->alertException($e, 'Saving Failed'));
@@ -174,7 +174,7 @@ class VoyagerBreadController extends Controller
 
             // Cache route list to add the new slug if applied
             Artisan::call('optimize');
-                        
+
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
             return back()->with($this->alertException($e, __('voyager::generic.update_failed')));
