@@ -66,7 +66,7 @@
                                     @php
                                         $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
 
-                                        $row     = $dataTypeRows->where('field', 'user_belongsto_role_relationship')->first();
+                                        $row     = $dataTypeRows->where('field', 'user_belongsto_role_relationship_role_id')->first();
                                         $options = $row->details;
                                     @endphp
                                     @include('voyager::formfields.relationship')
@@ -74,7 +74,7 @@
                                 <div class="form-group">
                                     <label for="additional_roles">{{ __('voyager::profile.roles_additional') }}</label>
                                     @php
-                                        $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship')->first();
+                                        $row     = $dataTypeRows->where('field', 'user_belongstomany_role_relationship_id')->first();
                                         $options = $row->details;
                                     @endphp
                                     @include('voyager::formfields.relationship')
