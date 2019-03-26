@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -101,6 +102,9 @@ class VoyagerBreadController extends Controller
                 event(new BreadAdded($dataType, $data));
             }
 
+            // Cache route list to add the new slug
+            Artisan:call('optimize');
+            
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
             return redirect()->route('voyager.bread.index')->with($this->alertException($e, 'Saving Failed'));
@@ -168,6 +172,9 @@ class VoyagerBreadController extends Controller
             // Save translations if applied
             $dataType->saveTranslations($translations);
 
+            // Cache route list to add the new slug if applied
+            Artisan:call('optimize');
+                        
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
             return back()->with($this->alertException($e, __('voyager::generic.update_failed')));
