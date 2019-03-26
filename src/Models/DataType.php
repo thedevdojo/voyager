@@ -116,6 +116,18 @@ class DataType extends Model
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
+                    $relationship_details = $requestData['relationship_details_'.$field] ?? null;
+                    if ($relationship_details) {
+                        $relationship_details = json_decode($relationship_details);
+                        if (is_object($relationship_details)) {
+                            $dataRowDetails = $dataRow->details;
+                            foreach ($relationship_details as $key=>$value) {
+                                if (!isset($dataRowDetails->$key)) $dataRowDetails->$key = $value;
+                            }
+                            $dataRow->details = $dataRowDetails;
+                        }
+                    }
+
                     if (!$dataRow->save()) {
                         throw new \Exception(__('voyager::database.field_safe_failed', ['field' => $field]));
                     }
