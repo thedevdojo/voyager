@@ -4,7 +4,6 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
@@ -134,7 +133,7 @@ class Menu extends Model
             return !$item->children->isEmpty() || app('VoyagerAuth')->user()->can('browse', $item);
         })->filter(function ($item) {
             // Filter out empty menu-items
-            if ($item->href == '' && $item->children->count() == 0) {
+            if ($item->url == '' && $item->route == '' && $item->children->count() == 0) {
                 return false;
             }
 

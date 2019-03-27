@@ -624,6 +624,7 @@ class VoyagerBaseController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         $action = new $request->action($dataType, null);
+
         return $action->massAction(explode(',', $request->ids), $request->headers->get('referer'));
     }
 
