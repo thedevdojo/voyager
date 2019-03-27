@@ -9,6 +9,11 @@ use TCG\Voyager\Models\Translation;
 
 class TranslationsTableSeeder extends Seeder
 {
+
+    protected $appLocale;
+
+    protected $transLocales = ['en', 'pt_br'];
+
     /**
      * Auto generated seed file.
      *
@@ -16,6 +21,7 @@ class TranslationsTableSeeder extends Seeder
      */
     public function run()
     {
+        $this->appLocale = App::getLocale();
         $this->dataTypesTranslations();
         $this->categoriesTranslations();
         $this->pagesTranslations();
@@ -31,15 +37,18 @@ class TranslationsTableSeeder extends Seeder
     {
         // Adding translations for 'categories'
         //
-        $cat = Category::where('slug', 'category-1')->firstOrFail();
-        if ($cat->exists) {
-            $this->trans('pt', $this->arr(['categories', 'slug'], $cat->id), 'categoria-1');
-            $this->trans('pt', $this->arr(['categories', 'name'], $cat->id), 'Categoria 1');
-        }
-        $cat = Category::where('slug', 'category-2')->firstOrFail();
-        if ($cat->exists) {
-            $this->trans('pt', $this->arr(['categories', 'slug'], $cat->id), 'categoria-2');
-            $this->trans('pt', $this->arr(['categories', 'name'], $cat->id), 'Categoria 2');
+        $transFields = ['1', '2'];
+        foreach ($transFields as $transField) {
+            $cat = Category::where('slug', __("voyager::seeders.categories.slug.{$transField}"))->firstOrFail();
+
+            foreach ($this->transLocales as $locale) {
+                if ($this->appLocale !== $locale){
+                    App::setLocale($locale);
+                    $this->trans($locale, $this->arr(['categories', 'slug'], $cat->id), __("voyager::seeders.categories.slug.{$transField}"));
+                    $this->trans($locale, $this->arr(['categories', 'name'], $cat->id), __("voyager::seeders.categories.name.{$transField}"));
+                    App::setLocale($this->appLocale);
+                }
+            }
         }
     }
 
@@ -54,58 +63,37 @@ class TranslationsTableSeeder extends Seeder
         //
         $_fld = 'display_name_singular';
         $_tpl = ['data_types', $_fld];
-        $dtp = DataType::where($_fld, 'Post')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Post');
+        $transFields = ['post', 'page', 'user', 'category', 'menu', 'role'];
+
+        foreach ($transFields as $transField) {
+            $dtp = DataType::where($_fld, __("voyager::seeders.data_types.{$transField}.singular"))->firstOrFail();
+
+            foreach ($this->transLocales as $locale) {
+                if ($this->appLocale !== $locale){
+                    App::setLocale($locale);
+                    $this->trans($locale, $this->arr($_tpl, $dtp->id), __("voyager::seeders.data_types.{$transField}.singular"));
+                    App::setLocale($this->appLocale);
+                }
+            }
         }
-        $dtp = DataType::where($_fld, 'Page')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Página');
-        }
-        $dtp = DataType::where($_fld, 'User')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Utilizador');
-        }
-        $dtp = DataType::where($_fld, 'Category')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Categoria');
-        }
-        $dtp = DataType::where($_fld, 'Menu')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Menu');
-        }
-        $dtp = DataType::where($_fld, 'Role')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Função');
-        }
+
 
         // Adding translations for 'display_name_plural'
         //
         $_fld = 'display_name_plural';
         $_tpl = ['data_types', $_fld];
-        $dtp = DataType::where($_fld, 'Posts')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Posts');
-        }
-        $dtp = DataType::where($_fld, 'Pages')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Páginas');
-        }
-        $dtp = DataType::where($_fld, 'Users')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Utilizadores');
-        }
-        $dtp = DataType::where($_fld, 'Categories')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Categorias');
-        }
-        $dtp = DataType::where($_fld, 'Menus')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Menus');
-        }
-        $dtp = DataType::where($_fld, 'Roles')->firstOrFail();
-        if ($dtp->exists) {
-            $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Funções');
+        $transFields = ['post', 'page', 'user', 'category', 'menu', 'role'];
+
+        foreach ($transFields as $transField) {
+            $dtp = DataType::where($_fld, __("voyager::seeders.data_types.{$transField}.plural"))->firstOrFail();
+
+            foreach ($this->transLocales as $locale) {
+                if ($this->appLocale !== $locale){
+                    App::setLocale($locale);
+                    $this->trans($locale, $this->arr($_tpl, $dtp->id), __("voyager::seeders.data_types.{$transField}.plural"));
+                    App::setLocale($this->appLocale);
+                }
+            }
         }
     }
 
@@ -116,24 +104,23 @@ class TranslationsTableSeeder extends Seeder
      */
     private function pagesTranslations()
     {
-        $page = Page::where('slug', 'hello-world')->firstOrFail();
+        $page = Page::where('slug', __("voyager::seeders.pages.slug"))->firstOrFail();
         if ($page->exists) {
-            $_arr = $this->arr(['pages', 'title'], $page->id);
-            $this->trans('pt', $_arr, 'Olá Mundo');
-            /**
-             * For configuring additional languages use it e.g.
-             *
-             * ```
-             *   $this->trans('es', $_arr, 'hola-mundo');
-             *   $this->trans('de', $_arr, 'hallo-welt');
-             * ```
-             */
-            $_arr = $this->arr(['pages', 'slug'], $page->id);
-            $this->trans('pt', $_arr, 'ola-mundo');
 
-            $_arr = $this->arr(['pages', 'body'], $page->id);
-            $this->trans('pt', $_arr, '<p>Olá Mundo. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
-                                        ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
+            foreach ($this->transLocales as $locale) {
+                if ($this->appLocale !== $locale){
+                    App::setLocale($locale);
+                    $_arr = $this->arr(['pages', 'title'], $page->id);
+                    $this->trans($locale, $_arr, __("voyager::seeders.pages.title"));
+
+                    $_arr = $this->arr(['pages', 'slug'], $page->id);
+                    $this->trans($locale, $_arr, __("voyager::seeders.pages.slug"));
+
+                    $_arr = $this->arr(['pages', 'body'], $page->id);
+                    $this->trans($locale, $_arr, __("voyager::seeders.pages.body"));
+                    App::setLocale($this->appLocale);
+                }
+            }
         }
     }
 
@@ -145,60 +132,19 @@ class TranslationsTableSeeder extends Seeder
     private function menusTranslations()
     {
         $_tpl = ['menu_items', 'title'];
-        $_item = $this->findMenuItem('Dashboard');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Painel de Controle');
+        $transFields = ['dashboard', 'media', 'posts', 'users', 'categories', 'pages', 'roles', 'tools', 'menu_builder', 'database', 'settings'];
+
+        foreach ($transFields as $transField) {
+            $_item = $this->findMenuItem(__("voyager::seeders.menu_items.{$transField}"));
+            foreach ($this->transLocales as $locale) {
+                if ($this->appLocale !== $locale){
+                    App::setLocale($locale);
+                    $this->trans($locale, $this->arr($_tpl, $_item->id), __("voyager::seeders.menu_items.{$transField}"));
+                    App::setLocale($this->appLocale);
+                }
+            }
         }
 
-        $_item = $this->findMenuItem('Media');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Media');
-        }
-
-        $_item = $this->findMenuItem('Posts');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Publicações');
-        }
-
-        $_item = $this->findMenuItem('Users');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Utilizadores');
-        }
-
-        $_item = $this->findMenuItem('Categories');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Categorias');
-        }
-
-        $_item = $this->findMenuItem('Pages');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Páginas');
-        }
-
-        $_item = $this->findMenuItem('Roles');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Funções');
-        }
-
-        $_item = $this->findMenuItem('Tools');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Ferramentas');
-        }
-
-        $_item = $this->findMenuItem('Menu Builder');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Menus');
-        }
-
-        $_item = $this->findMenuItem('Database');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Base de dados');
-        }
-
-        $_item = $this->findMenuItem('Settings');
-        if ($_item->exists) {
-            $this->trans('pt', $this->arr($_tpl, $_item->id), 'Configurações');
-        }
     }
 
     private function findMenuItem($title)
