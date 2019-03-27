@@ -180,20 +180,20 @@ class CategoriesTableSeeder extends Seeder
 
         //Content
         $category = Category::firstOrNew([
-            'slug' => 'category-1',
+            'slug' => __('voyager::seeders.categories.slug.1'),
         ]);
         if (!$category->exists) {
             $category->fill([
-                'name' => 'Category 1',
+                'name' => __('voyager::seeders.categories.name.1'),
             ])->save();
         }
 
         $category = Category::firstOrNew([
-            'slug' => 'category-2',
+            'slug' => __('voyager::seeders.categories.slug.2'),
         ]);
         if (!$category->exists) {
             $category->fill([
-                'name' => 'Category 2',
+                'name' => __('voyager::seeders.categories.name.2'),
             ])->save();
         }
     }
