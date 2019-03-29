@@ -219,7 +219,13 @@ trait Translatable
         if (!$this->relationLoaded('translations')) {
             $this->load('translations');
         }
-
+        
+        foreach ($translations as $locale => $value) {
+           if(empty($value)){
+                unset($translations[$locale]);
+           }
+        }
+        
         $default = config('voyager.multilingual.default', 'en');
         $locales = config('voyager.multilingual.locales', [$default]);
 
