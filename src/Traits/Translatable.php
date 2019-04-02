@@ -220,11 +220,7 @@ trait Translatable
             $this->load('translations');
         }
         
-        foreach ($translations as $locale => $value) {
-           if(empty($value)){
-                unset($translations[$locale]);
-           }
-        }
+        $translations = array_filter($translations);
         
         $default = config('voyager.multilingual.default', 'en');
         $locales = config('voyager.multilingual.locales', [$default]);
