@@ -2,8 +2,8 @@
 
 namespace TCG\Voyager\Tests;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use TCG\Voyager\Models\Page;
 
 class PageTest extends TestCase
