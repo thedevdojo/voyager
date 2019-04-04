@@ -16,7 +16,7 @@ return [
     'error_creating_bread'   => 'Spiacenti sembra ci sia stato un problema nel creare questo BREAD',
     'error_removing_bread'   => 'Spiacenti sembra ci sia stato un problema nel rimuovere questo BREAD',
     'error_updating_bread'   => 'Spiacenti sembra ci sia stato un problema nell\'aggiornare questo BREAD',
-    'error_tagging'          => 'Spiacenti sembra ci sia stato un problema nel creare il record. Assicurati che la tabella abbia valori predefiniti per gli altri campi.', 
+    'error_tagging'          => 'Spiacenti sembra ci sia stato un problema nel creare il record. Assicurati che la tabella abbia valori predefiniti per gli altri campi.',
     'success_created_bread'  => 'Nuovo BREAD creato con successo',
     'success_remove_bread'   => 'BREAD rimosso con successo da :datatype',
     'success_update_bread'   => 'Aggiornato con successo :datatype BREAD',
