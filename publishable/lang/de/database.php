@@ -18,7 +18,7 @@ return [
     'delete_bread_before_table' => 'Sie müssen zuerst das BREAD dieser Tabelle entfernen bevor Sie die Tabelle löschen können.',
     'delete_table_confirm'      => 'Ja, diese Tabelle löschen',
     'delete_table_question'     => 'Sind Sie sicher, dass Sie die Tabelle :table löschen möchten?',
-    'editing_table'             => 'Editing table :table',
+    'editing_table'             => 'Tabelle :table bearbeiten',
     'edit_table'                => 'Bearbeite die Tabelle :table',
     'edit_table_not_exist'      => 'Die Tabelle welche Sie bearbeiten möchten existiert nicht',
     'extra'                     => 'Extra',
