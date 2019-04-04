@@ -1,7 +1,7 @@
 @php $relationshipDetails = $relationship['details']; @endphp
 <div class="row row-dd row-dd-relationship">
     <div class="col-xs-2">
-        <h4><i class="voyager-heart"></i><strong>{{ $relationship->display_name }}</strong></h4>
+        <h4><i class="voyager-heart"></i><strong>{{ $relationship->getTranslatedAttribute('display_name') }}</strong></h4>
         <div class="handler voyager-handle"></div>
         <strong>{{ __('voyager::database.type') }}:</strong> <span>{{ __('voyager::database.relationship.relationship') }}</span>
         <div class="handler voyager-handle"></div>
@@ -23,6 +23,13 @@
         <p>{{ __('voyager::database.relationship.relationship') }}</p>
     </div>
     <div class="col-xs-2">
+        @if($isModelTranslatable)
+            @include('voyager::multilingual.input-hidden', [
+                'isModelTranslatable' => true,
+                '_field_name'         => 'field_display_name_' . $relationship['field'],
+                '_field_trans' => get_field_translations($relationship, 'display_name')
+            ])
+        @endif
         <input type="text" name="field_display_name_{{ $relationship['field'] }}" class="form-control relationship_display_name" value="{{ $relationship['display_name'] }}">
     </div>
     <div class="col-xs-4">
