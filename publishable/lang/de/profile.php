@@ -7,5 +7,8 @@ return [
     'password'      => 'Passwort',
     'password_hint' => 'Leer lassen um das Bisherige zu behalten',
     'role'          => 'Rolle',
+    'roles'            => 'Roles',
+    'role_default'     => 'Default Role',
+    'roles_additional' => 'Additional Roles',
     'user_role'     => 'Benutzerrolle',
 ];

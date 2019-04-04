@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'additional_fields'=> 'Additional Fields',
     'category'         => 'Post Kategorie',
     'content'          => 'Post Inhalt',
     'details'          => 'Post Details',
