@@ -1,10 +1,11 @@
 <?php
 
 return [
+    'additional_fields'=> 'Zusätzliche Felder',
     'category'         => 'Post Kategorie',
     'content'          => 'Post Inhalt',
     'details'          => 'Post Details',
-    'excerpt'          => 'Excerpt <small>Kurzbeschreibung dieses Posts</small>',
+    'excerpt'          => 'Ausschnitt <small>Kurzbeschreibung dieses Posts</small>',
     'image'            => 'Post Bild',
     'meta_description' => 'Meta Beschreibung',
     'meta_keywords'    => 'Meta Keywords',
