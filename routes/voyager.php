@@ -105,6 +105,14 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('crop', ['uses' => $namespacePrefix.'VoyagerMediaController@crop',             'as' => 'crop']);
         });
 
+        Route::group([
+            'as' => 'modals.',
+            'prefix' => 'modals'
+        ], function () use ($namespacePrefix) {
+            Route::get('{table}/create', ['uses' => $namespacePrefix.'VoyagerModalsController@create',     'as' => 'create']);
+            Route::post('/', ['uses' => $namespacePrefix.'VoyagerModalsController@store',   'as' => 'store']);
+        });
+
         // BREAD Routes
         Route::group([
             'as'     => 'bread.',

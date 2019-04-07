@@ -26,6 +26,7 @@
                     class="form-control select2-ajax" name="{{ $options->column }}"
                     data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
                     data-get-items-field="{{$row->field}}"
+                    id="{{ $row->field }}"
                 >
                     @php
                         $model = app($options->model);
@@ -153,6 +154,7 @@
                 <select
                     class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2-ajax @endif"
                     name="{{ $relationshipField }}[]" multiple
+                    id="{{ $row->field }}"
                     data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
                     data-get-items-field="{{$row->field}}"
                     @if(isset($options->taggable) && $options->taggable == 'on')
