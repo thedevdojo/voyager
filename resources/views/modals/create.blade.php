@@ -72,7 +72,7 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                        {!! Form::button('<span class="fa fa-save"></span> &nbsp;' . __('voyager::generic.save'), ['type' => 'button', 'id' =>'button-create-'.$dataType->slug, 'class' => 'btn btn-success button-submit', 'data-loading-text' => trans('general.loading')]) !!}
+                            <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
                         </div>
                     </form>
 
