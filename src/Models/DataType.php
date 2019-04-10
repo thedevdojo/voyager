@@ -117,7 +117,7 @@ class DataType extends Model
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
                     // Prepare Translations and Transform data
-                    $translations = is_bread_translatable($dataRow)
+                    $translations = (is_bread_translatable($dataRow) && !empty($requestData['field_display_name_'.$field.'_i18n']))
                         ? $dataRow->prepareTranslationsFromArray($field, $requestData)
                         : [];
 
