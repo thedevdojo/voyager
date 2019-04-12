@@ -19,7 +19,7 @@ return [
     'open_in'              => 'Ouvrir dans',
     'open_new'             => 'Nouvel onglet/fenêtre',
     'open_same'            => 'Même onglet/fenêtre',
-    'route_parameter'      => 'Paramètres de Route (le cas échéant)',
+    'route_parameter'      => 'Paramètres de route (le cas échéant)',
     'static_url'           => 'URL statique',
     'successfully_created' => 'Nouvel élément de menu créé avec succès.',
     'successfully_deleted' => 'Elément de menu supprimé avec succès.',
