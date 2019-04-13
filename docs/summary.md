@@ -14,7 +14,7 @@
 * [Introduction](bread/introduction.md)
 * [Relationships](bread/relationships.md)
 * [Formfields](bread/formfields/introduction.md)
-  * [Check Box](bread/formfields/checkbox.md)
+  * [Checkbox/Multiple Checkbox](bread/formfields/checkbox.md)
   * [Date & Time](bread/formfields/date-time.md)
   * [Drop Down](bread/formfields/dropdown.md)
   * [Images](bread/formfields/images.md)
