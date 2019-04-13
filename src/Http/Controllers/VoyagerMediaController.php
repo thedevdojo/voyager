@@ -41,7 +41,7 @@ class VoyagerMediaController extends Controller
         $options = $request->details ?? [];
         $thumbnail_names = [];
         $thumbnails = [];
-        if (!($options->hide_thumbnails ?? true)) {
+        if (!($options->hide_thumbnails ?? false)) {
             $thumbnail_names = array_column(($options['thumbnails'] ?? []), 'name');
         }
 
