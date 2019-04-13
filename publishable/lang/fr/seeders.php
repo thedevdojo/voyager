@@ -58,7 +58,7 @@ return [
         'bread'        => 'BREAD',
         'categories'   => 'Catégories',
         'compass'      => null,
-        'dashboard'    => 'Dashboard',
+        'dashboard'    => 'Tableau de bord',
         'database'     => 'Base de données',
         'media'        => 'Médiathèque',
         'menu_builder' => 'Créateur de menus',

@@ -14,7 +14,7 @@ return [
         'text'                  => 'Lancer les Commandes artisan depuis Voyager.',
         'clear_output'          => 'Vider la sortie',
         'command_output'        => 'Sortie des commandes Artisan',
-        'additional_args'       => 'Arguments additionnels?',
+        'additional_args'       => 'Arguments additionnels ?',
         'run_command'           => 'Lancer la commande',
     ],
     'resources'     => [

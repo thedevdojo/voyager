@@ -6,7 +6,7 @@ return [
     'create_new_item'      => 'Créer un nouvel élément de menu',
     'delete_item_confirm'  => 'Oui, supprimez cet élément de menu',
     'delete_item_question' => 'Êtes-vous sûr de vouloir supprimer cet élément de menu ?',
-    'drag_drop_info'       => 'Glissez/déposez les éléments du menu ci-dessous pour les réorganiser.',
+    'drag_drop_info'       => 'Glissez/déposez les éléments du menu ci-dessous pour les réarranger.',
     'dynamic_route'        => 'Route dynamique',
     'edit_item'            => 'Editer l\'élément du menu',
     'icon_class'           => 'Icône pour l\'élément de menu (utilisez la ',

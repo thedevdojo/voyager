@@ -86,7 +86,7 @@ return [
     'showing_entries'        => 'Affichage :from à :to de :all entrées|Affichage :from à :to de :all entrées',
     'submit'                 => 'Soumettre',
     'successfully_added_new' => 'Ajouté avec succès',
-    'successfully_deleted'   => 'Supprimer avec succès',
+    'successfully_deleted'   => 'Supprimé avec succès',
     'successfully_restored'  => 'Restauré avec succès',
     'successfully_updated'   => 'Mis à jour avec succès',
     'successfully_created'   => 'Créé avec succès',
