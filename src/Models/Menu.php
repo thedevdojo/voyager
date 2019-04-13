@@ -89,9 +89,29 @@ class Menu extends Model
     public function save(array $options = [])
     {
         //Remove from cache
-        \Cache::forget('voyager_menu_'.$this->name);
+        $this->removeMenuFromCache();
 
         parent::save();
+    }
+
+    public static function destroy($ids)
+    {
+        if ($ids instanceof BaseCollection) {
+            $ids = $ids->all();
+        }
+
+        if (is_array($ids)) {
+            self::findOrFail($ids[0])->removeMenuFromCache();
+        } else {
+            self::findOrFail($ids)->removeMenuFromCache();
+        }
+
+        parent::destroy($ids);
+    }
+
+    public function removeMenuFromCache()
+    {
+        \Cache::forget('voyager_menu_'.$this->name);
     }
 
     private static function processItems($items)
