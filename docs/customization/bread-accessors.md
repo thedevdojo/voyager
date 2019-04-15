@@ -8,7 +8,7 @@ For example if you have a `name` field and on the browse-page you want to displa
 
 public function getNameBrowseAttribute()
 {
-    return $this->name ? $this->name : 'Empty';
+    return $this->name ?? 'Empty';
 }
 ```
 
