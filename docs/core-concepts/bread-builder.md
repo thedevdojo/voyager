@@ -207,9 +207,9 @@ There are a few optional arguments you can use:
 - bottom
 - bottom-right
 
-**x** Relative offset on the x-axis. Defaults to 0
+**x** Relative offset to the position on the x-axis. Defaults to 0
 
-**y** Relative offset on the y-axis. Defaults to 0
+**y** Relative offset to the position on the y-axis. Defaults to 0
 
 **size** the size (in percent) of the watermark relative to the image. Defaults to 15
 
