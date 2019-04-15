@@ -195,7 +195,7 @@ So a `base_path` can, for example, look like the following:
 
 ### Watermark
 A watermark can be added to uploaded images. To do so, you need to define a `source` property relative to Voyagers storage-disk.
-There are a few optional arguments you can use:
+There are a few optional arguments you can use:  
 **position** the position where the watermark is placed. Can be:
 - top-left (default)
 - top
