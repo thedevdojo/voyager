@@ -1,5 +1,7 @@
 # Formfields
 
+Formfields 
+
 ## Description
 
 All types can include a description in order to help your future self or other users using your Voyager admin panel to understand exactly what a specific BREAD input field is for, this can be defined in the `Optional Details` JSON input field:
@@ -10,25 +12,22 @@ All types can include a description in order to help your future self or other u
 }
 ```
 
-# Something
+## Width
 
-When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box that allows you to include additional details or options for your datatype. This textarea accepts JSON and it applies to the following types of inputs:
+You can define define the width of a formfield as a number between 1 and 12, where 12 is full-width and 6 is half-width:
 
-* Text \(Text Box, Text Area, Rich Textbox and Hidden\)
-* Check Box
-* Drop Down
-* Radio Button
-* Image
-* Date
+```php
+{
+    "width" : 6
+}
+```
 
-Find out how to use these additional details below:
+## Default value
 
-## Text \(Text Box, Text Area, Rich Textbox and Hidden\)
+Most formfields allow you to define a default value when adding an entry:
 
 ```php
 {
     "default" : "Default text"
 }
 ```
-
-Text Box, Text Area, Rich Textbox and Hidden are all kind of texts inputs. In the JSON above you can specify the `default` value of the input.
