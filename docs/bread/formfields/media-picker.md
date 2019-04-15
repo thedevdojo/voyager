@@ -37,7 +37,7 @@ You can customize the behaviour with the following options:
     </tr>
     <tr>
       <td style="text-align:left">rename</td>
-      <td style="text-align:left">Renamed uploaded files to a given string/expression</td>
+      <td style="text-align:left">Rename uploaded files to a given string/expression</td>
       <td style="text-align:left">String</td>
       <td style="text-align:left">Original name</td>
     </tr>
@@ -133,7 +133,9 @@ You can customize the behaviour with the following options:
       <td style="text-align:left">[]</td>
     </tr>
   </tbody>
-</table>### Allowed types
+</table>
+
+### Allowed types
 
 If you want your users to only be able to upload specific file-types you can do so by passing an object with mime-types to the \`allowed\` prop, for example:
 
