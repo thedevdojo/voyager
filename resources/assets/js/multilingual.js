@@ -93,8 +93,13 @@
              * Setup translatable inputs
              */
             this.transInputs.each(function(i, inp) {
-                var _inp   = $(inp),
-                    inpUsr = $(_inp).parent().find(_this.settings.editing ? '.form-control' : '');
+                var _inp   = $(inp)
+                
+                if(_this.element.attr('id') === 'menu_item_modal') {
+                    var inpUsr = _inp.next(_this.settings.editing ? '.form-control' : '');
+                } else {
+                    var inpUsr = $(_inp).parent().find(_this.settings.editing ? '.form-control' : '');
+                }
 
                 inpUsr.data("inp", _inp);
                 _inp.data("inpUsr", inpUsr);
