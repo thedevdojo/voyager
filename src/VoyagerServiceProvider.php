@@ -19,8 +19,10 @@ use TCG\Voyager\Events\FormFieldsRegistered;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\FormFields\After\DescriptionHandler;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Models\Menu;
 use TCG\Voyager\Models\MenuItem;
 use TCG\Voyager\Models\Setting;
+use TCG\Voyager\Observers\MenuObserver;
 use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
@@ -47,6 +49,11 @@ class VoyagerServiceProvider extends ServiceProvider
         'browse_media',
         'browse_compass',
         'browse_hooks',
+    ];
+
+    protected $observers = [
+        Menu::class => MenuObserver::class,
+        MenuItem::class => MenuObserver::class,
     ];
 
     /**
@@ -121,6 +128,8 @@ class VoyagerServiceProvider extends ServiceProvider
         }
 
         $this->loadAuth();
+
+        $this->loadObservers();
 
         $this->registerViewComposers();
 
@@ -357,5 +366,12 @@ class VoyagerServiceProvider extends ServiceProvider
     private function registerAppCommands()
     {
         $this->commands(Commands\MakeModelCommand::class);
+    }
+
+    private function loadObservers()
+    {
+        foreach ($this->observers as $model => $observer) {
+            $model::observe($observer);
+        }
     }
 }
