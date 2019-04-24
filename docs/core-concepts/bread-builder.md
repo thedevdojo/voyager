@@ -145,7 +145,15 @@ The date & timestamp input field is where you can input a date. In the JSON abov
     "allow_create_folder": true,
     "allow_rename": true,
     "allow_crop": true,
-    "allowed": []
+    "allowed": [],
+    "hide_thumbnails": false,
+    "quality": 90,
+    "watermark": {
+        "source": "...",
+        "position": "top-left",
+        "x": 0,
+        "y": 0
+    }
 }
 ```
 
@@ -165,6 +173,8 @@ You can customize the behaviour with the following options:
 - `allow_create_folder` let users create new folders
 - `allow_rename` rename files
 - `allow_crop` let users crop images
+- `hide_thumbnails` hides known thumbnails and shows them as children of the parent image. Defaults to `true`
+- `quality` sets the quality of uploaded images and thumbnails. Defaults to `90`
 - `allowed` an object of mimetypes that are displayed. For example  
 `["image", "audio", "video"]`  
 or  
@@ -182,6 +192,99 @@ So a `base_path` can, for example, look like the following:
     "base_path": "/my-bread/{pk}/{date:Y}/{date:m}/"
 }
 ```
+
+### Watermark
+A watermark can be added to uploaded images. To do so, you need to define a `source` property relative to Voyagers storage-disk.
+There are a few optional arguments you can use:  
+**position** the position where the watermark is placed. Can be:
+- top-left (default)
+- top
+- top-right
+- left
+- center
+- right
+- bottom-left
+- bottom
+- bottom-right
+
+**x** Relative offset to the position on the x-axis. Defaults to 0
+
+**y** Relative offset to the position on the y-axis. Defaults to 0
+
+**size** the size (in percent) of the watermark relative to the image. Defaults to 15
+
+### Thumbnails
+You can generate thumbnails for each uploaded image.  
+A thumbnail can be one of three types:
+#### Fit
+Fit combines cropping and resizing to find the best way to generate a thumbnail matching your dimensions.  
+You have to pass `width` and can pass `height` and `position`.  
+An example for `fit` would be:
+```
+{
+    "thumbnails": [
+        {
+            "type": "fit",
+            "name": "fit-500",
+            "width": 500, // Required
+            "height": 500, // Optional
+            "position": "center" // Optional. Refer to http://image.intervention.io/api/fit
+        }
+    ]
+}
+```
+#### Crop
+Crop an image by given dimensions and position. 
+You have to pass `width` and `height` and can pass `x` and `y`.  
+An example for `crop` would be:
+```
+{
+    "thumbnails": [
+        {
+            "type": "crop",
+            "name": "crop-500-500",
+            "width": 500, // Required
+            "height": 500, // Required
+            "x": 50, // Optional. Left offset
+            "y": 50, // Optional. Top offset
+        }
+    ]
+}
+```
+
+#### Resize
+Resize the image to the given dimensions. 
+You have to pass `width` and/or `height`.  
+Some examples for `resize`:
+```
+{
+    "thumbnails": [
+        // Width will be 500px, height will be calculated based on the aspect-ratio
+        {
+            "type": "resize",
+            "name": "resize-500",
+            "width": 500,
+            "upsize": true, // Optional. Set to false to prevent upsizing
+        },
+        // Resizes the image to 500x500px
+        {
+            "type": "resize",
+            "name": "resize-500-500",
+            "width": 500,
+            "height": 500
+        },
+        // Height will be 500px, width will be auto-calculated
+        {
+            "type": "resize",
+            "name": "resize-500",
+            "width": null,
+            "height": 500
+        }
+    ]
+}
+```
+
+A watermark can also be inserted into each thumbnail. Just define the [watermark-options](#watermark) on the parent and set `watermark` to `true` for each thumbnail you want to insert the watermark to.
 
 ## Description
 

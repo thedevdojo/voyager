@@ -22,6 +22,7 @@
                         :allow-create-folder="{{ config('voyager.media.allow_create_folder', true) ? 'true' : 'false' }}"
                         :allow-rename="{{ config('voyager.media.allow_rename', true) ? 'true' : 'false' }}"
                         :allow-crop="{{ config('voyager.media.allow_crop', true) ? 'true' : 'false' }}"
+                        :details="{{ json_encode(['thumbnails' => config('voyager.media.thumbnails', []), 'watermark' => config('voyager.media.watermark', (object)[])]) }}"
                         ></media-manager>
                 </div>
             </div><!-- .row -->
