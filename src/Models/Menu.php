@@ -16,6 +16,19 @@ class Menu extends Model
 
     protected $guarded = [];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            $model->removeMenuFromCache();
+        });
+
+        static::deleted(function ($model) {
+            $model->removeMenuFromCache();
+        });
+    }
+
     public function items()
     {
         return $this->hasMany(Voyager::modelClass('MenuItem'));
