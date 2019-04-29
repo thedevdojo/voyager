@@ -14,6 +14,14 @@ if (!function_exists('menu')) {
     }
 }
 
+if (!function_exists('menu_exists')) {
+    function menu_exists($menuName)
+    {
+        return TCG\Voyager\Facades\Voyager::model('Menu')
+            ->where('name', $menuName)->count() > 0;
+    }
+}
+
 if (!function_exists('voyager_asset')) {
     function voyager_asset($path, $secure = null)
     {
