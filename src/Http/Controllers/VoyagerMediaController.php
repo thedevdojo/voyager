@@ -466,7 +466,8 @@ class VoyagerMediaController extends Controller
         return response()->json(compact('success', 'message'));
     }
 
-    public function sort(Request $request){
+    public function sort(Request $request)
+    {
         try {
             $slug = $request->get('slug');
             $id = $request->get('images')[0]['id'];
@@ -487,8 +488,7 @@ class VoyagerMediaController extends Controller
             }
 
             $images = [];
-            foreach($postedImages as $image)
-            {
+            foreach($postedImages as $image){
                 $images[] = $image['fileName'];
             }
 
@@ -500,8 +500,7 @@ class VoyagerMediaController extends Controller
                 'data' => [
                     'status'  => 200,
                     'message' => 'Files sorted',
-                    'check' => $images
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
             $code = 500;
