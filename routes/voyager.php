@@ -103,6 +103,7 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('upload', ['uses' => $namespacePrefix.'VoyagerMediaController@upload',             'as' => 'upload']);
             Route::post('remove', ['uses' => $namespacePrefix.'VoyagerMediaController@remove',             'as' => 'remove']);
             Route::post('crop', ['uses' => $namespacePrefix.'VoyagerMediaController@crop',             'as' => 'crop']);
+            Route::post('sort', ['uses' => $namespacePrefix.'VoyagerMediaController@sort',             'as' => 'sort']);
         });
 
         // BREAD Routes

@@ -466,6 +466,64 @@ class VoyagerMediaController extends Controller
         return response()->json(compact('success', 'message'));
     }
 
+    public function sort(Request $request){
+        try {
+            $slug = $request->get('slug');
+            $id = $request->get('images')[0]['id'];
+            $field = $request->get('images')[0]['fieldName'];
+            $postedImages = $request->get('images');
+
+            $dataType = \TCG\Voyager\Facades\Voyager::model('DataType')->where('slug', '=', $slug)->first();
+
+            $this->authorize('edit', app($dataType->model_name));
+
+            $model = app($dataType->model_name);
+            $entity = $model::find([$id])->first();
+
+
+
+            if (!isset($entity->{$field})) {
+                throw new \Exception(__('voyager::generic.field_does_not_exist'), 400);
+            }
+
+            $images = [];
+            foreach($postedImages as $image)
+            {
+                $images[] = $image['fileName'];
+            }
+
+            $entity->{$field} = json_encode($images);
+
+            $entity->save();
+
+            return response()->json([
+                'data' => [
+                    'status'  => 200,
+                    'message' => 'Files sorted',
+                    'check' => $images
+                ]
+            ]);
+        } catch (\Exception $e) {
+            $code = 500;
+            $message = __('voyager::generic.internal_error');
+
+            if ($e->getCode()) {
+                $code = $e->getCode();
+            }
+
+            if ($e->getMessage()) {
+                $message = $e->getMessage();
+            }
+
+            return response()->json([
+                'data' => [
+                    'status'  => $code,
+                    'message' => $message,
+                ],
+            ], $code);
+        }
+    }
+
     private function addWatermarkToImage($image, $options)
     {
         $watermark = Image::make(Storage::disk($this->filesystem)->path($options->source));

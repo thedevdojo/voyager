@@ -142,7 +142,7 @@
         function deleteHandler(tag, isMulti) {
           return function() {
             $file = $(this).siblings(tag);
-
+            console.log($file.parent());
             params = {
                 slug:   '{{ $dataType->slug }}',
                 filename:  $file.data('file-name'),
@@ -199,6 +199,37 @@
                 $('#confirm_delete_modal').modal('hide');
             });
             $('[data-toggle="tooltip"]').tooltip();
+
+            $('.dd-multiple-images').nestable({
+                expandBtnHTML: '',
+                collapseBtnHTML: '',
+                maxDepth : 1,
+                rootClass : 'dd-multiple-images',
+                listClass : 'dd-multiple-images-list',
+                handleClass : 'dd-multiple-images-handle',
+                itemClass : 'dd-multiple-images-item',
+                dragClass : 'dd-multiple-images-dragel'
+            });
+
+            $('.dd-multiple-images').on('change',function (){
+
+                var params= {
+                    images:$('.dd-multiple-images').nestable('serialize'),
+                    slug:   '{{ $dataType->slug }}'
+                };
+
+                $.post('{{ route('voyager.media.sort') }}', params, function (response) {
+                    if ( response
+                        && response.data
+                        && response.data.status
+                        && response.data.status == 200 ) {
+
+                        toastr.success(response.data.message);
+                    } else {
+                        toastr.error("Error sorting files.");
+                    }
+                });
+            });
         });
     </script>
 @stop
