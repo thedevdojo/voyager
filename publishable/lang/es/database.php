@@ -23,6 +23,7 @@ return [
     'edit_rows'                 => 'Editar las filas de la tabla siguiente',
     'edit_table'                => 'Editar la tabla siguiente:',
     'edit_table_not_exist'      => 'La tabla que desea editar no existe',
+    'editing_table'             => 'Editando tabla :table',
     'extra'                     => 'Extra',
     'field'                     => 'Campo',
     'field_safe_failed'         => 'No se pudo guardar el campo :field, ¡Estamos retrocediendo! ',

@@ -66,7 +66,7 @@ The media-manager got some new configuration-options:
 ```
 
 Compass is now switched off automatically when the environment is not `local`.  
-This can be overriden by the following new config-key:
+This can be overridden by the following new config-key:
 ```php
 'compass_in_production' => true,
 ```
