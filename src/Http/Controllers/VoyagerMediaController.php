@@ -38,6 +38,13 @@ class VoyagerMediaController extends Controller
         // Check permission
         $this->authorize('browse_media');
 
+        $options = $request->details ?? [];
+        $thumbnail_names = [];
+        $thumbnails = [];
+        if (!($options->hide_thumbnails ?? false)) {
+            $thumbnail_names = array_column(($options['thumbnails'] ?? []), 'name');
+        }
+
         $folder = $request->folder;
 
         if ($folder == '/') {
@@ -64,14 +71,31 @@ class VoyagerMediaController extends Controller
                 if (empty(pathinfo($item['path'], PATHINFO_FILENAME)) && !config('voyager.hidden_files')) {
                     continue;
                 }
+                // Its a thumbnail and thumbnails should be hidden
+                if (Str::endsWith($item['filename'], $thumbnail_names)) {
+                    $thumbnails[] = $item;
+                    continue;
+                }
                 $files[] = [
                     'name'          => $item['basename'],
+                    'filename'      => $item['filename'],
                     'type'          => $item['mimetype'] ?? 'file',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
                     'relative_path' => $item['path'],
                     'size'          => $item['size'],
                     'last_modified' => $item['timestamp'],
+                    'thumbnails'    => [],
                 ];
+            }
+        }
+
+        foreach ($files as $key => $file) {
+            foreach ($thumbnails as $thumbnail) {
+                if ($file['type'] != 'folder' && Str::startsWith($thumbnail['filename'], $file['filename'])) {
+                    $thumbnail['thumb_name'] = str_replace($file['filename'].'-', '', $thumbnail['filename']);
+                    $thumbnail['path'] = Storage::disk($this->filesystem)->url($thumbnail['path']);
+                    $files[$key]['thumbnails'][] = $thumbnail;
+                }
             }
         }
 
@@ -192,6 +216,8 @@ class VoyagerMediaController extends Controller
 
         $extension = $request->file->getClientOriginalExtension();
         $name = Str::replaceLast('.'.$extension, '', $request->file->getClientOriginalName());
+        $details = json_decode($request->get('details') ?? '{}');
+        $absolute_path = Storage::disk($this->filesystem)->path($request->upload_path);
 
         try {
             $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
@@ -234,7 +260,55 @@ class VoyagerMediaController extends Controller
                 if ($request->file->getClientOriginalExtension() == 'gif') {
                     copy($request->file->getRealPath(), $realPath.$file);
                 } else {
-                    $image->orientate()->save($realPath.$file);
+                    $image = $image->orientate();
+                    // Generate thumbnails
+                    if (property_exists($details, 'thumbnails') && is_array($details->thumbnails)) {
+                        foreach ($details->thumbnails as $thumbnail_data) {
+                            $type = $thumbnail_data->type ?? 'fit';
+                            $thumbnail = Image::make(clone $image);
+                            if ($type == 'fit') {
+                                $thumbnail = $thumbnail->fit(
+                                    $thumbnail_data->width,
+                                    ($thumbnail_data->height ?? null),
+                                    function ($constraint) {
+                                        $constraint->aspectRatio();
+                                    }, ($thumbnail_data->position ?? 'center')
+                                );
+                            } elseif ($type == 'crop') {
+                                $thumbnail = $thumbnail->crop(
+                                    $thumbnail_data->width,
+                                    $thumbnail_data->height,
+                                    ($thumbnail_data->x ?? null),
+                                    ($thumbnail_data->y ?? null)
+                                );
+                            } elseif ($type == 'resize') {
+                                $thumbnail = $thumbnail->resize(
+                                    $thumbnail_data->width,
+                                    ($thumbnail_data->height ?? null),
+                                    function ($constraint) use ($thumbnail_data) {
+                                        $constraint->aspectRatio();
+                                        if (!($thumbnail_data->upsize ?? true)) {
+                                            $constraint->upsize();
+                                        }
+                                    }
+                                );
+                            }
+                            if (
+                                property_exists($details, 'watermark') &&
+                                property_exists($details->watermark, 'source') &&
+                                property_exists($thumbnail_data, 'watermark') &&
+                                $thumbnail_data->watermark
+                            ) {
+                                $thumbnail = $this->addWatermarkToImage($thumbnail, $details->watermark);
+                            }
+                            $thumbnail->save($realPath.$request->upload_path.$name.'-'.($thumbnail_data->name ?? 'thumbnail').'.'.$extension, ($details->quality ?? 90));
+                        }
+                    }
+                    // Add watermark to image
+                    if (property_exists($details, 'watermark') && property_exists($details->watermark, 'source')) {
+                        $image = $this->addWatermarkToImage($image, $details->watermark);
+                    }
+                    $image->save($realPath.$file, ($details->quality ?? 90));
                 }
             }
 
@@ -390,5 +464,22 @@ class VoyagerMediaController extends Controller
         }
 
         return response()->json(compact('success', 'message'));
+    }
+
+    private function addWatermarkToImage($image, $options)
+    {
+        $watermark = Image::make(Storage::disk($this->filesystem)->path($options->source));
+        // Resize watermark
+        $width = $image->width() * (($options->size ?? 15) / 100);
+        $watermark->resize($width, null, function ($constraint) {
+            $constraint->aspectRatio();
+        });
+
+        return $image->insert(
+            $watermark,
+            ($options->position ?? 'top-left'),
+            ($options->x ?? 0),
+            ($options->y ?? 0)
+        );
     }
 }

@@ -25,6 +25,12 @@ require('./voyager_tinymce');
 require('./voyager_ace_editor');
 window.helpers = require('./helpers.js');
 
+Vue.component('admin-menu', require('./components/admin_menu.vue').default);
+
+var admin_menu = new Vue({
+    el: '#adminmenu',
+});
+
 $(document).ready(function () {
 
     var appContainer = $(".app-container"),
