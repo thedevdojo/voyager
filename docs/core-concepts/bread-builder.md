@@ -28,6 +28,7 @@ When Editing Your Browse, Read, Edit, Add, and Delete Rows you have a select box
 * Radio Button
 * Image
 * Date
+* Number
 
 Find out how to use these additional details below:
 
@@ -130,6 +131,18 @@ The image input has many options. By default if you do not specify any options n
 ```
 
 The date & timestamp input field is where you can input a date. In the JSON above you can specify the `format` value of the output of the date. It allows you to display a formatted `date` in browse and read views, using Carbon's `formatLocalized()` method
+
+### Number
+
+```php
+{
+    "step" : "0.1",
+    "min" : "0",
+    "max" : "10"
+}
+```
+
+These are standard attributes for number input field, default value for **step** is `any` if not defined.
 
 ### Media Picker
 
