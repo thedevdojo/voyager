@@ -1,4 +1,4 @@
-@if(isset($dataTypeContent->{$row->field}))
+@if(isset($dataTypeContent->{$row->field}) && $dataTypeContent->{$row->field} != '[]')
     @if(json_decode($dataTypeContent->{$row->field}))
         @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
           <div data-field-name="{{ $row->field }}">
