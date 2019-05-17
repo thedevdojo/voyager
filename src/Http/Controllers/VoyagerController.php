@@ -86,6 +86,7 @@ class VoyagerController extends Controller
                     if (substr_count($subject[1], '../') == 1) {
                         return str_replace('../', 'assets?path=', $subject[0]);
                     }
+
                     return $subject[0];
                 }, $fileContents);
             } else {
