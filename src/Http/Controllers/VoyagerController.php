@@ -77,14 +77,21 @@ class VoyagerController extends Controller
         $path = base_path('vendor/tcg/voyager/publishable/assets'.$path);
         if (File::exists($path)) {
             $mime = '';
+            $fileContents = File::get($path);
             if (ends_with($path, '.js')) {
                 $mime = 'text/javascript';
             } elseif (ends_with($path, '.css')) {
                 $mime = 'text/css';
+                $fileContents = preg_replace_callback('/url\((.*?)\)/', function ($subject) {
+                    if (substr_count($subject[1], '../') == 1) {
+                        return str_replace('../', 'assets?path=', $subject[0]);
+                    }
+                    return $subject[0];
+                }, $fileContents);
             } else {
                 $mime = File::mimeType($path);
             }
-            $response = response(File::get($path), 200, ['Content-Type' => $mime]);
+            $response = response($fileContents, 200, ['Content-Type' => $mime]);
             $response->setSharedMaxAge(31536000);
             $response->setMaxAge(31536000);
             $response->setExpires(new \DateTime('+1 year'));
