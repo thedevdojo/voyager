@@ -66,6 +66,18 @@ class Image extends BaseType
                         $thumb_resize_width = $resize_width;
                         $thumb_resize_height = $resize_height;
 
+                        if(isset($thumbnails->resize)) {
+                            $thumb_resize_width = null;
+                            $thumb_resize_height = null;
+
+                            if (isset($thumbnails->resize->width)) {
+                                $thumb_resize_width = $thumbnails->resize->width;
+                            }
+                            if (isset($thumbnails->resize->height)) {
+                                $thumb_resize_height = $thumbnails->resize->height;
+                            }
+                        }
+
                         if ($thumb_resize_width != null && $thumb_resize_width != 'null') {
                             $thumb_resize_width = intval($thumb_resize_width * $scale);
                         }
