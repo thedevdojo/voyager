@@ -123,7 +123,7 @@ class VoyagerBaseController extends Controller
 
         // Actions
         $actions = [];
-        if (!empty($dataTypeContent->first())) {       
+        if (!empty($dataTypeContent->first())) {
             foreach (Voyager::actions() as $action) {
                 $action = new $action($dataType, $dataTypeContent->first());
 
