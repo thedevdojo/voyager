@@ -14,7 +14,7 @@ class AddVoyagerUserFields extends Migration
                 $table->string('avatar')->nullable()->after('email')->default('users/default.png');
             }
             if (!Schema::hasColumn('users', 'role_id')) {
-                $table->bigInteger('role_id')->nullable()->after('id');              
+                $table->bigInteger('role_id')->nullable()->after('id');          
             }
         });
     }
