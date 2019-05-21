@@ -15,7 +15,8 @@ class AddVoyagerUserFields extends Migration
             }
             if (!Schema::hasColumn('users', 'role_id')) {
                 $table->bigInteger('role_id')->nullable()->after('id');
-            }           
+                
+            }
         });
     }
 
