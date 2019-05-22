@@ -73,6 +73,7 @@
                                     @if (isset($row->details->view))
                                         @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => ($edit ? 'edit' : 'add')])
                                     @elseif ($row->type == 'relationship')
+                                    <button type="button" onclick="addModel('{{ $row->details->table }}')" id="button-{{ $row->details->table }}" class="btn btn-primary save"><i class="voyager-plus"></i></button>
                                         @include('voyager::formfields.relationship', ['options' => $row->details])
                                     @else
                                         {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
@@ -200,5 +201,19 @@
             });
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+        function addModel(column) {
+            var link = "/admin/modals/"+column+"/create"
+            $.ajax({
+                url: link,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(json) {
+                    if (json['success']) {
+                        $('body').append(json['html']);
+                    }
+                }
+            });
+        }
     </script>
 @stop

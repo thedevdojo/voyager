@@ -363,12 +363,24 @@ class VoyagerBaseController extends Controller
 
         event(new BreadDataAdded($dataType, $data));
 
+        if(strpos($slug, 'modals') !== false){
         return redirect()
         ->route("voyager.{$dataType->slug}.index")
         ->with([
                 'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
                 'alert-type' => 'success',
             ]);
+        } else {
+            $request['enabled'] = 1;
+            $message = __('voyager::generic.successfully_added_new');
+            return response()->json([
+                'success' => true,
+                'error' => false,
+                'data' => $data,
+                'message' => $message,
+                'html' => 'null',
+            ]);
+        }
     }
 
     //***************************************
