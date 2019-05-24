@@ -64,7 +64,7 @@ abstract class Controller extends BaseController
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row, $row->details);
-            
+ 
             if ($row->type == 'relationship' && $row->details->type != 'belongsToMany') {
                 $row->field = @$row->details->column;
             }
@@ -112,7 +112,6 @@ abstract class Controller extends BaseController
                     'foreign_key' => !empty($row->details->foreign_key) ? $row->details->foreign_key : null, 
                     'related_key' => !empty($row->details->related_key) ? $row->details->related_key : null
                 ];
-                pr($multi_select);
 
             } else {
                 $data->{$row->field} = $content;
