@@ -122,7 +122,7 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
 
-                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
+                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table,isset($options->foreign_key) ? $options->foreign_key : null, isset($options->related_key) ? $options->related_key : null)->get()->map(function ($item, $key) use ($options) {
             			return $item->{$options->label};
             		})->all() : array();
                 @endphp
@@ -163,7 +163,7 @@
                 >
 
                         @php
-                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table)->get()->map(function ($item, $key) use ($options) {
+                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table,isset($options->foreign_key) ? $options->foreign_key : null, isset($options->related_key) ? $options->related_key : null)->get()->map(function ($item, $key) use ($options) {
                                 return $item->{$options->key};
                             })->all() : array();
                             $relationshipOptions = app($options->model)->all();

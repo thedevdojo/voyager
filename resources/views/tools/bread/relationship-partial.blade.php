@@ -1,4 +1,7 @@
-@php $relationshipDetails = $relationship['details']; @endphp
+@php 
+    $relationshipDetails = $relationship['details'];
+    $otherDetails = array_diff_key((array)$relationship['details'],array_flip(['model','table','type','column','label','key','pivot_table','pivot','foreign_key','related_key','taggable']));
+@endphp
 <div class="row row-dd row-dd-relationship">
     <div class="col-xs-2">
         <h4><i class="voyager-heart"></i><strong>{{ $relationship->display_name }}</strong></h4>
@@ -26,6 +29,16 @@
         <input type="text" name="field_display_name_{{ $relationship['field'] }}" class="form-control relationship_display_name" value="{{ $relationship['display_name'] }}">
     </div>
     <div class="col-xs-4">
+        <div class="alert alert-danger validation-error">
+            {{ __('voyager::json.invalid') }}
+        </div>
+        <textarea id="json-input-{{ json_encode($data['field']) }}" class="resizable-editor" data-editor="json" name="field_details_{{ $relationship['field'] }}">
+            @if(!empty($otherDetails))
+                {{ json_encode($otherDetails) }}
+            @else
+                {}
+            @endif
+        </textarea><br/>
         <div class="voyager-relationship-details-btn">
             <i class="voyager-angle-down"></i><i class="voyager-angle-up"></i>
             <span class="open_text">{{ __('voyager::database.relationship.open') }}</span>
@@ -90,6 +103,12 @@
                     <input type="checkbox" name="relationship_taggable_{{ $relationship['field'] }}" class="toggleswitch" data-on="{{ __('voyager::generic.yes') }}" data-off="{{ __('voyager::generic.no') }}" {{$relationshipDetails->taggable == 'on' ? 'checked' : ''}}>
                 </span>
             @endisset
+        </div>
+        <div class="relationship_details_content margin_top keys" style="@if($relationshipDetails->type != 'belongsToMany') display:none;@endif">
+            <label>{{ __('voyager::database.relationship.pivot_key') }} <span>{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</span></label>
+            <input type="text" name="relationship_foreign_key_{{ $relationship['field'] }}" class="form-control" value="@if(isset($relationshipDetails->foreign_key)){{ $relationshipDetails->foreign_key }}@endif"/>
+            <label>{{ __('voyager::database.relationship.pivot_key') }} <span class="label_table_name"></span></label>
+            <input type="text" name="relationship_related_key_{{ $relationship['field'] }}" class="form-control" value="@if(isset($relationshipDetails->related_key)){{ $relationshipDetails->related_key }}@endif" />
         </div>
     </div>
     <input type="hidden" value="0" name="field_required_{{ $relationship['field'] }}" checked="checked">

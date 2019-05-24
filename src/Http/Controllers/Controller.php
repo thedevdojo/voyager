@@ -64,7 +64,7 @@ abstract class Controller extends BaseController
             }
 
             $content = $this->getContentBasedOnType($request, $slug, $row, $row->details);
-
+            
             if ($row->type == 'relationship' && $row->details->type != 'belongsToMany') {
                 $row->field = @$row->details->column;
             }
@@ -105,7 +105,15 @@ abstract class Controller extends BaseController
 
             if ($row->type == 'relationship' && $row->details->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
-                $multi_select[] = ['model' => $row->details->model, 'content' => $content, 'table' => $row->details->pivot_table];
+                $multi_select[] = [
+                    'model' => $row->details->model, 
+                    'content' => $content, 
+                    'table' => $row->details->pivot_table, 
+                    'foreign_key' => !empty($row->details->foreign_key) ? $row->details->foreign_key : null, 
+                    'related_key' => !empty($row->details->related_key) ? $row->details->related_key : null
+                ];
+                pr($multi_select);
+
             } else {
                 $data->{$row->field} = $content;
             }
@@ -127,7 +135,7 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
+            $data->belongsToMany($sync_data['model'], $sync_data['table'],$sync_data['foreign_key'],$sync_data['related_key'])->sync($sync_data['content']);
         }
 
         // Rename folders for newly created data through media-picker

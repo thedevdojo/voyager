@@ -65,6 +65,7 @@ return [
         'which_column_from'    => 'Which column from the',
         'is_used_to_reference' => 'is used to reference the',
         'pivot_table'          => 'Pivot Table',
+        'pivot_key'            => '(Optional) Key related to',
         'selection_details'    => 'Selection Details',
         'display_the'          => 'Display the',
         'store_the'            => 'Store the',

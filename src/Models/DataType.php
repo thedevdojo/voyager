@@ -99,9 +99,7 @@ class DataType extends Model
                     ? app($this->model_name)->getTable()
                     : Arr::get($requestData, 'name')
                 );
-
                 $requestData = $this->getRelationships($requestData, $fields);
-
                 foreach ($fields as $field) {
                     $dataRow = $this->rows()->firstOrNew(['field' => $field]);
 
@@ -112,7 +110,7 @@ class DataType extends Model
                     $dataRow->required = boolval($requestData['field_required_'.$field]);
                     $dataRow->field = $requestData['field_'.$field];
                     $dataRow->type = $requestData['field_input_type_'.$field];
-                    $dataRow->details = json_decode($requestData['field_details_'.$field]);
+                    $dataRow->details = $requestData['field_details_'.$field];
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
@@ -179,18 +177,23 @@ class DataType extends Model
 
                     // Build the relationship details
                     $relationshipDetails = [
-                        'model'       => $requestData['relationship_model_'.$relationship],
-                        'table'       => $requestData['relationship_table_'.$relationship],
-                        'type'        => $requestData['relationship_type_'.$relationship],
-                        'column'      => $relationship_column,
-                        'key'         => $requestData['relationship_key_'.$relationship],
-                        'label'       => $requestData['relationship_label_'.$relationship],
-                        'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
-                        'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
-                        'taggable'    => $requestData['relationship_taggable_'.$relationship] ?? '0',
+                        'model'             => $requestData['relationship_model_'.$relationship],
+                        'table'             => $requestData['relationship_table_'.$relationship],
+                        'type'              => $requestData['relationship_type_'.$relationship],
+                        'column'            => $relationship_column,
+                        'key'               => $requestData['relationship_key_'.$relationship],
+                        'label'             => $requestData['relationship_label_'.$relationship],
+                        'pivot_table'       => $requestData['relationship_pivot_table_'.$relationship],
+                        'pivot'             => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1': '0',
+                        'foreign_key'       => $requestData['relationship_foreign_key_'.$relationship],
+                        'related_key'       => $requestData['relationship_related_key_'.$relationship],
+                        'taggable'          => $requestData['relationship_taggable_'.$relationship] ?? '0',
                     ];
 
-                    $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
+                    // Build the other details
+                    $otherDetails = json_decode($requestData["field_details_".$relationship],true);
+
+                    $requestData['field_details_'.$relationship] = array_merge($otherDetails,$relationshipDetails);
                 }
             }
         }
