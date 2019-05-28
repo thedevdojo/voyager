@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -38,6 +40,15 @@ class VoyagerServiceProvider extends ServiceProvider
         MenuItem::class => MenuItemPolicy::class,
     ];
 
+    protected $gates = [
+        'browse_admin',
+        'browse_bread',
+        'browse_database',
+        'browse_media',
+        'browse_compass',
+        'browse_hooks',
+    ];
+
     /**
      * Register the application services.
      */
@@ -54,6 +65,10 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->app->singleton('voyager', function () {
             return new Voyager();
+        });
+
+        $this->app->singleton('VoyagerAuth', function () {
+            return auth();
         });
 
         $this->loadHelpers();
@@ -97,13 +112,15 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadTranslationsFrom(realpath(__DIR__.'/../publishable/lang'), 'voyager');
 
-        if (config('app.env') == 'testing') {
-            $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
+        if (config('voyager.database.autoload_migrations', true)) {
+            if (config('app.env') == 'testing') {
+                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
+            }
+
+            $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
         }
 
-        $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
-
-        $this->registerGates();
+        $this->loadAuth();
 
         $this->registerViewComposers();
 
@@ -145,7 +162,7 @@ class VoyagerServiceProvider extends ServiceProvider
         } else {
             $currentRouteAction = null;
         }
-        $routeName = is_array($currentRouteAction) ? array_get($currentRouteAction, 'as') : null;
+        $routeName = is_array($currentRouteAction) ? Arr::get($currentRouteAction, 'as') : null;
 
         if ($routeName != 'voyager.dashboard') {
             return;
@@ -226,8 +243,8 @@ class VoyagerServiceProvider extends ServiceProvider
         $publishablePath = dirname(__DIR__).'/publishable';
 
         $publishable = [
-            'voyager_assets' => [
-                "{$publishablePath}/assets/" => public_path(config('voyager.assets_path')),
+            'voyager_avatar' => [
+                "{$publishablePath}/dummy_content/users/" => storage_path('app/public/users'),
             ],
             'seeds' => [
                 "{$publishablePath}/database/seeds/" => database_path('seeds'),
@@ -250,13 +267,15 @@ class VoyagerServiceProvider extends ServiceProvider
         );
     }
 
-    public function registerGates()
+    public function loadAuth()
     {
+        // DataType Policies
+
         // This try catch is necessary for the Package Auto-discovery
         // otherwise it will throw an error because no database
         // connection has been made yet.
         try {
-            if (Schema::hasTable('data_types')) {
+            if (Schema::hasTable(VoyagerFacade::model('DataType')->getTable())) {
                 $dataType = VoyagerFacade::model('DataType');
                 $dataTypes = $dataType->select('policy_name', 'model_name')->get();
 
@@ -273,7 +292,14 @@ class VoyagerServiceProvider extends ServiceProvider
                 $this->registerPolicies();
             }
         } catch (\PDOException $e) {
-            Log::error('No Database connection yet in VoyagerServiceProvider registerGates()');
+            Log::error('No Database connection yet in VoyagerServiceProvider loadAuth()');
+        }
+
+        // Gates
+        foreach ($this->gates as $gate) {
+            Gate::define($gate, function ($user) use ($gate) {
+                return $user->hasPermission($gate);
+            });
         }
     }
 
@@ -281,11 +307,13 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $formFields = [
             'checkbox',
+            'multiple_checkbox',
             'color',
             'date',
             'file',
             'image',
             'multiple_images',
+            'media_picker',
             'number',
             'password',
             'radio_btn',

@@ -1,15 +1,20 @@
+@php
+    $edit = !is_null($dataTypeContent->getKey());
+    $add  = is_null($dataTypeContent->getKey());
+@endphp
+
 @extends('voyager::master')
 
 @section('css')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 @stop
 
-@section('page_title', __('voyager::generic.'.(!is_null($dataTypeContent->getKey()) ? 'edit' : 'add')).' '.$dataType->display_name_singular)
+@section('page_title', __('voyager::generic.'.($edit ? 'edit' : 'add')).' '.$dataType->display_name_singular)
 
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i>
-        {{ __('voyager::generic.'.(!is_null($dataTypeContent->getKey()) ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
+        {{ __('voyager::generic.'.($edit ? 'edit' : 'add')).' '.$dataType->display_name_singular }}
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
@@ -23,10 +28,10 @@
                     <!-- form start -->
                     <form role="form"
                             class="form-edit-add"
-                            action="@if(!is_null($dataTypeContent->getKey())){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
+                            action="{{ $edit ? route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) : route('voyager.'.$dataType->slug.'.store') }}"
                             method="POST" enctype="multipart/form-data">
                         <!-- PUT Method if we are editing -->
-                        @if(!is_null($dataTypeContent->getKey()))
+                        @if($edit)
                             {{ method_field("PUT") }}
                         @endif
 
@@ -47,35 +52,42 @@
 
                             <!-- Adding / Editing -->
                             @php
-                                $dataTypeRows = $dataType->{(!is_null($dataTypeContent->getKey()) ? 'editRows' : 'addRows' )};
+                                $dataTypeRows = $dataType->{($edit ? 'editRows' : 'addRows' )};
                             @endphp
 
                             @foreach($dataTypeRows as $row)
                                 <!-- GET THE DISPLAY OPTIONS -->
                                 @php
-                                    $display_options = isset($row->details->display) ? $row->details->display : NULL;
+                                    $display_options = $row->details->display ?? NULL;
+                                    if ($dataTypeContent->{$row->field.'_'.($edit ? 'edit' : 'add')}) {
+                                        $dataTypeContent->{$row->field} = $dataTypeContent->{$row->field.'_'.($edit ? 'edit' : 'add')};
+                                    }
                                 @endphp
                                 @if (isset($row->details->legend) && isset($row->details->legend->text))
-                                    <legend class="text-{{isset($row->details->legend->align) ? $row->details->legend->align : 'center'}}" style="background-color: {{isset($row->details->legend->bgcolor) ? $row->details->legend->bgcolor : '#f0f0f0'}};padding: 5px;">{{$row->details->legend->text}}</legend>
+                                    <legend class="text-{{ $row->details->legend->align ?? 'center' }}" style="background-color: {{ $row->details->legend->bgcolor ?? '#f0f0f0' }};padding: 5px;">{{ $row->details->legend->text }}</legend>
                                 @endif
-                                @if (isset($row->details->formfields_custom))
-                                    @include('voyager::formfields.custom.' . $row->details->formfields_custom)
-                                @else
-                                    <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ isset($display_options->width) ? $display_options->width : 12 }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
-                                        {{ $row->slugify }}
-                                        <label for="name">{{ $row->display_name }}</label>
-                                        @include('voyager::multilingual.input-hidden-bread-edit-add')
-                                        @if($row->type == 'relationship')
-                                            @include('voyager::formfields.relationship', ['options' => $row->details])
-                                        @else
-                                            {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
-                                        @endif
 
-                                        @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
-                                            {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                                <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
+                                    {{ $row->slugify }}
+                                    <label class="control-label" for="name">{{ $row->display_name }}</label>
+                                    @include('voyager::multilingual.input-hidden-bread-edit-add')
+                                    @if (isset($row->details->view))
+                                        @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => ($edit ? 'edit' : 'add')])
+                                    @elseif ($row->type == 'relationship')
+                                        @include('voyager::formfields.relationship', ['options' => $row->details])
+                                    @else
+                                        {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+                                    @endif
+
+                                    @foreach (app('voyager')->afterFormFields($row, $dataType, $dataTypeContent) as $after)
+                                        {!! $after->handle($row, $dataType, $dataTypeContent) !!}
+                                    @endforeach
+                                    @if ($errors->has($row->field))
+                                        @foreach ($errors->get($row->field) as $error)
+                                            <span class="help-block">{{ $error }}</span>
                                         @endforeach
-                                    </div>
-                                @endif
+                                    @endif
+                                </div>
                             @endforeach
 
                         </div><!-- panel-body -->
@@ -129,7 +141,25 @@
 @section('javascript')
     <script>
         var params = {};
-        var $image;
+        var $file;
+
+        function deleteHandler(tag, isMulti) {
+          return function() {
+            $file = $(this).siblings(tag);
+
+            params = {
+                slug:   '{{ $dataType->slug }}',
+                filename:  $file.data('file-name'),
+                id:     $file.data('id'),
+                field:  $file.parent().data('field-name'),
+                multi: isMulti,
+                _token: '{{ csrf_token() }}'
+            }
+
+            $('.confirm_delete_name').text(params.filename);
+            $('#confirm_delete_modal').modal('show');
+          };
+        }
 
         $('document').ready(function () {
             $('.toggleswitch').bootstrapToggle();
@@ -151,21 +181,10 @@
                 $(el).slugify();
             });
 
-            $('.form-group').on('click', '.remove-multi-image', function (e) {
-                e.preventDefault();
-                $image = $(this).siblings('img');
-
-                params = {
-                    slug:   '{{ $dataType->slug }}',
-                    image:  $image.data('image'),
-                    id:     $image.data('id'),
-                    field:  $image.parent().data('field-name'),
-                    _token: '{{ csrf_token() }}'
-                }
-
-                $('.confirm_delete_name').text($image.data('image'));
-                $('#confirm_delete_modal').modal('show');
-            });
+            $('.form-group').on('click', '.remove-multi-image', deleteHandler('img', true));
+            $('.form-group').on('click', '.remove-single-image', deleteHandler('img', false));
+            $('.form-group').on('click', '.remove-multi-file', deleteHandler('a', true));
+            $('.form-group').on('click', '.remove-single-file', deleteHandler('a', false));
 
             $('#confirm_delete').on('click', function(){
                 $.post('{{ route('voyager.media.remove') }}', params, function (response) {
@@ -175,9 +194,9 @@
                         && response.data.status == 200 ) {
 
                         toastr.success(response.data.message);
-                        $image.parent().fadeOut(300, function() { $(this).remove(); })
+                        $file.parent().fadeOut(300, function() { $(this).remove(); })
                     } else {
-                        toastr.error("Error removing image.");
+                        toastr.error("Error removing file.");
                     }
                 });
 

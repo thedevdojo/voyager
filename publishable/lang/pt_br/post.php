@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'additional_fields'=> 'Campos adicionais',
     'category'         => 'Categoria da Publicação',
     'content'          => 'Conteúdo da Publicação',
     'details'          => 'Detalhes da Publicação',
@@ -13,9 +14,9 @@ return [
     'seo_title'        => 'Título SEO',
     'slug'             => 'URL slug',
     'status'           => 'Status da Publicação',
-    'status_draft'     => 'rascunho',
-    'status_pending'   => 'pendente',
-    'status_published' => 'publicados',
+    'status_draft'     => 'Rascunho',
+    'status_pending'   => 'Pendente',
+    'status_published' => 'Publicados',
     'title'            => 'Título da publicação',
     'title_sub'        => 'O título da sua publicação',
     'update'           => 'Alterar Publicação',

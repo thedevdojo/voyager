@@ -6,7 +6,7 @@ You can view your current Menus by clicking on the _Tools-&gt;Menu Builder_ butt
 
 When you are ready to add menu items to your menu you can click on the builder button of the corresponding menu:
 
-![](../.gitbook/assets/menu_1%20%281%29.jpg)
+![](../.gitbook/assets/menu_1.jpg)
 
 This will take you to the Menu Builder where you can add, edit, and delete menu items.
 
@@ -42,7 +42,7 @@ menu('main', 'my_menu');
 
 And your custom menu will now be output.
 
-### Menu as JSON
+## Menu as JSON
 
 If you dont want to render your menu but get an array instead, you can pass `_json` as the second parameter. For example:
 
@@ -51,4 +51,3 @@ menu('main', '_json')
 ```
 
 This will give you a collection of menu-items.
-

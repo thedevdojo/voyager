@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => 'Acción',
     'actions'                => 'Accions',
     'add'                    => 'Engadir',
@@ -58,6 +59,7 @@ return [
     'no_thanks'              => 'Non, grazas',
     'none'                   => 'Ningún',
     'not_null'               => 'Non nulo',
+    'no_results'             => 'No results',
     'options'                => 'Opcións',
     'password'               => 'Contrasinal',
     'permissions'            => 'Permisos',

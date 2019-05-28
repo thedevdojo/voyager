@@ -4,9 +4,10 @@ namespace TCG\Voyager;
 
 use ArrayAccess;
 use Illuminate\Database\Eloquent\Model;
+use JsonSerializable;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
-class Translator implements ArrayAccess
+class Translator implements ArrayAccess, JsonSerializable
 {
     protected $model;
     protected $attributes = [];
@@ -315,5 +316,12 @@ class Translator implements ArrayAccess
         $method = $this->model->getTranslatorMethod($method);
 
         return call_user_func_array([$this->model, $method], $arguments);
+    }
+
+    public function jsonSerialize()
+    {
+        return array_map(function ($array) {
+            return $array['value'];
+        }, $this->getRawAttributes());
     }
 }

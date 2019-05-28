@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'is_rtl'                 => 'false',
     'action'                 => '操作',
     'actions'                => '操作',
     'add'                    => '添加',
@@ -32,7 +33,7 @@ return [
     'delete_this_confirm'    => '是的，我要刪除！',
     'deselect_all'           => '反選全部',
     'download'               => '下載',
-    'drag_drop_info'         => 'Drag and drop the Items below to re-arrange them.',
+    'drag_drop_info'         => '拖曳下方的項目以重新放置它們',
     'edit'                   => '編輯',
     'email'                  => '電子郵件',
     'error_deleting'         => '抱歉，在刪除過程中出現了問題',
@@ -47,7 +48,7 @@ return [
     'key'                    => '鍵',
     'last_modified'          => '最近一次更改',
     'length'                 => '長度',
-    'locale'                 => 'Locale',
+    'locale'                 => '本地化',
     'login'                  => '登錄',
     'media'                  => '媒體',
     'menu_builder'           => '菜單生成器',
@@ -58,6 +59,7 @@ return [
     'no_thanks'              => '不，謝謝',
     'none'                   => '無',
     'not_null'               => '非空',
+    'no_results'             => '沒有結果',
     'options'                => '選項',
     'password'               => '密碼',
     'permissions'            => '權限',

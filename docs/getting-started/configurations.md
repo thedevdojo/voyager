@@ -94,10 +94,12 @@ By default Voyager is going to use the `public` local storage. You can additiona
     'tables' => [
         'hidden' => ['migrations', 'data_rows', 'data_types', 'menu_items', 'password_resets', 'permission_role', 'settings'],
     ],
+    'autoload_migrations' => true,
 ],
 ```
 
-You may wish to hide some database tables in the Voyager database section. In the database config you can choose which tables would like to hide.
+You may wish to hide some database tables in the Voyager database section. In the database config you can choose which tables would like to hide.  
+`autoload_migrations` allows you to exclude Voyagers migration-files from loading when running `php artisan migrate`.
 
 ## Multilingual
 
@@ -227,3 +229,22 @@ There is a new data type called **coordinates** that allow you to add a google m
 
 In this config you can set the default Google Maps Keys and center location. This can also be added to your .env file.
 
+## Allowed Mimetypes
+To allow/disallow mimetypes to be uploaded through the media-manager you can define an array `allowed_mimetypes`:
+```php
+<?php
+
+'allowed_mimetypes' => [
+     'image/jpeg',
+     'image/png',
+     'image/gif',
+     'image/bmp',
+     'video/mp4',
+],
+```
+The user can only upload files with the given mimetypes. If you want to allow all types to be uploaded you can use the following:
+```php
+<?php
+
+'allowed_mimetypes' => '*',
+```

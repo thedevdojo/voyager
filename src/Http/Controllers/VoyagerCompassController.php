@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Artisan;
 use Exception;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use TCG\Voyager\Facades\Voyager;
@@ -21,7 +22,11 @@ class VoyagerCompassController extends Controller
     public function index(Request $request)
     {
         // Check permission
-        Voyager::canOrFail('browse_compass');
+        $this->authorize('browse_compass');
+        //Check if app is not local
+        if (!\App::environment('local') && !config('voyager.compass_in_production', false)) {
+            throw new AccessDeniedHttpException();
+        }
 
         $message = '';
         $active_tab = '';
@@ -309,7 +314,7 @@ class LogViewer
                             'level_img'   => self::$levels_imgs[$level],
                             'date'        => $current[1],
                             'text'        => $current[3],
-                            'in_file'     => isset($current[4]) ? $current[4] : null,
+                            'in_file'     => $current[4] ?? null,
                             'stack'       => preg_replace("/^\n*/", '', $log_data[$i]),
                         ];
                     }

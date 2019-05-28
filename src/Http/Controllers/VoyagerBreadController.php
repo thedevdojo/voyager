@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use ReflectionClass;
 use TCG\Voyager\Database\Schema\Column;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
@@ -14,23 +15,20 @@ use TCG\Voyager\Events\BreadAdded;
 use TCG\Voyager\Events\BreadDeleted;
 use TCG\Voyager\Events\BreadUpdated;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\DataRow;
-use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Permission;
 
 class VoyagerBreadController extends Controller
 {
     public function index()
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         $dataTypes = Voyager::model('DataType')->select('id', 'name', 'slug')->get()->keyBy('name')->toArray();
 
         $tables = array_map(function ($table) use ($dataTypes) {
             $table = [
                 'name'       => $table,
-                'slug'       => isset($dataTypes[$table]['slug']) ? $dataTypes[$table]['slug'] : null,
-                'dataTypeId' => isset($dataTypes[$table]['id']) ? $dataTypes[$table]['id'] : null,
+                'slug'       => $dataTypes[$table]['slug'] ?? null,
+                'dataTypeId' => $dataTypes[$table]['id'] ?? null,
             ];
 
             return (object) $table;
@@ -49,7 +47,7 @@ class VoyagerBreadController extends Controller
      */
     public function create(Request $request, $table)
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
@@ -91,6 +89,8 @@ class VoyagerBreadController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('browse_bread');
+
         try {
             $dataType = Voyager::model('DataType');
             $res = $dataType->updateDataType($request->all(), true);
@@ -116,7 +116,7 @@ class VoyagerBreadController extends Controller
      */
     public function edit($table)
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
@@ -128,8 +128,12 @@ class VoyagerBreadController extends Controller
         $isModelTranslatable = is_bread_translatable($dataType);
         $tables = SchemaManager::listTableNames();
         $dataTypeRelationships = Voyager::model('DataRow')->where('data_type_id', '=', $dataType->id)->where('type', '=', 'relationship')->get();
+        $scopes = [];
+        if ($dataType->model_name != '') {
+            $scopes = $this->getModelScopes($dataType->model_name);
+        }
 
-        return Voyager::view('voyager::tools.bread.edit-add', compact('dataType', 'fieldOptions', 'isModelTranslatable', 'tables', 'dataTypeRelationships'));
+        return Voyager::view('voyager::tools.bread.edit-add', compact('dataType', 'fieldOptions', 'isModelTranslatable', 'tables', 'dataTypeRelationships', 'scopes'));
     }
 
     /**
@@ -142,7 +146,7 @@ class VoyagerBreadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         try {
@@ -179,7 +183,7 @@ class VoyagerBreadController extends Controller
      */
     public function destroy($id)
     {
-        Voyager::canOrFail('browse_bread');
+        $this->authorize('browse_bread');
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = Voyager::model('DataType')->find($id);
@@ -202,6 +206,17 @@ class VoyagerBreadController extends Controller
         }
 
         return redirect()->route('voyager.bread.index')->with($data);
+    }
+
+    public function getModelScopes($model_name)
+    {
+        $reflection = new ReflectionClass($model_name);
+
+        return collect($reflection->getMethods())->filter(function ($method) {
+            return starts_with($method->name, 'scope');
+        })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
+            return lcfirst(Str::replaceFirst('scope', '', $method->name));
+        });
     }
 
     // ************************************************************
@@ -252,7 +267,8 @@ class VoyagerBreadController extends Controller
                 'taggable'    => $request->relationship_taggable,
             ];
 
-            $newRow = new DataRow();
+            $className = Voyager::modelClass('DataRow');
+            $newRow = new $className();
 
             $newRow->data_type_id = $request->data_type_id;
             $newRow->field = $relationshipField;
@@ -303,7 +319,7 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->find($request->data_type_id);
 
-        $field = str_singular($dataType->name).'_'.$request->relationship_type.'_'.str_singular($request->relationship_table).'_relationship';
+        $field = Str::singular($dataType->name).'_'.$request->relationship_type.'_'.Str::singular($request->relationship_table).'_relationship';
 
         $relationshipFieldOriginal = $relationshipField = strtolower($field);
 

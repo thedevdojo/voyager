@@ -95,7 +95,7 @@
                                 '_field_name'  => 'title',
                                 '_field_trans' => get_field_translations($dataTypeContent, 'title')
                             ])
-                            <input type="text" class="form-control" id="title" name="title" placeholder="{{ __('voyager::generic.title') }}" value="@if(isset($dataTypeContent->title)){{ $dataTypeContent->title }}@endif">
+                            <input type="text" class="form-control" id="title" name="title" placeholder="{{ __('voyager::generic.title') }}" value="{{ $dataTypeContent->title ?? '' }}">
                         </div>
                     </div>
 
@@ -134,7 +134,7 @@
                                 '_field_name'  => 'excerpt',
                                 '_field_trans' => get_field_translations($dataTypeContent, 'excerpt')
                             ])
-                            <textarea class="form-control" name="excerpt">@if (isset($dataTypeContent->excerpt)){{ $dataTypeContent->excerpt }}@endif</textarea>
+                            <textarea class="form-control" name="excerpt">{{ $dataTypeContent->excerpt ?? '' }}</textarea>
                         </div>
                     </div>
 
@@ -154,7 +154,7 @@
                             @foreach($dataTypeRows as $row)
                                 @if(!in_array($row->field, $exclude))
                                     @php
-                                        $display_options = isset($row->details->display) ? $row->details->display : NULL;
+                                        $display_options = $row->details->display ?? NULL;
                                     @endphp
                                     @if (isset($row->details->formfields_custom))
                                         @include('voyager::formfields.custom.' . $row->details->formfields_custom)
@@ -164,7 +164,7 @@
                                             <label for="name">{{ $row->display_name }}</label>
                                             @include('voyager::multilingual.input-hidden-bread-edit-add')
                                             @if($row->type == 'relationship')
-                                                @include('voyager::formfields.relationship')
+                                                @include('voyager::formfields.relationship', ['options' => $row->details])
                                             @else
                                                 {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
                                             @endif
@@ -199,7 +199,7 @@
                                 <input type="text" class="form-control" id="slug" name="slug"
                                     placeholder="slug"
                                     {!! isFieldSlugAutoGenerator($dataType, $dataTypeContent, "slug") !!}
-                                    value="@if(isset($dataTypeContent->slug)){{ $dataTypeContent->slug }}@endif">
+                                    value="{{ $dataTypeContent->slug ?? '' }}">
                             </div>
                             <div class="form-group">
                                 <label for="status">{{ __('voyager::post.status') }}</label>
@@ -255,7 +255,7 @@
                                     '_field_name'  => 'meta_description',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'meta_description')
                                 ])
-                                <textarea class="form-control" name="meta_description">@if(isset($dataTypeContent->meta_description)){{ $dataTypeContent->meta_description }}@endif</textarea>
+                                <textarea class="form-control" name="meta_description">{{ $dataTypeContent->meta_description ?? '' }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="meta_keywords">{{ __('voyager::post.meta_keywords') }}</label>
@@ -263,7 +263,7 @@
                                     '_field_name'  => 'meta_keywords',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'meta_keywords')
                                 ])
-                                <textarea class="form-control" name="meta_keywords">@if(isset($dataTypeContent->meta_keywords)){{ $dataTypeContent->meta_keywords }}@endif</textarea>
+                                <textarea class="form-control" name="meta_keywords">{{ $dataTypeContent->meta_keywords ?? '' }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="seo_title">{{ __('voyager::post.seo_title') }}</label>
@@ -271,7 +271,7 @@
                                     '_field_name'  => 'seo_title',
                                     '_field_trans' => get_field_translations($dataTypeContent, 'seo_title')
                                 ])
-                                <input type="text" class="form-control" name="seo_title" placeholder="SEO Title" value="@if(isset($dataTypeContent->seo_title)){{ $dataTypeContent->seo_title }}@endif">
+                                <input type="text" class="form-control" name="seo_title" placeholder="SEO Title" value="{{ $dataTypeContent->seo_title ?? '' }}">
                             </div>
                         </div>
                     </div>
@@ -290,6 +290,24 @@
             <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
         </form>
     </div>
+    <div class="modal fade modal-danger" id="confirm_delete_modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::generic.are_you_sure') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>{{ __('voyager::generic.are_you_sure_delete') }} '<span class="confirm_delete_name"></span>'</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
+                    <button type="button" class="btn btn-danger" id="confirm_delete">{{ __('voyager::generic.delete_confirm') }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('javascript')
@@ -300,6 +318,38 @@
         @if ($isModelTranslatable)
             $('.side-body').multilingual({"editing": true});
         @endif
+
+        $('.side-body input[data-slug-origin]').each(function(i, el) {
+               $(el).slugify();
+           });
+            $('.form-group').on('click', '.remove-multi-image', function (e) {
+               e.preventDefault();
+               $image = $(this).siblings('img');
+                params = {
+                   slug:   '{{ $dataType->slug }}',
+                   image:  $image.data('image'),
+                   id:     $image.data('id'),
+                   field:  $image.parent().data('field-name'),
+                   _token: '{{ csrf_token() }}'
+               }
+                $('.confirm_delete_name').text($image.data('image'));
+               $('#confirm_delete_modal').modal('show');
+           });
+            $('#confirm_delete').on('click', function(){
+               $.post('{{ route('voyager.media.remove') }}', params, function (response) {
+                   if ( response
+                       && response.data
+                       && response.data.status
+                       && response.data.status == 200 ) {
+                        toastr.success(response.data.message);
+                       $image.parent().fadeOut(300, function() { $(this).remove(); })
+                   } else {
+                       toastr.error("Error removing image.");
+                   }
+               });
+                $('#confirm_delete_modal').modal('hide');
+           });
+           $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 @stop

@@ -13,6 +13,7 @@ use TCG\Voyager\Http\Controllers\ContentTypes\Checkbox;
 use TCG\Voyager\Http\Controllers\ContentTypes\Coordinates;
 use TCG\Voyager\Http\Controllers\ContentTypes\File;
 use TCG\Voyager\Http\Controllers\ContentTypes\Image as ContentImage;
+use TCG\Voyager\Http\Controllers\ContentTypes\MultipleCheckbox;
 use TCG\Voyager\Http\Controllers\ContentTypes\MultipleImage;
 use TCG\Voyager\Http\Controllers\ContentTypes\Password;
 use TCG\Voyager\Http\Controllers\ContentTypes\Relationship;
@@ -57,7 +58,7 @@ abstract class Controller extends BaseController
             if (!$request->hasFile($row->field) && !$request->has($row->field) && $row->type !== 'checkbox') {
                 // if the field is a belongsToMany relationship, don't remove it
                 // if no content is provided, that means the relationships need to be removed
-                if ((isset($row->details->type) && $row->details->type !== 'belongsToMany') || $row->field !== 'user_belongsto_role_relationship') {
+                if (isset($row->details->type) && $row->details->type !== 'belongsToMany') {
                     continue;
                 }
             }
@@ -110,6 +111,14 @@ abstract class Controller extends BaseController
             }
         }
 
+        if (isset($data->additional_attributes)) {
+            foreach ($data->additional_attributes as $attr) {
+                if ($request->has($attr)) {
+                    $data->{$attr} = $request->{$attr};
+                }
+            }
+        }
+
         $data->save();
 
         // Save translations
@@ -119,6 +128,24 @@ abstract class Controller extends BaseController
 
         foreach ($multi_select as $sync_data) {
             $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
+        }
+
+        // Rename folders for newly created data through media-picker
+        if ($request->session()->has($slug.'_path') || $request->session()->has($slug.'_uuid')) {
+            $old_path = $request->session()->get($slug.'_path');
+            $uuid = $request->session()->get($slug.'_uuid');
+            $new_path = str_replace($uuid, $data->getKey(), $old_path);
+            $folder_path = substr($old_path, 0, strpos($old_path, $uuid)).$uuid;
+
+            $rows->where('type', 'media_picker')->each(function ($row) use ($data, $uuid) {
+                $data->{$row->field} = str_replace($uuid, $data->getKey(), $data->{$row->field});
+            });
+            $data->save();
+            if ($old_path != $new_path && !Storage::disk(config('voyager.storage.disk'))->exists($new_path)) {
+                $request->session()->forget([$slug.'_path', $slug.'_uuid']);
+                Storage::disk(config('voyager.storage.disk'))->move($old_path, $new_path);
+                Storage::disk(config('voyager.storage.disk'))->deleteDirectory($folder_path);
+            }
         }
 
         return $data;
@@ -155,6 +182,13 @@ abstract class Controller extends BaseController
             // Get the rules for the current field whatever the format it is in
             $rules[$fieldName] = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
 
+            if ($id && property_exists($field->details->validation, 'edit')) {
+                $action_rules = $field->details->validation->edit->rule;
+                $rules[$fieldName] = array_merge($rules[$fieldName], (is_array($action_rules) ? $action_rules : explode('|', $action_rules)));
+            } elseif (!$id && property_exists($field->details->validation, 'add')) {
+                $action_rules = $field->details->validation->add->rule;
+                $rules[$fieldName] = array_merge($rules[$fieldName], (is_array($action_rules) ? $action_rules : explode('|', $action_rules)));
+            }
             // Fix Unique validation rule on Edit Mode
             if ($is_update) {
                 foreach ($rules[$fieldName] as &$fieldRule) {
@@ -184,6 +218,9 @@ abstract class Controller extends BaseController
             /********** CHECKBOX TYPE **********/
             case 'checkbox':
                 return (new Checkbox($request, $slug, $row, $options))->handle();
+            /********** MULTIPLE CHECKBOX TYPE **********/
+            case 'multiple_checkbox':
+                return (new MultipleCheckbox($request, $slug, $row, $options))->handle();
             /********** FILE TYPE **********/
             case 'file':
                 return (new File($request, $slug, $row, $options))->handle();

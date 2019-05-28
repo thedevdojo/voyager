@@ -3,7 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
@@ -15,6 +15,19 @@ class Menu extends Model
     protected $table = 'menus';
 
     protected $guarded = [];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            $model->removeMenuFromCache();
+        });
+
+        static::deleted(function ($model) {
+            $model->removeMenuFromCache();
+        });
+    }
 
     public function items()
     {
@@ -39,11 +52,13 @@ class Menu extends Model
     public static function display($menuName, $type = null, array $options = [])
     {
         // GET THE MENU - sort collection in blade
-        $menu = static::where('name', '=', $menuName)
+        $menu = \Cache::remember('voyager_menu_'.$menuName, \Carbon\Carbon::now()->addDays(30), function () use ($menuName) {
+            return static::where('name', '=', $menuName)
             ->with(['parent_items.children' => function ($q) {
                 $q->orderBy('order');
             }])
             ->first();
+        });
 
         // Check for Menu Existence
         if (!isset($menu)) {
@@ -55,21 +70,13 @@ class Menu extends Model
         // Convert options array into object
         $options = (object) $options;
 
-        // Set static vars values for admin menus
-        if (in_array($type, ['admin', 'admin_menu'])) {
-            $permissions = Voyager::model('Permission')->all();
-            $dataTypes = Voyager::model('DataType')->all();
-            $prefix = trim(route('voyager.dashboard', [], false), '/');
-            $user_permissions = null;
+        $items = $menu->parent_items->sortBy('order');
 
-            if (!Auth::guest()) {
-                $user = Voyager::model('User')->find(Auth::id());
-                $user_permissions = $user->role ? $user->role->permissions->pluck('key')->toArray() : [];
-            }
+        if ($menuName == 'admin' && $type == '_json') {
+            $items = static::processItems($items);
+        }
 
-            $options->user = (object) compact('permissions', 'dataTypes', 'prefix', 'user_permissions');
-
-            // change type to blade template name - TODO funky names, should clean up later
+        if ($type == 'admin') {
             $type = 'voyager::menu.'.$type;
         } else {
             if (is_null($type)) {
@@ -83,8 +90,6 @@ class Menu extends Model
             $options->locale = app()->getLocale();
         }
 
-        $items = $menu->parent_items->sortBy('order');
-
         if ($type === '_json') {
             return $items;
         }
@@ -92,5 +97,59 @@ class Menu extends Model
         return new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render()
         );
+    }
+
+    public function removeMenuFromCache()
+    {
+        \Cache::forget('voyager_menu_'.$this->name);
+    }
+
+    private static function processItems($items)
+    {
+        $items = $items->transform(function ($item) {
+            // Translate title
+            $item->title = $item->getTranslatedAttribute('title');
+            // Resolve URL/Route
+            $item->href = $item->link(true);
+
+            if ($item->href == url()->current() && $item->href != '') {
+                // The current URL is exactly the URL of the menu-item
+                $item->active = true;
+            } elseif (starts_with(url()->current(), Str::finish($item->href, '/'))) {
+                // The current URL is "below" the menu-item URL. For example "admin/posts/1/edit" => "admin/posts"
+                $item->active = true;
+            }
+            if (($item->href == url('') || $item->href == route('voyager.dashboard')) && $item->children->count() > 0) {
+                // Exclude sub-menus
+                $item->active = false;
+            } elseif ($item->href == route('voyager.dashboard') && url()->current() != route('voyager.dashboard')) {
+                // Exclude dashboard
+                $item->active = false;
+            }
+
+            if ($item->children->count() > 0) {
+                $item->setRelation('children', static::processItems($item->children));
+
+                if (!$item->children->where('active', true)->isEmpty()) {
+                    $item->active = true;
+                }
+            }
+
+            return $item;
+        });
+
+        // Filter items by permission
+        $items = $items->filter(function ($item) {
+            return !$item->children->isEmpty() || app('VoyagerAuth')->user()->can('browse', $item);
+        })->filter(function ($item) {
+            // Filter out empty menu-items
+            if ($item->url == '' && $item->route == '' && $item->children->count() == 0) {
+                return false;
+            }
+
+            return true;
+        });
+
+        return $items->values();
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ config('app.locale') }}" @if (config('voyager.multilingual.rtl')) dir="rtl" @endif>
+<html lang="{{ config('app.locale') }}" dir="{{ __('voyager::generic.is_rtl') == 'true' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,7 +8,7 @@
     <meta name="description" content="admin login">
     <title>Admin - {{ Voyager::setting("admin.title") }}</title>
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
-    @if (config('voyager.multilingual.rtl'))
+    @if (__('voyager::generic.is_rtl') == 'true')
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.css">
         <link rel="stylesheet" href="{{ voyager_asset('css/rtl.css') }}">
     @endif
@@ -31,6 +31,9 @@
         }
         .login-button, .bar:before, .bar:after{
             background:{{ config('voyager.primary_color','#22A7F0') }};
+        }
+        .remember-me-text{
+            padding:0 5px;
         }
     </style>
 
@@ -81,6 +84,12 @@
                         </div>
                     </div>
 
+                    <div class="form-group" id="rememberMeGroup">
+                        <div class="controls">
+                        <input type="checkbox" name="remember" value="1"><span class="remember-me-text">{{ __('voyager::generic.remember_me') }}</span>
+                        </div>
+                    </div>
+                    
                     <button type="submit" class="btn btn-block login-button">
                         <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager::login.loggingin') }}...</span>
                         <span class="signin">{{ __('voyager::generic.login') }}</span>
