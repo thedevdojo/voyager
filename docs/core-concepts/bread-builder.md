@@ -136,9 +136,9 @@ The date & timestamp input field is where you can input a date. In the JSON abov
 
 ```php
 {
-    "step" : "0.1",
-    "min" : "0",
-    "max" : "10"
+    "step" : 0.1,
+    "min" : 0,
+    "max" : 10
 }
 ```
 
