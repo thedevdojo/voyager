@@ -61,6 +61,7 @@ $(document).ready(function () {
                     var query = {
                         search: params.term,
                         type: $(this).data('get-items-field'),
+                        method: $(this).data('method'),
                         page: params.page || 1
                     }
                     return query;
