@@ -70,8 +70,7 @@ The media-manager got some new configuration-options:
 ```
 
 Compass is now switched off automatically when the environment is not `local`.  
-This can be overriden by the following new config-key:
-
+This can be overridden by the following new config-key:
 ```php
 'compass_in_production' => true,
 ```
@@ -120,4 +119,3 @@ Also you can remove the `assets_path` config-key from `config/voyager.php`.
 ## Troubleshooting
 
 Be sure to ask us on our slack channel if you are experiencing any issues and we will try and assist. Thanks.
-

@@ -20,6 +20,7 @@
                 :expanded="false"
                 :show-expand-button="true"
                 :element="'input[name=&quot;{{ $row->field }}&quot;]'"
+                :details="{{ json_encode($options ?? []) }}"
             ></media-manager>
             <input type="hidden" :value="{{ $content }}" name="{{ $row->field }}">
         </div>

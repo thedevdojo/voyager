@@ -53,7 +53,7 @@ class DataRow extends Model
         }
         $params['order_by'] = $this->field;
 
-        return url()->current().'?'.http_build_query(array_merge($params, \Request::all()));
+        return url()->current().'?'.http_build_query(array_merge(\Request::all(), $params));
     }
 
     public function setDetailsAttribute($value)

@@ -100,8 +100,8 @@ This section is meant for users who are installing Voyager on an already existin
 The first thing you should do is publish the assets that come with Voyager. You can do that by running the following commands:
 
 ```bash
-php artisan vendor:publish --provider=VoyagerServiceProvider
-php artisan vendor:publish --provider=ImageServiceProviderLaravel5
+php artisan vendor:publish --provider="TCG\Voyager\VoyagerServiceProvider"
+php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravel5"
 ```
 
 Next, call `php artisan migrate` to migrate all Voyager table.

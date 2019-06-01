@@ -11,9 +11,7 @@ class MediaPickerHandler extends AbstractHandler
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
         $content = '';
-        if (isset($options->max) && $options->max == 1) {
-            $content = "'".$dataTypeContent->{$row->field}."'";
-        } else {
+        if (isset($options->max) && $options->max > 1) {
             if (is_array($dataTypeContent->{$row->field})) {
                 $dataTypeContent->{$row->field} = json_encode($dataTypeContent->{$row->field});
             }
@@ -23,6 +21,8 @@ class MediaPickerHandler extends AbstractHandler
             } else {
                 $content = json_encode('[]');
             }
+        } else {
+            $content = "'".$dataTypeContent->{$row->field}."'";
         }
 
         if (isset($options->base_path)) {
