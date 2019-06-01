@@ -19,6 +19,7 @@
   * [Dropdown](bread/formfields/dropdown.md)
   * [Images](bread/formfields/images.md)
   * [Media Picker](bread/formfields/media-picker.md)
+  * [Number](bread/formfields/number.md)
 
 ## Core concepts
 
