@@ -15,7 +15,15 @@ You can customize the behaviour with the following options:
     "allow_create_folder": true,
     "allow_rename": true,
     "allow_crop": true,
-    "allowed": []
+    "allowed": [],
+    "hide_thumbnails": false,
+    "quality": 90,
+    "watermark": {
+        "source": "...",
+        "position": "top-left",
+        "x": 0,
+        "y": 0
+    }
 }
 ```
 
@@ -121,6 +129,18 @@ You can customize the behaviour with the following options:
       <td style="text-align:left">Allow users to crop images</td>
       <td style="text-align:left">bool</td>
       <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">hide_thumbnails</td>
+      <td style="text-align:left">Hides known thumbnails and shows them as children of the parent image</td>
+      <td style="text-align:left">bool</td>
+      <td style="text-align:left">true</td>
+    </tr>
+    <tr>
+      <td style="text-align:left">quality</td>
+      <td style="text-align:left">Sets the quality of uploaded images and thumbnails</td>
+      <td style="text-align:left">int</td>
+      <td style="text-align:left">90</td>
     </tr>
     <tr>
       <td style="text-align:left">allowed</td>
