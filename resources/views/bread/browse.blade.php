@@ -47,8 +47,8 @@
                             <form method="get" class="form-search">
                                 <div id="search-input">
                                     <select id="search_key" name="key">
-                                        @foreach($searchable as $key)
-                                            <option value="{{ $key }}" @if($search->key == $key || $key == $defaultSearchKey){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $key)) }}</option>
+                                        @foreach($searchable as $key => $value)
+                                            <option value="{{ $key }}" @if($search->key == $key || $key == $defaultSearchKey){{ 'selected' }}@endif>{{ ucwords(str_replace('_', ' ', $value)) }}</option>
                                         @endforeach
                                     </select>
                                     <select id="filter" name="filter">
