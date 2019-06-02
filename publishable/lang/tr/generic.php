@@ -67,6 +67,7 @@ return [
     'public_url'             => 'Açık Bağlantı',
     'read'                   => 'Göster',
     'rename'                 => 'Yeniden Adlandır',
+    'remember_me'            => 'Beni Hatırla',
     'required'               => 'Gerekli',
     'return_to_list'         => 'Listeye dön',
     'route'                  => 'Route',
