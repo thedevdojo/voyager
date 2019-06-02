@@ -5,7 +5,6 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Events\BreadDataDeleted;
 use TCG\Voyager\Events\BreadDataRestored;
@@ -63,7 +62,7 @@ class VoyagerBaseController extends Controller
         }
 
         // Transform rows into searchable
-        foreach($dataType->browseRows as $row) {
+        foreach ($dataType->browseRows as $row) {
             if (isset($row->details->label) && $row->type != 'hidden') {
                 $searchable[$row->details->label] = $row->display_name;
             }
@@ -132,7 +131,7 @@ class VoyagerBaseController extends Controller
             }
 
             if ($model->timestamps && ($orderBy == null || $search->value == null)) {
-                $dataTypeContent = call_user_func([$query->latest($search->related ? $search->related_table .'.'.$model::CREATED_AT : $dataType->name.'.'.$model::CREATED_AT), $getter]);
+                $dataTypeContent = call_user_func([$query->latest($search->related ? $search->related_table.'.'.$model::CREATED_AT : $dataType->name.'.'.$model::CREATED_AT), $getter]);
             }
 
             // Replace relationships' keys for labels and create READ links if a slug is provided.
