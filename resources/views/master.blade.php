@@ -12,9 +12,9 @@
     <!-- Favicon -->
     <?php $admin_favicon = Voyager::setting('admin.icon_image', ''); ?>
     @if($admin_favicon == '')
-        <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/png">
     @else
-        <link rel="shortcut icon" href="{{ Voyager::image($admin_favicon) }}" type="image/x-icon">
+        <link rel="shortcut icon" href="{{ Voyager::image($admin_favicon) }}" type="image/png">
     @endif
 
 
