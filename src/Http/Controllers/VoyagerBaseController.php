@@ -63,12 +63,12 @@ class VoyagerBaseController extends Controller
 
         // Transform rows into searchable
         foreach ($dataType->browseRows as $row) {
-            if (isset($row->details->label) && $row->type != 'hidden') {
-                $searchable[$row->details->label] = $row->display_name;
-            }
-
-            if (!isset($row->details->label) && $row->type != 'hidden') {
-                $searchable[$row->field] = $row->display_name;
+            if ($row->type != 'hidden') {
+                if (isset($row->details->label)) {
+                    $searchable[$row->details->label] = $row->display_name;
+                } else {
+                    $searchable[$row->field] = $row->display_name;
+                }
             }
         }
 
