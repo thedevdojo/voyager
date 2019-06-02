@@ -79,7 +79,7 @@ class VoyagerBaseController extends Controller
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
                 $query = $model->{$dataType->scope}();
             } else {
-                $query = $model::select('*', ''.$dataType->name.'.id as id', ''.$dataType->name.'.created_at as created_at', ''.$dataType->name.'.updated_at as updated_at');
+                $query = $model::select('*', ''.$dataType->name.'.'.$model->getKeyName().' as '.$model->getKeyName().'', ''.$dataType->name.'.created_at as created_at', ''.$dataType->name.'.updated_at as updated_at');
             }
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
