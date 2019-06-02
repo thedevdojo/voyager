@@ -1,5 +1,5 @@
 @if(isset($dataTypeContent->{$row->field}))
-    @if(json_decode($dataTypeContent->{$row->field}))
+    @if(json_decode($dataTypeContent->{$row->field}) !== null)
         @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
           <div data-field-name="{{ $row->field }}">
             <a class="fileType" target="_blank"
