@@ -224,7 +224,7 @@ trait Translatable
         $locales = config('voyager.multilingual.locales', [$default]);
 
         foreach ($locales as $locale) {
-            if (!isset($translations[$locale])) {
+            if (empty($translations[$locale])) {
                 continue;
             }
 
