@@ -104,7 +104,7 @@ class VoyagerBaseController extends Controller
                         $search->related_table = $row->details->table;
                     }
                 }
-                
+
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
                 $query->where($search->key, $search_filter, $search_value);
