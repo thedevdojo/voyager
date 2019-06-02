@@ -79,7 +79,7 @@ class VoyagerBaseController extends Controller
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
                 $query = $model->{$dataType->scope}();
             } else {
-                $query = $model::select('*', ''.$dataType->name.'.'.$model->getKeyName().' as '.$model->getKeyName().'', ''.$dataType->name.'.created_at as created_at', ''.$dataType->name.'.updated_at as updated_at');
+                $query = $model::select($dataType->name.'.*');
             }
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
@@ -99,6 +99,7 @@ class VoyagerBaseController extends Controller
             if ($search->key && $search->filter) {
                 foreach ($dataType->browseRows as $row) {
                     if ($row->type == 'relationship' && $search->key == $row->details->label && $row->details->type == 'belongsTo' && $orderBy != $row->field) {
+                        $query->addSelect($row->details->table.'.'.$row->details->key);
                         $query->leftJoin($row->details->table, $dataType->name.'.'.$row->details->column, $row->details->table.'.'.$row->details->key);
                         $search->related = true;
                         $search->related_table = $row->details->table;
@@ -114,6 +115,7 @@ class VoyagerBaseController extends Controller
             if ($orderBy && !in_array($orderBy, $dataType->fields())) {
                 foreach ($dataType->browseRows as $row) {
                     if ($row->type == 'relationship' && $orderBy === $row->field) {
+                        $query->addSelect($row->details->table.'.'.$row->details->key);
                         $query->leftJoin($row->details->table, $dataType->name.'.'.$row->details->column, $row->details->table.'.'.$row->details->key);
                         $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
                         $dataTypeContent = call_user_func([$query->orderBy($row->details->table.'.'.$row->details->label, $querySortOrder), $getter]);
