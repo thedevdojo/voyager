@@ -249,21 +249,15 @@ class PagesTableSeeder extends Seeder
 
         //Permissions
         Permission::generateFor('pages');
+
         //Content
-        $page = Page::firstOrNew([
-            'slug' => __('voyager::seeders.pages.slug'),
-        ]);
-        if (!$page->exists) {
-            $page->fill([
+        foreach (__('voyager::seeders.pages') as $page) {
+            $page = array_merge($page, [
                 'author_id' => 0,
-                'title'     => __('voyager::seeders.pages.title'),
-                'excerpt'   => __('voyager::seeders.pages.excerpt'),
-                'body'      => __('voyager::seeders.pages.body'),
-                'image'            => 'pages/page1.jpg',
-                'meta_description' => __('voyager::seeders.pages.meta_description'),
-                'meta_keywords'    => __('voyager::seeders.pages.meta_keywords'),
-                'status'           => Page::STATUS_ACTIVE,
-            ])->save();
+                'image'     => 'pages/page1.jpg',
+                'status'    => Page::STATUS_ACTIVE
+            ]);
+            Page::firstOrCreate($page);
         }
     }
 
