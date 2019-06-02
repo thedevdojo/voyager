@@ -6,7 +6,7 @@ return [
     'new'                  => 'Neue Einstellung',
     'help_name'            => 'Einstellungs-Name z.B. Admin Titel',
     'help_key'             => 'Einstellungs-Schlüssel z.B. title',
-    'help_option'          => '(optional, betrifft lediglich bestimmte Typen wie Dropdown Box oder Radio Button)',
+    'help_option'          => '(optional, die selben Optionen wie für das entsprechende Formfield können benutzt werden)',
     'add_new'              => 'Neue Einstellung hinzufügen',
     'delete_question'      => 'Wollen Sie die Einstellung :setting wirklich löschen?',
     'delete_confirm'       => 'Ja, diese Einstellung löschen',
