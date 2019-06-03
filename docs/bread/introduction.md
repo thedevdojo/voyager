@@ -2,7 +2,7 @@
 
 When adding or editing the current BREAD for a database table you will first see the BREAD info which allows you to set the Display Names, slug, icon, `Model` and Controller Namespace, Policy Name. You can also choose if you would like to Generate permissions for that BREAD type.
 
-![](../.gitbook/assets/bread_details%20%281%29.png)
+![](../.gitbook/assets/bread_details.png)
 
 When you scroll down you will see each of the rows that are associated with that table where you can select where in your views you want to see each of those fields:
 
@@ -183,6 +183,6 @@ public function scopeCurrentUser($query)
 
 Next, go to the BREAD-settings for `posts` and look for the `Scope` input and select `currentUser`:
 
-![](../.gitbook/assets/bread_scope%20%281%29.jpg)
+![](../.gitbook/assets/bread_scope.jpg)
 
 After hitting `Submit` you will only see your own posts.
