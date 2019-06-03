@@ -136,7 +136,7 @@ Route::group(['as' => 'voyager.'], function () {
     });
 
     //Asset Routes
-    Route::get('assets/{path}', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'assets'])->where('path', '(.*)');
+    Route::get('voyager-assets', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'voyager_assets']);
 
     event(new RoutingAfter());
 });
