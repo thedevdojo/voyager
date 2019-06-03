@@ -17,7 +17,7 @@ class MultilingualTest extends TestCase
         parent::setUp();
 
         // Add another language
-        config()->set('voyager.multilingual.locales', ['en', 'da']);
+        config()->set('voyager.multilingual.locales', ['en', 'da', 'pt_br']);
 
         // Turn on multilingual
         config()->set('voyager.multilingual.enabled', true);
@@ -255,13 +255,13 @@ class MultilingualTest extends TestCase
         $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', ['de'])->count(), 0);
 
         //Translation, correct locale-array
-        $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', ['de', 'pt'])->count(), 1);
+        $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', ['de', 'pt_br'])->count(), 1);
 
         //Translation, wrong locale
         $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', 'de')->count(), 0);
 
         //Translation, correct locale
-        $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', 'pt')->count(), 1);
+        $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', 'pt_br')->count(), 1);
     }
 }
 
