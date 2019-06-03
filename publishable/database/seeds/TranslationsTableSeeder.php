@@ -12,7 +12,7 @@ class TranslationsTableSeeder extends Seeder
 
     protected $appLocale;
 
-    protected $transLocales = ['en', 'pt_br'];
+    protected $transLocales = ['pt_br'];
 
     /**
      * Auto generated seed file.
@@ -39,14 +39,9 @@ class TranslationsTableSeeder extends Seeder
         foreach (__('voyager::seeders.categories') as $key => $category) {
             $cat = Category::where('slug', $category['slug'])->firstOrFail();
 
-
             foreach ($this->transLocales as $locale) {
-                if ($this->appLocale !== $locale){
-                    App::setLocale($locale);
-                    $this->trans($locale, $this->arr(['categories', 'slug'], $cat->id), __("voyager::seeders.categories")[$key]['slug']);
-                    $this->trans($locale, $this->arr(['categories', 'name'], $cat->id), __("voyager::seeders.categories")[$key]['slug']);
-                    App::setLocale($this->appLocale);
-                }
+                $this->trans($locale, $this->arr(['categories', 'slug'], $cat->id), __("voyager::seeders.categories")[$key]['slug']);
+                $this->trans($locale, $this->arr(['categories', 'name'], $cat->id), __("voyager::seeders.categories")[$key]['slug']);
             }
         }
     }
@@ -68,11 +63,7 @@ class TranslationsTableSeeder extends Seeder
             $dtp = DataType::where($_fld, __("voyager::seeders.data_types.{$transField}.singular"))->firstOrFail();
 
             foreach ($this->transLocales as $locale) {
-                if ($this->appLocale !== $locale){
-                    App::setLocale($locale);
-                    $this->trans($locale, $this->arr($_tpl, $dtp->id), __("voyager::seeders.data_types.{$transField}.singular"));
-                    App::setLocale($this->appLocale);
-                }
+                $this->trans($locale, $this->arr($_tpl, $dtp->id), __("voyager::seeders.data_types.{$transField}.singular"));
             }
         }
 
@@ -87,11 +78,7 @@ class TranslationsTableSeeder extends Seeder
             $dtp = DataType::where($_fld, __("voyager::seeders.data_types.{$transField}.plural"))->firstOrFail();
 
             foreach ($this->transLocales as $locale) {
-                if ($this->appLocale !== $locale){
-                    App::setLocale($locale);
-                    $this->trans($locale, $this->arr($_tpl, $dtp->id), __("voyager::seeders.data_types.{$transField}.plural"));
-                    App::setLocale($this->appLocale);
-                }
+                $this->trans($locale, $this->arr($_tpl, $dtp->id), __("voyager::seeders.data_types.{$transField}.plural"));
             }
         }
     }
@@ -107,18 +94,14 @@ class TranslationsTableSeeder extends Seeder
             $page = Page::where('slug', $page['slug'])->firstOrFail();
 
             foreach ($this->transLocales as $locale) {
-                if ($this->appLocale !== $locale){
-                    App::setLocale($locale);
-                    $_arr = $this->arr(['pages', 'title'], $page->id);
-                    $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['title']);
+                $_arr = $this->arr(['pages', 'title'], $page->id);
+                $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['title']);
 
-                    $_arr = $this->arr(['pages', 'slug'], $page->id);
-                    $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['slug']);
+                $_arr = $this->arr(['pages', 'slug'], $page->id);
+                $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['slug']);
 
-                    $_arr = $this->arr(['pages', 'body'], $page->id);
-                    $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['body']);
-                    App::setLocale($this->appLocale);
-                }
+                $_arr = $this->arr(['pages', 'body'], $page->id);
+                $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['body']);
             }
         }
     }
@@ -136,11 +119,7 @@ class TranslationsTableSeeder extends Seeder
         foreach ($transFields as $transField) {
             $_item = $this->findMenuItem(__("voyager::seeders.menu_items.{$transField}"));
             foreach ($this->transLocales as $locale) {
-                if ($this->appLocale !== $locale){
-                    App::setLocale($locale);
-                    $this->trans($locale, $this->arr($_tpl, $_item->id), __("voyager::seeders.menu_items.{$transField}"));
-                    App::setLocale($this->appLocale);
-                }
+                $this->trans($locale, $this->arr($_tpl, $_item->id), __("voyager::seeders.menu_items.{$transField}"));
             }
         }
 

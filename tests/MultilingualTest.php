@@ -263,6 +263,15 @@ class MultilingualTest extends TestCase
         //Translation, correct locale
         $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', 'pt_br')->count(), 1);
     }
+
+    public function testInstallingWithOtherLocale()
+    {
+        // Application was installed with pt_br as default locale.
+        // See setUp() method in TestCase.php
+        $this->assertEquals($this->app->getLocale(), 'pt_br');
+
+        $this->assertEquals(Page::first()->slug, 'ola-mundo');
+    }
 }
 
 class TranslatableModel extends Model
