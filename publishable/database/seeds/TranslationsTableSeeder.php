@@ -36,16 +36,15 @@ class TranslationsTableSeeder extends Seeder
     private function categoriesTranslations()
     {
         // Adding translations for 'categories'
-        //
-        $transFields = ['1', '2'];
-        foreach ($transFields as $transField) {
-            $cat = Category::where('slug', __("voyager::seeders.categories.slug.{$transField}"))->firstOrFail();
+        foreach (__('voyager::seeders.categories') as $key => $category) {
+            $cat = Category::where('slug', $category['slug'])->firstOrFail();
+
 
             foreach ($this->transLocales as $locale) {
                 if ($this->appLocale !== $locale){
                     App::setLocale($locale);
-                    $this->trans($locale, $this->arr(['categories', 'slug'], $cat->id), __("voyager::seeders.categories.slug.{$transField}"));
-                    $this->trans($locale, $this->arr(['categories', 'name'], $cat->id), __("voyager::seeders.categories.name.{$transField}"));
+                    $this->trans($locale, $this->arr(['categories', 'slug'], $cat->id), __("voyager::seeders.categories")[$key]['slug']);
+                    $this->trans($locale, $this->arr(['categories', 'name'], $cat->id), __("voyager::seeders.categories")[$key]['slug']);
                     App::setLocale($this->appLocale);
                 }
             }
@@ -104,20 +103,20 @@ class TranslationsTableSeeder extends Seeder
      */
     private function pagesTranslations()
     {
-        $page = Page::where('slug', __("voyager::seeders.pages.slug"))->firstOrFail();
-        if ($page->exists) {
+        foreach (__('voyager::seeders.pages') as $key => $page) {
+            $page = Page::where('slug', $page['slug'])->firstOrFail();
 
             foreach ($this->transLocales as $locale) {
                 if ($this->appLocale !== $locale){
                     App::setLocale($locale);
                     $_arr = $this->arr(['pages', 'title'], $page->id);
-                    $this->trans($locale, $_arr, __("voyager::seeders.pages.title"));
+                    $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['title']);
 
                     $_arr = $this->arr(['pages', 'slug'], $page->id);
-                    $this->trans($locale, $_arr, __("voyager::seeders.pages.slug"));
+                    $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['slug']);
 
                     $_arr = $this->arr(['pages', 'body'], $page->id);
-                    $this->trans($locale, $_arr, __("voyager::seeders.pages.body"));
+                    $this->trans($locale, $_arr, __("voyager::seeders.pages")[$key]['body']);
                     App::setLocale($this->appLocale);
                 }
             }

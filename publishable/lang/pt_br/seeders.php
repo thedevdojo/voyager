@@ -2,13 +2,13 @@
 
 return [
     'categories' => [
-        'slug' => [
-            '1' => 'categoria-1',
-            '2' => 'categoria-2'
+        [
+            'slug' => 'categoria-1',
+            'name' => 'Categoria 2'
         ],
-        'name' => [
-            '1' => 'Categoria 1',
-            '2' => 'Categoria 2'
+        [
+            'slug' => 'categoria-2',
+            'name' => 'Categoria 2'
         ],
     ],
     'data_rows'  => [
@@ -80,13 +80,15 @@ return [
         'users'        => 'Usuários',
     ],
     'pages' => [
-        'slug'             => 'ola-mundo',
-        'title'            => 'Olá Mundo',
-        'excerpt'          => 'Mussum Ipsum, cacilds vidis litro abertis. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Leite de capivaris, leite de mula manquis sem cabeça. Viva Forevis aptent taciti sociosqu ad litora torquent. ',
-        'body'             => '<p>Olá mundo. Mussum Ipsum, cacilds vidis litro abertis. Mé faiz elementum girarzis, nisi eros vermeio. Quem num gosta di mim que vai caçá sua turmis! Manduma pindureta quium dia nois paga. Interagi no mé, cursus quis, vehicula ac nisi. </p>
-                               <p>Copo furadis é disculpa de bebadis, arcu quam euismod magna. Delegadis gente finis, bibendum egestas augue arcu ut est. Casamentiss faiz malandris se pirulitá. Paisis, filhis, espiritis santis. </p>',
-        'meta_description' => 'Yar Meta Descrição',
-        'meta_keywords'    => 'Palavra-chave1, Palavra-chave2',
+        [
+            'slug'             => 'ola-mundo',
+            'title'            => 'Olá Mundo',
+            'excerpt'          => 'Mussum Ipsum, cacilds vidis litro abertis. Vehicula non. Ut sed ex eros. Vivamus sit amet nibh non tellus tristique interdum. Mais vale um bebadis conhecidiss, que um alcoolatra anonimis. Leite de capivaris, leite de mula manquis sem cabeça. Viva Forevis aptent taciti sociosqu ad litora torquent. ',
+            'body'             => '<p>Olá mundo. Mussum Ipsum, cacilds vidis litro abertis. Mé faiz elementum girarzis, nisi eros vermeio. Quem num gosta di mim que vai caçá sua turmis! Manduma pindureta quium dia nois paga. Interagi no mé, cursus quis, vehicula ac nisi. </p>
+                                   <p>Copo furadis é disculpa de bebadis, arcu quam euismod magna. Delegadis gente finis, bibendum egestas augue arcu ut est. Casamentiss faiz malandris se pirulitá. Paisis, filhis, espiritis santis. </p>',
+            'meta_description' => 'Yar Meta Descrição',
+            'meta_keywords'    => 'Palavra-chave1, Palavra-chave2',
+        ]
     ],
     'roles'      => [
         'admin' => 'Administrador',
