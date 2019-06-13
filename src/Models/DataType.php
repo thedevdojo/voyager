@@ -110,7 +110,7 @@ class DataType extends Model
                     $dataRow->required = boolval($requestData['field_required_'.$field]);
                     $dataRow->field = $requestData['field_'.$field];
                     $dataRow->type = $requestData['field_input_type_'.$field];
-                    $dataRow->details = $requestData['field_details_'.$field];
+                    $dataRow->details = json_decode($requestData['field_details_'.$field]);
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
@@ -174,7 +174,9 @@ class DataType extends Model
                     if ($requestData['relationship_type_'.$relationship] == 'hasOne' || $requestData['relationship_type_'.$relationship] == 'hasMany') {
                         $relationship_column = $requestData['relationship_column_'.$relationship];
                     }
-
+                    if(!isset($requestData['relationship_key_'.$relationship])){
+                        dd($requestData);
+                    }
                     // Build the relationship details
                     $relationshipDetails = [
                         'model'             => $requestData['relationship_model_'.$relationship],
@@ -193,7 +195,7 @@ class DataType extends Model
                     // Build the other details
                     $otherDetails = json_decode($requestData["field_details_".$relationship],true);
 
-                    $requestData['field_details_'.$relationship] = array_merge($otherDetails,$relationshipDetails);
+                    $requestData['field_details_'.$relationship] = json_encode(array_merge($otherDetails,$relationshipDetails));
                 }
             }
         }
