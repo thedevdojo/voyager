@@ -7,6 +7,10 @@
         <h1 class="page-title">
             <i class="{{ $dataType->icon }}"></i> {{ $dataType->display_name_plural }}
         </h1>
+        <a href="{{ route('voyager.bread.edit', $dataType->name) }}"
+           class="btn btn-primary btn-sm edit btn-add-new">
+            <i class="voyager-edit"></i> {{ __('voyager::generic.edit') }}
+        </a>
         @can('add', app($dataType->model_name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success btn-add-new">
                 <i class="voyager-plus"></i> <span>{{ __('voyager::generic.add_new') }}</span>
