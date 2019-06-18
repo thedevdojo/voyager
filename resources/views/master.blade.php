@@ -145,6 +145,10 @@ if (starts_with(app('VoyagerAuth')->user()->avatar, 'http://') || starts_with(ap
 @if(!empty(config('voyager.additional_js')))<!-- Additional Javascript -->
     @foreach(config('voyager.additional_js') as $js)<script type="text/javascript" src="{{ asset($js) }}"></script>@endforeach
 @endif
-
+<script>
+    $(document).ready(function(){
+        tinymce.init(window.tinymceConfig);
+    })
+</script>
 </body>
 </html>
