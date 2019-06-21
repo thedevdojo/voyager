@@ -50,6 +50,7 @@ return [
     'length'                 => 'Uzunluk',
     'locale'                 => 'Dil',
     'login'                  => 'Giriş',
+    'logout'                 => 'Çıkış',
     'media'                  => 'Medya',
     'menu_builder'           => 'Menu Oluşturucu',
     'move'                   => 'Hareket',
