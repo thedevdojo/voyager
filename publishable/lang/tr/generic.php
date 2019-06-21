@@ -40,6 +40,7 @@ return [
     'exception'              => 'İstisna',
     'featured'               => 'Öne Çıkan',
     'field_does_not_exist'   => 'Alan bulunamadı',
+    'home'                   => 'Anasayfa',
     'how_to_use'             => 'Nasıl Kullanılır',
     'index'                  => 'İndeks',
     'internal_error'         => 'Internal Error',
