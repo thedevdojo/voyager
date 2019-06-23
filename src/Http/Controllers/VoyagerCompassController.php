@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use TCG\Voyager\Facades\Voyager;
 
 class VoyagerCompassController extends Controller
 {
