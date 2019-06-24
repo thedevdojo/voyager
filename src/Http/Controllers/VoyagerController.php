@@ -63,6 +63,10 @@ class VoyagerController extends Controller
             } else {
                 $status = __('voyager::media.error_uploading');
             }
+        }else if(in_array($ext, ['pdf','zip', 'doc', 'docx'])){
+            $request->file('image')->storeAs(config('voyager.storage.subfolder') . $path, $filename. '.' . $file->getClientOriginalExtension());
+            $status = __('voyager::media.success_uploading');
+            $fullFilename = $fullPath;
         } else {
             $status = __('voyager::media.uploading_wrong_type');
         }
