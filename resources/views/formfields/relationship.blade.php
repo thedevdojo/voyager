@@ -47,11 +47,11 @@
         @elseif($options->type == 'hasOne')
 
             @php
-
                 $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-
                 $model = app($options->model);
-                $query = $model::where($options->column, '=', $relationshipData->id)->first();
+                dd($relationshipData->referer);
+                $query = $model::where($options->column, '=', $options->key ? $dataTypeContent->{$options->key} : $relationshipData->id)->first();
+                    dd($query);
 
             @endphp
 
@@ -68,7 +68,6 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
-
             		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
             			return $item->{$options->label};
             		})->all();
