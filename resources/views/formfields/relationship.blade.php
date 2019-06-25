@@ -49,7 +49,7 @@
             @php
                 $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                 $model = app($options->model);
-                $query = $model::where($options->column, '=', $options->key ? $dataTypeContent->{$options->key} : $relationshipData->id)->first();
+                $query = $model::where($options->column, '=', $options->key ? $relationshipData->{$options->key} : $relationshipData->id)->first();
 
             @endphp
 
