@@ -49,9 +49,7 @@
             @php
                 $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                 $model = app($options->model);
-                dd($relationshipData->referer);
                 $query = $model::where($options->column, '=', $options->key ? $dataTypeContent->{$options->key} : $relationshipData->id)->first();
-                    dd($query);
 
             @endphp
 
