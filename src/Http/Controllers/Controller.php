@@ -280,11 +280,12 @@ abstract class Controller extends BaseController
     /**
      * Authorize a given action for the current user.
      *
-     * @param  mixed  $ability
-     * @param  mixed|array  $arguments
-     * @return \Illuminate\Auth\Access\Response
+     * @param mixed       $ability
+     * @param mixed|array $arguments
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Auth\Access\Response
      */
     public function authorize($ability, $arguments = [])
     {
