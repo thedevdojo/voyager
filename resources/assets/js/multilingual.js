@@ -25,9 +25,7 @@
  *
  */
 ;( function( $, window, document, undefined ) {
-
     "use strict";
-
     var pluginName = "multilingual",
         defaults = {
             editing:       false,                       // Editing or View
@@ -35,7 +33,6 @@
             transInputs:   'input[data-i18n = true]', // Hidden inputs holding translations
             langSelectors: '.language-selector:first input' // Language selector inputs
         };
-
     function Plugin ( element, options ) {
         this.element   = $(element);
         this.settings  = $.extend( {}, defaults, options );
@@ -43,36 +40,28 @@
         this._name     = pluginName;
         this.init();
     }
-
     $.extend( Plugin.prototype, {
         init: function() {
             this.form          = this.element.find(this.settings.form);
             this.transInputs   = $(this.settings.transInputs);
             this.langSelectors = this.element.find(this.settings.langSelectors);
-
             if (this.transInputs.length === 0 || this.langSelectors === 0) {
                 return false;
             }
-
             this.setup();
             this.refresh();
         },
 
-
         setup: function() {
             var _this = this;
-
             this.locale = this.returnLocale();
-
             $('.js-language-label').text(this.locale);
-
             /**
              * Setup language selector
              */
             this.langSelectors.each(function(i, btn) {
                 $(btn).change($.proxy(_this.selectLanguage, _this));
             });
-
             /**
              * Save data before submit
              */
@@ -82,29 +71,39 @@
                 });
             }
         },
-
         /**
          * Refresh plugin data, required for dynamic calls (ex menu)
          */
         refresh: function() {
             var _this = this;
-
             /**
              * Setup translatable inputs
              */
             this.transInputs.each(function(i, inp) {
-                var _inp   = $(inp),
-                    inpUsr = _inp.nextAll(_this.settings.editing ? '.form-control' : '');
+                var _inp   = $(inp)
+
+                var segment_str = window.location.pathname;
+                var segment_array = segment_str.split('/');
+                var last_segment2 = segment_array.pop();
+                if ('create' === last_segment2 || 'edit' === last_segment2 ) {
+
+                    if(_this.element.attr('id') === 'menu_item_modal') {
+                        var inpUsr = _inp.next(_this.settings.editing ? '.form-control' : '');
+                    } else {
+                        var inpUsr = $(_inp).parent().find(_this.settings.editing ? '.form-control' : '');
+                    }
+                } else {
+                    inpUsr = _inp.next(_this.settings.editing ? '.form-control' : '');
+                }
+
 
                 inpUsr.data("inp", _inp);
                 _inp.data("inpUsr", inpUsr);
-
                 // Load and Save data in hidden input
                 var $_data = _this.loadJsonField(_inp.val());
                 if (_this.settings.editing) {
                     _inp.val(JSON.stringify($_data));
                 }
-
                 _this.langSelectors.each(function(i, btn) {
                     _inp.data(btn.id, $_data[btn.id]);  // Save translation in mem
                     if (btn.id == _this.locale) {
@@ -113,33 +112,26 @@
                 });
             });
         },
-
         loadJsonField: function(str) {
             var $_data = {};
-
             if (this.isJsonValid(str)) {
                 $_data = JSON.parse(str);
-
                 /**
                  * Convert nulls to ''.
                  */
                 this.langSelectors.each(function(i, btn) {  // loop languages
                     $_data[btn.id] = $_data[btn.id] || '';
                 });
-
                 return $_data;
             }
-
             /**
              * For the sake of validation, this looks ugly, but it will work
              */
             this.langSelectors.each(function(i, btn) {
                 $_data[btn.id] = '';
             });
-
             return $_data;
         },
-
 
         isJsonValid: function(str) {
             try {
@@ -149,7 +141,6 @@
             }
             return true;
         },
-
         /**
          * Return Locale for a given Button Group Selector
          *
@@ -160,23 +151,18 @@
                 return $(this).parent().hasClass('active');
             }).prop('id');
         },
-
         selectLanguage: function(e) {
             var _this = this,
                 lang  = e.target.id;
-
             this.transInputs.each(function(i, inp) {
                 if (_this.settings.editing) {
                     _this.updateInputCache($(inp));
                 }
                 _this.loadLang($(inp), lang);
             });
-
             this.locale = lang;
-
             $('.js-language-label').text(lang);
         },
-
         /**
          * Update cache for all inputs, and prepare form data for submit
          */
@@ -186,7 +172,6 @@
                 _this.updateInputCache($(inp));
             });
         },
-
         /**
          * Update cache for a single input
          */
@@ -195,31 +180,25 @@
                 inpUsr = inp.data('inpUsr'),
                 $_val  = $(inpUsr).val(),
                 $_data = {};  // Create new data
-
             if (inpUsr.hasClass('richTextBox')) {
                 var $_mce = tinymce.get('richtext'+inpUsr.prop('name'));
                 $_val = $_mce.getContent();
             }
-
             this.langSelectors.each(function(i, btn) {
                 var lang = btn.id;
                 $_data[lang] = (_this.locale == lang) ? $_val : inp.data(lang);
             });
-
             inp.val(JSON.stringify($_data));
             inp.data(this.locale, $_val);     // Update single key Mem
         },
-
         /**
          * Load input translation
          */
         loadLang: function(inp, lang) {
             var inpUsr = inp.data("inpUsr"),
                 _val   = inp.data(lang);
-
             if (!this.settings.editing) {
                 inpUsr.text(_val);
-
             } else {
                 var _mce = tinymce.get('richtext'+inpUsr.prop('name'));
                 if (inpUsr.hasClass('richTextBox') && _mce && _mce.initialized) {
@@ -230,7 +209,6 @@
             }
         }
     });
-
     $.fn[ pluginName ] = function( options ) {
         return this.each( function() {
             if ( !$.data( this, pluginName ) ) {
@@ -238,5 +216,4 @@
             }
         } );
     };
-
 } )( jQuery, window, document );
