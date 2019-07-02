@@ -11,9 +11,7 @@ You can override any of the BREAD views for a **single** BREAD by creating a new
 
 Alternatively you can override the views for **all** BREADs by creating any of the above files under `resources/views/vendor/voyager/bread`
 
-<<<<<<< HEAD
 ## Using custom Controllers
-=======
 #### Overriding submit button:
 You can override the submit button without the need to override the whole `edit-add.blade.php` by extending the `submit-buttons` section:  
 ```blade
@@ -25,7 +23,6 @@ You can override the submit button without the need to override the whole `edit-
 ```
 
 ### Using custom Controllers
->>>>>>> 1.2
 
 You can override the controller for a single BREAD by creating a controller which extends Voyagers controller, for example:
 
@@ -59,7 +56,7 @@ If you want to override any of Voyagers core controllers you first have to chang
 | Here you can specify voyager controller settings
 |
 */
-​
+
 'controllers' => [
     'namespace' => 'App\\Http\\Controllers\\Voyager',
 ],
