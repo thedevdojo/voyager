@@ -32,4 +32,14 @@ class DeleteAction extends AbstractAction
     {
         return 'javascript:;';
     }
+
+    public function shouldActionDisplayOnDataType()
+    {
+        $model = $this->data->getModel();
+        if ($model && in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses($model)) && $this->data->deleted_at) {
+            return false;
+        }
+
+        return parent::shouldActionDisplayOnDataType();
+    }
 }

@@ -4,7 +4,6 @@ namespace TCG\Voyager\Policies;
 
 use TCG\Voyager\Contracts\User;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\DataType;
 
 class MenuItemPolicy extends BasePolicy
 {
@@ -27,7 +26,7 @@ class MenuItemPolicy extends BasePolicy
         }
 
         if (self::$datatypes == null) {
-            self::$datatypes = DataType::all()->keyBy('slug');
+            self::$datatypes = Voyager::model('DataType')::all()->keyBy('slug');
         }
 
         $regex = str_replace('/', '\/', preg_quote(route('voyager.dashboard')));
@@ -40,6 +39,8 @@ class MenuItemPolicy extends BasePolicy
 
         if ($slug == '') {
             $slug = 'admin';
+        } elseif ($slug == 'compass' && !\App::environment('local') && !config('voyager.compass_in_production', false)) {
+            return false;
         }
 
         if (empty($action)) {

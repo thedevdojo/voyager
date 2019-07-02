@@ -5,13 +5,14 @@ namespace TCG\Voyager\Tests;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Models\Page;
 use TCG\Voyager\Traits\Translatable;
 use TCG\Voyager\Translator;
 use TCG\Voyager\Translator\Collection;
 
 class MultilingualTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -237,6 +238,30 @@ class MultilingualTest extends TestCase
         $this->assertTrue($model->getRawAttributes()['title']['exists']);
         $this->assertFalse($model->getRawAttributes()['title']['modified']);
         $this->assertEquals('da', $model->getRawAttributes()['title']['locale']);
+    }
+
+    public function testSearchingTranslations()
+    {
+        //Default locale
+        $this->assertEquals(Page::whereTranslation('slug', 'hello-world')->count(), 1);
+
+        //Default locale, but default excluded
+        $this->assertEquals(Page::whereTranslation('slug', '=', 'hello-world', [], false)->count(), 0);
+
+        //Translation, all locales
+        $this->assertEquals(Page::whereTranslation('slug', 'ola-mundo')->count(), 1);
+
+        //Translation, wrong locale-array
+        $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', ['de'])->count(), 0);
+
+        //Translation, correct locale-array
+        $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', ['de', 'pt'])->count(), 1);
+
+        //Translation, wrong locale
+        $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', 'de')->count(), 0);
+
+        //Translation, correct locale
+        $this->assertEquals(Page::whereTranslation('slug', '=', 'ola-mundo', 'pt')->count(), 1);
     }
 }
 

@@ -16,7 +16,7 @@ use TCG\Voyager\Traits\Spatial;
 class Category extends Model
 {
     use Spatial;
-    
+
     protected $spatial = ['your_column'];
 }
 ```

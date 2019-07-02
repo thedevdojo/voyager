@@ -6,7 +6,7 @@
 		        <div class="modal-header">
 	                <button type="button" class="close" data-dismiss="modal"
 	                        aria-hidden="true">&times;</button>
-	                <h4 class="modal-title"><i class="voyager-heart"></i> {{ str_singular(ucfirst($table)) }} 
+	                <h4 class="modal-title"><i class="voyager-heart"></i> {{ \Illuminate\Support\Str::singular(ucfirst($table)) }}
 					{{ __('voyager::database.relationship.relationships') }} </h4>
 	            </div>
 
@@ -15,7 +15,7 @@
 
 			        	@if(isset($dataType->id))
 				            <div class="col-md-12 relationship_details">
-				                <p class="relationship_table_select">{{ str_singular(ucfirst($table)) }}</p>
+				                <p class="relationship_table_select">{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</p>
 				                <select class="relationship_type select2" name="relationship_type">
 				                    <option value="hasOne" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasOne'){{ 'selected="selected"' }}@endif>{{ __('voyager::database.relationship.has_one') }}</option>
 				                    <option value="hasMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasMany'){{ 'selected="selected"' }}@endif>{{ __('voyager::database.relationship.has_many') }}</option>
@@ -24,14 +24,14 @@
 				                </select>
 				                <select class="relationship_table select2" name="relationship_table">
 				                    @foreach($tables as $tbl)
-				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl){{ 'selected="selected"' }}@endif>{{ str_singular(ucfirst($tbl)) }}</option>
+				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl){{ 'selected="selected"' }}@endif>{{ \Illuminate\Support\Str::singular(ucfirst($tbl)) }}</option>
 				                    @endforeach
 				                </select>
-				                <span><input type="text" class="form-control" name="relationship_model" placeholder="{{ __('voyager::database.relationship.namespace') }}" value="@if(isset($relationshipDetails->model)){{ $relationshipDetails->model }}@endif"></span>
+				                <span><input type="text" class="form-control" name="relationship_model" placeholder="{{ __('voyager::database.relationship.namespace') }}" value="{{ $relationshipDetails->model ?? ''}}"></span>
 				            </div>
 				            <div class="col-md-12 relationship_details relationshipField">
 				            	<div class="belongsTo">
-				            		<label>{{ __('voyager::database.relationship.which_column_from') }} <span>{{ str_singular(ucfirst($table)) }}</span> {{ __('voyager::database.relationship.is_used_to_reference') }} <span class="label_table_name"></span>?</label>
+				            		<label>{{ __('voyager::database.relationship.which_column_from') }} <span>{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</span> {{ __('voyager::database.relationship.is_used_to_reference') }} <span class="label_table_name"></span>?</label>
 				            		<select name="relationship_column_belongs_to" class="new_relationship_field select2">
 				                    	@foreach($fieldOptions as $data)
 				                        	<option value="{{ $data['field'] }}">{{ $data['field'] }}</option>
@@ -39,7 +39,7 @@
 				               		</select>
 				               	</div>
 				               	<div class="hasOneMany flexed">
-				            		<label>{{ __('voyager::database.relationship.which_column_from') }} <span class="label_table_name"></span> {{ __('voyager::database.relationship.is_used_to_reference') }} <span>{{ str_singular(ucfirst($table)) }}</span>?</label>
+				            		<label>{{ __('voyager::database.relationship.which_column_from') }} <span class="label_table_name"></span> {{ __('voyager::database.relationship.is_used_to_reference') }} <span>{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</span>?</label>
 					                <select name="relationship_column" class="new_relationship_field select2 rowDrop" data-table="{{ $tables[0] }}" data-selected="">
 					                </select>
 					            </div>
@@ -48,7 +48,7 @@
 				            	<label>{{ __('voyager::database.relationship.pivot_table') }}:</label>
 				            	<select name="relationship_pivot" class="select2">
 		                        	@foreach($tables as $tbl)
-				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl){{ 'selected="selected"' }}@endif>{{ str_singular(ucfirst($tbl)) }}</option>
+				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl){{ 'selected="selected"' }}@endif>{{ \Illuminate\Support\Str::singular(ucfirst($tbl)) }}</option>
 				                    @endforeach
 		                        </select>
 				            </div>
@@ -89,6 +89,6 @@
 		    </div>
 		</div>
 	</div>
-	<input type="hidden" value="@if(isset($dataType->id)){{ $dataType->id }}@endif" name="data_type_id">
+	<input type="hidden" value="{{ $dataType->id ?? '' }}" name="data_type_id">
 	{{ csrf_field() }}
 </form>

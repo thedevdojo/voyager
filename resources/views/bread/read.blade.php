@@ -13,9 +13,15 @@
             </a>
         @endcan
         @can('delete', $dataTypeContent)
-            <a href="javascript:;" title="{{ __('voyager::generic.delete') }}" class="btn btn-danger" data-id="{{ $dataTypeContent->getKey() }}" id="delete-{{ $dataTypeContent->getKey() }}">
-                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.delete') }}</span>
-            </a>
+            @if($isSoftDeleted)
+                <a href="{{ route('voyager.'.$dataType->slug.'.restore', $dataTypeContent->getKey()) }}" title="{{ __('voyager::generic.restore') }}" class="btn btn-default restore" data-id="{{ $dataTypeContent->getKey() }}" id="restore-{{ $dataTypeContent->getKey() }}">
+                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.restore') }}</span>
+                </a>
+            @else
+                <a href="javascript:;" title="{{ __('voyager::generic.delete') }}" class="btn btn-danger delete" data-id="{{ $dataTypeContent->getKey() }}" id="delete-{{ $dataTypeContent->getKey() }}">
+                    <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.delete') }}</span>
+                </a>
+            @endif
         @endcan
 
         <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
@@ -34,12 +40,19 @@
                 <div class="panel panel-bordered" style="padding-bottom:5px;">
                     <!-- form start -->
                     @foreach($dataType->readRows as $row)
+                        @php
+                        if ($dataTypeContent->{$row->field.'_read'}) {
+                            $dataTypeContent->{$row->field} = $dataTypeContent->{$row->field.'_read'};
+                        }
+                        @endphp
                         <div class="panel-heading" style="border-bottom:0;">
                             <h3 class="panel-title">{{ $row->display_name }}</h3>
                         </div>
 
                         <div class="panel-body" style="padding-top:0;">
-                            @if($row->type == "image")
+                            @if (isset($row->details->view))
+                                @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => 'read'])
+                            @elseif($row->type == "image")
                                 <img class="img-responsive"
                                      src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'multiple_images')
@@ -66,7 +79,7 @@
                                     @endforeach
 
                                 @elseif(property_exists($row->details, 'options'))
-                                    @if (count(json_decode($dataTypeContent->{$row->field})) > 0)
+                                    @if (!empty(json_decode($dataTypeContent->{$row->field})))
                                         @foreach(json_decode($dataTypeContent->{$row->field}) as $item)
                                             @if (@$row->details->options->{$item})
                                                 {{ $row->details->options->{$item} . (!$loop->last ? ', ' : '') }}

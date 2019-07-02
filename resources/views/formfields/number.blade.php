@@ -3,6 +3,8 @@
        name="{{ $row->field }}"
        type="number"
        @if($row->required == 1) required @endif
-       step="any"
-       placeholder="{{ isset($options->placeholder)? old($row->field, $options->placeholder): $row->display_name }}"
-       value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
+       @if(isset($options->min)) min="{{ $options->min }}" @endif
+       @if(isset($options->max)) max="{{ $options->max }}" @endif
+       step="{{ $options->step ?? 'any' }}"
+       placeholder="{{ old($row->field, $options->placeholder ?? $row->display_name) }}"
+       value="{{ old($row->field, $dataTypeContent->{$row->field} ?? $options->default ?? '') }}">

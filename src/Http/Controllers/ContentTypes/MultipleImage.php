@@ -22,6 +22,10 @@ class MultipleImage extends BaseType
         }
 
         foreach ($files as $file) {
+            if (!$file->isValid()) {
+                continue;
+            }
+
             $image = InterventionImage::make($file);
 
             $resize_width = null;
@@ -41,7 +45,7 @@ class MultipleImage extends BaseType
                 $resize_height = $image->height();
             }
 
-            $resize_quality = isset($this->options->quality) ? intval($this->options->quality) : 75;
+            $resize_quality = intval($this->options->quality ?? 75);
 
             $filename = Str::random(20);
             $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;

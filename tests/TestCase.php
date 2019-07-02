@@ -11,7 +11,7 @@ class TestCase extends OrchestraTestCase
 {
     protected $withDummy = true;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -41,7 +41,7 @@ class TestCase extends OrchestraTestCase
         ];
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         //parent::tearDown();
 
@@ -76,7 +76,7 @@ class TestCase extends OrchestraTestCase
     {
         $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
 
-        app(VoyagerServiceProvider::class, ['app' => $this->app])->registerGates();
+        app(VoyagerServiceProvider::class, ['app' => $this->app])->loadAuth();
 
         if (file_exists(base_path('routes/web.php'))) {
             require base_path('routes/web.php');

@@ -21,10 +21,28 @@ class MenuItem extends Model
 
     protected $translatable = ['title'];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($model) {
+            $model->menu->removeMenuFromCache();
+        });
+
+        static::saved(function ($model) {
+            $model->menu->removeMenuFromCache();
+        });
+
+        static::deleted(function ($model) {
+            $model->menu->removeMenuFromCache();
+        });
+    }
+
     public function children()
     {
         return $this->hasMany(Voyager::modelClass('MenuItem'), 'parent_id')
-            ->with('children');
+            ->with('children')
+            ->orderBy('order');
     }
 
     public function menu()

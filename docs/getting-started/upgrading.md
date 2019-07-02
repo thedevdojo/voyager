@@ -1,106 +1,121 @@
 # Upgrading
 
-## Upgrading 1.0 to 1.1
+## Upgrading 1.1 to 1.2
+
+### Laravel and PHP versions
+
+Support for Laravel 5.4 was dropped in Voyager 1.2 and therefore the minimum PHP version is now 7.1.  
+Please update your versions accordingly!
 
 ### Update your Composer.json
 
-To update to the latest version inside of your composer.json file make sure to update the version of voyager inside the require declaration inside of your composer.json to:
+To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration inside of your composer.json to:
 
-`"tcg/voyager": "1.1.*"`
+`tcg/voyager": "1.2.*`
 
-And then run `composer update`
-
-### Run the necessary migrations
-
-You will now need to run the following migrations to include new tables or rows that have been added to the latest version. you can find each of these migrations below:
-
-```text
-https://github.com/the-control-group/voyager/blob/1.1/migrations/2017_11_26_013050_add_user_role_relationship.php
-https://github.com/the-control-group/voyager/blob/1.1/migrations/2017_11_26_015000_create_user_roles_table.php
-https://github.com/the-control-group/voyager/blob/1.1/migrations/2018_03_11_000000_add_user_settings.php
-https://github.com/the-control-group/voyager/blob/1.1/migrations/2018_03_14_000000_add_details_to_data_types_table.php
-https://github.com/the-control-group/voyager/blob/1.1/migrations/2018_03_16_000000_make_settings_value_nullable.php
-```
-
-You can do this by adding each of those migrations to your `database/migrations` folder and then run `php artisan migrate`
+And then run composer update
 
 ### Update Configuration
 
-The `voyager.php` configuration file has had a few changes. The `prefix` key has been removed in favor of the `user.redirect` key. Please note that the `user.redirect` key should be prefixed with a slash \(`/`\), unlike the original `prefix` key.
-
-### Multi Roles
-
-Multi-roles is a new feature come by in v1.1 that allows you to have multiple roles and one primary role. You can fetch the user's primary role like normally using this:
+The `voyager.php` configuration file has had a few changes.
 
 ```php
-$user->role->name // Name of primary role
+'storage' => [
+    'disk' => 'public',
+],
 ```
 
-But now you can also use the new belongsToMany roles relationship to fetch all extra roles:
+is now
 
 ```php
-$user->roles() // gets all extra roles relationship
-$user->roles()->get() // gets all extra as a collection
+'storage' => [
+    'disk' => env('FILESYSTEM_DRIVER', 'public'),
+],
 ```
 
-Besides that there is a helper to get all the roles, both the primary and the extra roles:
+Also, the option
 
 ```php
-$user->roles_all() // collection of all roles
+'database' => [
+    'autoload_migrations' => true,
+]
 ```
 
-Please note, that you do not have to use the multi-roles and you can continue to use the primary role without any changes.
+was added. This allows you to exclude Voyagers migration-files from loading when running `php artisan migrate`.
 
-Also, make sure that you add the new data row into the database for the `users` data type. Insert a new row of data in the `data_rows` table. Make sure that it's `data_type_id` is the ID for the `users` data type, normally this would be ID `3`, but better make sure it is correct.
+The media-manager got some new configuration-options:
 
-Then make sure the other fields are like below:
+```php
+'media' => [
+    // The allowed mimetypes to be uploaded through the media-manager.
+    'allowed_mimetypes' => '*', //All types can be uploaded
 
-| field | user\_belongstomany\_role\_relationship |
-| :--- | :--- |
-| type | relationship |
-| display\_name | Roles |
-| required | 0 |
-| browse | 1 |
-| read | 1 |
-| edit | 1 |
-| add | 1 |
-| delete | 0 |
-| details | `{"model":"TCG\\Voyager\\Models\\Role","table":"roles","type":"belongsToMany","column":"id","key":"id","label":"name","pivot_table":"user_roles","pivot":"1"}` |
-| order | 11 |
+    /*'allowed_mimetypes' => [
+        'image/jpeg',
+        'image/png',
+        'image/gif',
+        'image/bmp',
+        'video/mp4',
+    ],*/
 
-### Bread
-
-The BREAD and Database section in Voyager has been separated into two sections. So in order to get access to the BREAD section using the menu, make sure to add the following menu item:
-
-![](../.gitbook/assets/upgrade_menu_item.png)
-
-However, you might still not be able to see it, because it requires permission, so go ahead and create a new row in the `permissions` table with the `key` being `browse_bread`, leave the `table_name` to be `null`.
-
-You should now be able to access the BREAD section.
-
-## Translations
-
-> If you have not translated any of the Voyager language strings, you may skip this step.
-
-Voyager have changed its translations strings from being like `__('voyager.generic.close')` to be prefixed with the `voyager::` group.
-
-Meaning that you would have to update your translated strings inside `resources/lang/LOCALE.json` to use the new prefix.
-
-## Final Steps
-
-Next, you may want to be sure that you have all the latest published assets. To re-publish the voyager assets you can run the following command:
-
-```text
-php artisan vendor:publish --tag=voyager_assets --force
+    //Path for media-manager. Relative to the filesystem.
+    'path'                => '/',
+    'show_folders'        => true,
+    'allow_upload'        => true,
+    'allow_move'          => true,
+    'allow_delete'        => true,
+    'allow_create_folder' => true,
+    'allow_rename'        => true,
+],
 ```
 
-Then you may wish to clear your view cache by running the following command:
-
-```text
-php artisan view:clear
+Compass is now switched off automatically when the environment is not `local`.  
+This can be overridden by the following new config-key:
+```php
+'compass_in_production' => true,
 ```
+
+The top dropdown-items can now be translated by providing a language-key:
+
+```php
+<?php
+
+'navbar_items' => [
+    'voyager::generic.profile' => [
+        'route'      => 'voyager.profile',
+        'classes'    => 'class-full-of-rum',
+        'icon_class' => 'voyager-person',
+    ],
+    'voyager::generic.home' => [
+        'route'        => '/',
+        'icon_class'   => 'voyager-home',
+        'target_blank' => true,
+    ],
+    'voyager::generic.logout' => [
+        'route'      => 'voyager.logout',
+        'icon_class' => 'voyager-power',
+    ],
+],
+```
+
+If you were using casts in your user-model previously, please remove the array-cast of `settings`.
+
+### Deprecation
+
+`can`, `canOrAbort`, `canOrFail` in the Voyager facade were all removed in favor of Policies and Gates.  
+Please refer to the [Laravel documentation](https://laravel.com/docs/authorization).
+
+### User BREAD
+
+The User BREAD now has its own controller. Please update your User BREAD to use `TCG\Voyager\Http\Controllers\VoyagerUserController` as the controller: ![](../.gitbook/assets/upgrade_controller.jpg)
+
+### Final Steps
+
+Voyager changed its way on how to load assets.  
+Assets don't get published anymore, instead they are loaded directly from the package.  
+Because of that, you can safely remove everything from your `public/vendor/tcg/voyager` folder.  
+Also you can remove the `assets_path` config-key from `config/voyager.php`.
 
 ## Troubleshooting
 
 Be sure to ask us on our slack channel if you are experiencing any issues and we will try and assist. Thanks.
-

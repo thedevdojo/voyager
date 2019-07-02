@@ -16,7 +16,7 @@
 @section('content')
     <div class="page-content container-fluid">
         <form class="form-edit-add" role="form"
-              action="{{ (isset($dataTypeContent->id)) ? route('voyager.'.$dataType->slug.'.update', $dataTypeContent->id) : route('voyager.'.$dataType->slug.'.store') }}"
+              action="@if(!is_null($dataTypeContent->getKey())){{ route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.'.$dataType->slug.'.store') }}@endif"
               method="POST" enctype="multipart/form-data" autocomplete="off">
             <!-- PUT Method if we are editing -->
             @if(isset($dataTypeContent->id))
@@ -42,13 +42,13 @@
                             <div class="form-group">
                                 <label for="name">{{ __('voyager::generic.name') }}</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('voyager::generic.name') }}"
-                                       value="@if(isset($dataTypeContent->name)){{ $dataTypeContent->name }}@endif">
+                                       value="{{ $dataTypeContent->name ?? '' }}">
                             </div>
 
                             <div class="form-group">
                                 <label for="email">{{ __('voyager::generic.email') }}</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('voyager::generic.email') }}"
-                                       value="@if(isset($dataTypeContent->email)){{ $dataTypeContent->email }}@endif">
+                                       value="{{ $dataTypeContent->email ?? '' }}">
                             </div>
 
                             <div class="form-group">

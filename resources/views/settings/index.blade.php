@@ -236,14 +236,14 @@
                     <ul class="nav nav-tabs">
                         @foreach($settings as $group => $setting)
                             <li @if($group == $active) class="active" @endif>
-                                <a data-toggle="tab" href="#{{ str_slug($group) }}">{{ $group }}</a>
+                                <a data-toggle="tab" href="#{{ \Illuminate\Support\Str::slug($group) }}">{{ $group }}</a>
                             </li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
                         @foreach($settings as $group => $group_settings)
-                        <div id="{{ str_slug($group) }}" class="tab-pane fade in @if($group == $active) active @endif">
+                        <div id="{{ \Illuminate\Support\Str::slug($group) }}" class="tab-pane fade in @if($group == $active) active @endif">
                             @foreach($group_settings as $setting)
                             <div class="panel-heading">
                                 <h3 class="panel-title">
@@ -268,13 +268,13 @@
                                     @if ($setting->type == "text")
                                         <input type="text" class="form-control" name="{{ $setting->key }}" value="{{ $setting->value }}">
                                     @elseif($setting->type == "text_area")
-                                        <textarea class="form-control" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                                        <textarea class="form-control" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</textarea>
                                     @elseif($setting->type == "rich_text_box")
-                                        <textarea class="form-control richTextBox" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                                        <textarea class="form-control richTextBox" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</textarea>
                                     @elseif($setting->type == "code_editor")
                                         <?php $options = json_decode($setting->details); ?>
-                                        <div id="{{ $setting->key }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_400" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</div>
-                                        <textarea name="{{ $setting->key }}" id="{{ $setting->key }}_textarea" class="hidden">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                                        <div id="{{ $setting->key }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_400" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</div>
+                                        <textarea name="{{ $setting->key }}" id="{{ $setting->key }}_textarea" class="hidden">{{ $setting->value ?? '' }}</textarea>
                                     @elseif($setting->type == "image" || $setting->type == "file")
                                         @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::disk(config('voyager.storage.disk'))->exists($setting->value))
                                             <div class="img_settings_container">

@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
@@ -32,6 +33,7 @@ class DataType extends Model
         'order_display_column',
         'order_direction',
         'default_search_key',
+        'scope',
         'details',
     ];
 
@@ -95,7 +97,7 @@ class DataType extends Model
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields((strlen($this->model_name) != 0)
                     ? app($this->model_name)->getTable()
-                    : array_get($requestData, 'name')
+                    : Arr::get($requestData, 'name')
                 );
 
                 $requestData = $this->getRelationships($requestData, $fields);
@@ -185,7 +187,7 @@ class DataType extends Model
                         'label'       => $requestData['relationship_label_'.$relationship],
                         'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
                         'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
-                        'taggable'    => isset($requestData['relationship_taggable_'.$relationship]) ? $requestData['relationship_taggable_'.$relationship] : '0',
+                        'taggable'    => $requestData['relationship_taggable_'.$relationship] ?? '0',
                     ];
 
                     // Get slug of relationship table for update
@@ -253,7 +255,7 @@ class DataType extends Model
 
     public function getOrderColumnAttribute()
     {
-        return isset($this->details->order_column) ? $this->details->order_column : null;
+        return $this->details->order_column ?? null;
     }
 
     public function setOrderColumnAttribute($value)
@@ -263,7 +265,7 @@ class DataType extends Model
 
     public function getOrderDisplayColumnAttribute()
     {
-        return isset($this->details->order_display_column) ? $this->details->order_display_column : null;
+        return $this->details->order_display_column ?? null;
     }
 
     public function setOrderDisplayColumnAttribute($value)
@@ -273,7 +275,7 @@ class DataType extends Model
 
     public function getDefaultSearchKeyAttribute()
     {
-        return isset($this->details->default_search_key) ? $this->details->default_search_key : null;
+        return $this->details->default_search_key ?? null;
     }
 
     public function setDefaultSearchKeyAttribute($value)
@@ -283,11 +285,21 @@ class DataType extends Model
 
     public function getOrderDirectionAttribute()
     {
-        return isset($this->details->order_direction) ? $this->details->order_direction : 'desc';
+        return $this->details->order_direction ?? 'desc';
     }
 
     public function setOrderDirectionAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['order_direction' => $value]);
+    }
+
+    public function getScopeAttribute()
+    {
+        return $this->details->scope ?? null;
+    }
+
+    public function setScopeAttribute($value)
+    {
+        $this->attributes['details'] = collect($this->details)->merge(['scope' => $value]);
     }
 }
