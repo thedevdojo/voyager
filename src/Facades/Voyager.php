@@ -1,6 +1,9 @@
 <?php
+
 namespace TCG\Voyager\Facades;
+
 use Illuminate\Support\Facades\Facade;
+
 class Voyager extends Facade
 {
     /**

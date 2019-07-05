@@ -4,8 +4,8 @@ namespace TCG\Voyager;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Routing\Router;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class VoyagerServiceProvider extends ServiceProvider
