@@ -1,6 +1,6 @@
 <?php
 
-Route::get('admin', function(){
+Route::get('admin', function () {
     echo 'yeah!';
 });
 
