@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Support\Facades\File;
-use TCG\Voyager\Facades\Voyager;
 
 class VoyagerController extends Controller
 {

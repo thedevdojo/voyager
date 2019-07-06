@@ -6,5 +6,4 @@ use Orchestra\Testbench\Dusk\TestCase;
 
 class BrowserTestCase extends TestCase
 {
-
 }
