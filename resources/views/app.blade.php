@@ -10,7 +10,7 @@
 </head>
 <body class="bg-gray-100">
 
-<div id="app" class="flex">
+<div id="voyager" class="flex">
 
     @include('voyager::sidebar')
 

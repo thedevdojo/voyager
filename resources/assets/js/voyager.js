@@ -1,7 +1,9 @@
-window.Vue = require('vue');
+require('./vendor');
+require('./helper');
+require('./formfields');
 
-var app = new Vue({
-    el: '#app',
+var voyager = new Vue({
+    el: '#voyager',
     data: {
         page_loading: true
     },
