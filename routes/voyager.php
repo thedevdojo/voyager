@@ -4,7 +4,7 @@ Route::group(['as' => 'voyager.'], function () {
     $namespace = '\\TCG\\Voyager\\Http\\Controllers\\';
 
     //Route::group(['middleware' => 'admin.user'], function () use ($namespace) {
-        Route::view('/', 'voyager::dashboard')->name('dashboard');
+    Route::view('/', 'voyager::dashboard')->name('dashboard');
     //});
 
     Route::get('login', ['uses' => $namespace.'AuthController@login', 'as' => 'login']);

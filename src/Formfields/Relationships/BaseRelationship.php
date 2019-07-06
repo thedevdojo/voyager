@@ -6,5 +6,4 @@ use TCG\Voyager\Formfields\BaseFormfield;
 
 class BaseRelationship extends BaseFormfield
 {
-
 }
