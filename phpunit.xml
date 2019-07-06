@@ -11,8 +11,14 @@
          stopOnFailure="false"
 >
     <testsuites>
-        <testsuite name="Voyager Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Browser">
+            <directory suffix="Test.php">./tests/Browser</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <logging>

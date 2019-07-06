@@ -1,46 +1,21 @@
 {
-  "private": true,
-  "scripts": {
-    "dev": "npm run development",
-    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "watch-poll": "npm run watch -- --watch-poll",
-    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "prod": "npm run production",
-    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-  },
-  "devDependencies": {
-    "bootstrap-sass": "^3.3.7",
-    "cross-env": "^3.2.3",
-    "jquery": "^3.1.1",
-    "laravel-mix": "^4.0.12",
-    "lodash": "^4.17.4",
-    "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.21"
-  },
-  "dependencies": {
-    "ace-builds": "^1.2.6",
-    "animate.css": "^3.5.2",
-    "bootstrap": "^3.3.7",
-    "bootstrap-datepicker": "^1.6.4",
-    "bootstrap-switch": "^3.3.4",
-    "bootstrap-toggle": "^2.2.2",
-    "brace": "^0.10.0",
-    "cropperjs": "^1.0.0",
-    "datatables-bootstrap3-plugin": "^0.6.0",
-    "datatables.net": "^1.10.15",
-    "datetimepicker": "^0.1.38",
-    "dropzone": "^5.0.1",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
-    "icheck": "^1.0.2",
-    "jquery-match-height": "^0.7.2",
-    "nestable2": "^1.6.0",
-    "node-sass": "^4.11.0",
-    "perfect-scrollbar": "^0.7.1",
-    "select2": "^4.0.3",
-    "simplemde": "^1.11.2",
-    "tinymce": "^4.9.2",
-    "toastr": "^2.1.2",
-    "vue": "^2.3.4"
-  }
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "cross-env": "^5.2.0",
+        "laravel-mix": "^4.0.16",
+        "sass-loader": "^7.1.0",
+        "vue-template-compiler": "^2.6.10"
+    },
+    "dependencies": {
+        "node-sass": "^4.12.0",
+        "vue": "^2.6.10"
+    }
 }
