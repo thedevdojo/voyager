@@ -1,0 +1,45 @@
+:root {
+    --navbar-height: 20rem;
+    --sidebar-width: 250px;
+}
+
+aside {
+    background: #353d47;
+    background: linear-gradient(45deg,#353d47 0,#21292e 100%);
+}
+
+aside.aside-expand {
+    min-width: 250px;
+}
+
+aside ul li {
+    @apply mt-8;
+}
+
+.app-wrapper {
+    width: calc(100vw - var(--sidebar-width));
+}
+
+[v-cloak] {
+    display: none;
+}
+
+#voyager-loader {
+    background: #F9F9F9;
+    position: absolute;
+    width: calc(100vw - var(--sidebar-width));
+    height: 100%;
+    left: var(--sidebar-width);
+    top: 0;
+    z-index: 99;
+}
+
+#voyager-loader .icon {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -50px;
+    margin-right: -50px;
+}
