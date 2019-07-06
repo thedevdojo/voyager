@@ -18,9 +18,11 @@
 
         @include('voyager::navbar')
 
-        <div id="voyager-loader">
-            <v-icon id="voyager-loader-icon"  class="icon" spin name="dharmachakra"></v-icon>
-        </div>
+        <transition name="fade">
+            <div id="voyager-loader" v-if="page_loading">
+                <v-icon id="voyager-loader-icon"  class="icon" spin name="dharmachakra"></v-icon>
+            </div>
+        </transition>
 
         <main class="py-4">
             @yield('content')
