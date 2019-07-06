@@ -8,7 +8,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-200">
 
 <div id="voyager" class="flex">
 
@@ -24,7 +24,7 @@
             </div>
         </transition>
 
-        <main class="py-4">
+        <main class="p-6">
             @yield('content')
         </main>
 
