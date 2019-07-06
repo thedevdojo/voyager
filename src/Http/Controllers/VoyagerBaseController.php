@@ -661,6 +661,14 @@ class VoyagerBaseController extends Controller
                 }
 
                 $results = [];
+
+                if (!$row->required && !$search) {
+                    $results[] = [
+                        'id'   => '',
+                        'text' => __('voyager::generic.none'),
+                    ];
+                }
+
                 foreach ($relationshipOptions as $relationshipOption) {
                     $results[] = [
                         'id'   => $relationshipOption->{$options->key},
