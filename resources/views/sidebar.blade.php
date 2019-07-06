@@ -1,11 +1,11 @@
 <aside class="flex flex-col h-full min-h-screen aside-expand w-48">
 
     <div class="bg-gray-900">
-        <div class="flex justify-center m-4  items-center text-white text-lg uppercase">Voyager</div>
+        <div class="flex justify-center m-4 items-center text-white text-lg uppercase">Voyager</div>
     </div>
 
     <div class="flex-1 bg-gray-800">
-        <ul class="list-reset ml-6">
+        <ul class="ml-6">
 
             <li>
                 <a href="/admin" class="flex items-center no-underline text-grey-dark hover:text-white">
