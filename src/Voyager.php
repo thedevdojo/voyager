@@ -8,4 +8,9 @@ class Voyager
     {
         require __DIR__.'/../routes/voyager.php';
     }
+
+    public function assetUrl($path)
+    {
+        return route('voyager.voyager_assets').'?path='.urlencode($path);
+    }
 }

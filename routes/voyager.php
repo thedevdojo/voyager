@@ -1,7 +1,7 @@
 <?php
 
 Route::group(['as' => 'voyager.'], function () {
-    $namespace = '\\TCG\\Voyager\\Controllers\\';
+    $namespace = '\\TCG\\Voyager\\Http\\Controllers\\';
 
     Route::get('/', function () {
         echo 'yeah!';
