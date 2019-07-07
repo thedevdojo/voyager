@@ -4,17 +4,15 @@ namespace TCG\Voyager\Tests;
 
 use Auth;
 use Illuminate\Contracts\Auth\StatefulGuard;
-use TCG\Voyager\Http\Controllers\VoyagerAuthController;
-use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Models\User;
-use TCG\Voyager\Tests\TestCase;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Models\User;
 
 class CustomGuardTest extends TestCase
 {
     /**
-     * Admin middleware uses custom guard
+     * Admin middleware uses custom guard.
      *
      * This test will make sure that the VoyagerAdminMiddleware uses
      * the custom guard.
@@ -24,9 +22,9 @@ class CustomGuardTest extends TestCase
         $this->useAuthorizedCustomGuard();
 
         $middleware = new VoyagerAdminMiddleware();
-        $response = new Response;
+        $response = new Response();
 
-        $actualResponse = $middleware->handle(new Request, function() use ($response) {
+        $actualResponse = $middleware->handle(new Request(), function () use ($response) {
             return $response;
         });
 
@@ -36,7 +34,7 @@ class CustomGuardTest extends TestCase
     }
 
     /**
-     * Voyager postLogin uses custom guard
+     * Voyager postLogin uses custom guard.
      *
      * This test will make sure that the postLogin uses custom guard
      * for authorizing users.
@@ -44,7 +42,7 @@ class CustomGuardTest extends TestCase
     public function testVoyagerPostLoginUsesCustomGuard()
     {
         $loginData = [
-            'email' => 'voyager@voyager.com',
+            'email'    => 'voyager@voyager.com',
             'password' => 'voyager',
         ];
 
@@ -60,7 +58,7 @@ class CustomGuardTest extends TestCase
 
         $guard->method('attempt')
             ->will($this->returnValueMap([
-                [$loginData, false, true]
+                [$loginData, false, true],
             ]));
 
         $this->app->instance('VoyagerAuth', $guard);
@@ -73,7 +71,7 @@ class CustomGuardTest extends TestCase
     }
 
     /**
-     * Voyager controllers use custom guard
+     * Voyager controllers use custom guard.
      *
      * This test will make sure that controllers internal authorize()
      * function uses the custom guard.
@@ -89,7 +87,7 @@ class CustomGuardTest extends TestCase
     }
 
     /**
-     * Default guard is used when custom is not defined
+     * Default guard is used when custom is not defined.
      *
      * This test will make sure that VoyagerAuth defaults to the applications
      * default guard when no custom guard is defined.
@@ -140,4 +138,3 @@ class CustomGuardTest extends TestCase
         return $guard;
     }
 }
-
