@@ -219,8 +219,7 @@ class Voyager
             }
 
             foreach (self::model('Setting')->all() as $setting) {
-                $keys = explode('.', $setting->key);
-                @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+                @$this->setting_cache[$setting->key] = $setting->value;
 
                 if ($globalCache) {
                     Cache::tags('settings')->forever($setting->key, $setting->value);
@@ -228,13 +227,7 @@ class Voyager
             }
         }
 
-        $parts = explode('.', $key);
-
-        if (count($parts) == 2) {
-            return @$this->setting_cache[$parts[0]][$parts[1]] ?: $default;
-        } else {
-            return @$this->setting_cache[$parts[0]] ?: $default;
-        }
+        return @$this->setting_cache[$key] ?: $default;
     }
 
     public function image($file, $default = '')
