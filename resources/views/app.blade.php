@@ -10,11 +10,11 @@
 </head>
 <body class="bg-gray-200">
 
-<div id="voyager" class="flex">
+<div id="voyager" class="flex container m-auto">
 
     @include('voyager::sidebar')
 
-    <div class="app-wrapper">
+    <div class="flex-initial w-full">
 
         @include('voyager::navbar')
 
@@ -24,7 +24,7 @@
             </div>
         </transition>
 
-        <main class="p-6">
+        <main class="py-6">
             @yield('content')
         </main>
 

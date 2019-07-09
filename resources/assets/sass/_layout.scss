@@ -3,36 +3,8 @@
     --sidebar-width: 250px;
 }
 
-aside {
-    background: #353d47;
-    background: linear-gradient(45deg, #353d47, #21292e);
-}
-
-aside > .logo{
-    position:relative;
-    background: linear-gradient(45deg, #363e44, #262e32)
-}
-
-aside > div.logo:before{
-    content:'';
-    position:absolute;
-    top:0px;
-    left:0px;
-    width:100%;
-    height:3px;
-    background:linear-gradient(45deg, #055efe, #0059ff);
-}
-
-aside.aside-expand {
-    min-width: 250px;
-}
-
 aside ul li {
     @apply mt-8;
-}
-
-.app-wrapper {
-    width: calc(100vw - var(--sidebar-width));
 }
 
 [v-cloak] {
