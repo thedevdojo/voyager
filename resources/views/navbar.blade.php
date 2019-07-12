@@ -1,4 +1,4 @@
-<div class="lg:border-b-2 lg:border-gray-200 h-16 flex flex-col justify-center">
+<div class="lg:border-b-2 lg:border-gray-200 h-20 flex flex-col justify-center">
     <div class="flex items-center pt-4">
         <div class="flex flex-grow">
             <div class="w-full">

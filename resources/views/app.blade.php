@@ -12,11 +12,15 @@
 
 <div id="voyager" class="flex container m-auto">
 
-    @include('voyager::sidebar')
+    @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
+        @include('voyager::sidebar')
+    @endif
 
     <div class="flex-initial w-full">
 
-        @include('voyager::navbar')
+        @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
+            @include('voyager::navbar')
+        @endif
 
         <transition name="fade">
             <div id="voyager-loader" v-if="page_loading">
@@ -24,7 +28,7 @@
             </div>
         </transition>
 
-        <main class="py-6">
+        <main>
             @yield('content')
         </main>
 
