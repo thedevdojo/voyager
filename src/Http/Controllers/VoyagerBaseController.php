@@ -691,8 +691,8 @@ class VoyagerBaseController extends Controller
 
     protected function isFieldAdditionalAttribute($field, $model)
     {
-        if ( ! property_exists($model, 'additional_attributes') ||
-            ! is_array(app($model)->additional_attributes)) {
+        if (!property_exists($model, 'additional_attributes') ||
+            !is_array(app($model)->additional_attributes)) {
             return false;
         }
 
