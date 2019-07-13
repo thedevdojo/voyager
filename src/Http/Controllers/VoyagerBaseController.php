@@ -651,10 +651,18 @@ class VoyagerBaseController extends Controller
 
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
-                    $total_count = app($options->model)->where($options->label, 'LIKE', '%'.$search.'%')->count();
-                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)
-                        ->where($options->label, 'LIKE', '%'.$search.'%')
-                        ->get();
+                    if (self::isFieldAdditionalAttribute($options->label, $options->model)) {
+                        $models = app($options->model)->all()->filter(function ($model) use ($options, $search) {
+                            return stripos($model->{$options->label}, $search) !== false;
+                        });
+                        $total_count = $models->count();
+                        $relationshipOptions = $models->slice($skip)->take($on_page);
+                    } else {
+                        $total_count = app($options->model)->where($options->label, 'LIKE', '%'.$search.'%')->count();
+                        $relationshipOptions = app($options->model)->take($on_page)->skip($skip)
+                            ->where($options->label, 'LIKE', '%'.$search.'%')
+                            ->get();
+                    }
                 } else {
                     $total_count = app($options->model)->count();
                     $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
@@ -679,5 +687,15 @@ class VoyagerBaseController extends Controller
 
         // No result found, return empty array
         return response()->json([], 404);
+    }
+
+    protected function isFieldAdditionalAttribute($field, $model)
+    {
+        if ( ! property_exists($model, 'additional_attributes') ||
+            ! is_array(app($model)->additional_attributes)) {
+            return false;
+        }
+
+        return in_array($field, app($model)->additional_attributes);
     }
 }
