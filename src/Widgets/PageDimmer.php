@@ -31,7 +31,7 @@ class PageDimmer extends BaseDimmer
                 'text' => __('voyager::dimmer.page_link_text'),
                 'link' => route('voyager.pages.index'),
             ],
-            'image' => voyager_asset('images/widget-backgrounds/03.jpg'),
+            'image' => asset( config('voyager.asset_path') . 'images/widget-backgrounds/03.jpg'),
         ]));
     }
 

@@ -31,7 +31,7 @@ class PostDimmer extends BaseDimmer
                 'text' => __('voyager::dimmer.post_link_text'),
                 'link' => route('voyager.posts.index'),
             ],
-            'image' => voyager_asset('images/widget-backgrounds/02.jpg'),
+            'image' => asset( config('voyager.asset_path') . 'images/widget-backgrounds/02.jpg'),
         ]));
     }
 

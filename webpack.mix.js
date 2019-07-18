@@ -15,4 +15,6 @@ mix.options({ processCssUrls: false }).sass('resources/assets/sass/app.scss', 'p
 .js('resources/assets/js/app.js', 'publishable/assets/js')
 .copy('node_modules/tinymce/skins', 'publishable/assets/js/skins')
 .copy('resources/assets/js/skins', 'publishable/assets/js/skins')
-.copy('node_modules/tinymce/themes/modern', 'publishable/assets/js/themes/modern');
+.copy('node_modules/tinymce/themes/modern', 'publishable/assets/js/themes/modern')
+.copy('resources/assets/js/multilingual.js', 'publishable/assets/js/multilingual.js')
+;

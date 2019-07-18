@@ -303,14 +303,14 @@
 
 @section('css')
 @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-    <link rel="stylesheet" href="{{ voyager_asset('lib/css/responsive.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset( config('voyager.asset_path') . 'lib/css/responsive.dataTables.min.css') }}">
 @endif
 @stop
 
 @section('javascript')
     <!-- DataTables -->
     @if(!$dataType->server_side && config('dashboard.data_tables.responsive'))
-        <script src="{{ voyager_asset('lib/js/dataTables.responsive.min.js') }}"></script>
+        <script src="{{ asset( config('voyager.asset_path') . 'lib/js/dataTables.responsive.min.js') }}"></script>
     @endif
     <script>
         $(document).ready(function () {

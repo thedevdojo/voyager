@@ -31,7 +31,7 @@ class UserDimmer extends BaseDimmer
                 'text' => __('voyager::dimmer.user_link_text'),
                 'link' => route('voyager.users.index'),
             ],
-            'image' => voyager_asset('images/widget-backgrounds/01.jpg'),
+            'image' => asset( config('voyager.asset_path') . 'images/widget-backgrounds/01.jpg'),
         ]));
     }
 

@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "voyager";
-  src:url("voyager-assets?path=fonts/voyager.eot");
-  src:url("voyager-assets?path=fonts/voyager.eot?#iefix") format("embedded-opentype"),
-    url("voyager-assets?path=fonts/voyager.woff") format("woff"),
-    url("voyager-assets?path=fonts/voyager.ttf") format("truetype"),
-    url("voyager-assets?path=fonts/voyager.svg#voyager") format("svg");
+  src:url("../fonts/voyager.eot");
+  src:url("../fonts/voyager.eot?#iefix") format("embedded-opentype"),
+    url("../fonts/voyager.woff") format("woff"),
+    url("../fonts/voyager.ttf") format("truetype"),
+    url("../fonts/voyager.svg#voyager") format("svg");
   font-weight: normal;
   font-style: normal;
 
@@ -637,7 +637,7 @@
 }
 .voyager-plus:before {
   content: "\e06a";
-}
+}multilingual.js
 .voyager-documentation:before {
   content: "\72";
 }
@@ -655,4 +655,14 @@
 }
 .voyager-github-icon:before {
   content: "\e06f";
+}
+
+@font-face {
+  font-family: "Glyphicons Halflings";
+  src: url("../fonts/bootstrap/glyphicons-halflings-regular.eot") !important;
+  src: url("../fonts/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"),
+  url("../fonts/bootstrap/glyphicons-halflings-regular.woff2") format("woff2"),
+  url("../fonts/bootstrap/glyphicons-halflings-regular.woff") format("woff"),
+  url("../fonts/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"),
+  url("../fonts/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg") !important;
 }
