@@ -3,7 +3,7 @@
 @if (isset($dataType->id))
     @section('page_title', __('voyager::bread.edit_bread_for_table', ['table' => $dataType->name]))
     @php
-        $display_name = $dataType->display_name_singular;
+        $display_name = $dataType->getTranslatedAttribute('display_name_singular');
         $display_name_plural = $dataType->getTranslatedAttribute('display_name_plural');
     @endphp
 @else
