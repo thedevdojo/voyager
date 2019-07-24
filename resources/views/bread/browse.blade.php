@@ -12,6 +12,7 @@
                 <i class="voyager-plus"></i> <span>{{ __('voyager::generic.add_new') }}</span>
             </a>
         @endcan
+        @php $showCheckboxColumn = false @endphp
         @can('delete', app($dataType->model_name))
             @php $showCheckboxColumn = true @endphp
             @include('voyager::partials.bulk-delete')
@@ -76,11 +77,11 @@
                             <table id="dataTable" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        @isset($showCheckboxColumn)
+                                        @if($showCheckboxColumn)
                                             <th>
                                                 <input type="checkbox" class="select_all">
                                             </th>
-                                        @endisset
+                                        @endif
                                         @foreach($dataType->browseRows as $row)
                                         <th>
                                             @if ($isServerSide)
@@ -105,11 +106,11 @@
                                 <tbody>
                                     @foreach($dataTypeContent as $data)
                                     <tr>
-                                        @isset($showCheckboxColumn)
+                                        @if($showCheckboxColumn)
                                             <td>
                                                 <input type="checkbox" name="row_id" id="checkbox_{{ $data->getKey() }}" value="{{ $data->getKey() }}">
                                             </td>
-                                        @endisset
+                                        @endif
                                         @foreach($dataType->browseRows as $row)
                                             @php
                                             if ($data->{$row->field.'_browse'}) {
