@@ -21,7 +21,7 @@
                         $url .= '/'.$segment;
                         @endphp
                         @if ($loop->last)
-                            <li>{{ ucfirst($segment($segment)) }}</li>
+                            <li>{{ ucfirst(urldecode($segment)) }}</li>
                         @else
                             <li>
                                 <a href="{{ $url }}">{{ ucfirst(urldecode($segment)) }}</a>
