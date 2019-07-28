@@ -301,7 +301,7 @@ class VoyagerBaseController extends Controller
         return redirect()
         ->route("voyager.{$dataType->slug}.index")
         ->with([
-            'message'    => __('voyager::generic.successfully_updated')." {$dataType->display_name_singular}",
+            'message'    => __('voyager::generic.successfully_updated')." {$dataType->getTranslatedAttribute('display_name_singular')}",
             'alert-type' => 'success',
         ]);
     }
@@ -376,7 +376,7 @@ class VoyagerBaseController extends Controller
         return redirect()
         ->route("voyager.{$dataType->slug}.index")
         ->with([
-                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->display_name_singular}",
+                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
             ]);
     }
@@ -420,7 +420,7 @@ class VoyagerBaseController extends Controller
             }
         }
 
-        $displayName = count($ids) > 1 ? $dataType->display_name_plural : $dataType->display_name_singular;
+        $displayName = count($ids) > 1 ? $dataType->getTranslatedAttribute('display_name_plural') : $dataType->getTranslatedAttribute('display_name_singular');
 
         $res = $data->destroy($ids);
         $data = $res
@@ -456,7 +456,7 @@ class VoyagerBaseController extends Controller
         }
         $data = $model->findOrFail($id);
 
-        $displayName = $dataType->display_name_singular;
+        $displayName = $dataType->getTranslatedAttribute('display_name_singular');
 
         $res = $data->restore($id);
         $data = $res

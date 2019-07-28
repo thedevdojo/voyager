@@ -367,6 +367,39 @@ trait Translatable
     }
 
     /**
+     * Prepare translations and set default locale field value.
+     *
+     * @param object $requestData
+     *
+     * @return array translations
+     */
+    public function prepareTranslationsFromArray($field, &$requestData)
+    {
+        $translations = [];
+
+        $field = 'field_display_name_'.$field;
+
+        if (empty($requestData[$field.'_i18n'])) {
+            throw new Exception('Invalid Translatable field '.$field);
+        }
+
+        $trans = json_decode($requestData[$field.'_i18n'], true);
+
+        // Set the default local value
+        $requestData['display_name'] = $trans[config('voyager.multilingual.default', 'en')];
+
+        $translations['display_name'] = $this->setAttributeTranslations(
+            'display_name',
+            $trans
+        );
+
+        // Remove field hidden input
+        unset($requestData[$field.'_i18n']);
+
+        return $translations;
+    }
+
+    /**
      * Save translations.
      *
      * @param object $translations

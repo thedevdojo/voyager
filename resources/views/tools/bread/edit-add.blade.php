@@ -2,6 +2,10 @@
 
 @if (isset($dataType->id))
     @section('page_title', __('voyager::bread.edit_bread_for_table', ['table' => $dataType->name]))
+    @php
+        $display_name = $dataType->getTranslatedAttribute('display_name_singular');
+        $display_name_plural = $dataType->getTranslatedAttribute('display_name_plural');
+    @endphp
 @else
     @section('page_title', __('voyager::bread.create_bread_for_table', ['table' => $table]))
 @endif
@@ -37,7 +41,7 @@
     <li class="active">
         @if(isset($dataType->id))
         <a href="{{ route('voyager.bread.edit', $table) }}">
-            {{ $dataType->display_name_singular }}
+            {{ $display_name }}
         </a>
         @else
         <a href="{{ route('voyager.bread.create', ['name' => $table]) }}">
@@ -96,7 +100,7 @@
                                            name="display_name_singular"
                                            id="display_name_singular"
                                            placeholder="{{ __('voyager::bread.display_name_singular') }}"
-                                           value="{{ $dataType->display_name_singular ?? $display_name }}">
+                                           value="{{ $display_name }}">
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="display_name_plural">{{ __('voyager::bread.display_name_plural') }}</label>
@@ -111,7 +115,7 @@
                                            name="display_name_plural"
                                            id="display_name_plural"
                                            placeholder="{{ __('voyager::bread.display_name_plural') }}"
-                                           value="{{ $dataType->display_name_plural ?? $display_name_plural }}">
+                                           value="{{ $display_name_plural }}">
                                 </div>
                             </div>
                             <div class="row clearfix">
@@ -365,6 +369,13 @@
                                         @endif
                                     </div>
                                     <div class="col-xs-2">
+                                        @if($isModelTranslatable)
+                                            @include('voyager::multilingual.input-hidden', [
+                                                'isModelTranslatable' => true,
+                                                '_field_name'         => 'field_display_name_' . $data['field'],
+                                                '_field_trans' => $dataRow ? get_field_translations($dataRow, 'display_name') : $data['field'],
+                                            ])
+                                        @endif
                                         <input type="text" class="form-control"
                                                value="{{ $dataRow->display_name ?? ucwords(str_replace('_', ' ', $data['field'])) }}"
                                                name="field_display_name_{{ $data['field'] }}">

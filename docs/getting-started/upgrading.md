@@ -16,8 +16,7 @@ To update to the latest version inside of your composer.json file make sure to u
 And then run composer update
 
 ### Update Configuration
-
-The `voyager.php` configuration file has had a few changes.
+The `voyager.php` configuration file had a few changes.
 
 ```php
 'storage' => [
@@ -43,8 +42,24 @@ Also, the option
 
 was added. This allows you to exclude Voyagers migration-files from loading when running `php artisan migrate`.
 
-The media-manager got some new configuration-options:
+There is a new section titled **Model specific settings** that contains new settings for Compass, cache and media-manager.
 
+**Compass** is now switched off automatically when the environment is not `local`.  
+This can be overriden by the following new config-key:
+```php
+'compass_in_production' => true,
+```
+
+New **cache** setting:
+```php
+    'settings' => [
+        // Enables Laravel cache method for
+        // storing cache values between requests
+        'cache' => false,
+    ],
+```
+
+The **media-manager** got some new configuration-options:
 ```php
 'media' => [
     // The allowed mimetypes to be uploaded through the media-manager.
@@ -69,11 +84,7 @@ The media-manager got some new configuration-options:
 ],
 ```
 
-Compass is now switched off automatically when the environment is not `local`.  
-This can be overridden by the following new config-key:
-```php
-'compass_in_production' => true,
-```
+
 
 The top dropdown-items can now be translated by providing a language-key:
 
