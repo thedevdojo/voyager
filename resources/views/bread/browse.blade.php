@@ -48,7 +48,7 @@
                                 <div id="search-input">
                                     <div class="col-2">
                                         <select id="search_key" name="key">
-                                            @foreach($searchable as $key => $name)
+                                            @foreach($searchNames as $key => $name)
                                                 <option value="{{ $key }}" @if($search->key == $key || (empty($search->key) && $key == $defaultSearchKey)){{ 'selected' }}@endif>{{ $name }}</option>
                                             @endforeach
                                         </select>
