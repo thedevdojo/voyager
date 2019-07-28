@@ -131,6 +131,18 @@ class VoyagerBaseController extends Controller
         // Check if a default search key is set
         $defaultSearchKey = $dataType->default_search_key ?? null;
 
+        // Actions
+        $actions = [];
+        if (!empty($dataTypeContent->first())) {
+            foreach (Voyager::actions() as $action) {
+                $action = new $action($dataType, $dataTypeContent->first());
+
+                if ($action->shouldActionDisplayOnDataType()) {
+                    $actions[] = $action;
+                }
+            }
+        }
+
         $view = 'voyager::bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
@@ -138,6 +150,7 @@ class VoyagerBaseController extends Controller
         }
 
         return Voyager::view($view, compact(
+            'actions',
             'dataType',
             'dataTypeContent',
             'isModelTranslatable',

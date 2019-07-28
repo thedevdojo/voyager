@@ -12,7 +12,9 @@
                 <i class="voyager-plus"></i> <span>{{ __('voyager::generic.add_new') }}</span>
             </a>
         @endcan
+        @php $showCheckboxColumn = false @endphp
         @can('delete', app($dataType->model_name))
+            @php $showCheckboxColumn = true @endphp
             @include('voyager::partials.bulk-delete')
         @endcan
         @can('edit', app($dataType->model_name))
@@ -27,8 +29,9 @@
                 <input type="checkbox" @if ($showSoftDeleted) checked @endif id="show_soft_deletes" data-toggle="toggle" data-on="{{ __('voyager::bread.soft_deletes_off') }}" data-off="{{ __('voyager::bread.soft_deletes_on') }}">
             @endif
         @endcan
-        @foreach(Voyager::actions() as $action)
+        @foreach($actions as $action)
             @if (method_exists($action, 'massAction'))
+                @php $showCheckboxColumn = true @endphp
                 @include('voyager::bread.partials.actions', ['action' => $action, 'data' => null])
             @endif
         @endforeach
@@ -78,11 +81,11 @@
                             <table id="dataTable" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        @can('delete',app($dataType->model_name))
+                                        @if($showCheckboxColumn)
                                             <th>
                                                 <input type="checkbox" class="select_all">
                                             </th>
-                                        @endcan
+                                        @endif
                                         @foreach($dataType->browseRows as $row)
                                         <th>
                                             @if ($isServerSide)
@@ -107,11 +110,11 @@
                                 <tbody>
                                     @foreach($dataTypeContent as $data)
                                     <tr>
-                                        @can('delete',app($dataType->model_name))
+                                        @if($showCheckboxColumn)
                                             <td>
                                                 <input type="checkbox" name="row_id" id="checkbox_{{ $data->getKey() }}" value="{{ $data->getKey() }}">
                                             </td>
-                                        @endcan
+                                        @endif
                                         @foreach($dataType->browseRows as $row)
                                             @php
                                             if ($data->{$row->field.'_browse'}) {
@@ -247,7 +250,7 @@
                                             </td>
                                         @endforeach
                                         <td class="no-sort no-click" id="bread-actions">
-                                            @foreach(Voyager::actions() as $action)
+                                            @foreach($actions as $action)
                                                 @if (!method_exists($action, 'massAction'))
                                                     @include('voyager::bread.partials.actions', ['action' => $action])
                                                 @endif
