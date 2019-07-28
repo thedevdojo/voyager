@@ -267,7 +267,7 @@ class VoyagerBaseController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Compatibility with Model binding.
-        $id = $id instanceof Model ? $id->{$id->getKeyName()} : $id;
+        $id = $id instanceof \Illuminate\Database\Eloquent\Model ? $id->{$id->getKeyName()} : $id;
 
         $model = app($dataType->model_name);
         if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
@@ -624,6 +624,7 @@ class VoyagerBaseController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         $action = new $request->action($dataType, null);
+
         return $action->massAction(explode(',', $request->ids), $request->headers->get('referer'));
     }
 
@@ -642,7 +643,8 @@ class VoyagerBaseController extends Controller
         $search = $request->input('search', false);
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        foreach ($dataType->editRows as $key => $row) {
+        $rows = $request->input('method', 'add') == 'add' ? $dataType->addRows : $dataType->editRows;
+        foreach ($rows as $key => $row) {
             if ($row->field === $request->input('type')) {
                 $options = $row->details;
                 $skip = $on_page * ($page - 1);
@@ -659,6 +661,14 @@ class VoyagerBaseController extends Controller
                 }
 
                 $results = [];
+
+                if (!$row->required && !$search) {
+                    $results[] = [
+                        'id'   => '',
+                        'text' => __('voyager::generic.none'),
+                    ];
+                }
+
                 foreach ($relationshipOptions as $relationshipOption) {
                     $results[] = [
                         'id'   => $relationshipOption->{$options->key},

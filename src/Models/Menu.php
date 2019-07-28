@@ -4,7 +4,6 @@ namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
 
@@ -16,6 +15,19 @@ class Menu extends Model
     protected $table = 'menus';
 
     protected $guarded = [];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            $model->removeMenuFromCache();
+        });
+
+        static::deleted(function ($model) {
+            $model->removeMenuFromCache();
+        });
+    }
 
     public function items()
     {
@@ -87,19 +99,16 @@ class Menu extends Model
         );
     }
 
-    public function save(array $options = [])
+    public function removeMenuFromCache()
     {
-        //Remove from cache
         \Cache::forget('voyager_menu_'.$this->name);
-
-        parent::save();
     }
 
     private static function processItems($items)
     {
         $items = $items->transform(function ($item) {
             // Translate title
-            $item->title = $item->getTranslatedAttribute('title');
+            $item->title = config('voyager.multilingual.enabled') ? $item->getTranslatedAttribute('title') : $item->title;
             // Resolve URL/Route
             $item->href = $item->link(true);
 
@@ -134,7 +143,7 @@ class Menu extends Model
             return !$item->children->isEmpty() || app('VoyagerAuth')->user()->can('browse', $item);
         })->filter(function ($item) {
             // Filter out empty menu-items
-            if ($item->href == '' && $item->children->count() == 0) {
+            if ($item->url == '' && $item->route == '' && $item->children->count() == 0) {
                 return false;
             }
 

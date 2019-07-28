@@ -36,7 +36,7 @@ return [
     'policy_name'            => 'Nombre de restricciones',
     'policy_name_ph'         => 'ej. \App\Policies\UserPolicy, si se deja vacío, intentará usar el valor predeterminado',
     'server_pagination'      => 'Paginación del servidor',
-    'updated_order'          => 'Order updated successfully',
+    'updated_order'          => 'Orden actualizado exitosamente',
     'url_slug'               => 'URL Slug (debe ser único)',
     'url_slug_ph'            => 'URL slug (ej posts)',
 ];

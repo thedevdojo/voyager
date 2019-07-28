@@ -21,6 +21,7 @@ class DescriptionHandler extends AbstractHandler
                                         aria-hidden="true"
                                         data-toggle="tooltip"
                                         data-placement="right"
+                                        data-html="true"
                                         title="'.$options->description.'"></span>';
     }
 }
