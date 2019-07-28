@@ -11,9 +11,7 @@ class MediaPickerHandler extends AbstractHandler
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
         $content = '';
-        if (isset($options->max) && $options->max == 1) {
-            $content = "'".$dataTypeContent->{$row->field}."'";
-        } else {
+        if (isset($options->max) && $options->max > 1) {
             if (is_array($dataTypeContent->{$row->field})) {
                 $dataTypeContent->{$row->field} = json_encode($dataTypeContent->{$row->field});
             }
@@ -23,10 +21,12 @@ class MediaPickerHandler extends AbstractHandler
             } else {
                 $content = json_encode('[]');
             }
+        } else {
+            $content = "'".$dataTypeContent->{$row->field}."'";
         }
 
         if (isset($options->base_path)) {
-            $options->base_path = str_replace('{uid}', \Auth::user()->getKey(), $options->base_path);
+            $options->base_path = str_replace('{uid}', app('VoyagerAuth')->user()->getKey(), $options->base_path);
             if (Str::contains($options->base_path, '{date:')) {
                 $options->base_path = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                     return \Carbon\Carbon::now()->format($date[1]);

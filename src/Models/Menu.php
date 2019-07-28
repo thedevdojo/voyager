@@ -16,6 +16,19 @@ class Menu extends Model
 
     protected $guarded = [];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            $model->removeMenuFromCache();
+        });
+
+        static::deleted(function ($model) {
+            $model->removeMenuFromCache();
+        });
+    }
+
     public function items()
     {
         return $this->hasMany(Voyager::modelClass('MenuItem'));
@@ -86,19 +99,16 @@ class Menu extends Model
         );
     }
 
-    public function save(array $options = [])
+    public function removeMenuFromCache()
     {
-        //Remove from cache
         \Cache::forget('voyager_menu_'.$this->name);
-
-        parent::save();
     }
 
     private static function processItems($items)
     {
         $items = $items->transform(function ($item) {
             // Translate title
-            $item->title = $item->getTranslatedAttribute('title');
+            $item->title = config('voyager.multilingual.enabled') ? $item->getTranslatedAttribute('title') : $item->title;
             // Resolve URL/Route
             $item->href = $item->link(true);
 

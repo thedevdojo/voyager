@@ -4,7 +4,7 @@ Voyager has several helper functions that are ready to use. Here you can find th
 
 ## Thumbnails URL
 
-Voyager will generate thumbnails for Image field type when you specify the [additional field options](bread-builder.md#additional-field-options).
+Voyager will generate thumbnails for Image field type when you specify the [additional field options](../bread/introduction.md#additional-field-options).
 
 After you have your thumbnails generated, you may want to display the thumbnails in your view or get the thumbnail URL. In order to do that you need to add `Resizable` traits to your model.
 
@@ -17,7 +17,7 @@ class Post extends Model
 }
 ```
 
-#### Display a single image
+### Display a single image
 
 ```php
 @foreach($posts as $post)
@@ -33,7 +33,7 @@ Or you can specify the optional image field name \(attribute\), default to `imag
 @endforeach
 ```
 
-#### Display multiple images
+### Display multiple images
 
 ```php
 @foreach($posts as $post)

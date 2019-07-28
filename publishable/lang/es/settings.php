@@ -20,8 +20,8 @@ return [
     'moved_order_down'     => 'Orden del parámetro :name disminuido',
     'successfully_removed' => 'Eliminado correctamente parámetro :name ',
     'group_general'        => 'General',
-    'group_admin'          => 'Admin',
-    'group_site'           => 'Site',
+    'group_admin'          => 'Administrador',
+    'group_site'           => 'Sitio',
     'group'                => 'Grupo',
     'help_group'           => 'Esta opción está asignada a',
 ];
