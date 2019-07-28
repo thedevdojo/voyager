@@ -12,7 +12,7 @@ class VoyagerAuthController extends Controller
 
     public function login()
     {
-        if (app('VoyagerAuth')->user()) {
+        if ($this->guard()->user()) {
             return redirect()->route('voyager.dashboard');
         }
 
@@ -52,5 +52,15 @@ class VoyagerAuthController extends Controller
     public function redirectTo()
     {
         return config('voyager.user.redirect', route('voyager.dashboard'));
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return app('VoyagerAuth');
     }
 }

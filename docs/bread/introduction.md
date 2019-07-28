@@ -77,21 +77,6 @@ You can define separate validation rules for edit and add:
 
 You can find a list of all available validation rules in the [Laravel docs](https://laravel.com/docs/validation#available-validation-rules).
 
-## Generating Slugs
-
-Using the bread builder you may wish to automatically generate slugs of a certain input. Lets say you have some posts, which have a title and a slug. If you want to automatically generate the slug from the title attribute, you may include the following _Optional Details_:
-
-```php
-{
-    "slugify": {
-        "origin": "title",
-        "forceUpdate": true
-    }
-}
-```
-
-This will automatically generate the slug from the input of the `title` field. If a slug does already exists, it will only be updated if `forceUpdate` is set enabled, by default this is disabled.
-
 ## Tagging
 
 Tagging gives you the possibility to add new items to a Belongs-To-Many relationship directly when editing or adding a BREAD.
@@ -107,51 +92,6 @@ After that you can enter a free-text into the select and hit enter to save a new
 
 This only stores the `display-column` so you have to make sure that all other fields are either nullable or have a default value.
 {% endhint %}
-
-## Null Values
-
-You might want to save an input field into the database as a `null` value instead of an empty string.
-
-Simply enough, inside the BREAD you can include the following _Optional Details_ for the field:
-
-```php
-{
-    "null": ""
-}
-```
-
-This will turn an empty string into a `null` value. However you might want to be able to add both an empty string and a `null` value to the database for that field. However you have to choose a replacement for the `null` value, but it can be anything you wish. For example, if you want a field to change a string \(ex. `Nothing`\) into a `null` value you could include the following _Optional Details_ for that field:
-
-```php
-{
-    "null": "Nothing"
-}
-```
-
-Now entering `Nothing` into the field will end up as a `null` value in the database.
-
-## Display options
-
-There are also a few options that you can include to change the way your BREAD is displayed. You can add a `display` key to your json object and change the width of the particular field and even specify a custom ID.
-
-```php
-{
-    "display": {
-        "width": "3",
-        "id": "custom_id"
-    }
-}
-```
-
-The width is displayed on a 12-grid system. Setting it with a width of 3 will span 25% of the width.
-
-The **id** will let you specify a custom id wrapper around your element. example:
-
-```markup
-<div id="custom_id">
-    <!-- Your field element -->
-</div>
-```
 
 ## Ordering Bread Items
 
