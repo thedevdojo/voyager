@@ -96,6 +96,9 @@ abstract class Controller extends BaseController
                 // If the file upload is null and it has a current file keep the current file
                 if ($row->type == 'file') {
                     $content = $data->{$row->field};
+                    if (!$content) {
+                        $content = json_encode([]);
+                    }
                 }
 
                 if ($row->type == 'password') {
@@ -272,5 +275,22 @@ abstract class Controller extends BaseController
 
             return !empty($value->details->validation->rule);
         });
+    }
+
+    /**
+     * Authorize a given action for the current user.
+     *
+     * @param mixed       $ability
+     * @param mixed|array $arguments
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function authorize($ability, $arguments = [])
+    {
+        $user = app('VoyagerAuth')->user();
+
+        return $this->authorizeForUser($user, $ability, $arguments);
     }
 }

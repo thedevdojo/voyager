@@ -27,8 +27,6 @@ class AddBreadMenuItem
     public function handle(BreadAdded $bread)
     {
         if (config('voyager.bread.add_menu_item') && file_exists(base_path('routes/web.php'))) {
-            require base_path('routes/web.php');
-
             $menu = Voyager::model('Menu')->where('name', config('voyager.bread.default_menu'))->firstOrFail();
 
             $menuItem = Voyager::model('MenuItem')->firstOrNew([
