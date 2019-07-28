@@ -4,5 +4,9 @@
            data-i18n="true"
            name="{{ $row->field }}_i18n"
            id="{{ $row->field }}_i18n"
-           value="{{ get_field_translations($dataTypeContent, $row->field) }}">
+           @if(!empty(session()->getOldInput($row->field.'_i18n') && is_null($dataTypeContent->id)))
+             value="{{ session()->getOldInput($row->field.'_i18n') }}"
+           @else
+             value="{{ get_field_translations($dataTypeContent, $row->field) }}"
+           @endif>
 @endif
