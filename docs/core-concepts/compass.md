@@ -13,3 +13,4 @@ In the Command section you can actually run some artisan commands directly from 
 And Lastly, under the Logs tab you will be able to view all your application logs.
 
 ![](../.gitbook/assets/compass_3.png)
+

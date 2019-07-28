@@ -25,6 +25,12 @@ require('./voyager_tinymce');
 require('./voyager_ace_editor');
 window.helpers = require('./helpers.js');
 
+Vue.component('admin-menu', require('./components/admin_menu.vue').default);
+
+var admin_menu = new Vue({
+    el: '#adminmenu',
+});
+
 $(document).ready(function () {
 
     var appContainer = $(".app-container"),
@@ -55,6 +61,7 @@ $(document).ready(function () {
                     var query = {
                         search: params.term,
                         type: $(this).data('get-items-field'),
+                        method: $(this).data('method'),
                         page: params.page || 1
                     }
                     return query;

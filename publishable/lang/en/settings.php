@@ -6,7 +6,7 @@ return [
     'new'                  => 'New Setting',
     'help_name'            => 'Setting name ex: Admin Title',
     'help_key'             => 'Setting key ex: admin_title',
-    'help_option'          => '(optional, only applies to certain types like dropdown box or radio button)',
+    'help_option'          => '(optional, the same options as for the corresponding formfield apply)',
     'add_new'              => 'Add New Setting',
     'delete_question'      => 'Are you sure you want to delete the :setting Setting?',
     'delete_confirm'       => 'Yes, Delete This Setting',
