@@ -8,11 +8,12 @@ use TCG\Voyager\Database\Types\Type;
 
 abstract class Column
 {
-    public static function make(array $column)
+    public static function make(array $column, string $tableName = null)
     {
         $name = Identifier::validate($column['name'], 'Column');
         $type = $column['type'];
         $type = ($type instanceof DoctrineType) ? $type : DoctrineType::getType(trim($type['name']));
+        $type->tableName = $tableName;
 
         $options = array_diff_key($column, ['name' => $name, 'type' => $type]);
 
