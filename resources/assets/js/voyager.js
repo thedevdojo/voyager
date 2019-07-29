@@ -1,5 +1,6 @@
 require('./vendor');
 require('./helper');
+require('./bread');
 require('./formfields');
 
 var voyager = new Vue({

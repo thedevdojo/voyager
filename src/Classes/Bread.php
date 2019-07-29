@@ -55,6 +55,13 @@ class Bread implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        return [];
+        return [
+            'table'         => $this->table,
+            'slug'          => $this->slug,
+            'name_singular' => $this->name_singular,
+            'name_plural'   => $this->name_plural,
+            'model_name'    => $this->model_name,
+            'layouts'       => $this->layouts,
+        ];
     }
 }
