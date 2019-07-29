@@ -19,7 +19,7 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="ids" id="bulk_delete_input" value="">
                     <input type="submit" class="btn btn-danger pull-right delete-confirm"
-                             value="{{ __('voyager::generic.bulk_delete_confirm') }} {{ strtolower($dataType->display_name_plural) }}">
+                             value="{{ __('voyager::generic.bulk_delete_confirm') }} {{ strtolower($dataType->getTranslatedAttribute('display_name_plural')) }}">
                 </form>
                 <button type="button" class="btn btn-default pull-right" data-dismiss="modal">
                     {{ __('voyager::generic.cancel') }}
@@ -48,7 +48,7 @@ window.onload = function () {
             // Reset input value
             $bulkDeleteInput.val('');
             // Deletion info
-            var displayName = count > 1 ? '{{ $dataType->display_name_plural }}' : '{{ $dataType->display_name_singular }}';
+            var displayName = count > 1 ? '{{ $dataType->getTranslatedAttribute('display_name_plural') }}' : '{{ $dataType->getTranslatedAttribute('display_name_singular') }}';
             displayName = displayName.toLowerCase();
             $bulkDeleteCount.html(count);
             $bulkDeleteDisplayName.html(displayName);

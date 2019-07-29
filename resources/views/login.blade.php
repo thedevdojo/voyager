@@ -86,7 +86,7 @@
 
                     <div class="form-group" id="rememberMeGroup">
                         <div class="controls">
-                        <input type="checkbox" name="remember" value="1"><span class="remember-me-text">{{ __('voyager::generic.remember_me') }}</span>
+                        <input type="checkbox" name="remember" id="remember" value="1"><label for="remember" class="remember-me-text">{{ __('voyager::generic.remember_me') }}</label>
                         </div>
                     </div>
                     
