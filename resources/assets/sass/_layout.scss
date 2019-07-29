@@ -37,3 +37,46 @@ aside ul li {
 .fade-enter, .fade-leave-to {
     opacity: 0;
 }
+
+.sidebar{
+    background: #2B50ED;
+    background: linear-gradient(45deg, #1B40CD 0%, #2B50ED 100%);
+    transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    overflow: hidden;
+    span{
+        opacity:0;
+        &.icon{
+            opacity:0.9;
+        }
+    }
+    li{
+        a{
+            svg{
+                margin-left:-2px;
+            }
+            span{
+                left: 36px;
+            }
+            span.icon{
+                width:28px;
+                height:28px;
+                margin-top: -2px;
+            }
+        }
+    }
+    &:hover{
+        width:250px !important;
+        span{
+            opacity:1;
+            transition: opacity 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+    }
+
+    .logo{
+        img{
+            width:28px;
+            height:28px;
+        }
+    }
+    
+}

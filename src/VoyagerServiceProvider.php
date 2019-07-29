@@ -33,11 +33,22 @@ class VoyagerServiceProvider extends ServiceProvider
             return new Voyager();
         });
 
+        $this->loadHelpers();
         $this->loadBreadsFrom(storage_path('bread'));
     }
 
     public function loadBreadsFrom($path)
     {
         VoyagerFacade::breadPath($path);
+    }
+
+    /**
+     * Load helpers.
+     */
+    protected function loadHelpers()
+    {
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
+            require_once $filename;
+        }
     }
 }

@@ -7633,6 +7633,51 @@ aside ul li {
   opacity: 0;
 }
 
+.sidebar {
+  background: #2B50ED;
+  background: linear-gradient(45deg, #1B40CD 0%, #2B50ED 100%);
+  -webkit-transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  overflow: hidden;
+}
+
+.sidebar span {
+  opacity: 0;
+}
+
+.sidebar span.icon {
+  opacity: 0.9;
+}
+
+.sidebar li a svg {
+  margin-left: -2px;
+}
+
+.sidebar li a span {
+  left: 36px;
+}
+
+.sidebar li a span.icon {
+  width: 28px;
+  height: 28px;
+  margin-top: -2px;
+}
+
+.sidebar:hover {
+  width: 250px !important;
+}
+
+.sidebar:hover span {
+  opacity: 1;
+  -webkit-transition: opacity 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: opacity 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.sidebar .logo img {
+  width: 28px;
+  height: 28px;
+}
+
 @media (min-width: 640px) {
   .sm\:appearance-none {
     -webkit-appearance: none;

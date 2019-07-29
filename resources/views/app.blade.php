@@ -10,7 +10,11 @@
 </head>
 <body class="bg-gray-200">
 
-<div id="voyager" class="flex container m-auto">
+        <!--div id="voyager-loader">
+            <img src="{{ voyager_asset('images/logo-icon.png') }}" alt="Voyager Loader">
+        </div-->
+
+<div id="voyager" class="flex m-auto">
 
     @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
         @include('voyager::sidebar')
@@ -24,7 +28,7 @@
 
         <transition name="fade">
             <div id="voyager-loader" v-if="page_loading">
-                <v-icon id="voyager-loader-icon"  class="icon" spin name="dharmachakra"></v-icon>
+                <!--v-icon id="voyager-loader-icon"  class="icon" spin name="dharmachakra"></v-icon-->
             </div>
         </transition>
 
