@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" locales="en,de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -42,4 +42,5 @@
 
 </body>
 <script src="{{ Voyager::assetUrl('js/voyager.js') }}"></script>
+@yield('js')
 </html>
