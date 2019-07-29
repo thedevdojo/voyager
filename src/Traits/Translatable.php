@@ -7,13 +7,16 @@ trait Translatable
     public $current_locale;
     public $fallback_locale;
 
-    function __construct() {
+    public function __construct()
+    {
         $this->current_locale = app()->getLocale();
         $this->fallback_locale = config('app.fallback_locale');
     }
-    public function __get($key) {
+
+    public function __get($key)
+    {
         $value = $this->{$key};
-        
+
         if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
             if (is_string($value)) {
                 $json = @json_decode($value);
@@ -32,7 +35,8 @@ trait Translatable
         return $value;
     }
 
-    public function __set($key, $value) {
+    public function __set($key, $value)
+    {
         if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
             if (is_array($value) || is_object($value)) {
                 $this->{$key} = $value;

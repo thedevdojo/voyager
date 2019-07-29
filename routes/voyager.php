@@ -12,9 +12,9 @@ Route::group(['as' => 'voyager.'], function () {
     ], function () use ($namespace) {
         Route::get('/', ['uses' => $namespace.'BreadManagerController@index', 'as' => 'index']);
         Route::get('create/{table}', ['uses' => $namespace.'BreadManagerController@create', 'as' => 'create']);
-        Route::get('edit/{table}',   ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'edit']);
-        Route::put('{table}',   ['uses' => $namespace.'BreadManagerController@update', 'as' => 'update']);
-        Route::delete('{table}',   ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'delete']);
+        Route::get('edit/{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'edit']);
+        Route::put('{table}', ['uses' => $namespace.'BreadManagerController@update', 'as' => 'update']);
+        Route::delete('{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'delete']);
     });
     //});
 
