@@ -33,8 +33,8 @@
             </li>
 
             <li>
-                <a href="/admin/devices" class="flex items-center no-underline">
-                    <span class="ml-3 font-hairline"> Managed Devices </span>
+                <a href="{{ route('voyager.bread.index') }}" class="flex items-center no-underline">
+                    <span class="ml-3 font-hairline"> BREAD </span>
                 </a>
             </li>
 

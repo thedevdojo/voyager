@@ -28,8 +28,16 @@ class VoyagerServiceProvider extends ServiceProvider
         $loader = AliasLoader::getInstance();
 
         $loader->alias('Voyager', VoyagerFacade::class);
+
         $this->app->singleton('voyager', function () {
             return new Voyager();
         });
+
+        $this->loadBreadsFrom(storage_path('bread'));
+    }
+
+    public function loadBreadsFrom($path)
+    {
+        VoyagerFacade::breadPath($path);
     }
 }
