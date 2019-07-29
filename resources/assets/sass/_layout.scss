@@ -3,10 +3,6 @@
     --sidebar-width: 250px;
 }
 
-aside ul li {
-    @apply mt-8;
-}
-
 [v-cloak] {
     display: none;
 }
@@ -50,9 +46,11 @@ aside ul li {
         }
     }
     li{
+        margin-top: 0.4rem;
         a{
             svg{
-                margin-left:-2px;
+                width:16px;
+                height:16px;
             }
             span{
                 left: 36px;
@@ -60,7 +58,26 @@ aside ul li {
             span.icon{
                 width:28px;
                 height:28px;
-                margin-top: -2px;
+            }
+
+            &:before {
+                content: '';
+                width: 3px;
+                height: 0%;
+                background: #ffffff;
+                position: absolute;
+                top: 50%;
+                left: 0px;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                transition: all 0.22s ease-out;
+            }
+
+            &:hover{
+                &:before{
+                    height: 70%;
+                    top: 15%;
+                }
             }
         }
     }

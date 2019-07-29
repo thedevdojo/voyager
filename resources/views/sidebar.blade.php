@@ -1,4 +1,4 @@
-<aside class="flex flex-col h-full min-h-screen aside-expand w-16 hover:w-56 mr-5 sidebar">
+<aside class="flex flex-col h-full min-h-screen aside-expand w-16 hover:w-56 mr-4 sidebar">
 
     <div class="flex justify-left pl-4 items-center h-16 logo">
         <img src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
@@ -6,20 +6,15 @@
     </div>
 
     <div class="flex-1 text-gray-600">
-        <ul class="pl-4">
+        <ul>
             <li>
-                <a href="/admin" class="block no-underline h-6">
-                    <span class="icon float-left flex justify-center">
-                        <svg width="100px" height="96px" viewBox="0 0 100 96" class="w-4 h-auto float-left"
-                            version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <a href="/admin" class="flex items-center no-underline h-10 pl-4 relative">
+                    <span class="icon float-left flex justify-center items-center">                        
+                        <svg width="96px" height="88px" class="w-4 h-auto float-left" viewBox="0 0 96 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g id="boat" fill="#ffffff" fill-rule="nonzero">
-                                    <path
-                                        d="M11.7777778,82.8888889 L12,82.8888889 C19.5555556,82.8888889 26.2222222,78.6666667 31.1111111,73.5555556 C35.7777778,78.6666667 42.4444444,82.8888889 50,82.8888889 C57.5555556,82.8888889 64.2222222,78.6666667 68.8888889,73.3333333 C73.7777778,78.6666667 80.2222222,82.8888889 88,82.8888889 L88.2222222,82.8888889 L99.5555556,52 C100,50.8888889 99.7777778,49.5555556 99.3333333,48.2222222 C98.8888889,47.1111111 97.7777778,46.4444444 96.4444444,46 L88,43.1111111 L88,21.3333333 C88,16.2222222 83.5555556,11.7777778 78.4444444,11.7777778 L64.2222222,11.7777778 L60.6666667,0 L39.3333333,0 L35.7777778,11.7777778 L21.5555556,11.7777778 C16.4444444,11.7777778 12,16.2222222 12,21.3333333 L12,43.1111111 L3.55555556,46 C2.44444444,46.4444444 1.11111111,47.1111111 0.666666667,48.2222222 C0.222222222,49.5555556 3.05311332e-16,50.6666667 0.444444444,52 L11.7777778,82.8888889 Z M21.5555556,21.3333333 L78.4444444,21.3333333 L78.4444444,40 L50,30.8888889 L21.5555556,40 L21.5555556,21.3333333 Z"
-                                        id="Shape"></path>
-                                    <path
-                                        d="M68.8888889,81.7777778 C57.3333333,89.7777778 42.6666667,89.7777778 31.1111111,81.7777778 C31.1111111,81.7777778 18.2222222,96 7.33333333,96 L12,96 C18.6666667,96 25.1111111,93.3333333 31.1111111,90.2222222 C42.8888889,96.4444444 57.1111111,96.4444444 68.8888889,90.2222222 C74.8888889,93.3333333 81.3333333,96 88,96 L92.6666667,96 C82,96 68.8888889,81.7777778 68.8888889,81.7777778 Z"
-                                        id="Path" opacity="0.6"></path>
+                                <g id="boat" transform="translate(-2.000000, 0.000000)" fill="#ffffff">
+                                    <path d="M59.375,87.71875 L59.375,66.4375 C59.3684157,65.4396522 58.9643985,64.4855783 58.2523761,63.7864591 C57.5403536,63.0873398 56.5790514,62.7008365 55.58125,62.7125 L44.41875,62.7125 C42.3459479,62.702023 40.6524282,64.3648529 40.625,66.4375 L40.625,87.71875 L15.625,87.71875 C13.9685474,87.7220696 12.3788017,87.066372 11.2063387,85.8962539 C10.0338756,84.7261357 9.37499667,83.1377059 9.375,81.48125 L9.375,37.7 C9.375,35.31875 10.7375,33.14375 12.875,32.1 L50.125,1.475 L86.975,32.03125 C89.1971417,33.0426098 90.6239323,35.258533 90.625,37.7 L90.625,81.48125 C90.6250008,83.1366213 89.9669797,84.7241017 88.7958694,85.8940397 C87.6247591,87.0639777 86.0366205,87.7204087 84.38125,87.71875 L59.375,87.71875 Z M50,48.96875 C52.902783,48.9687501 55.5850651,47.4201339 57.0364566,44.9062501 C58.4878481,42.3923663 58.4878481,39.2951337 57.0364566,36.7812499 C55.5850651,34.2673661 52.902783,32.7187499 50,32.71875 C45.5126864,32.71875 41.875,36.3564364 41.875,40.84375 C41.875,45.3310636 45.5126864,48.96875 50,48.96875 Z" id="Shape" fill-rule="nonzero" opacity="0.6"></path>
+                                    <path d="M48.09375,0.55625 L3.45,36.70625 C2.92011373,37.123678 2.58139967,37.7375225 2.51078394,38.408372 C2.44016821,39.0792215 2.64364419,39.7501386 3.075,40.26875 L7.7625,46.05 C8.625,47.1125 10.23125,47.3 11.3125,46.425 L50.0125,15.08125 L88.71875,46.425 C89.8,47.3 91.40625,47.1125 92.28125,46.05 L96.95625,40.2625 C97.3876058,39.7438886 97.5910818,39.0729715 97.5204661,38.402122 C97.4498503,37.7312725 97.1111363,37.117428 96.58125,36.7 L51.9375,0.5625 C51.3964399,0.127746577 50.6999556,-0.0644649743 50.0125,0.03125 C49.3270999,-0.0689358915 48.6332354,0.123176447 48.09375,0.55625 Z" id="Path"></path>
                                 </g>
                             </g>
                         </svg>
@@ -29,8 +24,8 @@
             </li>
 
             <li>
-                <a href="/admin/users" class="block no-underline h-6">
-                    <span class="icon float-left flex justify-center">
+                <a href="/admin/users" class="flex items-center no-underline h-10 pl-4 relative">
+                    <span class="icon float-left flex justify-center items-center">
                         <svg width="100px" height="86px" class="w-4 h-auto float-left" viewBox="0 0 100 86"
                             version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -51,8 +46,8 @@
 
 
             <li>
-                <a href="{{ route('voyager.bread.index') }}" class="block no-underline h-6">
-                    <span class="icon float-left flex justify-center">
+                <a href="{{ route('voyager.bread.index') }}" class="flex items-center no-underline h-10 pl-4 relative">
+                    <span class="icon float-left flex justify-center items-center">
                         <svg width="100px" height="100px" class="w-4 h-auto float-left" viewBox="0 0 100 100"
                             version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

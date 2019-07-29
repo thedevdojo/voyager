@@ -7596,10 +7596,6 @@ video {
   --sidebar-width: 250px;
 }
 
-aside ul li {
-  margin-top: 2rem;
-}
-
 [v-cloak] {
   display: none;
 }
@@ -7649,8 +7645,13 @@ aside ul li {
   opacity: 0.9;
 }
 
+.sidebar li {
+  margin-top: 0.4rem;
+}
+
 .sidebar li a svg {
-  margin-left: -2px;
+  width: 16px;
+  height: 16px;
 }
 
 .sidebar li a span {
@@ -7660,7 +7661,25 @@ aside ul li {
 .sidebar li a span.icon {
   width: 28px;
   height: 28px;
-  margin-top: -2px;
+}
+
+.sidebar li a:before {
+  content: '';
+  width: 3px;
+  height: 0%;
+  background: #ffffff;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  -webkit-transition: all 0.22s ease-out;
+  transition: all 0.22s ease-out;
+}
+
+.sidebar li a:hover:before {
+  height: 70%;
+  top: 15%;
 }
 
 .sidebar:hover {
