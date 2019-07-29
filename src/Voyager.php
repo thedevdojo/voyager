@@ -2,9 +2,9 @@
 
 namespace TCG\Voyager;
 
-use TCG\Voyager\Classes\Bread as BreadClass;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use TCG\Voyager\Classes\Bread as BreadClass;
 
 class Voyager
 {
@@ -14,7 +14,7 @@ class Voyager
     protected $messages = [];
 
     /**
-     * Get Voyagers reoutes
+     * Get Voyagers reoutes.
      *
      * @return array an array of routes
      */
@@ -24,9 +24,10 @@ class Voyager
     }
 
     /**
-     * Generate an absolute URL for an asset-file
+     * Generate an absolute URL for an asset-file.
      *
-     * @param  string $path the relative path, e.g. js/voyager.js
+     * @param string $path the relative path, e.g. js/voyager.js
+     *
      * @return string
      */
     public function assetUrl($path)
@@ -35,9 +36,10 @@ class Voyager
     }
 
     /**
-     * Sets the path where the BREAD-files are stored
+     * Sets the path where the BREAD-files are stored.
      *
-     * @param  string $path
+     * @param string $path
+     *
      * @return string the current pat
      */
     public function breadPath($path = null)
@@ -50,7 +52,7 @@ class Voyager
     }
 
     /**
-     * Get all BREADs from storage and validate
+     * Get all BREADs from storage and validate.
      *
      * @return \TCG\Voyager\Classes\Bread
      */
@@ -71,14 +73,15 @@ class Voyager
                 return $bread->isValid();
             });
         }
-        
+
         return $this->breads;
     }
 
     /**
-     * Get a BREAD by the table name
+     * Get a BREAD by the table name.
      *
-     * @param  string  $table
+     * @param string $table
+     *
      * @return \TCG\Voyager\Classes\Bread
      */
     public function getBread($table)
@@ -86,13 +89,15 @@ class Voyager
         if (!$this->breads) {
             $this->getBreads();
         }
+
         return $this->breads->where('table', $table)->first();
     }
 
     /**
-     * Get a BREAD by the slug
+     * Get a BREAD by the slug.
      *
-     * @param  string  $slug
+     * @param string $slug
+     *
      * @return \TCG\Voyager\Classes\Bread
      */
     public function getBreadBySlug($slug)
@@ -105,10 +110,11 @@ class Voyager
     }
 
     /**
-     * Store a BREAD-file
+     * Store a BREAD-file.
      *
-     * @param  string      $bread
-     * @return int|bool    success
+     * @param string $bread
+     *
+     * @return int|bool success
      */
     public function storeBread($bread)
     {
@@ -116,32 +122,33 @@ class Voyager
     }
 
     /**
-     * Create a BREAD-file
+     * Create a BREAD-file.
      *
-     * @param  string      $table
-     * @return int|bool    success
+     * @param string $table
+     *
+     * @return int|bool success
      */
     public function createBread($table)
     {
         $bread = [
             'table'         => $table,
-            'slug'          => (object)[],
-            'name_singular' => (object)[],
-            'name_plural'   => (object)[],
-            'layouts'       => (object)[],
+            'slug'          => (object) [],
+            'name_singular' => (object) [],
+            'name_plural'   => (object) [],
+            'layouts'       => (object) [],
 
         ];
 
         // TODO: Validate if BREAD already exists and throw exception?
 
-        return $this->storeBread((object)$bread);
+        return $this->storeBread((object) $bread);
     }
 
     /**
-     * Flash a message to the UI
+     * Flash a message to the UI.
      *
-     * @param  string  $message The message
-     * @param  string  $type    The type of the exception: info, warning, error or debug
+     * @param string $message The message
+     * @param string $type    The type of the exception: info, warning, error or debug
      */
     public function flashMessage($message, $type)
     {
@@ -152,7 +159,7 @@ class Voyager
     }
 
     /**
-     * Get all messages
+     * Get all messages.
      *
      * @return array The messages
      */

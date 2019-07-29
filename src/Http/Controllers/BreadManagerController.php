@@ -16,14 +16,15 @@ class BreadManagerController extends Controller
     public function index()
     {
         $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
-        
+
         return view('voyager::manager.index', compact('tables'));
     }
 
     /**
-     * Create a BREAD for a given $table
+     * Create a BREAD for a given $table.
      *
-     * @param  string  $table
+     * @param string $table
+     *
      * @return \Illuminate\Http\Response
      */
     public function create($table)
@@ -36,9 +37,10 @@ class BreadManagerController extends Controller
     }
 
     /**
-     * Edit a BREAD for a given $table
+     * Edit a BREAD for a given $table.
      *
-     * @param  string  $table
+     * @param string $table
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($table)
@@ -51,8 +53,9 @@ class BreadManagerController extends Controller
     /**
      * Update a BREAD.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $table
+     * @param \Illuminate\Http\Request $request
+     * @param string                   $table
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $table)
@@ -63,7 +66,8 @@ class BreadManagerController extends Controller
     /**
      * Remove a BREAD by a given table.
      *
-     * @param  string  $table
+     * @param string $table
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($table)

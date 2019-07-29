@@ -28,6 +28,7 @@ class Bread implements \JsonSerializable
         if (json_last_error() !== JSON_ERROR_NONE) {
             Voyager::flashMessage('BREAD-file "'.basename($path).'" does contain invalid JSON: '.json_last_error_msg(), 'debug');
             $this->parse_failed = true;
+
             return;
         }
 
