@@ -108,7 +108,7 @@ class Menu extends Model
     {
         $items = $items->transform(function ($item) {
             // Translate title
-            $item->title = config('voyager.multilingual.enabled') ? $item->getTranslatedAttribute('title') : $item->title;
+            $item->title = $item->getTranslatedAttribute('title');
             // Resolve URL/Route
             $item->href = $item->link(true);
 
