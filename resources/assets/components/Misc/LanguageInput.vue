@@ -19,7 +19,7 @@ export default {
                 return this.translations[this.$eventHub.locale];
             },
             set: function (value) {
-                this.translations[this.$eventHub.locale] = value;
+                Vue.set(this.translations, this.$eventHub.locale, value);
                 this.$emit('input', this.translations);
             }
         }
