@@ -68,14 +68,14 @@ class BreadManagerController extends Controller
         $success = true;
         $message = 'BREAD "'.$table.'" saved successfully!';
 
-        if (!Voyager::storeBread((object)$request->bread)) {
+        if (!Voyager::storeBread((object) $request->bread)) {
             $success = false;
             $message = 'There was an error storing the BREAD!';
         }
 
         return [
             'success' => $success,
-            'message' => $message
+            'message' => $message,
         ];
     }
 
