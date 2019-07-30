@@ -20,11 +20,33 @@
                 type="text" placeholder="Name plural"
                 v-bind:value="bread.name_plural"
                 v-on:input="bread.name_plural = $event" />
+
+        <div class="text-right">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="saveBread()">Save</button>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['bread']
+    props: ['bread', 'url'],
+    methods: {
+        saveBread: function () {
+            var vm = this;
+            axios.put(this.url, {
+                bread: vm.bread
+            })
+            .then(function (response) {
+                if (response.data.success) {
+                    vm.$snotify.success(response.data.message);
+                } else {
+                    vm.$snotify.error(response.data.message);
+                }
+            })
+            .catch(function (error) {
+                vm.$snotify.error(error);
+            });
+        }
+    }
 };
 </script>

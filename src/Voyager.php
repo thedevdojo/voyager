@@ -148,11 +148,11 @@ class Voyager
      * Flash a message to the UI.
      *
      * @param string $message The message
-     * @param string $type    The type of the exception: info, warning, error or debug
+     * @param string $type    The type of the exception: info, success, warning, error or debug
      */
     public function flashMessage($message, $type)
     {
-        $this->messages = [
+        $this->messages[] = [
             'message' => $message,
             'type'    => $type,
         ];

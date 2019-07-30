@@ -15,6 +15,11 @@ class BreadManagerController extends Controller
      */
     public function index()
     {
+        Voyager::flashMessage('Debug Message', 'debug');
+        Voyager::flashMessage('Info message', 'info');
+        Voyager::flashMessage('Success message', 'success');
+        Voyager::flashMessage('Warning message', 'warning');
+        Voyager::flashMessage('Error message', 'error');
         $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
 
         return view('voyager::manager.index', compact('tables'));
@@ -60,7 +65,18 @@ class BreadManagerController extends Controller
      */
     public function update(Request $request, $table)
     {
-        //
+        $success = true;
+        $message = 'BREAD "'.$table.'" saved successfully!';
+
+        if (!Voyager::storeBread((object)$request->bread)) {
+            $success = false;
+            $message = 'There was an error storing the BREAD!';
+        }
+
+        return [
+            'success' => $success,
+            'message' => $message
+        ];
     }
 
     /**
