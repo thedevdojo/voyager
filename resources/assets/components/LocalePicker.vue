@@ -1,6 +1,6 @@
 <template>
     <div class="inline-flex">
-        <button v-for="locale in $eventHub.locales" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4" @click="changeLocale(locale)">{{ locale }}</button>
+        <button v-for="locale in $eventHub.locales" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4" @click="changeLocale(locale)">{{ locale }}</button>
     </div>
 </template>
 

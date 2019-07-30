@@ -15,11 +15,6 @@ class BreadManagerController extends Controller
      */
     public function index()
     {
-        Voyager::flashMessage('Debug Message', 'debug');
-        Voyager::flashMessage('Info message', 'info');
-        Voyager::flashMessage('Success message', 'success');
-        Voyager::flashMessage('Warning message', 'warning');
-        Voyager::flashMessage('Error message', 'error');
         $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
 
         return view('voyager::manager.index', compact('tables'));

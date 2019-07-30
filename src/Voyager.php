@@ -167,4 +167,16 @@ class Voyager
     {
         return $this->messages;
     }
+
+    /**
+     * Get all Voyager translation strings.
+     *
+     * @return array The language strings
+     */
+    public function getLocalization()
+    {
+        return collect(['bread', 'generic'])->flatMap(function ($file) {
+            return ['voyager::'.$file => trans('voyager::'.$file)];
+        })->toJson();
+    }
 }

@@ -3,6 +3,7 @@
 namespace TCG\Voyager;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Facades\View;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
@@ -18,6 +19,7 @@ class VoyagerServiceProvider extends ServiceProvider
     public function boot(Router $router, Dispatcher $event)
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
+        $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'voyager');
     }
 
     /**

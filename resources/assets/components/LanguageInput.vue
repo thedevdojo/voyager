@@ -11,7 +11,7 @@ export default {
         };
     },
     mounted: function () {
-        this.translations = Vue.prototype.get_input_as_translatable_object(this.value, 'de');
+        this.translations = Vue.prototype.get_input_as_translatable_object(this.value);
     },
     computed: {
         currentText: {

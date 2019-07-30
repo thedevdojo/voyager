@@ -48,6 +48,7 @@ var voyager = new Vue({
     data: {
         page_loading: true,
         messages: {!! json_encode(Voyager::getMessages()) !!},
+        localization: {!! Voyager::getLocalization() !!},
     },
     mounted: function () {
         var vm = this;
@@ -70,6 +71,9 @@ var voyager = new Vue({
                 vm.$snotify.simple(m.message);
             }
         });
+    },
+    created: function () {
+        this.$eventHub.localization = this.localization;
     }
 });
 </script>
