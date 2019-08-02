@@ -71,7 +71,7 @@ return [
         'selection_details'    => 'Selección de Detalles',
         'display_the'          => 'Ver de',
         'store_the'            => 'Guardar de',
-        'easy_there'           => 'Fácil, Capitán',
+        'easy_there'           => 'Tranquilo Capitán',
         'before_create'        => 'Antes de que pueda crear una nueva relación, primero deberá crear el BREAD. <br> Luego, regrese para editar el BREAD y podrá agregar relaciones. Gracias.',
         'cancel'               => 'Cancelar',
         'add_new'              => 'Agregar Nueva Relación',
