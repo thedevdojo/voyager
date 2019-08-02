@@ -1,6 +1,6 @@
 .voyager-input {
-    @apply border-2 border-gray-400 appearance-none rounded w-full py-2 px-3;
-    transition: border 0.3s ease-in-out;
+    @apply border-2 border-gray-400 appearance-none rounded w-full py-3 px-3;
+    transition: border 0.2s ease-in-out;
 
     &:active,
     &:focus {
@@ -14,5 +14,49 @@
 }
 
 .voyager-h1{
-    @apply text-gray-800 text-4xl font-black mb-4;
+    @apply text-gray-800 text-4xl font-black;
 }
+
+.voyager-input-container{
+    @apply mb-4 relative;
+    .voyager-input{
+        @apply py-3;
+        &::-webkit-input-placeholder {
+            color:transparent;
+        }
+
+        &:-moz-placeholder { /* Firefox 18- */
+            color:transparent; 
+        }
+
+        &::-moz-placeholder {  /* Firefox 19+ */
+            color:transparent; 
+        }
+
+        &:-ms-input-placeholder {  
+            color:transparent;
+        }
+        &:focus, &:active, &.voyager-filled{
+            @apply pb-1 pt-5;
+            + .voyager-label{
+                @apply text-indigo-600 h-2 mt-0 text-xs;
+                transition: all 0.2s ease-out;
+            }
+        }
+    }
+    .voyager-label{
+        @apply absolute mb-0 text-gray-400 text-base mt-2;
+        transition: all 0.2s ease-out;
+        top:0.4rem;
+        left:0.8125rem;
+    }
+}
+
+// position: relative;
+// top: 25px;
+// left: 15px;
+// font-size: 10px;
+// margin-bottom: 0px;
+// color: #abacb5;
+
+// input has padding-top 20px;

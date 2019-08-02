@@ -607,12 +607,12 @@ video {
           appearance: none;
   border-radius: 0.25rem;
   width: 100%;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-  -webkit-transition: border 0.3s ease-in-out;
-  transition: border 0.3s ease-in-out;
+  -webkit-transition: border 0.2s ease-in-out;
+  transition: border 0.2s ease-in-out;
 }
 
 .voyager-input:active, .voyager-input:focus {
@@ -632,7 +632,60 @@ video {
   color: #2d3748;
   font-size: 2.25rem;
   font-weight: 900;
+}
+
+.voyager-input-container {
   margin-bottom: 1rem;
+  position: relative;
+}
+
+.voyager-input-container .voyager-input {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.voyager-input-container .voyager-input::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.voyager-input-container .voyager-input:-moz-placeholder {
+  /* Firefox 18- */
+  color: transparent;
+}
+
+.voyager-input-container .voyager-input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: transparent;
+}
+
+.voyager-input-container .voyager-input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.voyager-input-container .voyager-input:focus, .voyager-input-container .voyager-input:active, .voyager-input-container .voyager-input.voyager-filled {
+  padding-bottom: 0.25rem;
+  padding-top: 1.25rem;
+}
+
+.voyager-input-container .voyager-input:focus + .voyager-label, .voyager-input-container .voyager-input:active + .voyager-label, .voyager-input-container .voyager-input.voyager-filled + .voyager-label {
+  color: #5a67d8;
+  height: 0.5rem;
+  margin-top: 0;
+  font-size: 0.75rem;
+  -webkit-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+
+.voyager-input-container .voyager-label {
+  position: absolute;
+  margin-bottom: 0;
+  color: #cbd5e0;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  -webkit-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+  top: 0.4rem;
+  left: 0.8125rem;
 }
 
 .container {
