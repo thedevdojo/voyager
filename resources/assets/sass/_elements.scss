@@ -1,0 +1,18 @@
+.voyager-input {
+    @apply border-2 border-gray-400 appearance-none rounded w-full py-2 px-3;
+    transition: border 0.3s ease-in-out;
+
+    &:active,
+    &:focus {
+        @apply border-indigo-600 outline-none;
+    }
+
+}
+
+.voyager-label{
+    @apply block text-gray-600 text-sm font-normal mb-2;
+}
+
+.voyager-h1{
+    @apply text-gray-800 text-4xl font-black mb-4;
+}
