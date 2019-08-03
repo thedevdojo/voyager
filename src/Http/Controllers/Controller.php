@@ -17,4 +17,18 @@ abstract class Controller extends BaseController
 
         return Voyager::getBreadBySlug($slug);
     }
+
+    protected function searchQuery(&$query, $filters)
+    {
+        foreach ($filters as $field => $filter) {
+            // TODO: Search relationships and translatable
+            $query = $query->where($field, 'like', '%'.$filter.'%');
+        }
+    }
+    protected function orderQuery(&$query, $field, $direction)
+    {
+        // TODO: Order by relationship or translatable
+        $orderMethod = 'sortBy'.($direction == 'asc' ? '' : 'Desc');
+        $query = $query->get()->$orderMethod($field);
+    }
 }

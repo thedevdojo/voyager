@@ -13,6 +13,23 @@ class BreadController extends Controller
         //$this->authorize('browse', app($bread->model_name));
 
         if ($request->ajax()) {
+            $records = 0;
+            $rows = [];
+            $model = $bread->getModel();
+            $query = $model->select('*');
+            $perPage = $request->perPage ?? 10;
+            $records = $query->count();
+            $this->searchQuery($query, array_filter((array) json_decode($request->filter) ?? []));
+            $this->orderQuery($query, $request->orderField, ($request->orderDir ?? 'asc'));
+
+            $query = $query->slice((($request->page ?? 1) - 1) * $perPage)->take($perPage);
+            $rows = $query->values()->toArray();
+
+            return response()->json([
+                'records' => $records,
+                'rows'    => $rows,
+                'primary' => $model->getKeyName()
+            ]);
         }
 
         // TODO: Add Actions

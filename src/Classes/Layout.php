@@ -36,6 +36,7 @@ class Layout implements \JsonSerializable
                         $this->formfields[] = $formfield_class;
                     }
                 }
+                $this->formfields = collect($this->formfields);
             } else {
                 $this->{$key} = $data;
             }

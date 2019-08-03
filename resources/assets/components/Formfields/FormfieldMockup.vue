@@ -5,7 +5,7 @@
                 <a class="" @click="deleteFormfield()">X</a>
                 <a class="" @click="openOptions()">O</a>
                 <a class="drag-handle">D</a>
-                <a class="" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()"><></a>
+                <a class="" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()">&lt;&gt;</a>
             </div>
             <component :is="'formfield-'+formfield.type" :options="formfield.options" :fields="fields" action="mockup" />
             <popper trigger="click" :force-show="optionsOpen" :options="{ placement: 'top' }">

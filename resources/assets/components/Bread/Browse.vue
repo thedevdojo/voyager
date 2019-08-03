@@ -1,5 +1,6 @@
 <template>
     <div>
+        <button class="" v-if="selectedEntries.length > 0">Delete {{ selectedEntries.length }} Entries</button>
         <table class="w-full">
             <thead>
                 <tr>
@@ -19,12 +20,18 @@
                             @input="filter()">
                     </th>
                     <th>
-                        
+                        <!-- Actions -->
                     </th>
                 </tr>
             </thead>
             <tbody>
-
+                <tr v-for="(result, i) in results.rows" v-bind:key="'tr-'+i">
+                    <td><input type="checkbox" v-model="selectedEntries" :value="result[results.primary]"></td>
+                    <td v-for="(formfield, i) in layout.formfields" :key="'td-'+i">
+                        {{ result[formfield.options.field] || 'hh' }}
+                    </td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -37,13 +44,13 @@ export default {
         return {
             results: [],
             loading: false,
+            selectedEntries: [],
             parameter: {
                 page: 1,
                 perPage: 10,
                 filter: {},
                 orderField: '',
                 orderDir: 'asc',
-                _token: '',
             }
         };
     },
@@ -66,24 +73,48 @@ export default {
             this.loadItems();
         },
         selectAll: function (select) {
-            
+            var vm = this;
+            vm.selectedEntries = [];
+            if (select) {
+                vm.results.rows.forEach(function (row) {
+                    vm.selectedEntries.push(row[vm.results.primary]);
+                });
+            }
         },
-        loadItems: function () {
+        loadItems: debounce(function () {
             var vm = this;
             vm.loading = true;
-            axios.get(this.dataUrl, vm.parameter)
+            axios.get(this.dataUrl, {
+                params: vm.parameter
+            })
             .then(function (response) {
                 vm.results = response.data;
                 vm.loading = false;
+
+                if (history.pushState) {
+                    var url = response.request.responseURL;
+                    window.history.pushState({ path:  url }, '', url);
+                }
             })
             .catch(function (error) {
                 vm.$snotify.error(error);
                 vm.loading = false;
             });
-        }
+        }, 200)
     },
 
     mounted: function () {
+        var search = location.search.substring(1);
+        if (search !== '') {
+            var params = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) {
+                if (key == 'filter') {
+                    return JSON.parse(decodeURIComponent(value));
+                }
+                return key === "" ? value : decodeURIComponent(value);
+            });
+            Vue.set(this, 'parameter', params);
+        }
+
         this.loadItems();
     }
 };
