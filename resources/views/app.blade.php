@@ -49,6 +49,8 @@ var voyager = new Vue({
         page_loading: true,
         messages: {!! json_encode(Voyager::getMessages()) !!},
         localization: {!! Voyager::getLocalization() !!},
+        routes: {!! Voyager::getRoutes() !!},
+        formfields: {!! json_encode(Voyager::getFormfieldsDescription()) !!}
     },
     mounted: function () {
         var vm = this;
@@ -74,6 +76,8 @@ var voyager = new Vue({
     },
     created: function () {
         this.$eventHub.localization = this.localization;
+        this.$eventHub.routes = this.routes;
+        this.$eventHub.formfields = this.formfields;
     }
 });
 </script>

@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use TCG\Voyager\Classes\Bread as BreadClass;
@@ -14,7 +15,7 @@ class Voyager
     protected $messages = [];
 
     /**
-     * Get Voyagers reoutes.
+     * Get Voyagers routes.
      *
      * @return array an array of routes
      */
@@ -59,19 +60,20 @@ class Voyager
     public function getBreads()
     {
         if (!$this->breads) {
-            // TODO: Cache BREADs
-            if (!File::isDirectory($this->breadPath)) {
-                File::makeDirectory($this->breadPath);
-            }
-            $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {
-                return new BreadClass($bread->getPathName());
-            })->filter(function ($bread) {
-                if (!$bread->parse_failed && !$bread->isValid()) {
-                    $this->flashMessage('BREAD "'.$bread->slug.'" is not valid!', 'debug');
+            //$this->breads = Cache::rememberForever('voyager-breads', function () {
+                if (!File::isDirectory($this->breadPath)) {
+                    File::makeDirectory($this->breadPath);
                 }
+                $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {
+                    return new BreadClass($bread->getPathName());
+                })->filter(function ($bread) {
+                    if (!$bread->parse_failed && !$bread->isValid()) {
+                        $this->flashMessage('BREAD "'.$bread->slug.'" is not valid!', 'debug');
+                    }
 
-                return $bread->isValid();
-            });
+                    return $bread->isValid();
+                });
+            //});
         }
 
         return $this->breads;
@@ -104,9 +106,11 @@ class Voyager
     {
         if (!$this->breads) {
             $this->getBreads();
-        }
+        }        
 
-        return $this->breads->where('slug', $slug)->first();
+        return $this->breads->filter(function ($bread) use ($slug) {
+            return $bread->slug == $slug;
+        })->first();
     }
 
     /**
@@ -175,8 +179,75 @@ class Voyager
      */
     public function getLocalization()
     {
-        return collect(['bread', 'generic'])->flatMap(function ($file) {
+        return collect(['bread', 'manager', 'generic'])->flatMap(function ($file) {
             return ['voyager::'.$file => trans('voyager::'.$file)];
         })->toJson();
+    }
+
+    /**
+     * Get all Routes.
+     *
+     * @return array The routes
+     */
+    public function getRoutes()
+    {
+        return collect(\Route::getRoutes())->mapWithKeys(function ($route) {
+            return [$route->getName() => url($route->uri())];
+        })->filter(function ($value, $key) {
+            return $key != '';
+        });
+    }
+
+    /**
+     * Add a formfield
+     *
+     * @param string $type The type of the formfield
+     */
+    public function addFormfield($class)
+    {
+        if (!$this->formfields) {
+            $this->formfields = collect();
+        }
+        $class = new $class();
+        $this->formfields->push($class);
+    }
+
+    /**
+     * Get all formfields
+     *
+     * @return Illuminate\Support\Collection The formfields
+     */
+    public function getFormfields()
+    {
+        return $this->formfields->unique();
+    }
+
+    /**
+     * Get formfields-description
+     *
+     * @return Illuminate\Support\Collection The formfields
+     */
+    public function getFormfieldsDescription()
+    {
+        return $this->getFormfields()->map(function ($formfield) {
+            return [
+                'type'    => $formfield->type,
+                'name'    => $formfield->name,
+                'options' => $formfield->options
+            ];
+        });
+    }
+
+    /**
+     * Get a formfield by type
+     *
+     * @param string $type The type of the formfield
+     * @return object The formfield
+     */
+    public function getFormfield($type)
+    {
+        return $this->formfields->filter(function ($formfield) use ($type) {
+            return $formfield->type == $type;
+        })->first();
     }
 }

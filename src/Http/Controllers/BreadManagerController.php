@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Facades\Voyager;
 
@@ -46,8 +47,9 @@ class BreadManagerController extends Controller
     public function edit($table)
     {
         $bread = Voyager::getBread($table);
+        $fields = DB::getSchemaBuilder()->getColumnListing($bread->table);
         // TODO: throw exception if BREAD is not found.
-        return view('voyager::manager.edit-add', compact('bread'));
+        return view('voyager::manager.edit-add', compact('bread', 'fields'));
     }
 
     /**
@@ -68,6 +70,8 @@ class BreadManagerController extends Controller
             $message = 'There was an error storing the BREAD!';
         }
 
+        Cache::forget('voyager-breads');
+
         return [
             'success' => $success,
             'message' => $message,
@@ -83,6 +87,6 @@ class BreadManagerController extends Controller
      */
     public function destroy($table)
     {
-        //
+        Cache::forget('voyager-breads');
     }
 }

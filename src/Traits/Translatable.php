@@ -4,9 +4,6 @@ namespace TCG\Voyager\Traits;
 
 trait Translatable
 {
-    public $current_locale;
-    public $fallback_locale;
-
     public function __construct()
     {
         $this->current_locale = app()->getLocale();
@@ -18,6 +15,9 @@ trait Translatable
         $value = $this->{$key};
 
         if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
+            $current_locale = app()->getLocale();
+            $fallback_locale = config('app.fallback_locale');
+
             if (is_string($value)) {
                 $json = @json_decode($value);
                 if (json_last_error() == JSON_ERROR_NONE) {
@@ -26,9 +26,10 @@ trait Translatable
             }
 
             if (is_array($value)) {
-                return $value[$this->current_locale] ?? $value[$this->fallback_locale] ?? '';
+                return $value[$current_locale] ?? $value[$fallback_locale] ?? '';
             } elseif (is_object($value)) {
-                return $value->{$this->current_locale} ?? $value->{$this->fallback_locale} ?? '';
+                return $value->{$current_locale} ?? $value->{$fallback_locale} ?? '';
+            } else {
             }
         }
 

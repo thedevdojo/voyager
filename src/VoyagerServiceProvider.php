@@ -7,9 +7,12 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\Policies\BasePolicy;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
+    protected $policies = [];
+
     /**
      * Bootstrap the application services.
      *
@@ -19,6 +22,20 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
         $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'voyager');
+
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
+
+        // Register Policies
+        VoyagerFacade::getBreads()->each(function ($bread) {
+            $policy = BasePolicy::class;
+
+            if (!empty($bread->policy) && class_exists($bread->policy)) {
+                $policy = $bread->policy;
+            }
+
+            $this->policies[$bread->model_name.'::class'] = $policy;
+        });
+        $this->registerPolicies();
     }
 
     /**

@@ -6,6 +6,7 @@ Route::group(['as' => 'voyager.'], function () {
     //Route::group(['middleware' => 'admin.user'], function () use ($namespace) {
     Route::view('/', 'voyager::dashboard')->name('dashboard');
 
+    // BREAD manager
     Route::group([
         'as'     => 'bread.',
         'prefix' => 'bread',
@@ -16,6 +17,13 @@ Route::group(['as' => 'voyager.'], function () {
         Route::put('{table}', ['uses' => $namespace.'BreadManagerController@update', 'as' => 'update']);
         Route::delete('{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'delete']);
     });
+
+    // BREADs
+    foreach (Voyager::getBreads() as $bread) {
+        $controller = !empty($bread->controller) ? \Illuminate\Support\Str::start($bread->controller, '\\') : $namespace.'BreadController';
+        Route::resource($bread->slug, $controller);
+    }
+
     //});
 
     Route::get('login', ['uses' => $namespace.'AuthController@login', 'as' => 'login']);

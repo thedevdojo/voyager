@@ -19,6 +19,8 @@
         "node-sass": "^4.12.0",
         "tailwindcss": "^1.0.4",
         "vue": "^2.6.10",
-        "vue-snotify": "^3.2.1"
+        "vue-popperjs": "^2.0.4",
+        "vue-snotify": "^3.2.1",
+        "vuedraggable": "^2.23.0"
     }
 }

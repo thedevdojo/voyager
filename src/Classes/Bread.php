@@ -19,7 +19,7 @@ class Bread implements \JsonSerializable
     public $model_name;
     public $controller;
     public $policy;
-    public $layouts;
+    public $layouts = [];
 
     protected $parse_failed = false;
 
@@ -35,15 +35,38 @@ class Bread implements \JsonSerializable
         }
 
         foreach ($json as $key => $data) {
-            $this->{$key} = $data;
+            if ($key == 'layouts') {
+                foreach ($data ?? [] as $layout) {
+                    $layout = new Layout($layout, $this);
+                    if ($layout->isValid()) {
+                        $this->layouts[] = $layout;
+                    } else {
+                        Voyager::flashMessage('One layout in the "'.basename($path).'" BREAD is invalid!', 'debug');
+                    }
+                }
+
+                $this->layouts = collect($this->layouts);
+            } else {
+                $this->{$key} = $data;
+            }
         }
     }
 
     public function getModel()
     {
-        if ($this->model_name) {
-            return app($this->model_name);
+        return app($this->model_name);
+    }
+
+    public function getLayoutFor($action)
+    {
+        // TODO: Get layout based on action and roles
+        if ($action == 'browse') {
+            return $this->layouts->filter(function ($layout) {
+                return $layout->type == 'list';
+            })->first();
         }
+
+        return $this->layouts[0];
     }
 
     public function isValid()
@@ -63,6 +86,8 @@ class Bread implements \JsonSerializable
             'name_singular' => $this->name_singular,
             'name_plural'   => $this->name_plural,
             'model_name'    => $this->model_name,
+            'controller'    => $this->controller,
+            'policy'        => $this->policy,
             'layouts'       => $this->layouts,
         ];
     }

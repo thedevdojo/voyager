@@ -22,11 +22,34 @@ Vue.prototype.get_input_as_translatable_object = function (input) {
     return {};
 }
 
+Vue.prototype.translate = function (input) {
+    if (input && typeof input === 'object' && input.constructor === Object) {
+        return input[this.$eventHub.locale] || '';
+    }
+
+    return input;
+}
+
 Vue.prototype.$eventHub = new Vue({
     data: {
         locale: document.getElementsByTagName('html')[0].getAttribute('lang'),
         locales: document.getElementsByTagName('html')[0].getAttribute('locales').split(','),
         localization: [],
+        routes: [],
+        formfields: [],
+    },
+    methods: {
+        getFormfieldByType: function (type) {
+            var r_formfield = null;
+
+            this.formfields.forEach(function (formfield) {
+                if (formfield.type == type) {
+                    r_formfield = formfield;
+                }
+            });
+
+            return r_formfield;
+        }
     }
 });
 
@@ -58,4 +81,18 @@ Vue.prototype.trans_choice = function (key, count = 1, replace = {})
     }
 
     return translation;
+}
+
+Vue.prototype.route = function ()
+{
+    var args = Array.prototype.slice.call(arguments);
+    var name = args.shift();
+    if (Vue.prototype.$eventHub.routes[name] === undefined) {
+        console.error('Route not found ', name);
+    } else {
+        return Vue.prototype.$eventHub.routes[name]
+            .split('/')
+            .map(s => s[0] == '{' ? args.shift() : s)
+            .join('/');
+    }
 }

@@ -3,7 +3,11 @@
 @section('content')
     <locale-picker></locale-picker>
     <br>
-    <bread-builder :bread="{{ json_encode($bread) }}" url="{{ route('voyager.bread.update', $bread->table) }}"></bread-builder>
+    <bread-edit-add
+        :data="{{ json_encode($bread) }}"
+        :fields="{{ json_encode($fields) }}"
+        url="{{ route('voyager.bread.update', $bread->table) }}"
+    ></bread-builder>
 @endsection
 
 @section('js')
