@@ -1,6 +1,6 @@
 @extends('voyager::master')
 
-@section('page_title', __('voyager::generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->getTranslatedAttribute('display_name_singular'))
+@section('page_title', __('voyager::generic.'.(isset($dataTypeContent->getKey()) ? 'edit' : 'add')).' '.$dataType->getTranslatedAttribute('display_name_singular'))
 
 @section('css')
     <style>
@@ -53,16 +53,16 @@
 @section('page_header')
     <h1 class="page-title">
         <i class="{{ $dataType->icon }}"></i>
-        {{ __('voyager::generic.'.(isset($dataTypeContent->id) ? 'edit' : 'add')).' '.$dataType->getTranslatedAttribute('display_name_singular') }}
+        {{ __('voyager::generic.'.(isset($dataTypeContent->getKey()) ? 'edit' : 'add')).' '.$dataType->getTranslatedAttribute('display_name_singular') }}
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
 
 @section('content')
     <div class="page-content container-fluid">
-        <form class="form-edit-add" role="form" action="@if(isset($dataTypeContent->id)){{ route('voyager.posts.update', $dataTypeContent->id) }}@else{{ route('voyager.posts.store') }}@endif" method="POST" enctype="multipart/form-data">
+        <form class="form-edit-add" role="form" action="@if(isset($dataTypeContent->getKey())){{ route('voyager.posts.update', $dataTypeContent->getKey()) }}@else{{ route('voyager.posts.store') }}@endif" method="POST" enctype="multipart/form-data">
             <!-- PUT Method if we are editing -->
-            @if(isset($dataTypeContent->id))
+            @if(isset($dataTypeContent->getKey()))
                 {{ method_field("PUT") }}
             @endif
             {{ csrf_field() }}
@@ -114,7 +114,7 @@
                                 '_field_trans' => get_field_translations($dataTypeContent, 'body')
                             ])
                             @php
-                                $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                                $dataTypeRows = $dataType->{(isset($dataTypeContent->getKey()) ? 'editRows' : 'addRows' )};
                                 $row = $dataTypeRows->where('field', 'body')->first();
                             @endphp
                             {!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
@@ -147,7 +147,7 @@
                         </div>
                         <div class="panel-body">
                             @php
-                                $dataTypeRows = $dataType->{(isset($dataTypeContent->id) ? 'editRows' : 'addRows' )};
+                                $dataTypeRows = $dataType->{(isset($dataTypeContent->getKey()) ? 'editRows' : 'addRows' )};
                                 $exclude = ['title', 'body', 'excerpt', 'slug', 'status', 'category_id', 'author_id', 'featured', 'image', 'meta_description', 'meta_keywords', 'seo_title'];
                             @endphp
 
@@ -279,7 +279,7 @@
             </div>
 
             <button type="submit" class="btn btn-primary pull-right">
-                @if(isset($dataTypeContent->id)){{ __('voyager::post.update') }}@else <i class="icon wb-plus-circle"></i> {{ __('voyager::post.new') }} @endif
+                @if(isset($dataTypeContent->getKey())){{ __('voyager::post.update') }}@else <i class="icon wb-plus-circle"></i> {{ __('voyager::post.new') }} @endif
             </button>
         </form>
 
