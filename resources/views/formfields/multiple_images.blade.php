@@ -5,7 +5,7 @@
         @foreach($images as $image)
             <div class="img_settings_container" data-field-name="{{ $row->field }}" style="float:left;padding-right:15px;">
                 <a href="#" class="voyager-x remove-multi-image" style="position: absolute;"></a>
-                <img src="{{ Voyager::image( $image ) }}" data-file-name="{{ $image }}" data-id="{{ $dataTypeContent->id }}" style="max-width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:5px;">
+                <img src="{{ Voyager::image( $image ) }}" data-file-name="{{ $image }}" data-id="{{ $dataTypeContent->getKey() }}" style="max-width:200px; height:auto; clear:both; display:block; padding:2px; border:1px solid #ddd; margin-bottom:5px;">
             </div>
         @endforeach
     @endif
