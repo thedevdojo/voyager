@@ -61,18 +61,18 @@ class Voyager
     {
         if (!$this->breads) {
             //$this->breads = Cache::rememberForever('voyager-breads', function () {
-                if (!File::isDirectory($this->breadPath)) {
-                    File::makeDirectory($this->breadPath);
+            if (!File::isDirectory($this->breadPath)) {
+                File::makeDirectory($this->breadPath);
+            }
+            $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {
+                return new BreadClass($bread->getPathName());
+            })->filter(function ($bread) {
+                if (!$bread->parse_failed && !$bread->isValid()) {
+                    $this->flashMessage('BREAD "'.$bread->slug.'" is not valid!', 'debug');
                 }
-                $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {
-                    return new BreadClass($bread->getPathName());
-                })->filter(function ($bread) {
-                    if (!$bread->parse_failed && !$bread->isValid()) {
-                        $this->flashMessage('BREAD "'.$bread->slug.'" is not valid!', 'debug');
-                    }
 
-                    return $bread->isValid();
-                });
+                return $bread->isValid();
+            });
             //});
         }
 
@@ -106,7 +106,7 @@ class Voyager
     {
         if (!$this->breads) {
             $this->getBreads();
-        }        
+        }
 
         return $this->breads->filter(function ($bread) use ($slug) {
             return $bread->slug == $slug;
@@ -199,7 +199,7 @@ class Voyager
     }
 
     /**
-     * Add a formfield
+     * Add a formfield.
      *
      * @param string $type The type of the formfield
      */
@@ -213,7 +213,7 @@ class Voyager
     }
 
     /**
-     * Get all formfields
+     * Get all formfields.
      *
      * @return Illuminate\Support\Collection The formfields
      */
@@ -223,7 +223,7 @@ class Voyager
     }
 
     /**
-     * Get formfields-description
+     * Get formfields-description.
      *
      * @return Illuminate\Support\Collection The formfields
      */
@@ -233,15 +233,16 @@ class Voyager
             return [
                 'type'    => $formfield->type,
                 'name'    => $formfield->name,
-                'options' => $formfield->options
+                'options' => $formfield->options,
             ];
         });
     }
 
     /**
-     * Get a formfield by type
+     * Get a formfield by type.
      *
      * @param string $type The type of the formfield
+     *
      * @return object The formfield
      */
     public function getFormfield($type)

@@ -13,7 +13,6 @@ class BreadController extends Controller
         //$this->authorize('browse', app($bread->model_name));
 
         if ($request->ajax()) {
-            
         }
 
         // TODO: Add Actions

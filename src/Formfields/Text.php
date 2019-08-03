@@ -7,7 +7,7 @@ class Text extends BaseFormfield
     public $type = 'text';
     public $name = 'Text';
 
-    function __construct()
+    public function __construct()
     {
         $this->options['placeholder'] = '';
         $this->options['default_value'] = '';

@@ -13,9 +13,10 @@ class BaseFormfield implements \JsonSerializable
     ];
 
     /**
-     * Transform data to be stored in the database after updating
+     * Transform data to be stored in the database after updating.
      *
      * @param mixed $data The input-data
+     *
      * @return mixed The processed data
      */
     public function update($data)
@@ -24,9 +25,10 @@ class BaseFormfield implements \JsonSerializable
     }
 
     /**
-     * Transform data to be stored in the database after adding
+     * Transform data to be stored in the database after adding.
      *
      * @param mixed $data The input-data
+     *
      * @return mixed The processed data
      */
     public function store($data)
@@ -35,7 +37,7 @@ class BaseFormfield implements \JsonSerializable
     }
 
     /**
-     * Check if the formfield is valid
+     * Check if the formfield is valid.
      *
      * @return bool Is the formfield valid
      */
