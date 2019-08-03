@@ -36,18 +36,22 @@ class Bread implements \JsonSerializable
 
         foreach ($json as $key => $data) {
             if ($key == 'layouts') {
-                foreach ($data ?? [] as $layout) {
-                    $layout = new Layout($layout, $this);
-                    if ($layout->isValid()) {
-                        $this->layouts[] = $layout;
-                    } else {
-                        Voyager::flashMessage('One layout in the "'.basename($path).'" BREAD is invalid!', 'debug');
-                    }
-                }
-
-                $this->layouts = collect($this->layouts);
+                $this->parseLayouts($data, $path);
             } else {
                 $this->{$key} = $data;
+            }
+        }
+    }
+
+    private function parseLayouts($data, $path)
+    {
+        $this->layouts = collect();
+        foreach ($data ?? [] as $layout) {
+            $layout = new Layout($layout, $this);
+            if ($layout->isValid()) {
+                $this->layouts->push($layout);
+            } else {
+                Voyager::flashMessage('One layout in the "'.basename($path).'" BREAD is invalid!', 'debug');
             }
         }
     }

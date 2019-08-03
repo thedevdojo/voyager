@@ -18,27 +18,33 @@ class Layout implements \JsonSerializable
 
         foreach ($layout as $key => $data) {
             if ($key == 'formfields') {
-                foreach ($data ?? [] as $formfield) {
-                    $formfield_class = clone Voyager::getFormfield($formfield->type);
-                    if (!$formfield_class) {
-                        Voyager::flashMessage('Formfield "'.$formfield->type.'" couldn\'t be found.', 'debug');
-                        continue;
-                    }
-                    foreach ($formfield as $f_key => $f_value) {
-                        if ($f_key == 'options') {
-                            $formfield_class->options = array_merge($formfield_class->options, (array) $f_value);
-                        } else {
-                            $formfield_class->{$f_key} = $f_value;
-                        }
-                    }
-
-                    if ($formfield_class->isValid()) {
-                        $this->formfields[] = $formfield_class;
-                    }
-                }
-                $this->formfields = collect($this->formfields);
+                $this->parseFormfields($data);
             } else {
                 $this->{$key} = $data;
+            }
+        }
+    }
+
+    private function parseFormfields($data)
+    {
+        $this->formfields = collect();
+
+        foreach ($data ?? [] as $formfield) {
+            $formfield_class = clone Voyager::getFormfield($formfield->type);
+            if (!$formfield_class) {
+                Voyager::flashMessage('Formfield "'.$formfield->type.'" couldn\'t be found.', 'debug');
+                continue;
+            }
+            foreach ($formfield as $f_key => $f_value) {
+                if ($f_key == 'options') {
+                    $formfield_class->options = array_merge($formfield_class->options, (array) $f_value);
+                } else {
+                    $formfield_class->{$f_key} = $f_value;
+                }
+            }
+
+            if ($formfield_class->isValid()) {
+                $this->formfields->push($formfield_class);
             }
         }
     }

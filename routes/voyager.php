@@ -20,7 +20,10 @@ Route::group(['as' => 'voyager.'], function () {
 
     // BREADs
     foreach (Voyager::getBreads() as $bread) {
-        $controller = !empty($bread->controller) ? \Illuminate\Support\Str::start($bread->controller, '\\') : $namespace.'BreadController';
+        $controller = $namespace.'BreadController';
+        if (!empty($bread->controller)) {
+            $controller = \Illuminate\Support\Str::start($bread->controller, '\\');
+        }
         Route::resource($bread->slug, $controller);
     }
 

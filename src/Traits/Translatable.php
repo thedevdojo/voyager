@@ -29,7 +29,6 @@ trait Translatable
                 return $value[$current_locale] ?? $value[$fallback_locale] ?? '';
             } elseif (is_object($value)) {
                 return $value->{$current_locale} ?? $value->{$fallback_locale} ?? '';
-            } else {
             }
         }
 
