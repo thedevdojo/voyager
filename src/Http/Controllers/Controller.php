@@ -25,6 +25,7 @@ abstract class Controller extends BaseController
             $query = $query->where($field, 'like', '%'.$filter.'%');
         }
     }
+
     protected function orderQuery(&$query, $field, $direction)
     {
         // TODO: Order by relationship or translatable
