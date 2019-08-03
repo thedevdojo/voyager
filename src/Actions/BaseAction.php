@@ -10,6 +10,7 @@ abstract class BaseAction implements \JsonSerializable
     public $method = 'get';
 
     abstract public function getTitle();
+
     abstract public function getClasses();
 
     public function getUrl($key)
