@@ -1,6 +1,8 @@
 require('./vendor');
 require('./helper');
 require('./bread');
+require('./bread-manager');
+require('./multilanguage');
 require('./formfields');
 require('./voyager-ui');
 
