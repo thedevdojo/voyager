@@ -26,7 +26,7 @@ class Layout implements \JsonSerializable
                     }
                     foreach ($formfield as $f_key => $f_value) {
                         if ($f_key == 'options') {
-                            $formfield_class->options = array_merge($formfield_class->options, (array)$f_value);
+                            $formfield_class->options = array_merge($formfield_class->options, (array) $f_value);
                         } else {
                             $formfield_class->{$f_key} = $f_value;
                         }

@@ -3,8 +3,8 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
 use TCG\Voyager\Facades\Voyager;
 
 abstract class Controller extends BaseController
