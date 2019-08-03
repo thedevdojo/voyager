@@ -3,6 +3,8 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use TCG\Voyager\Facades\Voyager;
 
 class BreadController extends Controller
 {
@@ -13,6 +15,9 @@ class BreadController extends Controller
         //$this->authorize('browse', app($bread->model_name));
 
         if ($request->ajax()) {
+            if (Session::token() != $request->get('_token')) {
+                throw new \Illuminate\Session\TokenMismatchException;
+            }
             $records = 0;
             $rows = [];
             $model = $bread->getModel();
@@ -31,9 +36,9 @@ class BreadController extends Controller
                 'primary' => $model->getKeyName(),
             ]);
         }
+        $actions = Voyager::getActionsForBread($bread);
 
-        // TODO: Add Actions
-        return view('voyager::bread.browse', compact('bread', 'layout'));
+        return view('voyager::bread.browse', compact('bread', 'layout', 'actions'));
     }
 
     public function create(Request $request)

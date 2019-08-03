@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="" v-if="selectedEntries.length > 0">Delete {{ selectedEntries.length }} Entries</button>
+        <bread-actions :actions="actions" :mass="true" :keys="selectedEntries" :bread="bread" />
         <table class="w-full">
             <thead>
                 <tr>
@@ -19,9 +19,7 @@
                             :placeholder="__('voyager::bread.search_field', { field: translate(formfield.options.title) })"
                             @input="filter()">
                     </th>
-                    <th>
-                        <!-- Actions -->
-                    </th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +28,9 @@
                     <td v-for="(formfield, i) in layout.formfields" :key="'td-'+i">
                         {{ result[formfield.options.field] || 'hh' }}
                     </td>
-                    <td></td>
+                    <td>
+                        <bread-actions :actions="actions" :mass="false" :keys="result[results.primary]" :bread="bread" />
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -39,7 +39,7 @@
 
 <script>
 export default {
-    props: ['bread', 'layout', 'data-url'],
+    props: ['bread', 'layout', 'data-url', 'actions'],
     data: function () {
         return {
             results: [],
@@ -51,6 +51,7 @@ export default {
                 filter: {},
                 orderField: '',
                 orderDir: 'asc',
+                _token: document.head.querySelector('meta[name="csrf-token"]').content
             }
         };
     },
@@ -93,6 +94,7 @@ export default {
 
                 if (history.pushState) {
                     var url = response.request.responseURL;
+                    url = url.substring(0, url.indexOf('_token') - 1);
                     window.history.pushState({ path:  url }, '', url);
                 }
             })
@@ -112,6 +114,7 @@ export default {
                 }
                 return key === "" ? value : decodeURIComponent(value);
             });
+            params['_token'] = document.head.querySelector('meta[name="csrf-token"]').content;
             Vue.set(this, 'parameter', params);
         }
 

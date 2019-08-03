@@ -1,7 +1,8 @@
 let bread_components = [
     'Browse',
     'EditAdd',
-    'Read'
+    'Read',
+    'Actions',
 ];
 
 let bread_manager_components = [

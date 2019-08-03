@@ -11,6 +11,7 @@ class Voyager
 {
     protected $breads;
     protected $breadPath;
+    protected $actions;
     protected $formfields;
     protected $messages = [];
 
@@ -201,7 +202,7 @@ class Voyager
     /**
      * Add a formfield.
      *
-     * @param string $type The type of the formfield
+     * @param string $class The class of the formfield
      */
     public function addFormfield($class)
     {
@@ -250,5 +251,44 @@ class Voyager
         return $this->formfields->filter(function ($formfield) use ($type) {
             return $formfield->type == $type;
         })->first();
+    }
+
+    /**
+     * Add an action.
+     *
+     * @param string $class The class of the action
+     */
+    public function addAction($class)
+    {
+        if (!$this->actions) {
+            $this->actions = collect();
+        }
+        $class = new $class();
+        $this->actions->push($class);
+    }
+
+    /**
+     * Get all actions.
+     *
+     * @return Illuminate\Support\Collection The actions
+     */
+    public function getActions()
+    {
+        return $this->actions->unique();
+    }
+
+    /**
+     * Get all actions which should be shown on a BREAD.
+     *
+     * @param string $bread The BREAD
+     *
+     * @return object The actions
+     */
+    public function getActionsForBread($bread)
+    {
+        return $this->actions->filter(function ($action) use ($bread) {
+            $action->bread = $bread;
+            return $action->shouldBeDisplayOnBread($bread);
+        });
     }
 }

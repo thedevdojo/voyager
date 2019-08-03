@@ -4,6 +4,7 @@
 <bread-browse
     :bread="{{ json_encode($bread) }}"
     :layout="{{ json_encode($layout) }}"
+    :actions="{{ json_encode($actions) }}"
     data-url="{{ route('voyager.'.$bread->slug.'.index') }}"
 ></bread-browse>
 @endsection

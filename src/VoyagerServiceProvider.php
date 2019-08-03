@@ -25,6 +25,11 @@ class VoyagerServiceProvider extends ServiceProvider
 
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
 
+        VoyagerFacade::addAction(\TCG\Voyager\Actions\ReadAction::class);
+        VoyagerFacade::addAction(\TCG\Voyager\Actions\EditAction::class);
+        VoyagerFacade::addAction(\TCG\Voyager\Actions\DeleteAction::class);
+        VoyagerFacade::addAction(\TCG\Voyager\Actions\BulkDeleteAction::class);
+
         // Register Policies
         VoyagerFacade::getBreads()->each(function ($bread) {
             $policy = BasePolicy::class;
