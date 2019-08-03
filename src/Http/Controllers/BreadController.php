@@ -28,7 +28,7 @@ class BreadController extends Controller
             return response()->json([
                 'records' => $records,
                 'rows'    => $rows,
-                'primary' => $model->getKeyName()
+                'primary' => $model->getKeyName(),
             ]);
         }
 
