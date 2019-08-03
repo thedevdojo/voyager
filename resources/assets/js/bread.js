@@ -1,10 +1,15 @@
 let bread_components = [
-    'Browse',
-    'EditAdd',
-    'Read',
-    'Actions',
+    'Bread/Browse',
+    'Bread/EditAdd',
+    'Bread/Read',
+    'Bread/Actions',
+
+    'Manager/Builder',
+    'Manager/ViewBuilder',
+    'Manager/ListBuilder'
 ];
 
 bread_components.forEach(function (component) {
-    Vue.component('bread-'+Vue.prototype.kebab_case(component), require('../components/Bread/'+component).default);
+    var name = component.substring(component.lastIndexOf('/') + 1);
+    Vue.component('bread-'+Vue.prototype.kebab_case(name), require('../components/'+component).default);
 });
