@@ -16,7 +16,7 @@ class BreadController extends Controller
 
         if ($request->ajax()) {
             if (Session::token() != $request->get('_token')) {
-                throw new \Illuminate\Session\TokenMismatchException;
+                throw new \Illuminate\Session\TokenMismatchException();
             }
             $records = 0;
             $rows = [];

@@ -288,6 +288,7 @@ class Voyager
     {
         return $this->actions->filter(function ($action) use ($bread) {
             $action->bread = $bread;
+
             return $action->shouldBeDisplayOnBread($bread);
         });
     }
