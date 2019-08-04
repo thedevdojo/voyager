@@ -6,5 +6,5 @@
        @if(isset($options->min)) min="{{ $options->min }}" @endif
        @if(isset($options->max)) max="{{ $options->max }}" @endif
        step="{{ $options->step ?? 'any' }}"
-       placeholder="{{ old($row->field, $options->placeholder ?? $row->display_name) }}"
+       placeholder="{{ old($row->field, $options->placeholder ?? $row->getTranslatedAttribute('display_name')) }}"
        value="{{ old($row->field, $dataTypeContent->{$row->field} ?? $options->default ?? '') }}">
