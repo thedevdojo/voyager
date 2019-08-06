@@ -24,8 +24,8 @@ class DeleteAction extends BaseAction
     public function confirm()
     {
         return [
-            'title' => __('voyager::bread.delete_num_entries', ['num' => ':num:', 'display_name' => ':display_name:']),
-            'text'  => __('voyager::bread.delete_num_entries_conf', ['num' => ':num:', 'display_name' => ':display_name:']),
+            'title' => __('voyager::bread.delete_single_entry', ['display_name' => ':display_name:']),
+            'text'  => __('voyager::bread.delete_single_entry_conf', ['display_name' => ':display_name:']),
             'yes'   => __('voyager::generic.yes'),
             'no'    => __('voyager::generic.no'),
         ];
