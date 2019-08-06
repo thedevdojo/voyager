@@ -6,7 +6,12 @@ class ReadAction extends BaseAction
 {
     public function getTitle()
     {
-        return 'Read';
+        return __('voyager::generic.read');
+    }
+
+    public function getUrl($key)
+    {
+        return route('voyager.'.$this->bread->slug.'.show', $key);
     }
 
     public function getClasses()

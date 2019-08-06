@@ -6,7 +6,7 @@ class EditAction extends BaseAction
 {
     public function getTitle()
     {
-        return 'Edit';
+        return __('voyager::generic.edit');
     }
 
     public function getUrl($key)
