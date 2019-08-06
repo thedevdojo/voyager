@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Classes;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\Translatable;
@@ -59,6 +60,35 @@ class Bread implements \JsonSerializable
     public function getModel()
     {
         return app($this->model_name);
+    }
+
+    public function getFields()
+    {
+        return DB::getSchemaBuilder()->getColumnListing($this->table);
+    }
+
+    public function getAccessors()
+    {
+        return $this->getModel()->accessors ?? [];
+    }
+
+    public function getRelationships($deep = false)
+    {
+        $relationships = $this->getModel()->relationships ?? [];
+        if ($deep) {
+            foreach ($relationships as $key => $name) {
+                $relationship = $this->getModel()->{$name}();
+                $table = $relationship->getRelated()->getTable();
+                unset($relationships[$key]);
+                $relationships[$name] = [
+                    'bread'  => Voyager::getBread($table),
+                    'fields' => Voyager::getBread($table)->getFields(),
+                    'type'   => basename(get_class($relationship)),
+                ];
+            }
+        }
+
+        return $relationships;
     }
 
     public function getLayoutFor($action)

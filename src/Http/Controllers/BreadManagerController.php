@@ -47,9 +47,8 @@ class BreadManagerController extends Controller
     public function edit($table)
     {
         $bread = Voyager::getBread($table);
-        $fields = DB::getSchemaBuilder()->getColumnListing($bread->table);
         // TODO: throw exception if BREAD is not found.
-        return view('voyager::manager.edit-add', compact('bread', 'fields'));
+        return view('voyager::manager.edit-add', compact('bread'));
     }
 
     /**

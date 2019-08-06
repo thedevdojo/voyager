@@ -95,7 +95,7 @@
 
 <script>
 export default {
-    props: ['data', 'fields', 'url'],
+    props: ['data', 'fields', 'url', 'accessors', 'relationships'],
     data: function () {
         return {
             bread: this.data,
