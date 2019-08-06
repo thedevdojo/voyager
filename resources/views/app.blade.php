@@ -11,7 +11,7 @@
 <body class="bg-gray-200">
 
         <!--div id="voyager-loader">
-            <img src="{{ voyager_asset('images/logo-icon.png') }}" alt="Voyager Loader">
+            <img src="{{ Voyager::assetUrl('images/logo-icon.png') }}" alt="Voyager Loader">
         </div-->
 
 <div id="voyager" class="flex m-auto">

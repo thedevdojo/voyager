@@ -90,8 +90,6 @@
                 </div>
             </div>
         </div>
-        <br><br><br>
-        <textarea class="w-full" rows="20">{{ bread }}</textarea>
     </div>
 </template>
 

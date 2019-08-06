@@ -1,7 +1,7 @@
 <aside class="flex flex-col h-full min-h-screen aside-expand w-16 hover:w-56 mr-4 sidebar">
 
     <div class="flex justify-left pl-4 items-center h-16 logo">
-        <img src="{{ voyager_asset('images/logo-icon-light.png') }}" alt="Logo Icon">
+        <img src="{{ Voyager::assetUrl('images/logo-icon-light.png') }}" alt="Logo Icon">
         <span class="font-black ml-3 text-white text-lg uppercase">Voyager</span>
     </div>
 
