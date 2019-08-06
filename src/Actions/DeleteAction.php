@@ -16,7 +16,8 @@ class DeleteAction extends BaseAction
         return 'text-white bg-red-500';
     }
 
-    public function getUrl($key) {
+    public function getUrl($key)
+    {
         return route('voyager.'.$this->bread->slug.'.destroy', $key);
     }
 
