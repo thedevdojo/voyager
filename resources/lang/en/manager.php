@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'accessors'                 => 'Accessors',
     'add_formfield'             => 'Add Formfield',
     'add_formfield_first'       => 'Add a new formfield by choosing one from the dropdown above.',
     'add_list'                  => 'Add List',
@@ -12,11 +13,13 @@ return [
     'delete_formfield_confirm'  => 'Are you sure you want to delete this formfield?',
     'delete_layout'             => 'Delete Layout',
     'delete_layout_confirm'     => 'Are you sure you want to delete the current Layout?',
+    'formfields'                => 'Formfields',
     'layout_name'               => 'Layout name',
     'layout_name_hint'          => 'Enter a name for your Layout',
     'model_name'                => 'Model name',
     'name_plural'               => 'Name plural',
     'name_singular'             => 'Name singular',
+    'relationships'             => 'Relationships',
     'policy'                    => 'Policy',
     'searchable'                => 'Searchable',
     'select_layout'             => 'Select a Layout from the dropdown above',

@@ -10,6 +10,7 @@ return [
     'disabled'                  => 'Disabled',
     'edit'                      => 'Edit',
     'field'                     => 'Field',
+    'fields'                    => 'Fields',
     'no'                        => 'No',
     'options'                   => 'Options',
     'placeholder'               => 'Placeholder',

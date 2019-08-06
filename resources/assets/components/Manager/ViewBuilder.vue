@@ -6,6 +6,8 @@
             :ref="'formfield-'+i"
             :formfield="formfield"
             :fields="fields"
+            :accessors="accessors"
+            :relationships="relationships"
             action="mockup"
             type="view"
         />
@@ -14,7 +16,7 @@
 
 <script>
 export default {
-    props: ['layout', 'fields'],
+    props: ['layout', 'fields', 'accessors', 'relationships'],
     data: function () {
         return {
             currentOptionsId: null,

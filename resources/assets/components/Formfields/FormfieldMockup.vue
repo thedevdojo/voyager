@@ -22,7 +22,12 @@
                         <div class="w-full m-1" v-if="hasField">
                             <label class="block text-gray-100 text-sm font-bold mb-2">{{ __('voyager::generic.field') }}</label>
                             <select v-model="formfield.options.field" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
+                                <optgroup :label="__('voyager::generic.fields')">
+                                    <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
+                                </optgroup>
+                                <optgroup :label="__('voyager::manager.accessors')">
+                                    <option v-for="accessor in accessors" v-bind:key="accessor">{{ accessor }}</option>
+                                </optgroup>
                             </select>
                         </div>
                     </div>
@@ -56,7 +61,7 @@
 
 <script>
 export default {
-    props: ['formfield', 'fields', 'action', 'type'],
+    props: ['formfield', 'fields', 'accessors', 'relationships', 'action', 'type'],
     data: function () {
         return {
             hasField: true,
