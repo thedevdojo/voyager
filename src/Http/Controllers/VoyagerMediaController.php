@@ -62,7 +62,7 @@ class VoyagerMediaController extends Controller
                 $files[] = [
                     'name'          => $item['basename'],
                     'type'          => 'folder',
-                    'path'          => Voyager::url($item['path']),
+                    'path'          => Voyager::storage_url($item['path']),
                     'relative_path' => $item['path'],
                     'items'         => '',
                     'last_modified' => '',
@@ -80,7 +80,7 @@ class VoyagerMediaController extends Controller
                     'name'          => $item['basename'],
                     'filename'      => $item['filename'],
                     'type'          => $item['mimetype'] ?? 'file',
-                    'path'          => Voyager::url($item['path']),
+                    'path'          => Voyager::storage_url($item['path']),
                     'relative_path' => $item['path'],
                     'size'          => $item['size'],
                     'last_modified' => $item['timestamp'],
