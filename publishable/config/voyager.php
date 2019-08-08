@@ -61,6 +61,8 @@ return [
 
     'storage' => [
         'disk' => env('FILESYSTEM_DRIVER', 'public'),
+        'use_temporary_url' => true,
+        'temporary_url_cache' => 5,
     ],
 
     /*
