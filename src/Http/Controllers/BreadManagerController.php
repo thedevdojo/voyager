@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 
 class BreadManagerController extends Controller
@@ -62,11 +63,22 @@ class BreadManagerController extends Controller
     public function update(Request $request, $table)
     {
         $success = true;
-        $message = 'BREAD "'.$table.'" saved successfully!';
+        $message = __('voyager::manager.bread_saved_successfully', ['name' => $table]);
+        $bread = (object) $request->bread;
 
-        if (!Voyager::storeBread((object) $request->bread)) {
+        if (!empty($bread->model_name) && !class_exists(Str::start($bread->model_name, '\\'))) {
             $success = false;
-            $message = 'There was an error storing the BREAD!';
+            $message = __('voyager::manager.model_does_not_exist', ['name' => $bread->model_name]);
+        } else if (!empty($bread->controller) && !class_exists(Str::start($bread->controller, '\\'))) {
+            $success = false;
+            $message = __('voyager::manager.controller_does_not_exist', ['name' => $bread->controller]);
+        } else if (!empty($bread->policy) && !class_exists(Str::start($bread->policy, '\\'))) {
+            $success = false;
+            $message = __('voyager::manager.policy_does_not_exist', ['name' => $bread->policy]);
+        }
+        else if (!Voyager::storeBread($bread)) {
+            $success = false;
+            $message = __('voyager::manager.bread_save_failed');
         }
 
         Cache::forget('voyager-breads');
