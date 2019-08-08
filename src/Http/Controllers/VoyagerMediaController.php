@@ -62,7 +62,7 @@ class VoyagerMediaController extends Controller
                 $files[] = [
                     'name'          => $item['basename'],
                     'type'          => 'folder',
-                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'path'          => Voyager::url($item['path']),
                     'relative_path' => $item['path'],
                     'items'         => '',
                     'last_modified' => '',
@@ -80,7 +80,7 @@ class VoyagerMediaController extends Controller
                     'name'          => $item['basename'],
                     'filename'      => $item['filename'],
                     'type'          => $item['mimetype'] ?? 'file',
-                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                    'path'          => Voyager::url($item['path']),
                     'relative_path' => $item['path'],
                     'size'          => $item['size'],
                     'last_modified' => $item['timestamp'],
@@ -92,8 +92,8 @@ class VoyagerMediaController extends Controller
         foreach ($files as $key => $file) {
             foreach ($thumbnails as $thumbnail) {
                 if ($file['type'] != 'folder' && Str::startsWith($thumbnail['filename'], $file['filename'])) {
-                    $thumbnail['thumb_name'] = str_replace($file['filename'].'-', '', $thumbnail['filename']);
-                    $thumbnail['path'] = Storage::disk($this->filesystem)->url($thumbnail['path']);
+                    $thumbnail['thumb_name'] = str_replace($file['filename'] . '-', '', $thumbnail['filename']);
+                    $thumbnail['path'] = Voyager::image($thumbnail['path']);
                     $files[$key]['thumbnails'][] = $thumbnail;
                 }
             }
