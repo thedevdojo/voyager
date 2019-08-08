@@ -69,14 +69,13 @@ class BreadManagerController extends Controller
         if (!empty($bread->model_name) && !class_exists(Str::start($bread->model_name, '\\'))) {
             $success = false;
             $message = __('voyager::manager.model_does_not_exist', ['name' => $bread->model_name]);
-        } else if (!empty($bread->controller) && !class_exists(Str::start($bread->controller, '\\'))) {
+        } elseif (!empty($bread->controller) && !class_exists(Str::start($bread->controller, '\\'))) {
             $success = false;
             $message = __('voyager::manager.controller_does_not_exist', ['name' => $bread->controller]);
-        } else if (!empty($bread->policy) && !class_exists(Str::start($bread->policy, '\\'))) {
+        } elseif (!empty($bread->policy) && !class_exists(Str::start($bread->policy, '\\'))) {
             $success = false;
             $message = __('voyager::manager.policy_does_not_exist', ['name' => $bread->policy]);
-        }
-        else if (!Voyager::storeBread($bread)) {
+        } elseif (!Voyager::storeBread($bread)) {
             $success = false;
             $message = __('voyager::manager.bread_save_failed');
         }
