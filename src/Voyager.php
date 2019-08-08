@@ -180,7 +180,7 @@ class Voyager
      */
     public function getLocalization()
     {
-        return collect(['bread', 'manager', 'generic'])->flatMap(function ($file) {
+        return collect(['bread', 'generic', 'manager', 'validation'])->flatMap(function ($file) {
             return ['voyager::'.$file => trans('voyager::'.$file)];
         })->toJson();
     }

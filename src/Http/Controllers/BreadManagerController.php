@@ -62,22 +62,26 @@ class BreadManagerController extends Controller
      */
     public function update(Request $request, $table)
     {
-        $success = true;
-        $message = __('voyager::manager.bread_saved_successfully', ['name' => $table]);
+        $success = false;
+        $message = __('voyager::manager.bread_save_failed');
         $bread = (object) $request->bread;
+        $bread->table = $table;
 
-        if (!empty($bread->model_name) && !class_exists(Str::start($bread->model_name, '\\'))) {
-            $success = false;
+        if (empty($bread->slug)) {
+            $message = __('voyager::validation.slug_empty');
+        } elseif (empty($bread->name_singular)) {
+            $message = __('voyager::validation.name_singular_empty');
+        } elseif (empty($bread->name_plural)) {
+            $message = __('voyager::validation.name_plural_empty');
+        } elseif (!empty($bread->model_name) && !class_exists(Str::start($bread->model_name, '\\'))) {
             $message = __('voyager::manager.model_does_not_exist', ['name' => $bread->model_name]);
         } elseif (!empty($bread->controller) && !class_exists(Str::start($bread->controller, '\\'))) {
-            $success = false;
             $message = __('voyager::manager.controller_does_not_exist', ['name' => $bread->controller]);
         } elseif (!empty($bread->policy) && !class_exists(Str::start($bread->policy, '\\'))) {
-            $success = false;
             $message = __('voyager::manager.policy_does_not_exist', ['name' => $bread->policy]);
-        } elseif (!Voyager::storeBread($bread)) {
-            $success = false;
-            $message = __('voyager::manager.bread_save_failed');
+        } elseif (Voyager::storeBread($bread)) {
+            $success = true;
+            $message = __('voyager::manager.bread_saved_successfully', ['name' => $table]);
         }
 
         Cache::forget('voyager-breads');
