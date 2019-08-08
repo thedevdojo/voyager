@@ -240,7 +240,12 @@ class Voyager
     public function image($file, $default = '')
     {
         if (!empty($file)) {
-            return str_replace('\\', '/', Storage::disk(config('voyager.storage.disk'))->url($file));
+            if (config('voyager.storage.use_temporary_url', false)) {
+                $cache_time = now()->addMinutes(config('voyager.storage.temporary_url_cache', 5));
+                return str_replace('\\', '/', Storage::disk(config('voyager.storage.disk'))->temporaryUrl($file, $cache_time));
+            } else {
+                return str_replace('\\', '/', Storage::disk(config('voyager.storage.disk'))->url($file));
+            }
         }
 
         return $default;
