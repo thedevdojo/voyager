@@ -1,6 +1,6 @@
 <?php
 
-namespace TCG\Voyager\Tests;
+namespace TCG\Voyager\Tests\Browser;
 
 use Orchestra\Testbench\Dusk\TestCase;
 
