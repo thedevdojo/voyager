@@ -25,8 +25,8 @@
                                 <optgroup :label="__('voyager::generic.fields')">
                                     <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
                                 </optgroup>
-                                <optgroup :label="__('voyager::manager.accessors')">
-                                    <option v-for="accessor in accessors" v-bind:key="accessor">{{ accessor }}</option>
+                                <optgroup :label="__('voyager::manager.computed')">
+                                    <option v-for="prop in computed" v-bind:key="prop">{{ prop }}</option>
                                 </optgroup>
                             </select>
                         </div>
@@ -61,7 +61,7 @@
 
 <script>
 export default {
-    props: ['formfield', 'fields', 'accessors', 'relationships', 'action', 'type'],
+    props: ['formfield', 'fields', 'computed', 'relationships', 'action', 'type'],
     data: function () {
         return {
             hasField: true,

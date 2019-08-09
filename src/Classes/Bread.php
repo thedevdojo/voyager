@@ -67,9 +67,9 @@ class Bread implements \JsonSerializable
         return DB::getSchemaBuilder()->getColumnListing($this->table);
     }
 
-    public function getAccessors()
+    public function getComputedProperties()
     {
-        return $this->getModel()->accessors ?? [];
+        return $this->getModel()->computed ?? [];
     }
 
     public function getRelationships($deep = false)

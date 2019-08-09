@@ -83,10 +83,10 @@
                     {{ __('voyager::manager.add_formfield_first') }}
                 </div>
                 <div v-else-if="currentLayout.type == 'view'">
-                    <bread-view-builder :layout="currentLayout" :fields="fields" :accessors="accessors" :relationships="relationships" />
+                    <bread-view-builder :layout="currentLayout" :fields="fields" :computed="computed" :relationships="relationships" />
                 </div>
                 <div v-else-if="currentLayout.type == 'list'">
-                    <bread-list-builder :layout="currentLayout" :fields="fields" :accessors="accessors" :relationships="relationships" />
+                    <bread-list-builder :layout="currentLayout" :fields="fields" :computed="computed" :relationships="relationships" />
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
 
 <script>
 export default {
-    props: ['data', 'fields', 'url', 'accessors', 'relationships'],
+    props: ['data', 'fields', 'url', 'computed', 'relationships'],
     data: function () {
         return {
             bread: this.data,

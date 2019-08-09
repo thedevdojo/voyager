@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'accessors'                 => 'Accessors',
     'add_formfield'             => 'Add Formfield',
     'add_formfield_first'       => 'Add a new formfield by choosing one from the dropdown above.',
     'add_list'                  => 'Add List',
     'add_view'                  => 'Add View',
     'bread_saved_successfully'  => 'Bread ":name" saved successfully!',
     'bread_save_failed'         => 'There was an error storing the BREAD!',
+    'computed'                  => 'Computed',
     'controller'                => 'Controller',
     'controller_does_not_exist' => 'Controller ":name" does not exist!',
     'create_layout'             => 'Create Layout',

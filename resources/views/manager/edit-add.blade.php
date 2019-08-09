@@ -5,7 +5,7 @@
     <br>
     <bread-builder
         :data="{{ json_encode($bread) }}"
-        :accessors="{{ json_encode($bread->getAccessors()) }}"
+        :computed="{{ json_encode($bread->getComputedProperties()) }}"
         :relationships="{{ json_encode($bread->getRelationships(true)) }}"
         :fields="{{ json_encode($bread->getFields()) }}"
         url="{{ route('voyager.bread.update', $bread->table) }}"

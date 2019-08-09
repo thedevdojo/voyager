@@ -54,7 +54,7 @@
 
 <script>
 export default {
-    props: ['layout', 'fields', 'accessors', 'relationships'],
+    props: ['layout', 'fields', 'computed', 'relationships'],
     data: function () {
         return {
             
