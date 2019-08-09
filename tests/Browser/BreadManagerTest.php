@@ -2,6 +2,6 @@
 
 namespace TCG\Voyager\Tests\Browser;
 
-class BrowserTest extends BrowserTestCase
+class BreadManagerTest extends BrowserTestCase
 {
 }
