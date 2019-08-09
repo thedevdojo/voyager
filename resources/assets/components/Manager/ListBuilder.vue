@@ -14,10 +14,18 @@
             </thead>
             <draggable v-model="layout.formfields" handle=".drag-handle" tag="tbody">
                 <tr v-for="(formfield, i) in layout.formfields" v-bind:key="i">
-                    <th class="drag-handle"><></th>
+                    <th class="drag-handle">&lt;&gt;</th>
                     <th>
                         <select v-model="formfield.options.field" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
+                            <optgroup :label="__('voyager::generic.fields')">
+                                <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
+                            </optgroup>
+                            <optgroup :label="__('voyager::manager.computed')">
+                                <option v-for="prop in computed" v-bind:key="prop">{{ prop }}</option>
+                            </optgroup>
+                            <optgroup v-for="(relationship, name) in relationships" v-bind:key="name" :label="name">
+                                <option v-for="field in relationship.fields" v-bind:key="field">{{name }}.{{ field }}</option>
+                            </optgroup>
                         </select>
                     </th>
                     <th>{{ $eventHub.getFormfieldByType(formfield.type).name }}</th>
