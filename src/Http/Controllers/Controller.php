@@ -115,7 +115,6 @@ abstract class Controller extends BaseController
                     'foreign_key' => !empty($row->details->foreign_key) ? $row->details->foreign_key : null,
                     'related_key' => !empty($row->details->related_key) ? $row->details->related_key : null,
                 ];
-
             } else {
                 $data->{$row->field} = $content;
             }

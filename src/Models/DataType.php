@@ -89,7 +89,7 @@ class DataType extends Model
 
             // Prepare data
             foreach (['generate_permissions', 'server_side'] as $field) {
-                if(!isset($requestData[$field])) {
+                if (!isset($requestData[$field])) {
                     $requestData[$field] = 0;
                 }
             }
