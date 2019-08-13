@@ -84,7 +84,7 @@ class Bread implements \JsonSerializable
                 });
             }
         }
-    
+
         return $translatable;
     }
 
