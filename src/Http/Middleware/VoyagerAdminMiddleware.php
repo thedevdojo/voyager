@@ -23,7 +23,7 @@ class VoyagerAdminMiddleware
                 auth()->setDefaultDriver($guard);
             } elseif (app('VoyagerAuth') instanceof \Illuminate\Auth\SessionGuard) {
                 // Extract guard name from unique identifier for the auth session value
-                preg_match('/(?<=_).*(?=_)/',app('VoyagerAuth')->getName(), $matches);
+                preg_match('/(?<=_).*(?=_)/', app('VoyagerAuth')->getName(), $matches);
                 auth()->setDefaultDriver($matches[0]);
             }
 
