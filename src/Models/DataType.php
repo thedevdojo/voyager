@@ -182,7 +182,7 @@ class DataType extends Model
                     if ($requestData['relationship_type_'.$relationship] == 'hasOne' || $requestData['relationship_type_'.$relationship] == 'hasMany') {
                         $relationship_column = $requestData['relationship_column_'.$relationship];
                     }
-                    if(!isset($requestData['relationship_key_'.$relationship])){
+                    if (!isset($requestData['relationship_key_'.$relationship])) {
                         dd($requestData);
                     }
                     // Build the relationship details
@@ -201,9 +201,9 @@ class DataType extends Model
                     ];
 
                     // Build the other details
-                    $otherDetails = json_decode($requestData["field_details_".$relationship],true);
+                    $otherDetails = json_decode($requestData['field_details_'.$relationship], true);
 
-                    $requestData['field_details_'.$relationship] = json_encode(array_merge($otherDetails,$relationshipDetails));
+                    $requestData['field_details_'.$relationship] = json_encode(array_merge($otherDetails, $relationshipDetails));
                 }
             }
         }
