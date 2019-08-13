@@ -68,6 +68,7 @@ return [
         'which_column_from'    => '¿Qué columna de',
         'is_used_to_reference' => 'se usara para hacer referencia a',
         'pivot_table'          => 'Tabla Pivote',
+        'pivot_key'            => '(Opcional) Clave relacionada con',
         'selection_details'    => 'Selección de Detalles',
         'display_the'          => 'Ver de',
         'store_the'            => 'Guardar de',

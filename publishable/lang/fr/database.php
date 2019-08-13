@@ -65,6 +65,7 @@ return [
         'which_column_from'    => 'Quelle colonne de',
         'is_used_to_reference' => 'est utilisée pour référencer la table',
         'pivot_table'          => 'Tableau croisé dynamique (Pivot Table)',
+        'pivot_key'            => '(Facultatif) Touche liée à',
         'selection_details'    => 'Détails de la sélection',
         'display_the'          => 'Afficher le',
         'store_the'            => 'Enregistrer le',
