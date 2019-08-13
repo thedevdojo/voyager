@@ -2,10 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 
 abstract class Controller extends BaseController
@@ -32,7 +32,6 @@ abstract class Controller extends BaseController
 
     protected function searchQuery(&$query, $filters)
     {
-        
         foreach ($filters as $field => $filter) {
             // TODO: Search translatable
             if (Str::contains($field, '.')) {
@@ -71,8 +70,6 @@ abstract class Controller extends BaseController
             if ($formfield) {
                 return $formfield->{$method}($value);
             }
-
-            return null;
         })->filter(function ($value) {
             return $value !== null;
         });

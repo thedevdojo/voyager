@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager\Traits;
 
-use Illuminate\Support\Str;
-
 trait Translatable
 {
     public function __construct()
@@ -53,11 +51,11 @@ trait Translatable
 
             if (in_array($key, $this->casts)) {
                 if ($this->casts[$key] == 'object') {
-                    // TODO: 
+                    // TODO:
                 } elseif ($this->casts[$key] == 'array') {
-                    // TODO: 
+                    // TODO:
                 } elseif ($this->casts[$key] == 'collection') {
-                    // TODO: 
+                    // TODO:
                 }
             }
         }
