@@ -10,6 +10,8 @@ php:
 env:
   matrix:
     - LARAVEL_VERSION=5.8.*
+  global:
+    - CC_TEST_REPORTER_ID=4f8327fbe90144089ea73dc9c26471edf7a6ccd2c06ab156de73abdde6e03a61
 
 matrix:
   fast_finish: true
@@ -26,6 +28,9 @@ services:
   - sqlite
 
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
   - travis_retry composer self-update
   - composer require "illuminate/support:${LARAVEL_VERSION}"
   - composer show laravel/framework
@@ -34,3 +39,6 @@ before_script:
 
 script:
   - vendor/bin/phpunit --no-coverage
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
