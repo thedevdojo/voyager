@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use TCG\Voyager\Events\MenuDisplay;
 use TCG\Voyager\Facades\Voyager;
+use Auth;
 
 /**
  * @todo: Refactor this class by using something like MenuBuilder Helper.
@@ -140,7 +141,7 @@ class Menu extends Model
 
         // Filter items by permission
         $items = $items->filter(function ($item) {
-            return !$item->children->isEmpty() || app('VoyagerAuth')->user()->can('browse', $item);
+            return !$item->children->isEmpty() || Auth::user()->can('browse', $item);
         })->filter(function ($item) {
             // Filter out empty menu-items
             if ($item->url == '' && $item->route == '' && $item->children->count() == 0) {

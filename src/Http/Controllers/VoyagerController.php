@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
 use TCG\Voyager\Facades\Voyager;
+use Auth;
 
 class VoyagerController extends Controller
 {
@@ -18,7 +19,7 @@ class VoyagerController extends Controller
 
     public function logout()
     {
-        app('VoyagerAuth')->logout();
+        Auth::logout();
 
         return redirect()->route('voyager.login');
     }

@@ -11,6 +11,7 @@ use Intervention\Image\Facades\Image;
 use League\Flysystem\Plugin\ListWith;
 use TCG\Voyager\Events\MediaFileAdded;
 use TCG\Voyager\Facades\Voyager;
+use Auth;
 
 class VoyagerMediaController extends Controller
 {
@@ -232,7 +233,7 @@ class VoyagerMediaController extends Controller
                     $name = get_file_name($name);
                 }
             } else {
-                $name = str_replace('{uid}', app('VoyagerAuth')->user()->getKey(), $request->get('filename'));
+                $name = str_replace('{uid}', Auth::user()->getKey(), $request->get('filename'));
                 if (Str::contains($name, '{date:')) {
                     $name = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                         return \Carbon\Carbon::now()->format($date[1]);

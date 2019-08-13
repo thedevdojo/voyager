@@ -58,10 +58,11 @@ Create a new voyager [guard](https://laravel.com/docs/5.8/authentication#adding-
     ],
 ```
 
-Register you new guard to your `AuthServiceProvider` as explained [here](https://voyager-docs.devdojo.com/customization/custom-guard).
+Register your new guard to your `AuthServiceProvider` as explained [here](https://voyager-docs.devdojo.com/customization/custom-guard).
 
-If your `admin` guard is not the default guard of your app, and is using a driver other then `session`, then
-its necessary to specifiy the guard in `config/voyager.php`
+If you have set `user.add_default_role_on_register` to true in your config, you need to set `user.namespace` to the namespace of your voyager user (e.g. `'\App\VoyagerUser'`).
 
-    'guard' => 'admin',
+**Note 1**: Changing the default guard to anything other then the voyager guard is only supported for `session` driver in 1.2.
+
+**Note 2**: It is assumend that the middleware `admin.user` is used for any admin route (except login).
 
