@@ -89,7 +89,7 @@ class DataType extends Model
 
             // Prepare data
             foreach (['generate_permissions', 'server_side'] as $field) {
-                if (!isset($requestData[$field])) {
+                if(!isset($requestData[$field])) {
                     $requestData[$field] = 0;
                 }
             }
@@ -194,7 +194,7 @@ class DataType extends Model
                         'key'               => $requestData['relationship_key_'.$relationship],
                         'label'             => $requestData['relationship_label_'.$relationship],
                         'pivot_table'       => $requestData['relationship_pivot_table_'.$relationship],
-                        'pivot'             => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1': '0',
+                        'pivot'             => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
                         'foreign_key'       => $requestData['relationship_foreign_key_'.$relationship],
                         'related_key'       => $requestData['relationship_related_key_'.$relationship],
                         'taggable'          => $requestData['relationship_taggable_'.$relationship] ?? '0',

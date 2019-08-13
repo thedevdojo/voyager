@@ -137,7 +137,7 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->belongsToMany($sync_data['model'], $sync_data['table'],$sync_data['foreign_key'],$sync_data['related_key'])->sync($sync_data['content']);
+            $data->belongsToMany($sync_data['model'],$sync_data['table'],$sync_data['foreign_key'],$sync_data['related_key'])->sync($sync_data['content']);
         }
 
         // Rename folders for newly created data through media-picker
