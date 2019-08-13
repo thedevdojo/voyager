@@ -6,49 +6,99 @@
     &:focus {
         @apply border-indigo-600 outline-none;
     }
-
+    &.small {
+        @apply py-1 px-2 text-sm;
+    }
 }
 
-.voyager-label{
+.voyager-label {
     @apply block text-gray-600 text-sm font-normal mb-2;
 }
 
-.voyager-h1{
+.voyager-h1 {
     @apply text-gray-800 text-4xl font-black;
 }
 
-.voyager-input-container{
+.voyager-button {
+    @apply text-white py-2 px-4 mx-1 rounded;
+    &.bold {
+        @apply font-bold;
+    }
+    &.small {
+        @apply py-1 px-2 text-sm;
+    }
+    &.green {
+        @apply bg-green-500;
+        &:hover {
+            @apply bg-green-600;
+        }
+    }
+    &.red {
+        @apply bg-red-500;
+        &:hover {
+            @apply bg-red-600;
+        }
+    }
+    &.blue {
+        @apply bg-blue-500;
+        &:hover {
+            @apply bg-blue-600;
+        }
+    }
+    &.yellow {
+        @apply bg-yellow-500;
+        &:hover {
+            @apply bg-yellow-600;
+        }
+    }
+}
+
+.voyager-table {
+    @apply w-full text-left w-full border-collapse;
+    
+}
+
+.voyager-input-container {
     @apply mb-4 relative;
-    .voyager-input{
+
+    .voyager-input {
         @apply py-3;
+
         &::-webkit-input-placeholder {
-            color:transparent;
+            color: transparent;
         }
 
-        &:-moz-placeholder { /* Firefox 18- */
-            color:transparent; 
+        &:-moz-placeholder {
+            /* Firefox 18- */
+            color: transparent;
         }
 
-        &::-moz-placeholder {  /* Firefox 19+ */
-            color:transparent; 
+        &::-moz-placeholder {
+            /* Firefox 19+ */
+            color: transparent;
         }
 
-        &:-ms-input-placeholder {  
-            color:transparent;
+        &:-ms-input-placeholder {
+            color: transparent;
         }
-        &:focus, &:active, &.voyager-filled{
+
+        &:focus,
+        &:active,
+        &.voyager-filled {
             @apply pb-1 pt-5;
-            + .voyager-label{
+
+            +.voyager-label {
                 @apply text-indigo-600 h-2 mt-0 text-xs;
                 transition: all 0.2s ease-out;
             }
         }
     }
-    .voyager-label{
+
+    .voyager-label {
         @apply absolute mb-0 text-gray-400 text-base mt-2;
         transition: all 0.2s ease-out;
-        top:0.4rem;
-        left:0.8125rem;
+        top: 0.4rem;
+        left: 0.8125rem;
     }
 }
 

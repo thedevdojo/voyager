@@ -22,7 +22,7 @@ class Bread implements \JsonSerializable
     public $policy;
     public $layouts = [];
 
-    protected $parse_failed = false;
+    public $parse_failed = false;
 
     public function __construct($path)
     {
@@ -72,6 +72,27 @@ class Bread implements \JsonSerializable
         return $this->getModel()->computed ?? [];
     }
 
+    public function getTranslatableFields($deep = true)
+    {
+        $translatable = collect($this->getModel()->translatable ?? []);
+
+        if ($deep) {
+            $relationships = $this->getRelationships($deep);
+            foreach ($relationships as $name => $relationship) {
+                collect($relationship['bread']->getTranslatableFields(false))->each(function ($field) use ($name, $translatable) {
+                    $translatable->push($name.'.'.$field);
+                });
+            }
+        }
+    
+        return $translatable;
+    }
+
+    public function isFieldTranslatable($field)
+    {
+        return $this->getTranslatableFields()->contains($field);
+    }
+
     public function getRelationships($deep = false)
     {
         $relationships = $this->getModel()->relationships ?? [];
@@ -97,6 +118,10 @@ class Bread implements \JsonSerializable
         if ($action == 'browse') {
             return $this->layouts->filter(function ($layout) {
                 return $layout->type == 'list';
+            })->first();
+        } elseif ($action == 'edit') {
+            return $this->layouts->filter(function ($layout) {
+                return $layout->type == 'view';
             })->first();
         }
 

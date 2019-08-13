@@ -24,10 +24,12 @@ class BreadController extends Controller
             $query = $model->select('*');
             $perPage = $request->perPage ?? 10;
             $records = $query->count();
+            $this->loadRelationships($query, $layout);
             $this->searchQuery($query, array_filter((array) json_decode($request->filter) ?? []));
-            $this->orderQuery($query, $request->orderField, ($request->orderDir ?? 'asc'));
+            $this->orderQuery($query, $request->orderField ?? $layout->getDefaultSortField(), ($request->orderDir ?? 'asc'));
 
             $query = $query->slice((($request->page ?? 1) - 1) * $perPage)->take($perPage);
+            $this->loadAccessors($query, $bread);
             $rows = $query->values()->toArray();
 
             return response()->json([
@@ -62,13 +64,36 @@ class BreadController extends Controller
     public function edit(Request $request, $id)
     {
         $bread = $this->getBread($request);
-        // TODO: Authorize
+        $layout = $bread->getLayoutFor('edit');
+        $data = $bread->getModel()->findOrFail($id);
+        $this->loadAccessors($data, $bread);
+        //$this->authorize('browse', app($bread->model_name));
+
+        return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id'));
     }
 
     public function update(Request $request, $id)
     {
         $bread = $this->getBread($request);
-        // TODO: Authorize
+        $layout = $bread->getLayoutFor('edit');
+        $model = $bread->getModel()->findOrFail($id);
+
+        $data = collect(json_decode($request->get('data') ?? '{}'));
+        $this->prepareData($data, $bread, $layout, 'update');
+
+        $data->each(function ($value, $key) use ($model) {
+            $model->{$key} = $value;
+        });
+
+        $model->save();
+
+        if ($request->has('back')) {
+            return redirect($request->get('prev-url'));
+        } elseif ($request->has('new')) {
+            return redirect(route('voyager.'.$bread->slug.'.create'));
+        } else {
+            return redirect(route('voyager.'.$bread->slug.'.edit', $id));
+        }
     }
 
     public function destroy(Request $request, $id)

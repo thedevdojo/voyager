@@ -2,6 +2,7 @@
 
 return [
     'actions'                   => 'Actions',
+    'add'                       => 'Add',
     'cancel'                    => 'Cancel',
     'create'                    => 'Create',
     'default_value'             => 'Default value',

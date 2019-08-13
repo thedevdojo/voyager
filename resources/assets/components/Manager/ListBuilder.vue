@@ -9,6 +9,7 @@
                     <th>{{ __('voyager::generic.title') }}</th>
                     <th>{{ __('voyager::manager.searchable') }}</th>
                     <th>{{ __('voyager::manager.sortable') }}</th>
+                    <th>{{ __('voyager::manager.sorted_by_default') }}</th>
                     <th>{{ __('voyager::generic.actions') }}</th>
                 </tr>
             </thead>
@@ -16,7 +17,7 @@
                 <tr v-for="(formfield, i) in layout.formfields" v-bind:key="i">
                     <th class="drag-handle">&lt;&gt;</th>
                     <th>
-                        <select v-model="formfield.options.field" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <select v-model="formfield.options.field" class="voyager-input">
                             <optgroup :label="__('voyager::generic.fields')">
                                 <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
                             </optgroup>
@@ -31,26 +32,40 @@
                     <th>{{ $eventHub.getFormfieldByType(formfield.type).name }}</th>
                     <th>
                         <language-input
-                            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            class="voyager-input"
                             type="text" :placeholder="__('voyager::generic.title')"
                             v-bind:value="formfield.options.title"
                             v-on:input="formfield.options.title = $event" />
                     </th>
                     <th>
-                        <input type="checkbox" v-model="formfield.options.searchable">
+                        <input
+                            type="checkbox"
+                            v-model="formfield.options.searchable"
+                            :disabled="computed.includes(formfield.options.field)">
                     </th>
                     <th>
-                        <input type="checkbox" v-model="formfield.options.sortable">
+                        <input
+                            type="checkbox"
+                            v-model="formfield.options.sortable"
+                            :disabled="computed.includes(formfield.options.field)">
                     </th>
                     <th>
-                        <button @click="deleteFormfield(i)" class="bg-blue-400 rounded-sm text-white">{{ __('voyager::generic.delete') }}</button>
+                        <input
+                            type="radio"
+                            name="default_sorted"
+                            v-model="layout.default_sort_field"
+                            :value="formfield.options.field"
+                            :disabled="computed.includes(formfield.options.field)">
+                    </th>
+                    <th class="inline flex">
+                        <button @click="deleteFormfield(i)" class="voyager-button red small">{{ __('voyager::generic.delete') }}</button>
                         
                         <popper trigger="click" :options="{ placement: 'left' }">
                             <div class="popper">
                                 ...
                             </div>
                             <div slot="reference">
-                                <button class="bg-blue-400 rounded-sm text-white">{{ __('voyager::generic.options') }}</button>
+                                <button class="voyager-button blue small">{{ __('voyager::generic.options') }}</button>
                             </div>
                         </popper>
                     </th>

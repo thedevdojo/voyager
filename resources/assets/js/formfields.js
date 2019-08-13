@@ -1,5 +1,4 @@
 let formfields = [
-    'FormfieldBase',
     'FormfieldMockup',
     'Text'
 ];

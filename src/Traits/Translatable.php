@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\Traits;
 
+use Illuminate\Support\Str;
+
 trait Translatable
 {
     public function __construct()
@@ -12,12 +14,15 @@ trait Translatable
 
     public function __get($key)
     {
-        $value = $this->{$key};
+        if ($this instanceof \Illuminate\Database\Eloquent\Model) {
+            $value = $this->getAttribute($key);
+        } else {
+            $value = $this->{$key};
+        }
 
         if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
             $current_locale = app()->getLocale();
             $fallback_locale = config('app.fallback_locale');
-
             if (is_string($value)) {
                 $json = @json_decode($value);
                 if (json_last_error() == JSON_ERROR_NONE) {
@@ -39,16 +44,24 @@ trait Translatable
     {
         if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
             if (is_array($value) || is_object($value)) {
-                $this->{$key} = $value;
-            } elseif (is_array($this->{$key})) {
-                $this->{$key}[$this->current_locale] = $value;
-            } elseif (is_object($this->{$key})) {
-                $this->{$key}->{$this->current_locale} = $value;
+                $value = json_encode($value);
             } else {
-                // TODO: Save as object or array?
+                $value = json_encode((object) [
+                    $this->current_locale => $value,
+                ]);
             }
-        } else {
-            $this->{$key} = $value;
+
+            if (in_array($key, $this->casts)) {
+                if ($this->casts[$key] == 'object') {
+                    // TODO: 
+                } elseif ($this->casts[$key] == 'array') {
+                    // TODO: 
+                } elseif ($this->casts[$key] == 'collection') {
+                    // TODO: 
+                }
+            }
         }
+
+        parent::__set($key, $value);
     }
 }

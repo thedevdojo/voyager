@@ -19,6 +19,7 @@ return [
     'formfields'                => 'Formfields',
     'layout_name'               => 'Layout name',
     'layout_name_hint'          => 'Enter a name for your Layout',
+    'message'                   => 'Message',
     'model_does_not_exist'      => 'Model ":name" does not exist!',
     'model_name'                => 'Model name',
     'name_plural'               => 'Name plural',
@@ -26,7 +27,10 @@ return [
     'relationships'             => 'Relationships',
     'policy'                    => 'Policy',
     'policy_does_not_exist'     => 'Policy ":name" does not exist!',
+    'rule'                      => 'Rule',
     'searchable'                => 'Searchable',
     'select_layout'             => 'Select a Layout from the dropdown above',
     'sortable'                  => 'Sortable',
+    'sorted_by_default'         => 'Sorted by default',
+    'translatable'              => 'Translatable',
 ];

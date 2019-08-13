@@ -6,7 +6,8 @@ let bread_components = [
 
     'Manager/Builder',
     'Manager/ViewBuilder',
-    'Manager/ListBuilder'
+    'Manager/ListBuilder',
+    'Manager/ValidationInput',
 ];
 
 bread_components.forEach(function (component) {

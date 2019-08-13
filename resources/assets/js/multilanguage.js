@@ -1,8 +1,12 @@
 Vue.prototype.get_input_as_translatable_object = function (input) {
     if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-        var value = input;
-        input = {};
-        input[this.$eventHub.locale] = value;
+        try {
+            input = JSON.parse(input);
+        } catch (e) {
+            var value = input;
+            input = {};
+            input[this.$eventHub.locale] = value;
+        }
     }
 
     if (input && typeof input === 'object' && input.constructor === Object) {
@@ -18,9 +22,9 @@ Vue.prototype.get_input_as_translatable_object = function (input) {
     return {};
 }
 
-Vue.prototype.translate = function (input) {
+Vue.prototype.translate = function (input, once = false) {
     if (input && typeof input === 'object' && input.constructor === Object) {
-        return input[this.$eventHub.locale] || '';
+        return input[once ? this.$eventHub.initial_locale : this.$eventHub.locale] || '';
     }
 
     return input;
@@ -29,6 +33,7 @@ Vue.prototype.translate = function (input) {
 Vue.prototype.$eventHub = new Vue({
     data: {
         locale: document.getElementsByTagName('html')[0].getAttribute('lang'),
+        initial_locale: document.getElementsByTagName('html')[0].getAttribute('lang'),
         locales: document.getElementsByTagName('html')[0].getAttribute('locales').split(','),
         localization: [],
         routes: [],
@@ -55,7 +60,7 @@ Vue.prototype.trans = function (key, replace = {})
     let translation = key.split('.').reduce((t, i) => t[i] || null, translations);
 
     for (var placeholder in replace) {
-        translation = translation.replace(`:${placeholder}`, replace[placeholder]);
+        translation = translation.replace(new RegExp(':'+placeholder, 'g'), replace[placeholder]);
     }
 
     return translation || key;

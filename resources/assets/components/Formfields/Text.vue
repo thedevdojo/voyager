@@ -1,27 +1,39 @@
 <template>
     <div>
-        <div v-if="action == 'browse'" class="flex mb-4">
-            <div class="w-full m-1 text-white">
+        <div v-if="action == 'browse'">
+            {{ data }}
+        </div>
+        <div v-else-if="action == 'edit' || action == 'add'" class="flex mb-4">
+            <div class="w-full m-1">
+                <label class="voyager-label">{{ translate(options.title, true) }}</label>
+                <input
+                    type="text"
+                    :disabled="options.disabled || false"
+                    :placeholder="translate(options.placeholder, true)"
+                    :value="computedValue"
+                    v-on:input="$emit('input', $event.target.value)"
+                    class="voyager-input" />
+                <p>{{ translate(options.description, true) }}</p>
             </div>
         </div>
-        <div v-else-if="action == 'edit' || action == 'add' || action == 'mockup'" class="flex mb-4">
+        <div v-else-if="action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="block text-gray-700 text-sm font-bold mb-2">{{ translate(options.title) }}</label>
+                <label class="voyager-label">{{ translate(options.title) }}</label>
                 <input
                     type="text"
                     :disabled="action == 'mockup' || options.disabled"
                     :placeholder="translate(options.placeholder)"
                     :value="data || translate(options.default_value)"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                    class="voyager-input" />
                 <p>{{ translate(options.description) }}</p>
             </div>
         </div>
         <div v-else-if="action == 'options'">
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="block text-gray-100 text-sm font-bold mb-2">{{ __('voyager::generic.placeholder') }}</label>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.placeholder') }}</label>
                     <language-input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        class="voyager-input"
                         type="text" :placeholder="__('voyager::generic.placeholder')"
                         v-bind:value="options.placeholder"
                         v-on:input="options.placeholder = $event" />
@@ -29,16 +41,16 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="block text-gray-100 text-sm font-bold mb-2">{{ __('voyager::generic.default_value') }}</label>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.default_value') }}</label>
                     <language-input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        class="voyager-input"
                         type="text" :placeholder="__('voyager::generic.default_value')"
                         v-model="options.default_value" />
                 </div>
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="block text-gray-100 text-sm font-bold mb-2">{{ __('voyager::generic.disabled') }}</label>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.disabled') }}</label>
                     <input type="checkbox" v-model="options.disabled">
                 </div>
             </div>
@@ -49,5 +61,14 @@
 <script>
 export default {
     props: ['data', 'options', 'fields', 'action'],
+    computed: {
+        computedValue: function () {
+            if (this.action == 'add') {
+                return translate(options.default_value, true);
+            }
+
+            return this.data || '';
+        }
+    }
 };
 </script>

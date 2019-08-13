@@ -11,6 +11,7 @@ class BaseFormfield implements \JsonSerializable
         'title'       => '',
         'description' => '',
     ];
+    public $rules = [];
 
     /**
      * Transform data to be stored in the database after updating.
@@ -51,6 +52,7 @@ class BaseFormfield implements \JsonSerializable
         return [
             'type'    => $this->type,
             'options' => $this->options,
+            'rules'   => $this->rules,
         ];
     }
 }

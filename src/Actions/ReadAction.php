@@ -16,6 +16,6 @@ class ReadAction extends BaseAction
 
     public function getClasses()
     {
-        return 'text-white bg-blue-500';
+        return 'voyager-button blue small';
     }
 }

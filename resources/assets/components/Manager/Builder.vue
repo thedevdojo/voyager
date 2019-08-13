@@ -2,9 +2,9 @@
     <div>
         <div class="flex mb-4">
             <div class="w-full m-1">
-                <label class="block text-gray-700 text-sm font-bold mb-2">{{ __('voyager::generic.slug') }}</label>
+                <label class="voyager-label">{{ __('voyager::generic.slug') }}</label>
                 <language-input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="voyager-input"
                     type="text" :placeholder="__('voyager::generic.slug')"
                     v-bind:value="bread.slug"
                     v-on:input="bread.slug = $event" />
@@ -13,17 +13,17 @@
         
         <div class="flex mb-4">
             <div class="w-1/2 m-1">
-                <label class="block text-gray-700 text-sm font-bold mb-2">{{ __('voyager::manager.name_singular') }}</label>
+                <label class="voyager-label">{{ __('voyager::manager.name_singular') }}</label>
                 <language-input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.name_singular')"
                     v-bind:value="bread.name_singular"
                     v-on:input="bread.name_singular = $event" />
             </div>
             <div class="w-1/2 m-1">
-                <label class="block text-gray-700 text-sm font-bold mb-2">{{ __('voyager::manager.name_plural') }}</label>
+                <label class="voyager-label">{{ __('voyager::manager.name_plural') }}</label>
                 <language-input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.name_plural')"
                     v-bind:value="bread.name_plural"
                     v-on:input="bread.name_plural = $event" />
@@ -31,47 +31,47 @@
         </div>
         <div class="flex mb-4">
             <div class="w-1/3 m-1">
-                <label class="block text-gray-700 text-sm font-bold mb-2">{{ __('voyager::manager.model_name') }}</label>
+                <label class="voyager-label">{{ __('voyager::manager.model_name') }}</label>
                 <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.model_name')"
                     v-model="bread.model_name">
             </div>
             <div class="w-1/3 m-1">
-                <label class="block text-gray-700 text-sm font-bold mb-2">{{ __('voyager::manager.controller') }}</label>
+                <label class="voyager-label">{{ __('voyager::manager.controller') }}</label>
                 <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.controller')"
                     v-model="bread.controller">
             </div>
             <div class="w-1/3 m-1">
-                <label class="block text-gray-700 text-sm font-bold mb-2">{{ __('voyager::manager.policy') }}</label>
+                <label class="voyager-label">{{ __('voyager::manager.policy') }}</label>
                 <input
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.policy')"
                     v-model="bread.policy">
             </div>
         </div>
 
         <div class="text-right">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
+            <button class="voyager-button blue" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
         </div>
 
         <div>
-            <select v-model="currentLayoutId">
+            <select v-model="currentLayoutId" class="voyager-input small w-auto">
                 <option v-for="(layout, i) in bread.layouts" v-bind:value="i" v-bind:key="i">
                     {{ layout.name }}
                 </option>
             </select>
-            <select v-if="currentLayout" @change="addFormfield">
+            <select v-if="currentLayout" @change="addFormfield" class="voyager-input small w-auto">
                 <option v-bind:value="''">{{ __('voyager::manager.add_formfield') }}</option>
                 <option v-for="(formfield, i) in $eventHub.formfields" v-bind:value="formfield.type" v-bind:key="i">
                     {{ formfield.name }}
                 </option>
             </select>
-            <button class="bg-green-500 text-white font-bold py-2 px-4 rounded" @click="addLayout('view')">{{ __('voyager::manager.add_view') }}</button>
-            <button class="bg-green-500 text-white font-bold py-2 px-4 rounded" @click="addLayout('list')">{{ __('voyager::manager.add_list') }}</button>
-            <button class="bg-green-500 text-white font-bold py-2 px-4 rounded" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>
+            <button class="voyager-button green small" @click="addLayout('view')">{{ __('voyager::manager.add_view') }}</button>
+            <button class="voyager-button green small" @click="addLayout('list')">{{ __('voyager::manager.add_list') }}</button>
+            <button class="voyager-button green small" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>
             <div v-if="bread.layouts.length == 0">
                 {{ __('voyager::manager.create_layout_first') }}
             </div>
@@ -90,6 +90,8 @@
                 </div>
             </div>
         </div>
+        <br><br><br>
+        <textarea rows="10" v-model="jsonBread" class="voyager-input"></textarea>
     </div>
 </template>
 
@@ -227,6 +229,14 @@ export default {
             }
 
             return this.bread.layouts[this.currentLayoutId];
+        },
+        jsonBread: {
+            get: function () {
+                return JSON.stringify(this.bread, null, 4);
+            },
+            set: function (val) {
+                this.bread = JSON.parse(val);
+            }
         }
     },
     mounted: function () {

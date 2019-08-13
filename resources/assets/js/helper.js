@@ -15,3 +15,17 @@ Vue.prototype.route = function ()
             .join('/');
     }
 }
+
+Vue.prototype.isArray = function (input)
+{
+    return (input && typeof input === 'object' && input instanceof Array);
+}
+
+Vue.prototype.isObject = function (input)
+{
+    return (input && typeof input === 'object' && input.constructor === Object);
+}
+
+Vue.prototype.clamp = function (num, min, max) {
+    return num <= min ? min : num >= max ? max : num;
+}

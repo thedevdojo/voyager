@@ -20,8 +20,8 @@
                     </div>
                     <div class="flex mb-4">
                         <div class="w-full m-1" v-if="hasField">
-                            <label class="block text-gray-100 text-sm font-bold mb-2">{{ __('voyager::generic.field') }}</label>
-                            <select v-model="formfield.options.field" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <label class="voyager-label text-gray-100">{{ __('voyager::generic.field') }}</label>
+                            <select v-model="formfield.options.field" class="voyager-input">
                                 <optgroup :label="__('voyager::generic.fields')">
                                     <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
                                 </optgroup>
@@ -33,9 +33,9 @@
                     </div>
                     <div class="flex mb-4">
                         <div class="w-full m-1" v-if="hasTitle">
-                            <label class="block text-gray-100 text-sm font-bold mb-2">{{ __('voyager::generic.title') }}</label>
+                            <label class="voyager-label text-gray-100">{{ __('voyager::generic.title') }}</label>
                             <language-input
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="voyager-input"
                                 type="text" :placeholder="__('voyager::generic.title')"
                                 v-bind:value="formfield.options.title"
                                 v-on:input="formfield.options.title = $event" />
@@ -43,15 +43,20 @@
                     </div>
                     <div class="flex mb-4">
                         <div class="w-full m-1" v-if="hasDescription">
-                            <label class="block text-gray-100 text-sm font-bold mb-2">{{ __('voyager::generic.description') }}</label>
+                            <label class="voyager-label text-gray-100">{{ __('voyager::generic.description') }}</label>
                             <language-input
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                class="voyager-input"
                                 type="text" :placeholder="__('voyager::generic.description')"
                                 v-bind:value="formfield.options.description"
                                 v-on:input="formfield.options.description = $event" />
                         </div>
                     </div>
                     <component :is="'formfield-'+formfield.type" v-bind:options="formfield.options" :fields="fields" action="options" />
+                    <div class="flex mb-4">
+                        <div class="w-full m-1" v-if="hasValidation">
+                            <bread-validation-input v-bind:rules="formfield.rules" />
+                        </div>
+                    </div>
                 </div>
                 <div slot="reference"></div>
             </popper>
@@ -67,6 +72,7 @@ export default {
             hasField: true,
             hasTitle: true,
             hasDescription: true,
+            hasValidation: true,
         };
     },
     methods: {

@@ -16,6 +16,6 @@ class EditAction extends BaseAction
 
     public function getClasses()
     {
-        return 'text-white bg-yellow-500';
+        return 'voyager-button yellow small';
     }
 }

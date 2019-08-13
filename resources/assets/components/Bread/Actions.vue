@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="inline-flex">
         <component
             v-for="(action, i) in (mass ? massActions: normalActions)"
             :key="'action-'+i"

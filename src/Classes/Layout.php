@@ -8,6 +8,7 @@ class Layout implements \JsonSerializable
 {
     public $name;
     public $type = 'view';
+    public $default_sort_field;
     public $formfields = [];
 
     protected $bread;
@@ -49,6 +50,11 @@ class Layout implements \JsonSerializable
         }
     }
 
+    public function getDefaultSortField()
+    {
+        return $this->default_sort_field ?? $this->bread->getModel()->getKeyName();
+    }
+
     public function isValid()
     {
         return !empty($this->name);
@@ -58,16 +64,18 @@ class Layout implements \JsonSerializable
     {
         if ($this->type == 'list') {
             return [
-                'name'          => $this->name,
-                'type'          => $this->type,
-                'formfields'    => $this->formfields,
+                'name'               => $this->name,
+                'type'               => $this->type,
+                'formfields'         => $this->formfields,
+                'default_sort_field' => $this->default_sort_field,
             ];
         }
 
         return [
-            'name'          => $this->name,
-            'type'          => $this->type,
-            'formfields'    => $this->formfields,
+            'name'               => $this->name,
+            'type'               => $this->type,
+            'formfields'         => $this->formfields,
+            'default_sort_field' => $this->default_sort_field,
         ];
     }
 }

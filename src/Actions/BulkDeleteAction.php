@@ -14,7 +14,7 @@ class BulkDeleteAction extends BaseAction
 
     public function getClasses()
     {
-        return 'text-white bg-red-500';
+        return 'voyager-button red small';
     }
 
     public function getUrl($key)
