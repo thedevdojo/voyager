@@ -19,10 +19,10 @@ class VoyagerAdminMiddleware
         if (!app('VoyagerAuth')->guest()) {
 
             // Set default guard to voyager admin
-            if (!empty($guard = config('voyager.guard'))){
+            if (!empty($guard = config('voyager.guard'))) {
                 auth()->setDefaultDriver($guard);
             }
-            elseif (app('VoyagerAuth') instanceof \Illuminate\Auth\SessionGuard){
+            elseif (app('VoyagerAuth') instanceof \Illuminate\Auth\SessionGuard) {
               // Extract guard name from unique identifier for the auth session value
               preg_match('/(?<=_).*(?=_)/',app('VoyagerAuth')->getName(), $matches);
               auth()->setDefaultDriver($matches[0]);
