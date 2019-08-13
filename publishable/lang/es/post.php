@@ -10,7 +10,7 @@ return [
     'meta_keywords'    => 'Meta palabras clave',
     'new'              => 'Crear nuevo post',
     'seo_content'      => 'Contenido SEO',
-    'seo_title'        => 'Título Seo',
+    'seo_title'        => 'Título SEO',
     'slug'             => 'URL slug',
     'status'           => 'Estado del Post',
     'status_draft'     => 'borrador',
