@@ -20,8 +20,7 @@ class BreadController extends Controller
             }
             $records = 0;
             $rows = [];
-            $model = $bread->getModel();
-            $query = $model->select('*');
+            $query = $bread->getModel()->select('*');
             $perPage = $request->perPage ?? 10;
             $records = $query->count();
             $this->loadRelationships($query, $layout);
@@ -35,7 +34,7 @@ class BreadController extends Controller
             return response()->json([
                 'records' => $records,
                 'rows'    => $rows,
-                'primary' => $model->getKeyName(),
+                'primary' => $bread->getModel()->getKeyName(),
             ]);
         }
         $actions = Voyager::getActionsForBread($bread);
