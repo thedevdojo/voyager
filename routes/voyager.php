@@ -33,6 +33,9 @@ Route::group(['as' => 'voyager.'], function () {
     Route::post('login', ['uses' => $namespace.'AuthController@processLogin', 'as' => 'login']);
     Route::get('logout', ['uses' => $namespace.'AuthController@logout', 'as' => 'logout']);
 
+    // UI Routes
+    Route::view('ui', 'voyager::ui.index')->name('ui');
+
     // Asset routes
     Route::get('voyager-assets', ['uses' => $namespace.'VoyagerController@assets', 'as' => 'voyager_assets']);
 });

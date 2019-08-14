@@ -1,0 +1,52 @@
+.v-input-container {
+    @apply relative;
+
+    .v-input {
+        @apply border-2 border-gray-400 appearance-none rounded w-full py-3 px-3;
+        transition: border 0.2s ease-in-out;
+
+        &::-webkit-input-placeholder {
+            color: transparent;
+        }
+
+        &:-moz-placeholder {
+            /* Firefox 18- */
+            color: transparent;
+        }
+
+        &::-moz-placeholder {
+            /* Firefox 19+ */
+            color: transparent;
+        }
+
+        &:-ms-input-placeholder {
+            color: transparent;
+        }
+
+        &:focus,
+        &:active,
+        &.filled {
+            @apply pb-1 pt-5;
+
+            +.v-label {
+                @apply text-indigo-600 h-2 mt-0 text-xs;
+                transition: all 0.2s ease-out;
+            }
+        }
+
+        &:active,
+        &:focus {
+            @apply border-indigo-600 outline-none;
+        }
+        &.small {
+            @apply py-1 px-2 text-sm;
+        }
+    }
+
+    .v-label {
+        @apply absolute mb-0 text-gray-400 text-base mt-2;
+        transition: all 0.2s ease-out;
+        top: 0.4rem;
+        left: 0.8125rem;
+    }
+}

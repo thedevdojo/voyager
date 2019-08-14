@@ -1,4 +1,4 @@
-<aside class="flex flex-col h-full min-h-screen aside-expand w-16 hover:w-56 mr-4 sidebar">
+<aside class="flex flex-col h-full min-h-screen h-full aside-expand w-16 hover:w-56 sidebar overflow-x-hidden fixed z-50">
 
     <div class="flex justify-left pl-4 items-center h-16 logo">
         <img src="{{ Voyager::assetUrl('images/logo-icon-light.png') }}" alt="Logo Icon">
@@ -19,7 +19,7 @@
                             </g>
                         </svg>
                     </span>
-                    <span class="ml-5 text-white float-left absolute text-sm"> Dashboard </span>
+                    <span class="ml-5 text-white float-left absolute text-sm w-full"> Dashboard </span>
                 </a>
             </li>
 
@@ -40,7 +40,7 @@
                             </g>
                         </svg>
                     </span>
-                    <span class="ml-5 text-white float-left absolute text-sm"> Users </span>
+                    <span class="ml-5 text-white float-left absolute text-sm w-full"> Users </span>
                 </a>
             </li>
 
@@ -62,7 +62,25 @@
                             </g>
                         </svg>
                     </span>
-                    <span class="ml-5 text-white float-left absolute text-sm"> BREAD </span>
+                    <span class="ml-5 text-white float-left absolute text-sm w-full"> BREAD </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ route('voyager.ui') }}" class="flex items-center no-underline h-10 pl-4 relative">
+                    <span class="icon float-left flex justify-center items-center">
+                        <svg width="101px" height="101px" viewBox="0 0 101 101" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="ui" fill="#FFFFFF" fill-rule="nonzero">
+                                    <path d="M0.32292,10.323 L0.32292,31 L0.32292,44.7609121 L44.7696975,44.7609121 L44.7696975,0.323 L10.32292,0.323 C4.8000725,0.323 0.32292,4.8001525 0.32292,10.323 Z" id="Path"></path>
+                                    <path d="M55.88,65.88 L55.88,86.557 L55.88,100.317912 L100.326777,100.317912 L100.326777,55.88 L65.88,55.88 C60.3571525,55.88 55.88,60.3571525 55.88,65.88 Z" id="Path" fill-opacity="0.4" transform="translate(78.103389, 78.098956) rotate(-180.000000) translate(-78.103389, -78.098956) "></path>
+                                    <path d="M55.8827777,0.323 L55.8827777,2.93081926 L55.8827777,44.7609121 L100.32292,44.7609121 L100.32292,10.323 C100.32292,4.8001525 95.8457675,0.323 90.32292,0.323 L55.8827777,0.323 Z" id="Path" fill-opacity="0.8"></path>
+                                    <path d="M0.32292,55.8766892 L0.32292,58.4929072 L0.32292,90.323 C0.32292,95.8458475 4.8000725,100.323 10.32292,100.323 L44.7696975,100.323 L44.7696975,55.8766892 L0.32292,55.8766892 Z" id="Path" fill-opacity="0.6"></path>
+                                </g>
+                            </g>
+                        </svg>
+                    </span>
+                    <span class="ml-5 text-white float-left absolute text-sm w-full"> UI Components </span>
                 </a>
             </li>
 

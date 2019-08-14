@@ -37,8 +37,9 @@
 .sidebar{
     background: #2B50ED;
     background: linear-gradient(45deg, #1B40CD 0%, #2B50ED 100%);
-    transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
     overflow: hidden;
+    min-width: 4rem;
     span{
         opacity:0;
         &.icon{
@@ -83,6 +84,7 @@
     }
     &:hover{
         width:250px !important;
+        min-width:14rem;
         span{
             opacity:1;
             transition: opacity 0.3s cubic-bezier(0.19, 1, 0.22, 1);
@@ -96,4 +98,11 @@
         }
     }
     
+}
+
+.search{
+    transition: width 0.35s ease-out;
+    &:focus{
+        width:100%;
+    }
 }

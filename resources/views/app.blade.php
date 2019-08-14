@@ -20,7 +20,11 @@
         @include('voyager::sidebar')
     @endif
 
-    <div class="flex-initial w-full">
+    @if(isset($sidebarSecondary))
+        @include('voyager::partials.sidebar-secondary')
+    @endif
+
+    <div class="flex-initial w-full @if(isset($sidebarSecondary)){{ 'ml-72' }}@else{{ 'ml-16' }}@endif">
 
         @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
             @include('voyager::navbar')
@@ -32,7 +36,7 @@
             </div>
         </transition>
 
-        <main>
+        <main class="mx-4">
             @yield('content')
         </main>
 
