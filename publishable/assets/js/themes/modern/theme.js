@@ -150,10 +150,6 @@ var modern = (function (domGlobals) {
     var global$7 = tinymce.util.Tools.resolve('tinymce.util.Delay');
 
     var noop = function () {
-      var args = [];
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-      }
     };
     var constant = function (value) {
       return function () {
@@ -670,9 +666,9 @@ var modern = (function (domGlobals) {
       if (x === null)
         return 'null';
       var t = typeof x;
-      if (t === 'object' && Array.prototype.isPrototypeOf(x))
+      if (t === 'object' && (Array.prototype.isPrototypeOf(x) || x.constructor && x.constructor.name === 'Array'))
         return 'array';
-      if (t === 'object' && String.prototype.isPrototypeOf(x))
+      if (t === 'object' && (String.prototype.isPrototypeOf(x) || x.constructor && x.constructor.name === 'String'))
         return 'string';
       return t;
     };
@@ -684,6 +680,7 @@ var modern = (function (domGlobals) {
     var isFunction = isType('function');
     var isNumber = isType('number');
 
+    var slice = Array.prototype.slice;
     var rawIndexOf = function () {
       var pIndexOf = Array.prototype.indexOf;
       var fastIndex = function (xs, x) {
@@ -768,7 +765,6 @@ var modern = (function (domGlobals) {
       }
       return r;
     };
-    var slice = Array.prototype.slice;
     var from$1 = isFunction(Array.from) ? Array.from : function (x) {
       return slice.call(x);
     };
@@ -4754,7 +4750,7 @@ var modern = (function (domGlobals) {
         return NotificationManagerImpl(editor);
       };
       var getWindowManagerImpl = function () {
-        return WindowManagerImpl(editor);
+        return WindowManagerImpl();
       };
       return {
         renderUI: renderUI,
@@ -4991,7 +4987,7 @@ var modern = (function (domGlobals) {
         global$9(input).on('click', function (e) {
           e.stopPropagation();
         });
-        global$9(self.getEl('button')).on('click', function (e) {
+        global$9(self.getEl('button')).on('click touchstart', function (e) {
           e.stopPropagation();
           input.click();
         });
