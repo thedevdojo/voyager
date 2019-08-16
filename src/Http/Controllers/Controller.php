@@ -157,7 +157,7 @@ abstract class Controller extends BaseController
     /**
      * Validates bread POST request.
      *
-     * @param \Illuminate\Http\Request $request The Request
+     * @param array                    $request The Request
      * @param array                    $data    Field data
      * @param string                   $slug    Slug
      * @param int                      $id      Id of the record to update
