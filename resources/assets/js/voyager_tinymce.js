@@ -26,7 +26,7 @@ $(document).ready(function(){
     plugins: 'link, image, code, table, textcolor, lists',
     extended_valid_elements : 'input[id|name|value|type|class|style|required|placeholder|autocomplete|onclick]',
     file_browser_callback: function(field_name, url, type, win) {
-            if(type =='image'){
+            if(type =='image' || type =='file' ||){
               $('#upload_file').trigger('click');
             }
         },
