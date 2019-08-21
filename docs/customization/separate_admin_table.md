@@ -18,10 +18,16 @@ public function up()
 {
     Schema::create('voyager_users', function (Blueprint $table) {
         $table->increments('id');
+        $table->bigInteger('role_id')->unsigned()->nullable()
         $table->string('name');
         $table->string('email')->unique();
+        $table->string('avatar', 191)->nullable()->default('users/default.png');
         $table->string('password')->nullable();
+        $table->string('remember_token', 191)->nullable();
+        $table->text('settings')->nullable()->default(null);
         $table->timestamps();
+
+	$table->foreign('role_id')->references('id')->on('roles');
     });
 }
 ```
