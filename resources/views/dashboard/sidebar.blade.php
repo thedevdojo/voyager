@@ -1,4 +1,4 @@
-<div class="side-menu sidebar-inverse">
+<div class="side-menu sidebar-inverse" style="left: 0;">
     <nav class="navbar navbar-default" role="navigation">
         <div class="side-menu-container">
             <div class="navbar-header">
