@@ -52,6 +52,14 @@
 
     @yield('head')
     <style type="text/css">
+    .app-container .content-container .side-menu:hover .navbar-nav li.dropdown>a[aria-expanded=false]:after {
+    font-family: Voyager;
+    content: "\E038";
+    position: absolute;
+    
+    right: unset;
+    left: 1em;
+}
         .app-container .content-container .side-menu:hover .navbar-nav li.dropdown>a[aria-expanded=true]:after {
     font-family: Voyager;
     content: "\E047";
