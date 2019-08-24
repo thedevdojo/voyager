@@ -64,7 +64,6 @@
     font-family: Voyager;
     content: "\E047";
     position: absolute;
-    
     right: unset;
     left: 1em;
 }
