@@ -163,7 +163,7 @@
                                                     {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
 
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                    {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
+                                                    {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : verta($data->{$row->field})->format("Y-n-j H:i") }}
                                                 @elseif($row->type == 'checkbox')
                                                     @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                                         @if($data->{$row->field})
