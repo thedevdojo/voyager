@@ -30,6 +30,7 @@
 
     <!-- Few Dynamic Styles -->
     <style type="text/css">
+    
         .voyager .side-menu .navbar-header {
             background:{{ config('voyager.primary_color','#22A7F0') }};
             border-color:{{ config('voyager.primary_color','#22A7F0') }};
@@ -50,6 +51,33 @@
     @endif
 
     @yield('head')
+    <style type="text/css">
+        .app-container .content-container .side-menu:hover .navbar-nav li.dropdown>a[aria-expanded=true]:after {
+    font-family: Voyager;
+    content: "\E047";
+    position: absolute;
+    
+    right: unset;
+    left: 1em;
+}
+.app-container.expanded .content-container .side-menu .navbar-nav li.dropdown>a:after {
+    font-family: Voyager;
+    content: "\E038";
+    position: absolute;
+   right: unset;
+    left: 1em;
+}
+.app-container .content-container .side-menu .navbar-nav li.dropdown>a:after {
+    content: "";
+    position: absolute;
+    right: unset;
+    left: 1em;
+}
+.voyager .side-menu .navbar-nav {
+    width: 100%;
+    padding: 0;
+}
+    </style>
 </head>
 
 <body class="voyager @if(isset($dataType) && isset($dataType->slug)){{ $dataType->slug }}@endif">
