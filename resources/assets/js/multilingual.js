@@ -201,6 +201,12 @@
                 $_val = $_mce.getContent();
             }
 
+            if (inpUsr.hasClass('simplemde')) {                                          
+                var $codemirror = inpUsr.nextAll('.CodeMirror')[0].CodeMirror;           
+                $_val = $codemirror.getDoc().getValue();                                 
+                $codemirror.save();                                                      
+            }
+
             this.langSelectors.each(function(i, btn) {
                 var lang = btn.id;
                 $_data[lang] = (_this.locale == lang) ? $_val : inp.data(lang);
