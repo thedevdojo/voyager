@@ -226,6 +226,10 @@
                     _mce.setContent(_val);
                 } else {
                     inpUsr.val(_val);
+                    if (inpUsr.hasClass('simplemde')) {
+                        var $codemirror = inpUsr.nextAll('.CodeMirror')[0].CodeMirror;
+                        $codemirror.getDoc().setValue(inpUsr.val());
+                    }
                 }
             }
         }
