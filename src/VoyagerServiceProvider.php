@@ -332,7 +332,7 @@ class VoyagerServiceProvider extends ServiceProvider
         ];
 
         foreach ($formFields as $formField) {
-            $class = studly_case("{$formField}_handler");
+            $class = Str::studly("{$formField}_handler");
 
             VoyagerFacade::addFormField("TCG\\Voyager\\FormFields\\{$class}");
         }
