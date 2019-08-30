@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\FormFields;
 
+use Illuminate\Support\Str;
 use TCG\Voyager\Traits\Renderable;
 
 abstract class AbstractHandler implements HandlerInterface
@@ -38,7 +39,7 @@ abstract class AbstractHandler implements HandlerInterface
         if (empty($this->codename)) {
             $name = class_basename($this);
 
-            if (ends_with($name, 'Handler')) {
+            if (Str::endsWith($name, 'Handler')) {
                 $name = substr($name, 0, -strlen('Handler'));
             }
 
