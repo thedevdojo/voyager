@@ -18,7 +18,7 @@
         "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|^6.0",
         "intervention/image": "^2.4",
         "doctrine/dbal": "^2.5",
-        "larapack/doctrine-support": "~0.1.4",
+        "larapack/doctrine-support": "dev-laravel6-updates",
         "arrilot/laravel-widgets": "^3.7",
         "league/flysystem": "~1.0.41",
         "larapack/voyager-hooks": "dev-laravel6-updates",
