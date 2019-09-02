@@ -46,13 +46,21 @@ If you create a custom page and you want only allow specific user roles to acces
 This only works if your slug comes directly after `/admin/`. So for a custom page of the form `/admin/sub/foo` the menu item will not be hidden from  the menu.
 
 ### Create permission
-First, create a permission in the permissions table (you could use BREAD for example). The column `table_name` should be set to null. The column `key` should be of the form `browse_slug` where `slug` has to be replaced with  the actual slug of your custom page. For example, to restrict access to your custom page with url `/admin/create_bill` you may create the permission `browse_create_bill`.
+First, create a permission in the permissions table (you could use BREAD for example, model name is `TCG\Voyager\Models\Permission`). The column `table_name` should be set to null. The column `key` should be of the form `browse_slug` where `slug` has to be replaced with  the actual slug of your custom page. For example, to restrict access to your custom page with url `/admin/create_bill` you may create the permission `browse_create_bill`.
 
 ### Set role
 Check the permission for each role that you wish to grant access to the site at `admin/roles`. In the above example you would find a new checkbox called "Browse Create Bill". If a user does not have the required permission, the menu item leading to your custom page will be hidden.
 
 ### Customize controller
-Add the following line to the controller method so that user without required permission are not able to visit the page, even if they type in the url.
+You may create your own [gate](https://laravel.com/docs/5.8/authorization#gates) 
+
+```php
+Gate::define(`browse_create_bill`, function ($user) {
+                return $user->hasPermission(`browse_create_bill`);
+});
+```
+    
+to use `authorize` it in your controller:
 
 ```php
 public function index()
@@ -60,6 +68,22 @@ public function index()
   $this->authorize('browse_create_bill');
   //..
 ```
+
+If you do so, make sure add the custom gurad to your controller:
+
+```
+  /**
+   * Get the guard to be used during authentication.
+   *
+   * @return \Illuminate\Contracts\Auth\StatefulGuard
+   */
+  protected function guard()
+  {
+      return app('VoyagerAuth');
+  }
+```
+
+
 
 ## Using Permissions in your Blade Template files
 
