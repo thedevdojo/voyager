@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,7 +20,7 @@ class VoyagerController extends Controller
 
     public function logout()
     {
-        app('VoyagerAuth')->logout();
+        Auth::logout();
 
         return redirect()->route('voyager.login');
     }

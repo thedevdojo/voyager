@@ -8,6 +8,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -68,8 +69,8 @@ class VoyagerServiceProvider extends ServiceProvider
             return new Voyager();
         });
 
-        $this->app->singleton('VoyagerAuth', function () {
-            return auth();
+        $this->app->singleton('VoyagerGuard', function () {
+            return config('auth.defaults.guard', 'web');
         });
 
         $this->loadHelpers();
