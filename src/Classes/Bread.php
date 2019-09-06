@@ -106,7 +106,7 @@ class Bread implements \JsonSerializable
                     $pivot = DB::getSchemaBuilder()->getColumnListing($relationship->getTable());
                     $pivot = array_diff($pivot, [
                         $relationship->getForeignPivotKeyName(),
-                        $relationship->getRelatedPivotKeyName()
+                        $relationship->getRelatedPivotKeyName(),
                     ]);
                 }
                 $relationships[$name] = [
