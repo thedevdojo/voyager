@@ -3,7 +3,6 @@ language: php
 sudo: true
 
 php:
-  - 7.1
   - 7.2
   - 7.3
   - 7.4snapshot
@@ -14,6 +13,7 @@ env:
     - LARAVEL_VERSION=5.6.*
     - LARAVEL_VERSION=5.7.*
     - LARAVEL_VERSION=5.8.*
+    - LARAVEL_VERSION=6.0.*
 
 matrix:
   fast_finish: true
