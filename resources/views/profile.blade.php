@@ -20,6 +20,8 @@
         <h4>{{ ucwords(Auth::user()->name) }}</h4>
         <div class="user-email text-muted">{{ ucwords(Auth::user()->email) }}</div>
         <p>{{ Auth::user()->bio }}</p>
-        <a href="{{ route('voyager.users.edit', Auth::user()->getKey()) }}" class="btn btn-primary">{{ __('voyager::profile.edit') }}</a>
+        @if ($route != '')
+            <a href="{{ $route }}" class="btn btn-primary">{{ __('voyager::profile.edit') }}</a>
+        @endif
     </div>
 @stop

@@ -75,18 +75,13 @@ Open you `AppServiceProvider.php` and add the following to the `register` method
 ```php
 public function register()
 {
-    \TCG\Voyager\Facades\Voyager::useModel('User', \App\Admin::class);
-
     $this->app->singleton('VoyagerGuard', function () {
         return 'admin';
     });
 }
 ```
 
-Next, go to your database and search for the User-BREAD in the `data_types` table and change the model to `App\Admin`.  
-
 {% hint style="info" %}
-Please note that you can't use the User-BREAD to edit Admins.  
-Create a BREAD if you want to change Admins.  
-If you want to keep the old User-BREAD to change users, change back the model to `TCG\Voyager\Models\User`
+Please note that the user-bread is still responsible to edit users - not admins.  
+Create a BREAD if you want to change Admins.
 {% endhint %}
