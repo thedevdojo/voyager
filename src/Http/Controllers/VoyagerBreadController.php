@@ -212,7 +212,7 @@ class VoyagerBreadController extends Controller
         $reflection = new ReflectionClass($model_name);
 
         return collect($reflection->getMethods())->filter(function ($method) {
-            return starts_with($method->name, 'scope');
+            return Str::startsWith($method->name, 'scope');
         })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
             return lcfirst(Str::replaceFirst('scope', '', $method->name));
         });
