@@ -98,7 +98,7 @@ class VoyagerServiceProvider extends ServiceProvider
     public function boot(Router $router, Dispatcher $event)
     {
         if (config('voyager.user.add_default_role_on_register')) {
-            $model = Auth::guard()->getProvider()->getModel();
+            $model = Auth::guard(app('VoyagerGuard'))->getProvider()->getModel();
             call_user_func($model.'::created', function ($user) {
                 if (is_null($user->role_id)) {
                     VoyagerFacade::model('User')->findOrFail($user->id)
