@@ -157,10 +157,10 @@ abstract class Controller extends BaseController
     /**
      * Validates bread POST request.
      *
-     * @param array                    $data The data
-     * @param array                    $rows The rows
-     * @param string                   $slug Slug
-     * @param int                      $id   Id of the record to update
+     * @param array  $data The data
+     * @param array  $rows The rows
+     * @param string $slug Slug
+     * @param int    $id   Id of the record to update
      *
      * @return mixed
      */
