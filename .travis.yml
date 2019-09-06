@@ -27,13 +27,15 @@ services:
 
 before_script:
   - composer config discard-changes true
-  - if [[ $COVERAGE = '1' ]]; then ./bin/codeclimate setup; fi
+  - if [[ $COVERAGE = '1' ]]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter; fi
+  - if [[ $COVERAGE = '1' ]]; then chmod +x ./cc-test-reporter; fi
+  - if [[ $COVERAGE = '1' ]]; then ./cc-test-reporter before-build; fi
   - npm install
   - npm run dev
 
 before_install:
   - travis_retry composer self-update
-  - travis_retry composer require "illuminate/support:${LARAVEL}"
+  - travis_retry composer require "illuminate/support:${LARAVEL}" --no-interaction
   - composer show laravel/framework
 
 install:
@@ -44,4 +46,4 @@ script:
   - if [[ $COVERAGE = 0 ]]; then vendor/bin/phpunit --no-coverage; fi
 
 after_success:
-  - if [[ $COVERAGE = 1 ]]; then ./bin/codeclimate report $TRAVIS_TEST_RESULT; fi
+  - if [[ $COVERAGE = 1 ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
