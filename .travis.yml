@@ -2,22 +2,20 @@ language: php
 
 sudo: true
 
-php:
-  - 7.2
-  - 7.3
-  - 7.4snapshot
-
 env:
-  matrix:
-    - LARAVEL_VERSION=5.8.*
   global:
     - CC_TEST_REPORTER_ID=4f8327fbe90144089ea73dc9c26471edf7a6ccd2c06ab156de73abdde6e03a61
+    - COVERAGE=0
 
 matrix:
+  include:
+    - php: 7.2
+      env: LARAVEL='6.0.*'
+    - php: 7.3
+      env: COVERAGE=1 LARAVEL='6.0.*'
+    - php: 7.4-snapshot
+      env: LARAVEL='6.0.*'
   fast_finish: true
-
-  allow_failures:
-    - php: 7.4snapshot
 
 cache:
   directories:
@@ -28,17 +26,22 @@ services:
   - sqlite
 
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
-  - travis_retry composer self-update
-  - composer require "illuminate/support:${LARAVEL_VERSION}"
-  - composer show laravel/framework
+  - composer config discard-changes true
+  - if [[ $COVERAGE = '1' ]]; then ./bin/codeclimate setup; fi
   - npm install
   - npm run dev
 
-script:
-  - vendor/bin/phpunit
+before_install:
+  - travis_retry composer self-update
+  - travis_retry composer require "laravel/framework:${LARAVEL}" --no-interaction --no-update
+  - composer show laravel/framework
 
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+install:
+  - travis_retry composer install --prefer-dist --no-interaction --no-suggest
+
+script:
+  - if [[ $COVERAGE = 1 ]]; then vendor/bin/phpunit; fi
+  - if [[ $COVERAGE = 0 ]]; then vendor/bin/phpunit --no-coverage; fi
+
+after_success:
+  - if [[ $COVERAGE = 1 ]]; then ./bin/codeclimate report $TRAVIS_TEST_RESULT; fi
