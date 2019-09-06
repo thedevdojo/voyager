@@ -108,14 +108,14 @@ class Menu extends Model
     {
         $items = $items->transform(function ($item) {
             // Translate title
-            $item->title = config('voyager.multilingual.enabled') ? $item->getTranslatedAttribute('title') : $item->title;
+            $item->title = $item->getTranslatedAttribute('title');
             // Resolve URL/Route
             $item->href = $item->link(true);
 
             if ($item->href == url()->current() && $item->href != '') {
                 // The current URL is exactly the URL of the menu-item
                 $item->active = true;
-            } elseif (starts_with(url()->current(), Str::finish($item->href, '/'))) {
+            } elseif (Str::startsWith(url()->current(), Str::finish($item->href, '/'))) {
                 // The current URL is "below" the menu-item URL. For example "admin/posts/1/edit" => "admin/posts"
                 $item->active = true;
             }
