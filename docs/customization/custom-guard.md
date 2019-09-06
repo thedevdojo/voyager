@@ -84,4 +84,9 @@ public function register()
 ```
 
 Next, go to your database and search for the User-BREAD in the `data_types` table and change the model to `App\Admin`.  
-The last step is to remove the User-BREAD or to ungrant permissions for all Roles and create a new BREAD for your Admin-Table.
+
+{% hint style="info" %}
+Please note that you can't use the User-BREAD to edit Admins.  
+Create a BREAD if you want to change Admins.  
+If you want to keep the old User-BREAD to change users, change back the model to `TCG\Voyager\Models\User`
+{% endhint %}
