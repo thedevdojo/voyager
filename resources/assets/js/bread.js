@@ -12,5 +12,5 @@ let bread_components = [
 
 bread_components.forEach(function (component) {
     var name = component.substring(component.lastIndexOf('/') + 1);
-    Vue.component('bread-'+Vue.prototype.kebab_case(name), require('../components/'+component).default);
+    Vue.component('bread-'+kebab_case(name), require('../components/'+component).default);
 });

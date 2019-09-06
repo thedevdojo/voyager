@@ -38,22 +38,26 @@
                     <td v-for="(formfield, i) in layout.formfields" :key="'td-'+i">
                         <div v-if="isArray(getData(result, formfield.options.field))">
                             <div v-for="(relationship, key) in getData(result, formfield.options.field).slice(0, 3)" v-bind:key="key">
-                                <component
-                                    :is="'formfield-'+formfield.type"
-                                    :data="relationship[getRelationshipField(formfield.options.field)]"
-                                    :options="formfield.options"
-                                    action="browse" />
+                                <component :is="formfield.options.link ? 'a' : 'div'" :href="getRelationshipLink(formfield, relationship)">
+                                    <component
+                                        :is="'formfield-'+formfield.type"
+                                        :data="relationship[getRelationshipField(formfield.options.field)]"
+                                        :options="formfield.options"
+                                        action="browse" />
+                                </component>
                             </div>
-                            <div v-if="getData(result, formfield.options.field).length > 3">
+                            <i v-if="getData(result, formfield.options.field).length > 3">
                                 {{ __('voyager::bread.results_more', {num: (getData(result, formfield.options.field).length - 3)}) }}
-                            </div>
+                            </i>
                         </div>
                         <div v-else>
-                            <component
-                                :is="'formfield-'+formfield.type"
-                                :data="getData(result, formfield.options.field)"
-                                :options="formfield.options"
-                                action="browse" />
+                            <component :is="formfield.options.link ? 'a' : 'div'" :href="getLink(formfield, result)">
+                                <component
+                                    :is="'formfield-'+formfield.type"
+                                    :data="getData(result, formfield.options.field)"
+                                    :options="formfield.options"
+                                    action="browse" />
+                            </component>
                         </div>
                     </td>
                     <td>
@@ -137,31 +141,66 @@ export default {
                 vm.loading = false;
             });
         }, 200),
-        getData: function (result, field, max = null) {
+        getData: function (result, field) {
+            var snake_field = snake_case(field);
             if (field.includes('.')) {
-                var parts = field.split('.');
+                var parts = snake_field.split('.');
                 var results = result[parts[0]];
-                if (max) {
-                    results.length = Vue.prototype.clamp(max, 0, results.length);
-                }
-                if (this.isFieldTranslatable(field)) {
-                    // TODO: translate 
-                }
+                if (window.isArray(results)) {
+                    if (this.isFieldTranslatable(field)) {
+                        var trans_results = JSON.parse(JSON.stringify(results));
+                        var vm = this;
+                        results.forEach(function (result, key) {
+                            trans_results[key][parts[1]] = vm.translate(result[parts[1]]);
+                        });
 
-                return results;
+                        return trans_results;
+                    }
+
+                    return results;
+                } else if (isObject(results)) {
+                    if (this.isFieldTranslatable(field)) {
+                        return this.translate(results[parts[1]]);
+                    } else {
+                        return results[parts[1]];
+                    }
+                } else {
+                    return 'Nothing';
+                }
             }
 
             if (this.isFieldTranslatable(field)) {
-                result[field] = Vue.prototype.get_input_as_translatable_object(result[field]);
-
-                return Vue.prototype.translate(result[field]);
+                return this.translate(result[field]);
             }
+
+            return result[field] || 'nop';
         },
         isFieldTranslatable: function (field) {
             return this.translatable.includes(field);
         },
+        isArray: function (input) {
+            return window.isArray(input);
+        },
         getRelationshipField: function (field) {
             return field.substr(field.indexOf('.') + 1);
+        },
+        getLink: function (formfield, result) {
+            if (!formfield.options.link || false) {
+                return false;
+            }
+            var key = result[this.results.primary];
+
+            return route('voyager.'+this.translate(this.bread.slug, true)+'.show', key);
+        },
+        getRelationshipLink: function (formfield, result) {
+            if (!formfield.options.link || false) {
+                return false;
+            }
+
+            //return route();
+            //console.log(result);
+
+            return '#';
         }
     },
 

@@ -98,13 +98,22 @@ class Bread implements \JsonSerializable
         $relationships = $this->getModel()->relationships ?? [];
         if ($deep) {
             foreach ($relationships as $key => $name) {
+                $pivot = [];
                 $relationship = $this->getModel()->{$name}();
                 $table = $relationship->getRelated()->getTable();
                 unset($relationships[$key]);
+                if (get_class($relationship) == \Illuminate\Database\Eloquent\Relations\BelongsToMany::class) {
+                    $pivot = DB::getSchemaBuilder()->getColumnListing($relationship->getTable());
+                    $pivot = array_diff($pivot, [
+                        $relationship->getForeignPivotKeyName(),
+                        $relationship->getRelatedPivotKeyName()
+                    ]);
+                }
                 $relationships[$name] = [
                     'bread'  => Voyager::getBread($table),
                     'fields' => Voyager::getBread($table)->getFields(),
                     'type'   => basename(get_class($relationship)),
+                    'pivot'  => array_values($pivot),
                 ];
             }
         }

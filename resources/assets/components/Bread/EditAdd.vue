@@ -37,9 +37,7 @@ export default {
     methods: {
         getData: function (field) {
             if (this.isFieldTranslatable(field)) {
-                this.output[field] = Vue.prototype.get_input_as_translatable_object(this.output[field]);
-
-                return Vue.prototype.translate(this.output[field]);
+                return translate(this.output[field]);
             }
 
             return this.output[field];

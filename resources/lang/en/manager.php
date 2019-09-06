@@ -19,6 +19,7 @@ return [
     'formfields'                => 'Formfields',
     'layout_name'               => 'Layout name',
     'layout_name_hint'          => 'Enter a name for your Layout',
+    'link'                      => 'Link',
     'message'                   => 'Message',
     'model_does_not_exist'      => 'Model ":name" does not exist!',
     'model_name'                => 'Model name',

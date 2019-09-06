@@ -211,6 +211,7 @@ export default {
                         action: (toast) => {
                             vm.currentLayout.formfields.splice(id, 1);
                             vm.$snotify.remove(toast.id);
+                            vm.$forceUpdate();
                         }
                     }, {
                         text: vm.__('voyager::generic.no'),

@@ -1,3 +1,7 @@
+a {
+    @apply text-blue-600;
+}
+
 .voyager-input {
     @apply border-2 border-gray-400 appearance-none rounded w-full py-3 px-3;
     transition: border 0.2s ease-in-out;
@@ -54,8 +58,18 @@
 }
 
 .voyager-table {
-    @apply w-full text-left w-full border-collapse;
-    
+    @apply w-full text-left border-collapse bg-gray-100 rounded-lg;
+
+    tbody {
+        tr {
+            td {
+                @apply text-gray-700 p-2;
+            }
+        }
+        tr:nth-of-type(odd) {
+            @apply bg-gray-300;
+        }
+    }
 }
 
 .voyager-input-container {

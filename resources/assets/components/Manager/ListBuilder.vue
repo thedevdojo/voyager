@@ -10,10 +10,11 @@
                     <th>{{ __('voyager::manager.searchable') }}</th>
                     <th>{{ __('voyager::manager.sortable') }}</th>
                     <th>{{ __('voyager::manager.sorted_by_default') }}</th>
+                    <th>{{ __('voyager::manager.link') }}</th>
                     <th>{{ __('voyager::generic.actions') }}</th>
                 </tr>
             </thead>
-            <draggable v-model="layout.formfields" handle=".drag-handle" tag="tbody">
+            <draggable v-model="layout.formfields" handle=".drag-handle" tag="tbody" @end="refresh()">
                 <tr v-for="(formfield, i) in layout.formfields" v-bind:key="i">
                     <th class="drag-handle">&lt;&gt;</th>
                     <th>
@@ -25,7 +26,8 @@
                                 <option v-for="prop in computed" v-bind:key="prop">{{ prop }}</option>
                             </optgroup>
                             <optgroup v-for="(relationship, name) in relationships" v-bind:key="name" :label="name">
-                                <option v-for="field in relationship.fields" v-bind:key="field">{{name }}.{{ field }}</option>
+                                <option v-for="field in relationship.fields" v-bind:key="name+'.'+field">{{ name }}.{{ field }}</option>
+                                <option v-for="pivot in relationship.pivot" v-bind:key="name+'.pivot.'+pivot">{{ name }}.pivot.{{ pivot }}</option>
                             </optgroup>
                         </select>
                     </th>
@@ -57,6 +59,11 @@
                             :value="formfield.options.field"
                             :disabled="computed.includes(formfield.options.field)">
                     </th>
+                    <th>
+                        <input
+                            type="checkbox"
+                            v-model="formfield.options.link">
+                    </th>
                     <th class="inline flex">
                         <button @click="deleteFormfield(i)" class="voyager-button red small">{{ __('voyager::generic.delete') }}</button>
                         
@@ -86,6 +93,9 @@ export default {
     methods: {
         deleteFormfield: function (id) {
             this.$parent.deleteFormfield(id);
+        },
+        refresh: function () {
+            this.$forceUpdate();
         },
     },
     computed: {

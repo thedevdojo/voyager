@@ -5,8 +5,8 @@ let formfields = [
 
 formfields.forEach(function (formfield) {
     if (formfield.startsWith('Formfield')) {
-        Vue.component(Vue.prototype.kebab_case(formfield), require('../components/Formfields/'+formfield).default);
+        Vue.component(kebab_case(formfield), require('../components/Formfields/'+formfield).default);
     } else {
-        Vue.component('formfield-'+Vue.prototype.kebab_case(formfield), require('../components/Formfields/'+formfield).default);
+        Vue.component('formfield-'+kebab_case(formfield), require('../components/Formfields/'+formfield).default);
     }
 });

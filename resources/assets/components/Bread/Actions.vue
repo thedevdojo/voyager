@@ -37,10 +37,10 @@ export default {
                 length = this.keys.length
             }
             if (length == 1) {
-                return Vue.prototype.translate(this.bread.name_singular);
+                return this.translate(this.bread.name_singular);
             }
 
-            return Vue.prototype.translate(this.bread.name_plural);
+            return this.translate(this.bread.name_plural);
         },
         getUrl: function (action) {
             return action.url.replace(':key:', this.keys);

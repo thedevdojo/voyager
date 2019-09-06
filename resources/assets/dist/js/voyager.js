@@ -1900,10 +1900,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       if (length == 1) {
-        return Vue.prototype.translate(this.bread.name_singular);
+        return this.translate(this.bread.name_singular);
       }
 
-      return Vue.prototype.translate(this.bread.name_plural);
+      return this.translate(this.bread.name_plural);
     },
     getUrl: function getUrl(action) {
       return action.url.replace(':key:', this.keys);
@@ -2054,6 +2054,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['bread', 'accessors', 'layout', 'data-url', 'actions', 'translatable'],
   data: function data() {
@@ -2129,32 +2133,65 @@ __webpack_require__.r(__webpack_exports__);
       });
     }, 200),
     getData: function getData(result, field) {
-      var max = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+      var snake_field = snake_case(field);
 
       if (field.includes('.')) {
-        var parts = field.split('.');
+        var parts = snake_field.split('.');
         var results = result[parts[0]];
 
-        if (max) {
-          results.length = Vue.prototype.clamp(max, 0, results.length);
-        }
+        if (window.isArray(results)) {
+          if (this.isFieldTranslatable(field)) {
+            var trans_results = JSON.parse(JSON.stringify(results));
+            var vm = this;
+            results.forEach(function (result, key) {
+              trans_results[key][parts[1]] = vm.translate(result[parts[1]]);
+            });
+            return trans_results;
+          }
 
-        if (this.isFieldTranslatable(field)) {// TODO: translate 
+          return results;
+        } else if (isObject(results)) {
+          if (this.isFieldTranslatable(field)) {
+            return this.translate(results[parts[1]]);
+          } else {
+            return results[parts[1]];
+          }
+        } else {
+          return 'Nothing';
         }
-
-        return results;
       }
 
       if (this.isFieldTranslatable(field)) {
-        result[field] = Vue.prototype.get_input_as_translatable_object(result[field]);
-        return Vue.prototype.translate(result[field]);
+        return this.translate(result[field]);
       }
+
+      return result[field] || 'nop';
     },
     isFieldTranslatable: function isFieldTranslatable(field) {
       return this.translatable.includes(field);
     },
+    isArray: function isArray(input) {
+      return window.isArray(input);
+    },
     getRelationshipField: function getRelationshipField(field) {
       return field.substr(field.indexOf('.') + 1);
+    },
+    getLink: function getLink(formfield, result) {
+      if (!formfield.options.link || false) {
+        return false;
+      }
+
+      var key = result[this.results.primary];
+      return route('voyager.' + this.translate(this.bread.slug, true) + '.show', key);
+    },
+    getRelationshipLink: function getRelationshipLink(formfield, result) {
+      if (!formfield.options.link || false) {
+        return false;
+      } //return route();
+      //console.log(result);
+
+
+      return '#';
     }
   },
   mounted: function mounted() {
@@ -2229,8 +2266,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     getData: function getData(field) {
       if (this.isFieldTranslatable(field)) {
-        this.output[field] = Vue.prototype.get_input_as_translatable_object(this.output[field]);
-        return Vue.prototype.translate(this.output[field]);
+        return translate(this.output[field]);
       }
 
       return this.output[field];
@@ -2474,7 +2510,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.translations = Vue.prototype.get_input_as_translatable_object(this.value);
+    this.translations = this.get_input_as_translatable_object(this.value);
   },
   computed: {
     currentText: {
@@ -2734,6 +2770,7 @@ __webpack_require__.r(__webpack_exports__);
           action: function action(toast) {
             vm.currentLayout.formfields.splice(id, 1);
             vm.$snotify.remove(toast.id);
+            vm.$forceUpdate();
           }
         }, {
           text: vm.__('voyager::generic.no'),
@@ -2856,6 +2893,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['layout', 'fields', 'computed', 'relationships'],
   data: function data() {
@@ -2864,6 +2908,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     deleteFormfield: function deleteFormfield(id) {
       this.$parent.deleteFormfield(id);
+    },
+    refresh: function refresh() {
+      this.$forceUpdate();
     }
   },
   computed: {}
@@ -9697,19 +9744,34 @@ var render = function() {
                                   "div",
                                   { key: key },
                                   [
-                                    _c("formfield-" + formfield.type, {
-                                      tag: "component",
-                                      attrs: {
-                                        data:
-                                          relationship[
-                                            _vm.getRelationshipField(
-                                              formfield.options.field
-                                            )
-                                          ],
-                                        options: formfield.options,
-                                        action: "browse"
-                                      }
-                                    })
+                                    _c(
+                                      formfield.options.link ? "a" : "div",
+                                      {
+                                        tag: "component",
+                                        attrs: {
+                                          href: _vm.getRelationshipLink(
+                                            formfield,
+                                            relationship
+                                          )
+                                        }
+                                      },
+                                      [
+                                        _c("formfield-" + formfield.type, {
+                                          tag: "component",
+                                          attrs: {
+                                            data:
+                                              relationship[
+                                                _vm.getRelationshipField(
+                                                  formfield.options.field
+                                                )
+                                              ],
+                                            options: formfield.options,
+                                            action: "browse"
+                                          }
+                                        })
+                                      ],
+                                      1
+                                    )
                                   ],
                                   1
                                 )
@@ -9718,7 +9780,7 @@ var render = function() {
                             _vm._v(" "),
                             _vm.getData(result, formfield.options.field)
                               .length > 3
-                              ? _c("div", [
+                              ? _c("i", [
                                   _vm._v(
                                     "\n                            " +
                                       _vm._s(
@@ -9740,17 +9802,27 @@ var render = function() {
                       : _c(
                           "div",
                           [
-                            _c("formfield-" + formfield.type, {
-                              tag: "component",
-                              attrs: {
-                                data: _vm.getData(
-                                  result,
-                                  formfield.options.field
-                                ),
-                                options: formfield.options,
-                                action: "browse"
-                              }
-                            })
+                            _c(
+                              formfield.options.link ? "a" : "div",
+                              {
+                                tag: "component",
+                                attrs: { href: _vm.getLink(formfield, result) }
+                              },
+                              [
+                                _c("formfield-" + formfield.type, {
+                                  tag: "component",
+                                  attrs: {
+                                    data: _vm.getData(
+                                      result,
+                                      formfield.options.field
+                                    ),
+                                    options: formfield.options,
+                                    action: "browse"
+                                  }
+                                })
+                              ],
+                              1
+                            )
                           ],
                           1
                         )
@@ -10497,7 +10569,9 @@ var render = function() {
         "button",
         {
           key: locale,
-          staticClass: "voyager-button blue small uppercase",
+          class:
+            "voyager-button blue small uppercase " +
+            (_vm.$eventHub.locale == locale ? "bold" : ""),
           on: {
             click: function($event) {
               return _vm.changeLocale(locale)
@@ -10963,6 +11037,8 @@ var render = function() {
               _vm._v(_vm._s(_vm.__("voyager::manager.sorted_by_default")))
             ]),
             _vm._v(" "),
+            _c("th", [_vm._v(_vm._s(_vm.__("voyager::manager.link")))]),
+            _vm._v(" "),
             _c("th", [_vm._v(_vm._s(_vm.__("voyager::generic.actions")))])
           ])
         ]),
@@ -10971,6 +11047,11 @@ var render = function() {
           "draggable",
           {
             attrs: { handle: ".drag-handle", tag: "tbody" },
+            on: {
+              end: function($event) {
+                return _vm.refresh()
+              }
+            },
             model: {
               value: _vm.layout.formfields,
               callback: function($$v) {
@@ -11043,12 +11124,22 @@ var render = function() {
                       return _c(
                         "optgroup",
                         { key: name, attrs: { label: name } },
-                        _vm._l(relationship.fields, function(field) {
-                          return _c("option", { key: field }, [
-                            _vm._v(_vm._s(name) + "." + _vm._s(field))
-                          ])
-                        }),
-                        0
+                        [
+                          _vm._l(relationship.fields, function(field) {
+                            return _c("option", { key: name + "." + field }, [
+                              _vm._v(_vm._s(name) + "." + _vm._s(field))
+                            ])
+                          }),
+                          _vm._v(" "),
+                          _vm._l(relationship.pivot, function(pivot) {
+                            return _c(
+                              "option",
+                              { key: name + ".pivot." + pivot },
+                              [_vm._v(_vm._s(name) + ".pivot." + _vm._s(pivot))]
+                            )
+                          })
+                        ],
+                        2
                       )
                     })
                   ],
@@ -11211,6 +11302,53 @@ var render = function() {
                         "default_sort_field",
                         formfield.options.field
                       )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("th", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: formfield.options.link,
+                      expression: "formfield.options.link"
+                    }
+                  ],
+                  attrs: { type: "checkbox" },
+                  domProps: {
+                    checked: Array.isArray(formfield.options.link)
+                      ? _vm._i(formfield.options.link, null) > -1
+                      : formfield.options.link
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$a = formfield.options.link,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = null,
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 &&
+                            _vm.$set(
+                              formfield.options,
+                              "link",
+                              $$a.concat([$$v])
+                            )
+                        } else {
+                          $$i > -1 &&
+                            _vm.$set(
+                              formfield.options,
+                              "link",
+                              $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                            )
+                        }
+                      } else {
+                        _vm.$set(formfield.options, "link", $$c)
+                      }
                     }
                   }
                 })
@@ -29568,7 +29706,7 @@ __webpack_require__.r(__webpack_exports__);
 var bread_components = ['Bread/Browse', 'Bread/EditAdd', 'Bread/Read', 'Bread/Actions', 'Manager/Builder', 'Manager/ViewBuilder', 'Manager/ListBuilder', 'Manager/ValidationInput'];
 bread_components.forEach(function (component) {
   var name = component.substring(component.lastIndexOf('/') + 1);
-  Vue.component('bread-' + Vue.prototype.kebab_case(name), __webpack_require__("./resources/assets/components sync recursive ^\\.\\/.*$")("./" + component)["default"]);
+  Vue.component('bread-' + kebab_case(name), __webpack_require__("./resources/assets/components sync recursive ^\\.\\/.*$")("./" + component)["default"]);
 });
 
 /***/ }),
@@ -29583,9 +29721,9 @@ bread_components.forEach(function (component) {
 var formfields = ['FormfieldMockup', 'Text'];
 formfields.forEach(function (formfield) {
   if (formfield.startsWith('Formfield')) {
-    Vue.component(Vue.prototype.kebab_case(formfield), __webpack_require__("./resources/assets/components/Formfields sync recursive ^\\.\\/.*$")("./" + formfield)["default"]);
+    Vue.component(kebab_case(formfield), __webpack_require__("./resources/assets/components/Formfields sync recursive ^\\.\\/.*$")("./" + formfield)["default"]);
   } else {
-    Vue.component('formfield-' + Vue.prototype.kebab_case(formfield), __webpack_require__("./resources/assets/components/Formfields sync recursive ^\\.\\/.*$")("./" + formfield)["default"]);
+    Vue.component('formfield-' + kebab_case(formfield), __webpack_require__("./resources/assets/components/Formfields sync recursive ^\\.\\/.*$")("./" + formfield)["default"]);
   }
 });
 
@@ -29600,11 +29738,15 @@ formfields.forEach(function (formfield) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-Vue.prototype.kebab_case = function (input) {
+window.kebab_case = function (input) {
   return input.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').toLowerCase();
 };
 
-Vue.prototype.route = function () {
+window.snake_case = function (input) {
+  return input.replace(/([a-z])([A-Z])/g, '$1_$2').replace(/\s+/g, '_').toLowerCase();
+};
+
+window.route = function () {
   var args = Array.prototype.slice.call(arguments);
   var name = args.shift();
 
@@ -29617,15 +29759,15 @@ Vue.prototype.route = function () {
   }
 };
 
-Vue.prototype.isArray = function (input) {
+window.isArray = function (input) {
   return input && _typeof(input) === 'object' && input instanceof Array;
 };
 
-Vue.prototype.isObject = function (input) {
+window.isObject = function (input) {
   return input && _typeof(input) === 'object' && input.constructor === Object;
 };
 
-Vue.prototype.clamp = function (num, min, max) {
+window.clamp = function (num, min, max) {
   return num <= min ? min : num >= max ? max : num;
 };
 
@@ -29640,39 +29782,76 @@ Vue.prototype.clamp = function (num, min, max) {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-Vue.prototype.get_input_as_translatable_object = function (input) {
-  if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
-    try {
-      input = JSON.parse(input);
-    } catch (e) {
-      var value = input;
-      input = {};
-      input[this.$eventHub.locale] = value;
+Vue.mixin({
+  methods: {
+    get_input_as_translatable_object: function get_input_as_translatable_object(input) {
+      if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+        try {
+          input = JSON.parse(input);
+        } catch (e) {
+          var value = input;
+          input = {};
+          input[Vue.prototype.$eventHub.locale] = value;
+        }
+      }
+
+      if (input && _typeof(input) === 'object' && input.constructor === Object) {
+        Vue.prototype.$eventHub.locales.forEach(function (locale) {
+          if (!input.hasOwnProperty(locale)) {
+            input[locale] = '';
+          }
+        });
+        return input;
+      }
+
+      return {};
+    },
+    translate: function translate(input) {
+      var once = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      if (!window.isObject(input)) {
+        input = this.get_input_as_translatable_object(input);
+      }
+
+      if (window.isObject(input)) {
+        return input[once ? Vue.prototype.$eventHub.initial_locale : Vue.prototype.$eventHub.locale] || '';
+      }
+
+      return input;
+    },
+    trans: function trans(key) {
+      var replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var translations = Vue.prototype.$eventHub.localization;
+      var translation = key.split('.').reduce(function (t, i) {
+        return t[i] || null;
+      }, translations);
+
+      for (var placeholder in replace) {
+        translation = translation.replace(new RegExp(':' + placeholder, 'g'), replace[placeholder]);
+      }
+
+      return translation || key;
+    },
+    __: function __(key) {
+      var replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      return this.trans(key, replace);
+    },
+    trans_choice: function trans_choice(key) {
+      var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+      var replace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var translation = key.split('.').reduce(function (t, i) {
+        return t[i] || null;
+      }, Vue.prototype.$eventHub.localization).split('|');
+      translation = count > 1 ? translation[1] : translation[0];
+
+      for (var placeholder in replace) {
+        translation = translation.replace(":".concat(placeholder), replace[placeholder]);
+      }
+
+      return translation;
     }
   }
-
-  if (input && _typeof(input) === 'object' && input.constructor === Object) {
-    this.$eventHub.locales.forEach(function (locale) {
-      if (!input.hasOwnProperty(locale)) {
-        input[locale] = '';
-      }
-    });
-    return input;
-  }
-
-  return {};
-};
-
-Vue.prototype.translate = function (input) {
-  var once = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-  if (input && _typeof(input) === 'object' && input.constructor === Object) {
-    return input[once ? this.$eventHub.initial_locale : this.$eventHub.locale] || '';
-  }
-
-  return input;
-};
-
+});
 Vue.prototype.$eventHub = new Vue({
   data: {
     locale: document.getElementsByTagName('html')[0].getAttribute('lang'),
@@ -29694,40 +29873,6 @@ Vue.prototype.$eventHub = new Vue({
     }
   }
 });
-
-Vue.prototype.trans = function (key) {
-  var replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  var translations = this.$eventHub.localization;
-  var translation = key.split('.').reduce(function (t, i) {
-    return t[i] || null;
-  }, translations);
-
-  for (var placeholder in replace) {
-    translation = translation.replace(new RegExp(':' + placeholder, 'g'), replace[placeholder]);
-  }
-
-  return translation || key;
-};
-
-Vue.prototype.__ = function (key) {
-  var replace = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  return this.trans(key, replace);
-};
-
-Vue.prototype.trans_choice = function (key) {
-  var count = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
-  var replace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-  var translation = key.split('.').reduce(function (t, i) {
-    return t[i] || null;
-  }, Vue.prototype.$eventHub.localization).split('|');
-  translation = count > 1 ? translation[1] : translation[0];
-
-  for (var placeholder in replace) {
-    translation = translation.replace(":".concat(placeholder), replace[placeholder]);
-  }
-
-  return translation;
-};
 
 /***/ }),
 
@@ -29832,8 +29977,8 @@ Vue.component('locale-picker', __webpack_require__(/*! ../components/LocalePicke
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/tony/Sites/v2/vendor/tcg/voyager/resources/assets/js/voyager.js */"./resources/assets/js/voyager.js");
-module.exports = __webpack_require__(/*! /Users/tony/Sites/v2/vendor/tcg/voyager/resources/assets/sass/voyager.scss */"./resources/assets/sass/voyager.scss");
+__webpack_require__(/*! D:\Projekte\Github\tcg_voyager\resources\assets\js\voyager.js */"./resources/assets/js/voyager.js");
+module.exports = __webpack_require__(/*! D:\Projekte\Github\tcg_voyager\resources\assets\sass\voyager.scss */"./resources/assets/sass/voyager.scss");
 
 
 /***/ })

@@ -602,6 +602,10 @@ video {
   height: auto;
 }
 
+a {
+  color: #3182ce;
+}
+
 .voyager-input {
   border-width: 2px;
   border-color: #cbd5e0;
@@ -702,8 +706,18 @@ video {
 .voyager-table {
   width: 100%;
   text-align: left;
-  width: 100%;
   border-collapse: collapse;
+  background-color: #f7fafc;
+  border-radius: 0.5rem;
+}
+
+.voyager-table tbody tr td {
+  color: #4a5568;
+  padding: 0.5rem;
+}
+
+.voyager-table tbody tr:nth-of-type(odd) {
+  background-color: #e2e8f0;
 }
 
 .voyager-input-container {

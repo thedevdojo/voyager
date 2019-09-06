@@ -3,7 +3,7 @@
         <button
             v-for="locale in $eventHub.locales"
             v-bind:key="locale"
-            class="voyager-button blue small uppercase"
+            :class="'voyager-button blue small uppercase ' + ($eventHub.locale == locale ? 'bold' : '')"
             @click="changeLocale(locale)">
             {{ locale }}
         </button>

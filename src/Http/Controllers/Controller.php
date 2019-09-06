@@ -21,13 +21,15 @@ abstract class Controller extends BaseController
 
     protected function loadRelationships(&$query, $layout)
     {
-        $relationships = $layout->formfields->filter(function ($formfield) {
+        $layout->formfields->filter(function ($formfield) {
             return Str::contains($formfield->options['field'], '.');
         })->transform(function ($formfield) {
             return Str::before($formfield->options['field'], '.');
-        })->unique()->toArray();
-
-        $query->with($relationships);
+        })->unique()->each(function ($relationship) use ($query) {
+            $query->with([$relationship => function ($query) {
+                //
+            }]);
+        });
     }
 
     protected function searchQuery(&$query, $filters)
