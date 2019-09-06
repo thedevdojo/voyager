@@ -344,7 +344,7 @@
                 })
             @endif
             $('.select_all').on('click', function(e) {
-                $('input[name="row_id"]').prop('checked', $(this).prop('checked'));
+                $('input[name="row_id"]').prop('checked', $(this).prop('checked')).trigger('change');
             });
         });
 
