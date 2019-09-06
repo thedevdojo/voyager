@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
 use TCG\Voyager\Facades\Voyager;
@@ -73,13 +74,13 @@ class VoyagerController extends Controller
 
     public function assets(Request $request)
     {
-        $path = str_start(str_replace(['../', './'], '', urldecode($request->path)), '/');
+        $path = Str::start(str_replace(['../', './'], '', urldecode($request->path)), '/');
         $path = base_path('vendor/tcg/voyager/publishable/assets'.$path);
         if (File::exists($path)) {
             $mime = '';
-            if (ends_with($path, '.js')) {
+            if (Str::endsWith($path, '.js')) {
                 $mime = 'text/javascript';
-            } elseif (ends_with($path, '.css')) {
+            } elseif (Str::endsWith($path, '.css')) {
                 $mime = 'text/css';
             } else {
                 $mime = File::mimeType($path);

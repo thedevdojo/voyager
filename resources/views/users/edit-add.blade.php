@@ -42,13 +42,13 @@
                             <div class="form-group">
                                 <label for="name">{{ __('voyager::generic.name') }}</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="{{ __('voyager::generic.name') }}"
-                                       value="{{ $dataTypeContent->name ?? '' }}">
+                                       value="{{ old('name', $dataTypeContent->name ?? '') }}">
                             </div>
 
                             <div class="form-group">
                                 <label for="email">{{ __('voyager::generic.email') }}</label>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="{{ __('voyager::generic.email') }}"
-                                       value="{{ $dataTypeContent->email ?? '' }}">
+                                       value="{{ old('email', $dataTypeContent->email ?? '') }}">
                             </div>
 
                             <div class="form-group">
