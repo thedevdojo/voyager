@@ -13,7 +13,7 @@ matrix:
       env: LARAVEL='6.0.*'
     - php: 7.3
       env: COVERAGE=1 LARAVEL='6.0.*'
-    - php: 7.4-snapshot
+    - php: 7.4snapshot
       env: LARAVEL='6.0.*'
   fast_finish: true
 
@@ -34,7 +34,7 @@ before_script:
 before_install:
   - travis_retry composer self-update
   - travis_retry composer require "illuminate/support:${LARAVEL}" --no-interaction --no-update
-  - composer show laravel/framework
+  - composer show illuminate/support
 
 install:
   - travis_retry composer install --prefer-dist --no-interaction --no-suggest
