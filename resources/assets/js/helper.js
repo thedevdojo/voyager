@@ -1,8 +1,8 @@
-window.kebab_case = function (input) {
-    return input.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, '-').toLowerCase();
+window.kebab_case = function (input, char = '-') {
+    return input.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, char).toLowerCase();
 };
 window.snake_case = function (input) {
-    return input.replace(/([a-z])([A-Z])/g, '$1_$2').replace(/\s+/g, '_').toLowerCase();
+    return window.kebab_case(input, '_');
 };
 window.route = function ()
 {

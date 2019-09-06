@@ -123,6 +123,8 @@ class Voyager
      */
     public function storeBread($bread)
     {
+        $this->breads = null;
+
         return File::put(Str::finish($this->breadPath, '/').$bread->table.'.json', json_encode($bread, JSON_PRETTY_PRINT));
     }
 

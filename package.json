@@ -9,9 +9,9 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "cross-env": "^5.2.0",
-        "laravel-mix": "^4.1.2",
-        "sass-loader": "^7.2.0",
+        "cross-env": "^5.2.1",
+        "laravel-mix": "^4.1.4",
+        "sass-loader": "^7.3.1",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {

@@ -69,7 +69,11 @@ class Bread implements \JsonSerializable
 
     public function getComputedProperties()
     {
-        return $this->getModel()->computed ?? [];
+        if (property_exists($this->getModel(), 'computed')) {
+            return $this->getModel()->computed;
+        }
+
+        return [];
     }
 
     public function getTranslatableFields($deep = true)
@@ -95,7 +99,10 @@ class Bread implements \JsonSerializable
 
     public function getRelationships($deep = false)
     {
-        $relationships = $this->getModel()->relationships ?? [];
+        $relationships = [];
+        if (property_exists($this->getModel(), 'relationships')) {
+            $relationships = $this->getModel()->relationships;
+        }
         if ($deep) {
             foreach ($relationships as $key => $name) {
                 $pivot = [];
