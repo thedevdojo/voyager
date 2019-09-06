@@ -131,6 +131,11 @@ trait Translatable
      */
     public function getTranslatedAttribute($attribute, $language = null, $fallback = true)
     {
+        // If multilingual is not enabled don't check for translations
+        if (!config('voyager.multilingual.enabled')) {
+            return $this->getAttributeValue($attribute);
+        }
+
         list($value) = $this->getTranslatedAttributeMeta($attribute, $language, $fallback);
 
         return $value;
