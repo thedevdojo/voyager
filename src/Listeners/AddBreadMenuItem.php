@@ -31,7 +31,7 @@ class AddBreadMenuItem
 
             $menuItem = Voyager::model('MenuItem')->firstOrNew([
                 'menu_id' => $menu->id,
-                'title'   => $bread->dataType->display_name_plural,
+                'title'   => $bread->dataType->getTranslatedAttribute('display_name_plural'),
                 'url'     => '',
                 'route'   => 'voyager.'.$bread->dataType->slug.'.index',
             ]);
