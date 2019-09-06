@@ -33,7 +33,7 @@ before_script:
 
 before_install:
   - travis_retry composer self-update
-  - travis_retry composer require "illuminate/support:${LARAVEL}" --no-interaction --no-update
+  - travis_retry composer require "illuminate/support:${LARAVEL}"
   - composer show laravel/framework
 
 install:
