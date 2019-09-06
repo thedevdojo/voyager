@@ -4,13 +4,18 @@
     <title>@yield('page_title', setting('admin.title') . " - " . setting('admin.description'))</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <meta name="assets-path" content="{{ route('voyager.assets') }}"/>
+    <meta name="assets-path" content="{{ route('voyager.voyager_assets') }}"/>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/x-icon">
+    <?php $admin_favicon = Voyager::setting('admin.icon_image', ''); ?>
+    @if($admin_favicon == '')
+        <link rel="shortcut icon" href="{{ voyager_asset('images/logo-icon.png') }}" type="image/png">
+    @else
+        <link rel="shortcut icon" href="{{ Voyager::image($admin_favicon) }}" type="image/png">
+    @endif
 
 
 
@@ -25,18 +30,14 @@
 
     <!-- Few Dynamic Styles -->
     <style type="text/css">
-        .voyager .side-menu .navbar-header {
-            background:{{ config('voyager.primary_color','#22A7F0') }};
-            border-color:{{ config('voyager.primary_color','#22A7F0') }};
-        }
         .widget .btn-primary{
-            border-color:{{ config('voyager.primary_color','#22A7F0') }};
+            border-color:{{ config('voyager.primary_color','#2B50ED') }};
         }
         .widget .btn-primary:focus, .widget .btn-primary:hover, .widget .btn-primary:active, .widget .btn-primary.active, .widget .btn-primary:active:focus{
-            background:{{ config('voyager.primary_color','#22A7F0') }};
+            background:{{ config('voyager.primary_color','#2B50ED') }};
         }
         .voyager .breadcrumb a{
-            color:{{ config('voyager.primary_color','#22A7F0') }};
+            color:{{ config('voyager.primary_color','#2B50ED') }};
         }
     </style>
 
@@ -59,7 +60,7 @@
 </div>
 
 <?php
-if (starts_with(app('VoyagerAuth')->user()->avatar, 'http://') || starts_with(app('VoyagerAuth')->user()->avatar, 'https://')) {
+if (\Illuminate\Support\Str::startsWith(app('VoyagerAuth')->user()->avatar, 'http://') || \Illuminate\Support\Str::startsWith(app('VoyagerAuth')->user()->avatar, 'https://')) {
     $user_avatar = app('VoyagerAuth')->user()->avatar;
 } else {
     $user_avatar = Voyager::image(app('VoyagerAuth')->user()->avatar);
@@ -86,7 +87,7 @@ if (starts_with(app('VoyagerAuth')->user()->avatar, 'http://') || starts_with(ap
                     appContainer.style.WebkitTransition = appContainer.style.MozTransition = appContainer.style.transition =
                     navbar.style.WebkitTransition = navbar.style.MozTransition = navbar.style.transition = 'none';
 
-                    if (window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
+                    if (window.innerWidth > 768 && window.localStorage && window.localStorage['voyager.stickySidebar'] == 'true') {
                         appContainer.className += ' expanded no-animation';
                         loader.style.left = (sidebar.clientWidth/2)+'px';
                         hamburgerMenu.className += ' is-active no-animation';
@@ -135,12 +136,6 @@ if (starts_with(app('VoyagerAuth')->user()->avatar, 'http://') || starts_with(ap
     @endif
 </script>
 @include('voyager::media.manager')
-@include('voyager::menu.admin_menu')
-<script>
-new Vue({
-    el: '#adminmenu',
-});
-</script>
 @yield('javascript')
 @stack('javascript')
 @if(!empty(config('voyager.additional_js')))<!-- Additional Javascript -->

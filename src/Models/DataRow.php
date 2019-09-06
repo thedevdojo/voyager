@@ -3,14 +3,19 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use TCG\Voyager\Traits\Translatable;
 
 class DataRow extends Model
 {
+    use Translatable;
+
     protected $table = 'data_rows';
 
     protected $guarded = [];
 
     public $timestamps = false;
+
+    protected $translatable = ['display_name'];
 
     public function rowBefore()
     {

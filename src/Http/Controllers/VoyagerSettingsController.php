@@ -90,15 +90,14 @@ class VoyagerSettingsController extends Controller
             $content = $this->getContentBasedOnType($request, 'settings', (object) [
                 'type'    => $setting->type,
                 'field'   => str_replace('.', '_', $setting->key),
-                'details' => $setting->details,
                 'group'   => $setting->group,
-            ]);
+            ], $setting->details);
 
             if ($setting->type == 'image' && $content == null) {
                 continue;
             }
 
-            if ($setting->type == 'file' && $content == json_encode([])) {
+            if ($setting->type == 'file' && $content == null) {
                 continue;
             }
 

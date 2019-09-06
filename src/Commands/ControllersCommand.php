@@ -4,6 +4,7 @@ namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class ControllersCommand extends Command
@@ -66,7 +67,7 @@ class ControllersCommand extends Command
 
         $appNamespace = app()->getNamespace();
 
-        if (!starts_with($namespace, $appNamespace)) {
+        if (!Str::startsWith($namespace, $appNamespace)) {
             return $this->error('The controllers namespace must start with your application namespace: '.$appNamespace);
         }
 

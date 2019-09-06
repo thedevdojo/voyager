@@ -186,7 +186,7 @@ return [
     |
     */
 
-    'primary_color' => '#22A7F0',
+    'primary_color' => '#2B50ED',
 
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
 
@@ -246,5 +246,20 @@ return [
        'allow_delete'        => true,
        'allow_create_folder' => true,
        'allow_rename'        => true,
+       /*'watermark'           => [
+            'source'         => 'watermark.png',
+            'position'       => 'bottom-left',
+            'x'              => 0,
+            'y'              => 0,
+            'size'           => 15,
+       ],
+       'thumbnails'          => [
+           [
+                'type'  => 'fit',
+                'name'  => 'fit-500',
+                'width' => 500,
+                'height'=> 500
+           ],
+       ]*/
    ],
 ];

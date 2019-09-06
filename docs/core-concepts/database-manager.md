@@ -13,3 +13,4 @@ If you click the table name you can view the current schema. Additionally you ca
 You may also choose to Add BREAD \(Browse, Read, Edit, Add, & Delete\) for any of your database tables. Once a table already has BREAD you may choose to edit the current BREAD or Delete the BREAD for that table.
 
 Read on further about the BREAD builder in the next section.
+

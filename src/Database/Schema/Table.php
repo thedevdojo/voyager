@@ -17,7 +17,7 @@ class Table extends DoctrineTable
 
         $columns = [];
         foreach ($table['columns'] as $columnArr) {
-            $column = Column::make($columnArr);
+            $column = Column::make($columnArr, $table['name']);
             $columns[$column->getName()] = $column;
         }
 

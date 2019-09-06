@@ -16,6 +16,19 @@ class Menu extends Model
 
     protected $guarded = [];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($model) {
+            $model->removeMenuFromCache();
+        });
+
+        static::deleted(function ($model) {
+            $model->removeMenuFromCache();
+        });
+    }
+
     public function items()
     {
         return $this->hasMany(Voyager::modelClass('MenuItem'));
@@ -86,12 +99,9 @@ class Menu extends Model
         );
     }
 
-    public function save(array $options = [])
+    public function removeMenuFromCache()
     {
-        //Remove from cache
         \Cache::forget('voyager_menu_'.$this->name);
-
-        parent::save();
     }
 
     private static function processItems($items)
@@ -105,7 +115,7 @@ class Menu extends Model
             if ($item->href == url()->current() && $item->href != '') {
                 // The current URL is exactly the URL of the menu-item
                 $item->active = true;
-            } elseif (starts_with(url()->current(), Str::finish($item->href, '/'))) {
+            } elseif (Str::startsWith(url()->current(), Str::finish($item->href, '/'))) {
                 // The current URL is "below" the menu-item URL. For example "admin/posts/1/edit" => "admin/posts"
                 $item->active = true;
             }

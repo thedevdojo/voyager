@@ -116,9 +116,17 @@ class DataType extends Model
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
+                    // Prepare Translations and Transform data
+                    $translations = (is_bread_translatable($dataRow) && !empty($requestData['field_display_name_'.$field.'_i18n']))
+                        ? $dataRow->prepareTranslationsFromArray($field, $requestData)
+                        : [];
+
                     if (!$dataRow->save()) {
                         throw new \Exception(__('voyager::database.field_safe_failed', ['field' => $field]));
                     }
+
+                    // Save translations if applied
+                    $dataRow->saveTranslations($translations);
                 }
 
                 // Clean data_rows that don't have an associated field

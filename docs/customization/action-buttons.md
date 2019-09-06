@@ -1,11 +1,13 @@
-# Action Buttons
+# Action buttons
+
+## Action Buttons
 
 Action buttons are displayed when browsing a BREAD next to each row
 
 ![](../.gitbook/assets/action_buttons.jpg)
 
-You can add your own buttons very easily.
-First we will create an Action-class which extends Voyagers AbstractAction in app/Actions/MyAction.php
+You can add your own buttons very easily. First we will create an Action-class which extends Voyagers AbstractAction in app/Actions/MyAction.php
+
 ```php
 <?php
 
@@ -43,7 +45,9 @@ class MyAction extends AbstractAction
     }
 }
 ```
+
 Next we need to tell Voyager that we want to use this action. For this open your `app/Providers/AppServiceProvider.php` and search for the `boot()` method
+
 ```php
 <?php
 
@@ -61,12 +65,13 @@ class AppServiceProvider extends ServiceProvider
     }
 }
 ```
-After that you will see your new button when browsing any BREAD
-![](../.gitbook/assets/action_buttons_custom.jpg)
 
-## Showing/hiding actions
+After that you will see your new button when browsing any BREAD ![](../.gitbook/assets/action_buttons_custom.jpg)
+
+### Showing/hiding actions
 
 If you only want to show your action for special datatypes you can implement a function `shouldActionDisplayOnDataType()` in your action:
+
 ```php
 <?php
 
@@ -76,10 +81,11 @@ public function shouldActionDisplayOnDataType()
 }
 ```
 
-# Mass Actions
+## Mass Actions
 
 Mass actions are called for multiple instances of a model.  
 If you want your action to be a mass action, just implement the following method:
+
 ```php
 <?php
 
@@ -89,3 +95,4 @@ public function massAction($ids, $comingFrom)
     return redirect($comingFrom);
 }
 ```
+

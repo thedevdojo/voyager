@@ -94,7 +94,7 @@
              */
             this.transInputs.each(function(i, inp) {
                 var _inp   = $(inp),
-                    inpUsr = _inp.next(_this.settings.editing ? '.form-control' : '');
+                    inpUsr = _inp.nextAll(_this.settings.editing ? '.form-control' : '');
 
                 inpUsr.data("inp", _inp);
                 _inp.data("inpUsr", inpUsr);
