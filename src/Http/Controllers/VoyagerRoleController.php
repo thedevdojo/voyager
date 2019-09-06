@@ -31,7 +31,6 @@ class VoyagerRoleController extends VoyagerBaseController
                 'message'    => __('voyager::generic.successfully_updated')." {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
                 ]);
-        
     }
 
     // POST BRE(A)D
@@ -47,8 +46,6 @@ class VoyagerRoleController extends VoyagerBaseController
         //Validate fields
         $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
 
-        
-
         $data = new $dataType->model_name();
         $this->insertUpdateData($request, $slug, $dataType->addRows, $data);
 
@@ -60,6 +57,5 @@ class VoyagerRoleController extends VoyagerBaseController
                 'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
                 ]);
-        
     }
 }
