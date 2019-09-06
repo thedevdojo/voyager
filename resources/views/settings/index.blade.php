@@ -285,7 +285,16 @@
                                             </div>
                                             <div class="clearfix"></div>
                                         @elseif($setting->type == "file" && isset( $setting->value ))
-                                            <div class="fileType">{{ $setting->value }}</div>
+                                            @if(json_decode($setting->value) !== null)
+                                                @foreach(json_decode($setting->value) as $file)
+                                                  <div class="fileType">
+                                                    <a class="fileType" target="_blank" href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) }}">
+                                                      {{ $file->original_name }}
+                                                    </a>
+                                                    <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x delete_value"></a>
+                                                 </div>
+                                                @endforeach
+                                            @endif
                                         @endif
                                         <input type="file" name="{{ $setting->key }}">
                                     @elseif($setting->type == "select_dropdown")
