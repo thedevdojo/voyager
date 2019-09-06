@@ -17,7 +17,7 @@ class VoyagerRoleController extends VoyagerBaseController
         // Check permission
         $this->authorize('edit', app($dataType->model_name));
 
-        //Validate fields without ajax
+        //Validate fields
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id)->validate();
 
         $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
@@ -44,7 +44,7 @@ class VoyagerRoleController extends VoyagerBaseController
         // Check permission
         $this->authorize('add', app($dataType->model_name));
 
-        //Validate fields without ajax
+        //Validate fields
         $val = $this->validateBread($request->all(), $dataType->addRows)->validate();
 
         
