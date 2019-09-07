@@ -71,7 +71,7 @@ public function index()
 
 If you do so, make sure add the custom guard to your controller:
 
-```
+```php
   /**
    * Get the guard to be used during authentication.
    *
