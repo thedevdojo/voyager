@@ -52,7 +52,7 @@ First, create a permission in the permissions table (you could use BREAD for exa
 Check the permission for each role that you wish to grant access to the site at `admin/roles`. In the above example you would find a new checkbox called "Browse Create Bill". If a user does not have the required permission, the menu item leading to your custom page will be hidden.
 
 ### Customize controller
-You may create your own [gate](https://laravel.com/docs/5.8/authorization#gates) 
+You may create your own [gate](https://laravel.com/docs/authorization#gates) 
 
 ```php
 Gate::define(`browse_create_bill`, function ($user) {
