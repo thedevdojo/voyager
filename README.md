@@ -53,7 +53,15 @@ You will also want to update your website URL inside of the `APP_URL` variable i
 APP_URL=http://localhost:8000
 ```
 
-### 3. Run The Installer
+### 3. Setting Local Language
+
+open up your application config/app.php file and Change to Local Language:
+
+```
+'locale' => 'zh_CN',
+```
+
+### 4. Run The Installer
 
 Lastly, we can install voyager. You can do this either with or without dummy data.
 The dummy data will include 1 admin account (if no users already exists), 1 demo page, 4 demo posts, 2 categories and 7 settings.
