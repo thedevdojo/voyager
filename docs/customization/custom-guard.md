@@ -46,7 +46,7 @@ class Admin extends \TCG\Voyager\Models\User
 }
 ```
 
-Next, create a guard (see above) named `admin`:
+Next, create a guard named `admin` in your `config/auth.php`:
 ```
 'guards' => [
     'admin' => [
@@ -69,7 +69,7 @@ And a user provider called `admins`:
 ],
 ```
 
-Next you have to tell Voyager to use your model as the user-model and your new guard.  
+Next you have to tell Voyager to use your new guard.  
 Open you `AppServiceProvider.php` and add the following to the `register` method:
 
 ```php
@@ -83,5 +83,5 @@ public function register()
 
 {% hint style="info" %}
 Please note that the user-bread is still responsible to edit users - not admins.  
-Create a BREAD if you want to change Admins.
+Create a BREAD for the `admins` table if you want to change Admins.
 {% endhint %}
