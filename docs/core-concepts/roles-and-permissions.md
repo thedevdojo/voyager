@@ -56,7 +56,7 @@ You may create your own [gate](https://laravel.com/docs/5.8/authorization#gates)
 
 ```php
 Gate::define(`browse_create_bill`, function ($user) {
-                return $user->hasPermission(`browse_create_bill`);
+    return $user->hasPermission(`browse_create_bill`);
 });
 ```
     
