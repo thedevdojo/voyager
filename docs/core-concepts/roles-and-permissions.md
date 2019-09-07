@@ -79,7 +79,7 @@ If you do so, make sure add the custom guard to your controller:
    */
   protected function guard()
   {
-      return app('VoyagerAuth');
+      return Auth::guard(app('VoyagerGuard'));
   }
 ```
 
