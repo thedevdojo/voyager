@@ -12,6 +12,7 @@ return [
     'are_you_sure_delete'    => '你确定要删除吗',
     'auto_increment'         => '自增',
     'browse'                 => '浏览',
+    'bread'                  => 'bread',
     'builder'                => '构建器',
     'bulk_delete'            => '删除选中',
     'bulk_delete_confirm'    => '是的, 删除这些',
