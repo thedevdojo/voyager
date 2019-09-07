@@ -9,36 +9,36 @@
 <a href="https://github.com/larapack/awesome-voyager"><img src="https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg" alt="Awesome Voyager"></a>
 </p>
 
-# **V**oyager - The Missing Laravel Admin
+# **V**oyager - Laravel 后台管理框架
 Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
 ![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.png)
 
-Website & Documentation: https://voyager.devdojo.com/
+官网 & 文档: https://voyager.devdojo.com/
 
-Video Tutorial Here: https://voyager.devdojo.com/academy/
+视频教程: https://voyager.devdojo.com/academy/
 
-Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
+加入我们 Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
 View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 <hr>
 
-Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.5, 5.6, 5.7 and 5.8!
+Laravel 后台管理与BREAD系统 (Browse(浏览), Read(阅读), Edit(编辑), Add(添加), & Delete(删除)), 支持 Laravel 5.5, 5.6, 5.7 and 5.8!
 
-## Installation Steps
+## 安装步骤
 
-### 1. Require the Package
+### 1. 安装依赖包
 
-After creating your new Laravel application you can include the Voyager package with the following command:
+创建新的laravel应用程序后，可以使用以下命令安装Voyager包:
 
 ```bash
 composer require tcg/voyager
 ```
 
-### 2. Add the DB Credentials & APP_URL
+### 2. 添加数据库凭据与APP_URL
 
-Next make sure to create a new database and add your database credentials to your .env file:
+接下来，确保创建一个新数据库并将数据库凭据添加到.env文件中:
 
 ```
 DB_HOST=localhost
@@ -47,32 +47,32 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-You will also want to update your website URL inside of the `APP_URL` variable inside the .env file:
+你还需要更新.env文件中"APP_UR"变量中的网站URL:
 
 ```
 APP_URL=http://localhost:8000
 ```
 
-### 3. Setting Local Language
+### 3. 设置本地语言
 
-open up your application config/app.php file and Change to Local Language:
+打开应用程序config/app.php文件并更改为本地语言:
 
 ```
 'locale' => 'zh_CN',
 ```
 
-### 4. Run The Installer
+### 4. 运行安装命令
 
-Lastly, we can install voyager. You can do this either with or without dummy data.
-The dummy data will include 1 admin account (if no users already exists), 1 demo page, 4 demo posts, 2 categories and 7 settings.
+最后，我们可以安装voyager。你可以使用或不使用模拟数据来执行此操作.
+模拟数据将包括1个管理员帐户（如果没有用户已经存在）、1个演示页面、4个演示帖子、2个类别和7个设置.
 
-To install Voyager without dummy simply run
+如查不需要模拟数据可以使用以下命令：
 
 ```bash
 php artisan voyager:install
 ```
 
-If you prefer installing it with dummy run
+如果你需要模拟数据，则需要使用--with-dummy参数运行命令：
 
 ```bash
 php artisan voyager:install --with-dummy
