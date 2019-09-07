@@ -66,7 +66,7 @@ APP_URL=http://localhost:8000
 最后，我们可以安装voyager。你可以使用或不使用模拟数据来执行此操作.
 模拟数据将包括1个管理员帐户（如果没有用户已经存在）、1个演示页面、4个演示帖子、2个类别和7个设置.
 
-如查不需要模拟数据可以使用以下命令：
+如果不需要模拟数据可以使用以下命令：
 
 ```bash
 php artisan voyager:install
@@ -78,32 +78,33 @@ php artisan voyager:install
 php artisan voyager:install --with-dummy
 ```
 
-> Troubleshooting: **Specified key was too long error**. If you see this error message you have an outdated version of MySQL, use the following solution: https://laravel-news.com/laravel-5-4-key-too-long-error
+> 故障排除: **Specified key was too long error**. 如果看到此错误消息，说明mysql版本已过时，请使用以下解决方案: https://laravel-news.com/laravel-5-4-key-too-long-error
 
-And we're all good to go!
+我们现在可以开始了!
 
-Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
+使用"php artisan serve"启动本地开发服务器，然后访问 [http://localhost:8000/admin](http://localhost:8000/admin).
 
-## Creating an Admin User
+## 创建管理员用户
 
-If you did go ahead with the dummy data, a user should have been created for you with the following login credentials:
+如果继续使用模拟数据，则应使用以下登录凭据:
 
 >**email:** `admin@admin.com`   
 >**password:** `password`
 
-NOTE: Please note that a dummy user is **only** created if there are no current users in your database.
+注意：请注意，如果数据库中没有当前用户，则只创建一个虚拟用户**.
 
-If you did not go with the dummy user, you may wish to assign admin privileges to an existing user.
-This can easily be done by running this command:
+如果没有使用虚拟用户，则可能希望将管理权限分配给现有用户。
+
+可以通过运行此命令轻松完成此操作:
 
 ```bash
 php artisan voyager:admin your@email.com
 ```
 
-If you did not install the dummy data and you wish to create a new admin user you can pass the `--create` flag, like so:
+如果您没有安装模拟数据，并且希望创建一个新的管理员用户，则可以传参"--create"，如下所示:
 
 ```bash
 php artisan voyager:admin your@email.com --create
 ```
 
-And you will be prompted for the user's name and password.
+系统会提示您输入用户名和密码.
