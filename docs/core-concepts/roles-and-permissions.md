@@ -69,7 +69,7 @@ public function index()
   //..
 ```
 
-If you do so, make sure add the custom gurad to your controller:
+If you do so, make sure add the custom guard to your controller:
 
 ```
   /**
