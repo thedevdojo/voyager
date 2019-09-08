@@ -2,9 +2,9 @@
 
 namespace TCG\Voyager;
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
-use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
 use TCG\Voyager\Classes\Bread as BreadClass;
 
@@ -326,9 +326,9 @@ class Voyager
     /**
      * Validate if all locales of a translation array are not empty.
      *
-     * @param array  $data The translation array
-     * 
-     * @return bool  Wether a locale is empty or not.
+     * @param array $data The translation array
+     *
+     * @return bool Wether a locale is empty or not.
      */
     public function validateAllLocales($data)
     {
@@ -338,10 +338,10 @@ class Voyager
     /**
      * Validate if the given locales of a translation array are not empty.
      *
-     * @param array $data The translation array
+     * @param array $data   The translation array
      * @param array $locale The locales to test again
-     * 
-     * @return bool  Wether a locale is empty or not.
+     *
+     * @return bool Wether a locale is empty or not.
      */
     public function validateLocales($data, $locales)
     {

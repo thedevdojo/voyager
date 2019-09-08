@@ -2,11 +2,9 @@
 
 namespace TCG\Voyager\Tests\Browser;
 
-use Illuminate\Foundation\Auth\User;
 use Orchestra\Testbench\Dusk\TestCase;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\VoyagerServiceProvider;
-
 
 class BrowserTestCase extends TestCase
 {
@@ -43,7 +41,6 @@ class BrowserTestCase extends TestCase
      */
     protected function createUserTable(): void
     {
-        
     }
 
     protected function getPackageProviders($app)
@@ -53,10 +50,10 @@ class BrowserTestCase extends TestCase
         ];
     }
 
-        /**
+    /**
      * Define environment setup.
      *
-     * @param  Illuminate\Foundation\Application  $app
+     * @param Illuminate\Foundation\Application $app
      *
      * @return void
      */

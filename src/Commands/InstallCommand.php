@@ -30,12 +30,15 @@ class InstallCommand extends Command
         if (file_exists(getcwd().'/composer.phar')) {
             return '"'.PHP_BINARY.'" '.getcwd().'/composer.phar';
         }
+
         return 'composer';
     }
+
     public function fire(Filesystem $filesystem)
     {
         return $this->handle($filesystem);
     }
+
     /**
      * Execute the console command.
      *

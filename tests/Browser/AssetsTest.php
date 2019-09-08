@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Tests\Browser;
 
-use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser as DuskBrowser;
 use TCG\Voyager\Facades\Voyager;
 
@@ -15,6 +14,7 @@ class AssetsTest extends BrowserTestCase
                 ->assertDontSee('Not found');
         });
     }
+
     public function test_asset_js_loaded()
     {
         $this->browse(function (DuskBrowser $browser) {
@@ -22,6 +22,7 @@ class AssetsTest extends BrowserTestCase
                 ->assertDontSee('Not found');
         });
     }
+
     public function test_asset_not_loaded()
     {
         $this->browse(function (DuskBrowser $browser) {
@@ -29,6 +30,7 @@ class AssetsTest extends BrowserTestCase
                 ->assertSee('Not found');
         });
     }
+
     public function test_asset_cannot_load_file_outside()
     {
         $this->browse(function (DuskBrowser $browser) {
