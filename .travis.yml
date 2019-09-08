@@ -39,6 +39,7 @@ before_install:
   - travis_retry composer self-update
   - travis_retry composer require "illuminate/support:${LARAVEL}" --no-interaction
   - composer show laravel/framework
+  - ./vendor/bin/dusk-updater update
 
 install:
   - travis_retry composer install --prefer-dist --no-interaction --no-suggest
