@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Rules\ClassExists as ClassExistsRule;
 use TCG\Voyager\Rules\DefaultLocale as DefaultLocaleRule;
@@ -74,12 +73,12 @@ class BreadManagerController extends Controller
         $bread->table = $table;
 
         $validator = Validator::make($request->get('bread'), [
-            'slug'          => ['required', new DefaultLocaleRule],
-            'name_singular' => ['required', new DefaultLocaleRule],
-            'name_plural'   => ['required', new DefaultLocaleRule],
-            'model'         => ['nullable', new ClassExistsRule],
-            'controller'    => ['nullable', new ClassExistsRule],
-            'policy'        => ['nullable', new ClassExistsRule],
+            'slug'          => ['required', new DefaultLocaleRule()],
+            'name_singular' => ['required', new DefaultLocaleRule()],
+            'name_plural'   => ['required', new DefaultLocaleRule()],
+            'model'         => ['nullable', new ClassExistsRule()],
+            'controller'    => ['nullable', new ClassExistsRule()],
+            'policy'        => ['nullable', new ClassExistsRule()],
         ]);
 
         if ($validator->passes()) {

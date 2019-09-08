@@ -16,7 +16,7 @@ class BreadManagerTest extends BrowserTestCase
                 ->assertSee('failed_jobs')
                 ->assertSee('migrations')
                 ->assertSee('password_reset');
-                // TODO: remove once a hide-tables feature is enabled
+            // TODO: remove once a hide-tables feature is enabled
         });
     }
 
