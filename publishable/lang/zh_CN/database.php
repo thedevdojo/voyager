@@ -13,6 +13,7 @@ return [
     'composite_warning'         => '警告：此列是复合索引的一部分',
     'create_new_table'          => '创建新表',
     'create_your_new_table'     => '创建新表',
+    'create_model_table'        => '为此表创建模型?',
     'default'                   => '默认',
     'delete_bread_before_table' => '请务必在删除表前先删除该表的 BREAD。',
     'delete_table_confirm'      => '是的，删除该表',
