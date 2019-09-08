@@ -17,6 +17,7 @@ window.route = function ()
             .join('/');
     }
 };
+Vue.prototype.route = route;
 window.isArray = function (input)
 {
     return (input && typeof input === 'object' && input instanceof Array);

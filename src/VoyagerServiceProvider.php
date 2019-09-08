@@ -8,6 +8,8 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Routing\Router;
 use TCG\Voyager\Commands\InstallCommand;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Http\Middleware\VoyagerTestMiddleware;
 use TCG\Voyager\Policies\BasePolicy;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -42,6 +44,8 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->policies[$bread->model.'::class'] = $policy;
         });
         $this->registerPolicies();
+
+        $router->aliasMiddleware('voyager.admin', VoyagerAdminMiddleware::class);
     }
 
     /**

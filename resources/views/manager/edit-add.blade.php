@@ -11,7 +11,3 @@
         url="{{ route('voyager.bread.update', $bread->table) }}"
     />
 @endsection
-
-@section('js')
-
-@endsection

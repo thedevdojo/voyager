@@ -5,7 +5,7 @@ namespace TCG\Voyager\Tests\Browser;
 use Laravel\Dusk\Browser as DuskBrowser;
 use TCG\Voyager\Facades\Voyager;
 
-class AssetsTest extends BrowserTestCase
+class AssetsTest extends TestCase
 {
     public function test_asset_css_loaded()
     {

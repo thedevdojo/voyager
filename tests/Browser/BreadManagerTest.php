@@ -5,33 +5,33 @@ namespace TCG\Voyager\Tests\Browser;
 use Laravel\Dusk\Browser as DuskBrowser;
 use TCG\Voyager\Facades\Voyager;
 
-class BreadManagerTest extends BrowserTestCase
+class BreadManagerTest extends TestCase
 {
     public function test_can_browse_breads()
     {
+        Voyager::deleteBread('users');
         $this->browse(function (DuskBrowser $browser) {
             $browser->visitRoute('voyager.bread.index')
-                ->waitForText('TABLE')
-                ->assertSee('users')
-                ->assertSee('failed_jobs')
-                ->assertSee('migrations')
-                ->assertSee('password_reset');
-            // TODO: remove once a hide-tables feature is enabled
+                ->waitForText('users')
+                ->assertButtonEnabled('@add-users');
         });
     }
 
     public function test_can_create_user_bread()
     {
+        Voyager::deleteBread('users');
         $this->browse(function (DuskBrowser $browser) {
             $browser->visitRoute('voyager.bread.create', 'users')
-                ->waitForText('Please create a Layout first')
+                ->waitForText(__('voyager::manager.create_layout_first'))
                 ->pause(500)
-                ->press('Save')
+                ->press(__('voyager::generic.save'))
                 ->pause(500)
-                ->assertSee('Bread "users" saved successfully!');
+                ->assertSee(__('voyager::manager.bread_saved_successfully', ['name' => 'users']))
+                ->visitRoute('voyager.bread.index')
+                ->assertButtonEnabled('@edit-users');
         });
 
-        Voyager::clearBreads();
+        Voyager::clearBreads(); // Clear BREADs and reload them because phpunit and the browser are different clients
         $this->assertNotNull(Voyager::getBread('users'));
         $this->assertNull(Voyager::getBread('not_existing'));
     }
@@ -49,6 +49,20 @@ class BreadManagerTest extends BrowserTestCase
         $this->browse(function (DuskBrowser $browser) {
             $browser->visitRoute('voyager.bread.edit', 'not_existing')
                 ->assertSee('BreadNotFoundException');
+        });
+    }
+
+    public function test_can_delete_user_bread()
+    {
+        $this->browse(function (DuskBrowser $browser) {
+            $browser->visitRoute('voyager.bread.index')
+                ->pause(500)
+                ->assertButtonEnabled('@edit-users')
+                ->press('@delete-users')
+                ->waitForText(__('voyager::generic.yes'))
+                ->press(__('voyager::generic.yes'))
+                ->visitRoute('voyager.bread.index')
+                ->assertButtonEnabled('@add-users');
         });
     }
 }

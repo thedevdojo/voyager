@@ -83,7 +83,10 @@ class Bread implements \JsonSerializable
 
     public function getTranslatableFields($deep = true)
     {
-        $translatable = collect($this->getModel()->translatable ?? []);
+        $translatable = collect([]);
+        if (property_exists($this->getModel(), 'translatable')) {
+            $translatable = collect($this->getModel()->translatable);
+        }
 
         if ($deep) {
             $relationships = $this->getRelationships($deep);
@@ -133,20 +136,25 @@ class Bread implements \JsonSerializable
         return $relationships;
     }
 
-    public function getLayoutFor($action)
+    public function getLayoutFor($action, $fail = true)
     {
+        $layout = null;
         // TODO: Get layout based on action and roles
         if ($action == 'browse') {
-            return $this->layouts->filter(function ($layout) {
+            $layout = $this->layouts->filter(function ($layout) {
                 return $layout->type == 'list';
             })->first();
         } elseif ($action == 'edit') {
-            return $this->layouts->filter(function ($layout) {
+            $layout = $this->layouts->filter(function ($layout) {
                 return $layout->type == 'view';
             })->first();
         }
 
-        return $this->layouts[0];
+        if ($fail && !$layout) {
+            throw new \TCG\Voyager\Exceptions\NoLayoutFoundException;
+        }
+
+        return $layout;
     }
 
     public function isValid()

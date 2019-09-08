@@ -5,6 +5,7 @@ let bread_components = [
     'Bread/Actions',
 
     'Manager/Builder',
+    'Manager/BuilderBrowse',
     'Manager/ViewBuilder',
     'Manager/ListBuilder',
     'Manager/ValidationInput',

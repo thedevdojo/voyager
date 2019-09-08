@@ -158,6 +158,18 @@ class Voyager
     }
 
     /**
+     * Delete a BREAD from the filesystem.
+     *
+     * @param string $table The table of the BREAD
+     */
+    public function deleteBread($table)
+    {
+        $this->clearBreads();
+
+        return File::delete(Str::finish($this->breadPath, '/').$table.'.json');
+    }
+
+    /**
      * Flash a message to the UI.
      *
      * @param string $message The message

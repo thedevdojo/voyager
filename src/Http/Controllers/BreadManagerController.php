@@ -106,6 +106,8 @@ class BreadManagerController extends Controller
     public function destroy($table)
     {
         Cache::forget('voyager-breads');
+
+        return response('', Voyager::deleteBread($table) ? 200 : 500);
     }
 
     /**
