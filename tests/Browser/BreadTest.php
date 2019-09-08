@@ -13,7 +13,7 @@ class BreadTest extends TestCase
         $this->browse(function (DuskBrowser $browser) {
             $browser->visitRoute('voyager.users.index')
                 ->assertSee('NoLayoutFoundException');
-            
+
             // Create Layout
         });
     }
