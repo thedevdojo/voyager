@@ -11,7 +11,7 @@ class VoyagerController extends Controller
     public function assets(Request $request)
     {
         $path = Str::start(str_replace(['../', './'], '', urldecode($request->path)), '/');
-        $path = base_path('vendor/tcg/voyager/resources/assets/dist'.$path);
+        $path = Str::finish(dirname(__FILE__, 4), '/').'resources/assets/dist'.$path;
         if (File::exists($path)) {
             $mime = '';
             if (Str::endsWith($path, '.js')) {
@@ -29,6 +29,6 @@ class VoyagerController extends Controller
             return $response;
         }
 
-        return response('', 404);
+        return response('Not found', 404);
     }
 }

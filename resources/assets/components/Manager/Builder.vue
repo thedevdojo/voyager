@@ -31,11 +31,11 @@
         </div>
         <div class="flex mb-4">
             <div class="w-1/3 m-1">
-                <label class="voyager-label">{{ __('voyager::manager.model_name') }}</label>
+                <label class="voyager-label">{{ __('voyager::manager.model') }}</label>
                 <input
                     class="voyager-input"
-                    type="text" :placeholder="__('voyager::manager.model_name')"
-                    v-model="bread.model_name">
+                    type="text" :placeholder="__('voyager::manager.model')"
+                    v-model="bread.model">
             </div>
             <div class="w-1/3 m-1">
                 <label class="voyager-label">{{ __('voyager::manager.controller') }}</label>
@@ -58,7 +58,7 @@
         </div>
 
         <div>
-            <select v-model="currentLayoutId" class="voyager-input small w-auto">
+            <select v-if="bread.layouts.length > 0" v-model="currentLayoutId" class="voyager-input small w-auto">
                 <option v-for="(layout, i) in bread.layouts" v-bind:value="i" v-bind:key="i">
                     {{ layout.name }}
                 </option>
@@ -112,14 +112,15 @@ export default {
                 _token: document.head.querySelector('meta[name="csrf-token"]').content,
             })
             .then(function (response) {
-                if (response.data.success) {
-                    vm.$snotify.success(response.data.message);
-                } else {
-                    vm.$snotify.error(response.data.message);
-                }
+                vm.$snotify.success(vm.__('voyager::manager.bread_saved_successfully', {name: vm.bread.table}));
             })
-            .catch(function (error) {
-                vm.$snotify.error(error);
+            .catch(function (errors) {
+                var errors = errors.response.data;
+                Object.entries(errors).forEach(([key, val]) => {
+                    val.forEach(function (e) {
+                        vm.$snotify.error(e);
+                    });
+                });
             });
         },
         addLayout: function (type) {

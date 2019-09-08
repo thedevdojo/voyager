@@ -12,7 +12,7 @@ class BreadController extends Controller
     {
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('browse');
-        //$this->authorize('browse', app($bread->model_name));
+        //$this->authorize('browse', app($bread->model));
 
         if ($request->ajax()) {
             if (Session::token() != $request->get('_token')) {
@@ -66,7 +66,7 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('edit');
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
-        //$this->authorize('browse', app($bread->model_name));
+        //$this->authorize('browse', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id'));
     }

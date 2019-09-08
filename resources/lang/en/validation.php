@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'slug_empty'                => 'Please fill in the slug!',
-    'name_singular_empty'       => 'Please fill in the singular name!',
-    'name_plural_empty'         => 'Please fill in the plural name!',
+    'class_does_not_exist'      => 'The :attribute class `:value` does not exist.',
+    'default_translation'       => 'The :attribute needs to have at least your current locale.',
 ];

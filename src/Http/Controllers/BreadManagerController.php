@@ -5,8 +5,11 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Rules\ClassExists as ClassExistsRule;
+use TCG\Voyager\Rules\DefaultLocale as DefaultLocaleRule;
 
 class BreadManagerController extends Controller
 {
@@ -17,7 +20,7 @@ class BreadManagerController extends Controller
      */
     public function index()
     {
-        $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
+        $tables = $this->getDatabaseTables();
 
         return view('voyager::manager.index', compact('tables'));
     }
@@ -31,11 +34,13 @@ class BreadManagerController extends Controller
      */
     public function create($table)
     {
-        if (!Voyager::createBread($table)) {
-            // TODO: throw exception
+        if (!in_array($table, $this->getDatabaseTables())) {
+            throw new \TCG\Voyager\Exceptions\TableNotFoundException();
         }
 
-        return $this->edit($table);
+        $bread = Voyager::createBread($table);
+
+        return view('voyager::manager.edit-add', compact('bread'));
     }
 
     /**
@@ -48,7 +53,10 @@ class BreadManagerController extends Controller
     public function edit($table)
     {
         $bread = Voyager::getBread($table);
-        // TODO: throw exception if BREAD is not found.
+        if (!$bread) {
+            throw new \TCG\Voyager\Exceptions\BreadNotFoundException();
+        }
+
         return view('voyager::manager.edit-add', compact('bread'));
     }
 
@@ -62,34 +70,31 @@ class BreadManagerController extends Controller
      */
     public function update(Request $request, $table)
     {
-        $success = false;
-        $message = __('voyager::manager.bread_save_failed');
         $bread = (object) $request->bread;
         $bread->table = $table;
 
-        if (empty($bread->slug)) {
-            $message = __('voyager::validation.slug_empty');
-        } elseif (empty($bread->name_singular)) {
-            $message = __('voyager::validation.name_singular_empty');
-        } elseif (empty($bread->name_plural)) {
-            $message = __('voyager::validation.name_plural_empty');
-        } elseif (!empty($bread->model_name) && !class_exists(Str::start($bread->model_name, '\\'))) {
-            $message = __('voyager::manager.model_does_not_exist', ['name' => $bread->model_name]);
-        } elseif (!empty($bread->controller) && !class_exists(Str::start($bread->controller, '\\'))) {
-            $message = __('voyager::manager.controller_does_not_exist', ['name' => $bread->controller]);
-        } elseif (!empty($bread->policy) && !class_exists(Str::start($bread->policy, '\\'))) {
-            $message = __('voyager::manager.policy_does_not_exist', ['name' => $bread->policy]);
-        } elseif (Voyager::storeBread($bread)) {
-            $success = true;
-            $message = __('voyager::manager.bread_saved_successfully', ['name' => $table]);
+        $validator = Validator::make($request->get('bread'), [
+            'slug'          => ['required', new DefaultLocaleRule],
+            'name_singular' => ['required', new DefaultLocaleRule],
+            'name_plural'   => ['required', new DefaultLocaleRule],
+            'model'         => ['nullable', new ClassExistsRule],
+            'controller'    => ['nullable', new ClassExistsRule],
+            'policy'        => ['nullable', new ClassExistsRule],
+        ]);
+
+        if ($validator->passes()) {
+            if (Voyager::storeBread($bread)) {
+                Cache::forget('voyager-breads');
+            } else {
+                $validator->errors()->add('bread', __('voyager::manager.bread_save_failed'));
+
+                return response()->json($validator->errors(), 422);
+            }
+        } else {
+            return response()->json($validator->errors(), 422);
         }
 
-        Cache::forget('voyager-breads');
-
-        return [
-            'success' => $success,
-            'message' => $message,
-        ];
+        return response()->json($validator->messages(), 200);
     }
 
     /**
@@ -102,5 +107,15 @@ class BreadManagerController extends Controller
     public function destroy($table)
     {
         Cache::forget('voyager-breads');
+    }
+
+    /**
+     * Get all tables in the database.
+     *
+     * @return array
+     */
+    protected function getDatabaseTables()
+    {
+        return DB::connection()->getDoctrineSchemaManager()->listTableNames();
     }
 }

@@ -17,22 +17,27 @@ class Bread implements \JsonSerializable
     protected $slug;
     protected $name_singular;
     protected $name_plural;
-    public $model_name;
+    public $model;
     public $controller;
     public $policy;
     public $layouts = [];
 
     public $parse_failed = false;
 
-    public function __construct($path)
+    public function __construct($path, $parameter = null)
     {
-        $content = File::get($path);
-        $json = @json_decode($content);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            Voyager::flashMessage('BREAD-file "'.basename($path).'" does contain invalid JSON: '.json_last_error_msg(), 'debug');
-            $this->parse_failed = true;
+        $json = [];
+        if ($path) {
+            $content = File::get($path);
+            $json = @json_decode($content);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                Voyager::flashMessage('BREAD-file "'.basename($path).'" does contain invalid JSON: '.json_last_error_msg(), 'debug');
+                $this->parse_failed = true;
 
-            return;
+                return;
+            }
+        } else {
+            $json = $parameter;
         }
 
         foreach ($json as $key => $data) {
@@ -59,7 +64,7 @@ class Bread implements \JsonSerializable
 
     public function getModel()
     {
-        return app($this->model_name);
+        return app($this->model);
     }
 
     public function getFields()
@@ -160,7 +165,7 @@ class Bread implements \JsonSerializable
             'slug'          => $this->slug,
             'name_singular' => $this->name_singular,
             'name_plural'   => $this->name_plural,
-            'model_name'    => $this->model_name,
+            'model'         => $this->model,
             'controller'    => $this->controller,
             'policy'        => $this->policy,
             'layouts'       => $this->layouts,

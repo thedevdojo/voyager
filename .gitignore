@@ -3,6 +3,9 @@
 .idea
 vendor
 build
+/tests/Browser/console
+/tests/Browser/screenshots
 .lock
-composer.lock
 .phpunit.result.cache
+debug.log
+list.txt

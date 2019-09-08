@@ -6,6 +6,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use TCG\Voyager\Commands\InstallCommand;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Policies\BasePolicy;
 
@@ -38,7 +39,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 $policy = $bread->policy;
             }
 
-            $this->policies[$bread->model_name.'::class'] = $policy;
+            $this->policies[$bread->model.'::class'] = $policy;
         });
         $this->registerPolicies();
     }
@@ -58,6 +59,8 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->loadHelpers();
         $this->loadBreadsFrom(storage_path('bread'));
+
+        $this->commands(InstallCommand::class);
     }
 
     public function loadBreadsFrom($path)

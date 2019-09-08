@@ -15,10 +15,11 @@
         }
     ],
     "require": {
-        "illuminate/support": "~6.0.0"
+        "illuminate/support": "~6.0.0",
+        "doctrine/dbal": "^2.9"
     },
     "require-dev": {
-        "orchestra/testbench-dusk": "~4.0.0"
+        "orchestra/testbench-dusk": "^4.0"
     },
     "autoload": {
         "psr-4": {

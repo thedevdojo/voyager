@@ -4,6 +4,7 @@ namespace TCG\Voyager;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
 use TCG\Voyager\Classes\Bread as BreadClass;
 
@@ -20,7 +21,7 @@ class Voyager
      *
      * @return array an array of routes
      */
-    public function routes()
+    public function routes(Router $router)
     {
         require __DIR__.'/../routes/voyager.php';
     }
@@ -129,7 +130,7 @@ class Voyager
     }
 
     /**
-     * Create a BREAD-file.
+     * Create a BREAD-object.
      *
      * @param string $table
      *
@@ -139,16 +140,13 @@ class Voyager
     {
         $bread = [
             'table'         => $table,
-            'slug'          => (object) [],
-            'name_singular' => (object) [],
-            'name_plural'   => (object) [],
+            'slug'          => Str::slug($table),
+            'name_singular' => Str::singular(Str::title($table)),
+            'name_plural'   => Str::plural(Str::title($table)),
             'layouts'       => (object) [],
-
         ];
 
-        // TODO: Validate if BREAD already exists and throw exception?
-
-        return $this->storeBread((object) $bread);
+        return new BreadClass(null, $bread);
     }
 
     /**
@@ -293,5 +291,70 @@ class Voyager
 
             return $action->shouldBeDisplayOnBread();
         });
+    }
+
+    /**
+     * Get all locales supported by the app.
+     *
+     * @return array The locales
+     */
+    public function getLocales()
+    {
+        return config('app.locales', [$this->getLocale()]);
+    }
+
+    /**
+     * Get the current app-locale.
+     *
+     * @return string The current locale
+     */
+    public function getLocale()
+    {
+        return app()->getLocale();
+    }
+
+    /**
+     * Get wether the app is translatable or not.
+     *
+     * @return bool Wether the app is translatable or not.
+     */
+    public function isTranslatable()
+    {
+        return count($this->getLocales()) > 1;
+    }
+
+    /**
+     * Validate if all locales of a translation array are not empty.
+     *
+     * @param array  $data The translation array
+     * 
+     * @return bool  Wether a locale is empty or not.
+     */
+    public function validateAllLocales($data)
+    {
+        return $this->validateLocales($data, $this->getLocales());
+    }
+
+    /**
+     * Validate if the given locales of a translation array are not empty.
+     *
+     * @param array $data The translation array
+     * @param array $locale The locales to test again
+     * 
+     * @return bool  Wether a locale is empty or not.
+     */
+    public function validateLocales($data, $locales)
+    {
+        if (!is_array($data) || !$this->isTranslatable()) {
+            return !empty($data);
+        }
+
+        foreach ($locales as $locale) {
+            if (!property_exists($data, $locale) || empty($data[$locale])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

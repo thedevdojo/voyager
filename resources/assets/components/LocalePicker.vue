@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full text-right">
+    <div class="w-full text-right" v-if="$eventHub.locales.length > 1">
         <button
             v-for="locale in $eventHub.locales"
             v-bind:key="locale"

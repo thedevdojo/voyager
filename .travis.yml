@@ -1,6 +1,8 @@
 language: php
-
 sudo: true
+dist: trusty
+addons:
+  chrome: stable
 
 env:
   global:

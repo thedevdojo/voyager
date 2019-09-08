@@ -1,21 +1,21 @@
 <?php
 
-Route::group(['as' => 'voyager.'], function () {
+$router->group(['as' => 'voyager.'], function () use ($router) {
     $namespace = '\\TCG\\Voyager\\Http\\Controllers\\';
 
     //Route::group(['middleware' => 'admin.user'], function () use ($namespace) {
-    Route::view('/', 'voyager::dashboard')->name('dashboard');
+    $router->view('/', 'voyager::dashboard')->name('dashboard');
 
     // BREAD manager
-    Route::group([
+    $router->group([
         'as'     => 'bread.',
         'prefix' => 'bread',
-    ], function () use ($namespace) {
+    ], function () use ($namespace, $router) {
         Route::get('/', ['uses' => $namespace.'BreadManagerController@index', 'as' => 'index']);
-        Route::get('create/{table}', ['uses' => $namespace.'BreadManagerController@create', 'as' => 'create']);
-        Route::get('edit/{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'edit']);
-        Route::put('{table}', ['uses' => $namespace.'BreadManagerController@update', 'as' => 'update']);
-        Route::delete('{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'delete']);
+        $router->get('create/{table}', ['uses' => $namespace.'BreadManagerController@create', 'as' => 'create']);
+        $router->get('edit/{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'edit']);
+        $router->put('{table}', ['uses' => $namespace.'BreadManagerController@update', 'as' => 'update']);
+        $router->delete('{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'delete']);
     });
 
     // BREADs
@@ -29,13 +29,13 @@ Route::group(['as' => 'voyager.'], function () {
 
     //});
 
-    Route::get('login', ['uses' => $namespace.'AuthController@login', 'as' => 'login']);
-    Route::post('login', ['uses' => $namespace.'AuthController@processLogin', 'as' => 'login']);
-    Route::get('logout', ['uses' => $namespace.'AuthController@logout', 'as' => 'logout']);
+    $router->get('login', ['uses' => $namespace.'AuthController@login', 'as' => 'login']);
+    $router->post('login', ['uses' => $namespace.'AuthController@processLogin', 'as' => 'login']);
+    $router->get('logout', ['uses' => $namespace.'AuthController@logout', 'as' => 'logout']);
 
     // UI Routes
-    Route::view('ui', 'voyager::ui.index')->name('ui');
+    $router->view('ui', 'voyager::ui.index')->name('ui');
 
     // Asset routes
-    Route::get('voyager-assets', ['uses' => $namespace.'VoyagerController@assets', 'as' => 'voyager_assets']);
+    $router->get('voyager-assets', ['uses' => $namespace.'VoyagerController@assets', 'as' => 'voyager_assets']);
 });
