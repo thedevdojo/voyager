@@ -8,6 +8,7 @@ import 'tinymce/plugins/code';
 import 'tinymce/plugins/table';
 import 'tinymce/plugins/textcolor';
 import 'tinymce/plugins/lists';
+import 'tinymce/langs';
 
 $(document).ready(function(){
 
@@ -18,6 +19,7 @@ $(document).ready(function(){
   });
 
   tinymce.init({
+    language: 'zh_CN',
     menubar: false,
     selector:'textarea.richTextBox',
     skin_url: $('meta[name="assets-path"]').attr('content')+'?path=js/skins/voyager',
