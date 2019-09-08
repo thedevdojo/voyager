@@ -20,6 +20,14 @@ class BrowserTestCase extends TestCase
             copy($db_dir.'/database.sqlite.example', $db_dir.'/database.sqlite');
         }
 
+        $route_dir = realpath($this->getBasePath());
+        if (!is_dir($route_dir.'/routes')) {
+            @mkdir($route_dir.'/routes');
+        }
+        if (!file_exists($route_dir.'/routes/web.php')) {
+            file_put_contents($route_dir.'/routes/web.php', "<?php\n");
+        }
+
         $this->setUpTheBrowserEnvironment();
         $this->registerShutdownFunction();
 
