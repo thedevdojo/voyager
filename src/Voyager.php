@@ -124,7 +124,7 @@ class Voyager
      */
     public function storeBread($bread)
     {
-        $this->breads = null;
+        $this->clearBreads();
 
         return File::put(Str::finish($this->breadPath, '/').$bread->table.'.json', json_encode($bread, JSON_PRETTY_PRINT));
     }
@@ -147,6 +147,14 @@ class Voyager
         ];
 
         return new BreadClass(null, $bread);
+    }
+
+    /**
+     * Clears all BREAD-objects.
+     */
+    public function clearBreads()
+    {
+        $this->breads = null;
     }
 
     /**

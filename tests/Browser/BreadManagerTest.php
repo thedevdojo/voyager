@@ -31,6 +31,7 @@ class BreadManagerTest extends BrowserTestCase
                 ->assertSee('Bread "users" saved successfully!');
         });
 
+        Voyager::clearBreads();
         $this->assertNotNull(Voyager::getBread('users'));
         $this->assertNull(Voyager::getBread('not_existing'));
     }
