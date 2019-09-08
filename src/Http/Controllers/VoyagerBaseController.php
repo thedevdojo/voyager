@@ -387,12 +387,16 @@ class VoyagerBaseController extends Controller
 
         event(new BreadDataAdded($dataType, $data));
 
-        return redirect()
-        ->route("voyager.{$dataType->slug}.index")
-        ->with([
-                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
-                'alert-type' => 'success',
-            ]);
+        if (!$request->has('_tagging')) {
+            return redirect()
+            ->route("voyager.{$dataType->slug}.index")
+            ->with([
+                    'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
+                    'alert-type' => 'success',
+                ]);
+        } else {
+            return response()->json(['success' => true, 'data' => $data]);
+        }
     }
 
     //***************************************
