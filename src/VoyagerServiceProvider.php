@@ -9,7 +9,6 @@ use Illuminate\Routing\Router;
 use TCG\Voyager\Commands\InstallCommand;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
-use TCG\Voyager\Http\Middleware\VoyagerTestMiddleware;
 use TCG\Voyager\Policies\BasePolicy;
 
 class VoyagerServiceProvider extends ServiceProvider

@@ -151,7 +151,7 @@ class Bread implements \JsonSerializable
         }
 
         if ($fail && !$layout) {
-            throw new \TCG\Voyager\Exceptions\NoLayoutFoundException;
+            throw new \TCG\Voyager\Exceptions\NoLayoutFoundException();
         }
 
         return $layout;
