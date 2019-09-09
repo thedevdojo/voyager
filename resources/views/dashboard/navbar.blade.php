@@ -21,10 +21,10 @@
                         $url .= '/'.$segment;
                         @endphp
                         @if ($loop->last)
-                            <li>{{ ucfirst($segment) }}</li>
+                            <li>{{ ucfirst(urldecode($segment)) }}</li>
                         @else
                             <li>
-                                <a href="{{ $url }}">{{ ucfirst($segment) }}</a>
+                                <a href="{{ $url }}">{{ ucfirst(urldecode($segment)) }}</a>
                             </li>
                         @endif
                     @endforeach
@@ -41,8 +41,8 @@
                     <li class="profile-img">
                         <img src="{{ $user_avatar }}" class="profile-img">
                         <div class="profile-body">
-                            <h5>{{ app('VoyagerAuth')->user()->name }}</h5>
-                            <h6>{{ app('VoyagerAuth')->user()->email }}</h6>
+                            <h5>{{ Auth::user()->name }}</h5>
+                            <h6>{{ Auth::user()->email }}</h6>
                         </div>
                     </li>
                     <li class="divider"></li>

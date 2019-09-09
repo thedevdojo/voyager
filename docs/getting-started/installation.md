@@ -16,11 +16,6 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 
-{% hint style="info" %}
-**Using Laravel 5.4?**  
-If you are installing with Laravel 5.4 you will need to [add the Service Provider manually](installation.md#adding-the-service-provider). Otherwise, if you are on 5.5 this happens automatically thanks to package auto-discovery.
-{% endhint %}
-
 Finally, we can install Voyager. You can choose to install Voyager with dummy data or without the dummy data. The dummy data will include 1 admin account \(if no users already exist\), 1 demo page, 4 demo posts, 2 categories and 7 settings.
 
 To install Voyager without dummy data simply run
@@ -67,31 +62,6 @@ php artisan voyager:admin your@email.com --create
 ```
 
 And you will be prompted for the users name and password.
-
-## Adding the Service Provider
-
-{% hint style="info" %}
-**This is only required if you are using Laravel 5.4!**  
-If you are on Laravel 5.5+ you can skip this step.
-{% endhint %}
-
-To add the Voyager Service Provider open up your application `config/app.php` file and add `TCG\Voyager\VoyagerServiceProvider::class,` in the `providers` array like so:
-
-```php
-<?php
-
-'providers' => [
-    // Laravel Framework Service Providers...
-    //...
-
-    // Package Service Providers
-    TCG\Voyager\VoyagerServiceProvider::class,
-    // ...
-
-    // Application Service Providers
-    // ...
-],
-```
 
 ## Advanced
 

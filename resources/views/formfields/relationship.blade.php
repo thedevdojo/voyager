@@ -100,7 +100,7 @@
 
                 @php
                     $model = app($options->model);
-                    $query = $model::where($options->column, '=', $dataTypeContent->id)->get();
+                    $query = $model::where($options->column, '=', $dataTypeContent->getKey())->get();
                 @endphp
 
                 @if(isset($query))

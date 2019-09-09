@@ -13,11 +13,6 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        // Set `namespace` to `null` to use `config('auth.providers.users.model')` value
-        // Set `namespace` to a class to override auth user model.
-        // However make sure the appointed class must ready to use before installing voyager.
-        // Otherwise `php artisan voyager:install` will fail with class not found error.
-        'namespace'                    => null,
         'default_avatar'               => 'users/default.png',
         'redirect'                     => '/admin',
     ],
@@ -186,7 +181,7 @@ return [
     |
     */
 
-    'primary_color' => '#22A7F0',
+    'primary_color' => '#2B50ED',
 
     'show_dev_tips' => true, // Show development tip "How To Use:" in Menu and Settings
 
