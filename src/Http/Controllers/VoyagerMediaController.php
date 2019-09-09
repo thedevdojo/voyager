@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -231,7 +232,7 @@ class VoyagerMediaController extends Controller
                     $name = get_file_name($name);
                 }
             } else {
-                $name = str_replace('{uid}', app('VoyagerAuth')->user()->getKey(), $request->get('filename'));
+                $name = str_replace('{uid}', Auth::user()->getKey(), $request->get('filename'));
                 if (Str::contains($name, '{date:')) {
                     $name = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                         return \Carbon\Carbon::now()->format($date[1]);

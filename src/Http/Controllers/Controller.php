@@ -276,21 +276,4 @@ abstract class Controller extends BaseController
             return !empty($value->details->validation->rule);
         });
     }
-
-    /**
-     * Authorize a given action for the current user.
-     *
-     * @param mixed       $ability
-     * @param mixed|array $arguments
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Auth\Access\Response
-     */
-    public function authorize($ability, $arguments = [])
-    {
-        $user = app('VoyagerAuth')->user();
-
-        return $this->authorizeForUser($user, $ability, $arguments);
-    }
 }

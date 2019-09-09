@@ -3,7 +3,9 @@
 namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 use TCG\Voyager\Facades\Voyager;
 
@@ -116,7 +118,8 @@ class AdminCommand extends Command
     {
         $email = $this->argument('email');
 
-        $model = config('voyager.user.namespace') ?: config('auth.providers.users.model');
+        $model = Auth::guard(app('VoyagerGuard'))->getProvider()->getModel();
+        $model = Str::start($model, '\\');
 
         // If we need to create a new user go ahead and create it
         if ($create) {
@@ -138,13 +141,13 @@ class AdminCommand extends Command
 
             $this->info('Creating admin account');
 
-            return $model::create([
+            return call_user_func($model.'::create', [
                 'name'     => $name,
                 'email'    => $email,
                 'password' => Hash::make($password),
             ]);
         }
 
-        return $model::where('email', $email)->firstOrFail();
+        return call_user_func($model.'::where', 'email', $email)->firstOrFail();
     }
 }
