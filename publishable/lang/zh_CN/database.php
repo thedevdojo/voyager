@@ -18,6 +18,7 @@ return [
     'delete_bread_before_table' => '请务必在删除表前先删除该表的 BREAD。',
     'delete_table_confirm'      => '是的，删除该表',
     'delete_table_question'     => '您确定要删除 :table 表吗?',
+    'editing_table'             => '编辑表 :table',
     'edit_table'                => '在下方编辑 :table 表',
     'edit_table_not_exist'      => '您想要编辑的表不存在',
     'extra'                     => '额外',
