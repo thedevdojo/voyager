@@ -179,7 +179,7 @@ abstract class Controller extends BaseController
 
             // Show the field's display name on the error message
             if (!empty($field->display_name)) {
-                $customAttributes[$fieldName] = $field->display_name;
+                $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');
             }
 
             // Get the rules for the current field whatever the format it is in
@@ -275,5 +275,22 @@ abstract class Controller extends BaseController
 
             return !empty($value->details->validation->rule);
         });
+    }
+
+    /**
+     * Authorize a given action for the current user.
+     *
+     * @param mixed       $ability
+     * @param mixed|array $arguments
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     *
+     * @return \Illuminate\Auth\Access\Response
+     */
+    public function authorize($ability, $arguments = [])
+    {
+        $user = app('VoyagerAuth')->user();
+
+        return $this->authorizeForUser($user, $ability, $arguments);
     }
 }
