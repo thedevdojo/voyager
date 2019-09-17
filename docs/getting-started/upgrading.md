@@ -3,10 +3,12 @@
 ## Upgrading 1.1 to 1.2
 
 ### Laravel and PHP versions
+
 Support for Laravel 5.4 was dropped in Voyager 1.2 and therefore the minimum PHP version is now 7.1.  
 Please update your versions accordingly!
 
 ### Update your Composer.json
+
 To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration inside of your composer.json to:
 
 `tcg/voyager": "1.2.*`
@@ -14,7 +16,7 @@ To update to the latest version inside of your composer.json file make sure to u
 And then run composer update
 
 ### Update Configuration
-The `voyager.php` configuration file has had a few changes.
+The `voyager.php` configuration file had a few changes.
 
 ```php
 'storage' => [
@@ -40,7 +42,24 @@ Also, the option
 
 was added. This allows you to exclude Voyagers migration-files from loading when running `php artisan migrate`.
 
-The media-manager got some new configuration-options:
+There is a new section titled **Model specific settings** that contains new settings for Compass, cache and media-manager.
+
+**Compass** is now switched off automatically when the environment is not `local`.  
+This can be overriden by the following new config-key:
+```php
+'compass_in_production' => true,
+```
+
+New **cache** setting:
+```php
+    'settings' => [
+        // Enables Laravel cache method for
+        // storing cache values between requests
+        'cache' => false,
+    ],
+```
+
+The **media-manager** got some new configuration-options:
 ```php
 'media' => [
     // The allowed mimetypes to be uploaded through the media-manager.
@@ -65,13 +84,10 @@ The media-manager got some new configuration-options:
 ],
 ```
 
-Compass is now switched off automatically when the environment is not `local`.  
-This can be overridden by the following new config-key:
-```php
-'compass_in_production' => true,
-```
+
 
 The top dropdown-items can now be translated by providing a language-key:
+
 ```php
 <?php
 
@@ -96,15 +112,16 @@ The top dropdown-items can now be translated by providing a language-key:
 If you were using casts in your user-model previously, please remove the array-cast of `settings`.
 
 ### Deprecation
+
 `can`, `canOrAbort`, `canOrFail` in the Voyager facade were all removed in favor of Policies and Gates.  
 Please refer to the [Laravel documentation](https://laravel.com/docs/authorization).
 
 ### User BREAD
-The User BREAD now has its own controller.
-Please update your User BREAD to use `TCG\Voyager\Http\Controllers\VoyagerUserController` as the controller:
-![](../.gitbook/assets/upgrade_controller.jpg)
+
+The User BREAD now has its own controller. Please update your User BREAD to use `TCG\Voyager\Http\Controllers\VoyagerUserController` as the controller: ![](../.gitbook/assets/upgrade_controller.jpg)
 
 ### Final Steps
+
 Voyager changed its way on how to load assets.  
 Assets don't get published anymore, instead they are loaded directly from the package.  
 Because of that, you can safely remove everything from your `public/vendor/tcg/voyager` folder.  
