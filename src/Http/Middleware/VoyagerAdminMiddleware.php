@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Middleware;
 
 use Closure;
-use TCG\Voyager\Facades\Voyager;
 
 class VoyagerAdminMiddleware
 {

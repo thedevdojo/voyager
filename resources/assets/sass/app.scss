@@ -4434,8 +4434,8 @@ p#the_plugin_name{
 }
 
 .app-container .content-container .side-menu .navbar-header .navbar-brand img {
-    width: 28px;
-    height: 28px;
+    max-width: 50%;
+    max-height: 50%;
     position: relative;
     top:-1px;
     display:inline-block;

@@ -1,6 +1,6 @@
 @section('media-manager')
 <div>
-    <div v-if="hidden_element" class="dd">
+    <div v-if="hidden_element" :id="'dd_'+this._uid" class="dd">
         <ol id="files" class="dd-list">
             <li v-for="file in getSelectedFiles()" class="dd-item" :data-url="file">
                 <div class="file_link selected" aria-hidden="true" data-toggle="tooltip" data-placement="auto" :title="file">
@@ -605,6 +605,7 @@
                         } else {
                             content.push(file.relative_path);
                             this.hidden_element.value = JSON.stringify(content);
+                            this.$forceUpdate();
                         }
                     }
                 }
@@ -914,16 +915,15 @@
                 });
 
                 //Nestable
-                $('.dd').nestable({
+                $('#dd_'+vm._uid).nestable({
                     maxDepth: 1,
                     handleClass: 'file_link',
                     collapseBtnHTML: '',
                     expandBtnHTML: '',
-                    emptyClass : '',
                     callback: function(l, e) {
                         if (vm.allowMultiSelect) {
                             var new_content = [];
-                            var object = $('.dd').nestable('serialize');
+                            var object = $('#dd_'+vm._uid).nestable('serialize');
                             for (var key in object) {
                                 new_content.push(object[key].url);
                             }
@@ -943,3 +943,11 @@
         },
     });
 </script>
+<style>
+.dd-placeholder {
+    flex: 1;
+    width: 100%;
+    min-width: 200px;
+    max-width: 250px;
+}
+</style>

@@ -230,7 +230,9 @@ There is a new data type called **coordinates** that allow you to add a google m
 In this config you can set the default Google Maps Keys and center location. This can also be added to your .env file.
 
 ## Allowed Mimetypes
+
 To allow/disallow mimetypes to be uploaded through the media-manager you can define an array `allowed_mimetypes`:
+
 ```php
 <?php
 
@@ -242,9 +244,12 @@ To allow/disallow mimetypes to be uploaded through the media-manager you can def
      'video/mp4',
 ],
 ```
+
 The user can only upload files with the given mimetypes. If you want to allow all types to be uploaded you can use the following:
+
 ```php
 <?php
 
 'allowed_mimetypes' => '*',
 ```
+
