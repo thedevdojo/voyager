@@ -246,6 +246,7 @@ class VoyagerMediaController extends Controller
             }
 
             $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
+            $file = preg_replace('#/+#', '/', $file);
 
             $imageMimeTypes = [
                 'image/jpeg',
@@ -255,7 +256,7 @@ class VoyagerMediaController extends Controller
                 'image/svg+xml',
             ];
             if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
-                $image = Image::make($realPath.$file);
+                $image = Image::make(Storage::disk($this->filesystem)->url($realPath . $file));
 
                 if ($request->file->getClientOriginalExtension() == 'gif') {
                     copy($request->file->getRealPath(), $realPath.$file);
@@ -301,14 +302,15 @@ class VoyagerMediaController extends Controller
                             ) {
                                 $thumbnail = $this->addWatermarkToImage($thumbnail, $details->watermark);
                             }
-                            $thumbnail->save($realPath.$request->upload_path.$name.'-'.($thumbnail_data->name ?? 'thumbnail').'.'.$extension, ($details->quality ?? 90));
+                            $thumbnail_file = $realPath . $request->upload_path . $name . '-' . ($thumbnail_data->name ?? 'thumbnail') . '.' . $extension;
+                            Storage::disk($this->filesystem)->put($thumbnail_file, (string) $thumbnail->encode($extension, ($details->quality ?? 90)));
                         }
                     }
                     // Add watermark to image
                     if (property_exists($details, 'watermark') && property_exists($details->watermark, 'source')) {
                         $image = $this->addWatermarkToImage($image, $details->watermark);
                     }
-                    $image->save($realPath.$file, ($details->quality ?? 90));
+                    Storage::disk($this->filesystem)->put($realPath . $file, (string) $image->encode($extension, ($details->quality ?? 90)));
                 }
             }
 
