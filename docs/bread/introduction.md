@@ -109,6 +109,17 @@ Clicking this button will bring you to the page where you can re-arrange your it
 
 ![](../.gitbook/assets/bread_order.png)
 
+### Custom label for ordering
+
+You can override column printed in Order page by adding custom [model accessor](https://laravel.com/docs/eloquent-mutators#defining-an-accessor) for `order_label`.
+
+```php
+public function getOrderLabelAttribute()
+{
+    return $this->first_name." ".$this->last_name;
+}
+```
+
 ## Scope browse-results
 
 If you want to filter the browse results for a BREAD you can do so by creating a [Scope](https://laravel.com/docs/eloquent#local-scopes) in your model. For example if you want to only show posts that were created by the current user, define a Scope like the following:

@@ -29,6 +29,8 @@
                                         <span>
                                             <img src="@if( !filter_var($result->{$display_column}, FILTER_VALIDATE_URL)){{ Voyager::image( $result->{$display_column} ) }}@else{{ $result->{$display_column} }}@endif" style="height:100px">
                                         </span>
+                                    @elseif($result instanceof \Illuminate\Database\Eloquent\Model && $result->hasGetMutator('order_label'))
+                                        <span>{{ $result->order_label }}</span>
                                     @else
                                         <span>{{ $result->{$display_column} }}</span>
                                     @endif
