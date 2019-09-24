@@ -513,7 +513,7 @@ a:hover {
 .app-container {
   min-height: 100%;
   position: relative;
-  background:#f3f5f8;
+  background:#f9f9f9;
   padding-bottom: 30px; }
 .app-container .app-footer {
   display: block;
@@ -560,7 +560,7 @@ a:hover {
 .app-container .content-container .side-menu .navbar-header .navbar-brand .title {
   margin-left: -10px;
   display: none;
-  font-weight:900; }
+  font-weight:200; }
 .app-container .content-container .side-menu .navbar-header .navbar-expand-toggle {
   position: absolute;
   right: 0;
@@ -2679,25 +2679,18 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 */
 
 .voyager {
-    background-color: #f3f5f8;
+    background-color: #F9F9F9;
     /* small screen */
 }
 
-.voyager .navbar-fixed-top{
-    position:absolute;
-}
-
 .voyager .app-footer {
-    opacity: 1;
+    opacity: 0.7;
+    color: #353d47;
     width: 100%;
     text-align: right;
     padding: 10px 0;
-    background: #f3f5f8;
+    background: #fff;
     left: 0px;
-    border-top: 1px solid #eceef2;
-    font-size: 12px;
-    font-weight: 400;
-    color: #acaeb2;
 }
 
 .voyager .app-footer i {
@@ -2710,7 +2703,14 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 .voyager .navbar.navbar-default {
     border-bottom: 0;
     box-shadow: 0 0 0;
-    background:none;
+    background:rgba(250, 250, 250, 0.9);
+}
+
+.voyager .navbar > .container-fluid,
+.voyager .navbar.navbar-default > .container-fluid:after {
+    border-bottom: 1px solid #eee;
+    width: 99.5%;
+    height: 1px;
 }
 
 .voyager .expanded .navbar > .container-fluid,
@@ -2905,7 +2905,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 }
 
 .voyager .side-menu .navbar-header {
-    background: none;
+    background-color: #22A7F0;
     margin-bottom: 4px;
 }
 
@@ -2927,41 +2927,21 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 
 .voyager .side-menu .navbar li > a {
     color: #363c46;
-    position:relative;
 }
 
 .voyager .side-menu .navbar li.active {
     border-left: 0;
 }
 
-.voyager .side-menu.sidebar-inverse .navbar li > a{
-    &:before{
-        content: '';
-        width:3px;
-        height: 0%;
-        background:#ffffff;
-        position:absolute;
-        top:50%;
-        left: 0px;
-        border-top-right-radius:5px;
-        border-bottom-right-radius:5px;
-        transition:all 0.22s ease-out;
-    }
+.voyager .side-menu .navbar li.active > a {
+    border-right: 4px solid #22A7F0;
+    background-color: #FFF;
 }
 
-.voyager .side-menu.sidebar-inverse .navbar li.active > a, .voyager .side-menu.sidebar-inverse .navbar li > a:hover{
-    opacity:1;
-    color:#ffffff;
-    &:before{
-        height: 70%;
-        top:15%;
-    }
+.voyager .side-menu .navbar > li:hover > a {
+    background-color: #FA2A00;
+    color: #FFF;
 }
-
-// .voyager .side-menu .navbar > li:hover > a {
-//     background-color: #FA2A00;
-//     color: #FFF;
-// }
 
 .voyager .side-menu .navbar li.dropdown {
     background-color: transparent;
@@ -4490,7 +4470,8 @@ p#the_plugin_name{
     top:0px;
     left:4px;
     text-transform: uppercase;
-    font-weight:900;
+    font-weight:400;
+
 }
 
 .page-content.dashboard{
@@ -4531,8 +4512,7 @@ p#the_plugin_name{
 }
 
 .voyager .side-menu.sidebar-inverse .navbar li > a {
-    color: $sidebar-link-color;
-    opacity:0.9;
+    color: #76838f;
 }
 
 .voyager .side-menu.sidebar-inverse .navbar{
@@ -4542,8 +4522,10 @@ p#the_plugin_name{
 
 .voyager .side-menu.sidebar-inverse{
  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#353d47+0,21292e+100 */
-background:#2B50ED;
- background: linear-gradient(45deg,  #1B40CD 0%, #2B50ED 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+background: rgb(53,61,71); /* Old browsers */
+background: -moz-linear-gradient(45deg,  rgba(53,61,71,1) 0%, rgba(33,41,46,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(45deg,  rgba(53,61,71,1) 0%,rgba(33,41,46,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#353d47', endColorstr='#21292e',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 overflow-x: hidden;
     -webkit-transition: width 500ms cubic-bezier(0.19, 1, 0.22, 1);
@@ -4556,6 +4538,11 @@ overflow-x: hidden;
 
 .app-container.expanded.no-animation .content-container, .app-container.expanded.no-animation{
   transition:none;
+}
+
+.voyager .side-menu.sidebar-inverse .navbar li > a:hover{
+  color: #fff;
+  background: #2A363B;
 }
 
 /**** HAMBURGER MENU **********/
@@ -4665,7 +4652,7 @@ overflow-x: hidden;
 }
 
 #voyager-loader{
-  background:#f3f5f8;
+  background:#F9F9F9;
   position:fixed;
   width:100%;
   height:100%;
@@ -4809,10 +4796,10 @@ float: left;
     padding: 4px 10px;
     list-style: none;
     background-color: #fff;
-    border-radius: 4px;
+    border-radius: 25px;
     position: relative;
     top: 2px;
-    border: 0px;
+    border: 1px solid #f9f9f9;
     font-size: 12px;
     padding-right: 15px;
 }
