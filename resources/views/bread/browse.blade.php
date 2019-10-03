@@ -178,7 +178,15 @@
                                                     <span class="badge badge-lg" style="background-color: {{ $data->{$row->field} }}">{{ $data->{$row->field} }}</span>
                                                 @elseif($row->type == 'text')
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
-                                                    <div>{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
+
+                                                    @php
+                                                        $content = mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field};
+                                                    @endphp
+                                                    @if ($row === $dataType->browseRows->first() && (Auth::user()->can('edit', app($dataType->model_name)) || Auth::user()->can('read', app($dataType->model_name))))
+                                                        <a href="{{ route('voyager.' .$dataType->slug. '.' .(Auth::user()->can('edit', app($dataType->model_name)) ? 'edit' : 'show'), [ 'id' => $data->id ]) }}">{{ $content }}</a>
+                                                    @else
+                                                        <div>{{ $content }}</div>
+                                                    @endif
                                                 @elseif($row->type == 'text_area')
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
                                                     <div>{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
