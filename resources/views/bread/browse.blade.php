@@ -182,16 +182,16 @@
                                                     @php
                                                         $content = mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field};
 
-                                                        $view = null;
+                                                        $link = null;
                                                         if (property_exists($row->details, 'link')) {
-                                                            $view = collect($row->details->link)->first(function($view, $permission) use ($dataType) {
+                                                            $link = collect($row->details->link)->first(function($view, $permission) use ($dataType) {
                                                                 return Auth::user()->can($permission, app($dataType->model_name));
                                                             });
                                                         }
                                                     @endphp
 
-                                                    @if ($view)
-                                                        <a href="{{ route('voyager.' .$dataType->slug. '.' .$view, [ 'id' => $data->id ]) }}">{{ $content }}</a>
+                                                    @if ($link)
+                                                        <a href="{{ route('voyager.' .$dataType->slug. '.' .$link, $data->id) }}">{{ $content }}</a>
                                                     @else
                                                         <div>{{ $content }}</div>
                                                     @endif
