@@ -191,7 +191,7 @@
                                                     @endphp
 
                                                     @if ($link)
-                                                        <a href="{{ route('voyager.' .$dataType->slug. '.' .$link, $data->id) }}">{{ $content }}</a>
+                                                        <a href="{{ route('voyager.'.$dataType->slug.'.'.$link, $data->id) }}">{{ $content }}</a>
                                                     @else
                                                         <div>{{ $content }}</div>
                                                     @endif
