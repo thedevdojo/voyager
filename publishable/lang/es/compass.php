@@ -24,7 +24,7 @@ return [
     'logs'          => [
         'title'                 => 'Registros',
         'text'                  => 'Los registros (logs) de tu aplicación',
-        'file_too_big'          => 'Archivo de egistro >50M. Descárguelo para visualizarlo, por favor.',
+        'file_too_big'          => 'Archivo de registro >50M. Descárguelo para visualizarlo, por favor.',
         'level'                 => 'Nivel',
         'context'               => 'Contexto',
         'date'                  => 'Fecha',
