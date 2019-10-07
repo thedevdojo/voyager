@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Cache;
 use TCG\Voyager\Contracts\User;
 use TCG\Voyager\Facades\Voyager;
 
@@ -11,6 +12,8 @@ class BasePolicy
     use HandlesAuthorization;
 
     protected static $datatypes = [];
+
+    const CACHE_TIME = 5;
 
     /**
      * Handle all requested permission checks.
@@ -75,13 +78,15 @@ class BasePolicy
      */
     protected function checkPermission(User $user, $model, $action)
     {
-        if (!isset(self::$datatypes[get_class($model)])) {
-            $dataType = Voyager::model('DataType');
-            self::$datatypes[get_class($model)] = $dataType->where('model_name', get_class($model))->first();
-        }
+        return Cache::remember("{$user->getTable()}-{$user->id}-can-{$action}-{$model->getTable()}", self::CACHE_TIME, function () use ($user, $model, $action) {
+            if (!isset(self::$datatypes[get_class($model)])) {
+                $dataType = Voyager::model('DataType');
+                self::$datatypes[get_class($model)] = $dataType->where('model_name', get_class($model))->first();
+            }
 
-        $dataType = self::$datatypes[get_class($model)];
+            $dataType = self::$datatypes[get_class($model)];
 
-        return $user->hasPermission($action.'_'.$dataType->name);
+            return $user->hasPermission($action.'_'.$dataType->name);
+        });
     }
 }
