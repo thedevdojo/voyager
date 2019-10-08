@@ -58,10 +58,10 @@ class VoyagerBaseController extends Controller
 
         $orderBy = $request->get('order_by', $dataType->order_column);
         $sortOrder = $request->get('sort_order', null);
-
-        // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         $usesSoftDeletes = false;
         $showSoftDeleted = false;
+
+        // Next Get or Paginate the actual content from the MODEL that corresponds to the slug DataType
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
 
@@ -138,7 +138,7 @@ class VoyagerBaseController extends Controller
         if (Auth::user()->can('delete', app($dataType->model_name))) {
             $showCheckboxColumn = true;
         } else {
-            foreach($actions as $action) {
+            foreach ($actions as $action) {
                 if (method_exists($action, 'massAction')) {
                     $showCheckboxColumn = true;
                 }
