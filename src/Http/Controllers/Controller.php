@@ -63,6 +63,11 @@ abstract class Controller extends BaseController
                 }
             }
 
+            // Value is saved from $row->details->column row
+            if ($row->type == 'relationship' && $row->details->type == 'belongsTo') {
+                continue;
+            }
+
             $content = $this->getContentBasedOnType($request, $slug, $row, $row->details);
 
             if ($row->type == 'relationship' && $row->details->type != 'belongsToMany') {
