@@ -163,7 +163,11 @@
                                                     {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
 
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                    {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
+                                                    @if ( property_exists($row->details, 'format') && !is_null($data->{$row->field}) )
+                                                        {{ \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) }}
+                                                    @else
+                                                        {{ $data->{$row->field} }}
+                                                    @endif
                                                 @elseif($row->type == 'checkbox')
                                                     @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                                         @if($data->{$row->field})
