@@ -7,7 +7,7 @@ You can customize the behaviour with the following options:
 {
     "max": 10,
     "min": 0,
-    "expanded": false,
+    "expanded": true,
     "show_folders": true,
     "show_toolbar": true,
     "allow_upload": true,
@@ -84,7 +84,7 @@ You can customize the behaviour with the following options:
       <td style="text-align:left">expanded</td>
       <td style="text-align:left">If the media-picker should be expanded by default</td>
       <td style="text-align:left">bool</td>
-      <td style="text-align:left">false</td>
+      <td style="text-align:left">true</td>
     </tr>
     <tr>
       <td style="text-align:left">show_folders</td>

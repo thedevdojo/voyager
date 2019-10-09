@@ -336,7 +336,7 @@
                $('#confirm_delete_modal').modal('show');
            });
             $('#confirm_delete').on('click', function(){
-               $.post('{{ route('voyager.media.remove') }}', params, function (response) {
+               $.post('{{ route('voyager.'.$dataType->slug.'.media.remove') }}', params, function (response) {
                    if ( response
                        && response.data
                        && response.data.status

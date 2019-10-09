@@ -9,6 +9,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
 use TCG\Voyager\Actions\RestoreAction;
@@ -76,7 +77,7 @@ class Voyager
 
     public function model($name)
     {
-        return app($this->models[studly_case($name)]);
+        return app($this->models[Str::studly($name)]);
     }
 
     public function modelClass($name)
@@ -92,11 +93,11 @@ class Voyager
 
         $class = get_class($object);
 
-        if (isset($this->models[studly_case($name)]) && !$object instanceof $this->models[studly_case($name)]) {
-            throw new \Exception("[{$class}] must be instance of [{$this->models[studly_case($name)]}].");
+        if (isset($this->models[Str::studly($name)]) && !$object instanceof $this->models[Str::studly($name)]) {
+            throw new \Exception("[{$class}] must be instance of [{$this->models[Str::studly($name)]}].");
         }
 
-        $this->models[studly_case($name)] = $class;
+        $this->models[Str::studly($name)] = $class;
 
         return $this;
     }
