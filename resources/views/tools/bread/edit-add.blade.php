@@ -44,7 +44,7 @@
             {{ $display_name }}
         </a>
         @else
-        <a href="{{ route('voyager.bread.create', ['name' => $table]) }}">
+        <a href="{{ route('voyager.bread.create', $table) }}">
             {{ $display_name }}
         </a>
         @endif
