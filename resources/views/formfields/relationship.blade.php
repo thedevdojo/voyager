@@ -23,7 +23,7 @@
             @else
 
                 <select
-                    class="form-control select2-ajax" name="{{ $relationshipField }}"
+                    class="form-control select2-ajax" name="{{ $options->column }}"
                     data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
                     data-get-items-field="{{$row->field}}"
                     data-method="{{ isset($dataTypeContent) ? 'edit' : 'add' }}"
