@@ -71,12 +71,17 @@ $(document).ready(function () {
 
         $(this).on('select2:select',function(e){
             var data = e.params.data;
-            $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected','selected');;
+            if (data.id == '') {
+                // "None" was selected. Clear all selected options
+                $(this).val([]).trigger('change');
+            } else {
+                $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected','selected');
+            }
         });
 
         $(this).on('select2:unselect',function(e){
             var data = e.params.data;
-            $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected',false);;
+            $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected',false);
         });
     });
     $('select.select2-taggable').select2({
@@ -108,6 +113,7 @@ $(document).ready(function () {
 
         $.post(route, {
             [label]: e.params.args.data.text,
+            _tagging: true,
         }).done(function(data) {
             var newOption = new Option(e.params.args.data.text, data.data.id, false, true);
             $el.append(newOption).trigger('change');
@@ -116,6 +122,11 @@ $(document).ready(function () {
         });
 
         return false;
+    }).on('select2:select', function (e) {
+        if (e.params.data.id == '') {
+            // "None" was selected. Clear all selected options
+            $(this).val([]).trigger('change');
+        }
     });
 
     $('.match-height').matchHeight();
