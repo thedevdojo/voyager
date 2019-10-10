@@ -184,8 +184,8 @@
 
                                                         $link = null;
                                                         if (property_exists($row->details, 'link')) {
-                                                            $link = collect($row->details->link)->first(function($view, $permission) use ($dataType) {
-                                                                return Auth::user()->can($permission, app($dataType->model_name));
+                                                            $link = collect($row->details->link)->first(function($view, $permission) use ($data) {
+                                                                return Auth::user()->can($permission, $data);
                                                             });
                                                         }
                                                     @endphp
