@@ -30,6 +30,8 @@ services:
   - sqlite
 
 before_script:
+  - echo > $HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d/xdebug.ini
+  - pecl install pcov
   - travis_retry composer self-update
   - composer require "illuminate/support:${LARAVEL_VERSION}"
   - composer show laravel/framework
@@ -37,4 +39,7 @@ before_script:
   - npm run dev
 
 script:
-  - vendor/bin/phpunit --no-coverage
+  - php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
