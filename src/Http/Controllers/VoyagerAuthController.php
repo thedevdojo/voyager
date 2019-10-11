@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerAuthController extends Controller
@@ -61,6 +62,6 @@ class VoyagerAuthController extends Controller
      */
     protected function guard()
     {
-        return app('VoyagerAuth');
+        return Auth::guard(app('VoyagerGuard'));
     }
 }

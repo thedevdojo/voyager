@@ -63,6 +63,11 @@ abstract class Controller extends BaseController
                 }
             }
 
+            // Value is saved from $row->details->column row
+            if ($row->type == 'relationship' && $row->details->type == 'belongsTo') {
+                continue;
+            }
+
             $content = $this->getContentBasedOnType($request, $slug, $row, $row->details);
 
             if ($row->type == 'relationship' && $row->details->type != 'belongsToMany') {
@@ -157,21 +162,21 @@ abstract class Controller extends BaseController
     /**
      * Validates bread POST request.
      *
-     * @param \Illuminate\Http\Request $request The Request
-     * @param array                    $data    Field data
-     * @param string                   $slug    Slug
-     * @param int                      $id      Id of the record to update
+     * @param array  $data The data
+     * @param array  $rows The rows
+     * @param string $slug Slug
+     * @param int    $id   Id of the record to update
      *
      * @return mixed
      */
-    public function validateBread($request, $data, $name = null, $id = null)
+    public function validateBread($data, $rows, $name = null, $id = null)
     {
         $rules = [];
         $messages = [];
         $customAttributes = [];
         $is_update = $name && $id;
 
-        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
+        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($rows);
 
         foreach ($fieldsWithValidationRules as $field) {
             $fieldRules = $field->details->validation->rule;
@@ -209,7 +214,7 @@ abstract class Controller extends BaseController
             }
         }
 
-        return Validator::make($request, $rules, $messages, $customAttributes);
+        return Validator::make($data, $rules, $messages, $customAttributes);
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row, $options = null)
@@ -275,22 +280,5 @@ abstract class Controller extends BaseController
 
             return !empty($value->details->validation->rule);
         });
-    }
-
-    /**
-     * Authorize a given action for the current user.
-     *
-     * @param mixed       $ability
-     * @param mixed|array $arguments
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Auth\Access\Response
-     */
-    public function authorize($ability, $arguments = [])
-    {
-        $user = app('VoyagerAuth')->user();
-
-        return $this->authorizeForUser($user, $ability, $arguments);
     }
 }
