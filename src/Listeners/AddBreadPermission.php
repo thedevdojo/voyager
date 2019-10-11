@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Listeners;
 
 use TCG\Voyager\Events\BreadAdded;
-use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Permission;
 use TCG\Voyager\Models\Role;
 
