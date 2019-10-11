@@ -25,7 +25,6 @@ class NumberFormField extends AbstractHandler
         ]);
     }
 }
-
 ```
 
 The `codename` variable is used in the dropdown you see in the BREAD builder. In the `createContent` method we are returning the view that is used to display our form field.
@@ -39,7 +38,7 @@ Next, we will create the view specified above.
        data-name="{{ $row->display_name }}"
        type="number"
        @if($row->required == 1) required @endif
-			 step="any"
+             step="any"
        placeholder="{{ isset($options->placeholder)? old($row->field, $options->placeholder): $row->display_name }}"
        value="@if(isset($dataTypeContent->{$row->field})){{ old($row->field, $dataTypeContent->{$row->field}) }}@else{{old($row->field)}}@endif">
 ```
@@ -60,12 +59,11 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     //..
-    
+
     public function register()
     {
         Voyager::addFormField(NumberFormField::class);
     }
 }
-
 ```
 

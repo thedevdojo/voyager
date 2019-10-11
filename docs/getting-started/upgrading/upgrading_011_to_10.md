@@ -1,6 +1,6 @@
 # Version 0.11 to 1.0
 
- **Update your Composer.json**
+**Update your Composer.json**
 
 To update to the latest version inside of your composer.json file make sure to update the version of voyager inside the require declaration inside of your composer.json to:
 
@@ -10,7 +10,7 @@ To update to the latest version inside of your composer.json file make sure to u
 
 And then run composer update
 
- **Run the necessary migrations** 
+**Run the necessary migrations**
 
 You will now need to run the following migrations to include new tables or rows that have been added to the latest version. you can find each of these migrations below:
 
@@ -35,7 +35,7 @@ Each setting key will now belong to a group. Which means that you would need to 
 
 And that title key would now need to have a group with the name of 'Site', like the following:
 
-![](../../.gitbook/assets/011_10_settings.png)
+![](https://github.com/the-control-group/voyager/tree/75892e95373d27ade31638054debb3df36b45a9f/docs/.gitbook/assets/011_10_settings.png)
 
 To update all the settings in your app, you may want to, just create a group name, such as Site, and then update all your settings to include the `site` prefix:
 
@@ -45,7 +45,7 @@ To update all the settings in your app, you may want to, just create a group nam
 
 Any previous Admin settings have been added to a group called 'Admin'.
 
-**Final Steps** 
+**Final Steps**
 
 Next, you may want to be sure that you have all the latest published assets. To re-publish the voyager assets you can run the following command:
 
@@ -72,9 +72,9 @@ class User extends VoyagerUser
 
 And now you'll be upgraded to the latest version.
 
- **If you're planning to use hooks**  If you want to use Hooks \(Voyager's built-in plugin system\) you must run `php artisan hook:setup` before it will work. This is now included in `php artisan voyager:install`, so this will only need to be run after upgrading from an earlier version.
+**If you're planning to use hooks** If you want to use Hooks \(Voyager's built-in plugin system\) you must run `php artisan hook:setup` before it will work. This is now included in `php artisan voyager:install`, so this will only need to be run after upgrading from an earlier version.
 
- **Troubleshooting** 
+**Troubleshooting**
 
 Be sure to ask us on our slack channel if you are experiencing any issues and we will try and assist. Thanks.
 
