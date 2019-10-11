@@ -22,7 +22,6 @@ use TCG\Voyager\Events\TableUpdated;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\DataRow;
 use TCG\Voyager\Models\DataType;
-use TCG\Voyager\Models\Permission;
 
 class VoyagerDatabaseController extends Controller
 {
