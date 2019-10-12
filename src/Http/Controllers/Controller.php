@@ -41,7 +41,6 @@ abstract class Controller extends BaseController
                 $fields->each(function ($field) use (&$query, $global) {
                     $query->orWhere($field, 'LIKE', '%'.$global.'%');
                 });
-                
             });
         }
 

@@ -26,7 +26,7 @@ class Password extends BaseFormfield
         if (empty($data)) {
             return $old;
         }
-    
+
         return $this->store($data, $old);
     }
 
