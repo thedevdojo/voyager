@@ -31,6 +31,10 @@ class TestCase extends OrchestraTestCase
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\Session\Middleware\StartSession');
         $this->app->make('Illuminate\Contracts\Http\Kernel')->pushMiddleware('Illuminate\View\Middleware\ShareErrorsFromSession');
 
+        if ($this->getName() == 'testInstallingWithOtherLocale') {
+            $this->app->setLocale('pt_br');
+        }
+
         $this->install();
     }
 

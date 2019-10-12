@@ -179,22 +179,8 @@ class CategoriesTableSeeder extends Seeder
         Permission::generateFor('categories');
 
         //Content
-        $category = Category::firstOrNew([
-            'slug' => 'category-1',
-        ]);
-        if (!$category->exists) {
-            $category->fill([
-                'name' => 'Category 1',
-            ])->save();
-        }
-
-        $category = Category::firstOrNew([
-            'slug' => 'category-2',
-        ]);
-        if (!$category->exists) {
-            $category->fill([
-                'name' => 'Category 2',
-            ])->save();
+        foreach (__('voyager::seeders.categories') as $category) {
+            $category = Category::firstOrCreate($category);
         }
     }
 
@@ -209,9 +195,9 @@ class CategoriesTableSeeder extends Seeder
     protected function dataRow($type, $field)
     {
         return DataRow::firstOrNew([
-                'data_type_id' => $type->id,
-                'field'        => $field,
-            ]);
+            'data_type_id' => $type->id,
+            'field'        => $field,
+        ]);
     }
 
     /**
