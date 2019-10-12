@@ -7,23 +7,15 @@
             <div class="w-full m-1">
                 <label class="voyager-label">{{ translate(options.title, true) }}</label>
                 <input
-                    v-if="(options.rows || 1) == 1"
-                    type="text"
+                    type="number"
                     :disabled="options.disabled || false"
                     :placeholder="translate(options.placeholder, true)"
+                    :min="options.min || false"
+                    :max="options.max || false"
+                    :step="options.step || false"
                     v-bind:value="value"
                     v-on:input="$emit('input', $event.target.value)"
                     class="voyager-input" />
-                <textarea
-                    v-else
-                    :rows="options.rows"
-                    :disabled="options.disabled || false"
-                    :placeholder="translate(options.placeholder, true)"
-                    v-bind:value="value"
-                    v-on:input="$emit('input', $event.target.value)"
-                    class="voyager-input">
-
-                </textarea>
                 <p>{{ translate(options.description, true) }}</p>
             </div>
         </div>
@@ -31,20 +23,11 @@
             <div class="w-full m-1">
                 <label class="voyager-label">{{ translate(options.title) }}</label>
                 <input
-                    v-if="(options.rows || 1) == 1"
-                    type="text"
+                    type="number"
                     :disabled="action == 'mockup' || options.disabled"
                     :placeholder="translate(options.placeholder)"
                     :value="translate(options.default_value)"
                     class="voyager-input" />
-                <textarea
-                    v-else
-                    :rows="options.rows"
-                    :disabled="action == 'mockup' || options.disabled"
-                    :placeholder="translate(options.placeholder)"
-                    v-bind:value="translate(options.default_value)"
-                    class="voyager-input">
-                </textarea>
                 <p>{{ translate(options.description) }}</p>
             </div>
         </div>
@@ -61,20 +44,38 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.rows') }}</label>
-                    <input
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.default_value') }}</label>
+                    <language-input
                         class="voyager-input"
-                        type="number" min="1" max="255" :placeholder="__('voyager::generic.rows')"
-                        v-model.number="options.rows" />
+                        type="number" :placeholder="__('voyager::generic.default_value')"
+                        v-model="options.default_value" />
                 </div>
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.default_value') }}</label>
-                    <language-input
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.min') }}</label>
+                    <input
                         class="voyager-input"
-                        type="text" :placeholder="__('voyager::generic.default_value')"
-                        v-model="options.default_value" />
+                        type="number" :placeholder="__('voyager::generic.min')"
+                        v-model="options.min">
+                </div>
+            </div>
+            <div class="flex mb-4">
+                <div class="w-full m-1">
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.max') }}</label>
+                    <input
+                        class="voyager-input"
+                        type="number" :placeholder="__('voyager::generic.max')"
+                        v-model="options.max">
+                </div>
+            </div>
+            <div class="flex mb-4">
+                <div class="w-full m-1">
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.step') }}</label>
+                    <input
+                        class="voyager-input"
+                        type="number" :placeholder="__('voyager::generic.step')"
+                        v-model="options.step">
                 </div>
             </div>
             <div class="flex mb-4">

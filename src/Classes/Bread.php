@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Classes;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use TCG\Voyager\Facades\Voyager;
@@ -20,9 +21,13 @@ class Bread implements \JsonSerializable
     public $model;
     public $controller;
     public $policy;
+    public $soft_deletes = 'hide';
+    public $restore = false;
     public $layouts = [];
 
     public $parse_failed = false;
+
+    protected $model_class = null;
 
     public function __construct($path, $parameter = null)
     {
@@ -64,7 +69,16 @@ class Bread implements \JsonSerializable
 
     public function getModel()
     {
-        return app($this->model);
+        if (!$this->model_class) {
+            $this->model_class = app($this->model);
+        }
+
+        return $this->model_class;
+    }
+
+    public function usesSoftDeletes()
+    {
+        return in_array(SoftDeletes::class, class_uses($this->getModel()));
     }
 
     public function getFields()
@@ -144,7 +158,7 @@ class Bread implements \JsonSerializable
             $layout = $this->layouts->filter(function ($layout) {
                 return $layout->type == 'list';
             })->first();
-        } elseif ($action == 'edit') {
+        } elseif ($action == 'edit' || $action == 'add' || $action == 'read') {
             $layout = $this->layouts->filter(function ($layout) {
                 return $layout->type == 'view';
             })->first();
@@ -176,6 +190,8 @@ class Bread implements \JsonSerializable
             'model'         => $this->model,
             'controller'    => $this->controller,
             'policy'        => $this->policy,
+            'soft_deletes'  => $this->soft_deletes,
+            'restore'       => $this->restore,
             'layouts'       => $this->layouts,
         ];
     }

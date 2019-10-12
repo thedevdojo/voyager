@@ -11,18 +11,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr class="hover:bg-blue-lightest" v-for="table in tables" v-bind:key="table">
+            <tr v-for="table in tables" v-bind:key="table">
                 <td class="py-4 px-6 border-b border-grey-light">{{ table }}</td>
                 <td class="py-4 px-6 border-b border-grey-light text-right">
                     <div v-if="hasBread(table)">
-                        <a class="voyager-button blue" :dusk="'edit-'+table" :href="route('voyager.bread.edit', table)">
+                        <a class="button blue" :dusk="'browse-'+table" :href="route('voyager.'+table+'.index')">
+                            {{ __('voyager::generic.browse') }}
+                        </a>
+                        <a class="button yellow" :dusk="'edit-'+table" :href="route('voyager.bread.edit', table)">
                             {{ __('voyager::generic.edit_type', {type: __('voyager::bread.bread')}) }}
                         </a>
-                        <button class="voyager-button red" :dusk="'delete-'+table" @click="deleteBread(table)">
+                        <button class="button red" :dusk="'delete-'+table" @click="deleteBread(table)">
                             {{ __('voyager::generic.delete_type', {type: __('voyager::bread.bread')}) }}
                         </button>
                     </div>
-                    <a v-else class="voyager-button green" :dusk="'add-'+table" :href="route('voyager.bread.create', table)">
+                    <a v-else class="button green" :dusk="'add-'+table" :href="route('voyager.bread.create', table)">
                         {{ __('voyager::generic.add_type', {type: __('voyager::bread.bread')}) }}
                     </a>
                 </td>

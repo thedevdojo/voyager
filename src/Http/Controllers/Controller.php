@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 
@@ -22,9 +23,9 @@ abstract class Controller extends BaseController
     protected function loadRelationships(&$query, $layout)
     {
         $layout->formfields->filter(function ($formfield) {
-            return Str::contains($formfield->options['field'], '.');
+            return Str::contains($formfield->field, '.');
         })->transform(function ($formfield) {
-            return Str::before($formfield->options['field'], '.');
+            return Str::before($formfield->field, '.');
         })->unique()->each(function ($relationship) use ($query) {
             $query->with([$relationship => function ($query) {
                 //
@@ -32,8 +33,18 @@ abstract class Controller extends BaseController
         });
     }
 
-    protected function searchQuery(&$query, $filters)
+    protected function searchQuery(&$query, $layout, $filters, $global)
     {
+        if ($global != '') {
+            $fields = $layout->getSearchableFields()->pluck('field');
+            $query->where(function ($query) use ($fields, $global) {
+                $fields->each(function ($field) use (&$query, $global) {
+                    $query->orWhere($field, 'LIKE', '%'.$global.'%');
+                });
+                
+            });
+        }
+
         foreach ($filters as $field => $filter) {
             // TODO: Search translatable
             if (Str::contains($field, '.')) {
@@ -65,15 +76,43 @@ abstract class Controller extends BaseController
         }
     }
 
-    protected function prepareData(&$data, $bread, $layout, $method = 'store')
+    protected function prepareData(&$data, $old, $bread, $layout, $method = 'store')
     {
-        $data = $data->transform(function ($value, $field) use ($layout, $method, $bread) {
-            $formfield = $layout->formfields->where('options.field', $field)->first();
-            if ($formfield) {
-                return $formfield->{$method}($value);
+        $layout->formfields->each(function ($formfield) use (&$data, $old, $bread, $method) {
+            $field = $formfield->field;
+            $value = $data->get($field, null);
+            $value = $formfield->{$method}($value, ($old->{$field} ?? null));
+            if ($bread->isFieldTranslatable($field)) {
+                // Todo: We need to test for casts here
+                $value = json_encode($value);
             }
-        })->filter(function ($value) {
-            return $value !== null;
+
+            $data->put($field, $value);
         });
+    }
+
+    protected function getValidator($layout, $data)
+    {
+        $rules = [];
+        $messages = [];
+
+        $layout->formfields->each(function ($formfield) use (&$rules, &$messages) {
+            $formfield_rules = [];
+            collect($formfield->rules)->each(function ($rule_object) use ($formfield, &$formfield_rules, &$messages) {
+                // TODO: Add translation validation
+                $formfield_rules[] = $rule_object->rule;
+                $message_ident = $formfield->field.'.'.Str::before($rule_object->rule, ':');
+                $message = $rule_object->message;
+                if (is_object($message)) {
+                    $message = $message->{Voyager::getLocale()} ?? $message->{Voyager::getFallbackLocale()} ?? '';
+                }
+                $messages[$message_ident] = $message;
+            });
+            $rules[$formfield->field] = $formfield_rules;
+        });
+
+        $validator = Validator::make($data->toArray(), $rules, $messages);
+
+        return $validator;
     }
 }

@@ -9,6 +9,7 @@ class Layout implements \JsonSerializable
     public $name;
     public $type = 'view';
     public $default_sort_field;
+    public $global_search = '';
     public $formfields = [];
 
     protected $bread;
@@ -55,6 +56,11 @@ class Layout implements \JsonSerializable
         return $this->default_sort_field ?? $this->bread->getModel()->getKeyName();
     }
 
+    public function getSearchableFields()
+    {
+        return $this->formfields->where('options.searchable', true);
+    }
+
     public function isValid()
     {
         return !empty($this->name);
@@ -68,6 +74,7 @@ class Layout implements \JsonSerializable
                 'type'               => $this->type,
                 'formfields'         => $this->formfields,
                 'default_sort_field' => $this->default_sort_field,
+                'global_search'      => $this->global_search,
             ];
         }
 

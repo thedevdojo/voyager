@@ -25,12 +25,19 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
         $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'voyager');
 
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Color::class);
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\DateTime::class);
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Number::class);
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Password::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
 
         VoyagerFacade::addAction(\TCG\Voyager\Actions\ReadAction::class);
         VoyagerFacade::addAction(\TCG\Voyager\Actions\EditAction::class);
         VoyagerFacade::addAction(\TCG\Voyager\Actions\DeleteAction::class);
+        VoyagerFacade::addAction(\TCG\Voyager\Actions\RestoreAction::class);
+        VoyagerFacade::addAction(\TCG\Voyager\Actions\ForceDeleteAction::class);
         VoyagerFacade::addAction(\TCG\Voyager\Actions\BulkDeleteAction::class);
+        VoyagerFacade::addAction(\TCG\Voyager\Actions\BulkRestoreAction::class);
 
         // Register Policies
         VoyagerFacade::getBreads()->each(function ($bread) {

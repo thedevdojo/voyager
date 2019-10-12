@@ -5,6 +5,7 @@ $router->group(['as' => 'voyager.'], function () use ($router) {
 
     Route::group(['middleware' => 'voyager.admin'], function () use ($namespace, $router) {
         $router->view('/', 'voyager::dashboard')->name('dashboard');
+        $router->post('search', ['uses' => $namespace.'VoyagerController@search', 'as' => 'search']);
 
         // BREAD manager
         $router->group([
@@ -25,6 +26,7 @@ $router->group(['as' => 'voyager.'], function () use ($router) {
                 $controller = \Illuminate\Support\Str::start($bread->controller, '\\');
             }
             Route::resource($bread->slug, $controller);
+            Route::post($bread->slug.'/data', ['uses'=> $controller.'@data', 'as' => $bread->slug.'.data']);
         }
 
         // UI Routes

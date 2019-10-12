@@ -3,7 +3,7 @@ a {
 }
 
 .voyager-input {
-    @apply border-2 border-gray-400 appearance-none rounded w-full py-3 px-3;
+    @apply border-2 border-gray-400 appearance-none rounded w-full py-3 px-3 text-gray-800;
     transition: border 0.2s ease-in-out;
 
     &:active,
@@ -17,14 +17,36 @@ a {
 
 .voyager-label {
     @apply block text-gray-600 text-sm font-normal mb-2;
+
+    &.bigger {
+        @apply text-base;
+    }
+}
+
+.voyager-search {
+    @apply bg-gray-200 border border-gray-200 rounded py-2 pr-4 pl-4 block appearance-none leading-normal w-1/3 float-right search;
+    &:focus {
+        @apply outline-none bg-white shadow w-full;
+    }
+}
+
+.voyager-search-results {
+    @apply absolute bg-white rounded-lg border-gray-600 mt-8
 }
 
 .voyager-h1 {
     @apply text-gray-800 text-4xl font-black;
 }
 
-.voyager-button {
+.hint {
+    @apply text-gray-600 text-xs;
+}
+
+.button {
     @apply text-white py-2 px-4 mx-1 rounded;
+    &:focus {
+        @apply outline-none;
+    }
     &.bold {
         @apply font-bold;
     }
@@ -36,11 +58,23 @@ a {
         &:hover {
             @apply bg-green-600;
         }
+        &:active {
+            @apply bg-green-700;
+        }
+        &.active {
+            @apply bg-green-700;
+        }
     }
     &.red {
         @apply bg-red-500;
         &:hover {
             @apply bg-red-600;
+        }
+        &:active {
+            @apply bg-red-700;
+        }
+        &.active {
+            @apply bg-red-700;
         }
     }
     &.blue {
@@ -48,18 +82,66 @@ a {
         &:hover {
             @apply bg-blue-600;
         }
+        &:active {
+            @apply bg-blue-700;
+        }
+        &.active {
+            @apply bg-blue-700;
+        }
     }
     &.yellow {
         @apply bg-yellow-500;
         &:hover {
             @apply bg-yellow-600;
         }
+        &:active {
+            @apply bg-yellow-700;
+        }
+        &.active {
+            @apply bg-yellow-700;
+        }
+    }
+    &.orange {
+        @apply bg-orange-500;
+        &:hover {
+            @apply bg-orange-600;
+        }
+        &:active {
+            @apply bg-orange-700;
+        }
+        &.active {
+            @apply bg-orange-700;
+        }
+    }
+    &.purple {
+        @apply bg-purple-500;
+        &:hover {
+            @apply bg-purple-600;
+        }
+        &:active {
+            @apply bg-purple-700;
+        }
+        &.active {
+            @apply bg-purple-700;
+        }
+    }
+}
+
+.button-group {
+    @apply inline-flex;
+    .button {
+        @apply rounded-none mx-0;
+    }
+    .button:first-child {
+        @apply rounded-l;
+    }
+    .button:last-child {
+        @apply rounded-r;
     }
 }
 
 .voyager-table {
-    @apply w-full text-left border-collapse bg-gray-100 rounded-lg;
-
+    @apply w-full text-left border-collapse bg-gray-100 rounded-lg p-3;
     tbody {
         tr {
             td {

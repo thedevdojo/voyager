@@ -18,7 +18,17 @@ abstract class BaseAction implements \JsonSerializable
         return '#';
     }
 
+    public function getParameter()
+    {
+        return [];
+    }
+
     public function shouldBeDisplayOnBread()
+    {
+        return true;
+    }
+
+    public function shouldBeDisplayedOnEntry($entry)
     {
         return true;
     }
@@ -34,6 +44,7 @@ abstract class BaseAction implements \JsonSerializable
             'title'      => $this->getTitle(':num:'),
             'classes'    => $this->getClasses(),
             'url'        => $this->getUrl(':key:'),
+            'parameter'  => $this->getParameter(),
             'confirm'    => $this->confirm(),
             'method'     => $this->method,
             'massAction' => $this->massAction,

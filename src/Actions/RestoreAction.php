@@ -4,18 +4,18 @@ namespace TCG\Voyager\Actions;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class DeleteAction extends BaseAction
+class RestoreAction extends BaseAction
 {
     public $method = 'delete';
 
     public function getTitle()
     {
-        return __('voyager::generic.delete');
+        return __('voyager::generic.restore');
     }
 
     public function getClasses()
     {
-        return 'button red small';
+        return 'button green small';
     }
 
     public function getUrl($key)
@@ -23,11 +23,18 @@ class DeleteAction extends BaseAction
         return route('voyager.'.$this->bread->slug.'.destroy', $key);
     }
 
+    public function getParameter()
+    {
+        return [
+            'restore' => true,
+        ];
+    }
+
     public function confirm()
     {
         return [
-            'title' => __('voyager::bread.delete_single_entry', ['display_name' => ':display_name:']),
-            'text'  => __('voyager::bread.delete_single_entry_conf', ['display_name' => ':display_name:']),
+            'title' => __('voyager::bread.restore_single_entry', ['display_name' => ':display_name:']),
+            'text'  => __('voyager::bread.restore_single_entry_conf', ['display_name' => ':display_name:']),
             'yes'   => __('voyager::generic.yes'),
             'no'    => __('voyager::generic.no'),
         ];
@@ -36,9 +43,9 @@ class DeleteAction extends BaseAction
     public function shouldBeDisplayedOnEntry($entry)
     {
         if ($this->bread->usesSoftDeletes()) {
-            return !$entry->trashed();
+            return $entry->trashed() && $this->bread->restore ?? false;
         }
 
-        return true;
+        return false;
     }
 }

@@ -5,7 +5,7 @@
                 <h1>Dashboard</h1>
             </div>
             <div class="w-full">
-                <input type="text" placeholder="Search..." class="transition bg-gray-200 border border-gray-200 placeholder-gray-700 rounded py-2 pr-4 pl-4 block appearance-none leading-normal focus:outline-none focus:bg-white focus:shadow w-1/3 float-right focus:w-full search">
+                <search />
             </div>
             <span class="ml-3">
                 <img src="{{ Voyager::assetUrl('images/default-avatar.png') }}" class="w-10 h-auto rounded-full shadow" alt="Voyager Loader">

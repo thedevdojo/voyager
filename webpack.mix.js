@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const tailwindcss = require('tailwindcss');
+require('laravel-mix-purgecss');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,5 +16,8 @@ const tailwindcss = require('tailwindcss');
 .options({
     processCssUrls: false,
     postCss: [ tailwindcss('tailwind.config.js') ],
+}).purgeCss({
+    folders: ['resources'],
+    whitelistPatterns: [/snotify/],
 })
 .js('resources/assets/js/voyager.js', 'resources/assets/dist/js');

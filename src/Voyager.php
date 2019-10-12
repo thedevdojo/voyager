@@ -255,6 +255,7 @@ class Voyager
                 'type'    => $formfield->type,
                 'name'    => $formfield->name,
                 'options' => $formfield->options,
+                'rules'   => $formfield->rules,
             ];
         });
     }
@@ -309,7 +310,23 @@ class Voyager
         return $this->actions->filter(function ($action) use ($bread) {
             $action->bread = $bread;
 
-            return $action->shouldBeDisplayOnBread();
+            return $action->shouldBeDisplayOnBread($bread);
+        });
+    }
+
+    /**
+     * Get all actions which should be shown on a BREAD.
+     *
+     * @param string $bread The BREAD
+     *
+     * @return object The actions
+     */
+    public function getActionsForEntry($bread, $entry)
+    {
+        return $this->actions->filter(function ($action) use ($bread, $entry) {
+            $action->bread = $bread;
+
+            return $action->shouldBeDisplayOnBread() && $action->shouldBeDisplayedOnEntry($entry);
         });
     }
 
@@ -331,6 +348,16 @@ class Voyager
     public function getLocale()
     {
         return app()->getLocale();
+    }
+
+    /**
+     * Get the current app-locale.
+     *
+     * @return string The current locale
+     */
+    public function getFallbackLocale()
+    {
+        return config('app.fallback_locale', [$this->getLocale()]);
     }
 
     /**

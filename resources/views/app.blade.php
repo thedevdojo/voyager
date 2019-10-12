@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="base-url" content="{{ Str::finish(route('voyager.dashboard'), '/') }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
@@ -42,18 +43,22 @@
 
     </div>
     <vue-snotify></vue-snotify>
+    <floating-button position="bottom-right" v-if="$language.localePicker">
+        <locale-picker />
+    </floating-button>
 </div>
 
 </body>
 <script src="{{ Voyager::assetUrl('js/voyager.js') }}"></script>
+@if (Voyager::getLocale() != 'en')
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/{{ Voyager::getLocale() }}.js"></script>
+@endif
 <script>
 var voyager = new Vue({
     el: '#voyager',
     data: {
         page_loading: true,
         messages: {!! json_encode(Voyager::getMessages()) !!},
-        localization: {!! Voyager::getLocalization() !!},
-        routes: {!! Voyager::getRoutes() !!},
         formfields: {!! json_encode(Voyager::getFormfieldsDescription()) !!}
     },
     mounted: function () {
@@ -74,14 +79,18 @@ var voyager = new Vue({
             } else if (m.type == 'error') {
                 vm.$snotify.error(m.message);
             } else if (m.type == 'debug') {
-                vm.$snotify.simple(m.message);
+                if (vm.debug) {
+                    vm.debug(m.message);
+                }
             }
         });
     },
     created: function () {
-        this.$eventHub.localization = this.localization;
-        this.$eventHub.routes = this.routes;
-        this.$eventHub.formfields = this.formfields;
+        Vue.prototype.$language.localization = {!! Voyager::getLocalization() !!};
+        Vue.prototype.$globals.routes = {!! Voyager::getRoutes() !!};
+        Vue.prototype.$globals.breads = {!! Voyager::getBreads() !!};
+        Vue.prototype.$globals.formfields = this.formfields;
+        Vue.prototype.$globals.debug = {{ var_export(config('app.debug') ?? false, true) }};
     }
 });
 </script>

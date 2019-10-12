@@ -10,18 +10,22 @@
             <component :is="'formfield-'+formfield.type" :options="formfield.options" :fields="fields" action="mockup" />
             <popper trigger="click" :force-show="optionsOpen" :options="{ placement: 'top' }">
                 <div class="popper">
-                    <div class="flex mb-4">
-                        <div class="w-2/3">
-                            <h4 class="text-gray-100 text-lg">Options</h4>
-                        </div>
-                        <div class="w-1/3 text-right text-gray-100">
-                            <a @click="closeOptions()" class="cursor-pointer">X</a>
+                    <div class="">
+                        <locale-picker></locale-picker>
+                        <br>
+                        <div class="flex mb-4">
+                            <div class="w-2/3">
+                                <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
+                            </div>
+                            <div class="w-1/3 text-right text-gray-100">
+                                <a @click="closeOptions()" class="cursor-pointer">X</a>
+                            </div>
                         </div>
                     </div>
                     <div class="flex mb-4">
                         <div class="w-full m-1" v-if="hasField">
                             <label class="voyager-label text-gray-100">{{ __('voyager::generic.field') }}</label>
-                            <select v-model="formfield.options.field" class="voyager-input">
+                            <select v-model="formfield.field" class="voyager-input">
                                 <optgroup :label="__('voyager::generic.fields')">
                                     <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
                                 </optgroup>

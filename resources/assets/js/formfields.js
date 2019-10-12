@@ -1,6 +1,10 @@
 let formfields = [
     'FormfieldMockup',
-    'Text'
+    'Color',
+    'DateTime',
+    'Number',
+    'Password',
+    'Text',
 ];
 
 formfields.forEach(function (formfield) {

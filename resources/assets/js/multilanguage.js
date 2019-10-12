@@ -1,3 +1,13 @@
+Vue.prototype.$language = new Vue({
+    data: {
+        locale: document.getElementsByTagName('html')[0].getAttribute('lang'),
+        initial_locale: document.getElementsByTagName('html')[0].getAttribute('lang'),
+        locales: document.getElementsByTagName('html')[0].getAttribute('locales').split(','),
+        localePicker: false,
+        localization: [],
+    }
+});
+
 Vue.mixin({
     methods: {
         get_input_as_translatable_object: function (input) {
@@ -7,29 +17,29 @@ Vue.mixin({
                 } catch (e) {
                     var value = input;
                     input = {};
-                    input[Vue.prototype.$eventHub.locale] = value;
+                    input[this.$language.locale] = value;
                 }
+            } else if (typeof input !== 'object' || !input) {
+                input = {};
             }
 
             if (input && typeof input === 'object' && input.constructor === Object) {
-                Vue.prototype.$eventHub.locales.forEach(function (locale) {
+                this.$language.locales.forEach(function (locale) {
                     if (!input.hasOwnProperty(locale)) {
-                        input[locale] = '';
+                        Vue.set(input, locale, '');
                     }
                 });
-
-                return input;
             }
 
-            return {};
+            return input;
         },
 
         translate: function (input, once = false) {
-            if (!window.isObject(input)) {
+            if (!this.isObject(input)) {
                 input = this.get_input_as_translatable_object(input);
             }
-            if (window.isObject(input)) {
-                return input[once ? Vue.prototype.$eventHub.initial_locale : Vue.prototype.$eventHub.locale] || '';
+            if (this.isObject(input)) {
+                return input[once ? this.$language.initial_locale : this.$language.locale] || '';
             }
 
             return input;
@@ -37,8 +47,7 @@ Vue.mixin({
 
         trans: function (key, replace = {})
         {
-            var translations = Vue.prototype.$eventHub.localization;
-            let translation = key.split('.').reduce((t, i) => t[i] || null, translations);
+            let translation = key.split('.').reduce((t, i) => t[i] || null, this.$language.localization);
 
             for (var placeholder in replace) {
                 translation = translation.replace(new RegExp(':'+placeholder, 'g'), replace[placeholder]);
@@ -54,7 +63,7 @@ Vue.mixin({
 
         trans_choice: function (key, count = 1, replace = {})
         {
-            let translation = key.split('.').reduce((t, i) => t[i] || null, Vue.prototype.$eventHub.localization).split('|');
+            let translation = key.split('.').reduce((t, i) => t[i] || null, this.$language.localization).split('|');
 
             translation = count > 1 ? translation[1] : translation[0];
 
@@ -64,29 +73,5 @@ Vue.mixin({
 
             return translation;
         },
-    }
-});
-
-Vue.prototype.$eventHub = new Vue({
-    data: {
-        locale: document.getElementsByTagName('html')[0].getAttribute('lang'),
-        initial_locale: document.getElementsByTagName('html')[0].getAttribute('lang'),
-        locales: document.getElementsByTagName('html')[0].getAttribute('locales').split(','),
-        localization: [],
-        routes: [],
-        formfields: [],
-    },
-    methods: {
-        getFormfieldByType: function (type) {
-            var r_formfield = null;
-
-            this.formfields.forEach(function (formfield) {
-                if (formfield.type == type) {
-                    r_formfield = formfield;
-                }
-            });
-
-            return r_formfield;
-        }
     }
 });

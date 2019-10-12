@@ -6,6 +6,7 @@ class BaseFormfield implements \JsonSerializable
 {
     public $type;
     public $name;
+    public $field;
     public $options = [
         'width'       => '1/2',
         'title'       => '',
@@ -17,10 +18,11 @@ class BaseFormfield implements \JsonSerializable
      * Transform data to be stored in the database after updating.
      *
      * @param mixed $data The input-data
+     * @param mixed $old  The old data
      *
      * @return mixed The processed data
      */
-    public function update($data)
+    public function update($data, $old)
     {
         return $data;
     }
@@ -29,10 +31,11 @@ class BaseFormfield implements \JsonSerializable
      * Transform data to be stored in the database after adding.
      *
      * @param mixed $data The input-data
+     * @param mixed $old  The old data (null)
      *
      * @return mixed The processed data
      */
-    public function store($data)
+    public function store($data, $old)
     {
         return $data;
     }
@@ -51,6 +54,7 @@ class BaseFormfield implements \JsonSerializable
     {
         return [
             'type'    => $this->type,
+            'field'   => $this->field,
             'options' => $this->options,
             'rules'   => $this->rules,
         ];

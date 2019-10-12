@@ -11,18 +11,24 @@
     "devDependencies": {
         "cross-env": "^5.2.1",
         "laravel-mix": "^4.1.4",
+        "laravel-mix-purgecss": "^4.2.0",
         "sass-loader": "^7.3.1",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
         "axios": "^0.19.0",
         "debounce": "^1.2.0",
+        "luxon": "^1.19.3",
         "node-sass": "^4.12.0",
         "tailwindcss": "^1.1.1",
         "vue": "^2.6.10",
-        "vue-popperjs": "^2.0.4",
-        "vue-select": "^3.1.0",
+        "vue-multiselect": "^2.1.6",
+        "vue-popperjs": "^2.2.0",
+        "vue-select": "^3.2.0",
         "vue-snotify": "^3.2.1",
-        "vuedraggable": "^2.23.0"
+        "vue-swatches": "^1.0.4",
+        "vuedraggable": "^2.23.2",
+        "vuex": "^3.1.1",
+        "weekstart": "^1.0.0"
     }
 }

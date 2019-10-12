@@ -17,3 +17,9 @@ Vue.use(Snotify);
 
 import Popper from 'vue-popperjs';
 Vue.component('popper', Popper);
+
+import Swatches from 'vue-swatches';
+Vue.component('swatches', Swatches);
+
+import Multiselect from 'vue-multiselect';
+Vue.component('multiselect', Multiselect);

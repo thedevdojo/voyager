@@ -1,9 +1,9 @@
 <template>
-    <div class="w-full text-right" v-if="$eventHub.locales.length > 1">
+    <div class="button-group" v-if="$language.locales.length > 1">
         <button
-            v-for="locale in $eventHub.locales"
+            v-for="locale in $language.locales"
             v-bind:key="locale"
-            :class="'voyager-button blue small uppercase ' + ($eventHub.locale == locale ? 'bold' : '')"
+            :class="'button blue px-2 uppercase ' + ($language.locale == locale ? 'active' : '')"
             @click="changeLocale(locale)">
             {{ locale }}
         </button>
@@ -14,7 +14,7 @@
 export default {
     methods: {
         changeLocale: function (locale) {
-            this.$eventHub.locale = locale;
+            Vue.prototype.$language.locale = locale;
         }
     }
 };

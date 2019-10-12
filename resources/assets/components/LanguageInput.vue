@@ -16,10 +16,10 @@ export default {
     computed: {
         currentText: {
             get: function () {
-                return this.translations[this.$eventHub.locale];
+                return this.translations[this.$language.locale];
             },
             set: function (value) {
-                Vue.set(this.translations, this.$eventHub.locale, value);
+                Vue.set(this.translations, this.$language.locale, value);
                 this.$emit('input', this.translations);
             }
         }

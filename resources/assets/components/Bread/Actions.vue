@@ -16,11 +16,6 @@
 <script>
 export default {
     props: ['actions', 'keys', 'bread', 'mass'],
-    data: function () {
-        return {
-            
-        };
-    },
     methods: {
         getTitle: function (str) {
             var length = 1;
@@ -78,18 +73,21 @@ export default {
         },
         callAction: function (action) {
             var vm = this;
-            console.log(vm.getUrl(action));
+            var parameter = {
+                keys: vm.keys,
+                _token: document.head.querySelector('meta[name="csrf-token"]').content
+            };
+            parameter = Object.assign(parameter, action.parameter);
+
             axios({
                 method: action.method,
                 url: vm.getUrl(action),
-                data: {
-                    keys: vm.keys,
-                    _token: document.head.querySelector('meta[name="csrf-token"]').content
-                }
+                data: parameter
             })
             .then(function (response) {
                 if (response.data.success) {
                     vm.$snotify.success(response.data.message);
+                    vm.$emit('reset');
                 } else {
                     vm.$snotify.error(response.data.message);
                 }
@@ -103,15 +101,24 @@ export default {
     computed: {
         massActions: function () {
             var vm = this;
-            return this.actions.filter(function (action) {
+            var actions = this.actions;
+            if (this.isObject(actions)) {
+                actions = Object.values(actions);
+            }
+            return actions.filter(function (action) {
                 return action.massAction && vm.keys.length > 0;
             });
         },
         normalActions: function () {
-            return this.actions.filter(function (action) {
+            var actions = this.actions;
+            if (this.isObject(actions)) {
+                actions = Object.values(actions);
+            }
+
+            return actions.filter(function (action) {
                 return !action.massAction;
             });
         }
-    }
+    },
 };
 </script>

@@ -4,21 +4,23 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>{{ __('voyager::generic.field') }}</th>
                     <th>{{ __('voyager::generic.type') }}</th>
+                    <th>{{ __('voyager::generic.field') }}</th>
                     <th>{{ __('voyager::generic.title') }}</th>
                     <th>{{ __('voyager::manager.searchable') }}</th>
+                    <th>{{ __('voyager::manager.show_in_global_search') }}</th>
                     <th>{{ __('voyager::manager.sortable') }}</th>
                     <th>{{ __('voyager::manager.sorted_by_default') }}</th>
                     <th>{{ __('voyager::manager.link') }}</th>
                     <th>{{ __('voyager::generic.actions') }}</th>
                 </tr>
             </thead>
-            <draggable v-model="layout.formfields" handle=".drag-handle" tag="tbody" @end="refresh()">
-                <tr v-for="(formfield, i) in layout.formfields" v-bind:key="i">
+            <draggable v-model="layout.formfields" handle=".drag-handle" tag="tbody">
+                <tr v-for="(formfield, i) in layout.formfields" :key="i">
                     <th class="drag-handle">&lt;&gt;</th>
+                    <th>{{ getFormfieldByType(formfield.type).name }}</th>
                     <th>
-                        <select v-model="formfield.options.field" class="voyager-input">
+                        <select v-model="formfield.field" class="voyager-input">
                             <optgroup :label="__('voyager::generic.fields')">
                                 <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
                             </optgroup>
@@ -31,7 +33,6 @@
                             </optgroup>
                         </select>
                     </th>
-                    <th>{{ $eventHub.getFormfieldByType(formfield.type).name }}</th>
                     <th>
                         <language-input
                             class="voyager-input"
@@ -43,36 +44,47 @@
                         <input
                             type="checkbox"
                             v-model="formfield.options.searchable"
-                            :disabled="computed.includes(formfield.options.field)">
+                            :disabled="computed.includes(formfield.field)">
+                    </th>
+                    <th>
+                        <input
+                            type="radio"
+                            name="global_search"
+                            v-model="layout.global_search"
+                            :value="formfield.field">
                     </th>
                     <th>
                         <input
                             type="checkbox"
                             v-model="formfield.options.sortable"
-                            :disabled="computed.includes(formfield.options.field)">
+                            :disabled="computed.includes(formfield.field)">
                     </th>
                     <th>
                         <input
                             type="radio"
                             name="default_sorted"
                             v-model="layout.default_sort_field"
-                            :value="formfield.options.field"
-                            :disabled="computed.includes(formfield.options.field)">
+                            :value="formfield.field"
+                            :disabled="computed.includes(formfield.field)">
                     </th>
                     <th>
-                        <input
-                            type="checkbox"
-                            v-model="formfield.options.link">
+                        <select class="voyager-input" v-model="formfield.options.link">
+                            <option :value="false">{{ __('voyager::generic.no') }}</option>
+                            <option value="read">{{ __('voyager::generic.read') }}</option>
+                            <option value="read_new">{{ __('voyager::generic.read') }} ({{ __('voyager::generic.new_window') }})</option>
+                            <option value="edit">{{ __('voyager::generic.edit') }}</option>
+                            <option value="edit_new">{{ __('voyager::generic.edit') }} ({{ __('voyager::generic.new_window') }})</option>
+                        </select>
                     </th>
-                    <th class="inline flex">
-                        <button @click="deleteFormfield(i)" class="voyager-button red small">{{ __('voyager::generic.delete') }}</button>
+                    <th class="flex">
+                        <button @click="deleteFormfield(i)" class="button red small">{{ __('voyager::generic.delete') }}</button>
                         
                         <popper trigger="click" :options="{ placement: 'left' }">
                             <div class="popper">
                                 ...
                             </div>
                             <div slot="reference">
-                                <button class="voyager-button blue small">{{ __('voyager::generic.options') }}</button>
+                                <button class="button blue small">{{ __('voyager::generic.options') }}</button>
                             </div>
                         </popper>
                     </th>
@@ -85,21 +97,10 @@
 <script>
 export default {
     props: ['layout', 'fields', 'computed', 'relationships'],
-    data: function () {
-        return {
-            
-        };
-    },
     methods: {
         deleteFormfield: function (id) {
             this.$parent.deleteFormfield(id);
         },
-        refresh: function () {
-            this.$forceUpdate();
-        },
     },
-    computed: {
-        
-    }
 };
 </script>

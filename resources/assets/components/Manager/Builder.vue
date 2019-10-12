@@ -30,31 +30,48 @@
             </div>
         </div>
         <div class="flex mb-4">
-            <div class="w-1/3 m-1">
+            <div class="w-1/4 m-1">
                 <label class="voyager-label">{{ __('voyager::manager.model') }}</label>
                 <input
                     class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.model')"
                     v-model="bread.model">
             </div>
-            <div class="w-1/3 m-1">
+            <div class="w-1/4 m-1">
                 <label class="voyager-label">{{ __('voyager::manager.controller') }}</label>
                 <input
                     class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.controller')"
                     v-model="bread.controller">
             </div>
-            <div class="w-1/3 m-1">
+            <div class="w-1/4 m-1">
                 <label class="voyager-label">{{ __('voyager::manager.policy') }}</label>
                 <input
                     class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.policy')"
                     v-model="bread.policy">
             </div>
+            <div class="w-1/4 m-1">
+                <label class="voyager-label">{{ __('voyager::manager.soft_deletes') }}</label>
+                
+                <select class="voyager-input" v-model="bread.soft_deletes">
+                    <option v-bind:value="'hide'">{{ __('voyager::generic.hide') }}</option>
+                    <option v-bind:value="'show'">{{ __('voyager::generic.show') }}</option>
+                    <option v-bind:value="'select'">{{ __('voyager::generic.select') }}</option>
+                    <option v-bind:value="'only'">{{ __('voyager::generic.only') }}</option>
+                </select>
+                <label class="voyager-label mt-3">
+                    <input type="checkbox" v-model="bread.restore">
+                    <span class="text-sm">
+                        {{ __('voyager::manager.allow_restore') }}
+                    </span>
+                </label>
+                <p class="hint">{{ __('voyager::manager.soft_deletes_help') }}</p>
+            </div>
         </div>
 
         <div class="text-right">
-            <button class="voyager-button blue" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
+            <button class="button blue" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
         </div>
 
         <div>
@@ -65,13 +82,13 @@
             </select>
             <select v-if="currentLayout" @change="addFormfield" class="voyager-input small w-auto">
                 <option v-bind:value="''">{{ __('voyager::manager.add_formfield') }}</option>
-                <option v-for="(formfield, i) in $eventHub.formfields" v-bind:value="formfield.type" v-bind:key="i">
+                <option v-for="(formfield, i) in $globals.formfields" v-bind:value="formfield.type" v-bind:key="i">
                     {{ formfield.name }}
                 </option>
             </select>
-            <button class="voyager-button green small" @click="addLayout('view')">{{ __('voyager::manager.add_view') }}</button>
-            <button class="voyager-button green small" @click="addLayout('list')">{{ __('voyager::manager.add_list') }}</button>
-            <button class="voyager-button green small" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>
+            <button class="button green small" @click="addLayout('view')">{{ __('voyager::manager.add_view') }}</button>
+            <button class="button green small" @click="addLayout('list')">{{ __('voyager::manager.add_list') }}</button>
+            <button class="button green small" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>
             <div v-if="bread.layouts.length == 0">
                 {{ __('voyager::manager.create_layout_first') }}
             </div>
@@ -185,15 +202,18 @@ export default {
                 return;
             }
 
-            var formfield = this.$eventHub.formfields.filter(function (formfield) {
+            var formfield = this.$globals.formfields.filter(function (formfield) {
                 return formfield.type == event.target.value;
             }).pop();
 
             if (formfield) {
+                var options = JSON.parse(JSON.stringify(formfield.options));
+                options.link = false;
                 this.currentLayout.formfields.push({
                     type: formfield.type,
                     field: '',
-                    options: formfield.options,
+                    options: options,
+                    rules: []
                 });
             }
 
@@ -245,6 +265,14 @@ export default {
         if (this.bread.layouts.length > 0) {
             this.currentLayoutId = 0;
         }
+        var params = {};
+        location.search.substr(1).split("&").forEach(function (item) {
+            params[item.split("=")[0]] = item.split("=")[1]
+        });
+        if (params['layout']) {
+            this.currentLayoutId = params['layout'];
+        }
+        Vue.prototype.$language.localePicker = true;
     }
 };
 </script>
