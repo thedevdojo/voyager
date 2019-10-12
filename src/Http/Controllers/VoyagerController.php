@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
@@ -46,9 +45,8 @@ class VoyagerController extends Controller
                 $fields->each(function ($field) use (&$query, $q) {
                     $query->orWhere($field, 'LIKE', '%'.$q.'%');
                 });
-                
             });
-            
+
             $results = $query->get()->transform(function ($result) use ($layout) {
                 return [
                     'id'   => $result->getKey(),
@@ -62,7 +60,7 @@ class VoyagerController extends Controller
                 'bread'   => $bread->name_plural,
                 'results' => $results,
                 'count'   => $results->count(),
-            ]
+            ],
         ];
     }
 }

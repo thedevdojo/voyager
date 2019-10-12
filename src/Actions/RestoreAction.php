@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager\Actions;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 class RestoreAction extends BaseAction
 {
     public $method = 'delete';

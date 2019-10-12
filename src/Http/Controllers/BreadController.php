@@ -4,7 +4,6 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use TCG\Voyager\Facades\Voyager;
 
 class BreadController extends Controller
@@ -39,7 +38,7 @@ class BreadController extends Controller
             } elseif ($bread->soft_deletes == 'select') {
                 if ($request->softDeletes == 'show') {
                     $query = $model->withTrashed()->select('*');
-                } else if ($request->softDeletes == 'only') {
+                } elseif ($request->softDeletes == 'only') {
                     $query = $model->onlyTrashed()->select('*');
                 }
             }
@@ -72,7 +71,7 @@ class BreadController extends Controller
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('add');
         $this->loadAccessors($data, $bread);
-        $data = new \stdClass;
+        $data = new \stdClass();
         //$this->authorize('add', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data'));
@@ -82,7 +81,7 @@ class BreadController extends Controller
     {
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('add');
-        $model = new $bread->model;
+        $model = new $bread->model();
         $data = collect(json_decode($request->get('data') ?? '{}'));
         $validator = $this->getValidator($layout, $data);
         if ($validator->fails()) {
@@ -177,7 +176,7 @@ class BreadController extends Controller
 
         foreach ($ids as $id) {
             // Validate all IDs exist
-            $data = $bread->usesSoftDeletes() ? $model->withTrashed()->find($id): $model->find($id);
+            $data = $bread->usesSoftDeletes() ? $model->withTrashed()->find($id) : $model->find($id);
             if (!$data) {
                 return [
                     'success' => false,
