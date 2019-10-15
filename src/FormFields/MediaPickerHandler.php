@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\FormFields;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class MediaPickerHandler extends AbstractHandler
@@ -26,7 +27,7 @@ class MediaPickerHandler extends AbstractHandler
         }
 
         if (isset($options->base_path)) {
-            $options->base_path = str_replace('{uid}', app('VoyagerAuth')->user()->getKey(), $options->base_path);
+            $options->base_path = str_replace('{uid}', Auth::user()->getKey(), $options->base_path);
             if (Str::contains($options->base_path, '{date:')) {
                 $options->base_path = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                     return \Carbon\Carbon::now()->format($date[1]);
