@@ -22,7 +22,7 @@
                         type="text"
                         placeholder="742 Evergreen Terrace"
                         id="places-autocomplete"
-                        v-on:keypress="if (event.which === 13) { event.preventDefault(); }"
+                        v-on:keypress="onPlaceKeypress($event)"
                     />
                  </div>
                 <div class="col-md-2">
@@ -133,6 +133,12 @@
 
                 onMapDrag: function(event) {
                     this.setLatLng(event.latLng.lat(), event.latLng.lng());
+                },
+
+                onPlaceKeypress: function(event) {
+                    if (event.which === 13) {
+                        event.preventDefault()
+                    }
                 },
 
                 onPlaceChange: function() {
