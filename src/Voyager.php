@@ -64,6 +64,7 @@ class Voyager
             if (!File::isDirectory($this->breadPath)) {
                 File::makeDirectory($this->breadPath);
             }
+
             return collect(File::files($this->breadPath))->transform(function ($bread) {
                 return new BreadClass($bread->getPathName());
             })->filter(function ($bread) {

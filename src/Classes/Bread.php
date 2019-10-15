@@ -93,8 +93,6 @@ class Bread implements \JsonSerializable
         if ($builder->hasColumn($this->table, $column)) {
             return $builder->getColumnType($this->table, $column);
         }
-
-        return null;
     }
 
     public function getComputedProperties()

@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager\Formfields;
 
-use Illuminate\Support\Carbon;
-
 class DateTime extends BaseFormfield
 {
     public $type = 'date-time';
@@ -21,11 +19,8 @@ class DateTime extends BaseFormfield
     {
         // date, datetime, time
         if ($type == 'date') {
-
         } elseif ($type == 'datetime') {
-
-        } else if ($type == 'time') {
-
+        } elseif ($type == 'time') {
         }
 
         return $data;
