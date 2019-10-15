@@ -198,6 +198,13 @@ class DataType extends Model
                         'taggable'    => $requestData['relationship_taggable_'.$relationship] ?? '0',
                     ];
 
+                    // Get slug of relationship table for update
+                    $dataType = self::where(['name' => $relationshipDetails['table']])->first();
+
+                    if ($dataType) {
+                        $relationshipDetails['slug'] = $dataType->slug;
+                    }
+
                     $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
                 }
             }

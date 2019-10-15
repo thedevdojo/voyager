@@ -266,6 +266,13 @@ class VoyagerBreadController extends Controller
                 'taggable'    => $request->relationship_taggable,
             ];
 
+            // Get slug of relationship table
+            $dataType = Voyager::modelClass('DataType')->where(['name' => $request->relationship_table])->first();
+
+            if ($dataType) {
+                $relationshipDetails['slug'] = $dataType->slug;
+            }
+
             $className = Voyager::modelClass('DataRow');
             $newRow = new $className();
 
@@ -346,8 +353,8 @@ class VoyagerBreadController extends Controller
         Voyager::model('DataRow')->destroy($id);
 
         return back()->with([
-                'message'    => 'Successfully deleted relationship.',
-                'alert-type' => 'success',
-            ]);
+            'message'    => 'Successfully deleted relationship.',
+            'alert-type' => 'success',
+        ]);
     }
 }
