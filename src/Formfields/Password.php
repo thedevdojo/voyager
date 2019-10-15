@@ -16,8 +16,8 @@ class Password extends BaseFormfield
     /**
      * Transform data to be stored in the database after updating.
      *
-     * @param mixed $data The input-data
-     * @param mixed $old  The old data
+     * @param mixed  $data The input-data
+     * @param mixed  $old  The old data
      * @param string $type The type of the table-column (eg. text, int, varchar, etc)
      *
      * @return mixed The processed data
@@ -34,8 +34,8 @@ class Password extends BaseFormfield
     /**
      * Transform data to be stored in the database after adding.
      *
-     * @param mixed $data The input-data
-     * @param mixed $old  The old data (null)
+     * @param mixed  $data The input-data
+     * @param mixed  $old  The old data (null)
      * @param string $type The type of the table-column (eg. text, int, varchar, etc)
      *
      * @return mixed The processed data
