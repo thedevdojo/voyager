@@ -95,6 +95,24 @@ class VoyagerBaseController extends Controller
             $this->removeRelationshipField($dataType, 'browse');
 
             if ($search->value != '' && $search->key && $search->filter) {
+                
+                // This loop gets relation fields in searches
+                foreach ($dataType->browseRows as $row) {
+                    // We will do some work if its a relation field only.
+                    if (
+                        $row->type == 'relationship' &&
+                        $search->key == $row->details->column &&
+                        $row->details->type == 'belongsTo'
+                    ) {
+                        // search key should be the same as related column
+                        $relatedTable = Voyager::model('DataType')->where('slug', '=', $row->details->table)->first('details');
+                        $query->leftJoin($row->details->table, $dataType->name . '.' . $search->key, $row->details->table . '.id');
+                        if (isset($relatedTable->details->default_search_key)) {
+                            $search->key = $row->details->table . '.' . $relatedTable->details->default_search_key;
+                        }
+                    }
+                }
+                
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
                 $query->where($search->key, $search_filter, $search_value);
@@ -103,13 +121,17 @@ class VoyagerBaseController extends Controller
             if ($orderBy && in_array($orderBy, $dataType->fields())) {
                 $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
                 $dataTypeContent = call_user_func([
-                    $query->orderBy($orderBy, $querySortOrder),
+                    $query->orderBy($dataType->name . '.' . $orderBy, $querySortOrder),
                     $getter,
                 ]);
             } elseif ($model->timestamps) {
-                $dataTypeContent = call_user_func([$query->latest($model::CREATED_AT), $getter]);
+                $dataTypeContent = call_user_func([
+                    $query->latest($dataType->name . '.created_at'), $getter
+                ]);
             } else {
-                $dataTypeContent = call_user_func([$query->orderBy($model->getKeyName(), 'DESC'), $getter]);
+                $dataTypeContent = call_user_func([
+                    $query->orderBy($dataType->name . '.' . $model->getKeyName(), 'DESC'), $getter
+                ]);
             }
 
             // Replace relationships' keys for labels and create READ links if a slug is provided.
