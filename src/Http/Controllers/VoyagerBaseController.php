@@ -281,6 +281,11 @@ class VoyagerBaseController extends Controller
             $view = "voyager::$slug.edit-add";
         }
 
+        if (!empty($request->header('referer'))) {
+            // TODO laravel/framework v5.7.11+ support setIntendedUrl
+            session(['url.intended' => $request->header('referer')]);
+        }
+
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
@@ -314,7 +319,7 @@ class VoyagerBaseController extends Controller
         event(new BreadDataUpdated($dataType, $data));
 
         return redirect()
-        ->route("voyager.{$dataType->slug}.index")
+        ->intended(route("voyager.{$dataType->slug}.index"))
         ->with([
             'message'    => __('voyager::generic.successfully_updated')." {$dataType->getTranslatedAttribute('display_name_singular')}",
             'alert-type' => 'success',
@@ -456,7 +461,7 @@ class VoyagerBaseController extends Controller
             event(new BreadDataDeleted($dataType, $data));
         }
 
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+        return redirect($request->header('referer') ?: route("voyager.{$dataType->slug}.index"))->with($data);
     }
 
     public function restore(Request $request, $id)
