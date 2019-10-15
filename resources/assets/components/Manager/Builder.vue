@@ -66,6 +66,12 @@
                         {{ __('voyager::manager.allow_restore') }}
                     </span>
                 </label>
+                <label class="voyager-label mt-3">
+                    <input type="checkbox" v-model="bread.force_delete">
+                    <span class="text-sm">
+                        {{ __('voyager::manager.allow_force_delete') }}
+                    </span>
+                </label>
                 <p class="hint">{{ __('voyager::manager.soft_deletes_help') }}</p>
             </div>
         </div>

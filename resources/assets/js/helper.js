@@ -44,6 +44,11 @@ window.snake_case = function (input) {
 };
 Vue.prototype.snake_case = snake_case;
 
+window.slug = function (input) {
+    return window.slugify(input);
+};
+Vue.prototype.slug = slug;
+
 window.route = function ()
 {
     var args = Array.prototype.slice.call(arguments);

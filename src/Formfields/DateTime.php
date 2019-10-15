@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\Formfields;
 
+use Illuminate\Support\Carbon;
+
 class DateTime extends BaseFormfield
 {
     public $type = 'date-time';
@@ -9,11 +11,23 @@ class DateTime extends BaseFormfield
     public function __construct()
     {
         $this->name = __('voyager::bread.formfield_date_time');
-        $this->options['placeholder'] = '';
-        $this->options['default_value'] = '';
-        $this->options['disabled'] = false;
-        $this->options['min'] = false;
-        $this->options['max'] = false;
-        $this->options['step'] = false;
+        $this->options['type'] = 'datetime';
+        $this->options['mode'] = 'all';
+        $this->options['format'] = 'd-m-Y H:i';
+        $this->options['range'] = '';
+    }
+
+    public function update($data, $old, $type = null)
+    {
+        // date, datetime, time
+        if ($type == 'date') {
+
+        } elseif ($type == 'datetime') {
+
+        } else if ($type == 'time') {
+
+        }
+
+        return $data;
     }
 }

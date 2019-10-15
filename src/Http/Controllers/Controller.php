@@ -80,7 +80,7 @@ abstract class Controller extends BaseController
         $layout->formfields->each(function ($formfield) use (&$data, $old, $bread, $method) {
             $field = $formfield->field;
             $value = $data->get($field, null);
-            $value = $formfield->{$method}($value, ($old->{$field} ?? null));
+            $value = $formfield->{$method}($value, ($old->{$field} ?? null), $bread->getFieldType($field));
             if ($bread->isFieldTranslatable($field)) {
                 // Todo: We need to test for casts here
                 $value = json_encode($value);

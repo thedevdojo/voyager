@@ -10,7 +10,6 @@ use TCG\Voyager\Classes\Bread as BreadClass;
 
 class Voyager
 {
-    protected $breads;
     protected $breadPath;
     protected $actions;
     protected $formfields;
@@ -61,12 +60,11 @@ class Voyager
      */
     public function getBreads()
     {
-        if (!$this->breads) {
-            //$this->breads = Cache::rememberForever('voyager-breads', function () {
+        return Cache::rememberForever('voyager-breads', function () {
             if (!File::isDirectory($this->breadPath)) {
                 File::makeDirectory($this->breadPath);
             }
-            $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {
+            return collect(File::files($this->breadPath))->transform(function ($bread) {
                 return new BreadClass($bread->getPathName());
             })->filter(function ($bread) {
                 if (!$bread->parse_failed && !$bread->isValid()) {
@@ -75,10 +73,7 @@ class Voyager
 
                 return $bread->isValid();
             });
-            //});
-        }
-
-        return $this->breads;
+        });
     }
 
     /**
@@ -90,11 +85,7 @@ class Voyager
      */
     public function getBread($table)
     {
-        if (!$this->breads) {
-            $this->getBreads();
-        }
-
-        return $this->breads->where('table', $table)->first();
+        return $this->getBreads()->where('table', $table)->first();
     }
 
     /**
@@ -106,11 +97,7 @@ class Voyager
      */
     public function getBreadBySlug($slug)
     {
-        if (!$this->breads) {
-            $this->getBreads();
-        }
-
-        return $this->breads->filter(function ($bread) use ($slug) {
+        return $this->getBreads()->filter(function ($bread) use ($slug) {
             return $bread->slug == $slug;
         })->first();
     }
@@ -154,7 +141,7 @@ class Voyager
      */
     public function clearBreads()
     {
-        $this->breads = null;
+        Cache::forget('voyager-breads');
     }
 
     /**

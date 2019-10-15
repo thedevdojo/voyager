@@ -45,7 +45,7 @@
                 </tr>
                 <tr>
                     <th></th>
-                    <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick="parameter.filter[formfield.field] = null; filter()">
+                    <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick.prevent="clearFilter(formfield.field)">
                         <component
                             v-if="formfield.options.searchable"
                             v-model="parameter.filter[formfield.field]"
@@ -298,9 +298,16 @@ export default {
 
             return '#';
         },
-        clearFilter: function () {
-            this.parameter.filter = {};
-            this.parameter.globalSearch = '';
+        clearFilter: function (field = null) {
+            if (field) {
+                if (!this.parameter.filter[field]) {
+                    return;
+                }
+                this.parameter.filter[field] = null;
+            } else {
+                this.parameter.filter = {};
+                this.parameter.globalSearch = '';
+            }
             this.filter();
         },
     },

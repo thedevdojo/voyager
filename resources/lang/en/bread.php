@@ -22,6 +22,7 @@ return [
     'formfield_date_time'       => 'Date and Time',
     'formfield_number'          => 'Number',
     'formfield_password'        => 'Password',
+    'formfield_slug'            => 'Slug',
     'formfield_text'            => 'Text',
     'restore_num_entries'       => 'Restore :num :display_name',
     'restore_num_entries_conf'  => 'Are you sure you want to restore :num :display_name?',

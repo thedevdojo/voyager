@@ -72,14 +72,17 @@ export default {
         data: function (field, value = null) {
             if (value) {
                 if (this.isFieldTranslatable(field)) {
-                    Vue.set(this.output[field], this.locale, value);
+                    Vue.set(this.output[field], this.$language.locale, value);
                 } else {
                     Vue.set(this.output, field, value);
                 }
+                this.$globals.$emit('formfield-input', field, value, this.isFieldTranslatable(field));
             }
 
             if (this.isFieldTranslatable(field)) {
-                return this.translate(this.output[field]);
+                var translated = this.translate(this.output[field]);
+
+                return translated;
             }
 
             return this.output[field];
@@ -125,7 +128,7 @@ export default {
         });
 
         if (this.translatable.length > 0) {
-            Vue.prototype.$language.localePicker = true;
+            this.$language.localePicker = true;
         }
     }
 };

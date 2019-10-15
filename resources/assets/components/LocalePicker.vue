@@ -14,7 +14,7 @@
 export default {
     methods: {
         changeLocale: function (locale) {
-            Vue.prototype.$language.locale = locale;
+            this.$language.locale = locale;
         }
     }
 };

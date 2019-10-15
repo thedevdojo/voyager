@@ -24,5 +24,10 @@ export default {
             }
         }
     },
+    watch: {
+        value: function (val) {
+            this.translations = this.get_input_as_translatable_object(this.value);
+        }
+    }
 };
 </script>

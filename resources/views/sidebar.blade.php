@@ -8,7 +8,7 @@
     <div class="flex-1 text-gray-600">
         <ul>
             <li>
-                <a href="/admin" class="flex items-center no-underline h-10 pl-4 relative">
+                <a :href="route('voyager.dashboard')" class="flex items-center no-underline h-10 pl-4 relative">
                     <span class="icon float-left flex justify-center items-center">                        
                         <svg width="96px" height="88px" class="w-4 h-auto float-left" viewBox="0 0 96 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

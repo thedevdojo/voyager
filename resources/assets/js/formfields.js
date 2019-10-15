@@ -4,6 +4,7 @@ let formfields = [
     'DateTime',
     'Number',
     'Password',
+    'Slug',
     'Text',
 ];
 

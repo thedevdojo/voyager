@@ -19,10 +19,11 @@ class BaseFormfield implements \JsonSerializable
      *
      * @param mixed $data The input-data
      * @param mixed $old  The old data
+     * @param string $type The type of the table-column (eg. text, int, varchar, etc)
      *
      * @return mixed The processed data
      */
-    public function update($data, $old)
+    public function update($data, $old, $type = null)
     {
         return $data;
     }
@@ -32,10 +33,11 @@ class BaseFormfield implements \JsonSerializable
      *
      * @param mixed $data The input-data
      * @param mixed $old  The old data (null)
+     * @param string $type The type of the table-column (eg. text, integer, etc)
      *
      * @return mixed The processed data
      */
-    public function store($data, $old)
+    public function store($data, $old, $type = null)
     {
         return $data;
     }

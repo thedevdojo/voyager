@@ -23,6 +23,7 @@ class Bread implements \JsonSerializable
     public $policy;
     public $soft_deletes = 'hide';
     public $restore = false;
+    public $force_delete = false;
     public $layouts = [];
 
     public $parse_failed = false;
@@ -84,6 +85,16 @@ class Bread implements \JsonSerializable
     public function getFields()
     {
         return DB::getSchemaBuilder()->getColumnListing($this->table);
+    }
+
+    public function getFieldType($column)
+    {
+        $builder = DB::getSchemaBuilder();
+        if ($builder->hasColumn($this->table, $column)) {
+            return $builder->getColumnType($this->table, $column);
+        }
+
+        return null;
     }
 
     public function getComputedProperties()
@@ -192,6 +203,7 @@ class Bread implements \JsonSerializable
             'policy'        => $this->policy,
             'soft_deletes'  => $this->soft_deletes,
             'restore'       => $this->restore,
+            'force_delete'  => $this->force_delete,
             'layouts'       => $this->layouts,
         ];
     }

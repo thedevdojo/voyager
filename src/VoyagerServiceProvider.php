@@ -29,6 +29,7 @@ class VoyagerServiceProvider extends ServiceProvider
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\DateTime::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Number::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Password::class);
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Slug::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
 
         VoyagerFacade::addAction(\TCG\Voyager\Actions\ReadAction::class);
