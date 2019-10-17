@@ -313,9 +313,13 @@ class VoyagerBaseController extends Controller
 
         event(new BreadDataUpdated($dataType, $data));
 
-        return redirect()
-        ->route("voyager.{$dataType->slug}.index")
-        ->with([
+        if (auth()->user()->can('browse', $model)) {
+            $redirect = redirect()->route("voyager.{$dataType->slug}.index");
+        } else {
+            $redirect = redirect()->back();
+        }
+
+        return $redirect->with([
             'message'    => __('voyager::generic.successfully_updated')." {$dataType->getTranslatedAttribute('display_name_singular')}",
             'alert-type' => 'success',
         ]);
@@ -389,9 +393,13 @@ class VoyagerBaseController extends Controller
         event(new BreadDataAdded($dataType, $data));
 
         if (!$request->has('_tagging')) {
-            return redirect()
-            ->route("voyager.{$dataType->slug}.index")
-            ->with([
+            if (auth()->user()->can('browse', $data)) {
+                $redirect = redirect()->route("voyager.{$dataType->slug}.index");
+            } else {
+                $redirect = redirect()->back();
+            }
+
+            return $redirect->with([
                     'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
                     'alert-type' => 'success',
                 ]);
