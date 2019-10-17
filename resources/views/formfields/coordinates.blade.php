@@ -4,46 +4,204 @@
         width: 100%;
     }
 </style>
-@forelse($dataTypeContent->getCoordinates() as $point)
-    <input type="hidden" name="{{ $row->field }}[lat]" value="{{ $point['lat'] }}" id="lat"/>
-    <input type="hidden" name="{{ $row->field }}[lng]" value="{{ $point['lng'] }}" id="lng"/>
-@empty
-    <input type="hidden" name="{{ $row->field }}[lat]" value="{{ config('voyager.googlemaps.center.lat') }}" id="lat"/>
-    <input type="hidden" name="{{ $row->field }}[lng]" value="{{ config('voyager.googlemaps.center.lng') }}" id="lng"/>
-@endforelse
 
-<script type="application/javascript">
-    function initMap() {
-        @forelse($dataTypeContent->getCoordinates() as $point)
-            var center = {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}};
-        @empty
-            var center = {lat: {{ config('voyager.googlemaps.center.lat') }}, lng: {{ config('voyager.googlemaps.center.lng') }}};
-        @endforelse
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: {{ config('voyager.googlemaps.zoom') }},
-            center: center
-        });
-        var markers = [];
-        @forelse($dataTypeContent->getCoordinates() as $point)
-            var marker = new google.maps.Marker({
-                    position: {lat: {{ $point['lat'] }}, lng: {{ $point['lng'] }}},
-                    map: map,
-                    draggable: true
-                });
-            markers.push(marker);
-        @empty
-            var marker = new google.maps.Marker({
-                    position: center,
-                    map: map,
-                    draggable: true
-                });
-        @endforelse
+@php
+    $showAutocomplete = property_exists($row->details, 'showAutocompleteInput') ? (bool)$row->details->showAutocompleteInput : true;
+    $showAutocomplete = $showAutocomplete ? 'true' : 'false';
+    $showLatLng = property_exists($row->details, 'showLatLngInput') ? (bool)$row->details->showLatLngInput : true;
+    $showLatLng = $showLatLng ? 'true' : 'false';
+@endphp
 
-        google.maps.event.addListener(marker,'dragend',function(event) {
-            document.getElementById('lat').value = this.position.lat();
-            document.getElementById('lng').value = this.position.lng();
+<div id="coordinates-formfield">
+    <coordinates
+        inline-template
+        ref="coordinates"
+        api-key="{{ config('voyager.googlemaps.key') }}"
+        :points='@json($dataTypeContent->getCoordinates() && count($dataTypeContent->getCoordinates()) ? $dataTypeContent->getCoordinates() : [[ 'lat' => config('voyager.googlemaps.center.lat'), 'lng' => config('voyager.googlemaps.center.lng') ]])'
+        :show-autocomplete="{{ $showAutocomplete }}"
+        :show-lat-lng="{{ $showLatLng }}"
+        :zoom={{ config('voyager.googlemaps.zoom') }}
+    >
+        <div>
+            <div class="form-group">
+                <div class="col-md-5" v-if="showAutocomplete">
+                    <label class="control-label">{{ __('voyager::generic.find_by_place') }}</label>
+                    <input
+                        class="form-control"
+                        type="text"
+                        placeholder="742 Evergreen Terrace"
+                        id="places-autocomplete"
+                        v-on:keypress="onInputKeyPress($event)"
+                    />
+                </div>
+                <div class="col-md-2" v-if="showLatLng">
+                    <label class="control-label">{{ __('voyager::generic.latitude') }}</label>
+                    <input
+                        class="form-control"
+                        type="number"
+                        step="any"
+                        name="{{ $row->field }}[lat]"
+                        placeholder="19.6400"
+                        v-model="lat"
+                        @change="onLatLngInputChange"
+                        v-on:keypress="onInputKeyPress($event)"
+                    />
+                </div>
+                <div class="col-md-2" v-if="showLatLng">
+                    <label class="control-label">{{ __('voyager::generic.longitude') }}</label>
+                    <input
+                        class="form-control"
+                        type="number"
+                        step="any"
+                        name="{{ $row->field }}[lng]"
+                        placeholder="-155.9969"
+                        v-model="lng"
+                        @change="onLatLngInputChange"
+                        v-on:keypress="onInputKeyPress($event)"
+                    />
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <div id="map"></div>
+        </div>
+    </coordinates>
+</div>
+
+@push('javascript')
+    <script>
+        Vue.component('coordinates', {
+            props: {
+                apiKey: {
+                    type: String,
+                    required: true,
+                },
+                points: {
+                    type: Array,
+                    required: true,
+                },
+                showAutocomplete: {
+                    type: Boolean,
+                    default: true,
+                },
+                showLatLng: {
+                    type: Boolean,
+                    default: true,
+                },
+                zoom: {
+                    type: Number,
+                    required: true,
+                }
+            },
+            data() {
+                return {
+                    autocomplete: null,
+                    lat: '',
+                    lng: '',
+                    map: null,
+                    marker: null,
+                    onChangeDebounceTimeout: null,
+                    place: null,
+                };
+            },
+            mounted() {
+                // Load Google Maps script
+                let gMapScript = document.createElement('script');
+                gMapScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key='+this.apiKey+'&callback=gMapVm.$refs.coordinates.initMap&libraries=places');
+                document.head.appendChild(gMapScript);
+            },
+            methods: {
+                initMap: function() {
+                    var vm = this;
+
+                    var center = vm.points[vm.points.length - 1];
+
+                    // Set initial LatLng
+                    this.setLatLng(center.lat, center.lng);
+
+                    // Create map
+                    vm.map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: vm.zoom,
+                        center: new google.maps.LatLng(center.lat, center.lng)
+                    });
+
+                    // Create marker
+                    vm.marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(center.lat, center.lng),
+                        map: vm.map,
+                        draggable: true
+                    });
+
+                    // Listen to map drag events
+                    google.maps.event.addListener(vm.marker, 'drag', vm.onMapDrag);
+
+                    // Setup places Autocomplete
+                    if (this.showAutocomplete) {
+                        vm.autocomplete = new google.maps.places.Autocomplete(document.getElementById('places-autocomplete'));
+                        places = new google.maps.places.PlacesService(vm.map);
+                        vm.autocomplete.addListener('place_changed', vm.onPlaceChange);
+                    }
+                },
+
+                setLatLng: function(lat, lng) {
+                    this.lat = lat;
+                    this.lng = lng;
+                },
+
+                moveMapAndMarker: function(lat, lng) {
+                    this.marker.setPosition(new google.maps.LatLng(lat, lng));
+                    this.map.panTo(new google.maps.LatLng(lat, lng));
+                },
+
+                onMapDrag: function(event) {
+                    this.setLatLng(event.latLng.lat(), event.latLng.lng());
+
+                    this.onChange('mapDragged');
+                },
+
+                onInputKeyPress: function(event) {
+                    if (event.which === 13) {
+                        event.preventDefault();
+                    }
+                },
+
+                onPlaceChange: function() {
+                    this.place = this.autocomplete.getPlace();
+
+                    if (this.place.geometry) {
+                        this.setLatLng(this.place.geometry.location.lat(), this.place.geometry.location.lng());
+                        this.moveMapAndMarker(this.place.geometry.location.lat(), this.place.geometry.location.lng());
+                    }
+
+                    this.onChange('placeChanged');
+                },
+
+                onLatLngInputChange: function(event) {
+                    this.moveMapAndMarker(this.lat, this.lng);
+
+                    this.onChange('latLngChanged');
+                },
+
+                onChange: function(eventType) {
+                    @if (property_exists($row->details, 'onChange'))
+                        if (this.onChangeDebounceTimeout) {
+                            clearTimeout(this.onChangeDebounceTimeout);
+                        }
+
+                        self = this
+                        this.onChangeDebounceTimeout = setTimeout(function() {
+                            {{ $row->details->onChange }}(eventType, {
+                                lat: self.lat,
+                                lng: self.lng,
+                                place: self.place
+                            });
+                        }, 300);
+                    @endif
+                },
+            }
         });
-    }
-</script>
-<div id="map"></div>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('voyager.googlemaps.key') }}&callback=initMap"></script>
+
+        var gMapVm = new Vue({ el: '#coordinates-formfield' });
+    </script>
+@endpush

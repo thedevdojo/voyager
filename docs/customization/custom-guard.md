@@ -47,7 +47,7 @@ class Admin extends \TCG\Voyager\Models\User
 ```
 
 Next, create a guard named `admin` in your `config/auth.php`:
-```
+```php
 'guards' => [
     'admin' => [
         'driver' => 'session',
@@ -58,7 +58,7 @@ Next, create a guard named `admin` in your `config/auth.php`:
 ],
 ```
 And a user provider called `admins`:
-```
+```php
 'providers' => [
     'admins' => [
         'driver' => 'eloquent',
