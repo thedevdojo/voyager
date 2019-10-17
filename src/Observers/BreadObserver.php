@@ -10,7 +10,6 @@ class BreadObserver
     public function updated(DataType $bread)
     {
         if (config('voyager.bread.add_menu_item') && file_exists(base_path('routes/web.php'))) {
-
             $attributes = $bread->getDirty();
 
             $menu = Voyager::model('Menu')->where('name', config('voyager.bread.default_menu'))->firstOrFail();
