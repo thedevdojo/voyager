@@ -97,7 +97,7 @@ class VoyagerSettingsController extends Controller
                 continue;
             }
 
-            if ($setting->type == 'file' && $content == json_encode([])) {
+            if ($setting->type == 'file' && $content == null) {
                 continue;
             }
 

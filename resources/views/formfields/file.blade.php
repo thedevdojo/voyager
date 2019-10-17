@@ -4,7 +4,7 @@
           <div data-field-name="{{ $row->field }}">
             <a class="fileType" target="_blank"
               href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) ?: '' }}"
-              data-file-name="{{ $file->original_name }}" data-id="{{ $dataTypeContent->id }}">
+              data-file-name="{{ $file->original_name }}" data-id="{{ $dataTypeContent->getKey() }}">
               {{ $file->original_name ?: '' }}
             </a>
             <a href="#" class="voyager-x remove-multi-file"></a>
@@ -14,7 +14,7 @@
       <div data-field-name="{{ $row->field }}">
         <a class="fileType" target="_blank"
           href="{{ Storage::disk(config('voyager.storage.disk'))->url($dataTypeContent->{$row->field}) }}"
-          data-file-name="{{ $dataTypeContent->{$row->field} }}" data-id="{{ $dataTypeContent->id }}">>
+          data-file-name="{{ $dataTypeContent->{$row->field} }}" data-id="{{ $dataTypeContent->getKey() }}">>
           Download
         </a>
         <a href="#" class="voyager-x remove-single-file"></a>

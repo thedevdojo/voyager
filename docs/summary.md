@@ -5,6 +5,7 @@
 ## Getting started
 
 * [What is Voyager](getting-started/what-is-voyager.md)
+* [Prerequisites](getting-started/prerequisites.md)
 * [Installation](getting-started/installation.md)
 * [Upgrading](getting-started/upgrading.md)
 * [Configurations](getting-started/configurations.md)
