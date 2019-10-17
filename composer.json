@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "illuminate/support": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
+        "illuminate/support": "~5.5|~6.0",
         "intervention/image": "^2.4",
         "doctrine/dbal": "^2.5",
         "larapack/doctrine-support": "~0.1.4",
@@ -27,10 +27,10 @@
     "require-dev": {
         "phpunit/phpcov": "~4.0|~5.0|~6.0",
         "phpunit/phpunit": "~5.7.14|~6.1|~7.0|~8.0",
-        "laravel/framework": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
-        "orchestra/testbench": "~3.0",
+        "laravel/framework": "~5.5|~6.0",
+        "orchestra/testbench": "~3.0|~4.0",
         "laravel/browser-kit-testing": "~2.0.0|~3.0.0|~4.0.0|~5.0.0|~5.1",
-        "orchestra/testbench-browser-kit": "~3.5|~3.6|~3.7|~3.8"
+        "orchestra/testbench-browser-kit": "~3.5|~3.6|~3.7|~3.8|~4.0.0"
     },
     "autoload": {
         "psr-4": {
