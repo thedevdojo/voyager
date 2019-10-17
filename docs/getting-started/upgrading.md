@@ -1,11 +1,10 @@
 # Upgrading
 
-## Upgrading 1.2 to 1.x
+## Upgrading 1.2 to 1.3
 
-### Laravel and PHP versions
-
-Support for Laravel 6.0 was added in Voyager 1.3 and therefore the minimum PHP version is now 7.2.  
-Please update your versions accordingly!
+{% hint style="info" %}
+Please take a look at our [prerequisites](../getting-started/prerequisites.md) before upgrading!
+{% endhint %}
 
 ### Update your Composer.json
 
@@ -13,7 +12,7 @@ To update to the latest version inside of your composer.json file make sure to u
 
 `tcg/voyager": "1.3.*`
 
-And then run composer update
+And then run `composer update`
 
 ### Changes to VoyagerAuth
 The `VoyagerAuth` singleton was introduced in Voyager 1.2 and returned an instance of the guard.  
