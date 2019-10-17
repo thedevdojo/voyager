@@ -5,27 +5,36 @@
     }
 </style>
 
+@php
+    $showAutocomplete = property_exists($row->details, 'showAutocompleteInput') ? (bool)$row->details->showAutocompleteInput : true;
+    $showAutocomplete = $showAutocomplete ? 'true' : 'false';
+    $showLatLng = property_exists($row->details, 'showLatLngInput') ? (bool)$row->details->showLatLngInput : true;
+    $showLatLng = $showLatLng ? 'true' : 'false';
+@endphp
+
 <div id="coordinates-formfield">
     <coordinates
         inline-template
         ref="coordinates"
         api-key="{{ config('voyager.googlemaps.key') }}"
         :points='@json($dataTypeContent->getCoordinates() && count($dataTypeContent->getCoordinates()) ? $dataTypeContent->getCoordinates() : [[ 'lat' => config('voyager.googlemaps.center.lat'), 'lng' => config('voyager.googlemaps.center.lng') ]])'
+        :show-autocomplete="{{ $showAutocomplete }}"
+        :show-lat-lng="{{ $showLatLng }}"
         :zoom={{ config('voyager.googlemaps.zoom') }}
     >
         <div>
             <div class="form-group">
-                <div class="col-md-5">
+                <div class="col-md-5" v-if="showAutocomplete">
                     <label class="control-label">Find by Place</label>
                     <input
                         class="form-control"
                         type="text"
                         placeholder="742 Evergreen Terrace"
                         id="places-autocomplete"
-                        v-on:keypress="onPlaceKeypress($event)"
+                        v-on:keypress="onInputKeyPress($event)"
                     />
-                 </div>
-                <div class="col-md-2">
+                </div>
+                <div class="col-md-2" v-if="showLatLng">
                     <label class="control-label">Latitude</label>
                     <input
                         class="form-control"
@@ -35,9 +44,10 @@
                         placeholder="19.6400"
                         v-model="lat"
                         @change="onLatLngInputChange"
+                        v-on:keypress="onInputKeyPress($event)"
                     />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2" v-if="showLatLng">
                     <label class="control-label">Longitude</label>
                     <input
                         class="form-control"
@@ -47,6 +57,7 @@
                         placeholder="-155.9969"
                         v-model="lng"
                         @change="onLatLngInputChange"
+                        v-on:keypress="onInputKeyPress($event)"
                     />
                 </div>
 
@@ -70,6 +81,14 @@
                     type: Array,
                     required: true,
                 },
+                showAutocomplete: {
+                    type: Boolean,
+                    default: true,
+                },
+                showLatLng: {
+                    type: Boolean,
+                    default: true,
+                },
                 zoom: {
                     type: Number,
                     required: true,
@@ -82,6 +101,8 @@
                     lng: '',
                     map: null,
                     marker: null,
+                    onChangeDebounceTimeout: null,
+                    place: null,
                 };
             },
             mounted() {
@@ -116,9 +137,11 @@
                     google.maps.event.addListener(vm.marker, 'drag', vm.onMapDrag);
 
                     // Setup places Autocomplete
-                    vm.autocomplete = new google.maps.places.Autocomplete(document.getElementById('places-autocomplete'));
-                    places = new google.maps.places.PlacesService(vm.map);
-                    vm.autocomplete.addListener('place_changed', vm.onPlaceChange);
+                    if (this.showAutocomplete) {
+                        vm.autocomplete = new google.maps.places.Autocomplete(document.getElementById('places-autocomplete'));
+                        places = new google.maps.places.PlacesService(vm.map);
+                        vm.autocomplete.addListener('place_changed', vm.onPlaceChange);
+                    }
                 },
 
                 setLatLng: function(lat, lng) {
@@ -133,24 +156,48 @@
 
                 onMapDrag: function(event) {
                     this.setLatLng(event.latLng.lat(), event.latLng.lng());
+
+                    this.onChange('mapDragged');
                 },
 
-                onPlaceKeypress: function(event) {
+                onInputKeyPress: function(event) {
                     if (event.which === 13) {
-                        event.preventDefault()
+                        event.preventDefault();
                     }
                 },
 
                 onPlaceChange: function() {
-                    var place = this.autocomplete.getPlace();
-                    if (place.geometry) {
-                        this.setLatLng(place.geometry.location.lat(), place.geometry.location.lng());
-                        this.moveMapAndMarker(place.geometry.location.lat(), place.geometry.location.lng());
+                    this.place = this.autocomplete.getPlace();
+
+                    if (this.place.geometry) {
+                        this.setLatLng(this.place.geometry.location.lat(), this.place.geometry.location.lng());
+                        this.moveMapAndMarker(this.place.geometry.location.lat(), this.place.geometry.location.lng());
                     }
+
+                    this.onChange('placeChanged');
                 },
 
                 onLatLngInputChange: function(event) {
                     this.moveMapAndMarker(this.lat, this.lng);
+
+                    this.onChange('latLngChanged');
+                },
+
+                onChange: function(eventType) {
+                    @if (property_exists($row->details, 'onChange'))
+                        if (this.onChangeDebounceTimeout) {
+                            clearTimeout(this.onChangeDebounceTimeout);
+                        }
+
+                        self = this
+                        this.onChangeDebounceTimeout = setTimeout(function() {
+                            {{ $row->details->onChange }}(eventType, {
+                                lat: self.lat,
+                                lng: self.lng,
+                                place: self.place
+                            });
+                        }, 300);
+                    @endif
                 },
             }
         });
