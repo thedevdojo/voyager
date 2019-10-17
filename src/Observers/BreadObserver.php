@@ -27,7 +27,7 @@ class BreadObserver
             $menuItem->update([
                 'title'      => array_key_exists('display_name_plural', $attributes) ? $attributes['display_name_plural'] : $menuItem->title,
                 'route'      => array_key_exists('slug', $attributes) ? 'voyager.'.$attributes['slug'].'.index' : $menuItem->route,
-                'icon_class' => array_key_exists('icon', $attributes) ? $attributes['icon'] : $menuItem->icon,
+                'icon_class' => array_key_exists('icon', $attributes) ? $attributes['icon'] : $menuItem->icon_class,
             ]);
         }
     }
