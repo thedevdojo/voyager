@@ -16,6 +16,7 @@
 * [Relationships](bread/relationships.md)
 * [Formfields](bread/formfields/introduction.md)
   * [Checkbox/Multiple Checkbox/Radio](bread/formfields/checkbox.md)
+  * [Coordinates](bread/formfields/coordinates.md)
   * [Date & Time](bread/formfields/date-time.md)
   * [Dropdown](bread/formfields/dropdown.md)
   * [Images](bread/formfields/images.md)
