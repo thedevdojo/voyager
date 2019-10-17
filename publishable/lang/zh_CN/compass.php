@@ -2,7 +2,7 @@
 
 return [
     'welcome'                => '欢迎来到Voyager指南针。每一个好的应用程序都需要一个指南针来指向正确的方向。在本节中，您将找到许多资源和管理任务来帮助您构建应用程序。',
-    'links'         => [
+    'links'                  => [
         'title'                 => '链接',
         'documentation'         => '文档',
         'voyager_homepage'      => '官网',
