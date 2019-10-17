@@ -38,7 +38,7 @@ class VoyagerServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Setting::class => SettingPolicy::class,
+        Setting::class  => SettingPolicy::class,
         MenuItem::class => MenuItemPolicy::class,
     ];
 
@@ -108,31 +108,31 @@ class VoyagerServiceProvider extends ServiceProvider
             });
         }
 
-        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'voyager');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
 
         $router->aliasMiddleware('admin.user', VoyagerAdminMiddleware::class);
 
-        $this->loadTranslationsFrom(realpath(__DIR__ . '/../publishable/lang'), 'voyager');
+        $this->loadTranslationsFrom(realpath(__DIR__.'/../publishable/lang'), 'voyager');
 
         if (config('voyager.database.autoload_migrations', true)) {
             if (config('app.env') == 'testing') {
-                $this->loadMigrationsFrom(realpath(__DIR__ . '/migrations'));
+                $this->loadMigrationsFrom(realpath(__DIR__.'/migrations'));
             }
 
-            $this->loadMigrationsFrom(realpath(__DIR__ . '/../migrations'));
+            $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
         }
 
         $this->loadAuth();
 
         $this->registerViewComposers();
 
-        $this->registerObservers();
-
         $event->listen('voyager.alerts.collecting', function () {
             $this->addStorageSymlinkAlert();
         });
 
         $this->bootTranslatorCollectionMacros();
+
+        $this->registerObservers();
     }
 
     /**
@@ -140,7 +140,7 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     protected function loadHelpers()
     {
-        foreach (glob(__DIR__ . '/Helpers/*.php') as $filename) {
+        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
             require_once $filename;
         }
     }
@@ -220,7 +220,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $components = ['title', 'text', 'button'];
 
         foreach ($components as $component) {
-            $class = 'TCG\\Voyager\\Alert\\Components\\' . ucfirst(camel_case($component)) . 'Component';
+            $class = 'TCG\\Voyager\\Alert\\Components\\'.ucfirst(camel_case($component)).'Component';
 
             $this->app->bind("voyager.alert.components.{$component}", $class);
         }
@@ -244,7 +244,7 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     private function registerPublishableResources()
     {
-        $publishablePath = dirname(__DIR__) . '/publishable';
+        $publishablePath = dirname(__DIR__).'/publishable';
 
         $publishable = [
             'voyager_avatar' => [
@@ -267,7 +267,7 @@ class VoyagerServiceProvider extends ServiceProvider
     public function registerConfigs()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/publishable/config/voyager.php', 'voyager'
+            dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
         );
     }
 

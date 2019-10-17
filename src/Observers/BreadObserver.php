@@ -15,18 +15,20 @@ class BreadObserver
 
             $menu = Voyager::model('Menu')->where('name', config('voyager.bread.default_menu'))->firstOrFail();
 
-            $route = array_key_exists("slug", $attributes)
-                ? $bread->getOriginal("slug")
+            $route = array_key_exists('slug', $attributes)
+                ? $bread->getOriginal('slug')
                 : $bread->slug;
 
-            $menuItem = Voyager::model('MenuItem')->whereRoute("voyager." . $route . ".index")->first();
+            $menuItem = Voyager::model('MenuItem')->whereRoute('voyager.'.$route.'.index')->first();
 
-            if (!$menuItem) return;
+            if (!$menuItem) {
+                return;
+            };
 
             $menuItem->update([
-                "title" => array_key_exists("display_name_plural", $attributes) ? $attributes["display_name_plural"] : $menuItem->title,
-                "route" => array_key_exists("slug", $attributes) ? "voyager." . $attributes["slug"] . ".index" : $menuItem->route,
-                'icon_class' => array_key_exists("icon", $attributes) ? $attributes["icon"] : $menuItem->icon,
+                'title'      => array_key_exists('display_name_plural', $attributes) ? $attributes['display_name_plural'] : $menuItem->title,
+                'route'      => array_key_exists('slug', $attributes) ? 'voyager.'.$attributes['slug'].'.index' : $menuItem->route,
+                'icon_class' => array_key_exists('icon', $attributes) ? $attributes['icon'] : $menuItem->icon
             ]);
         }
     }
