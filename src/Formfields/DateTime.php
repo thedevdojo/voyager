@@ -47,12 +47,12 @@ class DateTime extends BaseFormfield
                 $this->field => [
                     'start' => $start,
                     'end'   => $end,
-                ]
+                ],
             ];
         }
 
         return [
-            $this->field => $data
+            $this->field => $data,
         ];
     }
 
@@ -69,7 +69,7 @@ class DateTime extends BaseFormfield
         }
 
         return [
-            $this->field => $data
+            $this->field => $data,
         ];
     }
 

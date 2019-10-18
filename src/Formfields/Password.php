@@ -26,7 +26,7 @@ class Password extends BaseFormfield
     {
         if (empty($data)) {
             return [
-                $this->field => $old
+                $this->field => $old,
             ];
         }
 
@@ -45,7 +45,7 @@ class Password extends BaseFormfield
     public function store($data, $old, $request_data, $type = null)
     {
         return [
-            $this->field => bcrypt($data)
+            $this->field => bcrypt($data),
         ];
     }
 }
