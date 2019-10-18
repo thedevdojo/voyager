@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Classes;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\Translatable;
