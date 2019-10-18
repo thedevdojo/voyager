@@ -53,7 +53,7 @@
                                      {{ __('voyager::bread.delete_bread') }}
                                 </a>
                             @else
-                                <a href="{{ route('voyager.bread.create', ['name' => $table->name]) }}"
+                                <a href="{{ route('voyager.bread.create', $table->name) }}"
                                    class="btn-sm btn-default">
                                     <i class="voyager-plus"></i> {{ __('voyager::bread.add_bread') }}
                                 </a>

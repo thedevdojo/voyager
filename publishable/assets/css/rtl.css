@@ -195,7 +195,7 @@
 
 [dir="rtl"] .panel-actions{
     left: 30px;
-    right: auto;
+    right: unset !important;
 }
 
 [dir="rtl"] code{
@@ -213,7 +213,7 @@
 }
 
 [dir="rtl"] .app-container .content-container .side-menu .navbar-nav li.dropdown > a:after {
-    right: auto !important;	
+    right: auto !important;
     left: 1em;
 }
 
@@ -357,15 +357,11 @@
  float:right;
 }
 
-[dir="rtl"] .dataTables_wrapper .dataTables_filter{float:left;text-align:right}
-
 [dir="rtl"] .app-container .side-body .container-fluid{
 	padding-left:0;
 	padding-right: 15px;
 
 	}
-[dir="rtl"] .dataTables_wrapper .dataTables_info{clear:both;float:right;padding-top:.755em}
-[dir="rtl"] .dataTables_wrapper .dataTables_paginate{float:left;text-align:right;padding-top:.25em}
 
 [dir="rtl"] .table.dataTable tbody td,
 table.dataTable tbody th {
@@ -384,4 +380,17 @@ table.dataTable tbody th {
 [dir="rtl"] .ps > .ps__scrollbar-y-rail > .ps__scrollbar-y {
     right:auto !important;
     left: 2px;
+}
+
+[dir="rtl"] .hamburger.is-active .hamburger-inner:before {
+    transform: translate3d(5px,1px,0) rotate(45deg) scaleX(.5);
+}
+
+[dir="rtl"] .hamburger.is-active .hamburger-inner:after {
+    transform: translate3d(5px,-1px,0) rotate(-45deg) scaleX(.5);
+}
+
+[dir="rtl"] .dd-list .dd-list {
+    padding-left: unset;
+    padding-right: 30px;
 }

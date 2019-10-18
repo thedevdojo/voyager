@@ -160,7 +160,11 @@
                                                     {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
 
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                    {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) : $data->{$row->field} }}
+                                                    @if ( property_exists($row->details, 'format') && !is_null($data->{$row->field}) )
+                                                        {{ \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) }}
+                                                    @else
+                                                        {{ $data->{$row->field} }}
+                                                    @endif
                                                 @elseif($row->type == 'checkbox')
                                                     @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                                         @if($data->{$row->field})
@@ -341,14 +345,14 @@
                 })
             @endif
             $('.select_all').on('click', function(e) {
-                $('input[name="row_id"]').prop('checked', $(this).prop('checked'));
+                $('input[name="row_id"]').prop('checked', $(this).prop('checked')).trigger('change');
             });
         });
 
 
         var deleteFormAction;
         $('td').on('click', '.delete', function (e) {
-            $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
+            $('#delete_form')[0].action = '{{ route('voyager.'.$dataType->slug.'.destroy', '__id') }}'.replace('__id', $(this).data('id'));
             $('#delete_modal').modal('show');
         });
 
