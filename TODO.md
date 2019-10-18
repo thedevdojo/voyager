@@ -7,3 +7,4 @@ Instead, they are listed here:
 - Rename language-strings like `voyager::bread.browse_name` and `voyager::generic.add_type` to be uniform (use `type` or `name`?)
 - DateTimePicker needs a formatting feature
 - Improve slidein styling
+- Order by relationship

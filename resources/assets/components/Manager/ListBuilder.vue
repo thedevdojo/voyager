@@ -57,7 +57,7 @@
                         <input
                             type="checkbox"
                             v-model="formfield.options.sortable"
-                            :disabled="computed.includes(formfield.field)">
+                            :disabled="computed.includes(formfield.field) || formfield.field.includes('.')">
                     </th>
                     <th>
                         <input
@@ -65,7 +65,7 @@
                             name="default_sorted"
                             v-model="layout.default_sort_field"
                             :value="formfield.field"
-                            :disabled="computed.includes(formfield.field)">
+                            :disabled="computed.includes(formfield.field) || formfield.field.includes('.')">
                     </th>
                     <th>
                         <select class="voyager-input" v-model="formfield.options.link">

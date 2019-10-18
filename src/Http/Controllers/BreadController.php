@@ -46,16 +46,16 @@ class BreadController extends Controller
 
         $perPage = $request->perPage ?? 10;
         $records = $query->count();
-        $this->loadRelationships($query, $layout);
         $this->searchQuery($query, $layout, array_filter((array) $request->filter ?? []), $request->globalSearch);
-        $this->orderQuery($query, $request->orderField ?? $layout->getDefaultSortField(), ($request->orderDir ?? 'asc'));
+        $this->orderQuery($query, $bread, $request->orderField ?? $layout->getDefaultSortField(), ($request->orderDir ?? 'asc'));
+        $query = $query->get();
         $filtered = $query->count();
         $query = $query->slice((($request->page ?? 1) - 1) * $perPage)->take($perPage);
         $this->loadAccessors($query, $bread);
         // TODO: We need to have relationships loaded at this point
         $rows = $query->transform(function ($row) use ($bread, $layout) {
-            $row['actions'] = Voyager::getActionsForEntry($bread, $layout, $row)->toArray();
-            $row = $this->prepareData(collect($row->toArray()), $row, $bread, $layout, 'browse');
+            $row->setAttribute('actions', Voyager::getActionsForEntry($bread, $layout, $row)->toArray());
+            $row = $this->prepareData($row, $row, $bread, $layout, 'browse');
 
             return $row;
         })->values();

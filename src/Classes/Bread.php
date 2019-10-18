@@ -81,15 +81,12 @@ class Bread implements \JsonSerializable
 
     public function getFields()
     {
-        return DB::getSchemaBuilder()->getColumnListing($this->table);
+        return Voyager::getFields($this->table);
     }
 
     public function getFieldType($column)
     {
-        $builder = DB::getSchemaBuilder();
-        if ($builder->hasColumn($this->table, $column)) {
-            return $builder->getColumnType($this->table, $column);
-        }
+        return Voyager::getFields($this->table)[$column] ?? null;
     }
 
     public function getComputedProperties()
@@ -111,9 +108,12 @@ class Bread implements \JsonSerializable
         if ($deep) {
             $relationships = $this->getRelationships($deep);
             foreach ($relationships as $name => $relationship) {
-                collect($relationship['bread']->getTranslatableFields(false))->each(function ($field) use ($name, $translatable) {
-                    $translatable->push($name.'.'.$field);
-                });
+                if ($relationship['bread']) {
+                    // TODO: &$translatable?
+                    collect($relationship['bread']->getTranslatableFields(false))->each(function ($field) use ($name, $translatable) {
+                        $translatable->push($name.'.'.$field);
+                    });
+                }
             }
         }
 
@@ -138,7 +138,7 @@ class Bread implements \JsonSerializable
                 $table = $relationship->getRelated()->getTable();
                 unset($relationships[$key]);
                 if (get_class($relationship) == \Illuminate\Database\Eloquent\Relations\BelongsToMany::class) {
-                    $pivot = DB::getSchemaBuilder()->getColumnListing($relationship->getTable());
+                    $pivot = array_keys(Voyager::getFields($relationship->getTable()));
                     $pivot = array_diff($pivot, [
                         $relationship->getForeignPivotKeyName(),
                         $relationship->getRelatedPivotKeyName(),
@@ -146,7 +146,7 @@ class Bread implements \JsonSerializable
                 }
                 $relationships[$name] = [
                     'bread'  => Voyager::getBread($table),
-                    'fields' => Voyager::getBread($table)->getFields(),
+                    'fields' => array_keys(Voyager::getFields($table)),
                     'type'   => basename(get_class($relationship)),
                     'pivot'  => array_values($pivot),
                 ];

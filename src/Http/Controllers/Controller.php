@@ -21,19 +21,6 @@ abstract class Controller extends BaseController
         return Voyager::getBreadBySlug($slug);
     }
 
-    protected function loadRelationships(&$query, $layout)
-    {
-        $layout->formfields->filter(function ($formfield) {
-            return Str::contains($formfield->field, '.');
-        })->transform(function ($formfield) {
-            return Str::before($formfield->field, '.');
-        })->unique()->each(function ($relationship) use ($query) {
-            $query->with([$relationship => function ($query) {
-                //
-            }]);
-        });
-    }
-
     protected function searchQuery(&$query, $layout, $filters, $global)
     {
         if ($global != '') {
@@ -62,10 +49,14 @@ abstract class Controller extends BaseController
         }
     }
 
-    protected function orderQuery(&$query, $field, $direction)
+    protected function orderQuery(&$query, $bread, $field, $direction)
     {
-        // TODO: Order by translatable
-        $query = $query->orderBy($field, $direction)->get();
+        if ($bread->isFieldTranslatable($field)) {
+            // TODO: Order by translatable
+            $query = $query->orderBy($field, $direction);
+        } else {
+            $query = $query->orderBy($field, $direction);
+        }
     }
 
     protected function loadAccessors(&$query, $bread)
@@ -79,13 +70,25 @@ abstract class Controller extends BaseController
         }
     }
 
-    protected function prepareData(Collection $data, $old, $bread, $layout, $method = 'store'): Collection
+    protected function prepareData($data, $old, $bread, $layout, $method = 'store')
     {
-        $layout->formfields->each(function ($formfield) use (&$data, $old, $bread, $method) {
+        $row = collect($data->toArray());
+        $layout->formfields->each(function ($formfield) use ($data, &$row, $old, $bread, $method) {
             $field = $formfield->field;
-            $value = $data->get($field, null);
+            $value = $row->get($field, null);
             $old_value = $old->{$field} ?? null;
-            $new_value = collect($formfield->{$method}($value, $old_value, $data, $bread->getFieldType($field)));
+            if (Str::contains($field, '.')) {
+                $rl_field = Str::after($field, '.');
+                $rl_name = Str::before($field, '.');
+                $data->with($field);
+                if ($data->{$rl_name} instanceof Collection) {
+                    $value = $data->{$rl_name}->pluck($rl_field);
+                } elseif ($data->{$rl_name}) {
+                    $value = $data->{$rl_name}->{$rl_field};
+                }
+                $old_value = $value;
+            }
+            $new_value = collect($formfield->{$method}($value, $old_value, $row, $bread->getFieldType($field)));
             $new_value->transform(function ($value, $field) use ($bread, $method) {
                 if ($bread->isFieldTranslatable($field)) {
                     // TODO: We need to test for casts here
@@ -98,10 +101,10 @@ abstract class Controller extends BaseController
 
                 return $value;
             });
-            $data = $data->merge($new_value);
+            $row = $row->merge($new_value);
         });
 
-        return $data;
+        return $row;
     }
 
     protected function getValidator($layout, $data)

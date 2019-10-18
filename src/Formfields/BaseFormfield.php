@@ -32,6 +32,23 @@ class BaseFormfield implements \JsonSerializable
     }
 
     /**
+     * Transform data to be shown when showing.
+     *
+     * @param mixed  $data         The input-data
+     * @param mixed  $old          The old data
+     * @param object $request_data the whole request data object
+     * @param string $type         The type of the table-column (eg. text, int, varchar, etc)
+     *
+     * @return mixed The processed data
+     */
+    public function show($data, $old, $request_data, $type = null)
+    {
+        return [
+            $this->field => $data,
+        ];
+    }
+
+    /**
      * Transform data to be shown when editing.
      *
      * @param mixed  $data         The input-data

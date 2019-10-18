@@ -72,7 +72,7 @@
                                 <component :is="formfield.options.link ? 'a' : 'div'" :href="getRelationshipLink(formfield, relationship)">
                                     <component
                                         :is="'formfield-'+formfield.type"
-                                        :value="relationship[getRelationshipField(formfield.field)]"
+                                        :value="relationship"
                                         :options="formfield.options"
                                         action="browse" />
                                 </component>
@@ -229,31 +229,8 @@ export default {
             });
         }, 250),
         getData: function (result, field) {
-            var snake_field = snake_case(field);
             if (field.includes('.')) {
-                var parts = snake_field.split('.');
-                var results = result[parts[0]];
-                if (window.isArray(results)) {
-                    if (this.isFieldTranslatable(field)) {
-                        var trans_results = JSON.parse(JSON.stringify(results));
-                        var vm = this;
-                        results.forEach(function (result, key) {
-                            trans_results[key][parts[1]] = vm.translate(result[parts[1]]);
-                        });
-
-                        return trans_results;
-                    }
-
-                    return results;
-                } else if (isObject(results)) {
-                    if (this.isFieldTranslatable(field)) {
-                        return this.translate(results[parts[1]]);
-                    } else {
-                        return results[parts[1]];
-                    }
-                } else {
-                    return 'Nothing';
-                }
+                // TODO: Translate relationship if necessary
             }
 
             if (this.isFieldTranslatable(field)) {

@@ -4,6 +4,7 @@ namespace TCG\Voyager;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use TCG\Voyager\Classes\Bread as BreadClass;
@@ -14,6 +15,7 @@ class Voyager
     protected $actions;
     protected $formfields;
     protected $messages = [];
+    protected $tables = [];
 
     /**
      * Get Voyagers routes.
@@ -319,6 +321,20 @@ class Voyager
 
             return $action->shouldBeDisplayOnBread() && $action->shouldBeDisplayedOnEntry($entry);
         });
+    }
+
+    public function getFields($table)
+    {
+        if (!array_key_exists($table, $this->tables)) {
+            $builder = DB::getSchemaBuilder();
+            $fields = $builder->getColumnListing($table);
+            $this->tables[$table] = [];
+            foreach ($fields as $field) {
+                $this->tables[$table][$field] = $builder->getColumnType($table, $field);
+            }
+        }
+
+        return $this->tables[$table];
     }
 
     /**
