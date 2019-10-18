@@ -55,6 +55,13 @@
                                 $dataTypeRows = $dataType->{($edit ? 'editRows' : 'addRows' )};
                             @endphp
 
+                            @section('submit-buttons')
+                                <button type="button" onclick="window.history.go(-1);" class="btn btn-warning btn-lg cancel pull-right" style="margin-left: 5px;">{{ __('voyager::generic.cancel') }}</button>
+                                <button type="submit" class="btn btn-primary btn-lg save pull-right" style="margin-left: 5px;">{{ __('voyager::generic.save') }}</button>
+                            @stop
+                            @yield('submit-buttons')
+                            <div style="clear: both;"></div>
+
                             @foreach($dataTypeRows as $row)
                                 <!-- GET THE DISPLAY OPTIONS -->
                                 @php
@@ -97,10 +104,8 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            @section('submit-buttons')
-                                <button type="submit" class="btn btn-primary save">{{ __('voyager::generic.save') }}</button>
-                            @stop
                             @yield('submit-buttons')
+                            <div class="clearfix"></div>
                         </div>
                     </form>
 
