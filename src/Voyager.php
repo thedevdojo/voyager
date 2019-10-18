@@ -289,7 +289,7 @@ class Voyager
     /**
      * Get all actions which should be shown on a BREAD.
      *
-     * @param object $bread The BREAD
+     * @param object $bread  The BREAD
      * @param object $layout The layout
      *
      * @return object The actions
