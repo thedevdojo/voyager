@@ -24,17 +24,19 @@
         </div>
         <br>
         <div class="flex flex-wrap">
-            <div v-for="(formfield, i) in layout.formfields" v-bind:key="'formfield-'+i" :class="'w-'+formfield.options.width">
-                <component
-                    :is="'formfield-'+formfield.type"
-                    v-bind:value="data(formfield.field, null)"
-                    v-on:input="data(formfield.field, $event)"
-                    :options="formfield.options"
-                    :action="action" />
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-if="getErrors(formfield.field).length > 0">
-                    <p v-for="(error, key) in getErrors(formfield.field)" :key="'error-'+key">
-                        {{ error }}
-                    </p>
+            <div v-for="(formfield, i) in layout.formfields" v-bind:key="'formfield-'+i" :class="'w-'+formfield.options.width+' voyager-card'">
+                <div class="body">
+                    <component
+                        :is="'formfield-'+formfield.type"
+                        v-bind:value="data(formfield.field, null)"
+                        v-on:input="data(formfield.field, $event)"
+                        :options="formfield.options"
+                        :action="action" />
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-if="getErrors(formfield.field).length > 0">
+                        <p v-for="(error, key) in getErrors(formfield.field)" :key="'error-'+key">
+                            {{ error }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

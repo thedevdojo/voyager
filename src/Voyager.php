@@ -289,14 +289,16 @@ class Voyager
     /**
      * Get all actions which should be shown on a BREAD.
      *
-     * @param string $bread The BREAD
+     * @param object $bread The BREAD
+     * @param object $layout The layout
      *
      * @return object The actions
      */
-    public function getActionsForBread($bread)
+    public function getActionsForBread($bread, $layout)
     {
-        return $this->actions->filter(function ($action) use ($bread) {
+        return $this->actions->filter(function ($action) use ($bread, $layout) {
             $action->bread = $bread;
+            $action->layout = $layout;
 
             return $action->shouldBeDisplayOnBread($bread);
         });
@@ -309,10 +311,11 @@ class Voyager
      *
      * @return object The actions
      */
-    public function getActionsForEntry($bread, $entry)
+    public function getActionsForEntry($bread, $layout, $entry)
     {
-        return $this->actions->filter(function ($action) use ($bread, $entry) {
+        return $this->actions->filter(function ($action) use ($bread, $layout, $entry) {
             $action->bread = $bread;
+            $action->layout = $layout;
 
             return $action->shouldBeDisplayOnBread() && $action->shouldBeDisplayedOnEntry($entry);
         });

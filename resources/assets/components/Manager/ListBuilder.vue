@@ -78,15 +78,16 @@
                     </th>
                     <th class="flex">
                         <button @click="deleteFormfield(i)" class="button red small">{{ __('voyager::generic.delete') }}</button>
-                        
-                        <popper trigger="click" :options="{ placement: 'left' }">
-                            <div class="popper">
-                                ...
+                        <slidein :opened="currentOptionsId == i" v-on:closed="currentOptionsId = null">
+                            <component :is="'formfield-'+formfield.type" v-bind:options="formfield.options" :fields="fields" action="options" type="list" />
+                            <div class="flex mb-4">
+                                <!-- TODO: Add hint that validation rules are only necessary if this is a relationship-list -->
+                                <div class="w-full m-1">
+                                    <bread-validation-input v-bind:rules="formfield.rules" />
+                                </div>
                             </div>
-                            <div slot="reference">
-                                <button class="button blue small">{{ __('voyager::generic.options') }}</button>
-                            </div>
-                        </popper>
+                        </slidein>
+                        <button class="button blue small" @click="currentOptionsId = i">{{ __('voyager::generic.options') }}</button>
                     </th>
                 </tr>
             </draggable>
@@ -97,6 +98,11 @@
 <script>
 export default {
     props: ['layout', 'fields', 'computed', 'relationships'],
+    data: function () {
+        return {
+            currentOptionsId: null
+        };
+    },
     methods: {
         deleteFormfield: function (id) {
             this.$parent.deleteFormfield(id);

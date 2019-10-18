@@ -1,9 +1,17 @@
 <template>
     <div>
-        <div v-if="action == 'browse' || action == 'read'">
+        <div v-if="action == 'browse'">
+            <div v-if="value.length > options.max_characters">
+                {{ value.substring(0, options.max_characters) }}...
+            </div>
+            <div v-else>
+                {{ value }}
+            </div>
+        </div>
+        <div v-else-if="action == 'read'">
             {{ value }}
         </div>
-        <div v-else-if="action == 'edit' || action == 'add'" class="flex mb-4">
+        <div v-else-if="action == 'edit' || action == 'add'">
             <div class="w-full m-1">
                 <label class="voyager-label">{{ translate(options.title, true) }}</label>
                 <input
@@ -49,7 +57,7 @@
             </div>
         </div>
         <div v-else-if="action == 'options'">
-            <div class="flex mb-4">
+            <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.placeholder') }}</label>
                     <language-input
@@ -59,7 +67,7 @@
                         v-on:input="options.placeholder = $event" />
                 </div>
             </div>
-            <div class="flex mb-4">
+            <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.rows') }}</label>
                     <input
@@ -68,7 +76,7 @@
                         v-model.number="options.rows" />
                 </div>
             </div>
-            <div class="flex mb-4">
+            <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.default_value') }}</label>
                     <language-input
@@ -77,10 +85,16 @@
                         v-model="options.default_value" />
                 </div>
             </div>
-            <div class="flex mb-4">
+            <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.disabled') }}</label>
                     <input type="checkbox" v-model="options.disabled">
+                </div>
+            </div>
+            <div class="flex mb-4" v-if="type == 'list'">
+                <div class="w-full m-1">
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.max_characters') }}</label>
+                    <input type="number" v-model="options.max_characters">
                 </div>
             </div>
         </div>
@@ -92,6 +106,6 @@
 
 <script>
 export default {
-    props: ['value', 'options', 'fields', 'action'],
+    props: ['value', 'options', 'fields', 'action', 'type'],
 };
 </script>

@@ -70,10 +70,10 @@
 </template>
 
 <script>
+// TODO: Add options.char and options.lower to settings-html
 export default {
-    props: ['value', 'options', 'fields', 'action'],
+    props: ['value', 'options', 'fields', 'action', 'type'],
     mounted: function () {
-        console.log(this.value);
         var vm = this;
         if (vm.options.from !== '') {
             vm.$globals.$on('formfield-input', function (field, value, translatable) {
@@ -85,9 +85,10 @@ export default {
     },
     methods: {
         slugify: function (value) {
+            var vm = this;
             return window.slugify(value, {
-                replacement: '-',
-                lower: true,
+                replacement: vm.options.char || '-',
+                lower: vm.options.lower || true,
             });
         }
     },

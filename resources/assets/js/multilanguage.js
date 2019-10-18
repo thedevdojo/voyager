@@ -5,6 +5,11 @@ Vue.prototype.$language = new Vue({
         locales: document.getElementsByTagName('html')[0].getAttribute('locales').split(','),
         localePicker: false,
         localization: [],
+    },
+    watch: {
+        locale: function (locale) {
+            // TODO: Store locale in a cookie?
+        }
     }
 });
 

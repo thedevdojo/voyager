@@ -40,13 +40,13 @@ class ForceDeleteAction extends BaseAction
 
     public function shouldBeDisplayOnBread()
     {
-        return $this->bread->restore ?? false;
+        return $this->layout->force_delete ?? false;
     }
 
     public function shouldBeDisplayedOnEntry($entry)
     {
         if ($this->bread->usesSoftDeletes()) {
-            return $entry->trashed() && $this->bread->force_delete ?? false;
+            return $entry->trashed() && $this->layout->force_delete ?? false;
         }
 
         return false;

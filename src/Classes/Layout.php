@@ -10,6 +10,9 @@ class Layout implements \JsonSerializable
     public $type = 'view';
     public $default_sort_field;
     public $global_search = '';
+    public $soft_deletes = 'hide';
+    public $restore = false;
+    public $force_delete = false;
     public $formfields = [];
 
     protected $bread;
@@ -72,9 +75,12 @@ class Layout implements \JsonSerializable
             return [
                 'name'               => $this->name,
                 'type'               => $this->type,
-                'formfields'         => $this->formfields,
                 'default_sort_field' => $this->default_sort_field,
                 'global_search'      => $this->global_search,
+                'soft_deletes'       => $this->soft_deletes,
+                'restore'            => $this->restore,
+                'force_delete'       => $this->force_delete,
+                'formfields'         => $this->formfields,
             ];
         }
 

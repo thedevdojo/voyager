@@ -93,6 +93,6 @@
 
 <script>
 export default {
-    props: ['value', 'options', 'fields', 'action'],
+    props: ['value', 'options', 'fields', 'action', 'type'],
 };
 </script>

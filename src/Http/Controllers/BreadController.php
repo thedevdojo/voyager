@@ -14,7 +14,7 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('browse');
         //$this->authorize('browse', app($bread->model));
 
-        $actions = Voyager::getActionsForBread($bread);
+        $actions = Voyager::getActionsForBread($bread, $layout);
 
         return view('voyager::bread.browse', compact('bread', 'layout', 'actions'));
     }
@@ -31,11 +31,11 @@ class BreadController extends Controller
         $query = $model->select('*');
 
         if ($bread->usesSoftDeletes()) {
-            if ($bread->soft_deletes == 'show') {
+            if ($layout->soft_deletes == 'show') {
                 $query = $model->withTrashed()->select('*');
-            } elseif ($bread->soft_deletes == 'only') {
+            } elseif ($layout->soft_deletes == 'only') {
                 $query = $model->onlyTrashed()->select('*');
-            } elseif ($bread->soft_deletes == 'select') {
+            } elseif ($layout->soft_deletes == 'select') {
                 if ($request->softDeletes == 'show') {
                     $query = $model->withTrashed()->select('*');
                 } elseif ($request->softDeletes == 'only') {
@@ -52,8 +52,10 @@ class BreadController extends Controller
         $filtered = $query->count();
         $query = $query->slice((($request->page ?? 1) - 1) * $perPage)->take($perPage);
         $this->loadAccessors($query, $bread);
-        $rows = $query->transform(function ($row) use ($bread) {
-            $row['actions'] = Voyager::getActionsForEntry($bread, $row)->toArray();
+        // TODO: We need to have relationships loaded at this point
+        $rows = $query->transform(function ($row) use ($bread, $layout) {
+            $row['actions'] = Voyager::getActionsForEntry($bread, $layout, $row)->toArray();
+            $row = $this->prepareData(collect($row->toArray()), $row, $bread, $layout, 'browse');
 
             return $row;
         })->values();
@@ -89,7 +91,7 @@ class BreadController extends Controller
 
             return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'errors'));
         }
-        $this->prepareData($data, null, $bread, $layout, 'store');
+        $data = $this->prepareData($data, $model, $bread, $layout, 'store');
 
         $data->each(function ($value, $key) use ($model) {
             $model->{$key} = $value;
@@ -117,6 +119,7 @@ class BreadController extends Controller
         // TODO: Add ->withTrashed()
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
+        $data = $this->prepareData(collect($data->toArray()), $data, $bread, $layout, 'show');
         //$this->authorize('read', app($bread->model));
 
         return view('voyager::bread.read', compact('bread', 'layout', 'data', 'id'));
@@ -131,6 +134,7 @@ class BreadController extends Controller
         // TODO: Add ->withTrashed()
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
+        $data = $this->prepareData(collect($data->toArray()), $data, $bread, $layout, 'edit');
         //$this->authorize('browse', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id'));
@@ -142,9 +146,8 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('edit');
         $model = $bread->getModel()->findOrFail($id);
         $data = collect(json_decode($request->get('data') ?? '{}'));
-        $this->prepareData($data, $model, $bread, $layout, 'update');
-
-        $data->each(function ($value, $key) use ($model) {
+        $data = $this->prepareData($data, $model, $bread, $layout, 'update');
+        $data->each(function ($value, $key) use (&$model) {
             $model->{$key} = $value;
         });
 

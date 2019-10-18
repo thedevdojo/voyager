@@ -22,13 +22,15 @@ class Password extends BaseFormfield
      *
      * @return mixed The processed data
      */
-    public function update($data, $old, $type = null)
+    public function update($data, $old, $request_data, $type = null)
     {
         if (empty($data)) {
-            return $old;
+            return [
+                $this->field => $old
+            ];
         }
 
-        return $this->store($data, $old, $type);
+        return $this->store($data, $old, $request_data, $type);
     }
 
     /**
@@ -40,8 +42,10 @@ class Password extends BaseFormfield
      *
      * @return mixed The processed data
      */
-    public function store($data, $old, $type = null)
+    public function store($data, $old, $request_data, $type = null)
     {
-        return bcrypt($data);
+        return [
+            $this->field => bcrypt($data)
+        ];
     }
 }

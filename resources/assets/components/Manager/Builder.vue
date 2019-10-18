@@ -30,49 +30,26 @@
             </div>
         </div>
         <div class="flex mb-4">
-            <div class="w-1/4 m-1">
+            <div class="w-1/3 m-1">
                 <label class="voyager-label">{{ __('voyager::manager.model') }}</label>
                 <input
                     class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.model')"
                     v-model="bread.model">
             </div>
-            <div class="w-1/4 m-1">
+            <div class="w-1/3 m-1">
                 <label class="voyager-label">{{ __('voyager::manager.controller') }}</label>
                 <input
                     class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.controller')"
                     v-model="bread.controller">
             </div>
-            <div class="w-1/4 m-1">
+            <div class="w-1/3 m-1">
                 <label class="voyager-label">{{ __('voyager::manager.policy') }}</label>
                 <input
                     class="voyager-input"
                     type="text" :placeholder="__('voyager::manager.policy')"
                     v-model="bread.policy">
-            </div>
-            <div class="w-1/4 m-1">
-                <label class="voyager-label">{{ __('voyager::manager.soft_deletes') }}</label>
-                
-                <select class="voyager-input" v-model="bread.soft_deletes">
-                    <option v-bind:value="'hide'">{{ __('voyager::generic.hide') }}</option>
-                    <option v-bind:value="'show'">{{ __('voyager::generic.show') }}</option>
-                    <option v-bind:value="'select'">{{ __('voyager::generic.select') }}</option>
-                    <option v-bind:value="'only'">{{ __('voyager::generic.only') }}</option>
-                </select>
-                <label class="voyager-label mt-3">
-                    <input type="checkbox" v-model="bread.restore">
-                    <span class="text-sm">
-                        {{ __('voyager::manager.allow_restore') }}
-                    </span>
-                </label>
-                <label class="voyager-label mt-3">
-                    <input type="checkbox" v-model="bread.force_delete">
-                    <span class="text-sm">
-                        {{ __('voyager::manager.allow_force_delete') }}
-                    </span>
-                </label>
-                <p class="hint">{{ __('voyager::manager.soft_deletes_help') }}</p>
             </div>
         </div>
 
@@ -92,6 +69,21 @@
                     {{ formfield.name }}
                 </option>
             </select>
+
+            <div v-if="currentLayout && currentLayout.type == 'list'">
+                <!-- {{ __('voyager::manager.soft_deletes') }} -->
+                <select class="voyager-input small w-auto" v-model="currentLayout.soft_deletes">
+                    <option v-bind:value="'hide'">{{ __('voyager::generic.hide') }}</option>
+                    <option v-bind:value="'show'">{{ __('voyager::generic.show') }}</option>
+                    <option v-bind:value="'select'">{{ __('voyager::generic.select') }}</option>
+                    <option v-bind:value="'only'">{{ __('voyager::generic.only') }}</option>
+                </select>
+
+                <input type="checkbox" v-model="currentLayout.restore"> {{ __('voyager::manager.allow_restore') }}
+                <input type="checkbox" v-model="currentLayout.force_delete"> {{ __('voyager::manager.allow_force_delete') }}
+
+                <!-- {{ __('voyager::manager.soft_deletes_help') }} -->
+            </div>
             <button class="button green small" @click="addLayout('view')">{{ __('voyager::manager.add_view') }}</button>
             <button class="button green small" @click="addLayout('list')">{{ __('voyager::manager.add_list') }}</button>
             <button class="button green small" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>

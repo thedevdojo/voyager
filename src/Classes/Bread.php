@@ -21,9 +21,6 @@ class Bread implements \JsonSerializable
     public $model;
     public $controller;
     public $policy;
-    public $soft_deletes = 'hide';
-    public $restore = false;
-    public $force_delete = false;
     public $layouts = [];
 
     public $parse_failed = false;
@@ -199,9 +196,6 @@ class Bread implements \JsonSerializable
             'model'         => $this->model,
             'controller'    => $this->controller,
             'policy'        => $this->policy,
-            'soft_deletes'  => $this->soft_deletes,
-            'restore'       => $this->restore,
-            'force_delete'  => $this->force_delete,
             'layouts'       => $this->layouts,
         ];
     }

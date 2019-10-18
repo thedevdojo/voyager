@@ -5,6 +5,7 @@ namespace TCG\Voyager\Actions;
 abstract class BaseAction implements \JsonSerializable
 {
     public $bread;
+    public $layout;
 
     public $massAction = false;
     public $method = 'get';

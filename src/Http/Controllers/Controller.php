@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 
@@ -53,7 +54,10 @@ abstract class Controller extends BaseController
                     $query->where($field, 'like', '%'.$filter.'%');
                 });
             } else {
-                $query = $query->where($field, 'like', '%'.$filter.'%');
+                $formfield = $layout->formfields->where('field', $field)->first();
+                if ($formfield) {
+                    $query = $formfield->query($query, $field, $filter);
+                }
             }
         }
     }
@@ -68,26 +72,36 @@ abstract class Controller extends BaseController
     {
         if ($query instanceof \Illuminate\Database\Eloquent\Model) {
             $query->append($bread->getComputedProperties());
-        } elseif ($query instanceof \Illuminate\Support\Collection) {
+        } elseif ($query instanceof Collection) {
             $query->each(function ($item) use ($bread) {
                 $item->append($bread->getComputedProperties());
             });
         }
     }
 
-    protected function prepareData(&$data, $old, $bread, $layout, $method = 'store')
+    protected function prepareData(Collection $data, $old, $bread, $layout, $method = 'store'): Collection
     {
         $layout->formfields->each(function ($formfield) use (&$data, $old, $bread, $method) {
             $field = $formfield->field;
             $value = $data->get($field, null);
-            $value = $formfield->{$method}($value, ($old->{$field} ?? null), $bread->getFieldType($field));
-            if ($bread->isFieldTranslatable($field)) {
-                // Todo: We need to test for casts here
-                $value = json_encode($value);
-            }
+            $old_value = $old->{$field} ?? null;
+            $new_value = collect($formfield->{$method}($value, $old_value, $data, $bread->getFieldType($field)));
+            $new_value->transform(function ($value, $field) use ($bread, $method) {
+                if ($bread->isFieldTranslatable($field)) {
+                    // TODO: We need to test for casts here
+                    if ($method == 'update' || $method == 'store') {
+                        return json_encode($value);
+                    }
 
-            $data->put($field, $value);
+                    return $value;
+                }
+
+                return $value;
+            });
+            $data = $data->merge($new_value);
         });
+
+        return $data;
     }
 
     protected function getValidator($layout, $data)

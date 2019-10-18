@@ -48,15 +48,16 @@
                     <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick.prevent="clearFilter(formfield.field)">
                         <component
                             v-if="formfield.options.searchable"
-                            v-model="parameter.filter[formfield.field]"
-                            v-on:input="filter()"
+                            v-bind:value="parameter.filter[formfield.field]"
+                            v-on:input="filterBy($event, formfield.field)"
                             :is="'formfield-'+formfield.type"
                             :options="formfield.options"
+                            :placeholder="__('voyager::bread.search_field', { field: translate(formfield.options.title, true) })"
                             action="query">
                             <input type="text" class="voyager-input small"
-                                v-model="parameter.filter[formfield.field]"
+                                v-bind:value="parameter.filter[formfield.field]"
                                 :placeholder="__('voyager::bread.search_field', { field: translate(formfield.options.title, true) })"
-                                @input="filter()">
+                                @input="filterBy($event.target.value, formfield.field)">
                         </component>
                     </th>
                     <th></th>
@@ -99,7 +100,7 @@
             
         <div v-bind:class="['flex mb-4 mt-4', loading ? 'opacity-25' : '']">
             <div class="w-1/2">
-                <div v-if="results.rows && results.rows.length > 0">
+                <div v-if="results.rows">
                     {{ browseResultsDescription }}
                     <span v-if="results.filtered < results.records">
                         {{ __('voyager::bread.browse_filtered', { total: results.records, type: translate(bread.name_plural, true)}) }}
@@ -117,7 +118,7 @@
                         <option v-if="results.filtered >= 100">100</option>
                         <option :value="Number.MAX_SAFE_INTEGER">All</option>
                     </select>
-                    <select class="voyager-input small w-auto mr-5" v-model="parameter.softDeletes" v-if="bread.soft_deletes == 'select'">
+                    <select class="voyager-input small w-auto mr-5" v-model="parameter.softDeletes" v-if="layout.soft_deletes == 'select'">
                         <option value="show">Show soft-deleted</option>
                         <option value="only">Show only soft-deleted</option>
                         <option value="hide">Hide soft-deleted</option>
@@ -169,6 +170,11 @@ export default {
         isFieldOrderable: function (field) {
             return !this.accessors.includes(field);
         },
+        filterBy: function (filter, field) {
+            this.parameter.filter[field] = filter;
+
+            this.filter();
+        },
         filter: function () {
             var filter = this.parameter.filter;
             for (var key in this.parameter.filter) {
@@ -204,7 +210,7 @@ export default {
                         if (key !== '_token' && vm.parameter.hasOwnProperty(key)) {
                             if (key == 'filter') {
                                 url.push(key + '=' + encodeURIComponent(JSON.stringify(vm.parameter[key])));
-                            } else if (key !== 'softDeletes' || vm.bread.soft_deletes == 'select') {
+                            } else if (key !== 'softDeletes' || vm.layout.soft_deletes == 'select') {
                                 url.push(key + '=' + encodeURIComponent(vm.parameter[key]));
                             }
                         }
@@ -325,6 +331,9 @@ export default {
             var total = this.results.filtered;
             if (end > total) {
                 end = total;
+            }
+            if (total == 0) {
+                start = 0;
             }
             if (this.results.rows.length == 1) {
                 description = this.__('voyager::bread.browse_results', {

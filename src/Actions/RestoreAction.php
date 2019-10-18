@@ -41,7 +41,7 @@ class RestoreAction extends BaseAction
     public function shouldBeDisplayedOnEntry($entry)
     {
         if ($this->bread->usesSoftDeletes()) {
-            return $entry->trashed() && $this->bread->restore ?? false;
+            return $entry->trashed() && $this->layout->restore ?? false;
         }
 
         return false;

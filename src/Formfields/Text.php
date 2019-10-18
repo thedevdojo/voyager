@@ -13,5 +13,6 @@ class Text extends BaseFormfield
         $this->options['default_value'] = '';
         $this->options['disabled'] = false;
         $this->options['rows'] = 1;
+        $this->options['max_characters'] = 50;
     }
 }
