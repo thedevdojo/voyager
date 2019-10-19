@@ -6,4 +6,5 @@
        @if($row->required == 1 && !isset($dataTypeContent->{$row->field})) required @endif
        class="form-control"
        name="{{ $row->field }}"
+       {!! outputAriaForHelpterText($row) !!}
        value="">
