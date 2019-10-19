@@ -2,7 +2,7 @@
 
 if (!function_exists('outputAriaForHelpterText')) {
     /**
-     * If row has helperText, output the appropriate aria-described by tag for the input
+     * If row has helperText, output the appropriate aria-described by tag for the input.
      *
      * @param DataRow $row
      *
