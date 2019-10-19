@@ -76,7 +76,7 @@
 
                                 <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width ?? 12 }} {{ $errors->has($row->field) ? 'has-error' : '' }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                                     {{ $row->slugify }}
-                                    <label class="control-label" for="{{ $row->field }}">{{ $row->getTranslatedAttribute('display_name') }}</label>
+                                    <label class="control-label" for="name">{{ $row->getTranslatedAttribute('display_name') }}</label>
                                     @if (isset($row->details->helperText))
                                         <p>{{ $row->details->helperText }}</p>
                                     @endif
