@@ -35,8 +35,8 @@
 }
 
 .sidebar{
-    background: #2B50ED;
-    background: linear-gradient(45deg, #1B40CD 0%, #2B50ED 100%);
+    background: #2d3748;
+    background: linear-gradient(45deg, #2d3748 0%, #1d2738 100%);
     transition: all 500ms cubic-bezier(0.19, 1, 0.22, 1);
     overflow: hidden;
     min-width: 4rem;
@@ -92,6 +92,8 @@
     }
 
     .logo{
+        // background: #2B50ED;
+        // background: linear-gradient(45deg, #1B40CD 0%, #2B50ED 100%);
         img{
             width:28px;
             height:28px;

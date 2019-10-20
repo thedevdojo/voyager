@@ -3,7 +3,7 @@
 @section('sidebar-secondary')
 
     <div class="h-16 flex flex-col justify-center">
-        <h1 class="pl-8 text-sm font-black text-gray-600">UI Components</h1>
+        <h1 class="pl-8 text-sm font-medium text-gray-600">UI Components</h1>
     </div>
 
 @endsection

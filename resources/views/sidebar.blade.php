@@ -1,11 +1,11 @@
-<aside class="flex flex-col h-full min-h-screen h-full aside-expand w-16 hover:w-56 sidebar overflow-x-hidden fixed z-50">
+<aside class="flex flex-col justify-between h-full min-h-screen h-full aside-expand w-16 hover:w-56 sidebar overflow-x-hidden fixed z-50">
 
     <div class="flex justify-left pl-4 items-center h-16 logo">
         <img src="{{ Voyager::assetUrl('images/logo-icon-light.png') }}" alt="Logo Icon">
-        <span class="font-black ml-3 text-white text-lg uppercase">Voyager</span>
+        <span class="font-bold ml-3 text-white text-sm uppercase">Voyager</span>
     </div>
 
-    <div class="flex-1 text-gray-600">
+    <div class="text-gray-600">
         <ul>
             <li>
                 <a :href="route('voyager.dashboard')" class="flex items-center no-underline h-10 pl-4 relative">
@@ -85,6 +85,11 @@
             </li>
 
         </ul>
+    </div>
+
+
+    <div>
+        <img src="{{ Voyager::assetUrl('images/default-avatar.png') }}" class="rounded-full m-4 w-8" alt="User Avatar">
     </div>
 
 </aside>

@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gray-200">
+<body class="bg-gray-100">
 
         <!--div id="voyager-loader">
             <img src="{{ Voyager::assetUrl('images/logo-icon.png') }}" alt="Voyager Loader">
@@ -27,18 +27,20 @@
 
     <div class="flex-initial w-full @if(isset($sidebarSecondary)){{ 'ml-72' }}@else{{ 'ml-16' }}@endif">
 
-        @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
-            @include('voyager::navbar')
-        @endif
-
         <transition name="fade">
             <div id="voyager-loader" v-if="page_loading">
                 <!--v-icon id="voyager-loader-icon"  class="icon" spin name="dharmachakra"></v-icon-->
             </div>
         </transition>
 
-        <main class="mx-4">
+        <main class="mx-4 px-12 py-10">
+
+            @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
+                @include('voyager::navbar')
+            @endif
+
             @yield('content')
+
         </main>
 
     </div>

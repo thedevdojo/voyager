@@ -1,7 +1,6 @@
 @extends('voyager::app')
 
 @section('content')
-    <div class="max-w-sm rounded overflow-hidden bg-white px-5 py-4 border-gray-300 border">
-        <h1 class="text-sm font-bold text-blue-500">Welcome to Voyager 2.0</h1>
-    </div>
+    <h1 class="text-gray-800 uppercase font-bold tracking-widest text-xs mb-4">Dashboard</h1>
+    <h2 class="text-blue-800 font-bold tracking-widest text-xl mb-4">Welcome to Voyager 2.0</h2>
 @endsection

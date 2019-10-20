@@ -24,9 +24,9 @@ a {
 }
 
 .voyager-search {
-    @apply bg-gray-200 border border-gray-200 rounded py-2 pr-4 pl-4 block appearance-none leading-normal w-1/3 float-right search;
+    @apply rounded py-2 pr-4 pl-10 block text-2xl appearance-none bg-transparent leading-normal w-full search;
     &:focus {
-        @apply outline-none bg-white shadow w-full;
+        @apply outline-none w-full;
     }
 }
 

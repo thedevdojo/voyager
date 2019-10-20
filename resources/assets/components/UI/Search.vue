@@ -1,6 +1,9 @@
 <template>
     <div>
-        <input type="text" class="voyager-search" @input="search">
+        <div class="absolute mt-3">
+            <svg width="25" height="25" fill="currentColor" class="text-gray-500" xmlns="http://www.w3.org/2000/svg"><path d="M19.41 19.41c-4.24 4.239-11.112 4.239-15.352 0-4.24-4.24-4.24-11.112 0-15.352s11.112-4.24 15.352 0c4.239 4.24 4.239 11.112 0 15.352zm-1.706-1.706a8.441 8.441 0 000-11.939 8.441 8.441 0 00-11.939 0 8.441 8.441 0 000 11.94 8.441 8.441 0 0011.94 0zm2.558 4.265l1.706-1.706 2.55 2.551a1.21 1.21 0 01.009 1.714 1.204 1.204 0 01-1.714-.008l-2.55-2.551z" /></svg>            
+        </div>
+        <input type="text" class="voyager-search" @input="search" placeholder="Search">
         <div v-if="searchResults.length > 0" class="voyager-search-results">
             <div v-for="(bread, i) in searchResults" :key="'bread-results-'+i">
                 {{ bread.bread }}
