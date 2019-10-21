@@ -6,7 +6,7 @@ class BaseFormfield implements \JsonSerializable
 {
     public $type;
     public $name;
-    public $field;
+    public $column;
     public $options = [
         'width'       => '1/2',
         'title'       => '',
@@ -18,16 +18,14 @@ class BaseFormfield implements \JsonSerializable
      * Transform data to be shown when browsing.
      *
      * @param mixed  $data         The input-data
-     * @param mixed  $old          The old data
      * @param object $request_data the whole request data object
-     * @param string $type         The type of the table-column (eg. text, int, varchar, etc)
      *
      * @return mixed The processed data
      */
-    public function browse($data, $old, $request_data, $type = null)
+    public function browse($data, $model)
     {
         return [
-            $this->field => $data,
+            $this->column => $data,
         ];
     }
 
@@ -35,16 +33,14 @@ class BaseFormfield implements \JsonSerializable
      * Transform data to be shown when showing.
      *
      * @param mixed  $data         The input-data
-     * @param mixed  $old          The old data
-     * @param object $request_data the whole request data object
-     * @param string $type         The type of the table-column (eg. text, int, varchar, etc)
+     * @param Model  $model        The Model instance
      *
      * @return mixed The processed data
      */
-    public function show($data, $old, $request_data, $type = null)
+    public function show($data, $model)
     {
         return [
-            $this->field => $data,
+            $this->column => $data,
         ];
     }
 
@@ -52,16 +48,14 @@ class BaseFormfield implements \JsonSerializable
      * Transform data to be shown when editing.
      *
      * @param mixed  $data         The input-data
-     * @param mixed  $old          The old data
-     * @param object $request_data the whole request data object
-     * @param string $type         The type of the table-column (eg. text, int, varchar, etc)
+     * @param Model  $model        The Model instance
      *
      * @return mixed The processed data
      */
-    public function edit($data, $old, $request_data, $type = null)
+    public function edit($data, $model)
     {
         return [
-            $this->field => $data,
+            $this->column => $data,
         ];
     }
 
@@ -70,15 +64,15 @@ class BaseFormfield implements \JsonSerializable
      *
      * @param mixed  $data         The input-data
      * @param mixed  $old          The old data
+     * @param Model  $model        The Model instance
      * @param object $request_data the whole request data object
-     * @param string $type         The type of the table-column (eg. text, int, varchar, etc)
      *
      * @return mixed The processed data
      */
-    public function update($data, $old, $request_data, $type = null)
+    public function update($data, $old, $model, $request_data)
     {
         return [
-            $this->field => $data,
+            $this->column => $data,
         ];
     }
 
@@ -87,15 +81,15 @@ class BaseFormfield implements \JsonSerializable
      *
      * @param mixed  $data         The input-data
      * @param mixed  $old          The old data (null)
+     * @param Model  $model        The Model instance
      * @param object $request_data the whole request data object
-     * @param string $type         The type of the table-column (eg. text, integer, etc)
      *
      * @return mixed The processed data
      */
-    public function store($data, $old, $request_data, $type = null)
+    public function store($data, $old, $model, $request_data)
     {
         return [
-            $this->field => $data,
+            $this->column => $data,
         ];
     }
 
@@ -103,14 +97,14 @@ class BaseFormfield implements \JsonSerializable
      * Query a formfield.
      *
      * @param Illuminate\Database\Eloquent\Builder $query  The query-builder
-     * @param string                               $field  The field-name
+     * @param string                               $column The column-name
      * @param mixed                                $filter The filter-value
      *
      * @return mixed The processed data
      */
-    public function query($query, $field, $filter)
+    public function query($query, $column, $filter)
     {
-        return $query->where($field, 'like', '%'.$filter.'%');
+        return $query->where($column, 'like', '%'.$filter.'%');
     }
 
     /**
@@ -127,7 +121,7 @@ class BaseFormfield implements \JsonSerializable
     {
         return [
             'type'    => $this->type,
-            'field'   => $this->field,
+            'column'  => $this->column,
             'options' => $this->options,
             'rules'   => $this->rules,
         ];

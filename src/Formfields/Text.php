@@ -8,7 +8,7 @@ class Text extends BaseFormfield
 
     public function __construct()
     {
-        $this->name = __('voyager::bread.formfield_text');
+        $this->name = __('voyager::bread.formfield.text');
         $this->options['placeholder'] = '';
         $this->options['default_value'] = '';
         $this->options['disabled'] = false;

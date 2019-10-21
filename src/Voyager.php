@@ -11,7 +11,6 @@ use TCG\Voyager\Classes\Bread as BreadClass;
 
 class Voyager
 {
-    protected $breadPath;
     protected $actions;
     protected $formfields;
     protected $messages = [];
@@ -37,126 +36,6 @@ class Voyager
     public function assetUrl($path)
     {
         return route('voyager.voyager_assets').'?path='.urlencode($path);
-    }
-
-    /**
-     * Sets the path where the BREAD-files are stored.
-     *
-     * @param string $path
-     *
-     * @return string the current pat
-     */
-    public function breadPath($path = null)
-    {
-        if ($path) {
-            $this->breadPath = Str::finish($path, '/');
-        }
-
-        return $this->breadPath;
-    }
-
-    /**
-     * Get all BREADs from storage and validate.
-     *
-     * @return \TCG\Voyager\Classes\Bread
-     */
-    public function getBreads()
-    {
-        return Cache::rememberForever('voyager-breads', function () {
-            if (!File::isDirectory($this->breadPath)) {
-                File::makeDirectory($this->breadPath);
-            }
-
-            return collect(File::files($this->breadPath))->transform(function ($bread) {
-                return new BreadClass($bread->getPathName());
-            })->filter(function ($bread) {
-                if (!$bread->parse_failed && !$bread->isValid()) {
-                    $this->flashMessage('BREAD "'.$bread->slug.'" is not valid!', 'debug');
-                }
-
-                return $bread->isValid();
-            });
-        });
-    }
-
-    /**
-     * Get a BREAD by the table name.
-     *
-     * @param string $table
-     *
-     * @return \TCG\Voyager\Classes\Bread
-     */
-    public function getBread($table)
-    {
-        return $this->getBreads()->where('table', $table)->first();
-    }
-
-    /**
-     * Get a BREAD by the slug.
-     *
-     * @param string $slug
-     *
-     * @return \TCG\Voyager\Classes\Bread
-     */
-    public function getBreadBySlug($slug)
-    {
-        return $this->getBreads()->filter(function ($bread) use ($slug) {
-            return $bread->slug == $slug;
-        })->first();
-    }
-
-    /**
-     * Store a BREAD-file.
-     *
-     * @param string $bread
-     *
-     * @return int|bool success
-     */
-    public function storeBread($bread)
-    {
-        $this->clearBreads();
-
-        return File::put(Str::finish($this->breadPath, '/').$bread->table.'.json', json_encode($bread, JSON_PRETTY_PRINT));
-    }
-
-    /**
-     * Create a BREAD-object.
-     *
-     * @param string $table
-     *
-     * @return int|bool success
-     */
-    public function createBread($table)
-    {
-        $bread = [
-            'table'         => $table,
-            'slug'          => Str::slug($table),
-            'name_singular' => Str::singular(Str::title($table)),
-            'name_plural'   => Str::plural(Str::title($table)),
-            'layouts'       => (object) [],
-        ];
-
-        return new BreadClass(null, $bread);
-    }
-
-    /**
-     * Clears all BREAD-objects.
-     */
-    public function clearBreads()
-    {
-        Cache::forget('voyager-breads');
-    }
-
-    /**
-     * Delete a BREAD from the filesystem.
-     *
-     * @param string $table The table of the BREAD
-     */
-    public function deleteBread($table)
-    {
-        $this->clearBreads();
-
-        return File::delete(Str::finish($this->breadPath, '/').$table.'.json');
     }
 
     /**
@@ -323,15 +202,11 @@ class Voyager
         });
     }
 
-    public function getFields($table)
+    public function getColumns($table)
     {
         if (!array_key_exists($table, $this->tables)) {
             $builder = DB::getSchemaBuilder();
-            $fields = $builder->getColumnListing($table);
-            $this->tables[$table] = [];
-            foreach ($fields as $field) {
-                $this->tables[$table][$field] = $builder->getColumnType($table, $field);
-            }
+            $this->tables[$table] = $builder->getColumnListing($table);
         }
 
         return $this->tables[$table];

@@ -8,7 +8,7 @@ class Color extends BaseFormfield
 
     public function __construct()
     {
-        $this->name = __('voyager::bread.formfield_color');
+        $this->name = __('voyager::bread.formfield.color');
         $this->options['default_value'] = '';
         $this->options['colors'] = 'basic';
     }

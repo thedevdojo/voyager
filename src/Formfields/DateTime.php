@@ -10,7 +10,7 @@ class DateTime extends BaseFormfield
 
     public function __construct()
     {
-        $this->name = __('voyager::bread.formfield_date_time');
+        $this->name = __('voyager::bread.formfield.date_time');
         $this->options['type'] = 'datetime';
         $this->options['mode'] = 'all';
         $this->options['range'] = false;
@@ -18,16 +18,16 @@ class DateTime extends BaseFormfield
         $this->options['delimiter'] = '-';
     }
 
-    public function browse($data, $old, $request_data, $type = null)
+    public function browse($data, $model)
     {
-        return $this->edit($data, $old, $request_data, $type);
+        return $this->edit($data, $model);
     }
 
-    public function edit($data, $old, $request_data, $type = null)
+    public function edit($data, $model)
     {
         if ($this->options['range']) {
-            $start = Carbon::parse($request_data->get($this->field, ''))->locale('de');
-            $end = Carbon::parse($request_data->get($this->options['field_second'], ''))->locale('de');
+            $start = Carbon::parse($model->{$this->field})->locale('de');
+            $end = Carbon::parse($model->{$this->options['field_second']})->locale('de');
             $type = $this->options['type'];
             if ($type == 'date') {
                 $start = $start->format('Y-m-d');
@@ -42,7 +42,6 @@ class DateTime extends BaseFormfield
                 $start = $start->format('Y-m-d H:i:s');
                 $end = $end->format('Y-m-d H:i:s');
             }
-
             return [
                 $this->field => [
                     'start' => $start,
@@ -56,7 +55,7 @@ class DateTime extends BaseFormfield
         ];
     }
 
-    public function update($data, $old, $request_data, $type = null)
+    public function update($data, $old, $model, $request_data)
     {
         if ($this->options['range']) {
             $field = $this->field;
@@ -73,9 +72,9 @@ class DateTime extends BaseFormfield
         ];
     }
 
-    public function store($data, $old, $request_data, $type = null)
+    public function store($data, $old, $model, $request_data)
     {
-        return $this->update($data, $old, $request_data, $type);
+        return $this->update($data, $old, $model, $request_data);
     }
 
     public function query($query, $field, $filter)

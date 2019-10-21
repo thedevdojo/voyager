@@ -28,12 +28,15 @@
                 <div class="body">
                     <component
                         :is="'formfield-'+formfield.type"
-                        v-bind:value="data(formfield.field, null)"
-                        v-on:input="data(formfield.field, $event)"
+                        v-bind:value="data(formfield.column, null)"
+                        v-on:input="data(formfield.column, $event)"
+                        :primary="data('primary', null)"
+                        :bread="bread"
                         :options="formfield.options"
+                        :column="formfield.column"
                         :action="action" />
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-if="getErrors(formfield.field).length > 0">
-                        <p v-for="(error, key) in getErrors(formfield.field)" :key="'error-'+key">
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-if="getErrors(formfield.column).length > 0">
+                        <p v-for="(error, key) in getErrors(formfield.column)" :key="'error-'+key">
                             {{ error }}
                         </p>
                     </div>
@@ -68,30 +71,30 @@ export default {
         };
     },
     methods: {
-        isFieldTranslatable: function (field) {
-            return this.translatable.includes(field);
+        isColumnTranslatable: function (column) {
+            return this.translatable.includes(column);
         },
-        data: function (field, value = null) {
+        data: function (column, value = null) {
             if (value) {
-                if (this.isFieldTranslatable(field)) {
-                    Vue.set(this.output[field], this.$language.locale, value);
+                if (this.isColumnTranslatable(column)) {
+                    Vue.set(this.output[column], this.$language.locale, value);
                 } else {
-                    Vue.set(this.output, field, value);
+                    Vue.set(this.output, column, value);
                 }
-                this.$globals.$emit('formfield-input', field, value, this.isFieldTranslatable(field));
+                this.$globals.$emit('formfield-input', column, value, this.isColumnTranslatable(column));
             }
 
-            if (this.isFieldTranslatable(field)) {
-                var translated = this.translate(this.output[field]);
+            if (this.isColumnTranslatable(column)) {
+                var translated = this.translate(this.output[column]);
 
                 return translated;
             }
 
-            return this.output[field];
+            return this.output[column];
         },
-        getErrors: function (field) {
+        getErrors: function (column) {
             for (var key in this.errors) {
-                if (key == field) {
+                if (key == column) {
                     return this.errors[key];
                 }
             }
@@ -122,10 +125,10 @@ export default {
         var vm = this;
 
         vm.layout.formfields.forEach(function (formfield) {
-            if (vm.isFieldTranslatable(formfield.field)) {
-                Vue.set(vm.output, formfield.field, vm.get_input_as_translatable_object(vm.output[formfield.field]));
+            if (vm.isColumnTranslatable(formfield.column)) {
+                Vue.set(vm.output, formfield.column, vm.get_input_as_translatable_object(vm.output[formfield.column]));
             } else {
-                Vue.set(vm.output, formfield.field, vm.output[formfield.field]);
+                Vue.set(vm.output, formfield.column, vm.output[formfield.column]);
             }
         });
 

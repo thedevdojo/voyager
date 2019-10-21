@@ -47,7 +47,7 @@ a {
 }
 
 .button {
-    @apply text-white py-2 px-4 mx-1 rounded;
+    @apply text-white py-2 px-4 mx-1 rounded cursor-pointer;
     &:focus {
         @apply outline-none;
     }

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Facades\Bread as BreadFacade;
 use TCG\Voyager\Rules\ClassExists as ClassExistsRule;
 use TCG\Voyager\Rules\DefaultLocale as DefaultLocaleRule;
 
@@ -37,7 +37,7 @@ class BreadManagerController extends Controller
             throw new \TCG\Voyager\Exceptions\TableNotFoundException();
         }
 
-        $bread = Voyager::createBread($table);
+        $bread = BreadFacade::createBread($table);
 
         return view('voyager::manager.edit-add', compact('bread'));
     }
@@ -51,7 +51,7 @@ class BreadManagerController extends Controller
      */
     public function edit($table)
     {
-        $bread = Voyager::getBread($table);
+        $bread = BreadFacade::getBread($table);
         if (!$bread) {
             throw new \TCG\Voyager\Exceptions\BreadNotFoundException();
         }
@@ -82,9 +82,7 @@ class BreadManagerController extends Controller
         ]);
 
         if ($validator->passes()) {
-            if (Voyager::storeBread($bread)) {
-                Cache::forget('voyager-breads');
-            } else {
+            if (!BreadFacade::storeBread($bread)) {
                 $validator->errors()->add('bread', __('voyager::manager.bread_save_failed'));
 
                 return response()->json($validator->errors(), 422);
@@ -107,7 +105,7 @@ class BreadManagerController extends Controller
     {
         Cache::forget('voyager-breads');
 
-        return response('', Voyager::deleteBread($table) ? 200 : 500);
+        return response('', BreadFacade::deleteBread($table) ? 200 : 500);
     }
 
     /**

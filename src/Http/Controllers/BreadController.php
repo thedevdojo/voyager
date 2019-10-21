@@ -4,7 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class BreadController extends Controller
 {
@@ -14,7 +14,7 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('browse');
         //$this->authorize('browse', app($bread->model));
 
-        $actions = Voyager::getActionsForBread($bread, $layout);
+        $actions = VoyagerFacade::getActionsForBread($bread, $layout);
 
         return view('voyager::bread.browse', compact('bread', 'layout', 'actions'));
     }
@@ -47,15 +47,15 @@ class BreadController extends Controller
         $perPage = $request->perPage ?? 10;
         $records = $query->count();
         $this->searchQuery($query, $layout, array_filter((array) $request->filter ?? []), $request->globalSearch);
-        $this->orderQuery($query, $bread, $request->orderField ?? $layout->getDefaultSortField(), ($request->orderDir ?? 'asc'));
+        $this->orderQuery($query, $bread, $request->orderColumn ?? $layout->getDefaultSortColumn(), ($request->orderDir ?? 'asc'));
         $query = $query->get();
         $filtered = $query->count();
         $query = $query->slice((($request->page ?? 1) - 1) * $perPage)->take($perPage);
         $this->loadAccessors($query, $bread);
-        // TODO: We need to have relationships loaded at this point
+
         $rows = $query->transform(function ($row) use ($bread, $layout) {
-            $row->setAttribute('actions', Voyager::getActionsForEntry($bread, $layout, $row)->toArray());
-            $row = $this->prepareData($row, $row, $bread, $layout, 'browse');
+            $row->setAttribute('actions', VoyagerFacade::getActionsForEntry($bread, $layout, $row)->toArray());
+            $row = $this->prepareDataForGetting($row, $bread, $layout, 'browse');
 
             return $row;
         })->values();
@@ -74,6 +74,8 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('add');
         $this->loadAccessors($data, $bread);
         $data = new \stdClass();
+        // TODO: $data = new $bread->getModel();
+        // $data = $this->prepareDataForGetting(...);
         //$this->authorize('add', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data'));
@@ -91,11 +93,7 @@ class BreadController extends Controller
 
             return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'errors'));
         }
-        $data = $this->prepareData($data, $model, $bread, $layout, 'store');
-
-        $data->each(function ($value, $key) use ($model) {
-            $model->{$key} = $value;
-        });
+        $data = $this->prepareDataForSetting($data, $model, $bread, $layout, 'store');
 
         $model->save();
 
@@ -119,7 +117,7 @@ class BreadController extends Controller
         // TODO: Add ->withTrashed()
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
-        $data = $this->prepareData(collect($data->toArray()), $data, $bread, $layout, 'show');
+        $data = $this->prepareDataForGetting(collect($data->toArray()), $bread, $layout, 'show');
         //$this->authorize('read', app($bread->model));
 
         return view('voyager::bread.read', compact('bread', 'layout', 'data', 'id'));
@@ -134,7 +132,7 @@ class BreadController extends Controller
         // TODO: Add ->withTrashed()
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
-        $data = $this->prepareData(collect($data->toArray()), $data, $bread, $layout, 'edit');
+        $data = $this->prepareDataForGetting($data, $bread, $layout, 'edit');
         //$this->authorize('browse', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id'));
@@ -146,10 +144,7 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('edit');
         $model = $bread->getModel()->findOrFail($id);
         $data = collect(json_decode($request->get('data') ?? '{}'));
-        $data = $this->prepareData($data, $model, $bread, $layout, 'update');
-        $data->each(function ($value, $key) use (&$model) {
-            $model->{$key} = $value;
-        });
+        $model = $this->prepareDataForSetting($data, $model, $bread, $layout, 'update');
 
         $model->save();
 

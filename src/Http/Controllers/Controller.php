@@ -2,13 +2,15 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Facades\Bread as BreadFacade;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 abstract class Controller extends BaseController
 {
@@ -18,44 +20,48 @@ abstract class Controller extends BaseController
     {
         $slug = explode('.', $request->route()->getName())[1];
 
-        return Voyager::getBreadBySlug($slug);
+        return BreadFacade::getBreadBySlug($slug);
     }
 
     protected function searchQuery(&$query, $layout, $filters, $global)
     {
         if ($global != '') {
-            $fields = $layout->getSearchableFields()->pluck('field');
-            $query->where(function ($query) use ($fields, $global) {
-                $fields->each(function ($field) use (&$query, $global) {
-                    $query->orWhere($field, 'LIKE', '%'.$global.'%');
+            $columns = $layout->getSearchableColumns()->pluck('column');
+            $query->where(function ($query) use ($columns, $global) {
+                $columns->each(function ($column) use (&$query, $global) {
+                    $query->orWhere($column, 'LIKE', '%'.$global.'%');
                 });
             });
         }
 
-        foreach ($filters as $field => $filter) {
+        foreach ($filters as $column => $filter) {
             // TODO: Search translatable
-            if (Str::contains($field, '.')) {
-                $relationship = Str::before($field, '.');
-                $field = Str::after($field, '.');
-                $query = $query->whereHas($relationship, function ($query) use ($field, $filter) {
-                    $query->where($field, 'like', '%'.$filter.'%');
-                });
+            if (Str::contains($column, '.')) {
+                $relationship = Str::before($column, '.');
+                $column = Str::after($column, '.');
+                if (Str::contains($column, 'pivot.')) {
+                    // TODO: Unfortunately we can't use wherePivot() here.
+                } else {
+                    $query = $query->whereHas($relationship, function ($query) use ($column, $filter) {
+                        $query->where($column, 'like', '%'.$filter.'%');
+                    });
+                }
             } else {
-                $formfield = $layout->formfields->where('field', $field)->first();
+                $formfield = $layout->formfields->where('column', $column)->first();
                 if ($formfield) {
-                    $query = $formfield->query($query, $field, $filter);
+                    $query = $formfield->query($query, $column, $filter);
                 }
             }
         }
     }
 
-    protected function orderQuery(&$query, $bread, $field, $direction)
+    protected function orderQuery(&$query, $bread, $column, $direction)
     {
-        if ($bread->isFieldTranslatable($field)) {
+        if ($bread->isColumnTranslatable($column)) {
             // TODO: Order by translatable
-            $query = $query->orderBy($field, $direction);
+            $query = $query->orderBy($column, $direction);
         } else {
-            $query = $query->orderBy($field, $direction);
+            $query = $query->orderBy($column, $direction);
         }
     }
 
@@ -70,41 +76,65 @@ abstract class Controller extends BaseController
         }
     }
 
-    protected function prepareData($data, $old, $bread, $layout, $method = 'store')
+    // Manipulate data to be shown when browsing, showing or editing
+    protected function prepareDataForGetting(Model $model, $bread, $layout, $method = 'browse'): Model
     {
-        $row = collect($data->toArray());
-        $layout->formfields->each(function ($formfield) use ($data, &$row, $old, $bread, $method) {
-            $field = $formfield->field;
-            $value = $row->get($field, null);
-            $old_value = $old->{$field} ?? null;
-            if (Str::contains($field, '.')) {
-                $rl_field = Str::after($field, '.');
-                $rl_name = Str::before($field, '.');
-                $data->with($field);
-                if ($data->{$rl_name} instanceof Collection) {
-                    $value = $data->{$rl_name}->pluck($rl_field);
-                } elseif ($data->{$rl_name}) {
-                    $value = $data->{$rl_name}->{$rl_field};
+        $layout->formfields->each(function ($formfield) use (&$model, $bread, $method) {
+            $column = $formfield->column;
+            $value = '';
+            if (array_key_exists($formfield->column, $model->getAttributes())) {
+                $value = $model->{$formfield->column};
+            } elseif (Str::contains($column, '.')) {
+                $rl_column = Str::after($column, '.');
+                $rl_name = Str::before($column, '.');
+                $model->with($rl_name);
+                if ($model->{$rl_name} instanceof Collection) {
+                    $value = $model->{$rl_name}->pluck($rl_column);
+                } elseif ($model->{$rl_name}) {
+                    $value = $model->{$rl_name}->{$rl_column};
                 }
-                $old_value = $value;
             }
-            $new_value = collect($formfield->{$method}($value, $old_value, $row, $bread->getFieldType($field)));
-            $new_value->transform(function ($value, $field) use ($bread, $method) {
-                if ($bread->isFieldTranslatable($field)) {
-                    // TODO: We need to test for casts here
-                    if ($method == 'update' || $method == 'store') {
-                        return json_encode($value);
-                    }
 
-                    return $value;
+            $new_value = $formfield->{$method}($value, $model);
+
+            // Merge columns in $new_value back into the model
+            foreach ($new_value as $key => $value) {
+                $model->{$key} = $value;
+            }
+        });
+        $model->primary = $model->getKey();
+
+        return $model;
+    }
+
+    // Manipulate data to be stored in the database when storing or updating
+    protected function prepareDataForSetting($data, Model $model, $bread, $layout, $method = 'store'): Model
+    {
+        $layout->formfields->each(function ($formfield) use ($data, &$model, $bread, $method) {
+            $value = $data->get($formfield->column, null);
+            $old = null;
+            if (array_key_exists($formfield->column, $model->getAttributes())) {
+                $old = $model->{$formfield->column};
+            }
+            $new_value = collect($formfield->{$method}($value, $old, $model, $data));
+            $new_value->transform(function ($value, $column) use ($bread, $method) {
+                if ($bread->isColumnTranslatable($column)) {
+                    // TODO: We need to test for casts here
+                    return json_encode($value);
                 }
 
                 return $value;
             });
-            $row = $row->merge($new_value);
+
+            // Merge columns in $new_value back into the model
+            foreach ($new_value as $column => $value) {
+                if (array_key_exists($formfield->column, $model->getAttributes())) {
+                    $model->{$column} = $value;
+                }
+            }
         });
 
-        return $row;
+        return $model;
     }
 
     protected function getValidator($layout, $data)
@@ -117,14 +147,14 @@ abstract class Controller extends BaseController
             collect($formfield->rules)->each(function ($rule_object) use ($formfield, &$formfield_rules, &$messages) {
                 // TODO: Add translation validation
                 $formfield_rules[] = $rule_object->rule;
-                $message_ident = $formfield->field.'.'.Str::before($rule_object->rule, ':');
+                $message_ident = $formfield->column.'.'.Str::before($rule_object->rule, ':');
                 $message = $rule_object->message;
                 if (is_object($message)) {
-                    $message = $message->{Voyager::getLocale()} ?? $message->{Voyager::getFallbackLocale()} ?? '';
+                    $message = $message->{VoyagerFacade::getLocale()} ?? $message->{VoyagerFacade::getFallbackLocale()} ?? '';
                 }
                 $messages[$message_ident] = $message;
             });
-            $rules[$formfield->field] = $formfield_rules;
+            $rules[$formfield->column] = $formfield_rules;
         });
 
         $validator = Validator::make($data->toArray(), $rules, $messages);

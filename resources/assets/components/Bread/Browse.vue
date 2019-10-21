@@ -28,9 +28,9 @@
             <thead>
                 <tr>
                     <th><input type="checkbox" @click="selectAll($event.target.checked)" ref="checkbox_all"></th>
-                    <th v-for="(formfield, i) in layout.formfields" :key="'th-'+i" @click="formfield.options.sortable ? orderBy(formfield.field) : ''">
+                    <th v-for="(formfield, i) in layout.formfields" :key="'th-'+i" @click="formfield.options.sortable ? orderBy(formfield.column) : ''">
                         {{ translate(formfield.options.title, true) }}
-                        <span v-if="formfield.options.sortable && parameter.orderField == formfield.field">
+                        <span v-if="formfield.options.sortable && parameter.orderColumn == formfield.column">
                             <span v-if="parameter.orderDir == 'asc'">
                                 <!-- TODO: add ASC icon -->
                                 &DoubleUpArrow;
@@ -45,19 +45,19 @@
                 </tr>
                 <tr>
                     <th></th>
-                    <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick.prevent="clearFilter(formfield.field)">
+                    <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick.prevent="clearFilter(formfield.column)">
                         <component
                             v-if="formfield.options.searchable"
-                            v-bind:value="parameter.filter[formfield.field]"
-                            v-on:input="filterBy($event, formfield.field)"
+                            v-bind:value="parameter.filter[formfield.column]"
+                            v-on:input="filterBy($event, formfield.column)"
                             :is="'formfield-'+formfield.type"
                             :options="formfield.options"
-                            :placeholder="__('voyager::bread.search_field', { field: translate(formfield.options.title, true) })"
+                            :placeholder="__('voyager::bread.search_column', { column: translate(formfield.options.title, true) })"
                             action="query">
                             <input type="text" class="voyager-input small"
-                                v-bind:value="parameter.filter[formfield.field]"
-                                :placeholder="__('voyager::bread.search_field', { field: translate(formfield.options.title, true) })"
-                                @input="filterBy($event.target.value, formfield.field)">
+                                v-bind:value="parameter.filter[formfield.column]"
+                                :placeholder="__('voyager::bread.search_column', { column: translate(formfield.options.title, true) })"
+                                @input="filterBy($event.target.value, formfield.column)">
                         </component>
                     </th>
                     <th></th>
@@ -67,8 +67,8 @@
                 <tr v-for="(result, i) in results.rows" v-bind:key="'tr-'+i">
                     <td><input type="checkbox" v-model="selectedEntries" :value="result[results.primary]"></td>
                     <td v-for="(formfield, i) in layout.formfields" :key="'td-'+i">
-                        <div v-if="isArray(getData(result, formfield.field))">
-                            <div v-for="(relationship, key) in getData(result, formfield.field).slice(0, 3)" v-bind:key="key">
+                        <div v-if="isArray(getData(result, formfield.column))">
+                            <div v-for="(relationship, key) in getData(result, formfield.column).slice(0, 3)" v-bind:key="key">
                                 <component :is="formfield.options.link ? 'a' : 'div'" :href="getRelationshipLink(formfield, relationship)">
                                     <component
                                         :is="'formfield-'+formfield.type"
@@ -77,15 +77,15 @@
                                         action="browse" />
                                 </component>
                             </div>
-                            <i v-if="getData(result, formfield.field).length > 3">
-                                {{ __('voyager::bread.results_more', {num: (getData(result, formfield.field).length - 3)}) }}
+                            <i v-if="getData(result, formfield.column).length > 3">
+                                {{ __('voyager::bread.results_more', {num: (getData(result, formfield.column).length - 3)}) }}
                             </i>
                         </div>
                         <div v-else>
                             <component :is="formfield.options.link ? 'a' : 'div'" :href="getLink(formfield, result)" :target="getTarget(formfield)">
                                 <component
                                     :is="'formfield-'+formfield.type"
-                                    :value="getData(result, formfield.field)"
+                                    :value="getData(result, formfield.column)"
                                     :options="formfield.options"
                                     action="browse" />
                             </component>
@@ -143,7 +143,7 @@ export default {
                 perPage: 10,
                 filter: {},
                 globalSearch: '',
-                orderField: '',
+                orderColumn: '',
                 orderDir: 'asc',
                 softDeletes: 'hide',
                 _token: document.head.querySelector('meta[name="csrf-token"]').content
@@ -151,27 +151,27 @@ export default {
         };
     },
     methods: {
-        orderBy: function (field) {
-            if (!this.isFieldOrderable(field)) {
+        orderBy: function (column) {
+            if (!this.isColumnOrderable(column)) {
                 return;
             }
-            if (this.parameter.orderField == field) {
+            if (this.parameter.orderColumn == column) {
                 if (this.parameter.orderDir == 'asc') {
                     this.parameter.orderDir = 'desc';
                 } else {
                     this.parameter.orderDir = 'asc';
                 }
             } else {
-                this.parameter.orderField = field;
+                this.parameter.orderColumn = column;
                 this.parameter.orderDir = 'asc';
             }
             this.loadItems();
         },
-        isFieldOrderable: function (field) {
-            return !this.accessors.includes(field);
+        isColumnOrderable: function (column) {
+            return !this.accessors.includes(column);
         },
-        filterBy: function (filter, field) {
-            this.parameter.filter[field] = filter;
+        filterBy: function (filter, column) {
+            this.parameter.filter[column] = filter;
 
             this.filter();
         },
@@ -228,25 +228,25 @@ export default {
                 vm.loading = false;
             });
         }, 250),
-        getData: function (result, field) {
-            if (field.includes('.')) {
+        getData: function (result, column) {
+            if (column.includes('.')) {
                 // TODO: Translate relationship if necessary
             }
 
-            if (this.isFieldTranslatable(field)) {
-                return this.translate(result[field]);
+            if (this.isColumnTranslatable(column)) {
+                return this.translate(result[column]);
             }
 
-            return result[field] || '';
+            return result[column] || '';
         },
-        isFieldTranslatable: function (field) {
-            return this.translatable.includes(field);
+        isColumnTranslatable: function (column) {
+            return this.translatable.includes(column);
         },
         isArray: function (input) {
             return window.isArray(input);
         },
-        getRelationshipField: function (field) {
-            return field.substr(field.indexOf('.') + 1);
+        getRelationshipColumn: function (column) {
+            return column.substr(column.indexOf('.') + 1);
         },
         getLink: function (formfield, result) {
             if (!formfield.options.link || false) {
@@ -281,12 +281,12 @@ export default {
 
             return '#';
         },
-        clearFilter: function (field = null) {
-            if (field) {
-                if (!this.parameter.filter[field]) {
+        clearFilter: function (column = null) {
+            if (column) {
+                if (!this.parameter.filter[column]) {
                     return;
                 }
-                this.parameter.filter[field] = null;
+                this.parameter.filter[column] = null;
             } else {
                 this.parameter.filter = {};
                 this.parameter.globalSearch = '';
@@ -369,8 +369,8 @@ export default {
             this.parameter = Object.assign(this.parameter, params);
         }
 
-        if (this.parameter.orderField == '') {
-            this.orderBy(this.layout.default_sort_field || '');
+        if (this.parameter.orderColumn == '') {
+            this.orderBy(this.layout.default_sort_column || '');
         }
 
         if (this.translatable.length > 0) {

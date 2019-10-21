@@ -58,7 +58,7 @@
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.from') }}</label>
                     <select v-model="options.from" class="voyager-input">
-                        <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
+                        <option v-for="column in columns" v-bind:key="column">{{ column }}</option>
                     </select>
                 </div>
             </div>
@@ -72,12 +72,12 @@
 <script>
 // TODO: Add options.char and options.lower to settings-html
 export default {
-    props: ['value', 'options', 'fields', 'action', 'type'],
+    props: ['value', 'options', 'columns', 'action', 'type'],
     mounted: function () {
         var vm = this;
         if (vm.options.from !== '') {
-            vm.$globals.$on('formfield-input', function (field, value, translatable) {
-                if (field == vm.options.from) {
+            vm.$globals.$on('formfield-input', function (column, value, translatable) {
+                if (column == vm.options.from) {
                     vm.$emit('input', value);
                 }
             });

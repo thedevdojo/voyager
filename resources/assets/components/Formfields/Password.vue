@@ -53,6 +53,6 @@
 
 <script>
 export default {
-    props: ['value', 'options', 'fields', 'action', 'type'],
+    props: ['value', 'options', 'columns', 'action', 'type'],
 };
 </script>

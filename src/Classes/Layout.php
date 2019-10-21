@@ -8,7 +8,7 @@ class Layout implements \JsonSerializable
 {
     public $name;
     public $type = 'view';
-    public $default_sort_field;
+    public $default_sort_column;
     public $global_search = '';
     public $soft_deletes = 'hide';
     public $restore = false;
@@ -54,12 +54,12 @@ class Layout implements \JsonSerializable
         }
     }
 
-    public function getDefaultSortField()
+    public function getDefaultSortColumn()
     {
-        return $this->default_sort_field ?? $this->bread->getModel()->getKeyName();
+        return $this->default_sort_column ?? $this->bread->getModel()->getKeyName();
     }
 
-    public function getSearchableFields()
+    public function getSearchableColumnss()
     {
         return $this->formfields->where('options.searchable', true);
     }
@@ -73,14 +73,14 @@ class Layout implements \JsonSerializable
     {
         if ($this->type == 'list') {
             return [
-                'name'               => $this->name,
-                'type'               => $this->type,
-                'default_sort_field' => $this->default_sort_field,
-                'global_search'      => $this->global_search,
-                'soft_deletes'       => $this->soft_deletes,
-                'restore'            => $this->restore,
-                'force_delete'       => $this->force_delete,
-                'formfields'         => $this->formfields,
+                'name'                => $this->name,
+                'type'                => $this->type,
+                'default_sort_column' => $this->default_sort_column,
+                'global_search'       => $this->global_search,
+                'soft_deletes'        => $this->soft_deletes,
+                'restore'             => $this->restore,
+                'force_delete'        => $this->force_delete,
+                'formfields'          => $this->formfields,
             ];
         }
 
@@ -88,7 +88,7 @@ class Layout implements \JsonSerializable
             'name'               => $this->name,
             'type'               => $this->type,
             'formfields'         => $this->formfields,
-            'default_sort_field' => $this->default_sort_field,
+            'default_sort_column' => $this->default_sort_column,
         ];
     }
 }

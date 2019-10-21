@@ -5,7 +5,7 @@
             :key="i"
             :ref="'formfield-'+i"
             :formfield="formfield"
-            :fields="fields"
+            :columns="columns"
             :computed="computed"
             :relationships="relationships"
             action="mockup"
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-    props: ['layout', 'fields', 'computed', 'relationships'],
+    props: ['layout', 'columns', 'computed', 'relationships'],
     data: function () {
         return {
             currentOptionsId: null,

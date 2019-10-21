@@ -8,7 +8,7 @@ class Number extends BaseFormfield
 
     public function __construct()
     {
-        $this->name = __('voyager::bread.formfield_number');
+        $this->name = __('voyager::bread.formfield.number');
         $this->options['placeholder'] = '';
         $this->options['default_value'] = '';
         $this->options['disabled'] = false;

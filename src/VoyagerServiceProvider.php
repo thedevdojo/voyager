@@ -7,6 +7,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use TCG\Voyager\Commands\InstallCommand;
+use TCG\Voyager\Facades\Bread as BreadFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Policies\BasePolicy;
@@ -29,6 +30,7 @@ class VoyagerServiceProvider extends ServiceProvider
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\DateTime::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Number::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Password::class);
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\SimpleRelationship::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Slug::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
 
@@ -41,7 +43,7 @@ class VoyagerServiceProvider extends ServiceProvider
         VoyagerFacade::addAction(\TCG\Voyager\Actions\BulkRestoreAction::class);
 
         // Register Policies
-        VoyagerFacade::getBreads()->each(function ($bread) {
+        BreadFacade::getBreads()->each(function ($bread) {
             $policy = BasePolicy::class;
 
             if (!empty($bread->policy) && class_exists($bread->policy)) {
@@ -63,9 +65,13 @@ class VoyagerServiceProvider extends ServiceProvider
         $loader = AliasLoader::getInstance();
 
         $loader->alias('Voyager', VoyagerFacade::class);
+        $loader->alias('Bread', BreadFacade::class);
 
         $this->app->singleton('voyager', function () {
             return new Voyager();
+        });
+        $this->app->singleton('bread', function () {
+            return new Bread();
         });
 
         $this->loadHelpers();
@@ -76,7 +82,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function loadBreadsFrom($path)
     {
-        VoyagerFacade::breadPath($path);
+        BreadFacade::breadPath($path);
     }
 
     /**

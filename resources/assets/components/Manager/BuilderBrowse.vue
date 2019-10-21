@@ -67,7 +67,7 @@ export default {
                     {
                         text: vm.__('voyager::generic.yes'),
                         action: (toast) => {
-                            axios.delete(route('voyager.bread.delete', table), {
+                            axios.delete(this.route('voyager.bread.delete', table), {
                                 _token: document.head.querySelector('meta[name="csrf-token"]').content,
                             })
                             .then(function (response) {

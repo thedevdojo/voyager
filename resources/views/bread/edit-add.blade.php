@@ -8,7 +8,7 @@
     :layout="{{ json_encode($layout) }}"
     :input="{{ json_encode($data) }}"
     :errors="{{ json_encode($errors ?? new stdClass) }}"
-    :translatable="{{ json_encode($bread->getTranslatableFields()) }}"
+    :translatable="{{ json_encode($bread->getTranslatableColumns()) }}"
     url="{{ isset($id) ? route('voyager.'.$bread->slug.'.update', $id) : route('voyager.'.$bread->slug.'.store') }}"
     prev-url="{{ url()->previous() }}"
 ></bread-edit-add>

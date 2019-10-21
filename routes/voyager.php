@@ -6,6 +6,8 @@ $router->group(['as' => 'voyager.'], function () use ($router) {
     Route::group(['middleware' => 'voyager.admin'], function () use ($namespace, $router) {
         $router->view('/', 'voyager::dashboard')->name('dashboard');
         $router->post('search', ['uses' => $namespace.'VoyagerController@search', 'as' => 'search']);
+        $router->post('search-relationship', ['uses' => $namespace.'VoyagerController@searchRelationship', 'as' => 'search-relationship']);
+        $router->post('add-relationship', ['uses' => $namespace.'VoyagerController@addRelationship', 'as' => 'add-relationship']);
 
         // BREAD manager
         $router->group([
@@ -20,7 +22,7 @@ $router->group(['as' => 'voyager.'], function () use ($router) {
         });
 
         // BREADs
-        foreach (Voyager::getBreads() as $bread) {
+        foreach (Bread::getBreads() as $bread) {
             $controller = $namespace.'BreadController';
             if (!empty($bread->controller)) {
                 $controller = \Illuminate\Support\Str::start($bread->controller, '\\');

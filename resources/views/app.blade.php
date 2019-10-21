@@ -90,7 +90,7 @@ var voyager = new Vue({
     created: function () {
         Vue.prototype.$language.localization = {!! Voyager::getLocalization() !!};
         Vue.prototype.$globals.routes = {!! Voyager::getRoutes() !!};
-        Vue.prototype.$globals.breads = {!! Voyager::getBreads() !!};
+        Vue.prototype.$globals.breads = {!! Bread::getBreads() !!};
         Vue.prototype.$globals.formfields = this.formfields;
         Vue.prototype.$globals.debug = {{ var_export(config('app.debug') ?? false, true) }};
     }

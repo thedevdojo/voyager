@@ -7,7 +7,7 @@
                 <a class="drag-handle">D</a>
                 <a class="" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()">&lt;&gt;</a>
             </div>
-            <component :is="'formfield-'+formfield.type" :options="formfield.options" :fields="fields" action="mockup" />
+            <component :is="'formfield-'+formfield.type" :options="formfield.options" :columns="columns" action="mockup" />
             <slidein :opened="optionsOpen" v-on:closed="closeOptions">
                 <div class="">
                     <locale-picker></locale-picker>
@@ -22,15 +22,23 @@
                     </div>
                 </div>
                 <div class="flex mb-4">
-                    <div class="w-full m-1" v-if="hasField">
-                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.field') }}</label>
-                        <select v-model="formfield.field" class="voyager-input">
-                            <optgroup :label="__('voyager::generic.fields')">
-                                <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
+                    <div class="w-full m-1" v-if="hasColumn">
+                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.column') }}</label>
+                        <select v-model="formfield.column" class="voyager-input">
+                            <optgroup :label="__('voyager::generic.columns')">
+                                <option v-for="column in columns" v-bind:key="column">{{ column }}</option>
                             </optgroup>
                             <optgroup :label="__('voyager::manager.computed')">
                                 <option v-for="prop in computed" v-bind:key="prop">{{ prop }}</option>
                             </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex mb-4">
+                    <div class="w-full m-1" v-if="hasRelationship">
+                        <label class="voyager-label text-gray-100">{{ __('voyager::manager.relationship') }}</label>
+                        <select v-model="formfield.column" class="voyager-input">
+                            <option v-for="(relationship, key) in relationships" v-bind:key="key">{{ key }}</option>
                         </select>
                     </div>
                 </div>
@@ -54,7 +62,7 @@
                             v-on:input="formfield.options.description = $event" />
                     </div>
                 </div>
-                <component :is="'formfield-'+formfield.type" v-bind:options="formfield.options" :fields="fields" action="options" type="view" />
+                <component :is="'formfield-'+formfield.type" v-bind:options="formfield.options" :columns="columns" :column="formfield.column" :relationships="relationships" action="options" type="view" />
                 <div class="flex mb-4">
                     <div class="w-full m-1" v-if="hasValidation">
                         <bread-validation-input v-bind:rules="formfield.rules" />
@@ -67,10 +75,11 @@
 
 <script>
 export default {
-    props: ['formfield', 'fields', 'computed', 'relationships', 'action', 'type'],
+    props: ['formfield', 'columns', 'computed', 'relationships', 'action', 'type'],
     data: function () {
         return {
-            hasField: true,
+            hasColumn: true,
+            hasRelationship: false,
             hasTitle: true,
             hasDescription: true,
             hasValidation: true,

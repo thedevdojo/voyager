@@ -66,9 +66,9 @@
             </div>
             <div class="flex mb-4" v-if="options.range">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.field') }}</label>
-                    <select v-model="options.field_second" class="voyager-input">
-                        <option v-for="field in fields" v-bind:key="field">{{ field }}</option>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.column') }}</label>
+                    <select v-model="options.column_second" class="voyager-input">
+                        <option v-for="column in columns" v-bind:key="column">{{ column }}</option>
                     </select>
                 </div>
             </div>
@@ -96,7 +96,7 @@
 
 <script>
 export default {
-    props: ['value', 'options', 'fields', 'action', 'placeholder', 'type'],
+    props: ['value', 'options', 'columns', 'action', 'placeholder', 'type'],
     data: function () {
         return {
             filterDate: new Date(),

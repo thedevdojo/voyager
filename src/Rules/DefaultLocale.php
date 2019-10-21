@@ -3,7 +3,7 @@
 namespace TCG\Voyager\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
-use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class DefaultLocale implements Rule
 {
@@ -17,11 +17,11 @@ class DefaultLocale implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (is_string($value) || !Voyager::isTranslatable()) {
+        if (is_string($value) || !VoyagerFacade::isTranslatable()) {
             return !empty($value);
         }
 
-        return !empty($value[Voyager::getLocale()]);
+        return !empty($value[VoyagerFacade::getLocale()]);
     }
 
     /**

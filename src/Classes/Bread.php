@@ -2,9 +2,13 @@
 
 namespace TCG\Voyager\Classes;
 
+use \Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use \Illuminate\Database\Eloquent\Relations\HasOne;
+use \Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\File;
-use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Facades\Bread as BreadFacade;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Traits\Translatable;
 
 class Bread implements \JsonSerializable
@@ -33,7 +37,7 @@ class Bread implements \JsonSerializable
             $content = File::get($path);
             $json = @json_decode($content);
             if (json_last_error() !== JSON_ERROR_NONE) {
-                Voyager::flashMessage('BREAD-file "'.basename($path).'" does contain invalid JSON: '.json_last_error_msg(), 'debug');
+                VoyagerFacade::flashMessage('BREAD-file "'.basename($path).'" does contain invalid JSON: '.json_last_error_msg(), 'debug');
                 $this->parse_failed = true;
 
                 return;
@@ -59,7 +63,7 @@ class Bread implements \JsonSerializable
             if ($layout->isValid()) {
                 $this->layouts->push($layout);
             } else {
-                Voyager::flashMessage('One layout in the "'.basename($path).'" BREAD is invalid!', 'debug');
+                VoyagerFacade::flashMessage('One layout in the "'.basename($path).'" BREAD is invalid!', 'debug');
             }
         }
     }
@@ -78,14 +82,9 @@ class Bread implements \JsonSerializable
         return in_array(SoftDeletes::class, class_uses($this->getModel()));
     }
 
-    public function getFields()
+    public function getColumns()
     {
-        return Voyager::getFields($this->table);
-    }
-
-    public function getFieldType($column)
-    {
-        return Voyager::getFields($this->table)[$column] ?? null;
+        return VoyagerFacade::getColumns($this->table);
     }
 
     public function getComputedProperties()
@@ -97,7 +96,7 @@ class Bread implements \JsonSerializable
         return [];
     }
 
-    public function getTranslatableFields($deep = true)
+    public function getTranslatableColumns($deep = true)
     {
         $translatable = collect([]);
         if (property_exists($this->getModel(), 'translatable')) {
@@ -109,8 +108,8 @@ class Bread implements \JsonSerializable
             foreach ($relationships as $name => $relationship) {
                 if ($relationship['bread']) {
                     // TODO: &$translatable?
-                    collect($relationship['bread']->getTranslatableFields(false))->each(function ($field) use ($name, $translatable) {
-                        $translatable->push($name.'.'.$field);
+                    collect($relationship['bread']->getTranslatableColumns(false))->each(function ($column) use ($name, $translatable) {
+                        $translatable->push($name.'.'.$column);
                     });
                 }
             }
@@ -119,9 +118,9 @@ class Bread implements \JsonSerializable
         return $translatable;
     }
 
-    public function isFieldTranslatable($field)
+    public function isColumnTranslatable($column)
     {
-        return $this->getTranslatableFields()->contains($field);
+        return $this->getTranslatableColumns()->contains($column);
     }
 
     public function getRelationships($deep = false)
@@ -136,18 +135,18 @@ class Bread implements \JsonSerializable
                 $relationship = $this->getModel()->{$name}();
                 $table = $relationship->getRelated()->getTable();
                 unset($relationships[$key]);
-                if (get_class($relationship) == \Illuminate\Database\Eloquent\Relations\BelongsToMany::class) {
-                    $pivot = array_keys(Voyager::getFields($relationship->getTable()));
+                if (get_class($relationship) == BelongsToMany::class) {
+                    $pivot = VoyagerFacade::getColumns($relationship->getTable());
                     $pivot = array_diff($pivot, [
                         $relationship->getForeignPivotKeyName(),
                         $relationship->getRelatedPivotKeyName(),
                     ]);
                 }
                 $relationships[$name] = [
-                    'bread'  => Voyager::getBread($table),
-                    'fields' => array_keys(Voyager::getFields($table)),
-                    'type'   => basename(get_class($relationship)),
-                    'pivot'  => array_values($pivot),
+                    'bread'   => BreadFacade::getBread($table),
+                    'columns' => VoyagerFacade::getColumns($table),
+                    'type'    => basename(get_class($relationship)),
+                    'pivot'   => $pivot,
                 ];
             }
         }

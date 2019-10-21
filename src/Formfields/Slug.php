@@ -8,7 +8,7 @@ class Slug extends BaseFormfield
 
     public function __construct()
     {
-        $this->name = __('voyager::bread.formfield_slug');
+        $this->name = __('voyager::bread.formfield.slug');
         $this->options['placeholder'] = '';
         $this->options['default_value'] = '';
         $this->options['disabled'] = false;

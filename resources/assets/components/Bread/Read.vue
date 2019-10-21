@@ -28,7 +28,7 @@
                     <label class="voyager-label">{{ translate(formfield.options.title, true) }}</label>
                     <component
                         :is="'formfield-'+formfield.type"
-                        :value="getData(formfield.field)"
+                        :value="getData(formfield.column)"
                         :options="formfield.options"
                         action="read" />
                 </div>
@@ -41,15 +41,15 @@
 export default {
     props: ['bread', 'accessors', 'layout', 'input', 'translatable', 'prev-url'],
     methods: {
-        getData: function (field) {
-            if (this.isFieldTranslatable(field)) {
-                return this.translate(this.input[field]);
+        getData: function (column) {
+            if (this.isColumnTranslatable(column)) {
+                return this.translate(this.input[column]);
             }
 
-            return this.input[field];
+            return this.input[column];
         },
-        isFieldTranslatable: function (field) {
-            return this.translatable.includes(field);
+        isColumnTranslatable: function (column) {
+            return this.translatable.includes(column);
         }
     },
     computed: {
