@@ -85,9 +85,9 @@ class Layout implements \JsonSerializable
         }
 
         return [
-            'name'               => $this->name,
-            'type'               => $this->type,
-            'formfields'         => $this->formfields,
+            'name'                => $this->name,
+            'type'                => $this->type,
+            'formfields'          => $this->formfields,
             'default_sort_column' => $this->default_sort_column,
         ];
     }
