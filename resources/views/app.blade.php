@@ -25,7 +25,7 @@
         @include('voyager::partials.sidebar-secondary')
     @endif
 
-    <div class="flex-initial w-full @if(isset($sidebarSecondary)){{ 'ml-72' }}@else{{ 'ml-16' }}@endif">
+    <div class="flex-initial w-full @if(isset($sidebarSecondary)){{ 'ml-72' }}@elseif(!isset($fullscreen)){{ 'ml-16' }}@endif">
 
         <transition name="fade">
             <div id="voyager-loader" v-if="page_loading">
@@ -33,7 +33,7 @@
             </div>
         </transition>
 
-        <main class="mx-4 px-12 py-10">
+        <main class="@if(!isset($fullscreen)){{ 'mx-4 px-12 py-10' }}@endif">
 
             @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
                 @include('voyager::navbar')

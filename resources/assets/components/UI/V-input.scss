@@ -2,7 +2,7 @@
     @apply relative;
 
     .v-input {
-        @apply border-2 border-gray-400 appearance-none rounded w-full py-3 px-3;
+        @apply appearance-none border border-transparent rounded-lg bg-gray-200 w-full py-3 px-3;
         transition: border 0.2s ease-in-out;
 
         &::-webkit-input-placeholder {
@@ -36,7 +36,7 @@
 
         &:active,
         &:focus {
-            @apply border-indigo-600 outline-none;
+            @apply border-transparent shadow-inner outline-none;
         }
         &.small {
             @apply py-1 px-2 text-sm;
@@ -44,7 +44,7 @@
     }
 
     .v-label {
-        @apply absolute mb-0 text-gray-400 text-base mt-2;
+        @apply absolute mb-0 text-gray-500 text-base mt-2;
         transition: all 0.2s ease-out;
         top: 0.4rem;
         left: 0.8125rem;
