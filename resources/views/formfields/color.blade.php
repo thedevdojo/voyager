@@ -1,3 +1,3 @@
 <input type="color" class="form-control" name="{{ $row->field }}"
-       {!! outputAriaForHelpterText($row) !!}
+       {!! outputAriaForHelperText($row) !!}
        value="{{ old($row->field, $dataTypeContent->{$row->field}) }}">
