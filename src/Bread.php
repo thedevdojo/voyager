@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use TCG\Voyager\Classes\Bread as BreadClass;
@@ -39,14 +38,14 @@ class Bread
             if (!File::isDirectory($this->breadPath)) {
                 File::makeDirectory($this->breadPath);
             }
-    
+
             $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {
                 return new BreadClass($bread->getPathName());
             })->filter(function ($bread) {
                 if (!$bread->parse_failed && !$bread->isValid()) {
                     $this->flashMessage('BREAD "'.$bread->slug.'" is not valid!', 'debug');
                 }
-    
+
                 return $bread->isValid();
             });
         }

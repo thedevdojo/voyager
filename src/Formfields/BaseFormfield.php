@@ -32,8 +32,8 @@ class BaseFormfield implements \JsonSerializable
     /**
      * Transform data to be shown when showing.
      *
-     * @param mixed  $data         The input-data
-     * @param Model  $model        The Model instance
+     * @param mixed $data  The input-data
+     * @param Model $model The Model instance
      *
      * @return mixed The processed data
      */
@@ -47,8 +47,8 @@ class BaseFormfield implements \JsonSerializable
     /**
      * Transform data to be shown when editing.
      *
-     * @param mixed  $data         The input-data
-     * @param Model  $model        The Model instance
+     * @param mixed $data  The input-data
+     * @param Model $model The Model instance
      *
      * @return mixed The processed data
      */

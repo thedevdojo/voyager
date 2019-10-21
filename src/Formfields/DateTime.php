@@ -42,6 +42,7 @@ class DateTime extends BaseFormfield
                 $start = $start->format('Y-m-d H:i:s');
                 $end = $end->format('Y-m-d H:i:s');
             }
+
             return [
                 $this->field => [
                     'start' => $start,

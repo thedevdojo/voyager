@@ -3,11 +3,8 @@
 namespace TCG\Voyager;
 
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use TCG\Voyager\Classes\Bread as BreadClass;
 
 class Voyager
 {
