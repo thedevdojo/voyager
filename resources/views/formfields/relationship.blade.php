@@ -152,11 +152,11 @@
 
             @else
                 <select
-                    class="form-control @if(isset($options->taggable) && $options->taggable == 'on') select2-taggable @else select2-ajax @endif"
+                    class="form-control @if(isset($options->taggable) && $options->taggable === 'on') select2-taggable @else select2-ajax @endif"
                     name="{{ $relationshipField }}[]" multiple
                     data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
                     data-get-items-field="{{$row->field}}"
-                    @if(isset($options->taggable) && $options->taggable == 'on')
+                    @if(isset($options->taggable) && $options->taggable === 'on')
                         data-route="{{ route('voyager.'.\Illuminate\Support\Str::slug($options->table).'.store') }}"
                         data-label="{{$options->label}}"
                         data-error-message="{{__('voyager::bread.error_tagging')}}"
