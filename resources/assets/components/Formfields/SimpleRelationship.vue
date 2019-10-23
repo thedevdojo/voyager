@@ -3,15 +3,17 @@
         <div v-if="action == 'browse'">
             {{ value }}
         </div>
-        <div v-else-if="action == 'read'">
-            <!-- TODO: Style me -->
-            <div v-if="isArray(selectedOptions)">
-                <span v-for="(option, key) in selectedOptions" :key="key">
+        <div v-if="action == 'read'">
+            <div v-if="!selectedOptions">
+                {{ __('voyager::generic.please_wait') }}...
+            </div>
+            <div v-else-if="isArray(selectedOptions)">
+                <span v-for="(option, key) in selectedOptions" :key="key" class="badge blue">
                     {{ option.label }}
                 </span>
             </div>
-            <div v-else>
-                <span>
+            <div v-else-if="isObject(selectedOptions)">
+                <span class="badge blue">
                     {{ selectedOptions.label }}
                 </span>
             </div>
@@ -117,7 +119,7 @@ export default {
     props: ['value', 'options', 'columns', 'column', 'action', 'type', 'relationships', 'primary', 'bread'],
     data: function () {
         return {
-            selectedOptions: [],
+            selectedOptions: null,
             selectOptions: [],
             loading: false,
             loaded: false,

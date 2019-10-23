@@ -33,6 +33,7 @@ return [
     'only'                      => 'Only',
     'options'                   => 'Options',
     'placeholder'               => 'Placeholder',
+    'please_wait'               => 'Please wait',
     'range'                     => 'Range',
     'read'                      => 'Read',
     'restore'                   => 'Restore',

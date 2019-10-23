@@ -46,6 +46,29 @@ a {
     @apply text-gray-600 text-xs;
 }
 
+.badge {
+    @apply inline-block text-white text-sm font-semibold px-2 rounded-full tracking-wide mr-1;
+
+    &.green {
+        @apply bg-green-500;
+    }
+    &.red {
+        @apply bg-red-500;
+    }
+    &.blue {
+        @apply bg-blue-500;
+    }
+    &.yellow {
+        @apply bg-yellow-500;
+    }
+    &.orange {
+        @apply bg-orange-500;
+    }
+    &.purple {
+        @apply bg-purple-500;
+    }
+}
+
 .button {
     @apply text-white py-2 px-4 mx-1 rounded cursor-pointer;
     &:focus {
