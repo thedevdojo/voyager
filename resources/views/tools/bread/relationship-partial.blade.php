@@ -27,7 +27,7 @@
     </div>
     <div class="col-xs-4">
         <div class="voyager-relationship-details-btn">
-            <i class="voyager-angle-down"></i><i class="voyager-angle-up"></i> 
+            <i class="voyager-angle-down"></i><i class="voyager-angle-up"></i>
             <span class="open_text">{{ __('voyager::database.relationship.open') }}</span>
             <span class="close_text">{{ __('voyager::database.relationship.close') }}</span>
             {{ __('voyager::database.relationship.relationship_details') }}
@@ -48,6 +48,7 @@
                     <option value="{{ $tablename }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tablename){{ 'selected="selected"' }}@endif>{{ ucfirst($tablename) }}</option>
                 @endforeach
             </select>
+            <span><input type="text" class="form-control" name="relationship_method_{{ $relationship['field'] }}" placeholder="{{ __('voyager::database.relationship.method', ['table' => $table]) }}" value="@if(isset($relationshipDetails->method)){{ $relationshipDetails->method }}@endif"></span>
             <span><input type="text" class="form-control" name="relationship_model_{{ $relationship['field'] }}" placeholder="{{ __('voyager::database.relationship.namespace') }}" value="@if(isset($relationshipDetails->model)){{ $relationshipDetails->model }}@endif"></span>
         </div>
             <div class="relationshipField">

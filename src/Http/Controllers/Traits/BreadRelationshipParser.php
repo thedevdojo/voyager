@@ -51,4 +51,21 @@ trait BreadRelationshipParser
 
         return $dataTypeContent instanceof LengthAwarePaginator ? $dataTypeContent->setCollection($dataTypeCollection) : $dataTypeCollection;
     }
+
+    /**
+     * Eager load relationships for index view (if 'method' is configured for the relationship)
+     *
+     * @param $query  The instance of query builder to update
+     * @param DataType $dataType
+     */
+    protected function eagerLoadRelationship($query, DataType $dataType)
+    {
+        $relationships = $dataType->browseRows->where('type', 'relationship');
+
+        foreach ($relationships as $row) {
+            if (!empty($row->details->method)) {
+                $query->with($row->details->method);
+            }
+        }
+    }
 }

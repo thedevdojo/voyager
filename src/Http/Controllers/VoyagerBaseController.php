@@ -65,6 +65,9 @@ class VoyagerBaseController extends Controller
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
 
+            //Eager load relationships specifying a method
+            $this->eagerLoadRelationship($query, $dataType);
+
             if ($search->value && $search->key && $search->filter) {
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';

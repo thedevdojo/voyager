@@ -10,12 +10,13 @@
 
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-                    $model = app($options->model);
-                    $query = $model::find($relationshipData->{$options->column});
+                    $model = !empty($options->method)
+                    ? $relationshipData->{$options->method}
+                    : app($options->model)->find($relationshipData->{$options->column});
                 @endphp
 
-                @if(isset($query))
-                    <p>{{ $query->{$options->label} }}</p>
+                @if(isset($model))
+                    <p>{{ $model->{$options->label} }}</p>
                 @else
                     <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
