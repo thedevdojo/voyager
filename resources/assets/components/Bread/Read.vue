@@ -29,7 +29,10 @@
                     <component
                         :is="'formfield-'+formfield.type"
                         :value="getData(formfield.column)"
+                        :primary="getData('primary', null)"
+                        :bread="bread"
                         :options="formfield.options"
+                        :column="formfield.column"
                         action="read" />
                 </div>
             </div>

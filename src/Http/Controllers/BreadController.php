@@ -117,7 +117,7 @@ class BreadController extends Controller
         // TODO: Add ->withTrashed()
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
-        $data = $this->prepareDataForGetting(collect($data->toArray()), $bread, $layout, 'show');
+        $data = $this->prepareDataForGetting($data, $bread, $layout, 'show');
         //$this->authorize('read', app($bread->model));
 
         return view('voyager::bread.read', compact('bread', 'layout', 'data', 'id'));

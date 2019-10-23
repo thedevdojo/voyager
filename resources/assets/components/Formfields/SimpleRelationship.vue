@@ -1,7 +1,20 @@
 <template>
     <div>
-        <div v-if="action == 'browse' || action == 'read'">
+        <div v-if="action == 'browse'">
             {{ value }}
+        </div>
+        <div v-else-if="action == 'read'">
+            <!-- TODO: Style me -->
+            <div v-if="isArray(selectedOptions)">
+                <span v-for="(option, key) in selectedOptions" :key="key">
+                    {{ option.label }}
+                </span>
+            </div>
+            <div v-else>
+                <span>
+                    {{ selectedOptions.label }}
+                </span>
+            </div>
         </div>
         <div v-else-if="action == 'edit' || action == 'add'">
             <div class="w-full m-1">
@@ -200,15 +213,17 @@ export default {
     },
     watch: {
         selectedOptions: function (options) {
-            if (this.multiple) {
-                var keys = [];
-                options.forEach(function (option) {
-                    keys.push(option.key);
-                });
+            if (this.action !== 'read') {
+                if (this.multiple) {
+                    var keys = [];
+                    options.forEach(function (option) {
+                        keys.push(option.key);
+                    });
 
-                this.$emit('input', keys);
-            } else {
-                this.$emit('input', options.key);
+                    this.$emit('input', keys);
+                } else {
+                    this.$emit('input', options.key);
+                }
             }
         }
     }
