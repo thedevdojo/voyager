@@ -65,7 +65,7 @@
             </select>
             <select v-if="currentLayout" @change="addFormfield" class="voyager-input small w-auto">
                 <option v-bind:value="''">{{ __('voyager::manager.add_formfield') }}</option>
-                <option v-for="(formfield, i) in $globals.formfields" v-bind:value="formfield.type" v-bind:key="i">
+                <option v-for="(formfield, i) in getFormfields()" v-bind:value="formfield.type" v-bind:key="i">
                     {{ formfield.name }}
                 </option>
             </select>
@@ -193,6 +193,16 @@ export default {
                         }
                     },
                 ]
+            });
+        },
+        getFormfields: function () {
+            var vm = this;
+            return this.$globals.formfields.filter(function (formfield) {
+                if (vm.currentLayout.type == 'list') {
+                    return formfield.lists;
+                }
+
+                return formfield.views;
             });
         },
         addFormfield: function (event) {

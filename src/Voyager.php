@@ -122,6 +122,8 @@ class Voyager
                 'name'    => $formfield->name,
                 'options' => $formfield->options,
                 'rules'   => $formfield->rules,
+                'lists'   => $formfield->lists,
+                'views'   => $formfield->views,
             ];
         });
     }

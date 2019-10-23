@@ -1,8 +1,5 @@
 <template>
     <div>
-        <div v-if="action == 'browse'">
-            {{ value }}
-        </div>
         <div v-if="action == 'read'">
             <div v-if="!selectedOptions">
                 {{ __('voyager::generic.please_wait') }}...

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class SimpleRelationship extends BaseFormfield
 {
     public $type = 'simple-relationship';
+    public $lists = false; // Don't show this formfield for lists
 
     public function __construct()
     {
