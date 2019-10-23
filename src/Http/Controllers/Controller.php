@@ -26,7 +26,10 @@ abstract class Controller extends BaseController
     protected function searchQuery(&$query, $layout, $filters, $global)
     {
         if ($global != '') {
-            $columns = $layout->getSearchableColumns()->pluck('column');
+            $columns = $layout->getSearchableColumns()->pluck('column')->filter(function ($column) {
+                return !Str::contains($column, '.');
+                // TODO: Also search for relationships?
+            });
             $query->where(function ($query) use ($columns, $global) {
                 $columns->each(function ($column) use (&$query, $global) {
                     $query->orWhere($column, 'LIKE', '%'.$global.'%');

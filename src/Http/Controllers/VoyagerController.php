@@ -41,7 +41,10 @@ class VoyagerController extends Controller
         $results = collect([]);
         if ($bread) {
             $layout = $bread->getLayoutFor('browse');
-            $columns = $layout->getSearchableColumns()->pluck('column');
+            $columns = $layout->getSearchableColumns()->pluck('column')->filter(function ($column) {
+                return !Str::contains($column, '.');
+                // TODO: Also search for relationships?
+            });
             $query = $bread->getModel()->where(function ($query) use ($columns, $q) {
                 $columns->each(function ($column) use (&$query, $q) {
                     $query->orWhere($column, 'LIKE', '%'.$q.'%');

@@ -59,7 +59,7 @@ class Layout implements \JsonSerializable
         return $this->default_sort_column ?? $this->bread->getModel()->getKeyName();
     }
 
-    public function getSearchableColumnss()
+    public function getSearchableColumns()
     {
         return $this->formfields->where('options.searchable', true);
     }
