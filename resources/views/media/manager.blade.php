@@ -518,7 +518,7 @@
             },
             openFile: function(file) {
                 if (file.type == 'folder') {
-                    this.current_folder += "/"+file.name;
+                    this.current_folder += file.name+"/";
                     this.getFiles();
                 } else if (this.hidden_element) {
                     this.addFileToInput(file);
