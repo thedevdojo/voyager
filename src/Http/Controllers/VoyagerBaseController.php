@@ -593,10 +593,16 @@ class VoyagerBaseController extends Controller
             ]);
         }
 
-        $model = app($dataType->model_name);
+        $model = app($dataType->model_name)->query();
         if ($model && in_array(SoftDeletes::class, class_uses($model))) {
             $model = $model->withTrashed();
         }
+        if ($search->value != '' && $search->key && $search->filter) {
+            $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
+            $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
+            $model->where($search->key, $search_filter, $search_value);
+        }
+
         $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
 
         $display_column = $dataType->order_display_column;
