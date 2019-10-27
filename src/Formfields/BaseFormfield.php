@@ -87,7 +87,6 @@ class BaseFormfield implements \JsonSerializable
      */
     public function updated($model, $request_data)
     {
-        return;
     }
 
     /**
@@ -115,7 +114,6 @@ class BaseFormfield implements \JsonSerializable
      */
     public function stored($model, $data)
     {
-        return;
     }
 
     /**
