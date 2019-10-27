@@ -1,112 +1,125 @@
 <template>
     <div>
-        <div class="flex mb-4">
-            <div class="w-full m-1">
-                <label class="voyager-label">{{ __('voyager::generic.slug') }}</label>
-                <language-input
-                    class="voyager-input"
-                    type="text" :placeholder="__('voyager::generic.slug')"
-                    v-bind:value="bread.slug"
-                    v-on:input="bread.slug = $event" />
+        <div class="voyager-card">
+            <div class="body">
+                <div class="flex mb-4">
+                    <div class="w-full m-1">
+                        <label class="voyager-label">{{ __('voyager::generic.slug') }}</label>
+                        <language-input
+                            class="voyager-input"
+                            type="text" :placeholder="__('voyager::generic.slug')"
+                            v-bind:value="bread.slug"
+                            v-on:input="bread.slug = $event" />
+                    </div>
+                </div>
+                
+                <div class="flex mb-4">
+                    <div class="w-1/2 m-1">
+                        <label class="voyager-label">{{ __('voyager::manager.name_singular') }}</label>
+                        <language-input
+                            class="voyager-input"
+                            type="text" :placeholder="__('voyager::manager.name_singular')"
+                            v-bind:value="bread.name_singular"
+                            v-on:input="bread.name_singular = $event" />
+                    </div>
+                    <div class="w-1/2 m-1">
+                        <label class="voyager-label">{{ __('voyager::manager.name_plural') }}</label>
+                        <language-input
+                            class="voyager-input"
+                            type="text" :placeholder="__('voyager::manager.name_plural')"
+                            v-bind:value="bread.name_plural"
+                            v-on:input="bread.name_plural = $event" />
+                    </div>
+                </div>
+                <div class="flex mb-4">
+                    <div class="w-1/3 m-1">
+                        <label class="voyager-label">{{ __('voyager::manager.model') }}</label>
+                        <input
+                            class="voyager-input"
+                            type="text" :placeholder="__('voyager::manager.model')"
+                            v-model="bread.model">
+                    </div>
+                    <div class="w-1/3 m-1">
+                        <label class="voyager-label">{{ __('voyager::manager.controller') }}</label>
+                        <input
+                            class="voyager-input"
+                            type="text" :placeholder="__('voyager::manager.controller')"
+                            v-model="bread.controller">
+                    </div>
+                    <div class="w-1/3 m-1">
+                        <label class="voyager-label">{{ __('voyager::manager.policy') }}</label>
+                        <input
+                            class="voyager-input"
+                            type="text" :placeholder="__('voyager::manager.policy')"
+                            v-model="bread.policy">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button class="button blue" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
+                </div>
             </div>
-        </div>
-        
-        <div class="flex mb-4">
-            <div class="w-1/2 m-1">
-                <label class="voyager-label">{{ __('voyager::manager.name_singular') }}</label>
-                <language-input
-                    class="voyager-input"
-                    type="text" :placeholder="__('voyager::manager.name_singular')"
-                    v-bind:value="bread.name_singular"
-                    v-on:input="bread.name_singular = $event" />
-            </div>
-            <div class="w-1/2 m-1">
-                <label class="voyager-label">{{ __('voyager::manager.name_plural') }}</label>
-                <language-input
-                    class="voyager-input"
-                    type="text" :placeholder="__('voyager::manager.name_plural')"
-                    v-bind:value="bread.name_plural"
-                    v-on:input="bread.name_plural = $event" />
-            </div>
-        </div>
-        <div class="flex mb-4">
-            <div class="w-1/3 m-1">
-                <label class="voyager-label">{{ __('voyager::manager.model') }}</label>
-                <input
-                    class="voyager-input"
-                    type="text" :placeholder="__('voyager::manager.model')"
-                    v-model="bread.model">
-            </div>
-            <div class="w-1/3 m-1">
-                <label class="voyager-label">{{ __('voyager::manager.controller') }}</label>
-                <input
-                    class="voyager-input"
-                    type="text" :placeholder="__('voyager::manager.controller')"
-                    v-model="bread.controller">
-            </div>
-            <div class="w-1/3 m-1">
-                <label class="voyager-label">{{ __('voyager::manager.policy') }}</label>
-                <input
-                    class="voyager-input"
-                    type="text" :placeholder="__('voyager::manager.policy')"
-                    v-model="bread.policy">
-            </div>
-        </div>
-
-        <div class="text-right">
-            <button class="button blue" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
         </div>
 
         <div>
-            <select v-if="bread.layouts.length > 0" v-model="currentLayoutId" class="voyager-input small w-auto">
-                <option v-for="(layout, i) in bread.layouts" v-bind:value="i" v-bind:key="i">
-                    {{ layout.name }}
-                </option>
-            </select>
-            <select v-if="currentLayout" @change="addFormfield" class="voyager-input small w-auto">
-                <option v-bind:value="''">{{ __('voyager::manager.add_formfield') }}</option>
-                <option v-for="(formfield, i) in getFormfields()" v-bind:value="formfield.type" v-bind:key="i">
-                    {{ formfield.name }}
-                </option>
-            </select>
+            <div class="voyager-card">
+                <div class="body">
+                    <select v-if="bread.layouts.length > 0" v-model="currentLayoutId" class="voyager-input small w-auto">
+                        <option v-for="(layout, i) in bread.layouts" v-bind:value="i" v-bind:key="i">
+                            {{ layout.name }}
+                        </option>
+                    </select>
+                    <select v-if="currentLayout" @change="addFormfield" class="voyager-input small w-auto">
+                        <option v-bind:value="''">{{ __('voyager::manager.add_formfield') }}</option>
+                        <option v-for="(formfield, i) in getFormfields()" v-bind:value="formfield.type" v-bind:key="i">
+                            {{ formfield.name }}
+                        </option>
+                    </select>
+                    <button class="button green small" @click="addLayout('view')">{{ __('voyager::manager.add_view') }}</button>
+                    <button class="button green small" @click="addLayout('list')">{{ __('voyager::manager.add_list') }}</button>
+                    <button class="button green small" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>
+                    <span v-if="currentLayout && currentLayout.type == 'list'">
+                        <!-- {{ __('voyager::manager.soft_deletes') }} -->
+                        <select class="voyager-input small w-auto" v-model="currentLayout.soft_deletes">
+                            <option v-bind:value="'hide'">{{ __('voyager::generic.hide') }}</option>
+                            <option v-bind:value="'show'">{{ __('voyager::generic.show') }}</option>
+                            <option v-bind:value="'select'">{{ __('voyager::generic.select') }}</option>
+                            <option v-bind:value="'only'">{{ __('voyager::generic.only') }}</option>
+                        </select>
 
-            <div v-if="currentLayout && currentLayout.type == 'list'">
-                <!-- {{ __('voyager::manager.soft_deletes') }} -->
-                <select class="voyager-input small w-auto" v-model="currentLayout.soft_deletes">
-                    <option v-bind:value="'hide'">{{ __('voyager::generic.hide') }}</option>
-                    <option v-bind:value="'show'">{{ __('voyager::generic.show') }}</option>
-                    <option v-bind:value="'select'">{{ __('voyager::generic.select') }}</option>
-                    <option v-bind:value="'only'">{{ __('voyager::generic.only') }}</option>
-                </select>
+                        <input type="checkbox" v-model="currentLayout.restore"> {{ __('voyager::manager.allow_restore') }}
+                        <input type="checkbox" v-model="currentLayout.force_delete"> {{ __('voyager::manager.allow_force_delete') }}
 
-                <input type="checkbox" v-model="currentLayout.restore"> {{ __('voyager::manager.allow_restore') }}
-                <input type="checkbox" v-model="currentLayout.force_delete"> {{ __('voyager::manager.allow_force_delete') }}
-
-                <!-- {{ __('voyager::manager.soft_deletes_help') }} -->
-            </div>
-            <button class="button green small" @click="addLayout('view')">{{ __('voyager::manager.add_view') }}</button>
-            <button class="button green small" @click="addLayout('list')">{{ __('voyager::manager.add_list') }}</button>
-            <button class="button green small" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>
-            <div v-if="bread.layouts.length == 0">
-                {{ __('voyager::manager.create_layout_first') }}
-            </div>
-            <div v-else-if="currentLayoutId == null">
-                {{ __('voyager::manager.select_layout') }}
-            </div>
-            <div v-else>
-                <div v-if="currentLayout.formfields.length == 0">
-                    {{ __('voyager::manager.add_formfield_first') }}
-                </div>
-                <div v-else-if="currentLayout.type == 'view'">
-                    <bread-view-builder :layout="currentLayout" :columns="columns" :computed="computed" :relationships="relationships" />
-                </div>
-                <div v-else-if="currentLayout.type == 'list'">
-                    <bread-list-builder :layout="currentLayout" :columns="columns" :computed="computed" :relationships="relationships" />
+                        <!-- {{ __('voyager::manager.soft_deletes_help') }} -->
+                    </span>
                 </div>
             </div>
+             <div class="voyager-card">
+                <div class="body">
+                    <div v-if="bread.layouts.length == 0">
+                        {{ __('voyager::manager.create_layout_first') }}
+                    </div>
+                    <div v-else-if="currentLayoutId == null">
+                        {{ __('voyager::manager.select_layout') }}
+                    </div>
+                    <div v-else>
+                        <div v-if="currentLayout.formfields.length == 0">
+                            {{ __('voyager::manager.add_formfield_first') }}
+                        </div>
+                        <div v-else-if="currentLayout.type == 'view'">
+                            <bread-view-builder :layout="currentLayout" :columns="columns" :computed="computed" :relationships="relationships" />
+                        </div>
+                        <div v-else-if="currentLayout.type == 'list'">
+                            <bread-list-builder :layout="currentLayout" :columns="columns" :computed="computed" :relationships="relationships" />
+                        </div>
+                    </div>
+                </div>
+             </div>
         </div>
-        <br><br><br>
-        <textarea rows="10" v-model="jsonBread" class="voyager-input"></textarea>
+        <div class="voyager-card">
+            <div class="body">
+                <textarea rows="10" v-model="jsonBread" class="voyager-input"></textarea>
+            </div>
+         </div>
     </div>
 </template>
 

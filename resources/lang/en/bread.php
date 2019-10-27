@@ -21,6 +21,8 @@ return [
     'formfield'                 => [
         'color'               => 'Color',
         'date_time'           => 'Date and Time',
+        'dynamic_dropdown'    => 'Dynamic Dropdown',
+        'html_element'        => 'HTML Element',
         'number'              => 'Number',
         'password'            => 'Password',
         'simple_relationship' => 'Simple Relationship',

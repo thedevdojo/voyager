@@ -8,3 +8,4 @@ Instead, they are listed here:
 - DateTimePicker needs a formatting feature
 - Improve slidein styling
 - Order by relationship
+- Remove styling (`voyager-card`) around html-element-formfield

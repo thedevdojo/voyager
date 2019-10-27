@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="action == 'browse'">
-            <div v-if="value.length > options.max_characters">
+            <div v-if="value && value.length > options.max_characters">
                 {{ value.substring(0, options.max_characters) }}...
             </div>
             <div v-else>

@@ -21,8 +21,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex mb-4">
-                    <div class="w-full m-1" v-if="hasColumn">
+                <div class="flex mb-4" v-if="hasColumn">
+                    <div class="w-full m-1">
                         <label class="voyager-label text-gray-100">{{ __('voyager::generic.column') }}</label>
                         <select v-model="formfield.column" class="voyager-input">
                             <optgroup :label="__('voyager::generic.columns')">
@@ -34,16 +34,16 @@
                         </select>
                     </div>
                 </div>
-                <div class="flex mb-4">
-                    <div class="w-full m-1" v-if="hasRelationship">
+                <div class="flex mb-4" v-if="hasRelationship">
+                    <div class="w-full m-1">
                         <label class="voyager-label text-gray-100">{{ __('voyager::manager.relationship') }}</label>
                         <select v-model="formfield.column" class="voyager-input">
                             <option v-for="(relationship, key) in relationships" v-bind:key="key">{{ key }}</option>
                         </select>
                     </div>
                 </div>
-                <div class="flex mb-4">
-                    <div class="w-full m-1" v-if="hasTitle">
+                <div class="flex mb-4" v-if="hasTitle">
+                    <div class="w-full m-1">
                         <label class="voyager-label text-gray-100">{{ __('voyager::generic.title') }}</label>
                         <language-input
                             class="voyager-input"
@@ -52,8 +52,8 @@
                             v-on:input="formfield.options.title = $event" />
                     </div>
                 </div>
-                <div class="flex mb-4">
-                    <div class="w-full m-1" v-if="hasDescription">
+                <div class="flex mb-4" v-if="hasDescription">
+                    <div class="w-full m-1">
                         <label class="voyager-label text-gray-100">{{ __('voyager::generic.description') }}</label>
                         <language-input
                             class="voyager-input"
@@ -63,8 +63,8 @@
                     </div>
                 </div>
                 <component :is="'formfield-'+formfield.type" v-bind:options="formfield.options" :columns="columns" :column="formfield.column" :relationships="relationships" action="options" type="view" />
-                <div class="flex mb-4">
-                    <div class="w-full m-1" v-if="hasValidation">
+                <div class="flex mb-4" v-if="hasValidation">
+                    <div class="w-full m-1">
                         <bread-validation-input v-bind:rules="formfield.rules" />
                     </div>
                 </div>

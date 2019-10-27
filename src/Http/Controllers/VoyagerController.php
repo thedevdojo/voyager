@@ -74,33 +74,39 @@ class VoyagerController extends Controller
         $multiple = false;
         $results = [];
         if ($bread) {
-            $model = $bread->getModel()->findOrFail($request->get('primary'));
+            $assigned = null;
+            $model = $bread->getModel();
 
-            $related = $model->{$request->get('relationship')}()->getRelated();
-            $query = $request->get('query', null);
-            $foreign_key = $related->getKeyName();
-            if ($query) {
-                $related = $related->where($request->get('column'), 'LIKE', '%'.$query.'%')->get();
+            if ($request->get('primary', null)) {
+                $model = $model->findOrFail($request->get('primary'));
+                $related = $model->{$request->get('relationship')}()->getRelated();
+                $query = $request->get('query', null);
+                $foreign_key = $related->getKeyName();
+                if ($query) {
+                    $related = $related->where($request->get('column'), 'LIKE', '%'.$query.'%')->get();
+                }
+                $related_entries = $related->pluck($request->get('column'), $foreign_key);
+            } else {
+                $related = $model->{$request->get('relationship')}()->getRelated();
+                $foreign_key = $related->getKeyName();
+                $related_entries = $related->pluck($request->get('column'), $foreign_key);
             }
-            $related_entries = $related->pluck($request->get('column'), $foreign_key);
 
             $assigned = $model->{$request->get('relationship')};
 
-            if ($assigned) {
-                foreach ($related_entries as $key => $label) {
-                    $is_assigned = false;
-                    if ($assigned instanceof Collection) {
-                        $multiple = true;
-                        $is_assigned = $assigned->contains($foreign_key, $key);
-                    } else {
-                        $is_assigned = $assigned->{$foreign_key} == $key;
-                    }
-                    $results[] = [
-                        'key'      => $key,
-                        'label'    => $label,
-                        'assigned' => $is_assigned,
-                    ];
+            foreach ($related_entries as $key => $label) {
+                $is_assigned = false;
+                if ($assigned instanceof Collection) {
+                    $multiple = true;
+                    $is_assigned = $assigned->contains($foreign_key, $key);
+                } elseif ($assigned) {
+                    $is_assigned = $assigned->{$foreign_key} == $key;
                 }
+                $results[] = [
+                    'key'      => $key,
+                    'label'    => $label,
+                    'assigned' => $is_assigned,
+                ];
             }
         }
 
@@ -131,5 +137,20 @@ class VoyagerController extends Controller
         }
 
         return $result;
+    }
+
+    public function getOptions(Request $request)
+    {
+        $results = [];
+
+        $controller = Str::start($request->get('controller'), '\\');
+        $method = $request->get('method');
+        $selected = $request->get('selected');
+
+        if (class_exists($controller) && method_exists(new $controller(), $method)) {
+            $results = call_user_func(array(new $controller(), $method), $selected);
+        }
+
+        return $results;
     }
 }

@@ -80,7 +80,17 @@ abstract class Controller extends BaseController
     }
 
     // Manipulate data to be shown when browsing, showing or editing
-    protected function prepareDataForGetting(Model $model, $bread, $layout, $method = 'browse'): Model
+    protected function prepareDataForEditing(Model $model, $bread, $layout): Model
+    {
+        return $this->prepareDataForBrowsing($model, $bread, $layout, 'edit');
+    }
+
+    protected function prepareDataForShowing(Model $model, $bread, $layout): Model
+    {
+        return $this->prepareDataForBrowsing($model, $bread, $layout, 'show');
+    }
+
+    protected function prepareDataForBrowsing(Model $model, $bread, $layout, $method = 'browse'): Model
     {
         $layout->formfields->each(function ($formfield) use (&$model, $bread, $method) {
             $column = $formfield->column;
@@ -110,15 +120,23 @@ abstract class Controller extends BaseController
         return $model;
     }
 
-    // Manipulate data to be stored in the database when storing or updating
-    protected function prepareDataForSetting($data, Model $model, $bread, $layout, $method = 'store'): Model
+    // Manipulate data to be stored in the database when updating
+    protected function prepareDataForUpdating($data, Model $model, $bread, $layout): Model
     {
-        $layout->formfields->each(function ($formfield) use ($data, &$model, $bread, $method) {
+        return $this->prepareDataForStoring($data, $model, $bread, $layout, 'update');
+    }
+
+    // Manipulate data to be stored in the database when creating
+    protected function prepareDataForStoring($data, Model $model, $bread, $layout, $method = 'store'): Model
+    {
+        $columns = VoyagerFacade::getColumns($model->getTable());
+        $layout->formfields->each(function ($formfield) use ($data, &$model, $bread, $method, $columns) {
+            debug($formfield->column);
             $value = $data->get($formfield->column, null);
             $old = null;
-            if (array_key_exists($formfield->column, $model->getAttributes())) {
+            //if (array_key_exists($formfield->column, $model->getAttributes())) {
                 $old = $model->{$formfield->column};
-            }
+            //}
             $new_value = collect($formfield->{$method}($value, $old, $model, $data));
             $new_value->transform(function ($value, $column) use ($bread, $method) {
                 if ($bread->isColumnTranslatable($column)) {
@@ -131,7 +149,7 @@ abstract class Controller extends BaseController
 
             // Merge columns in $new_value back into the model
             foreach ($new_value as $column => $value) {
-                if (array_key_exists($formfield->column, $model->getAttributes())) {
+                if (in_array($formfield->column, $columns)) {
                     $model->{$column} = $value;
                 }
             }

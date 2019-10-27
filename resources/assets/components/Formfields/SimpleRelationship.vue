@@ -105,9 +105,6 @@
                 </div>
             </div>
         </div>
-        <div v-else-if="action == 'query'">
-            <slot />
-        </div>
     </div>
 </template>
 

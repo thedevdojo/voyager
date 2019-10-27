@@ -80,6 +80,17 @@ class BaseFormfield implements \JsonSerializable
     }
 
     /**
+     * Do something AFTER the model was updated.
+     *
+     * @param Model  $model The Model instance
+     * @param object $data  The request data object
+     */
+    public function updated($model, $request_data)
+    {
+        return;
+    }
+
+    /**
      * Transform data to be stored in the database after adding.
      *
      * @param mixed  $data         The input-data
@@ -94,6 +105,17 @@ class BaseFormfield implements \JsonSerializable
         return [
             $this->column => $data,
         ];
+    }
+
+    /**
+     * Do something AFTER the model was stored.
+     *
+     * @param Model  $model The Model instance
+     * @param object $data  The request data object
+     */
+    public function stored($model, $data)
+    {
+        return;
     }
 
     /**

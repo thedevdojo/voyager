@@ -28,6 +28,8 @@ class VoyagerServiceProvider extends ServiceProvider
 
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Color::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\DateTime::class);
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\DynamicDropdown::class);
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\HtmlElement::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Number::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Password::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\SimpleRelationship::class);

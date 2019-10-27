@@ -8,6 +8,7 @@ return [
     'cancel'                    => 'Cancel',
     'column'                    => 'Column',
     'columns'                   => 'Columns',
+    'content'                   => 'Content',
     'copy_to_clipboard'         => 'Copy to clipboard',
     'create'                    => 'Create',
     'create_type'               => 'Create :type',

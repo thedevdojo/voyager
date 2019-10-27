@@ -55,7 +55,7 @@ class BreadController extends Controller
 
         $rows = $query->transform(function ($row) use ($bread, $layout) {
             $row->setAttribute('actions', VoyagerFacade::getActionsForEntry($bread, $layout, $row)->toArray());
-            $row = $this->prepareDataForGetting($row, $bread, $layout, 'browse');
+            $row = $this->prepareDataForBrowsing($row, $bread, $layout);
 
             return $row;
         })->values();
@@ -75,7 +75,6 @@ class BreadController extends Controller
         $this->loadAccessors($data, $bread);
         $data = new \stdClass();
         // TODO: $data = new $bread->getModel();
-        // $data = $this->prepareDataForGetting(...);
         //$this->authorize('add', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data'));
@@ -93,9 +92,13 @@ class BreadController extends Controller
 
             return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'errors'));
         }
-        $data = $this->prepareDataForSetting($data, $model, $bread, $layout, 'store');
+        $data = $this->prepareDataForStoring($data, $model, $bread, $layout);
 
         $model->save();
+
+        $layout->formfields->each(function ($formfield) use ($model, $data) {
+            $formfield->stored($model, $data);
+        });
 
         if ($request->has('_redirect')) {
             if ($request->get('_redirect') == 'back') {
@@ -117,7 +120,7 @@ class BreadController extends Controller
         // TODO: Add ->withTrashed()
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
-        $data = $this->prepareDataForGetting($data, $bread, $layout, 'show');
+        $data = $this->prepareDataForShowing($data, $bread, $layout);
         //$this->authorize('read', app($bread->model));
 
         return view('voyager::bread.read', compact('bread', 'layout', 'data', 'id'));
@@ -132,7 +135,7 @@ class BreadController extends Controller
         // TODO: Add ->withTrashed()
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
-        $data = $this->prepareDataForGetting($data, $bread, $layout, 'edit');
+        $data = $this->prepareDataForEditing($data, $bread, $layout);
         //$this->authorize('browse', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id'));
@@ -144,9 +147,13 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('edit');
         $model = $bread->getModel()->findOrFail($id);
         $data = collect(json_decode($request->get('data') ?? '{}'));
-        $model = $this->prepareDataForSetting($data, $model, $bread, $layout, 'update');
-
+        $model = $this->prepareDataForUpdating($data, $model, $bread, $layout);
+        debug($model->getQuery());
         $model->save();
+
+        $layout->formfields->each(function ($formfield) use ($model, $data) {
+            $formfield->updated($model, $data);
+        });
 
         if ($request->has('_redirect')) {
             if ($request->get('_redirect') == 'back') {

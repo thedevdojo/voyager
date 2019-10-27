@@ -1,5 +1,5 @@
 <template>
-    <draggable v-model="layout.formfields" handle=".drag-handle" class="flex flex-wrap bg-gray-300 w-full">
+    <draggable v-model="layout.formfields" handle=".drag-handle" class="flex flex-wrap w-full">
         <formfield-mockup
             v-for="(formfield, i) in layout.formfields"
             :key="i"

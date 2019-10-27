@@ -8,6 +8,7 @@ $router->group(['as' => 'voyager.'], function () use ($router) {
         $router->post('search', ['uses' => $namespace.'VoyagerController@search', 'as' => 'search']);
         $router->post('search-relationship', ['uses' => $namespace.'VoyagerController@searchRelationship', 'as' => 'search-relationship']);
         $router->post('add-relationship', ['uses' => $namespace.'VoyagerController@addRelationship', 'as' => 'add-relationship']);
+        $router->post('get-options', ['uses' => $namespace.'VoyagerController@getOptions', 'as' => 'get-options']);
 
         // BREAD manager
         $router->group([

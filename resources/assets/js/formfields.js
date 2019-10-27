@@ -1,6 +1,8 @@
 let formfields = [
     'FormfieldMockup',
     'Color',
+    'DynamicDropdown',
+    'HtmlElement',
     'DateTime',
     'Number',
     'Password',
