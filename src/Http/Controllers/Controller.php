@@ -135,7 +135,7 @@ abstract class Controller extends BaseController
             $value = $data->get($formfield->column, null);
             $old = null;
             //if (array_key_exists($formfield->column, $model->getAttributes())) {
-                $old = $model->{$formfield->column};
+            $old = $model->{$formfield->column};
             //}
             $new_value = collect($formfield->{$method}($value, $old, $model, $data));
             $new_value->transform(function ($value, $column) use ($bread, $method) {

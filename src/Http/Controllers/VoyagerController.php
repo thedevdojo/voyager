@@ -148,7 +148,7 @@ class VoyagerController extends Controller
         $selected = $request->get('selected');
 
         if (class_exists($controller) && method_exists(new $controller(), $method)) {
-            $results = call_user_func(array(new $controller(), $method), $selected);
+            $results = call_user_func([new $controller(), $method], $selected);
         }
 
         return $results;
