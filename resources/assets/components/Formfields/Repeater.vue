@@ -1,13 +1,10 @@
 <template>
     <div>
-        <div v-if="action == 'browse' || action == 'read'">
-            
-        </div>
-        <div v-else-if="action == 'edit' || action == 'add'" class="flex mb-4">
+        <div v-if="action == 'edit' || action == 'add' || action == 'read'" class="flex mb-4">
             <div class="w-full m-1">
                 <label class="voyager-label">{{ translate(options.title, true) }}</label>
                 <div v-for="(value, i) in repeaterValue" class="w-full flex flex-wrap" :key="i">
-                    <span class="absolute cursor-pointer" @click="deleteElement(i)">X</span>
+                    <span class="absolute cursor-pointer" @click="deleteElement(i)" v-if="action !== 'read'">X</span>
                     <div v-for="(formfield, b) in options.formfields" v-bind:key="'formfield-'+b" :class="'w-'+formfield.options.width+' voyager-card'">
                         <div class="body">
                             <component
@@ -22,7 +19,7 @@
                     </div>
                     <hr v-if="repeaterValue.length > 1 && (i+1) != repeaterValue.length" class="w-full" />
                 </div>
-                <button class="button blue opacity-75 w-full" @click="addElement">
+                <button class="button blue opacity-75 w-full" @click="addElement" v-if="action !== 'read'">
                     {{ translate(options.add_text, true) }}
                 </button>
                 <p>{{ translate(options.description, true) }}</p>
@@ -53,9 +50,6 @@
                         v-on:input="options.add_text = $event" />
                 </div>
             </div>
-        </div>
-        <div v-else-if="action == 'query'">
-            <slot />
         </div>
     </div>
 </template>
