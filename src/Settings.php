@@ -54,7 +54,7 @@ class Settings
 
                 return $settings->first()->value ?? $default;
             }
-        } else if (is_null($key)) {
+        } elseif (is_null($key)) {
             // Return all settings with key-value pairs
             $settings = [];
             $this->settings->each(function ($setting) use (&$settings, $default) {
