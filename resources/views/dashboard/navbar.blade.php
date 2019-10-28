@@ -7,7 +7,8 @@
             @section('breadcrumbs')
             <ol class="breadcrumb hidden-xs">
                 @php
-                $segments = array_filter(explode('/', str_replace(route('voyager.dashboard'), '', Request::path())));
+                $requestPath = '/'.Request::path();
+                $segments = array_filter(explode('/', str_replace(route('voyager.dashboard',[], false), '', $requestPath)));
                 $url = route('voyager.dashboard');
                 @endphp
                 @if(count($segments) == 0)
