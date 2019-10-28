@@ -3,10 +3,10 @@
         <h2 class="text-3xl mb-5" v-if="action == 'add'">{{ __('voyager::generic.add_type', {type: translate(bread.name_singular, true)}) }}</h2>
         <h2 class="text-3xl mb-5" v-else>{{ __('voyager::bread.edit_name', {name: translate(bread.name_singular, true)}) }}</h2>
         <div class="flex">
-            <a class="button green small" :href="route('voyager.'+translate(bread.slug, true)+'.create')" v-if="action == 'edit'">
+            <a class="button green small" :href="route('voyager.'+translate(bread.slug, true)+'.add')" v-if="action == 'edit'">
                 {{ __('voyager::generic.add_type', {type: translate(bread.name_singular, true)}) }}
             </a>
-            <a class="button blue small" :href="route('voyager.'+translate(bread.slug, true)+'.index')">
+            <a class="button blue small" :href="route('voyager.'+translate(bread.slug, true)+'.browse')">
                 {{ __('voyager::bread.browse_name', {name: translate(bread.name_plural, true)}) }}
             </a>
             <a

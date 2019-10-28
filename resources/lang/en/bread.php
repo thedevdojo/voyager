@@ -25,9 +25,15 @@ return [
         'html_element'        => 'HTML Element',
         'number'              => 'Number',
         'password'            => 'Password',
+        'repeater'            => 'Repeater',
         'simple_relationship' => 'Simple Relationship',
         'slug'                => 'Slug',
         'text'                => 'Text',
+    ],
+    'formfields'                => [
+        'repeater'            => [
+            'add_element_text'      => 'Add element text',
+        ]
     ],
     'press_enter_to_create'     => 'Press enter to create',
     'press_enter_to_deselect'   => 'Press enter to deselect',

@@ -6,6 +6,7 @@ let formfields = [
     'DateTime',
     'Number',
     'Password',
+    'Repeater',
     'SimpleRelationship',
     'Slug',
     'Text',

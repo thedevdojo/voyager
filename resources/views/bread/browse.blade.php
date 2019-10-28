@@ -7,6 +7,6 @@
     :layout="{{ json_encode($layout) }}"
     :actions="{{ $actions }}"
     :translatable="{{ json_encode($bread->getTranslatableColumns()) }}"
-    url="{{ Str::finish(route('voyager.'.$bread->slug.'.index'), '/') }}"
+    url="{{ Str::finish(route('voyager.'.$bread->slug.'.browse'), '/') }}"
 ></bread-browse>
 @endsection

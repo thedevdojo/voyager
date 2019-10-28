@@ -44,7 +44,6 @@
                 </a>
             </li>
 
-
             <li>
                 <a href="{{ route('voyager.bread.index') }}" class="flex items-center no-underline h-10 pl-4 relative">
                     <span class="icon float-left flex justify-center items-center">

@@ -95,7 +95,6 @@ export default {
             .then(function (response) {
                 if (vm.isObject(response.data)) {
                     Vue.set(vm.dynamic_options, num, response.data);
-                    console.log(vm.dynamic_options);
                 }
             })
             .catch(function (error) {

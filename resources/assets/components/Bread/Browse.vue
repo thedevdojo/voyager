@@ -2,7 +2,7 @@
     <div>
         <div class="flex mb-8 w-full">
             <div class="w-10/12">
-                <a class="button green small" :href="route('voyager.'+translate(bread.slug, true)+'.create')">
+                <a class="button green small" :href="route('voyager.'+translate(bread.slug, true)+'.add')">
                     {{ __('voyager::generic.add_type', {type: translate(bread.name_singular, true)}) }}
                 </a>
                 <bread-actions :actions="actions" :mass="true" :keys="selectedEntries" v-on:reset="selectedEntries = []" :bread="bread" />

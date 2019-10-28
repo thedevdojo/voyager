@@ -28,8 +28,29 @@ $router->group(['as' => 'voyager.'], function () use ($router) {
             if (!empty($bread->controller)) {
                 $controller = \Illuminate\Support\Str::start($bread->controller, '\\');
             }
-            Route::resource($bread->slug, $controller);
-            Route::post($bread->slug.'/data', ['uses'=> $controller.'@data', 'as' => $bread->slug.'.data']);
+            $router->group([
+                'as'     => $bread->slug.'.',
+                'prefix' => $bread->slug,
+            ], function () use ($bread, $controller, $router) {
+                // Browse
+                $router->get('/', ['uses' => $controller.'@browse', 'as' => 'browse']);
+                $router->post('data', ['uses'=> $controller.'@data', 'as' => 'data']);
+
+                // Edit
+                $router->get('/edit/{id}', ['uses' => $controller.'@edit', 'as' => 'edit']);
+                $router->put('/{id}', ['uses' => $controller.'@update', 'as' => 'update']);
+
+                // Add
+                $router->get('/add', ['uses' => $controller.'@add', 'as' => 'add']);
+                $router->post('/', ['uses' => $controller.'@store', 'as' => 'store']);
+
+                // Delete
+                $router->delete('/{id}', ['uses' => $controller.'@delete', 'as' => 'delete']);
+
+                // Read
+                $router->get('/{id}', ['uses' => $controller.'@read', 'as' => 'read']);
+            });
+            
         }
 
         // UI Routes

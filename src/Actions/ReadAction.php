@@ -11,7 +11,7 @@ class ReadAction extends BaseAction
 
     public function getUrl($key)
     {
-        return route('voyager.'.$this->bread->slug.'.show', $key);
+        return route('voyager.'.$this->bread->slug.'.read', $key);
     }
 
     public function getClasses()

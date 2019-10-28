@@ -19,7 +19,7 @@ class BulkDeleteAction extends BaseAction
 
     public function getUrl($key)
     {
-        return route('voyager.'.$this->bread->slug.'.destroy', $key);
+        return route('voyager.'.$this->bread->slug.'.delete', $key);
     }
 
     public function confirm()

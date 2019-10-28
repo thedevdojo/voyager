@@ -9,6 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use TCG\Voyager\Exceptions\JsonInvalidException;
 use TCG\Voyager\Facades\Bread as BreadFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
@@ -85,7 +86,7 @@ abstract class Controller extends BaseController
         return $this->prepareDataForBrowsing($model, $bread, $layout, 'edit');
     }
 
-    protected function prepareDataForShowing(Model $model, $bread, $layout): Model
+    protected function prepareDataForReading(Model $model, $bread, $layout): Model
     {
         return $this->prepareDataForBrowsing($model, $bread, $layout, 'show');
     }
@@ -181,5 +182,16 @@ abstract class Controller extends BaseController
         $validator = Validator::make($data->toArray(), $rules, $messages);
 
         return $validator;
+    }
+
+    protected function getJson(Request $request, $key = 'data')
+    {
+        $data = $request->get($key, '{}');
+        $data = json_decode((string) $data, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new JsonInvalidException('Unable to parse response data: ' . json_last_error());
+        }
+
+        return $data ?? array();
     }
 }

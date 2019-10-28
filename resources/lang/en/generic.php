@@ -3,6 +3,7 @@
 return [
     'actions'                   => 'Actions',
     'add'                       => 'Add',
+    'add_new_element'           => 'Add new element',
     'add_type'                  => 'Add :type',
     'browse'                    => 'Browse',
     'cancel'                    => 'Cancel',
@@ -22,6 +23,7 @@ return [
     'edit_type'                 => 'Edit :type',
     'format'                    => 'Format',
     'hide'                      => 'Hide',
+    'key'                       => 'Key',
     'max'                       => 'Max',
     'maximum'                   => 'Maximum',
     'max_characters'            => 'Maximum characters',

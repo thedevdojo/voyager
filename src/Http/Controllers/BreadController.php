@@ -8,7 +8,7 @@ use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class BreadController extends Controller
 {
-    public function index(Request $request)
+    public function browse(Request $request)
     {
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('browse');
@@ -68,7 +68,7 @@ class BreadController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function add(Request $request)
     {
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('add');
@@ -85,7 +85,7 @@ class BreadController extends Controller
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('add');
         $model = new $bread->model();
-        $data = collect(json_decode($request->get('data') ?? '{}'));
+        $data = collect($this->getJson($request));
         $validator = $this->getValidator($layout, $data);
         if ($validator->fails()) {
             $errors = $validator->errors()->getMessages();
@@ -111,7 +111,7 @@ class BreadController extends Controller
         return redirect(route('voyager.'.$bread->slug.'.edit', $model->getKey()));
     }
 
-    public function show(Request $request, $id)
+    public function read(Request $request, $id)
     {
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('read');
@@ -120,7 +120,7 @@ class BreadController extends Controller
         // TODO: Add ->withTrashed()
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
-        $data = $this->prepareDataForShowing($data, $bread, $layout);
+        $data = $this->prepareDataForReading($data, $bread, $layout);
         //$this->authorize('read', app($bread->model));
 
         return view('voyager::bread.read', compact('bread', 'layout', 'data', 'id'));
@@ -146,7 +146,7 @@ class BreadController extends Controller
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('edit');
         $model = $bread->getModel()->findOrFail($id);
-        $data = collect(json_decode($request->get('data') ?? '{}'));
+        $data = collect($this->getJson($request));
         $model = $this->prepareDataForUpdating($data, $model, $bread, $layout);
         debug($model->getQuery());
         $model->save();
@@ -166,7 +166,7 @@ class BreadController extends Controller
         return redirect(route('voyager.'.$bread->slug.'.edit', $id));
     }
 
-    public function destroy(Request $request, $id)
+    public function delete(Request $request, $id)
     {
         $bread = $this->getBread($request);
         // TODO: Authorize

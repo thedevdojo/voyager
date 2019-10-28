@@ -7,7 +7,14 @@
                 <a class="drag-handle">D</a>
                 <a class="" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()">&lt;&gt;</a>
             </div>
-            <component :is="'formfield-'+formfield.type" :options="formfield.options" :columns="columns" action="mockup" />
+            <component
+                :is="'formfield-'+formfield.type"
+                :options="formfield.options"
+                :columns="columns"
+                :computed="computed"
+                :relationships="relationships"
+                type="view"
+                action="mockup" />
             <slidein :opened="optionsOpen" v-on:closed="closeOptions">
                 <div class="">
                     <locale-picker></locale-picker>
@@ -32,6 +39,12 @@
                                 <option v-for="prop in computed" v-bind:key="prop">{{ prop }}</option>
                             </optgroup>
                         </select>
+                    </div>
+                </div>
+                <div class="flex mb-4" v-if="hasKey">
+                    <div class="w-full m-1">
+                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.key') }}</label>
+                        <input type="text" v-model="formfield.column" class="voyager-input">
                     </div>
                 </div>
                 <div class="flex mb-4" v-if="hasRelationship">
@@ -75,10 +88,11 @@
 
 <script>
 export default {
-    props: ['formfield', 'columns', 'computed', 'relationships', 'action', 'type'],
+    props: ['formfield', 'columns', 'computed', 'relationships', 'action', 'type', 'repeater'],
     data: function () {
         return {
             hasColumn: true,
+            hasKey: false, // Mainly used for repeaters. Instead of having pre-defined columns, let the user enter a text
             hasRelationship: false,
             hasTitle: true,
             hasDescription: true,
@@ -105,6 +119,13 @@ export default {
     computed: {
         optionsOpen: function () {
             return this.$parent.$parent.currentOptionsId == this.$vnode.key;
+        }
+    },
+    mounted: function () {
+        // If coming from repeater, hide the column section automatically
+        if (this.repeater) {
+            this.hasColumn = false;
+            this.hasKey = true;
         }
     }
 };

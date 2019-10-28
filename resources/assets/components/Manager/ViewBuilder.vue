@@ -1,5 +1,5 @@
 <template>
-    <draggable v-model="layout.formfields" handle=".drag-handle" class="flex flex-wrap w-full">
+    <draggable v-model="layout.formfields" handle=".drag-handle" class="flex flex-wrap w-full" :group="{ name: 'draggable', pull: true, put: true }">
         <formfield-mockup
             v-for="(formfield, i) in layout.formfields"
             :key="i"
@@ -8,6 +8,7 @@
             :columns="columns"
             :computed="computed"
             :relationships="relationships"
+            :repeater="repeater"
             action="mockup"
             type="view"
         />
@@ -16,7 +17,7 @@
 
 <script>
 export default {
-    props: ['layout', 'columns', 'computed', 'relationships'],
+    props: ['layout', 'columns', 'computed', 'relationships', 'repeater'],
     data: function () {
         return {
             currentOptionsId: null,
@@ -73,6 +74,6 @@ export default {
                 Vue.set(vm.layout.formfields[vm.currentResizeId].options, 'width', vm.widthClasses[size]);
             }
         });
-    }
+    },
 };
 </script>

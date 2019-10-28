@@ -15,7 +15,7 @@
                 <td class="py-4 px-6 border-b border-grey-light">{{ table }}</td>
                 <td class="py-4 px-6 border-b border-grey-light text-right">
                     <div v-if="hasBread(table)">
-                        <a class="button blue" :dusk="'browse-'+table" :href="route('voyager.'+table+'.index')">
+                        <a class="button blue" :dusk="'browse-'+table" :href="route('voyager.'+table+'.browse')">
                             {{ __('voyager::generic.browse') }}
                         </a>
                         <a class="button yellow" :dusk="'edit-'+table" :href="route('voyager.bread.edit', table)">
