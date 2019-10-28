@@ -189,9 +189,9 @@ abstract class Controller extends BaseController
         $data = $request->get($key, '{}');
         $data = json_decode((string) $data, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new JsonInvalidException('Unable to parse response data: ' . json_last_error());
+            throw new JsonInvalidException('Unable to parse response data: '.json_last_error());
         }
 
-        return $data ?? array();
+        return $data ?? [];
     }
 }

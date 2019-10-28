@@ -50,7 +50,6 @@ $router->group(['as' => 'voyager.'], function () use ($router) {
                 // Read
                 $router->get('/{id}', ['uses' => $controller.'@read', 'as' => 'read']);
             });
-            
         }
 
         // UI Routes
