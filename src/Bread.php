@@ -16,7 +16,7 @@ class Bread
      *
      * @param string $path
      *
-     * @return string the current pat
+     * @return string the current path
      */
     public function breadPath($path = null)
     {

@@ -61,12 +61,12 @@ export default {
         moreUrl: function (bread) {
             bread = this.getBreadByValue(bread.bread);
 
-            return this.route('voyager.'+this.translate(bread.slug, true)+'.index')+'?globalSearch='+this.query;
+            return this.route('voyager.'+this.translate(bread.slug, true)+'.browse')+'?globalSearch='+this.query;
         },
         getResultUrl: function (bread, id) {
             bread = this.getBreadByValue(bread.bread);
 
-            return this.route('voyager.'+this.translate(bread.slug, true)+'.show', id);
+            return this.route('voyager.'+this.translate(bread.slug, true)+'.read', id);
         }
     },
 };

@@ -35,7 +35,11 @@ a {
 }
 
 .voyager-card {
-    @apply p-1;
+    @apply p-1 mb-3;
+
+    &.bordered {
+        @apply border border-gray-400;
+    }
 
     .body {
         @apply m-2 bg-white rounded-lg p-5;

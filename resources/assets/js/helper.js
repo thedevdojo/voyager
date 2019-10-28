@@ -44,6 +44,16 @@ window.snake_case = function (input) {
 };
 Vue.prototype.snake_case = snake_case;
 
+window.title_case = function (input) {
+    input = this.snake_case(input).split('_');
+    for (var i = 0; i < input.length; i++) {
+        input[i] = input[i].charAt(0).toUpperCase() + input[i].slice(1); 
+    }
+
+    return input.join(' ');
+};
+Vue.prototype.title_case = title_case;
+
 window.slug = function (input) {
     return window.slugify(input);
 };

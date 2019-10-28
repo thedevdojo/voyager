@@ -6,8 +6,10 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Str;
 use TCG\Voyager\Commands\InstallCommand;
 use TCG\Voyager\Facades\Bread as BreadFacade;
+use TCG\Voyager\Facades\Settings as SettingsFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Policies\BasePolicy;
@@ -69,6 +71,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $loader->alias('Voyager', VoyagerFacade::class);
         $loader->alias('Bread', BreadFacade::class);
+        $loader->alias('Settings', SettingsFacade::class);
 
         $this->app->singleton('voyager', function () {
             return new Voyager();
@@ -76,9 +79,13 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->singleton('bread', function () {
             return new Bread();
         });
+        $this->app->singleton('settings', function () {
+            return new Settings();
+        });
 
         $this->loadHelpers();
         $this->loadBreadsFrom(storage_path('bread'));
+        $this->loadSettingsFrom(Str::finish(storage_path('voyager'), '/').'settings.json');
 
         $this->commands(InstallCommand::class);
     }
@@ -86,6 +93,11 @@ class VoyagerServiceProvider extends ServiceProvider
     public function loadBreadsFrom($path)
     {
         BreadFacade::breadPath($path);
+    }
+
+    public function loadSettingsFrom($path)
+    {
+        SettingsFacade::settingsPath($path);
     }
 
     /**

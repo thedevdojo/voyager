@@ -6,6 +6,7 @@ class HtmlElement extends BaseFormfield
 {
     public $type = 'html-element';
     public $lists = false;
+    public $settings = false;
 
     public function __construct()
     {

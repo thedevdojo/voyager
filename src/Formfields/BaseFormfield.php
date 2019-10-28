@@ -16,6 +16,7 @@ class BaseFormfield implements \JsonSerializable
 
     public $lists = true; // If this formfield can be used in Lists
     public $views = true; // If this formfield can be used in Views
+    public $settings = true; // If this formfield can be used as a setting
 
     /**
      * Transform data to be shown when browsing.
@@ -143,12 +144,13 @@ class BaseFormfield implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'type'    => $this->type,
-            'column'  => $this->column,
-            'options' => $this->options,
-            'rules'   => $this->rules,
-            'lists'   => $this->lists,
-            'views'   => $this->views,
+            'type'     => $this->type,
+            'column'   => $this->column,
+            'options'  => $this->options,
+            'rules'    => $this->rules,
+            'lists'    => $this->lists,
+            'views'    => $this->views,
+            'settings' => $this->settings,
         ];
     }
 }

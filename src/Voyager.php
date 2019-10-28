@@ -118,12 +118,13 @@ class Voyager
     {
         return $this->getFormfields()->map(function ($formfield) {
             return [
-                'type'    => $formfield->type,
-                'name'    => $formfield->name,
-                'options' => $formfield->options,
-                'rules'   => $formfield->rules,
-                'lists'   => $formfield->lists,
-                'views'   => $formfield->views,
+                'type'     => $formfield->type,
+                'name'     => $formfield->name,
+                'options'  => $formfield->options,
+                'rules'    => $formfield->rules,
+                'lists'    => $formfield->lists,
+                'views'    => $formfield->views,
+                'settings' => $formfield->settings,
             ];
         });
     }

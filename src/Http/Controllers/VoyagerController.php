@@ -49,7 +49,7 @@ class VoyagerController extends Controller
                 $columns->each(function ($column) use (&$query, $q) {
                     $query->orWhere($column, 'LIKE', '%'.$q.'%');
                 });
-            });
+            })->orderBy($layout->getDefaultSortColumn());
 
             $results = $query->get()->transform(function ($result) use ($layout) {
                 return [

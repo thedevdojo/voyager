@@ -6,6 +6,7 @@ class Repeater extends BaseFormfield
 {
     public $type = 'repeater';
     public $lists = false;
+    public $settings = false;
 
     public function __construct()
     {

@@ -11,6 +11,7 @@ class SimpleRelationship extends BaseFormfield
 {
     public $type = 'simple-relationship';
     public $lists = false; // Don't show this formfield for lists
+    public $settings = false;
 
     public function __construct()
     {
