@@ -4,7 +4,6 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Settings as SettingsFacade;
-use Validator;
 
 class SettingsController extends Controller
 {
@@ -32,9 +31,11 @@ class SettingsController extends Controller
             return $setting;
         })->pluck('formfield');
 
-        $layout = new class {
+        $layout = new class() {
             public $formfields = [];
-            public function isColumnTranslatable ($column) {
+
+            public function isColumnTranslatable($column)
+            {
                 return true;
             }
         };
