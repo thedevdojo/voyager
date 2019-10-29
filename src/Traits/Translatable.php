@@ -56,16 +56,6 @@ trait Translatable
                     $this->current_locale => $value,
                 ]);
             }
-
-            if (in_array($key, $this->casts)) {
-                if ($this->casts[$key] == 'object') {
-                    // TODO:
-                } elseif ($this->casts[$key] == 'array') {
-                    // TODO:
-                } elseif ($this->casts[$key] == 'collection') {
-                    // TODO:
-                }
-            }
         }
         if ((bool) class_parents($this)) {
             parent::__set($key, $value);

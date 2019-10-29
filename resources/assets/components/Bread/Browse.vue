@@ -229,10 +229,6 @@ export default {
             });
         }, 250),
         getData: function (result, column) {
-            if (column.includes('.')) {
-                // TODO: Translate relationship if necessary
-            }
-
             if (this.isColumnTranslatable(column)) {
                 return this.translate(result[column]);
             }

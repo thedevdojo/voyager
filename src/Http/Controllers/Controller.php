@@ -141,8 +141,7 @@ abstract class Controller extends BaseController
             $new_value = collect($formfield->{$method}($value, $old, $model, $data));
             $new_value->transform(function ($value, $column) use ($bread, $method) {
                 if ($bread->isColumnTranslatable($column)) {
-                    // TODO: We need to test for casts here
-                    return json_encode($value);
+                    // TODO: It looks like Laravel automatically casts arrays to text even if there is no cast
                 }
 
                 return $value;
@@ -198,5 +197,14 @@ abstract class Controller extends BaseController
         }
 
         return $data ?? [];
+    }
+
+    protected function redirect(Request $request)
+    {
+        if ($request->get('_redirect') == 'back') {
+            return redirect($request->get('prev-url'));
+        } elseif ($request->get('_redirect') == 'new') {
+            return redirect(route('voyager.'.$bread->slug.'.create'));
+        }
     }
 }
