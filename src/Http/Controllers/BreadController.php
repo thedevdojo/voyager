@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
-use Illuminate\Support\Facades\Validator;
-
 class BreadController extends Controller
 {
     public function browse(Request $request)
