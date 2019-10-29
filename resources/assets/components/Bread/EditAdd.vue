@@ -93,9 +93,12 @@ export default {
             return this.output[column];
         },
         getErrors: function (column) {
-            // TODO: Translatable columns include .locale in the key
+            if (this.isColumnTranslatable(column)) {
+                column = column+'.'+this.$language.initial_locale;
+            }
             for (var key in this.errors) {
-                if (key == column) {
+                // TODO: Using startsWith is not necessarily bullet-proof
+                if (key.startsWith(column)) {
                     return this.errors[key];
                 }
             }

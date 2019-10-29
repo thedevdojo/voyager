@@ -125,6 +125,7 @@ export default {
         // If coming from repeater, hide the column section automatically
         if (this.repeater) {
             this.hasColumn = false;
+            this.hasValidation = false;
             this.hasKey = true;
         }
     }

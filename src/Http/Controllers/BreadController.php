@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
+use Illuminate\Support\Facades\Validator;
+
 class BreadController extends Controller
 {
     public function browse(Request $request)
@@ -74,7 +76,6 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('add');
         $this->loadAccessors($data, $bread);
         $data = new \stdClass();
-        // TODO: $data = new $bread->getModel();
         //$this->authorize('add', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data'));
@@ -91,6 +92,8 @@ class BreadController extends Controller
             $errors = $validator->errors()->getMessages();
 
             return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'errors'));
+        } else {
+            dd($validator->getRules(), $data->toArray());
         }
         $data = $this->prepareDataForStoring($data, $model, $bread, $layout);
 
@@ -147,8 +150,14 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('edit');
         $model = $bread->getModel()->findOrFail($id);
         $data = collect($this->getJson($request));
+        $validator = $this->getValidator($layout, $data);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->getMessages();
+
+            return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id', 'errors'));
+        }
         $model = $this->prepareDataForUpdating($data, $model, $bread, $layout);
-        debug($model->getQuery());
         $model->save();
 
         $layout->formfields->each(function ($formfield) use ($model, $data) {

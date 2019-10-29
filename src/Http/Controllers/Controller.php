@@ -186,9 +186,7 @@ abstract class Controller extends BaseController
             }
         });
 
-        $validator = Validator::make($data->toArray(), $rules, $messages);
-
-        return $validator;
+        return Validator::make($data->toArray(), $rules, $messages);
     }
 
     protected function getJson(Request $request, $key = 'data')

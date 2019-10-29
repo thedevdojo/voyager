@@ -119,7 +119,8 @@ export default {
             } catch (e) {
                 
             }
-            this.repeaterValue = data;
+            Vue.set(this, 'repeaterValue', data);
+            this.$emit('input', this.repeaterValue);
         }
     },
     watch: {
