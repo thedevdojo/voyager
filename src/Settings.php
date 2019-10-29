@@ -4,6 +4,7 @@ namespace TCG\Voyager;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use TCG\Voyager\Classes\Setting;
 
 class Settings
 {
@@ -26,12 +27,15 @@ class Settings
         return $this->settingsPath;
     }
 
-    public function setting($key = null, $default = null)
+    public function setting($key = null, $translate = true, $default = null)
     {
         // setting('key'); returns a setting without group and this key OR a whole group with this name
         // setting('group.key') returns a setting in this group and with this key
         // setting() returns all settings
         $this->loadSettings();
+        $this->settings->each(function ($setting) use ($translate) {
+            $setting->translate = $translate;
+        });
 
         if ($key) {
             if (!Str::contains($key, '.')) {
@@ -73,7 +77,7 @@ class Settings
 
     public function saveSettings($content)
     {
-        $this->loadSetting(); // Load settings so the file is available
+        $this->loadSettings(); // Load settings so the file is available
         if (!is_string($content)) {
             $content = json_encode($content, JSON_PRETTY_PRINT);
         }
@@ -81,22 +85,30 @@ class Settings
         File::put($this->settingsPath, $content);
     }
 
-    protected function loadSettings()
+    public function loadSettings($input = null)
     {
-        if (!$this->settings) {
-            $folder = dirname($this->settingsPath);
-            if (!File::isDirectory($folder)) {
-                File::makeDirectory($folder);
-            }
-            if (!File::exists($this->settingsPath)) {
-                File::put($this->settingsPath, '{}');
-            }
-        }
+        if (!$this->settings || $input) {
+            $json = [];
+            if (!$input) {
+                $folder = dirname($this->settingsPath);
+                if (!File::isDirectory($folder)) {
+                    File::makeDirectory($folder);
+                }
+                if (!File::exists($this->settingsPath)) {
+                    File::put($this->settingsPath, '{}');
+                }
 
-        $json = @json_decode(File::get($this->settingsPath));
+                $json = @json_decode(File::get($this->settingsPath));
+            } else {
+                $json = $input;
+            }
+            $this->settings = collect();
 
-        if (json_last_error() == JSON_ERROR_NONE) {
-            $this->settings = collect($json);
+            if (json_last_error() == JSON_ERROR_NONE) {
+                foreach ($json as $setting) {
+                    $this->settings->push(new Setting($setting));
+                }
+            }
         }
     }
 }

@@ -93,6 +93,7 @@ export default {
             return this.output[column];
         },
         getErrors: function (column) {
+            // TODO: Translatable columns include .locale in the key
             for (var key in this.errors) {
                 if (key == column) {
                     return this.errors[key];

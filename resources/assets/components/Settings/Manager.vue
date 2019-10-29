@@ -27,13 +27,47 @@
                                 v-on:input="setGroup($event, setting)"
                                 v-bind:value="setting.group" />
                             <button class="button red small" @click="deleteSetting(setting)">{{ __('voyager::generic.delete') }}</button>
+                            <button class="button green small" @click="openedOptionsId = i">{{ __('voyager::generic.options') }}</button>
                             <component
-                                :is="'formfield-'+setting.type"
+                                :is="'formfield-'+setting.formfield.type"
                                 v-bind:value="data(i, null)"
                                 v-on:input="data(i, $event)"
-                                :options="setting.options"
+                                :options="setting.formfield.options"
                                 column=""
                                 action="edit" />
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-if="getErrors(setting).length > 0">
+                                <p v-for="(error, key) in getErrors(setting)" :key="'error-'+key">
+                                    {{ error }}
+                                </p>
+                            </div>
+
+                            <!-- Options slide-in -->
+                            <slidein :opened="openedOptionsId == i" v-on:closed="openedOptionsId = null">
+                                <div class="">
+                                    <locale-picker></locale-picker>
+                                    <br>
+                                    <div class="flex mb-4">
+                                        <div class="w-2/3">
+                                            <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
+                                        </div>
+                                        <div class="w-1/3 text-right text-gray-100">
+                                            <a @click="openedOptionsId = null" class="cursor-pointer">X</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <component
+                                    :is="'formfield-'+setting.formfield.type"
+                                    v-bind:options="setting.formfield.options"
+                                    :columns="[]"
+                                    :column="null"
+                                    :relationships="[]"
+                                    action="options" type="setting" />
+                                <div class="flex mb-4">
+                                    <div class="w-full m-1">
+                                        <bread-validation-input v-bind:rules="setting.formfield.rules" />
+                                    </div>
+                                </div>
+                            </slidein>
                         </div>
                     </div>
                 </div>
@@ -58,6 +92,8 @@ export default {
             settings: this.input,
             currentGroup: null,
             charWarningTriggered: false,
+            openedOptionsId: null,
+            validationErrors: [],
         };
     },
     computed: {
@@ -94,13 +130,15 @@ export default {
                 var options = JSON.parse(JSON.stringify(formfield.options));
                 options.link = false;
                 this.settings.push({
-                    type: formfield.type,
-                    options: options,
-                    value: this.get_input_as_translatable_object(''),
-                    title: '',
                     group: this.currentGroup,
                     key: '',
-                    rules: []
+                    title: '',
+                    value: this.get_input_as_translatable_object(''),
+                    formfield: {
+                        type: formfield.type,
+                        options: options,
+                        rules: []
+                    },
                 });
             }
 
@@ -142,14 +180,20 @@ export default {
                 _token: document.head.querySelector('meta[name="csrf-token"]').content,
             })
             .then(function (response) {
+                vm.validationErrors = [];
                 vm.$snotify.success(vm.__('voyager::generic.settings_saved'));
             })
             .catch(function (errors) {
-                var errors = errors.response.data;
-                Object.entries(errors).forEach(([key, val]) => {
-                    val.forEach(function (e) {
-                        vm.$snotify.error(e);
-                    });
+                vm.validationErrors = errors.response.data;
+                vm.$snotify.error(vm.__('voyager::generic.settings_validation_fail'));
+
+                // Open first group which has errors
+                vm.settings.forEach(function (setting) {
+                    if (vm.getErrors(setting).length > 0) {
+                        vm.currentGroup = setting.group;
+
+                        return;
+                    }
                 });
             });
         },
@@ -159,6 +203,20 @@ export default {
             }
 
             return this.translate(this.groupedSettings[num].value || '');
+        },
+        getErrors: function (setting) {
+            var errors = [];
+            var field_name = setting.key;
+            if (setting.group) {
+                field_name = setting.group+'_'+field_name;
+            }
+            for (var key in this.validationErrors) {
+                if (key.startsWith(field_name)) {
+                    errors = this.validationErrors[key];
+                }
+            }
+
+            return errors;
         },
         setKey: function (event, setting) {
             var new_value = this.checkInput(event.target.value);

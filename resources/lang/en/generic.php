@@ -52,6 +52,7 @@ return [
     'selected'                  => 'Selected',
     'settings_char_warning'     => 'You can only enter lowercase letters and underscores',
     'settings_saved'            => 'Settings saved',
+    'settings_validation_fail'  => 'There were errors validating the Settings!',
     'show'                      => 'Show',
     'slug'                      => 'Slug',
     'step'                      => 'Step',

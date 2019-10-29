@@ -115,7 +115,7 @@
                 </div>
              </div>
         </div>
-        <div class="voyager-card">
+        <div class="voyager-card" v-if="$globals.debug">
             <div class="body">
                 <textarea rows="10" v-model="jsonBread" class="voyager-input"></textarea>
             </div>
@@ -275,7 +275,7 @@ export default {
         },
         jsonBread: {
             get: function () {
-                return JSON.stringify(this.bread, null, 4);
+                return JSON.stringify(this.bread, true, 4);
             },
             set: function (val) {
                 this.bread = JSON.parse(val);

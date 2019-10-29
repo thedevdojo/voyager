@@ -164,19 +164,26 @@ abstract class Controller extends BaseController
         $rules = [];
         $messages = [];
 
-        $layout->formfields->each(function ($formfield) use (&$rules, &$messages) {
+        $layout->formfields->each(function ($formfield) use (&$rules, &$messages, $layout) {
             $formfield_rules = [];
-            collect($formfield->rules)->each(function ($rule_object) use ($formfield, &$formfield_rules, &$messages) {
-                // TODO: Add translation validation
+            collect($formfield->rules)->each(function ($rule_object) use ($formfield, &$formfield_rules, &$messages, $layout) {
                 $formfield_rules[] = $rule_object->rule;
                 $message_ident = $formfield->column.'.'.Str::before($rule_object->rule, ':');
+                if ($layout->isColumnTranslatable($formfield->column)) {
+                    $message_ident = $formfield->column.'.'.VoyagerFacade::getLocale().'.'.Str::before($rule_object->rule, ':');
+                }
                 $message = $rule_object->message;
                 if (is_object($message)) {
                     $message = $message->{VoyagerFacade::getLocale()} ?? $message->{VoyagerFacade::getFallbackLocale()} ?? '';
                 }
+                
                 $messages[$message_ident] = $message;
             });
-            $rules[$formfield->column] = $formfield_rules;
+            if ($layout->isColumnTranslatable($formfield->column)) {
+                $rules[$formfield->column.'.'.VoyagerFacade::getLocale()] = $formfield_rules;
+            } else {
+                $rules[$formfield->column] = $formfield_rules;
+            }
         });
 
         $validator = Validator::make($data->toArray(), $rules, $messages);

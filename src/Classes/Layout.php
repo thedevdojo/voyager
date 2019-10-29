@@ -64,6 +64,11 @@ class Layout implements \JsonSerializable
         return $this->formfields->where('options.searchable', true);
     }
 
+    public function isColumnTranslatable($column)
+    {
+        return $this->bread->isColumnTranslatable($column);
+    }
+
     public function isValid()
     {
         return !empty($this->name);

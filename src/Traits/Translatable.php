@@ -4,6 +4,8 @@ namespace TCG\Voyager\Traits;
 
 trait Translatable
 {
+    public $translate = true;
+
     public function __construct()
     {
         $this->current_locale = app()->getLocale();
@@ -12,10 +14,16 @@ trait Translatable
 
     public function __get($key)
     {
+        $value = null;
+
         if ($this instanceof \Illuminate\Database\Eloquent\Model) {
             $value = $this->getAttribute($key);
         } else {
             $value = $this->{$key};
+        }
+
+        if (!$this->translate) {
+            return $value;
         }
 
         if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
@@ -59,7 +67,10 @@ trait Translatable
                 }
             }
         }
-
-        parent::__set($key, $value);
+        if ((bool)class_parents($this)) {
+            parent::__set($key, $value);
+        } else {
+            $this->{$key} = $value;
+        }
     }
 }
