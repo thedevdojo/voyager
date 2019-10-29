@@ -88,11 +88,11 @@ class BreadController extends Controller
         $validator = $this->getValidator($layout, $data);
         if ($validator->fails()) {
             $errors = $validator->errors()->getMessages();
+            VoyagerFacade::flashMessage(__('voyager::bread.error_storing_type', ['type' => $bread->name_singular]), 'error', true);
 
             return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'errors'));
-        } else {
-            dd($validator->getRules(), $data->toArray());
         }
+
         $data = $this->prepareDataForStoring($data, $model, $bread, $layout);
 
         $model->save();
@@ -100,6 +100,8 @@ class BreadController extends Controller
         $layout->formfields->each(function ($formfield) use ($model, $data) {
             $formfield->stored($model, $data);
         });
+
+        VoyagerFacade::flashMessage(__('voyager::bread.success_stored_type', ['type' => $bread->name_singular]), 'success', true);
 
         if ($request->has('_redirect')) {
             if ($request->get('_redirect') == 'back') {
@@ -152,11 +154,14 @@ class BreadController extends Controller
 
         if ($validator->fails()) {
             $errors = $validator->errors()->getMessages();
+            VoyagerFacade::flashMessage(__('voyager::bread.error_updating_type', ['type' => $bread->name_singular]), 'error', true);
 
             return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id', 'errors'));
         }
         $model = $this->prepareDataForUpdating($data, $model, $bread, $layout);
         $model->save();
+
+        VoyagerFacade::flashMessage(__('voyager::bread.success_updated_type', ['type' => $bread->name_singular]), 'success', true);
 
         $layout->formfields->each(function ($formfield) use ($model, $data) {
             $formfield->updated($model, $data);

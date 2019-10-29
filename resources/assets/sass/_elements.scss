@@ -46,6 +46,14 @@ a {
     }
 }
 
+.alert {
+    @apply border px-4 py-3 rounded relative;
+
+    &.red {
+        @apply bg-red-100 border-red-400 text-red-700;
+    }
+}
+
 .hint {
     @apply text-gray-600 text-xs;
 }

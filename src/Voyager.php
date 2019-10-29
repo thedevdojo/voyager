@@ -4,7 +4,6 @@ namespace TCG\Voyager;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 class Voyager
 {
@@ -40,13 +39,20 @@ class Voyager
      *
      * @param string $message The message
      * @param string $type    The type of the exception: info, success, warning, error or debug
+     * @param bool   $next    If the message should be flashed after the next request
      */
-    public function flashMessage($message, $type)
+    public function flashMessage($message, $type, $next = false)
     {
         $this->messages[] = [
             'message' => $message,
             'type'    => $type,
         ];
+        if ($next) {
+            session()->push('voyager-messages', [
+                'message' => $message,
+                'type'    => $type,
+            ]);
+        }
     }
 
     /**
@@ -56,7 +62,10 @@ class Voyager
      */
     public function getMessages()
     {
-        return $this->messages;
+        $messages = array_merge($this->messages, session()->get('voyager-messages', []));
+        session()->forget('voyager-messages');
+
+        return collect($messages)->unique();
     }
 
     /**

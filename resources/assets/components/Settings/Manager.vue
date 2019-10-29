@@ -35,7 +35,7 @@
                                 :options="setting.formfield.options"
                                 column=""
                                 action="edit" />
-                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" v-if="getErrors(setting).length > 0">
+                            <div class="alert red" role="alert" v-if="getErrors(setting).length > 0">
                                 <p v-for="(error, key) in getErrors(setting)" :key="'error-'+key">
                                     {{ error }}
                                 </p>
