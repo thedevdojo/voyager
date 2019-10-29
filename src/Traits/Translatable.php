@@ -67,7 +67,7 @@ trait Translatable
                 }
             }
         }
-        if ((bool)class_parents($this)) {
+        if ((bool) class_parents($this)) {
             parent::__set($key, $value);
         } else {
             $this->{$key} = $value;

@@ -11,8 +11,11 @@ class Setting implements \JsonSerializable
 
     private $translatable = ['title', 'value'];
 
-    public $group, $key, $formfield;
-    protected $title, $value;
+    public $group;
+    public $key;
+    public $formfield;
+    protected $title;
+    protected $value;
 
     public function __construct($parameter)
     {

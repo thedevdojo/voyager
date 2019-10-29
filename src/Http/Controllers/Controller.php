@@ -176,7 +176,7 @@ abstract class Controller extends BaseController
                 if (is_object($message)) {
                     $message = $message->{VoyagerFacade::getLocale()} ?? $message->{VoyagerFacade::getFallbackLocale()} ?? '';
                 }
-                
+
                 $messages[$message_ident] = $message;
             });
             if ($layout->isColumnTranslatable($formfield->column)) {
