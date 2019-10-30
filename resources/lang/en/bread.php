@@ -33,9 +33,37 @@ return [
         'text'                => 'Text',
     ],
     'formfields'                => [
+        'color'               => [
+            'colors'          => [
+                'basic'          => 'Basic',
+                'text_basic'     => 'Text Basic',
+                'material_basic' => 'Material Basic',
+                'material_light' => 'Material Light',
+                'material_dark'  => 'Material Dark',
+            ],
+        ],
+        'date_time'           => [
+            'date'          => 'Date',
+            'datetime'      => 'Date and Time',
+            'time'          => 'Time',
+            'month'         => 'Month',
+            'future'        => 'Future',
+            'past'          => 'Past',
+        ],
+        'html_element'        => [
+            'h1'            => 'Heading 1',
+            'h2'            => 'Heading 2',
+            'h3'            => 'Heading 3',
+            'h4'            => 'Heading 4',
+            'hr'            => 'Horizontal Rule',
+        ],
         'repeater'            => [
             'add_element_text'      => 'Add element text',
         ],
+        'simple_relationship' => [
+            'list_empty'        => 'List is empty.',
+            'max_selected'      => 'Maximum of :num options selected. First remove a selected option to select another.',
+        ]
     ],
     'press_enter_to_create'     => 'Press enter to create',
     'press_enter_to_deselect'   => 'Press enter to deselect',

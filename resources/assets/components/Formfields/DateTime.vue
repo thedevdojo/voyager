@@ -41,10 +41,10 @@
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.type') }}</label>
                     <select class="voyager-input" v-model="options.type">
-                        <option value="date">Date</option>
-                        <option value="time">Time</option>
-                        <option value="datetime">Date and Time</option>
-                        <option value="month">Month</option>
+                        <option value="date">{{ __('voyager::bread.formfields.date_time.date') }}</option>
+                        <option value="time">{{ __('voyager::bread.formfields.date_time.time') }}</option>
+                        <option value="datetime">{{ __('voyager::bread.formfields.date_time.datetime') }}</option>
+                        <option value="month">{{ __('voyager::bread.formfields.date_time.moth') }}</option>
                     </select>
                 </div>
             </div>
@@ -52,9 +52,9 @@
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.mode') }}</label>
                     <select class="voyager-input" v-model="options.mode">
-                        <option value="future">Future</option>
-                        <option value="past">Past</option>
-                        <option value="all">All</option>
+                        <option value="future">{{ __('voyager::bread.formfields.date_time.future') }}</option>
+                        <option value="past">{{ __('voyager::bread.formfields.date_time.past') }}</option>
+                        <option value="all">{{ __('voyager::generic.all') }}</option>
                     </select>
                 </div>
             </div>

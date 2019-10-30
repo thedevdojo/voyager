@@ -33,7 +33,7 @@
                         background-color="transparent"
                         show-fallback
                         inline
-                        :disabled="action == 'mockup' || options.disabled" />
+                        :disabled="true" />
                 </div>
                 <p>{{ translate(options.description) }}</p>
             </div>
@@ -41,13 +41,13 @@
         <div v-else-if="action == 'options'">
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">Colors</label>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.colors') }}</label>
                     <select class="voyager-input" v-model="options.colors">
-                        <option value="basic">Basic</option>
-                        <option value="text-basic">Text Basic</option>
-                        <option value="material-basic">Material Basic</option>
-                        <option value="material-light">Material Light</option>
-                        <option value="material-dark">Material Dark</option>
+                        <option value="basic">{{ __('voyager::bread.formfields.color.colors.basic') }}</option>
+                        <option value="text-basic">{{ __('voyager::bread.formfields.color.colors.text_basic') }}</option>
+                        <option value="material-basic">{{ __('voyager::bread.formfields.color.colors.material_basic') }}</option>
+                        <option value="material-light">{{ __('voyager::bread.formfields.color.colors.material_light') }}</option>
+                        <option value="material-dark">{{ __('voyager::bread.formfields.color.colors.material_dark') }}</option>
                     </select>
                 </div>
             </div>

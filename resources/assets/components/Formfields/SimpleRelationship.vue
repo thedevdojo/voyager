@@ -40,13 +40,13 @@
                     @tag="createTag"
                 >
                     <template slot="maxElements">
-                        Maximum of {{ options.max }} options selected. First remove a selected option to select another.
+                        {{ __('voyager::bread.formfields.simple_relationship.max_selected', {num: options.max}) }}
                     </template>
                     <template slot="noResult">
-                        No elements found. Consider changing the search query.
+                        {{ __('voyager::generic.no_results') }}
                     </template>
                     <template slot="noOptions">
-                        List is empty.
+                        {{ __('voyager::bread.formfields.simple_relationship.list_empty') }}
                     </template>
                 </multiselect>
                 <p>{{ translate(options.description, true) }}</p>

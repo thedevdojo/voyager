@@ -32,28 +32,28 @@
         <div v-else-if="action == 'options'">
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">Controller</label>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.controller') }}</label>
                     <input type="text" v-model="options.controller" class="voyager-input" />
                 </div>
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">Method</label>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.method') }}</label>
                     <input type="text" v-model="options.method" class="voyager-input" />
                 </div>
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">Store</label>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.save') }}</label>
                     <select class="voyager-input" v-model="options.store">
-                        <option value="key">Key</option>
-                        <option value="value">Value</option>
+                        <option value="key">{{ __('voyager::generic.key') }}</option>
+                        <option value="value">{{ __('voyager::generic.value') }}</option>
                     </select>
                 </div>
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">Size</label>
+                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.size') }}</label>
                     <input type="number" v-model="options.size" class="voyager-input" min="1" />
                 </div>
             </div>
