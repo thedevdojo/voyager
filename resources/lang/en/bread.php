@@ -63,7 +63,7 @@ return [
         'simple_relationship' => [
             'list_empty'        => 'List is empty.',
             'max_selected'      => 'Maximum of :num options selected. First remove a selected option to select another.',
-        ]
+        ],
     ],
     'press_enter_to_create'     => 'Press enter to create',
     'press_enter_to_deselect'   => 'Press enter to deselect',
