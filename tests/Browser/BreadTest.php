@@ -3,7 +3,7 @@
 namespace TCG\Voyager\Tests\Browser;
 
 use Laravel\Dusk\Browser as DuskBrowser;
-use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Facades\Bread;
 
 class BreadTest extends TestCase
 {
@@ -20,7 +20,7 @@ class BreadTest extends TestCase
 
     protected function create_bread_for_table($table)
     {
-        Voyager::deleteBread($table);
+        Bread::deleteBread($table);
         $this->browse(function (DuskBrowser $browser) use ($table) {
             $browser->visitRoute('voyager.bread.create', $table)
                 ->waitForText(__('voyager::manager.create_layout_first'))

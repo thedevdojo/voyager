@@ -3,13 +3,13 @@
 namespace TCG\Voyager\Tests\Browser;
 
 use Laravel\Dusk\Browser as DuskBrowser;
-use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Facades\Bread;
 
 class BreadManagerTest extends TestCase
 {
     public function test_can_browse_breads()
     {
-        Voyager::deleteBread('users');
+        Bread::deleteBread('users');
         $this->browse(function (DuskBrowser $browser) {
             $browser->visitRoute('voyager.bread.index')
                 ->waitForText('users')
@@ -19,7 +19,7 @@ class BreadManagerTest extends TestCase
 
     public function test_can_create_user_bread()
     {
-        Voyager::deleteBread('users');
+        Bread::deleteBread('users');
         $this->browse(function (DuskBrowser $browser) {
             $browser->visitRoute('voyager.bread.create', 'users')
                 ->waitForText(__('voyager::manager.create_layout_first'))
@@ -31,9 +31,9 @@ class BreadManagerTest extends TestCase
                 ->assertButtonEnabled('@edit-users');
         });
 
-        Voyager::clearBreads(); // Clear BREADs and reload them because phpunit and the browser are different clients
-        $this->assertNotNull(Voyager::getBread('users'));
-        $this->assertNull(Voyager::getBread('not_existing'));
+        Bread::clearBreads(); // Clear BREADs and reload them because phpunit and the browser are different clients
+        $this->assertNotNull(Bread::getBread('users'));
+        $this->assertNull(Bread::getBread('not_existing'));
     }
 
     public function test_cannot_create_bread_for_non_existing_table()
