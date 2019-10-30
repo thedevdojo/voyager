@@ -12,11 +12,11 @@ env:
 matrix:
   include:
     - php: 7.2
-      env: LARAVEL=6.0.*
+      env: LARAVEL=6.*
     - php: 7.3
-      env: COVERAGE=1 LARAVEL=6.0.*
+      env: COVERAGE=1 LARAVEL=6.*
     - php: 7.4snapshot
-      env: LARAVEL=6.0.*
+      env: LARAVEL=6.*
   fast_finish: true
 
 cache:
