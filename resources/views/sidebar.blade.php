@@ -106,6 +106,9 @@
 
 
     <div>
+        <button class="button blue" @click="$globals.toggleDarkMode">
+            @{{ $globals.darkmode ? 'Lights on' : 'Lights off' }}
+        </button>
         <img src="{{ Voyager::assetUrl('images/default-avatar.png') }}" class="rounded-full m-4 w-8" alt="User Avatar">
     </div>
 

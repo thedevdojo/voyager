@@ -18,6 +18,6 @@ require('laravel-mix-purgecss');
     postCss: [ tailwindcss('tailwind.config.js') ],
 }).purgeCss({
     folders: ['resources'],
-    whitelistPatterns: [/snotify/],
+    whitelistPatterns: [/snotify/, /mode-dark/, /dark/],
 })
 .js('resources/assets/js/voyager.js', 'resources/assets/dist/js');

@@ -34,7 +34,7 @@
                     :computed="computed"
                     :relationships="relationships"
                     :repeater="true"
-                    class="border-dotted border-4 border-gray-600"
+                    class="border-dashed border border-gray-500"
                     style="min-height: 150px" />
                 <p>{{ translate(options.description) }}</p>
             </div>

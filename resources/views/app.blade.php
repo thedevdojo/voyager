@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 dark:bg-gray-800">
 
         <!--div id="voyager-loader">
             <img src="{{ Voyager::assetUrl('images/logo-icon.png') }}" alt="Voyager Loader">
@@ -88,11 +88,11 @@ var voyager = new Vue({
         });
     },
     created: function () {
-        Vue.prototype.$language.localization = {!! Voyager::getLocalization() !!};
-        Vue.prototype.$globals.routes = {!! Voyager::getRoutes() !!};
-        Vue.prototype.$globals.breads = {!! Bread::getBreads() !!};
-        Vue.prototype.$globals.formfields = this.formfields;
-        Vue.prototype.$globals.debug = {{ var_export(config('app.debug') ?? false, true) }};
+        this.$language.localization = {!! Voyager::getLocalization() !!};
+        this.$globals.routes = {!! Voyager::getRoutes() !!};
+        this.$globals.breads = {!! Bread::getBreads() !!};
+        this.$globals.formfields = this.formfields;
+        this.$globals.debug = {{ var_export(config('app.debug') ?? false, true) }};
     }
 });
 </script>

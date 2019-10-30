@@ -424,12 +424,12 @@ module.exports = {
       alignSelf: ['responsive'],
       appearance: ['responsive'],
       backgroundAttachment: ['responsive'],
-      backgroundColor: ['responsive', 'hover', 'focus'],
+      backgroundColor: ['dark', 'dark-hover', 'dark-group-hover', 'responsive', 'hover', 'focus'],
       backgroundPosition: ['responsive'],
       backgroundRepeat: ['responsive'],
       backgroundSize: ['responsive'],
       borderCollapse: ['responsive'],
-      borderColor: ['responsive', 'hover', 'focus'],
+      borderColor: ['dark', 'dark-focus', 'dark-focus-within', 'responsive', 'hover', 'focus'],
       borderRadius: ['responsive'],
       borderStyle: ['responsive'],
       borderWidth: ['responsive'],
@@ -473,7 +473,7 @@ module.exports = {
       stroke: ['responsive'],
       tableLayout: ['responsive'],
       textAlign: ['responsive'],
-      textColor: ['responsive', 'hover', 'focus'],
+      textColor: ['dark', 'dark-hover', 'dark-active', 'responsive', 'hover', 'focus'],
       textDecoration: ['responsive', 'hover', 'focus'],
       textTransform: ['responsive'],
       userSelect: ['responsive'],
@@ -485,5 +485,7 @@ module.exports = {
       zIndex: ['responsive'],
     },
     corePlugins: {},
-    plugins: [],
+    plugins: [
+      require('tailwindcss-dark-mode')()
+    ],
   }

@@ -94,7 +94,12 @@
             <div class="flex mb-4" v-if="type == 'list'">
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.max_characters') }}</label>
-                    <input type="number" v-model="options.max_characters">
+                    <input
+                        type="number"
+                        class="voyager-input"
+                        min="1"
+                        :placeholder="__('voyager::generic.max_characters')"
+                        v-model="options.max_characters">
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 <template>
     <div :class="'p-2 overflow-hidden h-auto w-'+(formfield.options.width || '1/2')">
+        <div class="test">Should be red :)</div>
         <div class="p-4 bg-white rounded shadow-md ">
             <div class="w-full text-right">
                 <a class="" @click="deleteFormfield()">X</a>
@@ -16,16 +17,13 @@
                 type="view"
                 action="mockup" />
             <slidein :opened="optionsOpen" v-on:closed="closeOptions">
-                <div class="">
-                    <locale-picker></locale-picker>
-                    <br>
-                    <div class="flex mb-4">
-                        <div class="w-2/3">
-                            <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
-                        </div>
-                        <div class="w-1/3 text-right text-gray-100">
-                            <a @click="closeOptions()" class="cursor-pointer">X</a>
-                        </div>
+                <div class="flex mb-4">
+                    <div class="w-2/3">
+                        <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
+                    </div>
+                    <div class="w-1/3 text-right text-gray-100">
+                        <locale-picker class="mr-2" />
+                        <button @click="closeOptions" class="button green">X</button>
                     </div>
                 </div>
                 <div class="flex mb-4" v-if="hasColumn">

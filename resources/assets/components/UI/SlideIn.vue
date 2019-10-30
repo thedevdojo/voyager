@@ -57,9 +57,8 @@ export default {
 
 <style lang="scss" scoped>
 .slidein {
-    @apply fixed w-1/4 top-0 left-auto right-0 h-full overflow-y-hidden;
-    background-color: rgba(0, 0, 0, .5);
-    transition: opacity 0.3s ease;
+    @apply fixed w-1/4 top-0 left-auto right-0 h-full overflow-y-auto p-8;
+    background-color: rgba(0, 0, 0, .7);
     z-index: 100;
 
     &.open {

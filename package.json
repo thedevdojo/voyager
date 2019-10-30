@@ -13,6 +13,7 @@
         "laravel-mix": "^4.1.4",
         "laravel-mix-purgecss": "^4.2.0",
         "sass-loader": "^7.3.1",
+        "tailwindcss-dark-mode": "ChanceArthur/tailwindcss-dark-mode#07d73029a92da20c37a194f27bf4f3257723e1b1",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {

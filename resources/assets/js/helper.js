@@ -5,6 +5,49 @@ Vue.prototype.$globals = new Vue({
         breads: [],
         permissions: [],
         debug: false,
+        darkmode: false,
+    },
+    methods: {
+        toggleDarkMode: function () {
+            var dark = true;
+            var classes = document.querySelector('html').classList;
+            if (classes.contains('mode-dark')) {
+                classes.remove('mode-dark');
+                dark = false;
+            } else {
+                classes.add('mode-dark');
+            }
+
+            this.setCookie('dark-mode', (dark ? 'true' : 'false'), 360);
+            this.darkmode = dark;
+        },
+        setCookie: function (name, value, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires="+ d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        },
+        getCookie: function (name) {
+            var name = name + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+    },
+    created: function () {
+        var dark_mode = this.getCookie('dark-mode');
+        if (dark_mode == 'true') {
+            this.toggleDarkMode();
+        }
     }
 });
 
