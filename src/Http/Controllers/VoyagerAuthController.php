@@ -64,4 +64,9 @@ class VoyagerAuthController extends Controller
     {
         return Auth::guard(app('VoyagerGuard'));
     }
+
+    public function username()
+    {
+        return 'username';
+    }
 }

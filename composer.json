@@ -1,6 +1,6 @@
 {
-    "name": "tcg/voyager",
-    "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
+    "name": "zijinhua/voyager",
+    "description": "this is a custom package that fork from tcg/voyager. we removed user email",
     "keywords": ["laravel", "admin", "panel"],
     "license": "MIT",
     "homepage": "https://the-control-group.github.io/voyager/",
