@@ -93,7 +93,7 @@ class BasePolicy
     }
 
     /**
-     * Purge cache, needed only for tests
+     * Purge cache, needed only for tests.
      *
      * @return void
      */
