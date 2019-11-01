@@ -91,4 +91,14 @@ class BasePolicy
 
         return self::$cache[$key];
     }
+
+    /**
+     * Purge cache, needed only for tests
+     *
+     * @return void
+     */
+    public static function purgeCache()
+    {
+        self::$cache = [];
+    }
 }

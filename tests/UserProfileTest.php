@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\User;
+use TCG\Voyager\Policies\BasePolicy;
 
 class UserProfileTest extends TestCase
 {
@@ -111,6 +112,9 @@ class UserProfileTest extends TestCase
             'browse_admin',
             'browse_users',
         ])->get()->pluck('id')->all());
+
+        BasePolicy::purgeCache();
+
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
              ->click(__('voyager::profile.edit'))
@@ -151,6 +155,8 @@ class UserProfileTest extends TestCase
         $user->role->permissions()->detach(
             $user->role->permissions()->where('key', 'browse_users')->first()
         );
+
+        BasePolicy::purgeCache();
 
         $this->visit($this->editPageForTheCurrentUser)
              ->press(__('voyager::generic.save'))

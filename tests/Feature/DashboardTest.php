@@ -4,6 +4,7 @@ namespace TCG\Voyager\Tests\Feature;
 
 use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Policies\BasePolicy;
 use TCG\Voyager\Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -65,6 +66,8 @@ class DashboardTest extends TestCase
             $user->role->permissions()->where('key', 'browse_users')->first()
         );
 
+        BasePolicy::purgeCache();
+
         $this->visit(route('voyager.dashboard'))
             ->see(__('voyager::generic.dashboard'));
 
@@ -86,6 +89,8 @@ class DashboardTest extends TestCase
             $user->role->permissions()->where('key', 'browse_posts')->first()
         );
 
+        BasePolicy::purgeCache();
+
         $this->visit(route('voyager.dashboard'))
             ->see(__('voyager::generic.dashboard'));
 
@@ -106,6 +111,8 @@ class DashboardTest extends TestCase
         $user->role->permissions()->detach(
             $user->role->permissions()->where('key', 'browse_pages')->first()
         );
+
+        BasePolicy::purgeCache();
 
         $this->visit(route('voyager.dashboard'))
             ->see(__('voyager::generic.dashboard'));

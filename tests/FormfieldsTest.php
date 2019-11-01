@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Schema;
 use TCG\Voyager\Models\Category;
 use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Permission;
+use TCG\Voyager\Policies\BasePolicy;
 
 class FormfieldsTest extends TestCase
 {
@@ -381,5 +382,7 @@ class FormfieldsTest extends TestCase
 
         // Attach permissions to role
         Auth::user()->role->permissions()->syncWithoutDetaching(Permission::all()->pluck('id'));
+
+        BasePolicy::purgeCache();
     }
 }
