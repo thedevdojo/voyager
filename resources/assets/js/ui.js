@@ -20,4 +20,5 @@ Vue.component('floating-button', require('../components/UI/FloatingButton').defa
 Vue.component('tooltip', require('../components/UI/Tooltip').default);
 Vue.component('search', require('../components/UI/Search').default);
 Vue.component('slidein', require('../components/UI/SlideIn').default);
+Vue.component('icon', require('../components/UI/Icon').default);
 

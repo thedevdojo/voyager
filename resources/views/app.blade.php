@@ -9,7 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gray-100 dark:bg-gray-800">
+<body>
 
         <!--div id="voyager-loader">
             <img src="{{ Voyager::assetUrl('images/logo-icon.png') }}" alt="Voyager Loader">

@@ -1,12 +1,11 @@
 <template>
     <div :class="'p-2 overflow-hidden h-auto w-'+(formfield.options.width || '1/2')">
-        <div class="test">Should be red :)</div>
-        <div class="p-4 bg-white rounded shadow-md ">
+        <div class="voyager-card">
             <div class="w-full text-right">
-                <a class="" @click="deleteFormfield()">X</a>
-                <a class="" @click="openOptions()">O</a>
-                <a class="drag-handle">D</a>
-                <a class="" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()">&lt;&gt;</a>
+                <i class="cursor-pointer" @click="deleteFormfield()"><icon icon="delete" /></i>
+                <i class="cursor-pointer" @click="openOptions()"><icon icon="cog" /></i>
+                <i class="cursor-pointer drag-handle"><icon icon="move" /></i>
+                <i class="cursor-pointer" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()"><icon icon="resize" /></i>
             </div>
             <component
                 :is="'formfield-'+formfield.type"

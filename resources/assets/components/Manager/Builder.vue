@@ -4,9 +4,10 @@
             <div class="body">
                 <div class="flex mb-4">
                     <div class="w-full m-1">
-                        <label class="voyager-label">{{ __('voyager::generic.slug') }}</label>
+                        <label class="voyager-label" for="slug">{{ __('voyager::generic.slug') }}</label>
                         <language-input
                             class="voyager-input"
+                            id="slug"
                             type="text" :placeholder="__('voyager::generic.slug')"
                             v-bind:value="bread.slug"
                             v-on:input="bread.slug = $event" />
@@ -15,17 +16,19 @@
                 
                 <div class="flex mb-4">
                     <div class="w-1/2 m-1">
-                        <label class="voyager-label">{{ __('voyager::manager.name_singular') }}</label>
+                        <label class="voyager-label" for="name-singular">{{ __('voyager::manager.name_singular') }}</label>
                         <language-input
                             class="voyager-input"
+                            id="name-singular"
                             type="text" :placeholder="__('voyager::manager.name_singular')"
                             v-bind:value="bread.name_singular"
                             v-on:input="bread.name_singular = $event" />
                     </div>
                     <div class="w-1/2 m-1">
-                        <label class="voyager-label">{{ __('voyager::manager.name_plural') }}</label>
+                        <label class="voyager-label" for="name-plural">{{ __('voyager::manager.name_plural') }}</label>
                         <language-input
                             class="voyager-input"
+                            id="name-plural"
                             type="text" :placeholder="__('voyager::manager.name_plural')"
                             v-bind:value="bread.name_plural"
                             v-on:input="bread.name_plural = $event" />
@@ -33,23 +36,26 @@
                 </div>
                 <div class="flex mb-4">
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label">{{ __('voyager::manager.model') }}</label>
+                        <label class="voyager-label" for="model">{{ __('voyager::manager.model') }}</label>
                         <input
                             class="voyager-input"
+                            id="model"
                             type="text" :placeholder="__('voyager::manager.model')"
                             v-model="bread.model">
                     </div>
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label">{{ __('voyager::manager.controller') }}</label>
+                        <label class="voyager-label" for="controller">{{ __('voyager::manager.controller') }}</label>
                         <input
                             class="voyager-input"
+                            id="controller"
                             type="text" :placeholder="__('voyager::manager.controller')"
                             v-model="bread.controller">
                     </div>
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label">{{ __('voyager::manager.policy') }}</label>
+                        <label class="voyager-label" for="policy">{{ __('voyager::manager.policy') }}</label>
                         <input
                             class="voyager-input"
+                            id="policy"
                             type="text" :placeholder="__('voyager::manager.policy')"
                             v-model="bread.policy">
                     </div>
@@ -76,21 +82,8 @@
                     </select>
                     <button class="button green small" @click="addLayout('view')">{{ __('voyager::manager.add_view') }}</button>
                     <button class="button green small" @click="addLayout('list')">{{ __('voyager::manager.add_list') }}</button>
-                    <button class="button green small" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>
-                    <span v-if="currentLayout && currentLayout.type == 'list'">
-                        <!-- {{ __('voyager::manager.soft_deletes') }} -->
-                        <select class="voyager-input small w-auto" v-model="currentLayout.soft_deletes">
-                            <option v-bind:value="'hide'">{{ __('voyager::generic.hide') }}</option>
-                            <option v-bind:value="'show'">{{ __('voyager::generic.show') }}</option>
-                            <option v-bind:value="'select'">{{ __('voyager::generic.select') }}</option>
-                            <option v-bind:value="'only'">{{ __('voyager::generic.only') }}</option>
-                        </select>
-
-                        <input type="checkbox" v-model="currentLayout.restore"> {{ __('voyager::manager.allow_restore') }}
-                        <input type="checkbox" v-model="currentLayout.force_delete"> {{ __('voyager::manager.allow_force_delete') }}
-
-                        <!-- {{ __('voyager::manager.soft_deletes_help') }} -->
-                    </span>
+                    <button class="button red small" @click="deleteLayout()" v-if="currentLayoutId !== null">{{ __('voyager::manager.delete_layout') }}</button>
+                    <button class="button blue small" @click="showLayoutSettings = true" v-if="currentLayoutId !== null">{{ __('voyager::manager.layout_settings') }}</button>
                 </div>
             </div>
              <div class="voyager-card">
@@ -106,20 +99,30 @@
                             {{ __('voyager::manager.add_formfield_first') }}
                         </div>
                         <div v-else-if="currentLayout.type == 'view'">
-                            <bread-view-builder :layout="currentLayout" :columns="columns" :computed="computed" :relationships="relationships" />
+                            <bread-view-builder
+                                :layout="currentLayout"
+                                :columns="columns"
+                                :computed="computed"
+                                :relationships="relationships"
+                                :show-settings="showLayoutSettings"
+                                v-on:layout-settings-closed="showLayoutSettings = false" />
                         </div>
                         <div v-else-if="currentLayout.type == 'list'">
-                            <bread-list-builder :layout="currentLayout" :columns="columns" :computed="computed" :relationships="relationships" />
+                            <bread-list-builder
+                                :layout="currentLayout"
+                                :columns="columns"
+                                :computed="computed"
+                                :relationships="relationships"
+                                :show-settings="showLayoutSettings"
+                                v-on:layout-settings-closed="showLayoutSettings = false" />
+                        </div>
+                        <div class="w-full mt-6 text-right">
+                            <button class="button blue" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
                         </div>
                     </div>
                 </div>
              </div>
         </div>
-        <div class="voyager-card" v-if="$globals.debug">
-            <div class="body">
-                <textarea rows="10" v-model="jsonBread" class="voyager-input"></textarea>
-            </div>
-         </div>
     </div>
 </template>
 
@@ -130,11 +133,13 @@ export default {
         return {
             bread: this.data,
             currentLayoutId: null,
+            showLayoutSettings: false,
         };
     },
     methods: {
         saveBread: function () {
             var vm = this;
+            var bread = vm.bread;
             axios.put(this.url, {
                 bread: vm.bread,
                 _token: document.head.querySelector('meta[name="csrf-token"]').content,
@@ -144,11 +149,15 @@ export default {
             })
             .catch(function (errors) {
                 var errors = errors.response.data;
-                Object.entries(errors).forEach(([key, val]) => {
-                    val.forEach(function (e) {
-                        vm.$snotify.error(e);
+                if (!vm.isObject(errors)) {
+                    vm.$snotify.error(errors);
+                } else {
+                    Object.entries(errors).forEach(([key, val]) => {
+                        val.forEach(function (e) {
+                            vm.$snotify.error(e);
+                        });
                     });
-                });
+                }
             });
         },
         addLayout: function (type) {
@@ -159,13 +168,16 @@ export default {
                     {
                         text: vm.__('voyager::generic.create'),
                         action: (toast) => {
-                            vm.bread.layouts.push({
-                                name: toast.value,
-                                type: type,
-                                formfields: []
-                            });
+                            if (toast.value !== '') {
+                                vm.bread.layouts.push({
+                                    name: toast.value,
+                                    type: type,
+                                    formfields: []
+                                });
+                                vm.currentLayoutId = vm.bread.layouts.length - 1;
+                            }
+                            
                             vm.$snotify.remove(toast.id);
-                            vm.currentLayoutId = vm.bread.layouts.length - 1;
                         }
                     },
                     {
@@ -223,6 +235,10 @@ export default {
                 return;
             }
 
+            if (event.target.value.includes('relationship')) {
+                this.$snotify.warning(this.__('voyager::manager.new_bread_relation_warn'));
+            }
+
             var formfield = this.$globals.formfields.filter(function (formfield) {
                 return formfield.type == event.target.value;
             }).pop();
@@ -272,19 +288,21 @@ export default {
             }
 
             return this.bread.layouts[this.currentLayoutId];
-        },
-        jsonBread: {
-            get: function () {
-                return JSON.stringify(this.bread, true, 4);
-            },
-            set: function (val) {
-                this.bread = JSON.parse(val);
-            }
         }
     },
     mounted: function () {
         if (this.bread.layouts.length > 0) {
             this.currentLayoutId = 0;
+
+            this.bread.layouts.forEach(function (layout) {
+                layout.formfields.forEach(function (formfield) {
+                    delete formfield.views;
+                    delete formfield.lists;
+                    delete formfield.settings;
+                });
+            });
+
+            Vue.set(this, 'bread', this.bread);
         }
         var params = {};
         location.search.substr(1).split("&").forEach(function (item) {

@@ -9,3 +9,6 @@ Instead, they are listed here:
 - Improve slidein styling
 - Order by relationship
 - Remove styling (`voyager-card`) around html-element-formfield
+
+## Nice to have
+- Validate (hash) AJAX data and check in controller

@@ -1,5 +1,4 @@
 let formfields = [
-    'FormfieldMockup',
     'Color',
     'DynamicDropdown',
     'HtmlElement',
@@ -7,15 +6,13 @@ let formfields = [
     'Number',
     'Password',
     'Repeater',
+    'RichTextEditor',
     'SimpleRelationship',
     'Slug',
     'Text',
 ];
 
 formfields.forEach(function (formfield) {
-    if (formfield.startsWith('Formfield')) {
-        Vue.component(kebab_case(formfield), require('../components/Formfields/'+formfield).default);
-    } else {
-        Vue.component('formfield-'+kebab_case(formfield), require('../components/Formfields/'+formfield).default);
-    }
+    Vue.component('formfield-'+kebab_case(formfield), require('../components/Formfields/'+formfield).default);
 });
+Vue.component('formfield-mockup', require('../components/Manager/FormfieldMockup').default);

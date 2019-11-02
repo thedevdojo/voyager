@@ -1,10 +1,22 @@
+body {
+    @apply text-gray-700 bg-gray-100;
+}
+
+.mode-dark body {
+    @apply text-gray-300 bg-gray-900;
+}
+
 a {
     @apply text-blue-600;
 }
 
+.mode-dark .voyager-input {
+    @apply border-gray-600 bg-gray-700 text-gray-200;
+    transition: border 0.2s ease-out-in;
+}
+
 .voyager-input {
     @apply border-2 border-gray-400 appearance-none rounded w-full py-3 px-3 text-gray-800;
-    transition: border 0.2s ease-in-out;
 
     &:active,
     &:focus {
@@ -15,6 +27,10 @@ a {
     }
 }
 
+.mode-dark .voyager-label {
+    @apply text-gray-200;
+}
+
 .voyager-label {
     @apply block text-gray-600 text-sm font-normal mb-2;
 
@@ -22,6 +38,7 @@ a {
         @apply text-base;
     }
 }
+
 
 .voyager-search {
     @apply rounded py-2 pr-4 pl-10 block text-2xl appearance-none bg-transparent leading-normal w-full search;
@@ -35,14 +52,22 @@ a {
 }
 
 .voyager-card {
-    @apply p-1 mb-3;
-
-    &.bordered {
-        @apply border border-gray-400;
-    }
+    @apply p-3 mb-4 rounded bg-white border border-gray-400;
 
     .body {
-        @apply m-2 bg-white rounded-lg p-5;
+        @apply m-2 p-5;
+    }
+
+    .title {
+        @apply font-semibold text-gray-700 text-lg mb-8;
+    }
+}
+
+.mode-dark .voyager-card {
+    @apply bg-gray-800 border-gray-700;
+
+    .title {
+        @apply font-semibold text-gray-300 text-lg mb-8;
     }
 }
 
@@ -82,7 +107,7 @@ a {
 }
 
 .button {
-    @apply text-white py-2 px-4 mx-1 rounded cursor-pointer;
+    @apply text-gray-200 py-2 px-4 mx-1 rounded cursor-pointer;
     &:focus {
         @apply outline-none;
     }
@@ -179,9 +204,27 @@ a {
     }
 }
 
+.mode-dark .voyager-table {
+    @apply bg-gray-800;
+    tbody {
+        tr {
+            td {
+                @apply text-gray-300 p-2;
+            }
+        }
+        tr:nth-of-type(odd) {
+            @apply bg-gray-700;
+        }
+    }
+}
+
 .voyager-table {
     @apply w-full text-left border-collapse bg-gray-100 rounded-lg p-3;
+    thead {
+        @apply m-3;
+    }
     tbody {
+        @apply m-3;
         tr {
             td {
                 @apply text-gray-700 p-2;

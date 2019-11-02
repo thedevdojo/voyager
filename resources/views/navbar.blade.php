@@ -1,4 +1,4 @@
-<nav class="h-16 flex flex-col justify-center mb-6 rounded-tl-none border-b border-gray-100">
+<nav class="h-16 flex flex-col justify-center mb-6 rounded-tl-none">
     <div class="flex items-center">
         <div class="flex flex-grow items-center justify-between">
             

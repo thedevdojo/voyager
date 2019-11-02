@@ -1,23 +1,50 @@
 <template>
-    <draggable v-model="layout.formfields" handle=".drag-handle" class="flex flex-wrap w-full" :group="{ name: 'draggable', pull: true, put: true }">
-        <formfield-mockup
-            v-for="(formfield, i) in layout.formfields"
-            :key="i"
-            :ref="'formfield-'+i"
-            :formfield="formfield"
-            :columns="columns"
-            :computed="computed"
-            :relationships="relationships"
-            :repeater="repeater"
-            action="mockup"
-            type="view"
-        />
-    </draggable>
+    <div>
+        <draggable
+            v-model="layout.formfields"
+            handle=".drag-handle"
+            class="flex flex-wrap w-full"
+            :group="{ name: 'draggable', pull: true, put: true }"
+            v-click-outside="endFormfieldResize">
+            <formfield-mockup
+                v-for="(formfield, i) in layout.formfields"
+                :key="i"
+                :ref="'formfield-'+i"
+                :formfield="formfield"
+                :columns="columns"
+                :computed="computed"
+                :relationships="relationships"
+                :repeater="repeater"
+                action="mockup"
+                type="view"
+            />
+        </draggable>
+        <slidein :opened="showSettings" v-on:closed="$emit('layout-settings-closed')">
+            <div class="flex mb-4">
+                <div class="w-2/3">
+                    <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
+                </div>
+                <div class="w-1/3 text-right text-gray-100">
+                    <button @click="$emit('layout-settings-closed')" class="button green">X</button>
+                </div>
+            </div>
+            <div class="flex mb-4">
+                <div class="w-1/2 m-1">
+                    <label class="voyager-label text-gray-100">{{ __('voyager::manager.show_back_button') }}</label>
+                    <input type="checkbox" v-model="layout.back_button">
+                </div>
+                <div class="w-1/2 m-1">
+                    <label class="voyager-label text-gray-100">{{ __('voyager::manager.show_create_button') }}</label>
+                    <input type="checkbox" v-model="layout.create_button">
+                </div>
+            </div>
+        </slidein>
+    </div>
 </template>
 
 <script>
 export default {
-    props: ['layout', 'columns', 'computed', 'relationships', 'repeater'],
+    props: ['layout', 'columns', 'computed', 'relationships', 'repeater', 'show-settings'],
     data: function () {
         return {
             currentOptionsId: null,
@@ -66,11 +93,12 @@ export default {
         });
         this.$el.addEventListener('mousemove', (e) => {
             if (vm.currentResizeId !== null) {
+                var sections = vm.widthClasses.length;
                 e.preventDefault();
                 var rect = vm.$el.getBoundingClientRect();
                 var x = e.clientX - rect.left;
-                var threshold = rect.width / 12;
-                var size = Math.min(Math.max(Math.round(x / threshold), 0), 12);
+                var threshold = rect.width / sections;
+                var size = Math.min(Math.max(Math.round(x / threshold), 0), sections);
                 Vue.set(vm.layout.formfields[vm.currentResizeId].options, 'width', vm.widthClasses[size]);
             }
         });

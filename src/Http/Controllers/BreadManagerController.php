@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use TCG\Voyager\Facades\Bread as BreadFacade;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Rules\ClassExists as ClassExistsRule;
 use TCG\Voyager\Rules\DefaultLocale as DefaultLocaleRule;
 
@@ -19,7 +20,7 @@ class BreadManagerController extends Controller
      */
     public function index()
     {
-        $tables = $this->getDatabaseTables();
+        $tables = VoyagerFacade::getTables();
 
         return view('voyager::manager.index', compact('tables'));
     }
@@ -33,8 +34,14 @@ class BreadManagerController extends Controller
      */
     public function create($table)
     {
-        if (!in_array($table, $this->getDatabaseTables())) {
-            throw new \TCG\Voyager\Exceptions\TableNotFoundException();
+        if (!in_array($table, VoyagerFacade::getTables())) {
+            throw new \TCG\Voyager\Exceptions\TableNotFoundException('Table "'.$table.'" does not exist');
+        }
+
+        if (BreadFacade::getBread($table)) {
+            VoyagerFacade::flashMessage(__('voyager::manager.bread_already_exists', ['table' => $table]), 'info', true);
+
+            return redirect()->route('voyager.bread.edit', $table);
         }
 
         $bread = BreadFacade::createBread($table);
@@ -53,7 +60,9 @@ class BreadManagerController extends Controller
     {
         $bread = BreadFacade::getBread($table);
         if (!$bread) {
-            throw new \TCG\Voyager\Exceptions\BreadNotFoundException();
+            VoyagerFacade::flashMessage(__('voyager::manager.bread_does_no_exist', ['table' => $table]), 'error', true);
+
+            return redirect()->route('voyager.bread.create', $table);
         }
 
         return view('voyager::manager.edit-add', compact('bread'));
@@ -69,7 +78,15 @@ class BreadManagerController extends Controller
      */
     public function update(Request $request, $table)
     {
-        $bread = (object) $request->bread;
+        $bread = $request->bread;
+
+        @json_decode(@json_encode($bread));
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return response()->json(__('voyager::bread.json_data_not_valid'), 422);
+        }
+
+        $bread = (object) $bread;
+
         $bread->table = $table;
 
         $validator = Validator::make($request->get('bread'), [
@@ -103,18 +120,6 @@ class BreadManagerController extends Controller
      */
     public function destroy($table)
     {
-        Cache::forget('voyager-breads');
-
         return response('', BreadFacade::deleteBread($table) ? 200 : 500);
-    }
-
-    /**
-     * Get all tables in the database.
-     *
-     * @return array
-     */
-    protected function getDatabaseTables()
-    {
-        return DB::connection()->getDoctrineSchemaManager()->listTableNames();
     }
 }

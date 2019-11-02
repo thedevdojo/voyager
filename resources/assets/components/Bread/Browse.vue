@@ -32,12 +32,10 @@
                         {{ translate(formfield.options.title, true) }}
                         <span v-if="formfield.options.sortable && parameter.orderColumn == formfield.column">
                             <span v-if="parameter.orderDir == 'asc'">
-                                <!-- TODO: add ASC icon -->
-                                &DoubleUpArrow;
+                                <icon icon="sort-asc" />
                             </span>
                             <span v-else>
-                                <!-- TODO: add DESC icon -->
-                                &DoubleDownArrow;
+                                <icon icon="sort-desc" />
                             </span>
                         </span>
                     </th>
@@ -47,6 +45,7 @@
                     <th></th>
                     <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick.prevent="clearFilter(formfield.column)">
                         <component
+                            class="my-3 mr-2"
                             v-if="formfield.options.searchable"
                             v-bind:value="parameter.filter[formfield.column]"
                             v-on:input="filterBy($event, formfield.column)"

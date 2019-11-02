@@ -9,6 +9,10 @@ class Layout implements \JsonSerializable
     public $name;
     public $type = 'view';
     public $default_sort_column;
+    // View properties
+    public $back_button = true;
+    public $create_button = true;
+    // List properties
     public $global_search = '';
     public $soft_deletes = 'hide';
     public $restore = false;
@@ -94,6 +98,8 @@ class Layout implements \JsonSerializable
             'type'                => $this->type,
             'formfields'          => $this->formfields,
             'default_sort_column' => $this->default_sort_column,
+            'back_button'         => $this->back_button,
+            'create_button'       => $this->create_button,
         ];
     }
 }

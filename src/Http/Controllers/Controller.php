@@ -199,12 +199,12 @@ abstract class Controller extends BaseController
         return $data ?? [];
     }
 
-    protected function redirect(Request $request)
+    protected function redirect(Request $request, $bread)
     {
         if ($request->get('_redirect') == 'back') {
             return redirect($request->get('prev-url'));
         } elseif ($request->get('_redirect') == 'new') {
-            return redirect(route('voyager.'.$bread->slug.'.create'));
+            return redirect(route('voyager.'.$bread->slug.'.add'));
         }
     }
 }

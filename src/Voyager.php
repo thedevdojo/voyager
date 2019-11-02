@@ -125,7 +125,7 @@ class Voyager
      */
     public function getFormfieldsDescription()
     {
-        return $this->getFormfields()->map(function ($formfield) {
+        return $this->getFormfields()->sortBy('name')->map(function ($formfield) {
             return [
                 'type'     => $formfield->type,
                 'name'     => $formfield->name,
@@ -209,6 +209,16 @@ class Voyager
 
             return $action->shouldBeDisplayOnBread() && $action->shouldBeDisplayedOnEntry($entry);
         });
+    }
+
+    /**
+     * Get all tables in the database.
+     *
+     * @return array
+     */
+    public function getTables()
+    {
+        return DB::connection()->getDoctrineSchemaManager()->listTableNames();
     }
 
     public function getColumns($table)

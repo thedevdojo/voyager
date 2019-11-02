@@ -104,7 +104,7 @@ class BreadController extends Controller
         VoyagerFacade::flashMessage(__('voyager::bread.success_stored_type', ['type' => $bread->name_singular]), 'success', true);
 
         if ($request->has('_redirect')) {
-            $this->redirect($request);
+            return $this->redirect($request, $bread);
         }
 
         return redirect(route('voyager.'.$bread->slug.'.edit', $model->getKey()));
@@ -164,7 +164,7 @@ class BreadController extends Controller
         });
 
         if ($request->has('_redirect')) {
-            $this->redirect($request);
+            return $this->redirect($request, $bread);
         }
 
         return redirect(route('voyager.'.$bread->slug.'.edit', $id));
