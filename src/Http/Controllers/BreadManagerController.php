@@ -3,8 +3,6 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use TCG\Voyager\Facades\Bread as BreadFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
