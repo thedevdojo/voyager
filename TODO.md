@@ -6,9 +6,10 @@ Instead, they are listed here:
 - Change variables to use kebab-case everywhere
 - Rename language-strings like `voyager::bread.browse_name` and `voyager::generic.add_type` to be uniform (use `type` or `name`?)
 - DateTimePicker needs a formatting feature
-- Improve slidein styling
+- ~Improve slidein styling~
 - Order by relationship
-- Remove styling (`voyager-card`) around html-element-formfield
+- ~Remove styling (`voyager-card`) around html-element-formfield~
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller
+- Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields

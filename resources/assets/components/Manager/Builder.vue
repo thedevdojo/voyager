@@ -123,6 +123,7 @@
                 </div>
              </div>
         </div>
+       <textarea rows="30" class="voyager-input">{{ JSON.stringify(bread, false, 4) }}</textarea> 
     </div>
 </template>
 
@@ -286,6 +287,7 @@ export default {
             if (this.currentLayoutId == null) {
                 return null;
             }
+            this.pushToUrlHistory(this.addParameterToUrl('layout', this.currentLayoutId));
 
             return this.bread.layouts[this.currentLayoutId];
         }
@@ -304,12 +306,9 @@ export default {
 
             Vue.set(this, 'bread', this.bread);
         }
-        var params = {};
-        location.search.substr(1).split("&").forEach(function (item) {
-            params[item.split("=")[0]] = item.split("=")[1]
-        });
-        if (params['layout']) {
-            this.currentLayoutId = params['layout'];
+        var layoutid = this.getParameterFromUrl('layout');
+        if (layoutid) {
+            this.currentLayoutId = layoutid;
         }
         Vue.prototype.$language.localePicker = true;
     }

@@ -202,21 +202,18 @@ export default {
             .then(function (response) {
                 vm.results = response.data;
                 vm.loading = false;
-
                 if (history.pushState) {
-                    var url = [];
+                    var url = document.location.href;
                     for (var key in vm.parameter) {
                         if (key !== '_token' && vm.parameter.hasOwnProperty(key)) {
                             if (key == 'filter') {
-                                url.push(key + '=' + encodeURIComponent(JSON.stringify(vm.parameter[key])));
+                                url = vm.addParameterToUrl(key, JSON.stringify(vm.parameter[key]), url);
                             } else if (key !== 'softDeletes' || vm.layout.soft_deletes == 'select') {
-                                url.push(key + '=' + encodeURIComponent(vm.parameter[key]));
+                                url = vm.addParameterToUrl(key, vm.parameter[key], url);
                             }
                         }
                     }
-                    url = url.join('&');
-                    url = vm.url + '?' + url;
-                    window.history.pushState({ path:  vm.url+'?'+url }, '', url);
+                    vm.pushToUrlHistory(url);   
                 }
             })
             .catch(function (error) {
@@ -354,14 +351,12 @@ export default {
     mounted: function () {
         var search = location.search.substring(1);
         if (search !== '') {
-            var params = JSON.parse('{"' + search.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) {
-                if (key == 'filter') {
-                    return JSON.parse(decodeURIComponent(value));
+            for(var param of this.getParametersFromUrl()) {
+                if (param[0] == 'filter') {
+                    param[1] = JSON.parse(decodeURIComponent(param[1]));
                 }
-                return key === "" ? value : decodeURIComponent(value);
-            });
-            params['_token'] = document.head.querySelector('meta[name="csrf-token"]').content;
-            this.parameter = Object.assign(this.parameter, params);
+                Vue.set(this.parameter, param[0], param[1]);
+            }
         }
 
         if (this.parameter.orderColumn == '') {

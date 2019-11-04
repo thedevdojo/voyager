@@ -174,6 +174,45 @@ window.clamp = function (num, min, max) {
 };
 Vue.prototype.clamp = clamp;
 
+window.addParameterToUrl = function (parameter, value, url = null) {
+    var newurl = new URL(document.location.href);
+
+    if (url)  {
+        newurl = new URL(url);
+    }
+    newurl.searchParams.set(parameter, value);
+
+    return newurl;
+};
+Vue.prototype.addParameterToUrl = addParameterToUrl;
+
+window.getParameterFromUrl = function (key, default_value = null, url = null) {
+    var newurl = new URL(document.location.href);
+
+    if (url)  {
+        newurl = new URL(url);
+    }
+
+    return newurl.searchParams.get(key) || default_value;
+};
+Vue.prototype.getParameterFromUrl = getParameterFromUrl;
+
+window.getParametersFromUrl = function (url = null) {
+    var newurl = new URL(document.location.href);
+
+    if (url)  {
+        newurl = new URL(url);
+    }
+
+    return newurl.searchParams.entries();
+};
+Vue.prototype.getParametersFromUrl = getParametersFromUrl;
+
+window.pushToUrlHistory = function (url) {
+    window.history.pushState({ path:  url.href }, '', url.search);
+};
+Vue.prototype.pushToUrlHistory = pushToUrlHistory;
+
 Vue.directive('click-outside', {
     bind: function (el, binding, vnode) {
         el.clickOutsideEvent = function (event) {
