@@ -2,8 +2,6 @@
 
 namespace TCG\Voyager\Traits;
 
-use Illuminate\Support\Str;
-
 trait Prefixable
 {
     protected $use_table_prefix = true;

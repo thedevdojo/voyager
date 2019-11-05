@@ -7,7 +7,6 @@ use TCG\Voyager\VoyagerServiceProvider;
 
 class PrefixTest extends TestCase
 {
-
     protected $table_prefix = 'voyager_';
 
     protected function install()
