@@ -11,7 +11,6 @@ trait Prefixable
     public function __construct(array $attributes = [])
     {
         if ($this->use_table_prefix && !empty(config('voyager.database.table_prefix'))) {
-            // $table = strtolower(Str::plural(Str::snake(class_basename(get_class($this)))));
             $this->setTable(config('voyager.database.table_prefix').$this->getTable());
         }
 
