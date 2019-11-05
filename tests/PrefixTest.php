@@ -7,16 +7,8 @@ use TCG\Voyager\VoyagerServiceProvider;
 
 class PrefixTest extends TestCase
 {
-    protected $table_prefix = "voyager_";
 
-    public function setUp(): void
-    {
-        $this->markTestSkipped(
-            'Skipping this test to check if it solves the other errors.'
-        );
-
-        parent::setUp();
-    }
+    protected $table_prefix = 'voyager_';
 
     protected function install()
     {
@@ -43,5 +35,14 @@ class PrefixTest extends TestCase
 
         $this->visit(route('voyager.dashboard'))
             ->see(__('voyager::generic.dashboard'));
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+
+        if (file_exists(config_path('voyager.php'))) {
+            unlink(config_path('voyager.php'));
+        }
     }
 }
