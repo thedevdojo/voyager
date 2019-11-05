@@ -148,7 +148,7 @@ class InstallCommand extends Command
                     $str = str_replace("'table_prefix' => ''", "'table_prefix' => '".$table_prefix."'", $str);
 
                     //Add prefix to hidden tables
-                    $str = preg_replace_callback("/^(\s+'hidden' \=\> )(\[('([a-z\_]+)'(\, )?)+\],)/m", function($matches) use ($table_prefix) {
+                    $str = preg_replace_callback("/^(\s+'hidden' \=\> )(\[('([a-z\_]+)'(\, )?)+\],)/m", function ($matches) use ($table_prefix) {
                         return $matches[1].preg_replace("/'([a-z\_]+)'/", "'".$table_prefix."$1'", $matches[2]);
                     }, $str);
 

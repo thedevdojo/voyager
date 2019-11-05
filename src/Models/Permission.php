@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Traits\Prefixable;
 

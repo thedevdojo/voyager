@@ -3,8 +3,6 @@
 namespace TCG\Voyager\Tests;
 
 use Illuminate\Support\Facades\Auth;
-use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Tests\TestCase;
 use TCG\Voyager\VoyagerServiceProvider;
 
 class PrefixTest extends TestCase
@@ -21,7 +19,7 @@ class PrefixTest extends TestCase
     protected function install()
     {
         $this->artisan('voyager:install', [
-            '--with-dummy' => $this->withDummy,
+            '--with-dummy'  => $this->withDummy,
             '--with-prefix' => $this->table_prefix,
         ]);
 
