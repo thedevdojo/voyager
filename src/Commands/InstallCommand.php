@@ -36,6 +36,7 @@ class InstallCommand extends Command
         return [
             ['force', null, InputOption::VALUE_NONE, 'Force the operation to run when in production', null],
             ['with-dummy', null, InputOption::VALUE_NONE, 'Install with dummy data', null],
+            ['with-prefix', null, InputOption::VALUE_REQUIRED, 'Install with prefix', null],
         ];
     }
 
@@ -74,6 +75,13 @@ class InstallCommand extends Command
 
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
         $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
+
+        if (!empty($this->option('with-prefix'))) {
+            $this->info('Setting Prefix for tables');
+
+            // Set Voyager table prefix
+            config(['voyager.database.table_prefix' => $this->option('with-prefix')]);
+        }
 
         $this->info('Migrating the database tables into your application');
         $this->call('migrate', ['--force' => $this->option('force')]);
@@ -128,6 +136,25 @@ class InstallCommand extends Command
             $this->seed('VoyagerDummyDatabaseSeeder');
         } else {
             $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => ['config', 'voyager_avatar']]);
+        }
+
+        if (!empty($this->option('with-prefix'))) {
+            $table_prefix = $this->option('with-prefix');
+            // Set Voyager table prefix
+            if (file_exists(config_path('voyager.php'))) {
+                $str = file_get_contents(config_path('voyager.php'));
+
+                if ($str !== false) {
+                    $str = str_replace("'table_prefix' => ''", "'table_prefix' => '".$table_prefix."'", $str);
+
+                    //Add prefix to hidden tables
+                    $str = preg_replace_callback("/^(\s+'hidden' \=\> )(\[('([a-z\_]+)'(\, )?)+\],)/m", function($matches) use ($table_prefix) {
+                        return $matches[1].preg_replace("/'([a-z\_]+)'/", "'".$table_prefix."$1'", $matches[2]);
+                    }, $str);
+
+                    file_put_contents(config_path('voyager.php'), $str);
+                }
+            }
         }
 
         $this->info('Setting up the hooks');

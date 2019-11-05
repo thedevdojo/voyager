@@ -13,7 +13,7 @@ class DataTypesTableSeeder extends Seeder
         $dataType = $this->dataType('slug', 'users');
         if (!$dataType->exists) {
             $dataType->fill([
-                'name'                  => 'users',
+                'name'                  => get_prefixed_table('users'),
                 'display_name_singular' => __('voyager::seeders.data_types.user.singular'),
                 'display_name_plural'   => __('voyager::seeders.data_types.user.plural'),
                 'icon'                  => 'voyager-person',
@@ -28,7 +28,7 @@ class DataTypesTableSeeder extends Seeder
         $dataType = $this->dataType('slug', 'menus');
         if (!$dataType->exists) {
             $dataType->fill([
-                'name'                  => 'menus',
+                'name'                  => get_prefixed_table('menus'),
                 'display_name_singular' => __('voyager::seeders.data_types.menu.singular'),
                 'display_name_plural'   => __('voyager::seeders.data_types.menu.plural'),
                 'icon'                  => 'voyager-list',
@@ -42,7 +42,7 @@ class DataTypesTableSeeder extends Seeder
         $dataType = $this->dataType('slug', 'roles');
         if (!$dataType->exists) {
             $dataType->fill([
-                'name'                  => 'roles',
+                'name'                  => get_prefixed_table('roles'),
                 'display_name_singular' => __('voyager::seeders.data_types.role.singular'),
                 'display_name_plural'   => __('voyager::seeders.data_types.role.plural'),
                 'icon'                  => 'voyager-lock',

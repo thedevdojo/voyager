@@ -23,7 +23,7 @@ class MenuTest extends TestCase
              ->seeInElement('button', __('voyager::generic.save'))
              ->press(__('voyager::generic.save'))
              ->seePageIs(route('voyager.menus.index'))
-             ->seeInDatabase('menus', [
+             ->seeInDatabase(get_prefixed_table('menus'), [
                 'id'   => $menu->id,
                 'name' => 'new_admin',
              ]);
@@ -35,7 +35,7 @@ class MenuTest extends TestCase
         $this->delete(route('voyager.menus.item.destroy', [
             'menu' => $menu->id,
             'id'   => $menu->items->first()->id,
-        ]))->notSeeInDatabase('menu_items', [
+        ]))->notSeeInDatabase(get_prefixed_table('menu_items'), [
             'id' => $menu->items->first()->id,
         ]);
     }
@@ -51,7 +51,7 @@ class MenuTest extends TestCase
             'title'   => 'Title',
             'url'     => '#',
             'target'  => '_self',
-        ]))->seeInDatabase('menu_items', [
+        ]))->seeInDatabase(get_prefixed_table('menu_items'), [
             'menu_id' => $menu->id,
             'title'   => 'Title',
         ]);
@@ -69,7 +69,7 @@ class MenuTest extends TestCase
             'title'   => 'New Title',
             'url'     => '#',
             'target'  => '_self',
-        ]))->seeInDatabase('menu_items', [
+        ]))->seeInDatabase(get_prefixed_table('menu_items'), [
             'menu_id' => $menu->id,
             'id'      => $item->id,
             'title'   => 'New Title',

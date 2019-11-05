@@ -32,3 +32,10 @@ if (!function_exists('get_file_name')) {
         }
     }
 }
+
+if (!function_exists('get_prefixed_table')) {
+    function get_prefixed_table($table)
+    {
+        return config('voyager.database.table_prefix', '').$table;
+    }
+}

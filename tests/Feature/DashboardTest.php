@@ -62,7 +62,7 @@ class DashboardTest extends TestCase
 
         // Remove `browse_users` permission
         $user->role->permissions()->detach(
-            $user->role->permissions()->where('key', 'browse_users')->first()
+            $user->role->permissions()->where('key', 'browse_'.get_prefixed_table('users'))->first()
         );
 
         $this->visit(route('voyager.dashboard'))
@@ -83,7 +83,7 @@ class DashboardTest extends TestCase
 
         // Remove `browse_users` permission
         $user->role->permissions()->detach(
-            $user->role->permissions()->where('key', 'browse_posts')->first()
+            $user->role->permissions()->where('key', 'browse_'.get_prefixed_table('posts'))->first()
         );
 
         $this->visit(route('voyager.dashboard'))
@@ -104,7 +104,7 @@ class DashboardTest extends TestCase
 
         // Remove `browse_users` permission
         $user->role->permissions()->detach(
-            $user->role->permissions()->where('key', 'browse_pages')->first()
+            $user->role->permissions()->where('key', 'browse_'.get_prefixed_table('pages'))->first()
         );
 
         $this->visit(route('voyager.dashboard'))

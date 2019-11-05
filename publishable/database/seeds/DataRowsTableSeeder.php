@@ -148,7 +148,7 @@ class DataRowsTableSeeder extends Seeder
                 'delete'       => 0,
                 'details'      => [
                     'model'       => 'TCG\\Voyager\\Models\\Role',
-                    'table'       => 'roles',
+                    'table'       => get_prefixed_table('roles'),
                     'type'        => 'belongsTo',
                     'column'      => 'role_id',
                     'key'         => 'id',
@@ -173,12 +173,12 @@ class DataRowsTableSeeder extends Seeder
                 'delete'       => 0,
                 'details'      => [
                     'model'       => 'TCG\\Voyager\\Models\\Role',
-                    'table'       => 'roles',
+                    'table'       => get_prefixed_table('roles'),
                     'type'        => 'belongsToMany',
                     'column'      => 'id',
                     'key'         => 'id',
                     'label'       => 'display_name',
-                    'pivot_table' => 'user_roles',
+                    'pivot_table' => get_prefixed_table('user').'_'.get_prefixed_table('roles'),
                     'pivot'       => '1',
                     'taggable'    => '0',
                 ],

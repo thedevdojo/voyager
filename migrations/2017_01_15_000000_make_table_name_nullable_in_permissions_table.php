@@ -13,7 +13,7 @@ class MakeTableNameNullableInPermissionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('permissions', function (Blueprint $table) {
+        Schema::table(get_prefixed_table('permissions'), function (Blueprint $table) {
             $table->string('table_name')->nullable()->default(null)->change();
         });
     }

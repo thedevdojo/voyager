@@ -25,12 +25,12 @@ class PermissionsTableSeeder extends Seeder
             ]);
         }
 
-        Permission::generateFor('menus');
+        Permission::generateFor(get_prefixed_table('menus'));
 
-        Permission::generateFor('roles');
+        Permission::generateFor(get_prefixed_table('roles'));
 
-        Permission::generateFor('users');
+        Permission::generateFor(get_prefixed_table('users'));
 
-        Permission::generateFor('settings');
+        Permission::generateFor(get_prefixed_table('settings'));
     }
 }

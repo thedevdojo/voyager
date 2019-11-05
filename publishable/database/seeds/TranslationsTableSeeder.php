@@ -33,13 +33,13 @@ class TranslationsTableSeeder extends Seeder
         //
         $cat = Category::where('slug', 'category-1')->firstOrFail();
         if ($cat->exists) {
-            $this->trans('pt', $this->arr(['categories', 'slug'], $cat->id), 'categoria-1');
-            $this->trans('pt', $this->arr(['categories', 'name'], $cat->id), 'Categoria 1');
+            $this->trans('pt', $this->arr([get_prefixed_table('categories'), 'slug'], $cat->id), 'categoria-1');
+            $this->trans('pt', $this->arr([get_prefixed_table('categories'), 'name'], $cat->id), 'Categoria 1');
         }
         $cat = Category::where('slug', 'category-2')->firstOrFail();
         if ($cat->exists) {
-            $this->trans('pt', $this->arr(['categories', 'slug'], $cat->id), 'categoria-2');
-            $this->trans('pt', $this->arr(['categories', 'name'], $cat->id), 'Categoria 2');
+            $this->trans('pt', $this->arr([get_prefixed_table('categories'), 'slug'], $cat->id), 'categoria-2');
+            $this->trans('pt', $this->arr([get_prefixed_table('categories'), 'name'], $cat->id), 'Categoria 2');
         }
     }
 
@@ -53,7 +53,7 @@ class TranslationsTableSeeder extends Seeder
         // Adding translations for 'display_name_singular'
         //
         $_fld = 'display_name_singular';
-        $_tpl = ['data_types', $_fld];
+        $_tpl = [get_prefixed_table('data_types'), $_fld];
         $dtp = DataType::where($_fld, __('voyager::seeders.data_types.post.singular'))->firstOrFail();
         if ($dtp->exists) {
             $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Post');
@@ -82,7 +82,7 @@ class TranslationsTableSeeder extends Seeder
         // Adding translations for 'display_name_plural'
         //
         $_fld = 'display_name_plural';
-        $_tpl = ['data_types', $_fld];
+        $_tpl = [get_prefixed_table('data_types'), $_fld];
         $dtp = DataType::where($_fld, __('voyager::seeders.data_types.post.plural'))->firstOrFail();
         if ($dtp->exists) {
             $this->trans('pt', $this->arr($_tpl, $dtp->id), 'Posts');
@@ -118,7 +118,7 @@ class TranslationsTableSeeder extends Seeder
     {
         $page = Page::where('slug', 'hello-world')->firstOrFail();
         if ($page->exists) {
-            $_arr = $this->arr(['pages', 'title'], $page->id);
+            $_arr = $this->arr([get_prefixed_table('pages'), 'title'], $page->id);
             $this->trans('pt', $_arr, 'Olá Mundo');
             /**
              * For configuring additional languages use it e.g.
@@ -128,10 +128,10 @@ class TranslationsTableSeeder extends Seeder
              *   $this->trans('de', $_arr, 'hallo-welt');
              * ```
              */
-            $_arr = $this->arr(['pages', 'slug'], $page->id);
+            $_arr = $this->arr([get_prefixed_table('pages'), 'slug'], $page->id);
             $this->trans('pt', $_arr, 'ola-mundo');
 
-            $_arr = $this->arr(['pages', 'body'], $page->id);
+            $_arr = $this->arr([get_prefixed_table('pages'), 'body'], $page->id);
             $this->trans('pt', $_arr, '<p>Olá Mundo. Scallywag grog swab Cat o\'nine tails scuttle rigging hardtack cable nipper Yellow Jack. Handsomely spirits knave lad killick landlubber or just lubber deadlights chantey pinnace crack Jennys tea cup. Provost long clothes black spot Yellow Jack bilged on her anchor league lateen sail case shot lee tackle.</p>'
                 ."\r\n".'<p>Ballast spirits fluke topmast me quarterdeck schooner landlubber or just lubber gabion belaying pin. Pinnace stern galleon starboard warp carouser to go on account dance the hempen jig jolly boat measured fer yer chains. Man-of-war fire in the hole nipperkin handsomely doubloon barkadeer Brethren of the Coast gibbet driver squiffy.</p>');
         }
@@ -144,7 +144,7 @@ class TranslationsTableSeeder extends Seeder
      */
     private function menusTranslations()
     {
-        $_tpl = ['menu_items', 'title'];
+        $_tpl = [get_prefixed_table('menu_items'), 'title'];
         $_item = $this->findMenuItem(__('voyager::seeders.menu_items.dashboard'));
         if ($_item->exists) {
             $this->trans('pt', $this->arr($_tpl, $_item->id), 'Painel de Controle');

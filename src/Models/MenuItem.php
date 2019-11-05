@@ -5,11 +5,12 @@ namespace TCG\Voyager\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\Prefixable;
 use TCG\Voyager\Traits\Translatable;
 
 class MenuItem extends Model
 {
-    use Translatable;
+    use Prefixable, Translatable;
 
     protected $translatorMethods = [
         'link' => 'translatorLink',

@@ -5,11 +5,12 @@ namespace TCG\Voyager\Models;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use TCG\Voyager\Contracts\User as UserContract;
+use TCG\Voyager\Traits\Prefixable;
 use TCG\Voyager\Traits\VoyagerUser;
 
 class User extends Authenticatable implements UserContract
 {
-    use VoyagerUser;
+    use Prefixable, VoyagerUser;
 
     protected $guarded = [];
 

@@ -21,7 +21,7 @@ class PagesTableSeeder extends Seeder
         $dataType = $this->dataType('slug', 'pages');
         if (!$dataType->exists) {
             $dataType->fill([
-                'name'                  => 'pages',
+                'name'                  => get_prefixed_table('pages'),
                 'display_name_singular' => __('voyager::seeders.data_types.page.singular'),
                 'display_name_plural'   => __('voyager::seeders.data_types.page.plural'),
                 'icon'                  => 'voyager-file-text',
@@ -125,7 +125,7 @@ class PagesTableSeeder extends Seeder
                         'origin' => 'title',
                     ],
                     'validation' => [
-                        'rule'  => 'unique:pages,slug',
+                        'rule'  => 'unique:'.get_prefixed_table('pages').',slug',
                     ],
                 ],
                 'order' => 6,
@@ -248,7 +248,7 @@ class PagesTableSeeder extends Seeder
         }
 
         //Permissions
-        Permission::generateFor('pages');
+        Permission::generateFor(get_prefixed_table('pages'));
         //Content
         $page = Page::firstOrNew([
             'slug' => 'hello-world',

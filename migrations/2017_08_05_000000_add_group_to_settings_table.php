@@ -13,7 +13,7 @@ class AddGroupToSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::table('settings', function (Blueprint $table) {
+        Schema::table(get_prefixed_table('settings'), function (Blueprint $table) {
             $table->string('group')->nullable()->after('order');
         });
     }
@@ -25,7 +25,7 @@ class AddGroupToSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::table('settings', function (Blueprint $table) {
+        Schema::table(get_prefixed_table('settings'), function (Blueprint $table) {
             $table->dropColumn('group');
         });
     }

@@ -47,8 +47,8 @@ class RouteTest extends TestCase
             route('voyager.menus.show', 1),
             route('voyager.menus.edit', 1),
             route('voyager.database.index'),
-            route('voyager.bread.edit', 'categories'),
-            route('voyager.database.edit', 'categories'),
+            route('voyager.bread.edit', get_prefixed_table('categories')),
+            route('voyager.database.edit', get_prefixed_table('categories')),
             route('voyager.database.create'),
         ];
 

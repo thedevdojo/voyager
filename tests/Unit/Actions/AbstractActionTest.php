@@ -29,7 +29,7 @@ class AbstractActionTest extends TestCase
 
         $this->withFactories(__DIR__.'/../../database/factories');
 
-        $this->userDataType = Voyager::model('DataType')->where('name', 'users')->first();
+        $this->userDataType = Voyager::model('DataType')->where('name', get_prefixed_table('users'))->first();
         $this->user = factory(User::class)->create();
     }
 

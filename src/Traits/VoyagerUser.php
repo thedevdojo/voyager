@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\Traits;
 
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use TCG\Voyager\Facades\Voyager;
 
@@ -23,7 +24,7 @@ trait VoyagerUser
      */
     public function roles()
     {
-        return $this->belongsToMany(Voyager::modelClass('Role'), 'user_roles', 'user_id', 'role_id');
+        return $this->belongsToMany(Voyager::modelClass('Role'), Str::singular($this->getTable()).'_'.Voyager::model('Role')->getTable(), 'user_id', 'role_id');
     }
 
     /**

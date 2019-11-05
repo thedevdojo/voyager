@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Page;
+use TCG\Voyager\Traits\Prefixable;
 use TCG\Voyager\Traits\Translatable;
 use TCG\Voyager\Translator;
 use TCG\Voyager\Translator\Collection;
@@ -64,8 +65,8 @@ class MultilingualTest extends TestCase
 
     public function testGettingTranslatorModelOfExistingTranslation()
     {
-        DB::table('translations')->insert([
-            'table_name'  => 'posts',
+        DB::table(get_prefixed_table('translations'))->insert([
+            'table_name'  => get_prefixed_table('posts'),
             'column_name' => 'title',
             'foreign_key' => 1,
             'locale'      => 'da',
@@ -124,8 +125,8 @@ class MultilingualTest extends TestCase
 
     public function testSavingExistingTranslatorModel()
     {
-        DB::table('translations')->insert([
-            'table_name'  => 'posts',
+        DB::table(get_prefixed_table('translations'))->insert([
+            'table_name'  => get_prefixed_table('posts'),
             'column_name' => 'title',
             'foreign_key' => 1,
             'locale'      => 'da',
@@ -195,8 +196,8 @@ class MultilingualTest extends TestCase
 
     public function testUpdatingTranslation()
     {
-        DB::table('translations')->insert([
-            'table_name'  => 'posts',
+        DB::table(get_prefixed_table('translations'))->insert([
+            'table_name'  => get_prefixed_table('posts'),
             'column_name' => 'title',
             'foreign_key' => 1,
             'locale'      => 'da',
@@ -267,9 +268,9 @@ class MultilingualTest extends TestCase
 
 class TranslatableModel extends Model
 {
-    protected $table = 'posts';
+    use Prefixable, Translatable;
 
-    use Translatable;
+    protected $table = 'posts';
 
     /**
      * The attributes that are mass assignable.
@@ -285,6 +286,8 @@ class TranslatableModel extends Model
 
 class NotTranslatableModel extends Model
 {
+    use Prefixable;
+
     protected $table = 'posts';
 
     /**
@@ -299,6 +302,8 @@ class NotTranslatableModel extends Model
 
 class StillNotTranslatableModel extends Model
 {
+    use Prefixable;
+
     protected $table = 'posts';
 
     /**
@@ -317,7 +322,7 @@ class ActuallyTranslatableModel extends Model
 {
     protected $table = 'posts';
 
-    use Translatable;
+    use Prefixable, Translatable;
 
     /**
      * The attributes that are mass assignable.

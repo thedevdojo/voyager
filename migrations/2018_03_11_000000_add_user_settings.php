@@ -13,7 +13,7 @@ class AddUserSettings extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table(get_prefixed_table('users'), function (Blueprint $table) {
             $table->text('settings')->nullable()->default(null)->after('remember_token');
         });
     }
@@ -25,7 +25,7 @@ class AddUserSettings extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table(get_prefixed_table('users'), function (Blueprint $table) {
             $table->dropColumn('settings');
         });
     }

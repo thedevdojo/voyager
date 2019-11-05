@@ -3,11 +3,12 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use TCG\Voyager\Traits\Prefixable;
 use TCG\Voyager\Traits\Translatable;
 
 class DataRow extends Model
 {
-    use Translatable;
+    use Prefixable, Translatable;
 
     protected $table = 'data_rows';
 

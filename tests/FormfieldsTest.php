@@ -42,7 +42,7 @@ class FormfieldsTest extends TestCase
         ->type('NULL', 'text')
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
-        ->seeInDatabase('categories', [
+        ->seeInDatabase(get_prefixed_table('categories'), [
             'text' => null,
         ]);
     }
@@ -257,7 +257,7 @@ class FormfieldsTest extends TestCase
         ->type('', 'timestamp')
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
-        ->seeInDatabase('categories', [
+        ->seeInDatabase(get_prefixed_table('categories'), [
             'timestamp' => null,
         ]);
     }
@@ -336,7 +336,7 @@ class FormfieldsTest extends TestCase
         ->visitRoute('voyager.categories.create')
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
-        ->seeInDatabase('categories', [
+        ->seeInDatabase(get_prefixed_table('categories'), [
             'file' => '[]',
         ]);
     }
@@ -354,27 +354,28 @@ class FormfieldsTest extends TestCase
         ->visitRoute('voyager.categories.create')
         ->press(__('voyager::generic.save'))
         ->seeRouteIs('voyager.categories.index')
-        ->seeInDatabase('categories', [
+        ->seeInDatabase(get_prefixed_table('categories'), [
             'file' => '[]',
         ]);
     }
 
     private function createBreadForFormfield($type, $name, $options = '')
     {
-        Schema::dropIfExists('categories');
-        Schema::create('categories', function ($table) use ($type, $name) {
+        Schema::dropIfExists(get_prefixed_table('categories'));
+        Schema::create(get_prefixed_table('categories'), function ($table) use ($type, $name) {
             $table->bigIncrements('id');
             $table->{$type}($name)->nullable();
             $table->timestamps();
         });
 
         // Delete old BREAD
-        $this->delete(route('voyager.bread.delete', ['id' => DataType::where('name', 'categories')->first()->id]));
+        $this->delete(route('voyager.bread.delete', ['id' => DataType::where('name', get_prefixed_table('categories'))->first()->id]));
 
         // Create BREAD
-        $this->visitRoute('voyager.bread.create', ['table' => 'categories'])
+        $this->visitRoute('voyager.bread.create', ['table' => get_prefixed_table('categories')])
         ->select($name, 'field_input_type_'.$name)
         ->type($options, 'field_details_'.$name)
+        ->type('categories', 'slug')
         ->type('TCG\\Voyager\\Models\\Category', 'model_name')
         ->press(__('voyager::generic.submit'))
         ->seeRouteIs('voyager.bread.index');

@@ -16,7 +16,7 @@ class SettingPolicy extends BasePolicy
      */
     public function browse(User $user, $model)
     {
-        return $user->hasPermission('browse_settings');
+        return $user->hasPermission('browse_'.$model->getTable());
     }
 
     /**
@@ -29,7 +29,7 @@ class SettingPolicy extends BasePolicy
      */
     public function read(User $user, $model)
     {
-        return $user->hasPermission('read_settings');
+        return $user->hasPermission('read_'.$model->getTable());
     }
 
     /**
@@ -42,7 +42,7 @@ class SettingPolicy extends BasePolicy
      */
     public function edit(User $user, $model)
     {
-        return $user->hasPermission('edit_settings');
+        return $user->hasPermission('edit_'.$model->getTable());
     }
 
     /**
@@ -55,7 +55,7 @@ class SettingPolicy extends BasePolicy
      */
     public function add(User $user, $model)
     {
-        return $user->hasPermission('add_settings');
+        return $user->hasPermission('add_'.$model->getTable());
     }
 
     /**
@@ -68,6 +68,6 @@ class SettingPolicy extends BasePolicy
      */
     public function delete(User $user, $model)
     {
-        return $user->hasPermission('delete_settings');
+        return $user->hasPermission('delete_'.$model->getTable());
     }
 }

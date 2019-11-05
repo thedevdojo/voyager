@@ -50,7 +50,7 @@ class UserProfileTest extends TestCase
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
-                 'users',
+                 get_prefixed_table('users'),
                  ['name' => 'New Awesome Name']
              );
     }
@@ -65,7 +65,7 @@ class UserProfileTest extends TestCase
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
-                 'users',
+                 get_prefixed_table('users'),
                  ['email' => 'another@email.com']
              );
     }
@@ -80,7 +80,7 @@ class UserProfileTest extends TestCase
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers);
 
-        $updatedPassword = DB::table('users')->where('id', 1)->first()->password;
+        $updatedPassword = DB::table(get_prefixed_table('users'))->where('id', 1)->first()->password;
         $this->assertTrue(Hash::check('voyager-rocks', $updatedPassword));
     }
 
@@ -109,7 +109,7 @@ class UserProfileTest extends TestCase
         // without permissions to edit  users
         $role->permissions()->attach(\TCG\Voyager\Models\Permission::whereIn('key', [
             'browse_admin',
-            'browse_users',
+            'browse_'.get_prefixed_table('users'),
         ])->get()->pluck('id')->all());
         Auth::onceUsingId($user->id);
         $this->visit(route('voyager.profile'))
@@ -120,7 +120,7 @@ class UserProfileTest extends TestCase
              ->press(__('voyager::generic.save'))
              ->seePageIs($this->listOfUsers)
              ->seeInDatabase(
-                 'users',
+                 get_prefixed_table('users'),
                  ['email' => 'another@email.com']
              );
     }
@@ -149,7 +149,7 @@ class UserProfileTest extends TestCase
 
         // Remove `browse_users` permission
         $user->role->permissions()->detach(
-            $user->role->permissions()->where('key', 'browse_users')->first()
+            $user->role->permissions()->where('key', 'browse_'.get_prefixed_table('users'))->first()
         );
 
         $this->visit($this->editPageForTheCurrentUser)
