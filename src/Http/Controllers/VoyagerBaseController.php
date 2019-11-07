@@ -832,17 +832,16 @@ class VoyagerBaseController extends Controller
             if ($row->field === $request->input('type')) {
                 $options = $row->details;
                 $skip = $on_page * ($page - 1);
+                $model = app($options->model);
 
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
-                    $total_count = app($options->model)->where($options->label, 'LIKE', '%'.$search.'%')->count();
-                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)
-                        ->where($options->label, 'LIKE', '%'.$search.'%')
-                        ->get();
-                } else {
-                    $total_count = app($options->model)->count();
-                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
+                    $label = $model->search_attribute ?? $options->label;
+                    $model = $model->where($label, 'LIKE', '%'.$search.'%');
                 }
+
+                $total_count = $model->count();
+                $relationshipOptions = $model->take($on_page)->skip($skip)->get();
 
                 $results = [];
 
