@@ -325,11 +325,11 @@
                                                id="field_browse_{{ $data['field'] }}"
                                                name="field_browse_{{ $data['field'] }}"
                                                @if(isset($dataRow->browse) && $dataRow->browse)
-                                                     checked="checked" 
+                                                   checked="checked"
                                                @elseif($data['key'] == 'PRI')
                                                @elseif($data['type'] == 'timestamp' && $data['field'] == 'updated_at')
                                                @elseif(!isset($dataRow->browse))
-                                                     checked="checked" 
+                                                   checked="checked"
                                                @endif>
                                         <label for="field_browse_{{ $data['field'] }}">{{ __('voyager::generic.browse') }}</label><br/>
                                         <input type="checkbox"
