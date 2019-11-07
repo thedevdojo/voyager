@@ -19,3 +19,11 @@ public $additional_attributes = ['full_name'];
 
 Thats it! You can now select `full_name` in your Relationship.
 
+If you choose to use a `HasMany` or `BelongsToMany` relationship the results will be shown in a multiselect to the user.
+The multiselect wil search on the custom attribute set in `$additional_attributes`, and if this attribute does not exist in the database it will fail.
+To get around this we can specify the search attribute on the model by using the following code:
+
+```php
+public $search_attribute = 'last_name';
+```
+
