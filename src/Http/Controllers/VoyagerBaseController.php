@@ -570,7 +570,7 @@ class VoyagerBaseController extends Controller
                 if (is_array($fieldData[0])) {
                     foreach ($fieldData as $index=>$file) {
                         // file type has a different structure than images
-                        if (empty($file['original_name'])) {
+                        if (!empty($file['original_name'])) {
                             if ($file['original_name'] == $filename) {
                                 $key = $index;
                                 break;
