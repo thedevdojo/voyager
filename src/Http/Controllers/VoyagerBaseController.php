@@ -601,15 +601,13 @@ class VoyagerBaseController extends Controller
                 }
             }
 
-            // Remove file from filesystem
-            if ($fileToRemove != config('voyager.user.default_avatar')) {
-                $this->deleteFileIfExists($fileToRemove);
-            }
-
             $row = $dataType->rows->where('field', $field)->first();
 
+            // Remove file from filesystem
             if (in_array($row->type, ['image', 'multiple_images'])) {
                 $this->deleteBreadImages($data, [$row], $fileToRemove);
+            } else {
+                $this->deleteFileIfExists($fileToRemove);
             }
 
             $data->save();
