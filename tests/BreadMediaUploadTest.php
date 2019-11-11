@@ -4,10 +4,9 @@ namespace TCG\Voyager\Tests;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\DataRow;
+use TCG\Voyager\Models\DataType;
 use TCG\Voyager\Models\Page;
 
 class BreadMediaUploadTest extends TestCase
@@ -222,11 +221,11 @@ class BreadMediaUploadTest extends TestCase
         $file = json_decode($page->image, true);
 
         $this->call('POST', route('voyager.pages.media.remove'), [
-            'id' => $page->id,
-            'slug' => 'pages',
+            'id'        => $page->id,
+            'slug'      => 'pages',
             'field'     => 'image',
-            'multi'      => 'true',
-            'filename'    => $file[0]['original_name'],
+            'multi'     => 'true',
+            'filename'  => $file[0]['original_name'],
         ]);
 
         $this->storage->assertMissing($file[0]['download_link']);
