@@ -187,7 +187,7 @@ class Voyager
      * Each of our widget groups contain a max of three widgets.
      * After that, we will switch to a new widget group.
      *
-     * @return Array - Array consisting of \Arrilot\Widget\WidgetGroup objects
+     * @return array - Array consisting of \Arrilot\Widget\WidgetGroup objects
      */
     public function dimmers()
     {
