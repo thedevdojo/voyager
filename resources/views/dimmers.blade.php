@@ -22,13 +22,3 @@ $dimmerGroups = Voyager::dimmers();
     @endif
 @endforeach
 @endif
-
-
-
-{{-- @if ( $loop->first || $loop->index % 3 === 0 )
-    {!! $container_open !!}
-@endif
-    {{ dd($dimmer) }}
-@if ( $loop->last || $loop->index % 3 === 0 )
-    {!! $container_close !!}
-@endif --}}
