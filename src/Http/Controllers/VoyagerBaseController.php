@@ -839,8 +839,8 @@ class VoyagerBaseController extends Controller
                     // If we are using additional_attribute as label
                     if (in_array($options->label, $model->additional_attributes)) {
                         $relationshipOptions = $model->all();
-                        $relationshipOptions = $relationshipOptions->filter(function($model) use($search, $options) {
-                            return (stripos($model->{$options->label}, $search) !== false);
+                        $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
+                            return stripos($model->{$options->label}, $search) !== false;
                         });
                         $total_count = $relationshipOptions->count();
                         $relationshipOptions = $relationshipOptions->forPage($page, $on_page);
