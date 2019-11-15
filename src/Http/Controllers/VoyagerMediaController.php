@@ -393,7 +393,7 @@ class VoyagerMediaController extends Controller
     private function addWatermarkToImage(\Intervention\Image\Image $image, $options)
     {
         $watermark = null;
-        
+
         try {
             $watermark = Image::make(Storage::disk($this->filesystem)->path($options->source));
             $success = true;
