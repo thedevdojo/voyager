@@ -413,7 +413,6 @@ class VoyagerMediaController extends Controller
         // Resize watermark
         $width = $image->width() * (($options->size ?? 15) / 100);
         $watermark->resize($width, null, function ($constraint) {
-            var_dump($constraint);
             $constraint->aspectRatio();
         });
 
