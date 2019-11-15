@@ -400,7 +400,7 @@ class VoyagerMediaController extends Controller
             $success = false;
         }
 
-        if (!$success){
+        if (!$success) {
             try {
                 $content = Storage::disk($this->filesystem)->get($options->source);
                 $watermark = Image::make($content);
