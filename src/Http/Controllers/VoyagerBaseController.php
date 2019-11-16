@@ -837,7 +837,7 @@ class VoyagerBaseController extends Controller
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
                     // If we are using additional_attribute as label
-                    if (in_array($options->label, $model->additional_attributes)) {
+                    if (in_array($options->label, $model->additional_attributes ?? [])) {
                         $relationshipOptions = $model->all();
                         $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
                             return stripos($model->{$options->label}, $search) !== false;
