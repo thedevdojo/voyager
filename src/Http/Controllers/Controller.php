@@ -241,6 +241,8 @@ abstract class Controller extends BaseController
             /********** IMAGE TYPE **********/
             case 'image':
                 return (new ContentImage($request, $slug, $row, $options))->handle();
+            /********** DATE TYPE **********/
+            case 'date':
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 return (new Timestamp($request, $slug, $row, $options))->handle();
