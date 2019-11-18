@@ -79,7 +79,7 @@ class VoyagerController extends Controller
         $path = realpath(__DIR__.'/../../../publishable/assets').$path;
 
         if (realpath($path) != $path) {
-             abort(404);
+            abort(404);
         }
 
         if (File::exists($path)) {
