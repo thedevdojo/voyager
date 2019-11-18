@@ -55,6 +55,11 @@
             <i class="voyager-refresh"></i>
         </button>
         <div class="btn-group offset-right">
+            <button type="button" class="btn btn-default" id="addAll" v-if="allowUpload" v-on:click="addAllFilesToInput();" 
+            :disabled="selected_files.length < 1 || !fileIs(selected_file, 'image')">
+                <i class="voyager-check"></i>
+                Add Selected
+            </button>
             <button type="button" v-if="showFolders && allowMove" class="btn btn-default" data-toggle="modal" :data-target="'#move_files_modal_'+this._uid">
                 <i class="voyager-move"></i>
                 {{ __('voyager::generic.move') }}
@@ -584,6 +589,9 @@
                 }
 
                 return false;
+            },
+            addAllFilesToInput: function() {
+                this.selected_files.forEach(this.addFileToInput);
             },
             addFileToInput: function(file) {
                 if (file.type != 'folder') {
