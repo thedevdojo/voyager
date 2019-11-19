@@ -75,8 +75,8 @@ class VoyagerController extends Controller
 
     public function assets(Request $request)
     {
-        $path = Str::start(urldecode($request->path), '/');
-        $path = realpath(__DIR__.'/../../../publishable/assets').$path;
+        $path = str_replace('/', DIRECTORY_SEPARATOR, Str::start(urldecode($request->path), '/'));
+        $path = realpath(dirname(__DIR__, 3).'/publishable/assets').$path;
 
         if (realpath($path) != $path) {
             abort(404);
