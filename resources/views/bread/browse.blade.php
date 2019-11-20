@@ -49,14 +49,14 @@
                                     <div class="col-2">
                                         <select id="search_key" name="key">
                                             @foreach($searchNames as $key => $name)
-                                                <option value="{{ $key }}" @if($search->key == $key || (empty($search->key) && $key == $defaultSearchKey)){{ 'selected' }}@endif>{{ $name }}</option>
+                                                <option value="{{ $key }}" @if($search->key == $key || (empty($search->key) && $key == $defaultSearchKey)) selected @endif>{{ $name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-2">
                                         <select id="filter" name="filter">
-                                            <option value="contains" @if($search->filter == "contains"){{ 'selected' }}@endif>contains</option>
-                                            <option value="equals" @if($search->filter == "equals"){{ 'selected' }}@endif>=</option>
+                                            <option value="contains" @if($search->filter == "contains") selected @endif>contains</option>
+                                            <option value="equals" @if($search->filter == "equals") selected @endif>=</option>
                                         </select>
                                     </div>
                                     <div class="input-group col-md-12">
