@@ -341,6 +341,7 @@ class VoyagerMediaController extends Controller
         $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
         $originImagePath = $request->upload_path.'/'.$request->originImageName;
         $originImagePath = preg_replace("#/+#", "/", $originImagePath);
+
         try {
             if ($createMode) {
                 // create a new image with the cpopped data
@@ -364,6 +365,7 @@ class VoyagerMediaController extends Controller
 
         return response()->json(compact('success', 'message'));
     }
+
     private function addWatermarkToImage($image, $options)
     {
         $watermark = Image::make(Storage::disk($this->filesystem)->path($options->source));
