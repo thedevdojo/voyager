@@ -340,6 +340,7 @@ class VoyagerMediaController extends Controller
 
         $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
         $originImagePath = $request->upload_path.'/'.$request->originImageName;
+
         $originImagePath = preg_replace("#/+#", "/", $originImagePath);
 
         try {
@@ -348,6 +349,7 @@ class VoyagerMediaController extends Controller
                 $fileNameParts = explode('.', $request->originImageName);
                 array_splice($fileNameParts, count($fileNameParts) - 1, 0, 'cropped_'.time());
                 $newImageName = implode('.', $fileNameParts);
+
                 $destImagePath = preg_replace("#/+#", "/", $request->upload_path.'/'.$newImageName);
             } else {
                 // override the original image
