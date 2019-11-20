@@ -26,7 +26,8 @@
                     class="form-control select2-ajax" name="{{ $options->column }}"
                     data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
                     data-get-items-field="{{$row->field}}"
-                    data-method="{{ isset($dataTypeContent) ? 'edit' : 'add' }}"
+                    @if(!is_null($dataTypeContent->getKey())) data-id="{{$dataTypeContent->getKey()}}" @endif
+                    data-method="{{ !is_null($dataTypeContent->getKey()) ? 'edit' : 'add' }}"
                 >
                     @php
                         $model = app($options->model);
@@ -156,6 +157,8 @@
                     name="{{ $relationshipField }}[]" multiple
                     data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
                     data-get-items-field="{{$row->field}}"
+                    @if(!is_null($dataTypeContent->getKey())) data-id="{{$dataTypeContent->getKey()}}" @endif
+                    data-method="{{ !is_null($dataTypeContent->getKey()) ? 'edit' : 'add' }}"
                     @if(isset($options->taggable) && $options->taggable === 'on')
                         data-route="{{ route('voyager.'.\Illuminate\Support\Str::slug($options->table).'.store') }}"
                         data-label="{{$options->label}}"
