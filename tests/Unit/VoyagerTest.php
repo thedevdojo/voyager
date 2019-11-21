@@ -48,25 +48,6 @@ class VoyagerTest extends TestCase
     /**
      * Dimmers returns an array filled with widget collections.
      *
-     * This test ensures that each widget collection can hold up to three widgets
-     */
-    public function testDimmerCollectionContainsThreeDimmersMax()
-    {
-        Config::set('voyager.dashboard.widgets', [
-            'TCG\\Voyager\\Tests\\Stubs\\Widgets\\AccessibleDimmer',
-            'TCG\\Voyager\\Tests\\Stubs\\Widgets\\AccessibleDimmer',
-            'TCG\\Voyager\\Tests\\Stubs\\Widgets\\AccessibleDimmer',
-        ]);
-
-        $dimmers = Voyager::dimmers();
-
-        $this->assertEquals(1, count($dimmers));
-        $this->assertEquals(3, $dimmers[0]->count());
-    }
-
-    /**
-     * Dimmers returns an array filled with widget collections.
-     *
      * Tests that we build N / 3 (rounded up) widget collections where
      * N is the total amount of widgets set in configuration
      */
