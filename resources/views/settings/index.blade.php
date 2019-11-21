@@ -304,7 +304,7 @@
                                             <?php $default = (isset($options->default)) ? $options->default : NULL; ?>
                                             @if(isset($options->options))
                                                 @foreach($options->options as $index => $option)
-                                                    <option value="{{ $index }}" @if($default == $index && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $index){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                                                    <option value="{{ $index }}" @if($default == $index && $selected_value === NULL) selected="selected" @endif @if($selected_value == $index) selected="selected" @endif>{{ $option }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -318,7 +318,7 @@
                                                 @foreach($options->options as $index => $option)
                                                     <li>
                                                         <input type="radio" id="option-{{ $index }}" name="{{ $setting->key }}"
-                                                               value="{{ $index }}" @if($default == $index && $selected_value === NULL){{ 'checked' }}@endif @if($selected_value == $index){{ 'checked' }}@endif>
+                                                               value="{{ $index }}" @if($default == $index && $selected_value === NULL) checked @endif @if($selected_value == $index) checked @endif>
                                                         <label for="option-{{ $index }}">{{ $option }}</label>
                                                         <div class="check"></div>
                                                     </li>
