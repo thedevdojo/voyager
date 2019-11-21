@@ -10,6 +10,8 @@ Inside of your admin panel you can visit Tools-&gt;Database and you'll be able t
 
 If you click the table name you can view the current schema. Additionally you can click on the View, Edit, or Delete buttons to perform that action for that table.
 
+Note that the table is created, modified or deleted in the database, but no Laravel's migration is managed, you have to do it by hand.
+
 You may also choose to Add BREAD \(Browse, Read, Edit, Add, & Delete\) for any of your database tables. Once a table already has BREAD you may choose to edit the current BREAD or Delete the BREAD for that table.
 
 Read on further about the BREAD builder in the next section.
