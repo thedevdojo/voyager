@@ -35,7 +35,7 @@ class AssetsTest extends TestCase
                 '....\dummy_content/pages/page1.jpg',
                 'images/..\..\dummy_content/pages/page1.jpg',
                 'images/....\\....\\dummy_content/pages/page1.jpg',
-            ]
+            ],
         ];
     }
 
