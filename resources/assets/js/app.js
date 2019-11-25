@@ -62,6 +62,7 @@ $(document).ready(function () {
                         search: params.term,
                         type: $(this).data('get-items-field'),
                         method: $(this).data('method'),
+                        id: $(this).data('id'),
                         page: params.page || 1
                     }
                     return query;
