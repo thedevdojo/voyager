@@ -116,7 +116,7 @@ class MultipleImage extends BaseType
                                     $constraint->upsize();
                                 }
                             }
-                        )->encode($file->getClientOriginalExtension(), $resize_quality);                        
+                        )->encode($file->getClientOriginalExtension(), $resize_quality);
                     }
 
                     Storage::disk(config('voyager.storage.disk'))->put(
