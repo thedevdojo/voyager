@@ -143,6 +143,20 @@ class UserProfileTest extends TestCase
         $this->assertTrue(($user->locale == $this->app->getLocale()));
     }
 
+    public function testRedirectBackAfterEditWithoutBrowsePermission()
+    {
+        $user = User::find(1);
+
+        // Remove `browse_users` permission
+        $user->role->permissions()->detach(
+            $user->role->permissions()->where('key', 'browse_users')->first()
+        );
+
+        $this->visit($this->editPageForTheCurrentUser)
+             ->press(__('voyager::generic.save'))
+             ->seePageIs($this->editPageForTheCurrentUser);
+    }
+
     protected function newImagePath()
     {
         return realpath(__DIR__.'/temp/new_avatar.png');

@@ -518,7 +518,7 @@
             },
             openFile: function(file) {
                 if (file.type == 'folder') {
-                    this.current_folder += "/"+file.name;
+                    this.current_folder += file.name+"/";
                     this.getFiles();
                 } else if (this.hidden_element) {
                     this.addFileToInput(file);
@@ -786,7 +786,6 @@
                 if (!this.hidden_element) {
                     console.error('Element "'+this.element+'" could not be found.');
                 } else {
-                    this.expanded = false;
                     if (this.maxSelectedFiles > 1 && this.hidden_element.value == '') {
                         this.hidden_element.value = '[]';
                     }

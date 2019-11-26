@@ -14,9 +14,9 @@ Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
 ![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.png)
 
-Website & Documentation: https://laravelvoyager.com
+Website & Documentation: https://voyager.devdojo.com/
 
-Video Tutorial Here: https://laravelvoyager.com/academy/
+Video Tutorial Here: https://voyager.devdojo.com/academy/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
@@ -24,7 +24,7 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 <hr>
 
-Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.5, 5.6, 5.7 and 5.8!
+Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.5 and newer!
 
 ## Installation Steps
 
