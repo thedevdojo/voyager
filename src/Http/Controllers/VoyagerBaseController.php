@@ -698,7 +698,7 @@ class VoyagerBaseController extends Controller
 
         foreach ($rows as $row) {
             if ($row->type == 'multiple_images') {
-                $images_to_remove = json_decode($data->getOriginal($row->field), true);
+                $images_to_remove = json_decode($data->getOriginal($row->field), true) ?? [];
             } else {
                 $images_to_remove = [$data->getOriginal($row->field)];
             }
