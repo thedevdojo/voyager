@@ -30,7 +30,7 @@
                 >
                     @php
                         $model = app($options->model);
-                        $query = $model::where($options->key, $dataTypeContent->{$options->column})->get();
+                        $query = $model::all();
                     @endphp
 
                     @if(!$row->required)
