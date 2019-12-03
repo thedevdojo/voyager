@@ -123,6 +123,13 @@ class AdminCommand extends Command
 
         // If we need to create a new user go ahead and create it
         if ($create) {
+            // check if user with given email exists
+            $User = $model::where('email', $email)->first();
+            if ($User) {
+                $this->info("Can't create user. User with the email " . $email . " exists already.");
+                return;
+            }
+            
             $name = $this->ask('Enter the admin name');
             $password = $this->secret('Enter admin password');
             $confirmPassword = $this->secret('Confirm Password');
@@ -141,7 +148,7 @@ class AdminCommand extends Command
 
             $this->info('Creating admin account');
 
-            return call_user_func($model.'::create', [
+            return call_user_func($model.'::forceCreate', [
                 'name'     => $name,
                 'email'    => $email,
                 'password' => Hash::make($password),
