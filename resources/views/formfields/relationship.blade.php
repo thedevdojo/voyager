@@ -31,7 +31,7 @@
                 >
                     @php
                         $model = app($options->model);
-                        $query = $model::where($options->key, $dataTypeContent->{$options->column})->get();
+                        $query = $model::where($options->key, old($options->column, $dataTypeContent->{$options->column}))->get();
                     @endphp
 
                     @if(!$row->required)
