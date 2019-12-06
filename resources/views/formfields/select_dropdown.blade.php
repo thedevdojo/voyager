@@ -18,7 +18,7 @@
             @if(isset($options->options))
                 <optgroup label="{{ __('voyager::generic.custom') }}">
                 @foreach($options->options as $key => $option)
-                    <option value="{{ ($key == '_empty_' ? '' : $key) }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if((string)$selected_value == (string)$key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                    <option value="{{ ($key == '_empty_' ? '' : $key) }}" @if($default == $key && $selected_value === NULL) selected="selected" @endif @if((string)$selected_value == (string)$key) selected="selected" @endif>{{ $option }}</option>
                 @endforeach
                 </optgroup>
             @endif
@@ -51,7 +51,7 @@
 
             <optgroup label="{{ __('voyager::database.relationship.relationship') }}">
             @foreach($relationshipOptions as $relationshipOption)
-                <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
+                <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL) selected="selected" @endif @if($selected_value == $relationshipOption->{$options->relationship->key}) selected="selected" @endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
             @endforeach
             </optgroup>
         </select>
@@ -64,7 +64,7 @@
         <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : null; ?>
         @if(isset($options->options))
             @foreach($options->options as $key => $option)
-                <option value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                <option value="{{ $key }}" @if($default == $key && $selected_value === NULL) selected="selected" @endif @if($selected_value == $key) selected="selected" @endif>{{ $option }}</option>
             @endforeach
         @endif
     </select>
