@@ -171,6 +171,7 @@
                                 return $item->{$options->key};
                             })->all() : array();
                             $relationshipOptions = app($options->model)->all();
+                        $selected_values = old($relationshipField, $selected_values);
                         @endphp
 
                         @if(!$row->required)
