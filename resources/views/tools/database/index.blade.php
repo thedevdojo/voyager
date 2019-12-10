@@ -29,6 +29,9 @@
                     @continue(in_array($table->name, config('voyager.database.tables.hidden', [])))
                     <tr>
                         <td>
+                            @if(in_array($table->name, $views))
+                                <i class="voyager-info-circled text-warning" data-toggle="tooltip" data-placement="top" title="{{ __('voyager::database.table_is_view') }}"></i> 
+                            @endif
                             <p class="name">
                                 <a href="{{ route('voyager.database.show', $table->prefix.$table->name) }}"
                                    data-name="{{ $table->prefix.$table->name }}" class="desctable">
@@ -62,6 +65,7 @@
                         </td>
 
                         <td class="actions">
+                        @if(!in_array($table->name, $views))
                             <a class="btn btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
                                data-table="{{ $table->prefix.$table->name }}">
                                <i class="voyager-trash"></i> {{ __('voyager::generic.delete') }}
@@ -75,6 +79,7 @@
                                class="btn btn-sm btn-warning pull-right desctable" style="display:inline; margin-right:10px;">
                                <i class="voyager-eye"></i> {{ __('voyager::generic.view') }}
                             </a>
+                        @endif
                         </td>
                     </tr>
                 @endforeach
@@ -232,6 +237,11 @@
                 $('#delete_bread_form')[0].action = '{{ route('voyager.bread.delete', '__id') }}'.replace('__id', id);
                 $('#delete_bread_modal').modal('show');
             });
+
+            //View tooltip
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
         });
     </script>
 

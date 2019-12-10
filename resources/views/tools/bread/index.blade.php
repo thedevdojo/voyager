@@ -27,6 +27,9 @@
                     @continue(in_array($table->name, config('voyager.database.tables.hidden', [])))
                     <tr>
                         <td>
+                            @if(in_array($table->name, $views))
+                                <i class="voyager-info-circled text-warning" data-toggle="tooltip" data-placement="top" title="{{ __('voyager::database.table_is_view') }}"></i> 
+                            @endif
                             <p class="name">
                                 <a href="{{ route('voyager.database.show', $table->prefix.$table->name) }}"
                                    data-name="{{ $table->prefix.$table->name }}" class="desctable">

@@ -45,6 +45,7 @@ return [
     'table_actions'             => 'Table Actions',
     'table_columns'             => 'Table Columns',
     'table_has_index'           => 'The table already has a primary index.',
+    'table_is_view'             => 'This is a view',
     'table_name'                => 'Table Name',
     'table_no_columns'          => 'The table has no columns...',
     'type'                      => 'Type',

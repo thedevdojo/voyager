@@ -46,6 +46,24 @@ abstract class SchemaManager
         return $tables;
     }
 
+    public static function listViews()
+    {
+        $views = static::manager()->listViews();
+
+        return array_keys($views);
+    }
+
+    public static function listTableNames()
+    {
+        $views = static::listViews();
+        $tables = static::manager()->listTableNames();
+
+        $views = array_merge($tables, $views);
+        asort($views);
+
+        return $views;
+    }
+
     /**
      * @param string $tableName
      *

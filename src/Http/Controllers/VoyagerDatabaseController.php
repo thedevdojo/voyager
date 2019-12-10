@@ -39,7 +39,9 @@ class VoyagerDatabaseController extends Controller
             return (object) $table;
         }, SchemaManager::listTableNames());
 
-        return Voyager::view('voyager::tools.database.index')->with(compact('dataTypes', 'tables'));
+        $views = SchemaManager::listViews();
+
+        return Voyager::view('voyager::tools.database.index')->with(compact('dataTypes', 'tables', 'views'));
     }
 
     /**

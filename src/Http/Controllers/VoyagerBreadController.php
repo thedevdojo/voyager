@@ -35,7 +35,9 @@ class VoyagerBreadController extends Controller
             return (object) $table;
         }, SchemaManager::listTableNames());
 
-        return Voyager::view('voyager::tools.bread.index')->with(compact('dataTypes', 'tables'));
+        $views = SchemaManager::listViews();
+
+        return Voyager::view('voyager::tools.bread.index')->with(compact('dataTypes', 'tables', 'views'));
     }
 
     /**
