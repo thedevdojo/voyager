@@ -79,7 +79,7 @@
                                 <thead>
                                     <tr>
                                         @if($showCheckboxColumn)
-                                            <th>
+                                            <th class="dt-not-orderable">
                                                 <input type="checkbox" class="select_all">
                                             </th>
                                         @endif
@@ -101,7 +101,7 @@
                                             @endif
                                         </th>
                                         @endforeach
-                                        <th class="actions text-right">{{ __('voyager::generic.actions') }}</th>
+                                        <th class="actions text-right dt-not-orderable">{{ __('voyager::generic.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -327,7 +327,9 @@
                     array_merge([
                         "order" => $orderColumn,
                         "language" => __('voyager::datatable'),
-                        "columnDefs" => [['targets' => -1, 'searchable' =>  false, 'orderable' => false]],
+                        "columnDefs" => [
+                            ['targets' => 'dt-not-orderable', 'searchable' =>  false, 'orderable' => false],
+                        ],
                     ],
                     config('voyager.dashboard.data_tables', []))
                 , true) !!});
