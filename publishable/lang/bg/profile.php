@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'avatar'           => 'Avatar',
-    'edit'             => 'Edit My Profile',
-    'edit_user'        => 'Edit User',
-    'password'         => 'Password',
-    'password_hint'    => 'Leave empty to keep the same',
-    'role'             => 'Role',
-    'roles'            => 'Roles',
-    'role_default'     => 'Default Role',
-    'roles_additional' => 'Additional Roles',
-    'user_role'        => 'User Role',
+    'avatar'           => 'Аватар',
+    'edit'             => 'Редактиране на моя профил',
+    'edit_user'        => 'Редактиране на потребител',
+    'password'         => 'Парола',
+    'password_hint'    => 'Оставете празно, за да запазите старата',
+    'role'             => 'Роля',
+    'roles'            => 'Роли',
+    'role_default'     => 'Роля по подразбиране',
+    'roles_additional' => 'Допълнителни роли',
+    'user_role'        => 'Роля на потребителя',
 ];
