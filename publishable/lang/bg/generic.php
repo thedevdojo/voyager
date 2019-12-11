@@ -106,7 +106,7 @@ return [
     'upload'                 => 'Качване',
     'url'                    => 'URL',
     'view'                   => 'Преглед',
-    'viewing'                => 'Преждане',
+    'viewing'                => 'Преглед',
     'whoopsie'               => 'Опаа!',
     'yes'                    => 'Да',
     'yes_please'             => 'Да, моля',
