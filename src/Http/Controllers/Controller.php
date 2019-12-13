@@ -189,7 +189,7 @@ abstract class Controller extends BaseController
             if (!empty($field->display_name)) {
                 if (!empty($data[$fieldName]) && is_array($data[$fieldName])) {
                     foreach ($data[$fieldName] as $index => $element) {
-                        $name = $element->getClientOriginalName() ?? $index+1;
+                        $name = $element->getClientOriginalName() ?? $index + 1;
 
                         $customAttributes[$fieldName.'.'.$index] = $field->getTranslatedAttribute('display_name').' '.$name;
                     }
