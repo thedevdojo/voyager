@@ -840,17 +840,28 @@ class VoyagerBaseController extends Controller
         foreach ($rows as $key => $row) {
             if ($row->field === $request->input('type')) {
                 $options = $row->details;
+                $model = app($options->model);
                 $skip = $on_page * ($page - 1);
 
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
-                    $total_count = app($options->model)->where($options->label, 'LIKE', '%'.$search.'%')->count();
-                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)
-                        ->where($options->label, 'LIKE', '%'.$search.'%')
-                        ->get();
+                    // If we are using additional_attribute as label
+                    if (in_array($options->label, $model->additional_attributes ?? [])) {
+                        $relationshipOptions = $model->all();
+                        $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
+                            return stripos($model->{$options->label}, $search) !== false;
+                        });
+                        $total_count = $relationshipOptions->count();
+                        $relationshipOptions = $relationshipOptions->forPage($page, $on_page);
+                    } else {
+                        $total_count = $model->where($options->label, 'LIKE', '%'.$search.'%')->count();
+                        $relationshipOptions = $model->take($on_page)->skip($skip)
+                            ->where($options->label, 'LIKE', '%'.$search.'%')
+                            ->get();
+                    }
                 } else {
-                    $total_count = app($options->model)->count();
-                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
+                    $total_count = $model->count();
+                    $relationshipOptions = $model->take($on_page)->skip($skip)->get();
                 }
 
                 $results = [];
