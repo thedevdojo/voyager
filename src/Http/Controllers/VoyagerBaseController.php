@@ -73,7 +73,7 @@ class VoyagerBaseController extends Controller
             }
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
-            if ($model && in_array(SoftDeletes::class, class_uses($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
                 $usesSoftDeletes = true;
 
                 if ($request->get('showSoftDeleted')) {
@@ -207,7 +207,7 @@ class VoyagerBaseController extends Controller
             $model = app($dataType->model_name);
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
-            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $model = $model->withTrashed();
             }
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
@@ -265,7 +265,7 @@ class VoyagerBaseController extends Controller
             $model = app($dataType->model_name);
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
-            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $model = $model->withTrashed();
             }
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
@@ -313,7 +313,7 @@ class VoyagerBaseController extends Controller
         if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
             $model = $model->{$dataType->scope}();
         }
-        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+        if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $data = $model->withTrashed()->findOrFail($id);
         } else {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
@@ -457,7 +457,7 @@ class VoyagerBaseController extends Controller
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
             $model = app($dataType->model_name);
-            if (!($model && in_array(SoftDeletes::class, class_uses($model)))) {
+            if (!($model && in_array(SoftDeletes::class, class_uses_recursive($model)))) {
                 $this->cleanup($dataType, $data);
             }
         }
@@ -755,7 +755,7 @@ class VoyagerBaseController extends Controller
         }
 
         $model = app($dataType->model_name);
-        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+        if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $model = $model->withTrashed();
         }
         $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
@@ -792,7 +792,7 @@ class VoyagerBaseController extends Controller
         $order = json_decode($request->input('order'));
         $column = $dataType->order_column;
         foreach ($order as $key => $item) {
-            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $i = $model->withTrashed()->findOrFail($item->id);
             } else {
                 $i = $model->findOrFail($item->id);
@@ -827,21 +827,41 @@ class VoyagerBaseController extends Controller
         $search = $request->input('search', false);
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        $rows = $request->input('method', 'add') == 'add' ? $dataType->addRows : $dataType->editRows;
+        $method = $request->input('method', 'add');
+
+        $model = app($dataType->model_name);
+        if ($method != 'add') {
+            $model = $model->find($request->input('id'));
+        }
+
+        $this->authorize($method, $model);
+
+        $rows = $dataType->{$method.'Rows'};
         foreach ($rows as $key => $row) {
             if ($row->field === $request->input('type')) {
                 $options = $row->details;
+                $model = app($options->model);
                 $skip = $on_page * ($page - 1);
 
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
-                    $total_count = app($options->model)->where($options->label, 'LIKE', '%'.$search.'%')->count();
-                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)
-                        ->where($options->label, 'LIKE', '%'.$search.'%')
-                        ->get();
+                    // If we are using additional_attribute as label
+                    if (in_array($options->label, $model->additional_attributes ?? [])) {
+                        $relationshipOptions = $model->all();
+                        $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
+                            return stripos($model->{$options->label}, $search) !== false;
+                        });
+                        $total_count = $relationshipOptions->count();
+                        $relationshipOptions = $relationshipOptions->forPage($page, $on_page);
+                    } else {
+                        $total_count = $model->where($options->label, 'LIKE', '%'.$search.'%')->count();
+                        $relationshipOptions = $model->take($on_page)->skip($skip)
+                            ->where($options->label, 'LIKE', '%'.$search.'%')
+                            ->get();
+                    }
                 } else {
-                    $total_count = app($options->model)->count();
-                    $relationshipOptions = app($options->model)->take($on_page)->skip($skip)->get();
+                    $total_count = $model->count();
+                    $relationshipOptions = $model->take($on_page)->skip($skip)->get();
                 }
 
                 $results = [];

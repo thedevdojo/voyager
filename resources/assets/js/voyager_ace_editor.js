@@ -4,6 +4,9 @@ var ace_editor_element = document.getElementsByClassName("ace_editor");
 for(var i = 0; i < ace_editor_element.length; i++)
 {
 
+    //Define path for libs
+    ace.config.set("basePath", $('meta[name="assets-path"]').attr('content')+"?path=js/ace/libs");
+
 	// Create an ace editor instance
 	var ace_editor = ace.edit(ace_editor_element[i].id);
 
