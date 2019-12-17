@@ -73,7 +73,7 @@ class VoyagerBaseController extends Controller
             }
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
-            if ($model && in_array(SoftDeletes::class, class_uses($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
                 $usesSoftDeletes = true;
 
                 if ($request->get('showSoftDeleted')) {
@@ -207,7 +207,7 @@ class VoyagerBaseController extends Controller
             $model = app($dataType->model_name);
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
-            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $model = $model->withTrashed();
             }
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
@@ -265,7 +265,7 @@ class VoyagerBaseController extends Controller
             $model = app($dataType->model_name);
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
-            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $model = $model->withTrashed();
             }
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
@@ -313,7 +313,7 @@ class VoyagerBaseController extends Controller
         if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
             $model = $model->{$dataType->scope}();
         }
-        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+        if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $data = $model->withTrashed()->findOrFail($id);
         } else {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
@@ -457,7 +457,7 @@ class VoyagerBaseController extends Controller
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
             $model = app($dataType->model_name);
-            if (!($model && in_array(SoftDeletes::class, class_uses($model)))) {
+            if (!($model && in_array(SoftDeletes::class, class_uses_recursive($model)))) {
                 $this->cleanup($dataType, $data);
             }
         }
@@ -755,7 +755,7 @@ class VoyagerBaseController extends Controller
         }
 
         $model = app($dataType->model_name);
-        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+        if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $model = $model->withTrashed();
         }
         $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
@@ -792,7 +792,7 @@ class VoyagerBaseController extends Controller
         $order = json_decode($request->input('order'));
         $column = $dataType->order_column;
         foreach ($order as $key => $item) {
-            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $i = $model->withTrashed()->findOrFail($item->id);
             } else {
                 $i = $model->findOrFail($item->id);
