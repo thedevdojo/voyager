@@ -73,7 +73,6 @@ class InstallCommand extends Command
         $tags = ['seeds'];
 
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
-        $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
         $this->call('migrate', ['--force' => $this->option('force')]);
