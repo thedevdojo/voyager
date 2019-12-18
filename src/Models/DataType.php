@@ -96,8 +96,8 @@ class DataType extends Model
 
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields((strlen($this->model_name) != 0)
-                    ? app($this->model_name)->getTable()
-                    : Arr::get($requestData, 'name')
+                    ? DB::getTablePrefix().app($this->model_name)->getTable()
+                    : DB::getTablePrefix().Arr::get($requestData, 'name')
                 );
 
                 $requestData = $this->getRelationships($requestData, $fields);
