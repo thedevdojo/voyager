@@ -569,10 +569,18 @@ class VoyagerBaseController extends Controller
                 // Check if we're dealing with a nested array for the case of multiple files
                 if (is_array($fieldData[0])) {
                     foreach ($fieldData as $index=>$file) {
-                        $file = array_flip($file);
-                        if (array_key_exists($filename, $file)) {
-                            $key = $index;
-                            break;
+                        // file type has a different structure than images
+                        if (!empty($file['original_name'])) {
+                            if ($file['original_name'] == $filename) {
+                                $key = $index;
+                                break;
+                            }
+                        } else {
+                            $file = array_flip($file);
+                            if (array_key_exists($filename, $file)) {
+                                $key = $index;
+                                break;
+                            }
                         }
                     }
                 } else {
@@ -584,7 +592,7 @@ class VoyagerBaseController extends Controller
                     throw new Exception(__('voyager::media.file_does_not_exist'), 400);
                 }
 
-                $fileToRemove = $fieldData[$key];
+                $fileToRemove = $fieldData[$key]['download_link'] ?? $fieldData[$key];
 
                 // Remove file from array
                 unset($fieldData[$key]);
