@@ -569,10 +569,18 @@ class VoyagerBaseController extends Controller
                 // Check if we're dealing with a nested array for the case of multiple files
                 if (is_array($fieldData[0])) {
                     foreach ($fieldData as $index=>$file) {
-                        $file = array_flip($file);
-                        if (array_key_exists($filename, $file)) {
-                            $key = $index;
-                            break;
+                        // file type has a different structure than images
+                        if (!empty($file['original_name'])) {
+                            if ($file['original_name'] == $filename) {
+                                $key = $index;
+                                break;
+                            }
+                        } else {
+                            $file = array_flip($file);
+                            if (array_key_exists($filename, $file)) {
+                                $key = $index;
+                                break;
+                            }
                         }
                     }
                 } else {
@@ -584,7 +592,7 @@ class VoyagerBaseController extends Controller
                     throw new Exception(__('voyager::media.file_does_not_exist'), 400);
                 }
 
-                $fileToRemove = $fieldData[$key];
+                $fileToRemove = $fieldData[$key]['download_link'] ?? $fieldData[$key];
 
                 // Remove file from array
                 unset($fieldData[$key]);
@@ -601,24 +609,13 @@ class VoyagerBaseController extends Controller
                 }
             }
 
-            // Remove file from filesystem
-            if ($fileToRemove != config('voyager.user.default_avatar')) {
-                $this->deleteFileIfExists($fileToRemove);
-            }
-
             $row = $dataType->rows->where('field', $field)->first();
 
-            if (!empty($row->details->thumbnails)) {
-                $ext = explode('.', $fileToRemove);
-                $extension = '.'.$ext[count($ext) - 1];
-
-                $path = str_replace($extension, '', $fileToRemove);
-
-                foreach ($row->details->thumbnails as $thumbnail) {
-                    $thumb_name = $thumbnail->name;
-
-                    $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
-                }
+            // Remove file from filesystem
+            if (in_array($row->type, ['image', 'multiple_images'])) {
+                $this->deleteBreadImages($data, [$row], $fileToRemove);
+            } else {
+                $this->deleteFileIfExists($fileToRemove);
             }
 
             $data->save();
@@ -666,7 +663,7 @@ class VoyagerBaseController extends Controller
         }
 
         // Delete Images
-        $this->deleteBreadImages($data, $dataType->deleteRows->where('type', 'image'));
+        $this->deleteBreadImages($data, $dataType->deleteRows->whereIn('type', ['image', 'multiple_images']));
 
         // Delete Files
         foreach ($dataType->deleteRows->where('type', 'file') as $row) {
@@ -703,28 +700,40 @@ class VoyagerBaseController extends Controller
      *
      * @return void
      */
-    public function deleteBreadImages($data, $rows)
+    public function deleteBreadImages($data, $rows, $single_image = null)
     {
+        $imagesDeleted = false;
+
         foreach ($rows as $row) {
-            if ($data->{$row->field} != config('voyager.user.default_avatar')) {
-                $this->deleteFileIfExists($data->{$row->field});
+            if ($row->type == 'multiple_images') {
+                $images_to_remove = json_decode($data->getOriginal($row->field), true) ?? [];
+            } else {
+                $images_to_remove = [$data->getOriginal($row->field)];
             }
 
-            if (isset($row->details->thumbnails)) {
-                foreach ($row->details->thumbnails as $thumbnail) {
-                    $ext = explode('.', $data->{$row->field});
-                    $extension = '.'.$ext[count($ext) - 1];
+            foreach ($images_to_remove as $image) {
+                // Remove only $single_image if we are removing from bread edit
+                if ($image != config('voyager.user.default_avatar') && (is_null($single_image) || $single_image == $image)) {
+                    $this->deleteFileIfExists($image);
+                    $imagesDeleted = true;
 
-                    $path = str_replace($extension, '', $data->{$row->field});
+                    if (isset($row->details->thumbnails)) {
+                        foreach ($row->details->thumbnails as $thumbnail) {
+                            $ext = explode('.', $image);
+                            $extension = '.'.$ext[count($ext) - 1];
 
-                    $thumb_name = $thumbnail->name;
+                            $path = str_replace($extension, '', $image);
 
-                    $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
+                            $thumb_name = $thumbnail->name;
+
+                            $this->deleteFileIfExists($path.'-'.$thumb_name.$extension);
+                        }
+                    }
                 }
             }
         }
 
-        if ($rows->count() > 0) {
+        if ($imagesDeleted) {
             event(new BreadImagesDeleted($data, $rows));
         }
     }
