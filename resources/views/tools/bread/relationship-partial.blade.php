@@ -110,7 +110,7 @@
                 </div>
                 <label>{{ __('voyager::database.relationship.relationship_details') }}</label>
                 <textarea id="json-input-{{ ($relationship['field']) }}" class="resizable-editor" data-editor="json" name="field_details_{{ $relationship['field'] }}">
-                    @if(isset($adv_details))
+                    @if(!empty($adv_details))
                         {{ json_encode($adv_details) }}
                     @else
                         {}
