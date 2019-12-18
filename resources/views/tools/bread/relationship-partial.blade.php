@@ -1,4 +1,9 @@
-@php $relationshipDetails = $relationship['details']; @endphp
+@php
+    $relationshipDetails = $relationship['details'];
+    $relationshipKeyArray = array_fill_keys(["model", "table", "type", "column", "key", "label", "pivot_table", "pivot", "taggable"], '');
+
+    $adv_details = array_diff_key(json_decode(json_encode($relationshipDetails), true), $relationshipKeyArray);
+@endphp
 <div class="row row-dd row-dd-relationship">
     <div class="col-xs-2">
         <h4><i class="voyager-heart"></i><strong>{{ $relationship->getTranslatedAttribute('display_name') }}</strong></h4>
@@ -97,6 +102,21 @@
                     <input type="checkbox" name="relationship_taggable_{{ $relationship['field'] }}" class="toggleswitch" data-on="{{ __('voyager::generic.yes') }}" data-off="{{ __('voyager::generic.no') }}" {{$relationshipDetails->taggable == 'on' ? 'checked' : ''}}>
                 </span>
             @endisset
+        </div>
+        <div class="relationship_details_content margin_top">
+            <div class="col-xs-12" style="margin: 0px !important; padding: 0px !important;">
+                <div class="alert alert-danger validation-error">
+                    {{ __('voyager::json.invalid') }}
+                </div>
+                <label>{{ __('voyager::database.relationship.relationship_details') }}</label>
+                <textarea id="json-input-{{ ($relationship['field']) }}" class="resizable-editor" data-editor="json" name="field_details_{{ $relationship['field'] }}">
+                    @if(!empty($adv_details))
+                        {{ json_encode($adv_details) }}
+                    @else
+                        {}
+                    @endif
+                </textarea>
+            </div>
         </div>
     </div>
     <input type="hidden" value="0" name="field_required_{{ $relationship['field'] }}" checked="checked">
