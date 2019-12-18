@@ -182,9 +182,20 @@ abstract class Controller extends BaseController
             $fieldRules = $field->details->validation->rule;
             $fieldName = $field->field;
 
+            // If field is an array apply rules to all array elements
+            $fieldName = !empty($data[$fieldName]) && is_array($data[$fieldName]) ? $fieldName.'.*' : $fieldName;
+
             // Show the field's display name on the error message
             if (!empty($field->display_name)) {
-                $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');
+                if (!empty($data[$fieldName]) && is_array($data[$fieldName])) {
+                    foreach ($data[$fieldName] as $index => $element) {
+                        $name = $element->getClientOriginalName() ?? $index + 1;
+
+                        $customAttributes[$fieldName.'.'.$index] = $field->getTranslatedAttribute('display_name').' '.$name;
+                    }
+                } else {
+                    $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');
+                }
             }
 
             // Get the rules for the current field whatever the format it is in
