@@ -25,7 +25,7 @@ class UserProfileTest extends TestCase
 
         $this->user = Auth::loginUsingId(1);
 
-        $this->editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $this->user->id]);
+        $this->editPageForTheCurrentUser = route('voyager.users.edit', [$this->user->id]);
 
         $this->listOfUsers = route('voyager.users.index');
 
@@ -102,7 +102,7 @@ class UserProfileTest extends TestCase
     public function testCanEditUserEmailWithEditorPermissions()
     {
         $user = factory(\TCG\Voyager\Models\User::class)->create();
-        $editPageForTheCurrentUser = route('voyager.users.edit', ['user' => $user->id]);
+        $editPageForTheCurrentUser = route('voyager.users.edit', [$user->id]);
         $roleId = $user->role_id;
         $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
