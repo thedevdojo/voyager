@@ -55,6 +55,8 @@ return [
     |
     */
 
+    'storage'               => [
+        'disk'                => env('FILESYSTEM_DRIVER', 'public'),
         'use_temporary_url'   => false,
         'temporary_url_cache' => 5,
     ],
