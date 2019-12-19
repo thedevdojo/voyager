@@ -85,7 +85,7 @@
                                         @endif
                                         @foreach($dataType->browseRows as $row)
                                         <th>
-                                            @if ($isServerSide)
+                                            @if ($isServerSide && $row->type !== 'relationship')
                                                 <a href="{{ $row->sortByUrl($orderBy, $sortOrder) }}">
                                             @endif
                                             {{ $row->getTranslatedAttribute('display_name') }}
