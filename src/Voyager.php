@@ -254,7 +254,7 @@ class Voyager
         $disk = Storage::disk(config('voyager.storage.disk'));
         if (config('voyager.storage.use_temporary_url', false)) {
             $cache_time = now()->addMinutes(config('voyager.storage.temporary_url_cache', 5));
-            $adapter    = $disk->getDriver()->getAdapter();
+            $adapter = $disk->getDriver()->getAdapter();
 
             if ($adapter instanceof CachedAdapter) {
                 $adapter = $adapter->getAdapter();

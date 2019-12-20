@@ -92,7 +92,7 @@ class VoyagerMediaController extends Controller
         foreach ($files as $key => $file) {
             foreach ($thumbnails as $thumbnail) {
                 if ($file['type'] != 'folder' && Str::startsWith($thumbnail['filename'], $file['filename'])) {
-                    $thumbnail['thumb_name'] = str_replace($file['filename'] . '-', '', $thumbnail['filename']);
+                    $thumbnail['thumb_name'] = str_replace($file['filename'].'-', '', $thumbnail['filename']);
                     $thumbnail['path'] = Voyager::image($thumbnail['path']);
                     $files[$key]['thumbnails'][] = $thumbnail;
                 }
