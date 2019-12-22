@@ -359,6 +359,7 @@ class VoyagerMediaController extends Controller
             $content = Storage::disk($this->filesystem)->get($originImagePath);
             $image = Image::make($content)->crop($width, $height, $x, $y);
             Storage::disk($this->filesystem)->put($destImagePath, $image->encode()->encoded);
+
             $success = true;
             $message = __('voyager::media.success_crop_image');
         } catch (Exception $e) {
