@@ -247,6 +247,7 @@ class VoyagerMediaController extends Controller
 
             $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
             $file = preg_replace('#/+#', '/', $file);
+
             $imageMimeTypes = [
                 'image/jpeg',
                 'image/png',
@@ -257,6 +258,7 @@ class VoyagerMediaController extends Controller
             if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
                 $content = Storage::disk($this->filesystem)->get($file);
                 $image = Image::make($content);
+
                 if ($request->file->getClientOriginalExtension() == 'gif') {
                     copy($request->file->getRealPath(), $realPath.$file);
                 } else {
@@ -353,6 +355,7 @@ class VoyagerMediaController extends Controller
                 // override the original image
                 $destImagePath = $originImagePath;
             }
+
             $content = Storage::disk($this->filesystem)->get($originImagePath);
             $image = Image::make($content)->crop($width, $height, $x, $y);
             Storage::disk($this->filesystem)->put($destImagePath, $image->encode()->encoded);
