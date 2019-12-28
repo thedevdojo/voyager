@@ -16,11 +16,15 @@ class Image extends BaseType
 
             $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
 
-            $filename = $this->generateFileName($file, $path);
+            $extension = $file->getClientOriginalExtension();
+            if(isset($this->options->format) && !$this->is_animated_gif($file)){
+                $extension = $this->options->format;
+            }
+            $filename = $this->generateFileName($file, $path , $extension);
 
             $image = InterventionImage::make($file);
 
-            $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+            $fullPath = $path.$filename.'.'.$extension;
 
             $resize_width = null;
             $resize_height = null;
@@ -49,11 +53,11 @@ class Image extends BaseType
                         $constraint->upsize();
                     }
                 }
-            )->encode($file->getClientOriginalExtension(), $resize_quality);
+            )->encode($extension, $resize_quality);
 
             if ($this->is_animated_gif($file)) {
                 Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
-                $fullPathStatic = $path.$filename.'-static.'.$file->getClientOriginalExtension();
+                $fullPathStatic = $path.$filename.'-static.'.$extension;
                 Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string) $image, 'public');
             } else {
                 Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
@@ -83,13 +87,13 @@ class Image extends BaseType
                                     $constraint->upsize();
                                 }
                             }
-                        )->encode($file->getClientOriginalExtension(), $resize_quality);
+                        )->encode($extension, $resize_quality);
                     } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                         $crop_width = $thumbnails->crop->width;
                         $crop_height = $thumbnails->crop->height;
                         $image = InterventionImage::make($file)
                             ->fit($crop_width, $crop_height)
-                            ->encode($file->getClientOriginalExtension(), $resize_quality);
+                            ->encode($extension, $resize_quality);
                     }
 
                     Storage::disk(config('voyager.storage.disk'))->put(
@@ -107,24 +111,29 @@ class Image extends BaseType
     /**
      * @param \Illuminate\Http\UploadedFile $file
      * @param $path
+     * @param $extension
      *
      * @return string
      */
-    protected function generateFileName($file, $path)
+    protected function generateFileName($file, $path, $extension)
     {
+        if($this->is_animated_gif($file)){
+            $extension = $file->getClientOriginalExtension();
+        }
+        
         if (isset($this->options->preserveFileUploadName) && $this->options->preserveFileUploadName) {
-            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+            $filename = basename($file->getClientOriginalName(), '.'.$extension);
             $filename_counter = 1;
 
             // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
-            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
-                $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$extension)) {
+                $filename = basename($file->getClientOriginalName(), '.'.$extension).(string) ($filename_counter++);
             }
         } else {
             $filename = Str::random(20);
 
             // Make sure the filename does not exist, if it does, just regenerate
-            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$extension)) {
                 $filename = Str::random(20);
             }
         }
