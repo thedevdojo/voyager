@@ -6,7 +6,7 @@ on:
       - '1.*'
     paths:
       - 'resources/assets/**'
-      - 'package*.json'
+      - 'package.json'
 
 jobs:
   compile-assets:
