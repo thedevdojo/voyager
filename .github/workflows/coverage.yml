@@ -27,8 +27,18 @@ jobs:
           extensions: mbstring, pdo_sqlite, fileinfo, gd
           coverage: pcov
 
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
       - name: Install Composer dependencies
         run: composer require "illuminate/support:6.*"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Compile Assets
+        run: npm run prod
 
       - name: Run tests for coverage
         run: php -d pvov.enabled=1 ./vendor/bin/phpunit --coverage-clover=coverage.xml
