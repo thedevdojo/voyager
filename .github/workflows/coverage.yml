@@ -9,9 +9,7 @@ on:
       - synchronize
       - opened
       - edited
-      - ready_for_review
       - reopened
-      - unlocked
 
 jobs:
   coverage:
