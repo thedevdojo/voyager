@@ -1,0 +1,37 @@
+name: Coverage
+
+on:
+  push:
+    branches:
+      - '1.*'
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Select PHP version
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: '7.3'
+          extensions: mbstring, pdo_sqlite, fileinfo, gd
+          coverage: pcov
+
+      - name: Install Composer dependencies
+        run: composer require "illuminate/support:6.*"
+
+      - name: Run tests for coverage
+        run: php -d pvov.enabled=1 ./vendor/bin/phpunit --coverage-clover=coverage.xml
+
+      - name: Upload coverage
+        run: bash <(curl -s https://codecov.io/bash)
