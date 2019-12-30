@@ -13,10 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
       - name: Install Dependencies
         run: npm install
+
       - name: Compile Assets
         run: npm run prod
+
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v1
         id: cpr
