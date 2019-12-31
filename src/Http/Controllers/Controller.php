@@ -182,9 +182,6 @@ abstract class Controller extends BaseController
             $fieldRules = $field->details->validation->rule;
             $fieldName = $field->field;
 
-            // If field is an array apply rules to all array elements
-            $fieldName = !empty($data[$fieldName]) && is_array($data[$fieldName]) ? $fieldName.'.*' : $fieldName;
-
             // Show the field's display name on the error message
             if (!empty($field->display_name)) {
                 if (!empty($data[$fieldName]) && is_array($data[$fieldName])) {
@@ -197,6 +194,9 @@ abstract class Controller extends BaseController
                     $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');
                 }
             }
+
+            // If field is an array apply rules to all array elements
+            $fieldName = !empty($data[$fieldName]) && is_array($data[$fieldName]) ? $fieldName.'.*' : $fieldName;
 
             // Get the rules for the current field whatever the format it is in
             $rules[$fieldName] = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
@@ -220,7 +220,7 @@ abstract class Controller extends BaseController
             // Set custom validation messages if any
             if (!empty($field->details->validation->messages)) {
                 foreach ($field->details->validation->messages as $key => $msg) {
-                    $messages["{$fieldName}.{$key}"] = $msg;
+                    $messages["{$field->field}.{$key}"] = $msg;
                 }
             }
         }

@@ -12,6 +12,8 @@ use TCG\Voyager\Models\Page;
 class BreadMediaUploadTest extends TestCase
 {
     protected $file = 'test.txt';
+    protected $file_two = 'test2.txt';
+    protected $file_three = 'test.pdf';
     protected $image_one = 'test1.png';
     protected $image_two = 'test2.png';
     protected $image_three = 'test3.png';
@@ -233,6 +235,24 @@ class BreadMediaUploadTest extends TestCase
         $this->delete(route('voyager.pages.destroy', [$page->id]));
     }
 
+    public function testValidationForFile()
+    {
+        $validation = '{"validation":{"rule":"mimes:txt"}}';
+
+        $page = $this->uploadMedia([$this->file, $this->file_three], 'file', json_decode($validation));
+
+        $this->assertTrue($page === null);
+
+        $page = $this->uploadMedia([$this->file, $this->file_two], 'file', json_decode($validation));
+
+        $file = json_decode($page->image, true);
+
+        $this->storage->assertExists($file[0]['download_link']);
+        $this->storage->assertExists($file[1]['download_link']);
+
+        $this->delete(route('voyager.pages.destroy', [$page->id]));
+    }
+
     public function testFileRemoveOnDelete()
     {
         $page = $this->uploadMedia([$this->file], 'file');
@@ -293,13 +313,18 @@ class BreadMediaUploadTest extends TestCase
                 $file = UploadedFile::fake()->image($names[0]);
                 break;
             case 'file':
-                $file = UploadedFile::fake()->create($names[0], 1);
+                $file = [];
+
+                foreach ($names as $name) {
+                    $file[] = UploadedFile::fake()->create($name, 1);
+                }
                 break;
             case 'multiple_images':
                 $file = [];
-                $file[] = UploadedFile::fake()->image($names[0]);
-                $file[] = UploadedFile::fake()->image($names[1]);
-                $file[] = UploadedFile::fake()->image($names[2]);
+
+                foreach ($names as $name) {
+                    $file[] = UploadedFile::fake()->image($name);
+                }
                 break;
         }
 
@@ -312,7 +337,7 @@ class BreadMediaUploadTest extends TestCase
             'image' => $file,
         ]);
 
-        $page = Page::where('slug', 'upload-media')->firstOrFail();
+        $page = Page::where('slug', 'upload-media')->first();
 
         return $page;
     }
