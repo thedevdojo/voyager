@@ -47,8 +47,7 @@ Route::group(['as' => 'voyager.'], function () {
                 Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
                 Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
                 Route::post($dataType->slug.'/remove', $breadController.'@remove_media')->name($dataType->slug.'.media.remove');
-                if (!in_array($dataType->slug, ['roles']))
-                    Route::resource($dataType->slug, $breadController, ['parameters' => [$dataType->slug => 'id']]);
+                Route::resource($dataType->slug, $breadController, ['parameters' => [$dataType->slug => 'id']]);
             }
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
@@ -57,7 +56,7 @@ Route::group(['as' => 'voyager.'], function () {
         }
 
         // Role Routes
-        Route::resource('roles', $namespacePrefix.'VoyagerRoleController');
+        Route::resource('roles', $namespacePrefix.'VoyagerRoleController', ['parameters' => ['roles' => 'id']]);
 
         // Menu Routes
         Route::group([
