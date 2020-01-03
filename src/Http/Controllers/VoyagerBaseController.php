@@ -764,14 +764,23 @@ class VoyagerBaseController extends Controller
         }
 
         $model = app($dataType->model_name);
-        if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
+        if ($model && in_array(SoftDeletes::class, class_uses($model))) {
             $model = $model->withTrashed();
         }
-        $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
-
+        
         $display_column = $dataType->order_display_column;
 
         $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->whereField($display_column)->first();
+
+        if (Schema::hasColumn($dataType->name, 'menu_parent') && isset($dataType->order_column)) { 
+            $results_tree_view = true; 
+            $orderTreeArray = self::order_results_tree_array(NULL, $dataType->name, $dataType->order_column, $dataType->order_direction);
+            $results = self::order_results_tree_build($orderTreeArray, $dataType->name, $display_column, $dataRow);
+        }
+        else {
+            $results_tree_view = false;
+            $results = self::order_results_build($dataType, $model, $dataRow, $display_column);
+        }
 
         $view = 'voyager::bread.order';
 
@@ -781,11 +790,119 @@ class VoyagerBaseController extends Controller
 
         return Voyager::view($view, compact(
             'dataType',
-            'display_column',
-            'dataRow',
+            'results_tree_view',
             'results'
         ));
     }
+
+    /**
+     * Order rusults WITH tree view - get as array
+     */
+    public static function order_results_tree_array($parent, $orderBy, $orderDirection, $table, $depth = 0) {
+
+        $depth++;
+        //depth limit if continue here
+
+        //get childrens
+        $query = DB::table($table);
+        $query->where('menu_parent', $parent);
+        $query->orderBy($orderBy, $orderDirection);
+        $childrens = $query->get()->toArray();
+
+        //return if no childrens
+        if (empty($childrens)) { return; }
+
+        //foreach children
+        foreach ($childrens as $key => $child) {
+
+            $returnArray[$key]['current'] = $child;
+
+            //recursive
+            $returnArray[$key]['childrens'] = self::order_results_tree_array($child->id, $orderBy, $orderDirection, $table, $depth);
+
+        }
+
+        return $returnArray;
+
+    }
+
+    /**
+     * Order rusults WITHOUT tree view render build
+     */
+    public static function order_results_build(&$dataType, &$model, &$dataRow, &$display_column) {
+
+        $output = "";
+        $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
+ 
+        foreach ($results as $result) {
+
+            $child_view_render = view('voyager::bread.order-tree-item', compact(
+                'display_column',
+                'dataRow',
+                'result'
+            ))->render();
+            
+            $output .= view('voyager::bread.order-tree-wrapper-without-childs', compact(
+                'child_view_render',
+                'result',
+            ))->render();
+
+        }
+
+        return $output;
+
+    }
+
+    /**
+     * Order rusults WITH tree view render build
+     */
+    public static function order_results_tree_build($menu_array, $table, &$display_column, &$dataRow) {
+
+        $output = "";
+
+        foreach ($menu_array as $result) {
+            
+            if (empty($result['childrens'])) {
+                
+                $result = $result["current"];
+
+                $child_view_render = view('voyager::bread.order-tree-item', compact(
+                    'display_column',
+                    'dataRow',
+                    'result'
+                ))->render();
+                
+                $output .= view('voyager::bread.order-tree-wrapper-without-childs', compact(
+                    'child_view_render',
+                    'result',
+                ))->render();
+
+            } else {
+
+                $childrens = self::order_results_tree_build($result['childrens'], $table, $display_column, $dataRow);
+
+                $result = $result["current"];
+
+                $child_view_render = view('voyager::bread.order-tree-item', compact(
+                    'display_column',
+                    'dataRow',
+                    'result'
+                ))->render();
+
+                $output .= view('voyager::bread.order-tree-wrapper-with-childs', compact(
+                    'child_view_render',
+                    'childrens',
+                    'result',
+                ))->render();
+
+            }
+
+        }
+
+        return $output;
+        
+    }
+
 
     public function update_order(Request $request)
     {
@@ -799,14 +916,62 @@ class VoyagerBaseController extends Controller
         $model = app($dataType->model_name);
 
         $order = json_decode($request->input('order'));
+
+        if (!empty($request->input('orderDirection')) &&  $request->input('orderDirection') == "desc") {
+            $order = self::reverseArray($order);
+        } 
+
         $column = $dataType->order_column;
+
+        if (Schema::hasColumn($dataType->name, 'menu_parent') && isset($dataType->order_column)) { 
+            return self::update_order_tree($order, $model, $column, NULL); 
+        } 
+        else {
+            foreach ($order as $key => $item) {
+                if ($model && in_array(SoftDeletes::class, class_uses($model))) {
+                    $i = $model->withTrashed()->findOrFail($item->id);
+                } else {
+                    $i = $model->findOrFail($item->id);
+                }
+                $i->$column = ($key + 1);
+                $i->save();
+            }
+        }
+
+    }
+
+    /**
+    * Reverse array for update_order()
+    */
+    public static function reverseArray($value){
+        $result = $value;
+        if (gettype($value) == "array") {
+            $result = [];
+            for ($i = count($value)-1; $i >= 0; $i--) { 
+                $result[] = self::reverseArray($value[$i]); 
+            }
+        }
+        return $result;
+    }
+
+
+    /**
+    * Update order as tree (with childs) if menu_parent isset - recursive 
+    */
+    public static function update_order_tree($order, &$model, &$column, $menu_parent) {
         foreach ($order as $key => $item) {
-            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
+            if ($model && in_array(SoftDeletes::class, class_uses($model))) {
                 $i = $model->withTrashed()->findOrFail($item->id);
             } else {
                 $i = $model->findOrFail($item->id);
             }
             $i->$column = ($key + 1);
+            $i->menu_parent = $menu_parent;
+
+            if (isset($item->children) && !empty($item->children)) {
+                self::update_order_tree($item->children, $model, $column, $item->id); 
+            }
+
             $i->save();
         }
     }

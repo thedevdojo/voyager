@@ -6,6 +6,10 @@
 <h1 class="page-title">
     <i class="voyager-list"></i>{{ $dataType->getTranslatedAttribute('display_name_plural') }} {{ __('voyager::bread.order') }}
 </h1>
+@if ($results_tree_view)
+<button type="button" id="collapse-all" class="btn btn-primary">Collapse All</button>
+<button type="button" id="expand-all" class="btn btn-primary">Expand All</button>
+@endif
 @stop
 
 @section('content')
@@ -20,21 +24,13 @@
                 <div class="panel-body" style="padding:30px;">
                     <div class="dd">
                         <ol class="dd-list">
-                            @foreach ($results as $result)
-                            <li class="dd-item" data-id="{{ $result->getKey() }}">
-                                <div class="dd-handle" style="height:inherit">
-                                    @if (isset($dataRow->details->view))
-                                        @include($dataRow->details->view, ['row' => $dataRow, 'dataType' => $dataType, 'dataTypeContent' => $result, 'content' => $result->{$display_column}, 'action' => 'order'])
-                                    @elseif($dataRow->type == 'image')
-                                        <span>
-                                            <img src="@if( !filter_var($result->{$display_column}, FILTER_VALIDATE_URL)){{ Voyager::image( $result->{$display_column} ) }}@else{{ $result->{$display_column} }}@endif" style="height:100px">
-                                        </span>
-                                    @else
-                                        <span>{{ $result->{$display_column} }}</span>
-                                    @endif
-                                </div>
-                            </li>
-                            @endforeach
+                            @if ($results_tree_view)
+                                <!-- Order tree ON -->
+                                {!! $results !!}
+                            @else
+                                <!-- Order tree OFF -->
+                                {!! $results !!}
+                            @endif
                         </ol>
                     </div>
                 </div>
@@ -47,23 +43,51 @@
 
 @section('javascript')
 
-<script>
-$(document).ready(function () {
-    $('.dd').nestable({
-        maxDepth: 1
-    });
+<!-- Reorder items -->
 
-    /**
-    * Reorder items
-    */
-    $('.dd').on('change', function (e) {
-        $.post('{{ route('voyager.'.$dataType->slug.'.order') }}', {
-            order: JSON.stringify($('.dd').nestable('serialize')),
-            _token: '{{ csrf_token() }}'
-        }, function (data) {
-            toastr.success("{{ __('voyager::bread.updated_order') }}");
+@if ($results_tree_view)
+
+    <!-- Order tree ON -->
+    <script>
+        $(document).ready(function () {
+            $('.dd').nestable({
+                maxDepth: 10
+            });
+        });
+        $( document ).on( "click", "#collapse-all", function() {
+            $('.dd').nestable('collapseAll');
+        });
+        $( document ).on( "click", "#expand-all", function() {
+            $('.dd').nestable('expandAll');
+        });
+    </script>
+
+@else
+
+    <!-- Order tree OFF -->
+    <script>
+        $(document).ready(function () {
+            $('.dd').nestable({
+                maxDepth: 1
+            });
+        });
+    </script>
+
+@endif
+
+<!-- Order tree Always -->
+<script>
+    $(document).ready(function () {
+        $('.dd').on('change', function (e) {
+            $.post('{{ route('voyager.'.$dataType->slug.'.order') }}', {
+                order: JSON.stringify($('.dd').nestable('serialize')),
+                orderDirection: "{{ $dataType->order_direction }}",
+                _token: '{{ csrf_token() }}'
+            }, function (data) {
+                toastr.success("{{ __('voyager::bread.updated_order') }}");
+            });
         });
     });
-});
 </script>
+
 @stop
