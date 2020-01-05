@@ -14,6 +14,7 @@ use TCG\Voyager\Events\BreadDataRestored;
 use TCG\Voyager\Events\BreadDataUpdated;
 use TCG\Voyager\Events\BreadImagesDeleted;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\Nestable;
 use TCG\Voyager\Http\Controllers\Traits\BreadRelationshipParser;
 
 class VoyagerBaseController extends Controller
@@ -763,6 +764,12 @@ class VoyagerBaseController extends Controller
         }
         $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
 
+        $nestable = false;
+        if (in_array(Nestable::class, class_uses_recursive($model))) {
+            $nestable = true;
+            $results->load('nestableChildren');
+        }
+
         $display_column = $dataType->order_display_column;
 
         $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->whereField($display_column)->first();
@@ -777,6 +784,7 @@ class VoyagerBaseController extends Controller
             'dataType',
             'display_column',
             'dataRow',
+            'nestable',
             'results'
         ));
     }
@@ -793,15 +801,29 @@ class VoyagerBaseController extends Controller
         $model = app($dataType->model_name);
 
         $order = json_decode($request->input('order'));
-        $column = $dataType->order_column;
-        foreach ($order as $key => $item) {
+
+        $this->orderItems($order, null, $model, $dataType);
+    }
+
+    protected function orderItems(array $items, $parentId, $model, $dataType)
+    {
+        if ($dataType->order_direction == 'desc') {
+            $items = array_reverse($items);
+        }
+
+        foreach ($items as $key => $item) {
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $i = $model->withTrashed()->findOrFail($item->id);
             } else {
                 $i = $model->findOrFail($item->id);
             }
-            $i->$column = ($key + 1);
+            $i->{$dataType->order_column} = ($key + 1);
+            $i->parent_id = $parentId;
             $i->save();
+
+            if (isset($item->children)) {
+                $this->orderItems($item->children, $item->id, $model, $dataType);
+            }
         }
     }
 
