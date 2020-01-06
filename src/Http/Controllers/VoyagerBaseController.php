@@ -415,9 +415,9 @@ class VoyagerBaseController extends Controller
             }
 
             return $redirect->with([
-                    'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
-                    'alert-type' => 'success',
-                ]);
+                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
+                'alert-type' => 'success',
+            ]);
         } else {
             return response()->json(['success' => true, 'data' => $data]);
         }
@@ -621,10 +621,10 @@ class VoyagerBaseController extends Controller
             $data->save();
 
             return response()->json([
-               'data' => [
-                   'status'  => 200,
-                   'message' => __('voyager::media.file_removed'),
-               ],
+                'data' => [
+                    'status'  => 200,
+                    'message' => __('voyager::media.file_removed'),
+                ],
             ]);
         } catch (Exception $e) {
             $code = 500;
