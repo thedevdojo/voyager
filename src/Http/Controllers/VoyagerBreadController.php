@@ -348,8 +348,8 @@ class VoyagerBreadController extends Controller
         Voyager::model('DataRow')->destroy($id);
 
         return back()->with([
-                'message'    => 'Successfully deleted relationship.',
-                'alert-type' => 'success',
-            ]);
+            'message'    => 'Successfully deleted relationship.',
+            'alert-type' => 'success',
+        ]);
     }
 }

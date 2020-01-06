@@ -24,8 +24,8 @@ class MenuTest extends TestCase
              ->press(__('voyager::generic.save'))
              ->seePageIs(route('voyager.menus.index'))
              ->seeInDatabase('menus', [
-                'id'   => $menu->id,
-                'name' => 'new_admin',
+                 'id'   => $menu->id,
+                 'name' => 'new_admin',
              ]);
     }
 
