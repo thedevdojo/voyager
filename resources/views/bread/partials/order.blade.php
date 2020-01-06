@@ -1,6 +1,6 @@
 <ol class="dd-list">
     @foreach ($items as $result)
-        @if($nestable && $result->parent_id != $parentId)
+        @if(!empty($nestable) && $result->{$result->getParentField()} != $parentId)
             @continue
         @endif
     <li class="dd-item" data-id="{{ $result->getKey() }}">
@@ -15,7 +15,7 @@
                 <span>{{ $result->{$display_column} }}</span>
             @endif
         </div>
-        @if(isset($result->nestableChildren) && !$result->nestableChildren->isEmpty())
+        @if(!empty($nestable) && !$result->nestableChildren->isEmpty())
             @include('voyager::bread.partials.order', ['items' => $result->nestableChildren, 'parentId' => $result->getKey()])
         @endif
     </li>
