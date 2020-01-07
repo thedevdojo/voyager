@@ -49,7 +49,7 @@ If you installed with the dummy data, a user has been created for you with the f
 A dummy user is **only** created if there are no current users in your database.
 {% endhint %}
 
-If you did not go with the dummy user, you may wish to assign admin priveleges to an existing user. This can easily be done by running this command:
+If you did not go with the dummy user, you may wish to assign admin privileges to an existing user. This can easily be done by running this command:
 
 ```bash
 php artisan voyager:admin your@email.com
