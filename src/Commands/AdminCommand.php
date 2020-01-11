@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Commands;
 
-use App\User;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use TCG\Voyager\Facades\Voyager;
@@ -134,8 +133,8 @@ class AdminCommand extends Command
             }
             
             // check if user with given email exists
-            $User = $model::where('email', $email)->first();
-            if ($User) {
+            
+            if ($model::where('email', $email)->exists()) {
                 $this->info("Can't create user. User with the email " . $email . " exists already.");
                 return;
             }
