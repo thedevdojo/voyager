@@ -52,8 +52,12 @@ class VoyagerBaseController extends Controller
             $searchable = SchemaManager::describeTable(app($dataType->model_name)->getTable())->pluck('name')->toArray();
             $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get();
             foreach ($searchable as $key => $value) {
-                $displayName = $dataRow->where('field', $value)->first()->getTranslatedAttribute('display_name');
-                $searchNames[$value] = $displayName ?: ucwords(str_replace('_', ' ', $value));
+				$dataRowField = $dataRow->where('field', $value)->first();
+				// Check field exists encase BREAD is not in sync
+				if ($dataRowField) {
+					$displayName = $dataRowField->getTranslatedAttribute('display_name');
+					$searchNames[$value] = $displayName ?: ucwords(str_replace('_', ' ', $value));
+				}
             }
         }
 
