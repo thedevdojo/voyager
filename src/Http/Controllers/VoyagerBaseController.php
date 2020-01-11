@@ -875,7 +875,7 @@ class VoyagerBaseController extends Controller
 
                 $results = [];
 
-                if (!$row->required && !$search) {
+                if (!$row->required && !$search && $page == 1) {
                     $results[] = [
                         'id'   => '',
                         'text' => __('voyager::generic.none'),
