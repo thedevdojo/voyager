@@ -25,10 +25,10 @@ use Validator;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs,
-        ValidatesRequests,
-        AuthorizesRequests,
-        AlertsMessages;
+    use DispatchesJobs;
+    use ValidatesRequests;
+    use AuthorizesRequests;
+    use AlertsMessages;
 
     public function getSlug(Request $request)
     {
@@ -184,8 +184,19 @@ abstract class Controller extends BaseController
 
             // Show the field's display name on the error message
             if (!empty($field->display_name)) {
-                $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');
+                if (!empty($data[$fieldName]) && is_array($data[$fieldName])) {
+                    foreach ($data[$fieldName] as $index => $element) {
+                        $name = $element->getClientOriginalName() ?? $index + 1;
+
+                        $customAttributes[$fieldName.'.'.$index] = $field->getTranslatedAttribute('display_name').' '.$name;
+                    }
+                } else {
+                    $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');
+                }
             }
+
+            // If field is an array apply rules to all array elements
+            $fieldName = !empty($data[$fieldName]) && is_array($data[$fieldName]) ? $fieldName.'.*' : $fieldName;
 
             // Get the rules for the current field whatever the format it is in
             $rules[$fieldName] = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
@@ -209,7 +220,7 @@ abstract class Controller extends BaseController
             // Set custom validation messages if any
             if (!empty($field->details->validation->messages)) {
                 foreach ($field->details->validation->messages as $key => $msg) {
-                    $messages["{$fieldName}.{$key}"] = $msg;
+                    $messages["{$field->field}.{$key}"] = $msg;
                 }
             }
         }
@@ -241,6 +252,8 @@ abstract class Controller extends BaseController
             /********** IMAGE TYPE **********/
             case 'image':
                 return (new ContentImage($request, $slug, $row, $options))->handle();
+            /********** DATE TYPE **********/
+            case 'date':
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 return (new Timestamp($request, $slug, $row, $options))->handle();

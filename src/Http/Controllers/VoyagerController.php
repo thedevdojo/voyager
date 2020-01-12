@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use League\Flysystem\Util;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerController extends Controller
@@ -75,10 +76,9 @@ class VoyagerController extends Controller
 
     public function assets(Request $request)
     {
-        $path = str_replace('/', DIRECTORY_SEPARATOR, Str::start(urldecode($request->path), '/'));
-        $path = realpath(dirname(__DIR__, 3).'/publishable/assets').$path;
-
-        if (realpath($path) != $path) {
+        try {
+            $path = dirname(__DIR__, 3).'/publishable/assets/'.Util::normalizeRelativePath(urldecode($request->path));
+        } catch (\LogicException $e) {
             abort(404);
         }
 
