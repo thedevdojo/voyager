@@ -30,7 +30,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: Compile Assets
-          commit-message: '[skip ci] Automatic assets compilation'
+          commit-message: 'Automatic assets compilation'
           author-name: github-actions[bot]
           author-email: 41898282+github-actions[bot]@users.noreply.github.com
           committer-name: GitHub
