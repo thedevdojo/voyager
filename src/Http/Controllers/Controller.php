@@ -25,10 +25,10 @@ use Validator;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs,
-        ValidatesRequests,
-        AuthorizesRequests,
-        AlertsMessages;
+    use DispatchesJobs;
+    use ValidatesRequests;
+    use AuthorizesRequests;
+    use AlertsMessages;
 
     public function getSlug(Request $request)
     {

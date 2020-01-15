@@ -107,10 +107,6 @@ class InstallCommand extends Command
             );
         }
 
-        \Route::group(['prefix' => 'admin'], function () {
-            \Voyager::routes();
-        });
-
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');
 
