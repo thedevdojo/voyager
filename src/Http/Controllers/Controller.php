@@ -25,10 +25,10 @@ use Validator;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs,
-        ValidatesRequests,
-        AuthorizesRequests,
-        AlertsMessages;
+    use DispatchesJobs;
+    use ValidatesRequests;
+    use AuthorizesRequests;
+    use AlertsMessages;
 
     public function getSlug(Request $request)
     {
@@ -75,9 +75,9 @@ abstract class Controller extends BaseController
             }
 
             /*
-             * merge ex_images and upload images
+             * merge ex_images/files and upload images/files
              */
-            if ($row->type == 'multiple_images' && !is_null($content)) {
+            if (in_array($row->type, ['multiple_images', 'file']) && !is_null($content)) {
                 if (isset($data->{$row->field})) {
                     $ex_files = json_decode($data->{$row->field}, true);
                     if (!is_null($ex_files)) {
