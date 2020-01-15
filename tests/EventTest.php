@@ -133,7 +133,7 @@ class EventTest extends TestCase
             'title'     => 'Toast',
             'slug'      => 'toasts',
             'status'    => 'ACTIVE',
-       ]);
+        ]);
 
         Event::assertNotDispatched(BreadDataUpdated::class);
 

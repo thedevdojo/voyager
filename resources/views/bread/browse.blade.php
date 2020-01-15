@@ -49,14 +49,14 @@
                                     <div class="col-2">
                                         <select id="search_key" name="key">
                                             @foreach($searchNames as $key => $name)
-                                                <option value="{{ $key }}" @if($search->key == $key || (empty($search->key) && $key == $defaultSearchKey)){{ 'selected' }}@endif>{{ $name }}</option>
+                                                <option value="{{ $key }}" @if($search->key == $key || (empty($search->key) && $key == $defaultSearchKey)) selected @endif>{{ $name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="col-2">
                                         <select id="filter" name="filter">
-                                            <option value="contains" @if($search->filter == "contains"){{ 'selected' }}@endif>contains</option>
-                                            <option value="equals" @if($search->filter == "equals"){{ 'selected' }}@endif>=</option>
+                                            <option value="contains" @if($search->filter == "contains") selected @endif>contains</option>
+                                            <option value="equals" @if($search->filter == "equals") selected @endif>=</option>
                                         </select>
                                     </div>
                                     <div class="input-group col-md-12">
@@ -120,7 +120,7 @@
                                             @endphp
                                             <td>
                                                 @if (isset($row->details->view))
-                                                    @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $data->{$row->field}, 'action' => 'browse'])
+                                                    @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $data->{$row->field}, 'action' => 'browse', 'view' => 'browse', 'options' => $row->details])
                                                 @elseif($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                                 @elseif($row->type == 'relationship')
@@ -250,7 +250,7 @@
                                                 @endif
                                             </td>
                                         @endforeach
-                                        <td class="no-sort no-click" id="bread-actions">
+                                        <td class="no-sort no-click bread-actions">
                                             @foreach($actions as $action)
                                                 @if (!method_exists($action, 'massAction'))
                                                     @include('voyager::bread.partials.actions', ['action' => $action])

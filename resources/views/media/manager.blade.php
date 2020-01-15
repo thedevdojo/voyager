@@ -327,7 +327,7 @@
 
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title"><i class="voyager-warning"></i> {{ __('voyager::media.crop_image') }}</h4>
+                    <h4 class="modal-title">{{ __('voyager::media.crop_image') }}</h4>
                 </div>
 
                 <div class="modal-body">
@@ -518,7 +518,7 @@
             },
             openFile: function(file) {
                 if (file.type == 'folder') {
-                    this.current_folder += "/"+file.name;
+                    this.current_folder += file.name+"/";
                     this.getFiles();
                 } else if (this.hidden_element) {
                     this.addFileToInput(file);
@@ -558,7 +558,7 @@
                 } else {
                     var path = this.getCurrentPath();
                     path.length = i + 1;
-                    this.current_folder = this.basePath+path.join('/');
+                    this.current_folder = this.basePath+path.join('/') + '/';
                 }
 
                 this.getFiles();
