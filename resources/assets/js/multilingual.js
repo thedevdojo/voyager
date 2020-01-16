@@ -224,7 +224,7 @@
                 _val   = inp.data(lang);
 
             if (!this.settings.editing) {
-                inpUsr.text(_val);
+                inpUsr.html(_val);
 
             } else {
                 var _mce = tinymce.get('richtext'+inpUsr.prop('name'));
