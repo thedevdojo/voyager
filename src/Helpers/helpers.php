@@ -82,9 +82,9 @@ if (!function_exists('str_limit_html')) {
 
         if (mb_strlen($string) > $length) {
             // truncate with new len last word
-            $string = mb_substr($string, 0, $length);
+            $truncated_html = rtrim(mb_substr($string, 0, $length));
             // finds last character
-            $last_character = rtrim(mb_substr($string, -1, 1));
+            $last_character = mb_substr($string, -1, 1);
             // trim punctuation
             if (in_array($last_character, ['.', ','])) {
                 $truncated_html = mb_substr($string, 0, -1);
