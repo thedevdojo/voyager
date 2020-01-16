@@ -32,3 +32,66 @@ if (!function_exists('get_file_name')) {
         }
     }
 }
+
+if (!function_exists('str_limit_html')) {
+    function str_limit_html($string, $length, $end = '&hellip;') {
+        // find all tags
+        $tagPattern = '/(<\/?)([\w]*)(\s*[^>]*)>?|&[\w#]+;/i';
+        // match html tags and entities
+        preg_match_all($tagPattern, $string, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER );
+        $i = 0;
+
+        // loop through each found tag that is within the $length, add those characters to the len,
+        // also track open and closed tags
+        // $matches[$i][0] = the whole tag string  --the only applicable field for html enitities
+        // IF its not matching an &htmlentity; the following apply
+        // $matches[$i][1] = the start of the tag either '<' or '</'
+        // $matches[$i][2] = the tag name
+        // $matches[$i][3] = the end of the tag
+        // $matches[$i][$j][0] = the string
+        // $matches[$i][$j][1] = the str offest
+        while (!empty($matches[$i]) && $matches[$i][0][1] < $length) {
+            $length = $length + strlen($matches[$i][0][0]);
+            if (substr($matches[$i][0][0], 0, 1) === '&') {
+                $length--;
+            }
+
+            // if $matches[$i][2] is undefined then its an html entity, want to ignore those for tag counting
+            // ignore empty/singleton tags for tag counting
+            if (!empty($matches[$i][2][0]) && !in_array($matches[$i][2][0], ['br', 'img', 'hr', 'input', 'param', 'link'])) {
+                // double check
+                if (substr($matches[$i][3][0],-1) !== '/' && substr($matches[$i][1][0],-1) !== '/') {
+                    $openTags[] = $matches[$i][2][0];
+                } elseif (end($openTags) === $matches[$i][2][0]) {
+                    array_pop($openTags);
+                }
+            }
+
+            $i++;
+        }
+
+        $closeTagString = '';
+
+        if (!empty($openTags)) {
+            $openTags = array_reverse($openTags);
+            foreach ($openTags as $t) {
+                $closeTagString .= "</$t>";
+            }
+        }
+
+        if (mb_strlen($string) > $length) {
+            // truncate with new len last word
+            $string = mb_substr($string, 0, $length);
+            // finds last character
+            $last_character = mb_substr($string, -1, 1);
+            // add the end text
+            $truncated_html = ($last_character === '.' ? $string : ($last_character === ',' ? mb_substr($string, 0, -1) : $string) . $end);
+            // restore any open tags
+            $truncated_html .= $closeTagString;
+        } else {
+            $truncated_html = $string;
+        }
+
+        return $truncated_html;
+    }
+}

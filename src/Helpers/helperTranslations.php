@@ -25,16 +25,23 @@ if (!function_exists('get_field_translations')) {
      *
      * @param Illuminate\Database\Eloquent\Model $model
      * @param string                             $field
-     * @param string                             $rowType
      * @param bool                               $stripHtmlTags
+     * @param string|null                        $allowableHtmlTags
+     * @param int|null                           $maxLength
      */
-    function get_field_translations($model, $field, $rowType = '', $stripHtmlTags = false)
+    function get_field_translations($model, $field, $stripHtmlTags = false, $allowableHtmlTags = null, $maxLength = null)
     {
         $_out = $model->getTranslationsOf($field);
 
-        if ($stripHtmlTags && $rowType == 'rich_text_box') {
+        if ($stripHtmlTags) {
             foreach ($_out as $language => $value) {
-                $_out[$language] = strip_tags($_out[$language]);
+                $_out[$language] = strip_tags($_out[$language], $allowableHtmlTags ?: null);
+            }
+        }
+
+        if ($maxLength) {
+            foreach ($_out as $language => $value) {
+                $_out[$language] = str_limit_html($_out[$language], $maxLength);
             }
         }
 
