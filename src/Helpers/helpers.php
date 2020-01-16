@@ -51,7 +51,7 @@ if (!function_exists('str_limit_html')) {
         // $matches[$i][$j][0] = the string
         // $matches[$i][$j][1] = the str offest
         while (!empty($matches[$i]) && $matches[$i][0][1] < $length) {
-            $length = $length + strlen($matches[$i][0][0]);
+            $length = $length + mb_strlen($matches[$i][0][0]);
             if (substr($matches[$i][0][0], 0, 1) === '&') {
                 $length--;
             }
@@ -83,7 +83,7 @@ if (!function_exists('str_limit_html')) {
             // truncate with new len last word
             $string = mb_substr($string, 0, $length);
             // finds last character
-            $last_character = mb_substr($string, -1, 1);
+            $last_character = rtrim(mb_substr($string, -1, 1));
             // add the end text
             $truncated_html = ($last_character === '.' ? $string : ($last_character === ',' ? mb_substr($string, 0, -1) : $string) . $end);
             // restore any open tags
