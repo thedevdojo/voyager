@@ -87,7 +87,7 @@ if (!function_exists('str_limit_html')) {
             $last_character = mb_substr($string, -1, 1);
             // trim punctuation
             if (in_array($last_character, ['.', ','])) {
-                $truncated_html = mb_substr($string, 0, -1);
+                $truncated_html = mb_substr($truncated_html, 0, -1);
             }
             // add the end text and restore any open tags
             $truncated_html .= $end.$closeTagString;
