@@ -34,7 +34,8 @@ if (!function_exists('get_file_name')) {
 }
 
 if (!function_exists('str_limit_html')) {
-    function str_limit_html($string, $length, $end = '&hellip;') {
+    function str_limit_html($string, $length, $end = '&hellip;')
+    {
         // find all tags
         $tagPattern = '/(<\/?)([\w]*)(\s*[^>]*)>?|&[\w#]+;/i';
         // match html tags and entities
@@ -60,7 +61,7 @@ if (!function_exists('str_limit_html')) {
             // ignore empty/singleton tags for tag counting
             if (!empty($matches[$i][2][0]) && !in_array($matches[$i][2][0], ['br', 'img', 'hr', 'input', 'param', 'link'])) {
                 // double check
-                if (substr($matches[$i][3][0], -1) !== '/' && substr($matches[$i][1][0],-1) !== '/') {
+                if (substr($matches[$i][3][0], -1) !== '/' && substr($matches[$i][1][0], -1) !== '/') {
                     $openTags[] = $matches[$i][2][0];
                 } elseif (end($openTags) === $matches[$i][2][0]) {
                     array_pop($openTags);
@@ -89,7 +90,7 @@ if (!function_exists('str_limit_html')) {
                 $truncated_html = mb_substr($string, 0, -1);
             }
             // add the end text and restore any open tags
-            $truncated_html .= $end . $closeTagString;
+            $truncated_html .= $end.$closeTagString;
         } else {
             $truncated_html = $string;
         }
