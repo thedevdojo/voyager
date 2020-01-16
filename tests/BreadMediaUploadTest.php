@@ -263,6 +263,33 @@ class BreadMediaUploadTest extends TestCase
         $this->storage->assertMissing($file[0]['download_link']);
     }
 
+    public function testUploadSecondFile()
+    {
+        // First file
+        $page = $this->uploadMedia([$this->file], 'file');
+
+        // Second file
+        $file = [];
+        $file[] = UploadedFile::fake()->create($this->file_two, 1);
+        $this->call('PUT', route('voyager.pages.update', $page->id), [
+            'author_id' => $page->author_id,
+            'title'     => $page->title,
+            'slug'      => $page->slug,
+            'status'    => $page->status,
+        ], [], [
+            'image' => $file,
+        ]);
+
+        $page = Page::where('slug', $page->slug)->firstOrFail();
+
+        $file = json_decode($page->image, true);
+
+        $this->storage->assertExists($file[0]['download_link']);
+        $this->storage->assertExists($file[1]['download_link']);
+
+        $this->delete(route('voyager.pages.destroy', [$page->id]));
+    }
+
     public function testImageUpload()
     {
         $page = $this->uploadMedia([$this->image_one], 'image');
