@@ -38,7 +38,7 @@ if (!function_exists('str_limit_html')) {
         // find all tags
         $tagPattern = '/(<\/?)([\w]*)(\s*[^>]*)>?|&[\w#]+;/i';
         // match html tags and entities
-        preg_match_all($tagPattern, $string, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER );
+        preg_match_all($tagPattern, $string, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
         $i = 0;
 
         // loop through each found tag that is within the $length, add those characters to the len,
@@ -60,7 +60,7 @@ if (!function_exists('str_limit_html')) {
             // ignore empty/singleton tags for tag counting
             if (!empty($matches[$i][2][0]) && !in_array($matches[$i][2][0], ['br', 'img', 'hr', 'input', 'param', 'link'])) {
                 // double check
-                if (substr($matches[$i][3][0],-1) !== '/' && substr($matches[$i][1][0],-1) !== '/') {
+                if (substr($matches[$i][3][0], -1) !== '/' && substr($matches[$i][1][0],-1) !== '/') {
                     $openTags[] = $matches[$i][2][0];
                 } elseif (end($openTags) === $matches[$i][2][0]) {
                     array_pop($openTags);
@@ -84,10 +84,12 @@ if (!function_exists('str_limit_html')) {
             $string = mb_substr($string, 0, $length);
             // finds last character
             $last_character = rtrim(mb_substr($string, -1, 1));
-            // add the end text
-            $truncated_html = ($last_character === '.' ? $string : ($last_character === ',' ? mb_substr($string, 0, -1) : $string) . $end);
-            // restore any open tags
-            $truncated_html .= $closeTagString;
+            // trim punctuation
+            if (in_array($last_character, ['.', ','])) {
+                $truncated_html = mb_substr($string, 0, -1);
+            }
+            // add the end text and restore any open tags
+            $truncated_html .= $end . $closeTagString;
         } else {
             $truncated_html = $string;
         }
