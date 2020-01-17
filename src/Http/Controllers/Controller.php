@@ -114,13 +114,13 @@ abstract class Controller extends BaseController
             if ($row->type == 'relationship' && $row->details->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
                 $multi_select[] = [
-                    'model' => $row->details->model,
-                    'content' => $content,
-                    'table' => $row->details->pivot_table,
+                    'model'           => $row->details->model,
+                    'content'         => $content,
+                    'table'           => $row->details->pivot_table,
                     'foreignPivotKey' => $row->details->foreign_pivot_key ?? null,
                     'relatedPivotKey' => $row->details->related_pivot_key ?? null,
-                    'parentKey' => $row->details->key,
-                    'relatedKey' => $row->details->related_key ?? null,
+                    'parentKey'       => $row->details->key,
+                    'relatedKey'      => $row->details->related_key ?? null,
                 ];
             } else {
                 $data->{$row->field} = $content;
