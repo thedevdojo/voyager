@@ -149,7 +149,7 @@ abstract class Controller extends BaseController
                 $sync_data['foreignPivotKey'],
                 $sync_data['relatedPivotKey'],
                 $sync_data['parentKey'],
-                $sync_data['relatedKey'],
+                $sync_data['relatedKey']
             )->sync($sync_data['content']);
         }
 
