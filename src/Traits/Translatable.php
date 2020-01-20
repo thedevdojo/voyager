@@ -339,7 +339,7 @@ trait Translatable
      *
      * @return array translations
      */
-    public function prepareTranslations(&$request)
+    public function prepareTranslations($request)
     {
         $translations = [];
 
