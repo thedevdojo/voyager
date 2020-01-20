@@ -337,7 +337,7 @@ trait Translatable
     /**
      * Prepare translations and set default locale field value.
      *
-     * @param Request $request
+     * @param Request    $request
      * @param Collection $rows
      *
      * @return array translations
