@@ -346,7 +346,9 @@ trait Translatable
         // Translatable Fields
         $transFields = $this->getTranslatableAttributes();
 
-        foreach ($transFields as $field) {
+        $fields = !empty($request->attributes->get('breadRows')) ? array_intersect($request->attributes->get('breadRows'), $transFields) : $transFields;
+
+        foreach ($fields as $field) {
             if (!$request->input($field.'_i18n')) {
                 throw new Exception('Invalid Translatable field'.$field);
             }
