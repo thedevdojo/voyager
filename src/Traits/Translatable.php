@@ -5,6 +5,8 @@ namespace TCG\Voyager\Traits;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Translator;
@@ -335,23 +337,31 @@ trait Translatable
     /**
      * Prepare translations and set default locale field value.
      *
-     * @param object $request
+     * @param Request $request
+     * @param Collection $rows
      *
      * @return array translations
      */
-    public function prepareTranslations(&$request)
+    public function prepareTranslations(Request $request, Collection $rows): array
     {
         $translations = [];
 
         // Translatable Fields
         $transFields = $this->getTranslatableAttributes();
+        $requiredFields = $rows->where($this->exists ? 'edit' : 'add', 1)->pluck('field')->toArray();
 
         foreach ($transFields as $field) {
-            if (!$request->input($field.'_i18n')) {
-                continue;
+            $i18nFieldName = $field.'_i18n';
+            // Remove field hidden input
+            if (!$request->input($i18nFieldName)) {
+                if (in_array($field, $requiredFields)) {
+                    throw new Exception("Invalid Translatable field: $field");
+                } else {
+                    continue;
+                }
             }
 
-            $trans = json_decode($request->input($field.'_i18n'), true);
+            $trans = json_decode($request->input($i18nFieldName), true);
 
             // Set the default local value
             $request->merge([$field => $trans[config('voyager.multilingual.default', 'en')]]);
@@ -362,7 +372,7 @@ trait Translatable
             );
 
             // Remove field hidden input
-            unset($request[$field.'_i18n']);
+            unset($request[$i18nFieldName]);
         }
 
         // Remove language selector input

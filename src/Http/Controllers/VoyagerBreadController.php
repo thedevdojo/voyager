@@ -155,7 +155,7 @@ class VoyagerBreadController extends Controller
 
             // Prepare Translations and Transform data
             $translations = is_bread_translatable($dataType)
-                ? $dataType->prepareTranslations($request)
+                ? $dataType->prepareTranslations($request, $dataType->rows)
                 : [];
 
             $res = $dataType->updateDataType($request->all(), true);

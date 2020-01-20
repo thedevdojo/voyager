@@ -2,11 +2,13 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use TCG\Voyager\Events\FileDeleted;
 use TCG\Voyager\Http\Controllers\ContentTypes\Checkbox;
@@ -41,7 +43,7 @@ abstract class Controller extends BaseController
         return $slug;
     }
 
-    public function insertUpdateData($request, $slug, $rows, $data)
+    public function insertUpdateData(Request $request, string $slug, Collection $rows, Model $data)
     {
         $multi_select = [];
 
@@ -49,7 +51,7 @@ abstract class Controller extends BaseController
          * Prepare Translations and Transform data
          */
         $translations = is_bread_translatable($data)
-                        ? $data->prepareTranslations($request)
+                        ? $data->prepareTranslations($request, $rows)
                         : [];
 
         foreach ($rows as $row) {
