@@ -9,6 +9,9 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use League\Flysystem\AwsS3v3\AwsS3Adapter;
+use League\Flysystem\Cached\CachedAdapter;
+use League\Flysystem\Rackspace\RackspaceAdapter;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
 use TCG\Voyager\Actions\RestoreAction;
@@ -240,10 +243,31 @@ class Voyager
     public function image($file, $default = '')
     {
         if (!empty($file)) {
-            return str_replace('\\', '/', Storage::disk(config('voyager.storage.disk'))->url($file));
+            return str_replace('\\', '/', self::storage_url($file));
         }
 
         return $default;
+    }
+
+    public function storage_url($file)
+    {
+        $disk = Storage::disk(config('voyager.storage.disk'));
+        if (config('voyager.storage.use_temporary_url', false)) {
+            $cache_time = now()->addMinutes(config('voyager.storage.temporary_url_cache', 5));
+            $adapter = $disk->getDriver()->getAdapter();
+
+            if ($adapter instanceof CachedAdapter) {
+                $adapter = $adapter->getAdapter();
+            }
+
+            if (method_exists($adapter, 'getTemporaryUrl') || $adapter instanceof AwsS3Adapter || $adapter instanceof RackspaceAdapter) {
+                return $disk->temporaryUrl($file, $cache_time);
+            } else {
+                return $disk->url($file);
+            }
+        } else {
+            return $disk->url($file);
+        }
     }
 
     public function routes()
