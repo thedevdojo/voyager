@@ -4,7 +4,6 @@ namespace TCG\Voyager\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Intervention\Image\ImageServiceProviderLaravel5;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Process\Process;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
@@ -73,7 +72,6 @@ class InstallCommand extends Command
         $tags = ['seeds'];
 
         $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => $tags]);
-        $this->call('vendor:publish', ['--provider' => ImageServiceProviderLaravel5::class]);
 
         $this->info('Migrating the database tables into your application');
         $this->call('migrate', ['--force' => $this->option('force')]);
@@ -108,10 +106,6 @@ class InstallCommand extends Command
                 "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
             );
         }
-
-        \Route::group(['prefix' => 'admin'], function () {
-            \Voyager::routes();
-        });
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');

@@ -30,8 +30,8 @@
                     <tr>
                         <td>
                             <p class="name">
-                                <a href="{{ route('voyager.database.show', $table->name) }}"
-                                   data-name="{{ $table->name }}" class="desctable">
+                                <a href="{{ route('voyager.database.show', $table->prefix.$table->name) }}"
+                                   data-name="{{ $table->prefix.$table->name }}" class="desctable">
                                    {{ $table->name }}
                                 </a>
                             </p>
@@ -63,14 +63,14 @@
 
                         <td class="actions">
                             <a class="btn btn-danger btn-sm pull-right delete_table @if($table->dataTypeId) remove-bread-warning @endif"
-                               data-table="{{ $table->name }}">
+                               data-table="{{ $table->prefix.$table->name }}">
                                <i class="voyager-trash"></i> {{ __('voyager::generic.delete') }}
                             </a>
-                            <a href="{{ route('voyager.database.edit', $table->name) }}"
+                            <a href="{{ route('voyager.database.edit', $table->prefix.$table->name) }}"
                                class="btn btn-sm btn-primary pull-right" style="display:inline; margin-right:10px;">
                                <i class="voyager-edit"></i> {{ __('voyager::generic.edit') }}
                             </a>
-                            <a href="{{ route('voyager.database.show', $table->name) }}"
+                            <a href="{{ route('voyager.database.show', $table->prefix.$table->name) }}"
                                data-name="{{ $table->name }}"
                                class="btn btn-sm btn-warning pull-right desctable" style="display:inline; margin-right:10px;">
                                <i class="voyager-eye"></i> {{ __('voyager::generic.view') }}
