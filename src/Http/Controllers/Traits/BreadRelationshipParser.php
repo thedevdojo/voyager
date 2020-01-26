@@ -53,12 +53,12 @@ trait BreadRelationshipParser
     }
 
     /**
-     * Eagerload relationships
+     * Eagerload relationships.
      *
-     * @param mixed $dataTypeContent    Can be either an eloquent Model or Collection.
+     * @param mixed    $dataTypeContent     Can be either an eloquent Model or Collection.
      * @param DataType $dataType
-     * @param string $action
-     * @param bool $isModelTranslatable
+     * @param string   $action
+     * @param bool     $isModelTranslatable
      *
      * @return void
      */
