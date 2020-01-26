@@ -112,9 +112,10 @@ class VoyagerBaseController extends Controller
         }
 
         // Check if BREAD is Translatable
-        if (($isModelTranslatable = is_bread_translatable($model))) {
-            $dataTypeContent->load('translations');
-        }
+        $isModelTranslatable = is_bread_translatable($dataTypeContent);
+
+        // Eagerload Relations
+        $this->eagerLoadRelations($dataTypeContent, $dataType, 'browse', $isModelTranslatable);
 
         // Check if server side pagination is enabled
         $isServerSide = isset($dataType->server_side) && $dataType->server_side;
@@ -234,6 +235,9 @@ class VoyagerBaseController extends Controller
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
+        // Eagerload Relations
+        $this->eagerLoadRelations($dataTypeContent, $dataType, 'read', $isModelTranslatable);
+
         $view = 'voyager::bread.read';
 
         if (view()->exists("voyager::$slug.read")) {
@@ -289,6 +293,9 @@ class VoyagerBaseController extends Controller
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
+
+        // Eagerload Relations
+        $this->eagerLoadRelations($dataTypeContent, $dataType, 'edit', $isModelTranslatable);
 
         $view = 'voyager::bread.edit-add';
 
@@ -375,6 +382,9 @@ class VoyagerBaseController extends Controller
 
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
+
+        // Eagerload Relations
+        $this->eagerLoadRelations($dataTypeContent, $dataType, 'add', $isModelTranslatable);
 
         $view = 'voyager::bread.edit-add';
 
