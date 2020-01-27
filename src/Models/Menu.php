@@ -75,11 +75,6 @@ class Menu extends Model
 
         if ($menuName == 'admin' && $type == '_json') {
             $items = static::processItems($items);
-        } else {
-            // Eagerload Translations
-            if (config('voyager.multilingual.enabled')) {
-                $items->load('translations');
-            }
         }
 
         if ($type == 'admin') {
