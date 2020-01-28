@@ -107,4 +107,5 @@ return [
     'whoopsie'               => 'Whoopsie!',
     'yes'                    => 'Yes',
     'yes_please'             => 'Yes, Please',
+    'please_wait'            => 'Please wait',
 ];
