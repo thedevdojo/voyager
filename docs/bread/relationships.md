@@ -30,3 +30,7 @@ If you need to set advanced options for `belongsToMany` relationship you can set
     "related_key": "id"
 }
 ```
+
+{% hint style="info" %}
+In a BelongsTo relationship the foreign key field decides if value can be saved on add or edit and applies validation rules for everything else, like visibility in browse and edit, the relationship field is used.
+{% endhint %}
