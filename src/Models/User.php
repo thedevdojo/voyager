@@ -13,7 +13,7 @@ class User extends Authenticatable implements UserContract
 
     protected $guarded = [];
 
-    public $additional_attributes = ['locale'];
+    public $additional_attributes = ['locale','mfa'];
 
     public function getAvatarAttribute($value)
     {
@@ -35,13 +35,33 @@ class User extends Authenticatable implements UserContract
         return collect(json_decode($value));
     }
 
+    public function setGenericAttribute($attr, $value)
+    {
+        $this->settings = $this->settings->merge([$attr => $value]);
+    }
+
+    public function getGenericAttribute($attr)
+    {
+        return $this->settings->get($attr);
+    }
+
     public function setLocaleAttribute($value)
     {
-        $this->settings = $this->settings->merge(['locale' => $value]);
+        $this->setGenericAttribute('locale', $value);
     }
 
     public function getLocaleAttribute()
     {
-        return $this->settings->get('locale');
+        return $this->getGenericAttribute('locale');
+    }
+
+    public function setMfaAttribute($value)
+    {
+        $this->setGenericAttribute('mfa', $value);
+    }
+
+    public function getMfaAttribute()
+    {
+        return $this->getGenericAttribute('mfa');
     }
 }

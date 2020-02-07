@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Jocic\GoogleAuthenticator\Secret;
 use Symfony\Component\Console\Input\InputOption;
 use TCG\Voyager\Facades\Voyager;
 
@@ -139,13 +140,25 @@ class AdminCommand extends Command
                 return;
             }
 
-            $this->info('Creating admin account');
+            $this->info('Creating admin account...');
 
-            return call_user_func($model.'::create', [
+            $user = call_user_func($model.'::create', [
                 'name'     => $name,
                 'email'    => $email,
-                'password' => Hash::make($password),
+                'password' => Hash::make($password)
             ]);
+
+            // Ask if multi-factor auth. is to be enabled
+            if ($this->confirm('Enable multi-factor authentication?')) {
+                $user->setMfaAttribute([
+                    'type' => 'google',
+                    'secret' => ($secret = (new Secret())->getValue())
+                ]);
+
+                $this->info('Your secret: ' . $secret);
+            }
+            
+            return $user;
         }
 
         return call_user_func($model.'::where', 'email', $email)->firstOrFail();
