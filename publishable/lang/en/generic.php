@@ -60,6 +60,7 @@ return [
     'longitude'              => 'Longitude',
     'media'                  => 'Media',
     'menu_builder'           => 'Menu Builder',
+    'mfa'                    => 'Multi-Factor Authentication',
     'mimetype_not_allowed'   => 'This mimetype is not allowed',
     'move'                   => 'Move',
     'name'                   => 'Name',

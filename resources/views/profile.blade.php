@@ -23,5 +23,17 @@
         @if ($route != '')
             <a href="{{ $route }}" class="btn btn-primary">{{ __('voyager::profile.edit') }}</a>
         @endif
+        @if (isset($mfa))
+            <a href="{{ $mfa }}" class="btn btn-primary" data-toggle="modal" data-target="#mfa-code">{{ __('voyager::profile.view_code') }}</a>
+        @endif
+    </div>
+
+    <div class="modal fade" id="mfa-code" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="width:260px">
+            <div class="modal-content">
+            <div class="modal-body text-center">
+                <img class="mfa" src="{{ $mfa }}" alt="{{ Auth::user()->name }} mfa code">
+            </div>
+        </div>
     </div>
 @stop
