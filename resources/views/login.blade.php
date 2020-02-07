@@ -73,16 +73,25 @@
                     <div class="form-group form-group-default" id="emailGroup">
                         <label>{{ __('voyager::generic.email') }}</label>
                         <div class="controls">
-                            <input type="text" name="email" id="email" value="{{ old('email') }}" placeholder="{{ __('voyager::generic.email') }}" class="form-control" required>
+                            <input type="text" name="email" id="email" value="{{ $credentials['email'] ?? '' }}" placeholder="{{ __('voyager::generic.email') }}" class="form-control" required>
                          </div>
                     </div>
 
                     <div class="form-group form-group-default" id="passwordGroup">
                         <label>{{ __('voyager::generic.password') }}</label>
                         <div class="controls">
-                            <input type="password" name="password" placeholder="{{ __('voyager::generic.password') }}" class="form-control" required>
+                            <input type="password" name="password" value="{{ $credentials['password'] ?? '' }}" placeholder="{{ __('voyager::generic.password') }}" class="form-control" required>
                         </div>
                     </div>
+
+                    @if (isset($mfa_enabled) && $mfa_enabled)
+                    <div class="form-group form-group-default" id="passwordGroup">
+                        <label>{{ __('voyager::generic.code') }}</label>
+                        <div class="controls">
+                            <input type="text" name="code" value="" placeholder="{{ __('voyager::generic.code') }}" class="form-control" required>
+                        </div>
+                    </div>
+                    @endif
 
                     <div class="form-group" id="rememberMeGroup">
                         <div class="controls">

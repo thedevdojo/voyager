@@ -22,6 +22,7 @@ return [
     'choose_type'            => 'Choose Type',
     'click_here'             => 'Click Here',
     'close'                  => 'Close',
+    'code'                   => 'Code',
     'compass'                => 'Compass',
     'created_at'             => 'Created at',
     'custom'                 => 'Custom',

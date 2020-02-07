@@ -2,9 +2,12 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Jocic\GoogleAuthenticator\Account;
+use Jocic\GoogleAuthenticator\Validator;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerAuthController extends Controller
@@ -35,8 +38,17 @@ class VoyagerAuthController extends Controller
 
         $credentials = $this->credentials($request);
 
-        if ($this->guard()->attempt($credentials, $request->has('remember'))) {
-            return $this->sendLoginResponse($request);
+        if ($this->guard()->once($credentials)) {
+            $user = $this->guard()->user();
+            $code = $request->input('code');
+
+            if (isset($user->mfa) && !isset($code)) {
+                return Voyager::view('voyager::login', [ 'credentials' => $credentials, 'mfa_enabled' => true ]);
+            }
+
+            if ($this->validateMfaCode($user->mfa, $code) && $this->guard()->attempt($credentials, $request->has('remember'))) {
+                return $this->sendLoginResponse($request);
+            }
         }
 
         // If the login attempt was unsuccessful we will increment the number of attempts
@@ -53,6 +65,19 @@ class VoyagerAuthController extends Controller
     public function redirectTo()
     {
         return config('voyager.user.redirect', route('voyager.dashboard'));
+    }
+
+    /**
+     * Checks if the provided MFA code is valid.
+     */
+    protected function validateMfaCode($data, $code)
+    {
+        if ($data == null) {
+            return true;
+        }
+
+        return (new Validator())->isCodeValid($code,
+            new Account("", "", $data->secret));
     }
 
     /**
