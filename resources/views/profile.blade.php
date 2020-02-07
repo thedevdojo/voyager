@@ -23,7 +23,7 @@
         @if ($route != '')
             <a href="{{ $route }}" class="btn btn-primary">{{ __('voyager::profile.edit') }}</a>
         @endif
-        @if (isset($mfa))
+        @if ($mfa != '')
             <a href="{{ $mfa }}" class="btn btn-primary" data-toggle="modal" data-target="#mfa-code">{{ __('voyager::profile.view_code') }}</a>
         @endif
     </div>
