@@ -97,6 +97,10 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <input id="mfa" type="checkbox" name="mfa" @if(isset($dataTypeContent->mfa)) checked="checked"@endif>
+                                <label for="mfa">{{ __('voyager::generic.mfa') }}</label>
+                            </div>
                         </div>
                     </div>
                 </div>
