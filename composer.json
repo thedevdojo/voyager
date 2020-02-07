@@ -22,7 +22,8 @@
         "arrilot/laravel-widgets": "^3.7",
         "league/flysystem": "~1.0.41",
         "larapack/voyager-hooks": "~1.2.1",
-        "ext-json": "*"
+        "ext-json": "*",
+        "jocic/google-authenticator": "^1.0"
     },
     "require-dev": {
         "phpunit/phpcov": "~4.0|~5.0|~6.0",
