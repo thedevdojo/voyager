@@ -49,7 +49,7 @@ class VoyagerDatabaseController extends Controller
      */
     public function create()
     {
-        $this->authorize('browse_database');
+        $this->authorize('add_database');
 
         $db = $this->prepareDbManager('create');
 
@@ -65,7 +65,7 @@ class VoyagerDatabaseController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('browse_database');
+        $this->authorize('add_database');
 
         try {
             $conn = 'database.connections.'.config('database.default');
@@ -121,7 +121,7 @@ class VoyagerDatabaseController extends Controller
      */
     public function edit($table)
     {
-        $this->authorize('browse_database');
+        $this->authorize('edit_database');
 
         if (!SchemaManager::tableExists($table)) {
             return redirect()
@@ -143,7 +143,7 @@ class VoyagerDatabaseController extends Controller
      */
     public function update(Request $request)
     {
-        $this->authorize('browse_database');
+        $this->authorize('edit_database');
 
         $table = json_decode($request->table, true);
 
@@ -197,6 +197,7 @@ class VoyagerDatabaseController extends Controller
 
     public function cleanOldAndCreateNew($originalName, $tableName)
     {
+        $this->authorize('clean_database');
         if (!empty($originalName) && $originalName != $tableName) {
             $dt = DB::table('data_types')->where('name', $originalName);
             if ($dt->get()) {
@@ -215,7 +216,7 @@ class VoyagerDatabaseController extends Controller
 
     public function reorder_column(Request $request)
     {
-        $this->authorize('browse_database');
+        $this->authorize('edit_database');
 
         if ($request->ajax()) {
             $table = $request->table;
@@ -241,7 +242,7 @@ class VoyagerDatabaseController extends Controller
      */
     public function show($table)
     {
-        $this->authorize('browse_database');
+        $this->authorize('read_database');
 
         $additional_attributes = [];
         $model_name = Voyager::model('DataType')->where('name', $table)->pluck('model_name')->first();
@@ -266,7 +267,7 @@ class VoyagerDatabaseController extends Controller
      */
     public function destroy($table)
     {
-        $this->authorize('browse_database');
+        $this->authorize('delete_database');
 
         try {
             SchemaManager::dropTable($table);

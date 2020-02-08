@@ -36,7 +36,7 @@ class VoyagerMediaController extends Controller
     public function files(Request $request)
     {
         // Check permission
-        $this->authorize('browse_media');
+        $this->authorize('read_media');
 
         $options = $request->details ?? [];
         $thumbnail_names = [];
@@ -105,7 +105,7 @@ class VoyagerMediaController extends Controller
     public function new_folder(Request $request)
     {
         // Check permission
-        $this->authorize('browse_media');
+        $this->authorize('folder_media');
 
         $new_folder = $request->new_folder;
         $success = false;
@@ -125,7 +125,7 @@ class VoyagerMediaController extends Controller
     public function delete(Request $request)
     {
         // Check permission
-        $this->authorize('browse_media');
+        $this->authorize('delete_media');
 
         $path = str_replace('//', '/', Str::finish($request->path, '/'));
         $success = true;
@@ -150,7 +150,7 @@ class VoyagerMediaController extends Controller
     public function move(Request $request)
     {
         // Check permission
-        $this->authorize('browse_media');
+        $this->authorize('move_media');
         $path = str_replace('//', '/', Str::finish($request->path, '/'));
         $dest = str_replace('//', '/', Str::finish($request->destination, '/'));
         if (strpos($dest, '/../') !== false) {
@@ -182,7 +182,7 @@ class VoyagerMediaController extends Controller
     public function rename(Request $request)
     {
         // Check permission
-        $this->authorize('browse_media');
+        $this->authorize('rename_media');
 
         $folderLocation = $request->folder_location;
         $filename = $request->filename;
@@ -212,7 +212,7 @@ class VoyagerMediaController extends Controller
     public function upload(Request $request)
     {
         // Check permission
-        $this->authorize('browse_media');
+        $this->authorize('upload_media');
 
         $extension = $request->file->getClientOriginalExtension();
         $name = Str::replaceLast('.'.$extension, '', $request->file->getClientOriginalName());
@@ -329,7 +329,7 @@ class VoyagerMediaController extends Controller
     public function crop(Request $request)
     {
         // Check permission
-        $this->authorize('browse_media');
+        $this->authorize('crop_media');
 
         $createMode = $request->get('createMode') === 'true';
         $x = $request->get('x');
