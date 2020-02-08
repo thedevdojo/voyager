@@ -48,7 +48,7 @@ class VoyagerBreadController extends Controller
      */
     public function create(Request $request, $table)
     {
-        $this->authorize('browse_bread');
+        $this->authorize('add_bread');
 
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
@@ -90,7 +90,7 @@ class VoyagerBreadController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('browse_bread');
+        $this->authorize('add_bread');
 
         try {
             $dataType = Voyager::model('DataType');
@@ -117,7 +117,7 @@ class VoyagerBreadController extends Controller
      */
     public function edit($table)
     {
-        $this->authorize('browse_bread');
+        $this->authorize('edit_bread');
 
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
@@ -147,7 +147,7 @@ class VoyagerBreadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->authorize('browse_bread');
+        $this->authorize('edit_bread');
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         try {
@@ -184,7 +184,7 @@ class VoyagerBreadController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('browse_bread');
+        $this->authorize('delete_bread');
 
         /* @var \TCG\Voyager\Models\DataType $dataType */
         $dataType = Voyager::model('DataType')->find($id);
