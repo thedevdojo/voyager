@@ -864,7 +864,11 @@ class VoyagerBaseController extends Controller
                     }
                 } else {
                     $total_count = $model->count();
-                    $relationshipOptions = $model->take($on_page)->skip($skip)->get();
+                    if (isset($options->whereRaw)) {
+                        $relationshipOptions = $model->whereRaw($options->whereRaw)->take($on_page)->skip($skip)->get();
+                    } else {
+                        $relationshipOptions = $model->take($on_page)->skip($skip)->get();
+                    }
                 }
 
                 $results = [];
