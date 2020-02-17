@@ -24,6 +24,9 @@ trait BreadRelationshipParser
         foreach ($forget_keys as $forget_key) {
             $dataType->{$bread_type.'Rows'}->forget($forget_key);
         }
+
+        // Reindex collection
+        $dataType->{$bread_type.'Rows'} = $dataType->{$bread_type.'Rows'}->values();
     }
 
     /**
