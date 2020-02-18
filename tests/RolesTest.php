@@ -32,21 +32,21 @@ class RolesTest extends TestCase
         $this->visit(route('voyager.roles.create'))
              ->type('superadmin', 'name')
              ->type('Super Admin', 'display_name')
-             ->press(__('voyager::generic.submit'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs(route('voyager.roles.index'))
              ->seeInDatabase('roles', ['name' => 'superadmin']);
 
         // Editing a Role
         $this->visit(route('voyager.roles.edit', 2))
              ->type('regular_user', 'name')
-             ->press(__('voyager::generic.submit'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs(route('voyager.roles.index'))
              ->seeInDatabase('roles', ['name' => 'regular_user']);
 
         // Editing a Role
         $this->visit(route('voyager.roles.edit', 2))
              ->type('user', 'name')
-             ->press(__('voyager::generic.submit'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs(route('voyager.roles.index'))
              ->seeInDatabase('roles', ['name' => 'user']);
 
