@@ -112,7 +112,7 @@ class VoyagerBaseController extends Controller
         }
 
         // Check if BREAD is Translatable
-        $isModelTranslatable = is_bread_translatable($dataTypeContent);
+        $isModelTranslatable = is_bread_translatable($model);
 
         // Eagerload Relations
         $this->eagerLoadRelations($dataTypeContent, $dataType, 'browse', $isModelTranslatable);
