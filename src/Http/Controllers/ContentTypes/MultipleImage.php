@@ -26,8 +26,6 @@ class MultipleImage extends BaseType
                 continue;
             }
 
-            // COTI ADD
-            // $image = InterventionImage::make($file);
             $image = InterventionImage::make($file)->orientate();
 
             $resize_width = null;
