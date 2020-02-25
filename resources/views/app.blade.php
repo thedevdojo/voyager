@@ -21,19 +21,13 @@
         @include('voyager::sidebar')
     @endif
 
-    @if(isset($sidebarSecondary))
-        @include('voyager::partials.sidebar-secondary')
-    @endif
-
-    <div class="flex-initial w-full @if(isset($sidebarSecondary)){{ 'ml-72' }}@elseif(!isset($fullscreen)){{ 'ml-16' }}@endif">
-
         <transition name="fade">
             <div id="voyager-loader" v-if="page_loading">
                 <!--v-icon id="voyager-loader-icon"  class="icon" spin name="dharmachakra"></v-icon-->
             </div>
         </transition>
 
-        <main class="@if(!isset($fullscreen)){{ 'mx-4 px-12 py-10' }}@endif">
+        <main class="px-5 flex-1 ml-56">
 
             @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
                 @include('voyager::navbar')
@@ -43,7 +37,6 @@
 
         </main>
 
-    </div>
     <vue-snotify></vue-snotify>
     <floating-button position="bottom-right" v-if="$language.localePicker">
         <locale-picker />

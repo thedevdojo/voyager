@@ -1,5 +1,5 @@
 body {
-    @apply text-gray-700 bg-gray-100;
+    @apply text-gray-700;
 }
 
 .mode-dark body {
@@ -36,14 +36,6 @@ a {
 
     &.bigger {
         @apply text-base;
-    }
-}
-
-
-.voyager-search {
-    @apply rounded py-2 pr-4 pl-10 block text-2xl appearance-none bg-transparent leading-normal w-full search;
-    &:focus {
-        @apply outline-none w-full;
     }
 }
 
