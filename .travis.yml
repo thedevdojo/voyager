@@ -3,7 +3,6 @@ language: php
 sudo: true
 
 php:
-  - 7.1
   - 7.2
   - 7.3
   - 7.4snapshot
@@ -11,9 +10,8 @@ php:
 env:
   matrix:
     - LARAVEL_VERSION=5.5.*
-    - LARAVEL_VERSION=5.6.*
-    - LARAVEL_VERSION=5.7.*
     - LARAVEL_VERSION=5.8.*
+    - LARAVEL_VERSION=6.*
 
 matrix:
   fast_finish: true
@@ -30,6 +28,8 @@ services:
   - sqlite
 
 before_script:
+  - echo > $HOME/.phpenv/versions/$TRAVIS_PHP_VERSION/etc/conf.d/xdebug.ini
+  - pecl install pcov
   - travis_retry composer self-update
   - composer require "illuminate/support:${LARAVEL_VERSION}"
   - composer show laravel/framework
@@ -37,4 +37,7 @@ before_script:
   - npm run dev
 
 script:
-  - vendor/bin/phpunit --no-coverage
+  - php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

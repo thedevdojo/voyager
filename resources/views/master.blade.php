@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{{ voyager_asset('css/app.css') }}">
 
     @yield('css')
-    @if(config('voyager.multilingual.rtl'))
+    @if(__('voyager::generic.is_rtl') == 'true')
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.css">
         <link rel="stylesheet" href="{{ voyager_asset('css/rtl.css') }}">
     @endif
@@ -64,10 +64,10 @@
 </div>
 
 <?php
-if (starts_with(app('VoyagerAuth')->user()->avatar, 'http://') || starts_with(app('VoyagerAuth')->user()->avatar, 'https://')) {
-    $user_avatar = app('VoyagerAuth')->user()->avatar;
+if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'https://')) {
+    $user_avatar = Auth::user()->avatar;
 } else {
-    $user_avatar = Voyager::image(app('VoyagerAuth')->user()->avatar);
+    $user_avatar = Voyager::image(Auth::user()->avatar);
 }
 ?>
 

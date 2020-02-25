@@ -12,7 +12,7 @@
             <li>
                 <input type="radio" id="option-{{ \Illuminate\Support\Str::slug($row->field, '-') }}-{{ \Illuminate\Support\Str::slug($key, '-') }}"
                        name="{{ $row->field }}"
-                       value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'checked' }}@endif @if($selected_value == $key){{ 'checked' }}@endif>
+                       value="{{ $key }}" @if($default == $key && $selected_value === NULL) checked @endif @if($selected_value == $key) checked @endif>
                 <label for="option-{{ \Illuminate\Support\Str::slug($row->field, '-') }}-{{ \Illuminate\Support\Str::slug($key, '-') }}">{{ $option }}</label>
                 <div class="check"></div>
             </li>

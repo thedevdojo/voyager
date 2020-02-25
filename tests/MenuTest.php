@@ -17,15 +17,15 @@ class MenuTest extends TestCase
     public function testCanRenameMenu()
     {
         $menu = Menu::where('name', '=', 'admin')->first();
-        $this->visitRoute('voyager.menus.edit', ['id' => $menu->id])
+        $this->visitRoute('voyager.menus.edit', $menu->id)
              ->seeInField('name', $menu->name)
              ->type('new_admin', 'name')
              ->seeInElement('button', __('voyager::generic.save'))
              ->press(__('voyager::generic.save'))
              ->seePageIs(route('voyager.menus.index'))
              ->seeInDatabase('menus', [
-                'id'   => $menu->id,
-                'name' => 'new_admin',
+                 'id'   => $menu->id,
+                 'name' => 'new_admin',
              ]);
     }
 

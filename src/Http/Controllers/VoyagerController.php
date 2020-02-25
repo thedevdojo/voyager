@@ -3,10 +3,13 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
+use League\Flysystem\Util;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerController extends Controller
@@ -18,7 +21,7 @@ class VoyagerController extends Controller
 
     public function logout()
     {
-        app('VoyagerAuth')->logout();
+        Auth::logout();
 
         return redirect()->route('voyager.login');
     }
@@ -73,13 +76,17 @@ class VoyagerController extends Controller
 
     public function assets(Request $request)
     {
-        $path = str_start(str_replace(['../', './'], '', urldecode($request->path)), '/');
-        $path = base_path('vendor/tcg/voyager/publishable/assets'.$path);
+        try {
+            $path = dirname(__DIR__, 3).'/publishable/assets/'.Util::normalizeRelativePath(urldecode($request->path));
+        } catch (\LogicException $e) {
+            abort(404);
+        }
+
         if (File::exists($path)) {
             $mime = '';
-            if (ends_with($path, '.js')) {
+            if (Str::endsWith($path, '.js')) {
                 $mime = 'text/javascript';
-            } elseif (ends_with($path, '.css')) {
+            } elseif (Str::endsWith($path, '.css')) {
                 $mime = 'text/css';
             } else {
                 $mime = File::mimeType($path);

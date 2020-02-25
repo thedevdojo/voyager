@@ -25,10 +25,10 @@ use Validator;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs,
-        ValidatesRequests,
-        AuthorizesRequests,
-        AlertsMessages;
+    use DispatchesJobs;
+    use ValidatesRequests;
+    use AuthorizesRequests;
+    use AlertsMessages;
 
     public function getSlug(Request $request)
     {
@@ -44,6 +44,9 @@ abstract class Controller extends BaseController
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $multi_select = [];
+
+        // Pass $rows so that we avoid checking unused fields
+        $request->attributes->add(['breadRows' => $rows->pluck('field')->toArray()]);
 
         /*
          * Prepare Translations and Transform data
@@ -63,6 +66,11 @@ abstract class Controller extends BaseController
                 }
             }
 
+            // Value is saved from $row->details->column row
+            if ($row->type == 'relationship' && $row->details->type == 'belongsTo') {
+                continue;
+            }
+
             $content = $this->getContentBasedOnType($request, $slug, $row, $row->details);
 
             if ($row->type == 'relationship' && $row->details->type != 'belongsToMany') {
@@ -70,9 +78,9 @@ abstract class Controller extends BaseController
             }
 
             /*
-             * merge ex_images and upload images
+             * merge ex_images/files and upload images/files
              */
-            if ($row->type == 'multiple_images' && !is_null($content)) {
+            if (in_array($row->type, ['multiple_images', 'file']) && !is_null($content)) {
                 if (isset($data->{$row->field})) {
                     $ex_files = json_decode($data->{$row->field}, true);
                     if (!is_null($ex_files)) {
@@ -157,21 +165,21 @@ abstract class Controller extends BaseController
     /**
      * Validates bread POST request.
      *
-     * @param \Illuminate\Http\Request $request The Request
-     * @param array                    $data    Field data
-     * @param string                   $slug    Slug
-     * @param int                      $id      Id of the record to update
+     * @param array  $data The data
+     * @param array  $rows The rows
+     * @param string $slug Slug
+     * @param int    $id   Id of the record to update
      *
      * @return mixed
      */
-    public function validateBread($request, $data, $name = null, $id = null)
+    public function validateBread($data, $rows, $name = null, $id = null)
     {
         $rules = [];
         $messages = [];
         $customAttributes = [];
         $is_update = $name && $id;
 
-        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($data);
+        $fieldsWithValidationRules = $this->getFieldsWithValidationRules($rows);
 
         foreach ($fieldsWithValidationRules as $field) {
             $fieldRules = $field->details->validation->rule;
@@ -179,8 +187,19 @@ abstract class Controller extends BaseController
 
             // Show the field's display name on the error message
             if (!empty($field->display_name)) {
-                $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');
+                if (!empty($data[$fieldName]) && is_array($data[$fieldName])) {
+                    foreach ($data[$fieldName] as $index => $element) {
+                        $name = $element->getClientOriginalName() ?? $index + 1;
+
+                        $customAttributes[$fieldName.'.'.$index] = $field->getTranslatedAttribute('display_name').' '.$name;
+                    }
+                } else {
+                    $customAttributes[$fieldName] = $field->getTranslatedAttribute('display_name');
+                }
             }
+
+            // If field is an array apply rules to all array elements
+            $fieldName = !empty($data[$fieldName]) && is_array($data[$fieldName]) ? $fieldName.'.*' : $fieldName;
 
             // Get the rules for the current field whatever the format it is in
             $rules[$fieldName] = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
@@ -204,12 +223,12 @@ abstract class Controller extends BaseController
             // Set custom validation messages if any
             if (!empty($field->details->validation->messages)) {
                 foreach ($field->details->validation->messages as $key => $msg) {
-                    $messages["{$fieldName}.{$key}"] = $msg;
+                    $messages["{$field->field}.{$key}"] = $msg;
                 }
             }
         }
 
-        return Validator::make($request, $rules, $messages, $customAttributes);
+        return Validator::make($data, $rules, $messages, $customAttributes);
     }
 
     public function getContentBasedOnType(Request $request, $slug, $row, $options = null)
@@ -236,6 +255,8 @@ abstract class Controller extends BaseController
             /********** IMAGE TYPE **********/
             case 'image':
                 return (new ContentImage($request, $slug, $row, $options))->handle();
+            /********** DATE TYPE **********/
+            case 'date':
             /********** TIMESTAMP TYPE **********/
             case 'timestamp':
                 return (new Timestamp($request, $slug, $row, $options))->handle();
@@ -275,22 +296,5 @@ abstract class Controller extends BaseController
 
             return !empty($value->details->validation->rule);
         });
-    }
-
-    /**
-     * Authorize a given action for the current user.
-     *
-     * @param mixed       $ability
-     * @param mixed|array $arguments
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     *
-     * @return \Illuminate\Auth\Access\Response
-     */
-    public function authorize($ability, $arguments = [])
-    {
-        $user = app('VoyagerAuth')->user();
-
-        return $this->authorizeForUser($user, $ability, $arguments);
     }
 }
