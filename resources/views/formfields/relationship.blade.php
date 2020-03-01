@@ -52,7 +52,7 @@
                 $relationshipData = (isset($data)) ? $data : $dataTypeContent;
 
                 $model = app($options->model);
-                $query = $model::where($options->column, '=', $relationshipData->id)->first();
+                $query = $model::where($options->column, '=', $relationshipData->getKey())->first();
 
             @endphp
 
@@ -70,7 +70,7 @@
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
 
-            		$selected_values = $model::where($options->column, '=', $relationshipData->id)->get()->map(function ($item, $key) use ($options) {
+            		$selected_values = $model::where($options->column, '=', $relationshipData->getKey())->get()->map(function ($item, $key) use ($options) {
             			return $item->{$options->label};
             		})->all();
                 @endphp
