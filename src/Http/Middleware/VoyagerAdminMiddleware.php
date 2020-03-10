@@ -3,6 +3,9 @@
 namespace TCG\Voyager\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\Plugins\AuthenticationPlugin;
 
 class VoyagerAdminMiddleware
 {
@@ -14,8 +17,8 @@ class VoyagerAdminMiddleware
      *
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        return VoyagerFacade::getPluginByType('authentication', AuthenticationPlugin::class)->handleRequest($request, $next);
     }
 }

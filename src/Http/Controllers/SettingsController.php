@@ -3,13 +3,13 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use TCG\Voyager\Facades\Settings as SettingsFacade;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class SettingsController extends Controller
 {
     public function index()
     {
-        $settings = SettingsFacade::setting(false);
+        $settings = VoyagerFacade::setting(false);
 
         return view('voyager::settings.browse', compact('settings'));
     }
@@ -18,9 +18,9 @@ class SettingsController extends Controller
     {
         $settings = $request->get('settings', '');
         // Reload settings from request, so new validation rules are respected
-        SettingsFacade::loadSettings(json_decode(json_encode($settings)));
+        VoyagerFacade::loadSettings(json_decode(json_encode($settings)));
         $data = collect();
-        $formfields = SettingsFacade::setting(false)->transform(function ($setting, $key) use ($settings, &$data) {
+        $formfields = VoyagerFacade::setting(false)->transform(function ($setting, $key) use ($settings, &$data) {
             $column = $setting->key;
             if ($setting->group) {
                 $column = $setting->group.'_'.$column;
@@ -34,7 +34,7 @@ class SettingsController extends Controller
         $layout = new class() {
             public $formfields = [];
 
-            public function isColumnTranslatable($column)
+            public function isFormfieldTranslatable($column)
             {
                 return true;
             }
@@ -42,11 +42,10 @@ class SettingsController extends Controller
         $layout->formfields = $formfields;
 
         $validator = $this->getValidator($layout, $data);
-
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         } else {
-            SettingsFacade::saveSettings($settings);
+            VoyagerFacade::saveSettings($settings);
         }
 
         return response()->json($validator->messages(), 200);

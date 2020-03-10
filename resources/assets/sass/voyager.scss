@@ -1,10 +1,10 @@
 @tailwind base;
 
+@import "animations";
 @import "elements";
 
 @tailwind components;
 @tailwind utilities;
-
 
 @import "layout";
 @import "vendor";

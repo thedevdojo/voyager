@@ -1,0 +1,69 @@
+.mode-dark .voyager-table {
+    @apply bg-gray-900 border-gray-700;
+
+    thead > tr > th {
+        @apply bg-gray-800 border-gray-600;
+    }
+
+    tbody > tr {        
+        td {
+            @apply border-gray-600;
+        }
+        &:hover {
+            @apply bg-gray-700;
+        }
+    }
+
+    &.striped {
+        tbody > tr {
+            &:nth-of-type(even) {
+                @apply bg-gray-800;
+                &:hover {
+                    @apply bg-gray-700;
+                }
+            }
+            &:nth-of-type(odd) {
+                &:hover {
+                    @apply bg-gray-700;
+                }
+            }
+        }
+    }
+}
+
+.voyager-table {
+    @apply bg-white text-left shadow-lg my-6 w-full border-collapse border border-gray-400;
+
+    thead > tr > th {
+        @apply py-4 px-6 bg-gray-100 font-bold text-sm border-b border-gray-400;
+    }
+
+    tbody > tr {
+        td {
+            @apply py-4 px-6 border-b border-gray-400;
+        }
+        &:hover {
+            @apply bg-gray-200;
+        }
+    }
+
+    &.striped {
+        tbody > tr {
+            &:nth-of-type(even) {
+                @apply bg-gray-100;
+                &:hover {
+                    @apply bg-gray-200;
+                }
+            }
+            &:nth-of-type(odd) {
+                &:hover {
+                    @apply bg-gray-200;
+                }
+            }
+        }
+    }
+
+    &.loading {
+        @apply opacity-25;
+    }
+}

@@ -5,6 +5,7 @@ namespace TCG\Voyager\Formfields;
 class Repeater extends BaseFormfield
 {
     public $type = 'repeater';
+    public $translatable = false; // The repeater itself cannot be translated
     public $lists = false;
     public $settings = false;
 

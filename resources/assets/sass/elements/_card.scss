@@ -1,0 +1,19 @@
+.mode-dark .voyager-card {
+    @apply bg-gray-800 border-gray-700;
+
+    .title {
+        @apply text-gray-300;
+    }
+}
+
+.voyager-card {
+    @apply m-2 p-4 rounded bg-white border border-gray-400 shadow;
+
+    .body {
+        @apply;
+    }
+
+    .title {
+        @apply font-semibold text-gray-700 text-lg mb-8;
+    }
+}

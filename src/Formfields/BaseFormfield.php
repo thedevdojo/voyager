@@ -8,12 +8,14 @@ class BaseFormfield implements \JsonSerializable
     public $name;
     public $column;
     public $options = [
-        'width'       => '1/2',
-        'title'       => '',
-        'description' => '',
+        'width'        => '1/2',
+        'title'        => '',
+        'description'  => '',
+        'translatable' => false,
     ];
     public $rules = [];
 
+    public $translatable = true; // If the formfield can be translatable
     public $lists = true; // If this formfield can be used in Lists
     public $views = true; // If this formfield can be used in Views
     public $settings = true; // If this formfield can be used as a setting
@@ -144,13 +146,14 @@ class BaseFormfield implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'type'     => $this->type,
-            'column'   => $this->column,
-            'options'  => $this->options,
-            'rules'    => $this->rules,
-            'lists'    => $this->lists,
-            'views'    => $this->views,
-            'settings' => $this->settings,
+            'type'         => $this->type,
+            'column'       => $this->column,
+            'options'      => $this->options,
+            'rules'        => $this->rules,
+            'translatable' => $this->translatable,
+            'lists'        => $this->lists,
+            'views'        => $this->views,
+            'settings'     => $this->settings,
         ];
     }
 }

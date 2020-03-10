@@ -2,10 +2,13 @@
     <div>
         <div class="voyager-card">
             <div class="body">
-                <select class="voyager-input mb-3 w-auto" v-model="currentGroup">
-                    <option :value="null">{{ __('voyager::generic.no_group') }}</option>
-                    <option v-for="group in groups" :key="group" :value="group">{{ title_case(group) }}</option>
-                </select>
+                <div class="flex mb-6">
+                    <select class="voyager-input small w-auto" v-model="currentGroup">
+                        <option :value="null">{{ __('voyager::generic.no_group') }}</option>
+                        <option v-for="group in groups" :key="group" :value="group">{{ title_case(group) }}</option>
+                    </select>
+                    <button class="button blue w-auto" @click="saveSettings">{{ __('voyager::generic.save') }}</button>
+                </div>
                 <div class="flex flex-wrap">
                     <div v-for="(setting, i) in groupedSettings" v-bind:key="'setting-'+i" class="w-full voyager-card bordered">
                         <div class="body">
@@ -43,16 +46,13 @@
 
                             <!-- Options slide-in -->
                             <slidein :opened="openedOptionsId == i" v-on:closed="openedOptionsId = null">
-                                <div class="">
-                                    <locale-picker></locale-picker>
-                                    <br>
-                                    <div class="flex mb-4">
-                                        <div class="w-2/3">
-                                            <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
-                                        </div>
-                                        <div class="w-1/3 text-right text-gray-100">
-                                            <a @click="openedOptionsId = null" class="cursor-pointer">X</a>
-                                        </div>
+                                <div class="flex mb-4">
+                                    <div class="w-2/3">
+                                        <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
+                                    </div>
+                                    <div class="w-1/3 text-right text-gray-100">
+                                        <locale-picker class="mr-2" />
+                                        <button @click="openedOptionsId = null" class="button green">X</button>
                                     </div>
                                 </div>
                                 <component
@@ -71,14 +71,17 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <div class="voyager-card">
+            <div class="body">
                 <select @change="addSetting" class="voyager-input w-full">
                     <option v-bind:value="''">{{ __('voyager::generic.add_setting') }}</option>
                     <option v-for="(formfield, i) in formfields" v-bind:value="formfield.type" v-bind:key="i">
                         {{ formfield.name }}
                     </option>
                 </select>
-                <button class="button blue mt-3" @click="saveSettings">{{ __('voyager::generic.save') }}</button>
             </div>
         </div>
     </div>
@@ -86,7 +89,7 @@
 
 <script>
 export default {
-    props: ['input', 'url'],
+    props: ['input'],
     data: function () {
         return {
             settings: this.input,
@@ -175,9 +178,9 @@ export default {
         },
         saveSettings: function () {
             var vm = this;
-            axios.post(this.url, {
+            axios.post(vm.route('voyager.settings.store'), {
                 settings: vm.settings,
-                _token: document.head.querySelector('meta[name="csrf-token"]').content,
+                _token: vm.$globals.csrf_token,
             })
             .then(function (response) {
                 vm.validationErrors = [];
@@ -225,11 +228,13 @@ export default {
         setGroup: function (event, setting) {
             var new_value = this.checkInput(event.target.value);
             setting.group = this.emptyToNull(new_value);
+
+            this.pushToUrlHistory(this.addParameterToUrl('group', setting.group));
             
             Vue.set(this, 'currentGroup', setting.group);
         },
         checkInput: function (value) {
-            if (!value.match(/^[a-z_]+$/)) {
+            if (!value.match(/^[a-z_0-9]+$/)) {
                 if (!this.charWarningTriggered) {
                     this.charWarningTriggered = true;
                     this.$snotify.warning(this.__('voyager::generic.settings_char_warning'));
@@ -248,6 +253,11 @@ export default {
             return value;
         }
     },
+    watch: {
+        currentGroup: function (group) {
+            this.pushToUrlHistory(this.addParameterToUrl('group', group || ''));
+        }
+    },
     mounted: function () {
         var vm = this;
         Vue.prototype.$language.localePicker = true;
@@ -264,6 +274,12 @@ export default {
         vm.settings.forEach(function (setting) {
             Vue.set(vm.settings, 'value', vm.get_input_as_translatable_object(setting.value));
         });
+
+        var group = this.getParameterFromUrl('group');
+        // TODO: Test if this group exists at all
+        if (group) {
+            Vue.set(this, 'currentGroup', group);
+        }
     }
 };
 </script>

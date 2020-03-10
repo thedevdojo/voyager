@@ -1,114 +1,158 @@
 <template>
     <div>
         <h2 class="text-3xl mb-5" v-if="action == 'add'">{{ __('voyager::generic.add_type', {type: translate(bread.name_singular, true)}) }}</h2>
-        <h2 class="text-3xl mb-5" v-else>{{ __('voyager::bread.edit_name', {name: translate(bread.name_singular, true)}) }}</h2>
+        <h2 class="text-3xl mb-5" v-else>{{ __('voyager::generic.edit_type', {type: translate(bread.name_singular, true)}) }}</h2>
         <div class="flex">
-            <a class="button green small" :href="route('voyager.'+translate(bread.slug, true)+'.add')" v-if="action == 'edit'">
+            <a class="button green small" :href="route('voyager.'+translate(bread.slug, true)+'.add')" v-if="action == 'edit' && !(fromRelationship || false)">
                 {{ __('voyager::generic.add_type', {type: translate(bread.name_singular, true)}) }}
             </a>
-            <a class="button blue small" :href="route('voyager.'+translate(bread.slug, true)+'.browse')">
-                {{ __('voyager::bread.browse_name', {name: translate(bread.name_plural, true)}) }}
+            <a class="button blue small" :href="route('voyager.'+translate(bread.slug, true)+'.browse')" v-if="!(fromRelationship || false)">
+                {{ __('voyager::bread.browse_type', {type: translate(bread.name_plural, true)}) }}
             </a>
             <a
-                class="button yellow small"
+                class="button yellow small inline"
                 :href="route('voyager.bread.edit', bread.table)"
                 v-if="debug">
-                {{ __('voyager::bread.edit_name', {name: __('voyager::bread.bread')}) }}
+                {{ __('voyager::generic.edit_type', {type: __('voyager::bread.bread')}) }}
             </a>
             <a
-                class="button yellow small"
+                class="button yellow small inline"
                 :href="route('voyager.bread.edit', bread.table)+'?layout='+layoutId"
                 v-if="debug">
-                {{ __('voyager::bread.edit_name', {name: __('voyager::manager.layout')}) }}
+                {{ __('voyager::generic.edit_type', {type: __('voyager::manager.layout')}) }}
             </a>
         </div>
         <br>
         <div class="flex flex-wrap">
-            <div v-for="(formfield, i) in layout.formfields" v-bind:key="'formfield-'+i" :class="'w-'+formfield.options.width+' voyager-card'">
-                <div class="body">
-                    <component
-                        :is="'formfield-'+formfield.type"
-                        v-bind:value="data(formfield.column, null)"
-                        v-on:input="data(formfield.column, $event)"
-                        :primary="data('primary', null)"
-                        :bread="bread"
-                        :options="formfield.options"
-                        :column="formfield.column"
-                        :action="action" />
-                    <div class="alert red" role="alert" v-if="getErrors(formfield.column).length > 0">
-                        <p v-for="(error, key) in getErrors(formfield.column)" :key="'error-'+key">
-                            {{ error }}
-                        </p>
+            <div v-for="(formfield, i) in layout.formfields" v-bind:key="'formfield-'+i" :class="'w-full lg:w-'+formfield.options.width+' '+(fromRelationship || false ? 'mode-dark' : '')">
+                <div class="voyager-card">
+                    <div class="body">
+                        <component
+                            :is="'formfield-'+formfield.type"
+                            v-bind:value="data(formfield, null)"
+                            v-on:input="data(formfield, $event)"
+                            :primary="primaryKey"
+                            :bread="bread"
+                            :options="formfield.options"
+                            :column="formfield.column"
+                            :relationships="relationships"
+                            :action="action" />
+                        <div class="alert red" role="alert" v-if="getErrors(formfield).length > 0">
+                            <p v-for="(error, key) in getErrors(formfield)" :key="'error-'+key">
+                                {{ error }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <form method="post" :action="url">
-            <input type="hidden" name="_token" :value="token">
+            <input type="hidden" name="_token" :value="$globals.csrf_token">
             <input type="hidden" name="_method" :value="action == 'edit' ? 'PUT' : 'POST'">
-            <input type="hidden" name="prev-url" :value="prevUrl">
             <input type="hidden" name="data" :value="jsonOutput">
-            <div v-if="action == 'add'" class="button-group">
-                <button type="submit" name="_redirect" value="" class="button blue">{{ __('voyager::bread.store_name', {name: translate(bread.name_singular, true)}) }}</button>
-                <button type="submit" name="_redirect" v-if="layout.back_button" value="back" class="button blue">{{ __('voyager::bread.store_name_back', {name: translate(bread.name_singular, true)}) }}</button>
-                <button type="submit" name="_redirect" v-if="layout.create_button" value="new" class="button blue">{{ __('voyager::bread.store_name_new', {name: translate(bread.name_singular, true)}) }}</button>
-            </div>
-            <div v-else class="button-group">
-                <button type="submit" name="_redirect" value="" class="button blue">{{ __('voyager::bread.update_name', {name: translate(bread.name_singular, true)}) }}</button>
-                <button type="submit" name="_redirect" v-if="layout.back_button" value="back" class="button blue">{{ __('voyager::bread.update_name_back', {name: translate(bread.name_singular, true)}) }}</button>
-                <button type="submit" name="_redirect" v-if="layout.create_button" value="new" class="button blue">{{ __('voyager::bread.update_name_new', {name: translate(bread.name_singular, true)}) }}</button>
-            </div>
+            <button @click="submitForm" type="submit" class="button blue">
+                {{ __('voyager::bread.'+(action == 'add' ? 'store' : 'update')+'_type', {type: translate(bread.name_singular, true)}) }}
+            </button>
         </form>
     </div>
 </template>
 
 <script>
 export default {
-    props: ['bread', 'action', 'errors', 'accessors', 'layout', 'input', 'translatable', 'url', 'prev-url'],
+    props: ['bread', 'action', 'errors', 'accessors', 'relationships', 'layout', 'input', 'url', 'prev-url', 'from-relationship'],
     data: function () {
         return {
+            validation_errors: this.errors,
             output: this.input,
         };
     },
     methods: {
-        isColumnTranslatable: function (column) {
-            return this.translatable.includes(column);
-        },
-        data: function (column, value = null) {
+        data: function (formfield, value = null) {
             if (value) {
-                if (this.isColumnTranslatable(column)) {
-                    Vue.set(this.output[column], this.$language.locale, value);
+                if (formfield.options.translatable || false) {
+                    Vue.set(this.output[formfield.column], this.$language.locale, value);
                 } else {
-                    Vue.set(this.output, column, value);
+                    Vue.set(this.output, formfield.column, value);
                 }
-                this.$globals.$emit('formfield-input', column, value, this.isColumnTranslatable(column));
+                this.$globals.$emit('formfield-input', formfield.column, value, formfield.options.translatable);
             }
 
-            if (this.isColumnTranslatable(column)) {
-                var translated = this.translate(this.output[column]);
+            if (formfield.options.translatable) {
+                var translated = this.translate(this.output[formfield.column]);
 
                 return translated;
             }
 
-            return this.output[column];
+            return this.output[formfield.column];
         },
-        getErrors: function (column) {
-            if (this.isColumnTranslatable(column)) {
-                column = column+'.'+this.$language.initial_locale;
+        getErrors: function (formfield) {
+            var column = formfield.column;
+            if (formfield.options.translatable || false) {
+                column = formfield.column+'.'+this.$language.initial_locale;
             }
-            for (var key in this.errors) {
+            for (var key in this.validation_errors) {
                 // TODO: Using startsWith is not necessarily bullet-proof
                 if (key.startsWith(column)) {
-                    return this.errors[key];
+                    return this.validation_errors[key];
                 }
             }
 
             return [];
         },
+        submitForm: function (e) {
+            if (!(this.bread.ajax_validation || true)) {
+                return;
+            }
+
+            e.preventDefault();
+
+            var vm = this;
+            axios.post(vm.url, {
+                data: vm.jsonOutput,
+                _method: (vm.action == 'edit' ? 'PUT' : 'POST')
+            })
+            .then(function (response) {
+                var primary = response.data;
+                vm.validation_errors = [];
+                if (vm.action == 'add') {
+                    if (!vm.fromRelationship) {
+                        // Redirect to edit-page
+                        window.location.href = vm.route('voyager.'+vm.translate(vm.bread.slug, true)+'.edit', primary);
+                    }
+                    vm.$snotify.success(vm.__('voyager::bread.success_stored_type', {type: vm.translate(vm.bread.name_singular, true)}));
+                } else {
+                    vm.$snotify.success(vm.__('voyager::bread.success_updated_type', {type: vm.translate(vm.bread.name_singular, true)}));
+                }
+
+                if ((vm.fromRelationship || false)) {
+                    // First parent is the modal, second parent is the relationship-formfield
+                    vm.$parent.$parent.finishAddingEntry(primary);
+                    vm.resetForm();
+                }
+            })
+            .catch(function (errors) {
+                vm.$snotify.error(vm.__('voyager::bread.validation_error_msg'));
+                if (errors.response) {
+                    vm.validation_errors = errors.response.data;
+                } else {
+                    console.error(errors);
+                }
+            });
+        },
+        resetForm: function () {
+            var vm = this;
+            vm.layout.formfields.forEach(function (formfield) {
+                if (formfield.options.translatable || false) {
+                    Vue.set(vm.output, formfield.column, vm.get_input_as_translatable_object(''));
+                } else {
+                    Vue.set(vm.output, formfield.column, '');
+                }
+            });
+        }
     },
     computed: {
-        token: function () {
-            return document.head.querySelector('meta[name="csrf-token"]').content;
+        primaryKey: function () {
+            return this.output['primary'];
         },
         jsonOutput: function () {
             return JSON.stringify(this.output);
@@ -129,16 +173,15 @@ export default {
         var vm = this;
 
         vm.layout.formfields.forEach(function (formfield) {
-            if (vm.isColumnTranslatable(formfield.column)) {
+            if (formfield.options.translatable || false) {
                 Vue.set(vm.output, formfield.column, vm.get_input_as_translatable_object(vm.output[formfield.column]));
             } else {
                 Vue.set(vm.output, formfield.column, vm.output[formfield.column]);
             }
         });
 
-        if (this.translatable.length > 0) {
-            this.$language.localePicker = true;
-        }
-    }
+        // TODO: Hide locale picker if there are no translatable formfields
+        this.$language.localePicker = true;
+    },
 };
 </script>

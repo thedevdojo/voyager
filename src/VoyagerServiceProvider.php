@@ -2,16 +2,16 @@
 
 namespace TCG\Voyager;
 
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use TCG\Voyager\Commands\InstallCommand;
 use TCG\Voyager\Facades\Bread as BreadFacade;
-use TCG\Voyager\Facades\Settings as SettingsFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
+use TCG\Voyager\Plugins\AuthenticationPlugin;
 use TCG\Voyager\Policies\BasePolicy;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -23,7 +23,7 @@ class VoyagerServiceProvider extends ServiceProvider
      *
      * @param \Illuminate\Routing\Router $router
      */
-    public function boot(Router $router, Dispatcher $event)
+    public function boot(Router $router)
     {
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
         $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'voyager');
@@ -34,9 +34,9 @@ class VoyagerServiceProvider extends ServiceProvider
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\HtmlElement::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Number::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Password::class);
+        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Relationship::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Repeater::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\RichTextEditor::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\SimpleRelationship::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Slug::class);
         VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
 
@@ -61,6 +61,8 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         $router->aliasMiddleware('voyager.admin', VoyagerAdminMiddleware::class);
+
+        View::share('authentication', VoyagerFacade::getPluginByType('authentication', AuthenticationPlugin::class));
     }
 
     /**
@@ -72,7 +74,6 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $loader->alias('Voyager', VoyagerFacade::class);
         $loader->alias('Bread', BreadFacade::class);
-        $loader->alias('Settings', SettingsFacade::class);
 
         $this->app->singleton('voyager', function () {
             return new Voyager();
@@ -80,13 +81,10 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->app->singleton('bread', function () {
             return new Bread();
         });
-        $this->app->singleton('settings', function () {
-            return new Settings();
-        });
 
-        $this->loadHelpers();
         $this->loadBreadsFrom(storage_path('bread'));
         $this->loadSettingsFrom(Str::finish(storage_path('voyager'), '/').'settings.json');
+        $this->loadPluginsFrom(Str::finish(storage_path('voyager'), '/').'plugins.json');
 
         $this->commands(InstallCommand::class);
     }
@@ -98,16 +96,11 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function loadSettingsFrom($path)
     {
-        SettingsFacade::settingsPath($path);
+        VoyagerFacade::settingsPath($path);
     }
 
-    /**
-     * Load helpers.
-     */
-    protected function loadHelpers()
+    public function loadPluginsFrom($path)
     {
-        foreach (glob(__DIR__.'/Helpers/*.php') as $filename) {
-            require_once $filename;
-        }
+        VoyagerFacade::pluginsPath($path);
     }
 }

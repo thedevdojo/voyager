@@ -1,0 +1,109 @@
+.button {
+    @apply text-gray-200 py-2 px-4 mx-1 rounded cursor-pointer;
+    &:focus {
+        @apply outline-none;
+    }
+    &.bold {
+        @apply font-bold;
+    }
+    &.small {
+        @apply py-1 px-2 text-sm;
+    }
+    &.green {
+        @apply bg-green-500;
+        &:hover {
+            @apply bg-green-600;
+        }
+        &:active {
+            @apply bg-green-700;
+        }
+        &.active {
+            @apply bg-green-700;
+        }
+    }
+    &.red {
+        @apply bg-red-500;
+        &:hover {
+            @apply bg-red-600;
+        }
+        &:active {
+            @apply bg-red-700;
+        }
+        &.active {
+            @apply bg-red-700;
+        }
+    }
+    &.blue {
+        @apply bg-blue-500;
+        &:hover {
+            @apply bg-blue-600;
+        }
+        &:active {
+            @apply bg-blue-700;
+        }
+        &.active {
+            @apply bg-blue-700;
+        }
+    }
+    &.yellow {
+        @apply bg-yellow-500;
+        &:hover {
+            @apply bg-yellow-600;
+        }
+        &:active {
+            @apply bg-yellow-700;
+        }
+        &.active {
+            @apply bg-yellow-700;
+        }
+    }
+    &.orange {
+        @apply bg-orange-500;
+        &:hover {
+            @apply bg-orange-600;
+        }
+        &:active {
+            @apply bg-orange-700;
+        }
+        &.active {
+            @apply bg-orange-700;
+        }
+    }
+    &.purple {
+        @apply bg-purple-500;
+        &:hover {
+            @apply bg-purple-600;
+        }
+        &:active {
+            @apply bg-purple-700;
+        }
+        &.active {
+            @apply bg-purple-700;
+        }
+    }
+    &.indigo {
+        @apply bg-indigo-500;
+        &:hover {
+            @apply bg-indigo-600;
+        }
+        &:active {
+            @apply bg-indigo-700;
+        }
+        &.active {
+            @apply bg-indigo-700;
+        }
+    }
+}
+
+.button-group {
+    @apply inline-flex;
+    .button {
+        @apply rounded-none mx-0;
+    }
+    .button:first-child {
+        @apply rounded-l;
+    }
+    .button:last-child {
+        @apply rounded-r;
+    }
+}

@@ -1,11 +1,11 @@
 <template>
-    <div class="mt-1 text-right max-w-sm mx-auto">
+    <div class="mt-1 text-right max-w-sm mx-auto z-50" v-on-clickaway="close">
         <div id="user_dropdown" class="relative inline-block">
             <button @click="toggle" class="flex items-center pl-6 py-2 font-semibold rounded-lg focus:outline-none">
             
             <div class="w-48 text-right text-sm flex justify-end">
                 <div class="w-6 h-6 rounded-full overflow-hidden bg-black flex justify-center items-center relative mr-3"><div class="w-3 h-3 rounded-full bg-white border-black relative z-10"></div> <div class="w-5 h-5 rounded-full bottom-0 absolute bg-gray-500 -mb-3"></div></div>
-                Hello Anonymous
+                Hello {{ name }}
             </div>
            
             <svg class="ml-2 h-6 w-6 text-black" fill="currentColor" viewBox="0 0 24 24">
@@ -22,21 +22,19 @@
             >
             <!-- Replace "right-0 origin-top-right" with "left-0 origin-top-left" to left-align the dropdown -->
             <div v-if="isOpen" class="mt-2 absolute right-0 origin-top-right">
-                <div class="w-64 text-left bg-white rounded-lg shadow-lg">
-                <div class="flex items-center px-6 py-4">
-                    <img class="h-10 w-10 rounded-full flex-no-shrink" :src="photo" alt="">
-                    <div class="ml-4">
-                    <p class="font-semibold text-gray-900 leading-none">{{ name }}</p>
-                    <p><a href="#" class="text-sm text-gray-600 leading-none hover:underline">View Profile</a></p>
+                <div class="w-64 text-left bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+                    <div class="flex items-center px-6 py-4">
+                        <img class="h-10 w-10 rounded-full flex-no-shrink" :src="photo" alt="">
+                        <div class="ml-4">
+                        <p class="font-semibold text-gray-900 dark:text-gray-100 leading-none">{{ name }}</p>
+                        <p><a href="#" class="text-sm text-gray-600 dark:text-gray-400 leading-none hover:underline">View Profile</a></p>
+                        </div>
                     </div>
-                </div>
-                <div class="border-t-2 border-gray-100 py-1">
-                    <a href="/" class="block px-6 py-3 leading-tight hover:bg-gray-200">Home</a>
-                    <a href="#" class="block px-6 py-3 leading-tight hover:bg-gray-200">Settings</a>
-                </div>
-                <form class="border-t-2 border-gray-100 py-1" action="/logout" method="POST">
-                    <button class="block w-full px-6 py-3 text-left leading-tight hover:bg-gray-200">Sign out</button>
-                </form>
+                    <div class="border-t-2 border-gray-100 dark:border-gray-900 py-1">
+                        <a :href="route('voyager.dashboard')" class="block px-6 py-3 leading-tight hover:bg-gray-200">{{ __('voyager::generic.dashboard') }}</a>
+                        <a href="#" class="block px-6 py-3 leading-tight hover:bg-gray-200">Settings</a>
+                        <a :href="route('voyager.logout')" class="block px-6 py-3 leading-tight hover:bg-gray-200">{{ __('voyager::auth.logout') }}</a>
+                    </div>
                 </div>
             </div>
             </transition>
@@ -56,6 +54,9 @@
             toggle() {
                 this.isOpen = !this.isOpen
             },
+            close() {
+                this.isOpen = false;
+            }
         },
     };
 </script>

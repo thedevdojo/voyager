@@ -5,6 +5,7 @@ namespace TCG\Voyager\Classes;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Bread as BreadFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Traits\Translatable;
@@ -22,11 +23,15 @@ class Bread implements \JsonSerializable
     public $model;
     public $controller;
     public $policy;
+    public $scope;
+    public $global_search_field;
+    public $ajax_validation = true;
     public $layouts = [];
 
     public $parse_failed = false;
 
     protected $model_class = null;
+    protected $reflection_class = null;
 
     public function __construct($path, $parameter = null)
     {
@@ -75,6 +80,19 @@ class Bread implements \JsonSerializable
         return $this->model_class;
     }
 
+    public function getReflectionClass()
+    {
+        if (!class_exists($this->model)) {
+            return;
+        }
+
+        if (!$this->reflection_class) {
+            $this->reflection_class = new \ReflectionClass($this->model);
+        }
+
+        return $this->reflection_class;
+    }
+
     public function usesSoftDeletes()
     {
         return in_array(SoftDeletes::class, class_uses($this->getModel()));
@@ -94,59 +112,51 @@ class Bread implements \JsonSerializable
         return [];
     }
 
-    public function getTranslatableColumns($deep = true)
+    public function getScopes()
     {
-        $translatable = collect([]);
-        if (property_exists($this->getModel(), 'translatable')) {
-            $translatable = collect($this->getModel()->translatable);
+        if (!$this->getReflectionClass()) {
+            return [];
         }
-
-        if ($deep) {
-            $relationships = $this->getRelationships($deep);
-            foreach ($relationships as $name => $relationship) {
-                if ($relationship['bread']) {
-                    // TODO: &$translatable?
-                    collect($relationship['bread']->getTranslatableColumns(false))->each(function ($column) use ($name, $translatable) {
-                        $translatable->push($name.'.'.$column);
-                    });
-                }
-            }
-        }
-
-        return $translatable;
+        return collect($this->getReflectionClass()->getMethods())->filter(function ($method) {
+            return Str::startsWith($method->name, 'scope');
+        })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
+            return lcfirst(Str::replaceFirst('scope', '', $method->name));
+        });
     }
 
-    public function isColumnTranslatable($column)
+    public function getRelationships()
     {
-        return $this->getTranslatableColumns()->contains($column);
-    }
-
-    public function getRelationships($deep = false)
-    {
-        $relationships = [];
-        if (property_exists($this->getModel(), 'relationships')) {
-            $relationships = $this->getModel()->relationships;
+        if (!$this->model) {
+            return [];
         }
-        if ($deep) {
-            foreach ($relationships as $key => $name) {
-                $pivot = [];
-                $relationship = $this->getModel()->{$name}();
-                $table = $relationship->getRelated()->getTable();
-                unset($relationships[$key]);
-                if (get_class($relationship) == BelongsToMany::class) {
-                    $pivot = VoyagerFacade::getColumns($relationship->getTable());
-                    $pivot = array_diff($pivot, [
-                        $relationship->getForeignPivotKeyName(),
-                        $relationship->getRelatedPivotKeyName(),
-                    ]);
-                }
-                $relationships[$name] = [
-                    'bread'   => BreadFacade::getBread($table),
-                    'columns' => VoyagerFacade::getColumns($table),
-                    'type'    => basename(get_class($relationship)),
-                    'pivot'   => $pivot,
-                ];
+        $relationship_types = [
+            \Illuminate\Database\Eloquent\Relations\BelongsTo::class,
+            \Illuminate\Database\Eloquent\Relations\BelongsToMany::class,
+            \Illuminate\Database\Eloquent\Relations\HasMany::class,
+            \Illuminate\Database\Eloquent\Relations\HasOne::class,
+        ];
+        $relationships = collect($this->getReflectionClass()->getMethods())->filter(function ($method) use ($relationship_types) {
+            return in_array(strval($method->getReturnType()), $relationship_types);
+        })->pluck('name')->toArray();
+
+        foreach ($relationships as $key => $name) {
+            $pivot = [];
+            $relationship = $this->getModel()->{$name}();
+            $table = $relationship->getRelated()->getTable();
+            unset($relationships[$key]);
+            if (get_class($relationship) == BelongsToMany::class) {
+                $pivot = VoyagerFacade::getColumns($relationship->getTable());
+                $pivot = array_diff($pivot, [
+                    $relationship->getForeignPivotKeyName(),
+                    $relationship->getRelatedPivotKeyName(),
+                ]);
             }
+            $relationships[$name] = [
+                'bread'   => BreadFacade::getBread($table),
+                'columns' => VoyagerFacade::getColumns($table),
+                'type'    => basename(get_class($relationship)),
+                'pivot'   => array_values($pivot),
+            ];
         }
 
         return $relationships;
@@ -185,14 +195,17 @@ class Bread implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'table'         => $this->table,
-            'slug'          => $this->slug,
-            'name_singular' => $this->name_singular,
-            'name_plural'   => $this->name_plural,
-            'model'         => $this->model,
-            'controller'    => $this->controller,
-            'policy'        => $this->policy,
-            'layouts'       => $this->layouts,
+            'table'               => $this->table,
+            'slug'                => $this->slug,
+            'name_singular'       => $this->name_singular,
+            'name_plural'         => $this->name_plural,
+            'model'               => $this->model,
+            'controller'          => $this->controller,
+            'policy'              => $this->policy,
+            'scope'               => $this->scope,
+            'global_search_field' => $this->global_search_field,
+            'ajax_validation'     => $this->ajax_validation,
+            'layouts'             => $this->layouts,
         ];
     }
 }

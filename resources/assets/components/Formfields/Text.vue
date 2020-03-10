@@ -13,7 +13,7 @@
         </div>
         <div v-else-if="action == 'edit' || action == 'add'">
             <div class="w-full m-1">
-                <label class="voyager-label">{{ translate(options.title, true) }}</label>
+                <label class="voyager-label bigger">{{ translate(options.title, true) }}</label>
                 <input
                     v-if="(options.rows || 1) == 1"
                     type="text"
@@ -32,12 +32,12 @@
                     class="voyager-input">
 
                 </textarea>
-                <p>{{ translate(options.description, true) }}</p>
+                <p class="description">{{ translate(options.description, true) }}</p>
             </div>
         </div>
         <div v-else-if="action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label">{{ translate(options.title) }}</label>
+                <label class="voyager-label bigger">{{ translate(options.title) }}</label>
                 <input
                     v-if="(options.rows || 1) == 1"
                     type="text"
@@ -53,7 +53,7 @@
                     v-bind:value="translate(options.default_value)"
                     class="voyager-input">
                 </textarea>
-                <p>{{ translate(options.description) }}</p>
+                <p class="description">{{ translate(options.description) }}</p>
             </div>
         </div>
         <div v-else-if="action == 'options'">

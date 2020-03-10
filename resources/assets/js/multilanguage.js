@@ -22,7 +22,7 @@ Vue.mixin({
                 } catch (e) {
                     var value = input;
                     input = {};
-                    input[this.$language.locale] = value;
+                    input[this.$language.initial_locale] = value;
                 }
             } else if (typeof input !== 'object' || !input) {
                 input = {};
@@ -54,11 +54,19 @@ Vue.mixin({
         {
             let translation = key.split('.').reduce((t, i) => t[i] || null, this.$language.localization);
 
+            if (!translation) {
+                if (this.$globals.debug) {
+                    console.warn('Translation with key "'+key+'" does not exist.');
+                }
+
+                return key;
+            }
+
             for (var placeholder in replace) {
                 translation = translation.replace(new RegExp(':'+placeholder, 'g'), replace[placeholder]);
             }
 
-            return translation || key;
+            return translation;
         },
 
         __: function (key, replace = {})

@@ -5,6 +5,7 @@ namespace TCG\Voyager\Formfields;
 class DynamicDropdown extends BaseFormfield
 {
     public $type = 'dynamic-dropdown';
+    public $translatable = false;
     public $settings = false;
 
     public function __construct()

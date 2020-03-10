@@ -4,6 +4,8 @@
             v-model="layout.formfields"
             handle=".drag-handle"
             class="flex flex-wrap w-full"
+            :animation="200"
+            ghost-class="ghost"
             :group="{ name: 'draggable', pull: true, put: true }"
             v-click-outside="endFormfieldResize">
             <formfield-mockup
@@ -105,3 +107,8 @@ export default {
     },
 };
 </script>
+<style scoped>
+.ghost {
+    @apply opacity-50;
+}
+</style>

@@ -10,7 +10,7 @@
         </div>
         <div v-else-if="action == 'edit' || action == 'add' || action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label">{{ translate(options.title, true) }}</label>
+                <label class="voyager-label bigger">{{ translate(options.title, true) }}</label>
                 <div class="flex">
                     <VueDatePicker
                         v-bind:value="value"
@@ -24,7 +24,7 @@
                         :type="dateType"
                         :disabled="false" />
                 </div>
-                <p>{{ translate(options.description, true) }}</p>
+                <p class="description">{{ translate(options.description, true) }}</p>
             </div>
         </div>
         <div v-else-if="action == 'options'">

@@ -4,9 +4,13 @@ namespace TCG\Voyager;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
+use TCG\Voyager\Traits\Plugins;
+use TCG\Voyager\Traits\Settings;
 
 class Voyager
 {
+    use Plugins, Settings;
+
     protected $actions;
     protected $formfields;
     protected $messages = [];
@@ -17,8 +21,9 @@ class Voyager
      *
      * @return array an array of routes
      */
-    public function routes(Router $router)
+    public function routes()
     {
+        $this->launchPlugins();
         require __DIR__.'/../routes/voyager.php';
     }
 
@@ -75,7 +80,7 @@ class Voyager
      */
     public function getLocalization()
     {
-        return collect(['bread', 'generic', 'manager', 'validation'])->flatMap(function ($file) {
+        return collect(['auth', 'bread', 'generic', 'manager', 'plugins', 'validation'])->flatMap(function ($file) {
             return ['voyager::'.$file => trans('voyager::'.$file)];
         })->toJson();
     }
@@ -92,6 +97,11 @@ class Voyager
         })->filter(function ($value, $key) {
             return $key != '';
         });
+    }
+
+    public function getRoutePrefix()
+    {
+        return $this->route_prefix;
     }
 
     /**
@@ -115,7 +125,7 @@ class Voyager
      */
     public function getFormfields()
     {
-        return $this->formfields->unique();
+        return $this->formfields;
     }
 
     /**
@@ -127,13 +137,14 @@ class Voyager
     {
         return $this->getFormfields()->sortBy('name')->map(function ($formfield) {
             return [
-                'type'     => $formfield->type,
-                'name'     => $formfield->name,
-                'options'  => $formfield->options,
-                'rules'    => $formfield->rules,
-                'lists'    => $formfield->lists,
-                'views'    => $formfield->views,
-                'settings' => $formfield->settings,
+                'type'         => $formfield->type,
+                'name'         => $formfield->name,
+                'options'      => $formfield->options,
+                'rules'        => $formfield->rules,
+                'translatable' => $formfield->translatable,
+                'lists'        => $formfield->lists,
+                'views'        => $formfield->views,
+                'settings'     => $formfield->settings,
             ];
         });
     }

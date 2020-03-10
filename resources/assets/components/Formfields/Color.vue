@@ -9,7 +9,7 @@
         </div>
         <div v-else-if="action == 'edit' || action == 'add'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label">{{ translate(options.title, true) }}</label>
+                <label class="voyager-label bigger">{{ translate(options.title, true) }}</label>
                 <div class="content-center text-center">
                     <swatches
                         :colors="options.colors"
@@ -20,12 +20,12 @@
                         v-bind:value="value"
                         v-on:input="$emit('input', $event)"></swatches>
                 </div>
-                <p>{{ translate(options.description, true) }}</p>
+                <p class="description">{{ translate(options.description, true) }}</p>
             </div>
         </div>
         <div v-else-if="action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label">{{ translate(options.title) }}</label>
+                <label class="voyager-label bigger">{{ translate(options.title) }}</label>
                 <div class="content-center text-center">
                     <swatches
                         :colors="options.colors"
@@ -35,7 +35,7 @@
                         inline
                         :disabled="true" />
                 </div>
-                <p>{{ translate(options.description) }}</p>
+                <p class="description">{{ translate(options.description) }}</p>
             </div>
         </div>
         <div v-else-if="action == 'options'">

@@ -9,6 +9,9 @@ Instead, they are listed here:
 - ~Improve slidein styling~
 - Order by relationship
 - ~Remove styling (`voyager-card`) around html-element-formfield~
+- Remove csrf_token as data-prop from AJAX requests as it is sended globally as a header
+- Actions for BREAD-Browse is an object but should be an array
+- Edit-Add modal for relationships needs to be emptied when the modal closes or opens
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller

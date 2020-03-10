@@ -8,12 +8,9 @@ class Layout implements \JsonSerializable
 {
     public $name;
     public $type = 'view';
+    public $uuid = '';
     public $default_sort_column;
-    // View properties
-    public $back_button = true;
-    public $create_button = true;
     // List properties
-    public $global_search = '';
     public $soft_deletes = 'hide';
     public $restore = false;
     public $force_delete = false;
@@ -67,10 +64,17 @@ class Layout implements \JsonSerializable
     {
         return $this->formfields->where('options.searchable', true);
     }
-
-    public function isColumnTranslatable($column)
+    
+    public function getTranslatableColumns()
     {
-        return $this->bread->isColumnTranslatable($column);
+        return $this->formfields->filter(function ($formfield) {
+            return $formfield->options['translatable'];
+        })->pluck('column');
+    }
+
+    public function isFormfieldTranslatable($column)
+    {
+        return $this->getTranslatableColumns()->contains($column);
     }
 
     public function isValid()
@@ -84,8 +88,8 @@ class Layout implements \JsonSerializable
             return [
                 'name'                => $this->name,
                 'type'                => $this->type,
+                'uuid'                => $this->uuid,
                 'default_sort_column' => $this->default_sort_column,
-                'global_search'       => $this->global_search,
                 'soft_deletes'        => $this->soft_deletes,
                 'restore'             => $this->restore,
                 'force_delete'        => $this->force_delete,
@@ -96,10 +100,9 @@ class Layout implements \JsonSerializable
         return [
             'name'                => $this->name,
             'type'                => $this->type,
-            'formfields'          => $this->formfields,
+            'uuid'                => $this->uuid,
             'default_sort_column' => $this->default_sort_column,
-            'back_button'         => $this->back_button,
-            'create_button'       => $this->create_button,
+            'formfields'          => $this->formfields,
         ];
     }
 }

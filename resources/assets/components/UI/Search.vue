@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div v-click-outside="close">
         <input type="text" class="py-2 block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none" @input="search" placeholder="search for users, posts, etc...">
-        <div v-if="searchResults.length > 0" class="voyager-search-results">
+        <div v-if="searchResults.length > 0 && opened" class="voyager-search-results">
             <div v-for="(bread, i) in searchResults" :key="'bread-results-'+i">
-                {{ bread.bread }}
+                <h4>{{ bread.bread }}</h4>
                 <div v-if="bread.results.length == 0">
                     {{ __('voyager::generic.no_results') }}
                 </div>
@@ -27,30 +27,39 @@ export default {
         return {
             searchResults: [],
             query: '',
-            loading: false
+            opened: false,
         };
     },
+    watch: {
+        query: function (query) {
+            this.search(query);
+        }
+    },
     methods: {
-        search: debounce(function (e) {
+        close: function () {
+            this.opened = false;
+        },
+        search: debounce(function (query) {
             var vm = this;
-            vm.loading = true;
-            vm.query = e.target.value;
+            Vue.set(vm, 'query', query);
             vm.searchResults = [];
+            if (query == '') {
+                return;
+            }
             this.$globals.breads.forEach(function (bread) {
                 axios.post(vm.route('voyager.search'), {
                     query: vm.query,
                     bread: bread.table,
                 })
                 .then(function (response) {
-                    vm.searchResults = response.data;
-                    vm.loading = false;
+                    vm.searchResults.push(response.data[0]);
+                    vm.opened = true;
                 })
                 .catch(function (errors) {
                     vm.$snotify.error(error);
                     if (vm.debug) {
                         vm.debug(error.response.data.message, true, 'error');
                     }
-                    vm.loading = false;
                 });
             });
             
@@ -65,6 +74,14 @@ export default {
 
             return this.route('voyager.'+this.translate(bread.slug, true)+'.read', id);
         }
+    },
+    mounted: function () {
+        var vm = this;
+        document.body.addEventListener('keydown', event => {
+            if (event.keyCode === 27) {
+                vm.search('');
+            }
+        });
     },
 };
 </script>

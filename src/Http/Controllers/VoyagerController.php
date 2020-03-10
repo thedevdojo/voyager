@@ -12,8 +12,13 @@ class VoyagerController extends Controller
 {
     public function assets(Request $request)
     {
-        $path = Str::start(str_replace(['../', './'], '', urldecode($request->path)), '/');
-        $path = Str::finish(dirname(__FILE__, 4), '/').'resources/assets/dist'.$path;
+        $path = str_replace('/', DIRECTORY_SEPARATOR, Str::start(urldecode($request->path), '/'));
+        $path = realpath(dirname(__DIR__, 3).'/resources/assets/dist').$path;
+
+        if (realpath($path) != $path) {
+            abort(404);
+        }
+
         if (File::exists($path)) {
             $mime = '';
             if (Str::endsWith($path, '.js')) {
@@ -31,7 +36,7 @@ class VoyagerController extends Controller
             return $response;
         }
 
-        return response('Not found', 404);
+        abort(404);
     }
 
     public function search(Request $request)
@@ -39,7 +44,7 @@ class VoyagerController extends Controller
         $q = $request->get('query');
         $bread = BreadFacade::getBread($request->get('bread'));
         $results = collect([]);
-        if ($bread) {
+        if ($bread && $bread->global_search_field) {
             $layout = $bread->getLayoutFor('browse');
             $columns = $layout->getSearchableColumns()->pluck('column')->filter(function ($column) {
                 return !Str::contains($column, '.');
@@ -51,10 +56,10 @@ class VoyagerController extends Controller
                 });
             })->orderBy($layout->getDefaultSortColumn());
 
-            $results = $query->get()->transform(function ($result) use ($layout) {
+            $results = $query->get()->transform(function ($result) use ($bread) {
                 return [
                     'id'   => $result->getKey(),
-                    'data' => $result->{$layout->global_search},
+                    'data' => $result->{$bread->global_search_field},
                 ];
             });
         }
@@ -89,6 +94,9 @@ class VoyagerController extends Controller
             } else {
                 $related = $model->{$request->get('relationship')}()->getRelated();
                 $foreign_key = $related->getKeyName();
+                if ($request->has('order_column')) {
+                    $related = $related->orderBy($request->get('order_column'));
+                }
                 $related_entries = $related->pluck($request->get('column'), $foreign_key);
             }
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace TCG\Voyager;
+namespace TCG\Voyager\Traits;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use TCG\Voyager\Classes\Setting;
 
-class Settings
+trait Settings
 {
     protected $settingsPath;
     protected $settings = null;

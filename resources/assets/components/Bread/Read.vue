@@ -6,34 +6,39 @@
                 {{ __('voyager::generic.add_type', {type: translate(bread.name_singular, true)}) }}
             </a>
             <a class="button blue small" :href="route('voyager.'+translate(bread.slug, true)+'.browse')">
-                {{ __('voyager::bread.browse_name', {name: translate(bread.name_plural, true)}) }}
+                {{ __('voyager::bread.browse_type', {type: translate(bread.name_plural, true)}) }}
+            </a>
+            <a class="button yellow small" :href="route('voyager.'+translate(bread.slug, true)+'.edit', input.primary)">
+                {{ __('voyager::generic.edit_type', {type: translate(bread.name_singular, true)}) }}
             </a>
             <a
                 class="button yellow small"
                 :href="route('voyager.bread.edit', bread.table)"
                 v-if="debug">
-                {{ __('voyager::bread.edit_name', {name: __('voyager::bread.bread')}) }}
+                {{ __('voyager::generic.edit_type', {type: __('voyager::bread.bread')}) }}
             </a>
             <a
                 class="button yellow small"
                 :href="route('voyager.bread.edit', bread.table)+'?layout='+layoutId"
                 v-if="debug">
-                {{ __('voyager::bread.edit_name', {name: __('voyager::manager.layout')}) }}
+                {{ __('voyager::generic.edit_type', {type: __('voyager::manager.layout')}) }}
             </a>
         </div>
         <br>
         <div class="flex flex-wrap">
             <div v-for="(formfield, i) in layout.formfields" v-bind:key="'formfield-'+i" :class="'p-2 w-'+formfield.options.width">
-                <div class="p-4 bg-white rounded shadow-md ">
-                    <label class="voyager-label">{{ translate(formfield.options.title, true) }}</label>
-                    <component
-                        :is="'formfield-'+formfield.type"
-                        :value="getData(formfield.column)"
-                        :primary="getData('primary', null)"
-                        :bread="bread"
-                        :options="formfield.options"
-                        :column="formfield.column"
-                        action="read" />
+                <div class="voyager-card">
+                    <div class="body">
+                        <h3 class="title">{{ translate(formfield.options.title, true) }}</h3>
+                        <component
+                            :is="'formfield-'+formfield.type"
+                            :value="getData(formfield)"
+                            :primary="getPrimary()"
+                            :bread="bread"
+                            :options="formfield.options"
+                            :column="formfield.column"
+                            action="read" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,17 +47,17 @@
 
 <script>
 export default {
-    props: ['bread', 'accessors', 'layout', 'input', 'translatable', 'prev-url'],
+    props: ['bread', 'accessors', 'layout', 'input', 'prev-url'],
     methods: {
-        getData: function (column) {
-            if (this.isColumnTranslatable(column)) {
-                return this.translate(this.input[column]);
+        getData: function (formfield) {
+            if (formfield.options.translatable || false) {
+                return this.translate(this.input[formfield.column]);
             }
 
-            return this.input[column];
+            return this.input[formfield.column];
         },
-        isColumnTranslatable: function (column) {
-            return this.translatable.includes(column);
+        getPrimary: function () {
+            return this.input['primary'];
         }
     },
     computed: {
@@ -69,9 +74,8 @@ export default {
         }
     },
     mounted: function () {
-        if (this.translatable.length > 0) {
-            Vue.prototype.$language.localePicker = true;
-        }
+        // TODO: Hide locale picker if there are no translatable formfields
+        Vue.prototype.$language.localePicker = true;
     }
 };
 </script>

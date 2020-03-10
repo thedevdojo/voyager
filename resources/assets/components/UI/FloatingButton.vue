@@ -1,5 +1,5 @@
 <template>
-    <div :class="'fixed '+classes">
+    <div :class="'fixed z-50 '+classes">
         <slot />
     </div>
 </template>

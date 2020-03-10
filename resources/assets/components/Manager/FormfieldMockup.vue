@@ -1,20 +1,21 @@
 <template>
     <div :class="'p-2 overflow-hidden h-auto w-'+(formfield.options.width || '1/2')">
         <div class="voyager-card">
-            <div class="w-full text-right">
-                <i class="cursor-pointer" @click="deleteFormfield()"><icon icon="delete" /></i>
-                <i class="cursor-pointer" @click="openOptions()"><icon icon="cog" /></i>
-                <i class="cursor-pointer drag-handle"><icon icon="move" /></i>
-                <i class="cursor-pointer" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()"><icon icon="resize" /></i>
+            <div class="drag-handle cursor-move">
+                <div class="w-full text-right">
+                    <i class="cursor-pointer" @click="deleteFormfield()"><icon icon="delete" /></i>
+                    <i class="cursor-pointer" @click="openOptions()"><icon icon="cog" /></i>
+                    <i class="cursor-pointer" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()"><icon icon="resize" /></i>
+                </div>
+                <component
+                    :is="'formfield-'+formfield.type"
+                    :options="formfield.options"
+                    :columns="columns"
+                    :computed="computed"
+                    :relationships="relationships"
+                    type="view"
+                    action="mockup" />
             </div>
-            <component
-                :is="'formfield-'+formfield.type"
-                :options="formfield.options"
-                :columns="columns"
-                :computed="computed"
-                :relationships="relationships"
-                type="view"
-                action="mockup" />
             <slidein :opened="optionsOpen" v-on:closed="closeOptions">
                 <div class="flex mb-4">
                     <div class="w-2/3">
@@ -50,6 +51,12 @@
                         <select v-model="formfield.column" class="voyager-input">
                             <option v-for="(relationship, key) in relationships" v-bind:key="key">{{ key }}</option>
                         </select>
+                    </div>
+                </div>
+                <div class="flex mb-4" v-if="getFormfieldByType(formfield.type).translatable">
+                    <div class="w-full m-1">
+                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.translatable') }}</label>
+                        <input type="checkbox" v-model="formfield.options.translatable">
                     </div>
                 </div>
                 <div class="flex mb-4" v-if="hasTitle">

@@ -2,7 +2,7 @@
     <div>
         <div v-if="action == 'edit' || action == 'add' || action == 'read'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label">{{ translate(options.title, true) }}</label>
+                <label class="voyager-label bigger">{{ translate(options.title, true) }}</label>
                 <div v-for="(value, i) in repeaterValue" class="w-full flex flex-wrap" :key="i">
                     <span class="absolute cursor-pointer" @click="deleteElement(i)" v-if="action !== 'read'">X</span>
                     <div v-for="(formfield, b) in options.formfields" v-bind:key="'formfield-'+b" :class="'w-'+formfield.options.width+' voyager-card'">
@@ -22,12 +22,12 @@
                 <button class="button blue opacity-75 w-full" @click="addElement" v-if="action !== 'read'">
                     {{ translate(options.add_text, true) }}
                 </button>
-                <p>{{ translate(options.description, true) }}</p>
+                <p class="description">{{ translate(options.description, true) }}</p>
             </div>
         </div>
         <div v-else-if="action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label">{{ translate(options.title) }}</label>
+                <label class="voyager-label bigger">{{ translate(options.title) }}</label>
                 <bread-view-builder
                     v-bind:layout="layout"
                     :columns="columns"
@@ -36,7 +36,7 @@
                     :repeater="true"
                     class="border-dashed border border-gray-500"
                     style="min-height: 150px" />
-                <p>{{ translate(options.description) }}</p>
+                <p class="description">{{ translate(options.description) }}</p>
             </div>
         </div>
         <div v-else-if="action == 'options'">

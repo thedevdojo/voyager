@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Collection;
@@ -12,10 +11,15 @@ use Illuminate\Support\Str;
 use TCG\Voyager\Exceptions\JsonInvalidException;
 use TCG\Voyager\Facades\Bread as BreadFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\Plugins\AuthenticationPlugin;
+use TCG\Voyager\Plugins\AuthorizationPlugin;
 
 abstract class Controller extends BaseController
 {
-    use AuthorizesRequests;
+    public function authorize($ability, $arguments = [])
+    {
+        return $this->getAuthorizationPlugin()->authorize($ability, $arguments);
+    }
 
     public function getBread(Request $request)
     {
@@ -59,9 +63,9 @@ abstract class Controller extends BaseController
         }
     }
 
-    protected function orderQuery(&$query, $bread, $column, $direction)
+    protected function orderQuery(&$query, $bread, $layout, $column, $direction)
     {
-        if ($bread->isColumnTranslatable($column)) {
+        if ($layout->isFormfieldTranslatable($column)) {
             // TODO: Order by translatable
             $query = $query->orderBy($column, $direction);
         } else {
@@ -131,17 +135,17 @@ abstract class Controller extends BaseController
     protected function prepareDataForStoring($data, Model $model, $bread, $layout, $method = 'store'): Model
     {
         $columns = VoyagerFacade::getColumns($model->getTable());
-        $layout->formfields->each(function ($formfield) use ($data, &$model, $bread, $method, $columns) {
-            debug($formfield->column);
+        $layout->formfields->each(function ($formfield) use ($data, &$model, $bread, $layout, $method, $columns) {
             $value = $data->get($formfield->column, null);
             $old = null;
             //if (array_key_exists($formfield->column, $model->getAttributes())) {
             $old = $model->{$formfield->column};
             //}
             $new_value = collect($formfield->{$method}($value, $old, $model, $data));
-            $new_value->transform(function ($value, $column) use ($bread, $method) {
-                if ($bread->isColumnTranslatable($column)) {
-                    // TODO: It looks like Laravel automatically casts arrays to text even if there is no cast
+            $new_value->transform(function ($value, $column) use ($bread, $layout, $method) {
+                if ($layout->isFormfieldTranslatable($column) && is_array($value)) {
+                    // TODO: Check for casts here
+                    $value = json_encode($value);
                 }
 
                 return $value;
@@ -168,7 +172,7 @@ abstract class Controller extends BaseController
             collect($formfield->rules)->each(function ($rule_object) use ($formfield, &$formfield_rules, &$messages, $layout) {
                 $formfield_rules[] = $rule_object->rule;
                 $message_ident = $formfield->column.'.'.Str::before($rule_object->rule, ':');
-                if ($layout->isColumnTranslatable($formfield->column)) {
+                if ($layout->isFormfieldTranslatable($formfield->column)) {
                     $message_ident = $formfield->column.'.'.VoyagerFacade::getLocale().'.'.Str::before($rule_object->rule, ':');
                 }
                 $message = $rule_object->message;
@@ -178,7 +182,7 @@ abstract class Controller extends BaseController
 
                 $messages[$message_ident] = $message;
             });
-            if ($layout->isColumnTranslatable($formfield->column)) {
+            if ($layout->isFormfieldTranslatable($formfield->column)) {
                 $rules[$formfield->column.'.'.VoyagerFacade::getLocale()] = $formfield_rules;
             } else {
                 $rules[$formfield->column] = $formfield_rules;
@@ -199,12 +203,13 @@ abstract class Controller extends BaseController
         return $data ?? [];
     }
 
-    protected function redirect(Request $request, $bread)
+    protected function getAuthorizationPlugin()
     {
-        if ($request->get('_redirect') == 'back') {
-            return redirect($request->get('prev-url'));
-        } elseif ($request->get('_redirect') == 'new') {
-            return redirect(route('voyager.'.$bread->slug.'.add'));
-        }
+        return VoyagerFacade::getPluginByType('authorization', AuthorizationPlugin::class);
+    }
+
+    protected function getAuthenticationPlugin()
+    {
+        return VoyagerFacade::getPluginByType('authentication', AuthenticationPlugin::class);
     }
 }

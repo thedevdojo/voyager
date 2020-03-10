@@ -1,31 +1,27 @@
 <template>
-    <table class="text-left m-4 w-full" style="border-collapse:collapse" id="bread-manager-browse">
+    <table class="voyager-table striped">
         <thead>
             <tr>
-                <th class="py-4 px-6 bg-grey-lighter font-sans font-medium uppercase text-sm text-grey border-b border-grey-light">
-                    {{ __('voyager::generic.table') }}
-                </th>
-                <th class="py-4 px-6 bg-grey-lighter font-sans font-medium uppercase text-sm text-grey border-b border-grey-light text-right">
-                    {{ __('voyager::generic.actions') }}
-                </th>
+                <th>{{ __('voyager::generic.table') }}</th>
+                <th class="text-right">{{ __('voyager::generic.actions') }}</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="table in tables" v-bind:key="table">
-                <td class="py-4 px-6 border-b border-grey-light">{{ table }}</td>
-                <td class="py-4 px-6 border-b border-grey-light text-right">
+                <td>{{ table }}</td>
+                <td class="text-right">
                     <div v-if="hasBread(table)">
-                        <a class="button blue" :dusk="'browse-'+table" :href="route('voyager.'+table+'.browse')">
+                        <a class="button blue" :href="route('voyager.'+table+'.browse')">
                             {{ __('voyager::generic.browse') }}
                         </a>
-                        <a class="button yellow" :dusk="'edit-'+table" :href="route('voyager.bread.edit', table)">
+                        <a class="button yellow" :href="route('voyager.bread.edit', table)">
                             {{ __('voyager::generic.edit_type', {type: __('voyager::bread.bread')}) }}
                         </a>
-                        <button class="button red" :dusk="'delete-'+table" @click="deleteBread(table)">
+                        <button class="button red" @click="deleteBread(table)">
                             {{ __('voyager::generic.delete_type', {type: __('voyager::bread.bread')}) }}
                         </button>
                     </div>
-                    <a v-else class="button green" :dusk="'add-'+table" :href="route('voyager.bread.create', table)">
+                    <a v-else class="button green" :href="route('voyager.bread.create', table)">
                         {{ __('voyager::generic.add_type', {type: __('voyager::bread.bread')}) }}
                     </a>
                 </td>
@@ -68,7 +64,7 @@ export default {
                         text: vm.__('voyager::generic.yes'),
                         action: (toast) => {
                             axios.delete(this.route('voyager.bread.delete', table), {
-                                _token: document.head.querySelector('meta[name="csrf-token"]').content,
+                                _token: vm.$globals.csrf_token,
                             })
                             .then(function (response) {
                                 vm.$snotify.success(vm.__('voyager::manager.delete_bread_success', {bread: table}));

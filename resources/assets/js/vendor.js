@@ -1,6 +1,7 @@
 window.Vue = require('vue');
 
 window.debounce = require('debounce');
+Vue.prototype.debounce = debounce;
 
 window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -20,8 +21,11 @@ Vue.use(Snotify);
 import Swatches from 'vue-swatches';
 Vue.component('swatches', Swatches);
 
-import Multiselect from 'vue-multiselect';
-Vue.component('multiselect', Multiselect);
-
 import VueDatePicker from '@mathieustan/vue-datepicker';
 Vue.use(VueDatePicker);
+
+import Popper from 'vue-popperjs';
+Vue.component('popper', Popper);
+
+import { mixin as clickaway } from 'vue-clickaway';
+Vue.mixin(clickaway);

@@ -5,6 +5,7 @@ namespace TCG\Voyager\Formfields;
 class HtmlElement extends BaseFormfield
 {
     public $type = 'html-element';
+    public $translatable = false;
     public $lists = false;
     public $settings = false;
 

@@ -1,0 +1,17 @@
+.mode-dark .voyager-label {
+    @apply text-gray-200;
+}
+
+.voyager-label {
+    @apply block text-gray-800 text-sm font-normal mb-2;
+
+    &.bigger {
+        @apply text-base;
+    }
+}
+
+p {
+    &.description {
+        @apply text-sm text-gray-600;
+    }
+}

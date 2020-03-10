@@ -7,28 +7,34 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class SimpleRelationship extends BaseFormfield
+class Relationship extends BaseFormfield
 {
-    public $type = 'simple-relationship';
+    public $type = 'relationship';
+    public $translatable = false;
     public $lists = false; // Don't show this formfield for lists
     public $settings = false;
 
+    private $data;
+
     public function __construct()
     {
-        $this->name = __('voyager::bread.formfield.simple_relationship');
-        $this->options['placeholder'] = '';
+        $this->name = __('voyager::bread.formfield.relationship');
         $this->options['column'] = '';
-        $this->options['max'] = 0;
-        $this->options['allow_null'] = false;
-        $this->options['allow_tagging'] = false;
-        $this->options['allow_edit'] = true;
+        $this->options['order_column'] = '';
+        $this->options['add_view'] = null;
     }
+
+    /*public function edit($data, $model)
+    {
+        return [
+            $this->column => $data,
+        ];
+    }*/
 
     public function update($data, $old, $model, $request_data)
     {
         // Sync $data with $model
         $relationship = $model->{$this->column}();
-
         if ($relationship instanceof BelongsTo) {
             $relationship->associate($data);
         } elseif ($relationship instanceof BelongsToMany) {
@@ -48,5 +54,17 @@ class SimpleRelationship extends BaseFormfield
         }
 
         return [];
+    }
+
+    public function store($data, $old, $model, $request_data)
+    {
+        $this->data = $data;
+        // Do nothing. Relationships can only be changed once the model WAS stored.
+        return [];
+    }
+
+    public function stored($model, $data)
+    {
+        $this->update($this->data, null, $model, null);
     }
 }

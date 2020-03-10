@@ -5,14 +5,17 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\Traits\Bread\Relationships;
 
 class BreadController extends Controller
 {
+    use Relationships;
+
     public function browse(Request $request)
     {
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('browse');
-        //$this->authorize('browse', app($bread->model));
+        $this->authorize('browse', app($bread->model));
 
         $actions = VoyagerFacade::getActionsForBread($bread, $layout);
 
@@ -23,7 +26,7 @@ class BreadController extends Controller
     {
         $bread = $this->getBread($request);
         $layout = $bread->getLayoutFor('browse');
-        //$this->authorize('browse', app($bread->model));
+        $this->authorize('browse', app($bread->model));
         $model = $bread->getModel();
 
         $records = 0;
@@ -47,7 +50,7 @@ class BreadController extends Controller
         $perPage = $request->perPage ?? 10;
         $records = $query->count();
         $this->searchQuery($query, $layout, array_filter((array) $request->filter ?? []), $request->globalSearch);
-        $this->orderQuery($query, $bread, $request->orderColumn ?? $layout->getDefaultSortColumn(), ($request->orderDir ?? 'asc'));
+        $this->orderQuery($query, $bread, $layout, $request->orderColumn ?? $layout->getDefaultSortColumn(), ($request->orderDir ?? 'asc'));
         $query = $query->get();
         $filtered = $query->count();
         $query = $query->slice((($request->page ?? 1) - 1) * $perPage)->take($perPage);
@@ -74,7 +77,7 @@ class BreadController extends Controller
         $layout = $bread->getLayoutFor('add');
         $this->loadAccessors($data, $bread);
         $data = new \stdClass();
-        //$this->authorize('add', app($bread->model));
+        $this->authorize('add', app($bread->model));
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data'));
     }
@@ -86,14 +89,19 @@ class BreadController extends Controller
         $model = new $bread->model();
         $data = collect($this->getJson($request));
         $validator = $this->getValidator($layout, $data);
+        $data = $this->prepareDataForStoring($data, $model, $bread, $layout);
+        $this->authorize('store', $data);
         if ($validator->fails()) {
             $errors = $validator->errors()->getMessages();
+
+            if ($request->ajax()) {
+                return response()->json($errors, 422);
+            }
+
             VoyagerFacade::flashMessage(__('voyager::bread.error_storing_type', ['type' => $bread->name_singular]), 'error', true);
 
             return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'errors'));
         }
-
-        $data = $this->prepareDataForStoring($data, $model, $bread, $layout);
 
         $model->save();
 
@@ -101,11 +109,11 @@ class BreadController extends Controller
             $formfield->stored($model, $data);
         });
 
-        VoyagerFacade::flashMessage(__('voyager::bread.success_stored_type', ['type' => $bread->name_singular]), 'success', true);
-
-        if ($request->has('_redirect')) {
-            return $this->redirect($request, $bread);
+        if ($request->ajax()) {
+            return response($model->getKey(), 200);
         }
+
+        VoyagerFacade::flashMessage(__('voyager::bread.success_stored_type', ['type' => $bread->name_singular]), 'success', true);
 
         return redirect(route('voyager.'.$bread->slug.'.edit', $model->getKey()));
     }
@@ -120,7 +128,7 @@ class BreadController extends Controller
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
         $data = $this->prepareDataForReading($data, $bread, $layout);
-        //$this->authorize('read', app($bread->model));
+        $this->authorize('read', $data);
 
         return view('voyager::bread.read', compact('bread', 'layout', 'data', 'id'));
     }
@@ -135,7 +143,7 @@ class BreadController extends Controller
         $data = $bread->getModel()->findOrFail($id);
         $this->loadAccessors($data, $bread);
         $data = $this->prepareDataForEditing($data, $bread, $layout);
-        //$this->authorize('browse', app($bread->model));
+        $this->authorize('edit', $data);
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id'));
     }
@@ -147,25 +155,31 @@ class BreadController extends Controller
         $model = $bread->getModel()->findOrFail($id);
         $data = collect($this->getJson($request));
         $validator = $this->getValidator($layout, $data);
+        $model = $this->prepareDataForUpdating($data, $model, $bread, $layout);
+        $this->authorize('update', $model);
 
         if ($validator->fails()) {
             $errors = $validator->errors()->getMessages();
+            if ($request->ajax()) {
+                return response()->json($errors, 422);
+            }
+
             VoyagerFacade::flashMessage(__('voyager::bread.error_updating_type', ['type' => $bread->name_singular]), 'error', true);
 
             return view('voyager::bread.edit-add', compact('bread', 'layout', 'data', 'id', 'errors'));
         }
-        $model = $this->prepareDataForUpdating($data, $model, $bread, $layout);
+        
         $model->save();
-
-        VoyagerFacade::flashMessage(__('voyager::bread.success_updated_type', ['type' => $bread->name_singular]), 'success', true);
 
         $layout->formfields->each(function ($formfield) use ($model, $data) {
             $formfield->updated($model, $data);
         });
 
-        if ($request->has('_redirect')) {
-            return $this->redirect($request, $bread);
+        if ($request->ajax()) {
+            return response($id, 200);
         }
+
+        VoyagerFacade::flashMessage(__('voyager::bread.success_updated_type', ['type' => $bread->name_singular]), 'success', true);
 
         return redirect(route('voyager.'.$bread->slug.'.edit', $id));
     }

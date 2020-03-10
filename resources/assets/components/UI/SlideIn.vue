@@ -51,13 +51,21 @@ export default {
                 this.$emit('closed');
             }
         }
-    }
+    },
+    mounted: function () {
+        var vm = this;
+        document.body.addEventListener('keydown', event => {
+            if (event.keyCode === 27) {
+                vm.close();
+            }
+        });
+    },
 };
 </script>
 
 <style lang="scss" scoped>
 .slidein {
-    @apply fixed w-1/4 top-0 left-auto right-0 h-full overflow-y-auto p-8;
+    @apply fixed w-1/4 top-0 left-auto right-0 h-full overflow-y-auto p-8 z-50;
     background-color: rgba(0, 0, 0, .7);
     z-index: 100;
 

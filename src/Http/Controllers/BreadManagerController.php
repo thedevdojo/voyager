@@ -43,8 +43,9 @@ class BreadManagerController extends Controller
         }
 
         $bread = BreadFacade::createBread($table);
+        $new = true;
 
-        return view('voyager::manager.edit-add', compact('bread'));
+        return view('voyager::manager.edit-add', compact('bread', 'new'));
     }
 
     /**
@@ -63,7 +64,9 @@ class BreadManagerController extends Controller
             return redirect()->route('voyager.bread.create', $table);
         }
 
-        return view('voyager::manager.edit-add', compact('bread'));
+        $new = false;
+
+        return view('voyager::manager.edit-add', compact('bread', 'new'));
     }
 
     /**

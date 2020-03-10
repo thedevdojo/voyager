@@ -5,6 +5,7 @@ namespace TCG\Voyager\Formfields;
 class Password extends BaseFormfield
 {
     public $type = 'password';
+    public $translatable = false;
 
     public function __construct()
     {

@@ -5,9 +5,9 @@ let formfields = [
     'DateTime',
     'Number',
     'Password',
+    'Relationship',
     'Repeater',
     'RichTextEditor',
-    'SimpleRelationship',
     'Slug',
     'Text',
 ];

@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="flex mb-8 w-full">
+    <div :class="fromRelationship ? 'mode-dark' : ''">
+        <div class="flex mb-8 w-full" v-if="!fromRelationship">
             <div class="w-10/12">
                 <a class="button green small" :href="route('voyager.'+translate(bread.slug, true)+'.add')">
                     {{ __('voyager::generic.add_type', {type: translate(bread.name_singular, true)}) }}
@@ -10,13 +10,13 @@
                     class="button yellow small"
                     :href="route('voyager.bread.edit', bread.table)"
                     v-if="debug">
-                    {{ __('voyager::bread.edit_name', {name: __('voyager::bread.bread')}) }}
+                    {{ __('voyager::generic.edit_type', {type: __('voyager::bread.bread')}) }}
                 </a>
                 <a
                     class="button yellow small"
                     :href="route('voyager.bread.edit', bread.table)+'?layout='+layoutId"
                     v-if="debug">
-                    {{ __('voyager::bread.edit_name', {name: __('voyager::manager.layout')}) }}
+                    {{ __('voyager::generic.edit_type', {type: __('voyager::manager.layout')}) }}
                 </a>
             </div>
             <div class="w-2/12 text-right">
@@ -24,11 +24,15 @@
             </div>
         </div>
         
-        <table v-bind:class="['voyager-table', loading ? 'opacity-25' : '']">
+        <table v-bind:class="['voyager-table striped', loading ? 'loading' : '']">
             <thead>
                 <tr>
-                    <th><input type="checkbox" @click="selectAll($event.target.checked)" ref="checkbox_all"></th>
-                    <th v-for="(formfield, i) in layout.formfields" :key="'th-'+i" @click="formfield.options.sortable ? orderBy(formfield.column) : ''">
+                    <th><input type="checkbox" :disabled="!multiple" @click="selectAll($event.target.checked)" ref="checkbox_all"></th>
+                    <th
+                        v-for="(formfield, i) in layout.formfields"
+                        :key="'th-'+i"
+                        @click="formfield.options.sortable ? orderBy(formfield.column) : ''"
+                        :class="formfield.options.sortable ? 'cursor-pointer' : ''">
                         {{ translate(formfield.options.title, true) }}
                         <span v-if="formfield.options.sortable && parameter.orderColumn == formfield.column">
                             <span v-if="parameter.orderDir == 'asc'">
@@ -39,7 +43,7 @@
                             </span>
                         </span>
                     </th>
-                    <th class="text-right">{{ __('voyager::generic.actions') }}</th>
+                    <th class="text-right" v-if="!fromRelationship">{{ __('voyager::generic.actions') }}</th>
                 </tr>
                 <tr>
                     <th></th>
@@ -59,15 +63,24 @@
                                 @input="filterBy($event.target.value, formfield.column)">
                         </component>
                     </th>
-                    <th></th>
+                    <th v-if="!fromRelationship"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(result, i) in results.rows" v-bind:key="'tr-'+i">
-                    <td><input type="checkbox" v-model="selectedEntries" :value="result[results.primary]"></td>
+                <tr
+                    v-for="(result, i) in results.rows"
+                    v-bind:key="'tr-'+i"
+                    @dblclick.stop="$emit('select-relationship', result[results.primary])">
+                    <td>
+                        <input
+                            :type="multiple ? 'checkbox' : 'radio'"
+                            v-model="selectedEntries"
+                            :value="result[results.primary]"
+                            @click="select($event, result[results.primary])">
+                    </td>
                     <td v-for="(formfield, i) in layout.formfields" :key="'td-'+i">
-                        <div v-if="isArray(getData(result, formfield.column))">
-                            <div v-for="(relationship, key) in getData(result, formfield.column).slice(0, 3)" v-bind:key="key">
+                        <div v-if="isArray(getData(result, formfield))">
+                            <div v-for="(relationship, key) in getData(result, formfield).slice(0, 3)" v-bind:key="key">
                                 <component :is="formfield.options.link ? 'a' : 'div'" :href="getRelationshipLink(formfield, relationship)">
                                     <component
                                         :is="'formfield-'+formfield.type"
@@ -76,21 +89,21 @@
                                         action="browse" />
                                 </component>
                             </div>
-                            <i v-if="getData(result, formfield.column).length > 3">
-                                {{ __('voyager::bread.results_more', {num: (getData(result, formfield.column).length - 3)}) }}
+                            <i v-if="getData(result, formfield).length > 3">
+                                {{ __('voyager::bread.results_more', {num: (getData(result, formfield).length - 3)}) }}
                             </i>
                         </div>
                         <div v-else>
                             <component :is="formfield.options.link ? 'a' : 'div'" :href="getLink(formfield, result)" :target="getTarget(formfield)">
                                 <component
                                     :is="'formfield-'+formfield.type"
-                                    :value="getData(result, formfield.column)"
+                                    :value="getData(result, formfield)"
                                     :options="formfield.options"
                                     action="browse" />
                             </component>
                         </div>
                     </td>
-                    <td class="text-right">
+                    <td class="text-right" v-if="!fromRelationship">
                         <bread-actions :actions="result.actions" :mass="false" :keys="result[results.primary]" :bread="bread" :key="'actions-'+i" />
                     </td>
                 </tr>
@@ -131,7 +144,36 @@
 
 <script>
 export default {
-    props: ['bread', 'accessors', 'layout', 'url', 'actions', 'translatable'],
+    props: {
+        'bread': {
+            type: Object,
+        },
+        'accessors': {
+            type: Array,
+        },
+        'layout': {
+            type: Object,
+        },
+        'actions': {
+            type: Object,
+        },
+        'from-relationship': {
+            type: Boolean,
+            default: false,
+        },
+        'foreign-key': {
+            required: false,
+        },
+        // Only used when coming from a relationship
+        'selected': {
+            type: [Array, Number],
+            required: false,
+        },
+        'multiple': {
+            type: Boolean,
+            default: true,
+        }
+    },
     data: function () {
         return {
             results: [],
@@ -145,8 +187,8 @@ export default {
                 orderColumn: '',
                 orderDir: 'asc',
                 softDeletes: 'hide',
-                _token: document.head.querySelector('meta[name="csrf-token"]').content
-            }
+            },
+            debounced: debounce(this.loadItems, 250),
         };
     },
     methods: {
@@ -164,7 +206,7 @@ export default {
                 this.parameter.orderColumn = column;
                 this.parameter.orderDir = 'asc';
             }
-            this.loadItems();
+            this.debounced();
         },
         isColumnOrderable: function (column) {
             return !this.accessors.includes(column);
@@ -182,18 +224,36 @@ export default {
                 }
             }
             this.parameter.page = 1;
-            this.loadItems();
+            this.debounced();
         },
         selectAll: function (select) {
             var vm = this;
+            var pivot_selected = vm.selectedEntries;
             vm.selectedEntries = [];
             if (select) {
                 vm.results.rows.forEach(function (row) {
                     vm.selectedEntries.push(row[vm.results.primary]);
+                    vm.$emit('select', {
+                        key: row[vm.results.primary],
+                        selected: true
+                    });
+                });
+            } else {
+                pivot_selected.forEach(function (row) {
+                    vm.$emit('select', {
+                        key: row,
+                        selected: false
+                    });
                 });
             }
         },
-        loadItems: debounce(function () {
+        select: function (e, key) {
+            this.$emit('select', {
+                key: key,
+                selected: e.target.checked
+            });
+        },
+        loadItems: function () {
             var vm = this;
             vm.loading = true;
             vm.selectedEntries = [];
@@ -201,11 +261,10 @@ export default {
             axios.post(this.route('voyager.'+this.translate(this.bread.slug, true)+'.data'), vm.parameter)
             .then(function (response) {
                 vm.results = response.data;
-                vm.loading = false;
-                if (history.pushState) {
+                if (history.pushState && !vm.fromRelationship) {
                     var url = document.location.href;
                     for (var key in vm.parameter) {
-                        if (key !== '_token' && vm.parameter.hasOwnProperty(key)) {
+                        if (vm.parameter.hasOwnProperty(key)) {
                             if (key == 'filter') {
                                 url = vm.addParameterToUrl(key, JSON.stringify(vm.parameter[key]), url);
                             } else if (key !== 'softDeletes' || vm.layout.soft_deletes == 'select') {
@@ -213,7 +272,7 @@ export default {
                             }
                         }
                     }
-                    vm.pushToUrlHistory(url);   
+                    vm.pushToUrlHistory(url);
                 }
             })
             .catch(function (error) {
@@ -221,18 +280,16 @@ export default {
                 if (vm.debug) {
                     vm.debug(error.response.data.message, true, 'error');
                 }
+            }).finally(function () {
                 vm.loading = false;
             });
-        }, 250),
-        getData: function (result, column) {
-            if (this.isColumnTranslatable(column)) {
-                return this.translate(result[column]);
+        },
+        getData: function (result, formfield) {
+            if (formfield.options.translatable || false) {
+                return this.translate(result[formfield.column]);
             }
 
-            return result[column] || '';
-        },
-        isColumnTranslatable: function (column) {
-            return this.translatable.includes(column);
+            return result[formfield.column] || '';
         },
         isArray: function (input) {
             return window.isArray(input);
@@ -268,8 +325,7 @@ export default {
                 return false;
             }
 
-            //return route();
-            //console.log(result);
+            // TODO: ...
 
             return '#';
         },
@@ -336,17 +392,20 @@ export default {
     },
     watch: {
         'parameter.page': function () {
-            this.loadItems();
+            this.debounced();
         },
         'parameter.perPage': function () {
-            this.loadItems();
+            this.debounced();
         },
         'parameter.softDeletes': function () {
-            this.loadItems();
+            this.debounced();
         },
         'parameter.globalSearch': function (value) {
-            this.loadItems();
-        }
+            this.debounced();
+        },
+        'selected': function (selected) {
+            this.selectedEntries = selected;
+        },
     },
     mounted: function () {
         var search = location.search.substring(1);
@@ -363,9 +422,8 @@ export default {
             this.orderBy(this.layout.default_sort_column || '');
         }
 
-        if (this.translatable.length > 0) {
-            Vue.prototype.$language.localePicker = true;
-        }
+        // TODO: Hide locale-picker if there are no translatable formfields
+        Vue.prototype.$language.localePicker = true;
     }
 };
 </script>

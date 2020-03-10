@@ -7,33 +7,33 @@
     display: none;
 }
 
-#voyager-loader {
-    background: #F9F9F9;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    z-index: 99;
+body {
+    @apply text-gray-700;
 }
 
-#voyager-loader .icon {
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -50px;
-    margin-right: -50px;
+.mode-dark body {
+    @apply text-gray-300 bg-gray-900;
 }
 
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
-}
-.fade-enter, .fade-leave-to {
-    opacity: 0;
+a {
+    @apply text-blue-600;
 }
 
+.loader {
+    @apply absolute bg-gray-100 w-full h-full left-0 top-0 z-50;
+
+    .icon {
+        @apply absolute w-32 h-32;
+        top: 50%;
+        left: 50%;
+        margin-left: calc(theme('spacing.16') * -1);
+        margin-right: calc(theme('spacing.16') * -1);
+    }
+}
+
+.mode-dark .loader {
+    @apply bg-gray-800;
+}
 
 .search{
     transition: width 0.35s ease-out;

@@ -75,7 +75,7 @@ export default {
             var vm = this;
             var parameter = {
                 keys: vm.keys,
-                _token: document.head.querySelector('meta[name="csrf-token"]').content
+                _token: vm.$globals.csrf_token
             };
             parameter = Object.assign(parameter, action.parameter);
 
