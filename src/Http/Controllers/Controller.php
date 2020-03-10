@@ -45,6 +45,9 @@ abstract class Controller extends BaseController
     {
         $multi_select = [];
 
+        // Pass $rows so that we avoid checking unused fields
+        $request->attributes->add(['breadRows' => $rows->pluck('field')->toArray()]);
+
         /*
          * Prepare Translations and Transform data
          */
