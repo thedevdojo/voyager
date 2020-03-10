@@ -21,3 +21,12 @@ You can also specify which columns you would like to see in the dropdown or the 
 
 Now, you can easily create `belongsTo`, `belongsToMany`, `hasOne`, and `hasMany` relationships directly in Voyager.
 
+If you need to set advanced options for `belongsToMany` relationship you can set, after saving relationship, these parameters in details field:
+
+```php
+{
+    "foreign_pivot_key": "user_id",
+    "related_pivot_key": "role_id",
+    "related_key": "id"
+}
+```
