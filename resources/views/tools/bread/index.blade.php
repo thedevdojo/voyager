@@ -28,8 +28,8 @@
                     <tr>
                         <td>
                             <p class="name">
-                                <a href="{{ route('voyager.database.show', $table->name) }}"
-                                   data-name="{{ $table->name }}" class="desctable">
+                                <a href="{{ route('voyager.database.show', $table->prefix.$table->name) }}"
+                                   data-name="{{ $table->prefix.$table->name }}" class="desctable">
                                    {{ $table->name }}
                                 </a>
                                 <i class="voyager-data"
