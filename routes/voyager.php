@@ -55,9 +55,6 @@ Route::group(['as' => 'voyager.'], function () {
             // do nothing, might just be because table not yet migrated.
         }
 
-        // Role Routes
-        Route::resource('roles', $namespacePrefix.'VoyagerRoleController', ['parameters' => ['roles' => 'id']]);
-
         // Menu Routes
         Route::group([
             'as'     => 'menus.',
