@@ -14,6 +14,12 @@ To update to the latest version inside of your composer.json file make sure to u
 
 And then run `composer update`
 
+### Updating the roles BREAD
+
+The roles BREAD now uses it's own controller.  
+Please update it to use `TCG\Voyager\Http\Controllers\VoyagerRoleController`
+![](../.gitbook/assets/upgrading_roles_controller.png)
+
 ### Troubleshooting
 
 Be sure to ask us on our slack channel if you are experiencing any issues and we will try and assist. Thanks.
