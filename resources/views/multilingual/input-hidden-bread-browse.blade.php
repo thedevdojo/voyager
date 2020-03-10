@@ -3,5 +3,5 @@
            data-i18n="true"
            name="{{ $row->field.$row->id }}_i18n"
            id="{{ $row->field.$row->id }}_i18n"
-           value="{{ get_field_translations($data, $row->field) }}">
+           value="{{ get_field_translations($data, $row->field, true, '<b><i><u><strong><em><span>', 200) }}">
 @endif
