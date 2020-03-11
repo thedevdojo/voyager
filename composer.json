@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "illuminate/support": ">=7.0",
+        "illuminate/support": "~6.0|~7.0",
         "doctrine/dbal": ">=2.10"
     },
     "require-dev": {

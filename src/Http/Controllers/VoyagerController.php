@@ -42,6 +42,7 @@ class VoyagerController extends Controller
     public function search(Request $request)
     {
         $q = $request->get('query');
+        debug($request->all());
         $bread = BreadFacade::getBread($request->get('bread'));
         $results = collect([]);
         if ($bread && $bread->global_search_field) {

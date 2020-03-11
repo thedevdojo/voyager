@@ -1,6 +1,6 @@
 <template>
     <div v-click-outside="close">
-        <input type="text" class="py-2 block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none" @input="search" placeholder="search for users, posts, etc...">
+        <input autocomplete="off" type="text" class="py-2 block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none" v-model="query" @input="search" placeholder="search for users, posts, etc...">
         <div v-if="searchResults.length > 0 && opened" class="voyager-search-results">
             <div v-for="(bread, i) in searchResults" :key="'bread-results-'+i">
                 <h4>{{ bread.bread }}</h4>
@@ -39,14 +39,16 @@ export default {
         close: function () {
             this.opened = false;
         },
-        search: debounce(function (query) {
+        search: debounce(function (e) {
             var vm = this;
-            Vue.set(vm, 'query', query);
             vm.searchResults = [];
-            if (query == '') {
+            if (vm.query == '') {
                 return;
             }
             this.$globals.breads.forEach(function (bread) {
+                if (bread.global_search_field === null || bread.global_search_field == '') {
+                    return;
+                }
                 axios.post(vm.route('voyager.search'), {
                     query: vm.query,
                     bread: bread.table,

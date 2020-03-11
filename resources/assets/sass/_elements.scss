@@ -6,7 +6,11 @@
 @import "elements/table";
 
 .voyager-search-results {
-    @apply absolute bg-white rounded-lg border-gray-600 mt-8;
+    @apply absolute bg-white text-black rounded-lg border-gray-600 mt-8 p-8;
+}
+
+.mode-dark .voyager-search-results {
+    @apply bg-black text-white;
 }
 
 .hint {
