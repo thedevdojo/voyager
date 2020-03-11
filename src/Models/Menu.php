@@ -73,7 +73,7 @@ class Menu extends Model
 
         $items = $menu->parent_items->sortBy('order');
 
-        if ($menuName == 'admin' && $type == '_json') {
+        if ($type == '_json') {
             $items = static::processItems($items);
         }
 
