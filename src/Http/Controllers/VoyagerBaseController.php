@@ -53,8 +53,11 @@ class VoyagerBaseController extends Controller
             $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get();
             foreach ($searchable as $key => $value) {
                 $field = $dataRow->where('field', $value)->first();
-                $displayName = $field !== null ? $field->getTranslatedAttribute('display_name') : null;
-                $searchNames[$value] = $displayName ?: ucwords(str_replace('_', ' ', $value));
+                $displayName = ucwords(str_replace('_', ' ', $value));
+                if ($field !== null) {
+                    $displayName = $field->getTranslatedAttribute('display_name');
+                }
+                $searchNames[$value] = $displayName;
             }
         }
 
