@@ -3,9 +3,15 @@
         <div class="voyager-card">
             <div class="drag-handle cursor-move">
                 <div class="w-full text-right">
-                    <i class="cursor-pointer" @click="deleteFormfield()"><icon icon="delete" /></i>
-                    <i class="cursor-pointer" @click="openOptions()"><icon icon="cog" /></i>
-                    <i class="cursor-pointer" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()"><icon icon="resize" /></i>
+                    <i class="cursor-pointer" @click="deleteFormfield()">
+                        <unicon name="trash" fill="currentColor" />
+                    </i>
+                    <i class="cursor-pointer" @click="openOptions()">
+                        <unicon name="cog" fill="currentColor" />
+                    </i>
+                    <i class="cursor-pointer" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()">
+                        <unicon name="arrows-h" fill="currentColor" />
+                    </i>
                 </div>
                 <component
                     :is="'formfield-'+formfield.type"

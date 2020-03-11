@@ -34,12 +34,12 @@
                         @click="formfield.options.sortable ? orderBy(formfield.column) : ''"
                         :class="formfield.options.sortable ? 'cursor-pointer' : ''">
                         {{ translate(formfield.options.title, true) }}
-                        <span v-if="formfield.options.sortable && parameter.orderColumn == formfield.column">
+                        <span v-if="formfield.options.sortable && parameter.orderColumn == formfield.column" class="text-gray-800 dark:text-gray-200">
                             <span v-if="parameter.orderDir == 'asc'">
-                                <icon icon="sort-asc" />
+                                <unicon name="sort-amount-up" fill="currentColor" />
                             </span>
                             <span v-else>
-                                <icon icon="sort-desc" />
+                                <unicon name="sort-amount-down" fill="currentColor" />
                             </span>
                         </span>
                     </th>
