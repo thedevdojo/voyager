@@ -3,6 +3,6 @@
         <div class="w-full">
             <search />
         </div>
-        <user-dropdown photo="{{ Voyager::assetUrl('images/default-avatar.png') }}" name="Anonymous" />
+        <user-dropdown photo="{{ Voyager::assetUrl('images/default-avatar.png') }}" name="{{ $authentication->name() }}" />
     </div>
 </nav>

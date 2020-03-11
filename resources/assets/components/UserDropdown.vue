@@ -8,7 +8,7 @@
                 Hello {{ name }}
             </div>
            
-            <svg class="ml-2 h-6 w-6 text-black" fill="currentColor" viewBox="0 0 24 24">
+            <svg class="ml-2 h-6 w-6 text-black dark:text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M15.3 9.3a1 1 0 0 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 1.4-1.4l3.3 3.29 3.3-3.3z"/>
             </svg>
             </button>
