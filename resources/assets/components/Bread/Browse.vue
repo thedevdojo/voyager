@@ -23,92 +23,95 @@
                 <input type="text" class="voyager-input small" :placeholder="__('voyager::generic.search')" v-model="parameter.globalSearch">
             </div>
         </div>
-        
-        <table v-bind:class="['voyager-table striped', loading ? 'loading' : '']">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" :disabled="!multiple" @click="selectAll($event.target.checked)" ref="checkbox_all"></th>
-                    <th
-                        v-for="(formfield, i) in layout.formfields"
-                        :key="'th-'+i"
-                        @click="formfield.options.sortable ? orderBy(formfield.column) : ''"
-                        :class="formfield.options.sortable ? 'cursor-pointer' : ''">
-                        {{ translate(formfield.options.title, true) }}
-                        <span v-if="formfield.options.sortable && parameter.orderColumn == formfield.column" class="text-gray-800 dark:text-gray-200">
-                            <span v-if="parameter.orderDir == 'asc'">
-                                <unicon name="sort-amount-up" fill="currentColor" />
+        <div class="voyager-table striped">
+            <table v-bind:class="[loading ? 'loading' : '']">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" :disabled="!multiple" @click="selectAll($event.target.checked)" ref="checkbox_all"></th>
+                        <th
+                            v-for="(formfield, i) in layout.formfields"
+                            :key="'th-'+i"
+                            @click="formfield.options.sortable ? orderBy(formfield.column) : ''"
+                            :class="formfield.options.sortable ? 'cursor-pointer' : ''">
+                            {{ translate(formfield.options.title, true) }}
+                            <span v-if="formfield.options.sortable && parameter.orderColumn == formfield.column" class="text-gray-800 dark:text-gray-200">
+                                <span v-if="parameter.orderDir == 'asc'">
+                                    <unicon name="sort-amount-up" fill="currentColor" />
+                                </span>
+                                <span v-else>
+                                    <unicon name="sort-amount-down" fill="currentColor" />
+                                </span>
                             </span>
-                            <span v-else>
-                                <unicon name="sort-amount-down" fill="currentColor" />
-                            </span>
-                        </span>
-                    </th>
-                    <th class="text-right" v-if="!fromRelationship">{{ __('voyager::generic.actions') }}</th>
-                </tr>
-                <tr>
-                    <th></th>
-                    <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick.prevent="clearFilter(formfield.column)">
-                        <component
-                            class="my-3 mr-2"
-                            v-if="formfield.options.searchable"
-                            v-bind:value="parameter.filter[formfield.column]"
-                            v-on:input="filterBy($event, formfield.column)"
-                            :is="'formfield-'+formfield.type"
-                            :options="formfield.options"
-                            :placeholder="__('voyager::bread.search_column', { column: translate(formfield.options.title, true) })"
-                            action="query">
-                            <input type="text" class="voyager-input small"
+                        </th>
+                        <th class="text-right" v-if="!fromRelationship">{{ __('voyager::generic.actions') }}</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick.prevent="clearFilter(formfield.column)">
+                            <component
+                                class="my-3 mr-2"
+                                v-if="formfield.options.searchable"
                                 v-bind:value="parameter.filter[formfield.column]"
+                                v-on:input="filterBy($event, formfield.column)"
+                                :is="'formfield-'+formfield.type"
+                                :options="formfield.options"
                                 :placeholder="__('voyager::bread.search_column', { column: translate(formfield.options.title, true) })"
-                                @input="filterBy($event.target.value, formfield.column)">
-                        </component>
-                    </th>
-                    <th v-if="!fromRelationship"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                    v-for="(result, i) in results.rows"
-                    v-bind:key="'tr-'+i"
-                    @dblclick.stop="$emit('select-relationship', result[results.primary])">
-                    <td>
-                        <input
-                            :type="multiple ? 'checkbox' : 'radio'"
-                            v-model="selectedEntries"
-                            :value="result[results.primary]"
-                            @click="select($event, result[results.primary])">
-                    </td>
-                    <td v-for="(formfield, i) in layout.formfields" :key="'td-'+i">
-                        <div v-if="isArray(getData(result, formfield))">
-                            <div v-for="(relationship, key) in getData(result, formfield).slice(0, 3)" v-bind:key="key">
-                                <component :is="formfield.options.link ? 'a' : 'div'" :href="getRelationshipLink(formfield, relationship)">
+                                action="query">
+                                <input type="text" class="voyager-input small"
+                                    v-bind:value="parameter.filter[formfield.column]"
+                                    :placeholder="__('voyager::bread.search_column', { column: translate(formfield.options.title, true) })"
+                                    @input="filterBy($event.target.value, formfield.column)">
+                            </component>
+                        </th>
+                        <th v-if="!fromRelationship"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="(result, i) in results.rows"
+                        v-bind:key="'tr-'+i"
+                        @dblclick.stop="$emit('select-relationship', result[results.primary])">
+                        <td>
+                            <input
+                                :type="multiple ? 'checkbox' : 'radio'"
+                                v-model="selectedEntries"
+                                :value="result[results.primary]"
+                                @click="select($event, result[results.primary])">
+                        </td>
+                        <td v-for="(formfield, i) in layout.formfields" :key="'td-'+i">
+                            <div v-if="isArray(getData(result, formfield))">
+                                <div v-for="(relationship, key) in getData(result, formfield).slice(0, 3)" v-bind:key="key">
+                                    <component :is="formfield.options.link ? 'a' : 'div'" :href="getRelationshipLink(formfield, relationship)">
+                                        <component
+                                            :is="'formfield-'+formfield.type"
+                                            :value="relationship"
+                                            :options="formfield.options"
+                                            action="browse" />
+                                    </component>
+                                </div>
+                                <i v-if="getData(result, formfield).length > 3">
+                                    {{ __('voyager::bread.results_more', {num: (getData(result, formfield).length - 3)}) }}
+                                </i>
+                            </div>
+                            <div v-else>
+                                <component :is="formfield.options.link ? 'a' : 'div'" :href="getLink(formfield, result)" :target="getTarget(formfield)">
                                     <component
                                         :is="'formfield-'+formfield.type"
-                                        :value="relationship"
+                                        :value="getData(result, formfield)"
                                         :options="formfield.options"
                                         action="browse" />
                                 </component>
                             </div>
-                            <i v-if="getData(result, formfield).length > 3">
-                                {{ __('voyager::bread.results_more', {num: (getData(result, formfield).length - 3)}) }}
-                            </i>
-                        </div>
-                        <div v-else>
-                            <component :is="formfield.options.link ? 'a' : 'div'" :href="getLink(formfield, result)" :target="getTarget(formfield)">
-                                <component
-                                    :is="'formfield-'+formfield.type"
-                                    :value="getData(result, formfield)"
-                                    :options="formfield.options"
-                                    action="browse" />
-                            </component>
-                        </div>
-                    </td>
-                    <td class="text-right" v-if="!fromRelationship">
-                        <bread-actions :actions="result.actions" :mass="false" :keys="result[results.primary]" :bread="bread" :key="'actions-'+i" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                        <td class="text-right" v-if="!fromRelationship">
+                            <bread-actions :actions="result.actions" :mass="false" :keys="result[results.primary]" :bread="bread" :key="'actions-'+i" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- TODO: Add pagination here? -->
+        </div>
             
         <div v-bind:class="['flex mb-4 mt-4', loading ? 'opacity-25' : '']">
             <div class="w-1/2">

@@ -10,7 +10,7 @@
         "postinstall": "patch-package"
     },
     "devDependencies": {
-        "cross-env": "^7.0.1",
+        "cross-env": "^7.0.2",
         "laravel-mix": "^5.0.1",
         "laravel-mix-purgecss": "^4.2.0",
         "patch-package": "^6.2.1",
@@ -28,7 +28,7 @@
         "vue": "^2.6.11",
         "vue-clickaway": "^2.2.2",
         "vue-popperjs": "^2.3.0",
-        "vue-select": "^3.5.1",
+        "vue-select": "^3.8.1",
         "vue-snotify": "^3.2.1",
         "vue-swatches": "^1.0.4",
         "vue-unicons": "^2.0.3",

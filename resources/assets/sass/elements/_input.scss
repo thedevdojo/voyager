@@ -1,10 +1,9 @@
 .mode-dark .voyager-input {
     @apply border-gray-600 bg-gray-700 text-gray-200;
-    transition: border 0.2s ease-out-in;
 }
 
 .voyager-input {
-    @apply border-2 border-gray-400 appearance-none rounded w-full py-3 px-3 text-gray-800;
+    @apply border-2 border-gray-400 appearance-none rounded w-full py-2 px-2 text-gray-800;
 
     &:active,
     &:focus {

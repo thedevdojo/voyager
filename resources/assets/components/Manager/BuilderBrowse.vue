@@ -1,33 +1,35 @@
 <template>
-    <table class="voyager-table striped">
-        <thead>
-            <tr>
-                <th>{{ __('voyager::generic.table') }}</th>
-                <th class="text-right">{{ __('voyager::generic.actions') }}</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="table in tables" v-bind:key="table">
-                <td>{{ table }}</td>
-                <td class="text-right">
-                    <div v-if="hasBread(table)">
-                        <a class="button blue" :href="route('voyager.'+table+'.browse')">
-                            {{ __('voyager::generic.browse') }}
+    <div class="voyager-table striped">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ __('voyager::generic.table') }}</th>
+                    <th class="text-right">{{ __('voyager::generic.actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="table in tables" v-bind:key="table">
+                    <td>{{ table }}</td>
+                    <td class="text-right">
+                        <div v-if="hasBread(table)">
+                            <a class="button blue" :href="route('voyager.'+table+'.browse')">
+                                {{ __('voyager::generic.browse') }}
+                            </a>
+                            <a class="button yellow" :href="route('voyager.bread.edit', table)">
+                                {{ __('voyager::generic.edit_type', {type: __('voyager::bread.bread')}) }}
+                            </a>
+                            <button class="button red" @click="deleteBread(table)">
+                                {{ __('voyager::generic.delete_type', {type: __('voyager::bread.bread')}) }}
+                            </button>
+                        </div>
+                        <a v-else class="button green" :href="route('voyager.bread.create', table)">
+                            {{ __('voyager::generic.add_type', {type: __('voyager::bread.bread')}) }}
                         </a>
-                        <a class="button yellow" :href="route('voyager.bread.edit', table)">
-                            {{ __('voyager::generic.edit_type', {type: __('voyager::bread.bread')}) }}
-                        </a>
-                        <button class="button red" @click="deleteBread(table)">
-                            {{ __('voyager::generic.delete_type', {type: __('voyager::bread.bread')}) }}
-                        </button>
-                    </div>
-                    <a v-else class="button green" :href="route('voyager.bread.create', table)">
-                        {{ __('voyager::generic.add_type', {type: __('voyager::bread.bread')}) }}
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <script>

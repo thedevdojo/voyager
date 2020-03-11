@@ -16,31 +16,33 @@
                 <dropdown ref="dropdown">
                     <div slot="opener"></div>
                     <div class="absolute bg-white rounded-lg shadow-xl">
-                        <table class="voyager-table striped m-0">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        <input type="checkbox" :disabled="!multiple" @click="selectAll">
-                                    </th>
-                                    <th v-for="(prop, a) in displayProp" :key="'th-'+a">
-                                        {{ prop }}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(option, i) in options" :key="'option-'+i">
-                                    <td>
-                                        <input
-                                            :type="multiple ? 'checkbox' : 'radio'"
-                                            :checked="checked(option[keyProp])"
-                                            @input="selectOption(option[keyProp], $event)">
-                                    </td>
-                                    <td v-for="(prop, b) in displayProp" :key="'td-'+b">
-                                        {{ option[prop] }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="voyager-table striped">
+                            <table class="m-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" :disabled="!multiple" @click="selectAll">
+                                        </th>
+                                        <th v-for="(prop, a) in displayProp" :key="'th-'+a">
+                                            {{ prop }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(option, i) in options" :key="'option-'+i">
+                                        <td>
+                                            <input
+                                                :type="multiple ? 'checkbox' : 'radio'"
+                                                :checked="checked(option[keyProp])"
+                                                @input="selectOption(option[keyProp], $event)">
+                                        </td>
+                                        <td v-for="(prop, b) in displayProp" :key="'td-'+b">
+                                            {{ option[prop] }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </dropdown>
             </slot>

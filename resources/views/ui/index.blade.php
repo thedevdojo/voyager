@@ -1,5 +1,7 @@
 @extends('voyager::app')
 
+@section('page-title', 'UI')
+
 @section('content')
 <div class="voyager-card">
     <h2 class="title">Form Inputs</h2>

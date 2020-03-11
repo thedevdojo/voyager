@@ -14,7 +14,7 @@
 
             <a href="{{ route('voyager.bread.index') }}" class="flex justify-start items-center no-underline h-10 pl-2 relative rounded-full mt-2 text-black dark:text-white">
                 <unicon name="bread" fill="currentColor" view-box="0 0 512 512" class="pr-2" height="20" width="20"></unicon>
-                <span class="text-xs font-medium leading-none"> Data Types </span>
+                <span class="text-xs font-medium leading-none"> {{ __('voyager::manager.breads') }} </span>
             </a>
 
             <a href="{{ route('voyager.ui') }}" class="flex justify-start items-center no-underline h-10 pl-2 relative rounded-full mt-2 text-black dark:text-white">

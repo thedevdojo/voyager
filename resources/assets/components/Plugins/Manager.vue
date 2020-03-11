@@ -35,66 +35,68 @@
                 <button class="button green">{{ __('voyager::plugins.find_a_plugin') }}</button>
             </div>
         </modal>
-        <table v-bind:class="['voyager-table', loading ? 'loading' : '']" id="bread-manager-browse">
-            <thead>
-                <tr>
-                    <th>
-                        {{ __('voyager::generic.name') }}
-                    </th>
-                    <th>
-                        {{ __('voyager::generic.description') }}
-                    </th>
-                    <th>
-                        {{ __('voyager::generic.type') }}
-                    </th>
-                    <th>
-                        {{ __('voyager::generic.version') }}
-                    </th>
-                    <th class="text-right">
-                        {{ __('voyager::generic.actions') }}
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(plugin, i) in installedPlugins" :key="'installed-plugin-'+i">
-                    <td>{{ plugin.name }}</td>
-                    <td>{{ plugin.description }}</td>
-                    <td>{{ __('voyager::plugins.types.'+plugin.type) }}</td>
-                    <td>
-                        {{ plugin.version || '-' }}
-                    </td>
-                    <td class="text-right">
-                        <a class="button green" v-if="plugin.website" :href="plugin.website" target="_blank">
-                            {{ __('voyager::generic.website') }}
-                        </a>
-                        <button v-if="!plugin.enabled" class="button green" @click="enablePlugin(plugin, true)">
-                            {{ __('voyager::generic.enable') }}
-                        </button>
-                        <button v-else class="button red" @click="enablePlugin(plugin, false)">
-                            {{ __('voyager::generic.disable') }}
-                        </button>
-                        <a v-if="plugin.has_settings && plugin.enabled" :href="route('voyager.plugins.settings', i)" class="button blue">
-                            {{ __('voyager::generic.settings') }}
-                        </a>
+        <div class="voyager-table striped">
+            <table v-bind:class="[loading ? 'loading' : '']" id="bread-manager-browse">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ __('voyager::generic.name') }}
+                        </th>
+                        <th>
+                            {{ __('voyager::generic.description') }}
+                        </th>
+                        <th>
+                            {{ __('voyager::generic.type') }}
+                        </th>
+                        <th>
+                            {{ __('voyager::generic.version') }}
+                        </th>
+                        <th class="text-right">
+                            {{ __('voyager::generic.actions') }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(plugin, i) in installedPlugins" :key="'installed-plugin-'+i">
+                        <td>{{ plugin.name }}</td>
+                        <td>{{ plugin.description }}</td>
+                        <td>{{ __('voyager::plugins.types.'+plugin.type) }}</td>
+                        <td>
+                            {{ plugin.version || '-' }}
+                        </td>
+                        <td class="text-right">
+                            <a class="button green" v-if="plugin.website" :href="plugin.website" target="_blank">
+                                {{ __('voyager::generic.website') }}
+                            </a>
+                            <button v-if="!plugin.enabled" class="button green" @click="enablePlugin(plugin, true)">
+                                {{ __('voyager::generic.enable') }}
+                            </button>
+                            <button v-else class="button red" @click="enablePlugin(plugin, false)">
+                                {{ __('voyager::generic.disable') }}
+                            </button>
+                            <a v-if="plugin.has_settings && plugin.enabled" :href="route('voyager.plugins.settings', i)" class="button blue">
+                                {{ __('voyager::generic.settings') }}
+                            </a>
 
-                        <button v-if="plugin.instructions" class="button blue" @click="$refs['instructions-modal-'+i][0].open()">
-                            {{ __('voyager::generic.instructions') }}
-                        </button>
-                        <modal v-if="plugin.instructions" :ref="'instructions-modal-'+i">
-                            <div class="flex mb-4">
-                                <div class="w-2/3">
-                                    <h4 class="text-gray-100 text-xl">{{ __('voyager::generic.instructions') }}</h4>
+                            <button v-if="plugin.instructions" class="button blue" @click="$refs['instructions-modal-'+i][0].open()">
+                                {{ __('voyager::generic.instructions') }}
+                            </button>
+                            <modal v-if="plugin.instructions" :ref="'instructions-modal-'+i">
+                                <div class="flex mb-4">
+                                    <div class="w-2/3">
+                                        <h4 class="text-gray-100 text-xl">{{ __('voyager::generic.instructions') }}</h4>
+                                    </div>
+                                    <div class="w-1/3 text-right text-gray-100">
+                                        <button class="button green close-button">X</button>
+                                    </div>
                                 </div>
-                                <div class="w-1/3 text-right text-gray-100">
-                                    <button class="button green close-button">X</button>
-                                </div>
-                            </div>
-                            <div v-html="plugin.instructions"></div>
-                        </modal>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                                <div v-html="plugin.instructions"></div>
+                            </modal>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
