@@ -55,7 +55,7 @@
     @endphp
 
     <li class="{{ $listItemClass }}">
-        <a href="{{ url($item->link()) }}" target="{{ $item->target }}" style="{{ $styles }}" {!! isset($linkAttributes) ? $linkAttributes : '' !!}>
+        <a href="{{ url($item->link()) }}" target="{{ $item->target }}" style="{{ $styles }}" {!! $linkAttributes ?? '' !!}>
             {!! $icon !!}
             <span>{{ $item->title }}</span>
             {!! $caret !!}

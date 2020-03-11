@@ -28,8 +28,8 @@
                     <tr>
                         <td>
                             <p class="name">
-                                <a href="{{ route('voyager.database.show', $table->name) }}"
-                                   data-name="{{ $table->name }}" class="desctable">
+                                <a href="{{ route('voyager.database.show', $table->prefix.$table->name) }}"
+                                   data-name="{{ $table->prefix.$table->name }}" class="desctable">
                                    {{ $table->name }}
                                 </a>
                                 <i class="voyager-data"
@@ -52,7 +52,7 @@
                                     <i class="voyager-trash"></i> {{ __('voyager::generic.delete') }}
                                 </a>
                             @else
-                                <a href="{{ route('voyager.bread.create', ['name' => $table->name]) }}"
+                                <a href="{{ route('voyager.bread.create', $table->name) }}"
                                    class="_btn btn-default btn-sm pull-right">
                                     <i class="voyager-plus"></i> {{ __('voyager::bread.add_bread') }}
                                 </a>
@@ -74,7 +74,7 @@
                     <h4 class="modal-title"><i class="voyager-trash"></i>  {!! __('voyager::bread.delete_bread_quest', ['table' => '<span id="delete_builder_name"></span>']) !!}</h4>
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('voyager.bread.delete', ['id' => null]) }}" id="delete_builder_form" method="POST">
+                    <form action="#" id="delete_builder_form" method="POST">
                         {{ method_field('DELETE') }}
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <input type="submit" class="btn btn-danger" value="{{ __('voyager::bread.delete_bread_conf') }}">
@@ -151,7 +151,7 @@
                 name = $(this).data('name');
 
                 $('#delete_builder_name').text(name);
-                $('#delete_builder_form')[0].action += '/' + id;
+                $('#delete_builder_form')[0].action = '{{ route('voyager.bread.delete', ['__id']) }}'.replace('__id', id);
                 $('#delete_builder_modal').modal('show');
             });
 

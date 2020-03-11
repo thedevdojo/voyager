@@ -72,10 +72,12 @@
                     <input id="m_form_method" type="hidden" name="_method" value="POST">
                     {{ csrf_field() }}
                     <div class="modal-body">
-                        @include('voyager::multilingual.language-selector')
-                        <label for="name">{{ __('voyager::menu_builder.item_title') }}</label>
-                        @include('voyager::multilingual.input-hidden', ['_field_name' => 'title', '_field_trans' => ''])
-                        <input type="text" class="form-control" id="m_title" name="title" placeholder="{{ __('voyager::generic.title') }}"><br>
+                        <div>
+                            @include('voyager::multilingual.language-selector')
+                            <label for="name">{{ __('voyager::menu_builder.item_title') }}</label>
+                            @include('voyager::multilingual.input-hidden', ['_field_name' => 'title', '_field_trans' => ''])
+                            <input type="text" class="form-control" id="m_title" name="title" placeholder="{{ __('voyager::generic.title') }}"><br>
+                        </div>
                         <label for="type">{{ __('voyager::menu_builder.link_type') }}</label>
                         <select id="m_link_type" class="form-control" name="type">
                             <option value="url" selected="selected">{{ __('voyager::menu_builder.static_url') }}</option>
@@ -277,7 +279,7 @@
              */
             $('.item_actions').on('click', '.delete', function (e) {
                 id = $(e.currentTarget).data('id');
-                $('#delete_form')[0].action = '{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '']) }}/' + id;
+                $('#delete_form')[0].action = '{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '__id']) }}'.replace('__id', id);
                 $('#delete_modal').modal('show');
             });
 

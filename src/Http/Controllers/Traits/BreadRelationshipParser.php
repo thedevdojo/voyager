@@ -24,6 +24,9 @@ trait BreadRelationshipParser
         foreach ($forget_keys as $forget_key) {
             $dataType->{$bread_type.'Rows'}->forget($forget_key);
         }
+
+        // Reindex collection
+        $dataType->{$bread_type.'Rows'} = $dataType->{$bread_type.'Rows'}->values();
     }
 
     /**
@@ -50,5 +53,30 @@ trait BreadRelationshipParser
         }
 
         return $dataTypeContent instanceof LengthAwarePaginator ? $dataTypeContent->setCollection($dataTypeCollection) : $dataTypeCollection;
+    }
+
+    /**
+     * Eagerload relationships.
+     *
+     * @param mixed    $dataTypeContent     Can be either an eloquent Model or Collection.
+     * @param DataType $dataType
+     * @param string   $action
+     * @param bool     $isModelTranslatable
+     *
+     * @return void
+     */
+    protected function eagerLoadRelations($dataTypeContent, DataType $dataType, string $action, bool $isModelTranslatable)
+    {
+        // Eagerload Translations
+        if (config('voyager.multilingual.enabled')) {
+            // Check if BREAD is Translatable
+            if ($isModelTranslatable) {
+                $dataTypeContent->load('translations');
+            }
+
+            // DataRow is translatable so it will always try to load translations
+            // even if current Model is not translatable
+            $dataType->{$action.'Rows'}->load('translations');
+        }
     }
 }

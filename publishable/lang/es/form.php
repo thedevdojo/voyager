@@ -9,7 +9,7 @@ return [
     'type_image'                   => 'Imagen',
     'type_radiobutton'             => 'Botón de radio',
     'type_richtextbox'             => 'Caja de texto enriquecido',
-    'type_selectdropdown'          => 'Seleccionar Desplegable',
+    'type_selectdropdown'          => 'Lista desplegable',
     'type_textarea'                => 'Área de texto',
     'type_textbox'                 => 'Caja de texto',
 ];

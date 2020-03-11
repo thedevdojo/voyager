@@ -131,6 +131,11 @@ trait Translatable
      */
     public function getTranslatedAttribute($attribute, $language = null, $fallback = true)
     {
+        // If multilingual is not enabled don't check for translations
+        if (!config('voyager.multilingual.enabled')) {
+            return $this->getAttributeValue($attribute);
+        }
+
         list($value) = $this->getTranslatedAttributeMeta($attribute, $language, $fallback);
 
         return $value;
@@ -224,7 +229,7 @@ trait Translatable
         $locales = config('voyager.multilingual.locales', [$default]);
 
         foreach ($locales as $locale) {
-            if (!isset($translations[$locale])) {
+            if (empty($translations[$locale])) {
                 continue;
             }
 
@@ -334,14 +339,16 @@ trait Translatable
      *
      * @return array translations
      */
-    public function prepareTranslations(&$request)
+    public function prepareTranslations($request)
     {
         $translations = [];
 
         // Translatable Fields
         $transFields = $this->getTranslatableAttributes();
 
-        foreach ($transFields as $field) {
+        $fields = !empty($request->attributes->get('breadRows')) ? array_intersect($request->attributes->get('breadRows'), $transFields) : $transFields;
+
+        foreach ($fields as $field) {
             if (!$request->input($field.'_i18n')) {
                 throw new Exception('Invalid Translatable field'.$field);
             }
@@ -362,6 +369,39 @@ trait Translatable
 
         // Remove language selector input
         unset($request['i18n_selector']);
+
+        return $translations;
+    }
+
+    /**
+     * Prepare translations and set default locale field value.
+     *
+     * @param object $requestData
+     *
+     * @return array translations
+     */
+    public function prepareTranslationsFromArray($field, &$requestData)
+    {
+        $translations = [];
+
+        $field = 'field_display_name_'.$field;
+
+        if (empty($requestData[$field.'_i18n'])) {
+            throw new Exception('Invalid Translatable field '.$field);
+        }
+
+        $trans = json_decode($requestData[$field.'_i18n'], true);
+
+        // Set the default local value
+        $requestData['display_name'] = $trans[config('voyager.multilingual.default', 'en')];
+
+        $translations['display_name'] = $this->setAttributeTranslations(
+            'display_name',
+            $trans
+        );
+
+        // Remove field hidden input
+        unset($requestData[$field.'_i18n']);
 
         return $translations;
     }

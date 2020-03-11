@@ -1,14 +1,14 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: "[Feature]"
+title: ""
 labels: feature
 assignees: ''
 
 ---
 
 <!---
-IF YOU'RE POSTING A QUESTION ABOUT HOW TO USE VOYAGER, PLEASE CONSIDER ASKING IN SLACK FIRST
+QUESTIONS ABOUT HOW TO USE VOYAGER SHOULD BE ASKED IN SLACK FIRST
 --->
 ## Version information
 <!--- The following information is strongly encouraged, but not required for feature requests --->

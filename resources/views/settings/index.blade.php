@@ -236,14 +236,14 @@
                     <ul class="nav nav-tabs">
                         @foreach($settings as $group => $setting)
                             <li @if($group == $active) class="active" @endif>
-                                <a data-toggle="tab" href="#{{ str_slug($group) }}">{{ $group }}</a>
+                                <a data-toggle="tab" href="#{{ \Illuminate\Support\Str::slug($group) }}">{{ $group }}</a>
                             </li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
                         @foreach($settings as $group => $group_settings)
-                        <div id="{{ str_slug($group) }}" class="tab-pane fade in @if($group == $active) active @endif">
+                        <div id="{{ \Illuminate\Support\Str::slug($group) }}" class="tab-pane fade in @if($group == $active) active @endif">
                             @foreach($group_settings as $setting)
                             <div class="panel-heading">
                                 <h3 class="panel-title">
@@ -256,10 +256,12 @@
                                     <a href="{{ route('voyager.settings.move_down', $setting->id) }}">
                                         <i class="sort-icons voyager-sort-desc"></i>
                                     </a>
+                                    @can('delete', Voyager::model('Setting'))
                                     <i class="voyager-trash"
                                        data-id="{{ $setting->id }}"
                                        data-display-key="{{ $setting->key }}"
                                        data-display-name="{{ $setting->display_name }}"></i>
+                                    @endcan
                                 </div>
                             </div>
 
@@ -268,13 +270,13 @@
                                     @if ($setting->type == "text")
                                         <input type="text" class="form-control" name="{{ $setting->key }}" value="{{ $setting->value }}">
                                     @elseif($setting->type == "text_area")
-                                        <textarea class="form-control" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                                        <textarea class="form-control" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</textarea>
                                     @elseif($setting->type == "rich_text_box")
-                                        <textarea class="form-control richTextBox" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                                        <textarea class="form-control richTextBox" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</textarea>
                                     @elseif($setting->type == "code_editor")
                                         <?php $options = json_decode($setting->details); ?>
-                                        <div id="{{ $setting->key }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_400" name="{{ $setting->key }}">@if(isset($setting->value)){{ $setting->value }}@endif</div>
-                                        <textarea name="{{ $setting->key }}" id="{{ $setting->key }}_textarea" class="hidden">@if(isset($setting->value)){{ $setting->value }}@endif</textarea>
+                                        <div id="{{ $setting->key }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_400" name="{{ $setting->key }}">{{ $setting->value ?? '' }}</div>
+                                        <textarea name="{{ $setting->key }}" id="{{ $setting->key }}_textarea" class="hidden">{{ $setting->value ?? '' }}</textarea>
                                     @elseif($setting->type == "image" || $setting->type == "file")
                                         @if(isset( $setting->value ) && !empty( $setting->value ) && Storage::disk(config('voyager.storage.disk'))->exists($setting->value))
                                             <div class="img_settings_container">
@@ -283,7 +285,16 @@
                                             </div>
                                             <div class="clearfix"></div>
                                         @elseif($setting->type == "file" && isset( $setting->value ))
-                                            <div class="fileType">{{ $setting->value }}</div>
+                                            @if(json_decode($setting->value) !== null)
+                                                @foreach(json_decode($setting->value) as $file)
+                                                  <div class="fileType">
+                                                    <a class="fileType" target="_blank" href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) }}">
+                                                      {{ $file->original_name }}
+                                                    </a>
+                                                    <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x delete_value"></a>
+                                                 </div>
+                                                @endforeach
+                                            @endif
                                         @endif
                                         <input type="file" name="{{ $setting->key }}">
                                     @elseif($setting->type == "select_dropdown")
@@ -293,7 +304,7 @@
                                             <?php $default = (isset($options->default)) ? $options->default : NULL; ?>
                                             @if(isset($options->options))
                                                 @foreach($options->options as $index => $option)
-                                                    <option value="{{ $index }}" @if($default == $index && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $index){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                                                    <option value="{{ $index }}" @if($default == $index && $selected_value === NULL) selected="selected" @endif @if($selected_value == $index) selected="selected" @endif>{{ $option }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -307,7 +318,7 @@
                                                 @foreach($options->options as $index => $option)
                                                     <li>
                                                         <input type="radio" id="option-{{ $index }}" name="{{ $setting->key }}"
-                                                               value="{{ $index }}" @if($default == $index && $selected_value === NULL){{ 'checked' }}@endif @if($selected_value == $index){{ 'checked' }}@endif>
+                                                               value="{{ $index }}" @if($default == $index && $selected_value === NULL) checked @endif @if($selected_value == $index) checked @endif>
                                                         <label for="option-{{ $index }}">{{ $option }}</label>
                                                         <div class="check"></div>
                                                     </li>
@@ -411,6 +422,7 @@
         @endcan
     </div>
 
+    @can('delete', Voyager::model('Setting'))
     <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -433,6 +445,7 @@
             </div>
         </div>
     </div>
+    @endcan
 
 @stop
 
@@ -448,6 +461,7 @@
                 }
             });
 
+            @can('delete', Voyager::model('Setting'))
             $('.panel-actions .voyager-trash').click(function () {
                 var display = $(this).data('display-name') + '/' + $(this).data('display-key');
 
@@ -456,6 +470,7 @@
                 $('#delete_form')[0].action = '{{ route('voyager.settings.delete', [ 'id' => '__id' ]) }}'.replace('__id', $(this).data('id'));
                 $('#delete_modal').modal('show');
             });
+            @endcan
 
             $('.toggleswitch').bootstrapToggle();
 

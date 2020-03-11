@@ -195,7 +195,7 @@
 
 [dir="rtl"] .panel-actions{
     left: 30px;
-    right: auto;
+    right: unset !important;
 }
 
 [dir="rtl"] code{
@@ -213,7 +213,7 @@
 }
 
 [dir="rtl"] .app-container .content-container .side-menu .navbar-nav li.dropdown > a:after {
-    right: auto;
+    right: auto !important;
     left: 1em;
 }
 
@@ -337,6 +337,9 @@
 [dir="rtl"] .voyager .navbar.navbar-default .navbar-nav .dropdown-menu {
     background-color: #fff;
     display: block;
+    position: absolute !important;
+    left: 0;
+    right: auto;
 }
 
 
@@ -346,4 +349,48 @@
     border-bottom:0;
     width: 99.5%;
     height: 1px;
+}
+
+
+/******** New ********/
+[dir="rtl"] .database-tables .name a {
+ float:right;
+}
+
+[dir="rtl"] .app-container .side-body .container-fluid{
+	padding-left:0;
+	padding-right: 15px;
+
+	}
+
+[dir="rtl"] .table.dataTable tbody td,
+table.dataTable tbody th {
+ padding:8px 18px
+}
+[dir="rtl"] .btn-group-sm > .btn i, .btn-sm i {top:3px}
+
+[dir="rtl"] .glyphicon-list::before{font-family: voyager !important;}
+
+
+[dir="rtl"] .ps.ps--active-y > .ps__scrollbar-y-rail {
+    right: auto !important;
+    left: 0;
+}
+
+[dir="rtl"] .ps > .ps__scrollbar-y-rail > .ps__scrollbar-y {
+    right:auto !important;
+    left: 2px;
+}
+
+[dir="rtl"] .hamburger.is-active .hamburger-inner:before {
+    transform: translate3d(5px,1px,0) rotate(45deg) scaleX(.5);
+}
+
+[dir="rtl"] .hamburger.is-active .hamburger-inner:after {
+    transform: translate3d(5px,-1px,0) rotate(-45deg) scaleX(.5);
+}
+
+[dir="rtl"] .dd-list .dd-list {
+    padding-left: unset;
+    padding-right: 30px;
 }

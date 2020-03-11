@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerMenuController extends Controller
@@ -122,7 +123,7 @@ class VoyagerMenuController extends Controller
 
     protected function prepareParameters($parameters)
     {
-        switch (array_get($parameters, 'type')) {
+        switch (Arr::get($parameters, 'type')) {
             case 'route':
                 $parameters['url'] = null;
                 break;

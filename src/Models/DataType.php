@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Facades\Voyager;
@@ -95,8 +96,8 @@ class DataType extends Model
 
             if ($this->fill($requestData)->save()) {
                 $fields = $this->fields((strlen($this->model_name) != 0)
-                    ? app($this->model_name)->getTable()
-                    : array_get($requestData, 'name')
+                    ? DB::getTablePrefix().app($this->model_name)->getTable()
+                    : DB::getTablePrefix().Arr::get($requestData, 'name')
                 );
 
                 $requestData = $this->getRelationships($requestData, $fields);
@@ -115,9 +116,17 @@ class DataType extends Model
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
 
+                    // Prepare Translations and Transform data
+                    $translations = (is_bread_translatable($dataRow) && !empty($requestData['field_display_name_'.$field.'_i18n']))
+                        ? $dataRow->prepareTranslationsFromArray($field, $requestData)
+                        : [];
+
                     if (!$dataRow->save()) {
                         throw new \Exception(__('voyager::database.field_safe_failed', ['field' => $field]));
                     }
+
+                    // Save translations if applied
+                    $dataRow->saveTranslations($translations);
                 }
 
                 // Clean data_rows that don't have an associated field
@@ -186,10 +195,12 @@ class DataType extends Model
                         'label'       => $requestData['relationship_label_'.$relationship],
                         'pivot_table' => $requestData['relationship_pivot_table_'.$relationship],
                         'pivot'       => ($requestData['relationship_type_'.$relationship] == 'belongsToMany') ? '1' : '0',
-                        'taggable'    => isset($requestData['relationship_taggable_'.$relationship]) ? $requestData['relationship_taggable_'.$relationship] : '0',
+                        'taggable'    => $requestData['relationship_taggable_'.$relationship] ?? '0',
                     ];
 
-                    $requestData['field_details_'.$relationship] = json_encode($relationshipDetails);
+                    $details = json_decode($requestData['field_details_'.$relationship], true);
+                    $merge = array_merge($details, $relationshipDetails);
+                    $requestData['field_details_'.$relationship] = json_encode($merge);
                 }
             }
         }
@@ -247,7 +258,7 @@ class DataType extends Model
 
     public function getOrderColumnAttribute()
     {
-        return isset($this->details->order_column) ? $this->details->order_column : null;
+        return $this->details->order_column ?? null;
     }
 
     public function setOrderColumnAttribute($value)
@@ -257,7 +268,7 @@ class DataType extends Model
 
     public function getOrderDisplayColumnAttribute()
     {
-        return isset($this->details->order_display_column) ? $this->details->order_display_column : null;
+        return $this->details->order_display_column ?? null;
     }
 
     public function setOrderDisplayColumnAttribute($value)
@@ -267,7 +278,7 @@ class DataType extends Model
 
     public function getDefaultSearchKeyAttribute()
     {
-        return isset($this->details->default_search_key) ? $this->details->default_search_key : null;
+        return $this->details->default_search_key ?? null;
     }
 
     public function setDefaultSearchKeyAttribute($value)
@@ -277,7 +288,7 @@ class DataType extends Model
 
     public function getOrderDirectionAttribute()
     {
-        return isset($this->details->order_direction) ? $this->details->order_direction : 'desc';
+        return $this->details->order_direction ?? 'desc';
     }
 
     public function setOrderDirectionAttribute($value)
@@ -287,7 +298,7 @@ class DataType extends Model
 
     public function getScopeAttribute()
     {
-        return isset($this->details->scope) ? $this->details->scope : null;
+        return $this->details->scope ?? null;
     }
 
     public function setScopeAttribute($value)

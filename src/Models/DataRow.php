@@ -3,14 +3,19 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use TCG\Voyager\Traits\Translatable;
 
 class DataRow extends Model
 {
+    use Translatable;
+
     protected $table = 'data_rows';
 
     protected $guarded = [];
 
     public $timestamps = false;
+
+    protected $translatable = ['display_name'];
 
     public function rowBefore()
     {
@@ -53,7 +58,7 @@ class DataRow extends Model
         }
         $params['order_by'] = $this->field;
 
-        return url()->current().'?'.http_build_query(array_merge($params, \Request::all()));
+        return url()->current().'?'.http_build_query(array_merge(\Request::all(), $params));
     }
 
     public function setDetailsAttribute($value)

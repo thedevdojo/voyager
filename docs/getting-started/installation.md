@@ -3,7 +3,7 @@
 Voyager is super easy to install. After creating your new Laravel application you can include the Voyager package with the following command:
 
 ```bash
-composer require tcg/voyager:1.x-dev
+composer require tcg/voyager
 ```
 
 Next make sure to create a new database and add your database credentials to your .env file, you will also want to add your application URL in the `APP_URL` variable:
@@ -15,11 +15,6 @@ DB_DATABASE=homestead
 DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
-
-{% hint style="info" %}
-**Using Laravel 5.4?**  
-If you are installing with Laravel 5.4 you will need to [add the Service Provider manually](installation.md#adding-the-service-provider). Otherwise, if you are on 5.5 this happens automatically thanks to package auto-discovery.
-{% endhint %}
 
 Finally, we can install Voyager. You can choose to install Voyager with dummy data or without the dummy data. The dummy data will include 1 admin account \(if no users already exist\), 1 demo page, 4 demo posts, 2 categories and 7 settings.
 
@@ -54,7 +49,7 @@ If you installed with the dummy data, a user has been created for you with the f
 A dummy user is **only** created if there are no current users in your database.
 {% endhint %}
 
-If you did not go with the dummy user, you may wish to assign admin priveleges to an existing user. This can easily be done by running this command:
+If you did not go with the dummy user, you may wish to assign admin privileges to an existing user. This can easily be done by running this command:
 
 ```bash
 php artisan voyager:admin your@email.com
@@ -68,31 +63,6 @@ php artisan voyager:admin your@email.com --create
 
 And you will be prompted for the users name and password.
 
-## Adding the Service Provider
-
-{% hint style="info" %}
-**This is only required if you are using Laravel 5.4!**  
-If you are on Laravel 5.5+ you can skip this step.
-{% endhint %}
-
-To add the Voyager Service Provider open up your application `config/app.php` file and add `TCG\Voyager\VoyagerServiceProvider::class,` in the `providers` array like so:
-
-```php
-<?php
-
-'providers' => [
-    // Laravel Framework Service Providers...
-    //...
-
-    // Package Service Providers
-    TCG\Voyager\VoyagerServiceProvider::class,
-    // ...
-
-    // Application Service Providers
-    // ...
-],
-```
-
 ## Advanced
 
 This section is meant for users who are installing Voyager on an already existing Laravel installation or for users who want to perform a manual install. If this is not the case, you should go back to the [installation](installation.md) documentation or skip this section.
@@ -100,17 +70,18 @@ This section is meant for users who are installing Voyager on an already existin
 The first thing you should do is publish the assets that come with Voyager. You can do that by running the following commands:
 
 ```bash
-php artisan vendor:publish --provider=VoyagerServiceProvider
-php artisan vendor:publish --provider=ImageServiceProviderLaravel5
+php artisan vendor:publish --provider="TCG\Voyager\VoyagerServiceProvider"
+php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravelRecent"
 ```
 
 Next, call `php artisan migrate` to migrate all Voyager table.
+
 {% hint style="info" %}
-If you want to change migrations, for example to use a different table for users, don't migrate.
-Instead copy Voyagers migrations to `database/migrations`, make your changes, turn off the config option `database.autoload_migrations` and then migrate.
+If you want to change migrations, for example to use a different table for users, don't migrate. Instead copy Voyagers migrations to `database/migrations`, make your changes, turn off the config option `database.autoload_migrations` and then migrate.
 {% endhint %}
 
-Now, open your User-Model (usually `app/User.php`) and make the class extend `\TCG\Voyager\Models\User` instead of `Authenticatable`.
+Now, open your User-Model \(usually `app/User.php`\) and make the class extend `\TCG\Voyager\Models\User` instead of `Authenticatable`.
+
 ```php
 <?php
 
@@ -121,6 +92,7 @@ class User extends \TCG\Voyager\Models\User
 ```
 
 The next step is to add Voyagers routes to your `routes/web.php` file:
+
 ```php
 <?php
 
@@ -138,3 +110,4 @@ to install the hooks system, and
 to create the storage symlink to your public folder.
 
 After that, run `composer dump-autoload` to finish your installation!
+

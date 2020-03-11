@@ -2,12 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use ReflectionClass;
-use TCG\Voyager\Database\Schema\Column;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Types\Type;
@@ -25,10 +23,13 @@ class VoyagerBreadController extends Controller
         $dataTypes = Voyager::model('DataType')->select('id', 'name', 'slug')->get()->keyBy('name')->toArray();
 
         $tables = array_map(function ($table) use ($dataTypes) {
+            $table = Str::replaceFirst(DB::getTablePrefix(), '', $table);
+
             $table = [
+                'prefix'     => DB::getTablePrefix(),
                 'name'       => $table,
-                'slug'       => isset($dataTypes[$table]['slug']) ? $dataTypes[$table]['slug'] : null,
-                'dataTypeId' => isset($dataTypes[$table]['id']) ? $dataTypes[$table]['id'] : null,
+                'slug'       => $dataTypes[$table]['slug'] ?? null,
+                'dataTypeId' => $dataTypes[$table]['id'] ?? null,
             ];
 
             return (object) $table;
@@ -53,8 +54,8 @@ class VoyagerBreadController extends Controller
 
         $data = $this->prepopulateBreadInfo($table);
         $data['fieldOptions'] = SchemaManager::describeTable((isset($dataType) && strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->getTable()
-            : $table
+            ? DB::getTablePrefix().app($dataType->model_name)->getTable()
+            : DB::getTablePrefix().$table
         );
 
         return Voyager::view('voyager::tools.bread.edit-add', $data);
@@ -121,8 +122,8 @@ class VoyagerBreadController extends Controller
         $dataType = Voyager::model('DataType')->whereName($table)->first();
 
         $fieldOptions = SchemaManager::describeTable((strlen($dataType->model_name) != 0)
-            ? app($dataType->model_name)->getTable()
-            : $dataType->name
+            ? DB::getTablePrefix().app($dataType->model_name)->getTable()
+            : DB::getTablePrefix().$dataType->name
         );
 
         $isModelTranslatable = is_bread_translatable($dataType);
@@ -213,9 +214,9 @@ class VoyagerBreadController extends Controller
         $reflection = new ReflectionClass($model_name);
 
         return collect($reflection->getMethods())->filter(function ($method) {
-            return starts_with($method->name, 'scope');
+            return Str::startsWith($method->name, 'scope');
         })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
-            return lcfirst(str_replace_first('scope', '', $method->name));
+            return lcfirst(Str::replaceFirst('scope', '', $method->name));
         });
     }
 
@@ -319,7 +320,7 @@ class VoyagerBreadController extends Controller
 
         $dataType = Voyager::model('DataType')->find($request->data_type_id);
 
-        $field = str_singular($dataType->name).'_'.$request->relationship_type.'_'.str_singular($request->relationship_table).'_relationship';
+        $field = Str::singular($dataType->name).'_'.$request->relationship_type.'_'.Str::singular($request->relationship_table).'_relationship';
 
         $relationshipFieldOriginal = $relationshipField = strtolower($field);
 
@@ -347,8 +348,8 @@ class VoyagerBreadController extends Controller
         Voyager::model('DataRow')->destroy($id);
 
         return back()->with([
-                'message'    => 'Successfully deleted relationship.',
-                'alert-type' => 'success',
-            ]);
+            'message'    => 'Successfully deleted relationship.',
+            'alert-type' => 'success',
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace TCG\Voyager\FormFields;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class MediaPickerHandler extends AbstractHandler
@@ -11,9 +12,7 @@ class MediaPickerHandler extends AbstractHandler
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {
         $content = '';
-        if (isset($options->max) && $options->max == 1) {
-            $content = "'".$dataTypeContent->{$row->field}."'";
-        } else {
+        if (isset($options->max) && $options->max > 1) {
             if (is_array($dataTypeContent->{$row->field})) {
                 $dataTypeContent->{$row->field} = json_encode($dataTypeContent->{$row->field});
             }
@@ -23,18 +22,20 @@ class MediaPickerHandler extends AbstractHandler
             } else {
                 $content = json_encode('[]');
             }
+        } else {
+            $content = "'".$dataTypeContent->{$row->field}."'";
         }
 
         if (isset($options->base_path)) {
-            $options->base_path = str_replace('{uid}', \Auth::user()->getKey(), $options->base_path);
-            if (str_contains($options->base_path, '{date:')) {
+            $options->base_path = str_replace('{uid}', Auth::user()->getKey(), $options->base_path);
+            if (Str::contains($options->base_path, '{date:')) {
                 $options->base_path = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                     return \Carbon\Carbon::now()->format($date[1]);
                 }, $options->base_path);
             }
-            if (str_contains($options->base_path, '{random:')) {
+            if (Str::contains($options->base_path, '{random:')) {
                 $options->base_path = preg_replace_callback('/\{random:([0-9]+)\}/', function ($random) {
-                    return str_random($random[1]);
+                    return Str::random($random[1]);
                 }, $options->base_path);
             }
             if (!$dataTypeContent->getKey()) {

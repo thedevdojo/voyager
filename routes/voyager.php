@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Str;
 use TCG\Voyager\Events\Routing;
 use TCG\Voyager\Events\RoutingAdmin;
 use TCG\Voyager\Events\RoutingAdminAfter;
@@ -43,7 +44,7 @@ Route::group(['as' => 'voyager.'], function () {
         try {
             foreach (Voyager::model('DataType')::all() as $dataType) {
                 $breadController = $dataType->controller
-                                 ? str_start($dataType->controller, '\\')
+                                 ? Str::start($dataType->controller, '\\')
                                  : $namespacePrefix.'VoyagerBaseController';
 
                 Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
@@ -51,16 +52,14 @@ Route::group(['as' => 'voyager.'], function () {
                 Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.order');
                 Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
                 Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
-                Route::resource($dataType->slug, $breadController);
+                Route::post($dataType->slug.'/remove', $breadController.'@remove_media')->name($dataType->slug.'.media.remove');
+                Route::resource($dataType->slug, $breadController, ['parameters' => [$dataType->slug => 'id']]);
             }
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
         } catch (\Exception $e) {
             // do nothing, might just be because table not yet migrated.
         }
-
-        // Role Routes
-        Route::resource('roles', $namespacePrefix.'VoyagerRoleController');
 
         // Menu Routes
         Route::group([
@@ -106,7 +105,6 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('move_file', ['uses' => $namespacePrefix.'VoyagerMediaController@move',          'as' => 'move']);
             Route::post('rename_file', ['uses' => $namespacePrefix.'VoyagerMediaController@rename',        'as' => 'rename']);
             Route::post('upload', ['uses' => $namespacePrefix.'VoyagerMediaController@upload',             'as' => 'upload']);
-            Route::post('remove', ['uses' => $namespacePrefix.'VoyagerMediaController@remove',             'as' => 'remove']);
             Route::post('crop', ['uses' => $namespacePrefix.'VoyagerMediaController@crop',             'as' => 'crop']);
         });
 
@@ -141,7 +139,7 @@ Route::group(['as' => 'voyager.'], function () {
     });
 
     //Asset Routes
-    Route::get('assets/{path}', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'assets'])->where('path', '(.*)');
+    Route::get('voyager-assets', ['uses' => $namespacePrefix.'VoyagerController@assets', 'as' => 'voyager_assets']);
 
     event(new RoutingAfter());
 });

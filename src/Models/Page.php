@@ -30,8 +30,8 @@ class Page extends Model
     public function save(array $options = [])
     {
         // If no author has been assigned, assign the current user's id as the author of the post
-        if (!$this->author_id && app('VoyagerAuth')->user()) {
-            $this->author_id = app('VoyagerAuth')->user()->getKey();
+        if (!$this->author_id && Auth::user()) {
+            $this->author_id = Auth::user()->getKey();
         }
 
         parent::save();

@@ -94,7 +94,7 @@
              */
             this.transInputs.each(function(i, inp) {
                 var _inp   = $(inp),
-                    inpUsr = _inp.next(_this.settings.editing ? '.form-control' : '');
+                    inpUsr = _inp.nextAll(_this.settings.editing ? '.form-control' : '');
 
                 inpUsr.data("inp", _inp);
                 _inp.data("inpUsr", inpUsr);
@@ -201,6 +201,12 @@
                 $_val = $_mce.getContent();
             }
 
+            if (inpUsr.hasClass('simplemde')) {                                          
+                var $codemirror = inpUsr.nextAll('.CodeMirror')[0].CodeMirror;           
+                $_val = $codemirror.getDoc().getValue();                                 
+                $codemirror.save();                                                      
+            }
+
             this.langSelectors.each(function(i, btn) {
                 var lang = btn.id;
                 $_data[lang] = (_this.locale == lang) ? $_val : inp.data(lang);
@@ -226,6 +232,10 @@
                     _mce.setContent(_val);
                 } else {
                     inpUsr.val(_val);
+                    if (inpUsr.hasClass('simplemde')) {
+                        var $codemirror = inpUsr.nextAll('.CodeMirror')[0].CodeMirror;
+                        $codemirror.getDoc().setValue(inpUsr.val());
+                    }
                 }
             }
         }

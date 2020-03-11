@@ -4,6 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerSettingsController extends Controller
@@ -46,7 +47,7 @@ class VoyagerSettingsController extends Controller
         // Check permission
         $this->authorize('add', Voyager::model('Setting'));
 
-        $key = implode('.', [str_slug($request->input('group')), $request->input('key')]);
+        $key = implode('.', [Str::slug($request->input('group')), $request->input('key')]);
         $key_check = Voyager::model('Setting')->where('key', $key)->get()->count();
 
         if ($key_check > 0) {
@@ -89,22 +90,21 @@ class VoyagerSettingsController extends Controller
             $content = $this->getContentBasedOnType($request, 'settings', (object) [
                 'type'    => $setting->type,
                 'field'   => str_replace('.', '_', $setting->key),
-                'details' => $setting->details,
                 'group'   => $setting->group,
-            ]);
+            ], $setting->details);
 
             if ($setting->type == 'image' && $content == null) {
                 continue;
             }
 
-            if ($setting->type == 'file' && $content == json_encode([])) {
+            if ($setting->type == 'file' && $content == null) {
                 continue;
             }
 
-            $key = preg_replace('/^'.str_slug($setting->group).'./i', '', $setting->key);
+            $key = preg_replace('/^'.Str::slug($setting->group).'./i', '', $setting->key);
 
             $setting->group = $request->input(str_replace('.', '_', $setting->key).'_group');
-            $setting->key = implode('.', [str_slug($setting->group), $key]);
+            $setting->key = implode('.', [Str::slug($setting->group), $key]);
             $setting->value = $content;
             $setting->save();
         }

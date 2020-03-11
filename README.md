@@ -14,9 +14,9 @@ Made with ❤️ by [The Control Group](https://www.thecontrolgroup.com)
 
 ![Voyager Screenshot](https://s3.amazonaws.com/thecontrolgroup/voyager-screenshot.png)
 
-Website & Documentation: https://laravelvoyager.com
+Website & Documentation: https://voyager.devdojo.com/
 
-Video Tutorial Here: https://laravelvoyager.com/academy/
+Video Tutorial Here: https://voyager.devdojo.com/academy/
 
 Join our Slack chat: https://voyager-slack-invitation.herokuapp.com/
 
@@ -24,13 +24,17 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 <hr>
 
-Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 5.4, 5.5, 5.6 and 5.7!
+Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 6 and newer!
+
+```
+Want to use Laravel 5? Use [Voyager 1.3](https://github.com/the-control-group/voyager/tree/1.3)
+```
 
 ## Installation Steps
 
 ### 1. Require the Package
 
-After creating your new Laravel application you can include the Voyager package with the following command: 
+After creating your new Laravel application you can include the Voyager package with the following command:
 
 ```bash
 composer require tcg/voyager
@@ -52,8 +56,6 @@ You will also want to update your website URL inside of the `APP_URL` variable i
 ```
 APP_URL=http://localhost:8000
 ```
-
-> Only if you are on Laravel 5.4 will you need to [Add the Service Provider.](https://voyager.readme.io/docs/adding-the-service-provider)
 
 ### 3. Run The Installer
 

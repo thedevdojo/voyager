@@ -13,11 +13,6 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        // Set `namespace` to `null` to use `config('auth.providers.users.model')` value
-        // Set `namespace` to a class to override auth user model.
-        // However make sure the appointed class must ready to use before installing voyager.
-        // Otherwise `php artisan voyager:install` will fail with class not found error.
-        'namespace'                    => null,
         'default_avatar'               => 'users/default.png',
         'redirect'                     => '/admin',
     ],
@@ -200,13 +195,13 @@ return [
     ],
 
     'googlemaps' => [
-         'key'    => env('GOOGLE_MAPS_KEY', ''),
-         'center' => [
-             'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
-             'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
-         ],
-         'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
-     ],
+        'key'    => env('GOOGLE_MAPS_KEY', ''),
+        'center' => [
+            'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
+            'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
+        ],
+        'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -238,13 +233,28 @@ return [
           'video/mp4',
         ],
         */
-       //Path for media-manager. Relative to the filesystem.
-       'path'                => '/',
-       'show_folders'        => true,
-       'allow_upload'        => true,
-       'allow_move'          => true,
-       'allow_delete'        => true,
-       'allow_create_folder' => true,
-       'allow_rename'        => true,
-   ],
+        //Path for media-manager. Relative to the filesystem.
+        'path'                => '/',
+        'show_folders'        => true,
+        'allow_upload'        => true,
+        'allow_move'          => true,
+        'allow_delete'        => true,
+        'allow_create_folder' => true,
+        'allow_rename'        => true,
+        /*'watermark'           => [
+            'source'         => 'watermark.png',
+            'position'       => 'bottom-left',
+            'x'              => 0,
+            'y'              => 0,
+            'size'           => 15,
+       ],
+       'thumbnails'          => [
+           [
+                'type'  => 'fit',
+                'name'  => 'fit-500',
+                'width' => 500,
+                'height'=> 500
+           ],
+       ]*/
+    ],
 ];

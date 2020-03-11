@@ -1,14 +1,14 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[BUG]"
+title: ""
 labels: possible bug
 assignees: ''
 
 ---
 
 <!---
-IF YOU'RE POSTING A QUESTION ABOUT HOW TO USE VOYAGER, PLEASE CONSIDER ASKING IN SLACK FIRST
+QUESTIONS ABOUT HOW TO USE VOYAGER SHOULD BE ASKED IN SLACK FIRST
 --->
 ## Version information
 <!--- The following information is required for bug reports.  Issues without it will be closed without response --->
