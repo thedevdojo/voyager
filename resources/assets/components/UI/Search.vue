@@ -1,6 +1,6 @@
 <template>
     <div v-click-outside="close">
-        <input autocomplete="off" type="text" class="py-2 block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none" v-model="query" @input="search" placeholder="Search for users, posts, etc...">
+        <input autocomplete="off" type="text" class="py-2 block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none" v-model="query" @input="search" :placeholder="$globals.searchPlaceholder">
         <div v-if="searchResults.length > 0 && opened" class="voyager-search-results">
             <div v-for="(bread, i) in searchResults" :key="'bread-results-'+i">
                 <h4>{{ bread.bread }}</h4>

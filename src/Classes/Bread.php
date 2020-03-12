@@ -20,6 +20,7 @@ class Bread implements \JsonSerializable
     protected $slug;
     protected $name_singular;
     protected $name_plural;
+    public $icon = 'window';
     public $model;
     public $controller;
     public $policy;
@@ -199,6 +200,7 @@ class Bread implements \JsonSerializable
             'slug'                => $this->slug,
             'name_singular'       => $this->name_singular,
             'name_plural'         => $this->name_plural,
+            'icon'                => $this->icon,
             'model'               => $this->model,
             'controller'          => $this->controller,
             'policy'              => $this->policy,

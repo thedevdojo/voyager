@@ -15,7 +15,7 @@
                 </div>
                 
                 <div class="flex mb-4">
-                    <div class="w-1/2 m-1">
+                    <div class="w-1/3 m-1">
                         <label class="voyager-label" for="name-singular">{{ __('voyager::manager.name_singular') }}</label>
                         <language-input
                             class="voyager-input"
@@ -24,7 +24,7 @@
                             v-bind:value="bread.name_singular"
                             v-on:input="bread.name_singular = $event" />
                     </div>
-                    <div class="w-1/2 m-1">
+                    <div class="w-1/3 m-1">
                         <label class="voyager-label" for="name-plural">{{ __('voyager::manager.name_plural') }}</label>
                         <language-input
                             class="voyager-input"
@@ -32,6 +32,25 @@
                             type="text" :placeholder="__('voyager::manager.name_plural')"
                             v-bind:value="bread.name_plural"
                             v-on:input="bread.name_plural = $event" />
+                    </div>
+                    <div class="w-1/3 m-1">
+                        <label class="voyager-label" for="icon">{{ __('voyager::generic.icon') }}</label>
+                        <modal ref="icon_modal">
+                            <div class="flex mb-4">
+                                <div class="w-2/3">
+                                    <h4 class="text-gray-100 text-xl">{{ __('voyager::generic.select_icon') }}</h4>
+                                </div>
+                                <div class="w-1/3 text-right text-gray-100">
+                                    <button class="button green close-button">X</button>
+                                </div>
+                            </div>
+                            <icon-picker v-on:select="$refs.icon_modal.close(); bread.icon = $event" />
+                            <div slot="opener" class="w-full">
+                                <button class="button green">
+                                    <i class="uil text-xl cursor-pointer my-1" :class="'uil-' + bread.icon"></i>
+                                </button>
+                            </div>
+                        </modal>
                     </div>
                 </div>
                 <div class="flex mb-4">

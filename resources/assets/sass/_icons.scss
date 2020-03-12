@@ -1,0 +1,544 @@
+$inter-font: "voyager-assets?path=fonts%2Funicons%2F";
+
+@font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-0.eot);
+    src: url(#{$inter-font}unicons-0.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-0.woff2) format('woff2'),
+          url(#{$inter-font}unicons-0.woff) format('woff'),
+          url(#{$inter-font}unicons-0.ttf) format('truetype'),
+          url(#{$inter-font}unicons-0.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E800-E81D;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-1.eot);
+    src: url(#{$inter-font}unicons-1.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-1.woff2) format('woff2'),
+          url(#{$inter-font}unicons-1.woff) format('woff'),
+          url(#{$inter-font}unicons-1.ttf) format('truetype'),
+          url(#{$inter-font}unicons-1.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E81E-E83B;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-10.eot);
+    src: url(#{$inter-font}unicons-10.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-10.woff2) format('woff2'),
+          url(#{$inter-font}unicons-10.woff) format('woff'),
+          url(#{$inter-font}unicons-10.ttf) format('truetype'),
+          url(#{$inter-font}unicons-10.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E92C-E949;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-11.eot);
+    src: url(#{$inter-font}unicons-11.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-11.woff2) format('woff2'),
+          url(#{$inter-font}unicons-11.woff) format('woff'),
+          url(#{$inter-font}unicons-11.ttf) format('truetype'),
+          url(#{$inter-font}unicons-11.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E94A-E967;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-12.eot);
+    src: url(#{$inter-font}unicons-12.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-12.woff2) format('woff2'),
+          url(#{$inter-font}unicons-12.woff) format('woff'),
+          url(#{$inter-font}unicons-12.ttf) format('truetype'),
+          url(#{$inter-font}unicons-12.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E968-E985;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-13.eot);
+    src: url(#{$inter-font}unicons-13.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-13.woff2) format('woff2'),
+          url(#{$inter-font}unicons-13.woff) format('woff'),
+          url(#{$inter-font}unicons-13.ttf) format('truetype'),
+          url(#{$inter-font}unicons-13.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E986-E9A3;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-14.eot);
+    src: url(#{$inter-font}unicons-14.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-14.woff2) format('woff2'),
+          url(#{$inter-font}unicons-14.woff) format('woff'),
+          url(#{$inter-font}unicons-14.ttf) format('truetype'),
+          url(#{$inter-font}unicons-14.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E9A4-E9C1;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-15.eot);
+    src: url(#{$inter-font}unicons-15.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-15.woff2) format('woff2'),
+          url(#{$inter-font}unicons-15.woff) format('woff'),
+          url(#{$inter-font}unicons-15.ttf) format('truetype'),
+          url(#{$inter-font}unicons-15.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E9C2-E9DF;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-16.eot);
+    src: url(#{$inter-font}unicons-16.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-16.woff2) format('woff2'),
+          url(#{$inter-font}unicons-16.woff) format('woff'),
+          url(#{$inter-font}unicons-16.ttf) format('truetype'),
+          url(#{$inter-font}unicons-16.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E9E0-E9FD;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-17.eot);
+    src: url(#{$inter-font}unicons-17.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-17.woff2) format('woff2'),
+          url(#{$inter-font}unicons-17.woff) format('woff'),
+          url(#{$inter-font}unicons-17.ttf) format('truetype'),
+          url(#{$inter-font}unicons-17.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E9FE-EA1B;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-18.eot);
+    src: url(#{$inter-font}unicons-18.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-18.woff2) format('woff2'),
+          url(#{$inter-font}unicons-18.woff) format('woff'),
+          url(#{$inter-font}unicons-18.ttf) format('truetype'),
+          url(#{$inter-font}unicons-18.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EA1C-EA39;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-19.eot);
+    src: url(#{$inter-font}unicons-19.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-19.woff2) format('woff2'),
+          url(#{$inter-font}unicons-19.woff) format('woff'),
+          url(#{$inter-font}unicons-19.ttf) format('truetype'),
+          url(#{$inter-font}unicons-19.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EA3A-EA57;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-2.eot);
+    src: url(#{$inter-font}unicons-2.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-2.woff2) format('woff2'),
+          url(#{$inter-font}unicons-2.woff) format('woff'),
+          url(#{$inter-font}unicons-2.ttf) format('truetype'),
+          url(#{$inter-font}unicons-2.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E83C-E859;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-20.eot);
+    src: url(#{$inter-font}unicons-20.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-20.woff2) format('woff2'),
+          url(#{$inter-font}unicons-20.woff) format('woff'),
+          url(#{$inter-font}unicons-20.ttf) format('truetype'),
+          url(#{$inter-font}unicons-20.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EA58-EA75;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-21.eot);
+    src: url(#{$inter-font}unicons-21.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-21.woff2) format('woff2'),
+          url(#{$inter-font}unicons-21.woff) format('woff'),
+          url(#{$inter-font}unicons-21.ttf) format('truetype'),
+          url(#{$inter-font}unicons-21.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EA76-EA93;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-22.eot);
+    src: url(#{$inter-font}unicons-22.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-22.woff2) format('woff2'),
+          url(#{$inter-font}unicons-22.woff) format('woff'),
+          url(#{$inter-font}unicons-22.ttf) format('truetype'),
+          url(#{$inter-font}unicons-22.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EA94-EAB1;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-23.eot);
+    src: url(#{$inter-font}unicons-23.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-23.woff2) format('woff2'),
+          url(#{$inter-font}unicons-23.woff) format('woff'),
+          url(#{$inter-font}unicons-23.ttf) format('truetype'),
+          url(#{$inter-font}unicons-23.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EAB2-EACF;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-24.eot);
+    src: url(#{$inter-font}unicons-24.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-24.woff2) format('woff2'),
+          url(#{$inter-font}unicons-24.woff) format('woff'),
+          url(#{$inter-font}unicons-24.ttf) format('truetype'),
+          url(#{$inter-font}unicons-24.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EAD0-EAED;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-25.eot);
+    src: url(#{$inter-font}unicons-25.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-25.woff2) format('woff2'),
+          url(#{$inter-font}unicons-25.woff) format('woff'),
+          url(#{$inter-font}unicons-25.ttf) format('truetype'),
+          url(#{$inter-font}unicons-25.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EAEE-EB0B;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-26.eot);
+    src: url(#{$inter-font}unicons-26.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-26.woff2) format('woff2'),
+          url(#{$inter-font}unicons-26.woff) format('woff'),
+          url(#{$inter-font}unicons-26.ttf) format('truetype'),
+          url(#{$inter-font}unicons-26.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EB0C-EB29;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-27.eot);
+    src: url(#{$inter-font}unicons-27.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-27.woff2) format('woff2'),
+          url(#{$inter-font}unicons-27.woff) format('woff'),
+          url(#{$inter-font}unicons-27.ttf) format('truetype'),
+          url(#{$inter-font}unicons-27.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EB2A-EB47;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-28.eot);
+    src: url(#{$inter-font}unicons-28.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-28.woff2) format('woff2'),
+          url(#{$inter-font}unicons-28.woff) format('woff'),
+          url(#{$inter-font}unicons-28.ttf) format('truetype'),
+          url(#{$inter-font}unicons-28.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EB48-EB65;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-29.eot);
+    src: url(#{$inter-font}unicons-29.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-29.woff2) format('woff2'),
+          url(#{$inter-font}unicons-29.woff) format('woff'),
+          url(#{$inter-font}unicons-29.ttf) format('truetype'),
+          url(#{$inter-font}unicons-29.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EB66-EB83;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-3.eot);
+    src: url(#{$inter-font}unicons-3.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-3.woff2) format('woff2'),
+          url(#{$inter-font}unicons-3.woff) format('woff'),
+          url(#{$inter-font}unicons-3.ttf) format('truetype'),
+          url(#{$inter-font}unicons-3.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E85A-E877;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-30.eot);
+    src: url(#{$inter-font}unicons-30.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-30.woff2) format('woff2'),
+          url(#{$inter-font}unicons-30.woff) format('woff'),
+          url(#{$inter-font}unicons-30.ttf) format('truetype'),
+          url(#{$inter-font}unicons-30.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EB84-EBA1;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-31.eot);
+    src: url(#{$inter-font}unicons-31.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-31.woff2) format('woff2'),
+          url(#{$inter-font}unicons-31.woff) format('woff'),
+          url(#{$inter-font}unicons-31.ttf) format('truetype'),
+          url(#{$inter-font}unicons-31.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EBA2-EBBF;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-32.eot);
+    src: url(#{$inter-font}unicons-32.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-32.woff2) format('woff2'),
+          url(#{$inter-font}unicons-32.woff) format('woff'),
+          url(#{$inter-font}unicons-32.ttf) format('truetype'),
+          url(#{$inter-font}unicons-32.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EBC0-EBDD;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-33.eot);
+    src: url(#{$inter-font}unicons-33.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-33.woff2) format('woff2'),
+          url(#{$inter-font}unicons-33.woff) format('woff'),
+          url(#{$inter-font}unicons-33.ttf) format('truetype'),
+          url(#{$inter-font}unicons-33.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EBDE-EBFB;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-34.eot);
+    src: url(#{$inter-font}unicons-34.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-34.woff2) format('woff2'),
+          url(#{$inter-font}unicons-34.woff) format('woff'),
+          url(#{$inter-font}unicons-34.ttf) format('truetype'),
+          url(#{$inter-font}unicons-34.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EBFC-EC19;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-35.eot);
+    src: url(#{$inter-font}unicons-35.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-35.woff2) format('woff2'),
+          url(#{$inter-font}unicons-35.woff) format('woff'),
+          url(#{$inter-font}unicons-35.ttf) format('truetype'),
+          url(#{$inter-font}unicons-35.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EC1A-EC37;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-36.eot);
+    src: url(#{$inter-font}unicons-36.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-36.woff2) format('woff2'),
+          url(#{$inter-font}unicons-36.woff) format('woff'),
+          url(#{$inter-font}unicons-36.ttf) format('truetype'),
+          url(#{$inter-font}unicons-36.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EC38-EC55;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-37.eot);
+    src: url(#{$inter-font}unicons-37.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-37.woff2) format('woff2'),
+          url(#{$inter-font}unicons-37.woff) format('woff'),
+          url(#{$inter-font}unicons-37.ttf) format('truetype'),
+          url(#{$inter-font}unicons-37.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+EC56-EC69;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-4.eot);
+    src: url(#{$inter-font}unicons-4.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-4.woff2) format('woff2'),
+          url(#{$inter-font}unicons-4.woff) format('woff'),
+          url(#{$inter-font}unicons-4.ttf) format('truetype'),
+          url(#{$inter-font}unicons-4.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E878-E895;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-5.eot);
+    src: url(#{$inter-font}unicons-5.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-5.woff2) format('woff2'),
+          url(#{$inter-font}unicons-5.woff) format('woff'),
+          url(#{$inter-font}unicons-5.ttf) format('truetype'),
+          url(#{$inter-font}unicons-5.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E896-E8B3;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-6.eot);
+    src: url(#{$inter-font}unicons-6.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-6.woff2) format('woff2'),
+          url(#{$inter-font}unicons-6.woff) format('woff'),
+          url(#{$inter-font}unicons-6.ttf) format('truetype'),
+          url(#{$inter-font}unicons-6.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E8B4-E8D1;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-7.eot);
+    src: url(#{$inter-font}unicons-7.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-7.woff2) format('woff2'),
+          url(#{$inter-font}unicons-7.woff) format('woff'),
+          url(#{$inter-font}unicons-7.ttf) format('truetype'),
+          url(#{$inter-font}unicons-7.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E8D2-E8EF;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-8.eot);
+    src: url(#{$inter-font}unicons-8.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-8.woff2) format('woff2'),
+          url(#{$inter-font}unicons-8.woff) format('woff'),
+          url(#{$inter-font}unicons-8.ttf) format('truetype'),
+          url(#{$inter-font}unicons-8.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E8F0-E90D;
+  }
+  @font-face {
+    font-family: 'unicons';
+    src: url(#{$inter-font}unicons-9.eot);
+    src: url(#{$inter-font}unicons-9.eot#iefix) format('embedded-opentype'),
+          url(#{$inter-font}unicons-9.woff2) format('woff2'),
+          url(#{$inter-font}unicons-9.woff) format('woff'),
+          url(#{$inter-font}unicons-9.ttf) format('truetype'),
+          url(#{$inter-font}unicons-9.svg#unicons) format('svg');
+    font-weight: normal;
+    font-style: normal;
+    unicode-range: U+E90E-E92B;
+  }
+
+
+  [class^="uil-"]:before,
+[class*=" uil-"]:before {
+  font-family: "unicons";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: 0.2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: 0.2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+/* Flip and Rotate */
+
+[class*="uil-"].flip-horizontal:before {
+  transform: scaleX(-1);
+}
+[class*="uil-"].flip-horizontal.rotate-90:before {
+  transform: rotate(90deg) scaleX(-1);
+}
+[class*="uil-"].flip-horizontal.rotate-180:before {
+  transform: rotate(180deg) scaleX(-1);
+}
+[class*="uil-"].flip-horizontal.rotate-270:before {
+  transform: rotate(270deg) scaleX(-1);
+}
+[class*="uil-"].flip-horizontal.flip-vertical:before {
+  transform: scale(-1);
+}
+[class*="uil-"].flip-horizontal.flip-vertical.rotate-90:before {
+  transform: rotate(90deg) scale(-1);
+}
+[class*="uil-"].flip-horizontal.flip-vertical.rotate-180:before {
+  transform: rotate(180deg) scale(-1);
+}
+[class*="uil-"].flip-horizontal.flip-vertical.rotate-270:before {
+  transform: rotate(270deg) scale(-1);
+}
+[class*="uil-"].flip-vertical:before {
+  transform: scaleY(-1);
+}
+[class*="uil-"].flip-vertical.rotate-90:before {
+  transform: rotate(90deg) scaleY(-1);
+}
+[class*="uil-"].flip-vertical.rotate-180:before {
+  transform: rotate(180deg) scaleY(-1);
+}
+[class*="uil-"].flip-vertical.rotate-270:before {
+  transform: rotate(270deg) scaleY(-1);
+}
+[class*="uil-"].rotate-90:before {
+  transform: rotate(90deg);
+}
+[class*="uil-"].rotate-180:before {
+  transform: rotate(180deg);
+}
+[class*="uil-"].rotate-270:before {
+  transform: rotate(270deg);
+}
+.uil-0-plus:before { content: '\e800'; }.uil-10-plus:before { content: '\e801'; }.uil-12-plus:before { content: '\e802'; }.uil-13-plus:before { content: '\e803'; }.uil-16-plus:before { content: '\e804'; }.uil-17-plus:before { content: '\e805'; }.uil-18-plus:before { content: '\e806'; }.uil-21-plus:before { content: '\e807'; }.uil-3-plus:before { content: '\e808'; }.uil-500px:before { content: '\e809'; }.uil-6-plus:before { content: '\e80a'; }.uil-abacus:before { content: '\e80b'; }.uil-accessible-icon-alt:before { content: '\e80c'; }.uil-adjust-alt:before { content: '\e80d'; }.uil-adjust-circle:before { content: '\e80e'; }.uil-adjust-half:before { content: '\e80f'; }.uil-adjust:before { content: '\e810'; }.uil-adobe-alt:before { content: '\e811'; }.uil-adobe:before { content: '\e812'; }.uil-airplay:before { content: '\e813'; }.uil-align-alt:before { content: '\e814'; }.uil-align-center-alt:before { content: '\e815'; }.uil-align-center-h:before { content: '\e816'; }.uil-align-center-justify:before { content: '\e817'; }.uil-align-center-v:before { content: '\e818'; }.uil-align-center:before { content: '\e819'; }.uil-align-justify:before { content: '\e81a'; }.uil-align-left-justify:before { content: '\e81b'; }.uil-align-left:before { content: '\e81c'; }.uil-align-letter-right:before { content: '\e81d'; }.uil-align-right-justify:before { content: '\e81e'; }.uil-align-right:before { content: '\e81f'; }.uil-align:before { content: '\e820'; }.uil-amazon:before { content: '\e821'; }.uil-ambulance:before { content: '\e822'; }.uil-analysis:before { content: '\e823'; }.uil-analytics:before { content: '\e824'; }.uil-anchor:before { content: '\e825'; }.uil-android-alt:before { content: '\e826'; }.uil-android-phone-slash:before { content: '\e827'; }.uil-android:before { content: '\e828'; }.uil-angle-double-down:before { content: '\e829'; }.uil-angle-double-left:before { content: '\e82a'; }.uil-angle-double-right:before { content: '\e82b'; }.uil-angle-double-up:before { content: '\e82c'; }.uil-angle-down:before { content: '\e82d'; }.uil-angle-left-b:before { content: '\e82e'; }.uil-angle-left:before { content: '\e82f'; }.uil-angle-right-b:before { content: '\e830'; }.uil-angle-right:before { content: '\e831'; }.uil-angle-up:before { content: '\e832'; }.uil-angry:before { content: '\e833'; }.uil-ankh:before { content: '\e834'; }.uil-annoyed-alt:before { content: '\e835'; }.uil-annoyed:before { content: '\e836'; }.uil-apple-alt:before { content: '\e837'; }.uil-apple:before { content: '\e838'; }.uil-apps:before { content: '\e839'; }.uil-archive-alt:before { content: '\e83a'; }.uil-archive:before { content: '\e83b'; }.uil-comment-alt-medical:before { content: '\e92c'; }.uil-comment-alt-message:before { content: '\e92d'; }.uil-comment-alt-notes:before { content: '\e92e'; }.uil-comment-alt-plus:before { content: '\e92f'; }.uil-comment-alt-question:before { content: '\e930'; }.uil-comment-alt-redo:before { content: '\e931'; }.uil-comment-alt-search:before { content: '\e932'; }.uil-comment-alt-share:before { content: '\e933'; }.uil-comment-alt-shield:before { content: '\e934'; }.uil-comment-alt-slash:before { content: '\e935'; }.uil-comment-alt-upload:before { content: '\e936'; }.uil-comment-alt-verify:before { content: '\e937'; }.uil-comment-alt:before { content: '\e938'; }.uil-comment-block:before { content: '\e939'; }.uil-comment-chart-line:before { content: '\e93a'; }.uil-comment-check:before { content: '\e93b'; }.uil-comment-dots:before { content: '\e93c'; }.uil-comment-download:before { content: '\e93d'; }.uil-comment-edit:before { content: '\e93e'; }.uil-comment-exclamation:before { content: '\e93f'; }.uil-comment-heart:before { content: '\e940'; }.uil-comment-image:before { content: '\e941'; }.uil-comment-info-alt:before { content: '\e942'; }.uil-comment-info:before { content: '\e943'; }.uil-comment-lines:before { content: '\e944'; }.uil-comment-lock:before { content: '\e945'; }.uil-comment-medical:before { content: '\e946'; }.uil-comment-message:before { content: '\e947'; }.uil-comment-notes:before { content: '\e948'; }.uil-comment-plus:before { content: '\e949'; }.uil-comment-question:before { content: '\e94a'; }.uil-comment-redo:before { content: '\e94b'; }.uil-comment-search:before { content: '\e94c'; }.uil-comment-share:before { content: '\e94d'; }.uil-comment-shield:before { content: '\e94e'; }.uil-comment-slash:before { content: '\e94f'; }.uil-comment-upload:before { content: '\e950'; }.uil-comment-verify:before { content: '\e951'; }.uil-comment:before { content: '\e952'; }.uil-comments-alt:before { content: '\e953'; }.uil-comments:before { content: '\e954'; }.uil-compact-disc:before { content: '\e955'; }.uil-comparison:before { content: '\e956'; }.uil-compass:before { content: '\e957'; }.uil-compress-alt-left:before { content: '\e958'; }.uil-compress-alt:before { content: '\e959'; }.uil-compress-arrows:before { content: '\e95a'; }.uil-compress-lines:before { content: '\e95b'; }.uil-compress-point:before { content: '\e95c'; }.uil-compress-v:before { content: '\e95d'; }.uil-compress:before { content: '\e95e'; }.uil-confused:before { content: '\e95f'; }.uil-constructor:before { content: '\e960'; }.uil-copy-alt:before { content: '\e961'; }.uil-copy-landscape:before { content: '\e962'; }.uil-copy:before { content: '\e963'; }.uil-copyright:before { content: '\e964'; }.uil-corner-down-left:before { content: '\e965'; }.uil-corner-down-right-alt:before { content: '\e966'; }.uil-corner-down-right:before { content: '\e967'; }.uil-corner-left-down:before { content: '\e968'; }.uil-corner-right-down:before { content: '\e969'; }.uil-corner-up-left-alt:before { content: '\e96a'; }.uil-corner-up-left:before { content: '\e96b'; }.uil-corner-up-right-alt:before { content: '\e96c'; }.uil-corner-up-right:before { content: '\e96d'; }.uil-creative-commons-pd:before { content: '\e96e'; }.uil-credit-card-search:before { content: '\e96f'; }.uil-credit-card:before { content: '\e970'; }.uil-crockery:before { content: '\e971'; }.uil-crop-alt-rotate-left:before { content: '\e972'; }.uil-crop-alt-rotate-right:before { content: '\e973'; }.uil-crop-alt:before { content: '\e974'; }.uil-crosshair-alt:before { content: '\e975'; }.uil-crosshair:before { content: '\e976'; }.uil-crosshairs:before { content: '\e977'; }.uil-cube:before { content: '\e978'; }.uil-dashboard:before { content: '\e979'; }.uil-data-sharing:before { content: '\e97a'; }.uil-database-alt:before { content: '\e97b'; }.uil-database:before { content: '\e97c'; }.uil-desert:before { content: '\e97d'; }.uil-desktop-alt-slash:before { content: '\e97e'; }.uil-desktop-alt:before { content: '\e97f'; }.uil-desktop-cloud-alt:before { content: '\e980'; }.uil-desktop-slash:before { content: '\e981'; }.uil-desktop:before { content: '\e982'; }.uil-dialpad-alt:before { content: '\e983'; }.uil-dialpad:before { content: '\e984'; }.uil-diamond:before { content: '\e985'; }.uil-diary-alt:before { content: '\e986'; }.uil-diary:before { content: '\e987'; }.uil-dice-five:before { content: '\e988'; }.uil-dice-four:before { content: '\e989'; }.uil-dice-one:before { content: '\e98a'; }.uil-dice-six:before { content: '\e98b'; }.uil-dice-three:before { content: '\e98c'; }.uil-dice-two:before { content: '\e98d'; }.uil-direction:before { content: '\e98e'; }.uil-directions:before { content: '\e98f'; }.uil-dizzy-meh:before { content: '\e990'; }.uil-dna:before { content: '\e991'; }.uil-document-info:before { content: '\e992'; }.uil-document-layout-center:before { content: '\e993'; }.uil-document-layout-left:before { content: '\e994'; }.uil-document-layout-right:before { content: '\e995'; }.uil-dollar-alt:before { content: '\e996'; }.uil-dollar-sign-alt:before { content: '\e997'; }.uil-dollar-sign:before { content: '\e998'; }.uil-download-alt:before { content: '\e999'; }.uil-dribbble:before { content: '\e99a'; }.uil-drill:before { content: '\e99b'; }.uil-dropbox:before { content: '\e99c'; }.uil-dumbbell:before { content: '\e99d'; }.uil-ear:before { content: '\e99e'; }.uil-edit-alt:before { content: '\e99f'; }.uil-edit:before { content: '\e9a0'; }.uil-ellipsis-h:before { content: '\e9a1'; }.uil-ellipsis-v:before { content: '\e9a2'; }.uil-emoji:before { content: '\e9a3'; }.uil-enter:before { content: '\e9a4'; }.uil-envelope-add:before { content: '\e9a5'; }.uil-envelope-alt:before { content: '\e9a6'; }.uil-envelope-block:before { content: '\e9a7'; }.uil-envelope-bookmark:before { content: '\e9a8'; }.uil-envelope-check:before { content: '\e9a9'; }.uil-envelope-download-alt:before { content: '\e9aa'; }.uil-envelope-download:before { content: '\e9ab'; }.uil-envelope-edit:before { content: '\e9ac'; }.uil-envelope-exclamation:before { content: '\e9ad'; }.uil-envelope-heart:before { content: '\e9ae'; }.uil-envelope-info:before { content: '\e9af'; }.uil-envelope-lock:before { content: '\e9b0'; }.uil-envelope-minus:before { content: '\e9b1'; }.uil-envelope-open:before { content: '\e9b2'; }.uil-envelope-question:before { content: '\e9b3'; }.uil-envelope-receive:before { content: '\e9b4'; }.uil-envelope-redo:before { content: '\e9b5'; }.uil-envelope-search:before { content: '\e9b6'; }.uil-envelope-send:before { content: '\e9b7'; }.uil-envelope-share:before { content: '\e9b8'; }.uil-envelope-shield:before { content: '\e9b9'; }.uil-envelope-star:before { content: '\e9ba'; }.uil-envelope-times:before { content: '\e9bb'; }.uil-envelope-upload-alt:before { content: '\e9bc'; }.uil-envelope-upload:before { content: '\e9bd'; }.uil-envelope:before { content: '\e9be'; }.uil-envelopes:before { content: '\e9bf'; }.uil-equal-circle:before { content: '\e9c0'; }.uil-euro-circle:before { content: '\e9c1'; }.uil-euro:before { content: '\e9c2'; }.uil-exchange-alt:before { content: '\e9c3'; }.uil-exchange:before { content: '\e9c4'; }.uil-exclamation-circle:before { content: '\e9c5'; }.uil-exclamation-octagon:before { content: '\e9c6'; }.uil-exclamation-triangle:before { content: '\e9c7'; }.uil-exclude:before { content: '\e9c8'; }.uil-exit:before { content: '\e9c9'; }.uil-expand-alt:before { content: '\e9ca'; }.uil-expand-arrows-alt:before { content: '\e9cb'; }.uil-expand-arrows:before { content: '\e9cc'; }.uil-expand-from-corner:before { content: '\e9cd'; }.uil-expand-left:before { content: '\e9ce'; }.uil-expand-right:before { content: '\e9cf'; }.uil-export:before { content: '\e9d0'; }.uil-exposure-alt:before { content: '\e9d1'; }.uil-exposure-increase:before { content: '\e9d2'; }.uil-external-link-alt:before { content: '\e9d3'; }.uil-eye-slash:before { content: '\e9d4'; }.uil-eye:before { content: '\e9d5'; }.uil-facebook-f:before { content: '\e9d6'; }.uil-facebook-messenger-alt:before { content: '\e9d7'; }.uil-facebook-messenger:before { content: '\e9d8'; }.uil-facebook:before { content: '\e9d9'; }.uil-fahrenheit:before { content: '\e9da'; }.uil-fast-mail-alt:before { content: '\e9db'; }.uil-fast-mail:before { content: '\e9dc'; }.uil-favorite:before { content: '\e9dd'; }.uil-feedback:before { content: '\e9de'; }.uil-file-alt:before { content: '\e9df'; }.uil-file-blank:before { content: '\e9e0'; }.uil-file-block-alt:before { content: '\e9e1'; }.uil-file-bookmark-alt:before { content: '\e9e2'; }.uil-file-check-alt:before { content: '\e9e3'; }.uil-file-check:before { content: '\e9e4'; }.uil-file-contract-dollar:before { content: '\e9e5'; }.uil-file-copy-alt:before { content: '\e9e6'; }.uil-file-download-alt:before { content: '\e9e7'; }.uil-file-download:before { content: '\e9e8'; }.uil-file-edit-alt:before { content: '\e9e9'; }.uil-file-exclamation-alt:before { content: '\e9ea'; }.uil-file-exclamation:before { content: '\e9eb'; }.uil-file-export:before { content: '\e9ec'; }.uil-file-heart:before { content: '\e9ed'; }.uil-file-import:before { content: '\e9ee'; }.uil-file-info-alt:before { content: '\e9ef'; }.uil-file-landscape-alt:before { content: '\e9f0'; }.uil-file-landscape:before { content: '\e9f1'; }.uil-file-lanscape-slash:before { content: '\e9f2'; }.uil-file-lock-alt:before { content: '\e9f3'; }.uil-file-medical-alt:before { content: '\e9f4'; }.uil-file-medical:before { content: '\e9f5'; }.uil-file-minus-alt:before { content: '\e9f6'; }.uil-file-minus:before { content: '\e9f7'; }.uil-file-network:before { content: '\e9f8'; }.uil-file-plus-alt:before { content: '\e9f9'; }.uil-file-plus:before { content: '\e9fa'; }.uil-file-question-alt:before { content: '\e9fb'; }.uil-file-question:before { content: '\e9fc'; }.uil-file-redo-alt:before { content: '\e9fd'; }.uil-file-search-alt:before { content: '\e9fe'; }.uil-file-share-alt:before { content: '\e9ff'; }.uil-file-shield-alt:before { content: '\ea00'; }.uil-file-slash:before { content: '\ea01'; }.uil-file-times-alt:before { content: '\ea02'; }.uil-file-times:before { content: '\ea03'; }.uil-file-upload-alt:before { content: '\ea04'; }.uil-file-upload:before { content: '\ea05'; }.uil-file:before { content: '\ea06'; }.uil-files-landscapes-alt:before { content: '\ea07'; }.uil-files-landscapes:before { content: '\ea08'; }.uil-film:before { content: '\ea09'; }.uil-filter-slash:before { content: '\ea0a'; }.uil-filter:before { content: '\ea0b'; }.uil-fire:before { content: '\ea0c'; }.uil-flask-potion:before { content: '\ea0d'; }.uil-flask:before { content: '\ea0e'; }.uil-flip-h-alt:before { content: '\ea0f'; }.uil-flip-h:before { content: '\ea10'; }.uil-flip-v-alt:before { content: '\ea11'; }.uil-flip-v:before { content: '\ea12'; }.uil-flower:before { content: '\ea13'; }.uil-focus-add:before { content: '\ea14'; }.uil-focus-target:before { content: '\ea15'; }.uil-focus:before { content: '\ea16'; }.uil-folder-check:before { content: '\ea17'; }.uil-folder-download:before { content: '\ea18'; }.uil-folder-exclamation:before { content: '\ea19'; }.uil-folder-heart:before { content: '\ea1a'; }.uil-folder-info:before { content: '\ea1b'; }.uil-folder-lock:before { content: '\ea1c'; }.uil-folder-medical:before { content: '\ea1d'; }.uil-folder-minus:before { content: '\ea1e'; }.uil-folder-network:before { content: '\ea1f'; }.uil-folder-open:before { content: '\ea20'; }.uil-folder-plus:before { content: '\ea21'; }.uil-folder-question:before { content: '\ea22'; }.uil-folder-slash:before { content: '\ea23'; }.uil-folder-times:before { content: '\ea24'; }.uil-folder-upload:before { content: '\ea25'; }.uil-folder:before { content: '\ea26'; }.uil-football-american:before { content: '\ea27'; }.uil-football-ball:before { content: '\ea28'; }.uil-football:before { content: '\ea29'; }.uil-forecastcloud-moon-tear:before { content: '\ea2a'; }.uil-forwaded-call:before { content: '\ea2b'; }.uil-forward:before { content: '\ea2c'; }.uil-frown:before { content: '\ea2d'; }.uil-game-structure:before { content: '\ea2e'; }.uil-gift:before { content: '\ea2f'; }.uil-github-alt:before { content: '\ea30'; }.uil-github:before { content: '\ea31'; }.uil-glass-martini-alt-slash:before { content: '\ea32'; }.uil-glass-martini-alt:before { content: '\ea33'; }.uil-glass-martini:before { content: '\ea34'; }.uil-glass-tea:before { content: '\ea35'; }.uil-glass:before { content: '\ea36'; }.uil-globe:before { content: '\ea37'; }.uil-gold:before { content: '\ea38'; }.uil-golf-ball:before { content: '\ea39'; }.uil-google-drive-alt:before { content: '\ea3a'; }.uil-google-drive:before { content: '\ea3b'; }.uil-google-hangouts-alt:before { content: '\ea3c'; }.uil-google-hangouts:before { content: '\ea3d'; }.uil-google-play:before { content: '\ea3e'; }.uil-google:before { content: '\ea3f'; }.uil-graduation-cap:before { content: '\ea40'; }.uil-graph-bar:before { content: '\ea41'; }.uil-grid:before { content: '\ea42'; }.uil-grids:before { content: '\ea43'; }.uil-grin-tongue-wink-alt:before { content: '\ea44'; }.uil-grin-tongue-wink:before { content: '\ea45'; }.uil-grin:before { content: '\ea46'; }.uil-grip-horizontal-line:before { content: '\ea47'; }.uil-hard-hat:before { content: '\ea48'; }.uil-hdd:before { content: '\ea49'; }.uil-headphones-alt:before { content: '\ea4a'; }.uil-headphones:before { content: '\ea4b'; }.uil-heart-alt:before { content: '\ea4c'; }.uil-heart-break:before { content: '\ea4d'; }.uil-heart-medical:before { content: '\ea4e'; }.uil-heart-rate:before { content: '\ea4f'; }.uil-heart-sign:before { content: '\ea50'; }.uil-heart:before { content: '\ea51'; }.uil-heartbeat:before { content: '\ea52'; }.uil-history-alt:before { content: '\ea53'; }.uil-history:before { content: '\ea54'; }.uil-home-alt:before { content: '\ea55'; }.uil-home:before { content: '\ea56'; }.uil-horizontal-align-center:before { content: '\ea57'; }.uil-archway:before { content: '\e83c'; }.uil-arrow-break:before { content: '\e83d'; }.uil-arrow-circle-down:before { content: '\e83e'; }.uil-arrow-circle-left:before { content: '\e83f'; }.uil-arrow-circle-right:before { content: '\e840'; }.uil-arrow-circle-up:before { content: '\e841'; }.uil-arrow-compress-h:before { content: '\e842'; }.uil-arrow-down-left:before { content: '\e843'; }.uil-arrow-down-right:before { content: '\e844'; }.uil-arrow-down:before { content: '\e845'; }.uil-arrow-from-right:before { content: '\e846'; }.uil-arrow-from-top:before { content: '\e847'; }.uil-arrow-growth:before { content: '\e848'; }.uil-arrow-left:before { content: '\e849'; }.uil-arrow-random:before { content: '\e84a'; }.uil-arrow-resize-diagonal:before { content: '\e84b'; }.uil-arrow-right:before { content: '\e84c'; }.uil-arrow-to-bottom:before { content: '\e84d'; }.uil-arrow-to-right:before { content: '\e84e'; }.uil-arrow-up-left:before { content: '\e84f'; }.uil-arrow-up-right:before { content: '\e850'; }.uil-arrow-up:before { content: '\e851'; }.uil-arrow:before { content: '\e852'; }.uil-arrows-h-alt:before { content: '\e853'; }.uil-arrows-h:before { content: '\e854'; }.uil-arrows-left-down:before { content: '\e855'; }.uil-arrows-maximize:before { content: '\e856'; }.uil-arrows-merge:before { content: '\e857'; }.uil-arrows-resize-h:before { content: '\e858'; }.uil-arrows-resize-v:before { content: '\e859'; }.uil-horizontal-align-left:before { content: '\ea58'; }.uil-horizontal-align-right:before { content: '\ea59'; }.uil-horizontal-distribution-center:before { content: '\ea5a'; }.uil-horizontal-distribution-left:before { content: '\ea5b'; }.uil-horizontal-distribution-right:before { content: '\ea5c'; }.uil-hourglass:before { content: '\ea5d'; }.uil-html3-alt:before { content: '\ea5e'; }.uil-html3:before { content: '\ea5f'; }.uil-hunting:before { content: '\ea60'; }.uil-image-alt-slash:before { content: '\ea61'; }.uil-image-block:before { content: '\ea62'; }.uil-image-broken:before { content: '\ea63'; }.uil-image-check:before { content: '\ea64'; }.uil-image-download:before { content: '\ea65'; }.uil-image-edit:before { content: '\ea66'; }.uil-image-lock:before { content: '\ea67'; }.uil-image-minus:before { content: '\ea68'; }.uil-image-plus:before { content: '\ea69'; }.uil-image-question:before { content: '\ea6a'; }.uil-image-redo:before { content: '\ea6b'; }.uil-image-resize-landscape:before { content: '\ea6c'; }.uil-image-resize-square:before { content: '\ea6d'; }.uil-image-search:before { content: '\ea6e'; }.uil-image-share:before { content: '\ea6f'; }.uil-image-shield:before { content: '\ea70'; }.uil-image-slash:before { content: '\ea71'; }.uil-image-times:before { content: '\ea72'; }.uil-image-upload:before { content: '\ea73'; }.uil-image-v:before { content: '\ea74'; }.uil-image:before { content: '\ea75'; }.uil-images:before { content: '\ea76'; }.uil-import:before { content: '\ea77'; }.uil-incoming-call:before { content: '\ea78'; }.uil-info-circle:before { content: '\ea79'; }.uil-instagram-alt:before { content: '\ea7a'; }.uil-instagram:before { content: '\ea7b'; }.uil-intercom-alt:before { content: '\ea7c'; }.uil-intercom:before { content: '\ea7d'; }.uil-invoice:before { content: '\ea7e'; }.uil-italic:before { content: '\ea7f'; }.uil-jackhammer:before { content: '\ea80'; }.uil-java-script:before { content: '\ea81'; }.uil-kayak:before { content: '\ea82'; }.uil-key-skeleton-alt:before { content: '\ea83'; }.uil-key-skeleton:before { content: '\ea84'; }.uil-keyboard-alt:before { content: '\ea85'; }.uil-keyboard-hide:before { content: '\ea86'; }.uil-keyboard-show:before { content: '\ea87'; }.uil-keyboard:before { content: '\ea88'; }.uil-keyhole-circle:before { content: '\ea89'; }.uil-keyhole-square-full:before { content: '\ea8a'; }.uil-keyhole-square:before { content: '\ea8b'; }.uil-kid:before { content: '\ea8c'; }.uil-label-alt:before { content: '\ea8d'; }.uil-label:before { content: '\ea8e'; }.uil-lamp:before { content: '\ea8f'; }.uil-laptop-cloud:before { content: '\ea90'; }.uil-laptop-connection:before { content: '\ea91'; }.uil-laptop:before { content: '\ea92'; }.uil-laughing:before { content: '\ea93'; }.uil-layer-group-slash:before { content: '\ea94'; }.uil-layer-group:before { content: '\ea95'; }.uil-layers-alt:before { content: '\ea96'; }.uil-layers-slash:before { content: '\ea97'; }.uil-layers:before { content: '\ea98'; }.uil-left-arrow-from-left:before { content: '\ea99'; }.uil-left-arrow-to-left:before { content: '\ea9a'; }.uil-left-indent-alt:before { content: '\ea9b'; }.uil-left-indent:before { content: '\ea9c'; }.uil-left-to-right-text-direction:before { content: '\ea9d'; }.uil-life-ring:before { content: '\ea9e'; }.uil-lightbulb-alt:before { content: '\ea9f'; }.uil-lightbulb:before { content: '\eaa0'; }.uil-line-alt:before { content: '\eaa1'; }.uil-line-spacing:before { content: '\eaa2'; }.uil-line:before { content: '\eaa3'; }.uil-link-add:before { content: '\eaa4'; }.uil-link-alt:before { content: '\eaa5'; }.uil-link-broken:before { content: '\eaa6'; }.uil-link-h:before { content: '\eaa7'; }.uil-link:before { content: '\eaa8'; }.uil-linkedin-alt:before { content: '\eaa9'; }.uil-linkedin:before { content: '\eaaa'; }.uil-list-ui-alt:before { content: '\eaab'; }.uil-list-ul:before { content: '\eaac'; }.uil-location-arrow-alt:before { content: '\eaad'; }.uil-location-arrow:before { content: '\eaae'; }.uil-location-pin-alt:before { content: '\eaaf'; }.uil-location-point:before { content: '\eab0'; }.uil-lock-access:before { content: '\eab1'; }.uil-lock-alt:before { content: '\eab2'; }.uil-lock-open-alt:before { content: '\eab3'; }.uil-lock-slash:before { content: '\eab4'; }.uil-lock:before { content: '\eab5'; }.uil-luggage-cart:before { content: '\eab6'; }.uil-mailbox-alt:before { content: '\eab7'; }.uil-mailbox:before { content: '\eab8'; }.uil-map-marker-alt:before { content: '\eab9'; }.uil-map-marker-edit:before { content: '\eaba'; }.uil-map-marker-info:before { content: '\eabb'; }.uil-map-marker-minus:before { content: '\eabc'; }.uil-map-marker-plus:before { content: '\eabd'; }.uil-map-marker-question:before { content: '\eabe'; }.uil-map-marker-shield:before { content: '\eabf'; }.uil-map-marker-slash:before { content: '\eac0'; }.uil-map-marker:before { content: '\eac1'; }.uil-map-pin-alt:before { content: '\eac2'; }.uil-map-pin:before { content: '\eac3'; }.uil-map:before { content: '\eac4'; }.uil-mars:before { content: '\eac5'; }.uil-master-card:before { content: '\eac6'; }.uil-maximize-left:before { content: '\eac7'; }.uil-medal:before { content: '\eac8'; }.uil-medical-drip:before { content: '\eac9'; }.uil-medical-square-full:before { content: '\eaca'; }.uil-medical-square:before { content: '\eacb'; }.uil-medium-m:before { content: '\eacc'; }.uil-medkit:before { content: '\eacd'; }.uil-meeting-board:before { content: '\eace'; }.uil-megaphone:before { content: '\eacf'; }.uil-meh-alt:before { content: '\ead0'; }.uil-meh-closed-eye:before { content: '\ead1'; }.uil-meh:before { content: '\ead2'; }.uil-message:before { content: '\ead3'; }.uil-metro:before { content: '\ead4'; }.uil-microphone-slash:before { content: '\ead5'; }.uil-microphone:before { content: '\ead6'; }.uil-minus-circle:before { content: '\ead7'; }.uil-minus-path:before { content: '\ead8'; }.uil-minus-square-full:before { content: '\ead9'; }.uil-minus-square:before { content: '\eada'; }.uil-minus:before { content: '\eadb'; }.uil-missed-call:before { content: '\eadc'; }.uil-mobile-android-alt:before { content: '\eadd'; }.uil-mobile-android:before { content: '\eade'; }.uil-mobile-vibrate:before { content: '\eadf'; }.uil-modem:before { content: '\eae0'; }.uil-money-bill-slash:before { content: '\eae1'; }.uil-money-bill-stack:before { content: '\eae2'; }.uil-money-bill:before { content: '\eae3'; }.uil-money-insert:before { content: '\eae4'; }.uil-money-stack:before { content: '\eae5'; }.uil-money-withdraw:before { content: '\eae6'; }.uil-money-withdrawal:before { content: '\eae7'; }.uil-moneybag-alt:before { content: '\eae8'; }.uil-moneybag:before { content: '\eae9'; }.uil-monitor-heart-rate:before { content: '\eaea'; }.uil-monitor:before { content: '\eaeb'; }.uil-moon-eclipse:before { content: '\eaec'; }.uil-moon:before { content: '\eaed'; }.uil-moonset:before { content: '\eaee'; }.uil-mountains-sun:before { content: '\eaef'; }.uil-mountains:before { content: '\eaf0'; }.uil-mouse-alt-2:before { content: '\eaf1'; }.uil-mouse-alt:before { content: '\eaf2'; }.uil-mouse:before { content: '\eaf3'; }.uil-multiply:before { content: '\eaf4'; }.uil-music-note:before { content: '\eaf5'; }.uil-music-tune-slash:before { content: '\eaf6'; }.uil-music:before { content: '\eaf7'; }.uil-n-a:before { content: '\eaf8'; }.uil-navigator:before { content: '\eaf9'; }.uil-nerd:before { content: '\eafa'; }.uil-newspaper:before { content: '\eafb'; }.uil-ninja:before { content: '\eafc'; }.uil-no-entry:before { content: '\eafd'; }.uil-notebooks:before { content: '\eafe'; }.uil-notes:before { content: '\eaff'; }.uil-object-group:before { content: '\eb00'; }.uil-object-ungroup:before { content: '\eb01'; }.uil-octagon:before { content: '\eb02'; }.uil-opera-alt:before { content: '\eb03'; }.uil-opera:before { content: '\eb04'; }.uil-outgoing-call:before { content: '\eb05'; }.uil-package:before { content: '\eb06'; }.uil-padlock:before { content: '\eb07'; }.uil-paint-tool:before { content: '\eb08'; }.uil-palette:before { content: '\eb09'; }.uil-panel-add:before { content: '\eb0a'; }.uil-panorama-h-alt:before { content: '\eb0b'; }.uil-panorama-h:before { content: '\eb0c'; }.uil-panorama-v:before { content: '\eb0d'; }.uil-paperclip:before { content: '\eb0e'; }.uil-paragraph:before { content: '\eb0f'; }.uil-parcel:before { content: '\eb10'; }.uil-parking-circle:before { content: '\eb11'; }.uil-parking-square:before { content: '\eb12'; }.uil-pathfinder-unite:before { content: '\eb13'; }.uil-pathfinder:before { content: '\eb14'; }.uil-pause-circle:before { content: '\eb15'; }.uil-pause:before { content: '\eb16'; }.uil-paypal:before { content: '\eb17'; }.uil-pen:before { content: '\eb18'; }.uil-pentagon:before { content: '\eb19'; }.uil-percentage:before { content: '\eb1a'; }.uil-phone-alt:before { content: '\eb1b'; }.uil-phone-pause:before { content: '\eb1c'; }.uil-phone-slash:before { content: '\eb1d'; }.uil-phone-times:before { content: '\eb1e'; }.uil-phone-volume:before { content: '\eb1f'; }.uil-phone:before { content: '\eb20'; }.uil-picture:before { content: '\eb21'; }.uil-pizza-slice:before { content: '\eb22'; }.uil-plane-arrival:before { content: '\eb23'; }.uil-plane-departure:before { content: '\eb24'; }.uil-plane-fly:before { content: '\eb25'; }.uil-plane:before { content: '\eb26'; }.uil-play-circle:before { content: '\eb27'; }.uil-play:before { content: '\eb28'; }.uil-plug:before { content: '\eb29'; }.uil-plus-circle:before { content: '\eb2a'; }.uil-plus-square:before { content: '\eb2b'; }.uil-plus:before { content: '\eb2c'; }.uil-podium:before { content: '\eb2d'; }.uil-polygon:before { content: '\eb2e'; }.uil-post-stamp:before { content: '\eb2f'; }.uil-postcard:before { content: '\eb30'; }.uil-pound-circle:before { content: '\eb31'; }.uil-pound:before { content: '\eb32'; }.uil-power:before { content: '\eb33'; }.uil-prescription-bottle:before { content: '\eb34'; }.uil-presentation-check:before { content: '\eb35'; }.uil-presentation-edit:before { content: '\eb36'; }.uil-presentation-line:before { content: '\eb37'; }.uil-presentation-lines-alt:before { content: '\eb38'; }.uil-presentation-minus:before { content: '\eb39'; }.uil-presentation-play:before { content: '\eb3a'; }.uil-presentation-plus:before { content: '\eb3b'; }.uil-presentation-times:before { content: '\eb3c'; }.uil-presentation:before { content: '\eb3d'; }.uil-previous:before { content: '\eb3e'; }.uil-pricetag-alt:before { content: '\eb3f'; }.uil-print-slash:before { content: '\eb40'; }.uil-print:before { content: '\eb41'; }.uil-process:before { content: '\eb42'; }.uil-processor:before { content: '\eb43'; }.uil-pump:before { content: '\eb44'; }.uil-puzzle-piece:before { content: '\eb45'; }.uil-qrcode-scan:before { content: '\eb46'; }.uil-question-circle:before { content: '\eb47'; }.uil-rainbow:before { content: '\eb48'; }.uil-raindrops-alt:before { content: '\eb49'; }.uil-raindrops:before { content: '\eb4a'; }.uil-react:before { content: '\eb4b'; }.uil-receipt-alt:before { content: '\eb4c'; }.uil-receipt:before { content: '\eb4d'; }.uil-record-audio:before { content: '\eb4e'; }.uil-reddit-alien-alt:before { content: '\eb4f'; }.uil-redo:before { content: '\eb50'; }.uil-refresh:before { content: '\eb51'; }.uil-registered:before { content: '\eb52'; }.uil-repeat:before { content: '\eb53'; }.uil-restaurant:before { content: '\eb54'; }.uil-right-indent-alt:before { content: '\eb55'; }.uil-right-to-left-text-direction:before { content: '\eb56'; }.uil-robot:before { content: '\eb57'; }.uil-rope-way:before { content: '\eb58'; }.uil-rotate-360:before { content: '\eb59'; }.uil-rss-alt:before { content: '\eb5a'; }.uil-rss-interface:before { content: '\eb5b'; }.uil-rss:before { content: '\eb5c'; }.uil-ruler-combined:before { content: '\eb5d'; }.uil-ruler:before { content: '\eb5e'; }.uil-rupee-sign:before { content: '\eb5f'; }.uil-sad-cry:before { content: '\eb60'; }.uil-sad-crying:before { content: '\eb61'; }.uil-sad-dizzy:before { content: '\eb62'; }.uil-sad-squint:before { content: '\eb63'; }.uil-sad:before { content: '\eb64'; }.uil-save:before { content: '\eb65'; }.uil-scaling-left:before { content: '\eb66'; }.uil-scaling-right:before { content: '\eb67'; }.uil-scenery:before { content: '\eb68'; }.uil-schedule:before { content: '\eb69'; }.uil-screw:before { content: '\eb6a'; }.uil-scroll-h:before { content: '\eb6b'; }.uil-scroll:before { content: '\eb6c'; }.uil-search-alt:before { content: '\eb6d'; }.uil-search-minus:before { content: '\eb6e'; }.uil-search-plus:before { content: '\eb6f'; }.uil-search:before { content: '\eb70'; }.uil-selfie:before { content: '\eb71'; }.uil-server-alt:before { content: '\eb72'; }.uil-server-connection:before { content: '\eb73'; }.uil-server-network-alt:before { content: '\eb74'; }.uil-server-network:before { content: '\eb75'; }.uil-server:before { content: '\eb76'; }.uil-servers:before { content: '\eb77'; }.uil-servicemark:before { content: '\eb78'; }.uil-share-alt:before { content: '\eb79'; }.uil-shield-check:before { content: '\eb7a'; }.uil-shield-exclamation:before { content: '\eb7b'; }.uil-shield-question:before { content: '\eb7c'; }.uil-shield-slash:before { content: '\eb7d'; }.uil-shield:before { content: '\eb7e'; }.uil-ship:before { content: '\eb7f'; }.uil-shop:before { content: '\eb80'; }.uil-shopping-bag:before { content: '\eb81'; }.uil-shopping-basket:before { content: '\eb82'; }.uil-shopping-cart-alt:before { content: '\eb83'; }.uil-arrows-resize:before { content: '\e85a'; }.uil-arrows-right-down:before { content: '\e85b'; }.uil-arrows-shrink-h:before { content: '\e85c'; }.uil-arrows-shrink-v:before { content: '\e85d'; }.uil-arrows-up-right:before { content: '\e85e'; }.uil-arrows-v-alt:before { content: '\e85f'; }.uil-arrows-v:before { content: '\e860'; }.uil-assistive-listening-systems:before { content: '\e861'; }.uil-asterisk:before { content: '\e862'; }.uil-at:before { content: '\e863'; }.uil-atom:before { content: '\e864'; }.uil-auto-flash:before { content: '\e865'; }.uil-award-alt:before { content: '\e866'; }.uil-award:before { content: '\e867'; }.uil-baby-carriage:before { content: '\e868'; }.uil-backpack:before { content: '\e869'; }.uil-backspace:before { content: '\e86a'; }.uil-backward:before { content: '\e86b'; }.uil-bag-alt:before { content: '\e86c'; }.uil-bag-slash:before { content: '\e86d'; }.uil-bag:before { content: '\e86e'; }.uil-balance-scale:before { content: '\e86f'; }.uil-ban:before { content: '\e870'; }.uil-band-aid:before { content: '\e871'; }.uil-bars:before { content: '\e872'; }.uil-baseball-ball:before { content: '\e873'; }.uil-basketball-hoop:before { content: '\e874'; }.uil-basketball:before { content: '\e875'; }.uil-bath:before { content: '\e876'; }.uil-battery-bolt:before { content: '\e877'; }.uil-shopping-cart:before { content: '\eb84'; }.uil-shovel:before { content: '\eb85'; }.uil-shrink:before { content: '\eb86'; }.uil-shuffle:before { content: '\eb87'; }.uil-shutter-alt:before { content: '\eb88'; }.uil-shutter:before { content: '\eb89'; }.uil-sick:before { content: '\eb8a'; }.uil-sigma:before { content: '\eb8b'; }.uil-sign-alt:before { content: '\eb8c'; }.uil-sign-in-alt:before { content: '\eb8d'; }.uil-sign-left:before { content: '\eb8e'; }.uil-sign-out-alt:before { content: '\eb8f'; }.uil-sign-right:before { content: '\eb90'; }.uil-signal-alt-3:before { content: '\eb91'; }.uil-signal-alt:before { content: '\eb92'; }.uil-signal:before { content: '\eb93'; }.uil-signin:before { content: '\eb94'; }.uil-silence:before { content: '\eb95'; }.uil-silent-squint:before { content: '\eb96'; }.uil-sim-card:before { content: '\eb97'; }.uil-sitemap:before { content: '\eb98'; }.uil-skip-forward-alt:before { content: '\eb99'; }.uil-skip-forward-circle:before { content: '\eb9a'; }.uil-skip-forward:before { content: '\eb9b'; }.uil-skype-alt:before { content: '\eb9c'; }.uil-skype:before { content: '\eb9d'; }.uil-slack-alt:before { content: '\eb9e'; }.uil-slack:before { content: '\eb9f'; }.uil-sliders-v-alt:before { content: '\eba0'; }.uil-sliders-v:before { content: '\eba1'; }.uil-smile-beam:before { content: '\eba2'; }.uil-smile-dizzy:before { content: '\eba3'; }.uil-smile-squint-wink-alt:before { content: '\eba4'; }.uil-smile-squint-wink:before { content: '\eba5'; }.uil-smile-wink-alt:before { content: '\eba6'; }.uil-smile-wink:before { content: '\eba7'; }.uil-smile:before { content: '\eba8'; }.uil-snapchat-alt:before { content: '\eba9'; }.uil-snapchat-ghost:before { content: '\ebaa'; }.uil-snapchat-square:before { content: '\ebab'; }.uil-snow-flake:before { content: '\ebac'; }.uil-snowflake-alt:before { content: '\ebad'; }.uil-snowflake:before { content: '\ebae'; }.uil-sort-amount-down:before { content: '\ebaf'; }.uil-sort-amount-up:before { content: '\ebb0'; }.uil-sort:before { content: '\ebb1'; }.uil-sorting:before { content: '\ebb2'; }.uil-space-key:before { content: '\ebb3'; }.uil-spade:before { content: '\ebb4'; }.uil-sperms:before { content: '\ebb5'; }.uil-spin:before { content: '\ebb6'; }.uil-square-full:before { content: '\ebb7'; }.uil-square-shape:before { content: '\ebb8'; }.uil-square:before { content: '\ebb9'; }.uil-squint:before { content: '\ebba'; }.uil-star-half-alt:before { content: '\ebbb'; }.uil-star:before { content: '\ebbc'; }.uil-step-backward-alt:before { content: '\ebbd'; }.uil-step-backward-circle:before { content: '\ebbe'; }.uil-step-backward:before { content: '\ebbf'; }.uil-step-forward:before { content: '\ebc0'; }.uil-stop-circle:before { content: '\ebc1'; }.uil-stopwatch-slash:before { content: '\ebc2'; }.uil-stopwatch:before { content: '\ebc3'; }.uil-store-alt:before { content: '\ebc4'; }.uil-store:before { content: '\ebc5'; }.uil-streering:before { content: '\ebc6'; }.uil-stretcher:before { content: '\ebc7'; }.uil-subject:before { content: '\ebc8'; }.uil-subway-alt:before { content: '\ebc9'; }.uil-subway:before { content: '\ebca'; }.uil-suitcase-alt:before { content: '\ebcb'; }.uil-suitcase:before { content: '\ebcc'; }.uil-sun:before { content: '\ebcd'; }.uil-sunset:before { content: '\ebce'; }.uil-surprise:before { content: '\ebcf'; }.uil-swatchbook:before { content: '\ebd0'; }.uil-swiggy:before { content: '\ebd1'; }.uil-swimmer:before { content: '\ebd2'; }.uil-sync-exclamation:before { content: '\ebd3'; }.uil-sync-slash:before { content: '\ebd4'; }.uil-sync:before { content: '\ebd5'; }.uil-syringe:before { content: '\ebd6'; }.uil-table-tennis:before { content: '\ebd7'; }.uil-table:before { content: '\ebd8'; }.uil-tablet:before { content: '\ebd9'; }.uil-tablets:before { content: '\ebda'; }.uil-tachometer-fast-alt:before { content: '\ebdb'; }.uil-tachometer-fast:before { content: '\ebdc'; }.uil-tag-alt:before { content: '\ebdd'; }.uil-tag:before { content: '\ebde'; }.uil-tape:before { content: '\ebdf'; }.uil-taxi:before { content: '\ebe0'; }.uil-tear:before { content: '\ebe1'; }.uil-telegram-alt:before { content: '\ebe2'; }.uil-telegram:before { content: '\ebe3'; }.uil-telescope:before { content: '\ebe4'; }.uil-temperature-empty:before { content: '\ebe5'; }.uil-temperature-half:before { content: '\ebe6'; }.uil-temperature-minus:before { content: '\ebe7'; }.uil-temperature-plus:before { content: '\ebe8'; }.uil-temperature-quarter:before { content: '\ebe9'; }.uil-temperature-three-quarter:before { content: '\ebea'; }.uil-temperature:before { content: '\ebeb'; }.uil-tennis-ball:before { content: '\ebec'; }.uil-text-fields:before { content: '\ebed'; }.uil-text-size:before { content: '\ebee'; }.uil-text-strike-through:before { content: '\ebef'; }.uil-text:before { content: '\ebf0'; }.uil-th-large:before { content: '\ebf1'; }.uil-th-slash:before { content: '\ebf2'; }.uil-th:before { content: '\ebf3'; }.uil-thermometer:before { content: '\ebf4'; }.uil-thumbs-down:before { content: '\ebf5'; }.uil-thumbs-up:before { content: '\ebf6'; }.uil-thunderstorm-moon:before { content: '\ebf7'; }.uil-thunderstorm-sun:before { content: '\ebf8'; }.uil-thunderstorm:before { content: '\ebf9'; }.uil-ticket:before { content: '\ebfa'; }.uil-times-circle:before { content: '\ebfb'; }.uil-times-square:before { content: '\ebfc'; }.uil-times:before { content: '\ebfd'; }.uil-toggle-off:before { content: '\ebfe'; }.uil-toggle-on:before { content: '\ebff'; }.uil-top-arrow-from-top:before { content: '\ec00'; }.uil-top-arrow-to-top:before { content: '\ec01'; }.uil-tornado:before { content: '\ec02'; }.uil-trademark-circle:before { content: '\ec03'; }.uil-trademark:before { content: '\ec04'; }.uil-traffic-barrier:before { content: '\ec05'; }.uil-traffic-light:before { content: '\ec06'; }.uil-transaction:before { content: '\ec07'; }.uil-trash-alt:before { content: '\ec08'; }.uil-trash:before { content: '\ec09'; }.uil-trees:before { content: '\ec0a'; }.uil-triangle:before { content: '\ec0b'; }.uil-trophy:before { content: '\ec0c'; }.uil-trowel:before { content: '\ec0d'; }.uil-truck-loading:before { content: '\ec0e'; }.uil-truck:before { content: '\ec0f'; }.uil-tumblr-alt:before { content: '\ec10'; }.uil-tumblr-square:before { content: '\ec11'; }.uil-tumblr:before { content: '\ec12'; }.uil-tv-retro-slash:before { content: '\ec13'; }.uil-tv-retro:before { content: '\ec14'; }.uil-twitter-alt:before { content: '\ec15'; }.uil-twitter:before { content: '\ec16'; }.uil-umbrella:before { content: '\ec17'; }.uil-unamused:before { content: '\ec18'; }.uil-underline:before { content: '\ec19'; }.uil-university:before { content: '\ec1a'; }.uil-unlock-alt:before { content: '\ec1b'; }.uil-unlock:before { content: '\ec1c'; }.uil-upload-alt:before { content: '\ec1d'; }.uil-upload:before { content: '\ec1e'; }.uil-usd-circle:before { content: '\ec1f'; }.uil-usd-square:before { content: '\ec20'; }.uil-user-check:before { content: '\ec21'; }.uil-user-circle:before { content: '\ec22'; }.uil-user-exclamation:before { content: '\ec23'; }.uil-user-location:before { content: '\ec24'; }.uil-user-minus:before { content: '\ec25'; }.uil-user-plus:before { content: '\ec26'; }.uil-user-square:before { content: '\ec27'; }.uil-user-times:before { content: '\ec28'; }.uil-user:before { content: '\ec29'; }.uil-users-alt:before { content: '\ec2a'; }.uil-utensils-alt:before { content: '\ec2b'; }.uil-utensils:before { content: '\ec2c'; }.uil-vector-square-alt:before { content: '\ec2d'; }.uil-vector-square:before { content: '\ec2e'; }.uil-venus:before { content: '\ec2f'; }.uil-vertical-align-bottom:before { content: '\ec30'; }.uil-vertical-align-center:before { content: '\ec31'; }.uil-vertical-align-top:before { content: '\ec32'; }.uil-vertical-distribute-bottom:before { content: '\ec33'; }.uil-vertical-distribution-center:before { content: '\ec34'; }.uil-vertical-distribution-top:before { content: '\ec35'; }.uil-video-slash:before { content: '\ec36'; }.uil-video:before { content: '\ec37'; }.uil-visual-studio:before { content: '\ec38'; }.uil-vk-alt:before { content: '\ec39'; }.uil-vk:before { content: '\ec3a'; }.uil-voicemail-rectangle:before { content: '\ec3b'; }.uil-voicemail:before { content: '\ec3c'; }.uil-volleyball:before { content: '\ec3d'; }.uil-volume-down:before { content: '\ec3e'; }.uil-volume-mute:before { content: '\ec3f'; }.uil-volume-off:before { content: '\ec40'; }.uil-volume-up:before { content: '\ec41'; }.uil-volume:before { content: '\ec42'; }.uil-vuejs-alt:before { content: '\ec43'; }.uil-vuejs:before { content: '\ec44'; }.uil-wall:before { content: '\ec45'; }.uil-wallet:before { content: '\ec46'; }.uil-watch-alt:before { content: '\ec47'; }.uil-watch:before { content: '\ec48'; }.uil-water-drop-slash:before { content: '\ec49'; }.uil-water-glass:before { content: '\ec4a'; }.uil-water:before { content: '\ec4b'; }.uil-web-grid-alt:before { content: '\ec4c'; }.uil-web-grid:before { content: '\ec4d'; }.uil-web-section-alt:before { content: '\ec4e'; }.uil-web-section:before { content: '\ec4f'; }.uil-webcam:before { content: '\ec50'; }.uil-weight:before { content: '\ec51'; }.uil-whatsapp:before { content: '\ec52'; }.uil-wheel-barrow:before { content: '\ec53'; }.uil-wheelchair-alt:before { content: '\ec54'; }.uil-wheelchair:before { content: '\ec55'; }.uil-wifi-router:before { content: '\ec56'; }.uil-wifi-slash:before { content: '\ec57'; }.uil-wifi:before { content: '\ec58'; }.uil-wind-moon:before { content: '\ec59'; }.uil-wind-sun:before { content: '\ec5a'; }.uil-wind:before { content: '\ec5b'; }.uil-window-grid:before { content: '\ec5c'; }.uil-window-maximize:before { content: '\ec5d'; }.uil-window-section:before { content: '\ec5e'; }.uil-window:before { content: '\ec5f'; }.uil-windsock:before { content: '\ec60'; }.uil-windy:before { content: '\ec61'; }.uil-wrap-text:before { content: '\ec62'; }.uil-wrench:before { content: '\ec63'; }.uil-x-add:before { content: '\ec64'; }.uil-x:before { content: '\ec65'; }.uil-yen-circle:before { content: '\ec66'; }.uil-yen:before { content: '\ec67'; }.uil-yin-yang:before { content: '\ec68'; }.uil-youtube:before { content: '\ec69'; }.uil-battery-empty:before { content: '\e878'; }.uil-bed-double:before { content: '\e879'; }.uil-bed:before { content: '\e87a'; }.uil-behance-alt:before { content: '\e87b'; }.uil-behance:before { content: '\e87c'; }.uil-bell-school:before { content: '\e87d'; }.uil-bell-slash:before { content: '\e87e'; }.uil-bell:before { content: '\e87f'; }.uil-bill:before { content: '\e880'; }.uil-bitcoin-alt:before { content: '\e881'; }.uil-bitcoin-circle:before { content: '\e882'; }.uil-bitcoin-sign:before { content: '\e883'; }.uil-bitcoin:before { content: '\e884'; }.uil-black-berry:before { content: '\e885'; }.uil-blogger-alt:before { content: '\e886'; }.uil-blogger:before { content: '\e887'; }.uil-bluetooth-b:before { content: '\e888'; }.uil-bold:before { content: '\e889'; }.uil-bolt-alt:before { content: '\e88a'; }.uil-bolt-slash:before { content: '\e88b'; }.uil-bolt:before { content: '\e88c'; }.uil-book-alt:before { content: '\e88d'; }.uil-book-medical:before { content: '\e88e'; }.uil-book-open:before { content: '\e88f'; }.uil-book-reader:before { content: '\e890'; }.uil-book:before { content: '\e891'; }.uil-bookmark-full:before { content: '\e892'; }.uil-bookmark:before { content: '\e893'; }.uil-books:before { content: '\e894'; }.uil-boombox:before { content: '\e895'; }.uil-border-alt:before { content: '\e896'; }.uil-border-bottom:before { content: '\e897'; }.uil-border-clear:before { content: '\e898'; }.uil-border-horizontal:before { content: '\e899'; }.uil-border-inner:before { content: '\e89a'; }.uil-border-left:before { content: '\e89b'; }.uil-border-out:before { content: '\e89c'; }.uil-border-right:before { content: '\e89d'; }.uil-border-top:before { content: '\e89e'; }.uil-border-vertical:before { content: '\e89f'; }.uil-bowling-ball:before { content: '\e8a0'; }.uil-box:before { content: '\e8a1'; }.uil-brackets-curly:before { content: '\e8a2'; }.uil-brain:before { content: '\e8a3'; }.uil-briefcase-alt:before { content: '\e8a4'; }.uil-briefcase:before { content: '\e8a5'; }.uil-bright:before { content: '\e8a6'; }.uil-brightness-empty:before { content: '\e8a7'; }.uil-brightness-half:before { content: '\e8a8'; }.uil-brightness-low:before { content: '\e8a9'; }.uil-brightness-minus:before { content: '\e8aa'; }.uil-brightness-plus:before { content: '\e8ab'; }.uil-brightness:before { content: '\e8ac'; }.uil-bring-bottom:before { content: '\e8ad'; }.uil-bring-front:before { content: '\e8ae'; }.uil-browser:before { content: '\e8af'; }.uil-brush-alt:before { content: '\e8b0'; }.uil-bug:before { content: '\e8b1'; }.uil-building:before { content: '\e8b2'; }.uil-bullseye:before { content: '\e8b3'; }.uil-bus-alt:before { content: '\e8b4'; }.uil-bus-school:before { content: '\e8b5'; }.uil-bus:before { content: '\e8b6'; }.uil-calculator-alt:before { content: '\e8b7'; }.uil-calculator:before { content: '\e8b8'; }.uil-calendar-alt:before { content: '\e8b9'; }.uil-calendar-slash:before { content: '\e8ba'; }.uil-calender:before { content: '\e8bb'; }.uil-calling:before { content: '\e8bc'; }.uil-camera-change:before { content: '\e8bd'; }.uil-camera-plus:before { content: '\e8be'; }.uil-camera-slash:before { content: '\e8bf'; }.uil-camera:before { content: '\e8c0'; }.uil-cancel:before { content: '\e8c1'; }.uil-capsule:before { content: '\e8c2'; }.uil-capture:before { content: '\e8c3'; }.uil-car-sideview:before { content: '\e8c4'; }.uil-car-slash:before { content: '\e8c5'; }.uil-car-wash:before { content: '\e8c6'; }.uil-car:before { content: '\e8c7'; }.uil-card-atm:before { content: '\e8c8'; }.uil-caret-right:before { content: '\e8c9'; }.uil-cell:before { content: '\e8ca'; }.uil-celsius:before { content: '\e8cb'; }.uil-channel-add:before { content: '\e8cc'; }.uil-channel:before { content: '\e8cd'; }.uil-chart-bar-alt:before { content: '\e8ce'; }.uil-chart-bar:before { content: '\e8cf'; }.uil-chart-down:before { content: '\e8d0'; }.uil-chart-growth-alt:before { content: '\e8d1'; }.uil-chart-growth:before { content: '\e8d2'; }.uil-chart-line:before { content: '\e8d3'; }.uil-chart-pie-alt:before { content: '\e8d4'; }.uil-chart-pie:before { content: '\e8d5'; }.uil-chart:before { content: '\e8d6'; }.uil-chat-bubble-user:before { content: '\e8d7'; }.uil-chat-info:before { content: '\e8d8'; }.uil-chat:before { content: '\e8d9'; }.uil-check-circle:before { content: '\e8da'; }.uil-check-square:before { content: '\e8db'; }.uil-check:before { content: '\e8dc'; }.uil-circle-layer:before { content: '\e8dd'; }.uil-circle:before { content: '\e8de'; }.uil-circuit:before { content: '\e8df'; }.uil-clapper-board:before { content: '\e8e0'; }.uil-clipboard-alt:before { content: '\e8e1'; }.uil-clipboard-blank:before { content: '\e8e2'; }.uil-clipboard-notes:before { content: '\e8e3'; }.uil-clipboard:before { content: '\e8e4'; }.uil-clock-eight:before { content: '\e8e5'; }.uil-clock-five:before { content: '\e8e6'; }.uil-clock-nine:before { content: '\e8e7'; }.uil-clock-seven:before { content: '\e8e8'; }.uil-clock-ten:before { content: '\e8e9'; }.uil-clock-three:before { content: '\e8ea'; }.uil-clock-two:before { content: '\e8eb'; }.uil-clock:before { content: '\e8ec'; }.uil-closed-captioning-slash:before { content: '\e8ed'; }.uil-closed-captioning:before { content: '\e8ee'; }.uil-cloud-block:before { content: '\e8ef'; }.uil-cloud-bookmark:before { content: '\e8f0'; }.uil-cloud-check:before { content: '\e8f1'; }.uil-cloud-computing:before { content: '\e8f2'; }.uil-cloud-data-connection:before { content: '\e8f3'; }.uil-cloud-database-tree:before { content: '\e8f4'; }.uil-cloud-download:before { content: '\e8f5'; }.uil-cloud-drizzle:before { content: '\e8f6'; }.uil-cloud-exclamation:before { content: '\e8f7'; }.uil-cloud-hail:before { content: '\e8f8'; }.uil-cloud-heart:before { content: '\e8f9'; }.uil-cloud-info:before { content: '\e8fa'; }.uil-cloud-lock:before { content: '\e8fb'; }.uil-cloud-meatball:before { content: '\e8fc'; }.uil-cloud-moon-hail:before { content: '\e8fd'; }.uil-cloud-moon-meatball:before { content: '\e8fe'; }.uil-cloud-moon-rain:before { content: '\e8ff'; }.uil-cloud-moon-showers:before { content: '\e900'; }.uil-cloud-moon:before { content: '\e901'; }.uil-cloud-question:before { content: '\e902'; }.uil-cloud-rain-sun:before { content: '\e903'; }.uil-cloud-rain:before { content: '\e904'; }.uil-cloud-redo:before { content: '\e905'; }.uil-cloud-share:before { content: '\e906'; }.uil-cloud-shield:before { content: '\e907'; }.uil-cloud-showers-alt:before { content: '\e908'; }.uil-cloud-showers-heavy:before { content: '\e909'; }.uil-cloud-showers:before { content: '\e90a'; }.uil-cloud-slash:before { content: '\e90b'; }.uil-cloud-sun-hail:before { content: '\e90c'; }.uil-cloud-sun-meatball:before { content: '\e90d'; }.uil-cloud-sun-rain-alt:before { content: '\e90e'; }.uil-cloud-sun-rain:before { content: '\e90f'; }.uil-cloud-sun-tear:before { content: '\e910'; }.uil-cloud-sun:before { content: '\e911'; }.uil-cloud-times:before { content: '\e912'; }.uil-cloud-unlock:before { content: '\e913'; }.uil-cloud-upload:before { content: '\e914'; }.uil-cloud-wifi:before { content: '\e915'; }.uil-cloud-wind:before { content: '\e916'; }.uil-cloud:before { content: '\e917'; }.uil-clouds:before { content: '\e918'; }.uil-club:before { content: '\e919'; }.uil-code-branch:before { content: '\e91a'; }.uil-coffee:before { content: '\e91b'; }.uil-cog:before { content: '\e91c'; }.uil-coins:before { content: '\e91d'; }.uil-columns:before { content: '\e91e'; }.uil-comment-add:before { content: '\e91f'; }.uil-comment-alt-block:before { content: '\e920'; }.uil-comment-alt-chart-lines:before { content: '\e921'; }.uil-comment-alt-check:before { content: '\e922'; }.uil-comment-alt-dots:before { content: '\e923'; }.uil-comment-alt-download:before { content: '\e924'; }.uil-comment-alt-edit:before { content: '\e925'; }.uil-comment-alt-exclamation:before { content: '\e926'; }.uil-comment-alt-heart:before { content: '\e927'; }.uil-comment-alt-image:before { content: '\e928'; }.uil-comment-alt-info:before { content: '\e929'; }.uil-comment-alt-lines:before { content: '\e92a'; }.uil-comment-alt-lock:before { content: '\e92b'; }

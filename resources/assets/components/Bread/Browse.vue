@@ -35,12 +35,7 @@
                             :class="formfield.options.sortable ? 'cursor-pointer' : ''">
                             {{ translate(formfield.options.title, true) }}
                             <span v-if="formfield.options.sortable && parameter.orderColumn == formfield.column" class="text-gray-800 dark:text-gray-200">
-                                <span v-if="parameter.orderDir == 'asc'">
-                                    <unicon name="sort-amount-up" fill="currentColor" />
-                                </span>
-                                <span v-else>
-                                    <unicon name="sort-amount-down" fill="currentColor" />
-                                </span>
+                                <i class="uil text-xl" :class="[parameter.orderDir == 'asc' ? 'uil-sort-amount-up' : 'uil-sort-amount-down']"></i>
                             </span>
                         </th>
                         <th class="text-right" v-if="!fromRelationship">{{ __('voyager::generic.actions') }}</th>

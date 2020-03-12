@@ -4,13 +4,13 @@
             <div class="drag-handle cursor-move">
                 <div class="w-full text-right">
                     <i class="cursor-pointer" @click="deleteFormfield()">
-                        <unicon name="trash" fill="currentColor" />
+                        <i class="uil uil-trash text-2xl"></i>
                     </i>
                     <i class="cursor-pointer" @click="openOptions()">
-                        <unicon name="cog" fill="currentColor" />
+                        <i class="uil uil-cog text-2xl"></i>
                     </i>
                     <i class="cursor-pointer" @mousedown="startFormfieldResize()" @mouseup="endFormfieldResize()">
-                        <unicon name="arrows-h" fill="currentColor" />
+                        <i class="uil uil-arrows-h text-2xl"></i>
                     </i>
                 </div>
                 <component

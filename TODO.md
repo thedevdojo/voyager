@@ -15,6 +15,3 @@ Instead, they are listed here:
 ## Nice to have
 - Validate (hash) AJAX data and check in controller
 - Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields
-
-## Documentation
-- Icons: Implementation (`<unicon name="helm" />`), adding custom icons (icons.js), finding icons

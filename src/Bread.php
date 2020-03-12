@@ -133,4 +133,27 @@ class Bread
 
         return $ret;
     }
+
+    /**
+     * Get the search placeholder (Search for Users, Posts, etc...)
+     *
+     * @param string $placeholder The placeholder
+     */
+    public function getBreadSearchPlaceholder()
+    {
+        $breads =  $this->getBreads();
+
+        if (count($breads) > 1) {
+            return __('voyager::generic.search_for_breads', [
+                'bread' => $breads[0]->name_plural,
+                'bread2' => $breads[1]->name_plural
+            ]);
+        } elseif (count($breads) == 1) {
+            return __('voyager::generic.search_for_bread', [
+                'bread' => $breads[0]->name_plural
+            ]);
+        }
+
+        return __('voyager::generic.search');
+    }
 }

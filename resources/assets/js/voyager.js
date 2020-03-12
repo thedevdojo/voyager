@@ -4,7 +4,6 @@ require('./bread');
 require('./multilanguage');
 require('./formfields');
 require('./ui');
-require('./icons');
 
 Vue.component('language-input', require('../components/LanguageInput').default);
 Vue.component('locale-picker', require('../components/LocalePicker').default);

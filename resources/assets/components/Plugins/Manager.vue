@@ -31,7 +31,7 @@
                     <button class="button blue" v-for="i in pages" @click="page = (i - 1)" :key="'page-button-'+i">{{ i }}</button>
                 </div>
             </div>
-            <div slot="opener" class="w-full text-right">
+            <div slot="opener" class="w-full text-right mb-5">
                 <button class="button green">{{ __('voyager::plugins.find_a_plugin') }}</button>
             </div>
         </modal>

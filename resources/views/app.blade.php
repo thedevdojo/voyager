@@ -31,9 +31,6 @@
 
     </main>
     <vue-snotify></vue-snotify>
-    <floating-button position="bottom-right" v-if="$language.localePicker">
-        <locale-picker />
-    </floating-button>
 </div>
 
 </body>
@@ -75,6 +72,7 @@ var voyager = new Vue({
         this.$globals.breads = {!! Bread::getBreads() !!};
         this.$globals.formfields = {!! Voyager::getFormfieldsDescription()->toJson() !!};
         this.$globals.debug = {{ var_export(config('app.debug') ?? false, true) }};
+        this.$globals.searchPlaceholder = '{{ Bread::getBreadSearchPlaceholder() }}';
     }
 });
 </script>

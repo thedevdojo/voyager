@@ -6,19 +6,18 @@
         "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "postinstall": "patch-package"
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
         "cross-env": "^7.0.2",
         "laravel-mix": "^5.0.1",
         "laravel-mix-purgecss": "^4.2.0",
-        "patch-package": "^6.2.1",
         "sass-loader": "^8.0.2",
         "tailwindcss-dark-mode": "^1.1.2",
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "@iconscout/unicons": "^2.1.3",
         "@mathieustan/vue-datepicker": "^0.2.2",
         "axios": "^0.19.2",
         "debounce": "^1.2.0",
@@ -32,7 +31,6 @@
         "vue-select": "^3.8.1",
         "vue-snotify": "^3.2.1",
         "vue-swatches": "^1.0.4",
-        "vue-unicons": "^2.0.3",
         "vuedraggable": "^2.23.2"
     }
 }

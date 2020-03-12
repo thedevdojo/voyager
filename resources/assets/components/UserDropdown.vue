@@ -27,13 +27,23 @@
                         <img class="h-10 w-10 rounded-full flex-no-shrink" :src="photo" alt="">
                         <div class="ml-4">
                         <p class="font-semibold text-gray-900 dark:text-gray-100 leading-none">{{ name }}</p>
-                        <p><a href="#" class="text-sm text-gray-600 dark:text-gray-400 leading-none hover:underline">View Profile</a></p>
+                        <p>
+                            <a href="#" class="text-sm text-gray-600 dark:text-gray-400 leading-none hover:underline">
+                                {{ __('voyager::generic.view_profile') }}
+                            </a>
+                        </p>
                         </div>
                     </div>
                     <div class="border-t-2 border-gray-100 dark:border-gray-900 py-1">
-                        <a :href="route('voyager.dashboard')" class="block px-6 py-3 leading-tight hover:bg-gray-200">{{ __('voyager::generic.dashboard') }}</a>
-                        <a href="#" class="block px-6 py-3 leading-tight hover:bg-gray-200">Settings</a>
-                        <a :href="route('voyager.logout')" class="block px-6 py-3 leading-tight hover:bg-gray-200">{{ __('voyager::auth.logout') }}</a>
+                        <a :href="route('voyager.dashboard')" class="block px-6 py-3 leading-tight hover:bg-gray-200">
+                            {{ __('voyager::generic.dashboard') }}
+                        </a>
+                        <a :href="route('voyager.settings.index')" class="block px-6 py-3 leading-tight hover:bg-gray-200">
+                            {{ __('voyager::generic.settings') }}
+                        </a>
+                        <a :href="route('voyager.logout')" class="block px-6 py-3 leading-tight hover:bg-gray-200">
+                            {{ __('voyager::auth.logout') }}
+                        </a>
                     </div>
                 </div>
             </div>
