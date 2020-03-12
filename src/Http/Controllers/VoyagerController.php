@@ -25,6 +25,12 @@ class VoyagerController extends Controller
                 $mime = 'text/javascript';
             } elseif (Str::endsWith($path, '.css')) {
                 $mime = 'text/css';
+            } elseif (Str::endsWith($path, '.woff')) {
+                $mime = 'font/woff';
+            } elseif (Str::endsWith($path, '.woff2')) {
+                $mime = 'font/woff2';
+            } elseif (Str::endsWith($path, '.ttf')) {
+                $mime = 'font/ttf';
             } else {
                 $mime = File::mimeType($path);
             }

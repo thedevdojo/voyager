@@ -1,8 +1,8 @@
 <aside class="flex flex-col justify-between h-full min-h-screen h-full aside-expand w-56 bg-gray-100 dark:bg-gray-800 overflow-x-hidden fixed">
     <div class="flex flex-col justify-start">
-        <a :href="route('voyager.dashboard')" class="flex justify-start pl-8 items-center w-auto h-16 relative text-white">
+        <a :href="route('voyager.dashboard')" class="flex justify-start pl-8 items-center w-auto h-16 relative text-black dark:text-white">
             <unicon name="helm" view-box="0 0 600 600" fill="currentColor"></unicon>
-            <span class="font-black text-black dark:text-white text-lg uppercase pl-2">Voyager</span>
+            <span class="font-black text-lg uppercase pl-2">Voyager</span>
         </a>
 
         <nav class="text-gray-500 px-5 mt-4">

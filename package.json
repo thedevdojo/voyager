@@ -22,6 +22,7 @@
         "@mathieustan/vue-datepicker": "^0.2.2",
         "axios": "^0.19.2",
         "debounce": "^1.2.0",
+        "inter-ui": "^3.12.1",
         "node-sass": "^4.13.1",
         "slugify": "^1.4.0",
         "tailwindcss": "^1.2",

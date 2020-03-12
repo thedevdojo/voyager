@@ -1,5 +1,7 @@
 .button {
-    @apply text-gray-200 py-2 px-4 mx-1 rounded cursor-pointer;
+    //  font-medium hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red 
+    //@apply text-gray-200 py-2 px-4 mx-1 rounded cursor-pointer;
+    @apply inline-flex justify-center rounded-md border border-transparent px-2 py-1 mx-1 text-base leading-6 font-normal text-white shadow-sm transition ease-in-out duration-150 cursor-pointer;
     &:focus {
         @apply outline-none;
     }
@@ -46,15 +48,15 @@
         }
     }
     &.yellow {
-        @apply bg-yellow-500;
+        @apply bg-yellow-600;
         &:hover {
-            @apply bg-yellow-600;
+            @apply bg-yellow-700;
         }
         &:active {
-            @apply bg-yellow-700;
+            @apply bg-yellow-800;
         }
         &.active {
-            @apply bg-yellow-700;
+            @apply bg-yellow-800;
         }
     }
     &.orange {
