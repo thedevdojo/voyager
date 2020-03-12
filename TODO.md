@@ -10,6 +10,7 @@ Instead, they are listed here:
 - Actions for BREAD-Browse is an object but should be an array
 - Edit-Add modal for relationships needs to be emptied when the modal closes or opens
 - Remove components `v-button` and `v-input` (?)
+- Tune Modal and Pagination components (Tailwind UI?)
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller

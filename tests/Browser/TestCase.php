@@ -83,6 +83,9 @@ class TestCase extends DuskTestCase
         $options->addArguments([
             '--log-level=3',
             '--silent',
+            '--disable-gpu',
+            '--headless',
+            '--no-sandbox'
         ]);
 
         return RemoteWebDriver::create(

@@ -20,4 +20,5 @@ require('laravel-mix-purgecss');
     folders: ['resources'],
     whitelistPatterns: [/snotify/, /mode-dark/, /dark/],
 })
-.js('resources/assets/js/voyager.js', 'resources/assets/dist/js');
+.js('resources/assets/js/voyager.js', 'resources/assets/dist/js')
+.copy('node_modules/inter-ui/Inter (web)', 'resources/assets/dist/fonts/inter');
