@@ -73,6 +73,7 @@ return [
     'profile'                => 'Perfil',
     'public_url'             => 'URL público',
     'read'                   => 'Ler',
+    'remember_me'            => 'Lembrar-me',
     'rename'                 => 'Renomear',
     'required'               => 'Requerido',
     'return_to_list'         => 'Voltar à lista',
