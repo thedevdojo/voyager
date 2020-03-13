@@ -6,7 +6,7 @@
                     <div class="w-full m-1">
                         <label class="voyager-label" for="slug">{{ __('voyager::generic.slug') }}</label>
                         <language-input
-                            class="voyager-input"
+                            class="voyager-input w-full"
                             id="slug"
                             type="text" :placeholder="__('voyager::generic.slug')"
                             v-bind:value="bread.slug"
@@ -18,7 +18,7 @@
                     <div class="w-1/3 m-1">
                         <label class="voyager-label" for="name-singular">{{ __('voyager::manager.name_singular') }}</label>
                         <language-input
-                            class="voyager-input"
+                            class="voyager-input w-full"
                             id="name-singular"
                             type="text" :placeholder="__('voyager::manager.name_singular')"
                             v-bind:value="bread.name_singular"
@@ -27,7 +27,7 @@
                     <div class="w-1/3 m-1">
                         <label class="voyager-label" for="name-plural">{{ __('voyager::manager.name_plural') }}</label>
                         <language-input
-                            class="voyager-input"
+                            class="voyager-input w-full"
                             id="name-plural"
                             type="text" :placeholder="__('voyager::manager.name_plural')"
                             v-bind:value="bread.name_plural"
@@ -57,7 +57,7 @@
                     <div class="w-1/3 m-1">
                         <label class="voyager-label" for="model">{{ __('voyager::manager.model') }}</label>
                         <input
-                            class="voyager-input"
+                            class="voyager-input w-full"
                             id="model"
                             type="text" :placeholder="__('voyager::manager.model')"
                             v-model="bread.model">
@@ -65,7 +65,7 @@
                     <div class="w-1/3 m-1">
                         <label class="voyager-label" for="controller">{{ __('voyager::manager.controller') }}</label>
                         <input
-                            class="voyager-input"
+                            class="voyager-input w-full"
                             id="controller"
                             type="text" :placeholder="__('voyager::manager.controller')"
                             v-model="bread.controller">
@@ -73,7 +73,7 @@
                     <div class="w-1/3 m-1">
                         <label class="voyager-label" for="policy">{{ __('voyager::manager.policy') }}</label>
                         <input
-                            class="voyager-input"
+                            class="voyager-input w-full"
                             id="policy"
                             type="text" :placeholder="__('voyager::manager.policy')"
                             v-model="bread.policy">

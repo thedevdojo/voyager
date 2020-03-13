@@ -7,7 +7,7 @@ $active-class: blue-500;
 }
 
 select, input.voyager-input {
-    @apply w-full bg-white appearance-none border-2 border-gray-400 rounded py-2 px-2 text-gray-800 transition duration-150 ease-in-out;
+    @apply bg-white appearance-none border-2 border-gray-400 rounded py-2 px-2 text-gray-800 transition duration-150 ease-in-out;
 
     &:focus {
         @apply outline-none border-#{$active-class};
@@ -15,6 +15,16 @@ select, input.voyager-input {
 
     &.small {
         @apply text-sm py-1 px-2;
+    }
+
+    &.error {
+        @apply border-red-500;
+    }
+    &.success {
+        @apply border-green-500;
+    }
+    &.warning {
+        @apply border-yellow-500;
     }
 
     &[type=checkbox] {
