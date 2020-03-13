@@ -1,5 +1,22 @@
 .mode-dark .voyager-table {
-    @apply  border-gray-800;
+    @apply border-gray-800 bg-gray-700;
+
+    &.striped {
+        table > tbody > tr {
+            &:nth-of-type(even) {
+                @apply bg-gray-700;
+                &:hover {
+                    @apply bg-gray-600;
+                }
+            }
+            &:nth-of-type(odd) {
+                @apply bg-gray-800;
+                &:hover {
+                    @apply bg-gray-600;
+                }
+            }
+        }
+    }
 
     table {
         thead > tr > th {
@@ -17,7 +34,27 @@
 }
 
 .voyager-table {
-    @apply align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200;
+    @apply align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200 my-5;
+
+    &.loading {
+        @apply opacity-25;
+    }
+
+    &.striped {
+        table > tbody > tr {
+            &:nth-of-type(even) {
+                @apply bg-gray-100;
+                &:hover {
+                    @apply bg-gray-200;
+                }
+            }
+            &:nth-of-type(odd) {
+                &:hover {
+                    @apply bg-gray-200;
+                }
+            }
+        }
+    }
 
     table {
         @apply min-w-full;
@@ -38,10 +75,6 @@
                     @apply border-none;
                 }
             }
-        }
-    
-        &.loading {
-            @apply opacity-25;
         }
     }
 }

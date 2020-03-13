@@ -23,11 +23,13 @@
                 <input type="text" class="voyager-input small" :placeholder="__('voyager::generic.search')" v-model="parameter.globalSearch">
             </div>
         </div>
-        <div class="voyager-table striped">
-            <table v-bind:class="[loading ? 'loading' : '']">
+        <div class="voyager-table striped" :class="[loading ? 'loading' : '']">
+            <table>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" :disabled="!multiple" @click="selectAll($event.target.checked)" ref="checkbox_all"></th>
+                        <th>
+                            <input class="voyager-input" type="checkbox" :disabled="!multiple" @click="selectAll($event.target.checked)" ref="checkbox_all">
+                        </th>
                         <th
                             v-for="(formfield, i) in layout.formfields"
                             :key="'th-'+i"
@@ -70,6 +72,7 @@
                             <input
                                 :type="multiple ? 'checkbox' : 'radio'"
                                 v-model="selectedEntries"
+                                class="voyager-input"
                                 :value="result[results.primary]"
                                 @click="select($event, result[results.primary])">
                         </td>
@@ -105,38 +108,38 @@
                 </tbody>
             </table>
 
-            <!-- TODO: Add pagination here? -->
+            <div class="flex m-4">
+                <div class="w-1/2">
+                    <div v-if="results.rows">
+                        {{ browseResultsDescription }}
+                        <span v-if="results.filtered < results.records">
+                            {{ __('voyager::bread.browse_filtered', { total: results.records, type: translate(bread.name_plural, true)}) }}
+                            <a @click.prevent="clearFilter()" href="#">{{ __('voyager::bread.browse_filter_clear') }}</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="w-1/2">
+                    <div class="flex text-right">
+                        <div class="w-full"></div>
+                        <select class="voyager-input small w-auto mr-5" v-model.number="parameter.perPage" v-if="results.rows && results.rows.length > 0">
+                            <option>10</option>
+                            <option v-if="results.filtered >= 25">25</option>
+                            <option v-if="results.filtered >= 50">50</option>
+                            <option v-if="results.filtered >= 100">100</option>
+                            <option :value="Number.MAX_SAFE_INTEGER">All</option>
+                        </select>
+                        <select class="voyager-input small w-auto mr-5" v-model="parameter.softDeletes" v-if="layout.soft_deletes == 'select'">
+                            <option value="show">Show soft-deleted</option>
+                            <option value="only">Show only soft-deleted</option>
+                            <option value="hide">Hide soft-deleted</option>
+                        </select>
+                        <pagination :pages="pages" v-model.number="parameter.page" :visible-pages="7" v-if="results.rows && results.rows.length > 0" />
+                    </div>
+                </div>
+            </div>
         </div>
             
-        <div v-bind:class="['flex mb-4 mt-4', loading ? 'opacity-25' : '']">
-            <div class="w-1/2">
-                <div v-if="results.rows">
-                    {{ browseResultsDescription }}
-                    <span v-if="results.filtered < results.records">
-                        {{ __('voyager::bread.browse_filtered', { total: results.records, type: translate(bread.name_plural, true)}) }}
-                        <a @click.prevent="clearFilter()" href="#">{{ __('voyager::bread.browse_filter_clear') }}</a>
-                    </span>
-                </div>
-            </div>
-            <div class="w-1/2">
-                <div class="flex text-right">
-                    <div class="w-full"></div>
-                    <select class="voyager-input small w-auto mr-5" v-model.number="parameter.perPage" v-if="results.rows && results.rows.length > 0">
-                        <option>10</option>
-                        <option v-if="results.filtered >= 25">25</option>
-                        <option v-if="results.filtered >= 50">50</option>
-                        <option v-if="results.filtered >= 100">100</option>
-                        <option :value="Number.MAX_SAFE_INTEGER">All</option>
-                    </select>
-                    <select class="voyager-input small w-auto mr-5" v-model="parameter.softDeletes" v-if="layout.soft_deletes == 'select'">
-                        <option value="show">Show soft-deleted</option>
-                        <option value="only">Show only soft-deleted</option>
-                        <option value="hide">Hide soft-deleted</option>
-                    </select>
-                    <pagination :pages="pages" v-model.number="parameter.page" :visible-pages="7" v-if="results.rows && results.rows.length > 0" />
-                </div>
-            </div>
-        </div>
+        
     </div>
 </template>
 
@@ -393,6 +396,7 @@ export default {
             this.debounced();
         },
         'parameter.perPage': function () {
+            Vue.set(this.parameter, 'page', 1);
             this.debounced();
         },
         'parameter.softDeletes': function () {

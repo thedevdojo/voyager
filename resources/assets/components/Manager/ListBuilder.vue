@@ -41,12 +41,14 @@
                         <td>
                             <input
                                 type="checkbox"
+                                class="voyager-input"
                                 v-model="formfield.options.searchable"
                                 :disabled="computed.includes(formfield.column)">
                         </td>
                         <td>
                             <input
                                 type="checkbox"
+                                class="voyager-input"
                                 v-model="formfield.options.sortable"
                                 :disabled="computed.includes(formfield.column) || (formfield.column || '').includes('.')">
                             <popper
@@ -60,6 +62,7 @@
                         <td>
                             <input
                                 type="radio"
+                                class="voyager-input"
                                 name="default_sorted"
                                 v-model="layout.default_sort_column"
                                 :value="formfield.column"

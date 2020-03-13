@@ -1,15 +1,60 @@
-.mode-dark .voyager-input {
-    @apply border-gray-600 bg-gray-700 text-gray-200;
+$active-class: blue-500;
+
+.mode-dark {
+    select, input.voyager-input {
+        @apply border-gray-600 bg-gray-700 text-gray-200;
+    }
 }
 
-.voyager-input {
-    @apply border-2 border-gray-400 appearance-none rounded w-full py-2 px-2 text-gray-800;
+select, input.voyager-input {
+    @apply w-full bg-white appearance-none border-2 border-gray-400 rounded py-2 px-2 text-gray-800 transition duration-150 ease-in-out;
 
-    &:active,
     &:focus {
-        @apply border-indigo-600 outline-none;
+        @apply outline-none border-#{$active-class};
     }
+
     &.small {
-        @apply py-1 px-2 text-sm;
+        @apply text-sm py-1 px-2;
     }
+
+    &[type=checkbox] {
+        @apply h-4 w-4 align-middle inline-block;
+
+        &:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+
+            @apply bg-no-repeat border-transparent bg-#{$active-class};
+
+            &:checked:focus {
+                @apply border-transparent;
+            }
+        }
+    }
+
+    &[type=radio] {
+        @apply h-4 w-4 rounded-full align-middle inline-block border-none text-#{$active-class};
+
+        &:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            &:checked:focus {
+                @apply border-transparent;
+            }
+        }
+    }
+}
+
+select.voyager-input {
+    @apply bg-no-repeat pr-10;
+
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%239fa6b2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
 }

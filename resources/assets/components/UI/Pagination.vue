@@ -2,7 +2,7 @@
     <div class="button-group">
         <button class="button blue" @click="openPreviousPage" :disabled="previousButtonDisabled">&lt;</button>
         <button
-            v-for="page in showingPages" :key="page"
+            v-for="(page, i) in showingPages" :key="i"
             :class="'button blue '+(page == currentPage ? 'active' : '')"
             @click="openPage(page)">
             {{ page }}
@@ -40,36 +40,33 @@ export default {
 
             if (vm.value <= threshold + 1) {
                 pagesArray[0] = 1;
-                const finalPages = pagesArray.map(
-                    (paginationTrigger, index) => {
-                        return pagesArray[0] + index;
-                    }
-                );
-                
+                const finalPages = pagesArray.map((paginationTrigger, index) => {
+                    return pagesArray[0] + index;
+                });
+                finalPages.push('...');
                 finalPages.push(vm.pages);
 
                 return finalPages;
             }
 
             if (vm.value >= vm.pages - threshold + 1) {
-                const finalPages = pagesArray.map(
-                    (paginationTrigger, index) => {
-                        return vm.pages - index;
-                    }
-                );
-
+                const finalPages = pagesArray.map((paginationTrigger, index) => {
+                    return vm.pages - index;
+                });
+                
+                finalPages.push('...');
                 finalPages.reverse().unshift(1);
 
                 return finalPages;
             }
 
             pagesArray[0] = vm.value - threshold + 1;
-            const finalPages = pagesArray.map(
-                (paginationTrigger, index) => {
-                    return pagesArray[0] + index;
-                }
-            );
-
+            const finalPages = pagesArray.map((paginationTrigger, index) => {
+                return pagesArray[0] + index;
+            });
+            finalPages.push('...');
+            finalPages.push('');
+            finalPages.unshift('...');
             finalPages.unshift(1);
             finalPages[finalPages.length - 1] = vm.pages;
 
@@ -78,6 +75,9 @@ export default {
     },
     methods: {
         openPage: function (page) {
+            if (page == '...') {
+                return;
+            }
             this.currentPage = parseInt(page);
             this.$emit('input', page);
         },

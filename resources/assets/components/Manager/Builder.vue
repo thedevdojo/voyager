@@ -82,21 +82,21 @@
                 <div class="flex mb-4">
                     <div class="w-1/3 m-1">
                         <label class="voyager-label" for="scope">{{ __('voyager::manager.scope') }}</label>
-                        <select class="voyager-input" v-model="bread.scope">
+                        <select class="voyager-input w-full" v-model="bread.scope">
                             <option :value="null">{{ __('voyager::generic.none') }}</option>
                             <option v-for="(scope, i) in scopes" :key="i">{{ scope }}</option>
                         </select>
                     </div>
                     <div class="w-1/3 m-1">
                         <label class="voyager-label" for="global_search">{{ __('voyager::manager.global_search_display_field') }}</label>
-                        <select class="voyager-input" v-model="bread.global_search_field">
+                        <select class="voyager-input w-full" v-model="bread.global_search_field">
                             <option value="">{{ __('voyager::generic.none') }}</option>
                             <option v-for="(col, i) in allColumns" :key="i">{{ col }}</option>
                         </select>
                     </div>
                     <div class="w-1/3 m-1">
                         <label class="voyager-label" for="ajax_validation">{{ __('voyager::manager.ajax_validation') }}</label>
-                        <select class="voyager-input" v-model="bread.ajax_validation">
+                        <select class="voyager-input w-full" v-model="bread.ajax_validation">
                             <option :value="true">{{ __('voyager::generic.yes') }}</option>
                             <option :value="false">{{ __('voyager::generic.no') }}</option>
                         </select>
