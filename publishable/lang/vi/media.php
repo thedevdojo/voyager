@@ -53,4 +53,5 @@ return [
     'browser_video_support'  => 'Trình duyệt của bạn không hỗ trợ phát video',
     'browser_audio_support'  => 'Trình duyệt không hỗ trợ tập tin audio.',
     'width'                  => 'Chiều rộng: ',
+    'add_all_selected'       => 'Thêm tất cả đã chọn',
 ];
