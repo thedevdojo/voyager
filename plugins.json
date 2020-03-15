@@ -5,5 +5,19 @@
         "repository": "emptynick/useless-plugin",
         "keywords": ["useless", "plugin", "Voyager"],
         "website": "https://github.com/emptynick/useless-plugin"
+    },
+    {
+        "name": "Simple Menu Manager",
+        "description": "A simple menu manager for Voyager 2",
+        "repository": "emptynick/voyager-menu-plugin",
+        "keywords": ["menu", "manager", "plugin", "Voyager"],
+        "website": "https://github.com/emptynick/voyager-menu-plugin"
+    },
+    {
+        "name": "Useless Widget Plugin",
+        "description": "A widget plugin for Voyager 2 that does absolutely nothing",
+        "repository": "emptynick/voyager-useless-widget-plugin",
+        "keywords": ["widget", "useless", "plugin", "Voyager"],
+        "website": "https://github.com/emptynick/voyager-useless-widget-plugin"
     }
 ]

@@ -221,6 +221,11 @@ window.uuid = function () {
 };
 Vue.prototype.uuid = uuid;
 
+window.nl2br = function (input) {
+    return input.replace(/\\n/g, '<br>');
+};
+Vue.prototype.nl2br = nl2br;
+
 Vue.directive('click-outside', {
     bind: function (el, binding, vnode) {
         el.clickOutsideEvent = function (event) {

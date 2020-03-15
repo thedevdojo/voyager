@@ -316,4 +316,27 @@ class Voyager
 
         return true;
     }
+
+    /**
+     * Gets all widgets from installed and enabled plugins
+     *
+     * @return Collection The widgets
+     */
+    public function getWidgets()
+    {
+        // TODO: Cache widgets?
+
+        return collect($this->getPluginsByType('widget')->where('enabled')->transform(function ($plugin) {
+            $width = $plugin->getWidth();
+            if ($width >= 1 && $width <= 11) {
+                $width = 'w-'.$width.'/12';
+            } else {
+                $width = 'w-full';
+            }
+            return (object)[
+                'width' => $width,
+                'view'  => $plugin->getWidgetView()
+            ];
+        }));
+    }
 }

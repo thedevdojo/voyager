@@ -9,7 +9,7 @@
         @endphp
 
         @if ($menu_plugin && $menu_plugin->getMenuView())
-            
+            {!! $menu_plugin->getMenuView()->render() !!}
         @else
         <nav class="text-gray-500 px-5 mt-4">
             <p class="text-xs font-medium uppercase ml-3 mb-4">{{ __('voyager::generic.main') }}</p>

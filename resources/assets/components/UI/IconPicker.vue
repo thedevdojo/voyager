@@ -1,6 +1,6 @@
 <template>
     <div>
-        <input type="text" class="voyager-input mb-3" :placeholder="__('voyager::generic.search_icons')" v-model="query" />
+        <input type="text" class="voyager-input w-full mb-3" :placeholder="__('voyager::generic.search_icons')" v-model="query" />
         <div class="grid grid-cols-12 gap-4">
             <div class="col-span-1" v-for="icon in filteredIcons" :key="'icon-' + icon">
                 <button class="button blue" @dblclick="selectIcon(icon)">

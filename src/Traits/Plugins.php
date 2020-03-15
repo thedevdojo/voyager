@@ -78,7 +78,7 @@ trait Plugins
 
     public function getPluginByType($type, $fallback = null)
     {
-        $plugin = $this->getPluginsByType($type)->first();
+        $plugin = $this->getPluginsByType($type)->where('enabled')->first();
         if (!$plugin && $fallback !== null) {
             $plugin = $fallback;
             if (!($fallback instanceof BasePlugin)) {

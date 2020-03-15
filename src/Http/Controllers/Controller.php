@@ -18,7 +18,9 @@ abstract class Controller extends BaseController
 {
     public function authorize($ability, $arguments = [])
     {
-        return $this->getAuthorizationPlugin()->authorize($ability, $arguments);
+        return $this->getAuthorizationPlugin()->each(function ($plugin) use ($ability, $arguments) {
+            $plugin->authorize($ability, $arguments);
+        });
     }
 
     public function getBread(Request $request)
@@ -205,7 +207,7 @@ abstract class Controller extends BaseController
 
     protected function getAuthorizationPlugin()
     {
-        return VoyagerFacade::getPluginByType('authorization', AuthorizationPlugin::class);
+        return VoyagerFacade::getPluginsByType('authorization');
     }
 
     protected function getAuthenticationPlugin()

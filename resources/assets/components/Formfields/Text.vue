@@ -21,7 +21,7 @@
                     :placeholder="translate(options.placeholder, true)"
                     v-bind:value="value"
                     v-on:input="$emit('input', $event.target.value)"
-                    class="voyager-input" />
+                    class="voyager-input w-full" />
                 <textarea
                     v-else
                     :rows="options.rows"
@@ -29,7 +29,7 @@
                     :placeholder="translate(options.placeholder, true)"
                     v-bind:value="value"
                     v-on:input="$emit('input', $event.target.value)"
-                    class="voyager-input">
+                    class="voyager-input w-full">
 
                 </textarea>
                 <p class="description">{{ translate(options.description, true) }}</p>
@@ -44,14 +44,14 @@
                     :disabled="action == 'mockup' || options.disabled"
                     :placeholder="translate(options.placeholder)"
                     :value="translate(options.default_value)"
-                    class="voyager-input" />
+                    class="voyager-input w-full" />
                 <textarea
                     v-else
                     :rows="options.rows"
                     :disabled="action == 'mockup' || options.disabled"
                     :placeholder="translate(options.placeholder)"
                     v-bind:value="translate(options.default_value)"
-                    class="voyager-input">
+                    class="voyager-input w-full">
                 </textarea>
                 <p class="description">{{ translate(options.description) }}</p>
             </div>
@@ -61,7 +61,7 @@
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.placeholder') }}</label>
                     <language-input
-                        class="voyager-input"
+                        class="voyager-input w-full"
                         type="text" :placeholder="__('voyager::generic.placeholder')"
                         v-bind:value="options.placeholder"
                         v-on:input="options.placeholder = $event" />
@@ -71,7 +71,7 @@
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.rows') }}</label>
                     <input
-                        class="voyager-input"
+                        class="voyager-input w-full"
                         type="number" min="1" max="255" :placeholder="__('voyager::generic.rows')"
                         v-model.number="options.rows" />
                 </div>
@@ -80,7 +80,7 @@
                 <div class="w-full m-1">
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.default_value') }}</label>
                     <language-input
-                        class="voyager-input"
+                        class="voyager-input w-full"
                         type="text" :placeholder="__('voyager::generic.default_value')"
                         v-model="options.default_value" />
                 </div>
@@ -96,7 +96,7 @@
                     <label class="voyager-label text-gray-100">{{ __('voyager::generic.max_characters') }}</label>
                     <input
                         type="number"
-                        class="voyager-input"
+                        class="voyager-input w-full"
                         min="1"
                         :placeholder="__('voyager::generic.max_characters')"
                         v-model="options.max_characters">

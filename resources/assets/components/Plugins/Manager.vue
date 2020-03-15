@@ -9,7 +9,7 @@
                     <button class="button green close-button">X</button>
                 </div>
             </div>
-            <input type="text" class="voyager-input mb-3" v-model="query" :placeholder="__('voyager::generic.search')">
+            <input type="text" class="voyager-input w-full mb-3" v-model="query" :placeholder="__('voyager::generic.search')">
             <div v-for="(plugin, i) in filteredPlugins.slice(start, end)" class="text-white" :key="'plugin-'+i">
                 <div class="flex">
                     <div class="w-3/5">
@@ -35,6 +35,10 @@
                 <button class="button green">{{ __('voyager::plugins.find_a_plugin') }}</button>
             </div>
         </modal>
+
+        <div v-if="hasMultiplePlugins('auth')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_auth_plugins'))"></div>
+        <div v-if="hasMultiplePlugins('menu')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></div>
+
         <div class="voyager-table striped">
             <table v-bind:class="[loading ? 'loading' : '']" id="bread-manager-browse">
                 <thead>
@@ -160,10 +164,11 @@ export default {
                                 _token: vm.$globals.csrf_token,
                             })
                             .then(function (response) {
-                                // TODO: ...
+                                vm.$snotify.info(vm.__('voyager::plugins.reload_page'));
                             })
-                            .catch(function (errors) {
-                                // TODO: ...
+                            .catch(function (error) {
+                                // TODO: This is not tested (error might be an array)
+                                vm.$snotify.error(vm.__('voyager::plugins.error_changing_plugin') + ' ' + error.data);
                             }).finally(function () {
                                 vm.loadPlugins();
                             });
@@ -178,6 +183,17 @@ export default {
                     },
                 ]
             });
+        },
+        hasMultiplePlugins: function (type) {
+            var num = 0;
+
+            for (let plugin in this.installedPlugins) {
+                if (plugin.enabled && plugin.type == 'type') {
+                    num++;
+                }
+            }
+
+            return num > 1;
         },
     },
     computed: {
@@ -197,7 +213,7 @@ export default {
         },
         pages: function () {
             return Math.ceil(this.filteredPlugins.length / this.resultsPerPage);
-        }
+        },
     },
     mounted: function () {
         this.loadPlugins();
