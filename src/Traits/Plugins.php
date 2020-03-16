@@ -31,7 +31,8 @@ trait Plugins
                 $plugin = new $plugin();
             }
             $plugin->type = $this->getPluginType($plugin);
-            $plugin->enabled = in_array($plugin->name, $this->enabled_plugins);
+            $plugin->identifier = $plugin->repository .'@'. class_basename($plugin);
+            $plugin->enabled = in_array($plugin->identifier, $this->enabled_plugins);
             if ($plugin->getInstructionsView()) {
                 $plugin->instructions = $plugin->getInstructionsView()->render();
             }
@@ -52,10 +53,8 @@ trait Plugins
             File::put($this->path, '[]');
         }
 
-        collect(@json_decode(File::get($this->path)))->each(function ($plugin) {
-            if ($plugin->enabled) {
-                $this->enabled_plugins[] = $plugin->name;
-            }
+        collect(@json_decode(File::get($this->path)))->where('enabled')->each(function ($plugin) {
+            $this->enabled_plugins[] = $plugin->identifier;
         });
     }
 
@@ -66,13 +65,11 @@ trait Plugins
 
     public function launchPlugins()
     {
-        $this->getAllPlugins()->each(function ($plugin, $key) {
-            if ($plugin->enabled) {
-                $plugin->registerPublicRoutes();
-                Route::group(['middleware' => 'voyager.admin'], function () use ($plugin, $key) {
-                    $plugin->registerProtectedRoutes();
-                });
-            }
+        $this->getAllPlugins()->where('enabled')->each(function ($plugin, $key) {
+            $plugin->registerPublicRoutes();
+            Route::group(['middleware' => 'voyager.admin'], function () use ($plugin, $key) {
+                $plugin->registerProtectedRoutes();
+            });
         });
     }
 
@@ -99,26 +96,26 @@ trait Plugins
         return @json_decode(File::get(realpath(__DIR__.'/../../plugins.json')));
     }
 
-    public function enablePlugin($name, $enable = true)
+    public function enablePlugin($identifier, $enable = true)
     {
         $this->getAllPlugins();
 
         $plugins = collect(@json_decode(File::get($this->path)));
-        if (!$plugins->contains('name', $name)) {
+        if (!$plugins->contains('identifier', $identifier)) {
             $plugins->push([
-                'name'    => $name,
-                'enabled' => $enable,
+                'identifier' => $identifier,
+                'enabled'    => $enable,
             ]);
         } else {
-            $plugins->where('name', $name)->first()->enabled = $enable;
+            $plugins->where('identifier', $identifier)->first()->enabled = $enable;
         }
 
         return File::put($this->path, json_encode($plugins, JSON_PRETTY_PRINT));
     }
 
-    public function disablePlugin($name)
+    public function disablePlugin($identifier)
     {
-        return $this->enablePlugin($name, false);
+        return $this->enablePlugin($identifier, false);
     }
 
     protected function getPluginType($class)

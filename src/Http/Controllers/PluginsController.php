@@ -9,17 +9,17 @@ class PluginsController extends Controller
 {
     public function enable(Request $request)
     {
-        $name = $request->get('name');
+        $identifier = $request->get('identifier');
         if ($request->get('enable', false)) {
-            return VoyagerFacade::enablePlugin($name);
+            return VoyagerFacade::enablePlugin($identifier);
         }
 
-        return VoyagerFacade::disablePlugin($name);
+        return VoyagerFacade::disablePlugin($identifier);
     }
 
     public function get()
     {
-        return VoyagerFacade::getAllPlugins()->sortBy('name');
+        return VoyagerFacade::getAllPlugins()->sortBy('identifier');
     }
 
     public function settings($key)

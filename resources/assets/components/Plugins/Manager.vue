@@ -159,7 +159,7 @@ export default {
                         text: vm.__('voyager::generic.yes'),
                         action: (toast) => {
                             axios.post(vm.route('voyager.plugins.enable'), {
-                                name: plugin.name,
+                                identifier: plugin.identifier,
                                 enable: enable,
                                 _token: vm.$globals.csrf_token,
                             })
