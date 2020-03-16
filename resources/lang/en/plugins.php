@@ -18,6 +18,7 @@ return [
         'authorization'                 => 'Authorization Plugin',
         'base'                          => 'Base Plugin',
         'menu'                          => 'Menu Plugin',
+        'theme'                         => 'Theme Plugin',
         'widget'                        => 'Widget Plugin',
     ],
 ];

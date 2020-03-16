@@ -8,6 +8,9 @@
 
     <title>@yield('page-title') - {{ Voyager::setting('admin.title', true, 'Voyager') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
+    @foreach (Voyager::getPluginsByType('theme')->where('enabled') as $theme)
+        <link href="{{ $theme->getStyleRoute() }}" rel="stylesheet">
+    @endforeach
 </head>
 <body>
 <div id="voyager" class="flex m-auto">

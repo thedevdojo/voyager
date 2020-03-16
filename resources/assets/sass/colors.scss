@@ -1,32 +1,32 @@
 @use "sass:map";
 
-$background-color               : 'bg-white';
-$background-color-dark          : 'bg-gray-900';
+$background-color               : 'bg-white' !default;
+$background-color-dark          : 'bg-gray-900' !default;
 
-$sidebar-title-color            : 'text-black';
-$sidebar-icon-color             : 'text-black';
-$sidebar-background-color       : 'bg-gray-100';
-$sidebar-item-text-color        : 'text-black';
-$sidebar-item-icon-color        : 'text-black';
-$sidebar-item-active-background : 'bg-gray-300';
-$sidebar-item-active-text-color : 'text-black';
-$sidebar-item-active-icon-color : 'text-black';
+$sidebar-title-color            : 'text-black' !default;
+$sidebar-icon-color             : 'text-black' !default;
+$sidebar-background-color       : 'bg-gray-100' !default;
+$sidebar-item-text-color        : 'text-black' !default;
+$sidebar-item-icon-color        : 'text-black' !default;
+$sidebar-item-active-background : 'bg-gray-300' !default;
+$sidebar-item-active-text-color : 'text-black' !default;
+$sidebar-item-active-icon-color : 'text-black' !default;
 
-$sidebar-title-color-dark            : 'text-white';
-$sidebar-icon-color-dark             : 'text-white';
-$sidebar-background-color-dark       : 'bg-gray-800';
-$sidebar-item-text-color-dark        : 'text-white';
-$sidebar-item-icon-color-dark        : 'text-white';
-$sidebar-item-active-background-dark : 'bg-white';
-$sidebar-item-active-text-color-dark : 'text-black';
-$sidebar-item-active-icon-color-dark : 'text-black';
+$sidebar-title-color-dark            : 'text-white' !default;
+$sidebar-icon-color-dark             : 'text-white' !default;
+$sidebar-background-color-dark       : 'bg-gray-800' !default;
+$sidebar-item-text-color-dark        : 'text-white' !default;
+$sidebar-item-icon-color-dark        : 'text-white' !default;
+$sidebar-item-active-background-dark : 'bg-white' !default;
+$sidebar-item-active-text-color-dark : 'text-black' !default;
+$sidebar-item-active-icon-color-dark : 'text-black' !default;
 
 
-$primary-text-color             : 'text-gray-700';
-$primary-text-color-dark        : 'text-gray-300';
+$primary-text-color             : 'text-gray-700' !default;
+$primary-text-color-dark        : 'text-gray-300' !default;
 
-$link-text-color                : 'text-blue-600';
-$link-text-color-dark           : 'text-blue-600';
+$link-text-color                : 'text-blue-600' !default;
+$link-text-color-dark           : 'text-blue-600' !default;
 
 $accent-colors: (
     'red': (
@@ -107,7 +107,7 @@ $accent-colors: (
         'dark-hover' : 'bg-orange-600',
         'dark-active': 'bg-orange-700',
     ),
-);
+) !default;
 
 body {
     @apply #{$background-color} #{$primary-text-color};

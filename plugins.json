@@ -19,5 +19,12 @@
         "repository": "emptynick/voyager-useless-widget-plugin",
         "keywords": ["widget", "useless", "plugin", "Voyager"],
         "website": "https://github.com/emptynick/voyager-useless-widget-plugin"
+    },
+    {
+        "name": "Voyager Red Theme",
+        "description": "A red theme for Voyager 2",
+        "repository": "emptynick/voyager-red-theme",
+        "keywords": ["plugin", "theme", "red", "Voyager"],
+        "website": "https://github.com/emptynick/voyager-red-theme"
     }
 ]
