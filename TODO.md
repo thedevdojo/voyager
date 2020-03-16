@@ -12,6 +12,7 @@ Instead, they are listed here:
 - Remove components `v-button` and `v-input` (?)
 - Tune Modal and Pagination components (Tailwind UI?)
 - Make sure all input with class `voyager-input` use `w-full` (where applicable)
+- Source out all colors from styles to `colors.scss`
 
 ## Plugins
 - A plugin can register multiple classes, should we allow single classes to be disabled/enabled or whole packages?

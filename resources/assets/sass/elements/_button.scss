@@ -1,6 +1,4 @@
 .button {
-    //  font-medium hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red 
-    //@apply text-gray-200 py-2 px-4 mx-1 rounded cursor-pointer;
     @apply inline-flex justify-center rounded-md border border-transparent px-2 py-1 mx-1 text-base leading-6 font-normal text-white shadow-sm transition ease-in-out duration-150 cursor-pointer;
     &:focus {
         @apply outline-none;
@@ -11,90 +9,7 @@
     &.small {
         @apply py-1 px-2 text-sm;
     }
-    &.green {
-        @apply bg-green-500;
-        &:hover {
-            @apply bg-green-600;
-        }
-        &:active {
-            @apply bg-green-700;
-        }
-        &.active {
-            @apply bg-green-700;
-        }
-    }
-    &.red {
-        @apply bg-red-500;
-        &:hover {
-            @apply bg-red-600;
-        }
-        &:active {
-            @apply bg-red-700;
-        }
-        &.active {
-            @apply bg-red-700;
-        }
-    }
-    &.blue {
-        @apply bg-blue-500;
-        &:hover {
-            @apply bg-blue-600;
-        }
-        &:active {
-            @apply bg-blue-700;
-        }
-        &.active {
-            @apply bg-blue-700;
-        }
-    }
-    &.yellow {
-        @apply bg-yellow-600;
-        &:hover {
-            @apply bg-yellow-700;
-        }
-        &:active {
-            @apply bg-yellow-800;
-        }
-        &.active {
-            @apply bg-yellow-800;
-        }
-    }
-    &.orange {
-        @apply bg-orange-500;
-        &:hover {
-            @apply bg-orange-600;
-        }
-        &:active {
-            @apply bg-orange-700;
-        }
-        &.active {
-            @apply bg-orange-700;
-        }
-    }
-    &.purple {
-        @apply bg-purple-500;
-        &:hover {
-            @apply bg-purple-600;
-        }
-        &:active {
-            @apply bg-purple-700;
-        }
-        &.active {
-            @apply bg-purple-700;
-        }
-    }
-    &.indigo {
-        @apply bg-indigo-500;
-        &:hover {
-            @apply bg-indigo-600;
-        }
-        &:active {
-            @apply bg-indigo-700;
-        }
-        &.active {
-            @apply bg-indigo-700;
-        }
-    }
+    
 }
 
 .button-group {

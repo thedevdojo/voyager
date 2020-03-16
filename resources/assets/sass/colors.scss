@@ -1,0 +1,223 @@
+@use "sass:map";
+
+$background-color               : 'bg-white';
+$background-color-dark          : 'bg-gray-900';
+
+$sidebar-title-color            : 'text-black';
+$sidebar-icon-color             : 'text-black';
+$sidebar-background-color       : 'bg-gray-100';
+$sidebar-item-text-color        : 'text-black';
+$sidebar-item-icon-color        : 'text-black';
+$sidebar-item-active-background : 'bg-gray-300';
+$sidebar-item-active-text-color : 'text-black';
+$sidebar-item-active-icon-color : 'text-black';
+
+$sidebar-title-color-dark            : 'text-white';
+$sidebar-icon-color-dark             : 'text-white';
+$sidebar-background-color-dark       : 'bg-gray-800';
+$sidebar-item-text-color-dark        : 'text-white';
+$sidebar-item-icon-color-dark        : 'text-white';
+$sidebar-item-active-background-dark : 'bg-white';
+$sidebar-item-active-text-color-dark : 'text-black';
+$sidebar-item-active-icon-color-dark : 'text-black';
+
+
+$primary-text-color             : 'text-gray-700';
+$primary-text-color-dark        : 'text-gray-300';
+
+$link-text-color                : 'text-blue-600';
+$link-text-color-dark           : 'text-blue-600';
+
+$accent-colors: (
+    'red': (
+        'text'       : 'text-white',
+        'accent'     : 'bg-red-500',
+        'focus'      : 'bg-red-600',
+        'hover'      : 'bg-red-600',
+        'active'     : 'bg-red-700',
+
+        'dark-text'  : 'text-white',
+        'dark-accent': 'bg-red-500',
+        'dark-focus' : 'bg-red-600',
+        'dark-hover' : 'bg-red-600',
+        'dark-active': 'bg-red-700',
+    ),
+    'green': (
+        'text'       : 'text-white',
+        'accent'     : 'bg-green-500',
+        'focus'      : 'bg-green-600',
+        'hover'      : 'bg-green-600',
+        'active'     : 'bg-green-700',
+
+        'dark-text'  : 'text-white',
+        'dark-accent': 'bg-green-500',
+        'dark-focus' : 'bg-green-600',
+        'dark-hover' : 'bg-green-600',
+        'dark-active': 'bg-green-700',
+    ),
+    'blue': (
+        'text'       : 'text-white',
+        'accent'     : 'bg-blue-500',
+        'focus'      : 'bg-blue-600',
+        'hover'      : 'bg-blue-600',
+        'active'     : 'bg-blue-700',
+
+        'dark-text'  : 'text-white',
+        'dark-accent': 'bg-blue-500',
+        'dark-focus' : 'bg-blue-600',
+        'dark-hover' : 'bg-blue-600',
+        'dark-active': 'bg-blue-700',
+    ),
+    'yellow': (
+        'text'       : 'text-white',
+        'accent'     : 'bg-yellow-500',
+        'focus'      : 'bg-yellow-600',
+        'hover'      : 'bg-yellow-600',
+        'active'     : 'bg-yellow-700',
+
+        'dark-text'  : 'text-white',
+        'dark-accent': 'bg-yellow-500',
+        'dark-focus' : 'bg-yellow-600',
+        'dark-hover' : 'bg-yellow-600',
+        'dark-active': 'bg-yellow-700',
+    ),
+    'purple': (
+        'text'       : 'text-white',
+        'accent'     : 'bg-purple-500',
+        'focus'      : 'bg-purple-600',
+        'hover'      : 'bg-purple-600',
+        'active'     : 'bg-purple-700',
+
+        'dark-text'  : 'text-white',
+        'dark-accent': 'bg-purple-500',
+        'dark-focus' : 'bg-purple-600',
+        'dark-hover' : 'bg-purple-600',
+        'dark-active': 'bg-purple-700',
+    ),
+    'orange': (
+        'text'       : 'text-white',
+        'accent'     : 'bg-orange-500',
+        'focus'      : 'bg-orange-600',
+        'hover'      : 'bg-orange-600',
+        'active'     : 'bg-orange-700',
+
+        'dark-text'  : 'text-white',
+        'dark-accent': 'bg-orange-500',
+        'dark-focus' : 'bg-orange-600',
+        'dark-hover' : 'bg-orange-600',
+        'dark-active': 'bg-orange-700',
+    ),
+);
+
+body {
+    @apply #{$background-color} #{$primary-text-color};
+}
+
+.mode-dark body {
+    @apply #{$background-color-dark} #{$primary-text-color-dark};
+}
+
+
+a {
+    @apply #{$link-text-color};
+}
+
+mode-dark a {
+    @apply #{$link-text-color-dark};
+}
+
+.sidebar {
+    @apply #{$sidebar-background-color};
+
+    .title {
+        @apply #{$sidebar-title-color};
+    }
+    .icon {
+        @apply #{$sidebar-icon-color};
+    }
+
+    .item {
+        @apply #{$sidebar-item-text-color};
+
+        &.active {
+            @apply #{$sidebar-item-active-text-color} #{$sidebar-item-active-background};
+
+            .icon {
+                @apply #{$sidebar-item-active-icon-color};
+            }
+        }
+
+        .icon {
+            @apply #{$sidebar-item-icon-color};
+        }
+    }
+}
+
+.mode-dark .sidebar {
+    @apply #{$sidebar-background-color-dark};
+
+    .title {
+        @apply #{$sidebar-title-color-dark};
+    }
+    .icon {
+        @apply #{$sidebar-icon-color-dark};
+    }
+
+    .item {
+        @apply #{$sidebar-item-text-color-dark};
+
+        &.active {
+            @apply #{$sidebar-item-active-text-color-dark} #{$sidebar-item-active-background-dark};
+
+            .icon {
+                @apply #{$sidebar-item-active-icon-color-dark};
+            }
+        }
+
+        .icon {
+            @apply #{$sidebar-item-icon-color-dark};
+        }
+    }
+}
+
+.button {
+    @each $name, $colors in $accent-colors {
+        &.#{$name} {
+            @apply #{map-get($colors, accent)} #{map-get($colors, text)};
+
+            &:hover {
+                @apply #{map-get($colors, hover)};
+            }
+            &:focus {
+                @apply #{map-get($colors, focus)};
+            }
+            &:active {
+                @apply #{map-get($colors, active)};
+            }
+            &.active {
+                @apply #{map-get($colors, active)};
+            }
+        }
+    };
+}
+
+.mode-dark .button {
+    @each $name, $colors in $accent-colors {
+        &.#{$name} {
+            @apply #{map-get($colors, dark-accent)} #{map-get($colors, dark-text)};
+
+            &:hover {
+                @apply #{map-get($colors, dark-hover)};
+            }
+            &:focus {
+                @apply #{map-get($colors, dark-focus)};
+            }
+            &:active {
+                @apply #{map-get($colors, dark-active)};
+            }
+            &.active {
+                @apply #{map-get($colors, dark-active)};
+            }
+        }
+    };
+}

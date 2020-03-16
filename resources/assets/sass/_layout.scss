@@ -8,17 +8,7 @@
 }
 
 body {
-    @apply text-gray-700;
-
     font-family: Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
-}
-
-.mode-dark body {
-    @apply text-gray-300 bg-gray-900;
-}
-
-a {
-    @apply text-blue-600;
 }
 
 .loader {
@@ -35,6 +25,18 @@ a {
 
 .mode-dark .loader {
     @apply bg-gray-800;
+}
+
+.sidebar {
+    @apply flex flex-col justify-between h-full min-h-screen h-full w-56 overflow-x-hidden fixed;
+
+    .item {
+        @apply flex justify-start items-center no-underline h-10 pl-2 relative rounded-full mt-2;
+
+        &.active {
+            @apply bg-white text-black rounded-full;
+        }
+    }
 }
 
 .search{
