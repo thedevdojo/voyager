@@ -16,7 +16,11 @@ import draggable from 'vuedraggable';
 Vue.component('draggable', draggable);
 
 var Snotify = require('vue-snotify');
-Vue.use(Snotify);
+Vue.use(Snotify, {
+    toast: {
+        timeout: 5000
+    }
+});
 
 import Swatches from 'vue-swatches';
 Vue.component('swatches', Swatches);

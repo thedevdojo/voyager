@@ -2,7 +2,7 @@
 
 namespace TCG\Voyager\Plugins\Interfaces;
 
-interface AuthorizationInterface extends BaseInterface
+interface AuthorizationInterface extends GenericInterface
 {
     public function authorize($ability, $arguments = []);
 }

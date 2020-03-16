@@ -4,7 +4,7 @@ namespace TCG\Voyager\Plugins\Interfaces;
 
 use Illuminate\View\View;
 
-interface BaseInterface
+interface GenericInterface
 {
     public function registerProtectedRoutes();
 

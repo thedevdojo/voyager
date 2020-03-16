@@ -21,3 +21,4 @@ Vue.component('modal', require('../components/UI/Modal').default);
 Vue.component('multi-select', require('../components/UI/MultiSelect').default);
 Vue.component('dropdown', require('../components/UI/Dropdown').default);
 Vue.component('icon-picker', require('../components/UI/IconPicker').default);
+Vue.component('helm', require('../components/UI/Helm').default);

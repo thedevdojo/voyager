@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-interface AuthenticationInterface extends BaseInterface
+interface AuthenticationInterface extends GenericInterface
 {
     public function user(): ?object;
 

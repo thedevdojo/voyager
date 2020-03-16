@@ -26,8 +26,11 @@
         tbody {
             @apply bg-gray-800;
     
-            tr > td {
-                @apply border-gray-600;
+            tr {
+                @apply transition ease-in-out duration-200;
+                tr {
+                    @apply border-gray-600;
+                }
             }
         }
     }

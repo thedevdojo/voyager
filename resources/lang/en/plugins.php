@@ -15,11 +15,11 @@ return [
     'reload'                        => 'Reload',
     'reload_page'                   => 'You might need to reload the page in order to take effect',
     'types'                         => [
-        'authentication'                => 'Authentication Plugin',
-        'authorization'                 => 'Authorization Plugin',
-        'base'                          => 'Base Plugin',
-        'menu'                          => 'Menu Plugin',
-        'theme'                         => 'Theme Plugin',
-        'widget'                        => 'Widget Plugin',
+        'authentication'                => 'Authentication',
+        'authorization'                 => 'Authorization',
+        'generic'                       => 'Generic',
+        'menu'                          => 'Menu',
+        'theme'                         => 'Theme',
+        'widget'                        => 'Widget',
     ],
 ];

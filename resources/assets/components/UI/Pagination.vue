@@ -3,7 +3,9 @@
         <button class="button blue" @click="openPreviousPage" :disabled="previousButtonDisabled">&lt;</button>
         <button
             v-for="(page, i) in showingPages" :key="i"
-            :class="'button blue '+(page == currentPage ? 'active' : '')"
+            class="button blue"
+            :class="[page == currentPage ? 'active' : '']"
+            :disabled="page == '...'"
             @click="openPage(page)">
             {{ page }}
         </button>

@@ -11,7 +11,9 @@
                             <h4 class="text-gray-100 text-xl">{{ __('voyager::plugins.plugins') }}</h4>
                         </div>
                         <div class="w-1/3 text-right text-gray-100">
-                            <button class="button green close-button">X</button>
+                            <button class="button green close-button">
+                                <i class="uil uil-times text-xl"></i>
+                            </button>
                         </div>
                     </div>
                     <input type="text" class="voyager-input w-full mb-3" v-model="query" :placeholder="__('voyager::generic.search')">
@@ -48,7 +50,7 @@
                 </modal>
             </div>
             <div class="w-2/12 text-right">
-                <input type="text" class="voyager-input small" :placeholder="__('voyager::generic.search')" >
+
             </div>
         </div>
 
@@ -77,7 +79,11 @@
                     <tr v-for="(plugin, i) in installedPlugins" :key="'installed-plugin-'+i">
                         <td>{{ translate(plugin.name) }}</td>
                         <td>{{ translate(plugin.description) }}</td>
-                        <td>{{ __('voyager::plugins.types.'+plugin.type) }}</td>
+                        <td>
+                            <span class="badge" :class="getPluginTypeColor(plugin.type)">
+                                {{ __('voyager::plugins.types.'+plugin.type) }}
+                            </span>
+                        </td>
                         <td>
                             {{ plugin.version || '-' }}
                         </td>
@@ -109,7 +115,7 @@
                                         <h4 class="text-gray-100 text-xl">{{ __('voyager::generic.instructions') }}</h4>
                                     </div>
                                     <div class="w-1/3 text-right text-gray-100">
-                                        <button class="button green close-button">X</button>
+                                        <i class="uil uil-times text-xl"></i>
                                     </div>
                                 </div>
                                 <div v-html="plugin.instructions"></div>

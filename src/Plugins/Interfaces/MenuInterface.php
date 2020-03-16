@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-interface MenuInterface extends BaseInterface
+interface MenuInterface extends GenericInterface
 {
     public function getMenuView(): ?View;
 }

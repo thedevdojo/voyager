@@ -14,7 +14,6 @@ Instead, they are listed here:
 - Make sure all input with class `voyager-input` use `w-full` (where applicable)
 - Source out all colors from styles to `colors.scss`
 - Add :disabled theming to buttons/inputs
-- Set default timeout of snotify to something higher (currently 2 seconds)
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller

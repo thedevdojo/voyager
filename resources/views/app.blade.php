@@ -20,7 +20,7 @@
     @endif
     <transition name="fade">
         <div class="loader" v-if="page_loading">
-            <img src="{{ Voyager::assetUrl('images/logo-icon.png') }}" alt="Voyager Loader" class="icon">
+            <helm class="icon rotating"></helm>
         </div>
     </transition>
 

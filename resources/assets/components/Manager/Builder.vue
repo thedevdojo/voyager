@@ -41,7 +41,9 @@
                                     <h4 class="text-gray-100 text-xl">{{ __('voyager::generic.select_icon') }}</h4>
                                 </div>
                                 <div class="w-1/3 text-right text-gray-100">
-                                    <button class="button green close-button">X</button>
+                                    <button class="button green close-button">
+                                        <i class="uil uil-times text-xl"></i>
+                                    </button>
                                 </div>
                             </div>
                             <icon-picker v-on:select="$refs.icon_modal.close(); bread.icon = $event" />

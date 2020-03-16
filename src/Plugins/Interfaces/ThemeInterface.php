@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-interface ThemeInterface extends BaseInterface
+interface ThemeInterface extends GenericInterface
 {
     public function getStyleRoute(): string;
 }

@@ -46,7 +46,7 @@
                         <th></th>
                         <th v-for="(formfield, i) in layout.formfields" :key="'th-search-'+i" @dblclick.prevent="clearFilter(formfield.column)">
                             <component
-                                class="my-3 mr-2"
+                                class="mr-2"
                                 v-if="formfield.options.searchable"
                                 v-bind:value="parameter.filter[formfield.column]"
                                 v-on:input="filterBy($event, formfield.column)"
