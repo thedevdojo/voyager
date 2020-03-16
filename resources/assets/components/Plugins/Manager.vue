@@ -62,8 +62,8 @@
                 </thead>
                 <tbody>
                     <tr v-for="(plugin, i) in installedPlugins" :key="'installed-plugin-'+i">
-                        <td>{{ plugin.name }}</td>
-                        <td>{{ plugin.description }}</td>
+                        <td>{{ translate(plugin.name) }}</td>
+                        <td>{{ translate(plugin.description) }}</td>
                         <td>{{ __('voyager::plugins.types.'+plugin.type) }}</td>
                         <td>
                             {{ plugin.version || '-' }}
