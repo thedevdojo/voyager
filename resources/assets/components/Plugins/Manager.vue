@@ -1,43 +1,56 @@
 <template>
     <div>
-        <modal>
-            <div class="flex mb-4">
-                <div class="w-2/3">
-                    <h4 class="text-gray-100 text-xl">{{ __('voyager::plugins.plugins') }}</h4>
-                </div>
-                <div class="w-1/3 text-right text-gray-100">
-                    <button class="button green close-button">X</button>
-                </div>
-            </div>
-            <input type="text" class="voyager-input w-full mb-3" v-model="query" :placeholder="__('voyager::generic.search')">
-            <div v-for="(plugin, i) in filteredPlugins.slice(start, end)" class="text-white" :key="'plugin-'+i">
-                <div class="flex">
-                    <div class="w-3/5">
-                        <h3 class="text-gray-100 text-lg">{{ plugin.name }}</h3>
-                        <p>{{ plugin.description }}</p>
-                        <a v-if="plugin.website" :href="plugin.website" target="_blank">
-                            {{ __('voyager::generic.website') }}
-                        </a>
-                        <span v-else>&nbsp;</span>
-                    </div>
-                    <div class="w-2/5 text-right">
-                        <input class="voyager-input select-none" :value="'composer require '+plugin.repository" @dblclick="copy(plugin)">
-                    </div>
-                </div>
-                <hr class="w-full bg-gray-300 my-4">
-            </div>
-            <div class="w-full text-right">
-                <div class="button-group">
-                    <button class="button blue" v-for="i in pages" @click="page = (i - 1)" :key="'page-button-'+i">{{ i }}</button>
-                </div>
-            </div>
-            <div slot="opener" class="w-full text-right mb-5">
-                <button class="button green">{{ __('voyager::plugins.find_a_plugin') }}</button>
-            </div>
-        </modal>
-
         <div v-if="hasMultiplePlugins('auth')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_auth_plugins'))"></div>
         <div v-if="hasMultiplePlugins('menu')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></div>
+
+        <div class="flex mb-3 w-full">
+            <div class="w-10/12">
+                <modal>
+                    <div class="flex mb-4">
+                        <div class="w-2/3">
+                            <h4 class="text-gray-100 text-xl">{{ __('voyager::plugins.plugins') }}</h4>
+                        </div>
+                        <div class="w-1/3 text-right text-gray-100">
+                            <button class="button green close-button">X</button>
+                        </div>
+                    </div>
+                    <input type="text" class="voyager-input w-full mb-3" v-model="query" :placeholder="__('voyager::generic.search')">
+                    <div v-for="(plugin, i) in filteredPlugins.slice(start, end)" class="text-white" :key="'plugin-'+i">
+                        <div class="flex">
+                            <div class="w-3/5">
+                                <div class="inline-flex">
+                                    <h3 class="text-gray-100 text-lg mr-2">{{ plugin.name }}</h3>
+                                    <span class="badge" :class="getPluginTypeColor(plugin.type)">{{ __('voyager::plugins.types.'+plugin.type) }}</span>
+                                </div>
+                                <p>{{ plugin.description }}</p>
+                                <a v-if="plugin.website" :href="plugin.website" target="_blank">
+                                    {{ __('voyager::generic.website') }}
+                                </a>
+                                <span v-else>&nbsp;</span>
+                            </div>
+                            <div class="w-2/5 text-right">
+                                <input class="voyager-input select-none" :value="'composer require '+plugin.repository" @dblclick="copy(plugin)">
+                            </div>
+                        </div>
+                        <hr class="w-full bg-gray-300 my-4">
+                    </div>
+                    <div class="w-full text-right">
+                        <div class="button-group">
+                            <button class="button blue" v-for="i in pages" @click="page = (i - 1)" :key="'page-button-'+i">{{ i }}</button>
+                        </div>
+                    </div>
+                    <div slot="opener" class="">
+                        <button class="button green">
+                            <i class="uil uil-search"></i>
+                            {{ __('voyager::plugins.find_a_plugin') }}
+                        </button>
+                    </div>
+                </modal>
+            </div>
+            <div class="w-2/12 text-right">
+                <input type="text" class="voyager-input small" :placeholder="__('voyager::generic.search')" >
+            </div>
+        </div>
 
         <div class="voyager-table striped">
             <table v-bind:class="[loading ? 'loading' : '']" id="bread-manager-browse">
@@ -68,21 +81,26 @@
                         <td>
                             {{ plugin.version || '-' }}
                         </td>
-                        <td class="text-right">
-                            <a class="button green" v-if="plugin.website" :href="plugin.website" target="_blank">
+                        <td>
+                            <a class="button green small" v-if="plugin.website" :href="plugin.website" target="_blank">
+                                <i class="uil uil-globe"></i>
                                 {{ __('voyager::generic.website') }}
                             </a>
-                            <button v-if="!plugin.enabled" class="button green" @click="enablePlugin(plugin, true)">
+                            <button v-if="!plugin.enabled" class="button green small" @click="enablePlugin(plugin, true)">
+                                <i class="uil uil-toggle-on"></i>
                                 {{ __('voyager::generic.enable') }}
                             </button>
-                            <button v-else class="button red" @click="enablePlugin(plugin, false)">
+                            <button v-else class="button red small" @click="enablePlugin(plugin, false)">
+                                <i class="uil uil-toggle-off"></i>
                                 {{ __('voyager::generic.disable') }}
                             </button>
-                            <a v-if="plugin.has_settings && plugin.enabled" :href="route('voyager.plugins.settings', i)" class="button blue">
+                            <a v-if="plugin.has_settings && plugin.enabled" :href="route('voyager.plugins.settings', i)" class="button blue small">
+                                <i class="uil uil-cog"></i>
                                 {{ __('voyager::generic.settings') }}
                             </a>
 
-                            <button v-if="plugin.instructions" class="button blue" @click="$refs['instructions-modal-'+i][0].open()">
+                            <button v-if="plugin.instructions" class="button blue small" @click="$refs['instructions-modal-'+i][0].open()">
+                                <i class="uil uil-map-marker-question"></i>
                                 {{ __('voyager::generic.instructions') }}
                             </button>
                             <modal v-if="plugin.instructions" :ref="'instructions-modal-'+i">
@@ -96,6 +114,10 @@
                                 </div>
                                 <div v-html="plugin.instructions"></div>
                             </modal>
+                            <button v-if="plugin.type == 'theme'" :disabled="plugin.enabled" class="button purple small" @click="previewTheme(plugin.src, plugin.name)">
+                                <i class="uil uil-eye"></i>
+                                {{ __('voyager::generic.preview') }}
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -184,6 +206,15 @@ export default {
                 ]
             });
         },
+        previewTheme: function (src, name) {
+            var file = document.createElement('link');
+            file.setAttribute('rel', 'stylesheet');
+            file.setAttribute('type', 'text/css');
+            file.setAttribute('href', src);
+            document.getElementsByTagName('head')[0].appendChild(file);
+
+            this.$snotify.info(this.__('voyager::plugins.preview_theme', {name: name}));
+        },
         hasMultiplePlugins: function (type) {
             var num = 0;
 
@@ -195,6 +226,21 @@ export default {
 
             return num > 1;
         },
+        getPluginTypeColor: function (type) {
+            if (type == 'authentication') {
+                return 'green';
+            } else if (type == 'authorization') {
+                return 'blue';
+            } else if (type == 'menu') {
+                return 'yellow';
+            } else if (type == 'theme') {
+                return 'purple';
+            } else if (type == 'widget') {
+                return 'orange';
+            }
+
+            return 'red';
+        }
     },
     computed: {
         filteredPlugins: function () {

@@ -13,9 +13,8 @@ Instead, they are listed here:
 - Tune Modal and Pagination components (Tailwind UI?)
 - Make sure all input with class `voyager-input` use `w-full` (where applicable)
 - Source out all colors from styles to `colors.scss`
-
-## Plugins
-- A plugin can register multiple classes, should we allow single classes to be disabled/enabled or whole packages?
+- Add :disabled theming to buttons/inputs
+- Set default timeout of snotify to something higher (currently 2 seconds)
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller

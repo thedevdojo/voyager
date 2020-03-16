@@ -28,7 +28,7 @@
         "vue": "^2.6.11",
         "vue-clickaway": "^2.2.2",
         "vue-popperjs": "^2.3.0",
-        "vue-select": "^3.9.0",
+        "vue-select": "^3.9.1",
         "vue-snotify": "^3.2.1",
         "vue-swatches": "^1.0.4",
         "vuedraggable": "^2.23.2"

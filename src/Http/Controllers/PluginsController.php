@@ -19,7 +19,14 @@ class PluginsController extends Controller
 
     public function get()
     {
-        return VoyagerFacade::getAllPlugins()->sortBy('identifier');
+        return VoyagerFacade::getAllPlugins()->sortBy('identifier')->transform(function ($plugin) {
+            // This is only used to preview a theme
+            if ($plugin->type == 'theme') {
+                $plugin->src = $plugin->getStyleRoute();
+            }
+
+            return $plugin;
+        });
     }
 
     public function settings($key)

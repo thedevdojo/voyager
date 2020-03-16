@@ -180,6 +180,8 @@ mode-dark a {
     }
 }
 
+// BUTTONS
+
 .button {
     @each $name, $colors in $accent-colors {
         &.#{$name} {
@@ -202,6 +204,49 @@ mode-dark a {
 }
 
 .mode-dark .button {
+    @each $name, $colors in $accent-colors {
+        &.#{$name} {
+            @apply #{map-get($colors, dark-accent)} #{map-get($colors, dark-text)};
+
+            &:hover {
+                @apply #{map-get($colors, dark-hover)};
+            }
+            &:focus {
+                @apply #{map-get($colors, dark-focus)};
+            }
+            &:active {
+                @apply #{map-get($colors, dark-active)};
+            }
+            &.active {
+                @apply #{map-get($colors, dark-active)};
+            }
+        }
+    };
+}
+
+// BADGES
+.badge {
+    @each $name, $colors in $accent-colors {
+        &.#{$name} {
+            @apply #{map-get($colors, accent)} #{map-get($colors, text)};
+
+            &:hover {
+                @apply #{map-get($colors, hover)};
+            }
+            &:focus {
+                @apply #{map-get($colors, focus)};
+            }
+            &:active {
+                @apply #{map-get($colors, active)};
+            }
+            &.active {
+                @apply #{map-get($colors, active)};
+            }
+        }
+    };
+}
+
+.mode-dark .badge {
     @each $name, $colors in $accent-colors {
         &.#{$name} {
             @apply #{map-get($colors, dark-accent)} #{map-get($colors, dark-text)};

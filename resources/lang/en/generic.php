@@ -54,6 +54,7 @@ return [
     'options'                   => 'Options',
     'placeholder'               => 'Placeholder',
     'please_wait'               => 'Please wait',
+    'preview'                   => 'Preview',
     'range'                     => 'Range',
     'read'                      => 'Read',
     'restore'                   => 'Restore',

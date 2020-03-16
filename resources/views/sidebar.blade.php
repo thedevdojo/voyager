@@ -1,7 +1,7 @@
 <aside class="sidebar aside-expand">
     <div class="flex flex-col justify-start">
         <a :href="route('voyager.dashboard')" class="flex justify-start pl-8 items-center w-auto h-16 relative">
-            <i class="uil uil-sun icon"></i>
+            <i class="uil uil-life-ring icon text-2xl"></i>
             <span class="font-black text-lg uppercase pl-2 title">Voyager</span>
         </a>
         @php

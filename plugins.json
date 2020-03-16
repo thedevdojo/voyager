@@ -2,6 +2,7 @@
     {
         "name": "Useless Plugin",
         "description": "A plugin for Voyager 2 that does absolutely nothing",
+        "type": "base",
         "repository": "emptynick/useless-plugin",
         "keywords": ["useless", "plugin", "Voyager"],
         "website": "https://github.com/emptynick/useless-plugin"
@@ -9,6 +10,7 @@
     {
         "name": "Simple Menu Manager",
         "description": "A simple menu manager for Voyager 2",
+        "type": "menu",
         "repository": "emptynick/voyager-menu-plugin",
         "keywords": ["menu", "manager", "plugin", "Voyager"],
         "website": "https://github.com/emptynick/voyager-menu-plugin"
@@ -16,6 +18,7 @@
     {
         "name": "Useless Widget Plugin",
         "description": "A widget plugin for Voyager 2 that does absolutely nothing",
+        "type": "widget",
         "repository": "emptynick/voyager-useless-widget-plugin",
         "keywords": ["widget", "useless", "plugin", "Voyager"],
         "website": "https://github.com/emptynick/voyager-useless-widget-plugin"
@@ -23,6 +26,7 @@
     {
         "name": "Voyager Red Theme",
         "description": "A red theme for Voyager 2",
+        "type": "theme",
         "repository": "emptynick/voyager-red-theme",
         "keywords": ["plugin", "theme", "red", "Voyager"],
         "website": "https://github.com/emptynick/voyager-red-theme"

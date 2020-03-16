@@ -31,6 +31,7 @@ trait Plugins
                 $plugin = new $plugin();
             }
             $plugin->type = $this->getPluginType($plugin);
+
             $plugin->identifier = $plugin->repository .'@'. class_basename($plugin);
             $plugin->enabled = in_array($plugin->identifier, $this->enabled_plugins);
             if ($plugin->getInstructionsView()) {
@@ -60,16 +61,18 @@ trait Plugins
 
     public function getAllPlugins()
     {
-        return $this->plugins ?? collect();
+        return collect($this->plugins);
     }
 
     public function launchPlugins()
     {
-        $this->getAllPlugins()->where('enabled')->each(function ($plugin, $key) {
-            $plugin->registerPublicRoutes();
-            Route::group(['middleware' => 'voyager.admin'], function () use ($plugin, $key) {
-                $plugin->registerProtectedRoutes();
-            });
+        $this->getAllPlugins()->each(function ($plugin, $key) {
+            if ($plugin->enabled || $plugin->type == 'theme') {
+                $plugin->registerPublicRoutes();
+                Route::group(['middleware' => 'voyager.admin'], function () use ($plugin, $key) {
+                    $plugin->registerProtectedRoutes();
+                });
+            }
         });
     }
 
