@@ -4,7 +4,10 @@
         <div v-if="hasMultiplePlugins('menu')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></div>
 
         <div class="flex mb-3 w-full">
-            <div class="w-10/12">
+            <div class="w-6/12">
+                <h2 class="text-2xl">{{ __('voyager::plugins.plugins') }}</h2>
+            </div>
+            <div class="w-6/12 text-right">
                 <modal key="search-plugin-modal">
                     <div class="flex mb-4">
                         <div class="w-2/3">
@@ -48,9 +51,6 @@
                         </button>
                     </div>
                 </modal>
-            </div>
-            <div class="w-2/12 text-right">
-
             </div>
         </div>
 

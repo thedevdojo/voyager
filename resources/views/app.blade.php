@@ -17,13 +17,13 @@
 <body>
     <div class="h-screen flex overflow-hidden" id="voyager">
         <transition name="fade">
-            <div class="loader" v-if="page_loading">
+            <div class="loader" v-if="pageLoading">
                 <helm class="icon rotating"></helm>
             </div>
         </transition>
         @include('voyager::sidebar')
         <div class="flex flex-col w-0 flex-1 overflow-hidden">
-            <main class="overflow-y-auto pb-6 outline-none">
+            <main class="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 outline-none">
                 @include('voyager::navbar')
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                     @yield('content')
@@ -39,16 +39,17 @@
 var voyager = new Vue({
     el: '#voyager',
     data: {
-        page_loading: true,
+        pageLoading: true,
         messages: {!! Voyager::getMessages()->toJson() !!},
         sidebarOpen: true,
+        mobileSidebarOpen: false,
     },
     mounted: function () {
         var vm = this;
 
         document.addEventListener("DOMContentLoaded", function(event) {
             // Hide voyager-loader
-            vm.page_loading = false;
+            vm.pageLoading = false;
         });
 
         vm.messages.forEach(function (m) {
@@ -74,6 +75,21 @@ var voyager = new Vue({
         this.$globals.formfields = {!! Voyager::getFormfieldsDescription()->toJson() !!};
         this.$globals.debug = {{ var_export(config('app.debug') ?? false, true) }};
         this.$globals.searchPlaceholder = '{{ Bread::getBreadSearchPlaceholder() }}';
+
+        var sidebar_open = this.$globals.getCookie('sidebar-open');
+        if (sidebar_open == 'false') {
+            this.sidebarOpen = false;
+        }
+    },
+    methods: {
+        clicky: function (f) {
+            console.log(f);
+        }
+    },
+    watch: {
+        sidebarOpen: function (open) {
+            this.$globals.setCookie('sidebar-open', (open ? 'true' : 'false'), 360);
+        }
     }
 });
 </script>

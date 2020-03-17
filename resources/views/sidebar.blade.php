@@ -1,13 +1,13 @@
 
 <!-- Mobile sidebar -->
-<div v-if="sidebarOpen" class="md:hidden">
-    <div @click="sidebarOpen = false" class="fixed inset-0 z-40">
+<div v-if="mobileSidebarOpen" class="md:hidden">
+    <div class="fixed inset-0 z-30">
         <div class="absolute inset-0 bg-gray-600 opacity-75"></div>
     </div>
-    <div class="fixed inset-0 flex z-50">
-        <div class="flex-1 flex flex-col max-w-xs w-full sidebar">
-            <div class="absolute top-0 right-0 -mr-14 p-1">
-                <button @click="sidebarOpen = false" class="flex items-center justify-center h-12 w-12 rounded-full">
+    <div class="fixed inset-0 flex z-40" @click="mobileSidebarOpen = false">
+        <div class="flex-1 flex flex-col max-w-xs w-full sidebar" @click.stop="">
+            <div class="absolute top-0 right-0 p-1">
+                <button @click="mobileSidebarOpen = false" class="flex items-center justify-center h-12 w-12 rounded-full">
                     <i class="uil uil-times text-3xl"></i>
                 </button>
             </div>
@@ -45,7 +45,7 @@
                         {{ __('voyager::generic.settings') }}
                     </a>
 
-                    <a href="{{ route('voyager.plugins.index') }}" class="text-base leading-6 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}">
+                    <a href="{{ route('voyager.plugins.index') }}" class="mb-5 text-base leading-6 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}">
                         <i class="uil uil-layer-group text-2xl icon"></i>
                         {{ __('voyager::plugins.plugins') }}
                     </a>
@@ -114,6 +114,7 @@
                         <i class="uil uil-layer-group text-2xl icon"></i>
                         {{ __('voyager::plugins.plugins') }}
                     </a>
+                    <hr class="my-3 sidebar-border" />
                     @if (count(Bread::getBreads()) > 0)
                         @foreach (Bread::getBreads() as $bread)
                         <a href="{{ route('voyager.'.$bread->slug.'.browse') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse'))) ? 'active' : '' }}">

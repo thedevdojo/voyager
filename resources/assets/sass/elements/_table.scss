@@ -1,76 +1,32 @@
 .mode-dark .voyager-table {
-    @apply border-gray-800 bg-gray-700;
-
-    &.striped {
-        table > tbody > tr {
-            &:nth-of-type(even) {
-                @apply bg-gray-700;
-                &:hover {
-                    @apply bg-gray-600;
-                }
-            }
-            &:nth-of-type(odd) {
-                @apply bg-gray-800;
-                &:hover {
-                    @apply bg-gray-600;
-                }
-            }
-        }
-    }
-
     table {
-        thead > tr > th {
-            @apply border-gray-800 bg-gray-700 text-gray-400;
-        }
-    
         tbody {
             @apply bg-gray-800;
     
             tr {
-                @apply transition ease-in-out duration-200;
-                tr {
-                    @apply border-gray-600;
-                }
+                @apply transition ease-in-out duration-100;
             }
         }
     }
 }
 
 .voyager-table {
-    @apply align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border-b border-gray-200 my-5;
+    @apply align-middle inline-block min-w-full shadow overflow-hidden rounded-lg border my-5;
 
     &.loading {
         @apply opacity-25;
-    }
-
-    &.striped {
-        table > tbody > tr {
-            &:nth-of-type(even) {
-                @apply bg-gray-100;
-                &:hover {
-                    @apply bg-gray-200;
-                }
-            }
-            &:nth-of-type(odd) {
-                &:hover {
-                    @apply bg-gray-200;
-                }
-            }
-        }
     }
 
     table {
         @apply min-w-full;
 
         thead > tr > th {
-            @apply px-6 py-3 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider;
+            @apply px-6 py-3 border-b text-left text-xs leading-4 font-medium uppercase tracking-wider;
         }
     
-        tbody {
-            @apply bg-white;
-    
+        tbody {    
             tr > td {
-                @apply px-6 py-4 whitespace-no-wrap border-b border-gray-200;
+                @apply px-6 py-4 whitespace-no-wrap border-b;
             }
 
             tr:last-child {
