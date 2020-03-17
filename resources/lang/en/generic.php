@@ -80,7 +80,7 @@ return [
     'title'                     => 'Title',
     'translatable'              => 'Translatable',
     'type'                      => 'Type',
-    'ui_components'             => 'UI componentes',
+    'ui_components'             => 'UI components',
     'value'                     => 'Value',
     'version'                   => 'Version',
     'view_profile'              => 'View Profile',

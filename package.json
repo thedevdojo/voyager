@@ -10,7 +10,7 @@
     },
     "devDependencies": {
         "cross-env": "^7.0.2",
-        "laravel-mix": "^5.0.1",
+        "laravel-mix": "^5.0.4",
         "laravel-mix-purgecss": "^4.2.0",
         "sass-loader": "^8.0.2",
         "tailwindcss-dark-mode": "^1.1.3",

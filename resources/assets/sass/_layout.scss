@@ -28,14 +28,8 @@ body {
 }
 
 .sidebar {
-    @apply flex flex-col justify-between h-full min-h-screen h-full w-56 overflow-x-hidden fixed;
-
     .item {
-        @apply flex justify-start items-center no-underline h-10 pl-2 relative rounded-full mt-2;
-
-        &.active {
-            @apply bg-white text-black rounded-full;
-        }
+        @apply mt-1 flex items-center px-2 py-2 font-medium rounded-md;
     }
 }
 

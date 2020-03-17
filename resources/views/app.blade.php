@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ Voyager::getLocale() }}" locales="{{ implode(',', Voyager::getLocales()) }}">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,32 +10,28 @@
     <title>@yield('page-title') - {{ Voyager::setting('admin.title', true, 'Voyager') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
     @foreach (Voyager::getPluginsByType('theme')->where('enabled') as $theme)
-        <link href="{{ $theme->getStyleRoute() }}" rel="stylesheet">
+    <link href="{{ $theme->getStyleRoute() }}" rel="stylesheet">
     @endforeach
 </head>
+
 <body>
-<div id="voyager" class="flex m-auto">
-
-    @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
+    <div class="h-screen flex overflow-hidden" id="voyager">
+        <transition name="fade">
+            <div class="loader" v-if="page_loading">
+                <helm class="icon rotating"></helm>
+            </div>
+        </transition>
         @include('voyager::sidebar')
-    @endif
-    <transition name="fade">
-        <div class="loader" v-if="page_loading">
-            <helm class="icon rotating"></helm>
+        <div class="flex flex-col w-0 flex-1 overflow-hidden">
+            <main class="overflow-y-auto pb-6 outline-none">
+                @include('voyager::navbar')
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    @yield('content')
+                </div>
+            </main>
         </div>
-    </transition>
-
-    <main class="px-5 flex-1 ml-56">
-
-        @if(!isset($sidebar) || (isset($sidebar) && $sidebar))
-            @include('voyager::navbar')
-        @endif
-
-        @yield('content')
-
-    </main>
-    <vue-snotify></vue-snotify>
-</div>
+        <vue-snotify></vue-snotify>
+    </div>
 
 </body>
 <script src="{{ Voyager::assetUrl('js/voyager.js') }}"></script>
@@ -44,6 +41,7 @@ var voyager = new Vue({
     data: {
         page_loading: true,
         messages: {!! Voyager::getMessages()->toJson() !!},
+        sidebarOpen: true,
     },
     mounted: function () {
         var vm = this;
@@ -80,4 +78,5 @@ var voyager = new Vue({
 });
 </script>
 @yield('js')
+
 </html>
