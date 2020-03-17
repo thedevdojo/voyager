@@ -57,7 +57,7 @@ $(document).ready(function () {
     * Reorder items
     */
     $('.dd').on('change', function (e) {
-        $.post('{{ route('voyager.'.$dataType->slug.'.order') }}', {
+        $.post('{{ route('voyager.'.$dataType->slug.'.update_order') }}', {
             order: JSON.stringify($('.dd').nestable('serialize')),
             _token: '{{ csrf_token() }}'
         }, function (data) {
