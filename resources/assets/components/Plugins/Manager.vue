@@ -5,7 +5,7 @@
 
         <div class="flex mb-3 w-full">
             <div class="w-10/12">
-                <modal>
+                <modal key="search-plugin-modal">
                     <div class="flex mb-4">
                         <div class="w-2/3">
                             <h4 class="text-gray-100 text-xl">{{ __('voyager::plugins.plugins') }}</h4>
@@ -44,7 +44,7 @@
                     <div slot="opener" class="">
                         <button class="button green">
                             <i class="uil uil-search"></i>
-                            {{ __('voyager::plugins.find_a_plugin') }}
+                            {{ __('voyager::plugins.search_plugins') }}
                         </button>
                     </div>
                 </modal>
