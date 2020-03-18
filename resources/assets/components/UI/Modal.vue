@@ -1,12 +1,12 @@
 <template>
     <div>
-        <transition name="fade">
-            <div v-bind:class="['modal', isOpened ? 'open' : 'close']" @click="click">
+        <fade-transition>
+            <div v-if="isOpened" class="modal" @click="click">
                 <div class="modal-body">
                     <slot />
                 </div>
             </div>
-        </transition>
+        </fade-transition>
         <slot name="opener"></slot>
     </div>
 </template>
@@ -79,13 +79,6 @@ export default {
 .modal {
     @apply fixed w-full top-0 left-0 h-full z-40 text-white text-left;
     background-color: rgba(0, 0, 0, .7);
-
-    &.open {
-        @apply visible opacity-100;
-    }
-    &.close {
-        @apply invisible opacity-0;
-    }
 
     .modal-body {
         @apply bg-gray-700 border-4 border-gray-700 rounded-lg absolute p-8 overflow-y-auto;

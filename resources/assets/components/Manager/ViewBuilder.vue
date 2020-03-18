@@ -32,11 +32,11 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-1/2 m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::manager.show_back_button') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::manager.show_back_button') }}</label>
                     <input type="checkbox" v-model="layout.back_button">
                 </div>
                 <div class="w-1/2 m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::manager.show_create_button') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::manager.show_create_button') }}</label>
                     <input type="checkbox" v-model="layout.create_button">
                 </div>
             </div>

@@ -2,10 +2,10 @@
     <div>
         <div v-if="action == 'edit' || action == 'add' || action == 'read'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label bigger">{{ translate(options.title, true) }}</label>
+                <label class="label bigger">{{ translate(options.title, true) }}</label>
                 <div v-for="(value, i) in repeaterValue" class="w-full flex flex-wrap" :key="i">
                     <span class="absolute cursor-pointer" @click="deleteElement(i)" v-if="action !== 'read'">X</span>
-                    <div v-for="(formfield, b) in options.formfields" v-bind:key="'formfield-'+b" :class="'w-'+formfield.options.width+' voyager-card'">
+                    <div v-for="(formfield, b) in options.formfields" v-bind:key="'formfield-'+b" :class="'w-'+formfield.options.width+' card'">
                         <div class="body">
                             <component
                                 :is="'formfield-'+formfield.type"
@@ -27,7 +27,7 @@
         </div>
         <div v-else-if="action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label bigger">{{ translate(options.title) }}</label>
+                <label class="label bigger">{{ translate(options.title) }}</label>
                 <bread-view-builder
                     v-bind:layout="layout"
                     :columns="columns"
@@ -42,7 +42,7 @@
         <div v-else-if="action == 'options'">
             <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::bread.formfields.repeater.add_element_text') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::bread.formfields.repeater.add_element_text') }}</label>
                     <language-input
                         class="voyager-input"
                         type="text" :placeholder="__('voyager::bread.formfields.repeater.add_element_text')"

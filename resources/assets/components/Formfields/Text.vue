@@ -13,7 +13,7 @@
         </div>
         <div v-else-if="action == 'edit' || action == 'add'">
             <div class="w-full m-1">
-                <label class="voyager-label bigger">{{ translate(options.title, true) }}</label>
+                <label class="label bigger">{{ translate(options.title, true) }}</label>
                 <input
                     v-if="(options.rows || 1) == 1"
                     type="text"
@@ -37,7 +37,7 @@
         </div>
         <div v-else-if="action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label bigger">{{ translate(options.title) }}</label>
+                <label class="label bigger">{{ translate(options.title) }}</label>
                 <input
                     v-if="(options.rows || 1) == 1"
                     type="text"
@@ -59,7 +59,7 @@
         <div v-else-if="action == 'options'">
             <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.placeholder') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.placeholder') }}</label>
                     <language-input
                         class="voyager-input w-full"
                         type="text" :placeholder="__('voyager::generic.placeholder')"
@@ -69,7 +69,7 @@
             </div>
             <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.rows') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.rows') }}</label>
                     <input
                         class="voyager-input w-full"
                         type="number" min="1" max="255" :placeholder="__('voyager::generic.rows')"
@@ -78,7 +78,7 @@
             </div>
             <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.default_value') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.default_value') }}</label>
                     <language-input
                         class="voyager-input w-full"
                         type="text" :placeholder="__('voyager::generic.default_value')"
@@ -87,13 +87,13 @@
             </div>
             <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.disabled') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.disabled') }}</label>
                     <input type="checkbox" v-model="options.disabled">
                 </div>
             </div>
             <div class="flex mb-4" v-if="type == 'list'">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.max_characters') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.max_characters') }}</label>
                     <input
                         type="number"
                         class="voyager-input w-full"

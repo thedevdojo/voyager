@@ -1,6 +1,6 @@
 <template>
     <div :class="'p-2 overflow-hidden h-auto w-'+(formfield.options.width || '1/2')">
-        <div class="voyager-card">
+        <div class="card">
             <div class="drag-handle cursor-move">
                 <div class="w-full text-right">
                     <i class="cursor-pointer" @click="deleteFormfield()">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="flex mb-4" v-if="hasColumn">
                     <div class="w-full m-1">
-                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.column') }}</label>
+                        <label class="label text-gray-100">{{ __('voyager::generic.column') }}</label>
                         <select v-model="formfield.column" class="voyager-input">
                             <optgroup :label="__('voyager::generic.columns')">
                                 <option v-for="column in columns" v-bind:key="column">{{ column }}</option>
@@ -47,13 +47,13 @@
                 </div>
                 <div class="flex mb-4" v-if="hasKey">
                     <div class="w-full m-1">
-                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.key') }}</label>
+                        <label class="label text-gray-100">{{ __('voyager::generic.key') }}</label>
                         <input type="text" v-model="formfield.column" class="voyager-input">
                     </div>
                 </div>
                 <div class="flex mb-4" v-if="hasRelationship">
                     <div class="w-full m-1">
-                        <label class="voyager-label text-gray-100">{{ __('voyager::manager.relationship') }}</label>
+                        <label class="label text-gray-100">{{ __('voyager::manager.relationship') }}</label>
                         <select v-model="formfield.column" class="voyager-input">
                             <option v-for="(relationship, key) in relationships" v-bind:key="key">{{ key }}</option>
                         </select>
@@ -61,13 +61,13 @@
                 </div>
                 <div class="flex mb-4" v-if="getFormfieldByType(formfield.type).translatable">
                     <div class="w-full m-1">
-                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.translatable') }}</label>
+                        <label class="label text-gray-100">{{ __('voyager::generic.translatable') }}</label>
                         <input type="checkbox" v-model="formfield.options.translatable">
                     </div>
                 </div>
                 <div class="flex mb-4" v-if="hasTitle">
                     <div class="w-full m-1">
-                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.title') }}</label>
+                        <label class="label text-gray-100">{{ __('voyager::generic.title') }}</label>
                         <language-input
                             class="voyager-input"
                             type="text" :placeholder="__('voyager::generic.title')"
@@ -77,7 +77,7 @@
                 </div>
                 <div class="flex mb-4" v-if="hasDescription">
                     <div class="w-full m-1">
-                        <label class="voyager-label text-gray-100">{{ __('voyager::generic.description') }}</label>
+                        <label class="label text-gray-100">{{ __('voyager::generic.description') }}</label>
                         <language-input
                             class="voyager-input"
                             type="text" :placeholder="__('voyager::generic.description')"

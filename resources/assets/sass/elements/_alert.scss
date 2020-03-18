@@ -1,21 +1,3 @@
-.mode-dark .alert {
-    &.red {
-        @apply bg-red-300;
-    }
-
-    &.blue {
-        @apply bg-blue-300;
-    }
-}
-
 .alert {
     @apply border px-4 py-3 rounded relative;
-
-    &.red {
-        @apply bg-red-100 border-red-400 text-red-700;
-    }
-
-    &.blue {
-        @apply bg-blue-100 border-blue-400 text-blue-700;
-    }
 }

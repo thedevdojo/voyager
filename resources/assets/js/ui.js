@@ -7,11 +7,6 @@
  * 
  **********************************************************************/
 
- /*
- * VOYAGER TEXT BOX
- *
- * This functionality is for a textbox container using the .voyager-input-container class
- */
 Vue.component('pagination', require('../components/UI/Pagination').default);
 Vue.component('badge', require('../components/UI/Badge').default);
 Vue.component('tooltip', require('../components/UI/Tooltip').default);

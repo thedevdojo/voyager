@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <div v-bind:class="['slidein', isOpened ? 'open' : 'close']" v-click-outside="closeOutside">
+    <slide-x-right-transition>
+        <div v-if="isOpened" class="slidein" v-click-outside="closeOutside">
             <slot />
         </div>
-    </div>
+    </slide-x-right-transition>
 </template>
 <script>
 export default {
@@ -65,15 +65,8 @@ export default {
 
 <style lang="scss" scoped>
 .slidein {
-    @apply fixed w-1/4 top-0 left-auto right-0 h-full overflow-y-auto p-8 z-50;
+    @apply fixed w-1/4 top-0 left-auto right-0 h-full overflow-y-auto p-8 z-50 block;
     background-color: rgba(0, 0, 0, .7);
     z-index: 100;
-
-    &.open {
-        @apply block;
-    }
-    &.close {
-        @apply hidden;
-    }
 }
 </style>

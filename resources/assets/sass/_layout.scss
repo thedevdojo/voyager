@@ -1,18 +1,9 @@
-:root {
-    --navbar-height: 20rem;
-    --sidebar-width: 250px;
-}
-
 [v-cloak] {
     display: none;
 }
 
-body {
-    font-family: Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
-}
-
 .loader {
-    @apply absolute bg-gray-100 w-full h-full left-0 top-0 z-50;
+    @apply absolute w-full h-full left-0 top-0 z-50;
 
     .icon {
         @apply absolute w-32 h-32;

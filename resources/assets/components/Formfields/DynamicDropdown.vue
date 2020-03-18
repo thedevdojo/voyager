@@ -5,7 +5,7 @@
         </div>
         <div v-else-if="action == 'edit' || action == 'add'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label bigger">{{ translate(options.title, true) }}</label>
+                <label class="label bigger">{{ translate(options.title, true) }}</label>
                 <div class="flex">
                     <select
                         class="voyager-input"
@@ -24,7 +24,7 @@
         </div>
         <div v-else-if="action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label bigger">{{ translate(options.title) }}</label>
+                <label class="label bigger">{{ translate(options.title) }}</label>
                 <select class="voyager-input" disabled></select>
                 <p class="description">{{ translate(options.description) }}</p>
             </div>
@@ -32,19 +32,19 @@
         <div v-else-if="action == 'options'">
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.controller') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.controller') }}</label>
                     <input type="text" v-model="options.controller" class="voyager-input" />
                 </div>
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.method') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.method') }}</label>
                     <input type="text" v-model="options.method" class="voyager-input" />
                 </div>
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.save') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.save') }}</label>
                     <select class="voyager-input" v-model="options.store">
                         <option value="key">{{ __('voyager::generic.key') }}</option>
                         <option value="value">{{ __('voyager::generic.value') }}</option>
@@ -53,7 +53,7 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.size') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.size') }}</label>
                     <input type="number" v-model="options.size" class="voyager-input" min="1" />
                 </div>
             </div>

@@ -1,8 +1,21 @@
 @use "sass:map";
 
+// PRIMARY COLOR
+$primary-accent-color            : 'blue-500' !default;
+$primary-accent-hover-color      : 'blue-600' !default;
+$primary-accent-color-dark       : 'red-500' !default;
+$primary-accent-hover-color-dark : 'red-600' !default;
+
 // BACKGROUND
 $background-color               : 'bg-gray-100' !default;
 $background-color-dark          : 'bg-gray-900' !default;
+$font-family                    : Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji !default;
+
+// LOADER
+$loader-background-color        : 'bg-gray-100' !default;
+$loader-text-color              : 'text-black' !default;
+$loader-background-color-dark   : 'bg-gray-800' !default;
+$loader-text-color-dark         : 'text-gray-200' !default;
 
 // TEXT COLOR
 $primary-text-color             : 'text-gray-700' !default;
@@ -11,6 +24,15 @@ $primary-text-color-dark        : 'text-gray-300' !default;
 // LINK COLOR
 $link-text-color                : 'text-blue-600' !default;
 $link-text-color-dark           : 'text-blue-600' !default;
+
+// INPUTS
+$input-background-color      : 'bg-white' !default;
+$input-border-color          : 'border-gray-400' !default;
+$input-text-color            : 'text-gray-800' !default;
+
+$input-background-color-dark : 'bg-gray-700' !default;
+$input-border-color-dark     : 'border-gray-600' !default;
+$input-text-color-dark       : 'text-gray-200' !default;
 
 // SIDEBAR
 $sidebar-title-color            : 'text-gray-800' !default;
@@ -35,6 +57,23 @@ $sidebar-item-active-icon-color-dark : 'text-gray-200' !default;
 $sidebar-item-hover-background-dark  : 'bg-gray-700' !default;
 $sidebar-border-color-dark           : 'border-gray-700' !default;
 
+// CARDS
+$cards-background-color      : 'bg-white' !default;
+$cards-border-color          : 'border-gray-400' !default;
+$cards-text-color            : $primary-text-color !default;
+$cards-title-text-color      : 'text-gray-700' !default;
+
+$cards-background-color-dark : 'bg-gray-800' !default;
+$cards-border-color-dark     : 'border-gray-700' !default;
+$cards-text-color-dark       : $primary-text-color-dark !default;
+$cards-title-text-color-dark : 'text-gray-300' !default;
+
+// LABELS
+$label-text-color            : 'text-gray-800' !default;
+$label-text-color-dark       : 'text-gray-200' !default;
+$description-text-color      : 'text-gray-800' !default;
+$description-text-color-dark : 'text-gray-200' !default;
+
 // TABLE COLORS
 $table-background-color                     : 'bg-white' !default;
 $table-border-color                         : 'border-gray-200' !default;
@@ -57,6 +96,7 @@ $table-row-odd-background-color-hover-dark  : 'bg-gray-600' !default;
 $table-row-border-color-dark                : 'border-gray-600' !default;
 
 // ACCENT COLORS
+// Accent colors are used for buttons, badges and alerts
 $accent-colors: (
     'red': (
         'text'       : 'text-white',
@@ -138,8 +178,48 @@ $accent-colors: (
     ),
 ) !default;
 
+.mode-dark {
+    .bg-primary {
+        @apply bg-#{$primary-accent-color-dark};
+    }
+
+    .hover-bg-primary {
+        &:hover {
+            @apply bg-#{$primary-accent-hover-color-dark};
+        }
+    }
+    
+    .border-primary {
+        @apply bg-#{$primary-accent-color-dark};
+    }
+    
+    .text-primary {
+        @apply bg-#{$primary-accent-color-dark};
+    }
+}
+
+.bg-primary {
+    @apply bg-#{$primary-accent-color};
+}
+
+.hover-bg-primary {
+    &:hover {
+        @apply bg-#{$primary-accent-hover-color};
+    }
+}
+
+.border-primary {
+    @apply bg-#{$primary-accent-color};
+}
+
+.text-primary {
+    @apply bg-#{$primary-accent-color};
+}
+
+
 body {
     @apply #{$background-color} #{$primary-text-color};
+    font-family: #{$font-family};
 }
 
 .mode-dark body {
@@ -153,6 +233,69 @@ a {
 
 mode-dark a {
     @apply #{$link-text-color-dark};
+}
+
+// LOADER
+.loader {
+    @apply #{$loader-background-color} #{$loader-text-color};
+}
+
+.mode-dark .loader {
+    @apply #{$loader-background-color-dark} #{$loader-text-color-dark};
+}
+
+// INPUTS
+.mode-dark {
+    select, input.voyager-input {
+        @apply #{$input-background-color-dark} #{$input-border-color-dark} #{$input-text-color-dark};
+    }
+}
+
+select, input.voyager-input {
+    @apply #{$input-background-color} #{$input-border-color} #{$input-text-color};
+
+    &:focus {
+        @apply border-#{$primary-accent-color};
+    }
+
+    &[type=checkbox] {
+        &:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+
+            @apply bg-no-repeat border-transparent bg-#{$primary-accent-color};
+
+            &:checked:focus {
+                @apply border-transparent;
+            }
+        }
+    }
+
+    &[type=radio] {
+        @apply text-#{$primary-accent-color};
+
+        &:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            background-color: currentColor;
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            &:checked:focus {
+                @apply border-transparent;
+            }
+        }
+    }
+}
+
+select.voyager-input {
+    @apply bg-no-repeat pr-10;
+
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%239fa6b2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
 }
 
 .sidebar {
@@ -225,8 +368,45 @@ mode-dark a {
     }
 }
 
-// BUTTONS
+// CARDS
+.mode-dark .card {
+    @apply #{$cards-background-color-dark} #{$cards-border-color-dark} #{$cards-text-color-dark};
 
+    .title {
+        @apply #{$cards-title-text-color-dark};
+    }
+}
+
+.card {
+    @apply #{$cards-background-color} #{$cards-border-color} #{$cards-text-color};
+
+    .title {
+        @apply #{$cards-title-text-color};
+    }
+}
+
+// LABELS
+.mode-dark .label {
+    @apply #{$label-text-color-dark};
+}
+
+.label {
+    @apply #{$label-text-color};
+}
+
+.mode-dark p {
+    &.description {
+        @apply #{$description-text-color-dark};
+    }
+}
+
+p {
+    &.description {
+        @apply #{$description-text-color};
+    }
+}
+
+// BUTTONS
 .button {
     @each $name, $colors in $accent-colors {
         &.#{$name} {
@@ -292,6 +472,49 @@ mode-dark a {
 }
 
 .mode-dark .badge {
+    @each $name, $colors in $accent-colors {
+        &.#{$name} {
+            @apply #{map-get($colors, dark-accent)} #{map-get($colors, dark-text)};
+
+            &:hover {
+                @apply #{map-get($colors, dark-hover)};
+            }
+            &:focus {
+                @apply #{map-get($colors, dark-focus)};
+            }
+            &:active {
+                @apply #{map-get($colors, dark-active)};
+            }
+            &.active {
+                @apply #{map-get($colors, dark-active)};
+            }
+        }
+    };
+}
+
+// Alert
+.alert {
+    @each $name, $colors in $accent-colors {
+        &.#{$name} {
+            @apply #{map-get($colors, accent)} #{map-get($colors, text)};
+
+            &:hover {
+                @apply #{map-get($colors, hover)};
+            }
+            &:focus {
+                @apply #{map-get($colors, focus)};
+            }
+            &:active {
+                @apply #{map-get($colors, active)};
+            }
+            &.active {
+                @apply #{map-get($colors, active)};
+            }
+        }
+    };
+}
+
+.mode-dark .alert {
     @each $name, $colors in $accent-colors {
         &.#{$name} {
             @apply #{map-get($colors, dark-accent)} #{map-get($colors, dark-text)};

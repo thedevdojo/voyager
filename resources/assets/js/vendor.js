@@ -31,5 +31,8 @@ Vue.use(VueDatePicker);
 import Popper from 'vue-popperjs';
 Vue.component('popper', Popper);
 
+import Transitions from 'vue2-transitions'
+Vue.use(Transitions);
+
 import { mixin as clickaway } from 'vue-clickaway';
 Vue.mixin(clickaway);

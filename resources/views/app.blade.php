@@ -16,11 +16,11 @@
 
 <body>
     <div class="h-screen flex overflow-hidden" id="voyager">
-        <transition name="fade">
+        <fade-transition>
             <div class="loader" v-if="pageLoading">
                 <helm class="icon rotating"></helm>
             </div>
-        </transition>
+        </fade-transition>
         @include('voyager::sidebar')
         <div class="flex flex-col w-0 flex-1 overflow-hidden">
             <main class="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 outline-none">

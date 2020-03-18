@@ -31,6 +31,7 @@
         "vue-select": "^3.9.1",
         "vue-snotify": "^3.2.1",
         "vue-swatches": "^1.0.4",
+        "vue2-transitions": "^0.3.0",
         "vuedraggable": "^2.23.2"
     }
 }

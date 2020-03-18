@@ -102,7 +102,7 @@
                                     </div>
                                     <div class="flex mb-4" v-if="getFormfieldByType(formfield.type).translatable">
                                         <div class="w-full m-1">
-                                            <label class="voyager-label text-gray-100">{{ __('voyager::generic.translatable') }}</label>
+                                            <label class="label text-gray-100">{{ __('voyager::generic.translatable') }}</label>
                                             <input type="checkbox" v-model="formfield.options.translatable">
                                         </div>
                                     </div>
@@ -126,7 +126,7 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::manager.soft_deletes') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::manager.soft_deletes') }}</label>
                     <select class="voyager-input" v-model="layout.soft_deletes">
                         <option v-bind:value="'hide'">{{ __('voyager::generic.hide') }}</option>
                         <option v-bind:value="'show'">{{ __('voyager::generic.show') }}</option>
@@ -137,15 +137,15 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-1/2 m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::manager.allow_restore') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::manager.allow_restore') }}</label>
                     <input type="checkbox" v-model="layout.restore">
                 </div>
                 <div class="w-1/2 m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::manager.allow_force_delete') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::manager.allow_force_delete') }}</label>
                     <input type="checkbox" v-model="layout.force_delete">
                 </div>
             </div>
-            <label class="voyager-label text-gray-100">{{ __('voyager::manager.soft_deletes_help') }}</label>
+            <label class="label text-gray-100">{{ __('voyager::manager.soft_deletes_help') }}</label>
         </slidein>
     </div>
 </template>

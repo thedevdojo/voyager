@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="voyager-card">
+        <div class="card">
             <div class="body">
                 <div class="flex mb-6">
                     <select class="voyager-input small w-auto" v-model="currentGroup">
@@ -10,7 +10,7 @@
                     <button class="button blue w-auto" @click="saveSettings">{{ __('voyager::generic.save') }}</button>
                 </div>
                 <div class="flex flex-wrap">
-                    <div v-for="(setting, i) in groupedSettings" v-bind:key="'setting-'+i" class="w-full voyager-card bordered">
+                    <div v-for="(setting, i) in groupedSettings" v-bind:key="'setting-'+i" class="w-full card bordered">
                         <div class="body">
                             <language-input
                                 class="voyager-input small w-1/5"
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <div class="voyager-card">
+        <div class="card">
             <div class="body">
                 <select @change="addSetting" class="voyager-input w-full">
                     <option v-bind:value="''">{{ __('voyager::generic.add_setting') }}</option>

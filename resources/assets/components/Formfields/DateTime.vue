@@ -10,7 +10,7 @@
         </div>
         <div v-else-if="action == 'edit' || action == 'add' || action == 'mockup'" class="flex mb-4">
             <div class="w-full m-1">
-                <label class="voyager-label bigger">{{ translate(options.title, true) }}</label>
+                <label class="label bigger">{{ translate(options.title, true) }}</label>
                 <div class="flex">
                     <VueDatePicker
                         v-bind:value="value"
@@ -30,7 +30,7 @@
         <div v-else-if="action == 'options'">
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.placeholder') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.placeholder') }}</label>
                     <language-input
                         class="voyager-input"
                         type="text" :placeholder="__('voyager::generic.placeholder')"
@@ -39,7 +39,7 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.type') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.type') }}</label>
                     <select class="voyager-input" v-model="options.type">
                         <option value="date">{{ __('voyager::bread.formfields.date_time.date') }}</option>
                         <option value="time">{{ __('voyager::bread.formfields.date_time.time') }}</option>
@@ -50,7 +50,7 @@
             </div>
             <div class="flex mb-4" v-if="type == 'view'">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.mode') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.mode') }}</label>
                     <select class="voyager-input" v-model="options.mode">
                         <option value="future">{{ __('voyager::bread.formfields.date_time.future') }}</option>
                         <option value="past">{{ __('voyager::bread.formfields.date_time.past') }}</option>
@@ -60,13 +60,13 @@
             </div>
             <div class="flex mb-4">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.range') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.range') }}</label>
                     <input type="checkbox" v-model="options.range">
                 </div>
             </div>
             <div class="flex mb-4" v-if="options.range">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.column') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.column') }}</label>
                     <select v-model="options.column_second" class="voyager-input">
                         <option v-for="column in columns" v-bind:key="column">{{ column }}</option>
                     </select>
@@ -74,7 +74,7 @@
             </div>
             <div class="flex mb-4" v-if="options.range">
                 <div class="w-full m-1">
-                    <label class="voyager-label text-gray-100">{{ __('voyager::generic.delimiter') }}</label>
+                    <label class="label text-gray-100">{{ __('voyager::generic.delimiter') }}</label>
                     <language-input
                         class="voyager-input"
                         type="text" :placeholder="__('voyager::generic.delimiter')"

@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="voyager-card">
+        <div class="card">
             <div class="body">
                 <div class="flex mb-4">
                     <div class="w-full m-1">
-                        <label class="voyager-label" for="slug">{{ __('voyager::generic.slug') }}</label>
+                        <label class="label" for="slug">{{ __('voyager::generic.slug') }}</label>
                         <language-input
                             class="voyager-input w-full"
                             id="slug"
@@ -16,7 +16,7 @@
                 
                 <div class="flex mb-4">
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="name-singular">{{ __('voyager::manager.name_singular') }}</label>
+                        <label class="label" for="name-singular">{{ __('voyager::manager.name_singular') }}</label>
                         <language-input
                             class="voyager-input w-full"
                             id="name-singular"
@@ -25,7 +25,7 @@
                             v-on:input="bread.name_singular = $event" />
                     </div>
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="name-plural">{{ __('voyager::manager.name_plural') }}</label>
+                        <label class="label" for="name-plural">{{ __('voyager::manager.name_plural') }}</label>
                         <language-input
                             class="voyager-input w-full"
                             id="name-plural"
@@ -34,7 +34,7 @@
                             v-on:input="bread.name_plural = $event" />
                     </div>
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="icon">{{ __('voyager::generic.icon') }}</label>
+                        <label class="label" for="icon">{{ __('voyager::generic.icon') }}</label>
                         <modal ref="icon_modal">
                             <div class="flex mb-4">
                                 <div class="w-2/3">
@@ -57,7 +57,7 @@
                 </div>
                 <div class="flex mb-4">
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="model">{{ __('voyager::manager.model') }}</label>
+                        <label class="label" for="model">{{ __('voyager::manager.model') }}</label>
                         <input
                             class="voyager-input w-full"
                             id="model"
@@ -65,7 +65,7 @@
                             v-model="bread.model">
                     </div>
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="controller">{{ __('voyager::manager.controller') }}</label>
+                        <label class="label" for="controller">{{ __('voyager::manager.controller') }}</label>
                         <input
                             class="voyager-input w-full"
                             id="controller"
@@ -73,7 +73,7 @@
                             v-model="bread.controller">
                     </div>
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="policy">{{ __('voyager::manager.policy') }}</label>
+                        <label class="label" for="policy">{{ __('voyager::manager.policy') }}</label>
                         <input
                             class="voyager-input w-full"
                             id="policy"
@@ -83,21 +83,21 @@
                 </div>
                 <div class="flex mb-4">
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="scope">{{ __('voyager::manager.scope') }}</label>
+                        <label class="label" for="scope">{{ __('voyager::manager.scope') }}</label>
                         <select class="voyager-input w-full" v-model="bread.scope">
                             <option :value="null">{{ __('voyager::generic.none') }}</option>
                             <option v-for="(scope, i) in scopes" :key="i">{{ scope }}</option>
                         </select>
                     </div>
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="global_search">{{ __('voyager::manager.global_search_display_field') }}</label>
+                        <label class="label" for="global_search">{{ __('voyager::manager.global_search_display_field') }}</label>
                         <select class="voyager-input w-full" v-model="bread.global_search_field">
                             <option value="">{{ __('voyager::generic.none') }}</option>
                             <option v-for="(col, i) in allColumns" :key="i">{{ col }}</option>
                         </select>
                     </div>
                     <div class="w-1/3 m-1">
-                        <label class="voyager-label" for="ajax_validation">{{ __('voyager::manager.ajax_validation') }}</label>
+                        <label class="label" for="ajax_validation">{{ __('voyager::manager.ajax_validation') }}</label>
                         <select class="voyager-input w-full" v-model="bread.ajax_validation">
                             <option :value="true">{{ __('voyager::generic.yes') }}</option>
                             <option :value="false">{{ __('voyager::generic.no') }}</option>
@@ -110,7 +110,7 @@
             </div>
         </div>
 
-        <div class="voyager-card">
+        <div class="card">
             <div class="body">
                 <div class="flex">
                     <select v-if="bread.layouts.length > 0" v-model="currentLayoutId" class="voyager-input small w-auto mr-1">
