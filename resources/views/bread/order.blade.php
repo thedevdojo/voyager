@@ -57,11 +57,11 @@ $(document).ready(function () {
     * Reorder items
     */
     $('.dd').on('change', function (e) {
-        $.post('{{ route('voyager.'.$dataType->slug.'.update_order') }}', {
+        $.post('{{ route('voyager.'.$dataType->slug.'.order') }}', {
             order: JSON.stringify($('.dd').nestable('serialize')),
             _token: '{{ csrf_token() }}'
         }, function (data) {
-            toastr.success("{{ __('voyager::bread.order') }}");
+            toastr.success("{{ __('voyager::bread.updated_order') }}");
         });
     });
 });
