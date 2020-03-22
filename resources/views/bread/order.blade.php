@@ -61,7 +61,7 @@ $(document).ready(function () {
             order: JSON.stringify($('.dd').nestable('serialize')),
             _token: '{{ csrf_token() }}'
         }, function (data) {
-            toastr.success("{{ __('voyager::bread.updated_order') }}");
+            toastr.success("{{ __('voyager::bread.order') }}");
         });
     });
 });
