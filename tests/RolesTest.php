@@ -3,11 +3,23 @@
 namespace TCG\Voyager\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Auth;
 use TCG\Voyager\Models\Role;
 
 class RolesTest extends TestCase
 {
     use DatabaseTransactions;
+
+    protected $user;
+    protected $permission_id = 3;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Auth::loginUsingId(1);
+        $this->user = Auth::user();
+    }
 
     /**
      * A basic functional test example.
@@ -16,12 +28,6 @@ class RolesTest extends TestCase
      */
     public function testRoles()
     {
-        $this->visit(route('voyager.login'))
-             ->type('admin@admin.com', 'email')
-             ->type('password', 'password')
-             ->press(__('voyager::generic.login'))
-             ->seePageIs(route('voyager.dashboard'));
-
         // Adding a New Role
         $this->visit(route('voyager.roles.create'))
              ->type('superadmin', 'name')
@@ -51,5 +57,22 @@ class RolesTest extends TestCase
         $response = $this->call('DELETE', route('voyager.roles.destroy', $superadmin_role->id), ['_token' => csrf_token()]);
         $this->assertEquals(302, $response->getStatusCode());
         $this->notSeeInDatabase('roles', ['name' => 'superadmin']);
+    }
+
+    /**
+     * Edit role permissions.
+     *
+     * @return void
+     */
+    public function testEditRolePermissions()
+    {
+        $this->notSeeInDatabase('permission_role', ['permission_id' => $this->permission_id, 'role_id' => 2]);
+        Role::find(2)->permissions()->attach($this->permission_id);
+
+        $this->visit(route('voyager.roles.edit', 2))
+             ->uncheck('permissions['.$this->permission_id.']')
+             ->press(__('voyager::generic.submit'))
+             ->seePageIs(route('voyager.roles.index'))
+             ->notSeeInDatabase('permission_role', ['permission_id' => $this->permission_id, 'role_id' => 2]);
     }
 }
