@@ -235,7 +235,7 @@ class Voyager
                 Cache::tags('settings')->flush();
             }
 
-            foreach (self::model('Setting')->all() as $setting) {
+            foreach (self::model('Setting')->orderBy('order')->get() as $setting) {
                 $keys = explode('.', $setting->key);
                 @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
 
