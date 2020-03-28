@@ -71,7 +71,7 @@ class VoyagerCompassController extends Controller
             $args = (isset($args)) ? ' '.$args : '';
 
             try {
-                $process = new Process('cd '.base_path().' && php artisan '.$command.$args);
+                $process = Process::fromShellCommandline('cd '.base_path().' && php artisan '.$command.$args);
                 $process->run();
 
                 if (!$process->isSuccessful()) {
