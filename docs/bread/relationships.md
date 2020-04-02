@@ -1,5 +1,7 @@
 # Relationships
 
+## Adding a relationship
+
 Using the BREAD builder you can easily create Relationships between tables. At the bottom of the page you will see a new button that says 'Create Relationship'
 
 ![](../.gitbook/assets/bread_relationship.png)
@@ -21,6 +23,8 @@ You can also specify which columns you would like to see in the dropdown or the 
 
 Now, you can easily create `belongsTo`, `belongsToMany`, `hasOne`, and `hasMany` relationships directly in Voyager.
 
+## Advanced options
+
 If you need to set advanced options for `belongsToMany` relationship you can set, after saving relationship, these parameters in details field:
 
 ```php
@@ -30,3 +34,26 @@ If you need to set advanced options for `belongsToMany` relationship you can set
     "related_key": "id"
 }
 ```
+
+## Scoping relationships
+
+You can easily filter the showns relationship option by defining a [local scope](https://laravel.com/docs/eloquent#local-scopes) in the foreign model.  
+For example, if you want to only show active entries, create a scope like:
+
+```php
+public function scopeActive($query)
+{
+    return $query->where('active', 1);
+}
+```
+
+And add the following to the relationship options:
+
+```php
+{
+    "scope": "active",
+}
+```
+
+The value is the name of your scope-method without scope.  
+The value for `scopeActive()` is `active`. For `scopeSomeUsers()` it is `someUsers`.

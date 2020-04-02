@@ -856,6 +856,11 @@ class VoyagerBaseController extends Controller
                 $model = app($options->model);
                 $skip = $on_page * ($page - 1);
 
+                // Apply local scope if it is defined in the relationship-options
+                if ($options->scope && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
+                    $model = $model->{$options->scope}();
+                }
+
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
                     // If we are using additional_attribute as label
