@@ -317,7 +317,7 @@ class VoyagerBaseController extends Controller
         if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $data = $model->withTrashed()->findOrFail($id);
         } else {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $data = $model->findOrFail($id);
         }
 
         // Check permission
