@@ -37,7 +37,7 @@ If you need to set advanced options for `belongsToMany` relationship you can set
 
 ## Scoping relationships
 
-You can easily filter the showns relationship option by defining a [local scope](https://laravel.com/docs/eloquent#local-scopes) in the foreign model.  
+You can easily filter the shown relationship options by defining a [local scope](https://laravel.com/docs/eloquent#local-scopes) in the foreign model.  
 For example, if you want to only show active entries, create a scope like:
 
 ```php
@@ -55,5 +55,5 @@ And add the following to the relationship options:
 }
 ```
 
-The value is the name of your scope-method without scope.  
+The value is the name of your scope-method without the word `scope`.  
 The value for `scopeActive()` is `active`. For `scopeSomeUsers()` it is `someUsers`.
