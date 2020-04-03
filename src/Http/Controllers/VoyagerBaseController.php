@@ -857,7 +857,7 @@ class VoyagerBaseController extends Controller
                 $skip = $on_page * ($page - 1);
 
                 // Apply local scope if it is defined in the relationship-options
-                if ($options->scope && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
+                if (isset($options->scope) && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
                     $model = $model->{$options->scope}();
                 }
 
