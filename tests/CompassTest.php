@@ -63,16 +63,24 @@ class CompassTest extends TestCase
     {
         $this->enableCompass();
 
-        $response = $this->call('POST', route('voyager.compass.index'), ['command' => 'make:model', 'args' => 'TestModel']);
-        $response->assertSee('Model created successfully.');
+        $response = $this->post(route('voyager.compass.index'), [
+            'command' => 'make:model',
+            'args' => 'TestModel'
+        ]);
+
+        $response->response->assertSee('Model created successfully.');
     }
 
     public function testCannotExecuteUnknownCommand()
     {
         $this->enableCompass();
 
-        $response = $this->call('POST', route('voyager.compass.index'), ['command' => 'unknown:command', 'args' => 'An argument']);
-        $response->assertSee('The command "unknown:command" does not exist.');
+        $response = $this->post(route('voyager.compass.index'), [
+            'command' => 'unknown:command',
+            'args' => 'AnArgument'
+        ]);
+
+        $response->response->assertSee('The command "unknown:command" does not exist.');    
     }
 
     public function testCanDeleteLaravelLog()
