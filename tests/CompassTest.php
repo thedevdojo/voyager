@@ -49,16 +49,6 @@ class CompassTest extends TestCase
              ->see($info);
     }
 
-    public function testCanDownloadLaravelLog()
-    {
-        $info = 'This is a downloadable log';
-        $this->logString($info);
-        $this->enableCompass();
-
-        $response = $this->call('GET', route('voyager.compass.index').'?download='.base64_encode('laravel.log'));
-        $response->assertHeader('content-type', 'text/plain');
-    }
-
     public function testCanExecuteCommand()
     {
         $this->enableCompass();
@@ -67,8 +57,7 @@ class CompassTest extends TestCase
             'command' => 'make:model',
             'args' => 'TestModel'
         ]);
-
-        $response->response->assertSee('Model created successfully.');
+        $this->assertStringContainsString('Model created successfully.', $response->response->content());
     }
 
     public function testCannotExecuteUnknownCommand()
@@ -79,8 +68,7 @@ class CompassTest extends TestCase
             'command' => 'unknown:command',
             'args' => 'AnArgument'
         ]);
-
-        $response->response->assertSee('The command "unknown:command" does not exist.');    
+        $this->assertStringContainsString('The command &quot;unknown:command&quot; does not exist.', $response->response->content());
     }
 
     public function testCanDeleteLaravelLog()
