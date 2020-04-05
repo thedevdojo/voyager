@@ -22,7 +22,7 @@ Please update it to use `TCG\Voyager\Http\Controllers\VoyagerRoleController`
 
 ### TinyMCE initialization
 
-Initialization has been moved from app.js to `rich_text_box` template, if you were using TinyMCE outside the standard template take a look at documentation (../bread/formfields/tinymce.md)
+Initialization has been moved from app.js to `rich_text_box` template, if you were using TinyMCE outside the standard template take a look at documentation [tinymce](../bread/formfields/tinymce.md)
 
 ### Troubleshooting
 
