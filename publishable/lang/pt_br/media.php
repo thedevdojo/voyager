@@ -53,4 +53,5 @@ return [
     'browser_video_support'  => 'Seu navegador não suporta a tag video',
     'browser_audio_support'  => 'Seu navegador não suporta o elemento audio',
     'width'                  => 'Largura: ',
+    'add_all_selected'       => 'Adicionar todos os selecionados',
 ];

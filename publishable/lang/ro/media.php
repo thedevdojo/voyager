@@ -30,4 +30,5 @@ return [
     'success_uploading'      => 'Încărcarea imaginii a avut loc cu succes',
     'uploading_wrong_type'   => 'Încărcare eșuată: formatul fișierului nu este suportat sau fișierul este prea mare pentru a fi încărcat!',
     'video_support'          => 'Browser-ul dvs. nu suportă elementul video.',
+    'add_all_selected'       => 'Adăugați toate selectate',
 ];

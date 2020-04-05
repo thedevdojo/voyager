@@ -288,7 +288,7 @@
              * Reorder items
              */
             $('.dd').on('change', function (e) {
-                $.post('{{ route('voyager.menus.order',['menu' => $menu->id]) }}', {
+                $.post('{{ route('voyager.menus.order_item',['menu' => $menu->id]) }}', {
                     order: JSON.stringify($('.dd').nestable('serialize')),
                     _token: '{{ csrf_token() }}'
                 }, function (data) {
