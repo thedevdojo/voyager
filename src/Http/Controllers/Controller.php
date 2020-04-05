@@ -122,8 +122,8 @@ abstract class Controller extends BaseController
                     'table'           => $row->details->pivot_table,
                     'foreignPivotKey' => $row->details->foreign_pivot_key ?? null,
                     'relatedPivotKey' => $row->details->related_pivot_key ?? null,
-                    'parentKey'       => $row->details->key,
-                    'relatedKey'      => $row->details->related_key ?? null,
+                    'parentKey'       => $row->details->parent_key ?? null,
+                    'relatedKey'      => $row->details->key,
                 ];
             } else {
                 $data->{$row->field} = $content;

@@ -54,4 +54,5 @@ return [
     'uploading_wrong_type'   => 'Falla de carga: formato de archivo no soportado o es demasiado grande para cargar',
     'video_support'          => 'Su navegador no soporta la etiqueta de video.',
     'width'                  => 'Ancho: ',
+    'add_all_selected'       => 'Agregar todos los seleccionados',
 ];

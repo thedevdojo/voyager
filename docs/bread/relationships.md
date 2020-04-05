@@ -31,7 +31,7 @@ If you need to set advanced options for `belongsToMany` relationship you can set
 {
     "foreign_pivot_key": "user_id",
     "related_pivot_key": "role_id",
-    "related_key": "id"
+    "parent_key": "id"
 }
 ```
 
