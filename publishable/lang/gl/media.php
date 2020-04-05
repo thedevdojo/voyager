@@ -44,4 +44,5 @@ return [
     'browser_video_support'  => 'O teu navegador non soporta esta etiqueta de vídeo.',
     'browser_audio_support'  => 'O teu navegador non soporta este elemento de audio.',
     'width'                  => 'Ancho: ',
+    'add_all_selected'       => 'Engade todos os seleccionados',
 ];

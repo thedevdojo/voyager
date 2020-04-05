@@ -55,6 +55,10 @@
             <i class="voyager-refresh"></i>
         </button>
         <div class="btn-group offset-right">
+            <button type="button" :disabled="selected_files.length == 0" v-if="allowUpload && hidden_element" class="btn btn-default" v-on:click="addSelectedFiles()">
+                <i class="voyager-upload"></i>
+                {{ __('voyager::media.add_all_selected') }}
+            </button>
             <button type="button" v-if="showFolders && allowMove" class="btn btn-default" data-toggle="modal" :data-target="'#move_files_modal_'+this._uid">
                 <i class="voyager-move"></i>
                 {{ __('voyager::generic.move') }}
@@ -742,6 +746,12 @@
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
 				});
+            },
+            addSelectedFiles: function () {
+                var vm = this;
+                for (i = 0; i < vm.selected_files.length; i++) {
+                    vm.openFile(vm.selected_files[i]);
+                }
             },
             bytesToSize: function(bytes) {
 				var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
