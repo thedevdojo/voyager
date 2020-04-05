@@ -44,4 +44,5 @@ return [
     'browser_video_support'  => 'مرورگر شما از تگ ویدئو پشتیبانی نمی کند.',
     'browser_audio_support'  => 'مرورگر شما از تگ audio پشتیبانی نمی کند',
     'width'                  => 'پهنا: ',
+    'add_all_selected'       => 'همه انتخاب شده را اضافه کنید',
 ];

@@ -42,4 +42,5 @@ return [
     'success_crop_image'    => 'Met succes de afbeelding bijgesneden',
     'height'                => 'Hoogte: ',
     'width'                 => 'Breedte: ',
+    'add_all_selected'      => 'Voeg alle geselecteerde toe',
 ];

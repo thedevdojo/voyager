@@ -49,7 +49,7 @@ If you installed with the dummy data, a user has been created for you with the f
 A dummy user is **only** created if there are no current users in your database.
 {% endhint %}
 
-If you did not go with the dummy user, you may wish to assign admin priveleges to an existing user. This can easily be done by running this command:
+If you did not go with the dummy user, you may wish to assign admin privileges to an existing user. This can easily be done by running this command:
 
 ```bash
 php artisan voyager:admin your@email.com
@@ -71,7 +71,7 @@ The first thing you should do is publish the assets that come with Voyager. You 
 
 ```bash
 php artisan vendor:publish --provider="TCG\Voyager\VoyagerServiceProvider"
-php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravel5"
+php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravelRecent"
 ```
 
 Next, call `php artisan migrate` to migrate all Voyager table.
