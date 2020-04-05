@@ -22,6 +22,7 @@ require('./slugify');
 window.TinyMCE = window.tinymce = require('tinymce');
 require('./multilingual');
 require('./voyager_tinymce');
+window.voyagerTinyMCE = require('./voyager_tinymce_config');
 require('./voyager_ace_editor');
 window.helpers = require('./helpers.js');
 

@@ -317,7 +317,7 @@ class VoyagerBaseController extends Controller
         if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $data = $model->withTrashed()->findOrFail($id);
         } else {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $data = $model->findOrFail($id);
         }
 
         // Check permission
@@ -855,6 +855,11 @@ class VoyagerBaseController extends Controller
                 $options = $row->details;
                 $model = app($options->model);
                 $skip = $on_page * ($page - 1);
+
+                // Apply local scope if it is defined in the relationship-options
+                if (isset($options->scope) && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
+                    $model = $model->{$options->scope}();
+                }
 
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
