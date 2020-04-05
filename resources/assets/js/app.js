@@ -6,7 +6,7 @@ window.Cropper = 'default' in window.Cropper ? window.Cropper['default'] : windo
 window.toastr = require('toastr');
 window.DataTable = require('datatables');
 require('datatables-bootstrap3-plugin/media/js/datatables-bootstrap3');
-window.SimpleMDE = require('simplemde');
+window.EasyMDE = require('easymde');
 require('dropzone');
 require('jquery-match-height');
 require('bootstrap-toggle');
@@ -194,11 +194,11 @@ $(document).ready(function () {
 
     /********** MARKDOWN EDITOR **********/
 
-    $('textarea.simplemde').each(function () {
-        var simplemde = new SimpleMDE({
-            element: this,
+    $('textarea.easymde').each(function () {
+        var easymde = new EasyMDE({
+            element: this
         });
-        simplemde.render();
+        easymde.render();
     });
 
     /********** END MARKDOWN EDITOR **********/

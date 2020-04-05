@@ -31,6 +31,7 @@
     "datatables.net": "^1.10.20",
     "datetimepicker": "^0.1.38",
     "dropzone": "^5.0.1",
+    "easymde": "^2.10.0",
     "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "icheck": "^1.0.2",
     "jquery-match-height": "^0.7.2",
@@ -38,7 +39,6 @@
     "node-sass": "^4.13.1",
     "perfect-scrollbar": "^0.7.1",
     "select2": "^4.0.11",
-    "simplemde": "^1.11.2",
     "tinymce": "^4.9.7",
     "toastr": "^2.1.2",
     "vue": "^2.3.4"
