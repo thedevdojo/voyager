@@ -55,7 +55,7 @@
             <i class="voyager-refresh"></i>
         </button>
         <div class="btn-group offset-right">
-            <button type="button" :disabled="selected_files.length == 0" v-if="allowUpload" class="btn btn-default" v-on:click="addSelectedFiles()">
+            <button type="button" :disabled="selected_files.length == 0" v-if="allowUpload && hidden_element" class="btn btn-default" v-on:click="addSelectedFiles()">
                 <i class="voyager-upload"></i>
                 {{ __('voyager::media.add_all_selected') }}
             </button>
