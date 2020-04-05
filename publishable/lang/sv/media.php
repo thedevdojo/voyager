@@ -44,4 +44,5 @@ return [
     'browser_video_support'     => 'Din webbläsare stödjer ej video-taggen.',
     'browser_audio_support'     => 'YDin webbläsare stödjer ej ljudelement.',
     'width'                     => 'bredd: ',
+    'add_all_selected'          => 'Lägg till alla valda',
 ];
