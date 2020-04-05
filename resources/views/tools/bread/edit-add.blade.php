@@ -559,10 +559,6 @@
         /********** Relationship functionality **********/
 
        $(function () {
-            $('.rowDrop').each(function(){
-                populateRowsFromTable($(this));
-            });
-
             $('.relationship_type').change(function(){
                 if($(this).val() == 'belongsTo'){
                     $(this).parent().parent().find('.relationshipField').show();
@@ -584,19 +580,16 @@
             });
 
             $('.btn-new-relationship').click(function(){
+                // Update table data
+                $('#new_relationship_modal .relationship_table').trigger('change');
+
                 $('#new_relationship_modal').modal('show');
             });
 
             relationshipTextDataBinding();
 
             $('.relationship_table').on('change', function(){
-                var tbl_selected = $(this).val();
-                var rowDropDowns = $(this).parent().parent().find('.rowDrop');
-                $(this).parent().parent().find('.rowDrop').each(function(){
-                    console.log('1');
-                    $(this).data('table', tbl_selected);
-                    populateRowsFromTable($(this));
-                });
+                populateRowsFromTable($(this));
             });
 
             $('.voyager-relationship-details-btn').click(function(){
@@ -611,23 +604,32 @@
         });
 
         function populateRowsFromTable(dropdown){
-            var tbl = dropdown.data('table');
-            var selected_value = dropdown.data('selected');
-            if(tbl.length != 0){
-                $.get('{{ route('voyager.database.index') }}/' + tbl, function(data){
-                    $(dropdown).empty();
-                    for (var option in data) {
-                       $('<option/>', {
-                         value: option,
-                         html: option
-                       }).appendTo($(dropdown));
+            var tbl = dropdown.val();
+
+            $.get('{{ route('voyager.database.index') }}/' + tbl, function(data){
+                var tbl_selected = $(dropdown).val();
+
+                $(dropdown).parent().parent().find('.rowDrop').each(function(){
+                    var selected_value = $(this).data('selected');
+
+                    var options = $.map(data, function (obj, key) {
+                        obj.id = key;
+                        obj.text = key; 
+
+                        return obj;
+                    });
+
+                    $(this).empty().select2({
+                        data: options
+                    });
+
+                    if (selected_value == '' || !$(this).find("option[value='"+selected_value+"']").length) {
+                        selected_value = $(this).find("option:first-child").val();
                     }
 
-                    if($(dropdown).find('option[value="'+selected_value+'"]').length > 0){
-                        $(dropdown).val(selected_value);
-                    }
+                    $(this).val(selected_value).trigger('change');
                 });
-            }
+            });
         }
 
         function relationshipTextDataBinding(){
