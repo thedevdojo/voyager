@@ -596,6 +596,7 @@
                 $(this).toggleClass('open');
                 if($(this).hasClass('open')){
                     $(this).parent().parent().find('.voyager-relationship-details').slideDown();
+                    populateRowsFromTable($(this).parent().parent().find('select.relationship_table'));
                 } else {
                     $(this).parent().parent().find('.voyager-relationship-details').slideUp();
                 }
