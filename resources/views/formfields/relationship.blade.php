@@ -12,13 +12,19 @@
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
                     $model = app($options->model);
                     $query = $model::where($options->key,$relationshipData->{$options->column})->first();
+
+                    if (isset($query)) {
+                        if (method_exists($query, 'getTranslatedAttribute')) {
+                            $label = $query->getTranslatedAttribute($options->label);
+                        } else {
+                            $label = $query->{$options->label};
+                        }
+                    } else {
+                        $label = __('voyager::generic.no_results');
+                    }
                 @endphp
 
-                @if(isset($query))
-                    <p>{{ $query->{$options->label} }}</p>
-                @else
-                    <p>{{ __('voyager::generic.no_results') }}</p>
-                @endif
+                <p>{{ $label }}</p>
 
             @else
 
@@ -32,6 +38,13 @@
                     @php
                         $model = app($options->model);
                         $query = $model::where($options->key, old($options->column, $dataTypeContent->{$options->column}))->get();
+
+                        if (method_exists($query->first(), 'getTranslatedAttribute')) {
+                            $query = $query->map(function ($item, $key) use ($options) {
+                                $item->{$options->label} = $item->getTranslatedAttribute($options->label);
+                                return $item;
+                            });
+                        }
                     @endphp
 
                     @if(!$row->required)
@@ -53,13 +66,19 @@
                 $model = app($options->model);
                 $query = $model::where($options->column, '=', $relationshipData->{$options->key})->first();
 
+                if (isset($query)) {
+                    if (method_exists($query->first(), 'getTranslatedAttribute')) {
+                        $label = $query->getTranslatedAttribute($options->label);
+                    } else {
+                        $label = $query->{$options->label};
+                    }
+                } else {
+                    $label = __('voyager::generic.no_results');
+                }
+
             @endphp
 
-            @if(isset($query))
-                <p>{{ $query->{$options->label} }}</p>
-            @else
-                <p>{{ __('voyager::generic.no_results') }}</p>
-            @endif
+            <p>{{ $label }}</p>
 
         @elseif($options->type == 'hasMany')
 
@@ -70,7 +89,11 @@
                     $model = app($options->model);
 
                     $selected_values = $model::where($options->column, '=', $relationshipData->{$options->key})->get()->map(function ($item, $key) use ($options) {
-                        return $item->{$options->label};
+                        if (method_exists($item, 'getTranslatedAttribute')) {
+                            return $item->getTranslatedAttribute($options->label);
+                        } else {
+                            return $item->{$options->label};
+                        }
                     })->all();
                 @endphp
 
@@ -101,6 +124,13 @@
                 @php
                     $model = app($options->model);
                     $query = $model::where($options->column, '=', $dataTypeContent->{$options->key})->get();
+
+                    if (isset($query) && method_exists($query->first(), 'getTranslatedAttribute')) {
+                        $query = $query->map(function ($item, $key) use ($options) {
+                            $item->{$options->label} = $item->getTranslatedAttribute($options->label);
+                            return $item;
+                        });
+                    }
                 @endphp
 
                 @if(isset($query))
@@ -124,7 +154,11 @@
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
 
                     $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key)->get()->map(function ($item, $key) use ($options) {
-            			return $item->{$options->label};
+                        if (method_exists($item, 'getTranslatedAttribute')) {
+                            return $item->getTranslatedAttribute($options->label);
+                        } else {
+                            return $item->{$options->label};
+                        }
             		})->all() : array();
                 @endphp
 
@@ -170,7 +204,14 @@
                                 return $item->{$options->key};
                             })->all() : array();
                             $relationshipOptions = app($options->model)->all();
-                        $selected_values = old($relationshipField, $selected_values);
+
+                            if (method_exists($relationshipOptions->first(), 'getTranslatedAttribute')) {
+                                $relationshipOptions = $relationshipOptions->map(function ($item, $key) use ($options) {
+                                    $item->{$options->label} = $item->getTranslatedAttribute($options->label);
+                                    return $item;
+                                });
+                            } 
+                            $selected_values = old($relationshipField, $selected_values);
                         @endphp
 
                         @if(!$row->required)
