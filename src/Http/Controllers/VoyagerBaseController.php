@@ -892,17 +892,15 @@ class VoyagerBaseController extends Controller
                 }
 
                 // Sort results
-                if (isset($options->sort) && is_object($options->sort)) {
+                if (isset($options->sort) && is_object($options->sort) && isset($options->sort->field)) {
                     $direction = 'asc';
                     if (isset($options->sort->direction)) {
                         $direction = strtolower($options->sort->direction);
                     }
-                    if (isset($options->sort->field)) {
-                        if ($direction == 'desc') {
-                            $relationshipOptions = $relationshipOptions->sortByDesc($options->sort->field);
-                        } else {
-                            $relationshipOptions = $relationshipOptions->sortBy($options->sort->field);
-                        }
+                    if ($direction == 'desc') {
+                        $relationshipOptions = $relationshipOptions->sortByDesc($options->sort->field);
+                    } else {
+                        $relationshipOptions = $relationshipOptions->sortBy($options->sort->field);
                     }
                 }
 

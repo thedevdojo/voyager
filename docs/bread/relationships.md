@@ -48,7 +48,17 @@ You can sort the results of a relationship by setting the `sort` object in the r
 }
 ```
 
-This will sort the results ascending by the field `my_field`. Use `desc` as the direction to sort it in the opposite order.
+Or
+
+```php
+{
+    "sort": {
+        "field": "my_field",
+        "direction": "desc"
+    }
+}
+```
+To sort by `my_field` descending.
 
 
 ## Scoping relationships
