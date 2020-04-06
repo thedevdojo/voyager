@@ -46,7 +46,8 @@ Route::group(['as' => 'voyager.'], function () {
                 Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.order');
                 Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
                 Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
-                Route::resource($dataType->slug, $breadController);
+                Route::post($dataType->slug.'/remove', $breadController.'@remove_media')->name($dataType->slug.'.media.remove');
+                Route::resource($dataType->slug, $breadController, ['parameters' => [$dataType->slug => 'id']]);
             }
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
@@ -55,7 +56,7 @@ Route::group(['as' => 'voyager.'], function () {
         }
 
         // Role Routes
-        Route::resource('roles', $namespacePrefix.'VoyagerRoleController');
+        Route::resource('roles', $namespacePrefix.'VoyagerRoleController', ['parameters' => ['roles' => 'id']]);
 
         // Menu Routes
         Route::group([
@@ -101,7 +102,6 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('move_file', ['uses' => $namespacePrefix.'VoyagerMediaController@move',          'as' => 'move']);
             Route::post('rename_file', ['uses' => $namespacePrefix.'VoyagerMediaController@rename',        'as' => 'rename']);
             Route::post('upload', ['uses' => $namespacePrefix.'VoyagerMediaController@upload',             'as' => 'upload']);
-            Route::post('remove', ['uses' => $namespacePrefix.'VoyagerMediaController@remove',             'as' => 'remove']);
             Route::post('crop', ['uses' => $namespacePrefix.'VoyagerMediaController@crop',             'as' => 'crop']);
         });
 
