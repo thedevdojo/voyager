@@ -333,7 +333,7 @@ class VoyagerBaseController extends Controller
 
         event(new BreadDataUpdated($dataType, $data));
 
-        if (auth()->user()->can('browse', $model)) {
+        if (auth()->user()->can('browse', app($dataType->model_name))) {
             $redirect = redirect()->route("voyager.{$dataType->slug}.index");
         } else {
             $redirect = redirect()->back();
