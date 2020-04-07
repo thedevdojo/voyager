@@ -43,4 +43,5 @@ return [
     'success_crop_image'    => 'Kuva rajattu onnistuneesti',
     'height'                => 'Korkeus: ',
     'width'                 => 'Leveys: ',
+    'add_all_selected'      => 'Lisää kaikki valitut',
 ];

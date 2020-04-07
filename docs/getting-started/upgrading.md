@@ -20,6 +20,10 @@ The roles BREAD now uses it's own controller.
 Please update it to use `TCG\Voyager\Http\Controllers\VoyagerRoleController`
 ![](../.gitbook/assets/upgrading_roles_controller.png)
 
+### TinyMCE initialization
+
+Initialization has been moved from app.js to `rich_text_box` template, if you were using TinyMCE outside the standard template take a look at documentation [tinymce](../bread/formfields/tinymce.md)
+
 ### Troubleshooting
 
 Be sure to ask us on our slack channel if you are experiencing any issues and we will try and assist. Thanks.

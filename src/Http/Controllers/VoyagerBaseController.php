@@ -52,8 +52,12 @@ class VoyagerBaseController extends Controller
             $searchable = SchemaManager::describeTable(app($dataType->model_name)->getTable())->pluck('name')->toArray();
             $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get();
             foreach ($searchable as $key => $value) {
-                $displayName = $dataRow->where('field', $value)->first()->getTranslatedAttribute('display_name');
-                $searchNames[$value] = $displayName ?: ucwords(str_replace('_', ' ', $value));
+                $field = $dataRow->where('field', $value)->first();
+                $displayName = ucwords(str_replace('_', ' ', $value));
+                if ($field !== null) {
+                    $displayName = $field->getTranslatedAttribute('display_name');
+                }
+                $searchNames[$value] = $displayName;
             }
         }
 
@@ -329,7 +333,7 @@ class VoyagerBaseController extends Controller
 
         event(new BreadDataUpdated($dataType, $data));
 
-        if (auth()->user()->can('browse', $model)) {
+        if (auth()->user()->can('browse', app($dataType->model_name))) {
             $redirect = redirect()->route("voyager.{$dataType->slug}.index");
         } else {
             $redirect = redirect()->back();
@@ -884,7 +888,7 @@ class VoyagerBaseController extends Controller
 
                 $results = [];
 
-                if (!$row->required && !$search) {
+                if (!$row->required && !$search && $page == 1) {
                     $results[] = [
                         'id'   => '',
                         'text' => __('voyager::generic.none'),

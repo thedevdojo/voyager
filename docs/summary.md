@@ -22,6 +22,7 @@
   * [Images](bread/formfields/images.md)
   * [Media Picker](bread/formfields/media-picker.md)
   * [Number](bread/formfields/number.md)
+  * [TinyMCE](bread/formfields/tinymce.md)
 
 ## Core concepts
 
@@ -42,7 +43,6 @@
 * [Additional CSS and JS](customization/additional-css-js.md)
 * [Enabling Soft-Delete](customization/enabling-soft-delete.md)
 * [Custom relationship attributes](customization/custom-realtionship-attributes.md)
-* [TinyMCE](customization/tinymce.md)
 * [Adding custom Formfields](customization/adding-custom-formfields.md)
 * [Coordinates](customization/coordinates.md)
 * [BREAD accessors](customization/bread-accessors.md)
