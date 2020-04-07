@@ -892,9 +892,9 @@ class VoyagerBaseController extends Controller
                 }
 
                 // Sort results
-                if (isset($options->sort) && is_object($options->sort) && isset($options->sort->field)) {
+                if (!empty($options->sort) && is_object($options->sort) && !empty($options->sort->field)) {
                     $direction = 'asc';
-                    if (isset($options->sort->direction)) {
+                    if (!empty($options->sort->direction)) {
                         $direction = strtolower($options->sort->direction);
                     }
                     if ($direction == 'desc') {
