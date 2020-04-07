@@ -35,6 +35,32 @@ If you need to set advanced options for `belongsToMany` relationship you can set
 }
 ```
 
+## Sorting relationships
+
+You can sort the results of a relationship by setting the `sort` object in the relationship options:
+
+```php
+{
+    "sort": {
+        "field": "my_field",
+        "direction": "asc"
+    }
+}
+```
+
+Or
+
+```php
+{
+    "sort": {
+        "field": "my_field",
+        "direction": "desc"
+    }
+}
+```
+To sort by `my_field` descending.
+
+
 ## Scoping relationships
 
 You can easily filter the shown relationship options by defining a [local scope](https://laravel.com/docs/eloquent#local-scopes) in the foreign model.  

@@ -895,6 +895,15 @@ class VoyagerBaseController extends Controller
                     ];
                 }
 
+                // Sort results
+                if (!empty($options->sort->field)) {
+                    if (!empty($options->sort->direction) && strtolower($options->sort->direction) == 'desc') {
+                        $relationshipOptions = $relationshipOptions->sortByDesc($options->sort->field);
+                    } else {
+                        $relationshipOptions = $relationshipOptions->sortBy($options->sort->field);
+                    }
+                }
+
                 foreach ($relationshipOptions as $relationshipOption) {
                     $results[] = [
                         'id'   => $relationshipOption->{$options->key},
