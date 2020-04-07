@@ -54,4 +54,5 @@ return [
     'browser_video_support'  => '您的浏览器不支持此视频标签.',
     'browser_audio_support'  => '您的浏览器不支持音频元素.',
     'width'                  => '宽度: ',
+    'add_all_selected'       => '添加所有选中的',
 ];
