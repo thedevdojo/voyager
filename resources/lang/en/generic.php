@@ -7,6 +7,8 @@ return [
     'add_setting'               => 'Add Setting',
     'add_type'                  => 'Add :type',
     'all'                       => 'All',
+    'bread'                     => 'BREAD',
+    'breads'                    => 'BREADs',
     'browse'                    => 'Browse',
     'cancel'                    => 'Cancel',
     'colors'                    => 'Colors',

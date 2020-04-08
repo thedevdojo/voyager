@@ -1,8 +1,8 @@
 .label {
-    @apply block text-sm font-normal mb-2;
+    @apply block text-base font-normal my-2;
 
     &.bigger {
-        @apply text-base;
+        @apply text-lg;
     }
 }
 

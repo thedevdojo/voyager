@@ -2,33 +2,68 @@
 
 namespace TCG\Voyager\Formfields;
 
-class Repeater extends BaseFormfield
-{
-    public $type = 'repeater';
-    public $translatable = false; // The repeater itself cannot be translated
-    public $lists = false;
-    public $settings = false;
+use TCG\Voyager\Contracts\Bread\Formfield;
 
-    public function __construct()
+class Repeater extends Formfield
+{
+    public function type(): string
     {
-        $this->name = __('voyager::bread.formfield.repeater');
-        $this->options['formfields'] = [];
-        $this->options['add_text'] = __('voyager::generic.add_new_element');
+        return 'repeater';
     }
 
-    public function update($data, $old, $model, $request_data)
+    public function name(): string
     {
-        if (is_array($data)) {
-            $data = json_encode($data);
-        }
+        return 'Repeater';
+    }
 
+    public function listOptions(): array
+    {
+        return [];
+    }
+
+    public function viewOptions(): array
+    {
         return [
-            $this->column => $data,
+            'min'         => 0,
+            'max'         => 0,
+            'add_text'    => 'Add',
+            'remove_text' => 'Remove',
+            'formfields'  => [],
         ];
     }
 
-    public function store($data, $old, $model, $request_data)
+    public function translatable(): bool
     {
-        return $this->update($data, $old, $model, $request_data);
+        return false;
+    }
+
+    public function browse($input)
+    {
+        return $input;
+    }
+
+    public function read($input)
+    {
+        return $input;
+    }
+
+    public function edit($input)
+    {
+        return $input;
+    }
+
+    public function update($input, $old)
+    {
+        return $input;
+    }
+
+    public function add()
+    {
+        return $input;
+    }
+
+    public function store($input)
+    {
+        return $input;
     }
 }

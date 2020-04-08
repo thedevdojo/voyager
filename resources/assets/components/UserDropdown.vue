@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-1 text-right max-w-sm mx-auto z-30" v-on-clickaway="close">
+    <div class="mt-1 text-right max-w-sm mx-auto z-30" v-on:click-away="close">
         <div id="user_dropdown" class="relative inline-block">
             <button @click="toggle" class="flex items-center pl-6 py-2 font-semibold rounded-lg focus:outline-none">
             

@@ -1,18 +1,12 @@
 let formfields = [
-    'Color',
-    'DynamicDropdown',
-    'HtmlElement',
-    'DateTime',
-    'Number',
-    'Password',
-    'Relationship',
     'Repeater',
-    'RichTextEditor',
-    'Slug',
     'Text',
 ];
 
 formfields.forEach(function (formfield) {
-    Vue.component('formfield-'+kebab_case(formfield), require('../components/Formfields/'+formfield).default);
+    var name = kebab_case(formfield);
+    Vue.component('formfield-'+name+'-browse', require('../components/Formfields/'+formfield+'/Browse').default);
+    Vue.component('formfield-'+name+'-read', require('../components/Formfields/'+formfield+'/Read').default);
+    Vue.component('formfield-'+name+'-edit-add', require('../components/Formfields/'+formfield+'/EditAdd').default);
+    Vue.component('formfield-'+name+'-builder', require('../components/Formfields/'+formfield+'/Builder').default);
 });
-Vue.component('formfield-mockup', require('../components/Manager/FormfieldMockup').default);

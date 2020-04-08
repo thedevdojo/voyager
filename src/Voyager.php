@@ -4,15 +4,10 @@ namespace TCG\Voyager;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
-use TCG\Voyager\Traits\Plugins;
-use TCG\Voyager\Traits\Settings;
+use TCG\Voyager\Facades\Plugins as PluginsFacade;
 
 class Voyager
 {
-    use Plugins, Settings;
-
-    protected $actions;
-    protected $formfields;
     protected $messages = [];
     protected $tables = [];
 
@@ -23,7 +18,7 @@ class Voyager
      */
     public function routes()
     {
-        $this->launchPlugins();
+        PluginsFacade::launchPlugins();
         require __DIR__.'/../routes/voyager.php';
     }
 
@@ -102,124 +97,6 @@ class Voyager
     public function getRoutePrefix()
     {
         return $this->route_prefix;
-    }
-
-    /**
-     * Add a formfield.
-     *
-     * @param string $class The class of the formfield
-     */
-    public function addFormfield($class)
-    {
-        if (!$this->formfields) {
-            $this->formfields = collect();
-        }
-        $class = new $class();
-        $this->formfields->push($class);
-    }
-
-    /**
-     * Get all formfields.
-     *
-     * @return Illuminate\Support\Collection The formfields
-     */
-    public function getFormfields()
-    {
-        return $this->formfields;
-    }
-
-    /**
-     * Get formfields-description.
-     *
-     * @return Illuminate\Support\Collection The formfields
-     */
-    public function getFormfieldsDescription()
-    {
-        return $this->getFormfields()->sortBy('name')->map(function ($formfield) {
-            return [
-                'type'         => $formfield->type,
-                'name'         => $formfield->name,
-                'options'      => $formfield->options,
-                'rules'        => $formfield->rules,
-                'translatable' => $formfield->translatable,
-                'lists'        => $formfield->lists,
-                'views'        => $formfield->views,
-                'settings'     => $formfield->settings,
-            ];
-        });
-    }
-
-    /**
-     * Get a formfield by type.
-     *
-     * @param string $type The type of the formfield
-     *
-     * @return object The formfield
-     */
-    public function getFormfield($type)
-    {
-        return $this->formfields->filter(function ($formfield) use ($type) {
-            return $formfield->type == $type;
-        })->first();
-    }
-
-    /**
-     * Add an action.
-     *
-     * @param string $class The class of the action
-     */
-    public function addAction($class)
-    {
-        if (!$this->actions) {
-            $this->actions = collect();
-        }
-        $class = new $class();
-        $this->actions->push($class);
-    }
-
-    /**
-     * Get all actions.
-     *
-     * @return Illuminate\Support\Collection The actions
-     */
-    public function getActions()
-    {
-        return $this->actions->unique();
-    }
-
-    /**
-     * Get all actions which should be shown on a BREAD.
-     *
-     * @param object $bread  The BREAD
-     * @param object $layout The layout
-     *
-     * @return object The actions
-     */
-    public function getActionsForBread($bread, $layout)
-    {
-        return $this->actions->filter(function ($action) use ($bread, $layout) {
-            $action->bread = $bread;
-            $action->layout = $layout;
-
-            return $action->shouldBeDisplayOnBread($bread);
-        });
-    }
-
-    /**
-     * Get all actions which should be shown on a BREAD.
-     *
-     * @param string $bread The BREAD
-     *
-     * @return object The actions
-     */
-    public function getActionsForEntry($bread, $layout, $entry)
-    {
-        return $this->actions->filter(function ($action) use ($bread, $layout, $entry) {
-            $action->bread = $bread;
-            $action->layout = $layout;
-
-            return $action->shouldBeDisplayOnBread() && $action->shouldBeDisplayedOnEntry($entry);
-        });
     }
 
     /**
@@ -326,7 +203,7 @@ class Voyager
     {
         // TODO: Cache widgets?
 
-        return collect($this->getPluginsByType('widget')->where('enabled')->transform(function ($plugin) {
+        return collect(PluginsFacade::getPluginsByType('widget')->where('enabled')->transform(function ($plugin) {
             $width = $plugin->getWidth();
             if ($width >= 1 && $width <= 11) {
                 $width = 'w-'.$width.'/12';

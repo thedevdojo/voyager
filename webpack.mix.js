@@ -18,8 +18,7 @@ require('laravel-mix-purgecss');
     postCss: [ tailwindcss('tailwind.config.js') ],
 }).purgeCss({
     folders: ['resources'],
-    whitelistPatterns: [/snotify/, /mode-dark/, /dark/, /uil/, /w-[0-9]+\/[0-9]+/],
+    whitelistPatterns: [/Vue-Toastification/, /mode-dark/, /dark/, /uil/, /w-[0-9]+\/[0-9]+/],
 })
 .js('resources/assets/js/voyager.js', 'resources/assets/dist/js')
-.copy('node_modules/inter-ui/Inter (web)', 'resources/assets/dist/fonts/inter')
-.copy('node_modules/@iconscout/unicons/fonts', 'resources/assets/dist/fonts/unicons');
+.copy('node_modules/inter-ui/Inter (web)', 'resources/assets/dist/fonts/inter');

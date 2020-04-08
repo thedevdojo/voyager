@@ -52,32 +52,6 @@ Vue.prototype.$globals = new Vue({
     }
 });
 
-window.getFormfieldByType = function (type) {
-    var r_formfield = null;
-
-    this.$globals.formfields.forEach(function (formfield) {
-        if (formfield.type == type) {
-            r_formfield = formfield;
-        }
-    });
-
-    return r_formfield;
-};
-Vue.prototype.getFormfieldByType = getFormfieldByType;
-
-window.getBreadByValue = function (value) {
-    var r_bread = null;
-    var vm = this;
-    vm.$globals.breads.forEach(function (bread) {
-        if (vm.translate(bread.name_singular, true) == value || vm.translate(bread.name_plural, true) == value || vm.translate(bread.slug, true) == value) {
-            r_bread = bread;
-        }
-    });
-
-    return r_bread;
-}
-Vue.prototype.getBreadByValue = getBreadByValue;
-
 window.kebab_case = function (input, char = '-') {
     return input.replace(/([a-z])([A-Z])/g, '$1-$2').replace(/\s+/g, char).toLowerCase();
 };
@@ -97,6 +71,16 @@ window.title_case = function (input) {
     return input.join(' ');
 };
 Vue.prototype.title_case = title_case;
+
+window.studly = function (input) {
+    input = this.kebab_case(input).split('-');
+    for (var i = 0; i < input.length; i++) {
+        input[i] = input[i].charAt(0).toUpperCase() + input[i].slice(1); 
+    }
+
+    return input.join('');
+};
+Vue.prototype.studly = studly;
 
 window.slug = function (input) {
     return window.slugify(input);
@@ -121,13 +105,6 @@ window.route = function ()
 };
 Vue.prototype.route = route;
 
-window.can = function ()
-{
-    
-    return false;
-};
-Vue.prototype.can = can;
-
 window.debug = function (message, printToConsole = true, type = 'log')
 {
     if (printToConsole) {
@@ -137,11 +114,9 @@ window.debug = function (message, printToConsole = true, type = 'log')
             console.error(message);
         else if (type == 'message')
             console.message(message);
+        else if (type == 'warn')
+            console.warn(message);
     }
-
-    message = message.replace(/'/g, "\\'");
-    var clipmsg = '<br><a class="text-xs" href="#" onclick="return copyToClipboard(\''+message+'\')">'+this.__('voyager::generic.copy_to_clipboard')+'</a>';
-    this.$snotify.html(message+clipmsg);
 }
 Vue.prototype.debug = debug;
 

@@ -1,0 +1,7 @@
+.dropdown {
+    @apply relative inline-block text-left;
+
+    .body {
+        @apply origin-top-left absolute left-0 mt-2 rounded-md shadow-lg;
+    }
+}

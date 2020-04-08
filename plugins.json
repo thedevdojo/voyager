@@ -2,7 +2,7 @@
     {
         "name": "Useless Plugin",
         "description": "A plugin for Voyager 2 that does absolutely nothing",
-        "type": "base",
+        "type": "generic",
         "repository": "emptynick/useless-plugin",
         "keywords": ["useless", "plugin", "Voyager"],
         "website": "https://github.com/emptynick/useless-plugin"

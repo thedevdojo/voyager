@@ -3,13 +3,8 @@ It only contains small things that came to our minds which we couldn't implement
 Instead, they are listed here:
 
 - Change variables to use kebab-case everywhere
-- Rename language-strings like `voyager::bread.browse_name` and `voyager::generic.add_type` to be uniform (use `type` or `name`?)
-- DateTimePicker needs a formatting feature
-- Order by relationship
+- Rename language-strings like `voyager::bread.browse_name` and `voyager::generic.add_type` to be uniform (use `type`!)
 - Remove csrf_token as data-prop from AJAX requests as it is sended globally as a header
-- Actions for BREAD-Browse is an object but should be an array
-- Edit-Add modal for relationships needs to be emptied when the modal closes or opens
-- Remove components `v-button` and `v-input` (?)
 - Tune Modal and Pagination components (Tailwind UI?)
 - Make sure all input with class `voyager-input` use `w-full` (where applicable)
 - Source out all colors from styles to `colors.scss`
@@ -19,3 +14,14 @@ Instead, they are listed here:
 ## Nice to have
 - Validate (hash) AJAX data and check in controller
 - Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields
+
+## Documentation
+- Relationship methods NEED TO define the return-type. Otherwise they won't be recognized by the BREAD builder
+- Scopes need to start with `scope` (ex. `scopeCurrentUser()`)
+- Accessors need to be named `getFieldAttribute` (ex. `getFullNameAttribute`)
+- Computed properties need to implement an accessor AND mutator when used for adding or editing
+
+## Checklist
+The following things need to be double checked
+
+- Sorting. Try to sort by an accessor and by a relationship property. It should also work when set as default-sort.

@@ -2,17 +2,70 @@
 
 namespace TCG\Voyager\Formfields;
 
-class Text extends BaseFormfield
-{
-    public $type = 'text';
+use TCG\Voyager\Contracts\Bread\Formfield;
 
-    public function __construct()
+class Text extends Formfield
+{
+    public function type(): string
     {
-        $this->name = __('voyager::bread.formfield.text');
-        $this->options['placeholder'] = '';
-        $this->options['default_value'] = '';
-        $this->options['disabled'] = false;
-        $this->options['rows'] = 1;
-        $this->options['max_characters'] = 50;
+        return 'text';
+    }
+
+    public function name(): string
+    {
+        return 'Text';
+    }
+
+    public function listOptions(): array
+    {
+        return [
+            'display_length'    => 150,
+        ];
+    }
+
+    public function viewOptions(): array
+    {
+        return [
+            'label'         => '',
+            'description'   => '',
+            'placeholder'   => '',
+            'default_value' => '',
+            'rows'          => 1,
+        ];
+    }
+
+    public function translatable(): bool
+    {
+        return true;
+    }
+
+    public function browse($input)
+    {
+        return $input;
+    }
+
+    public function read($input)
+    {
+        return $input;
+    }
+
+    public function edit($input)
+    {
+        return $input;
+    }
+
+    public function update($input, $old)
+    {
+        return $input;
+    }
+
+    public function add()
+    {
+        return $input;
+    }
+
+    public function store($input)
+    {
+        return $input;
     }
 }

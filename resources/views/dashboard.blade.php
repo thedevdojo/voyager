@@ -10,7 +10,7 @@
         <div class="w-full rounded-lg px-6 py-4 flex flex-col bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-sm">
             <div class="flex items-center">
                 <span class="w-6 h-6 mr-2 fill-current text-black dark:text-white">
-                    <i class="uil uil-sun"></i>
+                    <helm />
                 </span>
                 <h2 class="text-black dark:text-white font-bold text-lg leading-tight">Welcome to the New Voyager</h2>
             </div>

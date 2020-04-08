@@ -6,9 +6,6 @@ Route::group(['as' => 'voyager.'], function () {
     Route::group(['middleware' => 'voyager.admin'], function () use ($namespace) {
         Route::view('/', 'voyager::dashboard')->name('dashboard');
         Route::post('search', ['uses' => $namespace.'VoyagerController@search', 'as' => 'search']);
-        Route::post('search-relationship', ['uses' => $namespace.'VoyagerController@searchRelationship', 'as' => 'search-relationship']);
-        Route::post('add-relationship', ['uses' => $namespace.'VoyagerController@addRelationship', 'as' => 'add-relationship']);
-        Route::post('get-options', ['uses' => $namespace.'VoyagerController@getOptions', 'as' => 'get-options']);
 
         // BREAD manager
         Route::group([
@@ -19,6 +16,9 @@ Route::group(['as' => 'voyager.'], function () {
             Route::get('create/{table}', ['uses' => $namespace.'BreadManagerController@create', 'as' => 'create']);
             Route::get('edit/{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'edit']);
             Route::put('{table}', ['uses' => $namespace.'BreadManagerController@update', 'as' => 'update']);
+            Route::post('get-properties', ['uses' => $namespace.'BreadManagerController@getProperties', 'as' => 'get-properties']);
+            Route::post('get-breads', ['uses' => $namespace.'BreadManagerController@getBreads', 'as' => 'get-breads']);
+            Route::post('backup-bread', ['uses' => $namespace.'BreadManagerController@backupBread', 'as' => 'backup-bread']);
             Route::delete('{table}', ['uses' => $namespace.'BreadManagerController@destroy', 'as' => 'delete']);
         });
 
@@ -31,10 +31,10 @@ Route::group(['as' => 'voyager.'], function () {
             Route::group([
                 'as'     => $bread->slug.'.',
                 'prefix' => $bread->slug,
-            ], function () use ($controller) {
+            ], function () use ($bread, $controller) {
                 // Browse
-                Route::get('/', ['uses' => $controller.'@browse', 'as' => 'browse']);
-                Route::post('data', ['uses'=> $controller.'@data', 'as' => 'data']);
+                Route::view('/', 'voyager::bread.browse', compact('bread'))->name('browse');
+                Route::post('data', ['uses'=> $controller.'@browse', 'as' => 'browse']);
 
                 // Edit
                 Route::get('/edit/{id}', ['uses' => $controller.'@edit', 'as' => 'edit']);
@@ -49,11 +49,6 @@ Route::group(['as' => 'voyager.'], function () {
 
                 // Read
                 Route::get('/{id}', ['uses' => $controller.'@read', 'as' => 'read']);
-
-                // Get relationship-items
-                Route::post('/relationship-data', ['uses' => $controller.'@relationshipData', 'as' => 'relationship-data']);
-                // Add relationship item
-                Route::post('/relationship-add', ['uses' => $controller.'@relationshipAdd', 'as' => 'relationship-add']);
             });
         }
 

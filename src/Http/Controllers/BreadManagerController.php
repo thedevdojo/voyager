@@ -2,8 +2,10 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Bread as BreadFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Rules\ClassExists as ClassExistsRule;
@@ -122,5 +124,59 @@ class BreadManagerController extends Controller
     public function destroy($table)
     {
         return response('', BreadFacade::deleteBread($table) ? 200 : 500);
+    }
+
+    /**
+     * Get BREAD properties (accessors, scopes and relationships) by model
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getProperties(Request $request)
+    {
+        $model = $request->get('model', '');
+        if ($model == '') {
+            return response('Please enter a model class', 400);
+        }
+        $model = Str::start($model, '\\');
+        if (!class_exists($model)) {
+            return response('Model "'.$model.'" does not exist!', 400);
+        }
+        $instance = new $model();
+        $reflection = BreadFacade::getModelReflectionClass($model);
+        $resolve_relationships = $request->get('resolve_relationships', false);
+
+        return response()->json([
+            'columns'       => VoyagerFacade::getColumns($instance->getTable()),
+            'computed'      => BreadFacade::getModelComputedProperties($reflection)->values(),
+            'scopes'        => BreadFacade::getModelScopes($reflection)->values(),
+            'relationships' => BreadFacade::getModelRelationships($reflection, $instance, $resolve_relationships)->values(),
+            'softdeletes'   => in_array(SoftDeletes::class, class_uses($instance)),
+        ], 200);
+    }
+
+    /**
+     * Get all BREADs
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getBreads()
+    {
+        $breads = BreadFacade::getBreads();
+
+        return response()->json($breads, 200);
+    }
+
+    /**
+     * Backup a BREAD
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function backupBread(Request $request)
+    {
+        return response('', BreadFacade::backupBread($request->get('table', '')) ? 200 : 500);
     }
 }

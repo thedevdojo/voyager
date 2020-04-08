@@ -8,7 +8,7 @@ Vue.prototype.$language = new Vue({
     },
     watch: {
         locale: function (locale) {
-            // TODO: Store locale in a cookie?
+            // TODO: Set cookie?
         }
     }
 });
@@ -56,7 +56,7 @@ Vue.mixin({
 
             if (!translation) {
                 if (this.$globals.debug) {
-                    console.warn('Translation with key "'+key+'" does not exist.');
+                    this.debug('Translation with key "'+key+'" does not exist.', true, 'warn');
                 }
 
                 return key;

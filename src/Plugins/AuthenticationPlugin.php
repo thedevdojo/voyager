@@ -6,9 +6,9 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use TCG\Voyager\Plugins\Interfaces\AuthenticationInterface;
+use TCG\Voyager\Contracts\Plugins\IsAuthenticationPlugin;
 
-class AuthenticationPlugin implements AuthenticationInterface
+class AuthenticationPlugin implements IsAuthenticationPlugin
 {
     public function user(): ?object
     {

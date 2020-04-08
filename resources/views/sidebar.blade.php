@@ -17,7 +17,7 @@
                     <span class="font-black text-lg uppercase pl-2 title">Voyager</span>
                 </div>
                 @php
-                    $menu_plugin = Voyager::getPluginByType('menu');
+                    $menu_plugin = VoyagerPlugins::getPluginByType('menu');
                     $current_url = Str::finish('/', url()->current());
                 @endphp
 
@@ -32,7 +32,7 @@
 
                     <a href="{{ route('voyager.bread.index') }}" class="text-base leading-6 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}">
                         <i class="uil uil-dashboard text-2xl icon"></i>
-                        {{ __('voyager::manager.breads') }}
+                        {{ __('voyager::generic.breads') }}
                     </a>
 
                     <a href="{{ route('voyager.ui') }}" class="text-base leading-6 item {{ $current_url == Str::finish('/', route('voyager.ui')) ? 'active' : '' }}">
@@ -82,7 +82,7 @@
                     <span class="font-black text-lg uppercase pl-2 title">Voyager</span>
                 </div>
                 @php
-                    $menu_plugin = Voyager::getPluginByType('menu');
+                    $menu_plugin = VoyagerPlugins::getPluginByType('menu');
                     $current_url = Str::finish('/', url()->current());
                 @endphp
 
@@ -91,34 +91,34 @@
                 @else
                 <nav class="mt-4 flex-1 px-2">
                     <a :href="route('voyager.dashboard')" class="text-sm leading-5 item {{ $current_url == Str::finish('/', route('voyager.dashboard')) ? 'active' : '' }}">                   
-                        <i class="uil uil-dashboard text-2xl icon"></i>
+                        <icon icon="dashboard" class="icon mr-2"></icon>
                         {{ __('voyager::generic.dashboard') }}
                     </a>
 
                     <a href="{{ route('voyager.bread.index') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}">
-                        <i class="uil uil-dashboard text-2xl icon"></i>
-                        {{ __('voyager::manager.breads') }}
+                        <icon icon="dashboard" class="icon mr-2"></icon>
+                        {{ __('voyager::generic.breads') }}
                     </a>
 
                     <a href="{{ route('voyager.ui') }}" class="text-sm leading-5 item {{ $current_url == Str::finish('/', route('voyager.ui')) ? 'active' : '' }}">
-                        <i class="uil uil-window text-2xl icon"></i>
+                        <icon icon="window" class="icon mr-2"></icon>
                         {{ __('voyager::generic.ui_components') }}
                     </a>
 
                     <a href="{{ route('voyager.settings.index') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.settings.index'))) ? 'active' : '' }}">
-                        <i class="uil uil-cog text-2xl icon"></i>
+                        <icon icon="cog" class="icon mr-2"></icon>
                         {{ __('voyager::generic.settings') }}
                     </a>
 
                     <a href="{{ route('voyager.plugins.index') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}">
-                        <i class="uil uil-layer-group text-2xl icon"></i>
+                    <icon icon="layer-group" class="icon mr-2"></icon>
                         {{ __('voyager::plugins.plugins') }}
                     </a>
-                    <hr class="my-3 sidebar-border" />
                     @if (count(Bread::getBreads()) > 0)
+                        <hr class="my-3 sidebar-border" />
                         @foreach (Bread::getBreads() as $bread)
                         <a href="{{ route('voyager.'.$bread->slug.'.browse') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse'))) ? 'active' : '' }}">
-                            <i class="uil text-2xl uil-{{ $bread->icon }} icon"></i>
+                            <icon icon="{{ $bread->icon }}" class="icon mr-2"></icon>
                             {{ $bread->name_plural }}
                         </a>
                         @endforeach
@@ -128,7 +128,7 @@
             </div>
             <div class="flex-shrink-0 flex border-t sidebar-border p-4 h-auto">
                 <button class="rounded-full bg-gray-300 dark:bg-gray-700 outline-none px-2 py-2 rounded inline-flex items-center" @click="$globals.toggleDarkMode">
-                    <i class="uil text-xl" :class="[$globals.darkmode ? 'uil-sun' : 'uil-moon']"></i>
+                    <icon :icon="$globals.darkmode ? 'sun' : 'moon'" />
                 </button>
                 <img src="{{ Voyager::assetUrl('images/default-avatar.png') }}" class="rounded-full m-4 w-8" alt="User Avatar">
                 <locale-picker v-if="$language.localePicker" />

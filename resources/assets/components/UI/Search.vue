@@ -1,6 +1,6 @@
 <template>
     <div v-click-outside="close">
-        <input autocomplete="off" type="text" class="py-2 block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none" v-model="query" @input="search" :placeholder="$globals.searchPlaceholder">
+        <input autocomplete="off" type="text" class="py-2 block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none" v-model="query" @input="search" :placeholder="placeholder">
         <div v-if="searchResults.length > 0 && opened" class="voyager-search-results">
             <div v-for="(bread, i) in searchResults" :key="'bread-results-'+i">
                 <h4>{{ bread.bread }}</h4>
@@ -23,6 +23,7 @@
 </template>
 <script>
 export default {
+    props: ['placeholder'],
     data: function () {
         return {
             searchResults: [],
@@ -58,7 +59,7 @@ export default {
                     vm.opened = true;
                 })
                 .catch(function (errors) {
-                    vm.$snotify.error(error);
+                    vm.$notify.error(error);
                     if (vm.debug) {
                         vm.debug(error.response.data.message, true, 'error');
                     }

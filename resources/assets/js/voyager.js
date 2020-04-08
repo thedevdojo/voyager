@@ -1,4 +1,5 @@
 require('./vendor');
+require('./notify');
 require('./helper');
 require('./bread');
 require('./multilanguage');

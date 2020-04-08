@@ -1,4 +1,40 @@
-@keyframes rotating {
+@keyframes rotating-ccw {
+    from {
+        transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+    }
+}
+@-webkit-keyframes rotating-ccw {
+    from {
+        transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+    }
+}
+.rotating-ccw {
+    -webkit-animation: rotating-ccw 1s linear infinite;
+    -moz-animation: rotating-ccw 1s linear infinite;
+    -ms-animation: rotating-ccw 1s linear infinite;
+    -o-animation: rotatin-ccw 1s linear infinite;
+    animation: rotating-ccw 1s linear infinite;
+}
+
+
+
+@keyframes rotating-cw {
     from {
         transform: rotate(0deg);
         -o-transform: rotate(0deg);
@@ -14,7 +50,7 @@
         -webkit-transform: rotate(360deg);
     }
 }
-@-webkit-keyframes rotating {
+@-webkit-keyframes rotating-cw {
     from {
         transform: rotate(0deg);
         -webkit-transform: rotate(0deg);
@@ -24,10 +60,10 @@
         -webkit-transform: rotate(360deg);
     }
 }
-.rotating {
-    -webkit-animation: rotating 1s linear infinite;
-    -moz-animation: rotating 1s linear infinite;
-    -ms-animation: rotating 1s linear infinite;
-    -o-animation: rotating 1s linear infinite;
-    animation: rotating 1s linear infinite;
+.rotating-cw {
+    -webkit-animation: rotating-cw 1s linear infinite;
+    -moz-animation: rotating-cw 1s linear infinite;
+    -ms-animation: rotating-cw 1s linear infinite;
+    -o-animation: rotating-cw 1s linear infinite;
+    animation: rotating-cw 1s linear infinite;
 }

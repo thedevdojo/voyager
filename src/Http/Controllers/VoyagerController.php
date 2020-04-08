@@ -45,10 +45,11 @@ class VoyagerController extends Controller
         abort(404);
     }
 
+    // Search all BREADS
     public function search(Request $request)
     {
         $q = $request->get('query');
-        debug($request->all());
+
         $bread = BreadFacade::getBread($request->get('bread'));
         $results = collect([]);
         if ($bread && $bread->global_search_field) {
@@ -78,94 +79,5 @@ class VoyagerController extends Controller
                 'count'   => $results->count(),
             ],
         ];
-    }
-
-    public function searchRelationship(Request $request)
-    {
-        $bread = BreadFacade::getBread($request->get('table'));
-        $multiple = false;
-        $results = [];
-        if ($bread) {
-            $assigned = null;
-            $model = $bread->getModel();
-
-            if ($request->get('primary', null)) {
-                $model = $model->findOrFail($request->get('primary'));
-                $related = $model->{$request->get('relationship')}()->getRelated();
-                $query = $request->get('query', null);
-                $foreign_key = $related->getKeyName();
-                if ($query) {
-                    $related = $related->where($request->get('column'), 'LIKE', '%'.$query.'%')->get();
-                }
-                $related_entries = $related->pluck($request->get('column'), $foreign_key);
-            } else {
-                $related = $model->{$request->get('relationship')}()->getRelated();
-                $foreign_key = $related->getKeyName();
-                if ($request->has('order_column')) {
-                    $related = $related->orderBy($request->get('order_column'));
-                }
-                $related_entries = $related->pluck($request->get('column'), $foreign_key);
-            }
-
-            $assigned = $model->{$request->get('relationship')};
-
-            foreach ($related_entries as $key => $label) {
-                $is_assigned = false;
-                if ($assigned instanceof Collection) {
-                    $multiple = true;
-                    $is_assigned = $assigned->contains($foreign_key, $key);
-                } elseif ($assigned) {
-                    $is_assigned = $assigned->{$foreign_key} == $key;
-                }
-                $results[] = [
-                    'key'      => $key,
-                    'label'    => $label,
-                    'assigned' => $is_assigned,
-                ];
-            }
-        }
-
-        return [
-            'multiple' => $multiple,
-            'results'  => $results,
-        ];
-    }
-
-    public function addRelationship(Request $request)
-    {
-        $bread = BreadFacade::getBread($request->get('table'));
-        $result = '';
-        if ($bread) {
-            $model = $bread->getModel()->findOrFail($request->get('primary'));
-
-            $related = $model->{$request->get('relationship')}()->getRelated();
-            $tag = $request->get('tag', null);
-            $data = new $related();
-            $data->{$request->get('column')} = $tag;
-            $data->save();
-
-            $result = [
-                'key'      => $data->getKey(),
-                'label'    => $tag,
-                'assigned' => false,
-            ];
-        }
-
-        return $result;
-    }
-
-    public function getOptions(Request $request)
-    {
-        $results = [];
-
-        $controller = Str::start($request->get('controller'), '\\');
-        $method = $request->get('method');
-        $selected = $request->get('selected');
-
-        if (class_exists($controller) && method_exists(new $controller(), $method)) {
-            $results = call_user_func([new $controller(), $method], $selected);
-        }
-
-        return $results;
     }
 }

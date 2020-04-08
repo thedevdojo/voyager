@@ -8,14 +8,14 @@
                 <h2 class="text-2xl">{{ __('voyager::plugins.plugins') }}</h2>
             </div>
             <div class="w-6/12 text-right">
-                <modal key="search-plugin-modal">
+                <modal ref="search_plugin_modal">
                     <div class="flex mb-4">
                         <div class="w-2/3">
                             <h4 class="text-gray-100 text-xl">{{ __('voyager::plugins.plugins') }}</h4>
                         </div>
                         <div class="w-1/3 text-right text-gray-100">
-                            <button class="button green close-button">
-                                <i class="uil uil-times text-xl"></i>
+                            <button class="button green close-button" @click="$refs.search_plugin_modal.close()">
+                                <icon icon="times" />
                             </button>
                         </div>
                     </div>
@@ -151,7 +151,7 @@ export default {
         },
         copy: function (plugin) {
             this.copyToClipboard('composer require ' + plugin.repository);
-            this.$snotify.info(this.__('voyager::plugins.copy_notice'));
+            this.$notify.info(this.__('voyager::plugins.copy_notice'));
         },
         loadPlugins: function () {
             var vm = this;
@@ -171,45 +171,35 @@ export default {
         enablePlugin: function (plugin, enable) {
             var vm = this;
             var message = this.__('voyager::plugins.enable_plugin_confirm', {name: plugin.name});
-            var title = this.__('voyager::plugins.enable_plugin');
             if (!enable) {
                 message = this.__('voyager::plugins.disable_plugin_confirm', {name: plugin.name});
-                title = this.__('voyager::plugins.disable_plugin');
             }
 
-            vm.$snotify.confirm(message, title, {
-                timeout: 5000,
-                showProgressBar: true,
-                closeOnClick: false,
-                pauseOnHover: true,
-                buttons: [
-                    {
-                        text: vm.__('voyager::generic.yes'),
-                        action: (toast) => {
-                            axios.post(vm.route('voyager.plugins.enable'), {
-                                identifier: plugin.identifier,
-                                enable: enable,
-                                _token: vm.$globals.csrf_token,
-                            })
-                            .then(function (response) {
-                                vm.$snotify.info(vm.__('voyager::plugins.reload_page'));
-                            })
-                            .catch(function (error) {
-                                // TODO: This is not tested (error might be an array)
-                                vm.$snotify.error(vm.__('voyager::plugins.error_changing_plugin') + ' ' + error.data);
-                            }).finally(function () {
-                                vm.loadPlugins();
-                            });
-                            vm.$snotify.remove(toast.id);
-                        }
-                    },
-                    {
-                        text: vm.__('voyager::generic.no'),
-                        action: (toast) => {
-                            vm.$snotify.remove(toast.id);
-                        }
-                    },
-                ]
+            vm.$notify.confirm(
+                message,
+                vm.__('voyager::generic.yes'),
+                vm.__('voyager::generic.no'),
+                7500
+            )
+            .then(function (response) {
+                if (response) {
+                    axios.post(vm.route('voyager.plugins.enable'), {
+                        identifier: plugin.identifier,
+                        enable: enable,
+                    })
+                    .then(function (response) {
+                        vm.$notify.info(vm.__('voyager::plugins.reload_page'));
+                    })
+                    .catch(function (error) {
+                        // TODO: This is not tested (error might be an array)
+                        vm.$notify.error(vm.__('voyager::plugins.error_changing_plugin') + ' ' + error.data);
+                    }).finally(function () {
+                        vm.loadPlugins();
+                    });
+                }
+            })
+            .catch(function () {
+
             });
         },
         previewTheme: function (src, name) {
@@ -219,7 +209,7 @@ export default {
             file.setAttribute('href', src);
             document.getElementsByTagName('head')[0].appendChild(file);
 
-            this.$snotify.info(this.__('voyager::plugins.preview_theme', {name: name}));
+            this.$notify.info(this.__('voyager::plugins.preview_theme', {name: name}));
         },
         hasMultiplePlugins: function (type) {
             var num = 0;
@@ -252,6 +242,9 @@ export default {
         filteredPlugins: function () {
             var query = this.query.toLowerCase();
             return this.availablePlugins.filter(function (plugin) {
+                if (plugin.type == query) {
+                    return true;
+                }
                 return plugin.keywords.filter(function (keyword) {
                     return keyword.toLowerCase().indexOf(query) >= 0;
                 }).length > 0;
@@ -269,6 +262,12 @@ export default {
     },
     mounted: function () {
         this.loadPlugins();
+
+        var type = this.getParameterFromUrl('type', null);
+        if (type !== null) {
+            this.query = type[0].toUpperCase() + type.slice(1);
+            this.$refs.search_plugin_modal.open();
+        }
     }
 };
 </script>

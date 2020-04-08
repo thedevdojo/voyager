@@ -50,7 +50,7 @@
                                     <div class="w-2/3">
                                         <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
                                     </div>
-                                    <div class="w-1/3 text-right text-gray-100">
+                                    <div class="w-1/3 text-gray-100 flex justify-end">
                                         <locale-picker class="mr-2" />
                                         <button @click="openedOptionsId = null" class="button green">X</button>
                                     </div>
@@ -149,31 +149,24 @@ export default {
         },
         deleteSetting: function (setting) {
             var vm = this;
-            vm.$snotify.confirm(vm.__('voyager::generic.delete_setting_confirm'), vm.__('voyager::generic.delete_setting'), {
-                timeout: 5000,
-                showProgressBar: true,
-                closeOnClick: false,
-                pauseOnHover: true,
-                buttons: [
-                    {
-                        text: vm.__('voyager::generic.yes'),
-                        action: (toast) => {
-                            vm.settings = vm.settings.filter(function (set) {
-                                return set !== setting;
-                            });
-                            if (vm.groupedSettings.length == 0) {
-                                vm.currentGroup = null;
-                            }
-                            vm.$snotify.remove(toast.id);
-                        }
-                    },
-                    {
-                        text: vm.__('voyager::generic.no'),
-                        action: (toast) => {
-                            vm.$snotify.remove(toast.id);
-                        }
-                    },
-                ]
+            vm.$notify.confirm(
+                vm.__('voyager::generic.delete_setting_confirm'),
+                vm.__('voyager::generic.yes'),
+                vm.__('voyager::generic.no'),
+                7500
+            )
+            .then(function (response) {
+                if (response) {
+                    vm.settings = vm.settings.filter(function (set) {
+                        return set !== setting;
+                    });
+                    if (vm.groupedSettings.length == 0) {
+                        vm.currentGroup = null;
+                    }
+                }
+            })
+            .catch(function () {
+
             });
         },
         saveSettings: function () {
@@ -184,11 +177,11 @@ export default {
             })
             .then(function (response) {
                 vm.validationErrors = [];
-                vm.$snotify.success(vm.__('voyager::generic.settings_saved'));
+                vm.$notify.success(vm.__('voyager::generic.settings_saved'));
             })
             .catch(function (errors) {
                 vm.validationErrors = errors.response.data;
-                vm.$snotify.error(vm.__('voyager::generic.settings_validation_fail'));
+                vm.$notify.error(vm.__('voyager::generic.settings_validation_fail'));
 
                 // Open first group which has errors
                 vm.settings.forEach(function (setting) {
@@ -237,7 +230,7 @@ export default {
             if (!value.match(/^[a-z_0-9]+$/)) {
                 if (!this.charWarningTriggered) {
                     this.charWarningTriggered = true;
-                    this.$snotify.warning(this.__('voyager::generic.settings_char_warning'));
+                    this.$notify.warning(this.__('voyager::generic.settings_char_warning'));
                 }
 
                 return value.replace(/[^a-z_]/g, '');

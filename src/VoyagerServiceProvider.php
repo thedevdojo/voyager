@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use TCG\Voyager\Commands\InstallCommand;
 use TCG\Voyager\Facades\Bread as BreadFacade;
+use TCG\Voyager\Facades\Plugins as PluginsFacade;
+use TCG\Voyager\Facades\Settings as SettingsFacade;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Http\Middleware\VoyagerAdminMiddleware;
 use TCG\Voyager\Plugins\AuthenticationPlugin;
@@ -28,25 +30,8 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
         $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'voyager');
 
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Color::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\DateTime::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\DynamicDropdown::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\HtmlElement::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Number::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Password::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Relationship::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Repeater::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\RichTextEditor::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Slug::class);
-        VoyagerFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
-
-        VoyagerFacade::addAction(\TCG\Voyager\Actions\ReadAction::class);
-        VoyagerFacade::addAction(\TCG\Voyager\Actions\EditAction::class);
-        VoyagerFacade::addAction(\TCG\Voyager\Actions\DeleteAction::class);
-        VoyagerFacade::addAction(\TCG\Voyager\Actions\RestoreAction::class);
-        VoyagerFacade::addAction(\TCG\Voyager\Actions\ForceDeleteAction::class);
-        VoyagerFacade::addAction(\TCG\Voyager\Actions\BulkDeleteAction::class);
-        VoyagerFacade::addAction(\TCG\Voyager\Actions\BulkRestoreAction::class);
+        BreadFacade::addFormfield(\TCG\Voyager\Formfields\Repeater::class);
+        BreadFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
 
         // Register Policies
         BreadFacade::getBreads()->each(function ($bread) {
@@ -62,7 +47,7 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $router->aliasMiddleware('voyager.admin', VoyagerAdminMiddleware::class);
 
-        View::share('authentication', VoyagerFacade::getPluginByType('authentication', AuthenticationPlugin::class));
+        View::share('authentication', PluginsFacade::getPluginByType('authentication', AuthenticationPlugin::class));
     }
 
     /**
@@ -72,17 +57,25 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $loader = AliasLoader::getInstance();
 
-        $loader->alias('Voyager', VoyagerFacade::class);
         $loader->alias('Bread', BreadFacade::class);
+        $loader->alias('VoyagerPlugins', PluginsFacade::class);
+        $loader->alias('VoyagerSettings', SettingsFacade::class);
+        $loader->alias('Voyager', VoyagerFacade::class);
 
-        $this->app->singleton('voyager', function () {
-            return new Voyager();
-        });
         $this->app->singleton('bread', function () {
             return new Bread();
         });
+        $this->app->singleton('plugins', function () {
+            return new Plugins();
+        });
+        $this->app->singleton('settings', function () {
+            return new Settings();
+        });
+        $this->app->singleton('voyager', function () {
+            return new Voyager();
+        });
 
-        $this->loadBreadsFrom(storage_path('bread'));
+        $this->loadBreadsFrom(storage_path('voyager/breads'));
         $this->loadSettingsFrom(Str::finish(storage_path('voyager'), '/').'settings.json');
         $this->loadPluginsFrom(Str::finish(storage_path('voyager'), '/').'plugins.json');
 
@@ -96,11 +89,11 @@ class VoyagerServiceProvider extends ServiceProvider
 
     public function loadSettingsFrom($path)
     {
-        VoyagerFacade::settingsPath($path);
+        SettingsFacade::settingsPath($path);
     }
 
     public function loadPluginsFrom($path)
     {
-        VoyagerFacade::pluginsPath($path);
+        PluginsFacade::pluginsPath($path);
     }
 }

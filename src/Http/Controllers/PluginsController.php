@@ -3,7 +3,7 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\Facades\Plugins as PluginsFacade;
 
 class PluginsController extends Controller
 {
@@ -11,15 +11,15 @@ class PluginsController extends Controller
     {
         $identifier = $request->get('identifier');
         if ($request->get('enable', false)) {
-            return VoyagerFacade::enablePlugin($identifier);
+            return PluginsFacade::enablePlugin($identifier);
         }
 
-        return VoyagerFacade::disablePlugin($identifier);
+        return PluginsFacade::disablePlugin($identifier);
     }
 
     public function get()
     {
-        return VoyagerFacade::getAllPlugins()->sortBy('identifier')->transform(function ($plugin) {
+        return PluginsFacade::getAllPlugins()->sortBy('identifier')->transform(function ($plugin) {
             // This is only used to preview a theme
             if ($plugin->type == 'theme') {
                 $plugin->src = $plugin->getStyleRoute();
@@ -31,7 +31,7 @@ class PluginsController extends Controller
 
     public function settings($key)
     {
-        $plugin = VoyagerFacade::getAllPlugins()->get($key);
+        $plugin = PluginsFacade::getAllPlugins()->get($key);
         if (!$plugin) {
             throw new \TCG\Voyager\Exceptions\PluginNotFoundException('This Plugin does not exist');
         } elseif ($plugin->has_settings && $plugin->enabled) {

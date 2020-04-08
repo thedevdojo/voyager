@@ -3,8 +3,10 @@
 // PRIMARY COLOR
 $primary-accent-color            : 'blue-500' !default;
 $primary-accent-hover-color      : 'blue-600' !default;
-$primary-accent-color-dark       : 'red-500' !default;
-$primary-accent-hover-color-dark : 'red-600' !default;
+$primary-accent-active-color     : 'blue-700' !default;
+$primary-accent-color-dark       : 'blue-500' !default;
+$primary-accent-hover-color-dark : 'blue-600' !default;
+$primary-accent-active-color-dark: 'blue-700' !default;
 
 // BACKGROUND
 $background-color               : 'bg-gray-100' !default;
@@ -183,6 +185,10 @@ $accent-colors: (
         @apply bg-#{$primary-accent-color-dark};
     }
 
+    .bg-active-primary {
+        @apply bg-#{$primary-accent-active-color-dark};
+    }
+
     .hover-bg-primary {
         &:hover {
             @apply bg-#{$primary-accent-hover-color-dark};
@@ -200,6 +206,10 @@ $accent-colors: (
 
 .bg-primary {
     @apply bg-#{$primary-accent-color};
+}
+
+.bg-active-primary {
+    @apply bg-#{$primary-accent-active-color};
 }
 
 .hover-bg-primary {
@@ -246,12 +256,12 @@ mode-dark a {
 
 // INPUTS
 .mode-dark {
-    select, input.voyager-input {
+    textarea, select, input.voyager-input {
         @apply #{$input-background-color-dark} #{$input-border-color-dark} #{$input-text-color-dark};
     }
 }
 
-select, input.voyager-input {
+textarea, select, input.voyager-input {
     @apply #{$input-background-color} #{$input-border-color} #{$input-text-color};
 
     &:focus {
@@ -383,6 +393,16 @@ select.voyager-input {
     .title {
         @apply #{$cards-title-text-color};
     }
+}
+
+// DROPDOWN
+
+.mode-dark .dropdown .body {
+    @apply #{$background-color-dark};
+}
+
+.dropdown .body {
+    @apply #{$background-color};
 }
 
 // LABELS
