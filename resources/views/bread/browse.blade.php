@@ -157,7 +157,11 @@
 
                                                 @elseif(($row->type == 'select_dropdown' || $row->type == 'radio_btn') && property_exists($row->details, 'options'))
 
-                                                    {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
+                                                    @if(is_numeric($data->{$row->field}))
+                                                        {!! $row->details->options[$data->{$row->field}] ?? '' !!}
+                                                    @else
+                                                        {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
+                                                    @endif
 
                                                 @elseif($row->type == 'date' || $row->type == 'timestamp')
                                                     @if ( property_exists($row->details, 'format') && !is_null($data->{$row->field}) )
