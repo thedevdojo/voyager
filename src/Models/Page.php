@@ -34,7 +34,7 @@ class Page extends Model
             $this->author_id = Auth::user()->getKey();
         }
 
-        parent::save();
+        return parent::save();
     }
 
     /**
