@@ -1,14 +1,25 @@
 <template>
-    <div>
-        <fade-transition>
-            <div v-if="isOpened" class="modal" @click="click">
-                <div class="modal-body">
-                    <slot />
-                </div>
+<div>
+    <fade-transition>
+        <div v-if="isOpened" class="modal inset-0 p-0 flex items-center justify-center z-40">
+            <div v-if="isOpened" class="fixed inset-0 transition-opacity" @click="close">
+                <div class="absolute inset-0 bg-black opacity-75"></div>
             </div>
-        </fade-transition>
-        <slot name="opener"></slot>
-    </div>
+
+            <div v-if="isOpened" class="body lg:w-3/4 xl:w-2/4">
+                <card :title="title" :icon="icon" style="margin: 0 !important">
+                    <div slot="actions">
+                        <button style="margin: 0 !important" @click="close">
+                            <icon icon="times"></icon>
+                        </button>
+                    </div>
+                    <slot></slot>
+                </card>
+            </div>
+        </div>
+    </fade-transition>
+    <slot name="opener"></slot>
+</div>
 </template>
 <script>
 export default {
@@ -16,6 +27,18 @@ export default {
         opened: {
             type: Boolean,
             default: false
+        },
+        title: {
+            type: String,
+            default: ''
+        },
+        icon: {
+            type: String,
+            default: null
+        },
+        iconSize: {
+            type: Number,
+            default: 6
         },
     },
     data: function () {
@@ -58,11 +81,6 @@ export default {
                 vm.close();
             }
         });
-        Array.from(vm.$el.getElementsByClassName('close-button')).forEach(function (el) {
-            el.addEventListener('click', event => {
-                vm.close();
-            });
-        });
         if (vm.$slots.opener) {
             // TODO: We might need to check for other element aswell
             Array.from(vm.$slots.opener[0].elm.getElementsByTagName('button')).forEach(function (el) {
@@ -77,16 +95,10 @@ export default {
 
 <style lang="scss" scoped>
 .modal {
-    @apply fixed w-full top-0 left-0 h-full z-40 text-white text-left;
-    background-color: rgba(0, 0, 0, .7);
+    @apply fixed w-full top-0 left-0 h-full z-40 text-white text-left overflow-y-hidden;
 
-    .modal-body {
-        @apply bg-gray-700 border-4 border-gray-700 rounded-lg absolute p-8 overflow-y-auto;
-        max-height: 90%;
-        left: 25%;
-        width: 50%;
-        top: 50%;
-        transform: translateY(-50%);
+    .body {
+        @apply z-50 rounded-lg absolute overflow-y-auto max-h-3/4;
     }
 }
 </style>

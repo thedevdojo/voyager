@@ -1,9 +1,9 @@
 <template>
-    <div
-        class="inline-block text-white text-sm font-semibold px-2 rounded-full tracking-wide mr-1 cursor-pointer"
-        :class="`bg-${color}-500 text-gray-100 hover:bg-${color}-600 hover:text-white`">
+    <span
+        class="badge"
+        :class="`bg-${color}-400 text-${color}-800 hover:bg-${color}-500`">
         <slot></slot>
-    </div>
+    </span>
 </template>
 <script>
 export default {
@@ -11,7 +11,17 @@ export default {
         color: {
             type: String,
             default: 'green'
-        },
+        }
     },
 };
 </script>
+
+<style lang="scss" scoped>
+.badge {
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium leading-4 m-1 cursor-default transition ease-in-out duration-150;
+
+    &.large {
+        @apply px-3 text-sm leading-5;
+    }
+}
+</style>

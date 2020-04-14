@@ -1,4 +1,5 @@
 require('./vendor');
+require('./store');
 require('./notify');
 require('./helper');
 require('./bread');

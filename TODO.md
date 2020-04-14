@@ -10,10 +10,13 @@ Instead, they are listed here:
 - Source out all colors from styles to `colors.scss`
 - Add :disabled theming to buttons/inputs
 - Filter available plugins by type
+- Swap div's with class alert to use alert component instead
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller
 - Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields
+- Replace `vue-draggable` with `vue-slicksort` (much smaller, much cooler)
+- Add dark boxshadow variant to tailwind
 
 ## Documentation
 - Relationship methods NEED TO define the return-type. Otherwise they won't be recognized by the BREAD builder

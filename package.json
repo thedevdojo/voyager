@@ -17,18 +17,17 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
-        "@mathieustan/vue-datepicker": "^0.2.2",
         "axios": "^0.19.2",
         "debounce": "^1.2.0",
-        "inter-ui": "^3.12.1",
+        "inter-ui": "^3.13.1",
         "node-sass": "^4.13.1",
         "slugify": "^1.4.0",
         "tailwindcss": "^1.2",
         "vue": "^2.6.11",
-        "vue-clickaway": "^2.2.2",
-        "vue-toastification": "^1.4.0",
+        "vue-scrollto": "^2.18.0",
         "vue-unicons": "^2.1.0",
         "vue2-transitions": "^0.3.0",
-        "vuedraggable": "^2.23.2"
+        "vuedraggable": "^2.23.2",
+        "vuex": "^3.1.3"
     }
 }

@@ -1,8 +1,12 @@
 textarea, select, input.voyager-input {
-    @apply appearance-none border-2 rounded py-2 px-2 transition duration-150 ease-in-out;
+    @apply appearance-none border-2 rounded py-2 px-2;
 
     &:focus {
         @apply outline-none;
+    }
+
+    &:disabled {
+        @apply cursor-not-allowed;
     }
 
     &.small {
@@ -15,5 +19,11 @@ textarea, select, input.voyager-input {
 
     &[type=radio] {
         @apply h-4 w-4 rounded-full align-middle inline-block;
+    }
+
+    @each $color in $colors {
+        &.#{$color} {
+            @apply border-#{$color}-500 #{!important};
+        }
     }
 }

@@ -1,4 +1,10 @@
 /*!
+  * vue-scrollto v2.18.0
+  * (c) 2019 Randjelovic Igor
+  * @license MIT
+  */
+
+/*!
  * Vue.js v2.6.11
  * (c) 2014-2019 Evan You
  * Released under the MIT License.
@@ -8,6 +14,12 @@
  * vue2-transitions v0.3.0
  * (c) 2019-present cristij <joracristi@gmail.com>
  * Released under the MIT License.
+ */
+
+/**
+ * vuex v3.1.3
+ * (c) 2020 Evan You
+ * @license MIT
  */
 
 /**!

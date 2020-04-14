@@ -1,177 +1,100 @@
-const NotifyConfirm = {
-    props: {
-        content: {
-            type: String
-        },
-        yes: {
-            type: String
-        },
-        no: {
-            type: String
-        },
-        yesClass: {
-            type: String,
-            default: 'green',
-        },
-        noClass: {
-            type: String,
-            default: 'red',
-        }
-    },
-    template: 
-    `<div class="text-white" @click.stop="">
-        {{ content }}<br>
-        <button @click="$emit('yes')" class="button mt-2" :class="yesClass">{{ yes }}</button>
-        <button @click="$emit('no')" class="button mt-2" :class="noClass">{{ no }}</button>
-    </div>`
-};
-
-const NotifyPrompt = {
-    props: {
-        content: {
-            type: String
-        },
-        value: {
-            type: String
-        },
-        ok: {
-            type: String
-        },
-        cancel: {
-            type: String
-        },
-        okClass: {
-            type: String,
-            default: 'green',
-        },
-        cancelClass: {
-            type: String,
-            default: 'red',
-        },
-    },
+Vue.prototype.$notify = new Vue({
     data: function () {
         return {
-            input: this.value
-        }
+            notifications: [],
+        };
     },
-    mounted: function () {
-        this.$refs.input.focus();
-    },
-    template: 
-    `<div class="text-white" @click.stop="">
-        {{ content }}
-        <input type="text" class="voyager-input small w-full my-2" v-model="input" ref="input" v-on:keyup.enter="$emit('ok', input)" />
-        <button @click="$emit('ok', input)" class="button" :class="okClass">{{ ok }}</button>
-        <button @click="$emit('cancel')" class="button" :class="cancelClass">{{ cancel }}</button>
-    </div>`
-};
-
-Vue.prototype.$notify = new Vue({
     methods: {
-        default: function (content, options = false) {
-            if (!options) {
-                return this.$toast(content);
-            }
-
-            return this.$toast(content, options);
-        },
-        info: function (content, options = false) {
-            if (!options) {
-                return this.$toast.info(content);
-            }
-
-            return this.$toast.info(content, options);
-        },
-        success: function (content, options = false) {
-            if (!options) {
-                return this.$toast.success(content);
-            }
-
-            return this.$toast.success(content, options);
-        },
-        error: function (content, options = false) {
-            if (!options) {
-                return this.$toast.error(content);
-            }
-
-            return this.$toast.error(content, options);
-        },
-        warning: function (content, options = false) {
-            if (!options) {
-                return this.$toast.warning(content);
-            }
-
-            return this.$toast.warning(content, options);
-        },
-        confirm: function (content, yes, no, timeout = false, type = 'default') {
-            var vm = this;
-            return new Promise((resolve, reject) => {
-                var id = null;
-                var comp = {
-                    component: NotifyConfirm,
-                    props: {
-                        content: content,
-                        yes: yes,
-                        no: no
-                    },
-                    listeners: {
-                        yes: function () {
-                            resolve(true);
-                            vm.$toast.dismiss(id);
-                        },
-                        no: function () {
-                            resolve(false);
-                            vm.$toast.dismiss(id);
-                        }
-                    }
-                };
-                var options = {
-                    timeout: timeout,
-                    onClose: function () { reject(); }
-                };
-                id = vm.default(comp, options);
-
-                if (timeout !== false) {
-                    window.setTimeout(function () {
-                        reject();
-                    }, timeout);
+        confirm: function (
+            message,
+            callback,
+            title = false,
+            color = 'blue',
+            trueText = 'Yes',
+            falseText = 'No',
+            timeout = null,
+            indeterminate = false,
+            icon = 'question-circle',
+            onClose = null,
+            autoClose = true,
+            classes = ''
+        ) {
+            var buttons = [
+                {
+                    text: trueText,
+                    class: 'green',
+                    callback: callback,
+                    value: true
+                }, {
+                    text: falseText,
+                    class: 'red',
+                    callback: callback,
+                    value: false
                 }
-            });
+            ];
+            this.notify(message, title, color, timeout, indeterminate, icon, buttons, null, onClose, autoClose, classes);
         },
-        prompt: async function (content, ok, cancel, timeout = false, value = '', type = 'default') {
-            var vm = this;
-            return new Promise((resolve, reject) => {
-                var id = null;
-                var comp = {
-                    component: NotifyPrompt,
-                    props: {
-                        content: content,
-                        ok: ok,
-                        cancel: cancel,
-                        value: value,
-                    },
-                    listeners: {
-                        ok: function (input) {
-                            resolve(input);
-                            vm.$toast.dismiss(id);
-                        },
-                        cancel: function () {
-                            reject();
-                            vm.$toast.dismiss(id);
-                        }
-                    }
-                };
-                var options = {
-                    timeout: timeout,
-                    onClose: function () { reject(); }
-                };
-                id = vm.default(comp, options);
-                if (timeout !== false) {
-                    window.setTimeout(function () {
-                        reject();
-                    }, timeout);
+
+        prompt: function (
+            message,
+            input,
+            callback,
+            color = 'blue',
+            okText = 'Ok',
+            cancelText = 'Cancel',
+            title = false,
+            timeout = null,
+            indeterminate = false,
+            icon = 'question-circle',
+            onClose = null,
+            autoClose = true,
+            classes = ''
+        ) {
+            var buttons = [
+                {
+                    text: okText,
+                    class: 'green',
+                    callback: callback,
+                    value: true,
+                }, {
+                    text: cancelText,
+                    class: 'red',
+                    callback: callback,
+                    value: false,
                 }
-            });
+            ];
+            this.notify(message, title, color, timeout, indeterminate, icon, buttons, input, onClose, autoClose, classes);
         },
+
+        notify: function (message, title = null, color = 'blue', timeout = null, indeterminate = false, icon = 'info-circle', buttons = [], input = null, onClose = null, autoClose = true, classes = '') {
+            var vm = this;
+
+            var uuid = vm.uuid();
+
+            var notification = {
+                message: message,
+                title: title,
+                color: color,
+                timeout: timeout,
+                indeterminate: indeterminate,
+                icon: icon,
+                buttons: buttons,
+                input: input,
+                onClose: onClose,
+                autoClose: autoClose,
+                classes: classes,
+                uuid: uuid,
+            };
+            vm.notifications.push(notification);
+
+            vm.$eventHub.$emit('add-notification', notification);
+        },
+
+        remove: function (notification) {
+            var index = this.notifications.indexOf(notification);
+            if (index >= 0) {
+                this.notifications.splice(index, 1);
+            }
+        }
     }
 });

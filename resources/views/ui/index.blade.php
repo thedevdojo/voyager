@@ -3,166 +3,129 @@
 @section('page-title', 'UI')
 
 @section('content')
-<div class="card">
-    <h2 class="title">Buttons</h2>
-    <div class="body">
-        <div class="card">
-            <h3 class="title text-lg">Primary Accent</h3>
-            <div class="body">
-                <button class="button bg-primary hover-bg-primary">Accent</button>
-            </div>
-        </div>
-        <div class="card">
-            <h3 class="title text-lg">Normal</h3>
-            <div class="body">
-                <button class="button red">Red</button>
-                <button class="button green">Green</button>
-                <button class="button blue">Blue</button>
-                <button class="button yellow">Yellow</button>
-                <button class="button purple">Purple</button>
-                <button class="button orange">Orange</button>
-            </div>
-        </div>
-        <div class="card">
-            <h3 class="title text-lg">Small</h3>
-            <div class="body">
-            <button class="button red">Red</button>
-                <button class="button small green">Green</button>
-                <button class="button small blue">Blue</button>
-                <button class="button small yellow">Yellow</button>
-                <button class="button small purple">Purple</button>
-                <button class="button small orange">Orange</button>
-            </div>
-        </div>
-        <div class="card">
-            <h3 class="title text-lg">Button group</h3>
-            <div class="body">
-                <div class="button-group">
-                    <button class="button red">Red</button>
-                    <button class="button green">Green</button>
-                    <button class="button blue">Blue</button>
-                    <button class="button yellow">Yellow</button>
-                    <button class="button purple">Purple</button>
-                    <button class="button orange">Orange</button>
-                </div>
-            </div>
+<card title="UI Elements">
+    <div>
+        <span class="mr-4">Jump to: </span>
+        <div class="inline w-full">
+            <button class="button blue" v-scroll-to="'#ui-buttons'">
+                Buttons
+            </button>
+            <button class="button blue" v-scroll-to="'#ui-inputs'">
+                Inputs
+            </button>
+            <button class="button blue" v-scroll-to="'#ui-badges'">
+                Badges
+            </button>
+            <button class="button blue" v-scroll-to="'#ui-alerts'">
+                Alerts
+            </button>
+            <button class="button blue" v-scroll-to="'#ui-notifications'">
+                Notifications
+            </button>
         </div>
     </div>
+</card>
 
-    <h2 class="title mt-8">Inputs</h2>
-    <div class="body">
-    <div class="card">
-            <h3 class="title text-lg">Normal</h3>
-            <div class="body">
-                <input type="text" class="voyager-input w-full" placeholder="Placeholder" />
-            </div>
+<collapsible title="Buttons" id="ui-buttons">
+    <collapsible title="Default">
+        <button v-for="color in store.state.ui.colors" :key="'button-'+color" :class="['button', color]">
+            @{{ color[0].toUpperCase() + color.slice(1) }}
+        </button>
+    </collapsible>
+    <collapsible title="Small">
+        <button v-for="color in store.state.ui.colors" :key="'button-'+color" :class="['button', 'small', color]">
+            @{{ color[0].toUpperCase() + color.slice(1) }}
+        </button>
+    </collapsible>
+    <collapsible title="Large">
+        <button v-for="color in store.state.ui.colors" :key="'button-'+color" :class="['button', 'large', color]">
+            @{{ color[0].toUpperCase() + color.slice(1) }}
+        </button>
+    </collapsible>
+    <collapsible title="With Icon">
+        <button v-for="color in store.state.ui.colors" :key="'button-'+color" :class="['button', 'small', color]">
+            <icon icon="info-circle" class="mr-1"></icon>
+            @{{ color[0].toUpperCase() + color.slice(1) }}
+        </button>
+    </collapsible>
+    <collapsible title="Responsive">
+        <button v-for="color in store.state.ui.colors" :key="'button-'+color" :class="['button', 'small', color]">
+            <icon icon="info-circle"></icon>
+            <span>@{{ color[0].toUpperCase() + color.slice(1) }}</span>
+        </button>
+    </collapsible>
+    <collapsible title="Button group">
+        <div class="button-group">
+            <button v-for="color in store.state.ui.colors" :key="'button-'+color" :class="['button', color]">
+                @{{ color[0].toUpperCase() + color.slice(1) }}
+            </button>
         </div>
-        <div class="card">
-            <h3 class="title text-lg">Disabled</h3>
-            <div class="body">
-                <input type="text" class="voyager-input w-full" disabled placeholder="Placeholder" />
-            </div>
-        </div>
-        <div class="card">
-            <h3 class="title text-lg">Small</h3>
-            <div class="body">
-                <input type="text" class="voyager-input w-full small" placeholder="Placeholder" />
-            </div>
-        </div>
-        <div class="card">
-            <h3 class="title text-lg">With label</h3>
-            <div class="body">
-                <label class="label" for="labeled-input">Label</label>
-                <input type="text" class="voyager-input w-full" id="labeled-input" placeholder="Placeholder" />
-            </div>
-        </div>
-    </div>
+    </collapsible>
+</collapsible>
 
-    <h2 class="title mt-8">Badges</h2>
-    <div class="body">
-    <div class="card">
-            <h3 class="title text-lg">Normal</h3>
-            <div class="body">
-                <span class="badge red">Red</span>
-                <span class="badge green">Green</span>
-                <span class="badge blue">Blue</span>
-                <span class="badge yellow">Yellow</span>
-                <span class="badge purple">Purple</span>
-                <span class="badge orange">Orange</span>
-            </div>
+<collapsible title="Inputs" id="ui-inputs">
+    <collapsible title="Default">
+        <input type="text" class="voyager-input w-full" placeholder="Placeholder" />
+    </collapsible>
+    <collapsible title="Disabled">
+            <input type="text" class="voyager-input w-full" disabled placeholder="Placeholder" />
+    </collapsible>
+    <collapsible title="Small">
+        <input type="text" class="voyager-input w-full small" placeholder="Placeholder" />
+    </collapsible>
+    <collapsible title="With label">
+        <label class="label" for="labeled-input">Label</label>
+        <input type="text" class="voyager-input w-full" id="labeled-input" placeholder="Placeholder" />
+    </collapsible>
+    <collapsible title="Colors" :opened="false">
+        <input v-for="color in store.state.ui.colors" type="text" class="voyager-input w-full mb-2" :class="color" :placeholder="ucfirst(color)" :key="'input-'+color">
+    </collapsible>
+</collapsible>
+
+<collapsible title="Badges" id="ui-badges">
+    <collapsible title="Default">
+        <badge v-for="color in store.state.ui.colors" :color="color" :key="'badge-'+color">
+            @{{ color[0].toUpperCase() + color.slice(1) }}
+        </badge>
+    </collapsible>
+    <collapsible title="Large">
+        <badge v-for="color in store.state.ui.colors" :color="color" :key="'badge-'+color" class="large">
+            @{{ color[0].toUpperCase() + color.slice(1) }}
+        </badge>
+    </collapsible>
+</collapsible>
+
+<collapsible title="Alerts" id="ui-alerts">
+    <alert v-for="color in store.state.ui.colors" :color="color" :key="'alert-'+color">
+        <span slot="title">@{{ color[0].toUpperCase() + color.slice(1) }}</span>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid pariatur, ipsum similique veniam quo totam eius aperiam dolorum.</p>
+    </alert>
+</collapsible>
+
+<collapsible title="Notifications" id="ui-notifications">
+    <collapsible v-for="color in store.state.ui.colors" :key="'notification_'+color" :title="ucfirst(color)">
+        <div class="inline-flex">
+            <button @click="$notify.notify(store.state.ui.lorem, ucfirst(color), color)" class="button" :class="color">Message and title</button>
+            <button @click="$notify.notify(store.state.ui.lorem, null, color)" class="button" :class="color">Message only</button>
+            <button @click="$notify.notify(store.state.ui.lorem, ucfirst(color), color, null, true)" class="button" :class="color">Indeterminate</button>
+            <button @click="$notify.notify(store.state.ui.lorem, ucfirst(color), color, 5000, false)" class="button" :class="color">With timeout</button>
         </div>
-        <div class="card">
-            <h3 class="title text-lg">Large</h3>
-            <div class="body">
-                <span class="badge large red">Red</span>
-                <span class="badge large green">Green</span>
-                <span class="badge large blue">Blue</span>
-                <span class="badge large yellow">Yellow</span>
-                <span class="badge large purple">Purple</span>
-                <span class="badge large orange">Orange</span>
-            </div>
+    </collapsible>
+    <collapsible title="Confirm">
+        <div class="inline-flex">
+            <button @click="$notify.confirm('Are you sure?', function (result) {})" class="button blue">Simple</button>
+            <button @click="$notify.confirm('Are you sure?', function (result) {}, null, 'blue', 'Yes', 'No', null, true)" class="button blue">Indeterminate</button>
+            <button @click="$notify.confirm('Are you sure?', function (result) {}, null, 'blue', 'Yes', 'No', 5000)" class="button blue">With timeout</button>
+            <button @click="$notify.confirm('Are you sure?', function (result) {}, null, 'blue', 'Of course', 'Nah')" class="button blue">Custom buttons</button>
         </div>
-        <div class="card">
-            <h3 class="title text-lg">With Icon</h3>
-            <div class="body">
-                <span class="badge red">
-                    <i class="uil uil-question-circle text-xl"></i>
-                    Red
-                </span>
-                <span class="badge green">
-                    <i class="uil uil-angle-double-left text-xl"></i>
-                    Green
-                </span>
-                <span class="badge blue">
-                    <i class="uil uil-angle-double-right text-xl"></i>
-                    Blue
-                </span>
-                <span class="badge yellow">
-                    <i class="uil uil-question-circle text-xl"></i>
-                    Yellow
-                </span>
-                <span class="badge purple">
-                    <i class="uil uil-comment-plus text-xl"></i>
-                    Purple
-                </span>
-                <span class="badge orange">
-                    <i class="uil uil-suitcase text-xl"></i>
-                    Orange
-                </span>
-            </div>
+    </collapsible>
+    <collapsible title="Prompt">
+        <div class="inline-flex">
+            <button @click="$notify.prompt('Enter your name', '', function (result) {})" class="button blue">Simple</button>
+            <button @click="$notify.prompt('Enter your name', '', function (result) {}, 'blue', 'Save', 'Abort')" class="button blue">Custom buttons</button>
+            <button @click="$notify.prompt('Enter your name', store.state.ui.name, function (result) { if (result) { store.state.ui.name = result; } })" class="button blue">Value: @{{ store.state.ui.name }}</button>
         </div>
-    </div>
+    </collapsible>
+</collapsible>
 
-    <h2 class="title mt-8">Alert</h2>
-    <div class="body">
-    <div class="card">
-        <h3 class="title text-lg">Normal</h3>
-        <div class="body">
-            <div class="alert red mb-5">
-                This is an error!
-            </div>
-
-            <div class="alert green mb-5">
-                This is a success message!
-            </div>
-
-            <div class="alert blue mb-5">
-                This is an information!
-            </div>
-
-            <div class="alert yellow mb-5">
-                This is a warning!
-            </div>
-
-            <div class="alert purple mb-5">
-                This is just purple 🤷‍♂️
-            </div>
-
-            <div class="alert orange mb-5">
-                And orange 🍊
-            </div>
-        </div>
-    </div>
-</div>
-    
 @endsection

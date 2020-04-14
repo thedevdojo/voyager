@@ -1,9 +1,36 @@
+// https://tailwindcss.com/docs/customizing-spacing/#default-spacing-scale
+
 module.exports = {
     prefix: '',
     important: false,
     separator: ':',
     theme: {
-        
+      extend: {
+        spacing: {
+          '0.5': '0.125rem',
+          '1.5': '0.375rem',
+          '2.5': '0.625rem',
+          '3.5': '0.875rem',
+          '72': '18rem',
+          '80': '20rem',
+        },
+        boxShadow: {
+          'dark-lg': ' 0 10px 15px -3px rgba(170, 170, 170, .1), 0 4px 6px -2px rgba(170, 170, 170, .05)',
+        }
+      },
+      maxHeight: {
+        '0': '0',
+        '1/4': '25%',
+        '1/2': '50%',
+        '3/4': '75%',
+        'full': '100%',
+      },
+      minHeight: {
+        '1': '0.25rem',
+        '2': '0.5rem',
+        '4': '1rem',
+        '8': '2rem',
+      },
     },
     variants: {
       alignContent: ['responsive'],

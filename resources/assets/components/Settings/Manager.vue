@@ -102,7 +102,7 @@ export default {
     computed: {
         formfields: function () {
             var vm = this;
-            return this.$globals.formfields.filter(function (formfield) {
+            return this.formfields.filter(function (formfield) {
                 return formfield.settings;
             });
         },
@@ -125,7 +125,7 @@ export default {
     },
     methods: {
         addSetting: function (event) {
-            var formfield = this.$globals.formfields.filter(function (formfield) {
+            var formfield = this.formfields.filter(function (formfield) {
                 return formfield.type == event.target.value;
             }).pop();
 
@@ -173,7 +173,7 @@ export default {
             var vm = this;
             axios.post(vm.route('voyager.settings.store'), {
                 settings: vm.settings,
-                _token: vm.$globals.csrf_token,
+                _token: vm.csrf_token,
             })
             .then(function (response) {
                 vm.validationErrors = [];

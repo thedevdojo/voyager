@@ -1,6 +1,6 @@
 <template>
     <slide-x-right-transition>
-        <div v-if="isOpened" class="slidein" :class="width" v-click-outside="closeOutside">
+        <div v-if="isOpened" class="mode-dark slidein" :class="width" v-click-outside="closeOutside">
             <slot />
         </div>
     </slide-x-right-transition>

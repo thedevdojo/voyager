@@ -1,34 +1,67 @@
 .button {
-    @apply inline-flex items-center rounded-md border border-transparent px-2 py-1 mx-1 text-base leading-6 font-normal shadow-sm transition ease-in-out duration-150 cursor-pointer;
+    @apply text-white inline-flex items-center mb-1 mx-1 px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md transition ease-in-out duration-150;
+
     &:focus {
         @apply outline-none;
     }
-    &.bold {
-        @apply font-bold;
+
+    @each $color in $colors {
+        &.#{$color} {
+            @apply bg-#{$color}-500;
+            &:hover {
+                @apply bg-#{$color}-600;
+            }
+
+            &:focus {
+                @apply bg-#{$color}-700;
+            }
+
+            &.active {
+                @apply bg-#{$color}-800;
+            }
+        }
     }
+
     &.small {
-        @apply py-1 px-2 text-sm;
+        @apply px-2 py-1 text-sm leading-4;
     }
-    &:disabled {
-        @apply cursor-not-allowed;
+
+    &.large {
+        @apply px-4 py-2 text-sm leading-5;
     }
-    &.with-icon {
-        i {
+
+    i {
+        @apply mr-0;
+
+        @media(min-width: theme('screens.md')) {
             @apply mr-2;
         }
     }
-    
+
+    &.icon-only {
+        i {
+            @apply mr-0 #{!important};
+        }
+    }
+
+    span {
+        @apply hidden;
+        @media(min-width: theme('screens.md')) {
+            @apply block;
+        }
+    }
 }
 
 .button-group {
     @apply inline-flex;
     .button {
-        @apply rounded-none mx-0;
+        @apply mx-0 #{!important};
+        @apply rounded-none #{!important};
     }
     .button:first-child {
-        @apply rounded-l;
+        @apply rounded-l-md #{!important};
     }
     .button:last-child {
-        @apply rounded-r;
+        @apply rounded-r-md #{!important};
     }
 }

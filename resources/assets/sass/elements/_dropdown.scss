@@ -1,7 +1,36 @@
 .dropdown {
-    @apply relative inline-block text-left;
+    @apply relative inline-block;
 
+    &.left {
+        .body {
+            @apply origin-top-left left-0;
+        }
+    }
+
+    &.right {
+        .body {
+            @apply origin-top-right right-0;
+        }
+    }
     .body {
-        @apply origin-top-left absolute left-0 mt-2 rounded-md shadow-lg;
+        @apply absolute mt-2 rounded-md shadow-lg border;
+
+        .links {
+            @apply border-t;
+
+            a:hover {
+                @apply bg-gray-300;
+            }
+        }
+    }
+}
+
+.mode-dark .dropdown {
+    .body {
+        .links {
+            a:hover {
+                @apply bg-gray-700;
+            }
+        }
     }
 }

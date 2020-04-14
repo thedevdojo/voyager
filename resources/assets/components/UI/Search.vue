@@ -1,6 +1,15 @@
 <template>
     <div v-click-outside="close">
-        <input autocomplete="off" type="text" class="py-2 block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none" v-model="query" @input="search" :placeholder="placeholder">
+        <input
+            autocomplete="off"
+            type="text"
+            class="py-2 hidden sm:block text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none"
+            v-model="query" @input="search" :placeholder="placeholder">
+        <input
+            autocomplete="off"
+            type="text"
+            class="py-2 block sm:hidden text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none"
+            v-model="query" @input="search" :placeholder="mobilePlaceholder">
         <div v-if="searchResults.length > 0 && opened" class="voyager-search-results">
             <div v-for="(bread, i) in searchResults" :key="'bread-results-'+i">
                 <h4>{{ bread.bread }}</h4>
@@ -23,7 +32,7 @@
 </template>
 <script>
 export default {
-    props: ['placeholder'],
+    props: ['placeholder', 'mobilePlaceholder'],
     data: function () {
         return {
             searchResults: [],
@@ -46,7 +55,7 @@ export default {
             if (vm.query == '') {
                 return;
             }
-            this.$globals.breads.forEach(function (bread) {
+            this.breads.forEach(function (bread) {
                 if (bread.global_search_field === null || bread.global_search_field == '') {
                     return;
                 }
@@ -60,7 +69,7 @@ export default {
                 })
                 .catch(function (errors) {
                     vm.$notify.error(error);
-                    if (vm.debug) {
+                    if (vm.store.state.debug) {
                         vm.debug(error.response.data.message, true, 'error');
                     }
                 });

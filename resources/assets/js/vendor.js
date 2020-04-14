@@ -15,10 +15,7 @@ Vue.use(Transitions);
 import draggable from 'vuedraggable';
 Vue.component('draggable', draggable);
 
-import { mixin as clickaway } from 'vue-clickaway';
-Vue.mixin(clickaway);
-
-import Toast from "vue-toastification";
-Vue.use(Toast, {
-    position: 'bottom-right',
+import VueScrollTo from 'vue-scrollto';
+Vue.use(VueScrollTo, {
+    container: 'main',
 });

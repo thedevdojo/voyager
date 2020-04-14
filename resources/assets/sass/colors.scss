@@ -2,16 +2,14 @@
 
 // PRIMARY COLOR
 $primary-accent-color            : 'blue-500' !default;
-$primary-accent-hover-color      : 'blue-600' !default;
-$primary-accent-active-color     : 'blue-700' !default;
 $primary-accent-color-dark       : 'blue-500' !default;
-$primary-accent-hover-color-dark : 'blue-600' !default;
-$primary-accent-active-color-dark: 'blue-700' !default;
 
 // BACKGROUND
 $background-color               : 'bg-gray-100' !default;
 $background-color-dark          : 'bg-gray-900' !default;
-$font-family                    : Inter,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji !default;
+$border-color                   : 'border-gray-400' !default;
+$border-color-dark              : 'border-gray-700' !default;
+$font-family                    : Inter, system-ui !default;
 
 // LOADER
 $loader-background-color        : 'bg-gray-100' !default;
@@ -29,24 +27,26 @@ $link-text-color-dark           : 'text-blue-600' !default;
 
 // INPUTS
 $input-background-color      : 'bg-white' !default;
+$input-disabled-color        : 'bg-gray-200' !default;
 $input-border-color          : 'border-gray-400' !default;
 $input-text-color            : 'text-gray-800' !default;
 
 $input-background-color-dark : 'bg-gray-700' !default;
+$input-disabled-color-dark   : 'bg-gray-800' !default;
 $input-border-color-dark     : 'border-gray-600' !default;
 $input-text-color-dark       : 'text-gray-200' !default;
 
 // SIDEBAR
-$sidebar-title-color            : 'text-gray-800' !default;
-$sidebar-icon-color             : 'text-gray-800' !default;
-$sidebar-background-color       : 'bg-gray-200' !default;
-$sidebar-item-text-color        : 'text-gray-800' !default;
-$sidebar-item-icon-color        : 'text-gray-700' !default;
-$sidebar-item-active-background : 'bg-gray-400' !default;
-$sidebar-item-active-text-color : 'text-black' !default;
-$sidebar-item-active-icon-color : 'text-black' !default;
-$sidebar-item-hover-background  : 'bg-gray-300' !default;
-$sidebar-border-color           : 'border-gray-300' !default;
+$sidebar-title-color            : 'text-gray-200' !default;
+$sidebar-icon-color             : 'text-gray-200' !default;
+$sidebar-background-color       : 'bg-gray-800' !default;
+$sidebar-item-text-color        : 'text-gray-300' !default;
+$sidebar-item-icon-color        : 'text-gray-300' !default;
+$sidebar-item-active-background : 'bg-gray-700' !default;
+$sidebar-item-active-text-color : 'text-gray-300' !default;
+$sidebar-item-active-icon-color : 'text-gray-300' !default;
+$sidebar-item-hover-background  : 'bg-gray-600' !default;
+$sidebar-border-color           : 'border-gray-600' !default;
 
 $sidebar-title-color-dark            : 'text-gray-200' !default;
 $sidebar-icon-color-dark             : 'text-gray-200' !default;
@@ -69,6 +69,15 @@ $cards-background-color-dark : 'bg-gray-800' !default;
 $cards-border-color-dark     : 'border-gray-700' !default;
 $cards-text-color-dark       : $primary-text-color-dark !default;
 $cards-title-text-color-dark : 'text-gray-300' !default;
+
+// NOTIFICATIONS
+$notification-background-color:         'bg-white' !default;
+$notification-title-color:              'text-gray-900' !default;
+$notification-message-color:            'text-gray-500' !default;
+
+$notification-background-color-dark:    'bg-gray-800' !default;
+$notification-title-color-dark:         'text-gray-100' !default;
+$notification-message-color-dark:       'text-gray-500' !default;
 
 // LABELS
 $label-text-color            : 'text-gray-800' !default;
@@ -97,139 +106,12 @@ $table-row-even-background-color-hover-dark : 'bg-gray-600' !default;
 $table-row-odd-background-color-hover-dark  : 'bg-gray-600' !default;
 $table-row-border-color-dark                : 'border-gray-600' !default;
 
-// ACCENT COLORS
-// Accent colors are used for buttons, badges and alerts
-$accent-colors: (
-    'red': (
-        'text'       : 'text-white',
-        'accent'     : 'bg-red-500',
-        'focus'      : 'bg-red-600',
-        'hover'      : 'bg-red-600',
-        'active'     : 'bg-red-700',
-
-        'dark-text'  : 'text-white',
-        'dark-accent': 'bg-red-500',
-        'dark-focus' : 'bg-red-600',
-        'dark-hover' : 'bg-red-600',
-        'dark-active': 'bg-red-700',
-    ),
-    'green': (
-        'text'       : 'text-white',
-        'accent'     : 'bg-green-500',
-        'focus'      : 'bg-green-600',
-        'hover'      : 'bg-green-600',
-        'active'     : 'bg-green-700',
-
-        'dark-text'  : 'text-white',
-        'dark-accent': 'bg-green-500',
-        'dark-focus' : 'bg-green-600',
-        'dark-hover' : 'bg-green-600',
-        'dark-active': 'bg-green-700',
-    ),
-    'blue': (
-        'text'       : 'text-white',
-        'accent'     : 'bg-blue-500',
-        'focus'      : 'bg-blue-600',
-        'hover'      : 'bg-blue-600',
-        'active'     : 'bg-blue-700',
-
-        'dark-text'  : 'text-white',
-        'dark-accent': 'bg-blue-500',
-        'dark-focus' : 'bg-blue-600',
-        'dark-hover' : 'bg-blue-600',
-        'dark-active': 'bg-blue-700',
-    ),
-    'yellow': (
-        'text'       : 'text-white',
-        'accent'     : 'bg-yellow-500',
-        'focus'      : 'bg-yellow-600',
-        'hover'      : 'bg-yellow-600',
-        'active'     : 'bg-yellow-700',
-
-        'dark-text'  : 'text-white',
-        'dark-accent': 'bg-yellow-500',
-        'dark-focus' : 'bg-yellow-600',
-        'dark-hover' : 'bg-yellow-600',
-        'dark-active': 'bg-yellow-700',
-    ),
-    'purple': (
-        'text'       : 'text-white',
-        'accent'     : 'bg-purple-500',
-        'focus'      : 'bg-purple-600',
-        'hover'      : 'bg-purple-600',
-        'active'     : 'bg-purple-700',
-
-        'dark-text'  : 'text-white',
-        'dark-accent': 'bg-purple-500',
-        'dark-focus' : 'bg-purple-600',
-        'dark-hover' : 'bg-purple-600',
-        'dark-active': 'bg-purple-700',
-    ),
-    'orange': (
-        'text'       : 'text-white',
-        'accent'     : 'bg-orange-500',
-        'focus'      : 'bg-orange-600',
-        'hover'      : 'bg-orange-600',
-        'active'     : 'bg-orange-700',
-
-        'dark-text'  : 'text-white',
-        'dark-accent': 'bg-orange-500',
-        'dark-focus' : 'bg-orange-600',
-        'dark-hover' : 'bg-orange-600',
-        'dark-active': 'bg-orange-700',
-    ),
-) !default;
-
-.mode-dark {
-    .bg-primary {
-        @apply bg-#{$primary-accent-color-dark};
-    }
-
-    .bg-active-primary {
-        @apply bg-#{$primary-accent-active-color-dark};
-    }
-
-    .hover-bg-primary {
-        &:hover {
-            @apply bg-#{$primary-accent-hover-color-dark};
-        }
-    }
-    
-    .border-primary {
-        @apply bg-#{$primary-accent-color-dark};
-    }
-    
-    .text-primary {
-        @apply bg-#{$primary-accent-color-dark};
-    }
+html {
+    font-family: #{$font-family};
 }
-
-.bg-primary {
-    @apply bg-#{$primary-accent-color};
-}
-
-.bg-active-primary {
-    @apply bg-#{$primary-accent-active-color};
-}
-
-.hover-bg-primary {
-    &:hover {
-        @apply bg-#{$primary-accent-hover-color};
-    }
-}
-
-.border-primary {
-    @apply bg-#{$primary-accent-color};
-}
-
-.text-primary {
-    @apply bg-#{$primary-accent-color};
-}
-
 
 body {
     @apply #{$background-color} #{$primary-text-color};
-    font-family: #{$font-family};
 }
 
 .mode-dark body {
@@ -258,6 +140,10 @@ mode-dark a {
 .mode-dark {
     textarea, select, input.voyager-input {
         @apply #{$input-background-color-dark} #{$input-border-color-dark} #{$input-text-color-dark};
+
+        &:disabled {
+            @apply #{$input-disabled-color-dark};
+        }
     }
 }
 
@@ -266,6 +152,10 @@ textarea, select, input.voyager-input {
 
     &:focus {
         @apply border-#{$primary-accent-color};
+    }
+
+    &:disabled {
+        @apply #{$input-disabled-color};
     }
 
     &[type=checkbox] {
@@ -382,27 +272,85 @@ select.voyager-input {
 .mode-dark .card {
     @apply #{$cards-background-color-dark} #{$cards-border-color-dark} #{$cards-text-color-dark};
 
-    .title {
-        @apply #{$cards-title-text-color-dark};
+    .header {
+        @apply #{$cards-border-color-dark};
+
+        h3 {
+            @apply #{$cards-title-text-color-dark};
+        }
+    }
+
+    .footer {
+        @apply #{$cards-border-color-dark};
     }
 }
 
 .card {
     @apply #{$cards-background-color} #{$cards-border-color} #{$cards-text-color};
 
-    .title {
-        @apply #{$cards-title-text-color};
+    .header {
+        @apply #{$cards-border-color};
+
+        h3 {
+            @apply #{$cards-title-text-color};
+        }
+    }
+
+    .footer {
+        @apply #{$cards-border-color};
+    }
+}
+
+// NOTIFICATIONS
+.mode-dark .notifications {
+    .notification {
+        @apply #{$notification-background-color-dark};
+
+        p.title {
+            @apply #{$notification-title-color-dark};
+        }
+
+        p.message {
+            @apply #{$notification-message-color-dark};
+        }
+    }
+}
+
+.notifications {
+    .notification {
+        @apply #{$notification-background-color};
+
+        p.title {
+            @apply #{$notification-title-color};
+        }
+
+        p.message {
+            @apply #{$notification-message-color};
+        }
     }
 }
 
 // DROPDOWN
-
 .mode-dark .dropdown .body {
-    @apply #{$background-color-dark};
+    @apply #{$background-color-dark} #{$border-color-dark};
+
+    .links {
+        @apply #{$border-color-dark};
+    }
 }
 
 .dropdown .body {
-    @apply #{$background-color};
+    @apply #{$background-color} #{$border-color};
+
+    .links {
+        @apply #{$border-color};
+    }
+}
+
+// SLIDEIN
+// TODO: Make this a variable
+.slidein {
+    @apply #{$primary-text-color-dark};
 }
 
 // LABELS
@@ -424,135 +372,6 @@ p {
     &.description {
         @apply #{$description-text-color};
     }
-}
-
-// BUTTONS
-.button {
-    @each $name, $colors in $accent-colors {
-        &.#{$name} {
-            @apply #{map-get($colors, accent)} #{map-get($colors, text)};
-
-            &:hover {
-                @apply #{map-get($colors, hover)};
-            }
-            &:focus {
-                @apply #{map-get($colors, focus)};
-            }
-            &:active {
-                @apply #{map-get($colors, active)};
-            }
-            &.active {
-                @apply #{map-get($colors, active)};
-            }
-        }
-    };
-}
-
-.mode-dark .button {
-    @each $name, $colors in $accent-colors {
-        &.#{$name} {
-            @apply #{map-get($colors, dark-accent)} #{map-get($colors, dark-text)};
-
-            &:hover {
-                @apply #{map-get($colors, dark-hover)};
-            }
-            &:focus {
-                @apply #{map-get($colors, dark-focus)};
-            }
-            &:active {
-                @apply #{map-get($colors, dark-active)};
-            }
-            &.active {
-                @apply #{map-get($colors, dark-active)};
-            }
-        }
-    };
-}
-
-// BADGES
-.badge {
-    @each $name, $colors in $accent-colors {
-        &.#{$name} {
-            @apply #{map-get($colors, accent)} #{map-get($colors, text)};
-
-            &:hover {
-                @apply #{map-get($colors, hover)};
-            }
-            &:focus {
-                @apply #{map-get($colors, focus)};
-            }
-            &:active {
-                @apply #{map-get($colors, active)};
-            }
-            &.active {
-                @apply #{map-get($colors, active)};
-            }
-        }
-    };
-}
-
-.mode-dark .badge {
-    @each $name, $colors in $accent-colors {
-        &.#{$name} {
-            @apply #{map-get($colors, dark-accent)} #{map-get($colors, dark-text)};
-
-            &:hover {
-                @apply #{map-get($colors, dark-hover)};
-            }
-            &:focus {
-                @apply #{map-get($colors, dark-focus)};
-            }
-            &:active {
-                @apply #{map-get($colors, dark-active)};
-            }
-            &.active {
-                @apply #{map-get($colors, dark-active)};
-            }
-        }
-    };
-}
-
-// Alert
-.alert {
-    @each $name, $colors in $accent-colors {
-        &.#{$name} {
-            @apply #{map-get($colors, accent)} #{map-get($colors, text)};
-
-            &:hover {
-                @apply #{map-get($colors, hover)};
-            }
-            &:focus {
-                @apply #{map-get($colors, focus)};
-            }
-            &:active {
-                @apply #{map-get($colors, active)};
-            }
-            &.active {
-                @apply #{map-get($colors, active)};
-            }
-        }
-    };
-}
-
-.mode-dark .alert {
-    @each $name, $colors in $accent-colors {
-        &.#{$name} {
-            @apply #{map-get($colors, dark-accent)} #{map-get($colors, dark-text)};
-
-            &:hover {
-                @apply #{map-get($colors, dark-hover)};
-            }
-            &:focus {
-                @apply #{map-get($colors, dark-focus)};
-            }
-            &:active {
-                @apply #{map-get($colors, dark-active)};
-            }
-            &.active {
-                @apply #{map-get($colors, dark-active)};
-            }
-        }
-    };
 }
 
 // TABLE

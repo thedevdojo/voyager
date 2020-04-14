@@ -1,9 +1,9 @@
 <template>
-    <div class="voyager-table striped">
+    <div class="voyager-table striped mt-0">
         <table>
             <thead>
                 <tr>
-                    <th></th>
+                    <th class="hidden md:table-cell"></th>
                     <th class="hidden md:table-cell">Type</th>
                     <th>Column</th>
                     <th>Title</th>
@@ -15,12 +15,12 @@
             </thead>
             <draggable v-model="reactiveFormfields" tag="tbody" handle=".draghandle">
                 <tr v-for="(formfield, key) in reactiveFormfields" :key="'formfield-'+key">
-                    <td>
+                    <td class="hidden md:table-cell">
                         <icon icon="direction" class="draghandle cursor-move" />
                     </td>
                     <td class="hidden md:table-cell">{{ getFormfieldByType(formfield.type).name }}</td>
                     <td>
-                        <select class="voyager-input small" v-model="formfield.column">
+                        <select class="voyager-input small w-full" v-model="formfield.column">
                             <optgroup label="Columns">
                                 <option v-for="(column, i) in columns" :key="'column_'+i" :value="{column: column, type: 'column'}">
                                     {{ column }}
@@ -66,12 +66,12 @@
                     </td>
                     <td class="text-right">
                         <button class="button blue" @click="$emit('open-options', key)">
-                            <icon icon="cog" class="mr-0 md:mr-1" />
-                            <span class="hidden md:block">Options</span>
+                            <icon icon="cog" />
+                            <span>Options</span>
                         </button>
                         <button class="button red" @click="$emit('delete', key)">
-                            <icon icon="trash" class="mr-0 md:mr-1" />
-                            <span class="hidden md:block">Delete</span>
+                            <icon icon="trash" />
+                            <span>Delete</span>
                         </button>
                         <slidein :opened="optionsId == key" width="w-full md:w-1/3" v-on:closed="$emit('open-options', null)" class="text-left">
                             <div class="flex w-full mb-3">
@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="w-1/2 flex justify-end">
                                     <locale-picker v-if="$language.localePicker" />
-                                    <button class="button green" @click="$emit('open-options', null)">
+                                    <button class="button green icon-only" @click="$emit('open-options', null)">
                                         <icon icon="times" />
                                     </button>
                                 </div>

@@ -3,7 +3,8 @@
         <button
             v-for="locale in $language.locales"
             v-bind:key="locale"
-            :class="'button bg-primary hover-bg-primary px-2 uppercase ' + ($language.locale == locale ? 'bg-active-primary' : '')"
+            class="button small blue uppercase"
+            :class="$language.locale == locale ? 'active' : ''"
             @click="changeLocale(locale)">
             {{ locale }}
         </button>

@@ -1,6 +1,6 @@
 <template>
     <draggable
-        class="card flex flex-wrap w-full min-h-"
+        class="flex flex-wrap w-full"
         v-model="reactiveFormfields"
         tag="div"
         handle=".draghandle"
@@ -10,21 +10,20 @@
             :key="'formfield-'+key"
             class="m-0"
             :class="formfield.options.width">
-            <div class="card m-2">
-                <div class="text-right">
-                    <button>
-                        <icon icon="direction" class="draghandle cursor-move" />
+            <card :title="formfield.column.column || 'No column'">
+                <div slot="actions">
+                    <button class="button small blue mx-0.5">
+                        <icon icon="expand-arrows" class="draghandle cursor-move" />
                     </button>
-                    <button @mousedown="startResize(key)">
-                        <icon icon="arrows-resize" class="cursor-move" />
+                    <button class="button small blue mx-0.5" @mousedown="startResize(key)">
+                        <icon icon="arrows-h" class="cursor-move" />
                     </button>
-                    <button @click="$emit('open-options', key)">
+                    <button class="button small blue mx-0.5" @click="$emit('open-options', key)">
                         <icon icon="cog" />
                     </button>
-                    <button @click="$emit('delete', key)">
+                    <button class="button small red mx-0.5" @click="$emit('delete', key)">
                         <icon icon="trash" />
                     </button>
-
                     <slidein :opened="optionsId == key" v-on:closed="$emit('open-options', null)" width="w-1/3" class="text-left">
                         <div class="flex w-full mb-3">
                             <div class="w-1/2 text-2xl">
@@ -70,7 +69,7 @@
                     v-bind:options="formfield.options"
                     :column="formfield.column"
                     show="view" />
-            </div>
+            </card>
         </div>
         <slot v-if="reactiveFormfields.length == 0" />
     </draggable>

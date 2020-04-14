@@ -5,7 +5,7 @@
                 <h2 class="text-lg">Validation</h2>
             </div>
             <div class="w-2/6 text-right">
-                <button class="button green small" @click.stop="addRule">
+                <button class="button green small icon-only" @click.stop="addRule">
                     <icon icon="plus" />
                 </button>
             </div>

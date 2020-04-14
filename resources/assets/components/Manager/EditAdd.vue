@@ -1,22 +1,17 @@
 <template>
     <div>
-        <div class="card">
-            <div class="flex w-full">
-                <div class="w-1/2">
-                    <h2 class="title">Edit BREAD</h2>
-                </div>
-                <div class="w-1/2 text-right">
-                    <button class="button green" @click.stop="loadProperties">
-                        <icon icon="sync" class="mr-0 md:mr-1" :class="[loadingProps ? 'rotating-ccw' : '']" />
-                        <span class="hidden md:block">Reload properties</span>
-                    </button>
-                </div>
+        <card title="Edit BREAD" icon="bread" :icon-size="8">
+            <div slot="actions">
+                <button class="button green" @click.stop="loadProperties">
+                    <icon icon="sync" class="mr-0 md:mr-1" :class="[loadingProps ? 'rotating-ccw' : '']" />
+                    <span class="hidden md:block">Reload properties</span>
+                </button>
             </div>
-            <div class="body">
-                <div class="alert yellow" v-if="!bread.model || bread.model == ''">
-                    <icon icon="comment-info" :size="8"></icon>
+            <div>
+                <alert color="yellow" v-if="!bread.model || bread.model == ''">
+                    <span slot="title">Information</span>
                     Please enter a model name and click "Reload properties" to see scopes, computed properties and relationships!
-                </div>
+                </alert>
                 <div class="flex mb-4">
                     <div class="w-full m-1">
                         <label class="label" for="slug">{{ __('voyager::generic.slug') }}</label>
@@ -29,8 +24,8 @@
                     </div>
                 </div>
                 
-                <div class="flex mb-4">
-                    <div class="w-1/3 m-1">
+                <div class="flex-none md:flex mb-4">
+                    <div class="w-full md:w-1/3 m-1">
                         <label class="label" for="name-singular">{{ __('voyager::manager.name_singular') }}</label>
                         <language-input
                             class="voyager-input w-full"
@@ -39,7 +34,7 @@
                             v-bind:value="bread.name_singular"
                             v-on:input="bread.name_singular = $event" />
                     </div>
-                    <div class="w-1/3 m-1">
+                    <div class="w-full md:w-1/3 m-1">
                         <label class="label" for="name-plural">{{ __('voyager::manager.name_plural') }}</label>
                         <language-input
                             class="voyager-input w-full"
@@ -48,30 +43,20 @@
                             v-bind:value="bread.name_plural"
                             v-on:input="bread.name_plural = $event" />
                     </div>
-                    <div class="w-1/3 m-1">
+                    <div class="w-full md:w-1/3 m-1">
                         <label class="label" for="icon">{{ __('voyager::generic.icon') }}</label>
-                        <modal ref="icon_modal">
-                            <div class="flex mb-4">
-                                <div class="w-2/3">
-                                    <h4 class="text-gray-100 text-xl">{{ __('voyager::generic.select_icon') }}</h4>
-                                </div>
-                                <div class="w-1/3 text-right text-gray-100">
-                                    <button class="button green close-button" @click="$refs.icon_modal.close()">
-                                        <icon class="" :size="6" icon="times" />
-                                    </button>
-                                </div>
-                            </div>
+                        <modal ref="icon_modal" :title="__('voyager::generic.select_icon')">
                             <icon-picker v-on:select="$refs.icon_modal.close(); bread.icon = $event" />
                             <div slot="opener" class="w-full">
-                                <button class="button green">
+                                <button class="button green icon-only">
                                     <icon class="cursor-pointer text-white my-1 content-center" :size="6" :icon="bread.icon" />
                                 </button>
                             </div>
                         </modal>
                     </div>
                 </div>
-                <div class="flex mb-4">
-                    <div class="w-1/3 m-1">
+                <div class="flex-none md:flex mb-4">
+                    <div class="w-full md:w-1/3 m-1">
                         <label class="label" for="model">{{ __('voyager::manager.model') }}</label>
                         <input
                             class="voyager-input w-full"
@@ -79,7 +64,7 @@
                             type="text" :placeholder="__('voyager::manager.model')"
                             v-model="bread.model">
                     </div>
-                    <div class="w-1/3 m-1">
+                    <div class="w-full md:w-1/3 m-1">
                         <label class="label" for="controller">{{ __('voyager::manager.controller') }}</label>
                         <input
                             class="voyager-input w-full"
@@ -87,7 +72,7 @@
                             type="text" :placeholder="__('voyager::manager.controller')"
                             v-model="bread.controller">
                     </div>
-                    <div class="w-1/3 m-1">
+                    <div class="w-full md:w-1/3 m-1">
                         <label class="label" for="policy">{{ __('voyager::manager.policy') }}</label>
                         <input
                             class="voyager-input w-full"
@@ -96,15 +81,15 @@
                             v-model="bread.policy">
                     </div>
                 </div>
-                <div class="flex mb-4">
-                    <div class="w-1/2 m-1">
+                <div class="flex-none md:flex mb-4">
+                    <div class="w-full md:w-1/2 m-1">
                         <label class="label" for="scope">{{ __('voyager::manager.scope') }}</label>
                         <select class="voyager-input w-full" v-model="bread.scope">
                             <option :value="null">{{ __('voyager::generic.none') }}</option>
                             <option v-for="(scope, i) in scopes" :key="i">{{ scope }}</option>
                         </select>
                     </div>
-                    <div class="w-1/2 m-1">
+                    <div class="w-full md:w-1/2 m-1">
                         <label class="label" for="global_search">{{ __('voyager::manager.global_search_display_field') }}</label>
                         <select class="voyager-input w-full" v-model="bread.global_search_field">
                             <option :value="null">{{ __('voyager::generic.none') }}</option>
@@ -116,94 +101,90 @@
                     <button class="button blue" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
                 </div>
             </div>
-        </div>
+        </card>
 
-        <div class="card">
-            <div class="body">
-                <!-- Toolbar -->
-                <div class="w-full mb-3 flex">
-                    <select class="voyager-input small" v-model="currentLayoutName" :disabled="bread.layouts.length == 0">
-                        <option :value="null" v-if="bread.layouts.length == 0">Create a layout first</option>
-                        <optgroup label="Views" v-if="views.length > 0">
-                            <option v-for="view in views" :key="'view-' + view.name">{{ view.name }}</option>
-                        </optgroup>
-                        <optgroup label="Lists" v-if="lists.length > 0">
-                            <option v-for="list in lists" :key="'list-' + list.name">{{ list.name }}</option>
-                        </optgroup>
-                    </select>
-                    <div class="dropdown ml-2" v-on:click-away="closeFormfieldAddDropdown">
-                        <button @click="addFormfieldDropdownOpen = !addFormfieldDropdownOpen"
-                                class="button green small align-middle"
-                                :disabled="bread.layouts.length == 0">
-                            <icon icon="list-ul" class="mr-0 lg:mr-1" />
-                            <span class="hidden lg:block">Add Formfield</span>
-                        </button>
-                        <slide-y-up-transition>
-                            <div class="body w-64" v-if="addFormfieldDropdownOpen">
-                                <div class="py-1">
-                                    <a v-for="formfield in formfields"
-                                        :key="'formfield-'+formfield.type"
-                                        href="#"
-                                        @click.prevent="addFormfield(formfield)"
-                                        class="block px-4 py-2 text-base leading-5 focus:outline-none">
-                                        {{ formfield.name }}
-                                    </a>
-                                    <a
-                                        :href="route('voyager.plugins.index')+'/?type=formfield'"
-                                        target="_blank"
-                                        class="italic block px-4 py-3 text-base leading-5 focus:outline-none">
-                                        Looking for more formfields?
-                                    </a>
-                                </div>
+        <card :show-header="false">
+            <!-- Toolbar -->
+            <div class="w-full mb-5 flex">
+                <select class="voyager-input small" v-model="currentLayoutName" :disabled="bread.layouts.length == 0">
+                    <option :value="null" v-if="bread.layouts.length == 0">Create a layout first</option>
+                    <optgroup label="Views" v-if="views.length > 0">
+                        <option v-for="view in views" :key="'view-' + view.name">{{ view.name }}</option>
+                    </optgroup>
+                    <optgroup label="Lists" v-if="lists.length > 0">
+                        <option v-for="list in lists" :key="'list-' + list.name">{{ list.name }}</option>
+                    </optgroup>
+                </select>
+                <div class="dropdown left ml-2" v-click-outside="closeFormfieldAddDropdown">
+                    <button @click="addFormfieldDropdownOpen = !addFormfieldDropdownOpen"
+                            class="button green small"
+                            :disabled="bread.layouts.length == 0">
+                        <icon icon="list-ul" />
+                        <span>Add Formfield</span>
+                    </button>
+                    <slide-y-up-transition>
+                        <div class="body w-64" v-if="addFormfieldDropdownOpen">
+                            <div class="py-1">
+                                <a v-for="formfield in formfields"
+                                    :key="'formfield-'+formfield.type"
+                                    href="#"
+                                    @click.prevent="addFormfield(formfield)"
+                                    class="block px-4 py-2 text-base leading-5 focus:outline-none">
+                                    {{ formfield.name }}
+                                </a>
+                                <a
+                                    :href="route('voyager.plugins.index')+'/?type=formfield'"
+                                    target="_blank"
+                                    class="italic block px-4 py-3 text-base leading-5 focus:outline-none">
+                                    Looking for more formfields?
+                                </a>
                             </div>
-                        </slide-y-up-transition>
-                    </div>
-                    <button class="button blue small" @click="addLayout(false)">
-                        <icon icon="list-ul" class="mr-0 lg:mr-1" />
-                        <span class="hidden lg:block">Add List</span>
-                    </button>
-                    <button class="button blue small" @click="addLayout(true)">
-                        <icon icon="apps" class="mr-0 lg:mr-1" />
-                        <span class="hidden lg:block">Add View</span>
-                    </button>
-                    <button class="button yellow small" @click="renameLayout">
-                        <icon icon="pen" class="mr-0 lg:mr-1" />
-                        <span class="hidden lg:block">Rename Layout</span>
-                    </button>
-                    <button class="button red small" @click="deleteLayout">
-                        <icon icon="trash" class="mr-0 lg:mr-1" />
-                        <span class="hidden lg:block">Delete Layout</span>
-                    </button>
+                        </div>
+                    </slide-y-up-transition>
                 </div>
-
-                <div class="card text-center text-xl" v-if="!currentLayout">
-                    Please select or create a Layout
-                </div>
-                <div class="card text-center text-xl" v-else-if="currentLayout && currentLayout.formfields.length == 0">
-                    Please add a Formfield first
-                </div>
-                <component
-                    v-else-if="currentLayout"
-                    :is="'bread-manager-' + currentLayout.type"
-                    :computed="computed"
-                    :columns="columns"
-                    :relationships="relationships"
-                    :formfields="currentLayout.formfields"
-                    :available-formfields="formfields"
-                    :options="currentLayout.options"
-                    :options-id="openOptionsId"
-                    v-on:delete="deleteFormfield($event)"
-                    v-on:formfields="currentLayout.formfields = $event"
-                    v-on:options="currentLayout.options = $event"
-                    v-on:open-options="openOptionsId = $event" />
+                <button class="button blue small" @click="addLayout(false)">
+                    <icon icon="list-ul" />
+                    <span>Add List</span>
+                </button>
+                <button class="button blue small" @click="addLayout(true)">
+                    <icon icon="apps" />
+                    <span>Add View</span>
+                </button>
+                <button class="button yellow small" @click="renameLayout">
+                    <icon icon="pen" />
+                    <span>Rename Layout</span>
+                </button>
+                <button class="button red small" @click="deleteLayout">
+                    <icon icon="trash" />
+                    <span>Delete Layout</span>
+                </button>
             </div>
-        </div>
 
-        <div class="card" v-if="$globals.debug">
-            <div class="body">
-                <textarea class="input w-full" rows="10" v-model="jsonBread"></textarea>
+            <div class="card text-center text-xl" v-if="!currentLayout">
+                Please select or create a Layout
             </div>
-        </div>
+            <div class="card text-center text-xl" v-else-if="currentLayout && currentLayout.formfields.length == 0">
+                Please add a Formfield first
+            </div>
+            <component
+                v-else-if="currentLayout"
+                :is="'bread-manager-' + currentLayout.type"
+                :computed="computed"
+                :columns="columns"
+                :relationships="relationships"
+                :formfields="currentLayout.formfields"
+                :available-formfields="formfields"
+                :options="currentLayout.options"
+                :options-id="openOptionsId"
+                v-on:delete="deleteFormfield($event)"
+                v-on:formfields="currentLayout.formfields = $event"
+                v-on:options="currentLayout.options = $event"
+                v-on:open-options="openOptionsId = $event" />
+        </card>
+
+        <collapsible v-if="debug" title="JSON Output">
+            <textarea class="input w-full" rows="10" v-model="jsonBread"></textarea>
+        </collapsible>
     </div>
 </template>
 
@@ -277,68 +258,67 @@ export default {
             var vm = this;
 
             vm.$notify.prompt(
-                'Enter the name',
-                'Ok', 'Cancel', 7500
-            )
-            .then(function (value) {
-                if (value && value !== '') {
-                    var filtered = vm.bread.layouts.filter(function (layout) {
-                        return layout.name == value;
-                    });
+                'Enter the name', '',
+                function (value) {
+                    if (value && value !== '') {
+                        var filtered = vm.bread.layouts.filter(function (layout) {
+                            return layout.name == value;
+                        });
 
-                    if (filtered.length > 0) {
-                        vm.$notify.error('This name already exists.');
-                        return;
-                    }
-
-                    var view_options = {};
-                    var list_options = {
-                        default_order_column: {
-                            column: null,
-                            type: null,
+                        if (filtered.length > 0) {
+                            vm.$notify.error('This name already exists', false, 5000);
+                            return;
                         }
-                    };
 
-                    vm.bread.layouts.push({
-                        name: value,
-                        type: (view ? 'view' : 'list'),
-                        options: (view ? view_options : list_options),
-                        formfields: []
-                    });
+                        var view_options = {};
+                        var list_options = {
+                            default_order_column: {
+                                column: null,
+                                type: null,
+                            }
+                        };
 
-                    vm.currentLayoutName = value;
-                } else {
-                    vm.$notify.warning('Please enter a name');
-                }
-            })
-            .catch(function () { });
+                        vm.bread.layouts.push({
+                            name: value,
+                            type: (view ? 'view' : 'list'),
+                            options: (view ? view_options : list_options),
+                            formfields: []
+                        });
+
+                        vm.currentLayoutName = value;
+                    } else {
+                        vm.$notify.warning('Please enter a name', false, 5000);
+                    }
+                },
+                'Ok', 'Cancel', false, 7500
+            );
         },
         renameLayout: function () {
             var vm = this;
             vm.$notify.prompt(
-                'Enter the new name',
-                'Ok', 'Cancel', 7500,
-                vm.currentLayoutName
-            )
-            .then(function (value) {
-                if (value && value !== '') {
-                    if (value == vm.currentLayoutName) {
-                        return;
-                    }
-                    var filtered = vm.bread.layouts.filter(function (layout) {
-                        return layout.name == value;
-                    });
+                'Enter the new name', vm.currentLayoutName,
+                function (value) {
+                    if (value && value !== '') {
+                        if (value == vm.currentLayoutName) {
+                            return;
+                        }
+                        var filtered = vm.bread.layouts.filter(function (layout) {
+                            return layout.name == value;
+                        });
 
-                    if (filtered.length > 0) {
-                        vm.$notify.error('This name already exists.');
-                        return;
-                    }
+                        if (filtered.length > 0) {
+                            vm.$notify.error('This name already exists', false, 5000);
+                            return;
+                        }
 
-                    vm.currentLayout.name = value;
-                    vm.currentLayoutName = value;
-                }
-            })
-            .catch(function () {});
+                        vm.currentLayout.name = value;
+                        vm.currentLayoutName = value;
+                    } else {
+                        vm.$notify.warning('Please enter a new name', false, 5000);
+                    }
+                },
+                'Ok', 'Cancel', false, 7500,
+            );
         },
         deleteLayout: function () {
             var vm = this;
@@ -391,14 +371,13 @@ export default {
 
             vm.$notify.confirm(
                 'Delete formfield?',
-                'Yes', 'No', 7500
-            )
-            .then(function (response) {
-                if (response) {
-                    vm.currentLayout.formfields.splice(key, 1);
-                }
-            })
-            .catch(function () { });
+                'Yes', 'No',
+                function (result) {
+                    if (result) {
+                        vm.currentLayout.formfields.splice(key, 1);
+                    }
+                }, false, 7500
+            );
         },
         closeFormfieldAddDropdown: function () {
             this.addFormfieldDropdownOpen = false;

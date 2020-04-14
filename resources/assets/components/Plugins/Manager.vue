@@ -1,60 +1,44 @@
 <template>
-    <div>
+    <card :title="__('voyager::plugins.plugins')" icon="puzzle-piece">
+        <div slot="actions">
+            <modal ref="search_plugin_modal" :title="__('voyager::plugins.plugins')" icon="puzzle-piece">
+                <input type="text" class="voyager-input w-full mb-3" v-model="query" :placeholder="__('voyager::generic.search')">
+                <div v-for="(plugin, i) in filteredPlugins.slice(start, end)" class="text-white" :key="'plugin-'+i">
+                    <div class="flex">
+                        <div class="w-3/5">
+                            <div class="inline-flex">
+                                <h3 class="text-gray-100 text-lg mr-2">{{ plugin.name }}</h3>
+                                <badge :color="getPluginTypeColor(plugin.type)">{{ __('voyager::plugins.types.'+plugin.type) }}</badge>
+                            </div>
+                            <p>{{ plugin.description }}</p>
+                            <a v-if="plugin.website" :href="plugin.website" target="_blank">
+                                {{ __('voyager::generic.website') }}
+                            </a>
+                            <span v-else>&nbsp;</span>
+                        </div>
+                        <div class="w-2/5 text-right">
+                            <input class="voyager-input select-none" :value="'composer require '+plugin.repository" @dblclick="copy(plugin)">
+                        </div>
+                    </div>
+                    <hr class="w-full bg-gray-300 my-4">
+                </div>
+                <div class="w-full text-right">
+                    <div class="button-group">
+                        <button class="button blue" v-for="i in pages" @click="page = (i - 1)" :key="'page-button-'+i">{{ i }}</button>
+                    </div>
+                </div>
+                <div slot="opener" class="">
+                    <button class="button green">
+                        <icon icon="search"></icon>
+                        {{ __('voyager::plugins.search_plugins') }}
+                    </button>
+                </div>
+            </modal>
+        </div>
         <div v-if="hasMultiplePlugins('auth')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_auth_plugins'))"></div>
         <div v-if="hasMultiplePlugins('menu')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></div>
 
-        <div class="flex mb-3 w-full">
-            <div class="w-6/12">
-                <h2 class="text-2xl">{{ __('voyager::plugins.plugins') }}</h2>
-            </div>
-            <div class="w-6/12 text-right">
-                <modal ref="search_plugin_modal">
-                    <div class="flex mb-4">
-                        <div class="w-2/3">
-                            <h4 class="text-gray-100 text-xl">{{ __('voyager::plugins.plugins') }}</h4>
-                        </div>
-                        <div class="w-1/3 text-right text-gray-100">
-                            <button class="button green close-button" @click="$refs.search_plugin_modal.close()">
-                                <icon icon="times" />
-                            </button>
-                        </div>
-                    </div>
-                    <input type="text" class="voyager-input w-full mb-3" v-model="query" :placeholder="__('voyager::generic.search')">
-                    <div v-for="(plugin, i) in filteredPlugins.slice(start, end)" class="text-white" :key="'plugin-'+i">
-                        <div class="flex">
-                            <div class="w-3/5">
-                                <div class="inline-flex">
-                                    <h3 class="text-gray-100 text-lg mr-2">{{ plugin.name }}</h3>
-                                    <span class="badge" :class="getPluginTypeColor(plugin.type)">{{ __('voyager::plugins.types.'+plugin.type) }}</span>
-                                </div>
-                                <p>{{ plugin.description }}</p>
-                                <a v-if="plugin.website" :href="plugin.website" target="_blank">
-                                    {{ __('voyager::generic.website') }}
-                                </a>
-                                <span v-else>&nbsp;</span>
-                            </div>
-                            <div class="w-2/5 text-right">
-                                <input class="voyager-input select-none" :value="'composer require '+plugin.repository" @dblclick="copy(plugin)">
-                            </div>
-                        </div>
-                        <hr class="w-full bg-gray-300 my-4">
-                    </div>
-                    <div class="w-full text-right">
-                        <div class="button-group">
-                            <button class="button blue" v-for="i in pages" @click="page = (i - 1)" :key="'page-button-'+i">{{ i }}</button>
-                        </div>
-                    </div>
-                    <div slot="opener" class="">
-                        <button class="button green">
-                            <i class="uil uil-search"></i>
-                            {{ __('voyager::plugins.search_plugins') }}
-                        </button>
-                    </div>
-                </modal>
-            </div>
-        </div>
-
-        <div class="voyager-table striped">
+        <div class="voyager-table striped" v-if="installedPlugins > 0">
             <table v-bind:class="[loading ? 'loading' : '']" id="bread-manager-browse">
                 <thead>
                     <tr>
@@ -129,7 +113,10 @@
                 </tbody>
             </table>
         </div>
-    </div>
+        <div v-else class="w-full text-center">
+            <h3 class="text-xl">No plugins installed :(</h3>
+        </div>
+    </card>
 </template>
 
 <script>
@@ -151,13 +138,13 @@ export default {
         },
         copy: function (plugin) {
             this.copyToClipboard('composer require ' + plugin.repository);
-            this.$notify.info(this.__('voyager::plugins.copy_notice'));
+            this.$notify.notify(this.__('voyager::plugins.copy_notice'), null, 'blue', 5000);
         },
         loadPlugins: function () {
             var vm = this;
             vm.loading = true;
             axios.post(vm.route('voyager.plugins.get'), {
-                _token: vm.$globals.csrf_token,
+                _token: vm.csrf_token,
             })
             .then(function (response) {
                 vm.installedPlugins = response.data;

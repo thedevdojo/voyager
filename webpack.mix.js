@@ -12,13 +12,14 @@ require('laravel-mix-purgecss');
  | file for the application as well as bundling up all the JS files.
  |
  */
- mix.sass('resources/assets/sass/voyager.scss', 'resources/assets/dist/css')
+mix.sass('resources/assets/sass/voyager.scss', 'resources/assets/dist/css')
+mix.sass('resources/assets/sass/colors.scss', 'resources/assets/dist/css')
 .options({
     processCssUrls: false,
     postCss: [ tailwindcss('tailwind.config.js') ],
 }).purgeCss({
     folders: ['resources'],
-    whitelistPatterns: [/Vue-Toastification/, /mode-dark/, /dark/, /uil/, /w-[0-9]+\/[0-9]+/],
+    whitelistPatterns: [/mode-dark/, /dark/, /w-[0-9]+\/[0-9]+/],
 })
 .js('resources/assets/js/voyager.js', 'resources/assets/dist/js')
-.copy('node_modules/inter-ui/Inter (web)', 'resources/assets/dist/fonts/inter');
+.copy('node_modules/inter-ui/Inter (web)', 'resources/assets/dist/fonts/inter-ui');
