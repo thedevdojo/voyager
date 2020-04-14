@@ -72,8 +72,6 @@ If you prefer installing it with dummy run
 php artisan voyager:install --with-dummy
 ```
 
-> Troubleshooting: **Specified key was too long error**. If you see this error message you have an outdated version of MySQL, use the following solution: https://laravel-news.com/laravel-5-4-key-too-long-error
-
 And we're all good to go!
 
 Start up a local development server with `php artisan serve` And, visit [http://localhost:8000/admin](http://localhost:8000/admin).
