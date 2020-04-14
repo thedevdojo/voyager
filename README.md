@@ -26,9 +26,7 @@ View the Voyager Cheat Sheet: https://voyager-cheatsheet.ulties.com/
 
 Laravel Admin & BREAD System (Browse, Read, Edit, Add, & Delete), supporting Laravel 6 and newer!
 
-```
-Want to use Laravel 5? Use [Voyager 1.3](https://github.com/the-control-group/voyager/tree/1.3)
-```
+> Want to use Laravel 5? Use [Voyager 1.3](https://github.com/the-control-group/voyager/tree/1.3)
 
 ## Installation Steps
 
@@ -73,8 +71,6 @@ If you prefer installing it with dummy run
 ```bash
 php artisan voyager:install --with-dummy
 ```
-
-> Troubleshooting: **Specified key was too long error**. If you see this error message you have an outdated version of MySQL, use the following solution: https://laravel-news.com/laravel-5-4-key-too-long-error
 
 And we're all good to go!
 

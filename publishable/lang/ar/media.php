@@ -46,4 +46,5 @@ return [
     'browser_video_support'  => 'متصفحك الحالي لا يدعم تشغيل الفيديو.',
     'browser_audio_support'  => 'متصفحك لا يدعم عنصر الصوت.',
     'width'                  => 'العرض: ',
+    'add_all_selected'       => 'أضف كل المحدد',
 ];
