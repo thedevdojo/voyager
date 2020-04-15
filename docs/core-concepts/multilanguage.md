@@ -28,10 +28,10 @@ class Post extends Model
 }
 ```
 
-After following the previous indications, in order to see the language-selection on your BREAD pages, you need to run the Laravel Artisan command for removing the configuration cache file:
+After following the previous indications, if you don't see the language-selection on your BREAD pages, you need to run the Laravel Artisan command for removing the configuration cache file:
 
 ```bash
-php artisan config:cache
+php artisan config:clear
 ```
 
 Now you will see a language-selection in your BREAD pages.
