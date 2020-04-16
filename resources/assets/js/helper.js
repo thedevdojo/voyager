@@ -19,4 +19,10 @@ Vue.directive('click-outside', {
     },
 });
 
+Vue.directive('focus', {
+    inserted: function (el) {
+        el.focus();
+    }
+});
+
 Vue.prototype.$eventHub = new Vue({});

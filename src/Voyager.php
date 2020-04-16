@@ -38,19 +38,21 @@ class Voyager
      * Flash a message to the UI.
      *
      * @param string $message The message
-     * @param string $type    The type of the exception: info, success, warning, error or debug
+     * @param string $color   The tailwind color of the exception: blue, yellow, green, red...
      * @param bool   $next    If the message should be flashed after the next request
      */
-    public function flashMessage($message, $type, $next = false)
+    public function flashMessage($message, $color, $timeout = 5000, $next = false)
     {
         $this->messages[] = [
             'message' => $message,
-            'type'    => $type,
+            'color'   => $color,
+            'timeout' => $timeout,
         ];
         if ($next) {
             session()->push('voyager-messages', [
                 'message' => $message,
-                'type'    => $type,
+                'color'   => $color,
+                'timeout' => $timeout,
             ]);
         }
     }

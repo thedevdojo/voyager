@@ -52,19 +52,7 @@ var voyager = new Vue({
         var messages = {!! Voyager::getMessages()->toJson() !!};
 
         messages.forEach(function (m) {
-            if (m.type == 'info') {
-                vm.$notify.info(m.message);
-            } else if (m.type == 'success') {
-                vm.$notify.success(m.message);
-            } else if (m.type == 'warning') {
-                vm.$notify.warning(m.message);
-            } else if (m.type == 'error') {
-                vm.$notify.error(m.message);
-            } else if (m.type == 'debug') {
-                if (vm.debug) {
-                    vm.debug(m.message);
-                }
-            }
+            vm.$notify.notify(m.message, null, m.color, m.timeout);
         });
     },
     created: function () {

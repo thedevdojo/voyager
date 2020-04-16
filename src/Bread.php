@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
@@ -50,13 +51,13 @@ class Bread
 
             $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {
                 // Exclude backups
-                if (Str::endsWith($bread->getPathName(), '.backup.json')) {
+                if (Str::contains($bread->getPathName(), '.backup.')) {
                     return null;
                 }
                 $content = File::get($bread->getPathName());
                 $json = @json_decode($content);
                 if (json_last_error() !== JSON_ERROR_NONE) {
-                    VoyagerFacade::flashMessage('BREAD-file "'.basename($bread->getPathName()).'" does contain invalid JSON: '.json_last_error_msg(), 'debug');
+                    VoyagerFacade::flashMessage('BREAD-file "'.basename($bread->getPathName()).'" does contain invalid JSON: '.json_last_error_msg(), 'yellow');
                     return;
                 }
 
@@ -158,7 +159,7 @@ class Bread
     public function backupBread($table)
     {
         $old = $this->breadPath.$table.'.json';
-        $new = $this->breadPath.$table.'.backup.json';
+        $new = $this->breadPath.$table.'.backup.'.Carbon::now()->isoFormat('Y-MM-DD@HH-mm').'.json';
 
         if (File::exists($old)) {
             return File::copy($old, $new);

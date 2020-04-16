@@ -8,6 +8,11 @@
                     v-model="parameters.query"
                     @dblclick="parameters.query = null"
                     :placeholder="'Search ' + translate(bread.name_plural)">
+                <select class="voyager-input small ltr:mr-2 rtl:ml-2" v-model="parameters.softdeleted">
+                    <option value="show">Show soft-deleted</option>
+                    <option value="hide">Hide soft-deleted</option>
+                    <option value="only">Only show soft-deleted</option>
+                </select>
                 <button class="button blue m-0" @click.stop="load">
                     <icon icon="sync" :class="[loading ? 'rotating-ccw' : '']"></icon>
                     <span>{{ __('voyager::generic.reload') }}</span>
@@ -148,6 +153,7 @@ export default {
                 filters: {},
                 order: null,
                 direction: 'asc',
+                softdeleted: 'show', // show, hide, only
             },
         };
     },
@@ -379,6 +385,9 @@ export default {
         }
     },
     watch: {
+        'parameters.page': function () {
+            this.selected = [];
+        },
         parameters: {
             handler: debounce(function (val) {
                 // Remove all parameters from URL

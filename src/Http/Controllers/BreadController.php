@@ -16,12 +16,13 @@ class BreadController extends Controller
         $layout = $this->getLayoutForAction($bread, 'browse');
 
         list(
-            'page'      => $page,
-            'perpage'   => $perpage,
-            'query'     => $global,
-            'filters'   => $filters,
-            'order'     => $order,
-            'direction' => $direction,
+            'page'        => $page,
+            'perpage'     => $perpage,
+            'query'       => $global,
+            'filters'     => $filters,
+            'order'       => $order,
+            'direction'   => $direction,
+            'softdeleted' => $softdeleted,
         ) = $request->all();
 
         $model = $bread->getModel();
@@ -32,7 +33,11 @@ class BreadController extends Controller
         $uses_soft_deletes = $bread->usesSoftDeletes();
         if ($uses_soft_deletes) {
             // TODO: This needs to be configurable
-            $query = $query->withTrashed();
+            if ($softdeleted == 'show') {
+                $query = $query->withTrashed();
+            } else if ($softdeleted == 'only') {
+                $query = $query->onlyTrashed();
+            }
         }
 
         $total = $query->count();

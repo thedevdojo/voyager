@@ -35,7 +35,14 @@ class Bread implements \JsonSerializable
     public function __construct($json)
     {
         foreach ($json as $key => $value) {
-            $this->{$key} = $value;
+            if ($key == 'layouts') {
+                $this->layouts = collect();
+                foreach ($value as $layout) {
+                    $this->layouts->push(collect($layout));
+                }
+            } else {
+                $this->{$key} = $value;
+            }
         }
     }
 
@@ -62,10 +69,12 @@ class Bread implements \JsonSerializable
     {
         // TODO: We might need to consider withTrashed() as well.
         $count = $this->getModel()->count();
-        if ($count >= 1000000) {
+        if ($count >= 1100000) {
+            return number_format(($count / 1000000), 1) . 'M';
+        } else if ($count >= 1000000) {
             return number_format(($count / 1000000)) . 'M';
         } else if ($count >= 100000) {
-            return number_format(($count / 100000)) . 'K';
+            return number_format(($count / 1000)) . 'K';
         } else if ($count >= 1000) {
             return number_format(($count / 1000), 1) . 'K';
         }

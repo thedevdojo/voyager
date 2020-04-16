@@ -6,6 +6,7 @@
                 v-for="notification in $notify.notifications"
                 :key="notification.uuid"
                 :class="[`border-${notification.color}-500`, 'notification']"
+                v-on:keyup.enter="submit(notification)"
                 @mouseover="stopTimeout(notification)"
                 @mouseleave="startTimeout(notification)">
                 <div class="p-4">
@@ -20,7 +21,12 @@
                             </span>
                             <p class="title" v-else>{{ notification.message }}</p>
                             <div class="mt-4 flex" v-if="notification.input !== null">
-                                <input type="text" class="voyager-input small w-full" v-model="notification.input"  />
+                                <input
+                                    type="text"
+                                    class="voyager-input small w-full"
+                                    v-model="notification.input"
+                                    v-on:keyup="stopTimeout(notification)"
+                                    v-focus />
                             </div>
                             <div class="mt-4 flex" v-if="notification.buttons.length >= 1">
                                 <span class="inline-flex" v-for="(button, key) in notification.buttons" :key="'button-'+key">
@@ -78,6 +84,19 @@ export default {
 
             if (notification.autoClose) {
                 this.close(notification);
+            }
+        },
+        submit: function (notification) {
+            if (notification.input !== null) {
+                notification.buttons.forEach(function (button) {
+                    if (button.value == true) {
+                        button.callback(notification.input, notification);
+                    }
+                });
+
+                if (notification.autoClose) {
+                    this.close(notification);
+                }
             }
         },
         getProgressStyle: function (notification) {

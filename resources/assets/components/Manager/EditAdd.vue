@@ -238,7 +238,7 @@ export default {
             })
             .then(function (response) {
                 vm.$notify.notify(
-                    vm.__('voyager::manager.bread_saved_successfully', { name: vm.bread.table }),
+                    vm.__('voyager::manager.bread_saved_successfully'),
                     null, 'green', 5000
                 );
             })
@@ -447,12 +447,20 @@ export default {
         }
     },
     mounted: function () {
+        var vm = this;
         Vue.prototype.$language.localePicker = true;
 
         // Load model-properties (only when we already know the model-name)
-        if (this.bread.model) {
-            this.loadProperties();
+        if (vm.bread.model) {
+            vm.loadProperties();
         }
+
+        document.addEventListener('keydown', function (e) {
+            if (event.ctrlKey && event.key === 's') {
+                e.preventDefault();
+                vm.saveBread();
+            }
+        });
     },
     created: function () {
         var layout = parseInt(this.getParameterFromUrl('layout', 0));

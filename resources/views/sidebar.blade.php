@@ -117,13 +117,18 @@
                 @if (count(Bread::getBreads()) > 0)
                     <hr class="my-3 sidebar-border" />
                     @foreach (Bread::getBreads() as $bread)
-                    <a href="{{ route('voyager.'.$bread->slug.'.browse') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse'))) ? 'active' : '' }}">
+                    @php
+                        $active = Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse')));
+                    @endphp
+                    <a
+                        href="{{ route('voyager.'.$bread->slug.'.browse') }}"
+                        class="text-sm leading-5 item {{ $active ? 'active' : '' }}">
                         <icon icon="{{ $bread->icon }}" class="icon ltr:mr-2 rtl:ml-2"></icon>
                         {{ $bread->name_plural }}
                         
                         @if (isset($bread->badge) && $bread->badge)
-                        <span class="w-full text-right">
-                            <badge color="{{ isset($bread->color) ? $bread->color : 'green' }}">
+                        <span class="w-full ltr:text-right rtl:text-left">
+                            <badge color="{{ isset($bread->color) ? $bread->color : 'green' }}" class="cursor-pointer" {{ $active ? 'dot' : '' }}>
                                 {{ $bread->getReadableCount() }}
                             </badge>
                         </span>

@@ -39,7 +39,7 @@ class BreadManagerController extends Controller
         }
 
         if (BreadFacade::getBread($table)) {
-            VoyagerFacade::flashMessage(__('voyager::manager.bread_already_exists', ['table' => $table]), 'info', true);
+            VoyagerFacade::flashMessage(__('voyager::manager.bread_already_exists', ['table' => $table]), 'yellow', 5000, true);
 
             return redirect()->route('voyager.bread.edit', $table);
         }
@@ -61,7 +61,7 @@ class BreadManagerController extends Controller
     {
         $bread = BreadFacade::getBread($table);
         if (!$bread) {
-            VoyagerFacade::flashMessage(__('voyager::manager.bread_does_no_exist', ['table' => $table]), 'error', true);
+            VoyagerFacade::flashMessage(__('voyager::manager.bread_does_no_exist', ['table' => $table]), 'red', 5000, true);
 
             return redirect()->route('voyager.bread.create', $table);
         }
