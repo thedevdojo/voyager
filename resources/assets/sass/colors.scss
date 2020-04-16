@@ -87,24 +87,24 @@ $description-text-color-dark : 'text-gray-200' !default;
 
 // TABLE COLORS
 $table-background-color                     : 'bg-white' !default;
-$table-border-color                         : 'border-gray-200' !default;
+$table-border-color                         : 'border-gray-300' !default;
 $table-head-background-color                : 'bg-gray-100' !default;
 $table-head-text-color                      : 'text-black' !default;
-$table-row-even-background-color            : 'bg-gray-100' !default;
-$table-row-odd-background-color             : 'bg-gray-200' !default;
-$table-row-even-background-color-hover      : 'bg-white' !default;
+$table-row-even-background-color            : 'bg-gray-50' !default;
+$table-row-odd-background-color             : 'bg-gray-100' !default;
+$table-row-even-background-color-hover      : 'bg-gray-150' !default;
 $table-row-odd-background-color-hover       : 'bg-gray-200' !default;
-$table-row-border-color                     : 'border-gray-200' !default;
+$table-row-border-color                     : 'border-gray-300' !default;
 
 $table-background-color-dark                : 'bg-gray-800' !default;
-$table-border-color-dark                    : 'border-gray-600' !default;
+$table-border-color-dark                    : 'border-gray-650' !default;
 $table-head-background-color-dark           : 'bg-gray-700' !default;
 $table-head-text-color-dark                 : 'text-gray-400' !default;
 $table-row-even-background-color-dark       : 'bg-gray-800' !default;
-$table-row-odd-background-color-dark        : 'bg-gray-700' !default;
-$table-row-even-background-color-hover-dark : 'bg-gray-600' !default;
-$table-row-odd-background-color-hover-dark  : 'bg-gray-600' !default;
-$table-row-border-color-dark                : 'border-gray-600' !default;
+$table-row-odd-background-color-dark        : 'bg-gray-750' !default;
+$table-row-even-background-color-hover-dark : 'bg-gray-700' !default;
+$table-row-odd-background-color-hover-dark  : 'bg-gray-650' !default;
+$table-row-border-color-dark                : 'border-gray-650' !default;
 
 html {
     font-family: #{$font-family};
@@ -396,15 +396,16 @@ p {
     }
 
     table {
-        thead > tr > th {
-            @apply #{$table-border-color-dark} #{$table-background-color-dark} #{$table-head-text-color-dark};
+        thead {
+            @apply #{$table-head-background-color};
+            > tr > th {
+                @apply #{$table-border-color-dark} #{$table-background-color-dark} #{$table-head-text-color-dark};
+            }
         }
     
         tbody {    
-            tr {
-                tr {
-                    @apply #{$table-row-border-color-dark};
-                }
+            tr > td {
+                @apply #{$table-row-border-color-dark};
             }
         }
     }
@@ -431,15 +432,17 @@ p {
     }
 
     table {
-        thead > tr > th {
-            @apply #{$table-border-color} #{$table-background-color}  #{$table-head-text-color};
+        thead {
+            @apply #{$table-head-background-color};
+
+            > tr > th {
+                @apply #{$table-border-color} #{$table-background-color}  #{$table-head-text-color};
+            }
         }
     
         tbody {    
-            tr {
-                tr {
-                    @apply #{$table-row-border-color};
-                }
+            tr > td {
+                @apply #{$table-row-border-color};
             }
         }
     }

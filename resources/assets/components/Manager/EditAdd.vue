@@ -4,13 +4,17 @@
             <div slot="actions">
                 <button class="button green" @click.stop="loadProperties">
                     <icon icon="sync" class="mr-0 md:mr-1" :class="[loadingProps ? 'rotating-ccw' : '']" />
-                    <span class="hidden md:block">Reload properties</span>
+                    <span class="hidden md:block">
+                        {{ __('voyager::manager.reload_properties') }}
+                    </span>
                 </button>
             </div>
             <div>
                 <alert color="yellow" v-if="!bread.model || bread.model == ''">
-                    <span slot="title">Information</span>
-                    Please enter a model name and click "Reload properties" to see scopes, computed properties and relationships!
+                    <span slot="title">
+                        {{ __('voyager::generic.heads_up') }}
+                    </span>
+                    {{ __('voyager::manager.new_breads_prop_warning') }}
                 </alert>
                 <div class="flex mb-4">
                     <div class="w-full m-1">
@@ -107,7 +111,9 @@
             <!-- Toolbar -->
             <div class="w-full mb-5 flex">
                 <select class="voyager-input small" v-model="currentLayoutName" :disabled="bread.layouts.length == 0">
-                    <option :value="null" v-if="bread.layouts.length == 0">Create a layout first</option>
+                    <option :value="null" v-if="bread.layouts.length == 0">
+                        {{ __('voyager::manager.create_layout_first') }}
+                    </option>
                     <optgroup label="Views" v-if="views.length > 0">
                         <option v-for="view in views" :key="'view-' + view.name">{{ view.name }}</option>
                     </optgroup>
@@ -120,7 +126,9 @@
                             class="button green small"
                             :disabled="bread.layouts.length == 0">
                         <icon icon="list-ul" />
-                        <span>Add Formfield</span>
+                        <span>
+                            {{ __('voyager::manager.add_formfield') }}
+                        </span>
                     </button>
                     <slide-y-up-transition>
                         <div class="body w-64" v-if="addFormfieldDropdownOpen">
@@ -136,7 +144,7 @@
                                     :href="route('voyager.plugins.index')+'/?type=formfield'"
                                     target="_blank"
                                     class="italic block px-4 py-3 text-base leading-5 focus:outline-none">
-                                    Looking for more formfields?
+                                    {{ __('voyager::manager.formfields_more') }}
                                 </a>
                             </div>
                         </div>
@@ -144,27 +152,29 @@
                 </div>
                 <button class="button blue small" @click="addLayout(false)">
                     <icon icon="list-ul" />
-                    <span>Add List</span>
+                    <span>{{ __('voyager::manager.add_list') }}</span>
                 </button>
                 <button class="button blue small" @click="addLayout(true)">
                     <icon icon="apps" />
-                    <span>Add View</span>
+                    <span>{{ __('voyager::manager.add_view') }}</span>
                 </button>
-                <button class="button yellow small" @click="renameLayout">
+                <button class="button yellow small" @click="renameLayout" :disabled="!currentLayout">
                     <icon icon="pen" />
-                    <span>Rename Layout</span>
+                    <span>{{ __('voyager::manager.rename_layout') }}</span>
                 </button>
-                <button class="button red small" @click="deleteLayout">
+                <button class="button red small" @click="deleteLayout" :disabled="!currentLayout">
                     <icon icon="trash" />
-                    <span>Delete Layout</span>
+                    <span>
+                        {{ __('voyager::manager.delete_layout') }}
+                    </span>
                 </button>
             </div>
 
             <div class="card text-center text-xl" v-if="!currentLayout">
-                Please select or create a Layout
+                {{ __('voyager::manager.create_select_layout') }}
             </div>
             <div class="card text-center text-xl" v-else-if="currentLayout && currentLayout.formfields.length == 0">
-                Please add a Formfield first
+                {{ __('voyager::manager.add_formfield_to_layout') }}
             </div>
             <component
                 v-else-if="currentLayout"
@@ -182,7 +192,7 @@
                 v-on:open-options="openOptionsId = $event" />
         </card>
 
-        <collapsible v-if="debug" title="JSON Output">
+        <collapsible v-if="debug" :title="__('voyager::manager.json_output')">
             <textarea class="input w-full" rows="10" v-model="jsonBread"></textarea>
         </collapsible>
     </div>
@@ -213,16 +223,25 @@ export default {
                 bread: vm.bread
             })
             .then(function (response) {
-                vm.$notify.success(vm.__('voyager::manager.bread_saved_successfully', { name: vm.bread.table }));
+                vm.$notify.notify(
+                    vm.__('voyager::manager.bread_saved_successfully', { name: vm.bread.table }),
+                    null, 'green', 5000
+                );
             })
             .catch(function (errors) {
                 var errors = errors.response.data;
                 if (!vm.isObject(errors)) {
-                    vm.$notify.error(errors);
+                    vm.$notify.notify(
+                        errors,
+                        null, 'red', 5000
+                    );
                 } else {
                     Object.entries(errors).forEach(([key, val]) => {
                         val.forEach(function (e) {
-                            vm.$notify.error(e);
+                            vm.$notify.notify(
+                                e,
+                                null, 'red', 5000
+                            );
                         });
                     });
                 }
@@ -246,9 +265,10 @@ export default {
                 });
             })
             .catch(function (error) {
-                vm.$notify.error(error.response.data, {
-                    timeout: 2500
-                });
+                vm.$notify.notify(
+                    error.response.data,
+                    null, 'red', 5000
+                );
             })
             .then(function () {
                 vm.loadingProps = false;
@@ -258,7 +278,7 @@ export default {
             var vm = this;
 
             vm.$notify.prompt(
-                'Enter the name', '',
+                vm.__('voyager::manager.enter_name'), '',
                 function (value) {
                     if (value && value !== '') {
                         var filtered = vm.bread.layouts.filter(function (layout) {
@@ -266,7 +286,10 @@ export default {
                         });
 
                         if (filtered.length > 0) {
-                            vm.$notify.error('This name already exists', false, 5000);
+                            vm.$notify.notify(
+                                vm.__('voyager::manager.name_already_exists'),
+                                null, 'red', 5000
+                            );
                             return;
                         }
 
@@ -286,17 +309,15 @@ export default {
                         });
 
                         vm.currentLayoutName = value;
-                    } else {
-                        vm.$notify.warning('Please enter a name', false, 5000);
                     }
                 },
-                'Ok', 'Cancel', false, 7500
+                'blue', vm.__('voyager::generic.ok'), vm.__('voyager::generic.cancel'), false, 7500
             );
         },
         renameLayout: function () {
             var vm = this;
             vm.$notify.prompt(
-                'Enter the new name', vm.currentLayoutName,
+                vm.__('voyager::manager.enter_new_name'), vm.currentLayoutName,
                 function (value) {
                     if (value && value !== '') {
                         if (value == vm.currentLayoutName) {
@@ -307,39 +328,38 @@ export default {
                         });
 
                         if (filtered.length > 0) {
-                            vm.$notify.error('This name already exists', false, 5000);
+                            vm.$notify.notify(
+                                vm.__('voyager::manager.name_already_exists'),
+                                null, 'red', 5000
+                            );
                             return;
                         }
 
                         vm.currentLayout.name = value;
                         vm.currentLayoutName = value;
-                    } else {
-                        vm.$notify.warning('Please enter a new name', false, 5000);
                     }
                 },
-                'Ok', 'Cancel', false, 7500,
+                'blue', vm.__('voyager::generic.ok'), vm.__('voyager::generic.cancel'), false, 7500
             );
         },
         deleteLayout: function () {
             var vm = this;
-            vm.$notify.confirm(
-                'Delete Layout?',
-                'Ok', 'Cancel', 7500,
-            )
-            .then(function (response) {
-                if (response) {
-                    var name = vm.currentLayoutName;
-                    vm.currentLayoutName = null;
-                    vm.bread.layouts = vm.bread.layouts.filter(function (layout) {
-                        return layout.name !== name;
-                    });
+             vm.$notify.confirm(
+                vm.__('voyager::manager.delete_layout_confirm'),
+                function (result) {
+                    if (result) {
+                        var name = vm.currentLayoutName;
+                        vm.currentLayoutName = null;
+                        vm.bread.layouts = vm.bread.layouts.filter(function (layout) {
+                            return layout.name !== name;
+                        });
 
-                    if (vm.bread.layouts.length > 0) {
-                        vm.currentLayoutName = vm.bread.layouts[0].name;
+                        if (vm.bread.layouts.length > 0) {
+                            vm.currentLayoutName = vm.bread.layouts[0].name;
+                        }
                     }
-                }
-            })
-            .catch(function () {});
+                }, false, 'yellow', vm.__('voyager::generic.yes'), vm.__('voyager::generic.no'), 7500
+            );
         },
         addFormfield: function (formfield) {
             this.closeFormfieldAddDropdown();
@@ -370,13 +390,12 @@ export default {
             var vm = this;
 
             vm.$notify.confirm(
-                'Delete formfield?',
-                'Yes', 'No',
+                vm.__('voyager::manager.delete_formfield_confirm'),
                 function (result) {
                     if (result) {
                         vm.currentLayout.formfields.splice(key, 1);
                     }
-                }, false, 7500
+                }, false, 'yellow', vm.__('voyager::generic.yes'), vm.__('voyager::generic.no'), 7500
             );
         },
         closeFormfieldAddDropdown: function () {

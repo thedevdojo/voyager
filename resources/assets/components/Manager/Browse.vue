@@ -3,7 +3,7 @@
         <div slot="actions">
             <button class="button green" @click.stop="loadBreads">
                 <icon icon="sync" :class="[loading ? 'rotating-ccw' : '']" />
-                <span>Reload BREADs</span>
+                <span>{{ __('voyager::manager.reload_breads') }}</span>
             </button>
         </div>
         <div class="voyager-table striped" :class="[loading ? 'loading' : '']">
@@ -33,24 +33,34 @@
                             <div v-if="hasBread(table)">
                                 <a class="button blue" :href="route('voyager.'+table+'.browse')">
                                     <icon icon="globe" />
-                                    <span>Browse</span>
+                                    <span>
+                                        {{ __('voyager::generic.browse') }}
+                                    </span>
                                 </a>
                                 <button class="button green" @click="backupBread(table)">
                                     <icon icon="history" />
-                                    <span>Backup</span>
+                                    <span>
+                                        {{ __('voyager::generic.backup') }}
+                                    </span>
                                 </button>
                                 <a class="button yellow" :href="route('voyager.bread.edit', table)">
                                     <icon icon="pen" />
-                                    <span>Edit</span>
+                                    <span>
+                                        {{ __('voyager::generic.edit') }}
+                                    </span>
                                 </a>
                                 <button class="button red" @click="deleteBread(table)">
                                     <icon icon="trash" />
-                                    <span>Delete</span>
+                                    <span>
+                                        {{ __('voyager::generic.delete') }}
+                                    </span>
                                 </button>
                             </div>
                             <a v-else class="button green" :href="route('voyager.bread.create', table)">
                                 <icon icon="plus" />
-                                <span class="hidden md:block">Add BREAD</span>
+                                <span class="hidden md:block">
+                                    {{ __('voyager::manager.add_bread') }}
+                                </span>
                             </a>
                         </td>
                     </tr>
@@ -85,27 +95,29 @@ export default {
         },
         deleteBread: function (table) {
             var vm = this;
+
             vm.$notify.confirm(
                 vm.__('voyager::manager.delete_bread_confirm', {bread: table}),
+                function (response) {
+                    if (response) {
+                        axios.delete(vm.route('voyager.bread.delete', table))
+                        .then(function (response) {
+                            vm.$notify.notify(vm.__('voyager::manager.delete_bread_success', {bread: table}), null, 'green', 5000);
+                        })
+                        .catch(function (errors) {
+                            vm.$notify.notify(vm.__('voyager::manager.delete_bread_error', {bread: table}), null, 'red', 5000);
+                        })
+                        .then(function () {
+                            vm.loadBreads();
+                        });
+                    }
+                },
+                false,
+                'red',
                 vm.__('voyager::generic.yes'),
                 vm.__('voyager::generic.no'),
                 7500
-            ).then(function (response) {
-                if (response) {
-                    axios.delete(vm.route('voyager.bread.delete', table))
-                    .then(function (response) {
-                        vm.$notify.success(vm.__('voyager::manager.delete_bread_success', {bread: table}));
-                    })
-                    .catch(function (errors) {
-                        vm.$notify.error(vm.__('voyager::manager.delete_bread_error', {bread: table}));
-                    })
-                    .then(function () {
-                        vm.loadBreads();
-                    });
-                }
-            }).catch(function () {
-                // Promise rejected means "closed" (manually or after timeout). Do nothing
-            });
+            );
         },
         backupBread: function (table) {
             var vm = this;
@@ -113,12 +125,10 @@ export default {
                 table: table
             })
             .then(function (response) {
-                vm.$notify.success('BREAD successfully backed-up');
+                vm.$notify.notify(vm.__('voyager::manager.bread_backed_up'), null, 'blue', 5000);
             })
             .catch(function (error) {
-                vm.$notify.error(error.response.statusText, {
-                    timeout: 2500
-                });
+                vm.$notify.notify(error.response.statusText, null, 'red', 5000);
             });
         },
         loadBreads: function () {
@@ -134,9 +144,7 @@ export default {
                 vm.breads = response.data;
             })
             .catch(function (error) {
-                vm.$notify.error(error.response.statusText, {
-                    timeout: 2500
-                });
+                vm.$notify.notify(error.response.statusText, null, 'red', 5000);
             })
             .then(function () {
                 vm.loading = false;

@@ -14,6 +14,7 @@
         "laravel-mix-purgecss": "^4.2.0",
         "sass-loader": "^8.0.2",
         "tailwindcss-dark-mode": "^1.1.3",
+        "tailwindcss-dir": "^4.0.0",
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
@@ -24,7 +25,7 @@
         "slugify": "^1.4.0",
         "tailwindcss": "^1.2",
         "vue": "^2.6.11",
-        "vue-scrollto": "^2.18.0",
+        "vue-scrollto": "^2.18.1",
         "vue-unicons": "^2.1.0",
         "vue2-transitions": "^0.3.0",
         "vuedraggable": "^2.23.2",

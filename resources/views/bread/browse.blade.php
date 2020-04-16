@@ -3,8 +3,5 @@
 @section('content')
 <bread-browse
     :bread="{{ json_encode($bread) }}"
-    :accessors="{{ json_encode($bread->getComputedProperties()) }}"
-    :layout="{{ json_encode($layout) }}"
-    :actions="{{ $actions }}"
 ></bread-browse>
 @endsection

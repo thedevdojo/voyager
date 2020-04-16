@@ -1,5 +1,5 @@
 .button {
-    @apply text-white inline-flex items-center mb-1 mx-1 px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md transition ease-in-out duration-150;
+    @apply whitespace-no-wrap text-white inline-flex items-center mb-1 mx-1 px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md transition ease-in-out duration-150;
 
     &:focus {
         @apply outline-none;
@@ -58,10 +58,14 @@
         @apply mx-0 #{!important};
         @apply rounded-none #{!important};
     }
-    .button:first-child {
-        @apply rounded-l-md #{!important};
-    }
-    .button:last-child {
-        @apply rounded-r-md #{!important};
+
+    .button{
+        &:first-child {
+            @apply rounded-l-md #{!important};
+        }
+
+        &:last-child {
+            @apply rounded-r-md #{!important};
+        }
     }
 }

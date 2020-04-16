@@ -17,7 +17,7 @@
                             <span v-else>&nbsp;</span>
                         </div>
                         <div class="w-2/5 text-right">
-                            <input class="voyager-input select-none" :value="'composer require '+plugin.repository" @dblclick="copy(plugin)">
+                            <input class="voyager-input w-full select-none" :value="'composer require '+plugin.repository" @dblclick="copy(plugin)">
                         </div>
                     </div>
                     <hr class="w-full bg-gray-300 my-4">
@@ -38,8 +38,8 @@
         <div v-if="hasMultiplePlugins('auth')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_auth_plugins'))"></div>
         <div v-if="hasMultiplePlugins('menu')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></div>
 
-        <div class="voyager-table striped" v-if="installedPlugins > 0">
-            <table v-bind:class="[loading ? 'loading' : '']" id="bread-manager-browse">
+        <div class="voyager-table striped" v-if="installedPlugins > 0" v-bind:class="[loading ? 'loading' : '']">
+            <table id="bread-manager-browse">
                 <thead>
                     <tr>
                         <th>
@@ -114,7 +114,8 @@
             </table>
         </div>
         <div v-else class="w-full text-center">
-            <h3 class="text-xl">No plugins installed :(</h3>
+            <h3>No plugins installed 😞</h3>
+            <h4>Go ahead and install one</h4>
         </div>
     </card>
 </template>

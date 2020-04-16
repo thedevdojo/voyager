@@ -3,10 +3,10 @@
     <div class="header" :class="[{'cursor-pointer': headerPointer}]" v-if="showHeader" @click="$emit('click-header')">
         <div class="flex items-center justify-between flex-wrap sm:flex-no-wrap">
             <div class="inline-flex items-center">
-                <icon v-if="icon" :icon="icon" :size="iconSize" class="mr-2"></icon>
-                <h3 class="text-lg leading-6 font-medium">
+                <icon v-if="icon" :icon="icon" :size="iconSize" class="ltr:mr-2 rtl:ml-2"></icon>
+                <h6 class="leading-6 font-medium">
                     {{ title }}
-                </h3>
+                </h6>
                 <p class="mt-1 text-sm leading-5 text-gray-500">
                     {{ description }}
                 </p>

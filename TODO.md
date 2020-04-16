@@ -18,11 +18,20 @@ Instead, they are listed here:
 - Replace `vue-draggable` with `vue-slicksort` (much smaller, much cooler)
 - Add dark boxshadow variant to tailwind
 
+## Styling
+- Align tailwinds color palette to something nicer
+- Add more shades (`bg-gray-50`, `bg-gray-950`)
+- Closed collapsible should not have vertical padding on the cards content div when its closed
+
+## Bugs
+- Pagination: When there are only 3 pages it shows as 1,2...3
+
 ## Documentation
 - Relationship methods NEED TO define the return-type. Otherwise they won't be recognized by the BREAD builder
 - Scopes need to start with `scope` (ex. `scopeCurrentUser()`)
 - Accessors need to be named `getFieldAttribute` (ex. `getFullNameAttribute`)
 - Computed properties need to implement an accessor AND mutator when used for adding or editing
+- Browse filters can be cleared by double-clicking the input
 
 ## Checklist
 The following things need to be double checked

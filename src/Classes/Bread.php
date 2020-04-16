@@ -51,6 +51,11 @@ class Bread implements \JsonSerializable
         return in_array(SoftDeletes::class, class_uses($this->getModel()));
     }
 
+    public function layouts()
+    {
+        return collect($this->layouts)->recursive();
+    }
+
     public function jsonSerialize()
     {
         return [

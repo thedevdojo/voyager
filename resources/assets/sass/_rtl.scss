@@ -1,0 +1,24 @@
+[dir=rtl] {
+
+    // BUTTON GROUP
+    .button-group {
+        .button {
+            @apply rounded-none #{!important};
+        }
+    
+        .button{
+            &:first-child {
+                @apply rounded-r-md #{!important};
+            }
+    
+            &:last-child {
+                @apply rounded-l-md #{!important};
+            }
+        }
+    }
+
+    // BUTTONS
+    .button {
+        // TODO: Icon should have margin-left instead of right
+    }
+}

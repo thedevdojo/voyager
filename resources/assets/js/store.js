@@ -7,6 +7,7 @@ Vue.prototype.store = new Vuex.Store({
         csrf_token: document.head.querySelector('meta[name="csrf-token"]').content,
         debug: false,
         darkmode: false,
+        rtl: false,
         sidebarOpen: true,
         pageLoading: true,
         ui: {
@@ -47,6 +48,14 @@ Vue.prototype.store = new Vuex.Store({
                 document.querySelector('html').classList.add('mode-dark');
             } else {
                 document.querySelector('html').classList.remove('mode-dark');
+            }
+        },
+        toggleDirection (state) {
+            state.rtl = !state.rtl;
+            if (state.rtl) {
+                document.querySelector('html').setAttribute('dir', 'rtl');
+            } else {
+                document.querySelector('html').setAttribute('dir', 'ltr');
             }
         },
         toggleSidebar (state) {

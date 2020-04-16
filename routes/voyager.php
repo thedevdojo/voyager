@@ -34,21 +34,22 @@ Route::group(['as' => 'voyager.'], function () {
             ], function () use ($bread, $controller) {
                 // Browse
                 Route::view('/', 'voyager::bread.browse', compact('bread'))->name('browse');
-                Route::post('data', ['uses'=> $controller.'@browse', 'as' => 'browse']);
+                Route::post('/data', ['uses'=> $controller.'@data', 'as' => 'data', 'bread' => $bread]);
 
                 // Edit
-                Route::get('/edit/{id}', ['uses' => $controller.'@edit', 'as' => 'edit']);
-                Route::put('/{id}', ['uses' => $controller.'@update', 'as' => 'update']);
+                Route::get('/edit/{id}', ['uses' => $controller.'@edit', 'as' => 'edit', 'bread' => $bread]);
+                Route::put('/{id}', ['uses' => $controller.'@update', 'as' => 'update', 'bread' => $bread]);
 
                 // Add
-                Route::get('/add', ['uses' => $controller.'@add', 'as' => 'add']);
-                Route::post('/', ['uses' => $controller.'@store', 'as' => 'store']);
+                Route::get('/add', ['uses' => $controller.'@add', 'as' => 'add', 'bread' => $bread]);
+                Route::post('/', ['uses' => $controller.'@store', 'as' => 'store', 'bread' => $bread]);
 
                 // Delete
-                Route::delete('/{id}', ['uses' => $controller.'@delete', 'as' => 'delete']);
+                Route::delete('/', ['uses' => $controller.'@delete', 'as' => 'delete', 'bread' => $bread]);
+                Route::patch('/', ['uses' => $controller.'@restore', 'as' => 'restore', 'bread' => $bread]);
 
                 // Read
-                Route::get('/{id}', ['uses' => $controller.'@read', 'as' => 'read']);
+                Route::get('/{id}', ['uses' => $controller.'@read', 'as' => 'read', 'bread' => $bread]);
             });
         }
 

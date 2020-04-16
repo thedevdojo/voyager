@@ -6,6 +6,26 @@ module.exports = {
     separator: ':',
     theme: {
       extend: {
+        colors: {
+          gray: {
+            50:  '#FBFDFE',
+            100: '#F7FAFC',
+            150: '#F2F6FA',
+            200: '#EDF2F7',
+            250: '#E8EDF4',
+            300: '#E2E8F0',
+            400: '#CBD5E0',
+            500: '#A0AEC0',
+            600: '#718096',
+            650: '#5E6B7F',
+            700: '#4A5568',
+            750: '#3C4658',
+            800: '#2D3748',
+            850: '#242C3A',
+            900: '#1A202C',
+            950: '#0D1016',
+          }
+        },
         spacing: {
           '0.5': '0.125rem',
           '1.5': '0.375rem',
@@ -14,9 +34,19 @@ module.exports = {
           '72': '18rem',
           '80': '20rem',
         },
-        boxShadow: {
-          'dark-lg': ' 0 10px 15px -3px rgba(170, 170, 170, .1), 0 4px 6px -2px rgba(170, 170, 170, .05)',
-        }
+        /*colors: {
+          gray: {
+            '100': '#f5f5f5',
+            '200': '#eeeeee',
+            '300': '#e0e0e0',
+            '400': '#bdbdbd',
+            '500': '#9e9e9e',
+            '600': '#757575',
+            '700': '#3c3c3c',
+            '800': '#252526',
+            '900': '#1e1e1e',
+          }
+        }*/
       },
       maxHeight: {
         '0': '0',
@@ -56,7 +86,7 @@ module.exports = {
       flexGrow: ['responsive'],
       flexShrink: ['responsive'],
       flexWrap: ['responsive'],
-      float: ['responsive'],
+      float: ['responsive', 'direction'],
       fontFamily: ['responsive'],
       fontSize: ['responsive'],
       fontSmoothing: ['responsive'],
@@ -69,7 +99,7 @@ module.exports = {
       lineHeight: ['responsive'],
       listStylePosition: ['responsive'],
       listStyleType: ['responsive'],
-      margin: ['responsive'],
+      margin: ['responsive', 'direction'],
       maxHeight: ['responsive'],
       maxWidth: ['responsive'],
       minHeight: ['responsive'],
@@ -80,7 +110,7 @@ module.exports = {
       order: ['responsive'],
       outline: ['responsive', 'focus'],
       overflow: ['responsive'],
-      padding: ['responsive'],
+      padding: ['responsive', 'direction'],
       pointerEvents: ['responsive'],
       position: ['responsive'],
       resize: ['responsive'],
@@ -100,6 +130,7 @@ module.exports = {
     },
     corePlugins: {},
     plugins: [
-      require('tailwindcss-dark-mode')()
+      require('tailwindcss-dark-mode')(),
+      require('tailwindcss-dir')(),
     ],
   }

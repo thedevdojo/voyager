@@ -3,6 +3,8 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 use TCG\Voyager\Facades\Plugins as PluginsFacade;
 
 class PluginsController extends Controller

@@ -4,13 +4,13 @@
             <thead>
                 <tr>
                     <th class="hidden md:table-cell"></th>
-                    <th class="hidden md:table-cell">Type</th>
-                    <th>Column</th>
-                    <th>Title</th>
-                    <th class="hidden md:table-cell">Searchable</th>
-                    <th class="hidden md:table-cell">Orderable</th>
-                    <th class="hidden md:table-cell">Ordered by default</th>
-                    <th style="text-align:right !important">Actions</th>
+                    <th class="hidden md:table-cell">{{ __('voyager::generic.type') }}</th>
+                    <th>{{ __('voyager::generic.column') }}</th>
+                    <th>{{ __('voyager::generic.title') }}</th>
+                    <th class="hidden md:table-cell">{{ __('voyager::manager.searchable') }}</th>
+                    <th class="hidden md:table-cell">{{ __('voyager::manager.orderable') }}</th>
+                    <th class="hidden md:table-cell">{{ __('voyager::manager.order_default') }}</th>
+                    <th style="text-align:right !important">{{ __('voyager::generic.actions') }}</th>
                 </tr>
             </thead>
             <draggable v-model="reactiveFormfields" tag="tbody" handle=".draghandle">
@@ -21,12 +21,12 @@
                     <td class="hidden md:table-cell">{{ getFormfieldByType(formfield.type).name }}</td>
                     <td>
                         <select class="voyager-input small w-full" v-model="formfield.column">
-                            <optgroup label="Columns">
+                            <optgroup :label="__('voyager::manager.columns')">
                                 <option v-for="(column, i) in columns" :key="'column_'+i" :value="{column: column, type: 'column'}">
                                     {{ column }}
                                 </option>
                             </optgroup>
-                            <optgroup label="Computed">
+                            <optgroup :label="__('voyager::manager.computed')">
                                 <option v-for="(prop, i) in computed" :key="'computed_'+i" :value="{column: prop, type: 'computed'}">
                                     {{ prop }}
                                 </option>
@@ -49,34 +49,37 @@
                         <input
                             class="voyager-input"
                             type="checkbox"
-                            v-model="formfield.searchable" />
+                            v-model="formfield.searchable"
+                            :disabled="formfield.column.type !== 'column'" />
                     </td>
                     <td class="hidden md:table-cell">
                         <input
                             class="voyager-input"
                             type="checkbox"
-                            v-model="formfield.orderable" />
+                            v-model="formfield.orderable"
+                            :disabled="formfield.column.type !== 'column'" />
                     </td>
                     <td class="hidden md:table-cell">
                         <input
                             class="voyager-input"
                             type="radio"
+                            :disabled="formfield.column.type !== 'column'"
                             v-model="reactiveOptions.default_order_column"
                             v-bind:value="formfield.column" />
                     </td>
                     <td class="text-right">
                         <button class="button blue" @click="$emit('open-options', key)">
                             <icon icon="cog" />
-                            <span>Options</span>
+                            <span>{{ __('voyager::generic.options') }}</span>
                         </button>
                         <button class="button red" @click="$emit('delete', key)">
                             <icon icon="trash" />
-                            <span>Delete</span>
+                            <span>{{ __('voyager::generic.delete') }}</span>
                         </button>
                         <slidein :opened="optionsId == key" width="w-full md:w-1/3" v-on:closed="$emit('open-options', null)" class="text-left">
                             <div class="flex w-full mb-3">
                                 <div class="w-1/2 text-2xl">
-                                    <h2>Options</h2>
+                                    <h2>{{ __('voyager::generic.options') }}</h2>
                                 </div>
                                 <div class="w-1/2 flex justify-end">
                                     <locale-picker v-if="$language.localePicker" />

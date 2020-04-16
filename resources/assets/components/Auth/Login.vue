@@ -3,7 +3,7 @@
     <fade-transition :duration="150" tag="div" group>
         <form method="post" :action="route('voyager.login')" v-if="!passwordForgotOpen" key="login-form">
             <input type="hidden" name="_token" :value="store.state.csrf_token">
-            <h1 class="text-gray-800 dark:text-gray-200 mb-6 text-4xl font-bold">{{ __('voyager::auth.login') }}</h1>
+            <h2 class="text-gray-800 dark:text-gray-200 mb-6 font-bold">{{ __('voyager::auth.login') }}</h2>
 
             <alert v-if="error" color="red" role="alert" :closebutton="false">
                 {{ error }}
@@ -35,7 +35,7 @@
             </div>
         </form>
         <form method="post" :action="route('voyager.forgot_password')" v-if="hasPasswordForgot && passwordForgotOpen" key="password-form">
-            <h1 class="text-gray-800 dark:text-gray-200 mb-6 text-4xl font-bold">{{ __('voyager::auth.forgot_password') }}</h1>
+            <h2 class="text-gray-800 dark:text-gray-200 mb-6 font-bold">{{ __('voyager::auth.forgot_password') }}</h2>
             <input type="hidden" name="_token" :value="store.state.csrf_token">
             <div class="mt-4">
                 <slot name="forgot_password" />

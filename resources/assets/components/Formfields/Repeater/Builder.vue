@@ -35,7 +35,7 @@
                 </div>
             </bread-manager-view>
             <div class="w-full">
-                <button class="button green w-full">
+                <button class="button green w-full justify-center" disabled>
                     {{ translate(options.add_text) }}
                 </button>
             </div>
@@ -51,11 +51,11 @@ export default {
          deleteFormfield: function (key) {
             var vm = this;
 
-            // TODO: Add functionality
+            // TODO
         },
         openOptions: function (key) {
             this.$emit('open-options', this._uid + '_' + key);
         }
-    }
+    },
 };
 </script>

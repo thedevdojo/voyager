@@ -5,6 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
 use TCG\Voyager\Commands\InstallCommand;
@@ -80,6 +81,17 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadPluginsFrom(Str::finish(storage_path('voyager'), '/').'plugins.json');
 
         $this->commands(InstallCommand::class);
+
+        // TODO: Move this elsewhere
+        Collection::macro('recursive', function () {
+            return $this->map(function ($value) {
+                if (is_array($value) || is_object($value)) {
+                    return (new Collection($value))->recursive();
+                }
+
+                return $value;
+            });
+        });
     }
 
     public function loadBreadsFrom($path)

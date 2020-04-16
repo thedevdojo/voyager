@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ Voyager::getLocale() }}" locales="{{ implode(',', Voyager::getLocales()) }}">
+<html lang="{{ Voyager::getLocale() }}" locales="{{ implode(',', Voyager::getLocales()) }}" dir="ltr">
 
 <head>
     <meta charset="UTF-8">
