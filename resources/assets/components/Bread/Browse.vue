@@ -44,12 +44,12 @@
                                         ></icon>
                                     </div>
                                 </th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <th class="text-right">
+                                <th class="ltr:text-right rtl:text-left">
                                     {{ __('voyager::generic.actions') }}
                                 </th>
+                            </tr>
+                            <tr>
+                                <th></th>
                                 <th v-for="(formfield, key) in layout.formfields" :key="'thead-search-' + key">
                                     <component
                                         v-if="formfield.searchable"
@@ -82,7 +82,7 @@
                                         :value="result[formfield.column.column]">
                                     </component>
                                 </td>
-                                <td class="text-right">
+                                <td class="ltr:text-right rtl:text-left">
                                     <a :href="route('voyager.'+translate(bread.slug, true)+'.read', result[primary])" class="button blue small">
                                         <icon icon="book-alt"></icon>
                                         <span>Read</span>

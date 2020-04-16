@@ -116,7 +116,7 @@ module.exports = {
       resize: ['responsive'],
       stroke: ['responsive'],
       tableLayout: ['responsive'],
-      textAlign: ['responsive'],
+      textAlign: ['responsive', 'direction'],
       textColor: ['dark', 'dark-hover', 'dark-active', 'responsive', 'hover', 'focus'],
       textDecoration: ['responsive', 'hover', 'focus'],
       textTransform: ['responsive'],
