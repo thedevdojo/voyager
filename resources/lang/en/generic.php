@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'is_rtl'                    => 'false',
+
     'actions'                   => 'Actions',
     'add'                       => 'Add',
     'add_new_element'           => 'Add new element',
