@@ -120,6 +120,14 @@
                     <a href="{{ route('voyager.'.$bread->slug.'.browse') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse'))) ? 'active' : '' }}">
                         <icon icon="{{ $bread->icon }}" class="icon ltr:mr-2 rtl:ml-2"></icon>
                         {{ $bread->name_plural }}
+                        
+                        @if (isset($bread->badge) && $bread->badge)
+                        <span class="w-full text-right">
+                            <badge color="{{ isset($bread->color) ? $bread->color : 'green' }}">
+                                {{ $bread->getReadableCount() }}
+                            </badge>
+                        </span>
+                        @endif
                     </a>
                     @endforeach
                 @endif

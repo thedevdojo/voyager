@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use TCG\Voyager\Classes\Bread as BreadClass;
@@ -44,7 +45,7 @@ class Bread
     {
         if (!$this->breads) {
             if (!File::isDirectory($this->breadPath)) {
-                File::makeDirectory($this->breadPath);
+                File::makeDirectory($this->breadPath, 0755, true);
             }
 
             $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {

@@ -17,7 +17,7 @@
                     <span>{{ trans_choice('voyager::bread.delete_type', deletableEntries, { num: deletableEntries, types: translate(bread.name_plural, true), type: translate(bread.name_singular, true)}) }}</span>
                 </button>
                 <button class="button green m-0 ml-2" v-if="restorableEntries > 0" @click.prevent="restoreEntries(selected)">
-                    <icon icon="trash"></icon>
+                    <icon icon="history"></icon>
                     <span>{{ trans_choice('voyager::bread.restore_type', restorableEntries, { num: restorableEntries, types: translate(bread.name_plural, true), type: translate(bread.name_singular, true) }) }}</span>
                 </button>
             </div>

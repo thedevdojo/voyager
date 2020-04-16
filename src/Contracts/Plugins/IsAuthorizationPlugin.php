@@ -2,7 +2,7 @@
 
 namespace TCG\Voyager\Contracts\Plugins;
 
-interface IsAuthorizationPlugins extends IsGenericPlugin
+interface IsAuthorizationPlugin extends IsGenericPlugin
 {
     public function authorize($ability, $arguments = []);
 }

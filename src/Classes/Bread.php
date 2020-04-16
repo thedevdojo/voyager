@@ -26,6 +26,7 @@ class Bread implements \JsonSerializable
     public $policy;
     public $scope;
     public $global_search_field;
+    public $color = 'green';
     public $layouts = [];
 
     protected $model_class = null;
@@ -56,6 +57,21 @@ class Bread implements \JsonSerializable
         return collect($this->layouts)->recursive();
     }
 
+    public function getReadableCount()
+    {
+        // TODO: We might need to consider withTrashed() as well.
+        $count = $this->getModel()->count();
+        if ($count >= 1000000) {
+            return number_format(($count / 1000000)) . 'M';
+        } else if ($count >= 100000) {
+            return number_format(($count / 100000)) . 'K';
+        } else if ($count >= 1000) {
+            return number_format(($count / 1000), 1) . 'K';
+        }
+
+        return $count;
+    }
+
     public function jsonSerialize()
     {
         return [
@@ -69,6 +85,7 @@ class Bread implements \JsonSerializable
             'policy'              => $this->policy,
             'scope'               => $this->scope,
             'global_search_field' => $this->global_search_field,
+            'color'               => $this->color,
             'layouts'             => $this->layouts,
         ];
     }

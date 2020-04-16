@@ -48,7 +48,7 @@ class Plugins
 
         $folder = dirname($this->path);
         if (!File::isDirectory($folder)) {
-            File::makeDirectory($folder);
+            File::makeDirectory($folder, 0755, true);
         }
         if (!File::exists($this->path)) {
             File::put($this->path, '[]');

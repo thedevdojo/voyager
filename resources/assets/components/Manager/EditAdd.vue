@@ -29,7 +29,7 @@
                 </div>
                 
                 <div class="flex-none md:flex mb-4">
-                    <div class="w-full md:w-1/3 m-1">
+                    <div class="w-full md:w-1/4 m-1">
                         <label class="label" for="name-singular">{{ __('voyager::manager.name_singular') }}</label>
                         <language-input
                             class="voyager-input w-full"
@@ -38,7 +38,7 @@
                             v-bind:value="bread.name_singular"
                             v-on:input="bread.name_singular = $event" />
                     </div>
-                    <div class="w-full md:w-1/3 m-1">
+                    <div class="w-full md:w-1/4 m-1">
                         <label class="label" for="name-plural">{{ __('voyager::manager.name_plural') }}</label>
                         <language-input
                             class="voyager-input w-full"
@@ -47,7 +47,7 @@
                             v-bind:value="bread.name_plural"
                             v-on:input="bread.name_plural = $event" />
                     </div>
-                    <div class="w-full md:w-1/3 m-1">
+                    <div class="w-full md:w-1/6 m-1">
                         <label class="label" for="icon">{{ __('voyager::generic.icon') }}</label>
                         <modal ref="icon_modal" :title="__('voyager::generic.select_icon')">
                             <icon-picker v-on:select="$refs.icon_modal.close(); bread.icon = $event" />
@@ -55,6 +55,20 @@
                                 <button class="button green icon-only">
                                     <icon class="cursor-pointer text-white my-1 content-center" :size="6" :icon="bread.icon" />
                                 </button>
+                            </div>
+                        </modal>
+                    </div>
+                    <div class="w-full md:w-1/6 m-1">
+                        <label class="label" for="icon">{{ __('voyager::manager.show_menu_badge') }}</label>
+                        <input type="checkbox" class="voyager-input" v-model="bread.badge">
+                    </div>
+                    <div class="w-full md:w-1/6 m-1">
+                        <label class="label" for="color">{{ __('voyager::generic.color') }}</label>
+
+                        <modal ref="color_modal" :title="__('voyager::generic.select_color')" icon="palette">
+                            <color-picker v-on:select="$refs.color_modal.close(); bread.color = $event"></color-picker>
+                            <div slot="opener" class="w-full">
+                                <button :class="bread.color" class="button">{{ ucfirst(bread.color) }}</button>
                             </div>
                         </modal>
                     </div>

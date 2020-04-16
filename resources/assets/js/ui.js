@@ -12,6 +12,7 @@ Vue.component('alert', require('../components/UI/Alert').default);
 Vue.component('badge', require('../components/UI/Badge').default);
 Vue.component('card', require('../components/UI/Card').default);
 Vue.component('collapsible', require('../components/UI/Collapsible').default);
+Vue.component('color-picker', require('../components/UI/ColorPicker').default);
 Vue.component('search', require('../components/UI/Search').default);
 Vue.component('slidein', require('../components/UI/SlideIn').default);
 Vue.component('modal', require('../components/UI/Modal').default);

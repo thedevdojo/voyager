@@ -37,4 +37,5 @@ return [
     'rename_layout'                     => 'Rename Layout',
     'scope'                             => 'Scope',
     'searchable'                        => 'Searchable',
+    'show_menu_badge'                   => 'Show badge in menu',
 ];
