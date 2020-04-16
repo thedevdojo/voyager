@@ -147,37 +147,67 @@ class BreadController extends Controller
 
     public function delete(Request $request)
     {
-        // TODO: Authorize, also check if soft-delete is allowed/enabled
+        $bread = $this->getBread($request);
+        $model = $bread->getModel();
+        if ($bread->usesSoftDeletes()) {
+            $model = $model->withTrashed();
+        }
+
+        $deleted = 0;
+
         $force = $request->get('force', 'false');
         if ($request->has('ids')) {
-            if ($force == 'true') {
-                $ids = $request->get('ids');
-                if (!is_array($ids)) {
-                    $ids = [$ids];
-                }
-
-                foreach ($ids as $id) {
-                    $this->getBread($request)->getModel()->findOrFail($id)->forceDelete();
-                }
-            } else {
-                $this->getBread($request)->getModel()->destroy($request->ids);
+            $ids = $request->get('ids');
+            if (!is_array($ids)) {
+                $ids = [$ids];
             }
+            $model->find($ids)->each(function ($entry) use ($bread, $force, &$deleted) {
+                if ($force == 'true' && $bread->usesSoftDeletes()) {
+                    // TODO: Check if layout allows usage of soft-deletes
+                    if ($entry->trashed()) {
+                        $this->authorize('force-delete', $entry);
+                        $entry->forceDelete();
+                        $deleted++;
+                    }
+                } else {
+                    $this->authorize('delete', $entry);
+                    $entry->delete();
+                    $deleted++;
+                }
+            });
         }
+
+        return $deleted;
     }
 
     public function restore(Request $request)
     {
-        // TODO: Authorize, also check if soft-delete is allowed/enabled
+        // TODO: Check if layout allows usage of soft-deletes
+        $bread = $this->getBread($request);
+        if (!$bread->usesSoftDeletes()) {
+            return;
+        }
+
+        $restored = 0;
+
+        $model = $bread->getModel()->withTrashed();
+
         if ($request->has('ids')) {
             $ids = $request->get('ids');
             if (!is_array($ids)) {
                 $ids = [$ids];
             }
 
-            foreach ($ids as $id) {
-                $this->getBread($request)->getModel()->withTrashed()->findOrFail($id)->restore();
-            }
+            $model->find($ids)->each(function ($entry) use ($bread, &$restored) {
+                if ($entry->trashed()) {
+                    $this->authorize('restore', $entry);
+                    $entry->restore();
+                    $restored++;
+                }
+            });
         }
+
+        return $restored;
     }
 
     private function getBread(Request $request)

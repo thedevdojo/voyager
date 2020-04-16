@@ -221,9 +221,9 @@ export default {
                         .then(function (response) {
                             vm.$notify.notify(
                                 vm.trans_choice('voyager::bread.delete_type_success',
-                                (vm.isArray(entries) ? entries.length : 1),
+                                response.data,
                                 {
-                                    num: vm.deletableEntries,
+                                    num: response.data,
                                     type: vm.translate(vm.bread.name_singular, true),
                                     types: vm.translate(vm.bread.name_plural, true)
                                 }),
@@ -267,9 +267,9 @@ export default {
                         .then(function (response) {
                             vm.$notify.notify(
                                 vm.trans_choice('voyager::bread.restore_type_success',
-                                (vm.isArray(entries) ? entries.length : 1),
+                                response.data,
                                 {
-                                    num: vm.restorableEntries,
+                                    num: response.data,
                                     type: vm.translate(vm.bread.name_singular, true),
                                     types: vm.translate(vm.bread.name_plural, true)
                                 }),
