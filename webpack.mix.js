@@ -17,9 +17,12 @@ mix.sass('resources/assets/sass/colors.scss', 'resources/assets/dist/css')
 .options({
     processCssUrls: false,
     postCss: [ tailwindcss('tailwind.config.js') ],
-}).purgeCss({
-    folders: ['resources'],
-    whitelistPatterns: [/mode-dark/, /dark/, /w-[0-9]+\/[0-9]+/],
 })
 .js('resources/assets/js/voyager.js', 'resources/assets/dist/js')
 .copy('node_modules/inter-ui/Inter (web)', 'resources/assets/dist/fonts/inter-ui');
+/*
+.purgeCss({
+    folders: ['resources'],
+    whitelistPatterns: [/mode-dark/, /dark/, /w-[0-9]+\/[0-9]+/],
+})
+*/

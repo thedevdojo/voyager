@@ -27,6 +27,7 @@ class Bread implements \JsonSerializable
     public $scope;
     public $global_search_field;
     public $color = 'green';
+    public $badge = true;
     public $layouts = [];
 
     protected $model_class = null;
@@ -85,6 +86,7 @@ class Bread implements \JsonSerializable
             'policy'              => $this->policy,
             'scope'               => $this->scope,
             'global_search_field' => $this->global_search_field,
+            'badge'               => $this->badge,
             'color'               => $this->color,
             'layouts'             => $this->layouts,
         ];
