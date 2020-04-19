@@ -4,6 +4,11 @@ namespace TCG\Voyager\Contracts\Bread;
 
 abstract class Formfield implements \JsonSerializable
 {
+    public $options = [];
+    public $column = [
+        'column' => '',
+        'type'   => '',
+    ];
     /**
      * Get the name of the formfield.
      *
@@ -89,11 +94,11 @@ abstract class Formfield implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        return [
+        return array_merge([
             'name'        => $this->name(),
             'type'        => $this->type(),
             'listOptions' => (object) $this->listOptions(),
             'viewOptions' => (object) $this->viewOptions(),
-        ];
+        ], (array) $this);
     }
 }

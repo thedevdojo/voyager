@@ -12,6 +12,7 @@ class BreadController extends Controller
 {
     public function data(Request $request)
     {
+        $start = microtime(true);
         $bread = $this->getBread($request);
         $layout = $this->getLayoutForAction($bread, 'browse');
 
@@ -45,18 +46,16 @@ class BreadController extends Controller
         // Global search ($global)
         if (!empty($global)) {
             $query->where(function ($query) use ($global, $layout) {
-                $layout->get('formfields')->each(function ($formfield) use (&$query, $global) {
-                    if ($formfield->get('searchable')) {
-                        $column_type = $formfield->get('column')->get('type');
-                        $column = $formfield->get('column')->get('column');
-    
-                        if ($column_type == 'computed') {
-                            // TODO
-                        } else if ($column_type == 'relationship') {
-                            // TODO
-                        } else {
-                            $query->orWhere($column, 'LIKE', '%'.$global.'%');
-                        }
+                $layout->searchableFormfields()->each(function ($formfield) use (&$query, $global) {
+                    $column_type = $formfield->column->type;
+                    $column = $formfield->column->column;
+
+                    if ($column_type == 'computed') {
+                        // TODO
+                    } else if ($column_type == 'relationship') {
+                        // TODO
+                    } else {
+                        $query->orWhere($column, 'LIKE', '%'.$global.'%');
                     }
                 });
             });
@@ -64,7 +63,7 @@ class BreadController extends Controller
 
         // Field search ($filters)
         foreach (array_filter($filters) as $column => $filter) {
-            $column_type = $layout->get('formfields')->where('column.column', $column)->first()->get('column')->get('type');
+            $column_type = $layout->getFormfieldByColumn($column)->column->type;
 
             if ($column_type == 'computed') {
                 // TODO
@@ -77,7 +76,7 @@ class BreadController extends Controller
 
         // Ordering ($order and $direction)
         if (!empty($direction) && !empty($order)) {
-            $column_type = $layout->get('formfields')->where('column.column', $order)->first()->get('column')->get('type');
+            $column_type = $layout->getFormfieldByColumn($order)->column->type;
 
             if ($column_type == 'computed') {
                 // TODO
@@ -99,29 +98,34 @@ class BreadController extends Controller
         $query = $query->slice(($page - 1) * $perpage)->take($perpage);
 
         // Load accessors
-        $accessors = $layout->get('formfields')->where('column.type', 'computed')->pluck('column.column')->toArray();
+        $accessors = $layout->getFormfieldsByColumnType('computed')->pluck('column.column')->toArray();
         $query = $query->each(function ($item) use ($accessors) {
             $item->append($accessors);
         });
 
         // Transform results
-        $query = $query->transform(function ($item) use ($uses_soft_deletes) {
+        $query = $query->transform(function ($item) use ($uses_soft_deletes, $layout) {
             // Add soft-deleted property
-            $item->uses_soft_deletes = $uses_soft_deletes;
             $item->is_soft_deleted = false;
             if ($uses_soft_deletes && !empty($item->deleted_at)) {
                 $item->is_soft_deleted = $item->trashed();
             }
+            // TODO: Pass each result through formfields browse() method
+            $layout->formfields->each(function ($formfield) use (&$item) {
+                $item->{$formfield->column->column} = $formfield->browse($item->{$formfield->column->column});
+            });
 
             return $item;
         });
 
         return [
-            'results'   => $query->values(),
-            'filtered'  => $filtered,
-            'total'     => $total,
-            'layout'    => $layout,
-            'primary'   => $query->get(0) ? $query->get(0)->getKeyName() : 'id'
+            'results'           => $query->values(),
+            'filtered'          => $filtered,
+            'total'             => $total,
+            'layout'            => $layout,
+            'execution'         => number_format(((microtime(true) - $start) * 1000)),
+            'uses_soft_deletes' => $uses_soft_deletes,
+            'primary'           => $query->get(0) ? $query->get(0)->getKeyName() : 'id'
         ];
     }
 
@@ -222,6 +226,6 @@ class BreadController extends Controller
 
     private function getLayoutForAction($bread, $action)
     {
-        return $bread->layouts()->where('type', 'list')->first();
+        return $bread->layouts->where('type', 'list')->first();
     }
 }

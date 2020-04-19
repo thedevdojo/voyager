@@ -125,7 +125,7 @@ export default {
                 table: table
             })
             .then(function (response) {
-                vm.$notify.notify(vm.__('voyager::manager.bread_backed_up'), null, 'blue', 5000);
+                vm.$notify.notify(vm.__('voyager::manager.bread_backed_up', { name: response.data }), null, 'blue', 5000);
             })
             .catch(function (error) {
                 vm.$notify.notify(error.response.statusText, null, 'red', 5000);

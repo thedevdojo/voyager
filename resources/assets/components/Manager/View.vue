@@ -1,7 +1,6 @@
 <template>
     <draggable
         class="flex flex-wrap w-full"
-        v-model="reactiveFormfields"
         tag="div"
         handle=".draghandle"
         :list="reactiveFormfields"

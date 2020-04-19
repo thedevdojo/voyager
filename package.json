@@ -29,6 +29,6 @@
         "vue-unicons": "^2.1.0",
         "vue2-transitions": "^0.3.0",
         "vuedraggable": "^2.23.2",
-        "vuex": "^3.1.3"
+        "vuex": "^3.2.0"
     }
 }

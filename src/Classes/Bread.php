@@ -38,7 +38,7 @@ class Bread implements \JsonSerializable
             if ($key == 'layouts') {
                 $this->layouts = collect();
                 foreach ($value as $layout) {
-                    $this->layouts->push(collect($layout));
+                    $this->layouts->push(new Layout($layout));
                 }
             } else {
                 $this->{$key} = $value;
@@ -60,9 +60,10 @@ class Bread implements \JsonSerializable
         return in_array(SoftDeletes::class, class_uses($this->getModel()));
     }
 
-    public function layouts()
+    public function hasTranslatableFormfields()
     {
-        return collect($this->layouts)->recursive();
+        // TODO:
+        return false;
     }
 
     public function getReadableCount()

@@ -8,7 +8,7 @@
                     v-model="parameters.query"
                     @dblclick="parameters.query = null"
                     :placeholder="'Search ' + translate(bread.name_plural)">
-                <select class="voyager-input small ltr:mr-2 rtl:ml-2" v-model="parameters.softdeleted">
+                <select class="voyager-input small ltr:mr-2 rtl:ml-2" v-model="parameters.softdeleted" v-if="uses_soft_deletes">
                     <option value="show">Show soft-deleted</option>
                     <option value="hide">Hide soft-deleted</option>
                     <option value="only">Only show soft-deleted</option>
@@ -96,15 +96,15 @@
                                         <icon icon="pen"></icon>
                                         <span>Edit</span>
                                     </a>
-                                    <button @click.prevent="deleteEntries(result[primary])" class="button red small" v-if="(result.uses_soft_deletes && !result.is_soft_deleted) || !result.uses_soft_deletes">
+                                    <button @click.prevent="deleteEntries(result[primary])" class="button red small" v-if="(uses_soft_deletes && !result.is_soft_deleted) || !uses_soft_deletes">
                                         <icon icon="trash"></icon>
                                         <span>Delete</span>
                                     </button>
-                                    <button @click.prevent="deleteEntries(result[primary], true)" v-if="result.uses_soft_deletes && result.is_soft_deleted" class="button red small">
+                                    <button @click.prevent="deleteEntries(result[primary], true)" v-if="uses_soft_deletes && result.is_soft_deleted" class="button red small">
                                         <icon icon="trash"></icon>
                                         <span>Force Delete</span>
                                     </button>
-                                    <button @click.prevent="restoreEntries(result[primary])" v-if="result.uses_soft_deletes && result.is_soft_deleted" class="button green small">
+                                    <button @click.prevent="restoreEntries(result[primary])" v-if="uses_soft_deletes && result.is_soft_deleted" class="button green small">
                                         <icon icon="history"></icon>
                                         <span>Restore</span>
                                     </button>
@@ -146,6 +146,7 @@ export default {
             layout: null,
             selected: [],
             primary: 'id', // The primary key
+            uses_soft_deletes: false,
             parameters: {
                 page: 1,
                 perpage: 10,
@@ -174,6 +175,7 @@ export default {
                 if (vm.parameters.order === null) {
                     vm.parameters.order = vm.layout.options.default_order_column.column;
                 }
+                //console.log('Getting entries took ' + response.data.execution + 'ms');
             })
             .catch(function (response) {
                 console.log(response.statusText);
@@ -318,6 +320,9 @@ export default {
                 type = this.translate(this.bread.name_singular, true);
             }
             var start = 1 + ((this.parameters.page - 1) * this.parameters.perpage);
+            if (this.results.length == 0) {
+                start = 0;
+            }
             var end = this.clamp((start + this.parameters.perpage - 1), start, this.filtered);
             var desc = this.__('voyager::bread.results_description', {
                 start: start,
@@ -364,7 +369,7 @@ export default {
             return vm.results.filter(function (result) {
                 return result.is_soft_deleted && vm.selected.includes(result[vm.primary]);
             }).length;
-        }
+        },
     },
     mounted: function () {
         var parameter_found = false;
@@ -382,6 +387,10 @@ export default {
         // Data will automatically be loaded in the watcher when parameters were set above
         if (!parameter_found) {
             this.load();
+        }
+
+        if (this.bread.translatable) {
+            Vue.prototype.$language.localePicker = true;
         }
     },
     watch: {

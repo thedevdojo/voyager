@@ -177,6 +177,8 @@ class BreadManagerController extends Controller
      */
     public function backupBread(Request $request)
     {
-        return response('', BreadFacade::backupBread($request->get('table', '')) ? 200 : 500);
+        $result = BreadFacade::backupBread($request->get('table', ''));
+
+        return response($result, $result === false ? 500 : 200);
     }
 }

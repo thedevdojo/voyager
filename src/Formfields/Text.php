@@ -41,6 +41,12 @@ class Text extends Formfield
 
     public function browse($input)
     {
+        if ($this->options->display_length > 0) {
+            if (!is_array($input)) {
+                return substr($input, 0, $this->options->display_length);
+            }
+        }
+
         return $input;
     }
 

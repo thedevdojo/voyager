@@ -2,7 +2,7 @@
     <div>
         <card title="Edit BREAD" icon="bread" :icon-size="8">
             <div slot="actions">
-                <button class="button green" @click.stop="loadProperties">
+                <button class="button green" @click="loadProperties">
                     <icon icon="sync" class="mr-0 md:mr-1" :class="[loadingProps ? 'rotating-ccw' : '']" />
                     <span class="hidden md:block">
                         {{ __('voyager::manager.reload_properties') }}
@@ -116,7 +116,12 @@
                     </div>
                 </div>
                 <div class="w-full">
-                    <button class="button blue" @click="saveBread()">{{ __('voyager::generic.save') }}</button>
+                    <button class="button blue" @click="saveBread">
+                        {{ __('voyager::generic.save') }}
+                    </button>
+                    <button class="button green" @click="backupBread">
+                        {{ __('voyager::generic.backup') }}
+                    </button>
                 </div>
             </div>
         </card>
@@ -259,6 +264,18 @@ export default {
                         });
                     });
                 }
+            });
+        },
+        backupBread: function () {
+            var vm = this;
+            axios.post(vm.route('voyager.bread.backup-bread'), {
+                table: vm.bread.table
+            })
+            .then(function (response) {
+                vm.$notify.notify(vm.__('voyager::manager.bread_backed_up', { name: response.data }), null, 'blue', 5000);
+            })
+            .catch(function (error) {
+                vm.$notify.notify(error.response.statusText, null, 'red', 5000);
             });
         },
         loadProperties: function () {
@@ -414,7 +431,7 @@ export default {
         },
         closeFormfieldAddDropdown: function () {
             this.addFormfieldDropdownOpen = false;
-        }
+        },
     },
     computed: {
         views: function () {
@@ -444,7 +461,7 @@ export default {
             set: function (value) {
                 
             }
-        }
+        },
     },
     mounted: function () {
         var vm = this;
@@ -467,6 +484,6 @@ export default {
         if (this.bread.layouts.length >= (layout+1)) {
             this.currentLayoutName = this.bread.layouts[layout].name;
         }
-    }
+    },
 };
 </script>

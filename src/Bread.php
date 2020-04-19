@@ -159,13 +159,16 @@ class Bread
     public function backupBread($table)
     {
         $old = $this->breadPath.$table.'.json';
-        $new = $this->breadPath.$table.'.backup.'.Carbon::now()->isoFormat('Y-MM-DD@HH-mm').'.json';
+        $name = $table.'.backup.'.Carbon::now()->isoFormat('Y-MM-DD@HH-mm').'.json';
+        $new = $this->breadPath.$name;
 
         if (File::exists($old)) {
-            return File::copy($old, $new);
+            if (!File::copy($old, $new)) {
+                return false;
+            }
         }
 
-        return true;
+        return $name;
     }
 
     /**
@@ -225,7 +228,7 @@ class Bread
     public function getFormfield(string $type)
     {
         return $this->formfields->filter(function ($formfield) use ($type) {
-            return $formfield->type == $type;
+            return $formfield->type() == $type;
         })->first();
     }
 

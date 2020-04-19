@@ -93,7 +93,6 @@
                                 v-bind:options="formfield.options"
                                 :column="formfield.column"
                                 show="list-options" />
-                            <bread-manager-validation v-model="formfield.validation" />
                         </slidein>
                     </td>
                 </tr>
