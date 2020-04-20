@@ -18,7 +18,7 @@
                 </div>
                 @php
                     $menu_plugin = VoyagerPlugins::getPluginByType('menu');
-                    $current_url = Str::finish('/', url()->current());
+                    $current_url = Str::finish(url()->current(), '/');
                 @endphp
 
                 @if ($menu_plugin && $menu_plugin->getMenuView())
@@ -29,21 +29,25 @@
                     :title="__('voyager::generic.dashboard')"
                     :href="route('voyager.dashboard')"
                     icon="dashboard" 
-                    {{ $current_url == Str::finish('/', route('voyager.dashboard')) ? 'active' : '' }}>
+                    {{ $current_url == Str::finish(route('voyager.dashboard'), '/') ? 'active' : '' }}>
                 </menu-item>
 
                 <menu-item
                     :title="__('voyager::generic.breads')"
                     :href="route('voyager.bread.index')"
                     icon="bread" 
-                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}>
+                    {{ Str::startsWith($current_url, Str::finish(route('voyager.bread.index'), '/')) ? 'active' : '' }}>
                     @if (count(Bread::getBreads()) > 0)
                         <div class="rounded ltr:pl-3 rtl:pr-3">
                         @foreach (Bread::getBreads() as $bread)
+                            @php
+                                $active = Str::startsWith($current_url, route('voyager.bread.edit', $bread->table));
+                            @endphp
                             <menu-item
                                 title="{{ $bread->name_plural }}"
                                 href="{{ route('voyager.bread.edit', $bread->table) }}"
-                                icon="{{ $bread->icon }}">
+                                icon="{{ $bread->icon }}" 
+                                {{ $active ? 'active' : '' }}>
                             </menu-item>
                         @endforeach
                         </div>
@@ -54,28 +58,28 @@
                     :title="__('voyager::generic.ui_components')"
                     :href="route('voyager.ui')"
                     icon="window" 
-                    {{ $current_url == Str::finish('/', route('voyager.ui')) ? 'active' : '' }}>
+                    {{ $current_url == Str::finish(route('voyager.ui'), '/') ? 'active' : '' }}>
                 </menu-item>
 
                 <menu-item
                     :title="__('voyager::generic.settings')"
                     :href="route('voyager.settings.index')"
                     icon="cog" 
-                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.settings.index'))) ? 'active' : '' }}>
+                    {{ Str::startsWith($current_url, Str::finish(route('voyager.settings.index'), '/')) ? 'active' : '' }}>
                 </menu-item>
                 
                 <menu-item
                     :title="__('voyager::plugins.plugins')"
                     :href="route('voyager.plugins.index')"
                     icon="puzzle-piece" 
-                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}>
+                    {{ Str::startsWith($current_url, Str::finish(route('voyager.plugins.index'), '/')) ? 'active' : '' }}>
                 </menu-item>
 
                 @if (count(Bread::getBreads()) > 0)
                     <hr class="my-3 sidebar-border" />
                     @foreach (Bread::getBreads() as $bread)
                     @php
-                        $active = Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse')));
+                        $active = Str::startsWith($current_url, Str::finish(route('voyager.'.$bread->slug.'.browse'), '/'));
                     @endphp
                     <menu-item
                         title="{{ $bread->name_plural }}"
@@ -115,7 +119,7 @@
             </div>
             @php
                 $menu_plugin = VoyagerPlugins::getPluginByType('menu');
-                $current_url = Str::finish('/', url()->current());
+                $current_url = Str::finish(url()->current(), '/');
             @endphp
 
             @if ($menu_plugin && $menu_plugin->getMenuView())
@@ -126,21 +130,25 @@
                     :title="__('voyager::generic.dashboard')"
                     :href="route('voyager.dashboard')"
                     icon="dashboard" 
-                    {{ $current_url == Str::finish('/', route('voyager.dashboard')) ? 'active' : '' }}>
+                    {{ $current_url == Str::finish(route('voyager.dashboard'), '/') ? 'active' : '' }}>
                 </menu-item>
 
                 <menu-item
                     :title="__('voyager::generic.breads')"
                     :href="route('voyager.bread.index')"
                     icon="bread" 
-                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}>
+                    {{ Str::startsWith($current_url, Str::finish(route('voyager.bread.index'), '/')) ? 'active' : '' }}>
                     @if (count(Bread::getBreads()) > 0)
                         <div class="rounded ltr:ml-3 rtl:mr-3">
                         @foreach (Bread::getBreads() as $bread)
+                            @php
+                                $active = Str::startsWith($current_url, Str::finish(route('voyager.bread.edit', $bread->table), '/'));
+                            @endphp
                             <menu-item
                                 title="{{ $bread->name_plural }}"
                                 href="{{ route('voyager.bread.edit', $bread->table) }}"
-                                icon="{{ $bread->icon }}">
+                                icon="{{ $bread->icon }}" 
+                                {{ $active ? 'active' : '' }}>
                             </menu-item>
                         @endforeach
                         </div>
@@ -151,28 +159,28 @@
                     :title="__('voyager::generic.ui_components')"
                     :href="route('voyager.ui')"
                     icon="window" 
-                    {{ $current_url == Str::finish('/', route('voyager.ui')) ? 'active' : '' }}>
+                    {{ $current_url == Str::finish(route('voyager.ui'), '/') ? 'active' : '' }}>
                 </menu-item>
 
                 <menu-item
                     :title="__('voyager::generic.settings')"
                     :href="route('voyager.settings.index')"
                     icon="cog" 
-                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.settings.index'))) ? 'active' : '' }}>
+                    {{ Str::startsWith($current_url, Str::finish(route('voyager.settings.index'), '/')) ? 'active' : '' }}>
                 </menu-item>
                 
                 <menu-item
                     :title="__('voyager::plugins.plugins')"
                     :href="route('voyager.plugins.index')"
                     icon="puzzle-piece" 
-                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}>
+                    {{ Str::startsWith($current_url, Str::finish(route('voyager.plugins.index'), '/')) ? 'active' : '' }}>
                 </menu-item>
 
                 @if (count(Bread::getBreads()) > 0)
                     <hr class="my-3 sidebar-border" />
                     @foreach (Bread::getBreads() as $bread)
                     @php
-                        $active = Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse')));
+                        $active = Str::startsWith($current_url, Str::finish(route('voyager.'.$bread->slug.'.browse'), '/'));
                     @endphp
                     <menu-item
                         title="{{ $bread->name_plural }}"
