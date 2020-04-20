@@ -19,7 +19,7 @@
                                 <p class="title">{{ notification.title }}</p>
                                 <p class="message mt-1">{{ notification.message }}</p>
                             </span>
-                            <p class="title" v-else>{{ notification.message }}</p>
+                            <p class="title" v-else v-html="notification.message"></p>
                             <div class="mt-4 flex" v-if="notification.input !== null">
                                 <input
                                     type="text"

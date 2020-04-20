@@ -8,7 +8,7 @@ return [
     'multiple_auth_plugins'         => 'There are multiple authentication plugins enabled.\nOnly the first will be used.\nMake sure you only have one enabled at a time.',
     'multiple_menu_plugins'         => 'There are multiple menu plugins enabled.\nOnly the first will be used.\nMake sure you only have one enabled at a time.',
     'plugins'                       => 'Plugins',
-    'preview_theme'                 => 'You see a preview of the theme ":name". It will disappear when you reload the page.',
+    'preview_theme'                 => 'You see a preview of the theme ":name".<br>It will disappear when you reload the page.',
     'reload'                        => 'Reload',
     'reload_page'                   => 'You might need to reload the page in order to take effect',
     'search_plugins'                => 'Search Plugins',

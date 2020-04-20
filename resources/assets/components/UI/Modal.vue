@@ -1,7 +1,7 @@
 <template>
 <div>
     <fade-transition>
-        <div v-if="isOpened" class="modal inset-0 p-0 flex items-center justify-center z-40">
+        <div v-if="isOpened" class="mode-dark modal inset-0 p-0 flex items-center justify-center z-40">
             <div v-if="isOpened" class="fixed inset-0 transition-opacity" @click="close">
                 <div class="absolute inset-0 bg-black opacity-75"></div>
             </div>

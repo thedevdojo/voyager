@@ -3,11 +3,11 @@
         <div slot="actions">
             <modal ref="search_plugin_modal" :title="__('voyager::plugins.plugins')" icon="puzzle-piece">
                 <input type="text" class="voyager-input w-full mb-3" v-model="query" :placeholder="__('voyager::generic.search')">
-                <div v-for="(plugin, i) in filteredPlugins.slice(start, end)" class="text-white" :key="'plugin-'+i">
+                <div v-for="(plugin, i) in filteredPlugins.slice(start, end)" :key="'plugin-'+i">
                     <div class="flex">
                         <div class="w-3/5">
                             <div class="inline-flex">
-                                <h3 class="text-gray-100 text-lg mr-2">{{ plugin.name }}</h3>
+                                <h5 class="mr-2">{{ plugin.name }}</h5>
                                 <badge :color="getPluginTypeColor(plugin.type)">{{ __('voyager::plugins.types.'+plugin.type) }}</badge>
                             </div>
                             <p>{{ plugin.description }}</p>
@@ -54,7 +54,7 @@
                         <th>
                             {{ __('voyager::generic.version') }}
                         </th>
-                        <th class="text-right">
+                        <th class="ltr:text-right rtl:text-left">
                             {{ __('voyager::generic.actions') }}
                         </th>
                     </tr>
@@ -71,7 +71,7 @@
                         <td>
                             {{ plugin.version || '-' }}
                         </td>
-                        <td>
+                        <td class="ltr:text-right rtl:text-left">
                             <a class="button green small" v-if="plugin.website" :href="plugin.website" target="_blank">
                                 <icon icon="globe"></icon>
                                 {{ __('voyager::generic.website') }}
@@ -104,7 +104,7 @@
                                 </div>
                                 <div v-html="plugin.instructions"></div>
                             </modal>
-                            <button v-if="plugin.type == 'theme'" :disabled="plugin.enabled" class="button purple small" @click="previewTheme(plugin.src, plugin.name)">
+                            <button v-if="plugin.type == 'theme' && !plugin.enabled" class="button purple small" @click="previewTheme(plugin.src, plugin.name)">
                                 <icon icon="eye"></icon>
                                 {{ __('voyager::generic.preview') }}
                             </button>
