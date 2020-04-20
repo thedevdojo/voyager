@@ -1,6 +1,6 @@
 <template>
-<div>
-    <div class="menuitem" :class="[active ? 'active' : '']">
+<div class="menuitem">
+    <div class="item" :class="[active ? 'active' : '']">
         <div class="inline-flex items-center">
             <a :href="href" class="text-sm leading-5 link" @click="clickItem">
                 <icon :icon="icon" class="icon ltr:mr-2 rtl:ml-2"></icon>
@@ -15,7 +15,7 @@
         </div>
     </div>
     
-    <collapse-transition v-if="$slots.default">
+    <collapse-transition v-if="$slots.default" :class="[open ? 'dropdown-open' : '']">
         <slot v-if="open" />
     </collapse-transition>
 </div>
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.menuitem {
+.item {
     @apply flex items-center justify-between flex-wrap rounded-md font-medium mt-1 px-2 py-2;
 
     .link {

@@ -209,28 +209,34 @@ select.voyager-input {
     }
 
     .menuitem {
-        .link {
-            @apply #{$sidebar-item-text-color};
-        }
-
-        &:hover {
-            @apply #{$sidebar-item-hover-background};
-        }
-
-        &.active {
-            @apply #{$sidebar-item-active-background};
-
+        .item {
             .link {
-                @apply #{$sidebar-item-active-text-color};
+                @apply #{$sidebar-item-text-color};
+            }
+
+            &:hover {
+                @apply #{$sidebar-item-hover-background};
+            }
+
+            &.active {
+                @apply #{$sidebar-item-active-background};
+
+                .link {
+                    @apply #{$sidebar-item-active-text-color};
+                }
+
+                .icon {
+                    @apply #{$sidebar-item-active-icon-color};
+                }
             }
 
             .icon {
-                @apply #{$sidebar-item-active-icon-color};
+                @apply #{$sidebar-item-icon-color};
             }
         }
 
-        .icon {
-            @apply #{$sidebar-item-icon-color};
+        .dropdown-open {
+            // TODO: We can apply a (darker) background color to a dropdown here
         }
     }
 
