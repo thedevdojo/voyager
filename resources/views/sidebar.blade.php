@@ -39,7 +39,7 @@
                     {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}>
                     @if (count(Bread::getBreads()) > 0)
                         @foreach (Bread::getBreads() as $bread)
-                        <div class="bg-gray-850 rounded ltr:pl-3 rtl:pr-3">
+                        <div class="rounded ltr:pl-3 rtl:pr-3">
                             <menu-item
                                 title="{{ $bread->name_plural }}"
                                 href="{{ route('voyager.bread.edit', $bread->table) }}"
@@ -135,13 +135,15 @@
                     icon="bread" 
                     {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}>
                     @if (count(Bread::getBreads()) > 0)
-                        <div class="bg-gray-850 rounded ltr:pl-3 rtl:pr-3">
+                        @foreach (Bread::getBreads() as $bread)
+                        <div class="rounded ltr:pl-3 rtl:pr-3">
                             <menu-item
                                 title="{{ $bread->name_plural }}"
                                 href="{{ route('voyager.bread.edit', $bread->table) }}"
                                 icon="{{ $bread->icon }}">
                             </menu-item>
                         </div>
+                        @endforeach
                     @endif
                 </menu-item>
 
