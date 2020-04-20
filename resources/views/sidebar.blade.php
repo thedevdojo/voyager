@@ -38,7 +38,7 @@
                     icon="bread" 
                     {{ Str::startsWith($current_url, Str::finish(route('voyager.bread.index'), '/')) ? 'active' : '' }}>
                     @if (count(Bread::getBreads()) > 0)
-                        <div class="rounded ltr:pl-3 rtl:pr-3">
+                        <div>
                         @foreach (Bread::getBreads() as $bread)
                             @php
                                 $active = Str::startsWith($current_url, route('voyager.bread.edit', $bread->table));
@@ -139,7 +139,7 @@
                     icon="bread" 
                     {{ Str::startsWith($current_url, Str::finish(route('voyager.bread.index'), '/')) ? 'active' : '' }}>
                     @if (count(Bread::getBreads()) > 0)
-                        <div class="rounded ltr:ml-3 rtl:mr-3">
+                        <div>
                         @foreach (Bread::getBreads() as $bread)
                             @php
                                 $active = Str::startsWith($current_url, Str::finish(route('voyager.bread.edit', $bread->table), '/'));
@@ -190,6 +190,7 @@
                             :badge="true"
                             badge-content="{{ $bread->getReadableCount() }}"
                             badge-color="{{ isset($bread->color) ? $bread->color : 'green' }}"
+                            :badge-dot="{{ $active ? 'true' : 'false' }}"
                         @endif
                         {{ $active ? 'active' : '' }}>
                     </menu-item>

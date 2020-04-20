@@ -40,6 +40,7 @@ $input-text-color-dark       : 'text-gray-200' !default;
 $sidebar-title-color            : 'text-gray-200' !default;
 $sidebar-icon-color             : 'text-gray-200' !default;
 $sidebar-background-color       : 'bg-gray-800' !default;
+$sidebar-sub-background-color   : 'bg-gray-850' !default;
 $sidebar-item-text-color        : 'text-gray-300' !default;
 $sidebar-item-icon-color        : 'text-gray-300' !default;
 $sidebar-item-active-background : 'bg-gray-700' !default;
@@ -51,6 +52,7 @@ $sidebar-border-color           : 'border-gray-600' !default;
 $sidebar-title-color-dark            : 'text-gray-200' !default;
 $sidebar-icon-color-dark             : 'text-gray-200' !default;
 $sidebar-background-color-dark       : 'bg-gray-800' !default;
+$sidebar-sub-background-color-dark   : 'bg-gray-850' !default;
 $sidebar-item-text-color-dark        : 'text-gray-300' !default;
 $sidebar-item-icon-color-dark        : 'text-gray-300' !default;
 $sidebar-item-active-background-dark : 'bg-gray-900' !default;
@@ -235,8 +237,8 @@ select.voyager-input {
             }
         }
 
-        .dropdown-open {
-            // TODO: We can apply a (darker) background color to a dropdown here
+        .submenu {
+            @apply #{$sidebar-sub-background-color};
         }
     }
 
@@ -255,23 +257,35 @@ select.voyager-input {
         @apply #{$sidebar-icon-color-dark};
     }
 
-    .item {
-        @apply #{$sidebar-item-text-color-dark};
+    .menuitem {
+        .item {
+            .link {
+                @apply #{$sidebar-item-text-color-dark};
+            }
 
-        &:hover {
-            @apply #{$sidebar-item-hover-background-dark};
-        }
+            &:hover {
+                @apply #{$sidebar-item-hover-background-dark};
+            }
 
-        &.active {
-            @apply #{$sidebar-item-active-text-color-dark} #{$sidebar-item-active-background-dark};
+            &.active {
+                @apply #{$sidebar-item-active-background-dark};
+
+                .link {
+                    @apply #{$sidebar-item-active-text-color-dark};
+                }
+
+                .icon {
+                    @apply #{$sidebar-item-active-icon-color-dark};
+                }
+            }
 
             .icon {
-                @apply #{$sidebar-item-active-icon-color-dark};
+                @apply #{$sidebar-item-icon-color-dark};
             }
         }
 
-        .icon {
-            @apply #{$sidebar-item-icon-color-dark};
+        .submenu {
+            @apply #{$sidebar-sub-background-color-dark};
         }
     }
 

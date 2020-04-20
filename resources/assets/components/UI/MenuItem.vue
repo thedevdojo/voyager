@@ -8,14 +8,14 @@
             </a>
         </div>
         <div class="flex-shrink-0 cursor-pointer inline-flex items-center" @click="open = !open">
-            <badge :color="badgeColor" class="cursor-pointer" v-if="badge">
+            <badge :color="badgeColor" class="cursor-pointer" v-if="badge" :dot="badgeDot">
                 {{ badgeContent }}
             </badge>
             <icon :icon="open ? 'angle-up' : 'angle-down'" v-if="$slots.default" :size="6" class="icon"></icon>
         </div>
     </div>
     
-    <collapse-transition v-if="$slots.default" :class="[open ? 'dropdown-open' : '']">
+    <collapse-transition v-if="$slots.default" :class="[open ? 'submenu' : '']">
         <slot v-if="open" />
     </collapse-transition>
 </div>
@@ -57,6 +57,10 @@ export default {
             type: String,
             default: '',
         },
+        badgeDot: {
+            type: Boolean,
+            default: false,
+        },
     },
     data: function () {
         return {
@@ -80,11 +84,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.item {
-    @apply flex items-center justify-between flex-wrap rounded-md font-medium mt-1 px-2 py-2;
+.menuitem {
+    .item {
+        @apply flex items-center justify-between flex-wrap rounded-md font-medium mt-1 px-2 py-2;
 
-    .link {
-        @apply flex items-center flex-wrap;
+        .link {
+            @apply flex items-center flex-wrap;
+        }
+    }
+
+    .submenu {
+        @apply rounded-md ml-2;
     }
 }
 </style>
