@@ -208,15 +208,21 @@ select.voyager-input {
         @apply #{$sidebar-icon-color};
     }
 
-    .item {
-        @apply #{$sidebar-item-text-color};
+    .menuitem {
+        .link {
+            @apply #{$sidebar-item-text-color};
+        }
 
         &:hover {
             @apply #{$sidebar-item-hover-background};
         }
 
         &.active {
-            @apply #{$sidebar-item-active-text-color} #{$sidebar-item-active-background};
+            @apply #{$sidebar-item-active-background};
+
+            .link {
+                @apply #{$sidebar-item-active-text-color};
+            }
 
             .icon {
                 @apply #{$sidebar-item-active-icon-color};

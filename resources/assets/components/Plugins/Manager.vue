@@ -35,8 +35,8 @@
                 </div>
             </modal>
         </div>
-        <div v-if="hasMultiplePlugins('auth')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_auth_plugins'))"></div>
-        <div v-if="hasMultiplePlugins('menu')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></div>
+        <alert color="red" v-if="hasMultiplePlugins('auth')" class="mb-2" v-html="nl2br(__('voyager::plugins.multiple_auth_plugins'))"></alert>
+        <alert color="red" v-if="hasMultiplePlugins('menu')" class="mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></alert>
 
         <div class="voyager-table striped" v-if="installedPlugins.length > 0" v-bind:class="[loading ? 'loading' : '']">
             <table id="bread-manager-browse">

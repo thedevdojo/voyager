@@ -25,39 +25,69 @@
                     {!! $menu_plugin->getMenuView()->with(['mobile' => true])->render() !!}
                 @else
                 <nav class="mt-3 px-2">
-                    <a :href="route('voyager.dashboard')" class="text-base leading-6 item {{ $current_url == Str::finish('/', route('voyager.dashboard')) ? 'active' : '' }}">                   
-                        <icon icon="dashboard" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                        {{ __('voyager::generic.dashboard') }}
-                    </a>
+                <menu-item
+                    :title="__('voyager::generic.dashboard')"
+                    :href="route('voyager.dashboard')"
+                    icon="dashboard" 
+                    {{ $current_url == Str::finish('/', route('voyager.dashboard')) ? 'active' : '' }}>
+                </menu-item>
 
-                    <a href="{{ route('voyager.bread.index') }}" class="text-base leading-6 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}">
-                        <icon icon="bread" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                        {{ __('voyager::generic.breads') }}
-                    </a>
-
-                    <a href="{{ route('voyager.ui') }}" class="text-base leading-6 item {{ $current_url == Str::finish('/', route('voyager.ui')) ? 'active' : '' }}">
-                        <icon icon="window" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                        {{ __('voyager::generic.ui_components') }}
-                    </a>
-
-                    <a href="{{ route('voyager.settings.index') }}" class="text-base leading-6 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.settings.index'))) ? 'active' : '' }}">
-                        <icon icon="cog" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                        {{ __('voyager::generic.settings') }}
-                    </a>
-
-                    <a href="{{ route('voyager.plugins.index') }}" class="text-base leading-6 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}">
-                        <icon icon="puzzle-piece" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                        {{ __('voyager::plugins.plugins') }}
-                    </a>
+                <menu-item
+                    :title="__('voyager::generic.breads')"
+                    :href="route('voyager.bread.index')"
+                    icon="bread" 
+                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}>
                     @if (count(Bread::getBreads()) > 0)
-                        <hr class="my-3 sidebar-border" />
-                        @foreach (Bread::getBreads() as $bread)
-                        <a href="{{ route('voyager.'.$bread->slug.'.browse') }}" class="text-base leading-6 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse'))) ? 'active' : '' }}">
-                            <icon icon="{{ $bread->icon }}" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                            {{ $bread->name_plural }}
-                        </a>
-                        @endforeach
+                        <div class="bg-gray-850 rounded ltr:pl-3 rtl:pr-3">
+                            <menu-item
+                                title="{{ $bread->name_plural }}"
+                                href="{{ route('voyager.bread.edit', $bread->table) }}"
+                                icon="{{ $bread->icon }}">
+                            </menu-item>
+                        </div>
                     @endif
+                </menu-item>
+
+                <menu-item
+                    :title="__('voyager::generic.ui_components')"
+                    :href="route('voyager.ui')"
+                    icon="window" 
+                    {{ $current_url == Str::finish('/', route('voyager.ui')) ? 'active' : '' }}>
+                </menu-item>
+
+                <menu-item
+                    :title="__('voyager::generic.settings')"
+                    :href="route('voyager.settings.index')"
+                    icon="cog" 
+                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.settings.index'))) ? 'active' : '' }}>
+                </menu-item>
+                
+                <menu-item
+                    :title="__('voyager::plugins.plugins')"
+                    :href="route('voyager.plugins.index')"
+                    icon="puzzle-piece" 
+                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}>
+                </menu-item>
+
+                @if (count(Bread::getBreads()) > 0)
+                    <hr class="my-3 sidebar-border" />
+                    @foreach (Bread::getBreads() as $bread)
+                    @php
+                        $active = Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse')));
+                    @endphp
+                    <menu-item
+                        title="{{ $bread->name_plural }}"
+                        href="{{ route('voyager.'.$bread->slug.'.browse') }}"
+                        icon="{{ $bread->icon }}"
+                        @if (isset($bread->badge) && $bread->badge)
+                            :badge="true"
+                            badge-content="{{ $bread->getReadableCount() }}"
+                            badge-color="{{ isset($bread->color) ? $bread->color : 'green' }}"
+                        @endif
+                        {{ $active ? 'active' : '' }}>
+                    </menu-item>
+                    @endforeach
+                @endif
                 </nav>
                 @endif
             </div>
@@ -90,50 +120,67 @@
                 {!! $menu_plugin->getMenuView()->with(['mobile' => false])->render() !!}
             @else
             <nav class="mt-4 flex-1 px-2">
-                <a :href="route('voyager.dashboard')" class="text-sm leading-5 item {{ $current_url == Str::finish('/', route('voyager.dashboard')) ? 'active' : '' }}">                   
-                    <icon icon="dashboard" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                    {{ __('voyager::generic.dashboard') }}
-                </a>
+                <menu-item
+                    :title="__('voyager::generic.dashboard')"
+                    :href="route('voyager.dashboard')"
+                    icon="dashboard" 
+                    {{ $current_url == Str::finish('/', route('voyager.dashboard')) ? 'active' : '' }}>
+                </menu-item>
 
-                <a href="{{ route('voyager.bread.index') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}">
-                    <icon icon="bread" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                    {{ __('voyager::generic.breads') }}
-                </a>
+                <menu-item
+                    :title="__('voyager::generic.breads')"
+                    :href="route('voyager.bread.index')"
+                    icon="bread" 
+                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.bread.index'))) ? 'active' : '' }}>
+                    @if (count(Bread::getBreads()) > 0)
+                        <div class="bg-gray-850 rounded ltr:pl-3 rtl:pr-3">
+                            <menu-item
+                                title="{{ $bread->name_plural }}"
+                                href="{{ route('voyager.bread.edit', $bread->table) }}"
+                                icon="{{ $bread->icon }}">
+                            </menu-item>
+                        </div>
+                    @endif
+                </menu-item>
 
-                <a href="{{ route('voyager.ui') }}" class="text-sm leading-5 item {{ $current_url == Str::finish('/', route('voyager.ui')) ? 'active' : '' }}">
-                    <icon icon="window" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                    {{ __('voyager::generic.ui_components') }}
-                </a>
+                <menu-item
+                    :title="__('voyager::generic.ui_components')"
+                    :href="route('voyager.ui')"
+                    icon="window" 
+                    {{ $current_url == Str::finish('/', route('voyager.ui')) ? 'active' : '' }}>
+                </menu-item>
 
-                <a href="{{ route('voyager.settings.index') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.settings.index'))) ? 'active' : '' }}">
-                    <icon icon="cog" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                    {{ __('voyager::generic.settings') }}
-                </a>
+                <menu-item
+                    :title="__('voyager::generic.settings')"
+                    :href="route('voyager.settings.index')"
+                    icon="cog" 
+                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.settings.index'))) ? 'active' : '' }}>
+                </menu-item>
+                
+                <menu-item
+                    :title="__('voyager::plugins.plugins')"
+                    :href="route('voyager.plugins.index')"
+                    icon="puzzle-piece" 
+                    {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}>
+                </menu-item>
 
-                <a href="{{ route('voyager.plugins.index') }}" class="text-sm leading-5 item {{ Str::startsWith($current_url, Str::finish('/', route('voyager.plugins.index'))) ? 'active' : '' }}">
-                <icon icon="puzzle-piece" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                    {{ __('voyager::plugins.plugins') }}
-                </a>
                 @if (count(Bread::getBreads()) > 0)
                     <hr class="my-3 sidebar-border" />
                     @foreach (Bread::getBreads() as $bread)
                     @php
                         $active = Str::startsWith($current_url, Str::finish('/', route('voyager.'.$bread->slug.'.browse')));
                     @endphp
-                    <a
+                    <menu-item
+                        title="{{ $bread->name_plural }}"
                         href="{{ route('voyager.'.$bread->slug.'.browse') }}"
-                        class="text-sm leading-5 item {{ $active ? 'active' : '' }}">
-                        <icon icon="{{ $bread->icon }}" class="icon ltr:mr-2 rtl:ml-2"></icon>
-                        {{ $bread->name_plural }}
-                        
+                        icon="{{ $bread->icon }}"
                         @if (isset($bread->badge) && $bread->badge)
-                        <span class="w-full ltr:text-right rtl:text-left">
-                            <badge color="{{ isset($bread->color) ? $bread->color : 'green' }}" class="cursor-pointer" {{ $active ? 'dot' : '' }}>
-                                {{ $bread->getReadableCount() }}
-                            </badge>
-                        </span>
+                            :badge="true"
+                            badge-content="{{ $bread->getReadableCount() }}"
+                            badge-color="{{ isset($bread->color) ? $bread->color : 'green' }}"
                         @endif
-                    </a>
+                        {{ $active ? 'active' : '' }}>
+                    </menu-item>
                     @endforeach
                 @endif
             </nav>

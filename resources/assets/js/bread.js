@@ -11,7 +11,7 @@ bread_components.forEach(function (component) {
 });
 
 Vue.component('bread-manager-browse', require('../components/Manager/Browse').default);
-Vue.component('bread-edit-add', require('../components/Manager/EditAdd').default);
+Vue.component('bread-manager-edit-add', require('../components/Manager/EditAdd').default);
 Vue.component('bread-manager-view', require('../components/Manager/View').default);
 Vue.component('bread-manager-list', require('../components/Manager/List').default);
 Vue.component('bread-manager-validation', require('../components/Manager/ValidationForm').default);

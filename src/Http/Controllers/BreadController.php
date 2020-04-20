@@ -131,7 +131,11 @@ class BreadController extends Controller
 
     public function add(Request $request)
     {
-        
+        $bread = $this->getBread($request);
+        $layout = $this->getLayoutForAction($bread, 'add');
+        $new = true;
+
+        return view('voyager::bread.edit-add', compact('bread', 'layout', 'new'));
     }
 
     public function store(Request $request)
@@ -141,7 +145,11 @@ class BreadController extends Controller
 
     public function read(Request $request, $id)
     {
-        
+        $bread = $this->getBread($request);
+        $layout = $this->getLayoutForAction($bread, 'read');
+        $data = $bread->getModel()->findOrFail($id);
+
+        return view('voyager::bread.read', compact('bread', 'data', 'layout'));
     }
 
     public function edit(Request $request, $id)
@@ -226,6 +234,10 @@ class BreadController extends Controller
 
     private function getLayoutForAction($bread, $action)
     {
-        return $bread->layouts->where('type', 'list')->first();
+        if ($action == 'browse') {
+            return $bread->layouts->where('type', 'list')->first();
+        }
+
+        return $bread->layouts->where('type', 'view')->first();
     }
 }

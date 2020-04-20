@@ -16,6 +16,7 @@ Vue.component('color-picker', require('../components/UI/ColorPicker').default);
 Vue.component('search', require('../components/UI/Search').default);
 Vue.component('slidein', require('../components/UI/SlideIn').default);
 Vue.component('modal', require('../components/UI/Modal').default);
+Vue.component('menu-item', require('../components/UI/MenuItem').default);
 Vue.component('notifications', require('../components/UI/Notifications').default);
 Vue.component('icon', require('../components/UI/Icon').default);
 Vue.component('icon-picker', require('../components/UI/IconPicker').default);

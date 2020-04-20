@@ -42,12 +42,6 @@ h6 {
     @apply bg-gray-800;
 }
 
-.sidebar {
-    .item {
-        @apply mt-1 flex items-center px-2 py-2 font-medium rounded-md;
-    }
-}
-
 .search{
     transition: width 0.35s ease-out;
     &:focus{

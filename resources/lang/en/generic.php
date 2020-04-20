@@ -9,6 +9,7 @@ return [
     'add_setting'               => 'Add Setting',
     'add_type'                  => 'Add :type',
     'all'                       => 'All',
+    'back'                      => 'Back',
     'backup'                    => 'Backup',
     'bread'                     => 'BREAD',
     'breads'                    => 'BREADs',

@@ -3,8 +3,9 @@
 @section('content')
 <bread-read
     :bread="{{ json_encode($bread) }}"
-    :accessors="{{ json_encode($bread->getComputedProperties()) }}"
     :layout="{{ json_encode($layout) }}"
+    :data="{{ json_encode($data) }}"
+    :primary="{{ $data->getKey() }}"
     :input="{{ json_encode($data) }}"
     prev-url="{{ url()->previous() }}"
 ></bread-edit-add>

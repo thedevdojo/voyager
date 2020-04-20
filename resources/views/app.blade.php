@@ -55,6 +55,8 @@ var voyager = new Vue({
         });
     },
     created: function () {
+        var vm = this;
+
         this.$language.localization = {!! Voyager::getLocalization() !!};
         this.store.commit('routes', {!! Voyager::getRoutes() !!});
         this.store.commit('debug', {{ var_export(config('app.debug') ?? false, true) }});

@@ -10,7 +10,6 @@ Instead, they are listed here:
 - Source out all colors from styles to `colors.scss`
 - Add :disabled theming to buttons/inputs
 - Filter available plugins by type
-- Swap div's with class alert to use alert component instead
 - PurgeCSS strips out a lot classes. Check everything and add it to the whitelist if necessary
 
 ## Nice to have
