@@ -5,7 +5,7 @@ namespace TCG\Voyager;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
-use TCG\Voyager\Plugins\BasePlugin;
+use TCG\Voyager\Contracts\Plugins\IsGenericPlugin;
 
 class Plugins
 {
@@ -81,7 +81,7 @@ class Plugins
         $plugin = $this->getPluginsByType($type)->where('enabled')->first();
         if (!$plugin && $fallback !== null) {
             $plugin = $fallback;
-            if (!($fallback instanceof BasePlugin)) {
+            if (!($fallback instanceof IsGenericPlugin)) {
                 $plugin = new $fallback();
             }
         }
@@ -124,9 +124,9 @@ class Plugins
     protected function getPluginType($class)
     {
         return collect(class_implements($class))->filter(function ($interface) {
-            return Str::startsWith($interface, 'TCG\\Voyager\\Plugins\\Interfaces\\');
+            return Str::startsWith($interface, 'TCG\\Voyager\\Contracts\\Plugins\\');
         })->transform(function ($interface) {
-            return strtolower(str_replace(['TCG\\Voyager\\Plugins\\Interfaces\\', 'Interface'], '', $interface));
+            return strtolower(str_replace(['TCG\\Voyager\\Contracts\\Plugins\\', 'Plugin', 'Is'], '', $interface));
         })->first();
     }
 }

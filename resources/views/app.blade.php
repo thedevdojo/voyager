@@ -9,11 +9,10 @@
 
     <title>@yield('page-title') - Voyager</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
-    @forelse (VoyagerPlugins::getPluginsByType('theme')->where('enabled') as $theme)
+    <link href="{{ Voyager::assetUrl('css/colors.css') }}" rel="stylesheet">
+    @foreach (VoyagerPlugins::getPluginsByType('theme')->where('enabled') as $theme)
         <link href="{{ $theme->getStyleRoute() }}" rel="stylesheet">
-    @empty
-        <link href="{{ Voyager::assetUrl('css/colors.css') }}" rel="stylesheet">
-    @endforelse
+    @endforeach
 </head>
 
 <body>

@@ -38,7 +38,7 @@
         <div v-if="hasMultiplePlugins('auth')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_auth_plugins'))"></div>
         <div v-if="hasMultiplePlugins('menu')" class="alert red mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></div>
 
-        <div class="voyager-table striped" v-if="installedPlugins > 0" v-bind:class="[loading ? 'loading' : '']">
+        <div class="voyager-table striped" v-if="installedPlugins.length > 0" v-bind:class="[loading ? 'loading' : '']">
             <table id="bread-manager-browse">
                 <thead>
                     <tr>
@@ -73,24 +73,24 @@
                         </td>
                         <td>
                             <a class="button green small" v-if="plugin.website" :href="plugin.website" target="_blank">
-                                <i class="uil uil-globe"></i>
+                                <icon icon="globe"></icon>
                                 {{ __('voyager::generic.website') }}
                             </a>
                             <button v-if="!plugin.enabled" class="button green small" @click="enablePlugin(plugin, true)">
-                                <i class="uil uil-toggle-on"></i>
+                                <icon icon="toggle-on"></icon>
                                 {{ __('voyager::generic.enable') }}
                             </button>
                             <button v-else class="button red small" @click="enablePlugin(plugin, false)">
-                                <i class="uil uil-toggle-off"></i>
+                                <icon icon="toggle-off"></icon>
                                 {{ __('voyager::generic.disable') }}
                             </button>
                             <a v-if="plugin.has_settings && plugin.enabled" :href="route('voyager.plugins.settings', i)" class="button blue small">
-                                <i class="uil uil-cog"></i>
+                                <icon icon="cog"></icon>
                                 {{ __('voyager::generic.settings') }}
                             </a>
 
                             <button v-if="plugin.instructions" class="button blue small" @click="$refs['instructions-modal-'+i][0].open()">
-                                <i class="uil uil-map-marker-question"></i>
+                                <icon icon="map-marker-question"></icon>
                                 {{ __('voyager::generic.instructions') }}
                             </button>
                             <modal v-if="plugin.instructions" :ref="'instructions-modal-'+i">
@@ -99,13 +99,13 @@
                                         <h4 class="text-gray-100 text-xl">{{ __('voyager::generic.instructions') }}</h4>
                                     </div>
                                     <div class="w-1/3 text-right text-gray-100">
-                                        <i class="uil uil-times text-xl"></i>
+                                        <icon icon="times"></icon>
                                     </div>
                                 </div>
                                 <div v-html="plugin.instructions"></div>
                             </modal>
                             <button v-if="plugin.type == 'theme'" :disabled="plugin.enabled" class="button purple small" @click="previewTheme(plugin.src, plugin.name)">
-                                <i class="uil uil-eye"></i>
+                                <icon icon="eye"></icon>
                                 {{ __('voyager::generic.preview') }}
                             </button>
                         </td>
@@ -165,30 +165,29 @@ export default {
 
             vm.$notify.confirm(
                 message,
+                function (response) {
+                    if (response) {
+                        axios.post(vm.route('voyager.plugins.enable'), {
+                            identifier: plugin.identifier,
+                            enable: enable,
+                        })
+                        .then(function (response) {
+                            vm.$notify.notify(vm.__('voyager::plugins.reload_page'));
+                        })
+                        .catch(function (error) {
+                            // TODO: This is not tested (error might be an array)
+                            vm.$notify.notify(vm.__('voyager::plugins.error_changing_plugin') + ' ' + error.data);
+                        }).finally(function () {
+                            vm.loadPlugins();
+                        });
+                    }
+                },
+                false,
+                'blue',
                 vm.__('voyager::generic.yes'),
                 vm.__('voyager::generic.no'),
                 7500
-            )
-            .then(function (response) {
-                if (response) {
-                    axios.post(vm.route('voyager.plugins.enable'), {
-                        identifier: plugin.identifier,
-                        enable: enable,
-                    })
-                    .then(function (response) {
-                        vm.$notify.info(vm.__('voyager::plugins.reload_page'));
-                    })
-                    .catch(function (error) {
-                        // TODO: This is not tested (error might be an array)
-                        vm.$notify.error(vm.__('voyager::plugins.error_changing_plugin') + ' ' + error.data);
-                    }).finally(function () {
-                        vm.loadPlugins();
-                    });
-                }
-            })
-            .catch(function () {
-
-            });
+            );
         },
         previewTheme: function (src, name) {
             var file = document.createElement('link');
@@ -197,7 +196,7 @@ export default {
             file.setAttribute('href', src);
             document.getElementsByTagName('head')[0].appendChild(file);
 
-            this.$notify.info(this.__('voyager::plugins.preview_theme', {name: name}));
+            this.$notify.notify(this.__('voyager::plugins.preview_theme', {name: name}), null, 'blue', 5000);
         },
         hasMultiplePlugins: function (type) {
             var num = 0;
