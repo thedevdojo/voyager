@@ -10,7 +10,7 @@ Vue.prototype.$language = new Vue({
         locale: function (locale) {
             // TODO: Set cookie?
         }
-    }
+    },
 });
 
 Vue.mixin({

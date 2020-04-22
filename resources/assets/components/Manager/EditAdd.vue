@@ -407,6 +407,8 @@ export default {
                     column: null,
                     type: null,
                 },
+                translatable: false,
+                canbetranslated: formfield.canbetranslated,
                 options: JSON.parse(JSON.stringify(this.currentLayout.type == 'list' ? listOptions : viewOptions)),
                 validation: [],
             };

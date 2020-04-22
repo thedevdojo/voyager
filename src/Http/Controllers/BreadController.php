@@ -2,9 +2,11 @@
 
 namespace TCG\Voyager\Http\Controllers;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
@@ -24,6 +26,7 @@ class BreadController extends Controller
             'order'       => $order,
             'direction'   => $direction,
             'softdeleted' => $softdeleted,
+            'locale'      => $locale,
         ) = $request->all();
 
         $model = $bread->getModel();
@@ -45,8 +48,8 @@ class BreadController extends Controller
 
         // Global search ($global)
         if (!empty($global)) {
-            $query->where(function ($query) use ($global, $layout) {
-                $layout->searchableFormfields()->each(function ($formfield) use (&$query, $global) {
+            $query->where(function ($query) use ($global, $layout, $locale) {
+                $layout->searchableFormfields()->each(function ($formfield) use (&$query, $global, $locale) {
                     $column_type = $formfield->column->type;
                     $column = $formfield->column->column;
 
@@ -54,8 +57,10 @@ class BreadController extends Controller
                         // TODO
                     } else if ($column_type == 'relationship') {
                         // TODO
+                    } else if ($formfield->translatable ?? false) {
+                        $query->orWhere(DB::raw('lower('.$column.'->"'.$locale.'")'), 'LIKE', '%'.$global.'%');
                     } else {
-                        $query->orWhere($column, 'LIKE', '%'.$global.'%');
+                        $query->orWhere(DB::raw('lower('.$column.')'), 'LIKE', '%'.$global.'%');
                     }
                 });
             });
@@ -63,14 +68,17 @@ class BreadController extends Controller
 
         // Field search ($filters)
         foreach (array_filter($filters) as $column => $filter) {
-            $column_type = $layout->getFormfieldByColumn($column)->column->type;
+            $formfield = $layout->getFormfieldByColumn($column);
+            $column_type = $formfield->column->type;
 
             if ($column_type == 'computed') {
                 // TODO
             } else if ($column_type == 'relationship') {
                 // TODO
+            } else if ($formfield->translatable ?? false) {
+                $query->where(DB::raw('lower('.$column.'->"$.'.$locale.'")'), 'LIKE', '%'.$filter.'%');
             } else {
-                $query->where($column, 'LIKE', '%'.$filter.'%');
+                $query->where(DB::raw('lower('.$column.')'), 'LIKE', '%'.$filter.'%');
             }
         }
 
@@ -140,7 +148,43 @@ class BreadController extends Controller
 
     public function store(Request $request)
     {
-        
+        $bread = $this->getBread($request);
+        $layout = $this->getLayoutForAction($bread, 'add');
+
+        $model = new $bread->model();
+        $data = $request->get('data', []);
+
+        // Validate Data
+        $validation_errors = $this->getValidationErrors($layout, $data);
+        if (count($validation_errors) > 0) {
+            return response()->json($validation_errors, 422);
+        }
+
+        $layout->formfields->each(function ($formfield) use ($data, &$model) {
+            $value = $data[$formfield->column->column] ?? '';
+            $value = $formfield->store($value);
+
+            if ($formfield->translatable ?? false) {
+                $value = json_encode($value);
+            }
+
+            if ($formfield->column->type == 'column') {
+                $model->{$formfield->column->column} = $value;
+            } elseif ($formfield->column->type == 'computed') {
+                // TODO: Can't use ucfirst here because 
+                if (method_exists($model, 'set'.ucfirst($formfield->column->column).'Attribute')) {
+                    $model->{$formfield->column->column} = $value;
+                }
+            } elseif ($formfield->column->type == 'relationship') {
+                // 
+            }
+        });
+
+        if ($model->save()) {
+            return response(500);
+        } else {
+            return response(200, $model->getKey());
+        }
     }
 
     public function read(Request $request, $id)
@@ -154,12 +198,50 @@ class BreadController extends Controller
 
     public function edit(Request $request, $id)
     {
-        
+        $bread = $this->getBread($request);
+        $layout = $this->getLayoutForAction($bread, 'add');
+        $new = false;
+        $data = $bread->getModel()->findOrFail($id);
+
+        return view('voyager::bread.edit-add', compact('bread', 'layout', 'new', 'data'));
     }
 
     public function update(Request $request, $id)
     {
-        
+        $bread = $this->getBread($request);
+        $layout = $this->getLayoutForAction($bread, 'add');
+
+        $model = $bread->getModel()->findOrFail($id);
+        $data = $request->get('data', []);
+
+        // Validate Data
+        $validation_errors = $this->getValidationErrors($layout, $data);
+        if (count($validation_errors) > 0) {
+            return response()->json($validation_errors, 422);
+        }
+
+        $layout->formfields->each(function ($formfield) use ($data, &$model) {
+            $value = $data[$formfield->column->column] ?? '';
+            $value = $formfield->update($value, $model->{$formfield->column->column});
+
+            if ($formfield->translatable ?? false) {
+                $value = json_encode($value);
+            }
+
+            if ($formfield->column->type == 'column') {
+                $model->{$formfield->column->column} = $value;
+            } elseif ($formfield->column->type == 'computed') {
+                // 
+            } elseif ($formfield->column->type == 'relationship') {
+                // 
+            }
+        });
+
+        if ($model->save()) {
+            return response(500);
+        } else {
+            return response(200, $model->getKey());
+        }
     }
 
     public function delete(Request $request)
@@ -239,5 +321,31 @@ class BreadController extends Controller
         }
 
         return $bread->layouts->where('type', 'view')->first();
+    }
+
+    private function getValidationErrors($layout, $data): array
+    {
+        $errors = [];
+
+        $layout->formfields->each(function ($formfield) use (&$errors, $layout, $data) {
+            $value = $data[$formfield->column->column] ?? '';
+            if ($formfield->translatable && is_array($value)) {
+                // TODO: We could validate ALL locales here. But mostly, this doesn't make sense (Let user select?)
+                $value = $value[VoyagerFacade::getLocale()] ?? $value[VoyagerFacade::getFallbackLocale()];
+            }
+            foreach ($formfield->validation as $rule) {
+                $validator = Validator::make(['col' => $value], ['col' => $rule->rule]);
+
+                if ($validator->fails()) {
+                    $message = $rule->message;
+                    if (is_object($message)) {
+                        $message = $message->{VoyagerFacade::getLocale()} ?? $message->{VoyagerFacade::getFallbackLocale()} ?? '';
+                    }
+                    $errors[$formfield->column->column][] = $message;
+                }
+            }
+        });
+
+        return $errors;
     }
 }

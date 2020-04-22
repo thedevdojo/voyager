@@ -76,7 +76,7 @@
                             <icon icon="trash" />
                             <span>{{ __('voyager::generic.delete') }}</span>
                         </button>
-                        <slidein :opened="optionsId == key" width="w-full md:w-1/3" v-on:closed="$emit('open-options', null)" class="text-left">
+                        <slide-in :opened="optionsId == key" width="w-full md:w-1/3" v-on:closed="$emit('open-options', null)" class="text-left">
                             <div class="flex w-full mb-3">
                                 <div class="w-1/2 text-2xl">
                                     <h2>{{ __('voyager::generic.options') }}</h2>
@@ -88,12 +88,16 @@
                                     </button>
                                 </div>
                             </div>
+                            <div v-if="formfield.canbetranslated">
+                                <label class="label mt-4">Translatable</label>
+                                <input type="checkbox" class="voyager-input" v-model="formfield.translatable">
+                            </div>
                             <component
                                 :is="'formfield-'+formfield.type+'-builder'"
                                 v-bind:options="formfield.options"
                                 :column="formfield.column"
                                 show="list-options" />
-                        </slidein>
+                        </slide-in>
                     </td>
                 </tr>
             </draggable>

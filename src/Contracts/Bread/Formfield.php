@@ -4,7 +4,7 @@ namespace TCG\Voyager\Contracts\Bread;
 
 abstract class Formfield implements \JsonSerializable
 {
-    public $options = [];
+    public $translatable = false;
     public $column = [
         'column' => '',
         'type'   => '',
@@ -36,13 +36,6 @@ abstract class Formfield implements \JsonSerializable
      * @return array
      */
     abstract public function viewOptions(): array;
-
-    /**
-     * Gets if the formfield is translatable.
-     *
-     * @return bool
-     */
-    abstract public function translatable(): bool;
 
     /**
      * Get the data for browsing.
@@ -92,13 +85,24 @@ abstract class Formfield implements \JsonSerializable
      */
     abstract public function store($input);
 
+    /**
+     * Gets if the formfield can be translated.
+     *
+     * @return bool
+     */
+    public function canBeTranslated()
+    {
+        return true;
+    }
+
     public function jsonSerialize()
     {
         return array_merge([
-            'name'        => $this->name(),
-            'type'        => $this->type(),
-            'listOptions' => (object) $this->listOptions(),
-            'viewOptions' => (object) $this->viewOptions(),
+            'name'            => $this->name(),
+            'type'            => $this->type(),
+            'canbetranslated' => $this->canBeTranslated(),
+            'listOptions'     => (object) $this->listOptions(),
+            'viewOptions'     => (object) $this->viewOptions(),
         ], (array) $this);
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <card :title="__('voyager::bread.browse_type', { type: translate(bread.name_plural) })" :icon="bread.icon">
+    <card :title="__('voyager::bread.browse_type', { type: translate(bread.name_plural, true) })" :icon="bread.icon">
         <div slot="actions">
             <div class="flex items-center">
                 <input
@@ -7,11 +7,11 @@
                     class="voyager-input w-full small ltr:mr-2 rtl:ml-2"
                     v-model="parameters.query"
                     @dblclick="parameters.query = null"
-                    :placeholder="'Search ' + translate(bread.name_plural)">
+                    :placeholder="'Search ' + translate(bread.name_plural, true)">
                 <select class="voyager-input small ltr:mr-2 rtl:ml-2" v-model="parameters.softdeleted" v-if="uses_soft_deletes">
-                    <option value="show">Show soft-deleted</option>
-                    <option value="hide">Hide soft-deleted</option>
-                    <option value="only">Only show soft-deleted</option>
+                    <option value="show">{{ __('voyager::bread.soft_delete_show') }}</option>
+                    <option value="hide">{{ __('voyager::bread.soft_delete_hide') }}</option>
+                    <option value="only">{{ __('voyager::bread.soft_delete_only') }}</option>
                 </select>
                 <button class="button blue m-0" @click.stop="load">
                     <icon icon="sync" :class="[loading ? 'rotating-ccw' : '']"></icon>
@@ -21,10 +21,18 @@
                     <icon icon="trash"></icon>
                     <span>{{ trans_choice('voyager::bread.delete_type', deletableEntries, { num: deletableEntries, types: translate(bread.name_plural, true), type: translate(bread.name_singular, true)}) }}</span>
                 </button>
+                <button class="button red m-0 ml-2" v-if="restorableEntries > 0" @click.prevent="deleteEntries(selected, true)">
+                    <icon icon="trash"></icon>
+                    <span>{{ trans_choice('voyager::bread.force_delete_type', restorableEntries, { num: restorableEntries, types: translate(bread.name_plural, true), type: translate(bread.name_singular, true) }) }}</span>
+                </button>
                 <button class="button green m-0 ml-2" v-if="restorableEntries > 0" @click.prevent="restoreEntries(selected)">
                     <icon icon="history"></icon>
                     <span>{{ trans_choice('voyager::bread.restore_type', restorableEntries, { num: restorableEntries, types: translate(bread.name_plural, true), type: translate(bread.name_singular, true) }) }}</span>
                 </button>
+                <a class="button green m-0 ml-2" :href="route('voyager.'+translate(bread.slug, true)+'.add')">
+                    <icon icon="plus"></icon>
+                    <span>{{ __('voyager::generic.add') }}</span>
+                </a>
             </div>
         </div>
         <div>
@@ -84,29 +92,30 @@
                                     <component
                                         :is="'formfield-'+formfield.type+'-browse'"
                                         :options="formfield.options"
+                                        :translatable="formfield.translatable"
                                         :value="result[formfield.column.column]">
                                     </component>
                                 </td>
                                 <td class="ltr:text-right rtl:text-left">
                                     <a :href="route('voyager.'+translate(bread.slug, true)+'.read', result[primary])" class="button blue small">
                                         <icon icon="book-alt"></icon>
-                                        <span>Read</span>
+                                        <span>{{ __('voyager::generic.read') }}</span>
                                     </a>
                                     <a :href="route('voyager.'+translate(bread.slug, true)+'.edit', result[primary])" class="button yellow small">
                                         <icon icon="pen"></icon>
-                                        <span>Edit</span>
+                                        <span>{{ __('voyager::generic.edit') }}</span>
                                     </a>
                                     <button @click.prevent="deleteEntries(result[primary])" class="button red small" v-if="(uses_soft_deletes && !result.is_soft_deleted) || !uses_soft_deletes">
                                         <icon icon="trash"></icon>
-                                        <span>Delete</span>
+                                        <span>{{ __('voyager::generic.delete') }}</span>
                                     </button>
                                     <button @click.prevent="deleteEntries(result[primary], true)" v-if="uses_soft_deletes && result.is_soft_deleted" class="button red small">
                                         <icon icon="trash"></icon>
-                                        <span>Force Delete</span>
+                                        <span>{{ __('voyager::generic.force_delete') }}</span>
                                     </button>
                                     <button @click.prevent="restoreEntries(result[primary])" v-if="uses_soft_deletes && result.is_soft_deleted" class="button green small">
                                         <icon icon="history"></icon>
-                                        <span>Restore</span>
+                                        <span>{{ __('voyager::generic.restore') }}</span>
                                     </button>
                                 </td>
                             </tr>
@@ -155,6 +164,7 @@ export default {
                 order: null,
                 direction: 'asc',
                 softdeleted: 'show', // show, hide, only
+                locale: this.$language.locale,
             },
         };
     },
@@ -210,10 +220,10 @@ export default {
             var vm = this;
             vm.$notify.confirm(
                 vm.trans_choice(
-                    'voyager::bread.delete_type_confirm',
-                    (vm.isArray(entries) ? entries.length : 1),
+                    'voyager::bread.' + (force ? 'force_delete_type_confirm' : 'delete_type_confirm'),
+                    (force ? vm.restorableEntries : vm.deletableEntries),
                     {
-                        num: vm.deletableEntries,
+                        num: (force ? vm.restorableEntries : vm.deletableEntries),
                         types: vm.translate(vm.bread.name_plural, true),
                         type: vm.translate(vm.bread.name_singular, true)
                     }
@@ -228,7 +238,7 @@ export default {
                         })
                         .then(function (response) {
                             vm.$notify.notify(
-                                vm.trans_choice('voyager::bread.delete_type_success',
+                                vm.trans_choice('voyager::bread.' + (force ? 'force_delete_type_success' : 'delete_type_success'),
                                 response.data,
                                 {
                                     num: response.data,
@@ -363,7 +373,7 @@ export default {
                 return !result.is_soft_deleted && vm.selected.includes(result[vm.primary]);
             }).length;
         },
-        // Returns the number of entries which are selected and ARE soft-deleted
+        // Returns the number of entries which are selected and ARE soft-deleted (can also be used for force-delete)
         restorableEntries: function () {
             var vm = this;
             return vm.results.filter(function (result) {
@@ -389,9 +399,7 @@ export default {
             this.load();
         }
 
-        if (this.bread.translatable) {
-            Vue.prototype.$language.localePicker = true;
-        }
+        Vue.prototype.$language.localePicker = true;
     },
     watch: {
         'parameters.page': function () {
@@ -414,6 +422,9 @@ export default {
                 this.load();
             }, 250),
             deep: true,
+        },
+        '$language.locale': function (locale) {
+            this.parameters.locale = locale;
         }
     }
 };

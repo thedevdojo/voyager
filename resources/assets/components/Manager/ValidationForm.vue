@@ -32,7 +32,7 @@
                                 v-on:input="rule.message = $event" />
                         </td>
                         <td>
-                            <button class="button red small" @click.stop="removeRule(key)">
+                            <button class="button red small icon-only" @click.stop="removeRule(key)">
                                 <icon icon="trash" />
                             </button>
                         </td>

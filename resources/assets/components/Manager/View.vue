@@ -24,7 +24,7 @@
                     <button class="button small red icon-only" @click="$emit('delete', key)">
                         <icon icon="trash" />
                     </button>
-                    <slidein :opened="optionsId == key" v-on:closed="$emit('open-options', null)" width="w-1/3" class="text-left">
+                    <slide-in :opened="optionsId == key" v-on:closed="$emit('open-options', null)" width="w-1/3" class="text-left">
                         <div class="flex w-full mb-3">
                             <div class="w-1/2 text-2xl">
                                 <h2>{{ __('voyager::generic.options') }}</h2>
@@ -54,6 +54,10 @@
                                 </option>
                             </optgroup>
                         </select>
+                        <div v-if="formfield.canbetranslated">
+                            <label class="label mt-4">Translatable</label>
+                            <input type="checkbox" class="voyager-input" v-model="formfield.translatable">
+                        </div>
 
                         <component
                             :is="'formfield-'+formfield.type+'-builder'"
@@ -61,7 +65,7 @@
                             :column="formfield.column"
                             show="view-options" />
                         <bread-manager-validation v-model="formfield.validation" />
-                    </slidein>
+                    </slide-in>
                 </div>
 
                 <component

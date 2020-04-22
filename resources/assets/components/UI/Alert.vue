@@ -49,6 +49,6 @@ export default {
 
 <style scoped>
 .alert {
-    @apply rounded-md p-4 mb-4 border;
+    @apply rounded-md p-4 border;
 }
 </style>

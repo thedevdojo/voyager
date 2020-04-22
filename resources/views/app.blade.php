@@ -53,6 +53,16 @@ var voyager = new Vue({
         messages.forEach(function (m) {
             vm.$notify.notify(m.message, null, m.color, m.timeout);
         });
+
+        document.addEventListener('keydown', function (e) {
+            if (event.ctrlKey) {
+                if (e.keyCode == 38 || e.keyCode == 39) {
+                    // TODO: Select "next" locale
+                } else if (e.keyCode == 37 || e.keyCode == 40) {
+                    // TODO: Select "previous" locale
+                }
+            }
+        });
     },
     created: function () {
         var vm = this;

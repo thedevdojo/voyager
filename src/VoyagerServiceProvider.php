@@ -31,7 +31,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
         $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'voyager');
 
-        BreadFacade::addFormfield(\TCG\Voyager\Formfields\Repeater::class);
+        //BreadFacade::addFormfield(\TCG\Voyager\Formfields\Repeater::class);
         BreadFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
 
         // Register Policies
@@ -81,17 +81,6 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadPluginsFrom(Str::finish(storage_path('voyager'), '/').'plugins.json');
 
         $this->commands(InstallCommand::class);
-
-        // TODO: Move this elsewhere
-        Collection::macro('recursive', function () {
-            return $this->map(function ($value) {
-                if (is_array($value) || is_object($value)) {
-                    return (new Collection($value))->recursive();
-                }
-
-                return $value;
-            });
-        });
     }
 
     public function loadBreadsFrom($path)

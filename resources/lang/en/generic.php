@@ -37,6 +37,7 @@ return [
     'edit'                      => 'Edit',
     'edit_type'                 => 'Edit :type',
     'enable'                    => 'Enable',
+    'force_delete'              => 'Force delete',
     'format'                    => 'Format',
     'group'                     => 'Group',
     'heads_up'                  => 'Heads Up!',

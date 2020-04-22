@@ -32,11 +32,6 @@ class Repeater extends Formfield
         ];
     }
 
-    public function translatable(): bool
-    {
-        return false;
-    }
-
     public function browse($input)
     {
         return $input;

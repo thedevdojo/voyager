@@ -45,7 +45,7 @@
                             </div>
 
                             <!-- Options slide-in -->
-                            <slidein :opened="openedOptionsId == i" v-on:closed="openedOptionsId = null">
+                            <slide-in :opened="openedOptionsId == i" v-on:closed="openedOptionsId = null">
                                 <div class="flex mb-4">
                                     <div class="w-2/3">
                                         <h4 class="text-gray-100 text-lg">{{ __('voyager::generic.options') }}</h4>
@@ -67,7 +67,7 @@
                                         <bread-validation-input v-bind:rules="setting.formfield.rules" />
                                     </div>
                                 </div>
-                            </slidein>
+                            </slide-in>
                         </div>
                     </div>
                 </div>

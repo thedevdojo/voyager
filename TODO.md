@@ -33,6 +33,7 @@ Instead, they are listed here:
 - Accessors need to be named `getFieldAttribute` (ex. `getFullNameAttribute`)
 - Computed properties need to implement an accessor AND mutator when used for adding or editing
 - Browse filters can be cleared by double-clicking the input
+- Browse searching on translatable formfields "only" searches in the currently selected locale
 
 ## Checklist
 The following things need to be double checked
