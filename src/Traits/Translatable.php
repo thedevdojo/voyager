@@ -5,11 +5,51 @@ namespace TCG\Voyager\Traits;
 trait Translatable
 {
     public $translate = true;
+    public $current_locale;
+    public $fallback_locale;
 
     public function __construct()
     {
         $this->current_locale = app()->getLocale();
         $this->fallback_locale = config('app.fallback_locale');
+    }
+
+    public function getTranslated($key, $locale, $fallback, $default)
+    {
+        $old_locale = $this->current_locale;
+        $old_fallback = $this->fallback_locale;
+
+        // Set locales to desired
+        $this->current_locale = $locale;
+        $this->fallback_locale = $fallback;
+
+        $value = $this->__get($key);
+
+        // Set locales back to original
+        $this->current_locale = $old_locale;
+        $this->fallback_locale = $old_fallback;
+
+        return $value ?? $default;
+    }
+
+    public function setTranslated($key, $value, $locale)
+    {
+        $old_locale = $this->current_locale;
+
+        // Set locale to desired
+        $this->current_locale = $locale;
+
+        $this->__set($key, $value);
+
+        // Set locales back to original
+        $this->current_locale = $old_locale;
+    }
+
+    public function whereTranslated($query)
+    {
+        // TODO: ...
+
+        return $query;
     }
 
     public function __get($key)
@@ -26,8 +66,6 @@ trait Translatable
         }
 
         if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
-            $current_locale = app()->getLocale();
-            $fallback_locale = config('app.fallback_locale');
             if (is_string($value)) {
                 $json = @json_decode($value);
                 if (json_last_error() == JSON_ERROR_NONE) {
@@ -36,9 +74,9 @@ trait Translatable
             }
 
             if (is_array($value)) {
-                return $value[$current_locale] ?? $value[$fallback_locale] ?? '';
+                return $value[$this->current_locale] ?? $value[$this->fallback_locale] ?? null;
             } elseif (is_object($value)) {
-                return $value->{$current_locale} ?? $value->{$fallback_locale} ?? '';
+                return $value->{$this->current_locale} ?? $value->{$this->fallback_locale} ?? null;
             }
         }
 
