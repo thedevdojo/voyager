@@ -3,14 +3,12 @@ It only contains small things that came to our minds which we couldn't implement
 Instead, they are listed here:
 
 - Change variables to use kebab-case everywhere
-- Rename language-strings like `voyager::bread.browse_name` and `voyager::generic.add_type` to be uniform (use `type`!)
-- Remove csrf_token as data-prop from AJAX requests as it is sended globally as a header
-- Tune Modal and Pagination components (Tailwind UI?)
 - Make sure all input with class `voyager-input` use `w-full` (where applicable)
 - Source out all colors from styles to `colors.scss`
 - Add :disabled theming to buttons/inputs
 - Filter available plugins by type
 - PurgeCSS strips out a lot classes. Check everything and add it to the whitelist if necessary
+- Replace Vuex with a simple global storage
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller
@@ -20,8 +18,8 @@ Instead, they are listed here:
 - When saving a BREAD check if all needed routes exist (route caching)
 
 ## Styling
-- Align tailwinds color palette to something nicer
-- Add more shades (`bg-gray-50`, `bg-gray-950`)
+- ~Align tailwinds color palette to something nicer~
+- ~Add more shades (`bg-gray-50`, `bg-gray-950`)~
 - Closed collapsible should not have vertical padding on the cards content div when its closed
 
 ## Bugs
@@ -33,9 +31,8 @@ Instead, they are listed here:
 - Accessors need to be named `getFieldAttribute` (ex. `getFullNameAttribute`)
 - Computed properties need to implement an accessor AND mutator when used for adding or editing
 - Browse filters can be cleared by double-clicking the input
-- Browse searching on translatable formfields "only" searches in the currently selected locale
+- Browse searching on translatable formfields searches in the currently selected locale
+- BREAD menu-badge only shows non-soft-deleted entries
 
 ## Checklist
 The following things need to be double checked
-
-- Sorting. Try to sort by an accessor and by a relationship property. It should also work when set as default-sort.

@@ -40,4 +40,5 @@ return [
     'scope'                             => 'Scope',
     'searchable'                        => 'Searchable',
     'show_menu_badge'                   => 'Show badge in menu',
+    'show_soft_deleted'                 => 'Show soft-deleted',
 ];

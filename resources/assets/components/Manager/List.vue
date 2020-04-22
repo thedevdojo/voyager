@@ -10,6 +10,7 @@
                     <th class="hidden md:table-cell">{{ __('voyager::manager.searchable') }}</th>
                     <th class="hidden md:table-cell">{{ __('voyager::manager.orderable') }}</th>
                     <th class="hidden md:table-cell">{{ __('voyager::manager.order_default') }}</th>
+                    <th class="hidden md:table-cell">{{ __('voyager::generic.translatable') }}</th>
                     <th style="text-align:right !important">{{ __('voyager::generic.actions') }}</th>
                 </tr>
             </thead>
@@ -67,6 +68,13 @@
                             v-model="reactiveOptions.default_order_column"
                             v-bind:value="formfield.column" />
                     </td>
+                    <td class="hidden md:table-cell">
+                        <input
+                            type="checkbox"
+                            class="voyager-input"
+                            v-model="formfield.translatable"
+                            :disabled="!formfield.canbetranslated">
+                    </td>
                     <td class="text-right">
                         <button class="button blue" @click="$emit('open-options', key)">
                             <icon icon="cog" />
@@ -87,10 +95,6 @@
                                         <icon icon="times" />
                                     </button>
                                 </div>
-                            </div>
-                            <div v-if="formfield.canbetranslated">
-                                <label class="label mt-4">Translatable</label>
-                                <input type="checkbox" class="voyager-input" v-model="formfield.translatable">
                             </div>
                             <component
                                 :is="'formfield-'+formfield.type+'-builder'"

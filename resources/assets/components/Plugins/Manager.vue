@@ -144,9 +144,7 @@ export default {
         loadPlugins: function () {
             var vm = this;
             vm.loading = true;
-            axios.post(vm.route('voyager.plugins.get'), {
-                _token: vm.csrf_token,
-            })
+            axios.post(vm.route('voyager.plugins.get'))
             .then(function (response) {
                 vm.installedPlugins = response.data;
             })

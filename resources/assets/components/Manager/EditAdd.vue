@@ -205,7 +205,7 @@
                             </button>
                         </div>
                     </div>
-                    <label class="label mt-4">Show soft-deletes</label>
+                    <label class="label mt-4">{{ __('voyager::manager.show_soft_deleted') }}</label>
                     <input type="checkbox" v-model="currentLayout.options.soft_deletes">
                 </slide-in>
             </div>

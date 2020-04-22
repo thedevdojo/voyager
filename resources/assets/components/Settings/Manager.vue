@@ -173,7 +173,6 @@ export default {
             var vm = this;
             axios.post(vm.route('voyager.settings.store'), {
                 settings: vm.settings,
-                _token: vm.csrf_token,
             })
             .then(function (response) {
                 vm.validationErrors = [];
