@@ -60,9 +60,9 @@ class BreadController extends Controller
                     } else if ($column_type == 'relationship') {
                         // TODO
                     } else if ($formfield->translatable ?? false) {
-                        $query->orWhere(DB::raw('lower('.$column.'->"'.$locale.'")'), 'LIKE', '%'.$global.'%');
+                        $query->orWhere(DB::raw('lower('.$column.'->"'.$locale.'")'), 'LIKE', '%'.strtolower($global).'%');
                     } else {
-                        $query->orWhere(DB::raw('lower('.$column.')'), 'LIKE', '%'.$global.'%');
+                        $query->orWhere(DB::raw('lower('.$column.')'), 'LIKE', '%'.strtolower($global).'%');
                     }
                 });
             });
@@ -78,9 +78,9 @@ class BreadController extends Controller
             } else if ($column_type == 'relationship') {
                 // TODO
             } else if ($formfield->translatable ?? false) {
-                $query->where(DB::raw('lower('.$column.'->"$.'.$locale.'")'), 'LIKE', '%'.$filter.'%');
+                $query->where(DB::raw('lower('.$column.'->"$.'.$locale.'")'), 'LIKE', '%'.strtolower($filter).'%');
             } else {
-                $query->where(DB::raw('lower('.$column.')'), 'LIKE', '%'.$filter.'%');
+                $query->where(DB::raw('lower('.$column.')'), 'LIKE', '%'.strtolower($filter).'%');
             }
         }
 
@@ -164,8 +164,6 @@ class BreadController extends Controller
         $model = new $bread->model();
         $data = $request->get('data', []);
 
-        $model->translate = false;
-
         // Validate Data
         $validation_errors = $this->getValidationErrors($layout, $data);
         if (count($validation_errors) > 0) {
@@ -224,8 +222,6 @@ class BreadController extends Controller
 
         $model = $bread->getModel()->findOrFail($id);
         $data = $request->get('data', []);
-
-        $model->translate = false;
 
         // Validate Data
         $validation_errors = $this->getValidationErrors($layout, $data);

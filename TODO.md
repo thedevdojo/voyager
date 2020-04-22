@@ -33,7 +33,6 @@ Instead, they are listed here:
 - Browse filters can be cleared by double-clicking the input
 - Browse searching on translatable formfields searches in the currently selected locale
 - BREAD menu-badge only shows non-soft-deleted entries
-- Translatable: Set `$translatable` to false to get raw JSON
 - Translatable: Use `getTranslated($column, $locale, $fallback, $default)` to get a translated value (which is not the default locale)
 - Translatable: Use `setTranslated($column, $value, $locale)` to set a translated value (which is not the default locale)
 
