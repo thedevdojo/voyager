@@ -84,12 +84,19 @@ class BreadController extends Controller
 
         // Ordering ($order and $direction)
         if (!empty($direction) && !empty($order)) {
-            $column_type = $layout->getFormfieldByColumn($order)->column->type;
+            $formfield = $layout->getFormfieldByColumn($order);
+            $column_type = $formfield->column->type;
 
             if ($column_type == 'computed') {
                 // TODO
             } else if ($column_type == 'relationship') {
                 // TODO
+            } else if ($formfield->translatable ?? false) {
+                if ($direction == 'desc') {
+                    $query = $query->orderByDesc(DB::raw('lower('.$order.'->"$.'.$locale.'")'));
+                } else {
+                    $query = $query->orderBy(DB::raw('lower('.$order.'->"$.'.$locale.'")'));
+                }
             } else {
                 if ($direction == 'desc') {
                     $query = $query->orderByDesc($order);
