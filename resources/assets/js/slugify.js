@@ -100,7 +100,8 @@
                 }
 
                 str = _slug
-                .replace(/[^a-z0-9]/g, _sep)
+                .replace(/[ьЬъЪ]/g, '')
+                .replace(new RegExp('[^a-z0-9]', 'g'), _sep)
                 .replace(new RegExp('\\'+_sep+'\\'+_sep+'+', 'g'), _sep)
                 .replace(new RegExp('^\\'+_sep+'+|\\'+_sep+'+$', 'g'), '');
 
