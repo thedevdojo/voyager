@@ -16,12 +16,6 @@
  * Released under the MIT License.
  */
 
-/**
- * vuex v3.2.0
- * (c) 2020 Evan You
- * @license MIT
- */
-
 /**!
  * Sortable 1.10.2
  * @author	RubaXa   <trash@rubaxa.org>

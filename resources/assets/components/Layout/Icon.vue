@@ -51,7 +51,7 @@ export default {
             if (icons.hasOwnProperty(name)) {
                 return icons[name].path;
             } else {
-                this.store.state.debug('Icon "'+name+'" does not exist!', true, 'warn');
+                console.warn('Icon "'+name+'" does not exist!');
             }
         }
     }

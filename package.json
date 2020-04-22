@@ -28,7 +28,6 @@
         "vue-scrollto": "^2.18.1",
         "vue-unicons": "^2.1.0",
         "vue2-transitions": "^0.3.0",
-        "vuedraggable": "^2.23.2",
-        "vuex": "^3.2.0"
+        "vuedraggable": "^2.23.2"
     }
 }

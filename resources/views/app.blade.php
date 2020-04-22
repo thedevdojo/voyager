@@ -19,7 +19,7 @@
     <slide-x-left-transition class="h-screen flex overflow-hidden" id="voyager" tag="div" group>
         <div key="loader">
             <fade-transition :duration="500">
-                <div class="loader" v-if="store.state.pageLoading">
+                <div class="loader" v-if="pageLoading">
                     <icon icon="helm" size="auto" class="block icon rotating-cw"></icon>
                 </div>
             </fade-transition>
@@ -41,11 +41,12 @@
 <script>
 var voyager = new Vue({
     el: '#voyager',
+    data: this.$store,
     mounted: function () {
         var vm = this;
 
         document.addEventListener("DOMContentLoaded", function(event) {
-            vm.store.commit('pageLoading', false);
+            vm.$store.pageLoading = false;
         });
 
         var messages = {!! Voyager::getMessages()->toJson() !!};
@@ -68,27 +69,27 @@ var voyager = new Vue({
         var vm = this;
 
         this.$language.localization = {!! Voyager::getLocalization() !!};
-        this.store.commit('routes', {!! Voyager::getRoutes() !!});
-        this.store.commit('debug', {{ var_export(config('app.debug') ?? false, true) }});
+        this.$store.routes = {!! Voyager::getRoutes() !!};
+        this.$store.debug = {{ var_export(config('app.debug') ?? false, true) }};
 
         var dark_mode = this.getCookie('dark-mode');
         if (dark_mode == 'true') {
-            this.store.commit('toggleDarkMode');
+            vm.$store.toggleDarkMode();
         }
 
         var sidebar_open = this.getCookie('sidebar-open');
         if (sidebar_open == 'false') {
-            this.store.commit('setSidebar', false);
+            this.$store.toggleSidebar();
         }
     },
     watch: {
         sidebarOpen: function (open) {
             this.setCookie('sidebar-open', (open ? 'true' : 'false'), 360);
         },
-        'store.state.darkmode': function (darkmode) {
+        '$store.darkmode': function (darkmode) {
             this.setCookie('dark-mode', (darkmode ? 'true' : 'false'), 360);
         },
-        'store.state.sidebarOpen': function (open) {
+        '$store.sidebarOpen': function (open) {
             this.setCookie('sidebar-open', (open ? 'true' : 'false'), 360);
         }
     }

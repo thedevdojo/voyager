@@ -40,10 +40,10 @@ Vue.prototype.pushToUrlHistory = pushToUrlHistory;
 window.route = function () {
     var args = Array.prototype.slice.call(arguments);
     var name = args.shift();
-    if (this.store.state.routes[name] === undefined) {
+    if (this.$store.routes[name] === undefined) {
         console.error('Route not found ', name);
     } else {
-        return this.store.state.routes[name]
+        return this.$store.routes[name]
             .split('/')
             .map(s => s[0] == '{' ? args.shift() : s)
             .join('/');

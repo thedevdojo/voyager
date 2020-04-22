@@ -69,7 +69,7 @@ export default {
                 })
                 .catch(function (errors) {
                     vm.$notify.error(error);
-                    if (vm.store.state.debug) {
+                    if (vm.$store.debug) {
                         vm.debug(error.response.data.message, true, 'error');
                     }
                 });

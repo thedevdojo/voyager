@@ -8,7 +8,6 @@ Instead, they are listed here:
 - Add :disabled theming to buttons/inputs
 - Filter available plugins by type
 - PurgeCSS strips out a lot classes. Check everything and add it to the whitelist if necessary
-- Replace Vuex with a simple global storage
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller

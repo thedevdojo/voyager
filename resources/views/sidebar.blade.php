@@ -1,13 +1,13 @@
 
 <!-- Mobile sidebar -->
-<div v-if="store.state.sidebarOpen" class="md:hidden" :key="'mobile_sidebar'">
+<div v-if="$store.sidebarOpen" class="md:hidden" :key="'mobile_sidebar'">
     <div class="fixed inset-0 z-30">
         <div class="absolute inset-0 bg-gray-600 opacity-75"></div>
     </div>
-    <div class="fixed inset-0 flex z-40" @click="store.commit('setSidebar', false)">
+    <div class="fixed inset-0 flex z-40" @click="$store.toggleSidebar()">
         <div class="flex-1 flex flex-col max-w-xs w-full sidebar" @click.stop="">
             <div class="absolute top-0 right-0 p-1">
-                <button @click="store.commit('setSidebar', false)" class="flex items-center justify-center h-12 w-12 rounded-full">
+                <button @click="$store.toggleSidebar()" class="flex items-center justify-center h-12 w-12 rounded-full">
                     <icon icon="times"></icon>
                 </button>
             </div>
@@ -98,8 +98,8 @@
                 @endif
             </div>
             <div class="flex-shrink-0 flex border-t sidebar-border p-4">
-                <button class="rounded-full bg-gray-300 dark:bg-gray-700 outline-none px-2 py-2 rounded inline-flex items-center" @click="store.commit('toggleDarkMode')">
-                    <icon :icon="store.state.darkmode ? 'sun' : 'moon'"></icon>
+                <button class="rounded-full bg-gray-300 dark:bg-gray-700 outline-none px-2 py-2 rounded inline-flex items-center" @click="$store.toggleDarkMode()">
+                    <icon :icon="$store.darkmode ? 'sun' : 'moon'"></icon>
                 </button>
                 <img src="{{ Voyager::assetUrl('images/default-avatar.png') }}" class="rounded-full m-4 w-8" alt="User Avatar">
             </div>
@@ -109,7 +109,7 @@
 </div>
 
 <!-- Desktop sidebar -->
-<div class="hidden md:flex md:flex-shrink-0 sidebar h-full" v-if="store.state.sidebarOpen" :key="'desktop_sidebar'">
+<div class="hidden md:flex md:flex-shrink-0 sidebar h-full" v-if="$store.sidebarOpen" :key="'desktop_sidebar'">
     <div class="flex flex-col w-64 border-r sidebar-border">
         <div class="h-0 flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div class="flex items-center flex-shrink-0 px-4">
@@ -199,14 +199,14 @@
             @endif
         </div>
         <div class="flex-shrink-0 inline-flex border-t sidebar-border p-4 h-auto overflow-x-hidden">
-            <button class="button blue small icon-only" @click="store.commit('toggleDarkMode')">
-                <icon :icon="store.state.darkmode ? 'sun' : 'moon'" />
+            <button class="button blue small icon-only" @click="$store.toggleDarkMode()">
+                <icon :icon="$store.darkmode ? 'sun' : 'moon'" />
             </button>
             <button class="button blue small icon-only" v-scroll-to="{ el: '#scroll-top', offset: -200 }">
                 <icon icon="arrow-circle-up" />
             </button>
-            <button class="button blue small icon-only" @click="store.commit('toggleDirection')">
-                <icon :icon="store.state.rtl ? 'left-to-right-text-direction' : 'right-to-left-text-direction'" />
+            <button class="button blue small icon-only" @click="$store.toggleDirection()">
+                <icon :icon="$store.rtl ? 'left-to-right-text-direction' : 'right-to-left-text-direction'" />
             </button>
         </div>
     </div>

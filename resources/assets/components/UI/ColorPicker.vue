@@ -2,7 +2,7 @@
     <div>
         <div v-if="palette == 'tailwind-colors'" class="w-full text-center">
             <button
-                v-for="(color, key) in store.state.ui.colors" :key="'color-'+key"
+                v-for="(color, key) in $store.ui.colors" :key="'color-'+key"
                 @click="$emit('select', color)"
                 class="button" :class="color">
                 {{ ucfirst(color) }}

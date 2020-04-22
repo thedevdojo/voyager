@@ -51,12 +51,12 @@ var voyager = new Vue({
     el: '#voyager-login',
     created: function () {
         this.$language.localization = {!! Voyager::getLocalization() !!};
-        this.store.commit('routes', {!! Voyager::getRoutes() !!});
-        this.store.commit('debug', {{ var_export(config('app.debug') ?? false, true) }});
+        this.$store.routes = {!! Voyager::getRoutes() !!};
+        this.$store.debug = {{ var_export(config('app.debug') ?? false, true) }};
 
         var dark_mode = this.getCookie('dark-mode');
         if (dark_mode == 'true') {
-            this.store.commit('toggleDarkMode');
+            this.$store.darkmode = true;
         }
     },
 });
