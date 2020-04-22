@@ -35,8 +35,10 @@ class BreadController extends Controller
 
         // Soft-deletes
         $uses_soft_deletes = $bread->usesSoftDeletes();
+        if (!isset($layout->options->soft_deletes) || !$layout->options->soft_deletes) {
+            $uses_soft_deletes = false;
+        }
         if ($uses_soft_deletes) {
-            // TODO: This needs to be configurable
             if ($softdeleted == 'show') {
                 $query = $query->withTrashed();
             } else if ($softdeleted == 'only') {

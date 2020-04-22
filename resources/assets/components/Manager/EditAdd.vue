@@ -187,6 +187,27 @@
                         {{ __('voyager::manager.delete_layout') }}
                     </span>
                 </button>
+                <button class="button blue small" @click="layoutOptionsOpen = true" :disabled="!currentLayout">
+                    <icon icon="cog" />
+                    <span>
+                        {{ __('voyager::generic.options') }}
+                    </span>
+                </button>
+                <slide-in :opened="layoutOptionsOpen" width="w-1/3" class="text-left" v-on:closed="layoutOptionsOpen = false">
+                    <div class="flex w-full mb-3">
+                        <div class="w-1/2 text-2xl">
+                            <h2>{{ __('voyager::generic.options') }}</h2>
+                        </div>
+                        <div class="w-1/2 flex justify-end">
+                            <locale-picker v-if="$language.localePicker" />
+                            <button class="button green icon-only" @click="layoutOptionsOpen = false">
+                                <icon icon="times" />
+                            </button>
+                        </div>
+                    </div>
+                    <label class="label mt-4">Show soft-deletes</label>
+                    <input type="checkbox" v-model="currentLayout.options.soft_deletes">
+                </slide-in>
             </div>
 
             <div class="card text-center text-xl" v-if="!currentLayout">
@@ -232,6 +253,7 @@ export default {
             currentLayoutName: null,
             addFormfieldDropdownOpen: false,
             openOptionsId: null,
+            layoutOptionsOpen: false,
         };
     },
     methods: {
@@ -329,7 +351,8 @@ export default {
                             default_order_column: {
                                 column: null,
                                 type: null,
-                            }
+                            },
+                            soft_deletes: true,
                         };
 
                         vm.bread.layouts.push({
