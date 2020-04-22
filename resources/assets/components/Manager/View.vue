@@ -27,7 +27,7 @@
                     <slide-in :opened="optionsId == key" v-on:closed="$emit('open-options', null)" width="w-1/3" class="text-left">
                         <div class="flex w-full mb-3">
                             <div class="w-1/2 text-2xl">
-                                <h2>{{ __('voyager::generic.options') }}</h2>
+                                <h4>{{ __('voyager::generic.options') }}</h4>
                             </div>
                             <div class="w-1/2 flex justify-end">
                                 <locale-picker v-if="$language.localePicker" />

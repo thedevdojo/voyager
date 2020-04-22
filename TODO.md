@@ -11,7 +11,7 @@ Instead, they are listed here:
 
 ## Nice to have
 - Validate (hash) AJAX data and check in controller
-- Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields
+- Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields and validation-rules that don't have a rule
 - Replace `vue-draggable` with `vue-slicksort` (much smaller, much cooler)
 - Add dark boxshadow variant to tailwind
 - When saving a BREAD check if all needed routes exist (route caching)

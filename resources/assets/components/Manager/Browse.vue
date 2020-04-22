@@ -2,8 +2,8 @@
     <card :title="__('voyager::generic.breads')" icon="bread" :icon-size="8">
         <div slot="actions">
             <button class="button green" @click.stop="loadBreads">
-                <icon icon="sync" :class="[loading ? 'rotating-ccw' : '']" />
-                <span>{{ __('voyager::manager.reload_breads') }}</span>
+                <icon icon="sync" class="rotating-ccw" :size="4" v-if="loading" />
+                {{ __('voyager::manager.reload_breads') }}
             </button>
         </div>
         <div class="voyager-table striped" :class="[loading ? 'loading' : '']">
@@ -32,32 +32,32 @@
                         <td class="text-right">
                             <div v-if="hasBread(table)">
                                 <a class="button blue" :href="route('voyager.'+table+'.browse')">
-                                    <icon icon="globe" />
+                                    <icon icon="globe" :size="4" />
                                     <span>
                                         {{ __('voyager::generic.browse') }}
                                     </span>
                                 </a>
                                 <button class="button green" @click="backupBread(table)">
-                                    <icon icon="history" />
+                                    <icon icon="history" :class="[backingUp ? 'rotating-ccw' : '']" :size="4" />
                                     <span>
                                         {{ __('voyager::generic.backup') }}
                                     </span>
                                 </button>
                                 <a class="button yellow" :href="route('voyager.bread.edit', table)">
-                                    <icon icon="pen" />
+                                    <icon icon="pen" :size="4" />
                                     <span>
                                         {{ __('voyager::generic.edit') }}
                                     </span>
                                 </a>
                                 <button class="button red" @click="deleteBread(table)">
-                                    <icon icon="trash" />
+                                    <icon :icon="deleting ? 'sync' : 'trash'" :class="[deleting ? 'rotating-ccw' : '']" :size="4" />
                                     <span>
                                         {{ __('voyager::generic.delete') }}
                                     </span>
                                 </button>
                             </div>
                             <a v-else class="button green" :href="route('voyager.bread.create', table)">
-                                <icon icon="plus" />
+                                <icon icon="plus" :size="4" />
                                 <span class="hidden md:block">
                                     {{ __('voyager::manager.add_bread') }}
                                 </span>
@@ -77,6 +77,8 @@ export default {
         return {
             breads: [],
             loading: false,
+            backingUp: false,
+            deleting: false,
         };
     },
     methods: {
@@ -100,6 +102,7 @@ export default {
                 vm.__('voyager::manager.delete_bread_confirm', {bread: table}),
                 function (response) {
                     if (response) {
+                        vm.deleting = true;
                         axios.delete(vm.route('voyager.bread.delete', table))
                         .then(function (response) {
                             vm.$notify.notify(vm.__('voyager::manager.delete_bread_success', {bread: table}), null, 'green', 5000);
@@ -109,6 +112,7 @@ export default {
                         })
                         .then(function () {
                             vm.loadBreads();
+                            vm.deleting = false;
                         });
                     }
                 },
@@ -121,6 +125,7 @@ export default {
         },
         backupBread: function (table) {
             var vm = this;
+            vm.backingUp = true;
             axios.post(vm.route('voyager.bread.backup-bread'), {
                 table: table
             })
@@ -129,6 +134,9 @@ export default {
             })
             .catch(function (error) {
                 vm.$notify.notify(error.response.statusText, null, 'red', 5000);
+            })
+            .then(function () {
+                vm.backingUp = false;
             });
         },
         loadBreads: function () {

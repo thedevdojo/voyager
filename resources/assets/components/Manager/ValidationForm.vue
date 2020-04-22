@@ -2,7 +2,7 @@
     <div class="mt-5">
         <div class="w-full flex">
             <div class="w-4/6">
-                <h2 class="text-lg">Validation</h2>
+                <h5>{{ __('voyager::generic.validation') }}</h5>
             </div>
             <div class="w-2/6 text-right">
                 <button class="button green small icon-only" @click.stop="addRule">
@@ -14,20 +14,20 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Rule</th>
-                        <th>Message</th>
-                        <th>Actions</th>
+                        <th>{{ __('voyager::generic.rule') }}</th>
+                        <th>{{ __('voyager::generic.message') }}</th>
+                        <th>{{ __('voyager::generic.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(rule, key) in reactiveRules" :key="'rule-'+key">
                         <td>
-                            <input type="text" class="voyager-input w-full" v-model="rule.rule" placeholder="Rule">
+                            <input type="text" class="voyager-input w-full" v-model="rule.rule" :placeholder="__('voyager::generic.rule')">
                         </td>
                         <td>
                             <language-input
                                 class="voyager-input w-full"
-                                type="text" placeholder="Message"
+                                type="text" :placeholder="__('voyager::generic.message')"
                                 v-bind:value="rule.message"
                                 v-on:input="rule.message = $event" />
                         </td>

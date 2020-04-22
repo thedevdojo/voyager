@@ -4,10 +4,8 @@
             <div slot="actions">
                 <div class="flex items-center">
                     <button class="button green" @click="loadProperties">
-                        <icon icon="sync" class="mr-0 md:mr-1" :class="[loadingProps ? 'rotating-ccw' : '']" />
-                        <span class="hidden md:block">
-                            {{ __('voyager::manager.reload_properties') }}
-                        </span>
+                        <icon icon="sync" class="rotating-ccw" :size="4" v-if="loadingProps" />
+                        {{ __('voyager::manager.reload_properties') }}
                     </button>
                     <locale-picker :small="false" />
                 </div>
@@ -120,9 +118,11 @@
                 </div>
                 <div class="w-full">
                     <button class="button blue" @click="saveBread">
+                        <icon icon="sync" class="mr-0 md:mr-1 rotating-ccw" :size="4" v-if="savingBread" />
                         {{ __('voyager::generic.save') }}
                     </button>
                     <button class="button green" @click="backupBread">
+                        <icon icon="sync" class="mr-0 md:mr-1 rotating-ccw" :size="4" v-if="backingUp" />
                         {{ __('voyager::generic.backup') }}
                     </button>
                 </div>
@@ -199,7 +199,7 @@
                 <slide-in v-if="currentLayout" :opened="layoutOptionsOpen" width="w-1/3" class="text-left" v-on:closed="layoutOptionsOpen = false">
                     <div class="flex w-full mb-3">
                         <div class="w-1/2 text-2xl">
-                            <h2>{{ __('voyager::generic.options') }}</h2>
+                            <h4>{{ __('voyager::generic.options') }}</h4>
                         </div>
                         <div class="w-1/2 flex justify-end">
                             <locale-picker v-if="$language.localePicker" />
@@ -253,6 +253,8 @@ export default {
             relationships: [],
             softdeletes: false,
             loadingProps: false,
+            savingBread: false,
+            backingUp: false,
             currentLayoutName: null,
             addFormfieldDropdownOpen: false,
             openOptionsId: null,
@@ -262,6 +264,8 @@ export default {
     methods: {
         saveBread: function () {
             var vm = this;
+
+            vm.savingBread = true;
 
             axios.put(this.route('voyager.bread.update', this.bread.table), {
                 bread: vm.bread
@@ -289,10 +293,13 @@ export default {
                         });
                     });
                 }
+            }).then(function () {
+                vm.savingBread = false;
             });
         },
         backupBread: function () {
             var vm = this;
+            vm.backingUp = true;
             axios.post(vm.route('voyager.bread.backup-bread'), {
                 table: vm.bread.table
             })
@@ -301,6 +308,9 @@ export default {
             })
             .catch(function (error) {
                 vm.$notify.notify(error.response.statusText, null, 'red', 5000);
+            })
+            .then(function () {
+                vm.backingUp = false;
             });
         },
         loadProperties: function () {
