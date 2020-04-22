@@ -122,6 +122,7 @@ class BreadController extends Controller
 
         // Transform results
         $query = $query->transform(function ($item) use ($uses_soft_deletes, $layout) {
+            $item->translate = false;
             // Add soft-deleted property
             $item->is_soft_deleted = false;
             if ($uses_soft_deletes && !empty($item->deleted_at)) {
@@ -163,6 +164,8 @@ class BreadController extends Controller
         $model = new $bread->model();
         $data = $request->get('data', []);
 
+        $model->translate = false;
+
         // Validate Data
         $validation_errors = $this->getValidationErrors($layout, $data);
         if (count($validation_errors) > 0) {
@@ -180,8 +183,7 @@ class BreadController extends Controller
             if ($formfield->column->type == 'column') {
                 $model->{$formfield->column->column} = $value;
             } elseif ($formfield->column->type == 'computed') {
-                // TODO: Can't use ucfirst here because 
-                if (method_exists($model, 'set'.ucfirst($formfield->column->column).'Attribute')) {
+                if (method_exists($model, 'set'.Str::camel($formfield->column->column).'Attribute')) {
                     $model->{$formfield->column->column} = $value;
                 }
             } elseif ($formfield->column->type == 'relationship') {
@@ -222,6 +224,8 @@ class BreadController extends Controller
 
         $model = $bread->getModel()->findOrFail($id);
         $data = $request->get('data', []);
+
+        $model->translate = false;
 
         // Validate Data
         $validation_errors = $this->getValidationErrors($layout, $data);

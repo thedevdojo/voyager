@@ -21,7 +21,6 @@ trait Translatable
         } else {
             $value = $this->{$key};
         }
-
         if (!$this->translate) {
             return $value;
         }
@@ -48,7 +47,7 @@ trait Translatable
 
     public function __set($key, $value)
     {
-        if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
+        if ($this->translate && property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
             if (is_array($value) || is_object($value)) {
                 $value = json_encode($value);
             } else {
