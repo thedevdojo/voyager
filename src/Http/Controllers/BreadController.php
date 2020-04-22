@@ -356,6 +356,9 @@ class BreadController extends Controller
                 $value = $value[VoyagerFacade::getLocale()] ?? $value[VoyagerFacade::getFallbackLocale()];
             }
             foreach ($formfield->validation as $rule) {
+                if ($rule->rule == '') {
+                    continue;
+                }
                 $validator = Validator::make(['col' => $value], ['col' => $rule->rule]);
 
                 if ($validator->fails()) {
