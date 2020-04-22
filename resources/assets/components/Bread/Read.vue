@@ -7,10 +7,11 @@
                         <icon icon="backward"></icon>
                         <span>{{ __('voyager::generic.back') }}</span>
                     </a>
-                    <a class="button yellow" :href="route('voyager.'+translate(bread.slug)+'.edit', primary)">
+                    <a class="button yellow" :href="route('voyager.'+translate(bread.slug, true)+'.edit', primary)">
                         <icon icon="pen"></icon>
                         <span>{{ __('voyager::generic.edit') }}</span>
                     </a>
+                    <locale-picker v-if="$language.localePicker" :small="false"></locale-picker>
                 </div>
             </div>
             <div class="flex flex-wrap w-full">
@@ -19,6 +20,7 @@
                         <component
                             :is="'formfield-'+formfield.type+'-read'"
                             :data="getData(formfield.column)"
+                            :translatable="formfield.translatable"
                             :options="formfield.options" />
                     </card>
                 </div>
@@ -29,10 +31,15 @@
 
 <script>
 export default {
-    props: ['bread', 'data', 'primary', 'layout', 'prevUrl'],
+    props: ['bread', 'data', 'primary', 'layout', 'prevUrl', 'translatable'],
     methods: {
         getData: function (column) {
             return this.data[column.column];
+        }
+    },
+    mounted: function () {
+        if (this.translatable) {
+            Vue.prototype.$language.localePicker = true;
         }
     }
 };

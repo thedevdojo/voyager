@@ -18,6 +18,8 @@ class BreadController extends Controller
         $bread = $this->getBread($request);
         $layout = $this->getLayoutForAction($bread, 'browse');
 
+        $uses_translatable_trait = $bread->usesTranslatableTrait();
+
         list(
             'page'        => $page,
             'perpage'     => $perpage,
@@ -121,8 +123,10 @@ class BreadController extends Controller
         });
 
         // Transform results
-        $query = $query->transform(function ($item) use ($uses_soft_deletes, $layout) {
-            $item->translate = false;
+        $query = $query->transform(function ($item) use ($uses_soft_deletes, $uses_translatable_trait, $layout) {
+            if ($uses_translatable_trait) {
+                $item->dontTranslate();
+            }
             // Add soft-deleted property
             $item->is_soft_deleted = false;
             if ($uses_soft_deletes && !empty($item->deleted_at)) {
@@ -143,7 +147,8 @@ class BreadController extends Controller
             'layout'            => $layout,
             'execution'         => number_format(((microtime(true) - $start) * 1000)),
             'uses_soft_deletes' => $uses_soft_deletes,
-            'primary'           => $query->get(0) ? $query->get(0)->getKeyName() : 'id'
+            'primary'           => $query->get(0) ? $query->get(0)->getKeyName() : 'id',
+            'translatable'      => $layout->hasTranslatableFormfields(),
         ];
     }
 

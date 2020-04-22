@@ -3,10 +3,11 @@
         <card :title="__('voyager::generic.'+action+'_type', { type: translate(bread.name_singular, true) })" :icon="bread.icon">
             <div slot="actions">
                     <div class="flex items-center">
-                        <a class="button blue" v-if="prevUrl !== ''" :href="prevUrl">
+                        <a class="button blue ltr:mr-2 rtl:ml-2" v-if="prevUrl !== ''" :href="prevUrl">
                             <icon icon="backward"></icon>
                             <span>{{ __('voyager::generic.back') }}</span>
                         </a>
+                        <locale-picker v-if="$language.localePicker" :small="false"></locale-picker>
                     </div>
                 </div>
                 <div>
@@ -45,7 +46,7 @@
 
 <script>
 export default {
-    props: ['bread', 'action', 'input', 'layout', 'prevUrl'],
+    props: ['bread', 'action', 'input', 'layout', 'prevUrl', 'translatable'],
     data: function () {
         return {
             output: (this.input || {}),
@@ -116,7 +117,9 @@ export default {
         }
     },
     mounted: function () {
-        Vue.prototype.$language.localePicker = true;
+        if (this.translatable) {
+            Vue.prototype.$language.localePicker = true;
+        }
     }
 };
 </script>

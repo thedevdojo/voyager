@@ -3,7 +3,7 @@
     <div class="item" :class="[active ? 'active' : '']">
         <div class="inline-flex items-center">
             <a :href="href" class="text-sm leading-5 link" @click="clickItem">
-                <icon :icon="icon" class="icon ltr:mr-2 rtl:ml-2"></icon>
+                <icon :icon="icon" class="icon ltr:mr-2 rtl:ml-2" :size="6"></icon>
                 {{ title }}
             </a>
         </div>

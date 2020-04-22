@@ -33,6 +33,7 @@
                     <icon icon="plus"></icon>
                     <span>{{ __('voyager::generic.add') }}</span>
                 </a>
+                <locale-picker class="m-0 ml-2" :small="false" v-if="$language.localePicker" />
             </div>
         </div>
         <div>
@@ -145,7 +146,12 @@
 
 <script>
 export default {
-    props: ['bread'],
+    props: {
+        bread: {
+            type: Object,
+            required: true,
+        },
+    },
     data: function () {
         return {
             loading: false,
@@ -153,9 +159,10 @@ export default {
             total: 0,    // Total unfiltered amount of entries
             filtered: 0, // Amount of filtered entries
             layout: null,
-            selected: [],
+            selected: [], // Array of selected primary-keys
             primary: 'id', // The primary key
-            uses_soft_deletes: false,
+            uses_soft_deletes: false, // If the model uses soft-deleting
+            translatable: false, // If the layout contains translatable fields (will show/hide the locale picker)
             parameters: {
                 page: 1,
                 perpage: 10,
@@ -185,11 +192,12 @@ export default {
                 if (vm.parameters.order === null) {
                     vm.parameters.order = vm.layout.options.default_order_column.column;
                 }
-                //console.log('Getting entries took ' + response.data.execution + 'ms');
+                if (response.data.execution > 500) {
+                    vm.$notify.notify(vm.__('voyager::bread.execution_time_warning', { time: response.data.execution }), null, 'yellow', 7500);
+                }
             })
             .catch(function (response) {
-                console.log(response.statusText);
-                // TODO: Add notification
+                vm.$notify.notify(response.response.data.message, null, 'red', 7500);
             })
             .finally(function () {
                 vm.loading = false;
@@ -398,8 +406,6 @@ export default {
         if (!parameter_found) {
             this.load();
         }
-
-        Vue.prototype.$language.localePicker = true;
     },
     watch: {
         'parameters.page': function () {
@@ -425,6 +431,9 @@ export default {
         },
         '$language.locale': function (locale) {
             this.parameters.locale = locale;
+        },
+        translatable: function (value) {
+            Vue.prototype.$language.localePicker = value;
         }
     }
 };

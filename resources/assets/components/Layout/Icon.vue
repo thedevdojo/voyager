@@ -16,7 +16,7 @@ export default {
         },
         size: {
             type: [String, Number],
-            default: 6,
+            default: 5,
         },
         viewbox: {
             type: String,

@@ -35,6 +35,7 @@ Instead, they are listed here:
 - BREAD menu-badge only shows non-soft-deleted entries
 - Translatable: Use `getTranslated($column, $locale, $fallback, $default)` to get a translated value (which is not the default locale)
 - Translatable: Use `setTranslated($column, $value, $locale)` to set a translated value (which is not the default locale)
+- Translatable: Use `Ctrl` + `up/right` to select the next locale, `Ctrl` + `down/left` to select the previous locale
 
 ## Checklist
 The following things need to be double checked

@@ -57,9 +57,9 @@ var voyager = new Vue({
         document.addEventListener('keydown', function (e) {
             if (event.ctrlKey) {
                 if (e.keyCode == 38 || e.keyCode == 39) {
-                    // TODO: Select "next" locale
+                    vm.$language.nextLocale();
                 } else if (e.keyCode == 37 || e.keyCode == 40) {
-                    // TODO: Select "previous" locale
+                    vm.$language.previousLocale();
                 }
             }
         });

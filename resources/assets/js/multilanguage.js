@@ -5,12 +5,36 @@ Vue.prototype.$language = new Vue({
         locales: document.getElementsByTagName('html')[0].getAttribute('locales').split(','),
         localePicker: false,
         localization: [],
+        index: 0,
     },
     watch: {
         locale: function (locale) {
-            // TODO: Set cookie?
+            this.index = this.locales.indexOf(locale);
         }
     },
+    methods: {
+        nextLocale: function () {
+            if (this.index == this.locales.length - 1) {
+                this.index = 0;
+            } else {
+                this.index = this.index + 1;
+            }
+
+            this.locale = this.locales[this.index];
+        },
+        previousLocale: function () {
+            if (this.index == 0) {
+                this.index = this.locales.length - 1;
+            } else {
+                this.index = this.index - 1;
+            }
+
+            this.locale = this.locales[this.index];
+        }
+    },
+    mounted: function () {
+        this.index = this.locales.indexOf(locale);
+    }
 });
 
 Vue.mixin({

@@ -102,7 +102,6 @@
                     <icon :icon="store.state.darkmode ? 'sun' : 'moon'"></icon>
                 </button>
                 <img src="{{ Voyager::assetUrl('images/default-avatar.png') }}" class="rounded-full m-4 w-8" alt="User Avatar">
-                <locale-picker v-if="$language.localePicker" />
             </div>
         </div>
         <div class="flex-shrink-0 w-14"></div>
@@ -209,7 +208,6 @@
             <button class="button blue small icon-only" @click="store.commit('toggleDirection')">
                 <icon :icon="store.state.rtl ? 'left-to-right-text-direction' : 'right-to-left-text-direction'" />
             </button>
-            <locale-picker v-if="$language.localePicker"></language-picker>
         </div>
     </div>
 </div>

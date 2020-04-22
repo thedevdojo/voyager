@@ -45,6 +45,13 @@ class Layout implements \JsonSerializable
         return $this->formfields->where('column.type', $type);
     }
 
+    public function hasTranslatableFormfields()
+    {
+        return $this->formfields->filter(function ($formfield) {
+            return $formfield->translatable ?? false;
+        })->count() > 0;
+    }
+
     public function jsonSerialize()
     {
         return [
