@@ -57,7 +57,7 @@ class Bread implements \JsonSerializable
 
     public function usesTranslatableTrait()
     {
-        return class_uses($this->getModel());
+        return in_array(Translatable::class, class_uses($this->getModel()));
     }
 
     public function usesSoftDeletes()

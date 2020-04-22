@@ -31,6 +31,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'voyager');
         $this->loadTranslationsFrom(realpath(__DIR__.'/../resources/lang'), 'voyager');
 
+        BreadFacade::addFormfield(\TCG\Voyager\Formfields\Number::class);
         //BreadFacade::addFormfield(\TCG\Voyager\Formfields\Repeater::class);
         BreadFacade::addFormfield(\TCG\Voyager\Formfields\Text::class);
 

@@ -69,6 +69,7 @@ return [
     'range'                     => 'Range',
     'read'                      => 'Read',
     'reload'                    => 'Reload',
+    'remove'                    => 'Remove',
     'restore'                   => 'Restore',
     'rows'                      => 'Rows',
     'save'                      => 'Save',

@@ -2,12 +2,15 @@
     <div>
         <card title="Edit BREAD" icon="bread" :icon-size="8">
             <div slot="actions">
-                <button class="button green" @click="loadProperties">
-                    <icon icon="sync" class="mr-0 md:mr-1" :class="[loadingProps ? 'rotating-ccw' : '']" />
-                    <span class="hidden md:block">
-                        {{ __('voyager::manager.reload_properties') }}
-                    </span>
-                </button>
+                <div class="flex items-center">
+                    <button class="button green" @click="loadProperties">
+                        <icon icon="sync" class="mr-0 md:mr-1" :class="[loadingProps ? 'rotating-ccw' : '']" />
+                        <span class="hidden md:block">
+                            {{ __('voyager::manager.reload_properties') }}
+                        </span>
+                    </button>
+                    <locale-picker :small="false" />
+                </div>
             </div>
             <div>
                 <alert color="yellow" v-if="!bread.model || bread.model == ''">
@@ -193,7 +196,7 @@
                         {{ __('voyager::generic.options') }}
                     </span>
                 </button>
-                <slide-in :opened="layoutOptionsOpen" width="w-1/3" class="text-left" v-on:closed="layoutOptionsOpen = false">
+                <slide-in v-if="currentLayout" :opened="layoutOptionsOpen" width="w-1/3" class="text-left" v-on:closed="layoutOptionsOpen = false">
                     <div class="flex w-full mb-3">
                         <div class="w-1/2 text-2xl">
                             <h2>{{ __('voyager::generic.options') }}</h2>

@@ -8,14 +8,18 @@ trait Translatable
     private $current_locale;
     private $fallback_locale;
 
-    public function __construct()
+    public function setLocales()
     {
-        $this->current_locale = app()->getLocale();
-        $this->fallback_locale = config('app.fallback_locale');
+        if (!$this->current_locale) {
+            $this->current_locale = app()->getLocale();
+            $this->fallback_locale = config('app.fallback_locale');
+        }
     }
 
     public function getTranslated($key, $locale, $fallback, $default)
     {
+        $this->setLocales();
+
         $old_locale = $this->current_locale;
         $old_fallback = $this->fallback_locale;
 
@@ -57,10 +61,7 @@ trait Translatable
 
     public function __get($key)
     {
-        if (!$this->current_locale) {
-            $this->current_locale = app()->getLocale();
-            $this->fallback_locale = config('app.fallback_locale');
-        }
+        $this->setLocales();
         $value = null;
 
         if ($this instanceof \Illuminate\Database\Eloquent\Model) {
@@ -92,6 +93,7 @@ trait Translatable
 
     public function __set($key, $value)
     {
+        $this->setLocales();
         if ($this->translate && property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
             if (is_array($value) || is_object($value)) {
                 $value = json_encode($value);

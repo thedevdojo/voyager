@@ -5,10 +5,7 @@ namespace TCG\Voyager\Contracts\Bread;
 abstract class Formfield implements \JsonSerializable
 {
     public $translatable = false;
-    public $column = [
-        'column' => '',
-        'type'   => '',
-    ];
+    public $column;
     /**
      * Get the name of the formfield.
      *
@@ -97,12 +94,20 @@ abstract class Formfield implements \JsonSerializable
 
     public function jsonSerialize()
     {
+        // Formfield will be used in BREAD manager. We need list/view options and some other things
+        if (!$this->column) {
+            return [
+                'name'            => $this->name(),
+                'type'            => $this->type(),
+                'canbetranslated' => $this->canBeTranslated(),
+                'listOptions'     => (object) $this->listOptions(),
+                'viewOptions'     => (object) $this->viewOptions(),
+            ];
+        }
+
+        // BREAD was already stored by the BREAD manager. We don't need the above things at this point
         return array_merge([
-            'name'            => $this->name(),
             'type'            => $this->type(),
-            'canbetranslated' => $this->canBeTranslated(),
-            'listOptions'     => (object) $this->listOptions(),
-            'viewOptions'     => (object) $this->viewOptions(),
         ], (array) $this);
     }
 }

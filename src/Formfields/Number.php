@@ -4,22 +4,24 @@ namespace TCG\Voyager\Formfields;
 
 use TCG\Voyager\Contracts\Bread\Formfield;
 
-class Text extends Formfield
+class Number extends Formfield
 {
     public function type(): string
     {
-        return 'text';
+        return 'number';
     }
 
     public function name(): string
     {
-        return __('voyager::formfields.text.name');
+        return __('voyager::formfields.number.name');
     }
 
     public function listOptions(): array
     {
         return [
-            'display_length'    => 150,
+            'decimals'      => 0,
+            'dec_point'     => '.',
+            'thousands_sep' => ',',
         ];
     }
 
@@ -29,8 +31,9 @@ class Text extends Formfield
             'label'         => '',
             'description'   => '',
             'placeholder'   => '',
-            'default_value' => '',
-            'rows'          => 1,
+            'min'           => 0,
+            'max'           => 0,
+            'step'          => 1,
         ];
     }
 

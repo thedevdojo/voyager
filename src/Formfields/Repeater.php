@@ -13,7 +13,7 @@ class Repeater extends Formfield
 
     public function name(): string
     {
-        return 'Repeater';
+        return __('voyager::formfields.repeater.name');
     }
 
     public function listOptions(): array
@@ -26,8 +26,8 @@ class Repeater extends Formfield
         return [
             'min'         => 0,
             'max'         => 0,
-            'add_text'    => 'Add',
-            'remove_text' => 'Remove',
+            'add_text'    => __('voyager::generic.add'),
+            'remove_text' => __('voyager::generic.remove'),
             'formfields'  => [],
         ];
     }
