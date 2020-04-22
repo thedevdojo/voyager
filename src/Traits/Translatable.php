@@ -45,15 +45,12 @@ trait Translatable
         $this->current_locale = $old_locale;
     }
 
-    public function whereTranslated($query)
-    {
-        // TODO: ...
-
-        return $query;
-    }
-
     public function __get($key)
     {
+        if (!$this->current_locale) {
+            $this->current_locale = app()->getLocale();
+            $this->fallback_locale = config('app.fallback_locale');
+        }
         $value = null;
 
         if ($this instanceof \Illuminate\Database\Eloquent\Model) {
