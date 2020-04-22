@@ -164,6 +164,10 @@ class BreadController extends Controller
         $model = new $bread->model();
         $data = $request->get('data', []);
 
+        if ($bread->usesTranslatableTrait()) {
+            $model->dontTranslate();
+        }
+
         // Validate Data
         $validation_errors = $this->getValidationErrors($layout, $data);
         if (count($validation_errors) > 0) {
@@ -222,6 +226,10 @@ class BreadController extends Controller
 
         $model = $bread->getModel()->findOrFail($id);
         $data = $request->get('data', []);
+
+        if ($bread->usesTranslatableTrait()) {
+            $model->dontTranslate();
+        }
 
         // Validate Data
         $validation_errors = $this->getValidationErrors($layout, $data);

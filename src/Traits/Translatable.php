@@ -4,9 +4,9 @@ namespace TCG\Voyager\Traits;
 
 trait Translatable
 {
-    public $translate = true;
-    public $current_locale;
-    public $fallback_locale;
+    private $translate = true;
+    private $current_locale;
+    private $fallback_locale;
 
     public function __construct()
     {
@@ -43,6 +43,16 @@ trait Translatable
 
         // Set locales back to original
         $this->current_locale = $old_locale;
+    }
+
+    public function translate()
+    {
+        $this->translate = true;
+    }
+
+    public function dontTranslate()
+    {
+        $this->translate = false;
     }
 
     public function __get($key)
