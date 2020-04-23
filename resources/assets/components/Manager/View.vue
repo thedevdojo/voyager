@@ -1,19 +1,20 @@
 <template>
-    <draggable
+    <sort-container
         class="flex flex-wrap w-full"
         tag="div"
-        handle=".draghandle"
-        :list="reactiveFormfields"
-        :group="{ name: 'formfields' }">
-        <div
+        :useDragHandle="true"
+        v-model="reactiveFormfields">
+        <sort-element
             v-for="(formfield, key) in reactiveFormfields"
             :key="'formfield-'+key"
-            class="m-0"
+            :index="key"
+            axis="xy"
+            class="m-0 z-50"
             :class="formfield.options.width">
             <card :title="formfield.column.column || 'No column'">
                 <div slot="actions">
                     <button class="button small blue icon-only">
-                        <icon icon="expand-arrows" class="draghandle cursor-move" />
+                        <icon icon="expand-arrows" v-sort-handle class="cursor-move" />
                     </button>
                     <button class="button small blue icon-only" @mousedown="startResize(key)">
                         <icon icon="arrows-h" class="cursor-move" />
@@ -74,9 +75,9 @@
                     :column="formfield.column"
                     show="view" />
             </card>
-        </div>
+        </sort-element>
         <slot v-if="reactiveFormfields.length == 0" />
-    </draggable>
+    </sort-container>
 </template>
 
 <script>

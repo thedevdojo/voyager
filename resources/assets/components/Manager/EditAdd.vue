@@ -236,7 +236,7 @@
                 v-on:open-options="openOptionsId = $event" />
         </card>
 
-        <collapsible v-if="debug" :title="__('voyager::manager.json_output')">
+        <collapsible v-if="debug" :title="__('voyager::manager.json_output')" :opened="false">
             <textarea class="input w-full" rows="10" v-model="jsonBread"></textarea>
         </collapsible>
     </div>

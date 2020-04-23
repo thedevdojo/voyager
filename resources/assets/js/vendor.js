@@ -13,8 +13,8 @@ Vue.prototype.slugify = window.slugify;
 import Transitions from 'vue2-transitions'
 Vue.use(Transitions);
 
-import draggable from 'vuedraggable';
-Vue.component('draggable', draggable);
+import { HandleDirective } from 'vue-slicksort';
+Vue.directive('sort-handle', HandleDirective);
 
 import VueScrollTo from 'vue-scrollto';
 Vue.use(VueScrollTo, {

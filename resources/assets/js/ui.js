@@ -20,6 +20,8 @@ let components = [
     'Notifications',
     'Pagination',
     'SlideIn',
+    'SortContainer',
+    'SortElement',
     'Tabs',
 ];
 
