@@ -92,6 +92,7 @@ class VoyagerServiceProvider extends ServiceProvider
     public function loadSettingsFrom($path)
     {
         SettingsFacade::settingsPath($path);
+        SettingsFacade::loadSettings();
     }
 
     public function loadPluginsFrom($path)

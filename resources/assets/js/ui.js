@@ -20,6 +20,7 @@ let components = [
     'Notifications',
     'Pagination',
     'SlideIn',
+    'Tabs',
 ];
 
 components.forEach(function (component) {

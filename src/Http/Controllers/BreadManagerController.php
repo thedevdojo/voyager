@@ -163,9 +163,10 @@ class BreadManagerController extends Controller
      */
     public function getBreads()
     {
-        $breads = BreadFacade::getBreads();
-
-        return response()->json($breads, 200);
+        return response()->json([
+            'breads'  => BreadFacade::getBreads(),
+            'backups' => BreadFacade::getBackups()
+        ], 200);
     }
 
     /**
@@ -178,6 +179,20 @@ class BreadManagerController extends Controller
     public function backupBread(Request $request)
     {
         $result = BreadFacade::backupBread($request->get('table', ''));
+
+        return response($result, $result === false ? 500 : 200);
+    }
+
+    /**
+     * Rollback a BREAD
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rollbackBread(Request $request)
+    {
+        $result = BreadFacade::rollbackBread($request->get('table', ''), $request->get('path', ''));
 
         return response($result, $result === false ? 500 : 200);
     }

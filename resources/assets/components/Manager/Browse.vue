@@ -40,7 +40,7 @@
                                 <button class="button green" @click="backupBread(table)">
                                     <icon icon="history" :class="[backingUp ? 'rotating-ccw' : '']" :size="4" />
                                     <span>
-                                        {{ __('voyager::generic.backup') }}
+                                        {{ __('voyager::generic.backup') }} ({{ getBackupsForTable(table).length }})
                                     </span>
                                 </button>
                                 <a class="button yellow" :href="route('voyager.bread.edit', table)">
@@ -76,6 +76,7 @@ export default {
     data: function () {
         return {
             breads: [],
+            backups: [],
             loading: false,
             backingUp: false,
             deleting: false,
@@ -137,6 +138,12 @@ export default {
             })
             .then(function () {
                 vm.backingUp = false;
+                vm.loadBreads();
+            });
+        },
+        getBackupsForTable: function (table) {
+            return this.backups.filter(function (backup) {
+                return backup.table == table;
             });
         },
         loadBreads: function () {
@@ -149,7 +156,8 @@ export default {
             vm.loading = true;
             axios.post(vm.route('voyager.bread.get-breads'))
             .then(function (response) {
-                vm.breads = response.data;
+                vm.breads = response.data.breads;
+                vm.backups = response.data.backups;
             })
             .catch(function (error) {
                 vm.$notify.notify(error.response.statusText, null, 'red', 5000);
@@ -157,7 +165,7 @@ export default {
             .then(function () {
                 vm.loading = false;
             });
-        },
+        }
     },
     mounted: function () {
         this.loadBreads();

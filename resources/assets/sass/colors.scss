@@ -70,6 +70,21 @@ $cards-border-color-dark     : 'border-gray-700' !default;
 $cards-text-color-dark       : $primary-text-color-dark !default;
 $cards-title-text-color-dark : 'text-gray-300' !default;
 
+// TABS
+$tabs-color                     : 'text-gray-500' !default;
+$tabs-border-color              : 'border-gray-200' !default;
+$tabs-hover-color               : 'text-gray-700' !default;
+$tabs-hover-border-color        : 'border-gray-300' !default;
+$tabs-active-color              : 'text-blue-600' !default;
+$tabs-active-border-color       : 'border-blue-500' !default;
+
+$tabs-color-dark                : 'text-gray-500' !default;
+$tabs-border-color-dark         : 'border-gray-600' !default;
+$tabs-hover-color-dark          : 'text-gray-400' !default;
+$tabs-hover-border-color-dark   : 'border-gray-400' !default;
+$tabs-active-color-dark         : 'text-blue-600' !default;
+$tabs-active-border-color-dark  : 'border-blue-500' !default;
+
 // NOTIFICATIONS
 $notification-background-color:         'bg-white' !default;
 $notification-title-color:              'text-gray-900' !default;
@@ -322,6 +337,39 @@ select.voyager-input {
 
     .footer {
         @apply #{$cards-border-color};
+    }
+}
+
+// TABS
+.mode-dark .tabs {
+    .wrapper {
+        @apply #{$tabs-border-color-dark};
+        .tab {
+            @apply #{$tabs-color-dark};
+            &:hover {
+                @apply #{$tabs-hover-color-dark} #{$tabs-hover-border-color-dark};
+            }
+    
+            &.active {
+                @apply #{$tabs-active-color-dark} #{$tabs-active-border-color-dark};
+            }
+        }
+    }
+}
+
+.tabs {
+    .wrapper {
+        @apply #{$tabs-border-color};
+        .tab {
+            @apply #{$tabs-color};
+            &:hover {
+                @apply #{$tabs-hover-color} #{$tabs-hover-border-color};
+            }
+    
+            &.active {
+                @apply #{$tabs-active-color} #{$tabs-active-border-color};
+            }
+        }
     }
 }
 

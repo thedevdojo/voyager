@@ -20,6 +20,7 @@ class Bread
     protected $formfields;
     protected $breadPath;
     protected $breads = null;
+    protected $backups = [];
 
     /**
      * Sets the path where the BREAD-files are stored.
@@ -50,10 +51,6 @@ class Bread
             }
 
             $this->breads = collect(File::files($this->breadPath))->transform(function ($bread) {
-                // Exclude backups
-                if (Str::contains($bread->getPathName(), '.backup.')) {
-                    return null;
-                }
                 $content = File::get($bread->getPathName());
                 $json = @json_decode($content);
                 if (json_last_error() !== JSON_ERROR_NONE) {
@@ -61,13 +58,54 @@ class Bread
                     return;
                 }
 
-                return new BreadClass($json);
+                $b = new BreadClass($json);
+
+                // Push Exclude backups
+                if (Str::contains($bread->getPathName(), '.backup.')) {
+                    $date = Str::before(Str::after($bread->getFilename(), '.backup.'), '.json');
+                    $this->backups[] = [
+                        'table' => $b->table,
+                        'path'  => $bread->getPathName(),
+                        'date'  => $date,
+                    ];
+
+                    return null;
+                }
+
+                return $b;
             })->filter(function ($bread) {
                 return $bread !== null;
             })->values();
         }
 
         return $this->breads;
+    }
+
+    /**
+     * Get backed-up BREADs.
+     *
+     * @return array
+     */
+    public function getBackups()
+    {
+        return $this->backups;
+    }
+
+    /**
+     * Rollback BREAD to a given file.
+     * 
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function rollbackBread($table, $path)
+    {
+        if ($this->backupBread($table) !== false) {
+             // Delete $table.json
+             // Rename $path to $table.json
+        }
+
+        return false;
     }
 
     /**

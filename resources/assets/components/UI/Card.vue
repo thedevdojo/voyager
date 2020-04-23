@@ -2,7 +2,7 @@
 <div class="card">
     <div class="header" :class="[{'cursor-pointer': headerPointer}]" v-if="showHeader" @click="$emit('click-header')">
         <div class="flex items-center justify-between flex-wrap sm:flex-no-wrap">
-            <div class="inline-flex items-center">
+            <div class="inline-flex items-center" v-if="!$slots.title">
                 <icon v-if="icon" :icon="icon" :size="iconSize" class="ltr:mr-2 rtl:ml-2"></icon>
                 <h6 class="leading-6 font-medium">
                     {{ title }}
@@ -11,6 +11,7 @@
                     {{ description }}
                 </p>
             </div>
+            <slot v-else name="title" />
             <div class="flex-shrink-0" v-if="$slots.actions">
                 <slot name="actions"></slot>
             </div>
@@ -50,7 +51,7 @@ export default {
         description: {
             type: String,
             default: '',
-        }
+        },
     }
 };
 </script>
@@ -64,7 +65,7 @@ export default {
     }
 
     .content {
-        @apply p-2;
+        @apply px-2;
     }
 
     .footer {

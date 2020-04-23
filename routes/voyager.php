@@ -19,6 +19,7 @@ Route::group(['as' => 'voyager.'], function () {
             Route::post('get-properties', ['uses' => $namespace.'BreadManagerController@getProperties', 'as' => 'get-properties']);
             Route::post('get-breads', ['uses' => $namespace.'BreadManagerController@getBreads', 'as' => 'get-breads']);
             Route::post('backup-bread', ['uses' => $namespace.'BreadManagerController@backupBread', 'as' => 'backup-bread']);
+            Route::post('rolback-bread', ['uses' => $namespace.'BreadManagerController@rollbackBread', 'as' => 'rollback-bread']);
             Route::delete('{table}', ['uses' => $namespace.'BreadManagerController@destroy', 'as' => 'delete']);
         });
 

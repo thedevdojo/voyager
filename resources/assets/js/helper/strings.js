@@ -28,11 +28,6 @@ window.studly = function (input) {
 };
 Vue.prototype.studly = studly;
 
-window.slug = function (input) {
-    return window.slugify(input);
-};
-Vue.prototype.slug = slug;
-
 window.nl2br = function (input) {
     return input.replace(/\\n/g, '<br>');
 };

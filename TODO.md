@@ -19,7 +19,7 @@ Instead, they are listed here:
 ## Styling
 - ~Align tailwinds color palette to something nicer~
 - ~Add more shades (`bg-gray-50`, `bg-gray-950`)~
-- Closed collapsible should not have vertical padding on the cards content div when its closed
+- ~Closed collapsible should not have vertical padding on the cards content div when its closed~
 
 ## Bugs
 - Pagination: When there are only 3 pages it shows as 1,2...3

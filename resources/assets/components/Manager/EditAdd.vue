@@ -46,7 +46,7 @@
                             id="name-plural"
                             type="text" :placeholder="__('voyager::manager.name_plural')"
                             v-bind:value="bread.name_plural"
-                            v-on:input="bread.name_plural = $event" />
+                            v-on:input="bread.name_plural = $event; setSlug($event)" />
                     </div>
                     <div class="w-full md:w-1/6 m-1">
                         <label class="label" for="icon">{{ __('voyager::generic.icon') }}</label>
@@ -116,16 +116,17 @@
                         </select>
                     </div>
                 </div>
-                <div class="w-full">
-                    <button class="button blue" @click="saveBread">
-                        <icon icon="sync" class="mr-0 md:mr-1 rotating-ccw" :size="4" v-if="savingBread" />
-                        {{ __('voyager::generic.save') }}
-                    </button>
-                    <button class="button green" @click="backupBread">
-                        <icon icon="sync" class="mr-0 md:mr-1 rotating-ccw" :size="4" v-if="backingUp" />
-                        {{ __('voyager::generic.backup') }}
-                    </button>
-                </div>
+            </div>
+
+            <div slot="footer">
+                <button class="button blue" @click="saveBread">
+                    <icon icon="sync" class="mr-0 md:mr-1 rotating-ccw" :size="4" v-if="savingBread" />
+                    {{ __('voyager::generic.save') }}
+                </button>
+                <button class="button green" @click="backupBread">
+                    <icon icon="sync" class="mr-0 md:mr-1 rotating-ccw" :size="4" v-if="backingUp" />
+                    {{ __('voyager::generic.backup') }}
+                </button>
             </div>
         </card>
 
@@ -466,6 +467,11 @@ export default {
                     }
                 }, false, 'yellow', vm.__('voyager::generic.yes'), vm.__('voyager::generic.no'), 7500
             );
+        },
+        setSlug: function (value) {
+            var l = this.$language.locale;
+            this.bread.slug = this.get_input_as_translatable_object(this.bread.slug);
+            this.bread.slug[l] = this.slugify(value[l], { strict: true, lower: true });
         },
         closeFormfieldAddDropdown: function () {
             this.addFormfieldDropdownOpen = false;

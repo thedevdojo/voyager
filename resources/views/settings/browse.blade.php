@@ -4,6 +4,7 @@
 
 <settings-manager
     :input="{{ $settings->toJson() }}"
+    :formfields="{{ json_encode(Bread::getFormfields()) }}"
 ></settings-manager>
 
 @endsection
