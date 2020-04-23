@@ -2,23 +2,14 @@ This Todo list does **not** contain big improvements.
 It only contains small things that came to our minds which we couldn't implement immediately and would be forgotten otherwise.  
 Instead, they are listed here:
 
-- Change variables to use kebab-case everywhere
-- Make sure all input with class `voyager-input` use `w-full` (where applicable)
-- Source out all colors from styles to `colors.scss`
 - Add :disabled theming to buttons/inputs
 - Filter available plugins by type
 - PurgeCSS strips out a lot classes. Check everything and add it to the whitelist if necessary
 
 ## Nice to have
-- Validate (hash) AJAX data and check in controller
 - Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields and validation-rules that don't have a rule
 - Add dark boxshadow variant to tailwind
 - When saving a BREAD check if all needed routes exist (route caching)
-
-## Styling
-- ~Align tailwinds color palette to something nicer~
-- ~Add more shades (`bg-gray-50`, `bg-gray-950`)~
-- ~Closed collapsible should not have vertical padding on the cards content div when its closed~
 
 ## Bugs
 - Pagination: When there are only 3 pages it shows as 1,2...3

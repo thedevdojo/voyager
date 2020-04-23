@@ -49,7 +49,7 @@
                                 v-on:input="setting.key = slugify($event.target.value, { lower: true, strict: true })"
                                 :placeholder="__('voyager::generic.name')">
                             <input type="text" class="voyager-input small" v-bind:value="setting.key" disabled :placeholder="__('voyager::generic.key')">
-                            <input type="text" class="voyager-input small" v-model="setting.group" v-on:input="currentEnteredGroup = $event.target.value" :placeholder="__('voyager::generic.group')">
+                            <input type="text" class="voyager-input small" v-bind:value="setting.group" v-on:input="setting.group = slugify($event.target.value, {strict:true,lower:true}); currentEnteredGroup = $event.target.value" :placeholder="__('voyager::generic.group')">
                         </div>
                         <div slot="actions">
                             <button class="button blue" @click="optionsId = i">

@@ -218,4 +218,27 @@ class Voyager
             ];
         }));
     }
+
+    /**
+     * Translate a given string/object/array
+     *
+     * @return string The translated value
+     */
+    public function translate($value, $locale, $fallback)
+    {
+        if (is_string($value)) {
+            $json = @json_decode($value);
+            if (json_last_error() == JSON_ERROR_NONE) {
+                $value = $json;
+            }
+        }
+
+        if (is_array($value)) {
+            return $value[$locale] ?? $value[$falback] ?? null;
+        } elseif (is_object($value)) {
+            return $value->{$locale} ?? $value->{$falback} ?? null;
+        }
+
+        return $value;
+    }
 }

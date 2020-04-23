@@ -2,6 +2,8 @@
 
 namespace TCG\Voyager\Traits;
 
+use \TCG\Voyager\Facades\Voyager as VoyagerFacade;
+
 trait Translatable
 {
     private $translate = true;
@@ -74,18 +76,7 @@ trait Translatable
         }
 
         if (property_exists($this, 'translatable') && is_array($this->translatable) && in_array($key, $this->translatable)) {
-            if (is_string($value)) {
-                $json = @json_decode($value);
-                if (json_last_error() == JSON_ERROR_NONE) {
-                    $value = $json;
-                }
-            }
-
-            if (is_array($value)) {
-                return $value[$this->current_locale] ?? $value[$this->fallback_locale] ?? null;
-            } elseif (is_object($value)) {
-                return $value->{$this->current_locale} ?? $value->{$this->fallback_locale} ?? null;
-            }
+            return VoyagerFacade::translate($value, $this->current_locale, $this->fallback_locale);
         }
 
         return $value;
