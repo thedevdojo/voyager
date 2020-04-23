@@ -1,1 +1,12 @@
-@import "~inter-ui/default";
+// https://github.com/philipbelesky/inter-ui
+@use "~inter-ui/default" with (
+  $inter-font-display: swap,
+  $inter-font-path: 'voyager-assets?path=fonts/inter-ui'
+);
+@use "~inter-ui/variable" with (
+  $inter-font-display: swap,
+  $inter-font-path: 'voyager-assets?path=fonts/inter-ui'
+);
+
+@include default.all;
+@include variable.all;

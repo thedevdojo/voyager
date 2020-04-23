@@ -12,7 +12,9 @@ require('laravel-mix-purgecss');
  | file for the application as well as bundling up all the JS files.
  |
  */
-mix.sass('resources/assets/sass/voyager.scss', 'resources/assets/dist/css')
+mix.sass('resources/assets/sass/voyager.scss', 'resources/assets/dist/css', {
+    implementation: require('sass')
+})
 mix.sass('resources/assets/sass/colors.scss', 'resources/assets/dist/css')
 .options({
     processCssUrls: false,
