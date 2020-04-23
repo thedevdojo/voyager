@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="base-url" content="{{ Str::finish(route('voyager.dashboard'), '/') }}">
 
-    <title>@yield('page-title') - Voyager</title>
+    <title>{{ __('voyager::auth.login') }} - {{ VoyagerSettings::setting('admin.title', 'Voyager') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
     @forelse (VoyagerPlugins::getPluginsByType('theme')->where('enabled') as $theme)
         <link href="{{ $theme->getStyleRoute() }}" rel="stylesheet">
@@ -21,7 +21,7 @@
     <div class="w-0 md:w-3/5 bg-gray-200 bg-cover" style="background-image:url('{{ Voyager::assetUrl('images/login-bg.png') }}');">
         <div class="flex justify-left pl-4 items-center h-16 logo">
             <icon icon="helm" size="8" class="text-black"></icon>
-            <span class="font-bold ml-2 text-gray-900 mt-1 text-xl uppercase">Voyager</span>
+            <span class="font-bold ml-2 text-gray-900 mt-1 text-xl uppercase">{{ VoyagerSettings::setting('admin.title', 'Voyager') }}</span>
         </div>
     </div>
     <div class="w-full md:w-2/5 bg-white-100 dark:bg-gray-900 flex h-screen items-center">

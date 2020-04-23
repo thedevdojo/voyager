@@ -166,6 +166,11 @@ export default {
                 function (response) {
                     if (response) {
                         vm.settings.splice(vm.settings.indexOf(setting), 1);
+
+                        if (!vm.groups[vm.currentGroupId]) {
+                            vm.currentGroupId = 0;
+                            vm.$refs.tabs.openByIndex(0);
+                        }
                     }
                 },
                 false,

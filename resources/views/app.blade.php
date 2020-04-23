@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="base-url" content="{{ Str::finish(route('voyager.dashboard'), '/') }}">
 
-    <title>@yield('page-title') - Voyager</title>
+    <title>@yield('page-title') - {{ VoyagerSettings::setting('admin.title', 'Voyager') }}</title>
     <link href="{{ Voyager::assetUrl('css/voyager.css') }}" rel="stylesheet">
     <link href="{{ Voyager::assetUrl('css/colors.css') }}" rel="stylesheet">
     @foreach (VoyagerPlugins::getPluginsByType('theme')->where('enabled') as $theme)

@@ -2,7 +2,7 @@
     <card class="tabs" :show-header="false">
         <div class="sm:hidden">
             <select class="voyager-input" @change="openByIndex($event.target.value)">
-                <option v-for="(tab, i) in tabs" :key="'option-'+i" :value="i">
+                <option v-for="(tab, i) in tabs" :key="'option-'+i" :value="i" class="capitalize">
                     {{ tab.title }}
                 </option>
             </select>
@@ -74,7 +74,7 @@ export default {
 <style lang="scss" scoped>
 .tabs {
     .tab {
-        @apply whitespace-no-wrap py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5;
+        @apply whitespace-no-wrap py-4 px-1 border-b-2 border-transparent font-medium text-sm leading-5 capitalize;
     }
 
     .content {
