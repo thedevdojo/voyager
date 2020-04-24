@@ -57,7 +57,7 @@ class Settings
         $settings = $settings->mapWithKeys(function ($setting) use ($translate, $default) {
             $key = $setting->key;
             if ($setting->group !== null && $setting->group !== '') {
-                $key = $setting->group.'.'.$key;
+                $key = implode('.', [$setting->group, $setting->key]);
             }
             if ($translate) {
                 return [$key => VoyagerFacade::translate($setting->value, app()->getLocale(), config('app.fallback_locale')) ?? $default];

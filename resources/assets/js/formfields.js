@@ -1,6 +1,5 @@
 let formfields = [
     'Number',
-    'Repeater',
     'Text',
 ];
 

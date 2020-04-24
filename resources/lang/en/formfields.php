@@ -7,7 +7,4 @@ return [
     'text'          => [
         'name'          => 'Text',
     ],
-    'repeater'      => [
-        'name'          => 'Repeater',
-    ],
 ];

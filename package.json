@@ -10,7 +10,7 @@
         "cross-env": "^7.0.2",
         "laravel-mix": "^5.0.4",
         "laravel-mix-purgecss": "^4.2.0",
-        "sass": "^1.26.3",
+        "sass": "^1.26.5",
         "sass-loader": "^8.0.2",
         "tailwindcss-dark-mode": "^1.1.4",
         "tailwindcss-dir": "^4.0.0",
