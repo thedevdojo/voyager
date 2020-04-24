@@ -25,6 +25,8 @@ mix.sass('resources/assets/sass/colors.scss', 'resources/assets/dist/css')
         /mode-dark/,
         /dark/,
         /w-[0-9]+\/[0-9]+/,     // All variations of width classes we dynamically use in the view-builder
+        /w-[0-9]+/,
+        /h-[0-9]+/,
         /bg-[a-z]+-[0-9]+/,     // Dynamically used colors in badges, buttons and so on
         /text-[a-z]+-[0-9]+/,   // ^
         /border-[a-z]+-[0-9]+/, // ^

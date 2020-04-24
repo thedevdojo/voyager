@@ -39,64 +39,73 @@
                 </div>
             </div>
             <tabs v-on:select="currentGroupId = $event" :tabs="groups" ref="tabs">
-                <div v-for="(group, i) in groups" :key="'group-'+i" :slot="group.name">
-                    <card v-for="(setting, i) in settingsByGroup(group.name)" :key="'settings-'+i" :title="setting.name">
-                        <div slot="title">
-                            <input
-                                type="text"
-                                class="voyager-input small"
-                                v-model="setting.name"
-                                v-on:input="setting.key = slugify($event.target.value, { lower: true, strict: true })"
-                                :placeholder="__('voyager::generic.name')">
-                            <input type="text" class="voyager-input small" v-bind:value="setting.key" disabled :placeholder="__('voyager::generic.key')">
-                            <input type="text" class="voyager-input small" v-bind:value="setting.group" v-on:input="setting.group = slugify($event.target.value, {strict:true,lower:true}); currentEnteredGroup = $event.target.value" :placeholder="__('voyager::generic.group')">
-                        </div>
-                        <div slot="actions">
-                            <button class="button blue" @click="optionsId = i">
-                                <icon icon="cog" :size="4"></icon>
-                                {{ __('voyager::generic.options') }}
-                            </button>
-                            <button class="button red" @click="deleteSetting(setting)">
-                                <icon icon="trash" :size="4"></icon>
-                                {{ __('voyager::generic.delete') }}
-                            </button>
-                            <slide-in :opened="optionsId == i" v-on:closed="optionsId = null" width="w-1/3" class="text-left">
-                                <div class="flex w-full mb-3">
-                                    <div class="w-1/2 text-2xl">
-                                        <h4>{{ __('voyager::generic.options') }}</h4>
+                    <div v-for="(group, i) in groups" :key="'group-'+i" :slot="group.name">
+                        <sort-container v-model="groupedSettings" :useDragHandle="true">
+                            <sort-element v-for="(setting, i) in settingsByGroup(group.name)" :key="'settings-'+i" :index="i">
+                                <card :title="setting.name">
+                                    <div slot="title">
+                                        <input
+                                            type="text"
+                                            class="voyager-input small"
+                                            v-model="setting.name"
+                                            v-on:input="setting.key = slugify($event.target.value, { lower: true, strict: true })"
+                                            :placeholder="__('voyager::generic.name')">
+                                        <input type="text" class="voyager-input small" v-bind:value="setting.key" disabled :placeholder="__('voyager::generic.key')">
+                                        <input type="text" class="voyager-input small" v-bind:value="setting.group" v-on:input="setting.group = slugify($event.target.value, {strict:true,lower:true}); currentEnteredGroup = $event.target.value" :placeholder="__('voyager::generic.group')">
                                     </div>
-                                    <div class="w-1/2 flex justify-end">
-                                        <locale-picker v-if="$language.localePicker" />
-                                        <button class="button green icon-only" @click="optionsId = null">
-                                            <icon icon="times" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <div v-if="setting.canbetranslated">
-                                    <label class="label mt-4">Translatable</label>
-                                    <input type="checkbox" class="voyager-input" v-model="setting.translatable">
-                                </div>
+                                    <div slot="actions">
+                                        <div class="flex items-center">
+                                            <button class="button green icon-only" v-sort-handle>
+                                                <icon icon="sort" :size="4"></icon>
+                                            </button>
+                                            <button class="button blue" @click="optionsId = i">
+                                                <icon icon="cog" :size="4"></icon>
+                                                {{ __('voyager::generic.options') }}
+                                            </button>
+                                            <button class="button red" @click="deleteSetting(setting)">
+                                                <icon icon="trash" :size="4"></icon>
+                                                {{ __('voyager::generic.delete') }}
+                                            </button>
+                                            <slide-in :opened="optionsId == i" v-on:closed="optionsId = null" width="w-1/3" class="text-left">
+                                                <div class="flex w-full mb-3">
+                                                    <div class="w-1/2 text-2xl">
+                                                        <h4>{{ __('voyager::generic.options') }}</h4>
+                                                    </div>
+                                                    <div class="w-1/2 flex justify-end">
+                                                        <locale-picker v-if="$language.localePicker" />
+                                                        <button class="button green icon-only" @click="optionsId = null">
+                                                            <icon icon="times" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div v-if="setting.canbetranslated">
+                                                    <label class="label mt-4">Translatable</label>
+                                                    <input type="checkbox" class="voyager-input" v-model="setting.translatable">
+                                                </div>
 
-                                <component
-                                    :is="'formfield-'+setting.type+'-builder'"
-                                    v-bind:options="setting.options"
-                                    :column="''"
-                                    show="view-options" />
-                            </slide-in>
+                                                <component
+                                                    :is="'formfield-'+setting.type+'-builder'"
+                                                    v-bind:options="setting.options"
+                                                    :column="''"
+                                                    show="view-options" />
+                                            </slide-in>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <component
+                                            :is="'formfield-'+setting.type+'-edit-add'"
+                                            v-bind:value="data(setting, null)"
+                                            v-on:input="data(setting, $event)"
+                                            :options="setting.options"
+                                            :show="'edit'" />
+                                    </div>
+                                </card>
+                            </sort-element>
+                        </sort-container>
+                        <div v-if="groupedSettings.length == 0" class="w-full text-center">
+                            <h4>{{ __('voyager::settings.no_settings_in_group') }}</h4>
                         </div>
-                        <div>
-                             <component
-                                :is="'formfield-'+setting.type+'-edit-add'"
-                                v-bind:value="data(setting, null)"
-                                v-on:input="data(setting, $event)"
-                                :options="setting.options"
-                                :show="'edit'" />
-                        </div>
-                    </card>
-                    <div v-if="groupedSettings.length == 0" class="w-full text-center">
-                        <h4>{{ __('voyager::settings.no_settings_in_group') }}</h4>
                     </div>
-                </div>
             </tabs>
         </card>
         <collapsible v-if="debug" :title="__('voyager::manager.json_output')" :opened="false">
@@ -219,8 +228,21 @@ export default {
 
             return groups;
         },
-        groupedSettings: function () {
-            return this.settingsByGroup(this.groups[this.currentGroupId].name);
+        groupedSettings: {
+            get: function () {
+                return this.settingsByGroup(this.groups[this.currentGroupId].name);
+            },
+            set: function (settings) {
+                var vm = this;
+                var current_group = vm.groups[vm.currentGroupId].name;
+                vm.settings = vm.settings.filter(function (setting) {
+                    if (current_group == 'no-group') {
+                        return setting.group !== null;
+                    }
+                    return setting.group !== current_group;
+                });
+                vm.settings = vm.settings.concat(settings);
+            }
         },
         jsonSettings: {
             get: function () {
