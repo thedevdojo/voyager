@@ -92,6 +92,16 @@ abstract class Formfield implements \JsonSerializable
         return true;
     }
 
+    /**
+     * If this formfield can be used as a setting.
+     *
+     * @return bool
+     */
+    public function canBeUsedAsSetting()
+    {
+        return true;
+    }
+
     public function jsonSerialize()
     {
         // Formfield will be used in BREAD builder. We need list/view options and some other things
@@ -102,6 +112,7 @@ abstract class Formfield implements \JsonSerializable
                 'canbetranslated' => $this->canBeTranslated(),
                 'listOptions'     => (object) $this->listOptions(),
                 'viewOptions'     => (object) $this->viewOptions(),
+                'asSetting'       => $this->canBeUsedAsSetting(),
             ];
         }
 

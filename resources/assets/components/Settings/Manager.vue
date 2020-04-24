@@ -18,7 +18,7 @@
                         <slide-y-up-transition>
                             <div class="body w-64" v-if="addFormfieldDropdownOpen">
                                 <div class="py-1">
-                                    <a v-for="formfield in formfields"
+                                    <a v-for="formfield in filterFormfields"
                                         :key="'formfield-'+formfield.type"
                                         href="#"
                                         @click.prevent="addFormfield(formfield)"
@@ -252,6 +252,11 @@ export default {
         }
     },
     computed: {
+        filterFormfields: function () {
+            return this.formfields.filter(function (formfield) {
+                return formfield.asSetting;
+            });
+        },
         groups: function () {
             var groups = ['no-group'];
             this.settings.forEach(function (setting) {
