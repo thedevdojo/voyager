@@ -15,9 +15,9 @@
                         <div v-for="(formfield, key) in layout.formfields" :key="'formfield-'+key" class="m-0" :class="formfield.options.width">
                             <card :show-header="false">
                                 <div>
-                                    <alert v-if="getErrors(formfield.column.column).length > 0" color="red" :closebutton="false">
+                                    <alert v-if="getErrors(formfield.column).length > 0" color="red" :closebutton="false">
                                         <ul class="list-disc ml-4">
-                                            <li v-for="(error, i) in getErrors(formfield.column.column)" :key="'error-'+i">
+                                            <li v-for="(error, i) in getErrors(formfield.column)" :key="'error-'+i">
                                                 {{ error }}
                                             </li>
                                         </ul>
@@ -56,6 +56,7 @@ export default {
     },
     methods: {
         data: function (formfield, value = null) {
+            // TODO: if column.type == relationship, this won't work
             if (formfield.translatable || false && this.output[formfield.column.column] && this.isString(this.output[formfield.column.column])) {
                 Vue.set(this.output, formfield.column.column, this.get_input_as_translatable_object(this.output[formfield.column.column]));
             }
@@ -79,7 +80,8 @@ export default {
             return this.input[formfield.column.column];
         },
         getErrors: function (column) {
-            return this.errors[column] || [];
+            // TODO: if column.type == relationship, this won't work
+            return this.errors[column.column] || [];
         },
         save: function () {
             var vm = this;
