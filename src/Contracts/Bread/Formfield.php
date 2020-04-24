@@ -103,6 +103,26 @@ abstract class Formfield implements \JsonSerializable
     }
 
     /**
+     * If this formfield can be used in a list.
+     *
+     * @return bool
+     */
+    public function canBeUsedInList()
+    {
+        return true;
+    }
+
+    /**
+     * If this formfield can be used in a view.
+     *
+     * @return bool
+     */
+    public function canBeUsedInView()
+    {
+        return true;
+    }
+
+    /**
      * If array data should be passed to this formfield when browsing
      * This is especially useful for media-pickers and other formfields that don't just show text
      *
@@ -113,18 +133,77 @@ abstract class Formfield implements \JsonSerializable
         return false;
     }
 
+    /**
+     * If formfield accepts normal table columns
+     *
+     * @return bool
+     */
+    public function allowColumns()
+    {
+        return true;
+    }
+
+    /**
+     * If formfield accepts computed properties
+     *
+     * @return bool
+     */
+    public function allowComputed()
+    {
+        return true;
+    }
+
+    /**
+     * If formfield accepts relationships (method name)
+     * This is only useful for relationship-formfields
+     *
+     * @return bool
+     */
+    public function allowRelationships()
+    {
+        return false;
+    }
+
+    /**
+     * If formfield accepts relationship-columns
+     *
+     * @return bool
+     */
+    public function allowRelationshipColumns()
+    {
+        return true;
+    }
+
+    /**
+     * If formfield accepts relationship-pivot columns
+     *
+     * @return bool
+     */
+    public function allowRelationshipPivots()
+    {
+        return true;
+    }
+
     public function jsonSerialize()
     {
         // Formfield will be used in BREAD builder. We need list/view options and some other things
         if (!$this->column) {
             return [
-                'name'            => $this->name(),
-                'type'            => $this->type(),
-                'canbetranslated' => $this->canBeTranslated(),
-                'listOptions'     => (object) $this->listOptions(),
-                'viewOptions'     => (object) $this->viewOptions(),
-                'asSetting'       => $this->canBeUsedAsSetting(),
-                'browseArray'     => $this->browseDataAsArray(),
+                'name'                     => $this->name(),
+                'type'                     => $this->type(),
+                'canBeTranslated'          => $this->canBeTranslated(),
+                'listOptions'              => (object) $this->listOptions(),
+                'viewOptions'              => (object) $this->viewOptions(),
+                'asSetting'                => $this->canBeUsedAsSetting(),
+                'inList'                   => $this->canBeUsedInList(),
+                'inView'                   => $this->canBeUsedInView(),
+                'browseArray'              => $this->browseDataAsArray(),
+                'allowColumns'             => $this->allowColumns(),
+                'allowComputed'            => $this->allowComputed(),
+                'allowRelationships'       => $this->allowRelationships(),
+                'allowRelationshipColumns' => $this->allowRelationshipColumns(),
+                'allowPivot'               => $this->allowRelationshipPivots(),
+
             ];
         }
 

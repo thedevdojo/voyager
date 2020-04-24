@@ -69,6 +69,7 @@ return [
     'preview'                   => 'Preview',
     'range'                     => 'Range',
     'read'                      => 'Read',
+    'relationships'             => 'Relationships',
     'reload'                    => 'Reload',
     'remove'                    => 'Remove',
     'restore'                   => 'Restore',

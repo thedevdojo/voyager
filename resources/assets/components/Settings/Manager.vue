@@ -82,7 +82,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div v-if="setting.canbetranslated">
+                                            <div v-if="setting.canBeTranslated">
                                                 <label class="label mt-4">Translatable</label>
                                                 <input type="checkbox" class="voyager-input" v-model="setting.translatable">
                                             </div>
@@ -190,7 +190,7 @@ export default {
                 name: '',
                 value: null,
                 translatable: false,
-                canbetranslated: formfield.canbetranslated,
+                canBeTranslated: formfield.canBeTranslated,
                 options: formfield.viewOptions,
                 validation: [],
             });

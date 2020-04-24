@@ -156,7 +156,7 @@
                     <slide-y-up-transition>
                         <div class="body w-64" v-if="addFormfieldDropdownOpen">
                             <div class="py-1">
-                                <a v-for="formfield in $store.formfields"
+                                <a v-for="formfield in filteredFormfields"
                                     :key="'formfield-'+formfield.type"
                                     href="#"
                                     @click.prevent="addFormfield(formfield)"
@@ -444,7 +444,7 @@ export default {
                     type: null,
                 },
                 translatable: false,
-                canbetranslated: formfield.canbetranslated,
+                canBeTranslated: formfield.canBeTranslated,
                 options: JSON.parse(JSON.stringify(this.currentLayout.type == 'list' ? listOptions : viewOptions)),
                 validation: [],
             };
@@ -485,6 +485,15 @@ export default {
         lists: function () {
             return this.bread.layouts.filter(function (layout) {
                 return layout.type == 'list';
+            });
+        },
+        filteredFormfields: function () {
+            var vm = this;
+            return vm.$store.formfields.filter(function (formfield) {
+                if (vm.currentLayout.type == 'list') {
+                    return formfield.inList;
+                }
+                return formfield.inView;
             });
         },
         currentLayout: function () {
