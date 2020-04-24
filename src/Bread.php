@@ -323,11 +323,10 @@ class Bread
                     $relationship = $model->{$method->getName()}();
                     $table = $relationship->getRelated()->getTable();
                     if ($type->getName() == BelongsToMany::class) {
-                        // TODO: Might need to wrap this in array_values()
-                        $pivot = array_diff(VoyagerFacade::getColumns($relationship->getTable()), [
+                        $pivot = array_values(array_diff(VoyagerFacade::getColumns($relationship->getTable()), [
                             $relationship->getForeignPivotKeyName(),
                             $relationship->getRelatedPivotKeyName(),
-                        ]);
+                        ]));
                     }
 
                     $columns = VoyagerFacade::getColumns($table);

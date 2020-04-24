@@ -137,11 +137,23 @@ class BreadController extends Controller
                 if ($formfield->column->type == 'relationship') {
                     $relationship = Str::before($formfield->column->column, '.');
                     $property = Str::after($formfield->column->column, '.');
-                    if ($item->{$relationship} instanceof Collection) {
+                    if (Str::contains($property, 'pivot.')) {
+                        // Pivot data
+                        $property = Str::after($property, 'pivot.');
+                        $pivot = [];
+                        $item->{$relationship}->each(function ($related) use (&$pivot, $formfield, $property) {
+                            if (isset($related->pivot) && isset($related->pivot->{$property})) {
+                                $pivot[] = $formfield->browse($related->pivot->{$property});
+                            }
+                        });
+                        $item->{$formfield->column->column} = $pivot;
+                    } else if ($item->{$relationship} instanceof Collection) {
+                        // X-Many relationship
                         $item->{$formfield->column->column} = $item->{$relationship}->pluck($property)->transform(function ($value) use ($formfield) {
                             return $formfield->browse($value);
                         });
                     } else if (!empty($item->{$relationship})) {
+                        // Normal property/X-One relationship 
                         $item->{$formfield->column->column} = $formfield->browse($item->{$relationship}->{$property});
                     }
                 } else {

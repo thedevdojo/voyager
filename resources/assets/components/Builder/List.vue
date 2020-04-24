@@ -36,6 +36,9 @@
                                 <option v-for="(column, i) in relationship.columns" :key="'column_'+i" :value="{column: relationship.method+'.'+column, type: 'relationship'}">
                                     {{ column }}
                                 </option>
+                                <option v-for="(column, i) in relationship.pivot" :key="'pivot_'+i" :value="{column: relationship.method+'.pivot.'+column, type: 'relationship'}">
+                                    pivot.{{ column }}
+                                </option>
                             </optgroup>
                         </select>
                     </td>
