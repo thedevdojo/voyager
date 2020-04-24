@@ -7,34 +7,32 @@
                         <icon icon="sync" class="mr-0 md:mr-1 rotating-ccw" :size="4" v-if="savingSettings" />
                         {{ __('voyager::generic.save') }}
                     </button>
-                    <div class="dropdown right ml-2" v-click-outside="closeFormfieldAddDropdown" v-if="editMode">
-                        <button @click="addFormfieldDropdownOpen = !addFormfieldDropdownOpen"
-                                class="button green small">
-                            <icon icon="list-ul" />
-                            <span>
-                                {{ __('voyager::builder.add_formfield') }}
-                            </span>
-                        </button>
-                        <slide-y-up-transition>
-                            <div class="body w-64" v-if="addFormfieldDropdownOpen">
-                                <div class="py-1">
-                                    <a v-for="formfield in filterFormfields"
-                                        :key="'formfield-'+formfield.type"
-                                        href="#"
-                                        @click.prevent="addFormfield(formfield)"
-                                        class="block px-4 py-2 text-base leading-5 focus:outline-none">
-                                        {{ formfield.name }}
-                                    </a>
-                                    <a
-                                        :href="route('voyager.plugins.index')+'/?type=formfield'"
-                                        target="_blank"
-                                        class="italic block px-4 py-3 text-base leading-5 focus:outline-none">
-                                        {{ __('voyager::builder.formfields_more') }}
-                                    </a>
-                                </div>
-                            </div>
-                        </slide-y-up-transition>
-                    </div>
+                    <dropdown ref="formfield_dd" pos="right">
+                        <div>
+                            <a v-for="formfield in filterFormfields"
+                                :key="'formfield-'+formfield.type"
+                                href="#"
+                                @click.prevent="addFormfield(formfield); $refs.formfield_dd.close()"
+                                class="link">
+                                {{ formfield.name }}
+                            </a>
+                            <div class="divider"></div>
+                            <a
+                                :href="route('voyager.plugins.index')+'/?type=formfield'"
+                                target="_blank"
+                                class="italic link">
+                                {{ __('voyager::builder.formfields_more') }}
+                            </a>
+                        </div>
+                        <div slot="opener">
+                            <button class="button green small">
+                                <icon icon="list-ul" />
+                                <span>
+                                    {{ __('voyager::builder.add_formfield') }}
+                                </span>
+                            </button>
+                        </div>
+                    </dropdown>
                     <locale-picker :small="false" />
                 </div>
             </div>
@@ -142,7 +140,6 @@ export default {
         return {
             settings: this.input,
             savingSettings: false,
-            addFormfieldDropdownOpen: false,
             currentGroupId: 0,
             optionsId: null,
             currentEnteredGroup: null,
@@ -194,8 +191,6 @@ export default {
                 options: formfield.viewOptions,
                 validation: [],
             });
-
-            this.closeFormfieldAddDropdown();
         },
         deleteSetting: function (setting) {
             var vm = this;
@@ -243,9 +238,6 @@ export default {
 
             return this.errors[key] || [];
         },
-        closeFormfieldAddDropdown: function () {
-            this.addFormfieldDropdownOpen = false;
-        }
     },
     computed: {
         filterFormfields: function () {

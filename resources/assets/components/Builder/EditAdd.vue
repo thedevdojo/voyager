@@ -144,35 +144,32 @@
                         <option v-for="list in lists" :key="'list-' + list.name">{{ list.name }}</option>
                     </optgroup>
                 </select>
-                <div class="dropdown left ml-2" v-click-outside="closeFormfieldAddDropdown">
-                    <button @click="addFormfieldDropdownOpen = !addFormfieldDropdownOpen"
-                            class="button green small"
-                            :disabled="bread.layouts.length == 0">
-                        <icon icon="list-ul" />
-                        <span>
-                            {{ __('voyager::builder.add_formfield') }}
-                        </span>
-                    </button>
-                    <slide-y-up-transition>
-                        <div class="body w-64" v-if="addFormfieldDropdownOpen">
-                            <div class="py-1">
-                                <a v-for="formfield in filteredFormfields"
-                                    :key="'formfield-'+formfield.type"
-                                    href="#"
-                                    @click.prevent="addFormfield(formfield)"
-                                    class="block px-4 py-2 text-base leading-5 focus:outline-none">
-                                    {{ formfield.name }}
-                                </a>
-                                <a
-                                    :href="route('voyager.plugins.index')+'/?type=formfield'"
-                                    target="_blank"
-                                    class="italic block px-4 py-3 text-base leading-5 focus:outline-none">
-                                    {{ __('voyager::builder.formfields_more') }}
-                                </a>
-                            </div>
-                        </div>
-                    </slide-y-up-transition>
-                </div>
+                <dropdown ref="formfield_dd">
+                    <div>
+                        <a v-for="formfield in filteredFormfields"
+                            :key="'formfield-'+formfield.type"
+                            href="#"
+                            @click.prevent="addFormfield(formfield); $refs.formfield_dd.close()"
+                            class="link">
+                            {{ formfield.name }}
+                        </a>
+                        <a
+                            :href="route('voyager.plugins.index')+'/?type=formfield'"
+                            target="_blank"
+                            class="italic link">
+                            {{ __('voyager::builder.formfields_more') }}
+                        </a>
+                    </div>
+                    <div slot="opener">
+                        <button class="button green small"
+                                :disabled="bread.layouts.length == 0">
+                            <icon icon="list-ul" />
+                            <span>
+                                {{ __('voyager::builder.add_formfield') }}
+                            </span>
+                        </button>
+                    </div>
+                </dropdown>
                 <button class="button blue small" @click="addLayout(false)">
                     <icon icon="list-ul" />
                     <span>{{ __('voyager::builder.add_list') }}</span>
@@ -256,7 +253,6 @@ export default {
             savingBread: false,
             backingUp: false,
             currentLayoutName: null,
-            addFormfieldDropdownOpen: false,
             openOptionsId: null,
             layoutOptionsOpen: false,
         };
@@ -429,8 +425,6 @@ export default {
             );
         },
         addFormfield: function (formfield) {
-            this.closeFormfieldAddDropdown();
-
             // Merge any global options into the below options
             var listOptions = formfield.listOptions;
             var viewOptions = formfield.viewOptions;
@@ -471,9 +465,6 @@ export default {
             var l = this.$language.locale;
             this.bread.slug = this.get_input_as_translatable_object(this.bread.slug);
             this.bread.slug[l] = this.slugify(value[l], { strict: true, lower: true });
-        },
-        closeFormfieldAddDropdown: function () {
-            this.addFormfieldDropdownOpen = false;
         },
     },
     computed: {

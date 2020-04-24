@@ -7,7 +7,7 @@ Instead, they are listed here:
 - PurgeCSS strips out a lot classes. Check everything and add it to the whitelist if necessary
 
 ## Nice to have
-- Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields and validation-rules that don't have a rule
+- Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields and validation-rules that don't have a rule **This is actually important**
 - Add dark boxshadow variant to tailwind
 - When saving a BREAD check if all needed routes exist (route caching)
 

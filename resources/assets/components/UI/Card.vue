@@ -58,7 +58,7 @@ export default {
 
 <style lang="scss" scoped>
 .card {
-    @apply overflow-hidden shadow border rounded-lg p-4 mb-4 mx-1;
+    @apply shadow border rounded-lg p-4 mb-4 mx-1;
 
     .header {
         @apply p-2;

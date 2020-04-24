@@ -14,6 +14,7 @@ let components = [
     'Card',
     'Collapsible',
     'ColorPicker',
+    'Dropdown',
     'IconPicker',
     'LanguageInput',
     'Modal',

@@ -70,6 +70,19 @@ $cards-border-color-dark     : 'border-gray-700' !default;
 $cards-text-color-dark       : $primary-text-color-dark !default;
 $cards-title-text-color-dark : 'text-gray-300' !default;
 
+// DROPDOWN
+$dropdown-background-color         : 'bg-white' !default;
+$dropdown-border-color             : 'border-gray-400' !default;
+$dropdown-link-color               : 'text-blue-600' !default;
+$dropdown-link-bg-hover-color      : 'bg-gray-100' !default;
+$dropdown-divider-color            : 'border-gray-300' !default;
+
+$dropdown-background-color-dark    : 'bg-gray-900' !default;
+$dropdown-border-color-dark        : 'border-gray-700' !default;
+$dropdown-link-color-dark          : 'text-blue-600' !default;
+$dropdown-link-bg-hover-color-dark : 'bg-gray-800' !default;
+$dropdown-divider-color-dark       : 'border-gray-700' !default;
+
 // TABS
 $tabs-color                     : 'text-gray-500' !default;
 $tabs-border-color              : 'border-gray-200' !default;
@@ -403,19 +416,35 @@ select.voyager-input {
 }
 
 // DROPDOWN
-.mode-dark .dropdown .body {
-    @apply #{$background-color-dark} #{$border-color-dark};
+.mode-dark .dropdown .wrapper {
+    @apply #{$dropdown-background-color-dark} #{$dropdown-border-color-dark};
 
-    .links {
-        @apply #{$border-color-dark};
+    .link {
+        @apply #{$dropdown-border-color-dark} #{$dropdown-link-color-dark};
+
+        &:hover {
+            @apply #{$dropdown-link-bg-hover-color-dark};
+        }
+    }
+
+    .divider {
+        @apply border-t #{$dropdown-divider-color-dark};
     }
 }
 
-.dropdown .body {
-    @apply #{$background-color} #{$border-color};
+.dropdown .wrapper {
+    @apply #{$dropdown-background-color} #{$dropdown-border-color};
 
-    .links {
-        @apply #{$border-color};
+    .link {
+        @apply block px-6 py-3 leading-tight #{$dropdown-border-color} #{$dropdown-link-color};
+
+        &:hover {
+            @apply #{$dropdown-link-bg-hover-color};
+        }
+    }
+
+    .divider {
+        @apply border-t #{$dropdown-divider-color};
     }
 }
 
