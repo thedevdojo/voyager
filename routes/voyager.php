@@ -7,20 +7,20 @@ Route::group(['as' => 'voyager.'], function () {
         Route::view('/', 'voyager::dashboard')->name('dashboard');
         Route::post('search', ['uses' => $namespace.'VoyagerController@search', 'as' => 'search']);
 
-        // BREAD manager
+        // BREAD builder
         Route::group([
             'as'     => 'bread.',
             'prefix' => 'bread',
         ], function () use ($namespace) {
-            Route::get('/', ['uses' => $namespace.'BreadManagerController@index', 'as' => 'index']);
-            Route::get('create/{table}', ['uses' => $namespace.'BreadManagerController@create', 'as' => 'create']);
-            Route::get('edit/{table}', ['uses' => $namespace.'BreadManagerController@edit', 'as' => 'edit']);
-            Route::put('{table}', ['uses' => $namespace.'BreadManagerController@update', 'as' => 'update']);
-            Route::post('get-properties', ['uses' => $namespace.'BreadManagerController@getProperties', 'as' => 'get-properties']);
-            Route::post('get-breads', ['uses' => $namespace.'BreadManagerController@getBreads', 'as' => 'get-breads']);
-            Route::post('backup-bread', ['uses' => $namespace.'BreadManagerController@backupBread', 'as' => 'backup-bread']);
-            Route::post('rolback-bread', ['uses' => $namespace.'BreadManagerController@rollbackBread', 'as' => 'rollback-bread']);
-            Route::delete('{table}', ['uses' => $namespace.'BreadManagerController@destroy', 'as' => 'delete']);
+            Route::get('/', ['uses' => $namespace.'BreadBuilderController@index', 'as' => 'index']);
+            Route::get('create/{table}', ['uses' => $namespace.'BreadBuilderController@create', 'as' => 'create']);
+            Route::get('edit/{table}', ['uses' => $namespace.'BreadBuilderController@edit', 'as' => 'edit']);
+            Route::put('{table}', ['uses' => $namespace.'BreadBuilderController@update', 'as' => 'update']);
+            Route::post('get-properties', ['uses' => $namespace.'BreadBuilderController@getProperties', 'as' => 'get-properties']);
+            Route::post('get-breads', ['uses' => $namespace.'BreadBuilderController@getBreads', 'as' => 'get-breads']);
+            Route::post('backup-bread', ['uses' => $namespace.'BreadBuilderController@backupBread', 'as' => 'backup-bread']);
+            Route::post('rolback-bread', ['uses' => $namespace.'BreadBuilderController@rollbackBread', 'as' => 'rollback-bread']);
+            Route::delete('{table}', ['uses' => $namespace.'BreadBuilderController@destroy', 'as' => 'delete']);
         });
 
         // BREADs

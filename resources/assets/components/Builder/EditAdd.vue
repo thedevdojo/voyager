@@ -5,7 +5,7 @@
                 <div class="flex items-center">
                     <button class="button green" @click="loadProperties">
                         <icon icon="sync" class="rotating-ccw" :size="4" v-if="loadingProps" />
-                        {{ __('voyager::manager.reload_properties') }}
+                        {{ __('voyager::builder.reload_properties') }}
                     </button>
                     <locale-picker :small="false" />
                 </div>
@@ -15,7 +15,7 @@
                     <span slot="title">
                         {{ __('voyager::generic.heads_up') }}
                     </span>
-                    {{ __('voyager::manager.new_breads_prop_warning') }}
+                    {{ __('voyager::builder.new_breads_prop_warning') }}
                 </alert>
                 <div class="flex mb-4">
                     <div class="w-full m-1">
@@ -31,20 +31,20 @@
                 
                 <div class="flex-none md:flex mb-4">
                     <div class="w-full md:w-1/4 m-1">
-                        <label class="label" for="name-singular">{{ __('voyager::manager.name_singular') }}</label>
+                        <label class="label" for="name-singular">{{ __('voyager::builder.name_singular') }}</label>
                         <language-input
                             class="voyager-input w-full"
                             id="name-singular"
-                            type="text" :placeholder="__('voyager::manager.name_singular')"
+                            type="text" :placeholder="__('voyager::builder.name_singular')"
                             v-bind:value="bread.name_singular"
                             v-on:input="bread.name_singular = $event" />
                     </div>
                     <div class="w-full md:w-1/4 m-1">
-                        <label class="label" for="name-plural">{{ __('voyager::manager.name_plural') }}</label>
+                        <label class="label" for="name-plural">{{ __('voyager::builder.name_plural') }}</label>
                         <language-input
                             class="voyager-input w-full"
                             id="name-plural"
-                            type="text" :placeholder="__('voyager::manager.name_plural')"
+                            type="text" :placeholder="__('voyager::builder.name_plural')"
                             v-bind:value="bread.name_plural"
                             v-on:input="bread.name_plural = $event; setSlug($event)" />
                     </div>
@@ -60,7 +60,7 @@
                         </modal>
                     </div>
                     <div class="w-full md:w-1/6 m-1">
-                        <label class="label" for="icon">{{ __('voyager::manager.show_menu_badge') }}</label>
+                        <label class="label" for="icon">{{ __('voyager::builder.show_menu_badge') }}</label>
                         <input type="checkbox" class="voyager-input" v-model="bread.badge">
                     </div>
                     <div class="w-full md:w-1/6 m-1">
@@ -76,40 +76,40 @@
                 </div>
                 <div class="flex-none md:flex mb-4">
                     <div class="w-full md:w-1/3 m-1">
-                        <label class="label" for="model">{{ __('voyager::manager.model') }}</label>
+                        <label class="label" for="model">{{ __('voyager::builder.model') }}</label>
                         <input
                             class="voyager-input w-full"
                             id="model"
-                            type="text" :placeholder="__('voyager::manager.model')"
+                            type="text" :placeholder="__('voyager::builder.model')"
                             v-model="bread.model">
                     </div>
                     <div class="w-full md:w-1/3 m-1">
-                        <label class="label" for="controller">{{ __('voyager::manager.controller') }}</label>
+                        <label class="label" for="controller">{{ __('voyager::builder.controller') }}</label>
                         <input
                             class="voyager-input w-full"
                             id="controller"
-                            type="text" :placeholder="__('voyager::manager.controller')"
+                            type="text" :placeholder="__('voyager::builder.controller')"
                             v-model="bread.controller">
                     </div>
                     <div class="w-full md:w-1/3 m-1">
-                        <label class="label" for="policy">{{ __('voyager::manager.policy') }}</label>
+                        <label class="label" for="policy">{{ __('voyager::builder.policy') }}</label>
                         <input
                             class="voyager-input w-full"
                             id="policy"
-                            type="text" :placeholder="__('voyager::manager.policy')"
+                            type="text" :placeholder="__('voyager::builder.policy')"
                             v-model="bread.policy">
                     </div>
                 </div>
                 <div class="flex-none md:flex mb-4">
                     <div class="w-full md:w-1/2 m-1">
-                        <label class="label" for="scope">{{ __('voyager::manager.scope') }}</label>
+                        <label class="label" for="scope">{{ __('voyager::builder.scope') }}</label>
                         <select class="voyager-input w-full" v-model="bread.scope">
                             <option :value="null">{{ __('voyager::generic.none') }}</option>
                             <option v-for="(scope, i) in scopes" :key="i">{{ scope }}</option>
                         </select>
                     </div>
                     <div class="w-full md:w-1/2 m-1">
-                        <label class="label" for="global_search">{{ __('voyager::manager.global_search_display_field') }}</label>
+                        <label class="label" for="global_search">{{ __('voyager::builder.global_search_display_field') }}</label>
                         <select class="voyager-input w-full" v-model="bread.global_search_field">
                             <option :value="null">{{ __('voyager::generic.none') }}</option>
                             <option v-for="column in columns" :key="column">{{ column }}</option>
@@ -135,7 +135,7 @@
             <div class="w-full mb-5 flex">
                 <select class="voyager-input small" v-model="currentLayoutName" :disabled="bread.layouts.length == 0">
                     <option :value="null" v-if="bread.layouts.length == 0">
-                        {{ __('voyager::manager.create_layout_first') }}
+                        {{ __('voyager::builder.create_layout_first') }}
                     </option>
                     <optgroup label="Views" v-if="views.length > 0">
                         <option v-for="view in views" :key="'view-' + view.name">{{ view.name }}</option>
@@ -150,7 +150,7 @@
                             :disabled="bread.layouts.length == 0">
                         <icon icon="list-ul" />
                         <span>
-                            {{ __('voyager::manager.add_formfield') }}
+                            {{ __('voyager::builder.add_formfield') }}
                         </span>
                     </button>
                     <slide-y-up-transition>
@@ -167,7 +167,7 @@
                                     :href="route('voyager.plugins.index')+'/?type=formfield'"
                                     target="_blank"
                                     class="italic block px-4 py-3 text-base leading-5 focus:outline-none">
-                                    {{ __('voyager::manager.formfields_more') }}
+                                    {{ __('voyager::builder.formfields_more') }}
                                 </a>
                             </div>
                         </div>
@@ -175,20 +175,20 @@
                 </div>
                 <button class="button blue small" @click="addLayout(false)">
                     <icon icon="list-ul" />
-                    <span>{{ __('voyager::manager.add_list') }}</span>
+                    <span>{{ __('voyager::builder.add_list') }}</span>
                 </button>
                 <button class="button blue small" @click="addLayout(true)">
                     <icon icon="apps" />
-                    <span>{{ __('voyager::manager.add_view') }}</span>
+                    <span>{{ __('voyager::builder.add_view') }}</span>
                 </button>
                 <button class="button yellow small" @click="renameLayout" :disabled="!currentLayout">
                     <icon icon="pen" />
-                    <span>{{ __('voyager::manager.rename_layout') }}</span>
+                    <span>{{ __('voyager::builder.rename_layout') }}</span>
                 </button>
                 <button class="button red small" @click="deleteLayout" :disabled="!currentLayout">
                     <icon icon="trash" />
                     <span>
-                        {{ __('voyager::manager.delete_layout') }}
+                        {{ __('voyager::builder.delete_layout') }}
                     </span>
                 </button>
                 <button class="button blue small" @click="layoutOptionsOpen = true" :disabled="!currentLayout">
@@ -209,20 +209,20 @@
                             </button>
                         </div>
                     </div>
-                    <label class="label mt-4">{{ __('voyager::manager.show_soft_deleted') }}</label>
+                    <label class="label mt-4">{{ __('voyager::builder.show_soft_deleted') }}</label>
                     <input type="checkbox" v-model="currentLayout.options.soft_deletes">
                 </slide-in>
             </div>
 
             <div class="card text-center text-xl" v-if="!currentLayout">
-                {{ __('voyager::manager.create_select_layout') }}
+                {{ __('voyager::builder.create_select_layout') }}
             </div>
             <div class="card text-center text-xl" v-else-if="currentLayout && currentLayout.formfields.length == 0">
-                {{ __('voyager::manager.add_formfield_to_layout') }}
+                {{ __('voyager::builder.add_formfield_to_layout') }}
             </div>
             <component
                 v-else-if="currentLayout"
-                :is="'bread-manager-' + currentLayout.type"
+                :is="'bread-builder-' + currentLayout.type"
                 :computed="computed"
                 :columns="columns"
                 :relationships="relationships"
@@ -236,7 +236,7 @@
                 v-on:open-options="openOptionsId = $event" />
         </card>
 
-        <collapsible v-if="debug" :title="__('voyager::manager.json_output')" :opened="false">
+        <collapsible v-if="debug" :title="__('voyager::builder.json_output')" :opened="false">
             <textarea class="input w-full" rows="10" v-model="jsonBread"></textarea>
         </collapsible>
     </div>
@@ -273,7 +273,7 @@ export default {
             })
             .then(function (response) {
                 vm.$notify.notify(
-                    vm.__('voyager::manager.bread_saved_successfully'),
+                    vm.__('voyager::builder.bread_saved_successfully'),
                     null, 'green', 5000
                 );
             })
@@ -305,7 +305,7 @@ export default {
                 table: vm.bread.table
             })
             .then(function (response) {
-                vm.$notify.notify(vm.__('voyager::manager.bread_backed_up', { name: response.data }), null, 'blue', 5000);
+                vm.$notify.notify(vm.__('voyager::builder.bread_backed_up', { name: response.data }), null, 'blue', 5000);
             })
             .catch(function (error) {
                 vm.$notify.notify(error.response.statusText, null, 'red', 5000);
@@ -345,7 +345,7 @@ export default {
             var vm = this;
 
             vm.$notify.prompt(
-                vm.__('voyager::manager.enter_name'), '',
+                vm.__('voyager::builder.enter_name'), '',
                 function (value) {
                     if (value && value !== '') {
                         var filtered = vm.bread.layouts.filter(function (layout) {
@@ -354,7 +354,7 @@ export default {
 
                         if (filtered.length > 0) {
                             vm.$notify.notify(
-                                vm.__('voyager::manager.name_already_exists'),
+                                vm.__('voyager::builder.name_already_exists'),
                                 null, 'red', 5000
                             );
                             return;
@@ -385,7 +385,7 @@ export default {
         renameLayout: function () {
             var vm = this;
             vm.$notify.prompt(
-                vm.__('voyager::manager.enter_new_name'), vm.currentLayoutName,
+                vm.__('voyager::builder.enter_new_name'), vm.currentLayoutName,
                 function (value) {
                     if (value && value !== '') {
                         if (value == vm.currentLayoutName) {
@@ -397,7 +397,7 @@ export default {
 
                         if (filtered.length > 0) {
                             vm.$notify.notify(
-                                vm.__('voyager::manager.name_already_exists'),
+                                vm.__('voyager::builder.name_already_exists'),
                                 null, 'red', 5000
                             );
                             return;
@@ -413,7 +413,7 @@ export default {
         deleteLayout: function () {
             var vm = this;
              vm.$notify.confirm(
-                vm.__('voyager::manager.delete_layout_confirm'),
+                vm.__('voyager::builder.delete_layout_confirm'),
                 function (result) {
                     if (result) {
                         var name = vm.currentLayoutName;
@@ -460,7 +460,7 @@ export default {
             var vm = this;
 
             vm.$notify.confirm(
-                vm.__('voyager::manager.delete_formfield_confirm'),
+                vm.__('voyager::builder.delete_formfield_confirm'),
                 function (result) {
                     if (result) {
                         vm.currentLayout.formfields.splice(key, 1);

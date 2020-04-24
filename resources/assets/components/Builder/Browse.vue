@@ -3,7 +3,7 @@
         <div slot="actions">
             <button class="button green" @click.stop="loadBreads">
                 <icon icon="sync" class="rotating-ccw" :size="4" v-if="loading" />
-                {{ __('voyager::manager.reload_breads') }}
+                {{ __('voyager::builder.reload_breads') }}
             </button>
         </div>
         <div class="voyager-table striped" :class="[loading ? 'loading' : '']">
@@ -12,8 +12,8 @@
                     <tr>
                         <th>{{ __('voyager::generic.table') }}</th>
                         <th class="hidden md:table-cell">{{ __('voyager::generic.slug') }}</th>
-                        <th class="hidden md:table-cell">{{ __('voyager::manager.name_singular') }}</th>
-                        <th class="hidden md:table-cell">{{ __('voyager::manager.name_plural') }}</th>
+                        <th class="hidden md:table-cell">{{ __('voyager::builder.name_singular') }}</th>
+                        <th class="hidden md:table-cell">{{ __('voyager::builder.name_plural') }}</th>
                         <th style="text-align:right !important">{{ __('voyager::generic.actions') }}</th>
                     </tr>
                 </thead>
@@ -59,7 +59,7 @@
                             <a v-else class="button green" :href="route('voyager.bread.create', table)">
                                 <icon icon="plus" :size="4" />
                                 <span class="hidden md:block">
-                                    {{ __('voyager::manager.add_bread') }}
+                                    {{ __('voyager::builder.add_bread') }}
                                 </span>
                             </a>
                         </td>
@@ -100,16 +100,16 @@ export default {
             var vm = this;
 
             vm.$notify.confirm(
-                vm.__('voyager::manager.delete_bread_confirm', {bread: table}),
+                vm.__('voyager::builder.delete_bread_confirm', {bread: table}),
                 function (response) {
                     if (response) {
                         vm.deleting = true;
                         axios.delete(vm.route('voyager.bread.delete', table))
                         .then(function (response) {
-                            vm.$notify.notify(vm.__('voyager::manager.delete_bread_success', {bread: table}), null, 'green', 5000);
+                            vm.$notify.notify(vm.__('voyager::builder.delete_bread_success', {bread: table}), null, 'green', 5000);
                         })
                         .catch(function (errors) {
-                            vm.$notify.notify(vm.__('voyager::manager.delete_bread_error', {bread: table}), null, 'red', 5000);
+                            vm.$notify.notify(vm.__('voyager::builder.delete_bread_error', {bread: table}), null, 'red', 5000);
                         })
                         .then(function () {
                             vm.loadBreads();
@@ -131,7 +131,7 @@ export default {
                 table: table
             })
             .then(function (response) {
-                vm.$notify.notify(vm.__('voyager::manager.bread_backed_up', { name: response.data }), null, 'blue', 5000);
+                vm.$notify.notify(vm.__('voyager::builder.bread_backed_up', { name: response.data }), null, 'blue', 5000);
             })
             .catch(function (error) {
                 vm.$notify.notify(error.response.statusText, null, 'red', 5000);

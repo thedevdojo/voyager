@@ -11,7 +11,7 @@ use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Rules\ClassExists as ClassExistsRule;
 use TCG\Voyager\Rules\DefaultLocale as DefaultLocaleRule;
 
-class BreadManagerController extends Controller
+class BreadBuilderController extends Controller
 {
     /**
      * Display all BREADs.
@@ -22,7 +22,7 @@ class BreadManagerController extends Controller
     {
         $tables = VoyagerFacade::getTables();
 
-        return view('voyager::manager.index', compact('tables'));
+        return view('voyager::builder.index', compact('tables'));
     }
 
     /**
@@ -39,7 +39,7 @@ class BreadManagerController extends Controller
         }
 
         if (BreadFacade::getBread($table)) {
-            VoyagerFacade::flashMessage(__('voyager::manager.bread_already_exists', ['table' => $table]), 'yellow', 5000, true);
+            VoyagerFacade::flashMessage(__('voyager::builder.bread_already_exists', ['table' => $table]), 'yellow', 5000, true);
 
             return redirect()->route('voyager.bread.edit', $table);
         }
@@ -47,7 +47,7 @@ class BreadManagerController extends Controller
         $bread = BreadFacade::createBread($table);
         $new = true;
 
-        return view('voyager::manager.edit-add', compact('bread', 'new'));
+        return view('voyager::builder.edit-add', compact('bread', 'new'));
     }
 
     /**
@@ -61,14 +61,14 @@ class BreadManagerController extends Controller
     {
         $bread = BreadFacade::getBread($table);
         if (!$bread) {
-            VoyagerFacade::flashMessage(__('voyager::manager.bread_does_no_exist', ['table' => $table]), 'red', 5000, true);
+            VoyagerFacade::flashMessage(__('voyager::builder.bread_does_no_exist', ['table' => $table]), 'red', 5000, true);
 
             return redirect()->route('voyager.bread.create', $table);
         }
 
         $new = false;
 
-        return view('voyager::manager.edit-add', compact('bread', 'new'));
+        return view('voyager::builder.edit-add', compact('bread', 'new'));
     }
 
     /**
@@ -103,7 +103,7 @@ class BreadManagerController extends Controller
 
         if ($validator->passes()) {
             if (!BreadFacade::storeBread($bread)) {
-                $validator->errors()->add('bread', __('voyager::manager.bread_save_failed'));
+                $validator->errors()->add('bread', __('voyager::builder.bread_save_failed'));
 
                 return response()->json($validator->errors(), 422);
             }

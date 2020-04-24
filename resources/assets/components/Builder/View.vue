@@ -39,12 +39,12 @@
                         </div>
                         <label class="label mt-4">{{ __('voyager::generic.column') }}</label>
                         <select class="voyager-input w-full" v-model="formfield.column">
-                            <optgroup :label="__('voyager::manager.columns')">
+                            <optgroup :label="__('voyager::builder.columns')">
                                 <option v-for="(column, i) in columns" :key="'column_'+i" :value="{column: column, type: 'column'}">
                                     {{ column }}
                                 </option>
                             </optgroup>
-                            <optgroup :label="__('voyager::manager.computed')">
+                            <optgroup :label="__('voyager::builder.computed')">
                                 <option v-for="(prop, i) in computed" :key="'computed_'+i" :value="{column: prop, type: 'computed'}">
                                     {{ prop }}
                                 </option>
@@ -65,7 +65,7 @@
                             v-bind:options="formfield.options"
                             :column="formfield.column"
                             show="view-options" />
-                        <bread-manager-validation v-model="formfield.validation" />
+                        <bread-builder-validation v-model="formfield.validation" />
                     </slide-in>
                 </div>
 

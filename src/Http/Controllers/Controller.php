@@ -67,4 +67,18 @@ abstract class Controller extends BaseController
 
         return $errors;
     }
+
+    protected function getBread(Request $request)
+    {
+        return $request->route()->getAction()['bread'] ?? abort(404);
+    }
+
+    protected function getLayoutForAction($bread, $action)
+    {
+        if ($action == 'browse') {
+            return $bread->layouts->where('type', 'list')->first();
+        }
+
+        return $bread->layouts->where('type', 'view')->first();
+    }
 }

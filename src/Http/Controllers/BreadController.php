@@ -330,18 +330,4 @@ class BreadController extends Controller
 
         return $restored;
     }
-
-    private function getBread(Request $request)
-    {
-        return $request->route()->getAction()['bread'] ?? abort(404);
-    }
-
-    private function getLayoutForAction($bread, $action)
-    {
-        if ($action == 'browse') {
-            return $bread->layouts->where('type', 'list')->first();
-        }
-
-        return $bread->layouts->where('type', 'view')->first();
-    }
 }

@@ -7,9 +7,9 @@
                     <th class="hidden md:table-cell">{{ __('voyager::generic.type') }}</th>
                     <th>{{ __('voyager::generic.column') }}</th>
                     <th>{{ __('voyager::generic.title') }}</th>
-                    <th class="hidden md:table-cell">{{ __('voyager::manager.searchable') }}</th>
-                    <th class="hidden md:table-cell">{{ __('voyager::manager.orderable') }}</th>
-                    <th class="hidden md:table-cell">{{ __('voyager::manager.order_default') }}</th>
+                    <th class="hidden md:table-cell">{{ __('voyager::builder.searchable') }}</th>
+                    <th class="hidden md:table-cell">{{ __('voyager::builder.orderable') }}</th>
+                    <th class="hidden md:table-cell">{{ __('voyager::builder.order_default') }}</th>
                     <th class="hidden md:table-cell">{{ __('voyager::generic.translatable') }}</th>
                     <th style="text-align:right !important">{{ __('voyager::generic.actions') }}</th>
                 </tr>
@@ -22,12 +22,12 @@
                     <td class="hidden md:table-cell">{{ getFormfieldByType(formfield.type).name }}</td>
                     <td>
                         <select class="voyager-input small w-full" v-model="formfield.column">
-                            <optgroup :label="__('voyager::manager.columns')">
+                            <optgroup :label="__('voyager::builder.columns')">
                                 <option v-for="(column, i) in columns" :key="'column_'+i" :value="{column: column, type: 'column'}">
                                     {{ column }}
                                 </option>
                             </optgroup>
-                            <optgroup :label="__('voyager::manager.computed')">
+                            <optgroup :label="__('voyager::builder.computed')">
                                 <option v-for="(prop, i) in computed" :key="'computed_'+i" :value="{column: prop, type: 'computed'}">
                                     {{ prop }}
                                 </option>
