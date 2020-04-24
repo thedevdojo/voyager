@@ -38,7 +38,7 @@
                     </button>
                 </div>
         </card>
-        <collapsible v-if="debug" :title="__('voyager::manager.json_output')" :opened="false">
+        <collapsible v-if="debug" :title="__('voyager::builder.json_output')" :opened="false">
             <textarea class="input w-full" rows="10" v-model="jsonOutput"></textarea>
         </collapsible>
     </div>

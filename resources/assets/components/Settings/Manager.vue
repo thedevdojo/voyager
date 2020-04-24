@@ -12,7 +12,7 @@
                                 class="button green small">
                             <icon icon="list-ul" />
                             <span>
-                                {{ __('voyager::manager.add_formfield') }}
+                                {{ __('voyager::builder.add_formfield') }}
                             </span>
                         </button>
                         <slide-y-up-transition>
@@ -29,7 +29,7 @@
                                         :href="route('voyager.plugins.index')+'/?type=formfield'"
                                         target="_blank"
                                         class="italic block px-4 py-3 text-base leading-5 focus:outline-none">
-                                        {{ __('voyager::manager.formfields_more') }}
+                                        {{ __('voyager::builder.formfields_more') }}
                                     </a>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                                     v-bind:options="setting.options"
                                                     :column="''"
                                                     show="view-options" />
-                                                <bread-manager-validation v-model="setting.validation" />
+                                                <bread-builder-validation v-model="setting.validation" />
                                             </slide-in>
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@
                     </div>
             </tabs>
         </card>
-        <collapsible v-if="debug" :title="__('voyager::manager.json_output')" :opened="false">
+        <collapsible v-if="debug" :title="__('voyager::builder.json_output')" :opened="false">
             <textarea class="input w-full" rows="10" v-model="jsonSettings"></textarea>
         </collapsible>
     </div>

@@ -94,7 +94,7 @@ abstract class Formfield implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        // Formfield will be used in BREAD manager. We need list/view options and some other things
+        // Formfield will be used in BREAD builder. We need list/view options and some other things
         if (!$this->column) {
             return [
                 'name'            => $this->name(),
@@ -105,7 +105,7 @@ abstract class Formfield implements \JsonSerializable
             ];
         }
 
-        // BREAD was already stored by the BREAD manager. We don't need the above things at this point
+        // BREAD was already stored by the BREAD builder. We don't need the above things at this point
         return array_merge([
             'type'            => $this->type(),
         ], (array) $this);

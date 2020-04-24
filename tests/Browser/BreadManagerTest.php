@@ -22,11 +22,11 @@ class BreadManagerTest extends TestCase
         Bread::deleteBread('users');
         $this->browse(function (DuskBrowser $browser) {
             $browser->visitRoute('voyager.bread.create', 'users')
-                ->waitForText(__('voyager::manager.create_layout_first'))
+                ->waitForText(__('voyager::builder.create_layout_first'))
                 ->pause(500)
                 ->press(__('voyager::generic.save'))
                 ->pause(500)
-                ->assertSee(__('voyager::manager.bread_saved_successfully', ['name' => 'users']))
+                ->assertSee(__('voyager::builder.bread_saved_successfully', ['name' => 'users']))
                 ->visitRoute('voyager.bread.index')
                 ->assertButtonEnabled('@edit-users');
         });

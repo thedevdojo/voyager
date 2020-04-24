@@ -39,7 +39,7 @@
         <alert color="red" v-if="hasMultiplePlugins('menu')" class="mb-2" v-html="nl2br(__('voyager::plugins.multiple_menu_plugins'))"></alert>
 
         <div class="voyager-table striped" v-if="installedPlugins.length > 0" v-bind:class="[loading ? 'loading' : '']">
-            <table id="bread-manager-browse">
+            <table id="bread-builder-browse">
                 <thead>
                     <tr>
                         <th>
