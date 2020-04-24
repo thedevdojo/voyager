@@ -88,10 +88,18 @@
                                                     v-bind:options="setting.options"
                                                     :column="''"
                                                     show="view-options" />
+                                                <bread-manager-validation v-model="setting.validation" />
                                             </slide-in>
                                         </div>
                                     </div>
                                     <div>
+                                        <alert v-if="getErrors(setting).length > 0" color="red" class="my-2" :closebutton="false">
+                                            <ul class="list-disc ml-4">
+                                                <li v-for="(error, i) in getErrors(setting)" :key="'error-'+i">
+                                                    {{ error }}
+                                                </li>
+                                            </ul>
+                                        </alert>
                                         <component
                                             :is="'formfield-'+setting.type+'-edit-add'"
                                             v-bind:value="data(setting, null)"
@@ -125,6 +133,7 @@ export default {
             currentGroupId: 0,
             optionsId: null,
             currentEnteredGroup: null,
+            errors: [],
         };
     },
     methods: {
@@ -139,6 +148,7 @@ export default {
         saveSettings: function () {
             var vm = this;
             vm.savingSettings = true;
+            vm.errors = [];
 
             axios.post(vm.route('voyager.settings.store'), {
                 settings: vm.settings
@@ -147,7 +157,12 @@ export default {
                 vm.$notify.notify(vm.__('voyager::settings.settings_saved'), null, 'green', 5000);
             })
             .catch(function (response) {
-
+                if (response.response.status == 422) {
+                    // Validation failed
+                    vm.errors = response.response.data;
+                } else {
+                    vm.$notify.notify(response.response.data.message, false, 'red');
+                }
             })
             .then(function () {
                 vm.savingSettings = false;
@@ -164,6 +179,7 @@ export default {
                 translatable: false,
                 canbetranslated: formfield.canbetranslated,
                 options: formfield.viewOptions,
+                validation: [],
             });
 
             this.closeFormfieldAddDropdown();
@@ -205,6 +221,14 @@ export default {
                 return this.translate(this.get_input_as_translatable_object(setting.value));
             }
             return setting.value;
+        },
+        getErrors: function (setting) {
+            var key = setting.key;
+            if (setting.group !== null) {
+                key = setting.group+'.'+setting.key;
+            }
+
+            return this.errors[key] || [];
         },
         closeFormfieldAddDropdown: function () {
             this.addFormfieldDropdownOpen = false;

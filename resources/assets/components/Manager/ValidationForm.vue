@@ -53,6 +53,9 @@ export default {
     },
     methods: {
         addRule: function () {
+            if (!this.isArray(this.reactiveRules)) {
+                this.reactiveRules = [];
+            }
             this.reactiveRules.push({
                 rule: '',
                 message: '',

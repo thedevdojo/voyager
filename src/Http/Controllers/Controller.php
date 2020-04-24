@@ -33,4 +33,38 @@ abstract class Controller extends BaseController
     {
         return PluginsFacade::getPluginByType('authentication', AuthenticationPlugin::class);
     }
+
+    protected function validateData($formfields, $data): array
+    {
+        $errors = [];
+
+        $formfields->each(function ($formfield) use (&$errors, $data) {
+            if (empty($formfield->validation)) {
+                return;
+            }
+            $value = $data[$formfield->column->column] ?? '';
+            if ($formfield->translatable && is_array($value)) {
+                // TODO: We could validate ALL locales here. But mostly, this doesn't make sense (Let user select?)
+                $value = $value[VoyagerFacade::getLocale()] ?? $value[VoyagerFacade::getFallbackLocale()];
+            }
+            foreach ($formfield->validation as $rule) {
+                if ($rule->rule == '') {
+                    continue;
+                }
+                $validator = Validator::make(['col' => $value], ['col' => $rule->rule]);
+
+                if ($validator->fails()) {
+                    $message = $rule->message;
+                    if (is_object($message)) {
+                        $message = $message->{VoyagerFacade::getLocale()} ?? $message->{VoyagerFacade::getFallbackLocale()} ?? '';
+                    } else if (is_array($message)) {
+                        $message = $message[VoyagerFacade::getLocale()] ?? $message[VoyagerFacade::getFallbackLocale()] ?? '';
+                    }
+                    $errors[$formfield->column->column][] = $message;
+                }
+            }
+        });
+
+        return $errors;
+    }
 }

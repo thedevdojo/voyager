@@ -9,7 +9,7 @@
             :key="'formfield-'+key"
             :index="key"
             axis="xy"
-            class="m-0 z-50"
+            class="m-0"
             :class="formfield.options.width">
             <card :title="formfield.column.column || 'No column'">
                 <div slot="actions">
