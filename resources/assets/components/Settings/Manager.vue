@@ -7,7 +7,7 @@
                         <icon icon="sync" class="mr-0 md:mr-1 rotating-ccw" :size="4" v-if="savingSettings" />
                         {{ __('voyager::generic.save') }}
                     </button>
-                    <dropdown ref="formfield_dd" pos="right">
+                    <dropdown ref="formfield_dd">
                         <div>
                             <a v-for="formfield in filterFormfields"
                                 :key="'formfield-'+formfield.type"

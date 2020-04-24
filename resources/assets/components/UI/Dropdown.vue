@@ -66,11 +66,11 @@ export default {
     .wrapper {
         @apply absolute mt-2 rounded-md shadow-lg border;
 
-        &.left {
+        &.right {
             @apply origin-top-left left-0;
         }
 
-        &.right {
+        &.left {
             @apply origin-top-right right-0;
         }
 

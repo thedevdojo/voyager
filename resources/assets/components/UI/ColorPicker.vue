@@ -4,8 +4,8 @@
             <button
                 v-for="(color, key) in $store.ui.colors" :key="'color-'+key"
                 @click="$emit('select', color)"
-                class="button" :class="color">
-                {{ ucfirst(color) }}
+                class="button mb-2" :class="[color, (!describe ? 'w-10 h-10' : '')]">
+                <span>{{ describe ? ucfirst(color) : '&nbsp;' }}</span>
             </button>
         </div>
         <div v-if="palette == 'tailwind-shades'" class="w-full text-center">
@@ -34,6 +34,10 @@ export default {
                 return ['tailwind-colors', 'tailwind-shades'].indexOf(value) !== -1;
             }
         },
+        describe: {
+            type: Boolean,
+            default: true,
+        }
     },
 };
 </script>

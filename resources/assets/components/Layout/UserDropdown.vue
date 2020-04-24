@@ -1,6 +1,6 @@
 <template>
     <div class="mt-1 text-right max-w-sm mx-auto z-30">
-        <dropdown pos="right">
+        <dropdown>
             <div>
                 <div class="flex items-center px-6 py-4">
                     <img class="h-10 w-10 rounded-full flex-no-shrink" :src="photo" alt="">

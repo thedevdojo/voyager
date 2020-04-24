@@ -65,13 +65,14 @@
                     </div>
                     <div class="w-full md:w-1/6 m-1">
                         <label class="label" for="color">{{ __('voyager::generic.color') }}</label>
-
-                        <modal ref="color_modal" :title="__('voyager::generic.select_color')" icon="palette">
-                            <color-picker v-on:select="$refs.color_modal.close(); bread.color = $event"></color-picker>
-                            <div slot="opener" class="w-full">
+                        <dropdown ref="color_dd">
+                            <div class="m-4">
+                                <color-picker v-on:select="$refs.color_dd.close(); bread.color = $event" :describe="false"></color-picker>
+                            </div>
+                            <div slot="opener">
                                 <button :class="bread.color" class="button">{{ ucfirst(bread.color) }}</button>
                             </div>
-                        </modal>
+                        </dropdown>
                     </div>
                 </div>
                 <div class="flex-none md:flex mb-4">
@@ -144,7 +145,7 @@
                         <option v-for="list in lists" :key="'list-' + list.name">{{ list.name }}</option>
                     </optgroup>
                 </select>
-                <dropdown ref="formfield_dd">
+                <dropdown ref="formfield_dd" pos="right">
                     <div>
                         <a v-for="formfield in filteredFormfields"
                             :key="'formfield-'+formfield.type"
