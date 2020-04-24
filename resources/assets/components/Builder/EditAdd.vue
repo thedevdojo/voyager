@@ -156,7 +156,7 @@
                     <slide-y-up-transition>
                         <div class="body w-64" v-if="addFormfieldDropdownOpen">
                             <div class="py-1">
-                                <a v-for="formfield in formfields"
+                                <a v-for="formfield in $store.formfields"
                                     :key="'formfield-'+formfield.type"
                                     href="#"
                                     @click.prevent="addFormfield(formfield)"
@@ -227,7 +227,6 @@
                 :columns="columns"
                 :relationships="relationships"
                 :formfields="currentLayout.formfields"
-                :available-formfields="formfields"
                 :options="currentLayout.options"
                 :options-id="openOptionsId"
                 v-on:delete="deleteFormfield($event)"
@@ -244,7 +243,7 @@
 
 <script>
 export default {
-    props: ['data', 'formfields'],
+    props: ['data'],
     data: function () {
         return {
             bread: this.data,

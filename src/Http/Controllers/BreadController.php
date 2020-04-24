@@ -132,9 +132,21 @@ class BreadController extends Controller
             if ($uses_soft_deletes && !empty($item->deleted_at)) {
                 $item->is_soft_deleted = $item->trashed();
             }
-            // TODO: Pass each result through formfields browse() method
+
             $layout->formfields->each(function ($formfield) use (&$item) {
-                $item->{$formfield->column->column} = $formfield->browse($item->{$formfield->column->column});
+                if ($formfield->column->type == 'relationship') {
+                    $relationship = Str::before($formfield->column->column, '.');
+                    $property = Str::after($formfield->column->column, '.');
+                    if ($item->{$relationship} instanceof Collection) {
+                        $item->{$formfield->column->column} = $item->{$relationship}->pluck($property)->transform(function ($value) use ($formfield) {
+                            return $formfield->browse($value);
+                        });
+                    } else if (!empty($item->{$relationship})) {
+                        $item->{$formfield->column->column} = $formfield->browse($item->{$relationship}->{$property});
+                    }
+                } else {
+                    $item->{$formfield->column->column} = $formfield->browse($item->{$formfield->column->column});
+                }
             });
 
             return $item;
@@ -145,7 +157,7 @@ class BreadController extends Controller
             'filtered'          => $filtered,
             'total'             => $total,
             'layout'            => $layout,
-            'execution'         => number_format(((microtime(true) - $start) * 1000)),
+            'execution'         => number_format(((microtime(true) - $start) * 1000), 0, '.', ''),
             'uses_soft_deletes' => $uses_soft_deletes,
             'primary'           => $query->get(0) ? $query->get(0)->getKeyName() : 'id',
             'translatable'      => $layout->hasTranslatableFormfields(),

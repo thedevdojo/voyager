@@ -91,11 +91,22 @@
                                 </td>
                                 <td v-for="(formfield, key) in layout.formfields" :key="'row-' + key">
                                     <component
+                                        v-if="!isArray(result[formfield.column.column]) || $store.getFormfieldByType(formfield.type).browseArray"
                                         :is="'formfield-'+formfield.type+'-browse'"
                                         :options="formfield.options"
                                         :translatable="formfield.translatable"
-                                        :value="result[formfield.column.column]">
+                                        :value="result[formfield.column.column] || ''">
                                     </component>
+                                    <div v-else>
+                                        <component
+                                            v-for="(val, i) in result[formfield.column.column].slice(0, 3)"
+                                            :is="'formfield-'+formfield.type+'-browse'"
+                                            :options="formfield.options"
+                                            :translatable="formfield.translatable"
+                                            :key="'relationship-'+i"
+                                            :value="val">
+                                        </component>
+                                    </div>
                                 </td>
                                 <td class="ltr:text-right rtl:text-left">
                                     <a :href="route('voyager.'+translate(bread.slug, true)+'.read', result[primary])" class="button blue small">
@@ -193,7 +204,7 @@ export default {
                     vm.parameters.order = vm.layout.options.default_order_column.column;
                 }
                 if (response.data.execution > 500) {
-                    vm.$notify.notify(vm.__('voyager::bread.execution_time_warning', { time: response.data.execution }), null, 'yellow', 7500);
+                    vm.$notify.notify(vm.__('voyager::bread.execution_time_warning', { time: parseInt(response.data.execution) }), null, 'yellow', 7500);
                 }
             })
             .catch(function (response) {

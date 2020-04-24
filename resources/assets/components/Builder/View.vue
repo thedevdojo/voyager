@@ -82,7 +82,7 @@
 
 <script>
 export default {
-    props: ['computed', 'columns', 'relationships', 'formfields', 'availableFormfields', 'optionsId', 'options'],
+    props: ['computed', 'columns', 'relationships', 'formfields', 'optionsId', 'options'],
     data: function () {
         return {
             reactiveFormfields: this.formfields,

@@ -119,9 +119,17 @@ export default {
         }
     },
     mounted: function () {
-        if (this.translatable) {
+        var vm = this;
+        if (vm.translatable) {
             Vue.prototype.$language.localePicker = true;
         }
+
+        document.addEventListener('keydown', function (e) {
+            if (event.ctrlKey && event.key === 's') {
+                e.preventDefault();
+                vm.save();
+            }
+        });
     }
 };
 </script>

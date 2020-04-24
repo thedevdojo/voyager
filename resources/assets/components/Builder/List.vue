@@ -19,7 +19,7 @@
                     <td class="hidden md:table-cell">
                         <icon icon="direction" v-sort-handle class="cursor-move" />
                     </td>
-                    <td class="hidden md:table-cell">{{ getFormfieldByType(formfield.type).name }}</td>
+                    <td class="hidden md:table-cell">{{ $store.getFormfieldByType(formfield.type).name }}</td>
                     <td>
                         <select class="voyager-input small w-full" v-model="formfield.column">
                             <optgroup :label="__('voyager::builder.columns')">
@@ -111,19 +111,12 @@
 
 <script>
 export default {
-    props: ['computed', 'columns', 'relationships', 'formfields', 'availableFormfields', 'optionsId', 'options'],
+    props: ['computed', 'columns', 'relationships', 'formfields', 'optionsId', 'options'],
     data: function () {
         return {
             reactiveFormfields: this.formfields,
             reactiveOptions: this.options,
         };
-    },
-    methods: {
-        getFormfieldByType: function (type) {
-            return this.availableFormfields.filter(function (formfield) {
-                return formfield.type == type;
-            })[0];
-        },
     },
     watch: {
         reactiveFormfields: function (formfields) {

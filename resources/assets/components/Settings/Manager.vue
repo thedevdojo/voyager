@@ -133,10 +133,6 @@ export default {
             type: Array,
             required: true,
         },
-        formfields: {
-            type: Array,
-            required: true,
-        },
         editMode: {
             type: Boolean,
             default: true,
@@ -253,7 +249,7 @@ export default {
     },
     computed: {
         filterFormfields: function () {
-            return this.formfields.filter(function (formfield) {
+            return this.$store.formfields.filter(function (formfield) {
                 return formfield.asSetting;
             });
         },

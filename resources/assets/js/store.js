@@ -1,5 +1,6 @@
 var $store = {
     routes: [],
+    formfields: [],
     csrf_token: document.head.querySelector('meta[name="csrf-token"]').content,
     debug: false,
     darkmode: false,
@@ -40,6 +41,11 @@ var $store = {
     toggleSidebar () {
         this.sidebarOpen = !this.sidebarOpen;
     },
+    getFormfieldByType (type) {
+        return this.formfields.filter(function (formfield) {
+            return formfield.type == type;
+        })[0];
+    }
 };
 
 Vue.prototype.$store = $store;

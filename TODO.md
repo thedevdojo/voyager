@@ -29,3 +29,5 @@ Instead, they are listed here:
 
 ## Checklist
 The following things need to be double checked
+
+- Browse relationships: ~BelongsTo~, ~BelongsToMany~, ~HasOne~, ~HasMany~

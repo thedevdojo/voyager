@@ -102,6 +102,17 @@ abstract class Formfield implements \JsonSerializable
         return true;
     }
 
+    /**
+     * If array data should be passed to this formfield when browsing
+     * This is especially useful for media-pickers and other formfields that don't just show text
+     *
+     * @return bool
+     */
+    public function browseDataAsArray()
+    {
+        return false;
+    }
+
     public function jsonSerialize()
     {
         // Formfield will be used in BREAD builder. We need list/view options and some other things
@@ -113,6 +124,7 @@ abstract class Formfield implements \JsonSerializable
                 'listOptions'     => (object) $this->listOptions(),
                 'viewOptions'     => (object) $this->viewOptions(),
                 'asSetting'       => $this->canBeUsedAsSetting(),
+                'browseArray'     => $this->browseDataAsArray(),
             ];
         }
 

@@ -6,7 +6,7 @@ return [
     'delete_type_confirm'           => 'Are you sure you want to delete this :type?|Are you sure you want to delete :num :types?',
     'delete_type_success'           => ':type sucessfully deleted!|Successfully deleted :num :types!',
     'delete_type'                   => 'Delete one :type|Delete :num :types',
-    'execution_time_warning'        => 'Processing your request took :timems',
+    'execution_time_warning'        => 'Processing your request took :time ms',
     'filter_description'            => '(filtered from :total :type)',
     'force_delete_type_confirm'     => 'Are you sure you want to permanently delete this :type?|Are you sure you want to permanently delete :num :types?',
     'force_delete_type_success'     => ':type sucessfully deleted permanently!|Successfully deleted :num :types permanently!',
