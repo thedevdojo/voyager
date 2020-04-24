@@ -174,7 +174,7 @@ class BreadController extends Controller
         }
 
         // Validate Data
-        $validation_errors = $this->getValidationErrors($layout, $data);
+        $validation_errors = $this->validateData($layout->formfields, $data);
         if (count($validation_errors) > 0) {
             return response()->json($validation_errors, 422);
         }
@@ -237,7 +237,7 @@ class BreadController extends Controller
         }
 
         // Validate Data
-        $validation_errors = $this->getValidationErrors($layout, $data);
+        $validation_errors = $this->validateData($layout->formfields, $data);
         if (count($validation_errors) > 0) {
             return response()->json($validation_errors, 422);
         }
@@ -343,34 +343,5 @@ class BreadController extends Controller
         }
 
         return $bread->layouts->where('type', 'view')->first();
-    }
-
-    private function getValidationErrors($layout, $data): array
-    {
-        $errors = [];
-
-        $layout->formfields->each(function ($formfield) use (&$errors, $layout, $data) {
-            $value = $data[$formfield->column->column] ?? '';
-            if ($formfield->translatable && is_array($value)) {
-                // TODO: We could validate ALL locales here. But mostly, this doesn't make sense (Let user select?)
-                $value = $value[VoyagerFacade::getLocale()] ?? $value[VoyagerFacade::getFallbackLocale()];
-            }
-            foreach ($formfield->validation as $rule) {
-                if ($rule->rule == '') {
-                    continue;
-                }
-                $validator = Validator::make(['col' => $value], ['col' => $rule->rule]);
-
-                if ($validator->fails()) {
-                    $message = $rule->message;
-                    if (is_object($message)) {
-                        $message = $message->{VoyagerFacade::getLocale()} ?? $message->{VoyagerFacade::getFallbackLocale()} ?? '';
-                    }
-                    $errors[$formfield->column->column][] = $message;
-                }
-            }
-        });
-
-        return $errors;
     }
 }
