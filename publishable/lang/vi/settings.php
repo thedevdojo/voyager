@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'usage_help'           => 'Bạn có thể lấy giá trị của bấy kỳ một thông số cài đặt bằng cách gọi hàm',
+    'save'                 => 'Lưu cài đặt',
+    'new'                  => 'Thông số mới',
+    'help_name'            => 'Tên thông số VD: Admin Title',
+    'help_key'             => 'Từ khóa của thông số VD: admin_title',
+    'help_option'          => '(Không bắt buộc, chỉ áp dụng cho một số kiểu dữ liệu như: dropdown hoặc radio)',
+    'add_new'              => 'Thêm thông số mới',
+    'delete_question'      => 'Bạn có chắc là muốn xóa thông số :setting?',
+    'delete_confirm'       => 'Có, hãy xóa thông số này',
+    'successfully_created' => 'Tạo thông số mới thành công',
+    'successfully_saved'   => 'Đã lưu cài đặt mới',
+    'successfully_deleted' => 'Xóa thông số thành công',
+    'already_at_top'       => 'Thông số đã trên đầu danh sách rồi.',
+    'already_at_bottom'    => 'Thông số đã ở cuối danh sách rồi.',
+    'key_already_exists'   => 'Từ khóa :key đã được dùng.',
+    'moved_order_up'       => 'Di chuyển thông số :name lên',
+    'moved_order_down'     => 'Di chuyển thông số :name xuống',
+    'successfully_removed' => 'Xóa giá trị :name thành công',
+    'group_general'        => 'Chung',
+    'group_admin'          => 'Admin',
+    'group_site'           => 'Site',
+    'group'                => 'Nhóm',
+    'help_group'           => 'Thông số thuộc về nhóm',
+];

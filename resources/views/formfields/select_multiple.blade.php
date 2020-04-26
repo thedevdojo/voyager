@@ -20,7 +20,7 @@ $dataTypeContent->{$row->field} = json_decode($dataTypeContent->{$row->field})
             }
             ?>
             @foreach($relationshipOptions as $relationshipOption)
-                <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if(in_array($relationshipOption->{$options->relationship->key}, $selected_values)){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
+                <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if(in_array($relationshipOption->{$options->relationship->key}, $selected_values)) selected="selected" @endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
             @endforeach
         @endif
     @elseif(isset($options->options))

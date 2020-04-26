@@ -11,11 +11,11 @@ class DisabledTestException extends Handler
     {
     }
 
-    public function report(Exception $e)
+    public function report($e)
     {
     }
 
-    public function render($request, Exception $e)
+    public function render($request, $e)
     {
         throw $e;
     }

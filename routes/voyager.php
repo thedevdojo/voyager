@@ -43,11 +43,11 @@ Route::group(['as' => 'voyager.'], function () {
 
                 Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
                 Route::post($dataType->slug.'/action', $breadController.'@action')->name($dataType->slug.'.action');
-                Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.order');
+                Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.update_order');;
                 Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
                 Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
                 Route::post($dataType->slug.'/remove', $breadController.'@remove_media')->name($dataType->slug.'.media.remove');
-                Route::resource($dataType->slug, $breadController);
+                Route::resource($dataType->slug, $breadController, ['parameters' => [$dataType->slug => 'id']]);
             }
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);
@@ -55,16 +55,13 @@ Route::group(['as' => 'voyager.'], function () {
             // do nothing, might just be because table not yet migrated.
         }
 
-        // Role Routes
-        Route::resource('roles', $namespacePrefix.'VoyagerRoleController');
-
         // Menu Routes
         Route::group([
             'as'     => 'menus.',
             'prefix' => 'menus/{menu}',
         ], function () use ($namespacePrefix) {
             Route::get('builder', ['uses' => $namespacePrefix.'VoyagerMenuController@builder',    'as' => 'builder']);
-            Route::post('order', ['uses' => $namespacePrefix.'VoyagerMenuController@order_item', 'as' => 'order']);
+            Route::post('order', ['uses' => $namespacePrefix.'VoyagerMenuController@order_item', 'as' => 'order_item']);
 
             Route::group([
                 'as'     => 'item.',
