@@ -10,8 +10,8 @@
             type="text"
             class="py-2 block sm:hidden text-lg appearance-none bg-transparent leading-normal w-full search focus:outline-none"
             v-model="query" @input="search" :placeholder="mobilePlaceholder">
-        <div v-if="searchResults.length > 0 && opened" class="voyager-search-results">
-            <div v-for="(bread, i) in searchResults" :key="'bread-results-'+i">
+        <dropdown ref="results_dd" pos="right">
+            <div v-for="(bread, i) in searchResults" :key="'bread-results-'+i" class="p-4">
                 <h4>{{ bread.bread }}</h4>
                 <div v-if="bread.results.length == 0">
                     {{ __('voyager::generic.no_results') }}
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </dropdown>
     </div>
 </template>
 <script>
@@ -37,7 +37,6 @@ export default {
         return {
             searchResults: [],
             query: '',
-            opened: false,
         };
     },
     watch: {
@@ -47,7 +46,7 @@ export default {
     },
     methods: {
         close: function () {
-            this.opened = false;
+            this.$refs.results_dd.close();
         },
         search: debounce(function (e) {
             var vm = this;
@@ -55,7 +54,7 @@ export default {
             if (vm.query == '') {
                 return;
             }
-            this.breads.forEach(function (bread) {
+            this.$store.breads.forEach(function (bread) {
                 if (bread.global_search_field === null || bread.global_search_field == '') {
                     return;
                 }
@@ -65,7 +64,7 @@ export default {
                 })
                 .then(function (response) {
                     vm.searchResults.push(response.data[0]);
-                    vm.opened = true;
+                    vm.$refs.results_dd.open();
                 })
                 .catch(function (errors) {
                     vm.$notify.error(error);
@@ -77,12 +76,12 @@ export default {
             
         }, 250),
         moreUrl: function (bread) {
-            bread = this.getBreadByValue(bread.bread);
+            bread = this.$store.getBreadByTable(bread.table);
 
             return this.route('voyager.'+this.translate(bread.slug, true)+'.browse')+'?globalSearch='+this.query;
         },
         getResultUrl: function (bread, id) {
-            bread = this.getBreadByValue(bread.bread);
+            bread = this.$store.getBreadByTable(bread.table);
 
             return this.route('voyager.'+this.translate(bread.slug, true)+'.read', id);
         }
@@ -97,3 +96,12 @@ export default {
     },
 };
 </script>
+<style lang="scss" scoped>
+.voyager-search-results {
+    @apply absolute bg-white text-black rounded-lg border-gray-600 p-8 origin-top-left;
+}
+
+.mode-dark .voyager-search-results {
+    @apply bg-black text-white;
+}
+</style>

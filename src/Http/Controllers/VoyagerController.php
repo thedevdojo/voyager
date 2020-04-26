@@ -53,16 +53,7 @@ class VoyagerController extends Controller
         $bread = BreadFacade::getBread($request->get('bread'));
         $results = collect([]);
         if ($bread && $bread->global_search_field) {
-            $layout = $bread->getLayoutFor('browse');
-            $columns = $layout->getSearchableColumns()->pluck('column')->filter(function ($column) {
-                return !Str::contains($column, '.');
-                // TODO: Also search for relationships?
-            });
-            $query = $bread->getModel()->where(function ($query) use ($columns, $q) {
-                $columns->each(function ($column) use (&$query, $q) {
-                    $query->orWhere($column, 'LIKE', '%'.$q.'%');
-                });
-            })->orderBy($layout->getDefaultSortColumn());
+            $query = $bread->getModel()->where($bread->global_search_field, 'LIKE', '%'.$q.'%');
 
             $results = $query->get()->transform(function ($result) use ($bread) {
                 return [
@@ -74,7 +65,7 @@ class VoyagerController extends Controller
 
         return [
             [
-                'bread'   => $bread->name_plural,
+                'table'   => $bread->table,
                 'results' => $results,
                 'count'   => $results->count(),
             ],

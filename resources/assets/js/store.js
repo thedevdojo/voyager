@@ -1,6 +1,7 @@
 var $store = {
     routes: [],
     formfields: [],
+    breads: [],
     csrf_token: document.head.querySelector('meta[name="csrf-token"]').content,
     debug: false,
     darkmode: false,
@@ -44,6 +45,11 @@ var $store = {
     getFormfieldByType (type) {
         return this.formfields.filter(function (formfield) {
             return formfield.type == type;
+        })[0];
+    },
+    getBreadByTable (table) {
+        return this.breads.filter(function (bread) {
+            return bread.table == table;
         })[0];
     }
 };
