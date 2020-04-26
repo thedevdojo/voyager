@@ -35,7 +35,7 @@
         <button class="button green" @click="$refs.upload.upload()">
             Upload
         </button>
-        <button class="button green" @click="$refs.upload.selectFiles()">
+        <button class="button green" @click="$refs.upload.selectFilesToUpload()">
             Select files
         </button>
         <button class="button green" @click="$refs.upload.loadFiles()">

@@ -3,6 +3,7 @@
 @import "elements/label";
 @import "elements/notifications";
 @import "elements/table";
+@import "elements/tooltip";
 
 .voyager-search-results {
     @apply absolute bg-white text-black rounded-lg border-gray-600 p-8 origin-top-left;

@@ -31,3 +31,8 @@ Vue.use(VueScrollTo, {
 // https://github.com/katlasik/mime-matcher
 import MimeMatcher from 'mime-matcher';
 Vue.prototype.MimeMatcher = MimeMatcher;
+
+// https://github.com/Akryum/v-tooltip
+import { VTooltip } from 'v-tooltip';
+VTooltip.options.defaultPlacement = 'bottom';
+Vue.directive('tooltip', VTooltip);

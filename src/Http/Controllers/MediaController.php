@@ -24,15 +24,16 @@ class MediaController extends Controller
             return [
                 'is_upload' => false,
                 'file'      => [
-                    'type'          => $file['type'],
                     'name'          => $file['basename'],
                     'relative_path' => str_replace('\\', '/', $file['dirname']),
-                    'url'           => asset($file['path']),
+                    'url'           => Storage::disk('public')->url($file['path']),
                     'type'          => $file['mimetype'] ?? 'dir',
                     'size'          => $file['size'] ?? 0,
                 ]
             ];
-        });
+        })->sortBy('file.name')->sortBy(function ($file) {
+            return $file['file']['type'] == 'dir' ? 0 : 99999999;
+        })->values();
 
         return response()->json($files);
     }

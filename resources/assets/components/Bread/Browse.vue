@@ -13,7 +13,7 @@
                     <option value="hide">{{ __('voyager::bread.soft_delete_hide') }}</option>
                     <option value="only">{{ __('voyager::bread.soft_delete_only') }}</option>
                 </select>
-                <button class="button blue m-0" @click.stop="load">
+                <button class="button blue m-0 ml-2" @click.stop="load">
                     <icon icon="sync" :class="[loading ? 'rotating-ccw' : '']"></icon>
                     <span>{{ __('voyager::generic.reload') }}</span>
                 </button>

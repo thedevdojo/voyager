@@ -1,49 +1,83 @@
 <template>
-    <div class="flex min-h-64 w-full bg-gray-850 border-gray-700 border rounded-lg p-4 mb-4" ref="wrapper">
-        <input class="hidden" type="file" :multiple="multiple" @change="filesChanged($event.target.files)" :accept="accept" ref="upload_input">
-        <div class="self-center w-full text-center" v-if="filesToUpload.length == 0 && files.length == 0">
-            <h4>{{ dragging ? dropText : dragText }}</h4>
-        </div>
-        <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" v-else>
-            <div class="bg-gray-800 rounded-md border-gray-700 border" v-for="(file, i) in combinedFiles" :key="i">
-                <div class="flex p-3">
-                    <div class="flex-none">
-                        <div class="w-full flex justify-center">
-                            <img v-bind:src="file.preview" class="rounded object-contain h-24 max-w-full" v-if="file.preview" />
-                            <div v-else class="w-full flex justify-center h-24">
-                                <icon :icon="getFileIcon(file.file.type)" size="24"></icon>
+    <div class="flex min-h-64 w-full bg-gray-850 border-gray-700 border rounded-lg p-4 mb-4">
+        <input class="hidden" type="file" :multiple="multiple" @change="addUploadFiles($event.target.files)" :accept="accept" ref="upload_input">
+        <div class="flex w-full">
+            <!-- Add max-h-256 overflow-y-scroll to limit the height -->
+            <div class="relative flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 " @click="selectedFiles = []"  ref="wrapper">
+                <div class="absolute flex items-center w-full text-center h-full opacity-75 bg-gray-850" v-if="(filesToUpload.length == 0 && files.length == 0) || dragging">
+                    <h4 class="text-center w-full opacity-100">{{ dragging ? dropText : dragText }}</h4>
+                </div>
+                <div
+                    class="bg-gray-800 hover:bg-gray-750 rounded-md border-gray-700 border cursor-pointer"
+                    v-for="(file, i) in combinedFiles"
+                    :key="i"
+                    :class="[fileSelected(file) ? 'border-blue-700' : '']"
+                    @click="selectFile(file, $event)"
+                    @dblclick="openFile(file, $event)">
+                    <div class="flex p-3">
+                        <div class="flex-none">
+                            <div class="w-full flex justify-center">
+                                <img :src="file.preview" class="rounded object-contain h-24 max-w-full" v-if="file.preview" />
+                                <img :src="file.file.url" class="rounded object-contain h-24 max-w-full" v-else-if="mimeMatch(file.file.type, 'image/*')" />
+                                <div v-else class="w-full flex justify-center h-24">
+                                    <icon :icon="getFileIcon(file.file.type)" size="24"></icon>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="flex-grow ml-3 overflow-hidden">
-                        <div class="flex flex-col h-full">
-                            <div class="flex-none">
-                                <p class="whitespace-no-wrap">{{ file.file.name }}</p>
-                                <p class="text-xs" v-if="file.file.type !== 'dir'">{{ readableFileSize(file.file.size) }}</p>
+                        <div class="flex-grow ml-3 overflow-hidden">
+                            <div class="flex flex-col h-full">
+                                <div class="flex-none">
+                                    <p class="whitespace-no-wrap" v-tooltip="file.file.name">{{ file.file.name }}</p>
+                                    <p class="text-xs" v-if="file.file.type !== 'dir'">{{ readableFileSize(file.file.size) }}</p>
+                                </div>
+                                <div class="flex items-end justify-end flex-grow">
+                                    <button @click.stop="deleteUpload(file)" v-if="file.is_upload">
+                                        <icon icon="times" :size="4"></icon>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="flex items-end justify-end flex-grow">
-                                <button @click="deleteUpload(file)">
-                                    <icon icon="times" :size="4"></icon>
-                                </button>
-                            </div>
+                            
                         </div>
-                        
                     </div>
-                </div>
-                <div
-                    class="flex-none h-1 bg-blue-500 rounded-b-md"
-                    v-if="file.status == Status.Uploading"
-                    :style="{ width: file.progress+'%' }">
-                </div>
-                <div
-                    class="flex-none h-1 w-full bg-green-500 rounded-b-md"
-                    v-if="file.status == Status.Finished">
-                </div>
-                <div
-                    class="flex-none h-1 w-full bg-red-500 rounded-b-md"
-                    v-if="file.status == Status.Failed">
+                    <div
+                        class="flex-none h-1 bg-blue-500 rounded-b-md"
+                        v-if="file.status == Status.Uploading"
+                        :style="{ width: file.progress+'%' }">
+                    </div>
+                    <div
+                        class="flex-none h-1 w-full bg-green-500 rounded-b-md"
+                        v-if="file.status == Status.Finished">
+                    </div>
+                    <div
+                        class="flex-none h-1 w-full bg-red-500 rounded-b-md"
+                        v-if="file.status == Status.Failed">
+                    </div>
                 </div>
             </div>
+            <slide-x-right-transition class="flex-none">
+                <div class="h-full border border-gray-700 rounded-md p-2 ml-3 max-w-xs" v-if="selectedFiles.length > 0">
+                    <div class="w-full flex justify-center">
+                        <div v-if="selectedFiles.length > 1" class="w-full flex justify-center h-32">
+                            <icon icon="copy" size="32"></icon>
+                        </div>
+                        <img :src="selectedFiles[0].preview" class="rounded object-contain h-32 max-w-full" v-else-if="selectedFiles[0].preview" />
+                        <img :src="selectedFiles[0].file.url" class="rounded object-contain h-32 max-w-full" v-else-if="mimeMatch(selectedFiles[0].file.type, 'image/*')" />
+                        <div v-else class="w-full flex justify-center h-32">
+                            <icon :icon="getFileIcon(selectedFiles[0].file.type)" size="32"></icon>
+                        </div>
+                    </div>
+                    <div class="w-full flex justify-center">
+                        <div v-if="selectedFiles.length == 1">
+                            <p>{{ selectedFiles[0].file.name }}</p>
+                            <p>SIze: {{ readableFileSize(selectedFiles[0].file.size) }}</p>
+                        </div>
+                        <span v-else>
+                            {{ selectedFiles.length }} files selected
+                        </span>
+                    </div>
+                    
+                </div>
+            </slide-x-right-transition>
         </div>
     </div>
 </template>
@@ -79,6 +113,10 @@ export default {
             type: Number,
             default: 0,
         },
+        'multiSelect': {
+            type: Boolean,
+            default: true,
+        },
         'dragText': {
             type: String,
             default: 'Drag your files here',
@@ -96,13 +134,15 @@ export default {
         return {
             filesToUpload: [],
             files: [],
+            selectedFiles: [],
             path: '',
             ddCapable: true,
             dragging: false,
+            dragEnterCounter: 0,
         };
     },
     methods: {
-        filesChanged: function (files) {
+        addUploadFiles: function (files) {
             var vm = this;
             vm.filesToUpload = vm.filesToUpload.concat(Array.from(files).map(function (file) {
                 // Validate size
@@ -206,8 +246,27 @@ export default {
                 });
             });
         },
-        selectFiles: function () {
+        selectFilesToUpload: function () {
             this.$refs.upload_input.click();
+        },
+        selectFile: function (file, e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!e.ctrlKey || !this.multiSelect) {
+                this.selectedFiles = [];
+            }
+            this.selectedFiles.push(file);
+        },
+        fileSelected: function (file) {
+            return this.selectedFiles.indexOf(file) >= 0;
+        },
+        openFile: function (file, e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (file.file.type == 'dir') {
+                this.path = this.path + '/' + file.file.name;
+                this.loadFiles();
+            }
         },
         deleteUpload: function (file) {
             this.filesToUpload.splice(this.filesToUpload.indexOf(file), 1);
@@ -249,19 +308,25 @@ export default {
             // Indicates that we are dragging files over our wrapper
             ['drag', 'dragstart', 'dragover', 'dragenter'].forEach(function (event) {
                 vm.$refs.wrapper.addEventListener(event, function (e) {
+                    vm.dragEnterCounter++;
                     vm.dragging = true;
                 });
             });
 
-            // Indicates that we are left our wrapper or dropped files
+            // Indicates that we left our wrapper or dropped files
             ['dragend', 'dragleave', 'drop'].forEach(function (event) {
                 vm.$refs.wrapper.addEventListener(event, function (e) {
-                    vm.dragging = false;
+                    vm.dragEnterCounter--;
+                    if (vm.dragEnterCounter == 0) {
+                        vm.dragging = false;
+                    }
                 });
             });
 
             vm.$refs.wrapper.addEventListener('drop', function (e) {
-                vm.filesChanged(e.dataTransfer.files);
+                vm.dragEnterCounter = 0;
+                vm.dragging = false;
+                vm.addUploadFiles(e.dataTransfer.files);
             });
         }
 
