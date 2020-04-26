@@ -44,4 +44,5 @@ return [
     'browser_video_support'  => 'Tarıyıcınız video dosyası desteklemiyor.',
     'browser_audio_support'  => 'Tarıyıcınız ses dosyası desteklemiyor.',
     'width'                  => 'Genişlik: ',
+    'add_all_selected'       => 'Seçilenlerin tümünü ekle',
 ];

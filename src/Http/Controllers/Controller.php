@@ -25,10 +25,10 @@ use Validator;
 
 abstract class Controller extends BaseController
 {
-    use DispatchesJobs,
-        ValidatesRequests,
-        AuthorizesRequests,
-        AlertsMessages;
+    use DispatchesJobs;
+    use ValidatesRequests;
+    use AuthorizesRequests;
+    use AlertsMessages;
 
     public function getSlug(Request $request)
     {
@@ -44,6 +44,9 @@ abstract class Controller extends BaseController
     public function insertUpdateData($request, $slug, $rows, $data)
     {
         $multi_select = [];
+
+        // Pass $rows so that we avoid checking unused fields
+        $request->attributes->add(['breadRows' => $rows->pluck('field')->toArray()]);
 
         /*
          * Prepare Translations and Transform data
@@ -75,9 +78,9 @@ abstract class Controller extends BaseController
             }
 
             /*
-             * merge ex_images and upload images
+             * merge ex_images/files and upload images/files
              */
-            if ($row->type == 'multiple_images' && !is_null($content)) {
+            if (in_array($row->type, ['multiple_images', 'file']) && !is_null($content)) {
                 if (isset($data->{$row->field})) {
                     $ex_files = json_decode($data->{$row->field}, true);
                     if (!is_null($ex_files)) {
@@ -113,7 +116,15 @@ abstract class Controller extends BaseController
 
             if ($row->type == 'relationship' && $row->details->type == 'belongsToMany') {
                 // Only if select_multiple is working with a relationship
-                $multi_select[] = ['model' => $row->details->model, 'content' => $content, 'table' => $row->details->pivot_table];
+                $multi_select[] = [
+                    'model'           => $row->details->model,
+                    'content'         => $content,
+                    'table'           => $row->details->pivot_table,
+                    'foreignPivotKey' => $row->details->foreign_pivot_key ?? null,
+                    'relatedPivotKey' => $row->details->related_pivot_key ?? null,
+                    'parentKey'       => $row->details->parent_key ?? null,
+                    'relatedKey'      => $row->details->key,
+                ];
             } else {
                 $data->{$row->field} = $content;
             }
@@ -135,7 +146,14 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->belongsToMany($sync_data['model'], $sync_data['table'])->sync($sync_data['content']);
+            $data->belongsToMany(
+                $sync_data['model'],
+                $sync_data['table'],
+                $sync_data['foreignPivotKey'],
+                $sync_data['relatedPivotKey'],
+                $sync_data['parentKey'],
+                $sync_data['relatedKey']
+            )->sync($sync_data['content']);
         }
 
         // Rename folders for newly created data through media-picker

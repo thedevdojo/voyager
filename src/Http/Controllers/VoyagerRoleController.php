@@ -30,7 +30,7 @@ class VoyagerRoleController extends VoyagerBaseController
             ->with([
                 'message'    => __('voyager::generic.successfully_updated')." {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
-                ]);
+            ]);
     }
 
     // POST BRE(A)D
@@ -56,6 +56,6 @@ class VoyagerRoleController extends VoyagerBaseController
             ->with([
                 'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
-                ]);
+            ]);
     }
 }

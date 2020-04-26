@@ -52,13 +52,17 @@ class VoyagerBaseController extends Controller
             $searchable = SchemaManager::describeTable(app($dataType->model_name)->getTable())->pluck('name')->toArray();
             $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get();
             foreach ($searchable as $key => $value) {
-                $displayName = $dataRow->where('field', $value)->first()->getTranslatedAttribute('display_name');
-                $searchNames[$value] = $displayName ?: ucwords(str_replace('_', ' ', $value));
+                $field = $dataRow->where('field', $value)->first();
+                $displayName = ucwords(str_replace('_', ' ', $value));
+                if ($field !== null) {
+                    $displayName = $field->getTranslatedAttribute('display_name');
+                }
+                $searchNames[$value] = $displayName;
             }
         }
 
         $orderBy = $request->get('order_by', $dataType->order_column);
-        $sortOrder = $request->get('sort_order', null);
+        $sortOrder = $request->get('sort_order', $dataType->order_direction);
         $usesSoftDeletes = false;
         $showSoftDeleted = false;
 
@@ -112,9 +116,10 @@ class VoyagerBaseController extends Controller
         }
 
         // Check if BREAD is Translatable
-        if (($isModelTranslatable = is_bread_translatable($model))) {
-            $dataTypeContent->load('translations');
-        }
+        $isModelTranslatable = is_bread_translatable($model);
+
+        // Eagerload Relations
+        $this->eagerLoadRelations($dataTypeContent, $dataType, 'browse', $isModelTranslatable);
 
         // Check if server side pagination is enabled
         $isServerSide = isset($dataType->server_side) && $dataType->server_side;
@@ -150,13 +155,7 @@ class VoyagerBaseController extends Controller
         $orderColumn = [];
         if ($orderBy) {
             $index = $dataType->browseRows->where('field', $orderBy)->keys()->first() + ($showCheckboxColumn ? 1 : 0);
-            $orderColumn = [[$index, 'desc']];
-            if (!$sortOrder && isset($dataType->order_direction)) {
-                $sortOrder = $dataType->order_direction;
-                $orderColumn = [[$index, $dataType->order_direction]];
-            } else {
-                $orderColumn = [[$index, 'desc']];
-            }
+            $orderColumn = [[$index, $sortOrder ?? 'desc']];
         }
 
         $view = 'voyager::bread.browse';
@@ -234,6 +233,9 @@ class VoyagerBaseController extends Controller
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
+        // Eagerload Relations
+        $this->eagerLoadRelations($dataTypeContent, $dataType, 'read', $isModelTranslatable);
+
         $view = 'voyager::bread.read';
 
         if (view()->exists("voyager::$slug.read")) {
@@ -290,6 +292,9 @@ class VoyagerBaseController extends Controller
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
+        // Eagerload Relations
+        $this->eagerLoadRelations($dataTypeContent, $dataType, 'edit', $isModelTranslatable);
+
         $view = 'voyager::bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
@@ -316,7 +321,7 @@ class VoyagerBaseController extends Controller
         if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $data = $model->withTrashed()->findOrFail($id);
         } else {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $data = $model->findOrFail($id);
         }
 
         // Check permission
@@ -328,7 +333,7 @@ class VoyagerBaseController extends Controller
 
         event(new BreadDataUpdated($dataType, $data));
 
-        if (auth()->user()->can('browse', $model)) {
+        if (auth()->user()->can('browse', app($dataType->model_name))) {
             $redirect = redirect()->route("voyager.{$dataType->slug}.index");
         } else {
             $redirect = redirect()->back();
@@ -376,6 +381,9 @@ class VoyagerBaseController extends Controller
         // Check if BREAD is Translatable
         $isModelTranslatable = is_bread_translatable($dataTypeContent);
 
+        // Eagerload Relations
+        $this->eagerLoadRelations($dataTypeContent, $dataType, 'add', $isModelTranslatable);
+
         $view = 'voyager::bread.edit-add';
 
         if (view()->exists("voyager::$slug.edit-add")) {
@@ -415,9 +423,9 @@ class VoyagerBaseController extends Controller
             }
 
             return $redirect->with([
-                    'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
-                    'alert-type' => 'success',
-                ]);
+                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
+                'alert-type' => 'success',
+            ]);
         } else {
             return response()->json(['success' => true, 'data' => $data]);
         }
@@ -441,9 +449,6 @@ class VoyagerBaseController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
-        // Check permission
-        $this->authorize('delete', app($dataType->model_name));
-
         // Init array of IDs
         $ids = [];
         if (empty($id)) {
@@ -455,6 +460,9 @@ class VoyagerBaseController extends Controller
         }
         foreach ($ids as $id) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+
+            // Check permission
+            $this->authorize('delete', $data);
 
             $model = app($dataType->model_name);
             if (!($model && in_array(SoftDeletes::class, class_uses_recursive($model)))) {
@@ -621,10 +629,10 @@ class VoyagerBaseController extends Controller
             $data->save();
 
             return response()->json([
-               'data' => [
-                   'status'  => 200,
-                   'message' => __('voyager::media.file_removed'),
-               ],
+                'data' => [
+                    'status'  => 200,
+                    'message' => __('voyager::media.file_removed'),
+                ],
             ]);
         } catch (Exception $e) {
             $code = 500;
@@ -852,6 +860,11 @@ class VoyagerBaseController extends Controller
                 $model = app($options->model);
                 $skip = $on_page * ($page - 1);
 
+                // Apply local scope if it is defined in the relationship-options
+                if (isset($options->scope) && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
+                    $model = $model->{$options->scope}();
+                }
+
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
                     // If we are using additional_attribute as label
@@ -875,11 +888,20 @@ class VoyagerBaseController extends Controller
 
                 $results = [];
 
-                if (!$row->required && !$search) {
+                if (!$row->required && !$search && $page == 1) {
                     $results[] = [
                         'id'   => '',
                         'text' => __('voyager::generic.none'),
                     ];
+                }
+
+                // Sort results
+                if (!empty($options->sort->field)) {
+                    if (!empty($options->sort->direction) && strtolower($options->sort->direction) == 'desc') {
+                        $relationshipOptions = $relationshipOptions->sortByDesc($options->sort->field);
+                    } else {
+                        $relationshipOptions = $relationshipOptions->sortBy($options->sort->field);
+                    }
                 }
 
                 foreach ($relationshipOptions as $relationshipOption) {

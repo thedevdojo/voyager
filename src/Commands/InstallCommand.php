@@ -94,7 +94,7 @@ class InstallCommand extends Command
 
         $composer = $this->findComposer();
 
-        $process = new Process($composer.' dump-autoload');
+        $process = new Process([$composer.' dump-autoload']);
         $process->setTimeout(null); // Setting timeout to null to prevent installation from stopping at a certain point in time
         $process->setWorkingDirectory(base_path())->run();
 
@@ -106,10 +106,6 @@ class InstallCommand extends Command
                 "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
             );
         }
-
-        \Route::group(['prefix' => 'admin'], function () {
-            \Voyager::routes();
-        });
 
         $this->info('Seeding data into the database');
         $this->seed('VoyagerDatabaseSeeder');

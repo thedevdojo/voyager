@@ -373,7 +373,7 @@
                                             @include('voyager::multilingual.input-hidden', [
                                                 'isModelTranslatable' => true,
                                                 '_field_name'         => 'field_display_name_' . $data['field'],
-                                                '_field_trans' => $dataRow ? get_field_translations($dataRow, 'display_name') : $data['field'],
+                                                '_field_trans' => $dataRow ? get_field_translations($dataRow, 'display_name') : json_encode([config('voyager.multilingual.default') => ucwords(str_replace('_', ' ', $data['field']))]),
                                             ])
                                         @endif
                                         <input type="text" class="form-control"
@@ -559,53 +559,44 @@
         /********** Relationship functionality **********/
 
        $(function () {
-            $('.rowDrop').each(function(){
-                populateRowsFromTable($(this));
-            });
-
             $('.relationship_type').change(function(){
                 if($(this).val() == 'belongsTo'){
                     $(this).parent().parent().find('.relationshipField').show();
                     $(this).parent().parent().find('.relationshipPivot').hide();
-                    $(this).parent().parent().find('.relationship_key').show();
                     $(this).parent().parent().find('.relationship_taggable').hide();
                     $(this).parent().parent().find('.hasOneMany').removeClass('flexed');
                     $(this).parent().parent().find('.belongsTo').addClass('flexed');
                 } else if($(this).val() == 'hasOne' || $(this).val() == 'hasMany'){
                     $(this).parent().parent().find('.relationshipField').show();
                     $(this).parent().parent().find('.relationshipPivot').hide();
-                    $(this).parent().parent().find('.relationship_key').hide();
                     $(this).parent().parent().find('.relationship_taggable').hide();
                     $(this).parent().parent().find('.hasOneMany').addClass('flexed');
                     $(this).parent().parent().find('.belongsTo').removeClass('flexed');
                 } else {
                     $(this).parent().parent().find('.relationshipField').hide();
                     $(this).parent().parent().find('.relationshipPivot').css('display', 'flex');
-                    $(this).parent().parent().find('.relationship_key').hide();
                     $(this).parent().parent().find('.relationship_taggable').show();
                 }
             });
 
             $('.btn-new-relationship').click(function(){
+                // Update table data
+                $('#new_relationship_modal .relationship_table').trigger('change');
+
                 $('#new_relationship_modal').modal('show');
             });
 
             relationshipTextDataBinding();
 
             $('.relationship_table').on('change', function(){
-                var tbl_selected = $(this).val();
-                var rowDropDowns = $(this).parent().parent().find('.rowDrop');
-                $(this).parent().parent().find('.rowDrop').each(function(){
-                    console.log('1');
-                    $(this).data('table', tbl_selected);
-                    populateRowsFromTable($(this));
-                });
+                populateRowsFromTable($(this));
             });
 
             $('.voyager-relationship-details-btn').click(function(){
                 $(this).toggleClass('open');
                 if($(this).hasClass('open')){
                     $(this).parent().parent().find('.voyager-relationship-details').slideDown();
+                    populateRowsFromTable($(this).parent().parent().find('select.relationship_table'));
                 } else {
                     $(this).parent().parent().find('.voyager-relationship-details').slideUp();
                 }
@@ -614,23 +605,29 @@
         });
 
         function populateRowsFromTable(dropdown){
-            var tbl = dropdown.data('table');
-            var selected_value = dropdown.data('selected');
-            if(tbl.length != 0){
-                $.get('{{ route('voyager.database.index') }}/' + tbl, function(data){
-                    $(dropdown).empty();
-                    for (var option in data) {
-                       $('<option/>', {
-                         value: option,
-                         html: option
-                       }).appendTo($(dropdown));
+            var tbl = dropdown.val();
+
+            $.get('{{ route('voyager.database.index') }}/' + tbl, function(data){
+                var tbl_selected = $(dropdown).val();
+
+                $(dropdown).parent().parent().find('.rowDrop').each(function(){
+                    var selected_value = $(this).data('selected');
+
+                    var options = $.map(data, function (obj, key) {
+                        return {id: key, text: key};
+                    });
+
+                    $(this).empty().select2({
+                        data: options
+                    });
+
+                    if (selected_value == '' || !$(this).find("option[value='"+selected_value+"']").length) {
+                        selected_value = $(this).find("option:first-child").val();
                     }
 
-                    if($(dropdown).find('option[value="'+selected_value+'"]').length > 0){
-                        $(dropdown).val(selected_value);
-                    }
+                    $(this).val(selected_value).trigger('change');
                 });
-            }
+            });
         }
 
         function relationshipTextDataBinding(){

@@ -9,6 +9,6 @@ return [
     'symlink_missing_button' => 'Fix it',
     'symlink_missing_text'   => 'Ne nuk mund të gjejmë një symlink të ruajtjes. '
     .'Kjo mund të shkaktojë probleme me ngarkimi i skedarëve të medias nga shfletuesi.',
-                                'loading media files from the browser.',
+    'loading media files from the browser.',
     'symlink_missing_title' => 'Skeda e munguar e ruajtjes',
 ];

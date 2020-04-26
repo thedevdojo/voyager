@@ -37,4 +37,5 @@ return [
     'success_crop_image'     => 'Зображення успішно обрізано',
     'height'                 => 'Висота: ',
     'width'                  => 'Ширина: ',
+    'add_all_selected'       => 'Додати всі вибрані',
 ];
