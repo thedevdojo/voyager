@@ -52,8 +52,12 @@ class VoyagerBaseController extends Controller
             $searchable = SchemaManager::describeTable(app($dataType->model_name)->getTable())->pluck('name')->toArray();
             $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get();
             foreach ($searchable as $key => $value) {
-                $displayName = $dataRow->where('field', $value)->first()->getTranslatedAttribute('display_name');
-                $searchNames[$value] = $displayName ?: ucwords(str_replace('_', ' ', $value));
+                $field = $dataRow->where('field', $value)->first();
+                $displayName = ucwords(str_replace('_', ' ', $value));
+                if ($field !== null) {
+                    $displayName = $field->getTranslatedAttribute('display_name');
+                }
+                $searchNames[$value] = $displayName;
             }
         }
 
@@ -317,7 +321,7 @@ class VoyagerBaseController extends Controller
         if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $data = $model->withTrashed()->findOrFail($id);
         } else {
-            $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
+            $data = $model->findOrFail($id);
         }
 
         // Check permission
@@ -329,7 +333,7 @@ class VoyagerBaseController extends Controller
 
         event(new BreadDataUpdated($dataType, $data));
 
-        if (auth()->user()->can('browse', $model)) {
+        if (auth()->user()->can('browse', app($dataType->model_name))) {
             $redirect = redirect()->route("voyager.{$dataType->slug}.index");
         } else {
             $redirect = redirect()->back();
@@ -856,6 +860,11 @@ class VoyagerBaseController extends Controller
                 $model = app($options->model);
                 $skip = $on_page * ($page - 1);
 
+                // Apply local scope if it is defined in the relationship-options
+                if (isset($options->scope) && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
+                    $model = $model->{$options->scope}();
+                }
+
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
                     // If we are using additional_attribute as label
@@ -879,11 +888,20 @@ class VoyagerBaseController extends Controller
 
                 $results = [];
 
-                if (!$row->required && !$search) {
+                if (!$row->required && !$search && $page == 1) {
                     $results[] = [
                         'id'   => '',
                         'text' => __('voyager::generic.none'),
                     ];
+                }
+
+                // Sort results
+                if (!empty($options->sort->field)) {
+                    if (!empty($options->sort->direction) && strtolower($options->sort->direction) == 'desc') {
+                        $relationshipOptions = $relationshipOptions->sortByDesc($options->sort->field);
+                    } else {
+                        $relationshipOptions = $relationshipOptions->sortBy($options->sort->field);
+                    }
                 }
 
                 foreach ($relationshipOptions as $relationshipOption) {

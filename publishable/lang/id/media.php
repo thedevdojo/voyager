@@ -37,4 +37,5 @@ return [
     'success_crop_image'     => 'Berhasil memotong gambar',
     'height'                 => 'Tinggi: ',
     'width'                  => 'Lebar: ',
+    'add_all_selected'       => 'Tambahkan semua yang dipilih',
 ];

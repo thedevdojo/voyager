@@ -43,4 +43,5 @@ return [
     'success_crop_image'    => 'Pomyślnie przycięto obraz',
     'height'                => 'Wysokość: ',
     'width'                 => 'Szerekość: ',
+    'add_all_selected'      => 'Dodaj wszystkie wybrane',
 ];
