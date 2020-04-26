@@ -95,11 +95,11 @@
                                         :is="'formfield-'+formfield.type+'-browse'"
                                         :options="formfield.options"
                                         :translatable="formfield.translatable"
-                                        :value="result[formfield.column.column] || ''">
+                                        :value="getData(result, formfield)">
                                     </component>
                                     <div v-else>
                                         <component
-                                            v-for="(val, i) in result[formfield.column.column].slice(0, 3)"
+                                            v-for="(val, i) in getData(result, formfield, true)"
                                             :is="'formfield-'+formfield.type+'-browse'"
                                             :options="formfield.options"
                                             :translatable="formfield.translatable"
@@ -213,6 +213,16 @@ export default {
             .finally(function () {
                 vm.loading = false;
             });
+        },
+        getData: function (result, formfield, asArray = false) {
+            var vm = this;
+            if (asArray) {
+                return result[formfield.column.column].slice(0, 3).map(function (r) {
+                    return vm.translate((r || ''), !formfield.translatable)
+                });
+            }
+
+            return vm.translate((result[formfield.column.column] || ''), !formfield.translatable);
         },
         orderBy: function (column) {
             if (this.parameters.order == column) {
