@@ -29,6 +29,21 @@
     </div>
 </card>
 
+<collapsible title="File upload" id="ui-upload">
+    <div>
+        <file-upload :upload-url="route('voyager.upload')" :list-url="route('voyager.list')" ref="upload"></file-upload>
+        <button class="button green" @click="$refs.upload.upload()">
+            Upload
+        </button>
+        <button class="button green" @click="$refs.upload.selectFiles()">
+            Select files
+        </button>
+        <button class="button green" @click="$refs.upload.loadFiles()">
+            Load files
+        </button>
+    </div>
+</collapsible>
+
 <collapsible title="Heading" id="ui-headings">
     <h1>H1 Heading</h1>
     <h2>H2 Heading</h2>

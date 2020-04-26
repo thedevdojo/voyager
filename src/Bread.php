@@ -145,8 +145,6 @@ class Bread
     {
         $this->clearBreads();
 
-        
-
         return File::put(Str::finish($this->breadPath, '/').$bread->table.'.json', json_encode($bread, JSON_PRETTY_PRINT));
     }
 

@@ -15,6 +15,7 @@ let components = [
     'Collapsible',
     'ColorPicker',
     'Dropdown',
+    'FileUpload',
     'IconPicker',
     'LanguageInput',
     'Modal',

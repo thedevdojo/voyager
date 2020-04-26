@@ -27,3 +27,7 @@ import VueScrollTo from 'vue-scrollto';
 Vue.use(VueScrollTo, {
     container: 'main',
 });
+
+// https://github.com/katlasik/mime-matcher
+import MimeMatcher from 'mime-matcher';
+Vue.prototype.MimeMatcher = MimeMatcher;

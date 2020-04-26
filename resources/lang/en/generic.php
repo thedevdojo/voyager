@@ -98,6 +98,8 @@ return [
     'translatable'              => 'Translatable',
     'type'                      => 'Type',
     'ui_components'             => 'UI components',
+    'upload_too_large'          => 'Uploading ":file" failed because its size (:size) is too big!',
+    'upload_failed'             => 'Uploading ":file" failed:',
     'validation'                => 'Validation',
     'value'                     => 'Value',
     'version'                   => 'Version',

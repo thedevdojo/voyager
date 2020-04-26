@@ -71,6 +71,10 @@ Route::group(['as' => 'voyager.'], function () {
 
         // Logout
         Route::get('logout', ['uses' => $namespace.'AuthController@logout', 'as' => 'logout']);
+
+        // Media
+        Route::post('upload', ['uses' => $namespace.'MediaController@uploadFile', 'as' => 'upload']);
+        Route::post('list', ['uses' => $namespace.'MediaController@listFiles', 'as' => 'list']);
     });
 
     // Login

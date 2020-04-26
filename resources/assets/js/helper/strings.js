@@ -51,6 +51,20 @@ window.number_format = function (amount, decimalCount = 2, decimal = ".", thousa
 };
 Vue.prototype.number_format = number_format;
 
+window.readableFileSize = function (bytes, decimals = 2)
+{
+    if (bytes === 0) return '0 Bytes';
+
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+};
+Vue.prototype.readableFileSize = readableFileSize;
+
 window.uuid = function () {
     var dt = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {

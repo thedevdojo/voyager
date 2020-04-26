@@ -15,3 +15,10 @@ window.isString = function (input)
     return (typeof input === 'string');
 };
 Vue.prototype.isString = isString;
+
+window.mimeMatch = function (mime, match)
+{
+    var matcher = new this.MimeMatcher(match);
+    return matcher.match(mime);
+};
+Vue.prototype.mimeMatch = mimeMatch;

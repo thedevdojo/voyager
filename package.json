@@ -20,6 +20,7 @@
         "axios": "^0.19.2",
         "debounce": "^1.2.0",
         "inter-ui": "^3.13.1",
+        "mime-matcher": "^1.0.5",
         "node-sass": "^4.14.0",
         "slugify": "^1.4.0",
         "tailwindcss": "^1.3",
