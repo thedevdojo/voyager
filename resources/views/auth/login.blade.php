@@ -18,7 +18,7 @@
 
 <body>
 
-    <div class="h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8" id="voyager-login">
+    <div class="h-screen bg-gray-50 dark:bg-gray-800 flex flex-col justify-center py-12 sm:px-6 lg:px-8" id="voyager-login">
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
             <div class="justify-center flex text-center">
                 <icon icon="helm" size="16" class="text-black"></icon>
@@ -65,7 +65,7 @@ var voyager = new Vue({
 
         var dark_mode = this.getCookie('dark-mode');
         if (dark_mode == 'true') {
-            this.$store.darkmode = true;
+            this.$store.toggleDarkMode();
         }
     },
 });
