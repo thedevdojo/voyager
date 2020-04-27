@@ -15,7 +15,7 @@
         </div>
     </div>
     
-    <collapse-transition v-if="$slots.default" :class="[open ? 'submenu' : '']">
+    <collapse-transition v-if="$slots.default" :class="[open ? 'submenu' : '']" :duration="200">
         <slot v-if="open" />
     </collapse-transition>
 </div>

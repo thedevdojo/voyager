@@ -7,6 +7,9 @@
     <div>
         <span class="mr-4">Jump to: </span>
         <div class="inline w-full">
+        <button class="button blue" v-scroll-to="'#ui-tags'">
+                Tag input
+            </button>
             <button class="button blue" v-scroll-to="'#ui-headings'">
                 Headings
             </button>
@@ -28,6 +31,10 @@
         </div>
     </div>
 </card>
+
+<collapsible title="Tag input" id="ui-tags">
+    <tag-input v-model="$store.ui.tags"></tag-input>
+</collapsible>
 
 <collapsible title="Heading" id="ui-headings">
     <h1>H1 Heading</h1>

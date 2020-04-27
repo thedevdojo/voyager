@@ -189,12 +189,12 @@ mode-dark a {
 
 // INPUTS
 .mode-dark {
-    textarea, select, input.voyager-input {
+    .voyager-input {
         @apply #{$input-background-color-dark} #{$input-border-color-dark} #{$input-text-color-dark};
     }
 }
 
-textarea, select, input.voyager-input {
+.voyager-input {
     @apply #{$input-background-color} #{$input-border-color} #{$input-text-color};
 
     &:focus {

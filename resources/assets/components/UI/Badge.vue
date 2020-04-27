@@ -6,6 +6,13 @@
             <circle cx="4" cy="4" r="3" />
         </svg>
         <slot></slot>
+        <icon
+            v-on:click.native="$emit('click-icon', $event)"
+            class="ltr:ml-1 rtl:mr-1 cursor-pointer"
+            :size="5"
+            v-if="icon !== ''"
+            :icon="icon">
+        </icon>
     </span>
 </template>
 <script>
@@ -18,6 +25,10 @@ export default {
         dot: {
             type: Boolean,
             default: false,
+        },
+        icon: {
+            type: String,
+            default: '',
         }
     },
 };

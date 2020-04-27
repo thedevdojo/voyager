@@ -25,6 +25,7 @@ let components = [
     'SortContainer',
     'SortElement',
     'Tabs',
+    'TagInput',
 ];
 
 components.forEach(function (component) {
