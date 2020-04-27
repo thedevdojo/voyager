@@ -1,15 +1,14 @@
 <template>
     <div class="button-group">
-        <button class="button blue" @click="openPreviousPage" :disabled="previousButtonDisabled">&lt;</button>
+        <button class="button blue" :class="[previousButtonDisabled ? 'opacity-50' : '']" @click="openPreviousPage">&lt;</button>
         <button
             v-for="(page, i) in showingPages" :key="i"
             class="button blue"
-            :class="[page == currentPage ? 'active' : '']"
-            :disabled="page == '...'"
+            :class="[page == currentPage ? 'active' : '', page == '...' ? 'opacity-75' : '']"
             @click="openPage(page)">
             {{ page }}
         </button>
-        <button class="button blue" @click="openNextPage" :disabled="nextButtonDisabled">&gt;</button>
+        <button class="button blue" :class="[nextButtonDisabled ? 'opacity-50' : '']" @click="openNextPage">&gt;</button>
     </div>
 </template>
 

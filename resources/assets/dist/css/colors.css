@@ -36,10 +36,6 @@ mode-dark a {
   color: #EDF2F7;
 }
 
-.mode-dark textarea:disabled, .mode-dark select:disabled, .mode-dark input.voyager-input:disabled {
-  background-color: #2D3748;
-}
-
 textarea, select, input.voyager-input {
   background-color: #fff;
   border-color: #CBD5E0;
@@ -48,10 +44,6 @@ textarea, select, input.voyager-input {
 
 textarea:focus, select:focus, input.voyager-input:focus {
   border-color: #4299e1;
-}
-
-textarea:disabled, select:disabled, input.voyager-input:disabled {
-  background-color: #EDF2F7;
 }
 
 textarea[type=checkbox]:checked, select[type=checkbox]:checked, input.voyager-input[type=checkbox]:checked {

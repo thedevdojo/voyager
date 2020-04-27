@@ -5672,7 +5672,7 @@ Vue.prototype.Status = Status;
     },
     'instantUpload': {
       type: Boolean,
-      "default": false
+      "default": true
     },
     'multiple': {
       type: Boolean,
@@ -6260,7 +6260,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -24727,27 +24726,29 @@ var render = function() {
       _vm.showToolbar
         ? _c("div", { staticClass: "w-full mb-2" }, [
             _c("div", { staticClass: "inline-block" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "button green",
-                  attrs: { disabled: _vm.filesToUpload.length == 0 },
-                  on: {
-                    click: function($event) {
-                      return _vm.upload()
-                    }
-                  }
-                },
-                [
-                  _c("icon", { attrs: { icon: "upload" } }),
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(_vm.__("voyager::media.upload")) +
-                      "\n            "
+              !_vm.instantUpload
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "button green",
+                      attrs: { disabled: _vm.filesToUpload.length == 0 },
+                      on: {
+                        click: function($event) {
+                          return _vm.upload()
+                        }
+                      }
+                    },
+                    [
+                      _c("icon", { attrs: { icon: "upload" } }),
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(_vm.__("voyager::media.upload")) +
+                          "\n            "
+                      )
+                    ],
+                    1
                   )
-                ],
-                1
-              ),
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "button",
@@ -24957,7 +24958,10 @@ var render = function() {
                     key: i,
                     staticClass:
                       "item rounded-md border cursor-pointer select-none",
-                    class: [_vm.fileSelected(file) ? "selected" : ""],
+                    class: [
+                      _vm.fileSelected(file) ? "selected" : "",
+                      file.is_upload ? "opacity-50" : ""
+                    ],
                     on: {
                       click: function($event) {
                         $event.preventDefault()
@@ -25586,7 +25590,7 @@ var render = function() {
         "button",
         {
           staticClass: "button blue",
-          attrs: { disabled: _vm.previousButtonDisabled },
+          class: [_vm.previousButtonDisabled ? "opacity-50" : ""],
           on: { click: _vm.openPreviousPage }
         },
         [_vm._v("<")]
@@ -25598,8 +25602,10 @@ var render = function() {
           {
             key: i,
             staticClass: "button blue",
-            class: [page == _vm.currentPage ? "active" : ""],
-            attrs: { disabled: page == "..." },
+            class: [
+              page == _vm.currentPage ? "active" : "",
+              page == "..." ? "opacity-75" : ""
+            ],
             on: {
               click: function($event) {
                 return _vm.openPage(page)
@@ -25614,7 +25620,7 @@ var render = function() {
         "button",
         {
           staticClass: "button blue",
-          attrs: { disabled: _vm.nextButtonDisabled },
+          class: [_vm.nextButtonDisabled ? "opacity-50" : ""],
           on: { click: _vm.openNextPage }
         },
         [_vm._v(">")]

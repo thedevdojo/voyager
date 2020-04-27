@@ -5,6 +5,10 @@
         @apply outline-none;
     }
 
+    &:disabled {
+        @apply opacity-25 cursor-not-allowed;
+    }
+
     @each $color in $colors {
         &.#{$color} {
             @apply bg-#{$color}-500;

@@ -162,41 +162,6 @@ class Voyager
     }
 
     /**
-     * Validate if all locales of a translation array are not empty.
-     *
-     * @param array $data The translation array
-     *
-     * @return bool Wether a locale is empty or not.
-     */
-    public function validateAllLocales($data)
-    {
-        return $this->validateLocales($data, $this->getLocales());
-    }
-
-    /**
-     * Validate if the given locales of a translation array are not empty.
-     *
-     * @param array $data   The translation array
-     * @param array $locale The locales to test again
-     *
-     * @return bool Wether a locale is empty or not.
-     */
-    public function validateLocales($data, $locales)
-    {
-        if (!is_array($data) || !$this->isTranslatable()) {
-            return !empty($data);
-        }
-
-        foreach ($locales as $locale) {
-            if (!property_exists($data, $locale) || empty($data[$locale])) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Gets all widgets from installed and enabled plugins
      *
      * @return Collection The widgets
@@ -234,9 +199,9 @@ class Voyager
         }
 
         if (is_array($value)) {
-            return $value[$locale] ?? $value[$falback] ?? null;
+            return $value[$locale] ?? $value[$fallback] ?? null;
         } elseif (is_object($value)) {
-            return $value->{$locale} ?? $value->{$falback} ?? null;
+            return $value->{$locale} ?? $value->{$fallback} ?? null;
         }
 
         return $value;

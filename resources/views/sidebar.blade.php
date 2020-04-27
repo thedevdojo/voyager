@@ -14,7 +14,9 @@
             <div class="flex-1 h-0 pt-5 pb-4 overflow-y-auto">
                 <div class="flex-shrink-0 flex items-center px-4">
                     <icon icon="helm" :size="10" class="icon"></icon>
-                    <span class="font-black text-lg uppercase pl-2 title">Voyager</span>
+                    <span class="font-black text-lg uppercase pl-2 title">
+                        {{ VoyagerSettings::setting('admin.sidebar-title', 'Voyager') }}
+                    </span>
                 </div>
                 @php
                     $menu_plugin = VoyagerPlugins::getPluginByType('menu');
@@ -121,7 +123,9 @@
         <div class="h-0 flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <div class="flex items-center flex-shrink-0 px-4">
                 <icon icon="helm" :size="10" class="icon"></icon>
-                <span class="font-black text-lg uppercase ltr:pl-2 rtl:pr-2 title">Voyager</span>
+                <span class="font-black text-lg uppercase ltr:pl-2 rtl:pr-2 title">
+                    {{ VoyagerSettings::setting('admin.sidebar-title', 'Voyager') }}
+                </span>
             </div>
             @php
                 $menu_plugin = VoyagerPlugins::getPluginByType('menu');

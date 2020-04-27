@@ -692,6 +692,11 @@ video {
   outline: 0;
 }
 
+.button:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
 .button.red {
   background-color: #f56565;
 }
@@ -939,6 +944,7 @@ textarea:focus, select:focus, input.voyager-input:focus {
 }
 
 textarea:disabled, select:disabled, input.voyager-input:disabled {
+  opacity: 0.25;
   cursor: not-allowed;
 }
 

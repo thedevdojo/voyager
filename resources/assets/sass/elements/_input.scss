@@ -8,7 +8,7 @@ textarea, select, input.voyager-input {
     }
 
     &:disabled {
-        @apply cursor-not-allowed;
+        @apply opacity-25 cursor-not-allowed;
     }
 
     &.small {

@@ -3,7 +3,7 @@
         <input class="hidden" type="file" :multiple="multiple" @change="addUploadFiles($event.target.files)" :accept="accept" ref="upload_input">
         <div class="w-full mb-2" v-if="showToolbar">
             <div class="inline-block">
-                <button class="button green" @click="upload()" :disabled="filesToUpload.length == 0">
+                <button class="button green" @click="upload()" :disabled="filesToUpload.length == 0" v-if="!instantUpload">
                     <icon icon="upload"></icon>
                     {{ __('voyager::media.upload') }}
                 </button>
@@ -53,7 +53,7 @@
                     class="item rounded-md border cursor-pointer select-none"
                     v-for="(file, i) in combinedFiles"
                     :key="i"
-                    :class="[fileSelected(file) ? 'selected' : '']"
+                    :class="[fileSelected(file) ? 'selected' : '', file.is_upload ? 'opacity-50' : '']"
                     v-on:click.prevent.stop="selectFile(file, $event)"
                     v-on:dblclick.prevent.stop="openFile(file)">
                     <div class="flex p-3">
@@ -146,7 +146,7 @@ export default {
         },
         'instantUpload': {
             type: Boolean,
-            default: false,
+            default: true,
         },
         'multiple': {
             type: Boolean,
