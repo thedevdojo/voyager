@@ -19,7 +19,19 @@ class MediaController extends Controller
 
     public function uploadFile(Request $request)
     {
-        debug($request->all());
+        $path = Str::finish($request->get('path', ''), '/');
+        $file = $request->file('file');
+        $name = '';
+        $count = 0;
+        do {
+            $name = $this->getFileName($file, $count);
+            $count++;
+        } while (Storage::disk('public')->exists($path.$name));
+
+        
+        return response()->json([
+            'result' => Storage::disk('public')->putFileAs($path, $request->file('file'), $name)
+        ]);
     }
 
     public function listFiles(Request $request)
@@ -30,7 +42,7 @@ class MediaController extends Controller
                 'is_upload' => false,
                 'file'      => [
                     'name'          => $file['basename'],
-                    'relative_path' => str_replace('\\', '/', $file['dirname']),
+                    'relative_path' => Str::finish(str_replace('\\', '/', $file['dirname']), '/'),
                     'url'           => Storage::disk('public')->url($file['path']),
                     'type'          => $file['mimetype'] ?? 'dir',
                     'size'          => $file['size'] ?? 0,
@@ -41,5 +53,32 @@ class MediaController extends Controller
         })->values();
 
         return response()->json($files);
+    }
+
+    public function delete(Request $request)
+    {
+        foreach($request->get('files', []) as $file) {
+            //debug($file);
+        }
+        return Storage::disk('public')->delete($request->get('files', []));
+    }
+
+    public function createFolder(Request $request)
+    {
+        return Storage::disk('public')->makeDirectory(
+            Str::finish($request->get('path', ''), '/') . $request->get('name', '')
+        );
+    }
+
+    // Checks if a file exists and add a numbered prefix until the file does not exist.
+    private function getFileName($file, $count = 0)
+    {
+        $pathinfo = pathinfo($file->getClientOriginalName());
+        $name = $pathinfo['filename'];
+        if ($count >= 1) {
+            $name .= '_'.$count;
+        }
+
+        return $name . '.' . $pathinfo['extension'];
     }
 }

@@ -104,6 +104,8 @@ Vue.mixin({
 
             translation = count > 1 ? translation[1] : translation[0];
 
+            translation = translation.replace(`:num`, count);
+
             for (var placeholder in replace) {
                 translation = translation.replace(`:${placeholder}`, replace[placeholder]);
             }

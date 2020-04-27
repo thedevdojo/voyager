@@ -5,6 +5,7 @@ Instead, they are listed here:
 - Add :disabled theming to buttons/inputs
 - Filter available plugins by type
 - PurgeCSS strips out a lot classes. Check everything and add it to the whitelist if necessary
+- Media manager should not upload all files simultaneously
 
 ## Nice to have
 - Validate layouts when saving a BREAD for formfields that don't have a field or double-assigned fields and validation-rules that don't have a rule **This is actually important**

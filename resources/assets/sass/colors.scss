@@ -134,6 +134,31 @@ $table-row-even-background-color-hover-dark : 'bg-gray-700' !default;
 $table-row-odd-background-color-hover-dark  : 'bg-gray-650' !default;
 $table-row-border-color-dark                : 'border-gray-650' !default;
 
+// MEDIA MANAGER
+$media-background-color                     : 'bg-white' !default;
+$media-border-color                         : 'border-gray-300' !default;
+$media-breadcrumbs-background-color         : 'bg-gray-150' !default;
+$media-breadcrumbs-border-color             : 'border-gray-300' !default;
+$media-item-background-color                : 'bg-gray-100' !default;
+$media-item-background-hover-color          : 'bg-gray-200' !default;
+$media-item-border-color                    : 'border-gray-300' !default;
+$media-sidebar-background-color             : 'bg-white' !default;
+$media-sidebar-border-color                 : 'border-gray-300' !default;
+$media-item-selected-background-color       : 'bg-gray-250' !default;
+$media-item-selected-border-color           : 'border-blue-300' !default;
+
+$media-background-color-dark                : 'bg-gray-850' !default;
+$media-border-color-dark                    : 'border-gray-700' !default;
+$media-breadcrumbs-background-color-dark    : 'bg-gray-800' !default;
+$media-breadcrumbs-border-color-dark        : 'border-gray-700' !default;
+$media-item-background-color-dark           : 'bg-gray-800' !default;
+$media-item-background-hover-color-dark     : 'bg-gray-700' !default;
+$media-item-border-color-dark               : 'border-gray-700' !default;
+$media-sidebar-background-color-dark        : 'bg-gray-800' !default;
+$media-sidebar-border-color-dark            : 'border-gray-700' !default;
+$media-item-selected-background-color-dark  : 'bg-gray-750' !default;
+$media-item-selected-border-color-dark      : 'border-blue-700' !default;
+
 html {
     font-family: #{$font-family};
 }
@@ -546,5 +571,70 @@ p {
                 @apply #{$table-row-border-color};
             }
         }
+    }
+}
+
+// MEDIA MANAGER
+.mode-dark .media-manager {
+    @apply #{$media-background-color-dark} #{$media-border-color-dark};
+
+    .item {
+        @apply #{$media-item-background-color-dark} #{$media-item-border-color-dark};
+
+        &:hover {
+            @apply #{$media-item-background-hover-color-dark};
+        }
+
+        &.selected {
+            @apply #{$media-item-selected-background-color-dark} #{$media-item-selected-border-color-dark};
+        }
+    }
+
+    .breadcrumbs {
+        @apply #{$media-breadcrumbs-background-color-dark} #{$media-breadcrumbs-border-color-dark};
+    }
+
+    .sidebar {
+        @apply #{$media-sidebar-background-color-dark} #{$media-sidebar-border-color-dark};
+    }
+
+    .dragdrop {
+        @apply #{$media-background-color-dark};
+    }
+
+    .loader {
+        @apply #{$media-background-color-dark};
+    }
+}
+
+.media-manager {
+    @apply #{$media-background-color} #{$media-border-color};
+
+    .item {
+        @apply #{$media-item-background-color} #{$media-item-border-color};
+
+        &:hover {
+            @apply #{$media-item-background-hover-color};
+        }
+
+        &.selected {
+            @apply #{$media-item-selected-background-color} #{$media-item-selected-border-color};
+        }
+    }
+
+    .breadcrumbs {
+        @apply #{$media-breadcrumbs-background-color} #{$media-breadcrumbs-border-color};
+    }
+
+    .sidebar {
+        @apply #{$media-sidebar-background-color} #{$media-sidebar-border-color};
+    }
+
+    .dragdrop {
+        @apply #{$media-background-color};
+    }
+
+    .loader {
+        @apply #{$media-background-color};
     }
 }

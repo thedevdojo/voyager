@@ -1,48 +1,59 @@
 <template>
-    <div class="min-h-64 w-full bg-gray-850 border-gray-700 border rounded-lg p-4 mb-4">
+    <div class="min-h-64 w-full media-manager border rounded-lg p-4 mb-4">
         <input class="hidden" type="file" :multiple="multiple" @change="addUploadFiles($event.target.files)" :accept="accept" ref="upload_input">
         <div class="w-full mb-2" v-if="showToolbar">
-            <div class="button-group">
-                <button class="button blue" @click="upload()">
-                    Upload
+            <div class="inline-block">
+                <button class="button green" @click="upload()" :disabled="filesToUpload.length == 0">
+                    <icon icon="upload"></icon>
+                    {{ __('voyager::media.upload') }}
                 </button>
                 <button class="button blue" @click="selectFilesToUpload()">
-                    Select files
+                    <icon icon="check-square"></icon>
+                    {{ __('voyager::media.select_files') }}
                 </button>
                 <button class="button blue" @click="loadFiles()">
-                    Load files
+                    <icon icon="sync"></icon>
+                    {{ __('voyager::generic.reload') }}
+                </button>
+                <button class="button blue" @click="createFolder()">
+                    <icon icon="folder-plus"></icon>
+                    {{ __('voyager::media.create_folder') }}
+                </button>
+                <button class="button red" @click="deleteSelected()" v-if="selectedFiles.length > 0">
+                    <icon icon="trash"></icon>
+                    {{ trans_choice('voyager::media.delete_files', selectedFiles.length) }}
                 </button>
             </div>
         </div>
-        <div class="w-full mb-2">
+        <div class="w-full mb-2 rounded-md breadcrumbs">
             <div class="button-group">
                 <span v-for="(path, i) in pathSegments" :key="'path-'+i" class="flex inline-block items-center">
-                    <button class="button">
+                    <button class="button py-0">
                         <a href="#" @click.prevent.stop="openPath(path, i)">
                             <icon v-if="path == ''" icon="home"></icon>
                             <span v-else>{{ path }}</span>
                         </a>
                     </button>
-                    <button class="button cursor-default px-0" v-if="pathSegments.length !== (i+1)">
-                        <icon icon="angle-double-right"></icon>
+                    <button class="button cursor-default px-0 py-0 icon-only" v-if="pathSegments.length !== (i+1)">
+                        <icon icon="angle-double-right" class="text-gray-700 dark:text-gray-300"></icon>
                     </button>
                 </span>
             </div>
         </div>
-        <div class="flex w-full">
+        <div class="flex w-full min-h-64">
             <!-- Add max-h-256 overflow-y-scroll to limit the height -->
             <div class="relative flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 " @click="selectedFiles = []"  ref="wrapper">
-                <div class="absolute flex items-center w-full text-center h-full opacity-75 bg-gray-850" v-if="(filesToUpload.length == 0 && files.length == 0) || dragging">
-                    <h4 class="text-center w-full opacity-100">{{ dragging ? dropText : dragText }}</h4>
+                <div class="absolute flex items-center w-full text-center h-full opacity-75 dragdrop" v-if="((filesToUpload.length == 0 && files.length == 0) || dragging) && !loadingFiles">
+                    <h4 class="text-center w-full">{{ dragging ? dropText : dragText }}</h4>
                 </div>
-                <div class="absolute flex items-center w-full text-center h-full opacity-75 bg-gray-850" v-if="loadingFiles">
-                    <h4 class="text-center w-full opacity-100">{{ __('voyager::generic.loading') }}</h4>
+                <div class="absolute flex items-center w-full text-center h-full opacity-75 loader" v-if="loadingFiles">
+                    <h4 class="text-center w-full">{{ __('voyager::generic.loading') }}</h4>
                 </div>
                 <div
-                    class="bg-gray-800 hover:bg-gray-750 rounded-md border-gray-700 border cursor-pointer select-none"
+                    class="item rounded-md border cursor-pointer select-none"
                     v-for="(file, i) in combinedFiles"
                     :key="i"
-                    :class="[fileSelected(file) ? 'border-blue-700' : '']"
+                    :class="[fileSelected(file) ? 'selected' : '']"
                     v-on:click.prevent.stop="selectFile(file, $event)"
                     v-on:dblclick.prevent.stop="openFile(file)">
                     <div class="flex p-3">
@@ -86,7 +97,7 @@
                 </div>
             </div>
             <slide-x-right-transition class="flex-none">
-                <div class="h-full border border-gray-700 rounded-md p-2 ml-3 max-w-xs" v-if="selectedFiles.length > 0">
+                <div class="sidebar h-full border rounded-md p-2 ml-3 max-w-xs" v-if="selectedFiles.length > 0">
                     <div class="w-full flex justify-center">
                         <div v-if="selectedFiles.length > 1" class="w-full flex justify-center h-32">
                             <icon icon="copy" size="32"></icon>
@@ -169,6 +180,7 @@ export default {
     data: function () {
         return {
             filesToUpload: [],
+            uploading: 0,
             files: [],
             selectedFiles: [],
             path: '',
@@ -250,11 +262,13 @@ export default {
         upload: function () {
             var vm = this;
             vm.filesToUpload.forEach(function (file) {
+                vm.uploading++;
                 if (file.status == Status.Uploading || file.status == Status.Finished) {
                     return;
                 }
                 let formData = new FormData();
                 formData.append('file', file.file);
+                formData.append('path', vm.path);
                 axios.post(vm.uploadUrl, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -264,9 +278,25 @@ export default {
                         file.progress = Math.round((e.loaded * 100) / e.total);
                     }
                 })
-                .then(function () {
+                .then(function (response) {
                     file.status = Status.Finished;
                     file.progress = 100;
+
+                    if (response.data.exists === true) {
+                        vm.$notify.notify(
+                            vm.__('voyager::media.file_exists', { file: file.file.name }),
+                            null, 'red', 7500
+                        );
+                        file.status = Status.Failed;
+                    } else {
+                        if (response.data.success === false) {
+                            vm.$notify.notify(
+                                vm.__('voyager::media.file_upload_failed', { file: file.file.name }),
+                                null, 'red', 7500
+                            );
+                            file.status = Status.Failed;
+                        }
+                    }
                 })
                 .catch(function (response) {
                     file.status = Status.Failed;
@@ -282,6 +312,14 @@ export default {
                             vm.__('voyager::generic.upload_failed', { file: file.file.name }) + '<br>' + response.response.statusText,
                             null, 'red', 7500
                         );
+                    }
+                }).then(function () {
+                    vm.uploading--;
+                    if (vm.uploading == 0) {
+                        vm.loadFiles();
+                        vm.filesToUpload = vm.filesToUpload.filter(function (file) {
+                            return file.status !== Status.Finished;
+                        });
                     }
                 });
             });
@@ -333,6 +371,68 @@ export default {
             var url = window.location.href.split('?')[0];
             url = this.addParameterToUrl('path', this.path, url);
             this.pushToUrlHistory(url);
+        },
+        deleteSelected: function () {
+            var vm = this;
+            var files = [];
+            vm.selectedFiles.forEach(function (file) {
+                files.push(file.file.relative_path + file.file.name);
+            });
+
+            vm.$notify.confirm(
+                vm.trans_choice('voyager::media.delete_files_confirm', files.length),
+                function (response) {
+                    if (response) {
+                        axios.delete(vm.route('voyager.media.delete'), {
+                            params: {
+                                files: files,
+                            }
+                        })
+                        .then(function (response) {
+                            vm.$notify.notify(
+                                vm.trans_choice('voyager::media.delete_files_success', files.length),
+                                null,
+                                'green',
+                                5000
+                            );
+                        })
+                        .catch(function (errors) {
+                            //
+                        })
+                        .then(function () {
+                            vm.loadFiles();
+                        });
+                    }
+                },
+                false,
+                'red',
+                vm.__('voyager::generic.yes'),
+                vm.__('voyager::generic.no'),
+                7500
+            );
+        },
+        createFolder: function () {
+            var vm = this;
+            vm.$notify.prompt(vm.__('voyager::media.create_folder_prompt'), '', function (name) {
+                axios.post(vm.route('voyager.media.create_folder'), {
+                    path: vm.path,
+                    name: name,
+                })
+                .then(function (response) {
+                    vm.$notify.notify(
+                        vm.__('voyager::media.create_folder_success', { name: name }),
+                        null,
+                        'green',
+                        5000
+                    );
+                })
+                .catch(function (errors) {
+                    //
+                })
+                .then(function () {
+                    vm.loadFiles();
+                });
+            }, 'blue', vm.__('voyager::generic.ok'), vm.__('voyager::generic.cancel'), false, 7500);
         }
     },
     computed: {
@@ -379,7 +479,7 @@ export default {
             ['dragend', 'dragleave', 'drop'].forEach(function (event) {
                 vm.$refs.wrapper.addEventListener(event, function (e) {
                     vm.dragEnterCounter--;
-                    if (vm.dragEnterCounter == 0) {
+                    if (vm.dragEnterCounter == 0 || vm.combinedFiles.length == 0) {
                         vm.dragging = false;
                     }
                 });

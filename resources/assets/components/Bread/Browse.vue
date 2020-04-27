@@ -19,15 +19,15 @@
                 </button>
                 <button class="button red m-0 ml-2" v-if="deletableEntries > 0" @click.prevent="deleteEntries(selected)">
                     <icon icon="trash"></icon>
-                    <span>{{ trans_choice('voyager::bread.delete_type', deletableEntries, { num: deletableEntries, types: translate(bread.name_plural, true), type: translate(bread.name_singular, true)}) }}</span>
+                    <span>{{ trans_choice('voyager::bread.delete_type', deletableEntries, { types: translate(bread.name_plural, true), type: translate(bread.name_singular, true)}) }}</span>
                 </button>
                 <button class="button red m-0 ml-2" v-if="restorableEntries > 0" @click.prevent="deleteEntries(selected, true)">
                     <icon icon="trash"></icon>
-                    <span>{{ trans_choice('voyager::bread.force_delete_type', restorableEntries, { num: restorableEntries, types: translate(bread.name_plural, true), type: translate(bread.name_singular, true) }) }}</span>
+                    <span>{{ trans_choice('voyager::bread.force_delete_type', restorableEntries, { types: translate(bread.name_plural, true), type: translate(bread.name_singular, true) }) }}</span>
                 </button>
                 <button class="button green m-0 ml-2" v-if="restorableEntries > 0" @click.prevent="restoreEntries(selected)">
                     <icon icon="history"></icon>
-                    <span>{{ trans_choice('voyager::bread.restore_type', restorableEntries, { num: restorableEntries, types: translate(bread.name_plural, true), type: translate(bread.name_singular, true) }) }}</span>
+                    <span>{{ trans_choice('voyager::bread.restore_type', restorableEntries, { types: translate(bread.name_plural, true), type: translate(bread.name_singular, true) }) }}</span>
                 </button>
                 <a class="button green m-0 ml-2" :href="route('voyager.'+translate(bread.slug, true)+'.add')">
                     <icon icon="plus"></icon>

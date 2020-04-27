@@ -76,6 +76,8 @@ Route::group(['as' => 'voyager.'], function () {
         Route::get('media', ['uses' => $namespace.'MediaController@index', 'as' => 'media']);
         Route::post('upload', ['uses' => $namespace.'MediaController@uploadFile', 'as' => 'media.upload']);
         Route::post('list', ['uses' => $namespace.'MediaController@listFiles', 'as' => 'media.list']);
+        Route::delete('delete', ['uses' => $namespace.'MediaController@delete', 'as' => 'media.delete']);
+        Route::post('create_folder', ['uses' => $namespace.'MediaController@createFolder', 'as' => 'media.create_folder']);
     });
 
     // Login
