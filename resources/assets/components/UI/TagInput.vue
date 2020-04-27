@@ -2,7 +2,7 @@
     <div class="voyager-input taginput" @click="$refs.input.focus()">
         <sort-container v-model="tags" tag="span" lockAxis="x" axis="x" :hideSortableGhost="false">
             <sort-element v-for="(tag, i) in tags" :key="'tag-'+i" :index="i" tag="span" :disabled="!allowReorder">
-                <badge :color="badgeColor" icon="times" @click-icon="removeTag(tag)" class="large" :class="[allowReorder ? 'cursor-move' : '']">
+                <badge :color="badgeColor" icon="times" @click-icon.prevent.stop="removeTag(tag)" class="large" :class="[allowReorder ? 'cursor-move' : '']">
                     {{ tag }}
                 </badge>
             </sort-element>
@@ -29,7 +29,7 @@ export default {
         },
         allowReorder: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         min: {
             type: Number,
