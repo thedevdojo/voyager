@@ -146,7 +146,7 @@ export default {
         },
         'instantUpload': {
             type: Boolean,
-            default: false,
+            default: true,
         },
         'multiple': {
             type: Boolean,

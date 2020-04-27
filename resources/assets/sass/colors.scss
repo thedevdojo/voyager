@@ -25,12 +25,10 @@ $link-text-color-dark           : 'text-blue-600' !default;
 
 // INPUTS
 $input-background-color      : 'bg-white' !default;
-$input-disabled-color        : 'bg-gray-200' !default;
 $input-border-color          : 'border-gray-400' !default;
 $input-text-color            : 'text-gray-800' !default;
 
 $input-background-color-dark : 'bg-gray-700' !default;
-$input-disabled-color-dark   : 'bg-gray-800' !default;
 $input-border-color-dark     : 'border-gray-600' !default;
 $input-text-color-dark       : 'text-gray-200' !default;
 
@@ -193,10 +191,6 @@ mode-dark a {
 .mode-dark {
     textarea, select, input.voyager-input {
         @apply #{$input-background-color-dark} #{$input-border-color-dark} #{$input-text-color-dark};
-
-        &:disabled {
-            @apply #{$input-disabled-color-dark};
-        }
     }
 }
 
@@ -205,10 +199,6 @@ textarea, select, input.voyager-input {
 
     &:focus {
         @apply border-#{$primary-accent-color};
-    }
-
-    &:disabled {
-        @apply #{$input-disabled-color};
     }
 
     &[type=checkbox] {
