@@ -32,7 +32,7 @@ class Plugins
             }
             $plugin->type = $this->getPluginType($plugin);
 
-            $plugin->identifier = $plugin->repository .'@'. class_basename($plugin);
+            $plugin->identifier = $plugin->repository.'@'.class_basename($plugin);
             $plugin->enabled = in_array($plugin->identifier, $this->enabled_plugins);
             if ($plugin->getInstructionsView()) {
                 $plugin->instructions = $plugin->getInstructionsView()->render();

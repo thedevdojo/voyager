@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use TCG\Voyager\Classes\Bread as BreadClass;
 use TCG\Voyager\Facades\Voyager as VoyagerFacade;
@@ -55,6 +55,7 @@ class Bread
                 $json = @json_decode($content);
                 if (json_last_error() !== JSON_ERROR_NONE) {
                     VoyagerFacade::flashMessage('BREAD-file "'.basename($bread->getPathName()).'" does contain invalid JSON: '.json_last_error_msg(), 'yellow');
+
                     return;
                 }
 
@@ -93,7 +94,7 @@ class Bread
 
     /**
      * Rollback BREAD to a given file.
-     * 
+     *
      * @param string $path
      *
      * @return bool
@@ -101,7 +102,7 @@ class Bread
     public function rollbackBread($table, $path)
     {
         if ($this->backupBread($table) !== false) {
-             // Delete $table.json
+            // Delete $table.json
              // Rename $path to $table.json
         }
 
@@ -210,22 +211,22 @@ class Bread
     }
 
     /**
-     * Get the search placeholder (Search for Users, Posts, etc...)
+     * Get the search placeholder (Search for Users, Posts, etc...).
      *
      * @param string $placeholder The placeholder
      */
     public function getBreadSearchPlaceholder()
     {
-        $breads =  $this->getBreads();
+        $breads = $this->getBreads();
 
         if ($breads->count() > 1) {
             return __('voyager::generic.search_for_breads', [
-                'bread' => $breads[rand(0, (count($breads) - 1))]->name_plural,
-                'bread2' => $breads[rand(0, (count($breads) - 1))]->name_plural
+                'bread'  => $breads[rand(0, (count($breads) - 1))]->name_plural,
+                'bread2' => $breads[rand(0, (count($breads) - 1))]->name_plural,
             ]);
         } elseif ($breads->count() == 1) {
             return __('voyager::generic.search_for_bread', [
-                'bread' => $breads[0]->name_plural
+                'bread' => $breads[0]->name_plural,
             ]);
         }
 
@@ -337,7 +338,7 @@ class Bread
                     'pivot'   => $pivot,
                 ];
             }
-            
+
             return null;
         })->filter();
     }

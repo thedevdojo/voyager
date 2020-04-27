@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager;
 
-use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Facades\Plugins as PluginsFacade;
 
@@ -162,7 +161,7 @@ class Voyager
     }
 
     /**
-     * Gets all widgets from installed and enabled plugins
+     * Gets all widgets from installed and enabled plugins.
      *
      * @return Collection The widgets
      */
@@ -177,15 +176,16 @@ class Voyager
             } else {
                 $width = 'w-full';
             }
-            return (object)[
+
+            return (object) [
                 'width' => $width,
-                'view'  => $plugin->getWidgetView()
+                'view'  => $plugin->getWidgetView(),
             ];
         }));
     }
 
     /**
-     * Translate a given string/object/array
+     * Translate a given string/object/array.
      *
      * @return string The translated value
      */

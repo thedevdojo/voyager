@@ -2,7 +2,7 @@
 
 namespace TCG\Voyager\Traits;
 
-use \TCG\Voyager\Facades\Voyager as VoyagerFacade;
+use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 trait Translatable
 {

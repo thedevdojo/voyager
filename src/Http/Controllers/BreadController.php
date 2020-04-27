@@ -3,12 +3,9 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use DB;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class BreadController extends Controller
 {
@@ -28,8 +25,7 @@ class BreadController extends Controller
             'order'       => $order,
             'direction'   => $direction,
             'softdeleted' => $softdeleted,
-            'locale'      => $locale,
-        ) = $request->all();
+            'locale'      => $locale) = $request->all();
 
         $model = $bread->getModel();
 
@@ -43,7 +39,7 @@ class BreadController extends Controller
         if ($uses_soft_deletes) {
             if ($softdeleted == 'show') {
                 $query = $query->withTrashed();
-            } else if ($softdeleted == 'only') {
+            } elseif ($softdeleted == 'only') {
                 $query = $query->onlyTrashed();
             }
         }
@@ -59,9 +55,9 @@ class BreadController extends Controller
 
                     if ($column_type == 'computed') {
                         // TODO
-                    } else if ($column_type == 'relationship') {
+                    } elseif ($column_type == 'relationship') {
                         // TODO
-                    } else if ($formfield->translatable ?? false) {
+                    } elseif ($formfield->translatable ?? false) {
                         $query->orWhere(DB::raw('lower('.$column.'->"'.$locale.'")'), 'LIKE', '%'.strtolower($global).'%');
                     } else {
                         $query->orWhere(DB::raw('lower('.$column.')'), 'LIKE', '%'.strtolower($global).'%');
@@ -77,9 +73,9 @@ class BreadController extends Controller
 
             if ($column_type == 'computed') {
                 // TODO
-            } else if ($column_type == 'relationship') {
+            } elseif ($column_type == 'relationship') {
                 // TODO
-            } else if ($formfield->translatable ?? false) {
+            } elseif ($formfield->translatable ?? false) {
                 $query->where(DB::raw('lower('.$column.'->"$.'.$locale.'")'), 'LIKE', '%'.strtolower($filter).'%');
             } else {
                 $query->where(DB::raw('lower('.$column.')'), 'LIKE', '%'.strtolower($filter).'%');
@@ -93,9 +89,9 @@ class BreadController extends Controller
 
             if ($column_type == 'computed') {
                 // TODO
-            } else if ($column_type == 'relationship') {
+            } elseif ($column_type == 'relationship') {
                 // TODO
-            } else if ($formfield->translatable ?? false) {
+            } elseif ($formfield->translatable ?? false) {
                 if ($direction == 'desc') {
                     $query = $query->orderByDesc(DB::raw('lower('.$order.'->"$.'.$locale.'")'));
                 } else {
@@ -109,7 +105,7 @@ class BreadController extends Controller
                 }
             }
         }
-        
+
         $query = $query->get();
         $filtered = $query->count();
 
@@ -147,13 +143,13 @@ class BreadController extends Controller
                             }
                         });
                         $item->{$formfield->column->column} = $pivot;
-                    } else if ($item->{$relationship} instanceof Collection) {
+                    } elseif ($item->{$relationship} instanceof Collection) {
                         // X-Many relationship
                         $item->{$formfield->column->column} = $item->{$relationship}->pluck($property)->transform(function ($value) use ($formfield) {
                             return $formfield->browse($value);
                         });
-                    } else if (!empty($item->{$relationship})) {
-                        // Normal property/X-One relationship 
+                    } elseif (!empty($item->{$relationship})) {
+                        // Normal property/X-One relationship
                         $item->{$formfield->column->column} = $formfield->browse($item->{$relationship}->{$property});
                     }
                 } else {
@@ -218,7 +214,7 @@ class BreadController extends Controller
                     $model->{$formfield->column->column} = $value;
                 }
             } elseif ($formfield->column->type == 'relationship') {
-                // 
+                //
             }
         });
 
@@ -277,9 +273,9 @@ class BreadController extends Controller
             if ($formfield->column->type == 'column') {
                 $model->{$formfield->column->column} = $value;
             } elseif ($formfield->column->type == 'computed') {
-                // 
+                //
             } elseif ($formfield->column->type == 'relationship') {
-                // 
+                //
             }
         });
 

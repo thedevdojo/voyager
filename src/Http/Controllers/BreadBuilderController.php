@@ -127,7 +127,7 @@ class BreadBuilderController extends Controller
     }
 
     /**
-     * Get BREAD properties (accessors, scopes and relationships) by model
+     * Get BREAD properties (accessors, scopes and relationships) by model.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -157,7 +157,7 @@ class BreadBuilderController extends Controller
     }
 
     /**
-     * Get all BREADs
+     * Get all BREADs.
      *
      * @return \Illuminate\Http\Response
      */
@@ -165,12 +165,12 @@ class BreadBuilderController extends Controller
     {
         return response()->json([
             'breads'  => BreadFacade::getBreads(),
-            'backups' => BreadFacade::getBackups()
+            'backups' => BreadFacade::getBackups(),
         ], 200);
     }
 
     /**
-     * Backup a BREAD
+     * Backup a BREAD.
      *
      * @param \Illuminate\Http\Request $request
      *
@@ -184,7 +184,7 @@ class BreadBuilderController extends Controller
     }
 
     /**
-     * Rollback a BREAD
+     * Rollback a BREAD.
      *
      * @param \Illuminate\Http\Request $request
      *

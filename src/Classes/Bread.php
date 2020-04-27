@@ -2,12 +2,7 @@
 
 namespace TCG\Voyager\Classes;
 
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use TCG\Voyager\Facades\Bread as BreadFacade;
-use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 use TCG\Voyager\Traits\Translatable;
 
 class Bread implements \JsonSerializable
@@ -76,13 +71,13 @@ class Bread implements \JsonSerializable
         // TODO: We might need to consider withTrashed() as well.
         $count = $this->getModel()->count();
         if ($count >= 1100000) {
-            return number_format(($count / 1000000), 1) . 'M';
-        } else if ($count >= 1000000) {
-            return number_format(($count / 1000000)) . 'M';
-        } else if ($count >= 100000) {
-            return number_format(($count / 1000)) . 'K';
-        } else if ($count >= 1000) {
-            return number_format(($count / 1000), 1) . 'K';
+            return number_format(($count / 1000000), 1).'M';
+        } elseif ($count >= 1000000) {
+            return number_format(($count / 1000000)).'M';
+        } elseif ($count >= 100000) {
+            return number_format(($count / 1000)).'K';
+        } elseif ($count >= 1000) {
+            return number_format(($count / 1000), 1).'K';
         }
 
         return $count;
