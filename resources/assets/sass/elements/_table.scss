@@ -11,7 +11,7 @@
 }
 
 .voyager-table {
-    @apply align-middle inline-block min-w-full shadow overflow-x-auto overflow-y-hidden rounded-lg border my-5;
+    @apply align-middle min-w-full shadow rounded-lg border my-5;
 
     &.loading {
         @apply opacity-25;

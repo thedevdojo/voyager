@@ -1,6 +1,6 @@
 .voyager-input {
 
-    @apply appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md transition duration-150 ease-in-out;
+    @apply appearance-none block px-3 py-2 border border-gray-300 rounded-md transition duration-150 ease-in-out;
 
     &:focus {
         @apply outline-none border-blue-300;
@@ -20,7 +20,7 @@
     }
 
     &[type=radio] {
-        @apply h-4 w-4 rounded-full align-middle inline-block;
+        @apply h-4 w-4 rounded-full py-2 px-2 align-middle inline-block;
     }
 
     @each $color in $colors {

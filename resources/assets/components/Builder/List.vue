@@ -81,7 +81,7 @@
                             type="checkbox"
                             class="voyager-input"
                             v-model="formfield.translatable"
-                            :disabled="!formfield.canBeTranslated">
+                            :disabled="!$store.getFormfieldByType(formfield.type).canBeTranslated">
                     </td>
                     <td class="text-right">
                         <button class="button blue" @click="$emit('open-options', key)">

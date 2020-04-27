@@ -66,7 +66,7 @@ class Bread
                     $date = Str::before(Str::after($bread->getFilename(), '.backup.'), '.json');
                     $this->backups[] = [
                         'table' => $b->table,
-                        'path'  => $bread->getPathName(),
+                        'path'  => $bread->getFilename(),
                         'date'  => $date,
                     ];
 
@@ -101,9 +101,9 @@ class Bread
      */
     public function rollbackBread($table, $path)
     {
+        $breadPath = Str::finish($this->breadPath, '/');
         if ($this->backupBread($table) !== false) {
-            // Delete $table.json
-             // Rename $path to $table.json
+            return File::delete($breadPath.$table.'.json') && File::copy($breadPath.$path, $breadPath.$table.'.json');
         }
 
         return false;
@@ -198,7 +198,7 @@ class Bread
     public function backupBread($table)
     {
         $old = $this->breadPath.$table.'.json';
-        $name = $table.'.backup.'.Carbon::now()->isoFormat('Y-MM-DD@HH-mm').'.json';
+        $name = $table.'.backup.'.Carbon::now()->isoFormat('Y-MM-DD@HH-mm-ss').'.json';
         $new = $this->breadPath.$name;
 
         if (File::exists($old)) {

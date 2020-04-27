@@ -8,6 +8,7 @@ return [
     'add_view'                          => 'Add View',
     'bread_backed_up'                   => 'BREAD successfully backed-up as ":name"',
     'bread_does_no_exist'               => 'BREAD ":table" does not exist!',
+    'bread_rolled_back'                 => 'BREAD rolled back to :date!',
     'bread_saved_successfully'          => 'BREAD was saved successfully!',
     'computed_properties'               => 'Computed properties',
     'columns'                           => 'Columns',

@@ -39,10 +39,32 @@
                                 </a>
                                 <button class="button green" @click="backupBread(table)">
                                     <icon icon="history" :class="[backingUp ? 'rotating-ccw' : '']" :size="4" />
-                                    <span>
+                                    <span v-if="getBackupsForTable(table).length > 0">
                                         {{ __('voyager::generic.backup') }} ({{ getBackupsForTable(table).length }})
                                     </span>
+                                    <span v-else>
+                                        {{ __('voyager::generic.backup') }}
+                                    </span>
                                 </button>
+                                <dropdown ref="rollbackdd" v-if="getBackupsForTable(table).length > 0">
+                                    <div>
+                                        <a v-for="(bu, i) in getBackupsForTable(table)"
+                                            :key="'rollback-'+i"
+                                            href="#"
+                                            @click.prevent="rollbackBread(table, bu)"
+                                            class="link">
+                                            {{ bu.date }}
+                                        </a>
+                                    </div>
+                                    <div slot="opener">
+                                        <button class="button green">
+                                            <icon icon="clock" :size="4" />
+                                            <span>
+                                                Rollback
+                                            </span>
+                                        </button>
+                                    </div>
+                                </dropdown>
                                 <a class="button yellow" :href="route('voyager.bread.edit', table)">
                                     <icon icon="pen" :size="4" />
                                     <span>
@@ -138,6 +160,24 @@ export default {
             })
             .then(function () {
                 vm.backingUp = false;
+                vm.loadBreads();
+            });
+        },
+        rollbackBread: function (table, backup) {
+            var vm = this;
+            vm.$refs.rollbackdd[0].close();
+            axios.post(vm.route('voyager.bread.rollback-bread'), {
+                table: table,
+                path: backup.path
+            })
+            .then(function (response) {
+                console.log(response);
+                vm.$notify.notify(vm.__('voyager::builder.bread_rolled_back', { date: backup.date }), null, 'blue', 5000);
+            })
+            .catch(function (error) {
+                vm.$notify.notify(error.response.statusText, null, 'red', 5000);
+            })
+            .then(function () {
                 vm.loadBreads();
             });
         },

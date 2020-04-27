@@ -115,7 +115,7 @@
 </collapsible>
 
 <collapsible title="Alerts" id="ui-alerts">
-    <alert v-for="color in $store.ui.colors" :color="color" :key="'alert-'+color">
+    <alert v-for="color in $store.ui.colors" :color="color" :key="'alert-'+color" class="mb-3">
         <span slot="title">@{{ color[0].toUpperCase() + color.slice(1) }}</span>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid pariatur, ipsum similique veniam quo totam eius aperiam dolorum.</p>
     </alert>
