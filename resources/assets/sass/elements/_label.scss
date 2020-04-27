@@ -1,5 +1,5 @@
 .label {
-    @apply block text-base font-normal my-2;
+    @apply block text-sm font-medium leading-5 text-gray-700;
 
     &.bigger {
         @apply text-lg;

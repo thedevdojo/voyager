@@ -17,33 +17,42 @@
 </head>
 
 <body>
-<div class="flex h-screen" id="voyager-login">
-    <div class="w-0 md:w-3/5 bg-gray-200 bg-cover" style="background-image:url('{{ Voyager::assetUrl('images/login-bg.png') }}');">
-        <div class="flex justify-left pl-4 items-center h-16 logo">
-            <icon icon="helm" size="8" class="text-black"></icon>
-            <span class="font-bold ml-2 text-gray-900 mt-1 text-xl uppercase">{{ VoyagerSettings::setting('admin.title', 'Voyager') }}</span>
-        </div>
-    </div>
-    <div class="w-full md:w-2/5 bg-white-100 dark:bg-gray-900 flex h-screen items-center">
-        <div class="w-0 xl:w-1/5"></div>
-        <div class="w-full xl:w-3/5 mx-6 xl:mx-0">
-            <login error="{{ Session::get('error', null) }}" success="{{ Session::get('success', null) }}" :old="{{ json_encode(old()) }}">
-                @if ($authentication->loginView())
-                <div slot="login">
-                    {!! $authentication->loginView() !!}
-                </div>
-                @endif
 
-                @if ($authentication->forgotPasswordView())
-                <div slot="forgot_password">
-                    {!! $authentication->forgotPasswordView() !!}
-                </div>
-                @endif
-            </login>
+    <div class="h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8" id="voyager-login">
+        <div class="sm:mx-auto sm:w-full sm:max-w-md">
+            <div class="justify-center flex text-center">
+                <icon icon="helm" size="16" class="text-black"></icon>
+            </div>
+            <p class="mt-6 text-center text-sm leading-5 text-gray-600 max-w">
+                Welcome to Voyager
+            </p>
+            <h2 class="mt-2 text-center text-3xl leading-9 font-extrabold text-gray-900">
+                Sign in to your account
+            </h2>
+            
         </div>
-        <div class="w-0 xl:w-1/5"></div>
+
+        <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+            <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+
+                <login error="{{ Session::get('error', null) }}" success="{{ Session::get('success', null) }}" :old="{{ json_encode(old()) }}">
+                    @if ($authentication->loginView())
+                    <div slot="login">
+                        {!! $authentication->loginView() !!}
+                    </div>
+                    @endif
+
+                    @if ($authentication->forgotPasswordView())
+                    <div slot="forgot_password">
+                        {!! $authentication->forgotPasswordView() !!}
+                    </div>
+                    @endif
+                </login>
+
+            </div>
+        </div>
     </div>
-</div>
+
 </body>
 <script src="{{ Voyager::assetUrl('js/voyager.js') }}"></script>
 <script>
