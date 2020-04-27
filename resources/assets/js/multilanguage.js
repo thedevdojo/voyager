@@ -79,8 +79,8 @@ Vue.mixin({
             let translation = key.split('.').reduce((t, i) => t[i] || null, this.$language.localization);
 
             if (!translation) {
-                if (this.debug) {
-                    this.debug('Translation with key "'+key+'" does not exist.', true, 'warn');
+                if (this.$store.debug) {
+                    console.log('Translation with key "'+key+'" does not exist.');
                 }
 
                 return key;

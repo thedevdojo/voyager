@@ -55,6 +55,13 @@
                 </menu-item>
 
                 <menu-item
+                    :title="__('voyager::generic.media')"
+                    :href="route('voyager.media')"
+                    icon="film" 
+                    {{ $current_url == Str::finish(route('voyager.media'), '/') ? 'active' : '' }}>
+                </menu-item>
+
+                <menu-item
                     :title="__('voyager::generic.ui_components')"
                     :href="route('voyager.ui')"
                     icon="window" 
@@ -152,6 +159,13 @@
                         @endforeach
                         </div>
                     @endif
+                </menu-item>
+
+                <menu-item
+                    :title="__('voyager::generic.media')"
+                    :href="route('voyager.media')"
+                    icon="film" 
+                    {{ $current_url == Str::finish(route('voyager.media'), '/') ? 'active' : '' }}>
                 </menu-item>
 
                 <menu-item

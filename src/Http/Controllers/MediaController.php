@@ -12,6 +12,11 @@ use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class MediaController extends Controller
 {
+    public function index()
+    {
+        return view('voyager::media.browse');
+    }
+
     public function uploadFile(Request $request)
     {
         debug($request->all());

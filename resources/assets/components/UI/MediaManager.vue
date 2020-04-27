@@ -1,19 +1,50 @@
 <template>
-    <div class="flex min-h-64 w-full bg-gray-850 border-gray-700 border rounded-lg p-4 mb-4">
+    <div class="min-h-64 w-full bg-gray-850 border-gray-700 border rounded-lg p-4 mb-4">
         <input class="hidden" type="file" :multiple="multiple" @change="addUploadFiles($event.target.files)" :accept="accept" ref="upload_input">
+        <div class="w-full mb-2" v-if="showToolbar">
+            <div class="button-group">
+                <button class="button blue" @click="upload()">
+                    Upload
+                </button>
+                <button class="button blue" @click="selectFilesToUpload()">
+                    Select files
+                </button>
+                <button class="button blue" @click="loadFiles()">
+                    Load files
+                </button>
+            </div>
+        </div>
+        <div class="w-full mb-2">
+            <div class="button-group">
+                <span v-for="(path, i) in pathSegments" :key="'path-'+i" class="flex inline-block items-center">
+                    <button class="button">
+                        <a href="#" @click.prevent.stop="openPath(path, i)">
+                            <icon v-if="path == ''" icon="home"></icon>
+                            <span v-else>{{ path }}</span>
+                        </a>
+                    </button>
+                    <button class="button cursor-default px-0" v-if="pathSegments.length !== (i+1)">
+                        <icon icon="angle-double-right"></icon>
+                    </button>
+                </span>
+            </div>
+        </div>
         <div class="flex w-full">
             <!-- Add max-h-256 overflow-y-scroll to limit the height -->
             <div class="relative flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 " @click="selectedFiles = []"  ref="wrapper">
                 <div class="absolute flex items-center w-full text-center h-full opacity-75 bg-gray-850" v-if="(filesToUpload.length == 0 && files.length == 0) || dragging">
                     <h4 class="text-center w-full opacity-100">{{ dragging ? dropText : dragText }}</h4>
                 </div>
+                <div class="absolute flex items-center w-full text-center h-full opacity-75 bg-gray-850" v-if="loadingFiles">
+                    <h4 class="text-center w-full opacity-100">{{ __('voyager::generic.loading') }}</h4>
+                </div>
                 <div
-                    class="bg-gray-800 hover:bg-gray-750 rounded-md border-gray-700 border cursor-pointer"
+                    class="bg-gray-800 hover:bg-gray-750 rounded-md border-gray-700 border cursor-pointer select-none"
                     v-for="(file, i) in combinedFiles"
                     :key="i"
                     :class="[fileSelected(file) ? 'border-blue-700' : '']"
-                    @click="selectFile(file, $event)"
-                    @dblclick="openFile(file, $event)">
+                    v-on:click.prevent.stop="selectFile(file, $event)"
+                    v-on:dblclick.prevent.stop="openFile(file)">
                     <div class="flex p-3">
                         <div class="flex-none">
                             <div class="w-full flex justify-center">
@@ -69,11 +100,12 @@
                     <div class="w-full flex justify-center">
                         <div v-if="selectedFiles.length == 1">
                             <p>{{ selectedFiles[0].file.name }}</p>
-                            <p>SIze: {{ readableFileSize(selectedFiles[0].file.size) }}</p>
+                            <p>{{ __('voyager::media.size') }}: {{ readableFileSize(selectedFiles[0].file.size) }}</p>
                         </div>
-                        <span v-else>
-                            {{ selectedFiles.length }} files selected
-                        </span>
+                        <div v-else>
+                            <p>{{ __('voyager::media.files_selected', { num: selectedFiles.length }) }}</p>
+                            <p>{{ __('voyager::generic.approximately') }} {{ readableFileSize(selectedFilesSize) }}</p>
+                        </div>
                     </div>
                     
                 </div>
@@ -129,6 +161,10 @@ export default {
             type: String,
             default: '*/*'
         },
+        'showToolbar': {
+            type: Boolean,
+            default: true,
+        }
     },
     data: function () {
         return {
@@ -139,6 +175,7 @@ export default {
             ddCapable: true,
             dragging: false,
             dragEnterCounter: 0,
+            loadingFiles: false,
         };
     },
     methods: {
@@ -194,6 +231,8 @@ export default {
         },
         loadFiles: function () {
             var vm = this;
+            vm.loadingFiles = true;
+            vm.selectedFiles = [];
             axios.post(vm.listUrl, {
                 path: vm.path
             })
@@ -205,6 +244,7 @@ export default {
             })
             .then(function () {
                 // When loaded, clear finished filesToUpload
+                vm.loadingFiles = false;
             });
         },
         upload: function () {
@@ -250,8 +290,6 @@ export default {
             this.$refs.upload_input.click();
         },
         selectFile: function (file, e) {
-            e.preventDefault();
-            e.stopPropagation();
             if (!e.ctrlKey || !this.multiSelect) {
                 this.selectedFiles = [];
             }
@@ -260,11 +298,10 @@ export default {
         fileSelected: function (file) {
             return this.selectedFiles.indexOf(file) >= 0;
         },
-        openFile: function (file, e) {
-            e.preventDefault();
-            e.stopPropagation();
+        openFile: function (file) {
             if (file.file.type == 'dir') {
                 this.path = this.path + '/' + file.file.name;
+                this.pushCurrentPathToUrl();
                 this.loadFiles();
             }
         },
@@ -283,11 +320,36 @@ export default {
             }
 
             return 'file-alt';
+        },
+        openPath: function (path, index) {
+            this.path = this.pathSegments.slice(0, (index + 1)).join('/');
+
+            // Push path to URL
+            this.pushCurrentPathToUrl();
+
+            this.loadFiles();
+        },
+        pushCurrentPathToUrl: function () {
+            var url = window.location.href.split('?')[0];
+            url = this.addParameterToUrl('path', this.path, url);
+            this.pushToUrlHistory(url);
         }
     },
     computed: {
         combinedFiles: function () {
             return this.files.concat(this.filesToUpload);
+        },
+        selectedFilesSize: function () {
+            var size = 0;
+
+            this.selectedFiles.forEach(function (file) {
+                size += file.file.size;
+            });
+
+            return size;
+        },
+        pathSegments: function () {
+            return this.path.split('/');
         }
     },
     mounted: function () {
@@ -328,6 +390,11 @@ export default {
                 vm.dragging = false;
                 vm.addUploadFiles(e.dataTransfer.files);
             });
+        }
+
+        var path = vm.getParameterFromUrl('path', '');
+        if (path !== '/') {
+            vm.path = path;
         }
 
         vm.loadFiles();

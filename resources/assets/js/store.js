@@ -51,7 +51,7 @@ var $store = {
         return this.breads.filter(function (bread) {
             return bread.table == table;
         })[0];
-    }
+    },
 };
 
 Vue.prototype.$store = $store;

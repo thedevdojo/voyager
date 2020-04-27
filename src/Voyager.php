@@ -77,7 +77,7 @@ class Voyager
      */
     public function getLocalization()
     {
-        return collect(['auth', 'bread', 'builder', 'formfields', 'generic', 'plugins', 'settings', 'validation'])->flatMap(function ($file) {
+        return collect(['auth', 'bread', 'builder', 'formfields', 'generic', 'media', 'plugins', 'settings', 'validation'])->flatMap(function ($file) {
             return ['voyager::'.$file => trans('voyager::'.$file)];
         })->toJson();
     }
