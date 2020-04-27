@@ -6,6 +6,7 @@ abstract class Formfield implements \JsonSerializable
 {
     public $translatable = false;
     public $column;
+
     /**
      * Get the name of the formfield.
      *
@@ -38,6 +39,7 @@ abstract class Formfield implements \JsonSerializable
      * Get the data for browsing.
      *
      * @param mixed $input
+     *
      * @return mixed
      */
     abstract public function browse($input);
@@ -46,6 +48,7 @@ abstract class Formfield implements \JsonSerializable
      * Get the data for reading.
      *
      * @param mixed $input
+     *
      * @return mixed
      */
     abstract public function read($input);
@@ -54,6 +57,7 @@ abstract class Formfield implements \JsonSerializable
      * Get the data for editing.
      *
      * @param mixed $input
+     *
      * @return mixed
      */
     abstract public function edit($input);
@@ -63,6 +67,7 @@ abstract class Formfield implements \JsonSerializable
      *
      * @param mixed $input
      * @param mixed $old
+     *
      * @return mixed
      */
     abstract public function update($input, $old);
@@ -78,6 +83,7 @@ abstract class Formfield implements \JsonSerializable
      * Get the data for storing (after adding).
      *
      * @param mixed $input
+     *
      * @return mixed
      */
     abstract public function store($input);
@@ -124,7 +130,7 @@ abstract class Formfield implements \JsonSerializable
 
     /**
      * If array data should be passed to this formfield when browsing
-     * This is especially useful for media-pickers and other formfields that don't just show text
+     * This is especially useful for media-pickers and other formfields that don't just show text.
      *
      * @return bool
      */
@@ -134,7 +140,7 @@ abstract class Formfield implements \JsonSerializable
     }
 
     /**
-     * If formfield accepts normal table columns
+     * If formfield accepts normal table columns.
      *
      * @return bool
      */
@@ -144,7 +150,7 @@ abstract class Formfield implements \JsonSerializable
     }
 
     /**
-     * If formfield accepts computed properties
+     * If formfield accepts computed properties.
      *
      * @return bool
      */
@@ -155,7 +161,7 @@ abstract class Formfield implements \JsonSerializable
 
     /**
      * If formfield accepts relationships (method name)
-     * This is only useful for relationship-formfields
+     * This is only useful for relationship-formfields.
      *
      * @return bool
      */
@@ -165,7 +171,7 @@ abstract class Formfield implements \JsonSerializable
     }
 
     /**
-     * If formfield accepts relationship-columns
+     * If formfield accepts relationship-columns.
      *
      * @return bool
      */
@@ -175,7 +181,7 @@ abstract class Formfield implements \JsonSerializable
     }
 
     /**
-     * If formfield accepts relationship-pivot columns
+     * If formfield accepts relationship-pivot columns.
      *
      * @return bool
      */

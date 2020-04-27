@@ -3,12 +3,10 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use League\Flysystem\Plugin\ListWith;
-use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class MediaController extends Controller
 {
@@ -28,9 +26,8 @@ class MediaController extends Controller
             $count++;
         } while (Storage::disk('public')->exists($path.$name));
 
-        
         return response()->json([
-            'result' => Storage::disk('public')->putFileAs($path, $request->file('file'), $name)
+            'result' => Storage::disk('public')->putFileAs($path, $request->file('file'), $name),
         ]);
     }
 
@@ -46,7 +43,7 @@ class MediaController extends Controller
                     'url'           => Storage::disk('public')->url($file['path']),
                     'type'          => $file['mimetype'] ?? 'dir',
                     'size'          => $file['size'] ?? 0,
-                ]
+                ],
             ];
         })->sortBy('file.name')->sortBy(function ($file) {
             return $file['file']['type'] == 'dir' ? 0 : 99999999;
@@ -57,16 +54,17 @@ class MediaController extends Controller
 
     public function delete(Request $request)
     {
-        foreach($request->get('files', []) as $file) {
+        foreach ($request->get('files', []) as $file) {
             //debug($file);
         }
+
         return Storage::disk('public')->delete($request->get('files', []));
     }
 
     public function createFolder(Request $request)
     {
         return Storage::disk('public')->makeDirectory(
-            Str::finish($request->get('path', ''), '/') . $request->get('name', '')
+            Str::finish($request->get('path', ''), '/').$request->get('name', '')
         );
     }
 
@@ -79,6 +77,6 @@ class MediaController extends Controller
             $name .= '_'.$count;
         }
 
-        return $name . '.' . $pathinfo['extension'];
+        return $name.'.'.$pathinfo['extension'];
     }
 }

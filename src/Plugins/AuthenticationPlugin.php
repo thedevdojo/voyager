@@ -25,7 +25,8 @@ class AuthenticationPlugin implements IsAuthenticationPlugin
         return 'web';
     }
 
-    public function authenticate(Request $request) {
+    public function authenticate(Request $request)
+    {
         $credentials = $request->only('email', 'password');
         if (!$credentials['email'] || !$credentials['password']) {
             return redirect()->back()->with([
@@ -41,7 +42,7 @@ class AuthenticationPlugin implements IsAuthenticationPlugin
         return redirect()->back()->with([
             'error' => __('voyager::auth.login_failed'),
         ]);
-     }
+    }
 
     public function logout()
     {
@@ -61,7 +62,6 @@ class AuthenticationPlugin implements IsAuthenticationPlugin
         $email = $request->get('email');
         // TODO: Validate Email, check if it exists, send mail
 
-
         return redirect()->back()->with([
             'success' => __('voyager::auth.forgot_password_conf'),
         ]);
@@ -74,8 +74,9 @@ class AuthenticationPlugin implements IsAuthenticationPlugin
         if ($this->user() && !Auth::guest()) {
             return $next($request);
         }
-    
+
         return redirect()->guest(route('voyager.login'));
+
         return $next($request);
     }
 

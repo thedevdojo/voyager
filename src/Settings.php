@@ -42,7 +42,7 @@ class Settings
             // We are looking for a setting in a group
             list($group, $key) = explode('.', $key);
             $settings = $settings->where('group', $group)->where('key', $key);
-        } else if ($key !== '' && $key !== null) {
+        } elseif ($key !== '' && $key !== null) {
             // We are looking for a setting without a group OR all group-settings
             $group = $settings->where('group', null)->where('key', $key);
 
@@ -68,7 +68,7 @@ class Settings
 
         if ($settings->count() == 0) {
             return $default;
-        } else if ($settings->count() == 1) {
+        } elseif ($settings->count() == 1) {
             $settings = $settings->first();
         }
 

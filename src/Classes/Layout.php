@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Classes;
 
 use TCG\Voyager\Facades\Bread as BreadFacade;
-use TCG\Voyager\Facades\Voyager as VoyagerFacade;
 
 class Layout implements \JsonSerializable
 {

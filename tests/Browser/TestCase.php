@@ -85,7 +85,7 @@ class TestCase extends DuskTestCase
             '--silent',
             '--disable-gpu',
             '--headless',
-            '--no-sandbox'
+            '--no-sandbox',
         ]);
 
         return RemoteWebDriver::create(
