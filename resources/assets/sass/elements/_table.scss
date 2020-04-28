@@ -2,10 +2,6 @@
     table {
         tbody {
             @apply bg-gray-800;
-    
-            tr {
-                @apply transition ease-in-out duration-100;
-            }
         }
     }
 }

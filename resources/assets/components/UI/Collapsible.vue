@@ -4,7 +4,7 @@
         <icon :icon="open ? 'angle-up' : 'angle-down'" :size="8"></icon>
     </div>
     <collapse-transition>
-        <div v-if="open">
+        <div v-show="open">
             <slot></slot>
         </div>
     </collapse-transition>

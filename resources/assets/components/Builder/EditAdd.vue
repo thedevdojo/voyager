@@ -1,6 +1,6 @@
 <template>
     <div>
-        <card title="Edit BREAD" icon="bread" :icon-size="8">
+        <card :title="__('voyager::generic.'+(isNew ? 'add' : 'edit')+'_type', { type: __('voyager::generic.bread')})" icon="bread" :icon-size="8">
             <div slot="actions">
                 <div class="flex items-center">
                     <button class="button green" @click="loadProperties">
@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div>
-                <alert color="yellow" v-if="!bread.model || bread.model == ''">
+                <alert color="yellow" v-if="!bread.model || bread.model == ''" class="mx-4">
                     <span slot="title">
                         {{ __('voyager::generic.heads_up') }}
                     </span>
@@ -241,7 +241,7 @@
 
 <script>
 export default {
-    props: ['data'],
+    props: ['data', 'isNew'],
     data: function () {
         return {
             bread: this.data,

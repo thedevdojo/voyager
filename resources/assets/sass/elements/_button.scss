@@ -1,5 +1,6 @@
 .button {
-    @apply whitespace-no-wrap text-white inline-flex items-center mb-1 mx-1 px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md transition ease-in-out duration-150;
+    @apply whitespace-no-wrap text-white inline-flex items-center mb-1 mx-1 px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-md;
+    @apply transition duration-150 ease-in-out;
 
     &:focus {
         @apply outline-none;

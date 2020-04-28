@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'add_bread'                         => 'Add BREAD',
     'add_formfield'                     => 'Add Formfield',
     'add_formfield_to_layout'           => 'Please add a Formfield first',
     'add_list'                          => 'Add List',
@@ -38,6 +37,7 @@ return [
     'reload_breads'                     => 'Reload BREADs',
     'reload_properties'                 => 'Reload properties',
     'rename_layout'                     => 'Rename Layout',
+    'rollback'                          => 'Rollback',
     'scope'                             => 'Scope',
     'searchable'                        => 'Searchable',
     'show_menu_badge'                   => 'Show badge in menu',

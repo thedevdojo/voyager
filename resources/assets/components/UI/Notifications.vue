@@ -1,11 +1,12 @@
 <template>
-<div class="notifications sm:p-6 sm:justify-end" v-on:animationend="timeout($event)" v-on:animationcancel="timeout($event)">
+<div class="notifications sm:p-6 sm:items-start sm:justify-end" v-on:animationend="timeout($event)" v-on:animationcancel="timeout($event)">
     <div>
         <slide-x-right-transition group :duration="{enter: 500, leave: 0}">
             <div
                 v-for="notification in $notify.notifications"
                 :key="notification.uuid"
-                :class="[`border-${notification.color}-500`, 'notification']"
+                class="notification"
+                :class="[`border-${notification.color}-500`]"
                 v-on:keyup.enter="submit(notification)"
                 @mouseover="stopTimeout(notification)"
                 @mouseleave="startTimeout(notification)">

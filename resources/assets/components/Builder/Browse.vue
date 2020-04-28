@@ -60,7 +60,7 @@
                                         <button class="button green">
                                             <icon icon="clock" :size="4" />
                                             <span>
-                                                Rollback
+                                                {{ __('voyager::builder.rollback') }}
                                             </span>
                                         </button>
                                     </div>
@@ -81,7 +81,8 @@
                             <a v-else class="button green" :href="route('voyager.bread.create', table)">
                                 <icon icon="plus" :size="4" />
                                 <span class="hidden md:block">
-                                    {{ __('voyager::builder.add_bread') }}
+                                    {{ __('voyager::generic.add_type', { type: __('voyager::generic.bread') }) }}
+                                    
                                 </span>
                             </a>
                         </td>
