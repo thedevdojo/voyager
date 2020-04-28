@@ -18,7 +18,10 @@ class Tags extends Formfield
 
     public function listOptions(): array
     {
-        return [];
+        return [
+            'color'     => 'blue',
+            'display'   => 3,
+        ];
     }
 
     public function viewOptions(): array
@@ -28,6 +31,7 @@ class Tags extends Formfield
             'description' => '',
             'min'         => 0,
             'max'         => 0,
+            'color'       => 'blue',
         ];
     }
 

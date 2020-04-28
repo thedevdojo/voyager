@@ -3,24 +3,10 @@
         <div v-if="palette == 'tailwind-colors'" class="w-full text-center">
             <button
                 v-for="(color, key) in $store.ui.colors" :key="'color-'+key"
-                @click="$emit('select', color)"
-                class="button mb-2" :class="[color, (!describe ? 'w-10 h-10' : '')]">
-                <span>{{ describe ? ucfirst(color) : '&nbsp;' }}</span>
+                @click="$emit('input', color); current = color"
+                class="button mb-2 icon-only" :class="[color]">
+                <icon :icon="current == color ? 'check-circle' : 'circle'"></icon>
             </button>
-        </div>
-        <div v-if="palette == 'tailwind-shades'" class="w-full text-center">
-            <div class="flex w-full">
-                <div v-for="(color, key) in $store.ui.colors" :key="'color-'+key" class="flex-1 mx-2">
-                    <div v-for="(shade, i) in [100, 200, 300, 400, 500, 600, 700, 800, 900]" :key="'shade-'+i">
-                        <button
-                            class="button w-full my-2"
-                            :class="`bg-${color}-${shade}`"
-                            @click="$emit('select', color+'-'+shade)">
-                            &nbsp;
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -31,14 +17,19 @@ export default {
             type: String,
             default: 'tailwind-colors',
             validator: function (value) {
-                return ['tailwind-colors', 'tailwind-shades'].indexOf(value) !== -1;
+                return ['tailwind-colors'].indexOf(value) !== -1;
             }
         },
-        describe: {
-            type: Boolean,
-            default: true,
+        value: {
+            type: String,
+            default: 'blue',
         }
     },
+    data: function () {
+        return {
+            current: this.value
+        };
+    }
 };
 </script>
 

@@ -64,7 +64,7 @@ export default {
     @apply relative inline-block text-left;
 
     .wrapper {
-        @apply absolute mt-2 rounded-md shadow-lg border;
+        @apply absolute rounded-md shadow-lg border;
 
         &.right {
             @apply origin-top-left left-0;

@@ -67,7 +67,7 @@
                         <label class="label" for="color">{{ __('voyager::generic.color') }}</label>
                         <dropdown ref="color_dd">
                             <div class="m-4">
-                                <color-picker v-on:select="$refs.color_dd.close(); bread.color = $event" :describe="false"></color-picker>
+                                <color-picker v-on:input="$refs.color_dd.close(); bread.color = $event" v-bind:value="bread.color" :describe="false"></color-picker>
                             </div>
                             <div slot="opener">
                                 <button :class="bread.color" class="button">{{ ucfirst(bread.color) }}</button>
@@ -134,7 +134,7 @@
         <card :show-header="false">
             <!-- Toolbar -->
             <div class="w-full mb-5 flex">
-                <select class="voyager-input small" v-model="currentLayoutName" :disabled="bread.layouts.length == 0">
+                <select class="voyager-input small self-center" v-model="currentLayoutName" :disabled="bread.layouts.length == 0">
                     <option :value="null" v-if="bread.layouts.length == 0">
                         {{ __('voyager::builder.create_layout_first') }}
                     </option>
@@ -145,7 +145,7 @@
                         <option v-for="list in lists" :key="'list-' + list.name">{{ list.name }}</option>
                     </optgroup>
                 </select>
-                <dropdown ref="formfield_dd" pos="right">
+                <dropdown ref="formfield_dd" pos="right" class="self-center">
                     <div>
                         <a v-for="formfield in filteredFormfields"
                             :key="'formfield-'+formfield.type"

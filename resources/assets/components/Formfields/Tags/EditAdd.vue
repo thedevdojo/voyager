@@ -4,6 +4,7 @@
         <tag-input
             :min="options.min"
             :max="options.max"
+            :badge-color="options.color || 'blue'"
             v-bind:value="value || []"
             @input="$emit('input', $event)">
         </tag-input>
