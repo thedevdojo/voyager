@@ -60,6 +60,7 @@ class File extends BaseType
             while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
                 $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
             }
+            $filename = Str::slug($filename);
         } else {
             $filename = Str::random(20);
 
