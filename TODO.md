@@ -28,6 +28,7 @@ Instead, they are listed here:
 - Translatable: Use `Ctrl` + `up/right` to select the next locale, `Ctrl` + `down/left` to select the previous locale
 - Settings: Use `VoyagerSettings::settings()` with key `null` to get all settings, key `something` to get a whole group (first) or a setting with that name and no group, or key `group.name` to get a settings with that group and key.
 - Backing-up a BREAD always uses the current stored state. So when backing-up after changing something (without saving first), the changes will NOT be included in the backup
+- Tag input: Press backspace twice to remove latest tag
 
 ## Checklist
 The following things need to be double checked

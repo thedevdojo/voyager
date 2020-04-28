@@ -7,7 +7,7 @@
                 </badge>
             </sort-element>
         </sort-container>
-        <input type="text" class="" ref="input" v-on:keyup.enter="addTag">
+        <input type="text" class="" ref="input" v-on:keyup.enter="addTag" v-on:keyup.delete="removeLastTag($event)">
     </div>
 </template>
 <script>
@@ -38,11 +38,12 @@ export default {
         max: {
             type: Number,
             default: 0,
-        }
+        },
     },
     data: function () {
         return {
             tags: this.value,
+            deleteCounter: 0,
         };
     },
     methods: {
@@ -62,6 +63,15 @@ export default {
                 return;
             }
             this.tags.splice(this.tags.indexOf(tag), 1);
+        },
+        removeLastTag: function (e) {
+            if (e.target.value == '') {
+                this.deleteCounter++;
+                if (this.deleteCounter >= 2) {
+                    this.tags.splice(this.tags.length - 1, 1);
+                    this.deleteCounter = 0;
+                }
+            }
         }
     },
     watch: {
