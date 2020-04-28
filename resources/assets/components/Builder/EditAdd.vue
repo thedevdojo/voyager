@@ -482,7 +482,7 @@ export default {
         filteredFormfields: function () {
             var vm = this;
             return vm.$store.formfields.filter(function (formfield) {
-                if (vm.currentLayout.type == 'list') {
+                if (vm.currentLayout && vm.currentLayout.type == 'list') {
                     return formfield.inList;
                 }
                 return formfield.inView;
