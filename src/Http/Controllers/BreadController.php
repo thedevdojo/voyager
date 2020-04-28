@@ -58,7 +58,7 @@ class BreadController extends Controller
                     } elseif ($column_type == 'relationship') {
                         // TODO
                     } elseif ($formfield->translatable ?? false) {
-                        $query->orWhere(DB::raw('lower('.$column.'->"'.$locale.'")'), 'LIKE', '%'.strtolower($global).'%');
+                        $query->orWhere(DB::raw('lower('.$column.'->"$.'.$locale.'")'), 'LIKE', '%'.strtolower($global).'%');
                     } else {
                         $query->orWhere(DB::raw('lower('.$column.')'), 'LIKE', '%'.strtolower($global).'%');
                     }
