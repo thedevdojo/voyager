@@ -77,6 +77,9 @@ export default {
     watch: {
         tags: function (tags) {
             this.$emit('input', tags);
+        },
+        value: function (tags) {
+            this.tags = tags;
         }
     }
 };

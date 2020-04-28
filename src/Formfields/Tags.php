@@ -59,7 +59,7 @@ class Tags extends Formfield
 
     public function add()
     {
-        return [];
+        return '';
     }
 
     public function store($input)

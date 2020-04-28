@@ -23,8 +23,24 @@ export default {
         };
     },
     mounted: function () {
-        if (this.isArray(this.value)) {
-            this.tags = this.value;
+        this.parseValue();
+    },
+    methods: {
+        parseValue: function () {
+            if (this.isArray(this.value)) {
+                this.tags = this.value;
+            } else {
+                try {
+                    var json = JSON.parse(this.value);
+
+                    this.tags = json;
+                } catch (e) { }
+            }
+        }
+    },
+    watch: {
+        value: function (value) {
+            this.parseValue();
         }
     }
 };

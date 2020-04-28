@@ -206,10 +206,16 @@ class BreadController extends Controller
 
         $layout->formfields->each(function ($formfield) use ($data, &$model) {
             $value = $data[$formfield->column->column] ?? '';
-            $value = $formfield->store($value);
 
             if ($formfield->translatable ?? false) {
-                $value = json_encode($value);
+                $translations = [];
+                foreach ($value as $locale => $translated) {
+                    // TODO: Old value is an array with locales instead of single translated values
+                    $translations[$locale] = $formfield->store($translated, $model->{$formfield->column->column});
+                }
+                $value = json_encode($translations);
+            } else {
+                $value = $formfield->store($value, $model->{$formfield->column->column});
             }
 
             if ($formfield->column->type == 'column') {
@@ -249,11 +255,27 @@ class BreadController extends Controller
         $bread = $this->getBread($request);
         $layout = $this->getLayoutForAction($bread, 'add');
         $new = false;
+
         $data = $bread->getModel()->findOrFail($id);
+
+        if ($bread->usesTranslatableTrait()) {
+            $data->dontTranslate();
+        }
 
         $layout->formfields->each(function ($formfield) use (&$data) {
             $value = $data->{$formfield->column->column};
-            $data->{$formfield->column->column} = $formfield->edit($value);
+            
+            if ($formfield->translatable ?? false) {
+                $translations = [];
+                $value = json_decode($value) ?? [];
+                foreach ($value as $locale => $translated) {
+                    // TODO: Old value is an array with locales instead of single translated values
+                    $translations[$locale] = $formfield->edit($translated);
+                }
+                $data->{$formfield->column->column} = json_encode($translations);
+            } else {
+                $data->{$formfield->column->column} = $formfield->edit($value);
+            }
         });
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'new', 'data'));
@@ -277,12 +299,18 @@ class BreadController extends Controller
             return response()->json($validation_errors, 422);
         }
 
-        $layout->formfields->each(function ($formfield) use ($data, &$model) {
+        $layout->formfields->each(function ($formfield) use ($data, &$model, $request) {
             $value = $data[$formfield->column->column] ?? '';
-            $value = $formfield->update($value, $model->{$formfield->column->column});
 
             if ($formfield->translatable ?? false) {
-                $value = json_encode($value);
+                $translations = [];
+                foreach ($value as $locale => $translated) {
+                    // TODO: Old value is an array with locales instead of single translated values
+                    $translations[$locale] = $formfield->update($translated, $model->{$formfield->column->column});
+                }
+                $value = json_encode($translations);
+            } else {
+                $value = $formfield->update($value, $model->{$formfield->column->column});
             }
 
             if ($formfield->column->type == 'column') {
