@@ -49,6 +49,7 @@ class MultipleImage extends BaseType
 
             $filename = Str::random(20);
             $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+            $filename = $this->generateFileName($file, $path);
             array_push($filesPath, $path.$filename.'.'.$file->getClientOriginalExtension());
             $filePath = $path.$filename.'.'.$file->getClientOriginalExtension();
 
@@ -111,5 +112,34 @@ class MultipleImage extends BaseType
         }
 
         return json_encode($filesPath);
+    }
+
+    /**
+     * @param \Illuminate\Http\UploadedFile $file
+     * @param $path
+     *
+     * @return string
+     */
+    protected function generateFileName($file, $path)
+    {
+        if (isset($this->options->preserveFileUploadName) && $this->options->preserveFileUploadName) {
+            $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
+            $filename_counter = 1;
+
+            // Make sure the filename does not exist, if it does make sure to add a number to the end 1, 2, 3, etc...
+            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension()).(string) ($filename_counter++);
+            }
+            $filename = Str::slug($filename);
+        } else {
+            $filename = Str::random(20);
+
+            // Make sure the filename does not exist, if it does, just regenerate
+            while (Storage::disk(config('voyager.storage.disk'))->exists($path.$filename.'.'.$file->getClientOriginalExtension())) {
+                $filename = Str::random(20);
+            }
+        }
+
+        return $filename;
     }
 }
