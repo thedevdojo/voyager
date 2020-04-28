@@ -56,7 +56,7 @@ class Text extends Formfield
 
     public function add()
     {
-        return $input;
+        return '';
     }
 
     public function store($input)

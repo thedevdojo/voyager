@@ -7,7 +7,7 @@
                         <icon icon="sync" class="rotating-ccw" :size="4" v-if="loadingProps" />
                         {{ __('voyager::builder.reload_properties') }}
                     </button>
-                    <locale-picker :small="false" />
+                    <locale-picker :small="false" class="ltr:ml-2 rtl:mr-2" />
                 </div>
             </div>
             <div>
@@ -234,7 +234,7 @@
         </card>
 
         <collapsible v-if="debug" :title="__('voyager::builder.json_output')" :opened="false">
-            <textarea class="input w-full" rows="10" v-model="jsonBread"></textarea>
+            <textarea class="voyager-input w-full" rows="10" v-model="jsonBread"></textarea>
         </collapsible>
     </div>
 </template>

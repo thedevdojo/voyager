@@ -1,0 +1,31 @@
+<template>
+    <div>
+        <slot v-if="show == 'query'"></slot>
+        <div v-else>
+            <div class="inline-flex items-center">
+                <badge color="blue" v-for="(tag, i) in tags.slice(0, 3)" :key="'tag-'+i">
+                    {{ tag }}
+                </badge>
+                <span class="text-xs ml-1 italic" v-if="tags.length > 3">
+                    {{ __('voyager::generic.more_results', { num: (tags.length - 3) }) }}
+                </span>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+export default {
+    props: ['show', 'options', 'value', 'translatable'],
+    data: function () {
+        return {
+            tags: [],
+        };
+    },
+    mounted: function () {
+        if (this.isArray(this.value)) {
+            this.tags = this.value;
+        }
+    }
+};
+</script>

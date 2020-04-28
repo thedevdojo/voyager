@@ -6,7 +6,7 @@
     action="{{ $new ? 'add' : 'edit' }}"
     :layout="{{ json_encode($layout) }}"
     :translatable="{{ $layout->hasTranslatableFormfields() ? 'true' : 'false' }}"
-    :input="{{ $new ? '{}' : json_encode($data) }}"
+    :input="{{ json_encode($data) }}"
     prev-url="{{ url()->previous() }}"
 ></bread-edit-add>
 @endsection

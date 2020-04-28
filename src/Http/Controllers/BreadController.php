@@ -177,8 +177,13 @@ class BreadController extends Controller
         $bread = $this->getBread($request);
         $layout = $this->getLayoutForAction($bread, 'add');
         $new = true;
+        $data = collect();
 
-        return view('voyager::bread.edit-add', compact('bread', 'layout', 'new'));
+        $layout->formfields->each(function ($formfield) use (&$data) {
+            $data->put($formfield->column->column, $formfield->add());
+        });
+
+        return view('voyager::bread.edit-add', compact('bread', 'layout', 'new', 'data'));
     }
 
     public function store(Request $request)
@@ -231,6 +236,11 @@ class BreadController extends Controller
         $layout = $this->getLayoutForAction($bread, 'read');
         $data = $bread->getModel()->findOrFail($id);
 
+        $layout->formfields->each(function ($formfield) use (&$data) {
+            $value = $data->{$formfield->column->column};
+            $data->{$formfield->column->column} = $formfield->read($value);
+        });
+
         return view('voyager::bread.read', compact('bread', 'data', 'layout'));
     }
 
@@ -240,6 +250,11 @@ class BreadController extends Controller
         $layout = $this->getLayoutForAction($bread, 'add');
         $new = false;
         $data = $bread->getModel()->findOrFail($id);
+
+        $layout->formfields->each(function ($formfield) use (&$data) {
+            $value = $data->{$formfield->column->column};
+            $data->{$formfield->column->column} = $formfield->edit($value);
+        });
 
         return view('voyager::bread.edit-add', compact('bread', 'layout', 'new', 'data'));
     }
