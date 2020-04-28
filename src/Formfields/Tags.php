@@ -57,11 +57,6 @@ class Tags extends Formfield
         return json_encode($input);
     }
 
-    public function add()
-    {
-        return '';
-    }
-
     public function store($input)
     {
         return json_encode($input);

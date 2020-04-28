@@ -210,12 +210,11 @@ class BreadController extends Controller
             if ($formfield->translatable ?? false) {
                 $translations = [];
                 foreach ($value as $locale => $translated) {
-                    // TODO: Old value is an array with locales instead of single translated values
-                    $translations[$locale] = $formfield->store($translated, $model->{$formfield->column->column});
+                    $translations[$locale] = $formfield->store($translated);
                 }
                 $value = json_encode($translations);
             } else {
-                $value = $formfield->store($value, $model->{$formfield->column->column});
+                $value = $formfield->store($value);
             }
 
             if ($formfield->column->type == 'column') {
@@ -269,7 +268,6 @@ class BreadController extends Controller
                 $translations = [];
                 $value = json_decode($value) ?? [];
                 foreach ($value as $locale => $translated) {
-                    // TODO: Old value is an array with locales instead of single translated values
                     $translations[$locale] = $formfield->edit($translated);
                 }
                 $data->{$formfield->column->column} = json_encode($translations);
@@ -304,9 +302,12 @@ class BreadController extends Controller
 
             if ($formfield->translatable ?? false) {
                 $translations = [];
+                $old = $model->{$formfield->column->column};
+                if (!is_object($old)) {
+                    $old = @json_decode($old);
+                }
                 foreach ($value as $locale => $translated) {
-                    // TODO: Old value is an array with locales instead of single translated values
-                    $translations[$locale] = $formfield->update($translated, $model->{$formfield->column->column});
+                    $translations[$locale] = $formfield->update($translated, (isset($old->{$locale}) ? $old->{$locale} : ''));
                 }
                 $value = json_encode($translations);
             } else {
@@ -316,7 +317,9 @@ class BreadController extends Controller
             if ($formfield->column->type == 'column') {
                 $model->{$formfield->column->column} = $value;
             } elseif ($formfield->column->type == 'computed') {
-                //
+                if (method_exists($model, 'set'.Str::camel($formfield->column->column).'Attribute')) {
+                    $model->{$formfield->column->column} = $value;
+                }
             } elseif ($formfield->column->type == 'relationship') {
                 //
             }

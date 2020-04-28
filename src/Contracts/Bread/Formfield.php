@@ -42,7 +42,10 @@ abstract class Formfield implements \JsonSerializable
      *
      * @return mixed
      */
-    abstract public function browse($input);
+    public function browse($input)
+    {
+        return $input;
+    }
 
     /**
      * Get the data for reading.
@@ -51,7 +54,10 @@ abstract class Formfield implements \JsonSerializable
      *
      * @return mixed
      */
-    abstract public function read($input);
+    public function read($input)
+    {
+        return $input;
+    }
 
     /**
      * Get the data for editing.
@@ -60,7 +66,10 @@ abstract class Formfield implements \JsonSerializable
      *
      * @return mixed
      */
-    abstract public function edit($input);
+    public function edit($input)
+    {
+        return $input;
+    }
 
     /**
      * Get the data for updating (after editing).
@@ -70,14 +79,20 @@ abstract class Formfield implements \JsonSerializable
      *
      * @return mixed
      */
-    abstract public function update($input, $old);
+    public function update($input, $old)
+    {
+        return $input;
+    }
 
     /**
      * Get the data for adding (eg. default values).
      *
      * @return mixed
      */
-    abstract public function add();
+    public function add()
+    {
+        return '';
+    }
 
     /**
      * Get the data for storing (after adding).
@@ -86,7 +101,10 @@ abstract class Formfield implements \JsonSerializable
      *
      * @return mixed
      */
-    abstract public function store($input);
+    public function store($input)
+    {
+        return $input;
+    }
 
     /**
      * Gets if the formfield can be translated.

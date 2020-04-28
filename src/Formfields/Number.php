@@ -37,33 +37,8 @@ class Number extends Formfield
         ];
     }
 
-    public function browse($input)
-    {
-        return $input;
-    }
-
-    public function read($input)
-    {
-        return $input;
-    }
-
-    public function edit($input)
-    {
-        return $input;
-    }
-
-    public function update($input, $old)
-    {
-        return $input;
-    }
-
     public function add()
     {
         return 0;
-    }
-
-    public function store($input)
-    {
-        return $input;
     }
 }
