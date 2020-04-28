@@ -21,6 +21,7 @@ class Tags extends Formfield
         return [
             'color'     => 'blue',
             'display'   => 3,
+            'reorder'   => true,
         ];
     }
 
@@ -32,6 +33,7 @@ class Tags extends Formfield
             'min'         => 0,
             'max'         => 0,
             'color'       => 'blue',
+            'reorder'     => true,
         ];
     }
 
