@@ -3,8 +3,7 @@
     @apply appearance-none block px-3 py-2 border border-gray-300 rounded-md transition duration-150 ease-in-out;
 
     &:focus {
-        @apply outline-none border-blue-300;
-        box-shadow: 0 0 0 3px rgba(164,202,254,.45);
+        @apply outline-none;
     }
 
     &:disabled {
