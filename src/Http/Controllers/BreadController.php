@@ -264,7 +264,7 @@ class BreadController extends Controller
 
         $layout->formfields->each(function ($formfield) use (&$data) {
             $value = $data->{$formfield->column->column};
-            
+
             if ($formfield->translatable ?? false) {
                 $translations = [];
                 $value = json_decode($value) ?? [];
