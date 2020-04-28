@@ -1,4 +1,28 @@
 /*!
+    * tiptap v1.27.0
+    * (c) 2020 Scrumpy UG (limited liability)
+    * @license MIT
+    */
+
+/*!
+    * tiptap-commands v1.13.0
+    * (c) 2020 Scrumpy UG (limited liability)
+    * @license MIT
+    */
+
+/*!
+    * tiptap-extensions v1.29.0
+    * (c) 2020 Scrumpy UG (limited liability)
+    * @license MIT
+    */
+
+/*!
+    * tiptap-utils v1.9.0
+    * (c) 2020 Scrumpy UG (limited liability)
+    * @license MIT
+    */
+
+/*!
   * vue-scrollto v2.18.1
   * (c) 2019 Randjelovic Igor
   * @license MIT

@@ -32,6 +32,10 @@
     </div>
 </card>
 
+<collapsible title="WYSIWYG Editor" id="ui-wysiwyg">
+    <wysiwyg></wysiwyg>
+</collapsible>
+
 <collapsible title="Tag input" id="ui-tags">
     <tag-input v-model="$store.ui.tags"></tag-input>
 </collapsible>

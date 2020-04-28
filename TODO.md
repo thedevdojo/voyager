@@ -6,8 +6,8 @@ Instead, they are listed here:
 - Filter available plugins by type
 - PurgeCSS strips out a lot classes. Check everything and add it to the whitelist if necessary
 - Media manager should not upload all files simultaneously
-- Translatable fields will call formfields `browse`, `add`, `store` with an array of of locale:values pairs, instead it should call it for every locale
 - When adding an entry to a BREAD, something should happen (form reset, ...)
+- Test all formfields, translatable and not translatable
 
 ## Formfields
 - **Select** with translatable labels, multiple/single, adjustable amount of displayed entries when browsing

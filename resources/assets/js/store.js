@@ -1,3 +1,5 @@
+import Vue from "vue";
+
 var $store = {
     routes: [],
     formfields: [],
