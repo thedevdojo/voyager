@@ -1,5 +1,5 @@
 <template>
-<i>
+<i :class="{ 'mirrored': mirrored }">
     <svg xmlns="http://www.w3.org/2000/svg" :viewBox="vb" v-html="iconPath" :class="'fill-current h-'+size+' w-' + size" />
 </i>
 </template>
@@ -22,6 +22,10 @@ export default {
             type: String,
             default: '0 0 24 24'
         },
+        mirrored: {
+            type: Boolean,
+            default: false,
+        }
     },
     data: function () {
         return {
@@ -57,3 +61,11 @@ export default {
     }
 };
 </script>
+
+
+<style lang="scss" scoped>
+.mirrored {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+</style>

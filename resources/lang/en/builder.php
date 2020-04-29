@@ -5,6 +5,7 @@ return [
     'add_formfield_to_layout'           => 'Please add a Formfield first',
     'add_list'                          => 'Add List',
     'add_view'                          => 'Add View',
+    'bread_already_exists'              => 'A BREAD for table ":table" already exists!',
     'bread_backed_up'                   => 'BREAD successfully backed-up as ":name"',
     'bread_does_no_exist'               => 'BREAD ":table" does not exist!',
     'bread_rolled_back'                 => 'BREAD rolled back to :date!',

@@ -27,6 +27,21 @@
         }
     }
 
+    &.dark-gray {
+        @apply bg-gray-750;
+        &:hover {
+            @apply bg-gray-800;
+        }
+
+        &:focus {
+            @apply bg-gray-850;
+        }
+
+        &.active {
+            @apply bg-gray-900;
+        }
+    }
+
     &.small {
         @apply px-2 py-1 text-sm leading-4;
     }
@@ -72,5 +87,10 @@
         &:last-child {
             @apply rounded-r-md #{!important};
         }
+    }
+
+    .divider {
+        @apply h-full border border-gray-800;
+        width: 1px;
     }
 }
