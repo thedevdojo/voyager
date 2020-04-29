@@ -278,7 +278,9 @@ trait Translatable
         $self = new static();
         $table = $self->getTable();
 
-        return $query->whereIn($self->getKeyName(), Translation::where('table_name', $table)
+        return $query->whereIn(
+            $self->getKeyName(),
+            Translation::where('table_name', $table)
             ->where('column_name', $field)
             ->where('value', $operator, $value)
             ->when(!is_null($locales), function ($query) use ($locales) {

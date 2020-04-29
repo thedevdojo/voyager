@@ -95,7 +95,8 @@ class DataType extends Model
             }
 
             if ($this->fill($requestData)->save()) {
-                $fields = $this->fields((strlen($this->model_name) != 0)
+                $fields = $this->fields(
+                    (strlen($this->model_name) != 0)
                     ? DB::getTablePrefix().app($this->model_name)->getTable()
                     : DB::getTablePrefix().Arr::get($requestData, 'name')
                 );
@@ -213,7 +214,8 @@ class DataType extends Model
         // Get ordered BREAD fields
         $orderedFields = $this->rows()->pluck('field')->toArray();
 
-        $_fieldOptions = SchemaManager::describeTable((strlen($this->model_name) != 0)
+        $_fieldOptions = SchemaManager::describeTable(
+            (strlen($this->model_name) != 0)
             ? app($this->model_name)->getTable()
             : $this->name
         )->toArray();
