@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'add_another'                   => 'Add another',
     'browse_type'                   => 'Browse :type',
     'clear_all_filters'             => 'Clear all filters',
     'delete_type_confirm'           => 'Are you sure you want to delete this :type?|Are you sure you want to delete :num :types?',

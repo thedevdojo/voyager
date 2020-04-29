@@ -51,6 +51,7 @@ export default {
         return {
             output: (this.input || {}),
             isSaving: false,
+            isSaved: false,
             errors: [],
         };
     },
@@ -85,7 +86,11 @@ export default {
         },
         save: function () {
             var vm = this;
+            if (vm.isSaving) {
+                return;
+            }
             vm.isSaving = true;
+            vm.isSaved = false;
             vm.errors = [];
             axios({
                 method: vm.action == 'add' ? 'post' : 'put',
@@ -95,7 +100,34 @@ export default {
                 }
             })
             .then(function (response) {
-                vm.$notify.notify(vm.__('voyager::bread.type_save_success', {type: vm.translate(vm.bread.name_singular, true)}), false, 'green', 7500);
+                var buttons = [
+                    {
+                        text: vm.__('voyager::bread.add_another'),
+                        class: 'green',
+                        callback: () => {
+                            window.location = route('voyager.'+vm.translate(vm.bread.slug, true)+'.add');
+                        },
+                        value: true,
+                    }, {
+                        text: vm.__('voyager::generic.read'),
+                        class: 'blue',
+                        callback: (val) => {
+                            window.location = route('voyager.'+vm.translate(vm.bread.slug, true)+'.read', response.data);
+                        },
+                        value: true,
+                    }
+                ];
+                if (vm.action == 'add') {
+                    buttons.push({
+                        text: vm.__('voyager::generic.edit'),
+                        class: 'yellow',
+                        callback: () => {
+                            window.location = route('voyager.'+vm.translate(vm.bread.slug, true)+'.edit', response.data);
+                        },
+                        value: true,
+                    });
+                }
+                vm.$notify.notify(vm.__('voyager::bread.type_save_success', {type: vm.translate(vm.bread.name_singular, true)}), null, 'green', null, false, 'info-circle', buttons);
             })
             .catch(function (response) {
                 if (response.response.status == 422) {
@@ -110,6 +142,7 @@ export default {
             })
             .finally(function () {
                 vm.isSaving = false;
+                vm.isSaved = true;
             });
         }
     },

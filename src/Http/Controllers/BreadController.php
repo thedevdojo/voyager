@@ -229,9 +229,9 @@ class BreadController extends Controller
         });
 
         if ($model->save()) {
-            return response(500);
+            return response($model->getKey(), 200);
         } else {
-            return response(200, $model->getKey());
+            return response($model->getKey(), 500);
         }
     }
 
@@ -326,9 +326,9 @@ class BreadController extends Controller
         });
 
         if ($model->save()) {
-            return response(500);
+            return response($model->getKey(), 200);
         } else {
-            return response(200, $model->getKey());
+            return response($model->getKey(), 500);
         }
     }
 
