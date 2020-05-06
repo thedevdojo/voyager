@@ -55,7 +55,7 @@ class CompassTest extends TestCase
 
         $response = $this->post(route('voyager.compass.index'), [
             'command' => 'make:model',
-            'args' => 'TestModel'
+            'args'    => 'TestModel',
         ]);
         $this->assertStringContainsString('Model created successfully.', $response->response->content());
     }
@@ -66,7 +66,7 @@ class CompassTest extends TestCase
 
         $response = $this->post(route('voyager.compass.index'), [
             'command' => 'unknown:command',
-            'args' => 'AnArgument'
+            'args'    => 'AnArgument',
         ]);
         $this->assertStringContainsString('The command &quot;unknown:command&quot; does not exist.', $response->response->content());
     }

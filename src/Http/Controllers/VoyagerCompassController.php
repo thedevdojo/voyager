@@ -6,8 +6,6 @@ use Artisan;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class VoyagerCompassController extends Controller
 {
@@ -71,7 +69,7 @@ class VoyagerCompassController extends Controller
             $args = (isset($args)) ? ' '.$args : '';
 
             try {
-                Artisan::call($command . $args);
+                Artisan::call($command.$args);
                 $artisan_output = Artisan::output();
             } catch (Exception $e) {
                 $artisan_output = $e->getMessage();
