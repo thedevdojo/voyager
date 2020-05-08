@@ -80,11 +80,11 @@ class Image extends BaseType
                                 $thumb_resize_width,
                                 $thumb_resize_height,
                                 function (Constraint $constraint) {
-                                $constraint->aspectRatio();
-                                if (isset($this->options->upsize) && !$this->options->upsize) {
-                                    $constraint->upsize();
+                                    $constraint->aspectRatio();
+                                    if (isset($this->options->upsize) && !$this->options->upsize) {
+                                        $constraint->upsize();
+                                    }
                                 }
-                            }
                             )->encode($file->getClientOriginalExtension(), $resize_quality);
                     } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                         $crop_width = $thumbnails->crop->width;
