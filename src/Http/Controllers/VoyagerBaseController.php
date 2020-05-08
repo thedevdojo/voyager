@@ -859,7 +859,7 @@ class VoyagerBaseController extends Controller
                 $options = $row->details;
                 $model = app($options->model);
                 $skip = $on_page * ($page - 1);
-                
+
                 $additional_attributes = $model->additional_attributes ?? [];
 
                 // Apply local scope if it is defined in the relationship-options
