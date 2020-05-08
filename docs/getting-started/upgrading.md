@@ -18,6 +18,7 @@ And then run `composer update`
 
 The roles BREAD now uses it's own controller.  
 Please update it to use `TCG\Voyager\Http\Controllers\VoyagerRoleController`
+
 ![](../.gitbook/assets/upgrading_roles_controller.png)
 
 ### TinyMCE initialization
