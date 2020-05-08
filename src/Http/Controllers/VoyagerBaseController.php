@@ -859,6 +859,8 @@ class VoyagerBaseController extends Controller
                 $options = $row->details;
                 $model = app($options->model);
                 $skip = $on_page * ($page - 1);
+                
+                $additional_attributes = $model->additional_attributes ?? [];
 
                 // Apply local scope if it is defined in the relationship-options
                 if (isset($options->scope) && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
@@ -868,7 +870,7 @@ class VoyagerBaseController extends Controller
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
                     // If we are using additional_attribute as label
-                    if (in_array($options->label, $model->additional_attributes ?? [])) {
+                    if (in_array($options->label, $additional_attributes)) {
                         $relationshipOptions = $model->all();
                         $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
                             return stripos($model->{$options->label}, $search) !== false;
