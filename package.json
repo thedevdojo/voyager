@@ -39,7 +39,7 @@
     "node-sass": "^4.13.1",
     "perfect-scrollbar": "^0.7.1",
     "select2": "^4.0.11",
-    "tinymce": "^4.9.7",
+    "tinymce": "^4.9.10",
     "toastr": "^2.1.2",
     "vue": "^2.3.4"
   }
