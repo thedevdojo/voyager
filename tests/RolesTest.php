@@ -71,7 +71,7 @@ class RolesTest extends TestCase
 
         $this->visit(route('voyager.roles.edit', 2))
              ->uncheck('permissions['.$this->permission_id.']')
-             ->press(__('voyager::generic.submit'))
+             ->press(__('voyager::generic.save'))
              ->seePageIs(route('voyager.roles.index'))
              ->notSeeInDatabase('permission_role', ['permission_id' => $this->permission_id, 'role_id' => 2]);
     }
