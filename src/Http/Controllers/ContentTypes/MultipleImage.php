@@ -99,6 +99,27 @@ class MultipleImage extends BaseType
                             ->orientate()
                             ->fit($crop_width, $crop_height)
                             ->encode($file->getClientOriginalExtension(), $resize_quality);
+                    } elseif (isset($thumbnails->name) && isset($thumbnails->fit)) {
+                        $thumbnail = InterventionImage::make($file);
+                        $image = $thumbnail->fit(
+                            $thumbnails->fit->width,
+                            ($thumbnails->fit->height ?? null),
+                            function ($constraint) {
+                                $constraint->aspectRatio();
+                            }, ($thumbnails->fit->position ?? 'center')
+                        )->encode($file->getClientOriginalExtension(), $resize_quality);
+                    } elseif (isset($thumbnails->name) && isset($thumbnails->resize)) {
+                        $thumbnail = InterventionImage::make($file);
+                        $image = $thumbnail->resize(
+                            $thumbnails->resize->width,
+                            ($thumbnails->resize->height ?? null),
+                            function ($constraint) use ($thumbnails) {
+                                $constraint->aspectRatio();
+                                if (!($thumbnails->resize->upsize ?? true)) {
+                                    $constraint->upsize();
+                                }
+                            }
+                        )->encode($file->getClientOriginalExtension(), $resize_quality);
                     }
 
                     Storage::disk(config('voyager.storage.disk'))->put(
