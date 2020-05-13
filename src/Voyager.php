@@ -183,24 +183,40 @@ class Voyager
     }
 
     /**
-     * Get a collection of the dashboard widgets.
+     * Get a collection of dashboard widgets.
+     * Each of our widget groups contain a max of three widgets.
+     * After that, we will switch to a new widget group.
      *
-     * @return \Arrilot\Widgets\WidgetGroup
+     * @return array - Array consisting of \Arrilot\Widget\WidgetGroup objects
      */
     public function dimmers()
     {
         $widgetClasses = config('voyager.dashboard.widgets');
-        $dimmers = Widget::group('voyager::dimmers');
+        $dimmerGroups = [];
+        $dimmerCount = 0;
+        $dimmers = Widget::group("voyager::dimmers-{$dimmerCount}");
 
         foreach ($widgetClasses as $widgetClass) {
             $widget = app($widgetClass);
 
             if ($widget->shouldBeDisplayed()) {
+
+                // Every third dimmer, we consider out WidgetGroup filled.
+                // We switch that out with another WidgetGroup.
+                if ($dimmerCount % 3 === 0 && $dimmerCount !== 0) {
+                    $dimmerGroups[] = $dimmers;
+                    $dimmerGroupTag = ceil($dimmerCount / 3);
+                    $dimmers = Widget::group("voyager::dimmers-{$dimmerGroupTag}");
+                }
+
                 $dimmers->addWidget($widgetClass);
+                $dimmerCount++;
             }
         }
 
-        return $dimmers;
+        $dimmerGroups[] = $dimmers;
+
+        return $dimmerGroups;
     }
 
     public function setting($key, $default = null)
@@ -325,6 +341,16 @@ class Voyager
 
     public function getLocales()
     {
-        return array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), ['..', '.']);
+        $appLocales = [];
+        if ($this->filesystem->exists(resource_path('lang/vendor/voyager'))) {
+            $appLocales = array_diff(scandir(resource_path('lang/vendor/voyager')), ['..', '.']);
+        }
+
+        $vendorLocales = array_diff(scandir(realpath(__DIR__.'/../publishable/lang')), ['..', '.']);
+        $allLocales = array_merge($vendorLocales, $appLocales);
+
+        asort($allLocales);
+
+        return $allLocales;
     }
 }

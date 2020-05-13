@@ -31,7 +31,7 @@
             this.settings  = $.extend( {}, defaults, options );
             this._defaults = defaults;
             this.chars     = this._load_char_maps();
-            if (!this.settings.map) {      // Load extra character map translator
+            if (this.settings.map) {      // Load extra character map translator
                 $.extend(this.chars, this.settings.map);
             }
             this.init();

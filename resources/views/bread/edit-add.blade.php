@@ -72,7 +72,7 @@
                                     <label class="control-label" for="name">{{ $row->getTranslatedAttribute('display_name') }}</label>
                                     @include('voyager::multilingual.input-hidden-bread-edit-add')
                                     @if (isset($row->details->view))
-                                        @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => ($edit ? 'edit' : 'add')])
+                                        @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => ($edit ? 'edit' : 'add'), 'view' => ($edit ? 'edit' : 'add'), 'options' => $row->details])
                                     @elseif ($row->type == 'relationship')
                                         @include('voyager::formfields.relationship', ['options' => $row->details])
                                     @else
@@ -167,9 +167,15 @@
             //Init datepicker for date fields if data-datepicker attribute defined
             //or if browser does not handle date inputs
             $('.form-group input[type=date]').each(function (idx, elt) {
-                if (elt.type != 'date' || elt.hasAttribute('data-datepicker')) {
+                if (elt.hasAttribute('data-datepicker')) {
                     elt.type = 'text';
                     $(elt).datetimepicker($(elt).data('datepicker'));
+                } else if (elt.type != 'date') {
+                    elt.type = 'text';
+                    $(elt).datetimepicker({
+                        format: 'L',
+                        extraFormats: [ 'YYYY-MM-DD' ]
+                    }).datetimepicker($(elt).data('datepicker'));
                 }
             });
 
