@@ -43,7 +43,7 @@ Route::group(['as' => 'voyager.'], function () {
 
                 Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
                 Route::post($dataType->slug.'/action', $breadController.'@action')->name($dataType->slug.'.action');
-                Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.update_order');;
+                Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.update_order');
                 Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
                 Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
                 Route::post($dataType->slug.'/remove', $breadController.'@remove_media')->name($dataType->slug.'.media.remove');

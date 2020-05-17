@@ -12,7 +12,7 @@
   "devDependencies": {
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^3.2.3",
-    "jquery": "^3.1.1",
+    "jquery": "^3.5.1",
     "laravel-mix": "^4.1.4",
     "lodash": "^4.17.4",
     "sass-loader": "^7.3.1",
@@ -39,7 +39,7 @@
     "node-sass": "^4.13.1",
     "perfect-scrollbar": "^0.7.1",
     "select2": "^4.0.11",
-    "tinymce": "^4.9.7",
+    "tinymce": "^4.9.10",
     "toastr": "^2.1.2",
     "vue": "^2.3.4"
   }

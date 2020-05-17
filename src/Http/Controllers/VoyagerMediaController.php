@@ -274,7 +274,8 @@ class VoyagerMediaController extends Controller
                                     ($thumbnail_data->height ?? null),
                                     function ($constraint) {
                                         $constraint->aspectRatio();
-                                    }, ($thumbnail_data->position ?? 'center')
+                                    },
+                                    ($thumbnail_data->position ?? 'center')
                                 );
                             } elseif ($type == 'crop') {
                                 $thumbnail = $thumbnail->crop(
