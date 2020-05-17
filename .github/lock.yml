@@ -1,0 +1,18 @@
+# Configuration for Lock Threads - https://github.com/dessant/lock-threads-app
+
+daysUntilLock: 180
+
+skipCreatedBefore: false
+
+exemptLabels: []
+
+lockLabel: false
+
+lockComment: >
+  This issue has been automatically locked since there has not been
+  any recent activity after it was closed.
+  If you have further questions please ask in our Slack group.
+
+setLockReason: true
+
+only: issues
