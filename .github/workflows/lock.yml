@@ -15,7 +15,6 @@ jobs:
           issue-exclude-created-before: ''
           issue-exclude-labels: ''
           issue-lock-labels: ''
-          issue-lock-comment: ''
           issue-lock-reason: 'resolved'
           issue-lock-comment: >
             This issue has been automatically locked since there has not been	
