@@ -2,7 +2,7 @@ name: 'Lock issues'
 
 on:
   schedule:
-    - cron: '0,10,20,30,40,50 * * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   lock:
