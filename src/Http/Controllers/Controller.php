@@ -218,8 +218,11 @@ abstract class Controller extends BaseController
                 }
             }
 
-            // If field is an array apply rules to all array elements
-            $fieldName = !empty($data[$fieldName]) && is_array($data[$fieldName]) ? $fieldName.'.*' : $fieldName;
+            // If field is an array apply rules to all array elements.
+            //  Relationship validation error workaround: see - https://github.com/the-control-group/voyager/issues/4945
+            if ($field->type !== 'relationship') {
+                $fieldName = !empty($data[$fieldName]) && is_array($data[$fieldName]) ? $fieldName.'.*' : $fieldName;
+            }
 
             // Get the rules for the current field whatever the format it is in
             $rules[$fieldName] = is_array($fieldRules) ? $fieldRules : explode('|', $fieldRules);
