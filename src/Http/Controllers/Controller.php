@@ -200,9 +200,10 @@ abstract class Controller extends BaseController
         foreach ($fieldsWithValidationRules as $field) {
             $fieldRules = $field->details->validation->rule;
             $fieldName = $field->field;
+            $isRelationshipField = $field->type === 'relationship';
 
             // Show the field's display name on the error message
-            if (!empty($field->display_name)) {
+            if (!empty($field->display_name) && !$isRelationshipField) {
                 if (!empty($data[$fieldName]) && is_array($data[$fieldName])) {
                     foreach ($data[$fieldName] as $index => $element) {
                         if ($element instanceof UploadedFile) {
@@ -220,7 +221,7 @@ abstract class Controller extends BaseController
 
             // If field is an array apply rules to all array elements.
             //  Relationship validation error workaround: see - https://github.com/the-control-group/voyager/issues/4945
-            if ($field->type !== 'relationship') {
+            if (!$isRelationshipField) {
                 $fieldName = !empty($data[$fieldName]) && is_array($data[$fieldName]) ? $fieldName.'.*' : $fieldName;
             }
 
