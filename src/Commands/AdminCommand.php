@@ -145,6 +145,8 @@ class AdminCommand extends Command
                 'name'     => $name,
                 'email'    => $email,
                 'password' => Hash::make($password),
+                'email_verified_at' => now()
+
             ]);
         }
 
