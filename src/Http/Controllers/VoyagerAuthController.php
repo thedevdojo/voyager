@@ -68,13 +68,13 @@ class VoyagerAuthController extends Controller
     /**
      * Check if the email is validated.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isEmailVerified($email)
     {
         return call_user_func(
             [$this->guard()->getProvider()->getModel(), 'where'],
-            function ($query) use($email) {
+            function ($query) use ($email) {
                 return $query->where('email', $email)->where('email_verified_at', '<', now());
             }
         )->exists();
