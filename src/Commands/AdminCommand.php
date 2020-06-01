@@ -142,10 +142,10 @@ class AdminCommand extends Command
             $this->info('Creating admin account');
 
             return call_user_func($model.'::create', [
-                'name'     => $name,
-                'email'    => $email,
-                'password' => Hash::make($password),
-                'email_verified_at' => now()
+                'name'              => $name,
+                'email'             => $email,
+                'password'          => Hash::make($password),
+                'email_verified_at' => now(),
             ]);
         }
 
