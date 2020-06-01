@@ -35,7 +35,7 @@ class VoyagerAuthController extends Controller
 
         $credentials = $this->credentials($request);
 
-        if ($this->guard()->attempt($credentials, $request->has('remember'))) {
+        if ($this->isEmailVerified($credentials['email']) && $this->guard()->attempt($credentials, $request->has('remember'))) {
             return $this->sendLoginResponse($request);
         }
 
@@ -63,5 +63,20 @@ class VoyagerAuthController extends Controller
     protected function guard()
     {
         return Auth::guard(app('VoyagerGuard'));
+    }
+
+    /**
+     * Check if the email is validated.
+     *
+     * @return boolean
+     */
+    protected function isEmailVerified($email)
+    {
+        return call_user_func(
+            [$this->guard()->getProvider()->getModel(), 'where'],
+            function ($query) use($email) {
+                return $query->where('email', $email)->where('email_verified_at', '<', now());
+            }
+        )->exists();
     }
 }
