@@ -1,4 +1,4 @@
-@extends('voyager::auth.master', [ 'title' => Voyager::setting("admin.title")])
+@extends('voyager::auth.master')
 
 @section('content')
     <div class="login-container">
