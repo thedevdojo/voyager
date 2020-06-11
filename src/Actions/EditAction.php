@@ -28,6 +28,12 @@ class EditAction extends AbstractAction
 
     public function getDefaultRoute()
     {
-        return route('voyager.'.$this->dataType->slug.'.edit', $this->data->{$this->data->getKeyName()});
+        $id = $this->data->{$this->data->getKeyName()};
+
+        if (is_null($id)) {
+            throw new \RuntimeException('Primary key in ' . $this->dataType->model_name . ' CANNOT BE null');
+        }
+        
+        return route('voyager.'.$this->dataType->slug.'.edit', $id);
     }
 }
