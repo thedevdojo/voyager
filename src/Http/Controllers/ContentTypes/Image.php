@@ -91,7 +91,7 @@ class Image extends BaseType
                         $crop_height = $thumbnails->crop->height;
                         $image = InterventionImage::make($file)
                             ->orientate()
-                            ->fit($crop_width, $crop_height)
+                            ->fit($crop_width, $crop_height, null, $thumbnails->crop->position ?? 'center')
                             ->encode($file->getClientOriginalExtension(), $resize_quality);
                     }
 
