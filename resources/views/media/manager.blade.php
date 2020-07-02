@@ -35,12 +35,12 @@
         </ol>
     </div>
     <div v-if="hidden_element">
-        <div class="btn btn-sm btn-default" v-on:click="expanded = !expanded;" style="width:100%">
-            <div v-if="!expanded"><i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}</div>
-            <div v-if="expanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
+        <div class="btn btn-sm btn-default" v-on:click="isExpanded = !isExpanded;" style="width:100%">
+            <div v-if="!isExpanded"><i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}</div>
+            <div v-if="isExpanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
         </div>
     </div>
-    <div id="toolbar" v-if="showToolbar" :style="expanded ? 'display:block' : 'display:none'">
+    <div id="toolbar" v-if="showToolbar" :style="isExpanded ? 'display:block' : 'display:none'">
         <div class="btn-group offset-right">
             <button type="button" class="btn btn-primary" id="upload" v-if="allowUpload">
                 <i class="voyager-upload"></i>
@@ -77,7 +77,7 @@
     <div id="uploadProgress" class="progress active progress-striped" v-if="allowUpload">
         <div class="progress-bar progress-bar-success" style="width: 0"></div>
     </div>
-    <div id="content" :style="expanded ? 'display:block' : 'display:none'">
+    <div id="content" :style="isExpanded ? 'display:block' : 'display:none'">
         <div class="breadcrumb-container">
             <ol class="breadcrumb filemanager">
                 <li class="media_breadcrumb" v-on:click="setCurrentPath(-1)">
@@ -431,6 +431,10 @@
                     return {};
                 }
             },
+            expanded: {
+                type: Boolean,
+                default: true,
+            },
         },
         data: function() {
             return {
@@ -439,7 +443,7 @@
                 files: [],
 		  		is_loading: true,
                 hidden_element: null,
-                expanded: true,
+                isExpanded: this.expanded,
                 modals: {
                     new_folder: {
                         name: ''
