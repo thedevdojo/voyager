@@ -51,6 +51,9 @@ class PostPolicy extends BasePolicy
         // Does this post belong to the current user?
         $current = $user->id === $model->author_id;
 
-        return $current || $this->checkPermission($user, $model, 'delete');
+        // Has this already been deleted?
+        $soft_delete = $model->deleted_at && in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($model));
+
+        return !$soft_delete && ($current || $this->checkPermission($user, $model, 'delete'));
     }
 }

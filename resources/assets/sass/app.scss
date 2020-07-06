@@ -1806,7 +1806,7 @@ table.dataTable.no-footer{
             border: 1px solid #f1f1f1;
             margin-left: 10px;
         }
-        .relationship_key, .relationship_taggable{
+        .relationship_taggable{
           display:none;
         }
         .select2{
@@ -1989,7 +1989,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
     font-weight: 500;
     text-decoration: none;
 }
-#dataTable #bread-actions a, .actions a.btn {
+#dataTable .bread-actions .btn, .actions a.btn {
     padding: 5px 10px;
     font-size: 12px;
 }
@@ -3321,7 +3321,7 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
         .select2-container--default .select2-selection--single{
             border:1px solid #f1f1f1;
         }
-        .relationship_key, .relationship_taggable{
+        .relationship_taggable{
           display:none;
         }
         .well{
