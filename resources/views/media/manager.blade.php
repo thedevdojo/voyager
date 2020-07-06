@@ -544,7 +544,7 @@
             fileIs: function(file, type) {
                 if (typeof file === 'string') {
                     if (type == 'image') {
-                        return this.endsWithAny(['jpg', 'jpeg', 'png', 'bmp'], file);
+                        return this.endsWithAny(['jpg', 'jpeg', 'png', 'bmp'], file.toLowerCase());
                     }
                     //Todo: add other types
                 } else {
@@ -613,9 +613,9 @@
                         } else {
                             content.push(file.relative_path);
                             this.hidden_element.value = JSON.stringify(content);
-                            this.$forceUpdate();
                         }
                     }
+                    this.$forceUpdate();
                 }
             },
             removeFileFromInput: function(path) {
