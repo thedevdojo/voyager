@@ -265,7 +265,8 @@ class VoyagerServiceProvider extends ServiceProvider
     public function registerConfigs()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
+            dirname(__DIR__).'/publishable/config/voyager.php',
+            'voyager'
         );
     }
 

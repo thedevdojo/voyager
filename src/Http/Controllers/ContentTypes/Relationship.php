@@ -11,11 +11,9 @@ class Relationship extends BaseType
     {
         $content = $this->request->input($this->row->field);
         if (is_array($content)) {
-            for ($i = 0; $i < count($content); $i++) {
-                if ($content[$i] === null) {
-                    unset($content[$i]);
-                }
-            }
+            $content = array_filter($content, function ($value) {
+                return $value !== null;
+            });
         }
 
         return $content;
