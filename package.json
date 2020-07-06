@@ -36,7 +36,7 @@
     "icheck": "^1.0.2",
     "jquery-match-height": "^0.7.2",
     "nestable2": "^1.6.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "perfect-scrollbar": "^0.7.1",
     "select2": "^4.0.11",
     "tinymce": "^4.9.10",
