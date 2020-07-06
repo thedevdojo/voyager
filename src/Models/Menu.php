@@ -55,7 +55,9 @@ class Menu extends Model
         // GET THE MENU - sort collection in blade
         $menu = \Cache::remember('voyager_menu_'.$menuName, \Carbon\Carbon::now()->addDays(30), function () use ($menuName) {
             return static::where('name', '=', $menuName)
-            ->with(['parent_items.children'])
+            ->with(['parent_items.children' => function ($q) {
+                $q->orderBy('order');
+            }])
             ->first();
         });
 
