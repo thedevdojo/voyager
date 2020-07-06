@@ -2,12 +2,12 @@
 
 namespace TCG\Voyager\Commands;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\Command;
-use TCG\Voyager\Facades\Voyager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
+use TCG\Voyager\Facades\Voyager;
 
 class AdminCommand extends Command
 {
@@ -131,11 +131,12 @@ class AdminCommand extends Command
             if (!$email) {
                 $email = $this->ask('Enter the admin email');
             }
-            
+
             // check if user with given email exists
-            
+
             if ($model::where('email', $email)->exists()) {
-                $this->info("Can't create user. User with the email " . $email . " exists already.");
+                $this->info("Can't create user. User with the email ".$email.' exists already.');
+
                 return;
             }
 
