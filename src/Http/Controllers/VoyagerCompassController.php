@@ -6,8 +6,6 @@ use Artisan;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class VoyagerCompassController extends Controller
 {
@@ -47,7 +45,7 @@ class VoyagerCompassController extends Controller
             $active_tab = 'logs';
             app('files')->delete(LogViewer::pathToLogFile(base64_decode($this->request->input('del'))));
 
-            return $this->redirect($this->request->url().'?logs=true')->with([
+            return redirect($this->request->url().'?logs=true')->with([
                 'message'    => __('voyager::compass.logs.delete_success').' '.base64_decode($this->request->input('del')),
                 'alert-type' => 'success',
             ]);
@@ -57,7 +55,7 @@ class VoyagerCompassController extends Controller
                 app('files')->delete(LogViewer::pathToLogFile($file));
             }
 
-            return $this->redirect($this->request->url().'?logs=true')->with([
+            return redirect($this->request->url().'?logs=true')->with([
                 'message'    => __('voyager::compass.logs.delete_all_success'),
                 'alert-type' => 'success',
             ]);
@@ -71,18 +69,8 @@ class VoyagerCompassController extends Controller
             $args = (isset($args)) ? ' '.$args : '';
 
             try {
-                $process = new Process('cd '.base_path().' && php artisan '.$command.$args);
-                $process->run();
-
-                if (!$process->isSuccessful()) {
-                    throw new ProcessFailedException($process);
-                }
-
-                $artisan_output = $process->getOutput();
-
-                //$artisan_output = exec('cd ' . base_path() . ' && php artisan ' . $command . $args);
-                // Artisan::call($command . $args);
-                // $artisan_output = Artisan::output();
+                Artisan::call($command.$args);
+                $artisan_output = Artisan::output();
             } catch (Exception $e) {
                 $artisan_output = $e->getMessage();
             }
@@ -142,23 +130,9 @@ class VoyagerCompassController extends Controller
         return $commands;
     }
 
-    private function redirect($to)
-    {
-        if (function_exists('redirect')) {
-            return redirect($to);
-        }
-
-        return app('redirect')->to($to);
-    }
-
     private function download($data)
     {
-        if (function_exists('response')) {
-            return response()->download($data);
-        }
-
-        // For laravel 4.2
-        return app('\Illuminate\Support\Facades\Response')->download($data);
+        return response()->download($data);
     }
 }
 

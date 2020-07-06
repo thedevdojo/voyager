@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Tests;
 
-use Exception;
 use Illuminate\Foundation\Exceptions\Handler;
 
 class DisabledTestException extends Handler
@@ -11,11 +10,11 @@ class DisabledTestException extends Handler
     {
     }
 
-    public function report(Exception $e)
+    public function report($e)
     {
     }
 
-    public function render($request, Exception $e)
+    public function render($request, $e)
     {
         throw $e;
     }

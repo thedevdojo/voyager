@@ -56,11 +56,11 @@
 				                <div class="well">
 				                    <label>{{ __('voyager::database.relationship.selection_details') }}</label>
 				                    <p><strong>{{ __('voyager::database.relationship.display_the') }} <span class="label_table_name"></span>: </strong>
-				                        <select name="relationship_label" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="">
+				                        <select name="relationship_label" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="" style="width: 100%">
 				                        </select>
 				                    </p>
 				                    <p class="relationship_key"><strong>{{ __('voyager::database.relationship.store_the') }} <span class="label_table_name"></span>: </strong>
-				                        <select name="relationship_key" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="">
+				                        <select name="relationship_key" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="" style="width: 100%">
 				                        </select>
 									</p>
 

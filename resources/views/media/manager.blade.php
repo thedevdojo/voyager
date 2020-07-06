@@ -35,12 +35,12 @@
         </ol>
     </div>
     <div v-if="hidden_element">
-        <div class="btn btn-sm btn-default" v-on:click="expanded = !expanded;" style="width:100%">
-            <div v-if="!expanded"><i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}</div>
-            <div v-if="expanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
+        <div class="btn btn-sm btn-default" v-on:click="isExpanded = !isExpanded;" style="width:100%">
+            <div v-if="!isExpanded"><i class="voyager-double-down"></i> {{ __('voyager::generic.open') }}</div>
+            <div v-if="isExpanded"><i class="voyager-double-up"></i> {{ __('voyager::generic.close') }}</div>
         </div>
     </div>
-    <div id="toolbar" v-if="showToolbar" :style="expanded ? 'display:block' : 'display:none'">
+    <div id="toolbar" v-if="showToolbar" :style="isExpanded ? 'display:block' : 'display:none'">
         <div class="btn-group offset-right">
             <button type="button" class="btn btn-primary" id="upload" v-if="allowUpload">
                 <i class="voyager-upload"></i>
@@ -55,6 +55,10 @@
             <i class="voyager-refresh"></i>
         </button>
         <div class="btn-group offset-right">
+            <button type="button" :disabled="selected_files.length == 0" v-if="allowUpload && hidden_element" class="btn btn-default" v-on:click="addSelectedFiles()">
+                <i class="voyager-upload"></i>
+                {{ __('voyager::media.add_all_selected') }}
+            </button>
             <button type="button" v-if="showFolders && allowMove" class="btn btn-default" data-toggle="modal" :data-target="'#move_files_modal_'+this._uid">
                 <i class="voyager-move"></i>
                 {{ __('voyager::generic.move') }}
@@ -73,7 +77,7 @@
     <div id="uploadProgress" class="progress active progress-striped" v-if="allowUpload">
         <div class="progress-bar progress-bar-success" style="width: 0"></div>
     </div>
-    <div id="content" :style="expanded ? 'display:block' : 'display:none'">
+    <div id="content" :style="isExpanded ? 'display:block' : 'display:none'">
         <div class="breadcrumb-container">
             <ol class="breadcrumb filemanager">
                 <li class="media_breadcrumb" v-on:click="setCurrentPath(-1)">
@@ -427,6 +431,10 @@
                     return {};
                 }
             },
+            expanded: {
+                type: Boolean,
+                default: true,
+            },
         },
         data: function() {
             return {
@@ -435,7 +443,7 @@
                 files: [],
 		  		is_loading: true,
                 hidden_element: null,
-                expanded: true,
+                isExpanded: this.expanded,
                 modals: {
                     new_folder: {
                         name: ''
@@ -536,7 +544,7 @@
             fileIs: function(file, type) {
                 if (typeof file === 'string') {
                     if (type == 'image') {
-                        return this.endsWithAny(['jpg', 'jpeg', 'png', 'bmp'], file);
+                        return this.endsWithAny(['jpg', 'jpeg', 'png', 'bmp'], file.toLowerCase());
                     }
                     //Todo: add other types
                 } else {
@@ -558,7 +566,7 @@
                 } else {
                     var path = this.getCurrentPath();
                     path.length = i + 1;
-                    this.current_folder = this.basePath+path.join('/');
+                    this.current_folder = this.basePath+path.join('/') + '/';
                 }
 
                 this.getFiles();
@@ -605,9 +613,9 @@
                         } else {
                             content.push(file.relative_path);
                             this.hidden_element.value = JSON.stringify(content);
-                            this.$forceUpdate();
                         }
                     }
+                    this.$forceUpdate();
                 }
             },
             removeFileFromInput: function(path) {
@@ -742,6 +750,12 @@
 						toastr.error(data.error, "{{ __('voyager::generic.whoopsie') }}");
 					}
 				});
+            },
+            addSelectedFiles: function () {
+                var vm = this;
+                for (i = 0; i < vm.selected_files.length; i++) {
+                    vm.openFile(vm.selected_files[i]);
+                }
             },
             bytesToSize: function(bytes) {
 				var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
