@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'page'           => 'Page|Pages',
-    'page_link_text' => 'View all pages',
-    'page_text'      => 'You have :count :string in your database. Click on button below to view all pages.',
-    'post'           => 'Post|Posts',
-    'post_link_text' => 'View all posts',
-    'post_text'      => 'You have :count :string in your database. Click on button below to view all posts.',
-    'user'           => 'User|Users',
-    'user_link_text' => 'View all users',
-    'user_text'      => 'You have :count :string in your database. Click on button below to view all users.',
+    'page'           => 'Σελίδα|Σελίδες',
+    'page_link_text' => 'Όλες οι σελίδες',
+    'page_text'      => 'Έχετε :count :string στη βάση δεδομένων σας. Κάντε κλικ παρακάτω για να δείτε όλες τις σελίδες.',
+    'post'           => 'Άρθρο|Άρθρα',
+    'post_link_text' => 'Όλα τα άρθρα',
+    'post_text'      => 'Έχετε :count :string στη βάση δεδομένων σας. Κάντε κλικ παρακάτω για να δείτε όλα τα άρθρα.',
+    'user'           => 'Χρήστη|Χρήστες',
+    'user_link_text' => 'Όλοι οι χρήστες',
+    'user_text'      => 'Έχετε :count :string στη βάση δεδομένων σας. Κάντε κλικ παρακάτω για να δείτε όλους τους χρήστες.',
 ];
