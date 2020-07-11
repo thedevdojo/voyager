@@ -1,10 +1,7 @@
 <?php
 
 return [
-    'welcome'                => 'Welcome to the Voyager Compass. Every good app needs a compass to point them in the right direction.
-    In this section you will find many resources and administrative tasks to help guide you as you build out your application.',
-    'welcome'                => 'Καλωσήρθατε στην Πυξίδα Voyager. Κάθε καλή εφαρμογή χρειάζεται μία πυξίδα για να σας καθοδηγήσει προς τη σωστή κατεύθυνση. Σε αυτό τον τομέα θα βρείτε πολλές πηγές και ενέργειες διαχείρισης που θα σας βοηθήσουν όσο χτίζετε την εφαρμογή σας.
-    In this section you will find many resources and administrative tasks to help guide you as you build out your application.',
+    'welcome'                => 'Καλωσήρθατε στην Πυξίδα Voyager. Κάθε καλή εφαρμογή χρειάζεται μία πυξίδα για να σας καθοδηγήσει προς τη σωστή κατεύθυνση. Σε αυτό τον τομέα θα βρείτε πολλές πηγές και ενέργειες διαχείρισης που θα σας βοηθήσουν όσο χτίζετε την εφαρμογή σας.',
     'links'         => [
         'title'                 => 'Σύνδεσμοι',
         'documentation'         => 'Τεκμηρίωση',
