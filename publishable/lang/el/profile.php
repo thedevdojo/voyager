@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'avatar'           => 'Avatar',
-    'edit'             => 'Edit My Profile',
-    'edit_user'        => 'Edit User',
-    'password'         => 'Password',
-    'password_hint'    => 'Leave empty to keep the same',
-    'role'             => 'Role',
-    'roles'            => 'Roles',
-    'role_default'     => 'Default Role',
-    'roles_additional' => 'Additional Roles',
-    'user_role'        => 'User Role',
+    'avatar'           => 'Εικόνα προφίλ',
+    'edit'             => 'Επεξεργασία του προφίλ μου',
+    'edit_user'        => 'Επεξεργασία χρήστη',
+    'password'         => 'Κωδικός',
+    'password_hint'    => 'Αφήστε το κενό για να κρατήσετε τον ίδιο',
+    'role'             => 'Ρόλος',
+    'roles'            => 'Ρόλοι',
+    'role_default'     => 'Προεπιλεγμένος ρόλος',
+    'roles_additional' => 'Επιπλέον ρόλοι',
+    'user_role'        => 'Ρόλος χρήστη',
 ];
