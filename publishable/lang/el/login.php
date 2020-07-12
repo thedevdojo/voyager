@@ -2,6 +2,6 @@
 
 return [
     'loggingin'    => 'Logging in',
-    'signin_below' => 'Sign In Below:',
-    'welcome'      => 'Welcome to Voyager. The Missing Admin for Laravel',
+    'signin_below' => 'Κάντε σύνδεση παρακάτω:',
+    'welcome'      => 'Καλωσήρθατε στο Voyager. Τον πίνακα διαχείρισης που έλειπε για το Laravel',
 ];
