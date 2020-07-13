@@ -5,7 +5,7 @@ return [
     'category'         => 'Κατηγορία άρθρου',
     'content'          => 'Περιεχόμενο άρθρου',
     'details'          => 'Λεπτομέρειες άρθρου',
-    'excerpt'          => 'Απόσπασμα <small>μικρή περιγραφή για το άθρο</small>',
+    'excerpt'          => 'Απόσπασμα <small>μικρή περιγραφή για το άρθρο</small>',
     'image'            => 'Εικόνα Άρθρου',
     'meta_description' => 'Meta Description',
     'meta_keywords'    => 'Meta Keywords',
