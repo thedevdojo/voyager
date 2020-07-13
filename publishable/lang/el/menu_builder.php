@@ -9,7 +9,7 @@ return [
     'drag_drop_info'       => 'Σύρετε και αφήστε τα στοιχεία του μενού για να τα ανακατατάξετε.',
     'dynamic_route'        => 'Δυναμική Διαδρομή',
     'edit_item'            => 'Επεξεργασία στοιχείου μενού',
-    'icon_class'           => 'Font Icon class για το στοιχείο μενού (Χρησιμοποιείστε μία',
+    'icon_class'           => 'Font Icon class για το στοιχείο μενού (Χρησιμοποιήστε μία',
     'icon_class2'          => 'Voyager Font Class</a>)',
     'icon_class_ph'        => 'Icon Class (προαιρετικό)',
     'item_route'           => 'Διαδρομή για το στοιχείο μενού',

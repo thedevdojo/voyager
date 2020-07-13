@@ -12,7 +12,7 @@ return [
     'new'              => 'Δημιουργία νέου άρθρου',
     'seo_content'      => 'Περιεχόμενο SEO',
     'seo_title'        => 'Τίτλος SEO',
-    'slug'             => 'URL slug',
+    'slug'             => 'Μόνιμος σύνδεσμος',
     'status'           => 'Κατάσταση άρθρου',
     'status_draft'     => 'πρόχειρο',
     'status_pending'   => 'εκκρεμεί',

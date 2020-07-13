@@ -107,7 +107,7 @@ return [
     'url'                    => 'URL',
     'view'                   => 'Προβολή',
     'viewing'                => 'Βλέπετε:',
-    'whoopsie'               => 'Ούυυπς!',
+    'whoopsie'               => 'Ουυυπς!',
     'yes'                    => 'Ναι',
     'yes_please'             => 'Ναι παρακαλώ',
 ];
