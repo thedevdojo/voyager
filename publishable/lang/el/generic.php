@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'is_rtl'                 => 'όχι',
+    'is_rtl'                 => 'false',
     'action'                 => 'Ενέργεια',
     'actions'                => 'Ενέργειες',
     'add'                    => 'Προσθήκη',
