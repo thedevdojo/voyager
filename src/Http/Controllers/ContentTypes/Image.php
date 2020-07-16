@@ -25,7 +25,7 @@ class Image extends BaseType
             $resize_width = null;
             $resize_height = null;
 
-            if(isset($this->options->fit)) {
+            if (isset($this->options->fit)) {
                 if (isset($this->options->fit) && (
                     isset($this->options->fit->width) || isset($this->options->fit->height)
                 )) {
