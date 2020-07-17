@@ -21,7 +21,8 @@
             "name": "cropped",
             "crop": {
                 "width": "300",
-                "height": "250"
+                "height": "250",
+                "position": "center" // Optional. Refer to http://image.intervention.io/api/fit
             }
         }
     ]
@@ -36,4 +37,4 @@ The image input has many options. By default if you do not specify any options n
 
 **upsize** This is only valid if you have set your image to be resized. If you specify your image to resized to 1000 pixels and the image is smaller than 1000 pixels by default it will not upsize that image to the 1000 pixels; however, if you set `upsize` to true. It will upsize all images to your specified resize values.
 
-**thumbnails** Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image \(as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg\). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the _resize_ width and height if specified.
+**thumbnails** Thumbnails takes an array of objects. Each object is a new thumbnail that is created. Each object contains 2 values, the `name` and `scale` percentage. The `name` will be attached to your thumbnail image \(as an example say the image you uploaded was ABC.jpg a thumbnail with the `name` of `medium` would now be created at ABC-medium.jpg\). The `scale` is the percentage amount you want that thumbnail to scale. This value will be a percentage of the _resize_ width and height if specified. You can fit the thumbnail using the width, height and position specified within the key `crop`.
