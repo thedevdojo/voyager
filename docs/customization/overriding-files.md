@@ -112,8 +112,8 @@ class DataRow extends \TCG\Voyager\Models\DataRow
 }
 ```
 
-Finally, go to the BREAD settings and fill in the Model Name with your fully-qualified class-name. Following the
-`DataRow` row example:
+Finally, go to the BREAD settings for the model you are overriding and fill in the Model Name with your fully-qualified
+class-name. Following the `DataRow` row example:
 
 ![](../.gitbook/assets/bread_override_voyager_models.png)
 
