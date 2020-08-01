@@ -56,14 +56,19 @@
                                 <img class="img-responsive"
                                      src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'multiple_images')
-                                @if(json_decode($dataTypeContent->{$row->field}))
-                                    @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
-                                        <img class="img-responsive"
-                                             src="{{ filter_var($file, FILTER_VALIDATE_URL) ? $file : Voyager::image($file) }}">
-                                    @endforeach
+                                @php $image_files = json_decode($dataTypeContent->{$row->field}); @endphp
+                                @if (is_array($image_files))
+                                    @if (count($image_files) === 0)
+                                        {{ __('voyager::generic.none') }}
+                                    @else
+                                        @foreach ($image_files as $file)
+                                            <img class="img-responsive"
+                                                 style="display: inline-block; margin-top: 4px;"
+                                                 src="{{ filter_var($file, FILTER_VALIDATE_URL) ? $file : Voyager::image($file) }}">
+                                        @endforeach
+                                    @endif
                                 @else
-                                    <img class="img-responsive"
-                                         src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
+                                    {{ __('voyager::generic.none') }}
                                 @endif
                             @elseif($row->type == 'relationship')
                                  @include('voyager::formfields.relationship', ['view' => 'read', 'options' => $row->details])
