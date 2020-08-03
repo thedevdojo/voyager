@@ -56,8 +56,7 @@
                                 <img class="img-responsive"
                                      src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
                             @elseif($row->type == 'multiple_images')
-                                @php $image_files = json_decode($dataTypeContent->{$row->field}) ?? []; @endphp
-                                @forelse ($image_files as $file)
+                                @forelse (json_decode($dataTypeContent->{$row->field}) ?? [] as $file)
                                     <img class="img-responsive"
                                          style="display: inline-block; margin-top: 4px;"
                                          src="{{ filter_var($file, FILTER_VALIDATE_URL) ? $file : Voyager::image($file) }}">
