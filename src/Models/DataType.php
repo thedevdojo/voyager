@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Routing\ResourceRegistrar;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
@@ -36,6 +37,8 @@ class DataType extends Model
         'scope',
         'details',
     ];
+
+    protected $appends = ['uri', 'parent_route'];
 
     public function rows()
     {
@@ -306,5 +309,27 @@ class DataType extends Model
     public function setScopeAttribute($value)
     {
         $this->attributes['details'] = collect($this->details)->merge(['scope' => $value]);
+    }
+
+    /**
+     * Example slug:  users/{user}/achievements
+     * Derived route: users.achievements
+     * Example slug:  tools/menus
+     * Derived route: tools.menus
+     */
+    public function getUriAttribute()
+    {
+        $registrar = new ResourceRegistrar(app('router'));
+        return $registrar->getResourceUri($this->slug);
+    }
+
+    /**
+     * Example slug:   users/{user}/achievements
+     * Derived parent: users
+     */
+    public function getParentRouteAttribute()
+    {
+        $separator = strpos($this->slug, '.');
+        return $separator === false ? null : substr($this->slug, 0, $separator);
     }
 }

@@ -1,3 +1,7 @@
+@php
+    $baseParams = Arr::except(request()->route()->parameters(), 'id');
+@endphp
+
 @if(isset($options->model) && isset($options->type))
 
     @if(class_exists($options->model))
@@ -24,7 +28,7 @@
 
                 <select
                     class="form-control select2-ajax" name="{{ $options->column }}"
-                    data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
+                    data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation', $baseParams)}}"
                     data-get-items-field="{{$row->field}}"
                     @if(!is_null($dataTypeContent->getKey())) data-id="{{$dataTypeContent->getKey()}}" @endif
                     data-method="{{ !is_null($dataTypeContent->getKey()) ? 'edit' : 'add' }}"
@@ -154,7 +158,7 @@
                 <select
                     class="form-control @if(isset($options->taggable) && $options->taggable === 'on') select2-taggable @else select2-ajax @endif"
                     name="{{ $relationshipField }}[]" multiple
-                    data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
+                    data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation', $baseParams)}}"
                     data-get-items-field="{{$row->field}}"
                     @if(!is_null($dataTypeContent->getKey())) data-id="{{$dataTypeContent->getKey()}}" @endif
                     data-method="{{ !is_null($dataTypeContent->getKey()) ? 'edit' : 'add' }}"

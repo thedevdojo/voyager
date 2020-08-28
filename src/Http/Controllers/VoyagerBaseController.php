@@ -194,8 +194,11 @@ class VoyagerBaseController extends Controller
     //
     //****************************************
 
-    public function show(Request $request, $id)
+    public function show(Request $request, ...$ids)
     {
+        // support nested routing by capturing all of the parameters
+        $id = end($ids);
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -257,8 +260,11 @@ class VoyagerBaseController extends Controller
     //
     //****************************************
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, ...$ids)
     {
+        // support nested routing by capturing all of the parameters
+        $id = end($ids);
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -305,8 +311,11 @@ class VoyagerBaseController extends Controller
     }
 
     // POST BR(E)AD
-    public function update(Request $request, $id)
+    public function update(Request $request, ...$ids)
     {
+        // support nested routing by capturing all of the parameters
+        $id = end($ids);
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -443,8 +452,11 @@ class VoyagerBaseController extends Controller
     //
     //****************************************
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, ...$ids)
     {
+        // support nested routing by capturing all of the parameters
+        $id = end($ids);
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -490,8 +502,11 @@ class VoyagerBaseController extends Controller
         return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
     }
 
-    public function restore(Request $request, $id)
+    public function restore(Request $request, ...$id)
     {
+        // support nested routing by capturing all of the parameters
+        $id = end($ids);
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();

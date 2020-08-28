@@ -30,10 +30,12 @@ class VoyagerDatabaseController extends Controller
             $table = Str::replaceFirst(DB::getTablePrefix(), '', $table);
 
             $table = [
-                'prefix'     => DB::getTablePrefix(),
-                'name'       => $table,
-                'slug'       => $dataTypes[$table]['slug'] ?? null,
-                'dataTypeId' => $dataTypes[$table]['id'] ?? null,
+                'prefix'      => DB::getTablePrefix(),
+                'name'        => $table,
+                'slug'        => $dataTypes[$table]['slug'] ?? null,
+                'dataTypeId'  => $dataTypes[$table]['id'] ?? null,
+                'uri'         => $dataTypes[$table]['uri'] ?? null,
+                'parentRoute' => $dataTypes[$table]['parent_route'] ?? null,
             ];
 
             return (object) $table;

@@ -14,6 +14,7 @@ return [
     'auto_increment'         => 'Auto Increment',
     'bread'                  => 'BREAD',
     'browse'                 => 'Browse',
+    'browse_parent'          => 'Browse Parent',
     'builder'                => 'Builder',
     'bulk_delete'            => 'Bulk Delete',
     'bulk_delete_confirm'    => 'Yes, Delete These',

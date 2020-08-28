@@ -8,8 +8,10 @@ use TCG\Voyager\Facades\Voyager;
 class VoyagerRoleController extends VoyagerBaseController
 {
     // POST BR(E)AD
-    public function update(Request $request, $id)
+    public function update(Request $request, ...$ids)
     {
+        $id = end($ids);
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
