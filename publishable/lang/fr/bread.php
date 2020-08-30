@@ -4,6 +4,7 @@ return [
     'add_bread'              => 'Ajouter le BREAD à cette table',
     'bread_crud_actions'     => 'Actions du BREAD/CRUD',
     'bread_info'             => 'Information du BREAD',
+    'contains'               => 'contient',
     'controller_name_hint'   => 'exemple : PageController. Si laissé vide, utilisera le contrôleur BREAD',
     'create_bread_for_table' => 'Créer un BREAD pour la table :table',
     'default_search_key'     => 'Champ de recherche côté serveur par défaut',

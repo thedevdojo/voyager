@@ -4,6 +4,7 @@ return [
     'add_bread'              => 'Add BREAD to this table',
     'bread_crud_actions'     => 'BREAD/CRUD Actions',
     'bread_info'             => 'BREAD info',
+    'contains'               => 'contains',
     'controller_name_hint'   => 'ex. PageController, if left empty will use the BREAD Controller',
     'create_bread_for_table' => 'Create BREAD for :table table',
     'default_search_key'     => 'Default server-side search field',
