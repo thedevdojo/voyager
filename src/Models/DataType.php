@@ -312,24 +312,36 @@ class DataType extends Model
     }
 
     /**
+     * Get the derived URI from the slug.
+     *
      * Example slug:  users/{user}/achievements
      * Derived route: users.achievements
      * Example slug:  tools/menus
      * Derived route: tools.menus
+     * Supports nested routes, or is a synonym for the slug if not nested.
+     *
+     * @return string
      */
     public function getUriAttribute()
     {
         $registrar = new ResourceRegistrar(app('router'));
+
         return $registrar->getResourceUri($this->slug);
     }
 
     /**
+     * If the slug is a nested route, get the top-level parent route.
+     *
      * Example slug:   users/{user}/achievements
      * Derived parent: users
+     * Only relevant if the slug is nested.
+     *
+     * @return null|string
      */
     public function getParentRouteAttribute()
     {
         $separator = strpos($this->slug, '.');
+
         return $separator === false ? null : substr($this->slug, 0, $separator);
     }
 }

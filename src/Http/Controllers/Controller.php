@@ -38,7 +38,6 @@ abstract class Controller extends BaseController
         } else {
             // trim voyager namespace and trailing view
             $slug = implode('.', array_slice(explode('.', $request->route()->getName()), 1, -1));
-
         }
 
         return $slug;
