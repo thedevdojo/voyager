@@ -194,10 +194,11 @@ class VoyagerBaseController extends Controller
     //
     //****************************************
 
-    public function show(Request $request, ...$ids)
+    public function show(Request $request, $id)
     {
-        // support nested routing by capturing all of the parameters
-        $id = end($ids);
+        // support nested routing
+        $baseParams = $request->route()->parameters();
+        $id = array_pop($baseParams);
 
         $slug = $this->getSlug($request);
 
@@ -260,10 +261,11 @@ class VoyagerBaseController extends Controller
     //
     //****************************************
 
-    public function edit(Request $request, ...$ids)
+    public function edit(Request $request, $id)
     {
-        // support nested routing by capturing all of the parameters
-        $id = end($ids);
+        // support nested routing
+        $baseParams = $request->route()->parameters();
+        $id = array_pop($baseParams);
 
         $slug = $this->getSlug($request);
 
@@ -311,10 +313,11 @@ class VoyagerBaseController extends Controller
     }
 
     // POST BR(E)AD
-    public function update(Request $request, ...$ids)
+    public function update(Request $request, $id)
     {
-        // support nested routing by capturing all of the parameters
-        $id = end($ids);
+        // support nested routing
+        $baseParams = $request->route()->parameters();
+        $id = array_pop($baseParams);
 
         $slug = $this->getSlug($request);
 
@@ -343,7 +346,7 @@ class VoyagerBaseController extends Controller
         event(new BreadDataUpdated($dataType, $data));
 
         if (auth()->user()->can('browse', app($dataType->model_name))) {
-            $redirect = redirect()->route("voyager.{$dataType->slug}.index");
+            $redirect = redirect()->route("voyager.{$dataType->slug}.index", $baseParams);
         } else {
             $redirect = redirect()->back();
         }
@@ -411,6 +414,8 @@ class VoyagerBaseController extends Controller
      */
     public function store(Request $request)
     {
+        $baseParams = $request->route()->parameters();
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -426,7 +431,7 @@ class VoyagerBaseController extends Controller
 
         if (!$request->has('_tagging')) {
             if (auth()->user()->can('browse', $data)) {
-                $redirect = redirect()->route("voyager.{$dataType->slug}.index");
+                $redirect = redirect()->route("voyager.{$dataType->slug}.index", $baseParams);
             } else {
                 $redirect = redirect()->back();
             }
@@ -452,10 +457,11 @@ class VoyagerBaseController extends Controller
     //
     //****************************************
 
-    public function destroy(Request $request, ...$ids)
+    public function destroy(Request $request, $id)
     {
-        // support nested routing by capturing all of the parameters
-        $id = end($ids);
+        // support nested routing
+        $baseParams = $request->route()->parameters();
+        $id = array_pop($baseParams);
 
         $slug = $this->getSlug($request);
 
@@ -499,13 +505,14 @@ class VoyagerBaseController extends Controller
             event(new BreadDataDeleted($dataType, $data));
         }
 
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+        return redirect()->route("voyager.{$dataType->slug}.index", $baseParams)->with($data);
     }
 
-    public function restore(Request $request, ...$id)
+    public function restore(Request $request, $id)
     {
-        // support nested routing by capturing all of the parameters
-        $id = end($ids);
+        // support nested routing
+        $baseParams = $request->route()->parameters();
+        $id = array_pop($baseParams);
 
         $slug = $this->getSlug($request);
 
@@ -538,7 +545,7 @@ class VoyagerBaseController extends Controller
             event(new BreadDataRestored($dataType, $data));
         }
 
-        return redirect()->route("voyager.{$dataType->slug}.index")->with($data);
+        return redirect()->route("voyager.{$dataType->slug}.index", $baseParams)->with($data);
     }
 
     //***************************************
@@ -770,6 +777,9 @@ class VoyagerBaseController extends Controller
      */
     public function order(Request $request)
     {
+        // support nested routing
+        $baseParams = $request->route()->parameters();
+
         $slug = $this->getSlug($request);
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
@@ -779,7 +789,7 @@ class VoyagerBaseController extends Controller
 
         if (!isset($dataType->order_column) || !isset($dataType->order_display_column)) {
             return redirect()
-            ->route("voyager.{$dataType->slug}.index")
+            ->route("voyager.{$dataType->slug}.index", $baseParams)
             ->with([
                 'message'    => __('voyager::bread.ordering_not_set'),
                 'alert-type' => 'error',
