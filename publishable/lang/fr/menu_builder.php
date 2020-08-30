@@ -6,7 +6,7 @@ return [
     'create_new_item'      => 'Créer un nouvel élément de menu',
     'delete_item_confirm'  => 'Oui, supprimez cet élément de menu',
     'delete_item_question' => 'Êtes-vous sûr de vouloir supprimer cet élément de menu ?',
-    'drag_drop_info'       => 'Glissez/déposez les éléments du menu ci-dessous pour les réarranger.',
+    'drag_drop_info'       => 'Glissez/déposez les éléments du menu ci-dessous pour les ordonner.',
     'dynamic_route'        => 'Route dynamique',
     'edit_item'            => 'Editer l\'élément du menu',
     'icon_class'           => 'Icône pour l\'élément de menu (utilisez la ',
@@ -26,5 +26,5 @@ return [
     'successfully_updated' => 'Elément de menu édité avec succès.',
     'updated_order'        => 'Elément de menu réordonné avec succès.',
     'url'                  => 'URL pour l\'élément de menu',
-    'usage_hint'           => 'Vous pouvez afficher un menu n\'importe où sur le site en appelant|Vous pouvez afficher ce menu n\'importe où sur le site en appelant',
+    'usage_hint'           => 'Vous pouvez afficher un menu n\'importe où sur le site en appelant|Vous pouvez afficher ces menus n\'importe où sur le site en appelant',
 ];

@@ -27,7 +27,6 @@ return [
     'loading'                => 'CHARGEMENT DES FICHIERS MULTIMEDIA',
     'max_files_select'       => 'Vous ne pouvez sélectionner qu\'un fichier|Vous ne pouvez sélectionner qu\'un maximum de :count fichiers',
     'min_files_select'       => 'Vous devez sélectionner au moins un fichier|Vous devez sélectionner au moins :count fichiers',
-
     'move_file_folder'       => 'Déplacer fichier/dossier',
     'new_file_folder'        => 'Nouveau nom de fichier/dossier',
     'new_folder_name'        => 'Nouveau nom de dossier',
