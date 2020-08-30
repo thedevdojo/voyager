@@ -41,13 +41,14 @@ Route::group(['as' => 'voyager.'], function () {
                                  ? Str::start($dataType->controller, '\\')
                                  : $namespacePrefix.'VoyagerBaseController';
 
-                Route::get($dataType->slug.'/order', $breadController.'@order')->name($dataType->slug.'.order');
-                Route::post($dataType->slug.'/action', $breadController.'@action')->name($dataType->slug.'.action');
-                Route::post($dataType->slug.'/order', $breadController.'@update_order')->name($dataType->slug.'.update_order');
-                Route::get($dataType->slug.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
-                Route::get($dataType->slug.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
-                Route::post($dataType->slug.'/remove', $breadController.'@remove_media')->name($dataType->slug.'.media.remove');
-                Route::resource($dataType->slug, $breadController, ['parameters' => [$dataType->slug => 'id']]);
+                Route::get($dataType->uri.'/order', $breadController.'@order')->name($dataType->slug.'.order');
+                Route::post($dataType->uri.'/action', $breadController.'@action')->name($dataType->slug.'.action');
+                Route::post($dataType->uri.'/order', $breadController.'@update_order')->name($dataType->slug.'.update_order');
+                Route::get($dataType->uri.'/{id}/restore', $breadController.'@restore')->name($dataType->slug.'.restore');
+                Route::get($dataType->uri.'/relation', $breadController.'@relation')->name($dataType->slug.'.relation');
+                Route::post($dataType->uri.'/remove', $breadController.'@remove_media')->name($dataType->slug.'.media.remove');
+                $slug_parts = explode('.', $dataType->slug);
+                Route::resource($dataType->slug, $breadController, ['parameters' => [end($slug_parts) => 'id']]);
             }
         } catch (\InvalidArgumentException $e) {
             throw new \InvalidArgumentException("Custom routes hasn't been configured because: ".$e->getMessage(), 1);

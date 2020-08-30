@@ -28,6 +28,12 @@ class ViewAction extends AbstractAction
 
     public function getDefaultRoute()
     {
-        return route('voyager.'.$this->dataType->slug.'.show', $this->data->{$this->data->getKeyName()});
+        return route(
+            'voyager.'.$this->dataType->slug.'.show',
+            array_merge(
+                request()->route()->parameters(),
+                ['id' => $this->data->{$this->data->getKeyName()}]
+            )
+        );
     }
 }

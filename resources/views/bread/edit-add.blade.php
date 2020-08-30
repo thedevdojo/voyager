@@ -1,6 +1,7 @@
 @php
     $edit = !is_null($dataTypeContent->getKey());
     $add  = is_null($dataTypeContent->getKey());
+    $baseParams = Arr::except(request()->route()->parameters(), 'id');
 @endphp
 
 @extends('voyager::master')
@@ -28,7 +29,7 @@
                     <!-- form start -->
                     <form role="form"
                             class="form-edit-add"
-                            action="{{ $edit ? route('voyager.'.$dataType->slug.'.update', $dataTypeContent->getKey()) : route('voyager.'.$dataType->slug.'.store') }}"
+                            action="{{ $edit ? route('voyager.'.$dataType->slug.'.update', array_merge($baseParams, ['id' => $dataTypeContent->getKey()])) : route('voyager.'.$dataType->slug.'.store', $baseParams) }}"
                             method="POST" enctype="multipart/form-data">
                         <!-- PUT Method if we are editing -->
                         @if($edit)
@@ -193,7 +194,7 @@
             $('.form-group').on('click', '.remove-single-file', deleteHandler('a', false));
 
             $('#confirm_delete').on('click', function(){
-                $.post('{{ route('voyager.'.$dataType->slug.'.media.remove') }}', params, function (response) {
+                $.post('{{ route('voyager.'.$dataType->slug.'.media.remove', $baseParams) }}', params, function (response) {
                     if ( response
                         && response.data
                         && response.data.status

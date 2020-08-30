@@ -39,10 +39,17 @@
 
                         <td class="actions text-right">
                             @if($table->dataTypeId)
-                                <a href="{{ route('voyager.' . $table->slug . '.index') }}"
-                                   class="btn btn-warning btn-sm browse_bread" style="margin-right: 0;">
-                                    <i class="voyager-plus"></i> {{ __('voyager::generic.browse') }}
-                                </a>
+                                @if($table->parentRoute === null)
+                                    <a href="{{ route('voyager.' . $table->slug . '.index') }}"
+                                        class="btn btn-warning btn-sm browse_bread" style="margin-right: 0;">
+                                        <i class="voyager-plus"></i> {{ __('voyager::generic.browse') }}
+                                    </a>
+                                @else
+                                    <a href="{{ route('voyager.' . $table->parentRoute . '.index') }}"
+                                        class="btn btn-warning btn-sm browse_bread" style="margin-right: 0;">
+                                        <i class="voyager-plus"></i> {{ __('voyager::generic.browse_parent') }}
+                                    </a>
+                                @endif
                                 <a href="{{ route('voyager.bread.edit', $table->name) }}"
                                    class="btn btn-primary btn-sm edit">
                                     <i class="voyager-edit"></i> {{ __('voyager::generic.edit') }}

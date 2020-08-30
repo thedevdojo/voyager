@@ -28,6 +28,12 @@ class EditAction extends AbstractAction
 
     public function getDefaultRoute()
     {
-        return route('voyager.'.$this->dataType->slug.'.edit', $this->data->{$this->data->getKeyName()});
+        return route(
+            'voyager.'.$this->dataType->slug.'.edit',
+            array_merge(
+                request()->route()->parameters(),
+                ['id' => $this->data->{$this->data->getKeyName()}]
+            )
+        );
     }
 }

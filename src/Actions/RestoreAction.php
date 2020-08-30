@@ -30,6 +30,12 @@ class RestoreAction extends AbstractAction
 
     public function getDefaultRoute()
     {
-        return route('voyager.'.$this->dataType->slug.'.restore', $this->data->{$this->data->getKeyName()});
+        return route(
+            'voyager.'.$this->dataType->slug.'.restore',
+            array_merge(
+                request()->route()->parameters(),
+                ['id' => $this->data->{$this->data->getKeyName()}]
+            )
+        );
     }
 }

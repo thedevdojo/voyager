@@ -14,7 +14,7 @@
             <div class="modal-body" id="bulk_delete_modal_body">
             </div>
             <div class="modal-footer">
-                <form action="{{ route('voyager.'.$dataType->slug.'.index') }}/0" id="bulk_delete_form" method="POST">
+                <form action="{{ route('voyager.'.$dataType->slug.'.index', request()->route()->parameters()) }}/0" id="bulk_delete_form" method="POST">
                     {{ method_field("DELETE") }}
                     {{ csrf_field() }}
                     <input type="hidden" name="ids" id="bulk_delete_input" value="">
