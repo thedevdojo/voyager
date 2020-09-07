@@ -31,8 +31,7 @@
         "laravel/framework": "~6.0|~7.0|~8.0",
         "orchestra/testbench": ">=4.0",
         "laravel/browser-kit-testing": ">=5.0.0",
-        "orchestra/testbench-browser-kit": ">=4.0",
-        "laravel/legacy-factories": "1.0.4"
+        "orchestra/testbench-browser-kit": ">=4.0"
     },
     "autoload": {
         "psr-4": {
