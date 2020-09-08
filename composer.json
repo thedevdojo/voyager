@@ -51,5 +51,8 @@
                 "TCG\\Voyager\\Providers\\VoyagerDummyServiceProvider"
             ]
         }
+    },
+    "suggest": {
+        "laravel/legacy-factories": "Required to run Voyager tests with Laravel 8.x"
     }
 }
