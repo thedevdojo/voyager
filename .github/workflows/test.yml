@@ -43,7 +43,7 @@ jobs:
       - name: Install Composer dependencies
         run: composer require "illuminate/support:${{ matrix.laravel }}"
 
-      # Install PHP dependencies
+      # Install legacy factories for Laravel 8
       - name: Install legacy factories for Laravel
         if: ${{ matrix.laravel == '8.*' }}
         run: composer require laravel/legacy-factories
