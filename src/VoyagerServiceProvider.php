@@ -133,7 +133,9 @@ class VoyagerServiceProvider extends ServiceProvider
 
         $this->bootTranslatorCollectionMacros();
 
-        Paginator::useBootstrap();
+        if (method_exists('Paginator', 'useBootstrap')) {
+            Paginator::useBootstrap();
+        }
     }
 
     /**
