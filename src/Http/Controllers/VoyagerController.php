@@ -36,15 +36,7 @@ class VoyagerController extends Controller
 
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->firstOrFail();
 
-        if (
-            (
-                auth()->user()->cannot('add', app($dataType->model_name))
-                || $dataType->addRows->where('type', 'rich_text_box')->count() === 0
-            ) && (
-                auth()->user()->cannot('edit', app($dataType->model_name))
-                || $dataType->editRows->where('type', 'rich_text_box')->count() === 0
-            )
-        ) {
+        if ($this->userCannotUploadImageIn($dataType, 'add') && $this->userCannotUploadImageIn($dataType, 'edit')) {
             abort(403);
         }
 
@@ -114,5 +106,11 @@ class VoyagerController extends Controller
         }
 
         return response('', 404);
+    }
+
+    protected function userCannotUploadImageIn($dataType, $action)
+    {
+        return auth()->user()->cannot($action, app($dataType->model_name))
+                || $dataType->{$action.'Rows'}->where('type', 'rich_text_box')->count() === 0;
     }
 }
