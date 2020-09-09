@@ -77,16 +77,18 @@ class InstallCommand extends Command
         $this->call('migrate', ['--force' => $this->option('force')]);
 
         $this->info('Attempting to set Voyager User model as parent to App\User');
-        if (file_exists(app_path('User.php'))) {
-            $str = file_get_contents(app_path('User.php'));
+        if (file_exists(app_path('User.php')) || file_exists(app_path('Models/User.php'))) {
+            $userPath = file_exists(app_path('User.php')) ? app_path('User.php') : app_path('Models/User.php');
+
+            $str = file_get_contents($userPath);
 
             if ($str !== false) {
                 $str = str_replace('extends Authenticatable', "extends \TCG\Voyager\Models\User", $str);
 
-                file_put_contents(app_path('User.php'), $str);
+                file_put_contents($userPath, $str);
             }
         } else {
-            $this->warn('Unable to locate "app/User.php".  Did you move this file?');
+            $this->warn('Unable to locate "User.php" in app or app/Models.  Did you move this file?');
             $this->warn('You will need to update this manually.  Change "extends Authenticatable" to "extends \TCG\Voyager\Models\User" in your User model');
         }
 
