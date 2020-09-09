@@ -34,6 +34,20 @@ class VoyagerController extends Controller
         $slug = $request->input('type_slug');
         $file = $request->file('image');
 
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->firstOrFail();
+
+        if (
+            (
+                auth()->user()->cannot('add', app($dataType->model_name))
+                || $dataType->addRows->where('type', 'rich_text_box')->count() === 0
+            ) && (
+                auth()->user()->cannot('edit', app($dataType->model_name))
+                || $dataType->editRows->where('type', 'rich_text_box')->count() === 0
+            )
+        ) {
+            abort(403);
+        }
+
         $path = $slug.'/'.date('F').date('Y').'/';
 
         $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
