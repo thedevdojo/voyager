@@ -88,7 +88,7 @@ class InstallCommand extends Command
                 file_put_contents($userPath, $str);
             }
         } else {
-            $this->warn('Unable to locate "app/User.php".  Did you move this file?');
+            $this->warn('Unable to locate "User.php" in app or app/Models.  Did you move this file?');
             $this->warn('You will need to update this manually.  Change "extends Authenticatable" to "extends \TCG\Voyager\Models\User" in your User model');
         }
 
