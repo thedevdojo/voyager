@@ -143,9 +143,7 @@ return [
             ],
         ],
 
-        'widgets' => [
-
-        ],
+        'widgets' => [],
 
     ],
 
@@ -241,6 +239,7 @@ return [
         'allow_delete'        => true,
         'allow_create_folder' => true,
         'allow_rename'        => true,
+        'show_aspect_ratio'   => true,
         /*'watermark'           => [
             'source'         => 'watermark.png',
             'position'       => 'bottom-left',
