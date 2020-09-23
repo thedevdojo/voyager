@@ -170,20 +170,22 @@ class InstallCommand extends Command
         $this->info('Successfully installed Voyager! Enjoy');
     }
 
-    private function addNamespaceIfNeeded($seeds, Filesystem $filesystem) {
+    private function addNamespaceIfNeeded($seeds, Filesystem $filesystem)
+    {
         if ($this->seedFolder != 'seeders') {
             return;
         }
 
-        $seeds->each(function($file) use($filesystem) {
-                $path = database_path('seeders').'/'.$file->getFilename();
+        $seeds->each(function ($file) use ($filesystem) {
+            $path = database_path('seeders').'/'.$file->getFilename();
 
-                $stub = str_replace(
-                    "<?php\n\nuse", "<?php\n\nnamespace Database\\Seeders;\n\nuse",
-                    $filesystem->get($path)
-                );
+            $stub = str_replace(
+                "<?php\n\nuse",
+                "<?php\n\nnamespace Database\\Seeders;\n\nuse",
+                $filesystem->get($path)
+            );
 
-                $filesystem->put($path, $stub);
-            });
+            $filesystem->put($path, $stub);
+        });
     }
 }
