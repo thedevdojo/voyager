@@ -3,6 +3,7 @@
 namespace TCG\Voyager\Providers;
 
 use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class VoyagerDummyServiceProvider extends ServiceProvider
@@ -28,9 +29,14 @@ class VoyagerDummyServiceProvider extends ServiceProvider
     {
         $publishablePath = dirname(__DIR__).'/../publishable';
 
+        $seedsFolderName = 'seeds';
+        if (version_compare(Application::VERSION, '8.0') >= 0) {
+            $seedsFolderName = 'seeders';
+        }
+
         $publishable = [
             'dummy_seeds' => [
-                "{$publishablePath}/database/dummy_seeds/" => database_path('seeds'),
+                "{$publishablePath}/database/dummy_seeds/" => database_path($seedsFolderName),
             ],
             'dummy_content' => [
                 "{$publishablePath}/dummy_content/" => storage_path('app/public'),
