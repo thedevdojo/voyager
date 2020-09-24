@@ -44,6 +44,7 @@ class InstallCommand extends Command
         parent::__construct();
 
         $this->composer = $composer;
+        $this->composer->setWorkingPath(base_path());
 
         $this->seedFolder = version_compare(app()->version(), '8.0') >= 0 ? 'seeders' : 'seeds';
     }
@@ -142,6 +143,7 @@ class InstallCommand extends Command
 
         $this->info('Dumping the autoloaded files and reloading all new files');
         $this->composer->dumpAutoloads();
+        require_once(base_path('vendor/autoload.php'));
 
         $this->info('Seeding data into the database');
         $this->call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
