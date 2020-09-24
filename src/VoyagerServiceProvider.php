@@ -30,7 +30,6 @@ use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
-use TCG\Voyager\Voyager;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
