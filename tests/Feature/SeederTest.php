@@ -14,7 +14,7 @@ class SeederTest extends TestCase
     }
 
     /**
-     * Test manaually seeding is working.
+     * Test manually seeding is working.
      */
     public function testVoyagerDatabaseSeederCanBeCalled()
     {

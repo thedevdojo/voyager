@@ -353,4 +353,9 @@ class Voyager
 
         return $allLocales;
     }
+
+    public function getSeedsFolderName()
+    {
+        return version_compare(app()->version(), '8.0') >= 0 ? 'seeders' : 'seeds';
+    }
 }

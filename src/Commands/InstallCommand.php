@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 use Symfony\Component\Console\Input\InputOption;
+use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\VoyagerServiceProvider;
 
@@ -46,7 +47,7 @@ class InstallCommand extends Command
         $this->composer = $composer;
         $this->composer->setWorkingPath(base_path());
 
-        $this->seedFolder = version_compare(app()->version(), '8.0') >= 0 ? 'seeders' : 'seeds';
+        $this->seedFolder = Voyager::getSeedsFolderName();
     }
 
     protected function getOptions()
@@ -143,7 +144,7 @@ class InstallCommand extends Command
 
         $this->info('Dumping the autoloaded files and reloading all new files');
         $this->composer->dumpAutoloads();
-        require_once(base_path('vendor/autoload.php'));
+        require_once base_path('vendor/autoload.php');
 
         $this->info('Seeding data into the database');
         $this->call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);

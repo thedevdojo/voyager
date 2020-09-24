@@ -5,7 +5,6 @@ namespace TCG\Voyager;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
-use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Router;
@@ -31,6 +30,7 @@ use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
+use TCG\Voyager\Voyager;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -250,17 +250,12 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $publishablePath = dirname(__DIR__).'/publishable';
 
-        $seedsFolderName = 'seeds';
-        if (version_compare(Application::VERSION, '8.0') >= 0) {
-            $seedsFolderName = 'seeders';
-        }
-
         $publishable = [
             'voyager_avatar' => [
                 "{$publishablePath}/dummy_content/users/" => storage_path('app/public/users'),
             ],
             'seeds' => [
-                "{$publishablePath}/database/seeds/" => database_path($seedsFolderName),
+                "{$publishablePath}/database/seeds/" => database_path((new Voyager())->getSeedsFolderName()),
             ],
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
