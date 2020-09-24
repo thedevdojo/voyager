@@ -7,15 +7,10 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 use Symfony\Component\Console\Input\InputOption;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
-use TCG\Voyager\Traits\Seedable;
 use TCG\Voyager\VoyagerServiceProvider;
 
 class InstallCommand extends Command
 {
-    use Seedable;
-
-    protected $seedersPath;
-
     /**
      * The console command name.
      *
@@ -51,8 +46,6 @@ class InstallCommand extends Command
         $this->composer = $composer;
 
         $this->seedFolder = version_compare(app()->version(), '8.0') >= 0 ? 'seeders' : 'seeds';
-
-        $this->seedersPath = database_path($this->seedFolder).'/';
     }
 
     protected function getOptions()
@@ -151,14 +144,14 @@ class InstallCommand extends Command
         $this->composer->dumpAutoloads();
 
         $this->info('Seeding data into the database');
-        $this->seed('VoyagerDatabaseSeeder');
+        $this->call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
 
         if ($this->option('with-dummy')) {
             $this->info('Migrating dummy tables');
             $this->call('migrate');
 
             $this->info('Seeding dummy data');
-            $this->seed('VoyagerDummyDatabaseSeeder');
+            $this->call('db:seed', ['--class' => 'VoyagerDummyDatabaseSeeder']);
         }
 
         $this->info('Setting up the hooks');

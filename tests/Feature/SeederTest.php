@@ -15,14 +15,15 @@ class SeederTest extends TestCase
 
     /**
      * Test manaually seeding is working.
-     *
      */
     public function testVoyagerDatabaseSeederCanBeCalled()
     {
         $exception = null;
+
         try {
             $this->artisan('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
-        } catch (\Exception $exception) {}
+        } catch (\Exception $exception) {
+        }
 
         $this->assertNull($exception, 'An exception was thrown');
     }

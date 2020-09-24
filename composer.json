@@ -40,8 +40,12 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TCG\\Voyager\\Tests\\": "tests/"
-        }
+            "TCG\\Voyager\\Tests\\": "tests/",
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "classmap": [
+            "vendor/orchestra/testbench-core/laravel/database"
+        ]
     },
     "minimum-stability": "stable",
     "extra": {
