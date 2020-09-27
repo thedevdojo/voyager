@@ -889,11 +889,11 @@ class VoyagerBaseController extends Controller
 
                 // Apply local scope if it is defined in the relationship-options
                 if (isset($options->scope) && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
-                    $scopeParamsMethod = 'scope'.ucfirst($dataType->scope).'Params';
+                    $scopeParamsMethod = 'scope'.ucfirst($options->scope).'Params';
                     if (method_exists($this, $scopeParamsMethod)) {
-                        $model = call_user_func_array([$model, $dataType->scope], $this->{$scopeParamsMethod}($request));
+                        $model = call_user_func_array([$model, $options->scope], $this->{$scopeParamsMethod}($request));
                     } else {
-                        $model = $model->{$dataType->scope}();
+                        $model = $model->{$options->scope}();
                     }
                 }
 
