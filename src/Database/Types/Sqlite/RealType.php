@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class RealType extends Type
 {
-    const NAME = 'real';
+    public const NAME = 'real';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
