@@ -90,9 +90,11 @@ class VoyagerBaseController extends Controller
             $this->removeRelationshipField($dataType, 'browse');
 
             if ($search->value != '' && $search->key && $search->filter) {
-                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
-                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
-                $query->where($search->key, $search_filter, $search_value);
+                if($search->filter == 'equals'){
+                    $query->where($search->key, '=', $search->value);
+                } else {
+                    $query->whereRaw("lower({$search->key}) LIKE lower(?)", ["%{$search->value}%"]);
+                }
             }
 
             if ($orderBy && in_array($orderBy, $dataType->fields())) {
@@ -878,9 +880,9 @@ class VoyagerBaseController extends Controller
                         $total_count = $relationshipOptions->count();
                         $relationshipOptions = $relationshipOptions->forPage($page, $on_page);
                     } else {
-                        $total_count = $model->where($options->label, 'LIKE', '%'.$search.'%')->count();
+                        $total_count = $model->whereRaw("lower({$options->label}) LIKE lower(?)", ["%{$search}%"])->count();
                         $relationshipOptions = $model->take($on_page)->skip($skip)
-                            ->where($options->label, 'LIKE', '%'.$search.'%')
+                            ->whereRaw("lower({$options->label}) LIKE lower(?)", ["%{$search}%"])
                             ->get();
                     }
                 } else {
