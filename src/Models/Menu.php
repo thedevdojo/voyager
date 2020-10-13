@@ -95,6 +95,8 @@ class Menu extends Model
             return $items;
         }
 
+        info("SM-disp-menu", $items);
+
         return new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render()
         );
