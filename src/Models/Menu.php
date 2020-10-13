@@ -73,6 +73,8 @@ class Menu extends Model
 
         $items = $menu->parent_items->sortBy('order');
 
+        info("SM-got-items", $items);
+
         if ($menuName == 'admin' && $type == '_json') {
             $items = static::processItems($items);
         }
@@ -94,8 +96,6 @@ class Menu extends Model
         if ($type === '_json') {
             return $items;
         }
-
-        info("SM-disp-menu", $items);
 
         return new \Illuminate\Support\HtmlString(
             \Illuminate\Support\Facades\View::make($type, ['items' => $items, 'options' => $options])->render()
