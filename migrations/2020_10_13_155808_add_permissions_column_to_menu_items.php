@@ -14,7 +14,7 @@ class AddPermissionsColumnToMenuItems extends Migration
     public function up()
     {
         Schema::table('menu_items', function (Blueprint $table) {
-            $table->json("permissions")->nullable();
+            $table->json('permissions')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddPermissionsColumnToMenuItems extends Migration
     public function down()
     {
         Schema::table('menu_items', function (Blueprint $table) {
-            $table->dropColumn("permissions");
+            $table->dropColumn('permissions');
         });
     }
 }

@@ -5,8 +5,8 @@ namespace TCG\Voyager\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use TCG\Voyager\Facades\Voyager;
-use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\Permission;
+use TCG\Voyager\Models\Role;
 
 class VoyagerMenuController extends Controller
 {

@@ -92,7 +92,7 @@ class Menu extends Model
         }
 
         $items = static::checkItemPermissions($items);
-        
+
         if ($type === '_json') {
             return $items;
         }
