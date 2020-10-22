@@ -101,17 +101,16 @@ class VoyagerBaseController extends Controller
                 if (!empty($row)) {
                     $query->select([
                         $dataType->name.'.*',
-                        $row->details->table.'.'.$row->details->label.' as relationshipOrderField',
+                        $row->details->table.'.'.$row->details->label.' as '.$orderBy,
                     ])->leftJoin(
                         $row->details->table,
                         $dataType->name.'.'.$row->details->column,
                         $row->details->table.'.'.$row->details->key,
                     );
-                    $orderByRelationship = 'relationshipOrderField';
                 }
 
                 $dataTypeContent = call_user_func([
-                    $query->orderBy($orderByRelationship ?? $orderBy, $querySortOrder),
+                    $query->orderBy($orderBy, $querySortOrder),
                     $getter,
                 ]);
             } elseif ($model->timestamps) {
