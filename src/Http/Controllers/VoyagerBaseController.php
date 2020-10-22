@@ -95,10 +95,23 @@ class VoyagerBaseController extends Controller
                 $query->where($search->key, $search_filter, $search_value);
             }
 
-            if ($orderBy && in_array($orderBy, $dataType->fields())) {
+            $row = $dataType->rows->where('field', $orderBy)->firstWhere('type', 'relationship');
+            if ($orderBy && (in_array($orderBy, $dataType->fields()) || !empty($row))) {
                 $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
+                if (!empty($row)) {
+                    $query->select([
+                        $dataType->name.'.*',
+                        $row->details->table.'.'.$row->details->label.' as relationshipOrderField',
+                    ])->leftJoin(
+                        $row->details->table,
+                        $dataType->name.'.'.$row->details->column,
+                        $row->details->table.'.'.$row->details->key,
+                    );
+                    $orderByRelationship = 'relationshipOrderField';
+                }
+
                 $dataTypeContent = call_user_func([
-                    $query->orderBy($orderBy, $querySortOrder),
+                    $query->orderBy($orderByRelationship ?? $orderBy, $querySortOrder),
                     $getter,
                 ]);
             } elseif ($model->timestamps) {
