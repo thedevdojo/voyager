@@ -968,7 +968,7 @@ class VoyagerBaseController extends Controller
 
     protected function isAlreadyJoined($query, $table)
     {
-        return collect($query->getQuery()->joins)->filter(function($item) use ($table) {
+        return collect($query->getQuery()->joins)->filter(function ($item) use ($table) {
             return Str::endsWith($item->table , $table);
         })->isNotEmpty();
     }
