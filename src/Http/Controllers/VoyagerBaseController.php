@@ -103,7 +103,7 @@ class VoyagerBaseController extends Controller
                         $dataType->name.'.*',
                         'joined.'.$row->details->label.' as '.$orderBy,
                     ])->leftJoin(
-                        $row->details->table. ' as joined',
+                        $row->details->table.' as joined',
                         $dataType->name.'.'.$row->details->column,
                         'joined.'.$row->details->key,
                     );
