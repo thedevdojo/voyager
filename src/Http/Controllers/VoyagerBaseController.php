@@ -101,11 +101,11 @@ class VoyagerBaseController extends Controller
                 if (!empty($row)) {
                     $query->select([
                         $dataType->name.'.*',
-                        $row->details->table.'.'.$row->details->label.' as '.$orderBy,
+                        'joined.'.$row->details->label.' as '.$orderBy,
                     ])->leftJoin(
-                        $row->details->table,
+                        $row->details->table. ' as joined',
                         $dataType->name.'.'.$row->details->column,
-                        $row->details->table.'.'.$row->details->key,
+                        'joined.'.$row->details->key,
                     );
                 }
 
