@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Events\BreadDataAdded;
 use TCG\Voyager\Events\BreadDataDeleted;
@@ -70,10 +71,9 @@ class VoyagerBaseController extends Controller
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
 
+            $query = $model::select($dataType->name.'.*');
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-                $query = $model->{$dataType->scope}();
-            } else {
-                $query = $model::select('*');
+                $query->{$dataType->scope}();
             }
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
@@ -89,28 +89,32 @@ class VoyagerBaseController extends Controller
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
 
+            $relationshipRows = $dataType->rows->where('type', 'relationship');
+
             if ($search->value != '' && $search->key && $search->filter) {
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
-                $query->where($search->key, $search_filter, $search_value);
+
+                $searchField = $dataType->name.'.'.$search->key;
+                if ($row = $this->findRelationshipRow($relationshipRows, $search->key)) {
+                    $this->joinRelationshipTable($query, $dataType->name, $row, $row->details->label);
+
+                    $searchField = 'joined_'.$row->details->table.'.'.$row->details->label;
+                }
+
+                $query->where($searchField, $search_filter, $search_value);
             }
 
-            $row = $dataType->rows->where('field', $orderBy)->firstWhere('type', 'relationship');
+            $row = $relationshipRows->firstWhere('field', $orderBy);
             if ($orderBy && (in_array($orderBy, $dataType->fields()) || !empty($row))) {
                 $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
                 if (!empty($row)) {
-                    $query->select([
-                        $dataType->name.'.*',
-                        'joined.'.$row->details->label.' as '.$orderBy,
-                    ])->leftJoin(
-                        $row->details->table.' as joined',
-                        $dataType->name.'.'.$row->details->column,
-                        'joined.'.$row->details->key,
-                    );
+                    $this->joinRelationshipTable($query, $dataType->name, $row, 'joined_'.$orderBy);
+                    $orderByRelationship = 'joined_'.$orderBy;
                 }
 
                 $dataTypeContent = call_user_func([
-                    $query->orderBy($orderBy, $querySortOrder),
+                    $query->orderBy($orderByRelationship ?? $orderBy, $querySortOrder),
                     $getter,
                 ]);
             } elseif ($model->timestamps) {
@@ -936,5 +940,36 @@ class VoyagerBaseController extends Controller
 
         // No result found, return empty array
         return response()->json([], 404);
+    }
+
+    protected function findRelationshipRow($relationshipRows, $searchKey)
+    {
+        return $relationshipRows->filter(function($item) use($searchKey) {
+            return $item->details->type == 'belongsTo' && $item->details->column == $searchKey;
+        })->first();
+    }
+
+    protected function joinRelationshipTable($query, $name, $row, $field)
+    {
+        $query->addSelect([
+                'joined_'.$row->details->table.'.'.$row->details->label.' as '.$field,
+            ]);
+
+        if ($this->isAlreadyJoined($query, 'joined_'.$row->details->table)) {
+            return;
+        }
+
+        $query->leftJoin(
+                $row->details->table.' as joined_'.$row->details->table,
+                $name.'.'.$row->details->column,
+                'joined_'.$row->details->table.'.'.$row->details->key,
+            );
+    }
+
+    protected function isAlreadyJoined($query, $table)
+    {
+        return collect($query->getQuery()->joins)->filter(function($item) use($table) {
+                return Str::endsWith($item->table , $table);
+            })->isNotEmpty();
     }
 }
