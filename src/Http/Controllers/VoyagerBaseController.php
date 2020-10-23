@@ -944,7 +944,7 @@ class VoyagerBaseController extends Controller
 
     protected function findRelationshipRow($relationshipRows, $searchKey)
     {
-        return $relationshipRows->filter(function($item) use($searchKey) {
+        return $relationshipRows->filter(function ($item) use($searchKey) {
             return $item->details->type == 'belongsTo' && $item->details->column == $searchKey;
         })->first();
     }
@@ -952,24 +952,24 @@ class VoyagerBaseController extends Controller
     protected function joinRelationshipTable($query, $name, $row, $field)
     {
         $query->addSelect([
-                'joined_'.$row->details->table.'.'.$row->details->label.' as '.$field,
-            ]);
+            'joined_'.$row->details->table.'.'.$row->details->label.' as '.$field,
+        ]);
 
         if ($this->isAlreadyJoined($query, 'joined_'.$row->details->table)) {
             return;
         }
 
         $query->leftJoin(
-                $row->details->table.' as joined_'.$row->details->table,
-                $name.'.'.$row->details->column,
-                'joined_'.$row->details->table.'.'.$row->details->key,
-            );
+            $row->details->table.' as joined_'.$row->details->table,
+            $name.'.'.$row->details->column,
+            'joined_'.$row->details->table.'.'.$row->details->key,
+        );
     }
 
     protected function isAlreadyJoined($query, $table)
     {
         return collect($query->getQuery()->joins)->filter(function($item) use($table) {
-                return Str::endsWith($item->table , $table);
-            })->isNotEmpty();
+            return Str::endsWith($item->table , $table);
+        })->isNotEmpty();
     }
 }
