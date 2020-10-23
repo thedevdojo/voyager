@@ -944,7 +944,7 @@ class VoyagerBaseController extends Controller
 
     protected function findRelationshipRow($relationshipRows, $searchKey)
     {
-        return $relationshipRows->filter(function ($item) use($searchKey) {
+        return $relationshipRows->filter(function ($item) use ($searchKey) {
             return $item->details->type == 'belongsTo' && $item->details->column == $searchKey;
         })->first();
     }
@@ -968,7 +968,7 @@ class VoyagerBaseController extends Controller
 
     protected function isAlreadyJoined($query, $table)
     {
-        return collect($query->getQuery()->joins)->filter(function($item) use($table) {
+        return collect($query->getQuery()->joins)->filter(function($item) use ($table) {
             return Str::endsWith($item->table , $table);
         })->isNotEmpty();
     }
