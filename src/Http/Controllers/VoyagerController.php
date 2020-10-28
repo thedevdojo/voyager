@@ -29,7 +29,7 @@ class VoyagerController extends Controller
     public function upload(Request $request)
     {
         $fullFilename = null;
-        $resizeWidth = 1800;
+        $resizeWidth = 1024;
         $resizeHeight = null;
         $slug = $request->input('type_slug');
         $file = $request->file('image');
