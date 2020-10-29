@@ -62,9 +62,11 @@ class Image extends BaseType
             if (isset($this->options->thumbnails)) {
                 foreach ($this->options->thumbnails as $thumbnails) {
                     $image_extension = $file->getClientOriginalExtension();
+                    
                     if (isset($thumbnails->convert)) {
                         $image_extension = $thumbnails->convert;
                     }
+                    
                     if (isset($thumbnails->quality)) {
                         $resize_quality = $thumbnails->quality;
                     }
