@@ -394,7 +394,7 @@
                         params.perPage = oSettings._iDisplayLength;
                     }
 
-                    if (oSettings._iDisplayStart) {
+                    if (oSettings._iDisplayStart && oSettings._iDisplayLength) {
                         params.page = Math.floor(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
                     }
 
@@ -402,10 +402,12 @@
                         params.search = oSettings.oPreviousSearch.sSearch;
                     }
 
-                    if (oSettings.aaSorting.length !== @json($orderColumn).length || oSettings.aaSorting[0][0] !== @json($orderColumn)[0][0] || oSettings.aaSorting[0][1] !== @json($orderColumn)[0][1]) {
-                        params.sort = oSettings.aaSorting.reduce(function(acc, sort) {
-                            return acc+sort[0]+':'+sort[1]+',';
-                        }, '').replace(/,$/, '');
+                    if (oSettings.aaSorting) {
+                        if (oSettings.aaSorting.length !== @json($orderColumn ?? []).length || (oSettings.aaSorting[0] && (oSettings.aaSorting[0][0] !== @json($orderColumn ?? [])[0][0] || oSettings.aaSorting[0][1] !== @json($orderColumn ?? [])[0][1]))) {
+                            params.sort = oSettings.aaSorting.reduce(function(acc, sort) {
+                                return acc+sort[0]+':'+sort[1]+',';
+                            }, '').replace(/,$/, '');
+                        }
                     }
 
                     if (JSON.stringify(params) !== JSON.stringify(window.dataTableParams)) {
