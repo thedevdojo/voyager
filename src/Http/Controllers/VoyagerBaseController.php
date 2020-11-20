@@ -722,6 +722,29 @@ class VoyagerBaseController extends Controller
             foreach ($images_to_remove as $image) {
                 // Remove only $single_image if we are removing from bread edit
                 if ($image != config('voyager.user.default_avatar') && (is_null($single_image) || $single_image == $image)) {
+
+                    /*
+                     *
+                     * COTI ADD
+                     *
+                     * Pour supprimer les images générées par :
+                     * spatie/laravel-glide
+                     *
+                     */
+                    $ext = explode('.', $image);
+                    $extension = '.'.$ext[count($ext) - 1];
+                    $path = str_replace($extension, '', $image);
+
+                    $this->deleteFileIfExists($path . '-xs' . $extension);
+                    $this->deleteFileIfExists($path . '-sm' . $extension);
+                    $this->deleteFileIfExists($path . '-md' . $extension);
+                    $this->deleteFileIfExists($path . '-lg' . $extension);
+                    /*
+                     *
+                     * END COTI ADD
+                     *
+                     */
+
                     $this->deleteFileIfExists($image);
                     $imagesDeleted = true;
 
