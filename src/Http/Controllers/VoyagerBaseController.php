@@ -739,6 +739,7 @@ class VoyagerBaseController extends Controller
                     $this->deleteFileIfExists($path . '-sm' . $extension);
                     $this->deleteFileIfExists($path . '-md' . $extension);
                     $this->deleteFileIfExists($path . '-lg' . $extension);
+                    $this->deleteFileIfExists($path . '-xl' . $extension);
                     /*
                      *
                      * END COTI ADD
