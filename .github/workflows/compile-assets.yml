@@ -1,0 +1,38 @@
+name: Compile Assets
+
+on:
+  push:
+    branches:
+      - '1.*'
+    paths:
+      - 'resources/assets/**'
+      - 'package.json'
+
+jobs:
+  compile-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Compile Assets
+        run: npm run prod
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v1
+        id: cpr
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Compile Assets
+          commit-message: 'Automatic assets compilation'
+          author-name: github-actions[bot]
+          author-email: 41898282+github-actions[bot]@users.noreply.github.com
+          committer-name: GitHub
+          committer-email: noreply@github.com
+          labels: automerge

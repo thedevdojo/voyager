@@ -373,7 +373,7 @@
                                             @include('voyager::multilingual.input-hidden', [
                                                 'isModelTranslatable' => true,
                                                 '_field_name'         => 'field_display_name_' . $data['field'],
-                                                '_field_trans' => $dataRow ? get_field_translations($dataRow, 'display_name') : $data['field'],
+                                                '_field_trans' => $dataRow ? get_field_translations($dataRow, 'display_name') : json_encode([config('voyager.multilingual.default') => ucwords(str_replace('_', ' ', $data['field']))]),
                                             ])
                                         @endif
                                         <input type="text" class="form-control"
@@ -567,21 +567,18 @@
                 if($(this).val() == 'belongsTo'){
                     $(this).parent().parent().find('.relationshipField').show();
                     $(this).parent().parent().find('.relationshipPivot').hide();
-                    $(this).parent().parent().find('.relationship_key').show();
                     $(this).parent().parent().find('.relationship_taggable').hide();
                     $(this).parent().parent().find('.hasOneMany').removeClass('flexed');
                     $(this).parent().parent().find('.belongsTo').addClass('flexed');
                 } else if($(this).val() == 'hasOne' || $(this).val() == 'hasMany'){
                     $(this).parent().parent().find('.relationshipField').show();
                     $(this).parent().parent().find('.relationshipPivot').hide();
-                    $(this).parent().parent().find('.relationship_key').hide();
                     $(this).parent().parent().find('.relationship_taggable').hide();
                     $(this).parent().parent().find('.hasOneMany').addClass('flexed');
                     $(this).parent().parent().find('.belongsTo').removeClass('flexed');
                 } else {
                     $(this).parent().parent().find('.relationshipField').hide();
                     $(this).parent().parent().find('.relationshipPivot').css('display', 'flex');
-                    $(this).parent().parent().find('.relationship_key').hide();
                     $(this).parent().parent().find('.relationship_taggable').show();
                 }
             });

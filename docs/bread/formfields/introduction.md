@@ -101,11 +101,12 @@ This will then load `my_view` from `resources/views` instead of the formfield.
 
 You get plenty of data passed to your view for you to use:
 
-* `$action` can be `browse`, `read`, `edit`, `add` or `order`
+* `$view` can be `browse`, `read`, `edit`, `add` or `order`
 * `$content` the content for this field
 * `$dataType` the DataType
 * `$dataTypeContent` the whole model-instance
 * `$row` the DataRow
+* `$options` the DataRow details
 
 {% hint style="info" %}
 **Developing a custom formfield?**  
