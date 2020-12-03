@@ -94,7 +94,7 @@
                             <textarea rows="3" class="form-control" id="m_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
                         </div>
                         <label for="icon_class">{{ __('voyager::menu_builder.icon_class') }} <a
-                                    href="{{ route('voyager.compass.index', [], false) }}#fonts"
+                                    href="{{ route('voyager.compass.index') }}#fonts"
                                     target="_blank">{!! __('voyager::menu_builder.icon_class2') !!}</label>
                         <input type="text" class="form-control" id="m_icon_class" name="icon_class"
                                placeholder="{{ __('voyager::menu_builder.icon_class_ph') }}"><br>
@@ -288,7 +288,7 @@
              * Reorder items
              */
             $('.dd').on('change', function (e) {
-                $.post('{{ route('voyager.menus.order',['menu' => $menu->id]) }}', {
+                $.post('{{ route('voyager.menus.order_item',['menu' => $menu->id]) }}', {
                     order: JSON.stringify($('.dd').nestable('serialize')),
                     _token: '{{ csrf_token() }}'
                 }, function (data) {

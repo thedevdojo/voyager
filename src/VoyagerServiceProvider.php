@@ -6,6 +6,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -131,6 +132,10 @@ class VoyagerServiceProvider extends ServiceProvider
         });
 
         $this->bootTranslatorCollectionMacros();
+
+        if (method_exists('Paginator', 'useBootstrap')) {
+            Paginator::useBootstrap();
+        }
     }
 
     /**
@@ -265,7 +270,8 @@ class VoyagerServiceProvider extends ServiceProvider
     public function registerConfigs()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
+            dirname(__DIR__).'/publishable/config/voyager.php',
+            'voyager'
         );
     }
 

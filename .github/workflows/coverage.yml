@@ -33,7 +33,7 @@ jobs:
 
       # Install PHP dependencies
       - name: Install Composer dependencies
-        run: composer require "illuminate/support:6.*"
+        run: composer require "illuminate/support:7.*" --no-ansi
 
       # Install NPM dependencies
       - name: Install Dependencies
@@ -45,7 +45,7 @@ jobs:
 
       # Run phpunit tests to generate coverage report
       - name: Run tests for coverage
-        run: php -d pvov.enabled=1 ./vendor/bin/phpunit --coverage-clover=coverage.xml
+        run: php -d pcov.enabled=1 ./vendor/bin/phpunit --coverage-clover=coverage.xml
 
       # Upload coverage report to codecov.io
       - name: Upload coverage

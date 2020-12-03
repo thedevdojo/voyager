@@ -41,8 +41,7 @@ class MenuItem extends Model
     public function children()
     {
         return $this->hasMany(Voyager::modelClass('MenuItem'), 'parent_id')
-            ->with('children')
-            ->orderBy('order');
+            ->with('children');
     }
 
     public function menu()
