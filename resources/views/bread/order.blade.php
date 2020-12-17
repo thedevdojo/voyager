@@ -4,9 +4,10 @@
 
 @section('page_header')
 <h1 class="page-title">
-    <i class="voyager-list"></i>{{ $dataType->getTranslatedAttribute('display_name_plural') }} {{ __('voyager::bread.order') }}
+    <i class="voyager-list"></i>{{ $dataType->getTranslatedAttribute('display_name_plural') }}
+    {{ __('voyager::bread.order') }}
 </h1>
-@stop
+@endsection
 
 @section('content')
 <div class="page-content container-fluid">
@@ -19,38 +20,21 @@
 
                 <div class="panel-body" style="padding:30px;">
                     <div class="dd">
-                        <ol class="dd-list">
-                            @foreach ($results as $result)
-                            <li class="dd-item" data-id="{{ $result->getKey() }}">
-                                <div class="dd-handle" style="height:inherit">
-                                    @if (isset($dataRow->details->view))
-                                        @include($dataRow->details->view, ['row' => $dataRow, 'dataType' => $dataType, 'dataTypeContent' => $result, 'content' => $result->{$display_column}, 'action' => 'order'])
-                                    @elseif($dataRow->type == 'image')
-                                        <span>
-                                            <img src="@if( !filter_var($result->{$display_column}, FILTER_VALIDATE_URL)){{ Voyager::image( $result->{$display_column} ) }}@else{{ $result->{$display_column} }}@endif" style="height:100px">
-                                        </span>
-                                    @else
-                                        <span>{{ $result->{$display_column} }}</span>
-                                    @endif
-                                </div>
-                            </li>
-                            @endforeach
-                        </ol>
+                        @include('voyager::bread.partials.order',
+                            ['items' => $results, 'nestable' => $nestable, 'parentId' => ''])
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@stop
+@endsection
 
 @section('javascript')
-
 <script>
 $(document).ready(function () {
     $('.dd').nestable({
-        maxDepth: 1
+        @if(empty($nestable)) maxDepth: 1 @endif
     });
 
     /**
@@ -66,4 +50,4 @@ $(document).ready(function () {
     });
 });
 </script>
-@stop
+@endsection
