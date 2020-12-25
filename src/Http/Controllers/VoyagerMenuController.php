@@ -150,14 +150,17 @@ class VoyagerMenuController extends Controller
      */
     protected function prepareMenuTranslations(&$data)
     {
-        $trans = json_decode($data['title_i18n'], true);
+        if (isset($data['title_i18n'])) {
+            $trans = json_decode($data['title_i18n'], true);
 
-        // Set field value with the default locale
-        $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
+            // Set field value with the default locale
+            $data['title'] = $trans[config('voyager.multilingual.default', 'en')];
 
-        unset($data['title_i18n']);     // Remove hidden input holding translations
-        unset($data['i18n_selector']);  // Remove language selector input radio
+            unset($data['title_i18n']);     // Remove hidden input holding translations
+            unset($data['i18n_selector']);  // Remove language selector input radio
 
-        return $trans;
+            return $trans;
+        }
+
     }
 }
