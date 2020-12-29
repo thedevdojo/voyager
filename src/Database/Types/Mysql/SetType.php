@@ -8,7 +8,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class SetType extends Type
 {
-    const NAME = 'set';
+    public const NAME = 'set';
 
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
