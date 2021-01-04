@@ -6,8 +6,8 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
 use Symfony\Component\Console\Input\InputOption;
-use TCG\Voyager\Facades\Voyager;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
+use TCG\Voyager\Seed;
 use TCG\Voyager\VoyagerServiceProvider;
 
 class InstallCommand extends Command
@@ -47,7 +47,7 @@ class InstallCommand extends Command
         $this->composer = $composer;
         $this->composer->setWorkingPath(base_path());
 
-        $this->seedFolder = Voyager::getSeedsFolderName();
+        $this->seedFolder = Seed::getFolderName();
     }
 
     protected function getOptions()
