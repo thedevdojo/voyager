@@ -129,18 +129,17 @@ class InstallCommand extends Command
             $this->call('vendor:publish', ['--provider' => VoyagerDummyServiceProvider::class, '--tag' => $tags]);
 
             $this->addNamespaceIfNeeded(
-                collect($filesystem->files("{$publishablePath}/database/seeds/"))
-                    ->concat($filesystem->files("{$publishablePath}/database/dummy_seeds/")),
+                collect($filesystem->files("{$publishablePath}/database/dummy_seeds/")),
                 $filesystem
             );
         } else {
             $this->call('vendor:publish', ['--provider' => VoyagerServiceProvider::class, '--tag' => ['config', 'voyager_avatar']]);
-
-            $this->addNamespaceIfNeeded(
-                collect($filesystem->files("{$publishablePath}/database/seeds/")),
-                $filesystem
-            );
         }
+
+        $this->addNamespaceIfNeeded(
+            collect($filesystem->files("{$publishablePath}/database/seeds/")),
+            $filesystem
+        );
 
         $this->info('Dumping the autoloaded files and reloading all new files');
         $this->composer->dumpAutoloads();
