@@ -92,13 +92,25 @@ class VoyagerBaseController extends Controller
             if ($search->value != '' && $search->key && $search->filter) {
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
-                $query->where($search->key, $search_filter, $search_value);
+                $query->where($model->getTable().'.'.$search->key, $search_filter, $search_value);
             }
 
-            if ($orderBy && in_array($orderBy, $dataType->fields())) {
+            $row = $dataType->rows->where('field', $orderBy)->firstWhere('type', 'relationship');
+            if ($orderBy && (in_array($orderBy, $dataType->fields()) || !empty($row))) {
                 $querySortOrder = (!empty($sortOrder)) ? $sortOrder : 'desc';
+                if (!empty($row)) {
+                    $query->select([
+                        $dataType->name.'.*',
+                        'joined.'.$row->details->label.' as '.$orderBy,
+                    ])->leftJoin(
+                        $row->details->table.' as joined',
+                        $dataType->name.'.'.$row->details->column,
+                        'joined.'.$row->details->key,
+                    );
+                }
+
                 $dataTypeContent = call_user_func([
-                    $query->orderBy($orderBy, $querySortOrder),
+                    $query->orderBy($orderBy ?? $orderBy, $querySortOrder),
                     $getter,
                 ]);
             } elseif ($model->timestamps) {
