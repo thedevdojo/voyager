@@ -279,7 +279,7 @@
                                     'order_by' => $orderBy,
                                     'sort_order' => $sortOrder,
                                     'showSoftDeleted' => $showSoftDeleted,
-                                ])->links() }}
+                                ])->links(config('pagination.view')) }}
                             </div>
                         @endif
                     </div>

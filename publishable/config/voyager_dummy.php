@@ -244,4 +244,26 @@ return [
            ],
        ]*/
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Pagination specific settings
+    |--------------------------------------------------------------------------
+    |
+    | Here you change pagination view setting
+    |
+    | Currently Laravel support:
+    | - pagination::default (Bootstrap 3)
+    | - pagination::bootstrap-4
+    | - pagination::tailwind (default in Laravel 8.x)
+    |
+    | of course, you can customize pagination view
+    | https://laravel.com/docs/8.x/pagination#customizing-the-pagination-view
+    |
+    */
+
+    'pagination' => [
+        // Pagination view name
+        'view' => 'pagination::default'
+    ]
 ];
