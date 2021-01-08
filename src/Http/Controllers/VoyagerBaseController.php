@@ -119,7 +119,7 @@ class VoyagerBaseController extends Controller
                 }
 
                 $dataTypeContent = call_user_func([
-                    $query->orderBy($orderBy ?? $orderBy, $querySortOrder),
+                    $query->orderBy($orderBy, $querySortOrder),
                     $getter,
                 ]);
             } elseif ($model->timestamps) {
