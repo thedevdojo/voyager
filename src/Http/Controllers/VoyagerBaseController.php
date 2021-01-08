@@ -3,7 +3,6 @@
 namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,27 +70,11 @@ class VoyagerBaseController extends Controller
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
 
-            $relationshipRows = $dataType->rows->where('type', 'relationship');
+            $query = $model::select($dataType->name.'.*');
 
-            if ($search->value != '' && $search->key && $search->filter) {
-                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
-                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
-
-                $searchField = $dataType->name.'.'.$search->key;
-                if ($row = $this->findRelationshipRow($relationshipRows, $search->key)) {
-                    $dataType->model_name::addGlobalScope('filter', function (Builder $builder) use($row, $searchField, $search_filter, $search_value) {
-                        $builder->whereIn(
-                            $searchField,
-                            $row->details->model::where($row->details->label, $search_filter, $search_value)->pluck('id')->toArray()
-                        );
-                    });
-                } else {
-                    $query = $this->getQuery($dataType, $model);
-                    $query->where($searchField, $search_filter, $search_value);
-                }
+            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+                $query->{$dataType->scope}();
             }
-
-            $query = $query ?? $this->getQuery($dataType, $model);
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
@@ -105,6 +88,21 @@ class VoyagerBaseController extends Controller
 
             // If a column has a relationship associated with it, we do not want to show that field
             $this->removeRelationshipField($dataType, 'browse');
+
+            if ($search->value != '' && $search->key && $search->filter) {
+                $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
+                $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
+
+                $searchField = $dataType->name.'.'.$search->key;
+                if ($row = $this->findRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
+                    $query->whereIn(
+                        $searchField,
+                        $row->details->model::where($row->details->label, $search_filter, $search_value)->pluck('id')->toArray()
+                    );
+                } else {
+                    $query->where($searchField, $search_filter, $search_value);
+                }
+            }
 
             $row = $dataType->rows->where('field', $orderBy)->firstWhere('type', 'relationship');
             if ($orderBy && (in_array($orderBy, $dataType->fields()) || !empty($row))) {
@@ -947,17 +945,6 @@ class VoyagerBaseController extends Controller
 
         // No result found, return empty array
         return response()->json([], 404);
-    }
-
-    protected function getQuery($dataType, $model)
-    {
-        $query = $model::select($dataType->name.'.*');
-
-        if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-            $query->{$dataType->scope}();
-        }
-
-        return $query;
     }
 
     protected function findRelationshipRow($relationshipRows, $searchKey)
