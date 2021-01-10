@@ -329,7 +329,18 @@ class VoyagerBaseController extends Controller
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id)->validate();
+
+        // Get fields with images to remove before updating and make a copy of $data
+        $to_remove = $dataType->editRows->where('type', 'image')
+            ->filter(function ($item, $key) use ($request) {
+                return $request->hasFile($item->field);
+            });
+        $original_data = clone($data);
+
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+
+        // Delete Images
+        $this->deleteBreadImages($original_data, $to_remove);
 
         event(new BreadDataUpdated($dataType, $data));
 
