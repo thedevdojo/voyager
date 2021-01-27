@@ -553,7 +553,7 @@ class VoyagerBaseController extends Controller
     //
     //****************************************
 
-    public function removeMedia(Request $request)
+    public function remove_media(Request $request)
     {
         try {
             // GET THE SLUG, ex. 'posts', 'pages', etc.

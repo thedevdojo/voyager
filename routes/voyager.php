@@ -49,7 +49,7 @@ Route::group(['as' => 'voyager.'], function () {
                     ->name($dataType->slug.'.restore');
                 Route::get($dataType->slug.'/relation', $breadController.'@relation')
                     ->name($dataType->slug.'.relation');
-                Route::post($dataType->slug.'/remove', $breadController.'@removeMedia')
+                Route::post($dataType->slug.'/remove', $breadController.'@remove_media')
                     ->name($dataType->slug.'.media.remove');
                 Route::resource($dataType->slug, $breadController, ['parameters' => [$dataType->slug => 'id']]);
             }
