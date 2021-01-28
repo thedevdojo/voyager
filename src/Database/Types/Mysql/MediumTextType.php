@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class MediumTextType extends Type
 {
-    const NAME = 'mediumtext';
+    public const NAME = 'mediumtext';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
