@@ -102,7 +102,6 @@ class DataType extends Model
                 );
 
                 $requestData = $this->getRelationships($requestData, $fields);
-
                 foreach ($fields as $field) {
                     $dataRow = $this->rows()->firstOrNew(['field' => $field]);
 
@@ -110,7 +109,7 @@ class DataType extends Model
                         $dataRow->{$check} = isset($requestData["field_{$check}_{$field}"]);
                     }
 
-                    $dataRow->required = boolval($requestData['field_required_'.$field]);
+                    $dataRow->required = !empty($requestData['field_required_'.$field]);
                     $dataRow->field = $requestData['field_'.$field];
                     $dataRow->type = $requestData['field_input_type_'.$field];
                     $dataRow->details = json_decode($requestData['field_details_'.$field]);
