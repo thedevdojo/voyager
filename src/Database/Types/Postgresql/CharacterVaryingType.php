@@ -6,6 +6,6 @@ use TCG\Voyager\Database\Types\Common\VarCharType;
 
 class CharacterVaryingType extends VarCharType
 {
-    const NAME = 'character varying';
-    const DBTYPE = 'varchar';
+    public const NAME = 'character varying';
+    public const DBTYPE = 'varchar';
 }

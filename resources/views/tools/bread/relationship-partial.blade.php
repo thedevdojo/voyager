@@ -8,7 +8,9 @@
     <div class="col-xs-2">
         <h4><i class="voyager-heart"></i><strong>{{ $relationship->getTranslatedAttribute('display_name') }}</strong></h4>
         <div class="handler voyager-handle"></div>
-        <strong>{{ __('voyager::database.type') }}:</strong> <span>{{ __('voyager::database.relationship.relationship') }}</span>
+        <strong>{{ __('voyager::database.type') }}:</strong> <span>{{ __('voyager::database.relationship.relationship') }}</span><br/>
+        <strong>{{ __('voyager::generic.required') }}:</strong>
+        <input type="checkbox" value="1" name="field_required_{{ $relationship['field'] }}" @if(!empty($relationship->required))checked="checked"@endif>
         <div class="handler voyager-handle"></div>
         <input class="row_order" type="hidden" value="{{ $relationship['order'] }}" name="field_order_{{ $relationship['field'] }}">
     </div>
@@ -122,7 +124,6 @@
             </div>
         </div>
     </div>
-    <input type="hidden" value="0" name="field_required_{{ $relationship['field'] }}" checked="checked">
     <input type="hidden" name="field_input_type_{{ $relationship['field'] }}" value="relationship">
     <input type="hidden" name="field_{{ $relationship['field'] }}" value="{{ $relationship['field'] }}">
     <input type="hidden" name="relationships[]" value="{{ $relationship['field'] }}">

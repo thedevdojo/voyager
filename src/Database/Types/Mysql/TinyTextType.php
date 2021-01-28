@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class TinyTextType extends Type
 {
-    const NAME = 'tinytext';
+    public const NAME = 'tinytext';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

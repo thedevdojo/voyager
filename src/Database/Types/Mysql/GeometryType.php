@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class GeometryType extends Type
 {
-    const NAME = 'geometry';
+    public const NAME = 'geometry';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
