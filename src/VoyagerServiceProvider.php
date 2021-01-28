@@ -29,6 +29,7 @@ use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
+use TCG\Voyager\Seed;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -254,7 +255,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 "{$publishablePath}/dummy_content/users/" => storage_path('app/public/users'),
             ],
             'seeds' => [
-                "{$publishablePath}/database/seeds/" => database_path('seeds'),
+                "{$publishablePath}/database/seeds/" => database_path(Seed::getFolderName()),
             ],
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
