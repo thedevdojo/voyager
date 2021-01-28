@@ -34,6 +34,12 @@ class VoyagerController extends Controller
         $slug = $request->input('type_slug');
         $file = $request->file('image');
 
+        $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->firstOrFail();
+
+        if ($this->userCannotUploadImageIn($dataType, 'add') && $this->userCannotUploadImageIn($dataType, 'edit')) {
+            abort(403);
+        }
+
         $path = $slug.'/'.date('F').date('Y').'/';
 
         $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
@@ -100,5 +106,11 @@ class VoyagerController extends Controller
         }
 
         return response('', 404);
+    }
+
+    protected function userCannotUploadImageIn($dataType, $action)
+    {
+        return auth()->user()->cannot($action, app($dataType->model_name))
+                || $dataType->{$action.'Rows'}->where('type', 'rich_text_box')->count() === 0;
     }
 }
