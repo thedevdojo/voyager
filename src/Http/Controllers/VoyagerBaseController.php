@@ -777,7 +777,7 @@ class VoyagerBaseController extends Controller
         // Check permission
         $this->authorize('edit', app($dataType->model_name));
 
-        if (!isset($dataType->order_column) || !isset($dataType->order_display_column)) {
+        if (empty($dataType->order_column) || empty($dataType->order_display_column)) {
             return redirect()
             ->route("voyager.{$dataType->slug}.index")
             ->with([
