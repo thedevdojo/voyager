@@ -112,3 +112,9 @@ class DataRow extends \TCG\Voyager\Models\DataRow
 }
 ```
 
+If the model you are overriding has an associated BREAD, go to the BREAD settings for the model you are overriding
+and replace the Model Name with your fully-qualified class-name. For example, if you are overriding the Voyager `Menu`
+model with your own `App\Menu` model:
+
+![](../.gitbook/assets/bread_override_voyager_models.png)
+

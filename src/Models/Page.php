@@ -15,8 +15,8 @@ class Page extends Model
     /**
      * Statuses.
      */
-    const STATUS_ACTIVE = 'ACTIVE';
-    const STATUS_INACTIVE = 'INACTIVE';
+    public const STATUS_ACTIVE = 'ACTIVE';
+    public const STATUS_INACTIVE = 'INACTIVE';
 
     /**
      * List of statuses.

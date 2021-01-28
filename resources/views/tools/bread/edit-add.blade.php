@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="col-md-6 form-group">
                                     <label for="icon">{{ __('voyager::bread.icon_hint') }} <a
-                                                href="{{ route('voyager.compass.index', [], false) }}#fonts"
+                                                href="{{ route('voyager.compass.index') }}#fonts"
                                                 target="_blank">{{ __('voyager::bread.icon_hint2') }}</a></label>
                                     <input type="text" class="form-control" name="icon"
                                            placeholder="{{ __('voyager::bread.icon_class') }}"

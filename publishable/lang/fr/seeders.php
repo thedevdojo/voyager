@@ -87,7 +87,7 @@ return [
             'description'                  => 'Description du site',
             'google_analytics_tracking_id' => 'Google Analytics ID de Tracking',
             'logo'                         => 'Logo du site',
-            'title'                        => 'Title du site',
+            'title'                        => 'Titre du site',
         ],
     ],
 ];

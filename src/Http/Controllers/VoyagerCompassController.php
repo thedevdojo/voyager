@@ -189,7 +189,7 @@ class LogViewer
         'processed',
     ];
 
-    const MAX_FILE_SIZE = 52428800; // Why? Uh... Sorry
+    public const MAX_FILE_SIZE = 52428800; // Why? Uh... Sorry
 
     /**
      * @param string $file

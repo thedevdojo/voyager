@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class ByteaType extends Type
 {
-    const NAME = 'bytea';
+    public const NAME = 'bytea';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

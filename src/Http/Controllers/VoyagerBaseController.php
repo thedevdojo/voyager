@@ -204,15 +204,16 @@ class VoyagerBaseController extends Controller
 
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
+            $query = $model->query();
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
-                $model = $model->withTrashed();
+                $query = $query->withTrashed();
             }
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-                $model = $model->{$dataType->scope}();
+                $query = $query->{$dataType->scope}();
             }
-            $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
+            $dataTypeContent = call_user_func([$query, 'findOrFail'], $id);
             if ($dataTypeContent->deleted_at) {
                 $isSoftDeleted = true;
             }
@@ -265,15 +266,16 @@ class VoyagerBaseController extends Controller
 
         if (strlen($dataType->model_name) != 0) {
             $model = app($dataType->model_name);
+            $query = $model->query();
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
-                $model = $model->withTrashed();
+                $query = $query->withTrashed();
             }
             if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-                $model = $model->{$dataType->scope}();
+                $query = $query->{$dataType->scope}();
             }
-            $dataTypeContent = call_user_func([$model, 'findOrFail'], $id);
+            $dataTypeContent = call_user_func([$query, 'findOrFail'], $id);
         } else {
             // If Model doest exist, get data from table name
             $dataTypeContent = DB::table($dataType->name)->where('id', $id)->first();
@@ -315,21 +317,33 @@ class VoyagerBaseController extends Controller
         $id = $id instanceof \Illuminate\Database\Eloquent\Model ? $id->{$id->getKeyName()} : $id;
 
         $model = app($dataType->model_name);
+        $query = $model->query();
         if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-            $model = $model->{$dataType->scope}();
+            $query = $query->{$dataType->scope}();
         }
         if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
-            $data = $model->withTrashed()->findOrFail($id);
-        } else {
-            $data = $model->findOrFail($id);
+            $query = $query->withTrashed();
         }
+
+        $data = $query->findOrFail($id);
 
         // Check permission
         $this->authorize('edit', $data);
 
         // Validate fields with ajax
         $val = $this->validateBread($request->all(), $dataType->editRows, $dataType->name, $id)->validate();
+
+        // Get fields with images to remove before updating and make a copy of $data
+        $to_remove = $dataType->editRows->where('type', 'image')
+            ->filter(function ($item, $key) use ($request) {
+                return $request->hasFile($item->field);
+            });
+        $original_data = clone($data);
+
         $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+
+        // Delete Images
+        $this->deleteBreadImages($original_data, $to_remove);
 
         event(new BreadDataUpdated($dataType, $data));
 
@@ -497,14 +511,15 @@ class VoyagerBaseController extends Controller
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
         // Check permission
-        $this->authorize('delete', app($dataType->model_name));
+        $model = app($dataType->model_name);
+        $this->authorize('delete', $model);
 
         // Get record
-        $model = call_user_func([$dataType->model_name, 'withTrashed']);
+        $query = $model->withTrashed();
         if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-            $model = $model->{$dataType->scope}();
+            $query = $query->{$dataType->scope}();
         }
-        $data = $model->findOrFail($id);
+        $data = $query->findOrFail($id);
 
         $displayName = $dataType->getTranslatedAttribute('display_name_singular');
 
@@ -772,10 +787,11 @@ class VoyagerBaseController extends Controller
         }
 
         $model = app($dataType->model_name);
+        $query = $model->query();
         if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
-            $model = $model->withTrashed();
+            $query = $query->withTrashed();
         }
-        $results = $model->orderBy($dataType->order_column, $dataType->order_direction)->get();
+        $results = $query->orderBy($dataType->order_column, $dataType->order_direction)->get();
 
         $display_column = $dataType->order_display_column;
 

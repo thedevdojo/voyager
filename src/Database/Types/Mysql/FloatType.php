@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class FloatType extends Type
 {
-    const NAME = 'float';
+    public const NAME = 'float';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

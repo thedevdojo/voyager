@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class BinaryType extends Type
 {
-    const NAME = 'binary';
+    public const NAME = 'binary';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
