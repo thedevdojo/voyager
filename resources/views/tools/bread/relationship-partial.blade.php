@@ -94,16 +94,28 @@
             <select name="relationship_label_{{ $relationship['field'] }}" class="rowDrop select2" data-table="{{ $relationshipDetails->table ?? '' }}" data-selected="{{ $relationshipDetails->label ?? ''}}">
                 <option value="{{ $relationshipDetails->label ?? '' }}">{{ $relationshipDetails->label ?? '' }}</option>
             </select>
-            <label class="relationship_key" style="@if($relationshipDetails->type == 'belongsTo' || $relationshipDetails->type == 'belongsToMany') display:block @endif">{{ __('voyager::database.relationship.store_the') }} <span class="label_table_name"></span></label>
-            <select name="relationship_key_{{ $relationship['field'] }}" class="rowDrop select2 relationship_key" style="@if($relationshipDetails->type == 'belongsTo' || $relationshipDetails->type == 'belongsToMany') display:block @endif" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="@if(isset($relationshipDetails->key)){{ $relationshipDetails->key }}@endif">
-                <option value="{{ $relationshipDetails->key ?? '' }}">{{ $relationshipDetails->key ?? '' }}</option>
-            </select>
+            <div class="belongsToShow belongsToManyShow relationship_details_content" style="flex:1">
+                <label class="relationship_key">{{ __('voyager::database.relationship.store_the') }} <span class="label_table_name"></span></label>
+                <select name="relationship_key_{{ $relationship['field'] }}" class="rowDrop select2 relationship_key" data-table="@if(isset($relationshipDetails->table)){{ $relationshipDetails->table }}@endif" data-selected="@if(isset($relationshipDetails->key)){{ $relationshipDetails->key }}@endif">
+                    <option value="{{ $relationshipDetails->key ?? '' }}">{{ $relationshipDetails->key ?? '' }}</option>
+                </select>
+            </div>
+            <div class="hasOneShow hasManyShow relationship_details_content" style="flex:1">
+                <label class="relationship_key">{{ __('voyager::database.relationship.store_the') }}
+                    <span>{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</span>
+                </label>
+                <select name="relationship_key_{{ $relationship['field'] }}" class="select2 relationship_key">
+                    @foreach($fieldOptions as $data)
+                        <option value="{{ $data['field'] }}" @if($relationshipDetails->key == $data['field']) selected="selected" @endif>{{ $data['field'] }}</option>
+                    @endforeach
+                </select>
+            </div>
             <br>
             @isset($relationshipDetails->taggable)
-                <label class="relationship_taggable" style="@if($relationshipDetails->type == 'belongsToMany') display:block @endif">
+                <label class="relationship_taggable">
                     {{__('voyager::database.relationship.allow_tagging')}}
                 </label>
-                <span class="relationship_taggable" style="@if($relationshipDetails->type == 'belongsToMany') display:block @endif">
+                <span class="relationship_taggable">
                     <input type="checkbox" name="relationship_taggable_{{ $relationship['field'] }}" class="toggleswitch" data-on="{{ __('voyager::generic.yes') }}" data-off="{{ __('voyager::generic.no') }}" {{$relationshipDetails->taggable == 'on' ? 'checked' : ''}}>
                 </span>
             @endisset

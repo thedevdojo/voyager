@@ -59,11 +59,19 @@
 				                        <select name="relationship_label" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="" style="width: 100%">
 				                        </select>
 				                    </p>
-				                    <p class="relationship_key"><strong>{{ __('voyager::database.relationship.store_the') }} <span class="label_table_name"></span>: </strong>
+									<p class="relationship_key belongsToShow belongsToManyShow"><strong>{{ __('voyager::database.relationship.store_the') }}
+                                        <span class="label_table_name"></span>: </strong>
 				                        <select name="relationship_key" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="" style="width: 100%">
 				                        </select>
 									</p>
-
+                                    <p class="relationship_key hasOneShow hasManyShow"><strong>{{ __('voyager::database.relationship.store_the') }}
+                                        <span>{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</span>: </strong>
+                                        <select name="relationship_key" class="select2" style="width: 100%">
+                                            @foreach($fieldOptions as $data)
+                                                <option value="{{ $data['field'] }}">{{ $data['field'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </p>
 									<p class="relationship_taggable"><strong>{{ __('voyager::database.relationship.allow_tagging') }}:</strong> <br>
 										<input type="checkbox" name="relationship_taggable" class="toggleswitch" data-on="{{ __('voyager::generic.yes') }}" data-off="{{ __('voyager::generic.no') }}">
 				                    </p>
