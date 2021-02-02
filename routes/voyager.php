@@ -119,6 +119,7 @@ Route::group(['as' => 'voyager.'], function () {
 
         // Database Routes
         Route::resource('database', $namespacePrefix.'VoyagerDatabaseController');
+        Route::post('database/create', ['uses' => $namespacePrefix.'VoyagerDatabaseController@store',        'as' => 'database.store']);
 
         // Compass Routes
         Route::group([
