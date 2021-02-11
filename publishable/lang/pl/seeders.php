@@ -20,7 +20,7 @@ return [
         'parent'           => 'Rodzic',
         'password'         => 'Hasło',
         'post_image'       => 'Grafika Postu',
-        'remember_token'   => 'Remember Token',
+        'remember_token'   => 'Token Zapamiętaj',
         'role'             => 'Rola',
         'seo_title'        => 'Tytuł SEO',
         'slug'             => 'Slug',
