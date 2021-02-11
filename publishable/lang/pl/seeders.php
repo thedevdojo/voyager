@@ -57,7 +57,7 @@ return [
     'menu_items' => [
         'bread'        => 'BREAD',
         'categories'   => 'Kategorie',
-        'compass'      => 'Komaps',
+        'compass'      => 'Kompas',
         'dashboard'    => 'Panel',
         'database'     => 'Baza Danych',
         'media'        => 'Media',
