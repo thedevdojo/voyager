@@ -67,7 +67,7 @@ return [
         'roles'        => 'Role',
         'settings'     => 'Ustawienia',
         'tools'        => 'Narzędzia',
-        'users'        => 'Uzytkownicy',
+        'users'        => 'Użytkownicy',
     ],
     'roles'      => [
         'admin' => 'Administrator',
