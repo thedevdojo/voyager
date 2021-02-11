@@ -21,7 +21,7 @@ return [
         'password'         => 'Hasło',
         'post_image'       => 'Grafika Postu',
         'remember_token'   => 'Remember Token',
-        'role'             => 'Role',
+        'role'             => 'Rola',
         'seo_title'        => 'Tytuł SEO',
         'slug'             => 'Slug',
         'status'           => 'Status',
