@@ -10,7 +10,7 @@ return [
         'display_name'     => 'Nazwa Wyświetlana',
         'email'            => 'Email',
         'excerpt'          => 'Wyciąg',
-        'featured'         => 'Przedstawiony',
+        'featured'         => 'Wyróżniono',
         'id'               => 'ID',
         'meta_description' => 'Meta Opis',
         'meta_keywords'    => 'Słowa Kluczowe',
