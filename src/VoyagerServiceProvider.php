@@ -284,22 +284,20 @@ class VoyagerServiceProvider extends ServiceProvider
         // otherwise it will throw an error because no database
         // connection has been made yet.
         try {
-            if (Schema::hasTable(VoyagerFacade::model('DataType')->getTable())) {
-                $dataType = VoyagerFacade::model('DataType');
-                $dataTypes = $dataType->getCached();
+            $dataType = VoyagerFacade::model('DataType');
+            $dataTypes = $dataType->getCached();
 
-                foreach ($dataTypes as $dataType) {
-                    $policyClass = BasePolicy::class;
-                    if (isset($dataType->policy_name) && $dataType->policy_name !== ''
-                        && class_exists($dataType->policy_name)) {
-                        $policyClass = $dataType->policy_name;
-                    }
-
-                    $this->policies[$dataType->model_name] = $policyClass;
+            foreach ($dataTypes as $dataType) {
+                $policyClass = BasePolicy::class;
+                if (isset($dataType->policy_name) && $dataType->policy_name !== ''
+                    && class_exists($dataType->policy_name)) {
+                    $policyClass = $dataType->policy_name;
                 }
 
-                $this->registerPolicies();
+                $this->policies[$dataType->model_name] = $policyClass;
             }
+
+            $this->registerPolicies();
         } catch (\PDOException $e) {
             Log::error('No Database connection yet in VoyagerServiceProvider loadAuth()');
         }
