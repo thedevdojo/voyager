@@ -94,7 +94,7 @@ class VoyagerBaseController extends Controller
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
 
                 $searchField = $dataType->name.'.'.$search->key;
-                if ($row = $this->findRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
+                if ($row = $this->findSearchableRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
                     $query->whereIn(
                         $searchField,
                         $row->details->model::where($row->details->label, $search_filter, $search_value)->pluck('id')->toArray()
@@ -179,6 +179,9 @@ class VoyagerBaseController extends Controller
             $orderColumn = [[$index, $sortOrder ?? 'desc']];
         }
 
+        // Define list of columns that can be sorted server side
+        $sortableColumns = $this->getSortableColumns($dataType->browseRows);
+
         $view = 'voyager::bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
@@ -193,6 +196,7 @@ class VoyagerBaseController extends Controller
             'search',
             'orderBy',
             'orderColumn',
+            'sortableColumns',
             'sortOrder',
             'searchNames',
             'isServerSide',
@@ -963,10 +967,38 @@ class VoyagerBaseController extends Controller
         return response()->json([], 404);
     }
 
-    protected function findRelationshipRow($relationshipRows, $searchKey)
+    protected function findSearchableRelationshipRow($relationshipRows, $searchKey)
     {
         return $relationshipRows->filter(function ($item) use ($searchKey) {
-            return $item->details->type == 'belongsTo' && $item->details->column == $searchKey;
+            if ($item->details->column != $searchKey) {
+                return false;
+            }
+            if ($item->details->type != 'belongsTo') {
+                return false;
+            }
+
+            return !$this->relationIsUsingAccessorAsLabel($item->details);
         })->first();
+    }
+
+    protected function getSortableColumns($rows)
+    {
+        return $rows->filter(function ($item) {
+            if ($item->type != 'relationship') {
+                return true;
+            }
+            if ($item->details->type != 'belongsTo') {
+                return false;
+            }
+
+            return !$this->relationIsUsingAccessorAsLabel($item->details);
+        })
+        ->pluck('field')
+        ->toArray();
+    }
+
+    protected function relationIsUsingAccessorAsLabel($details)
+    {
+        return in_array($details->label, app($details->model)->additional_attributes ?? []);
     }
 }
