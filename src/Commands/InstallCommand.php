@@ -117,7 +117,7 @@ class InstallCommand extends Command
         if (false === strpos($routes_contents, 'Voyager::routes()')) {
             $filesystem->append(
                 base_path('routes/web.php'),
-                "\n\nRoute::group(['prefix' => 'admin'], function () {\n    Voyager::routes();\n});\n"
+                PHP_EOL.PHP_EOL."Route::group(['prefix' => 'admin'], function () {".PHP_EOL."    Voyager::routes();".PHP_EOL."});".PHP_EOL
             );
         }
 
