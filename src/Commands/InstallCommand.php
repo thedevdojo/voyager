@@ -174,6 +174,11 @@ class InstallCommand extends Command
         $seeds->each(function ($file) use ($filesystem) {
             $path = database_path('seeders').'/'.$file->getFilename();
             $stub = str_replace(
+                "<?php\n\nuse",
+                "<?php\n\nnamespace Database\\Seeders;\n\nuse",
+                $filesystem->get($path)
+            );
+            $stub = str_replace(
                 "<?php".PHP_EOL.PHP_EOL."use",
                 "<?php".PHP_EOL.PHP_EOL."namespace Database\\Seeders;".PHP_EOL.PHP_EOL."use",
                 $filesystem->get($path)
