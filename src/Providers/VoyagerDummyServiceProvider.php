@@ -4,6 +4,7 @@ namespace TCG\Voyager\Providers;
 
 use Arrilot\Widgets\ServiceProvider as WidgetServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use TCG\Voyager\Seed;
 
 class VoyagerDummyServiceProvider extends ServiceProvider
 {
@@ -30,7 +31,7 @@ class VoyagerDummyServiceProvider extends ServiceProvider
 
         $publishable = [
             'dummy_seeds' => [
-                "{$publishablePath}/database/dummy_seeds/" => database_path('seeds'),
+                "{$publishablePath}/database/dummy_seeds/" => database_path(Seed::getFolderName()),
             ],
             'dummy_content' => [
                 "{$publishablePath}/dummy_content/" => storage_path('app/public'),
@@ -52,7 +53,8 @@ class VoyagerDummyServiceProvider extends ServiceProvider
     public function registerConfigs()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/../publishable/config/voyager_dummy.php', 'voyager'
+            dirname(__DIR__).'/../publishable/config/voyager_dummy.php',
+            'voyager'
         );
     }
 }

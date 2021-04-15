@@ -1,0 +1,65 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - '1.*'
+  pull_request:
+    types:
+      - synchronize
+      - opened
+      - edited
+      - reopened
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [7.3, 7.4, 8.0]
+        laravel: ['6.*', '7.*', '8.*']
+
+    name: 'PHP ${{ matrix.php }} / ${{ matrix.laravel }}'
+
+    steps:
+      - uses: actions/checkout@master
+
+      # Configure PHP
+      - name: Select PHP version
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: '${{ matrix.php }}'
+          extensions: mbstring, pdo_sqlite, fileinfo, gd
+          coverage: none
+
+      # Configure NPM
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+
+      # Install PHP dependencies
+      - name: Install Composer dependencies
+        run: composer require "illuminate/support:${{ matrix.laravel }}"
+
+      # Install legacy factories for Laravel 8
+      - name: Install legacy factories for Laravel
+        if: ${{ matrix.laravel == '8.*' }}
+        run: composer require laravel/legacy-factories
+
+      # Display installed laravel version
+      - name: Show laravel version
+        run: composer show laravel/framework
+
+      # Install NPM dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # Build static assets
+      - name: Compile Assets
+        run: npm run prod
+
+      # Run phpunit tests
+      - name: Run tests
+        run: ./vendor/bin/phpunit

@@ -285,7 +285,16 @@
                                             </div>
                                             <div class="clearfix"></div>
                                         @elseif($setting->type == "file" && isset( $setting->value ))
-                                            <div class="fileType">{{ $setting->value }}</div>
+                                            @if(json_decode($setting->value) !== null)
+                                                @foreach(json_decode($setting->value) as $file)
+                                                  <div class="fileType">
+                                                    <a class="fileType" target="_blank" href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) }}">
+                                                      {{ $file->original_name }}
+                                                    </a>
+                                                    <a href="{{ route('voyager.settings.delete_value', $setting->id) }}" class="voyager-x delete_value"></a>
+                                                 </div>
+                                                @endforeach
+                                            @endif
                                         @endif
                                         <input type="file" name="{{ $setting->key }}">
                                     @elseif($setting->type == "select_dropdown")
@@ -295,7 +304,7 @@
                                             <?php $default = (isset($options->default)) ? $options->default : NULL; ?>
                                             @if(isset($options->options))
                                                 @foreach($options->options as $index => $option)
-                                                    <option value="{{ $index }}" @if($default == $index && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $index){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                                                    <option value="{{ $index }}" @if($default == $index && $selected_value === NULL) selected="selected" @endif @if($selected_value == $index) selected="selected" @endif>{{ $option }}</option>
                                                 @endforeach
                                             @endif
                                         </select>
@@ -309,7 +318,7 @@
                                                 @foreach($options->options as $index => $option)
                                                     <li>
                                                         <input type="radio" id="option-{{ $index }}" name="{{ $setting->key }}"
-                                                               value="{{ $index }}" @if($default == $index && $selected_value === NULL){{ 'checked' }}@endif @if($selected_value == $index){{ 'checked' }}@endif>
+                                                               value="{{ $index }}" @if($default == $index && $selected_value === NULL) checked @endif @if($selected_value == $index) checked @endif>
                                                         <label for="option-{{ $index }}">{{ $option }}</label>
                                                         <div class="check"></div>
                                                     </li>
@@ -474,6 +483,9 @@
                 $(this).closest('form').attr('action', $(this).attr('href'));
                 $(this).closest('form').submit();
             });
+
+            // Initiliaze rich text editor
+            tinymce.init(window.voyagerTinyMCE.getConfig());
         });
     </script>
     <script type="text/javascript">

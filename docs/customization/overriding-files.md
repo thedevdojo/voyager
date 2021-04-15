@@ -45,6 +45,11 @@ You can now override all methods from the [VoyagerBaseController](https://github
 
 ## Overriding Voyagers Controllers
 
+{% hint style="danger" %}
+**Only use this method if you know what you are doing**  
+We don't recommend or support overriding all controllers as you won't get any code-changes made in future updates.
+{% endhint %}
+
 If you want to override any of Voyagers core controllers you first have to change your config file `config/voyager.php`:
 
 ```php
@@ -106,4 +111,10 @@ class DataRow extends \TCG\Voyager\Models\DataRow
     // ...
 }
 ```
+
+If the model you are overriding has an associated BREAD, go to the BREAD settings for the model you are overriding
+and replace the Model Name with your fully-qualified class-name. For example, if you are overriding the Voyager `Menu`
+model with your own `App\Menu` model:
+
+![](../.gitbook/assets/bread_override_voyager_models.png)
 

@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class BitType extends Type
 {
-    const NAME = 'bit';
+    public const NAME = 'bit';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

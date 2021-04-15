@@ -4,7 +4,7 @@ namespace TCG\Voyager\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -232,7 +232,7 @@ class VoyagerMediaController extends Controller
                     $name = get_file_name($name);
                 }
             } else {
-                $name = str_replace('{uid}', app('VoyagerAuth')->user()->getKey(), $request->get('filename'));
+                $name = str_replace('{uid}', Auth::user()->getKey(), $request->get('filename'));
                 if (Str::contains($name, '{date:')) {
                     $name = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                         return \Carbon\Carbon::now()->format($date[1]);
@@ -246,6 +246,7 @@ class VoyagerMediaController extends Controller
             }
 
             $file = $request->file->storeAs($request->upload_path, $name.'.'.$extension, $this->filesystem);
+            $file = preg_replace('#/+#', '/', $file);
 
             $imageMimeTypes = [
                 'image/jpeg',
@@ -255,7 +256,8 @@ class VoyagerMediaController extends Controller
                 'image/svg+xml',
             ];
             if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
-                $image = Image::make($realPath.$file);
+                $content = Storage::disk($this->filesystem)->get($file);
+                $image = Image::make($content);
 
                 if ($request->file->getClientOriginalExtension() == 'gif') {
                     copy($request->file->getRealPath(), $realPath.$file);
@@ -272,7 +274,8 @@ class VoyagerMediaController extends Controller
                                     ($thumbnail_data->height ?? null),
                                     function ($constraint) {
                                         $constraint->aspectRatio();
-                                    }, ($thumbnail_data->position ?? 'center')
+                                    },
+                                    ($thumbnail_data->position ?? 'center')
                                 );
                             } elseif ($type == 'crop') {
                                 $thumbnail = $thumbnail->crop(
@@ -301,14 +304,15 @@ class VoyagerMediaController extends Controller
                             ) {
                                 $thumbnail = $this->addWatermarkToImage($thumbnail, $details->watermark);
                             }
-                            $thumbnail->save($realPath.$request->upload_path.$name.'-'.($thumbnail_data->name ?? 'thumbnail').'.'.$extension, ($details->quality ?? 90));
+                            $thumbnail_file = $request->upload_path.$name.'-'.($thumbnail_data->name ?? 'thumbnail').'.'.$extension;
+                            Storage::disk($this->filesystem)->put($thumbnail_file, $thumbnail->encode($extension, ($details->quality ?? 90))->encoded);
                         }
                     }
                     // Add watermark to image
                     if (property_exists($details, 'watermark') && property_exists($details->watermark, 'source')) {
                         $image = $this->addWatermarkToImage($image, $details->watermark);
                     }
-                    $image->save($realPath.$file, ($details->quality ?? 90));
+                    Storage::disk($this->filesystem)->put($file, $image->encode($extension, ($details->quality ?? 90))->encoded);
                 }
             }
 
@@ -326,108 +330,6 @@ class VoyagerMediaController extends Controller
         return response()->json(compact('success', 'message', 'path'));
     }
 
-    public function remove(Request $request)
-    {
-        // Check permission
-        $this->authorize('browse_media');
-
-        try {
-            // GET THE SLUG, ex. 'posts', 'pages', etc.
-            $slug = $request->get('slug');
-
-            // GET file name
-            $filename = $request->get('filename');
-
-            // GET record id
-            $id = $request->get('id');
-
-            // GET field name
-            $field = $request->get('field');
-
-            // GET multi value
-            $multi = $request->get('multi');
-
-            // GET THE DataType based on the slug
-            $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
-
-            // Check permission
-            $this->authorize('delete', app($dataType->model_name));
-
-            // Load model and find record
-            $model = app($dataType->model_name);
-            $data = $model::find([$id])->first();
-
-            // Check if field exists
-            if (!isset($data->{$field})) {
-                throw new Exception(__('voyager::generic.field_does_not_exist'), 400);
-            }
-
-            if (@json_decode($multi)) {
-                // Check if valid json
-                if (is_null(@json_decode($data->{$field}))) {
-                    throw new Exception(__('voyager::json.invalid'), 500);
-                }
-
-                // Decode field value
-                $fieldData = @json_decode($data->{$field}, true);
-                $key = null;
-
-                // Check if we're dealing with a nested array for the case of multiple files
-                if (is_array($fieldData[0])) {
-                    foreach ($fieldData as $index=>$file) {
-                        $file = array_flip($file);
-                        if (array_key_exists($filename, $file)) {
-                            $key = $index;
-                            break;
-                        }
-                    }
-                } else {
-                    $key = array_search($filename, $fieldData);
-                }
-
-                // Check if file was found in array
-                if (is_null($key) || $key === false) {
-                    throw new Exception(__('voyager::media.file_does_not_exist'), 400);
-                }
-
-                // Remove file from array
-                unset($fieldData[$key]);
-
-                // Generate json and update field
-                $data->{$field} = empty($fieldData) ? null : json_encode(array_values($fieldData));
-            } else {
-                $data->{$field} = null;
-            }
-
-            $data->save();
-
-            return response()->json([
-               'data' => [
-                   'status'  => 200,
-                   'message' => __('voyager::media.file_removed'),
-               ],
-            ]);
-        } catch (Exception $e) {
-            $code = 500;
-            $message = __('voyager::generic.internal_error');
-
-            if ($e->getCode()) {
-                $code = $e->getCode();
-            }
-
-            if ($e->getMessage()) {
-                $message = $e->getMessage();
-            }
-
-            return response()->json([
-                'data' => [
-                    'status'  => $code,
-                    'message' => $message,
-                ],
-            ], $code);
-        }
-    }
-
     public function crop(Request $request)
     {
         // Check permission
@@ -440,7 +342,8 @@ class VoyagerMediaController extends Controller
         $width = $request->get('width');
 
         $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
-        $originImagePath = $realPath.$request->upload_path.'/'.$request->originImageName;
+        $originImagePath = $request->upload_path.'/'.$request->originImageName;
+        $originImagePath = preg_replace('#/+#', '/', $originImagePath);
 
         try {
             if ($createMode) {
@@ -448,13 +351,15 @@ class VoyagerMediaController extends Controller
                 $fileNameParts = explode('.', $request->originImageName);
                 array_splice($fileNameParts, count($fileNameParts) - 1, 0, 'cropped_'.time());
                 $newImageName = implode('.', $fileNameParts);
-                $destImagePath = $realPath.$request->upload_path.'/'.$newImageName;
+                $destImagePath = preg_replace('#/+#', '/', $request->upload_path.'/'.$newImageName);
             } else {
                 // override the original image
                 $destImagePath = $originImagePath;
             }
 
-            Image::make($originImagePath)->crop($width, $height, $x, $y)->save($destImagePath);
+            $content = Storage::disk($this->filesystem)->get($originImagePath);
+            $image = Image::make($content)->crop($width, $height, $x, $y);
+            Storage::disk($this->filesystem)->put($destImagePath, $image->encode()->encoded);
 
             $success = true;
             $message = __('voyager::media.success_crop_image');

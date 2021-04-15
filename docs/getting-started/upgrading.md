@@ -1,132 +1,30 @@
 # Upgrading
 
-## Upgrading 1.1 to 1.2
+## Upgrading 1.3 to 1.4
 
-### Laravel and PHP versions
-
-Support for Laravel 5.4 was dropped in Voyager 1.2 and therefore the minimum PHP version is now 7.1.  
-Please update your versions accordingly!
+{% hint style="info" %}
+Please take a look at our [prerequisites](../getting-started/prerequisites.md) before upgrading!
+{% endhint %}
 
 ### Update your Composer.json
 
 To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration inside of your composer.json to:
 
-`tcg/voyager": "1.2.*`
+`tcg/voyager": "1.4.*`
 
-And then run composer update
+And then run `composer update`
 
-### Update Configuration
-The `voyager.php` configuration file had a few changes.
+### Updating the roles BREAD
 
-```php
-'storage' => [
-    'disk' => 'public',
-],
-```
+The roles BREAD now uses it's own controller.  
+Please update it to use `TCG\Voyager\Http\Controllers\VoyagerRoleController`
 
-is now
+![](../.gitbook/assets/upgrading_roles_controller.png)
 
-```php
-'storage' => [
-    'disk' => env('FILESYSTEM_DRIVER', 'public'),
-],
-```
+### TinyMCE initialization
 
-Also, the option
+Initialization has been moved from app.js to `rich_text_box` template, if you were using TinyMCE outside the standard template take a look at documentation [tinymce](../bread/formfields/tinymce.md)
 
-```php
-'database' => [
-    'autoload_migrations' => true,
-]
-```
-
-was added. This allows you to exclude Voyagers migration-files from loading when running `php artisan migrate`.
-
-There is a new section titled **Model specific settings** that contains new settings for Compass, cache and media-manager.
-
-**Compass** is now switched off automatically when the environment is not `local`.  
-This can be overriden by the following new config-key:
-```php
-'compass_in_production' => true,
-```
-
-New **cache** setting:
-```php
-    'settings' => [
-        // Enables Laravel cache method for
-        // storing cache values between requests
-        'cache' => false,
-    ],
-```
-
-The **media-manager** got some new configuration-options:
-```php
-'media' => [
-    // The allowed mimetypes to be uploaded through the media-manager.
-    'allowed_mimetypes' => '*', //All types can be uploaded
-
-    /*'allowed_mimetypes' => [
-        'image/jpeg',
-        'image/png',
-        'image/gif',
-        'image/bmp',
-        'video/mp4',
-    ],*/
-
-    //Path for media-manager. Relative to the filesystem.
-    'path'                => '/',
-    'show_folders'        => true,
-    'allow_upload'        => true,
-    'allow_move'          => true,
-    'allow_delete'        => true,
-    'allow_create_folder' => true,
-    'allow_rename'        => true,
-],
-```
-
-
-
-The top dropdown-items can now be translated by providing a language-key:
-
-```php
-<?php
-
-'navbar_items' => [
-    'voyager::generic.profile' => [
-        'route'      => 'voyager.profile',
-        'classes'    => 'class-full-of-rum',
-        'icon_class' => 'voyager-person',
-    ],
-    'voyager::generic.home' => [
-        'route'        => '/',
-        'icon_class'   => 'voyager-home',
-        'target_blank' => true,
-    ],
-    'voyager::generic.logout' => [
-        'route'      => 'voyager.logout',
-        'icon_class' => 'voyager-power',
-    ],
-],
-```
-
-If you were using casts in your user-model previously, please remove the array-cast of `settings`.
-
-### Deprecation
-
-`can`, `canOrAbort`, `canOrFail` in the Voyager facade were all removed in favor of Policies and Gates.  
-Please refer to the [Laravel documentation](https://laravel.com/docs/authorization).
-
-### User BREAD
-
-The User BREAD now has its own controller. Please update your User BREAD to use `TCG\Voyager\Http\Controllers\VoyagerUserController` as the controller: ![](../.gitbook/assets/upgrade_controller.jpg)
-
-### Final Steps
-
-Voyager changed its way on how to load assets.  
-Assets don't get published anymore, instead they are loaded directly from the package.  
-Because of that, you can safely remove everything from your `public/vendor/tcg/voyager` folder.  
-Also you can remove the `assets_path` config-key from `config/voyager.php`.
-
-## Troubleshooting
+### Troubleshooting
 
 Be sure to ask us on our slack channel if you are experiencing any issues and we will try and assist. Thanks.

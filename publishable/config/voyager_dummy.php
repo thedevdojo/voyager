@@ -13,7 +13,6 @@ return [
     'user' => [
         'add_default_role_on_register' => true,
         'default_role'                 => 'user',
-        'namespace'                    => null,
         'default_avatar'               => 'users/default.png',
         'redirect'                     => '/admin',
     ],
@@ -198,21 +197,20 @@ return [
     ],
 
     'googlemaps' => [
-         'key'    => env('GOOGLE_MAPS_KEY', ''),
-         'center' => [
-             'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
-             'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
-         ],
-         'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
-     ],
+        'key'    => env('GOOGLE_MAPS_KEY', ''),
+        'center' => [
+            'lat' => env('GOOGLE_MAPS_DEFAULT_CENTER_LAT', '32.715738'),
+            'lng' => env('GOOGLE_MAPS_DEFAULT_CENTER_LNG', '-117.161084'),
+        ],
+        'zoom' => env('GOOGLE_MAPS_DEFAULT_ZOOM', 11),
+    ],
 
     // Activate compass when environment is NOT local
     'compass_in_production' => false,
 
     'media' => [
         // The allowed mimetypes to be uploaded through the media-manager.
-        'allowed_mimetypes' => '*', //All types can be uploaded
-        /*
+        // 'allowed_mimetypes' => '*', //All types can be uploaded
         'allowed_mimetypes' => [
           'image/jpeg',
           'image/png',
@@ -220,16 +218,15 @@ return [
           'image/bmp',
           'video/mp4',
         ],
-        */
-       //Path for media-manager. Relative to the filesystem.
-       'path'                => '/',
-       'show_folders'        => true,
-       'allow_upload'        => true,
-       'allow_move'          => true,
-       'allow_delete'        => true,
-       'allow_create_folder' => true,
-       'allow_rename'        => true,
-       /*'watermark'           => [
+        //Path for media-manager. Relative to the filesystem.
+        'path'                => '/',
+        'show_folders'        => true,
+        'allow_upload'        => true,
+        'allow_move'          => true,
+        'allow_delete'        => true,
+        'allow_create_folder' => true,
+        'allow_rename'        => true,
+        /*'watermark'           => [
             'source'         => 'watermark.png',
             'position'       => 'bottom-left',
             'x'              => 0,
@@ -244,5 +241,5 @@ return [
                 'height'=> 500
            ],
        ]*/
-   ],
+    ],
 ];

@@ -8,8 +8,7 @@
 
         @can('edit', $dataTypeContent)
             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-                {{ __('voyager::generic.edit') }}
+                <i class="glyphicon glyphicon-pencil"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.edit') }}</span>
             </a>
         @endcan
         @can('delete', $dataTypeContent)
@@ -23,11 +22,11 @@
                 </a>
             @endif
         @endcan
-
+        @can('browse', $dataTypeContent)
         <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
-            <span class="glyphicon glyphicon-list"></span>&nbsp;
-            {{ __('voyager::generic.return_to_list') }}
+            <i class="glyphicon glyphicon-list"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.return_to_list') }}</span>
         </a>
+        @endcan
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
@@ -51,7 +50,7 @@
 
                         <div class="panel-body" style="padding-top:0;">
                             @if (isset($row->details->view))
-                                @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => 'read'])
+                                @include($row->details->view, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $dataTypeContent->{$row->field}, 'action' => 'read', 'view' => 'read', 'options' => $row->details])
                             @elseif($row->type == "image")
                                 <img class="img-responsive"
                                      src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
@@ -90,7 +89,11 @@
                                     @endif
                                 @endif
                             @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                {{ property_exists($row->details, 'format') ? \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($row->details->format) : $dataTypeContent->{$row->field} }}
+                                @if ( property_exists($row->details, 'format') && !is_null($dataTypeContent->{$row->field}) )
+                                    {{ \Carbon\Carbon::parse($dataTypeContent->{$row->field})->formatLocalized($row->details->format) }}
+                                @else
+                                    {{ $dataTypeContent->{$row->field} }}
+                                @endif
                             @elseif($row->type == 'checkbox')
                                 @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                     @if($dataTypeContent->{$row->field})
@@ -107,7 +110,7 @@
                                 @include('voyager::partials.coordinates')
                             @elseif($row->type == 'rich_text_box')
                                 @include('voyager::multilingual.input-hidden-bread-read')
-                                <p>{!! $dataTypeContent->{$row->field} !!}</p>
+                                {!! $dataTypeContent->{$row->field} !!}
                             @elseif($row->type == 'file')
                                 @if(json_decode($dataTypeContent->{$row->field}))
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
@@ -165,7 +168,6 @@
                 $('.side-body').multilingual();
             });
         </script>
-        <script src="{{ voyager_asset('js/multilingual.js') }}"></script>
     @endif
     <script>
         var deleteFormAction;

@@ -6,9 +6,9 @@ use Doctrine\DBAL\Schema\Index as DoctrineIndex;
 
 abstract class Index
 {
-    const PRIMARY = 'PRIMARY';
-    const UNIQUE = 'UNIQUE';
-    const INDEX = 'INDEX';
+    public const PRIMARY = 'PRIMARY';
+    public const UNIQUE = 'UNIQUE';
+    public const INDEX = 'INDEX';
 
     public static function make(array $index)
     {

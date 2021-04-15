@@ -72,10 +72,12 @@
                     <input id="m_form_method" type="hidden" name="_method" value="POST">
                     {{ csrf_field() }}
                     <div class="modal-body">
-                        @include('voyager::multilingual.language-selector')
-                        <label for="name">{{ __('voyager::menu_builder.item_title') }}</label>
-                        @include('voyager::multilingual.input-hidden', ['_field_name' => 'title', '_field_trans' => ''])
-                        <input type="text" class="form-control" id="m_title" name="title" placeholder="{{ __('voyager::generic.title') }}"><br>
+                        <div>
+                            @include('voyager::multilingual.language-selector')
+                            <label for="name">{{ __('voyager::menu_builder.item_title') }}</label>
+                            @include('voyager::multilingual.input-hidden', ['_field_name' => 'title', '_field_trans' => ''])
+                            <input type="text" class="form-control" id="m_title" name="title" placeholder="{{ __('voyager::generic.title') }}"><br>
+                        </div>
                         <label for="type">{{ __('voyager::menu_builder.link_type') }}</label>
                         <select id="m_link_type" class="form-control" name="type">
                             <option value="url" selected="selected">{{ __('voyager::menu_builder.static_url') }}</option>
@@ -92,7 +94,7 @@
                             <textarea rows="3" class="form-control" id="m_parameters" name="parameters" placeholder="{{ json_encode(['key' => 'value'], JSON_PRETTY_PRINT) }}"></textarea><br>
                         </div>
                         <label for="icon_class">{{ __('voyager::menu_builder.icon_class') }} <a
-                                    href="{{ route('voyager.compass.index', [], false) }}#fonts"
+                                    href="{{ route('voyager.compass.index') }}#fonts"
                                     target="_blank">{!! __('voyager::menu_builder.icon_class2') !!}</label>
                         <input type="text" class="form-control" id="m_icon_class" name="icon_class"
                                placeholder="{{ __('voyager::menu_builder.icon_class_ph') }}"><br>
@@ -277,7 +279,7 @@
              */
             $('.item_actions').on('click', '.delete', function (e) {
                 id = $(e.currentTarget).data('id');
-                $('#delete_form')[0].action = '{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '']) }}/' + id;
+                $('#delete_form')[0].action = '{{ route('voyager.menus.item.destroy', ['menu' => $menu->id, 'id' => '__id']) }}'.replace('__id', id);
                 $('#delete_modal').modal('show');
             });
 
@@ -286,7 +288,7 @@
              * Reorder items
              */
             $('.dd').on('change', function (e) {
-                $.post('{{ route('voyager.menus.order',['menu' => $menu->id]) }}', {
+                $.post('{{ route('voyager.menus.order_item',['menu' => $menu->id]) }}', {
                     order: JSON.stringify($('.dd').nestable('serialize')),
                     _token: '{{ csrf_token() }}'
                 }, function (data) {

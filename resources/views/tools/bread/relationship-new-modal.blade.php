@@ -17,14 +17,14 @@
 				            <div class="col-md-12 relationship_details">
 				                <p class="relationship_table_select">{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</p>
 				                <select class="relationship_type select2" name="relationship_type">
-				                    <option value="hasOne" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasOne'){{ 'selected="selected"' }}@endif>{{ __('voyager::database.relationship.has_one') }}</option>
-				                    <option value="hasMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasMany'){{ 'selected="selected"' }}@endif>{{ __('voyager::database.relationship.has_many') }}</option>
-				                    <option value="belongsTo" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'belongsTo'){{ 'selected="selected"' }}@endif>{{ __('voyager::database.relationship.belongs_to') }}</option>
-				                    <option value="belongsToMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'belongsToMany'){{ 'selected="selected"' }}@endif>{{ __('voyager::database.relationship.belongs_to_many') }}</option>
+				                    <option value="hasOne" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasOne') selected="selected" @endif>{{ __('voyager::database.relationship.has_one') }}</option>
+				                    <option value="hasMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'hasMany') selected="selected" @endif>{{ __('voyager::database.relationship.has_many') }}</option>
+				                    <option value="belongsTo" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'belongsTo') selected="selected" @endif>{{ __('voyager::database.relationship.belongs_to') }}</option>
+				                    <option value="belongsToMany" @if(isset($relationshipDetails->type) && $relationshipDetails->type == 'belongsToMany') selected="selected" @endif>{{ __('voyager::database.relationship.belongs_to_many') }}</option>
 				                </select>
 				                <select class="relationship_table select2" name="relationship_table">
 				                    @foreach($tables as $tbl)
-				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl){{ 'selected="selected"' }}@endif>{{ \Illuminate\Support\Str::singular(ucfirst($tbl)) }}</option>
+				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl) selected="selected" @endif>{{ \Illuminate\Support\Str::singular(ucfirst($tbl)) }}</option>
 				                    @endforeach
 				                </select>
 				                <span><input type="text" class="form-control" name="relationship_model" placeholder="{{ __('voyager::database.relationship.namespace') }}" value="{{ $relationshipDetails->model ?? ''}}"></span>
@@ -48,7 +48,7 @@
 				            	<label>{{ __('voyager::database.relationship.pivot_table') }}:</label>
 				            	<select name="relationship_pivot" class="select2">
 		                        	@foreach($tables as $tbl)
-				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl){{ 'selected="selected"' }}@endif>{{ \Illuminate\Support\Str::singular(ucfirst($tbl)) }}</option>
+				                        <option value="{{ $tbl }}" @if(isset($relationshipDetails->table) && $relationshipDetails->table == $tbl) selected="selected" @endif>{{ \Illuminate\Support\Str::singular(ucfirst($tbl)) }}</option>
 				                    @endforeach
 		                        </select>
 				            </div>
@@ -56,14 +56,22 @@
 				                <div class="well">
 				                    <label>{{ __('voyager::database.relationship.selection_details') }}</label>
 				                    <p><strong>{{ __('voyager::database.relationship.display_the') }} <span class="label_table_name"></span>: </strong>
-				                        <select name="relationship_label" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="">
+				                        <select name="relationship_label" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="" style="width: 100%">
 				                        </select>
 				                    </p>
-				                    <p class="relationship_key"><strong>{{ __('voyager::database.relationship.store_the') }} <span class="label_table_name"></span>: </strong>
-				                        <select name="relationship_key" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="">
+									<p class="relationship_key belongsToShow belongsToManyShow"><strong>{{ __('voyager::database.relationship.store_the') }}
+                                        <span class="label_table_name"></span>: </strong>
+				                        <select name="relationship_key" class="rowDrop select2" data-table="{{ $tables[0] }}" data-selected="" style="width: 100%">
 				                        </select>
 									</p>
-
+                                    <p class="relationship_key hasOneShow hasManyShow"><strong>{{ __('voyager::database.relationship.store_the') }}
+                                        <span>{{ \Illuminate\Support\Str::singular(ucfirst($table)) }}</span>: </strong>
+                                        <select name="relationship_key" class="select2" style="width: 100%">
+                                            @foreach($fieldOptions as $data)
+                                                <option value="{{ $data['field'] }}">{{ $data['field'] }}</option>
+                                            @endforeach
+                                        </select>
+                                    </p>
 									<p class="relationship_taggable"><strong>{{ __('voyager::database.relationship.allow_tagging') }}:</strong> <br>
 										<input type="checkbox" name="relationship_taggable" class="toggleswitch" data-on="{{ __('voyager::generic.yes') }}" data-off="{{ __('voyager::generic.no') }}">
 				                    </p>

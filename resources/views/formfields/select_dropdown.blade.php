@@ -1,11 +1,11 @@
 @if(isset($options->relationship))
 
     {{-- If this is a relationship and the method does not exist, show a warning message --}}
-    @if( !method_exists( $dataType->model_name, camel_case($row->field) ) )
-        <p class="label label-warning"><i class="voyager-warning"></i> {{ __('voyager::form.field_select_dd_relationship', ['method' => camel_case($row->field).'()', 'class' => $dataType->model_name]) }}</p>
+    @if( !method_exists( $dataType->model_name, \Illuminate\Support\Str::camel($row->field) ) )
+        <p class="label label-warning"><i class="voyager-warning"></i> {{ __('voyager::form.field_select_dd_relationship', ['method' => \Illuminate\Support\Str::camel($row->field).'()', 'class' => $dataType->model_name]) }}</p>
     @endif
 
-    @if( method_exists( $dataType->model_name, camel_case($row->field) ) )
+    @if( method_exists( $dataType->model_name, \Illuminate\Support\Str::camel($row->field) ) )
         @if(isset($dataTypeContent->{$row->field}) && !is_null(old($row->field, $dataTypeContent->{$row->field})))
             <?php $selected_value = old($row->field, $dataTypeContent->{$row->field}); ?>
         @else
@@ -18,17 +18,17 @@
             @if(isset($options->options))
                 <optgroup label="{{ __('voyager::generic.custom') }}">
                 @foreach($options->options as $key => $option)
-                    <option value="{{ ($key == '_empty_' ? '' : $key) }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if((string)$selected_value == (string)$key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                    <option value="{{ ($key == '_empty_' ? '' : $key) }}" @if($default == $key && $selected_value === NULL) selected="selected" @endif @if((string)$selected_value == (string)$key) selected="selected" @endif>{{ $option }}</option>
                 @endforeach
                 </optgroup>
             @endif
             {{-- Populate all options from relationship --}}
             <?php
-            $relationshipListMethod = camel_case($row->field) . 'List';
+            $relationshipListMethod = \Illuminate\Support\Str::camel($row->field) . 'List';
             if (method_exists($dataTypeContent, $relationshipListMethod)) {
                 $relationshipOptions = $dataTypeContent->$relationshipListMethod();
             } else {
-                $relationshipClass = $dataTypeContent->{camel_case($row->field)}()->getRelated();
+                $relationshipClass = $dataTypeContent->{\Illuminate\Support\Str::camel($row->field)}()->getRelated();
                 if (isset($options->relationship->where)) {
                     $relationshipOptions = $relationshipClass::where(
                         $options->relationship->where[0],
@@ -51,7 +51,7 @@
 
             <optgroup label="{{ __('voyager::database.relationship.relationship') }}">
             @foreach($relationshipOptions as $relationshipOption)
-                <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $relationshipOption->{$options->relationship->key}){{ 'selected="selected"' }}@endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
+                <option value="{{ $relationshipOption->{$options->relationship->key} }}" @if($default == $relationshipOption->{$options->relationship->key} && $selected_value === NULL) selected="selected" @endif @if($selected_value == $relationshipOption->{$options->relationship->key}) selected="selected" @endif>{{ $relationshipOption->{$options->relationship->label} }}</option>
             @endforeach
             </optgroup>
         </select>
@@ -64,7 +64,7 @@
         <?php $default = (isset($options->default) && !isset($dataTypeContent->{$row->field})) ? $options->default : null; ?>
         @if(isset($options->options))
             @foreach($options->options as $key => $option)
-                <option value="{{ $key }}" @if($default == $key && $selected_value === NULL){{ 'selected="selected"' }}@endif @if($selected_value == $key){{ 'selected="selected"' }}@endif>{{ $option }}</option>
+                <option value="{{ $key }}" @if($default == $key && $selected_value === NULL) selected="selected" @endif @if($selected_value == $key) selected="selected" @endif>{{ $option }}</option>
             @endforeach
         @endif
     </select>

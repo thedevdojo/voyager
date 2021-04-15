@@ -30,4 +30,5 @@ return [
     'success_uploading'      => 'Imagem carregada com sucesso!',
     'uploading_wrong_type'   => 'Falha de envio: Formato do ficheiro não suportado ou é muito grande para ser carregado!',
     'video_support'          => 'O seu navegador não suporta a tag de vídeo.',
+    'add_all_selected'       => 'Adicionar todos os selecionados',
 ];

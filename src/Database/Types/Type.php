@@ -16,9 +16,9 @@ abstract class Type extends DoctrineType
     protected static $customTypeOptions = [];
     protected static $typeCategories = [];
 
-    const NAME = 'UNDEFINED_TYPE_NAME';
-    const NOT_SUPPORTED = 'notSupported';
-    const NOT_SUPPORT_INDEX = 'notSupportIndex';
+    public const NAME = 'UNDEFINED_TYPE_NAME';
+    public const NOT_SUPPORTED = 'notSupported';
+    public const NOT_SUPPORT_INDEX = 'notSupportIndex';
 
     // todo: make sure this is not overwrting DoctrineType properties
 

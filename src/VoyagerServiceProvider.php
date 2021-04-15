@@ -6,12 +6,15 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageServiceProvider;
 use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
@@ -26,6 +29,7 @@ use TCG\Voyager\Policies\MenuItemPolicy;
 use TCG\Voyager\Policies\SettingPolicy;
 use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
+use TCG\Voyager\Seed;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
 
 class VoyagerServiceProvider extends ServiceProvider
@@ -67,8 +71,8 @@ class VoyagerServiceProvider extends ServiceProvider
             return new Voyager();
         });
 
-        $this->app->singleton('VoyagerAuth', function () {
-            return auth();
+        $this->app->singleton('VoyagerGuard', function () {
+            return config('auth.defaults.guard', 'web');
         });
 
         $this->loadHelpers();
@@ -96,10 +100,10 @@ class VoyagerServiceProvider extends ServiceProvider
     public function boot(Router $router, Dispatcher $event)
     {
         if (config('voyager.user.add_default_role_on_register')) {
-            $app_user = config('voyager.user.namespace') ?: config('auth.providers.users.model');
-            $app_user::created(function ($user) {
+            $model = Auth::guard(app('VoyagerGuard'))->getProvider()->getModel();
+            call_user_func($model.'::created', function ($user) use ($model) {
                 if (is_null($user->role_id)) {
-                    VoyagerFacade::model('User')->findOrFail($user->id)
+                    call_user_func($model.'::findOrFail', $user->id)
                         ->setRole(config('voyager.user.default_role'))
                         ->save();
                 }
@@ -129,6 +133,10 @@ class VoyagerServiceProvider extends ServiceProvider
         });
 
         $this->bootTranslatorCollectionMacros();
+
+        if (method_exists('Paginator', 'useBootstrap')) {
+            Paginator::useBootstrap();
+        }
     }
 
     /**
@@ -216,7 +224,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $components = ['title', 'text', 'button'];
 
         foreach ($components as $component) {
-            $class = 'TCG\\Voyager\\Alert\\Components\\'.ucfirst(camel_case($component)).'Component';
+            $class = 'TCG\\Voyager\\Alert\\Components\\'.ucfirst(Str::camel($component)).'Component';
 
             $this->app->bind("voyager.alert.components.{$component}", $class);
         }
@@ -247,7 +255,7 @@ class VoyagerServiceProvider extends ServiceProvider
                 "{$publishablePath}/dummy_content/users/" => storage_path('app/public/users'),
             ],
             'seeds' => [
-                "{$publishablePath}/database/seeds/" => database_path('seeds'),
+                "{$publishablePath}/database/seeds/" => database_path(Seed::getFolderName()),
             ],
             'config' => [
                 "{$publishablePath}/config/voyager.php" => config_path('voyager.php'),
@@ -263,7 +271,8 @@ class VoyagerServiceProvider extends ServiceProvider
     public function registerConfigs()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/publishable/config/voyager.php', 'voyager'
+            dirname(__DIR__).'/publishable/config/voyager.php',
+            'voyager'
         );
     }
 
@@ -331,7 +340,7 @@ class VoyagerServiceProvider extends ServiceProvider
         ];
 
         foreach ($formFields as $formField) {
-            $class = studly_case("{$formField}_handler");
+            $class = Str::studly("{$formField}_handler");
 
             VoyagerFacade::addFormField("TCG\\Voyager\\FormFields\\{$class}");
         }

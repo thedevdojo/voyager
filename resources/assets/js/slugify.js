@@ -31,7 +31,7 @@
             this.settings  = $.extend( {}, defaults, options );
             this._defaults = defaults;
             this.chars     = this._load_char_maps();
-            if (!this.settings.map) {      // Load extra character map translator
+            if (this.settings.map) {      // Load extra character map translator
                 $.extend(this.chars, this.settings.map);
             }
             this.init();
@@ -94,7 +94,7 @@
                 // Replace Char Map
                 //
                 for (var i=0, l=str.length ; i<l ; i++) {
-                    _slug += (this.chars[str.charAt(i)])
+                    _slug += (this.chars.hasOwnProperty(str.charAt(i)))
                              ? this.chars[str.charAt(i)]
                              : str.charAt(i);
                 }
@@ -247,7 +247,8 @@
                     'Ễ': 'E','Ị': 'I','Ỉ': 'I','Ọ': 'O','Ỏ': 'O','Ồ': 'O','Ố': 'O','Ộ': 'O',
                     'Ổ': 'O','Ỗ': 'O','Ờ': 'O','Ớ': 'O','Ợ': 'O','Ở': 'O','Ỡ': 'O','Ụ': 'U',
                     'Ủ': 'U','Ừ': 'U','Ứ': 'U','Ự': 'U','Ử': 'U','Ữ': 'U','Ỳ': 'Y','Ỵ': 'Y',
-                    'đ': 'd','Đ': 'D','Ỷ': 'Y','Ỹ': 'Y','ă': 'a','Ă': 'a'
+                    'đ': 'd','Đ': 'D','Ỷ': 'Y','Ỹ': 'Y','ă': 'a','Ă': 'a','Ư': 'u','Ơ': 'o',
+                    'ư': 'u','ơ': 'o'
                 };
             },
             _map_latvian: function() {

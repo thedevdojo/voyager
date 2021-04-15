@@ -44,4 +44,5 @@ return [
     'browser_video_support'  => 'براوسەرەکەت پشتگیری فایلی ڤیدیۆیی ناکات.',
     'browser_audio_support'  => 'براوسەرەکەت پشتگیری فایلی دەنگی ناکات.',
     'width'                  => 'درێژی: ',
+    'add_all_selected'       => 'Add all selected',
 ];
