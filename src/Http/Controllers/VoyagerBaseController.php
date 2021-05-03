@@ -49,16 +49,9 @@ class VoyagerBaseController extends Controller
 
         $searchNames = [];
         if ($dataType->server_side) {
-            $searchable = SchemaManager::describeTable(app($dataType->model_name)->getTable())->pluck('name')->toArray();
-            $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get();
-            foreach ($searchable as $key => $value) {
-                $field = $dataRow->where('field', $value)->first();
-                $displayName = ucwords(str_replace('_', ' ', $value));
-                if ($field !== null) {
-                    $displayName = $field->getTranslatedAttribute('display_name');
-                }
-                $searchNames[$value] = $displayName;
-            }
+            $searchNames = $dataType->browseRows->mapWithKeys(function ($row) {
+                return [$row['field'] => $row->getTranslatedAttribute('display_name')];
+            });
         }
 
         $orderBy = $request->get('order_by', $dataType->order_column);
@@ -100,7 +93,9 @@ class VoyagerBaseController extends Controller
                         $row->details->model::where($row->details->label, $search_filter, $search_value)->pluck('id')->toArray()
                     );
                 } else {
-                    $query->where($searchField, $search_filter, $search_value);
+                    if ($dataType->browseRows->pluck('field')->contains($search->key)) {
+                        $query->where($searchField, $search_filter, $search_value);
+                    }
                 }
             }
 
