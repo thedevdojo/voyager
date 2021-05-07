@@ -7,8 +7,8 @@ use TCG\Voyager\Database\Types\Type;
 
 class BitVaryingType extends Type
 {
-    const NAME = 'bit varying';
-    const DBTYPE = 'varbit';
+    public const NAME = 'bit varying';
+    public const DBTYPE = 'varbit';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

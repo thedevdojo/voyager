@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class MoneyType extends Type
 {
-    const NAME = 'money';
+    public const NAME = 'money';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

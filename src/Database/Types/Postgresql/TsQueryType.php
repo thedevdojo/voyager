@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class TsQueryType extends Type
 {
-    const NAME = 'tsquery';
+    public const NAME = 'tsquery';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

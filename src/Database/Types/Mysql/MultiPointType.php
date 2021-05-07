@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class MultiPointType extends Type
 {
-    const NAME = 'multipoint';
+    public const NAME = 'multipoint';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

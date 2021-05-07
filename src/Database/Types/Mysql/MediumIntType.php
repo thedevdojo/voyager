@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class MediumIntType extends Type
 {
-    const NAME = 'mediumint';
+    public const NAME = 'mediumint';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
