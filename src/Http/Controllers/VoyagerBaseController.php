@@ -49,16 +49,9 @@ class VoyagerBaseController extends Controller
 
         $searchNames = [];
         if ($dataType->server_side) {
-            $searchable = SchemaManager::describeTable(app($dataType->model_name)->getTable())->pluck('name')->toArray();
-            $dataRow = Voyager::model('DataRow')->whereDataTypeId($dataType->id)->get();
-            foreach ($searchable as $key => $value) {
-                $field = $dataRow->where('field', $value)->first();
-                $displayName = ucwords(str_replace('_', ' ', $value));
-                if ($field !== null) {
-                    $displayName = $field->getTranslatedAttribute('display_name');
-                }
-                $searchNames[$value] = $displayName;
-            }
+            $searchNames = $dataType->browseRows->mapWithKeys(function ($row) {
+                return [$row['field'] => $row->getTranslatedAttribute('display_name')];
+            });
         }
 
         $orderBy = $request->get('order_by', $dataType->order_column);
@@ -94,13 +87,15 @@ class VoyagerBaseController extends Controller
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
 
                 $searchField = $dataType->name.'.'.$search->key;
-                if ($row = $this->findRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
+                if ($row = $this->findSearchableRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
                     $query->whereIn(
                         $searchField,
                         $row->details->model::where($row->details->label, $search_filter, $search_value)->pluck('id')->toArray()
                     );
                 } else {
-                    $query->where($searchField, $search_filter, $search_value);
+                    if ($dataType->browseRows->pluck('field')->contains($search->key)) {
+                        $query->where($searchField, $search_filter, $search_value);
+                    }
                 }
             }
 
@@ -179,6 +174,9 @@ class VoyagerBaseController extends Controller
             $orderColumn = [[$index, $sortOrder ?? 'desc']];
         }
 
+        // Define list of columns that can be sorted server side
+        $sortableColumns = $this->getSortableColumns($dataType->browseRows);
+
         $view = 'voyager::bread.browse';
 
         if (view()->exists("voyager::$slug.browse")) {
@@ -193,6 +191,7 @@ class VoyagerBaseController extends Controller
             'search',
             'orderBy',
             'orderColumn',
+            'sortableColumns',
             'sortOrder',
             'searchNames',
             'isServerSide',
@@ -963,10 +962,38 @@ class VoyagerBaseController extends Controller
         return response()->json([], 404);
     }
 
-    protected function findRelationshipRow($relationshipRows, $searchKey)
+    protected function findSearchableRelationshipRow($relationshipRows, $searchKey)
     {
         return $relationshipRows->filter(function ($item) use ($searchKey) {
-            return $item->details->type == 'belongsTo' && $item->details->column == $searchKey;
+            if ($item->details->column != $searchKey) {
+                return false;
+            }
+            if ($item->details->type != 'belongsTo') {
+                return false;
+            }
+
+            return !$this->relationIsUsingAccessorAsLabel($item->details);
         })->first();
+    }
+
+    protected function getSortableColumns($rows)
+    {
+        return $rows->filter(function ($item) {
+            if ($item->type != 'relationship') {
+                return true;
+            }
+            if ($item->details->type != 'belongsTo') {
+                return false;
+            }
+
+            return !$this->relationIsUsingAccessorAsLabel($item->details);
+        })
+        ->pluck('field')
+        ->toArray();
+    }
+
+    protected function relationIsUsingAccessorAsLabel($details)
+    {
+        return in_array($details->label, app($details->model)->additional_attributes ?? []);
     }
 }
