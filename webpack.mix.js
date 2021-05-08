@@ -12,7 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.options({ processCssUrls: false }).sass('resources/assets/sass/app.scss', 'publishable/assets/css', { implementation: require('node-sass') })
-.js('resources/assets/js/app.js', 'publishable/assets/js')
+.js('resources/assets/js/app.js', 'publishable/assets/js').vue({ version: 2 })
 .copy('node_modules/tinymce/skins', 'publishable/assets/js/skins')
 .copy('resources/assets/js/skins', 'publishable/assets/js/skins')
 .copy('node_modules/tinymce/themes/modern', 'publishable/assets/js/themes/modern')
