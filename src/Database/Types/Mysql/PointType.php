@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class PointType extends Type
 {
-    const NAME = 'point';
+    public const NAME = 'point';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

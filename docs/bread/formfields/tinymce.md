@@ -1,6 +1,6 @@
 # TinyMCE
 
-If you want to customize TinyMCE within Voyager, you can do so by adding a [additional JS file](additional-css-js.md) to your config.
+If you want to customize TinyMCE within Voyager, you can do so by adding a [additional JS file](../../customization/additional-css-js.md) to your config.
 
 In this file you have to define a function like
 

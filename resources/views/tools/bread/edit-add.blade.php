@@ -558,8 +558,14 @@
 
         /********** Relationship functionality **********/
 
-       $(function () {
+        $(function () {
             $('.relationship_type').change(function(){
+                $(this).parent().parent().find('.belongsToManyShow, .belongsToShow, .hasOneShow, .hasManyShow').hide();
+                $(this).parent().parent().find('.' + $(this).val() + 'Show').show();
+                // hasOneShow has a prepopulated select, only one between the following should be enabled
+                $(this).parent().parent().find('.hasOneShow select').attr('disabled', true);
+                $(this).parent().parent().find('.belongsToShow select').attr('disabled', false);
+
                 if($(this).val() == 'belongsTo'){
                     $(this).parent().parent().find('.relationshipField').show();
                     $(this).parent().parent().find('.relationshipPivot').hide();
@@ -572,12 +578,14 @@
                     $(this).parent().parent().find('.relationship_taggable').hide();
                     $(this).parent().parent().find('.hasOneMany').addClass('flexed');
                     $(this).parent().parent().find('.belongsTo').removeClass('flexed');
+                    $(this).parent().parent().find('.hasOneShow select').attr('disabled', false);
+                    $(this).parent().parent().find('.belongsToShow select').attr('disabled', true);
                 } else {
                     $(this).parent().parent().find('.relationshipField').hide();
                     $(this).parent().parent().find('.relationshipPivot').css('display', 'flex');
                     $(this).parent().parent().find('.relationship_taggable').show();
                 }
-            });
+            }).trigger('change');
 
             $('.btn-new-relationship').click(function(){
                 // Update table data

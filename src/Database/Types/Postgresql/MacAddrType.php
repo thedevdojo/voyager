@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class MacAddrType extends Type
 {
-    const NAME = 'macaddr';
+    public const NAME = 'macaddr';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class TextType extends Type
 {
-    const NAME = 'text';
+    public const NAME = 'text';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
