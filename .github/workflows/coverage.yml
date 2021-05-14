@@ -33,7 +33,7 @@ jobs:
 
       # Install PHP dependencies
       - name: Install Composer dependencies
-        run: composer require "illuminate/support:6.*"
+        run: composer require "illuminate/support:7.*" --no-ansi
 
       # Install NPM dependencies
       - name: Install Dependencies

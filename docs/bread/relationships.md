@@ -83,3 +83,7 @@ And add the following to the relationship options:
 
 The value is the name of your scope-method without the word `scope`.  
 The value for `scopeActive()` is `active`. For `scopeSomeUsers()` it is `someUsers`.
+
+{% hint style="info" %}
+In a BelongsTo relationship the foreign key field decides if value can be saved on add or edit and applies validation rules for everything else, like visibility in browse and edit, the relationship field is used.
+{% endhint %}

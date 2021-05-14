@@ -8,7 +8,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class EnumType extends Type
 {
-    const NAME = 'enum';
+    public const NAME = 'enum';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
