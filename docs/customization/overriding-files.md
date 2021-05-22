@@ -11,7 +11,7 @@ You can override any of the BREAD views for a **single** BREAD by creating a new
 
 Alternatively you can override the views for **all** BREADs by creating any of the above files under `resources/views/vendor/voyager/bread`
 
-#### Overriding submit button:
+## Overriding submit button:
 You can override the submit button without the need to override the whole `edit-add.blade.php` by extending the `submit-buttons` section:  
 ```blade
 @extends('voyager::bread.edit-add')
