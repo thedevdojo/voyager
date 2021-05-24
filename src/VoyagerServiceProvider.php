@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 use Intervention\Image\ImageServiceProvider;
 use Larapack\DoctrineSupport\DoctrineSupportServiceProvider;
 use Larapack\VoyagerHooks\VoyagerHooksServiceProvider;
