@@ -6,7 +6,7 @@
 @import "node_modules/datatables-bootstrap3-plugin/media/css/datatables-bootstrap3";
 @import "node_modules/select2/dist/css/select2";
 @import "node_modules/toastr/build/toastr";
-@import "node_modules/perfect-scrollbar/dist/css/perfect-scrollbar";
+@import "node_modules/perfect-scrollbar/css/perfect-scrollbar";
 @import "node_modules/bootstrap-toggle/css/bootstrap-toggle";
 @import "node_modules/icheck/skins/flat/flat";
 @import "node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker";
@@ -8497,8 +8497,8 @@ limitations under the License.
 
 /********** Add z-index to perfect-scrollbar **********/
 
-.ps.ps--active-x>.ps__scrollbar-x-rail, .ps.ps--active-y>.ps__scrollbar-y-rail {
-    z-index: 999;
+.ps__rail-x, .ps__rail-y {
+  z-index: 999;
 }
 
 /********** END perfect-scrollbar style **********/
