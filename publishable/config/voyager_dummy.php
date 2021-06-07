@@ -151,12 +151,7 @@ return [
         
         // The admin is able to define the number of widgets to display per line
         // Related to file tcg/src/Voyager.php
-        'widgets_per_line' => 4,        
-
-        // Defines the number of records to display when server-side paging is disabled.
-        'data_tables' => [
-            'pageLength' => 25
-        ],        
+        'widgets_per_line' => 4,      
 
     ],
 
