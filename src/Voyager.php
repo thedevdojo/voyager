@@ -192,6 +192,7 @@ class Voyager
     public function dimmers()
     {
         $widgetClasses = config('voyager.dashboard.widgets');
+        $widgetsPerLine = config('voyager.dashboard.widgets_per_line');
         $dimmerGroups = [];
         $dimmerCount = 0;
         $dimmers = Widget::group("voyager::dimmers-{$dimmerCount}");
@@ -203,7 +204,7 @@ class Voyager
 
                 // Every third dimmer, we consider out WidgetGroup filled.
                 // We switch that out with another WidgetGroup.
-                if ($dimmerCount % config('voyager.dashboard.widgets_per_line') === 0 && $dimmerCount !== 0) {
+                if ($dimmerCount % isset($widgetsPerLine) ? $widgetsPerLine : 3 === 0 && $dimmerCount !== 0) {
                     $dimmerGroups[] = $dimmers;
                     $dimmerGroupTag = ceil($dimmerCount / 3);
                     $dimmers = Widget::group("voyager::dimmers-{$dimmerGroupTag}");
