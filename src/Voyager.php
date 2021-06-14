@@ -192,7 +192,6 @@ class Voyager
     public function dimmers()
     {
         $widgetClasses = config('voyager.dashboard.widgets');
-        $widgetsPerLine = config('voyager.dashboard.widgets_per_line');
         $dimmerGroups = [];
         $dimmerCount = 0;
         $dimmers = Widget::group("voyager::dimmers-{$dimmerCount}");
