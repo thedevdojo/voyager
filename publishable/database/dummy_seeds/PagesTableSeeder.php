@@ -280,7 +280,7 @@ class PagesTableSeeder extends Seeder
                 'image'            => null,
                 'meta_description' => null,
                 'meta_keywords'    => null,
-                'status'           => Page::STATUS_INACTIVE,
+                'status'           => Page::STATUS_ACTIVE,
             ])->save();
         }
     }
