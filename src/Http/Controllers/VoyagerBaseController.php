@@ -65,9 +65,7 @@ class VoyagerBaseController extends Controller
 
             $query = $model::select($dataType->name.'.*');
 
-            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-                $query->{$dataType->scope}();
-            }
+            $this->applyScopes( $dataType, $model, $query );
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
@@ -230,9 +228,7 @@ class VoyagerBaseController extends Controller
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $query = $query->withTrashed();
             }
-            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-                $query = $query->{$dataType->scope}();
-            }
+            $this->applyScopes( $dataType, $model, $query );
             $dataTypeContent = call_user_func([$query, 'findOrFail'], $id);
             if ($dataTypeContent->deleted_at) {
                 $isSoftDeleted = true;
@@ -292,9 +288,7 @@ class VoyagerBaseController extends Controller
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $query = $query->withTrashed();
             }
-            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-                $query = $query->{$dataType->scope}();
-            }
+            $this->applyScopes( $dataType, $model, $query );
             $dataTypeContent = call_user_func([$query, 'findOrFail'], $id);
         } else {
             // If Model doest exist, get data from table name
@@ -338,9 +332,9 @@ class VoyagerBaseController extends Controller
 
         $model = app($dataType->model_name);
         $query = $model->query();
-        if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-            $query = $query->{$dataType->scope}();
-        }
+
+        $this->applyScopes( $dataType, $model, $query );
+
         if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
             $query = $query->withTrashed();
         }
@@ -536,9 +530,7 @@ class VoyagerBaseController extends Controller
 
         // Get record
         $query = $model->withTrashed();
-        if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-            $query = $query->{$dataType->scope}();
-        }
+        $this->applyScopes( $dataType, $model, $query );
         $data = $query->findOrFail($id);
 
         $displayName = $dataType->getTranslatedAttribute('display_name_singular');
@@ -995,5 +987,18 @@ class VoyagerBaseController extends Controller
     protected function relationIsUsingAccessorAsLabel($details)
     {
         return in_array($details->label, app($details->model)->additional_attributes ?? []);
+    }
+
+    protected function applyScopes( $dataType, $model, $query )
+    {
+        if (isset($dataType->scope) && !empty($dataType->scope)) {
+            if( ! is_array($dataType->scope))
+                $dataType->scope = [$dataType->scope];
+            foreach ($dataType->scope as $scope)
+            {
+                if (method_exists($model, 'scope'.ucfirst($scope)))
+                    $query->{$scope}();    
+            }
+        }
     }
 }
