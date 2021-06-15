@@ -211,20 +211,20 @@ class VoyagerBreadController extends Controller
         return redirect()->route('voyager.bread.index')->with($data);
     }
 
+    /**
+     * Return the list of model's scopes that have only one required parameters: the $query.
+     *
+     * @param string $model_name
+     * @return \Illuminate\Support\Collection
+     */
     public function getModelScopes($model_name)
     {
         $reflection = new ReflectionClass($model_name);
 
         return collect($reflection->getMethods())->filter(function ($method)
         {
-            // method name start with 'scope'
-            if( Str::startsWith($method->name, 'scope') )
-            {
-                // and have only one Required parameters (the $query)
-                if( $method->getNumberOfRequiredParameters() == 1 )
-                    return true ;
-            }
-            return false ;
+            return ( Str::startsWith($method->name, 'scope')
+                && $method->getNumberOfRequiredParameters() == 1 );
         })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
             return lcfirst(Str::replaceFirst('scope', '', $method->name));
         });
