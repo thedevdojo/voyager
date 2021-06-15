@@ -3,8 +3,7 @@
 namespace TCG\Voyager\Tests\Stubs\Models ;
 
 /**
- * This class to test model scope.
- * 
+ * This class to test BREAD model's scope(s).
  */
 class ModelWithScopes {
 

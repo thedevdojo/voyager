@@ -11,6 +11,10 @@ use TCG\Voyager\Http\Controllers\VoyagerBreadController;
 
 class VoyagerBreadControllerTest extends TestCase
 {
+    /**
+     * @see \TCG\Voyager\Tests\Stubs\Models\ModelWithScopes fake model with test dedicated scopes.
+     * @return void
+     */
     public function testGetModelScopes()
     {
         $vbc = new VoyagerBreadController();
