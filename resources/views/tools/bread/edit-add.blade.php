@@ -251,12 +251,16 @@
                             <div class="row clearfix">
                                 @if (isset($scopes) && isset($dataType))
                                     <div class="col-md-3 form-group">
-                                        <label for="scope">{{ __('voyager::bread.scope') }}</label>
-                                        <select name="scope" class="select2 form-control">
+                                        <label for="scopes">{{ __('voyager::bread.scope') }}</label>
+                                        <select id="scopes" name="scope[]" class="select2 form-control" multiple>
                                             <option value="">-- {{ __('voyager::generic.none') }} --</option>
                                             @foreach($scopes as $scope)
                                             <option value="{{ $scope }}"
+                                                @if(is_array($dataType->scope))
+                                                    @if(in_array($scope,$dataType->scope)) selected @endif
+                                                @else {{-- for backward compat --}}
                                                     @if($dataType->scope == $scope) selected @endif
+                                                @endif
                                             >{{ $scope }}</option>
                                             @endforeach
                                         </select>

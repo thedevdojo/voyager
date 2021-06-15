@@ -104,7 +104,7 @@ class VoyagerBreadController extends Controller
             }
 
             return redirect()->route('voyager.bread.index')->with($data);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('voyager.bread.index')->with($this->alertException($e, 'Saving Failed'));
         }
     }
@@ -172,7 +172,7 @@ class VoyagerBreadController extends Controller
             $dataType->saveTranslations($translations);
 
             return redirect()->route('voyager.bread.index')->with($data);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->with($this->alertException($e, __('voyager::generic.update_failed')));
         }
     }
@@ -221,8 +221,7 @@ class VoyagerBreadController extends Controller
     {
         $reflection = new ReflectionClass($model_name);
 
-        return collect($reflection->getMethods())->filter(function ($method)
-        {
+        return collect($reflection->getMethods())->filter(function ($method) {
             return ( Str::startsWith($method->name, 'scope')
                 && $method->getNumberOfRequiredParameters() == 1 );
         })->whereNotIn('name', ['scopeWithTranslations', 'scopeWithTranslation', 'scopeWhereTranslation'])->transform(function ($method) {
