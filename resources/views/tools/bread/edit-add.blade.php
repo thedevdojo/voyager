@@ -260,12 +260,8 @@
                                             <option></option>
                                             @foreach($scopes as $scope)
                                             <option value="{{ $scope }}"
-                                                @if(is_array($dataType->scope))
-                                                    @if(in_array($scope,$dataType->scope)) selected @endif
-                                                @else {{-- for backward compat --}}
-                                                    @if($dataType->scope == $scope) selected @endif
-                                                @endif
-                                            >{{ $scope }}</option>
+                                                @if(in_array($scope, Arr::wrap($dataType->scope))) selected @endif
+                                                >{{ $scope }}</option>
                                             @endforeach
                                         </select>
                                     </div>

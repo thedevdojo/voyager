@@ -5,6 +5,7 @@ namespace TCG\Voyager\Http\Controllers;
 use Exception;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Database\Schema\SchemaManager;
@@ -991,13 +992,13 @@ class VoyagerBaseController extends Controller
 
     protected function applyScopes( $dataType, $model, $query )
     {
-        if (isset($dataType->scope) && !empty($dataType->scope)) {
-            if( ! is_array($dataType->scope))
-                $dataType->scope = [$dataType->scope];
-            foreach ($dataType->scope as $scope)
-            {
-                if (method_exists($model, 'scope'.ucfirst($scope)))
-                    $query->{$scope}();    
+        if (empty($dataType->scope)) {
+            return;
+        }
+    
+        foreach (Arr::wrap($dataType->scope) as $scope) {
+            if (method_exists($model, 'scope'.ucfirst($scope))) {
+                $query->{$scope}();
             }
         }
     }
