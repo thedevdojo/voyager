@@ -908,20 +908,39 @@ class VoyagerBaseController extends Controller
                     // If we are using additional_attribute as label
                     if (in_array($options->label, $additional_attributes)) {
                         $relationshipOptions = $model->all();
+
+                        if (is_bread_translatable($model)) {
+                            $relationshipOptions = $relationshipOptions->translate();
+                        }
+
                         $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
                             return stripos($model->{$options->label}, $search) !== false;
                         });
                         $total_count = $relationshipOptions->count();
                         $relationshipOptions = $relationshipOptions->forPage($page, $on_page);
                     } else {
-                        $total_count = $model->where($options->label, 'LIKE', '%'.$search.'%')->count();
+                        $where = 'where';
+                        $parameters = [$options->label, 'LIKE', '%'.$search.'%'];
+
+                        // If translatable use whereTranslation and add locale parameter for search
+                        if (is_bread_translatable($model)) {
+                            $where .= 'Translation';
+                            $parameters[] = [app()->getLocale()];
+                            $parameters[] = false;
+                        }
+
+                        $total_count = $model->{$where}(...$parameters)->count();
                         $relationshipOptions = $model->take($on_page)->skip($skip)
-                            ->where($options->label, 'LIKE', '%'.$search.'%')
+                            ->{$where}(...$parameters)
                             ->get();
                     }
                 } else {
                     $total_count = $model->count();
                     $relationshipOptions = $model->take($on_page)->skip($skip)->get();
+                }
+
+                if (is_bread_translatable($model) && !($search && in_array($options->label, $model->additional_attributes ?? []))) {
+                    $relationshipOptions = $relationshipOptions->translate();
                 }
 
                 $results = [];
