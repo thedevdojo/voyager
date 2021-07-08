@@ -90,7 +90,7 @@ use TCG\Voyager\Facades\Voyager;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function boot()
     {
         Voyager::useModel('DataRow', \App\DataRow::class);
     }
