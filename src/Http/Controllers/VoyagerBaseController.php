@@ -907,7 +907,7 @@ class VoyagerBaseController extends Controller
                 if ($search) {
                     // If we are using additional_attribute as label
                     if (in_array($options->label, $additional_attributes)) {
-                        $relationshipOptions = $model->all();
+                        $relationshipOptions = $model->get();
                         $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
                             return stripos($model->{$options->label}, $search) !== false;
                         });
