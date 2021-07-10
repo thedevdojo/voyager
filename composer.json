@@ -18,7 +18,7 @@
         "php": "^7.3|^7.4|^8.0",
         "illuminate/support": "~6.0|~7.0|~8.0",
         "intervention/image": "^2.4",
-        "doctrine/dbal": "^2.5",
+        "doctrine/dbal": "^3.1",
         "larapack/doctrine-support": "~0.1.4",
         "laravel/ui": ">=1.0",
         "arrilot/laravel-widgets": "^3.7",
