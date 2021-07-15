@@ -8,7 +8,7 @@ return [
     'destination_folder'     => 'Dosya Konumu',
     'drag_drop_info'         => 'Sürükle bırak yöntemiyle hızlıca resim yükle',
     'error_already_exists'   => 'Malesef dosya/dizin ile aynı isimde bulunan bir kayıt var',
-    'error_creating_dir'     => 'Malesef dizin oluşturuken bir şeyler yolunda gitmedi, ' . 'Lütfen izinlerinizi kontrol ediniz',
+    'error_creating_dir'     => 'Malesef dizin oluşturuken bir şeyler yolunda gitmedi, Lütfen izinlerinizi kontrol ediniz',
     'error_deleting_file'    => 'Bu dosyayı silerken bir sorun oluştu, lütfen izinlerinizi kontrol ediniz ',
     'error_deleting_folder'  => 'Malesef bu dizini silerken bir sorun oluştu, lütfen izinlerinizi kontrol ediniz',
     'error_may_exist'        => 'Dosya/dizin ile aynı isimde bulunan bir kayıt olabilir lütfen ismini değiştirin',
