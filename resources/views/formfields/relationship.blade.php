@@ -120,11 +120,16 @@
         @elseif($options->type == 'belongsToMany')
 
             @if(isset($view) && ($view == 'browse' || $view == 'read'))
-
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
 
-                    $selected_values = isset($relationshipData) ? $relationshipData->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key)->get()->map(function ($item, $key) use ($options) {
+                    if (method_exists($relationshipData, $options->method_name) && $options->method_name) {
+                        $relation_method = call_user_func([$relationshipData, $options->method_name]);
+                    } elseif (isset($relationshipData)) {
+                        $relation_method = $relationshipData->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key);
+                    }
+
+                    $selected_values = isset($relationshipData) ? $relation_method->get()->map(function ($item, $key) use ($options) {
             			return $item->{$options->label};
             		})->all() : array();
                 @endphp
@@ -168,7 +173,13 @@
                 >
 
                         @php
-                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key)->get()->map(function ($item, $key) use ($options) {
+                            if (method_exists($dataTypeContent, $options->method_name) && $options->method_name) {
+                                $relation_method = call_user_func([$dataTypeContent, $options->method_name]);
+                            } elseif (isset($dataTypeContent)) {
+                                $relation_method = $dataTypeContent->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key);
+                            }
+
+                            $selected_values = isset($dataTypeContent) ? $relation_method->get()->map(function ($item, $key) use ($options) {
                                 return $item->{$options->key};
                             })->all() : array();
                             $relationshipOptions = app($options->model)->all();
