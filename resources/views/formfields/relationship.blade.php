@@ -123,7 +123,7 @@
                 @php
                     $relationshipData = (isset($data)) ? $data : $dataTypeContent;
 
-                    if (method_exists($relationshipData, $options->method_name) && $options->method_name) {
+                    if (isset($options?->method_name) && method_exists($relationshipData, $options->method_name)) {                    
                         $relation_method = call_user_func([$relationshipData, $options->method_name]);
                     } elseif (isset($relationshipData)) {
                         $relation_method = $relationshipData->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key);
@@ -173,7 +173,7 @@
                 >
 
                         @php
-                            if (method_exists($dataTypeContent, $options->method_name) && $options->method_name) {
+                            if (isset($options->method_name) && method_exists($dataTypeContent, $options->method_name)) {
                                 $relation_method = call_user_func([$dataTypeContent, $options->method_name]);
                             } elseif (isset($dataTypeContent)) {
                                 $relation_method = $dataTypeContent->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key);
