@@ -7,7 +7,6 @@ return [
         'title'                 => 'Länkar',
         'documentation'         => 'Dokumentation',
         'voyager_homepage'      => 'Voyager Hemsida',
-        'voyager_hooks'         => 'Voyager Hooks',
     ],
     'commands' => [
         'title'                 => 'Kommandon',

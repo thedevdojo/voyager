@@ -6,7 +6,6 @@ return [
         'title'                 => 'Σύνδεσμοι',
         'documentation'         => 'Τεκμηρίωση',
         'voyager_homepage'      => 'Αρχική σελίδα Voyager',
-        'voyager_hooks'         => 'Voyager Hooks',
     ],
     'commands'      => [
         'title'                 => 'Εντολές',

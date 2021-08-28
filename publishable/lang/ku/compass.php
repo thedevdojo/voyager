@@ -7,7 +7,6 @@ return [
         'title'                 => 'لینکەکان',
         'documentation'         => 'بەڵگەنامەکردن',
         'voyager_homepage'      => 'پەڕەی سەرەتای ڤۆیەیجەر (Voyager)',
-        'voyager_hooks'         => 'هووکەکانی ڤۆیەیجەر (Voyager)',
     ],
     'commands'      => [
         'title'                 => 'ناونیشان',
