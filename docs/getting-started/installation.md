@@ -1,6 +1,6 @@
 # Installation
 
-Voyager is super easy to install. After creating your new Laravel application you can include the Voyager package with the following command:
+Voyager is very easy to install. After creating your new Laravel application you can include the Voyager package with the following command:
 
 ```bash
 composer require tcg/voyager
