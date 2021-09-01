@@ -14,6 +14,7 @@ return [
     'error_deleting_folder'  => 'Sorry something seems to have gone wrong when deleting this folder, please check your permissions',
     'error_may_exist'        => 'File or Folder may already exist with that name. Please choose another name or delete the other file.',
     'error_moving'           => 'Sorry there seems to be a problem moving that file/folder, please make sure you have the correct permissions.',
+    'error_renaming_ext'     => 'The extension of a file can not be changed!',
     'error_uploading'        => 'Upload Fail: Unknown error occurred!',
     'files'                  => '1 file|:count files',
     'files_more'             => 'And :count more',
