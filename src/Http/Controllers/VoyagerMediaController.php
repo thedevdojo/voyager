@@ -142,6 +142,15 @@ class VoyagerMediaController extends Controller
                 $error = __('voyager::media.error_deleting_file');
                 $success = false;
             }
+
+            if (!empty($file['thumbnails'])) {
+                foreach ($file['thumbnails'] as $thumbnail) {
+                    if ($thumbnail['type'] == 'file') {
+                        $thumbnail_path = $path.$thumbnail['basename'];
+                        Storage::disk($this->filesystem)->delete($thumbnail_path);
+                    }
+                }
+            }
         }
 
         return compact('success', 'error');
