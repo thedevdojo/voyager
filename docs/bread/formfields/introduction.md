@@ -1,8 +1,8 @@
 # Formfields
 
-Formfields are the hearth of Voyagers BREAD-system.  
-Each formfield represents a field in your database-table and one input (or output) in BREAD.  
-To tweak your formfields you can insert JSON options which are described in the following pages.  
+Formfields are the hearth of Voyagers BREAD-system.
+Each formfield represents a field in your database-table and one input (or output) in BREAD.
+To tweak your formfields you can insert JSON options which are described in the following pages.
 
 All formfields share a handful options:
 
@@ -88,7 +88,7 @@ This will automatically generate the slug from the input of the `title` field. I
 
 ## Custom view
 
-You can specify a custom view to be used for a formfield.  
+You can specify a custom view to be used for a formfield.
 To do so, you have to specify the `view` attribute for your desired field:
 
 ```text
@@ -108,7 +108,22 @@ You get plenty of data passed to your view for you to use:
 * `$row` the DataRow
 * `$options` the DataRow details
 
+You can also use a custom field view for a specific action (browse, read or edit).
+In this case you can use:
+
+```text
+{
+    "view_browse": "my_browse_view",
+    "view_read": "my_read_view",
+    "view_add": "my_add_view",
+    "view_edit": "my_edit_view",
+    "view_order": "my_order_view"
+}
+```
+
+The same variables will be passed to your custom view (except `$view`).
+
 {% hint style="info" %}
-**Developing a custom formfield?**  
+**Developing a custom formfield?**
 If you are developing a custom formfield and want to customize any of the views, you can do so by merging `view` into `$options` in your formfields `createContent()` method.
 {% endhint %}
