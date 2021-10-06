@@ -29,7 +29,7 @@ return [
     'edit_rows'              => 'Редагуйте рядки таблиці :table нижче',
     'generate_permissions'   => 'Створення прав доступу',
     'icon_class'             => 'Значок для цієї таблиці',
-    'icon_hint'              => 'Значок для (необов`язково)',
+    'icon_hint'              => 'Значок (необов`язково)',
     'icon_hint2'             => 'Voyager Fonts Class',
     'model_class'            => 'Назва класу моделі',
     'model_name'             => 'Назва моделі',
