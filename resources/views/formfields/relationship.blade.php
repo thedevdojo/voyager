@@ -170,7 +170,7 @@
                         @php
                             $selected_keys = [];
                             
-                            if (isset($dataTypeContent)) {
+                            if (!is_null($dataTypeContent->getKey())) {
                                 $selected_keys = $dataTypeContent->belongsToMany(
                                     $options->model,
                                     $options->pivot_table,
