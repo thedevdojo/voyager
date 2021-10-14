@@ -59,6 +59,20 @@ $(document).ready(function () {
     $('select.select2-ajax').each(function() {
         $(this).select2({
             width: '100%',
+            tags: $(this).hasClass('taggable'),
+            createTag: function(params) {
+                var term = $.trim(params.term);
+    
+                if (term === '') {
+                    return null;
+                }
+    
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true
+                }
+            },
             ajax: {
                 url: $(this).data('get-items-route'),
                 data: function (params) {
@@ -88,50 +102,33 @@ $(document).ready(function () {
             var data = e.params.data;
             $(e.currentTarget).find("option[value='" + data.id + "']").attr('selected',false);
         });
-    });
-    $('select.select2-taggable').select2({
-        width: '100%',
-        tags: true,
-        createTag: function(params) {
-            var term = $.trim(params.term);
 
-            if (term === '') {
-                return null;
+        $(this).on('select2:selecting', function(e) {
+            if (!$(this).hasClass('taggable')) {
+                return;
             }
-
-            return {
-                id: term,
-                text: term,
-                newTag: true
-            }
-        }
-    }).on('select2:selecting', function(e) {
-        var $el = $(this);
-        var route = $el.data('route');
-        var label = $el.data('label');
-        var errorMessage = $el.data('error-message');
-        var newTag = e.params.args.data.newTag;
-
-        if (!newTag) return;
-
-        $el.select2('close');
-
-        $.post(route, {
-            [label]: e.params.args.data.text,
-            _tagging: true,
-        }).done(function(data) {
-            var newOption = new Option(e.params.args.data.text, data.data.id, false, true);
-            $el.append(newOption).trigger('change');
-        }).fail(function(error) {
-            toastr.error(errorMessage);
+            var $el = $(this);
+            var route = $el.data('route');
+            var label = $el.data('label');
+            var errorMessage = $el.data('error-message');
+            var newTag = e.params.args.data.newTag;
+    
+            if (!newTag) return;
+    
+            $el.select2('close');
+    
+            $.post(route, {
+                [label]: e.params.args.data.text,
+                _tagging: true,
+            }).done(function(data) {
+                var newOption = new Option(e.params.args.data.text, data.data.id, false, true);
+                $el.append(newOption).trigger('change');
+            }).fail(function(error) {
+                toastr.error(errorMessage);
+            });
+    
+            return false;
         });
-
-        return false;
-    }).on('select2:select', function (e) {
-        if (e.params.data.id == '') {
-            // "None" was selected. Clear all selected options
-            $(this).val([]).trigger('change');
-        }
     });
 
     $('.match-height').matchHeight();
