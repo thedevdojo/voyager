@@ -42,7 +42,7 @@ return [
     */
 
     'models' => [
-       // 'namespace' => 'App\\Models\\',
+       'namespace' => 'App\\Models\\',
     ],
 
     /*
@@ -104,13 +104,13 @@ return [
         /*
          * Select default language
          */
-        'default' => 'en',
+        'default' => 'fr',
 
         /*
          * Select languages that are supported.
          */
         'locales' => [
-            'en',
+            'fr',
             //'pt',
         ],
     ],
