@@ -16,7 +16,7 @@
             <div class="modal-footer">
                 <form action="{{ route('voyager.'.$dataType->slug.'.index') }}/0" id="bulk_delete_form" method="POST">
                     {{ method_field("DELETE") }}
-                    {{ csrf_field() }}
+                    @csrf
                     <input type="hidden" name="ids" id="bulk_delete_input" value="">
                     <input type="submit" class="btn btn-danger pull-right delete-confirm"
                              value="{{ __('voyager::generic.bulk_delete_confirm') }} {{ strtolower($dataType->getTranslatedAttribute('display_name_plural')) }}">

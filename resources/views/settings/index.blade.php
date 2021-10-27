@@ -228,7 +228,7 @@
     <div class="page-content settings container-fluid">
         <form action="{{ route('voyager.settings.update') }}" method="POST" enctype="multipart/form-data">
             {{ method_field("PUT") }}
-            {{ csrf_field() }}
+            @csrf
             <input type="hidden" name="setting_tab" class="setting_tab" value="{{ $active }}" />
             <div class="panel">
 
@@ -366,7 +366,7 @@
             </div>
             <div class="panel-body">
                 <form action="{{ route('voyager.settings.store') }}" method="POST">
-                    {{ csrf_field() }}
+                    @csrf
                     <input type="hidden" name="setting_tab" class="setting_tab" value="{{ $active }}" />
                     <div class="col-md-3">
                         <label for="display_name">{{ __('voyager::generic.name') }}</label>
@@ -437,7 +437,7 @@
                 <div class="modal-footer">
                     <form action="#" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
-                        {{ csrf_field() }}
+                        @csrf
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager::settings.delete_confirm') }}">
                     </form>
                     <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>
@@ -502,7 +502,7 @@
     </script>
     <iframe id="form_target" name="form_target" style="display:none"></iframe>
     <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="POST" enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
-        {{ csrf_field() }}
+        @csrf
         <input name="image" id="upload_file" type="file" onchange="$('#my_form').submit();this.value='';">
         <input type="hidden" name="type_slug" id="type_slug" value="settings">
     </form>

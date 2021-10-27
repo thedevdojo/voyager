@@ -84,7 +84,7 @@
                 <div class="modal-footer">
                     <form action="#" id="delete_form" method="POST">
                         {{ method_field("DELETE") }}
-                        {{ csrf_field() }}
+                        @csrf
                         <input type="submit" class="btn btn-danger pull-right delete-confirm" value="{{ __('voyager::generic.delete_this_confirm') }} {{ $dataType->getTranslatedAttribute('display_name_singular') }}">
                     </form>
                     <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager::generic.cancel') }}</button>

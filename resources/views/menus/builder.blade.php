@@ -45,7 +45,7 @@
                           id="delete_form"
                           method="POST">
                         {{ method_field("DELETE") }}
-                        {{ csrf_field() }}
+                        @csrf
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
                                value="{{ __('voyager::menu_builder.delete_item_confirm') }}">
                     </form>
@@ -70,7 +70,7 @@
                       data-action-update="{{ route('voyager.menus.item.update', ['menu' => $menu->id]) }}">
 
                     <input id="m_form_method" type="hidden" name="_method" value="POST">
-                    {{ csrf_field() }}
+                    @csrf
                     <div class="modal-body">
                         <div>
                             @include('voyager::multilingual.language-selector')

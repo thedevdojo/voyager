@@ -71,7 +71,7 @@
             @if($edit)
                 {{ method_field("PUT") }}
             @endif
-            {{ csrf_field() }}
+            @csrf
 
             <div class="row">
                 <div class="col-md-8">
@@ -298,7 +298,7 @@
             <input name="image" id="upload_file" type="file"
                      onchange="$('#my_form').submit();this.value='';">
             <input type="hidden" name="type_slug" id="type_slug" value="{{ $dataType->slug }}">
-            {{ csrf_field() }}
+            @csrf
         </form>
     </div>
 

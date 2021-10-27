@@ -98,5 +98,5 @@
 		</div>
 	</div>
 	<input type="hidden" value="{{ $dataType->id ?? '' }}" name="data_type_id">
-	{{ csrf_field() }}
+	@csrf
 </form>

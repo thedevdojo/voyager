@@ -150,7 +150,7 @@
                 <div class="modal-footer">
                     <form action="{{ route('voyager.'.$dataType->slug.'.index') }}" id="delete_form" method="POST">
                         {{ method_field('DELETE') }}
-                        {{ csrf_field() }}
+                        @csrf
                         <input type="submit" class="btn btn-danger pull-right delete-confirm"
                                value="{{ __('voyager::generic.delete_confirm') }} {{ strtolower($dataType->getTranslatedAttribute('display_name_singular')) }}">
                     </form>

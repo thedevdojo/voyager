@@ -46,8 +46,7 @@ class VoyagerBaseController extends Controller
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
-        $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'),
-            'filter' => $request->get('filter')];
+        $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
 
         $searchNames = [];
         if ($dataType->server_side) {
@@ -72,10 +71,7 @@ class VoyagerBaseController extends Controller
             }
 
             // Use withTrashed() if model uses SoftDeletes and if toggle is selected
-            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model)) && Auth::user()->can(
-                'delete',
-                app($dataType->model_name)
-            )) {
+            if ($model && in_array(SoftDeletes::class, class_uses_recursive($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
                 $usesSoftDeletes = true;
 
                 if ($request->get('showSoftDeleted')) {
@@ -379,8 +375,7 @@ class VoyagerBaseController extends Controller
         }
 
         return $redirect->with([
-            'message'    => __('voyager::generic.successfully_updated').
-                " {$dataType->getTranslatedAttribute('display_name_singular')}",
+            'message'    => __('voyager::generic.successfully_updated')." {$dataType->getTranslatedAttribute('display_name_singular')}",
             'alert-type' => 'success',
         ]);
     }
@@ -463,8 +458,7 @@ class VoyagerBaseController extends Controller
             }
 
             return $redirect->with([
-                'message'    => __('voyager::generic.successfully_added_new').
-                    " {$dataType->getTranslatedAttribute('display_name_singular')}",
+                'message'    => __('voyager::generic.successfully_added_new')." {$dataType->getTranslatedAttribute('display_name_singular')}",
                 'alert-type' => 'success',
             ]);
         } else {
@@ -511,9 +505,7 @@ class VoyagerBaseController extends Controller
             }
         }
 
-        $displayName = count($ids) > 1 ?
-            $dataType->getTranslatedAttribute('display_name_plural') :
-            $dataType->getTranslatedAttribute('display_name_singular');
+        $displayName = count($ids) > 1 ? $dataType->getTranslatedAttribute('display_name_plural') : $dataType->getTranslatedAttribute('display_name_singular');
 
         $res = $data->destroy($ids);
         $data = $res
@@ -620,7 +612,7 @@ class VoyagerBaseController extends Controller
 
                 // Check if we're dealing with a nested array for the case of multiple files
                 if (is_array($fieldData[0])) {
-                    foreach ($fieldData as $index => $file) {
+                    foreach ($fieldData as $index=>$file) {
                         // file type has a different structure than images
                         if (!empty($file['original_name'])) {
                             if ($file['original_name'] == $filename) {
@@ -727,8 +719,7 @@ class VoyagerBaseController extends Controller
         }
 
         // Delete media-picker files
-        $dataType->rows->where('type', 'media_picker')->where('details.delete_files', true)
-        ->each(function ($row) use ($data) {
+        $dataType->rows->where('type', 'media_picker')->where('details.delete_files', true)->each(function ($row) use ($data) {
             $content = $data->{$row->field};
             if (isset($content)) {
                 if (!is_array($content)) {
@@ -766,9 +757,7 @@ class VoyagerBaseController extends Controller
 
             foreach ($images_to_remove as $image) {
                 // Remove only $single_image if we are removing from bread edit
-                if ($image != config('voyager.user.default_avatar') &&
-                (is_null($single_image) ||
-                $single_image == $image)) {
+                if ($image != config('voyager.user.default_avatar') && (is_null($single_image) || $single_image == $image)) {
                     /*
                      *
                      * COTI ADD
@@ -874,7 +863,7 @@ class VoyagerBaseController extends Controller
         ));
     }
 
-    public function updateOrder(Request $request)
+    public function update_order(Request $request)
     {
         $slug = $this->getSlug($request);
 
@@ -887,10 +876,10 @@ class VoyagerBaseController extends Controller
 
         $order = json_decode($request->input('order'));
 
-        $this->orderItems($order, null, $model, $dataType);
+        $this->order_items($order, null, $model, $dataType);
     }
 
-    protected function orderItems(array $items, $parentId, $model, $dataType)
+    protected function order_items(array $items, $parentId, $model, $dataType)
     {
         if ($dataType->order_direction == 'desc') {
             $items = array_reverse($items);
@@ -907,7 +896,7 @@ class VoyagerBaseController extends Controller
             $i->save();
 
             if (isset($item->children)) {
-                $this->orderItems($item->children, $item->id, $model, $dataType);
+                $this->order_items($item->children, $item->id, $model, $dataType);
             }
         }
     }
@@ -956,10 +945,7 @@ class VoyagerBaseController extends Controller
                 $additional_attributes = $model->additional_attributes ?? [];
 
                 // Apply local scope if it is defined in the relationship-options
-                if (isset($options->scope) && $options->scope != '' && method_exists(
-                    $model,
-                    'scope'.ucfirst($options->scope)
-                )) {
+                if (isset($options->scope) && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
                     $model = $model->{$options->scope}();
                 }
 

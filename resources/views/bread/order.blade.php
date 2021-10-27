@@ -20,8 +20,7 @@
 
                 <div class="panel-body" style="padding:30px;">
                     <div class="dd">
-                        @include('voyager::bread.partials.order',
-                            ['items' => $results, 'nestable' => $nestable, 'parentId' => ''])
+                        @include('voyager::bread.partials.order', ['items' => $results, 'nestable' => $nestable, 'parentId' => ''])
                     </div>
                 </div>
             </div>
@@ -32,9 +31,9 @@
 
 @section('javascript')
 <script>
-$(document).ready(function () {
+$(function() {
     $('.dd').nestable({
-        @if(empty($nestable)) maxDepth: 1 @endif
+        @if (empty($nestable)) maxDepth: 1 @endif
     });
 
     /**
