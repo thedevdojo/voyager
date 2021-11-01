@@ -92,7 +92,7 @@ This can easily be done by running this command:
 php artisan voyager:admin your@email.com
 ```
 
-If you did not install the dummy data and you wish to create a new admin user you can pass the `--create` flag, like so:
+If you did not install the dummy data and you wish to create a new admin user, you can pass the `--create` flag, like so:
 
 ```bash
 php artisan voyager:admin your@email.com --create
