@@ -178,7 +178,7 @@
                                     $options->related_pivot_key ?? null,
                                     $options->parent_key ?? null,
                                     $options->key
-                                )->pluck($options->key);
+                                )->pluck($options->table.'.'.$options->key);
                             }
                             $selected_keys = old($relationshipField, $selected_keys);
                             $selected_values = app($options->model)->whereIn($options->key, $selected_keys)->pluck($options->label, $options->key);
