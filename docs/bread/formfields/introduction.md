@@ -108,7 +108,8 @@ You get plenty of data passed to your view for you to use:
 * `$row` the DataRow
 * `$options` the DataRow details
 
-You can also use a custom field view for a specific action (browse, read or edit). In this case you can use:
+You can also use a custom field view for a specific action (browse, edit, etc) or for similar actions (browse and read).  
+The custom views are:
 
 ```text
 {
@@ -120,7 +121,7 @@ You can also use a custom field view for a specific action (browse, read or edit
 }
 ```
 
-The same variables will be passed to your custom view (except `$view`).
+The same variables as above will be passed to your custom action view.
 
 {% hint style="info" %}
 **Developing a custom formfield?**  
