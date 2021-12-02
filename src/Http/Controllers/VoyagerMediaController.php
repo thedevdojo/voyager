@@ -259,7 +259,7 @@ class VoyagerMediaController extends Controller
                 'image/bmp',
                 'image/svg+xml',
             ];
-            if (in_array($request->file->getMimeType(), $imageMimeTypes) && config('voyager.media.use_intervention') {
+            if (in_array($request->file->getMimeType(), $imageMimeTypes) && config('voyager.media.use_intervention')) {
                 $content = Storage::disk($this->filesystem)->get($file);
                 $image = Image::make($content);
 
