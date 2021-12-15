@@ -8,8 +8,7 @@
 
         @can('edit', $dataTypeContent)
             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $dataTypeContent->getKey()) }}" class="btn btn-info">
-                <span class="glyphicon glyphicon-pencil"></span>&nbsp;
-                {{ __('voyager::generic.edit') }}
+                <i class="glyphicon glyphicon-pencil"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.edit') }}</span>
             </a>
         @endcan
         @can('delete', $dataTypeContent)
@@ -23,11 +22,11 @@
                 </a>
             @endif
         @endcan
-
+        @can('browse', $dataTypeContent)
         <a href="{{ route('voyager.'.$dataType->slug.'.index') }}" class="btn btn-warning">
-            <span class="glyphicon glyphicon-list"></span>&nbsp;
-            {{ __('voyager::generic.return_to_list') }}
+            <i class="glyphicon glyphicon-list"></i> <span class="hidden-xs hidden-sm">{{ __('voyager::generic.return_to_list') }}</span>
         </a>
+        @endcan
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop

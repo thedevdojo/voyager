@@ -44,4 +44,5 @@ return [
     'browser_video_support'  => '您的瀏覽器不支援視頻',
     'browser_audio_support'  => '您的瀏覽器不支援視頻',
     'width'                  => '寬度: ',
+    'add_all_selected'       => '添加所有選中的',
 ];

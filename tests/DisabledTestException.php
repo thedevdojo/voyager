@@ -2,7 +2,6 @@
 
 namespace TCG\Voyager\Tests;
 
-use Exception;
 use Illuminate\Foundation\Exceptions\Handler;
 
 class DisabledTestException extends Handler

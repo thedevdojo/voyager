@@ -94,7 +94,7 @@
                 // Replace Char Map
                 //
                 for (var i=0, l=str.length ; i<l ; i++) {
-                    _slug += (this.chars[str.charAt(i)])
+                    _slug += (this.chars.hasOwnProperty(str.charAt(i)))
                              ? this.chars[str.charAt(i)]
                              : str.charAt(i);
                 }

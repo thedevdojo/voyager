@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class IntervalType extends Type
 {
-    const NAME = 'interval';
+    public const NAME = 'interval';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {

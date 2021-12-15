@@ -18,8 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.3, 7.4]
-        laravel: ['6.*', '7.*']
+        php: [7.3, 7.4, 8.0]
+        laravel: ['6.*', '7.*', '8.*']
 
     name: 'PHP ${{ matrix.php }} / ${{ matrix.laravel }}'
 
@@ -37,11 +37,16 @@ jobs:
       # Configure NPM
       - uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: '14.x'
 
       # Install PHP dependencies
       - name: Install Composer dependencies
         run: composer require "illuminate/support:${{ matrix.laravel }}"
+
+      # Install legacy factories for Laravel 8
+      - name: Install legacy factories for Laravel
+        if: ${{ matrix.laravel == '8.*' }}
+        run: composer require laravel/legacy-factories
 
       # Display installed laravel version
       - name: Show laravel version

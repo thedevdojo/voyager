@@ -1,0 +1,23 @@
+name: 'Lock issues'
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dessant/lock-threads@v2
+        with:
+          github-token: ${{ github.token }}
+          issue-lock-inactive-days: '180'
+          issue-exclude-created-before: ''
+          issue-exclude-labels: ''
+          issue-lock-labels: ''
+          issue-lock-reason: 'resolved'
+          issue-lock-comment: >
+            This issue has been automatically locked since there has not been	
+            any recent activity after it was closed.	
+            If you have further questions please ask in our Slack group.
+          process-only: 'issues'

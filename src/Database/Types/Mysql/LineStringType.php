@@ -7,7 +7,7 @@ use TCG\Voyager\Database\Types\Type;
 
 class LineStringType extends Type
 {
-    const NAME = 'linestring';
+    public const NAME = 'linestring';
 
     public function getSQLDeclaration(array $field, AbstractPlatform $platform)
     {
