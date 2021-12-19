@@ -257,7 +257,10 @@ class Voyager
     public function image($file, $default = '')
     {
         if (!empty($file)) {
-            return str_replace('\\', '/', Storage::disk(config('voyager.storage.disk'))->url($file));
+            $url = Storage::disk(config('voyager.storage.disk'))->url($file);
+            $url = str_replace('\\', '/', $url);
+            $url = str_replace('%5C', '/', $url);
+            return $url;
         }
 
         return $default;
