@@ -857,6 +857,10 @@ class VoyagerBaseController extends Controller
 
     public function action(Request $request)
     {
+        if (!$request->action || !class_exists($request->action)) {
+            abort(400);
+        }
+
         $slug = $this->getSlug($request);
         $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
