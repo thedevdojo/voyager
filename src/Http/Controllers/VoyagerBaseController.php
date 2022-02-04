@@ -858,7 +858,7 @@ class VoyagerBaseController extends Controller
     public function action(Request $request)
     {
         if (!$request->action || !class_exists($request->action)) {
-            abort(400);
+            throw new \Exception("Action {$request->action} doesn't exist or has not been defined");
         }
 
         $slug = $this->getSlug($request);
