@@ -2,7 +2,7 @@
 
 return [
     'add_bread'              => 'Bu cədvələ BREADı əlavə et',
-    'bread_crud_actions'     => 'BREAD/CRUD hərəkətləri',
+    'bread_crud_actions'     => 'BREAD/CRUD fəaliyyətləri',
     'bread_info'             => 'BREAD xəbər',
     'controller_name_hint'   => 'misal. PageController, əgər boş saxlasanız BREAD Controller istifadə olunacaq',
     'create_bread_for_table' => ':table cədvəli üçün BREAD yarat',
