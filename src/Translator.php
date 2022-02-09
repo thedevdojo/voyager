@@ -52,6 +52,12 @@ class Translator implements ArrayAccess, JsonSerializable
             $this->translateAttribute($attribute, $locale, $fallback);
         }
 
+        foreach ($this->model->getRelations() as $key => $relation) {
+            if ((new Voyager)->translatable($relation)) {
+                $this[$key] = $relation->translate($locale, $fallback);
+            }
+        }
+        
         return $this;
     }
 
