@@ -34,7 +34,7 @@ class Translator implements ArrayAccess, JsonSerializable
 
         foreach ($this->model->getRelations() as $relation => $value) {
             $attributes[$relation] = [
-                'value'    => $value->toArray(),
+                'value'    => $value,
                 'locale'   => $this->locale,
                 'exists'   => true,
                 'modified' => false,
