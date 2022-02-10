@@ -26,7 +26,7 @@ jobs:
           - php: 7.4
             laravel: 9.*
 
-    name: 'PHP ${{ matrix.php }} / ${{ matrix.laravel }}'
+    name: 'PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }}'
 
     steps:
       - uses: actions/checkout@master
@@ -48,9 +48,9 @@ jobs:
       - name: Install Composer dependencies
         run: composer require "illuminate/support:${{ matrix.laravel }}"
 
-      # Install legacy factories for Laravel 8
+      # Install legacy factories for Laravel 8/9
       - name: Install legacy factories for Laravel
-        if: ${{ matrix.laravel == '8.*' }}
+        if: ${{ matrix.laravel == '8.*' || matrix.laravel == '9.*' }}
         run: composer require laravel/legacy-factories
 
       # Display installed laravel version
