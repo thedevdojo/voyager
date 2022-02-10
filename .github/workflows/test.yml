@@ -20,6 +20,11 @@ jobs:
       matrix:
         php: [7.3, 7.4, 8.0]
         laravel: ['6.*', '7.*', '8.*', '9.*']
+        exclude:
+          - php: 7.3
+            laravel: 9.*
+          - php: 7.4
+            laravel: 9.*
 
     name: 'PHP ${{ matrix.php }} / ${{ matrix.laravel }}'
 
