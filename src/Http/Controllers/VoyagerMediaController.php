@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-use League\Flysystem\Plugin\ListWith;
 use TCG\Voyager\Events\MediaFileAdded;
 use TCG\Voyager\Facades\Voyager;
 
@@ -54,13 +53,18 @@ class VoyagerMediaController extends Controller
         $dir = $this->directory.$folder;
 
         $files = [];
-        $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
-        $storageItems = $storage->listWith(['mimetype'], $dir);
+        if (class_exists(League\Flysystem\Plugin\ListWith::class)) {
+            $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
+            $storageItems = $storage->listWith(['mimetype'], $dir);
+        } else {
+            $storage = Storage::disk($this->filesystem);
+            $storageItems = $storage->listContents($dir)->sortByPath()->toArray();
+        }
 
         foreach ($storageItems as $item) {
             if ($item['type'] == 'dir') {
                 $files[] = [
-                    'name'          => $item['basename'],
+                    'name'          => $item['basename'] ?? basename($item['path']),
                     'type'          => 'folder',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
                     'relative_path' => $item['path'],
@@ -72,18 +76,18 @@ class VoyagerMediaController extends Controller
                     continue;
                 }
                 // Its a thumbnail and thumbnails should be hidden
-                if (Str::endsWith($item['filename'], $thumbnail_names)) {
+                if (Str::endsWith($item['path'], $thumbnail_names)) {
                     $thumbnails[] = $item;
                     continue;
                 }
                 $files[] = [
-                    'name'          => $item['basename'],
-                    'filename'      => $item['filename'],
+                    'name'          => $item['basename'] ?? basename($item['path']),
+                    //'filename'      => $item['filename'],
                     'type'          => $item['mimetype'] ?? 'file',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
                     'relative_path' => $item['path'],
-                    'size'          => $item['size'],
-                    'last_modified' => $item['timestamp'],
+                    'size'          => $item['size'] ?? $item->fileSize(),
+                    'last_modified' => $item['timestamp'] ?? $item->lastModified(),
                     'thumbnails'    => [],
                 ];
             }
