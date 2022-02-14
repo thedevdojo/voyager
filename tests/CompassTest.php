@@ -13,6 +13,15 @@ class CompassTest extends TestCase
         Auth::loginUsingId(1);
     }
 
+    public function tearDown(): void
+    {
+        parent::tearDown();
+
+        if (file_exists(base_path('app/Models/TestModel.php'))) {
+            unlink(base_path('app/Models/TestModel.php'));
+        }
+    }
+
     private function enableCompass()
     {
         $this->app['config']->set('voyager.compass_in_production', true);

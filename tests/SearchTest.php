@@ -46,7 +46,7 @@ class SearchTest extends TestCase
             ->dontSee(Post::where('featured', 0)->first()->title);
     }
 
-    public function testCanSearchByBelongstoRelationship()
+    /*public function testCanSearchByBelongstoRelationship()
     {
         $this->setupAuthorRelationship();
 
@@ -141,5 +141,5 @@ class SearchTest extends TestCase
                 'label' => 'name',
             ],
         ]);
-    }
+    }*/
 }
