@@ -54,7 +54,7 @@ class VoyagerMediaController extends Controller
 
         $files = [];
         if (class_exists(\League\Flysystem\Plugin\ListWith::class)) {
-            $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
+            $storage = Storage::disk($this->filesystem)->addPlugin(new \League\Flysystem\Plugin\ListWith());
             $storageItems = $storage->listWith(['mimetype'], $dir);
         } else {
             $storage = Storage::disk($this->filesystem);
