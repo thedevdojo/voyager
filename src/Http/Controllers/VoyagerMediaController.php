@@ -82,8 +82,8 @@ class VoyagerMediaController extends Controller
                 }
                 $files[] = [
                     'name'          => $item['basename'] ?? basename($item['path']),
-                    //'filename'      => $item['filename'],
-                    'type'          => $item['mimetype'] ?? 'file',
+                    'filename'      => $item['filename'] ?? basename($item['path'], '.'.pathinfo($item['path'])['extension']),
+                    'type'          => $item['mimetype'] ?? (new \League\MimeTypeDetection\ExtensionMimeTypeDetector())->detectMimeTypeFromFile($item['path']),
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
                     'relative_path' => $item['path'],
                     'size'          => $item['size'] ?? $item->fileSize(),
