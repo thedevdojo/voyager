@@ -1,29 +1,37 @@
 # Upgrading
 
-## Upgrading 1.3 to 1.4
-
-{% hint style="info" %}
-Please take a look at our [prerequisites](../getting-started/prerequisites.md) before upgrading!
-{% endhint %}
+## Upgrading 1.4 to 1.5
 
 ### Update your Composer.json
 
-To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration inside of your composer.json to:
+To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration of your composer.json to:
 
-`tcg/voyager": "1.4.*`
+`tcg/voyager": "1.5.*`
 
 And then run `composer update`
 
-### Updating the roles BREAD
+### Removed hooks
 
-The roles BREAD now uses it's own controller.  
-Please update it to use `TCG\Voyager\Http\Controllers\VoyagerRoleController`
+Version 1.5 removes the hooks functionality.  
+If you use any hooks, either skip this release or convert them to regular composer packages.  
+Another way is to disable ssl verification in your `composer.json`: 
 
-![](../.gitbook/assets/upgrading_roles_controller.png)
+```
+"repositories": {
+    "hooks": {
+        "type": "composer",
+        "url": "https://larapack.io",
+        "options": {
+            "ssl": {
+                "verify_peer": false
+            }
+        }
+    }
+}
+```
 
-### TinyMCE initialization
 
-Initialization has been moved from app.js to `rich_text_box` template, if you were using TinyMCE outside the standard template take a look at documentation [tinymce](../bread/formfields/tinymce.md)
+If you do not use any hooks, you don't have to take any actions!
 
 ### Troubleshooting
 

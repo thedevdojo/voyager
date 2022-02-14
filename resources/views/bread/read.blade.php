@@ -119,7 +119,7 @@
                                         </a>
                                         <br/>
                                     @endforeach
-                                @else
+                                @elseif($dataTypeContent->{$row->field})
                                     <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($row->field) ?: '' }}">
                                         {{ __('voyager::generic.download') }}
                                     </a>

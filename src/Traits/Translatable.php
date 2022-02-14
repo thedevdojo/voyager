@@ -107,7 +107,7 @@ trait Translatable
      * Translate the whole model.
      *
      * @param null|string $language
-     * @param bool[string $fallback
+     * @param bool|string $fallback
      *
      * @return Translator
      */

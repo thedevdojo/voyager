@@ -153,7 +153,7 @@
 
             @else
                 <select
-                    class="form-control @if(isset($options->taggable) && $options->taggable === 'on') select2-taggable @else select2-ajax @endif"
+                    class="form-control select2-ajax @if(isset($options->taggable) && $options->taggable === 'on') taggable @endif"
                     name="{{ $relationshipField }}[]" multiple
                     data-get-items-route="{{route('voyager.' . $dataType->slug.'.relation')}}"
                     data-get-items-field="{{$row->field}}"
@@ -168,19 +168,28 @@
                 >
 
                         @php
-                            $selected_values = isset($dataTypeContent) ? $dataTypeContent->belongsToMany($options->model, $options->pivot_table, $options->foreign_pivot_key ?? null, $options->related_pivot_key ?? null, $options->parent_key ?? null, $options->key)->get()->map(function ($item, $key) use ($options) {
-                                return $item->{$options->key};
-                            })->all() : array();
-                            $relationshipOptions = app($options->model)->all();
-                        $selected_values = old($relationshipField, $selected_values);
+                            $selected_keys = [];
+                            
+                            if (!is_null($dataTypeContent->getKey())) {
+                                $selected_keys = $dataTypeContent->belongsToMany(
+                                    $options->model,
+                                    $options->pivot_table,
+                                    $options->foreign_pivot_key ?? null,
+                                    $options->related_pivot_key ?? null,
+                                    $options->parent_key ?? null,
+                                    $options->key
+                                )->pluck($options->table.'.'.$options->key);
+                            }
+                            $selected_keys = old($relationshipField, $selected_keys);
+                            $selected_values = app($options->model)->whereIn($options->key, $selected_keys)->pluck($options->label, $options->key);
                         @endphp
 
                         @if(!$row->required)
                             <option value="">{{__('voyager::generic.none')}}</option>
                         @endif
 
-                        @foreach($relationshipOptions as $relationshipOption)
-                            <option value="{{ $relationshipOption->{$options->key} }}" @if(in_array($relationshipOption->{$options->key}, $selected_values)) selected="selected" @endif>{{ $relationshipOption->{$options->label} }}</option>
+                        @foreach ($selected_values as $key => $value)
+                            <option value="{{ $key }}" selected="selected">{{ $value }}</option>
                         @endforeach
 
                 </select>

@@ -1,6 +1,6 @@
 # Introduction
 
-Welcome to the Voyager documentation for version 1.4. This documentation will teach you how to install, configure, and use Voyager so that way you can create some kick ass stuff!
+Welcome to the Voyager documentation for version 1.5. This documentation will teach you how to install, configure, and use Voyager so that way you can create some kick ass stuff!
 
 Hm Hm \(cough\)… I mean… Arrgg! Ye young scallywag! What say we learn how to steer this ship!
 

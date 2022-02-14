@@ -190,20 +190,24 @@ class VoyagerMediaController extends Controller
         $success = false;
         $error = false;
 
-        if (is_array($folderLocation)) {
-            $folderLocation = rtrim(implode('/', $folderLocation), '/');
-        }
-
-        $location = "{$this->directory}/{$folderLocation}";
-
-        if (!Storage::disk($this->filesystem)->exists("{$location}/{$newFilename}")) {
-            if (Storage::disk($this->filesystem)->move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
-                $success = true;
-            } else {
-                $error = __('voyager::media.error_moving');
-            }
+        if (pathinfo($filename)['extension'] !== pathinfo($newFilename)['extension']) {
+            $error = __('voyager::media.error_renaming_ext');
         } else {
-            $error = __('voyager::media.error_may_exist');
+            if (is_array($folderLocation)) {
+                $folderLocation = rtrim(implode('/', $folderLocation), '/');
+            }
+
+            $location = "{$this->directory}/{$folderLocation}";
+
+            if (!Storage::disk($this->filesystem)->exists("{$location}/{$newFilename}")) {
+                if (Storage::disk($this->filesystem)->move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
+                    $success = true;
+                } else {
+                    $error = __('voyager::media.error_moving');
+                }
+            } else {
+                $error = __('voyager::media.error_may_exist');
+            }
         }
 
         return compact('success', 'error');
