@@ -232,7 +232,7 @@ class VoyagerMediaController extends Controller
         $absolute_path = Storage::disk($this->filesystem)->path($request->upload_path);
 
         try {
-            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+            $realPath = Storage::disk($this->filesystem)->path('/');
 
             $allowedMimeTypes = config('voyager.media.allowed_mimetypes', '*');
             if ($allowedMimeTypes != '*' && (is_array($allowedMimeTypes) && !in_array($request->file->getMimeType(), $allowedMimeTypes))) {
@@ -353,7 +353,7 @@ class VoyagerMediaController extends Controller
         $height = $request->get('height');
         $width = $request->get('width');
 
-        $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+        $realPath = Storage::disk($this->filesystem)->path('/');
         $originImagePath = $request->upload_path.'/'.$request->originImageName;
         $originImagePath = preg_replace('#/+#', '/', $originImagePath);
 

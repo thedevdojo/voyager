@@ -329,7 +329,7 @@ class EventTest extends TestCase
 
         $image = UploadedFile::fake()->image('test.png');
 
-        $this->json('POST', route('voyager.media.upload'), ['file'=>$image]);
+        $this->json('POST', route('voyager.media.upload'), ['file'=>$image, 'upload_path' => '/']);
 
         Event::assertDispatched(MediaFileAdded::class);
     }
