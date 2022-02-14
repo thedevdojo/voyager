@@ -5,13 +5,13 @@
   */
 
 /*!
- * Cropper.js v1.5.11
+ * Cropper.js v1.5.12
  * https://fengyuanchen.github.io/cropperjs
  *
  * Copyright 2015-present Chen Fengyuan
  * Released under the MIT license
  *
- * Date: 2021-02-17T11:53:27.572Z
+ * Date: 2021-06-12T08:00:17.411Z
  */
 
 /*!
@@ -38,8 +38,8 @@
  */
 
 /*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
+ * Vue.js v2.6.14
+ * (c) 2014-2021 Evan You
  * Released under the MIT License.
  */
 
@@ -58,8 +58,8 @@
  */
 
 /*!
- * perfect-scrollbar v1.5.0
- * Copyright 2020 Hyunje Jun, MDBootstrap and Contributors
+ * perfect-scrollbar v1.5.3
+ * Copyright 2021 Hyunje Jun, MDBootstrap and Contributors
  * Licensed under MIT
  */
 
@@ -78,7 +78,7 @@
 /**
   * bootstrap-switch - Turn checkboxes and radio buttons into toggle switches.
   *
-  * @version v3.3.5
+  * @version v3.4.0
   * @homepage https://bttstrp.github.io/bootstrap-switch
   * @author Mattia Larentis <mattia@larentis.eu> (http://larentis.eu)
   * @license MIT
