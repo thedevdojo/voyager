@@ -36,7 +36,6 @@ var admin_menu = new Vue({
 });
 
 $(document).ready(function () {
-
     var appContainer = $(".app-container"),
         fadedOverlay = $('.fadetoblack'),
         hamburger = $('.hamburger');
