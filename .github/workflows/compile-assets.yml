@@ -25,7 +25,7 @@ jobs:
         run: npm run prod
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1
+        uses: peter-evans/create-pull-request@v3
         id: cpr
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
