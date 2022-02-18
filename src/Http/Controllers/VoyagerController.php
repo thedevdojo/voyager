@@ -39,7 +39,7 @@ class VoyagerController extends Controller
             abort(403);
         }
 
-        $path = $slug.'/'.date('F').date('Y').'/';
+        $path = $slug.'/'.date('FY').'/';
 
         $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
         $filename_counter = 1;
