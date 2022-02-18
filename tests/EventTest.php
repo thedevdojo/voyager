@@ -329,8 +329,38 @@ class EventTest extends TestCase
 
         $image = UploadedFile::fake()->image('test.png');
 
-        $this->json('POST', route('voyager.media.upload'), ['file'=>$image]);
+        $this->json('POST', route('voyager.media.upload'), ['file'=>$image, 'upload_path' => '/']);
+
+        // Ensure file exists on disk
+        $this->assertFileExists(public_path('storage/'.$image->name));
 
         Event::assertDispatched(MediaFileAdded::class);
+    }
+
+    public function testNestedMediaFileAddedEvent()
+    {
+        Event::fake();
+        Auth::loginUsingId(1);
+        Storage::fake(config('filesystems.default'));
+
+        $image = UploadedFile::fake()->image('test.png');
+
+        $this->json('POST', route('voyager.media.upload'), ['file'=>$image, 'upload_path' => '/nested/']);
+
+        // Ensure file exists on disk
+        $this->assertFileExists(public_path('storage/nested/'.$image->name));
+
+        Event::assertDispatched(MediaFileAdded::class);
+    }
+
+    public function tearDown(): void
+    {
+        if (file_exists(public_path('storage/test.png'))) {
+            unlink(public_path('storage/test.png'));
+        }
+
+        if (file_exists(public_path('storage/nested/test.png'))) {
+            unlink(public_path('storage/nested/test.png'));
+        }
     }
 }

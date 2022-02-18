@@ -25,14 +25,10 @@ jobs:
         run: npm run prod
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v1
+        uses: peter-evans/create-pull-request@v3
         id: cpr
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: Compile Assets
           commit-message: 'Automatic assets compilation'
-          author-name: github-actions[bot]
-          author-email: 41898282+github-actions[bot]@users.noreply.github.com
-          committer-name: GitHub
-          committer-email: noreply@github.com
           labels: automerge
