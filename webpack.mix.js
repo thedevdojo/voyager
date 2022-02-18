@@ -15,5 +15,6 @@ mix.options({ processCssUrls: false }).sass('resources/assets/sass/app.scss', 'p
 .js('resources/assets/js/app.js', 'publishable/assets/js').vue({ version: 2 })
 .copy('node_modules/tinymce/skins', 'publishable/assets/js/skins')
 .copy('resources/assets/js/skins', 'publishable/assets/js/skins')
-.copy('node_modules/tinymce/themes/modern', 'publishable/assets/js/themes/modern')
+.copy('node_modules/tinymce/themes/silver', 'publishable/assets/js/themes/silver')
+.copy('node_modules/tinymce/icons/default', 'publishable/assets/js/icons/default')
 .copy('node_modules/ace-builds/src-noconflict', 'publishable/assets/js/ace/libs');

@@ -75,8 +75,8 @@ class VoyagerController extends Controller
             $status = __('voyager::media.uploading_wrong_type');
         }
 
-        // echo out script that TinyMCE can handle and update the image in the editor
-        return "<script> parent.helpers.setImageValue('".Voyager::image($fullFilename)."'); </script>";
+        // Return URL for TinyMCE
+        return Voyager::image($fullFilename);
     }
 
     public function assets(Request $request)
