@@ -2,8 +2,7 @@
 $dimmerGroups = Voyager::dimmers();
 @endphp
 
-@if (count($dimmerGroups))
-@foreach($dimmerGroups as $dimmerGroup)
+@forelse($dimmerGroups as $dimmerGroup)
     @php
     $count = $dimmerGroup->count();
     $classes = [
@@ -20,5 +19,7 @@ $dimmerGroups = Voyager::dimmers();
         {!! $prefix.$dimmerGroup->setSeparator($surfix.$prefix)->display().$surfix !!}
     </div>
     @endif
-@endforeach
-@endif
+
+@empty
+
+@endforelse
