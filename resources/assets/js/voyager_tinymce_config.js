@@ -24,10 +24,10 @@ var getConfig = function(options) {
                 input.onchange = function () {
                     var formdata = new FormData();
                     formdata.append('image', this.files[0]);
-                    formdata.append('type_slug', $('#upload_type_slug').html());
+                    formdata.append('type_slug', $('#upload_type_slug').val());
                     $.ajax({
                         type: 'post',
-                        url: $('#upload_url').html(),
+                        url: $('#upload_url').val(),
                         data: formdata,
                         enctype: 'multipart/form-data',
                         processData: false,
