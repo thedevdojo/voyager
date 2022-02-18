@@ -125,6 +125,7 @@ abstract class Controller extends BaseController
                     'relatedPivotKey' => $row->details->related_pivot_key ?? null,
                     'parentKey'       => $row->details->parent_key ?? null,
                     'relatedKey'      => $row->details->key,
+                    'methodName'      => $row->details->method_name ?? null,
                 ];
             } else {
                 $data->{$row->field} = $content;
@@ -147,14 +148,19 @@ abstract class Controller extends BaseController
         }
 
         foreach ($multi_select as $sync_data) {
-            $data->belongsToMany(
-                $sync_data['model'],
-                $sync_data['table'],
-                $sync_data['foreignPivotKey'],
-                $sync_data['relatedPivotKey'],
-                $sync_data['parentKey'],
-                $sync_data['relatedKey']
-            )->sync($sync_data['content']);
+            if (method_exists($data, $sync_data['methodName']) && $sync_data['methodName']) {
+                $relation_method = call_user_func([$data, $sync_data['methodName']]);
+                $relation_method->sync($sync_data['content']);
+            } else {
+                $data->belongsToMany(
+                    $sync_data['model'],
+                    $sync_data['table'],
+                    $sync_data['foreignPivotKey'],
+                    $sync_data['relatedPivotKey'],
+                    $sync_data['parentKey'],
+                    $sync_data['relatedKey']
+                )->sync($sync_data['content']);
+            }
         }
 
         // Rename folders for newly created data through media-picker
@@ -168,10 +174,10 @@ abstract class Controller extends BaseController
                 $data->{$row->field} = str_replace($uuid, $data->getKey(), $data->{$row->field});
             });
             $data->save();
-            if ($old_path != $new_path && 
-                !Storage::disk(config('voyager.storage.disk'))->exists($new_path) && 
+            if ($old_path != $new_path &&
+                !Storage::disk(config('voyager.storage.disk'))->exists($new_path) &&
                 Storage::disk(config('voyager.storage.disk'))->exists($old_path)
-                ) 
+                )
             {
                 $request->session()->forget([$slug.'_path', $slug.'_uuid']);
                 Storage::disk(config('voyager.storage.disk'))->move($old_path, $new_path);
