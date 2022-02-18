@@ -108,6 +108,21 @@ You get plenty of data passed to your view for you to use:
 * `$row` the DataRow
 * `$options` the DataRow details
 
+You can also use a custom field view for a specific action (browse, edit, etc) or for similar actions (browse and read).  
+The custom views are:
+
+```text
+{
+    "view_browse": "my_browse_view",
+    "view_read": "my_read_view",
+    "view_add": "my_add_view",
+    "view_edit": "my_edit_view",
+    "view_order": "my_order_view"
+}
+```
+
+The same variables as above will be passed to your custom action view.
+
 {% hint style="info" %}
 **Developing a custom formfield?**  
 If you are developing a custom formfield and want to customize any of the views, you can do so by merging `view` into `$options` in your formfields `createContent()` method.
