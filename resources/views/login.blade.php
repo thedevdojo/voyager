@@ -46,8 +46,9 @@
             </div>
         @endif
 
-    </div> <!-- .login-container -->
-@endsection
+                <p><a href="{{route('voyager.password.request')}}">{{  __('voyager::auth.forgotten_password?') }}</a></p>
+
+            </div> <!-- .login-container -->
 
 @section('post_js')
 
