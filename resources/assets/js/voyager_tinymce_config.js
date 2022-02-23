@@ -14,6 +14,8 @@ var getConfig = function(options) {
         resize: 'vertical',
         plugins: 'link image code table lists',
         extended_valid_elements : 'input[id|name|value|type|class|style|required|placeholder|autocomplete|onclick]',
+        relative_urls: false, // Necessary so uploaded images don't get a relative path but an URL instead.
+        remove_script_host: false,
         file_picker_types: 'image',
         file_picker_callback: (callback, value, meta) => {
             if (meta.filetype == 'image') {
@@ -25,6 +27,9 @@ var getConfig = function(options) {
                     var formdata = new FormData();
                     formdata.append('image', this.files[0]);
                     formdata.append('type_slug', $('#upload_type_slug').val());
+                    // Show loader
+                    $('#voyager-loader').css('z-index', 10000);
+                    $('#voyager-loader').fadeIn();
                     $.ajax({
                         type: 'post',
                         url: $('#upload_url').val(),
@@ -33,9 +38,13 @@ var getConfig = function(options) {
                         processData: false,
                         contentType: false,
                         cache: false,
-                        success: (result) =>{
-                            callback(result);
-                        }
+                    })
+                    .done((result) => {
+                        callback(result);
+                    })
+                    .always(() => {
+                        $('#voyager-loader').fadeOut();
+                        $('#voyager-loader').css('z-index', 99);
                     });
                 }
 
