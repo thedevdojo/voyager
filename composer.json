@@ -40,7 +40,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "TCG\\Voyager\\Tests\\": "tests/"
+            "TCG\\Voyager\\Tests\\": "tests/",
+            "TCG\\Voyager\\Tests\\Database\\Factories\\": "tests/database/factories/"
         }
     },
     "minimum-stability": "stable",
