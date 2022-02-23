@@ -14,7 +14,7 @@ class UserFactory extends Factory
         static $password;
 
         return [
-            'id'      => $this->faker->randomNumber(),
+            'id'      => $this->faker->unique()->randomDigitNotNull(),
             'name'    => $this->faker->name(),
             'email'   => $this->faker->unique()->safeEmail(),
             'password'       => $password ?: $password = bcrypt('secret'),
