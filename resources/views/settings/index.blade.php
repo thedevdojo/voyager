@@ -500,12 +500,10 @@
     });
     $(".group_select_new").val('').trigger('change');
     </script>
-    <iframe id="form_target" name="form_target" style="display:none"></iframe>
-    <form id="my_form" action="{{ route('voyager.upload') }}" target="form_target" method="POST" enctype="multipart/form-data" style="width:0;height:0;overflow:hidden">
-        {{ csrf_field() }}
-        <input name="image" id="upload_file" type="file" onchange="$('#my_form').submit();this.value='';">
-        <input type="hidden" name="type_slug" id="type_slug" value="settings">
-    </form>
+    <div style="display:none">
+        <input type="hidden" id="upload_url" value="{{ route('voyager.upload') }}">
+        <input type="hidden" id="upload_type_slug" value="settings">
+    </div>
 
     <script>
         var options_editor = ace.edit('options_editor');

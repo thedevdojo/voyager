@@ -15,8 +15,8 @@
     "laravel-mix": "^6.0.42",
     "node-sass": "^7.0.1",
     "postcss": "^8.4.6",
-    "sass": "^1.49.7",
-    "sass-loader": "^12.4.0",
+    "sass": "^1.49.8",
+    "sass-loader": "^12.6.0",
     "vue-loader": "^15.9.7",
     "vue-template-compiler": "^2.6.14"
   },
@@ -41,7 +41,7 @@
     "nestable2": "^1.6.0",
     "perfect-scrollbar": "^1.5.5",
     "select2": "^4.0.13",
-    "tinymce": "^4.9.11",
+    "tinymce": "^5.10.3",
     "toastr": "^2.1.4",
     "vue": "^2.6.14"
   }

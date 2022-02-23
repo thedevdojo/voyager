@@ -1,5 +1,5 @@
 // Theme
-import 'tinymce/themes/modern/theme';
+import 'tinymce/themes/silver/theme';
 
   // Plugins
 import 'tinymce/plugins/link';
