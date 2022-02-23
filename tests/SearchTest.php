@@ -23,7 +23,6 @@ class SearchTest extends TestCase
         parent::setUp();
 
         $this->user = Auth::loginUsingId(1);
-        $this->withFactories(__DIR__.'/database/factories');
     }
 
     public function testCanSearchEquals0()

@@ -28,8 +28,6 @@ class UserProfileTest extends TestCase
         $this->editPageForTheCurrentUser = route('voyager.users.edit', [$this->user->id]);
 
         $this->listOfUsers = route('voyager.users.index');
-
-        $this->withFactories(__DIR__.'/database/factories');
     }
 
     public function testCanSeeTheUserInfoOnHisProfilePage()
@@ -101,13 +99,11 @@ class UserProfileTest extends TestCase
 
     public function testCanEditUserEmailWithEditorPermissions()
     {
-        $user = factory(\TCG\Voyager\Models\User::class)->create();
+        $user = \TCG\Voyager\Models\User::factory()->for(\TCG\Voyager\Models\Role::factory())->create();
         $editPageForTheCurrentUser = route('voyager.users.edit', [$user->id]);
-        $roleId = $user->role_id;
-        $role = Role::find($roleId);
         // add permissions which reflect a possible editor role
         // without permissions to edit  users
-        $role->permissions()->attach(\TCG\Voyager\Models\Permission::whereIn('key', [
+        $user->role->permissions()->attach(\TCG\Voyager\Models\Permission::whereIn('key', [
             'browse_admin',
             'browse_users',
         ])->get()->pluck('id')->all());
