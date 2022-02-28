@@ -1,5 +1,5 @@
-<div class="side-menu sidebar-inverse">
-    <nav class="navbar navbar-default" role="navigation">
+<div class="side-menu sidebar-inverse p-0">
+    <nav class="navbar navbar-default pt-0" role="navigation">
         <div class="side-menu-container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="{{ route('voyager.dashboard') }}">
