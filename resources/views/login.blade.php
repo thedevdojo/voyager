@@ -2,36 +2,36 @@
 
 @section('content')
     <div class="login-container">
-
         <p>{{ __('voyager::login.signin_below') }}</p>
 
         <form action="{{ route('voyager.login') }}" method="POST">
             {{ csrf_field() }}
-            <div class="form-group form-group-default" id="emailGroup">
-                <label>{{ __('voyager::generic.email') }}</label>
-                <div class="controls">
-                    <input type="text" name="email" id="email" value="{{ old('email') }}" placeholder="{{ __('voyager::generic.email') }}" class="form-control" required>
+            
+            <div class="form-floating mb-3" id="emailGroup">
+                <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="{{ __('voyager::generic.email') }}" class="form-control" required>
+                <label for="email">{{ __('voyager::generic.email') }}</label>
+            </div>
+
+            <div class="form-floating mb-3" id="passwordGroup">
+                <input type="password" name="password" id="password" placeholder="{{ __('voyager::generic.password') }}" class="form-control" required>
+                <label for="password">{{ __('voyager::generic.password') }}</label>
+            </div>
+
+            <div class="mb-3" id="rememberMeGroup">                   
+                <div class="form-check">
+                    <input type="checkbox" name="remember" id="remember" value="1" class="form-check-input">
+                    <label class="form-check-label" for="remember">
+                        {{ __('voyager::generic.remember_me') }}
+                    </label>
                 </div>
             </div>
 
-            <div class="form-group form-group-default" id="passwordGroup">
-                <label>{{ __('voyager::generic.password') }}</label>
-                <div class="controls">
-                    <input type="password" name="password" placeholder="{{ __('voyager::generic.password') }}" class="form-control" required>
-                </div>
+            <div>
+                <button type="submit" class="btn btn-primary w-md login-button">
+                    <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager::login.loggingin') }}...</span>
+                    <span class="signin">{{ __('voyager::generic.login') }}</span>
+                </button>
             </div>
-
-            <div class="form-group" id="rememberMeGroup">
-                <div class="controls">
-                    <input type="checkbox" name="remember" id="remember" value="1"><label for="remember" class="remember-me-text">{{ __('voyager::generic.remember_me') }}</label>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-block login-button">
-                <span class="signingin hidden"><span class="voyager-refresh"></span> {{ __('voyager::login.loggingin') }}...</span>
-                <span class="signin">{{ __('voyager::generic.login') }}</span>
-            </button>
-
         </form>
 
         <div style="clear:both"></div>
@@ -50,7 +50,6 @@
 @endsection
 
 @section('post_js')
-
     <script>
         var btn = document.querySelector('button[type="submit"]');
         var form = document.forms[0];
@@ -81,6 +80,5 @@
         password.addEventListener('focusout', function(e){
             document.getElementById('passwordGroup').classList.remove("focused");
         });
-
     </script>
 @endsection

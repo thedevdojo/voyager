@@ -15,7 +15,6 @@ body.login {
         position:relative;
         border-radius:5px;
         z-index:2;
-        padding:0;
         justify-content:center;
         background:#ffffff;
         border-top: 5px solid #22A7F0;
@@ -37,7 +36,7 @@ body.login {
         position: absolute;
         z-index: 10;
         width: 100%;
-        padding: 30px;
+        padding: 0 40px 0 20px;
         top: 50%;
         margin-top: -150px;
     }
@@ -63,6 +62,10 @@ body.login {
     .login-container .voyager-refresh{
         top:0px;
         font-size:10px;
+    }
+
+    .login-container .hidden{
+        display:none;
     }
 
     .login-container .signingin .voyager-refresh{
@@ -122,30 +125,7 @@ body.login {
         top: -3px;
         font-size: 15px;
     }
-    .login-button {
-        display:block;
-        text-align:center;
-        text-decoration:none;
-        color:#eee;
-        font-family: 'Open Sans', sans-serif;
-        font-weight:100;
-        padding:12px 20px;
-        border-radius:1px;
-        outline:none !important;
-        opacity:0.8;
-        border:0px;
-        width: auto;
-        border-radius: 2px;
-        float:left;
-        font-size: 11px;
-        font-weight: normal;
-        text-transform: uppercase;
-        transition:width 0.3s ease;
-    }
-    .login-button:hover, .login-button:focus {
-        color: #FFF;
-        opacity: 1
-    }
+
     .copy {
         width: auto;
         padding: 30px;
@@ -180,6 +160,7 @@ body.login {
         position:relative;
         top:-8px;
     }
+
     .faded-bg {
         position: absolute;
         top: 0;
@@ -193,11 +174,13 @@ body.login {
         background: linear-gradient(to bottom, rgba(21,21,28,0) 0%,rgba(21,21,28,0.1) 40%,rgba(21,21,28,0.3) 55%,rgba(21,21,28,0.61) 75%,rgba(21,21,28,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0015151c', endColorstr='#15151c',GradientType=0 ); /* IE6-9 */
     }
+
     .voyager-refresh {
         -webkit-animation:spin 0.6s infinite linear;
         -moz-animation:spin 0.6s infinite linear;
         animation:spin 0.6s infinite linear;
     }
+    
     .alert-black {
         background: rgba(0, 0, 0, 0.5);
         color: rgb(255, 255, 255);
@@ -216,86 +199,24 @@ body.login {
         margin-top: 20px;
     }
 
-    .form-group-default {
-        background-color: #fff;
-        position: relative;
-        border: 2px solid rgba(28,43,54,.07);
-        border-radius: 3px;
-        padding: 7px 12px 4px;
-        overflow: hidden;
-        transition: border 0.3s ease-in;
-        font-weight:normal;
-    }
-
-    .form-group-default label {
-        margin: 0;
-        display: block;
-        opacity: 1;
-        transition: opacity .2s ease;
-        font-weight: 500;
-        font-size: 10px;
-        color:#58666e;
-        margin-bottom:3px;
-    }
-
-    .form-group-default .form-control{
-        border: none;
-        height: 25px;
-        min-height: 25px;
-        padding: 0;
-        margin-top: -4px;
-        background: 0 0;
-    }
-
-    .form-control{
-        background: #fff;
-        -webkit-appearance: none;
-        color: #1c2b36;
-        outline: 0;
-        border:0;
-        height: 35px;
-        line-height: normal;
-        vertical-align: middle;
-        min-height: 35px;
-        box-shadow: none;
-        font-weight:normal;
-    }
-
-    .form-control::-webkit-input-placeholder{
-      color:#ccc;
-      font-weight:300;
-    }
-    .form-control::-moz-placeholder{
-      color:#ccc;
-      font-weight:300;
-    }
-    .form-control:-ms-input-placeholder{
-      color:#ccc;
-      font-weight:300;
-    }
-    .form-control:-moz-placeholder{
-      color:#ccc;
-      font-weight:300;
-    }
-
-    .form-control-grey:focus, .form-control:focus {
+    .form-floating:focus {
         outline: 0!important;
         box-shadow: none;
     }
 
-    .form-control:focus::-webkit-input-placeholder{
+    .form-floating:focus::-webkit-input-placeholder{
         color:#8c9bA6;
     }
 
-    .form-control:focus::-moz-placeholder{
+    .form-floating:focus::-moz-placeholder{
         color:#8c9bA6;
     }
 
-    .form-control:focus:-ms-input-placeholder{
+    .form-floating:focus:-ms-input-placeholder{
         color:#8c9bA6;
     }
 
-    .form-control:focus:-moz-placeholder{
+    .form-floating:focus:-moz-placeholder{
         color:#8c9bA6;
     }
 }
