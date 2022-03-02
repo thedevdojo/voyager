@@ -10,7 +10,6 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "bootstrap-sass": "^3.4.1",
     "cross-env": "^7.0.3",
     "laravel-mix": "^6.0.43",
     "node-sass": "^7.0.1",
