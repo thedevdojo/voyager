@@ -1,4 +1,5 @@
 /node_modules
+/publishable
 .DS_Store
 .idea
 /vendor
@@ -6,3 +7,4 @@ build
 .lock
 composer.lock
 .phpunit.result.cache
+package-lock.json
