@@ -43,6 +43,20 @@ class Translator implements ArrayAccess, JsonSerializable
             $this->translateAttribute($attribute, $locale, $fallback);
         }
 
+        if(request()->is('api/*') && request()->isMethod('GET') || request()->wantsJson()) {
+
+            $relations = [];
+            
+            foreach ($this->model->getEagerRelations() as $relation) {
+                $relations[$relation] = !empty($this->model->$relation->toArray()) && Voyager::translatable(get_class($this->model->$relation->first())) ? $this->model->$relation->translate($locale, $fallback) : $this->model->$relation;
+            }
+            
+            $data = collect($this)->merge($relations);
+            
+            return $data;
+            
+        }
+
         return $this;
     }
 

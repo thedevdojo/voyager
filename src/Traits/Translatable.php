@@ -12,6 +12,16 @@ use TCG\Voyager\Translator;
 trait Translatable
 {
     /**
+     * Access the model eager loaded relationships
+     *
+     * @return array
+     */
+    public function getEagerRelations()
+    {
+        return $this->with;
+    }
+
+    /**
      * Check if this model can translate.
      *
      * @return bool
