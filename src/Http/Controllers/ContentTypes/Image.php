@@ -22,10 +22,11 @@ class Image extends BaseType
         $filename = $this->generateFileName($file, $path);
 
         $fileMimeType = $file->getMimeType();
+        $fileExtension = $file->getClientOriginalExtension();
 
         $image = InterventionImage::make($file)->orientate();
 
-        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+        $fullPath = $path.$filename.'.'.$fileExtension;
 
         $resizableMimeTypes = [
             'image/png',
@@ -69,11 +70,11 @@ class Image extends BaseType
                         $constraint->upsize();
                     }
                 }
-            )->encode($file->getClientOriginalExtension(), $resize_quality);
+            )->encode($fileExtension, $resize_quality);
 
             if ($this->is_animated_gif($file)) {
                 Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
-                $fullPathStatic = $path . $filename . '-static.' . $file->getClientOriginalExtension();
+                $fullPathStatic = $path . $filename . '-static.' . $fileExtension;
                 Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string)$image, 'public');
             } else {
                 Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string)$image, 'public');
@@ -105,18 +106,18 @@ class Image extends BaseType
                                         $constraint->upsize();
                                     }
                                 }
-                            )->encode($file->getClientOriginalExtension(), $resize_quality);
+                            )->encode($fileExtension, $resize_quality);
                     } elseif (isset($thumbnails->crop->width) && isset($thumbnails->crop->height)) {
                         $crop_width = $thumbnails->crop->width;
                         $crop_height = $thumbnails->crop->height;
                         $image = InterventionImage::make($file)
                             ->orientate()
                             ->fit($crop_width, $crop_height)
-                            ->encode($file->getClientOriginalExtension(), $resize_quality);
+                            ->encode($fileExtension, $resize_quality);
                     }
 
                     Storage::disk(config('voyager.storage.disk'))->put(
-                        $path . $filename . '-' . $thumbnails->name . '.' . $file->getClientOriginalExtension(),
+                        $path . $filename . '-' . $thumbnails->name . '.' . $fileExtension,
                         (string)$image,
                         'public'
                     );
