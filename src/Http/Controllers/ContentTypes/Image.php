@@ -11,22 +11,42 @@ class Image extends BaseType
 {
     public function handle()
     {
-        if ($this->request->hasFile($this->row->field)) {
-            $file = $this->request->file($this->row->field);
+        if (!$this->request->hasFile($this->row->field)) {
+            return;
+        }
 
-            $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+        $file = $this->request->file($this->row->field);
 
-            $filename = $this->generateFileName($file, $path);
+        $path = $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
 
-            $image = InterventionImage::make($file)->orientate();
+        $filename = $this->generateFileName($file, $path);
 
-            $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+        $fileMimeType = $file->getMimeType();
 
+        $image = InterventionImage::make($file)->orientate();
+
+        $fullPath = $path.$filename.'.'.$file->getClientOriginalExtension();
+
+        $resizableMimeTypes = [
+            'image/png',
+            'image/x-png',
+            'image/jpg',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/gif',
+            'image/webp',
+            'image/x-webp'
+        ];
+
+        // Skip resize
+        if (!in_array($fileMimeType, $resizableMimeTypes)) {
+            Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
+        } else {
             $resize_width = null;
             $resize_height = null;
             if (isset($this->options->resize) && (
-                isset($this->options->resize->width) || isset($this->options->resize->height)
-            )) {
+                    isset($this->options->resize->width) || isset($this->options->resize->height)
+                )) {
                 if (isset($this->options->resize->width)) {
                     $resize_width = $this->options->resize->width;
                 }
@@ -53,10 +73,10 @@ class Image extends BaseType
 
             if ($this->is_animated_gif($file)) {
                 Storage::disk(config('voyager.storage.disk'))->put($fullPath, file_get_contents($file), 'public');
-                $fullPathStatic = $path.$filename.'-static.'.$file->getClientOriginalExtension();
-                Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string) $image, 'public');
+                $fullPathStatic = $path . $filename . '-static.' . $file->getClientOriginalExtension();
+                Storage::disk(config('voyager.storage.disk'))->put($fullPathStatic, (string)$image, 'public');
             } else {
-                Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string) $image, 'public');
+                Storage::disk(config('voyager.storage.disk'))->put($fullPath, (string)$image, 'public');
             }
 
             if (isset($this->options->thumbnails)) {
@@ -96,15 +116,15 @@ class Image extends BaseType
                     }
 
                     Storage::disk(config('voyager.storage.disk'))->put(
-                        $path.$filename.'-'.$thumbnails->name.'.'.$file->getClientOriginalExtension(),
-                        (string) $image,
+                        $path . $filename . '-' . $thumbnails->name . '.' . $file->getClientOriginalExtension(),
+                        (string)$image,
                         'public'
                     );
                 }
             }
-
-            return $fullPath;
         }
+
+        return $fullPath;
     }
 
     /**
