@@ -61,6 +61,8 @@ class Translator implements ArrayAccess, JsonSerializable
 
         // Get Appended Attributes
         foreach ($this->model->getMutatedAttributes() as $appendKey) {
+            if ($appendKey == 'field_translations' || $appendKey == 'translated') continue; // Cause an error when we create/update model with translation fields (we must find a better way to do that of course)
+
             if (!isset($this[$appendKey])) {
                 $this[$appendKey] = '';
             }
