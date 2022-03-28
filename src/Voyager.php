@@ -235,12 +235,14 @@ class Voyager
                 Cache::tags('settings')->flush();
             }
 
-            foreach (self::model('Setting')->orderBy('order')->get() as $setting) {
-                $keys = explode('.', $setting->key);
-                @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
+            if (\Schema::hasTable('settings')) {
+                foreach (self::model('Setting')->orderBy('order')->get() as $setting) {
+                    $keys = explode('.', $setting->key);
+                    @$this->setting_cache[$keys[0]][$keys[1]] = $setting->value;
 
-                if ($globalCache) {
-                    Cache::tags('settings')->forever($setting->key, $setting->value);
+                    if ($globalCache) {
+                        Cache::tags('settings')->forever($setting->key, $setting->value);
+                    }
                 }
             }
         }
