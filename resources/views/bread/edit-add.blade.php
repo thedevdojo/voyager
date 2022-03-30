@@ -208,6 +208,9 @@
                     } else {
                         toastr.error("Error removing file.");
                     }
+                })
+                .fail(function() {
+                    toastr.error("Error removing file.");
                 });
 
                 $('#confirm_delete_modal').modal('hide');
