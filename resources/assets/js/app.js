@@ -199,7 +199,8 @@ $(document).ready(function () {
 
     $('textarea.easymde').each(function () {
         var easymde = new EasyMDE({
-            element: this
+            element: this,
+            spellChecker: false
         });
         easymde.render();
     });
