@@ -6,9 +6,13 @@
 
 To update to the latest version inside of your composer.json file make sure to update the version of Voyager inside the require declaration of your composer.json to:
 
-`tcg/voyager": "1.5.*`
+`"tcg/voyager": "1.5.*`
 
 And then run `composer update`
+
+For Laravel 9 compatibility, you will have to run the development branch or change your [minimum-stability] (https://getcomposer.org/doc/04-schema.md#minimum-stability) to dev.
+
+`"tcg/voyager": "1.5.*@dev" 
 
 ### Removed hooks
 
