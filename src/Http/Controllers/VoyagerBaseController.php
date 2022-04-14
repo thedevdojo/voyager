@@ -754,7 +754,7 @@ class VoyagerBaseController extends Controller
                 $images_to_remove = [$data->getOriginal($row->field)];
             }
 
-            foreach ($images_to_remove as $image) {
+            foreach ((array)$images_to_remove as $image) {
                 // Remove only $single_image if we are removing from bread edit
                 if ($image != config('voyager.user.default_avatar') && (is_null($single_image) || $single_image == $image)) {
                     $this->deleteFileIfExists($image);
