@@ -82,6 +82,11 @@ class BasePolicy
 
         $dataType = self::$datatypes[get_class($model)];
 
+        // if dataType is null then permission is false
+        if($dataType==null){
+            return false;
+        }
+
         return $user->hasPermission($action.'_'.$dataType->name);
     }
 }
