@@ -22,6 +22,7 @@ return [
         'post_image'       => 'Post Image',
         'remember_token'   => 'Remember Token',
         'role'             => 'Role',
+        'roles'            => 'Roles',
         'seo_title'        => 'SEO Title',
         'slug'             => 'Slug',
         'status'           => 'Status',
