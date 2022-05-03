@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Constraint;
 use Intervention\Image\Facades\Image;
-use League\Flysystem\Util;
 use TCG\Voyager\Facades\Voyager;
 
 class VoyagerController extends Controller
@@ -40,7 +39,7 @@ class VoyagerController extends Controller
             abort(403);
         }
 
-        $path = $slug.'/'.date('F').date('Y').'/';
+        $path = $slug.'/'.date('FY').'/';
 
         $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
         $filename_counter = 1;
@@ -83,7 +82,15 @@ class VoyagerController extends Controller
     public function assets(Request $request)
     {
         try {
-            $path = dirname(__DIR__, 3).'/publishable/assets/'.Util::normalizeRelativePath(urldecode($request->path));
+            if (class_exists(\League\Flysystem\Util::class)) {
+                // Flysystem 1.x
+                $path = dirname(__DIR__, 3).'/publishable/assets/'.\League\Flysystem\Util::normalizeRelativePath(urldecode($request->path));
+            } elseif (class_exists(\League\Flysystem\WhitespacePathNormalizer::class)) {
+                // Flysystem >= 2.x
+                $normalizer = new \League\Flysystem\WhitespacePathNormalizer();
+                $path = dirname(__DIR__, 3).'/publishable/assets/'. $normalizer->normalizePath(urldecode($request->path));
+            }
+            
         } catch (\LogicException $e) {
             abort(404);
         }

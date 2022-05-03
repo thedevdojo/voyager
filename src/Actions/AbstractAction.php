@@ -37,17 +37,22 @@ abstract class AbstractAction implements ActionInterface
 
     public function convertAttributesToHtml()
     {
-        $result = '';
+        $result = [];
 
         foreach ($this->getAttributes() as $key => $attribute) {
-            $result .= $key.'="'.$attribute.'"';
+            $result[] = sprintf('%s="%s"', $key, $attribute);
         }
 
-        return $result;
+        return implode(" ", $result);
     }
 
     public function shouldActionDisplayOnDataType()
     {
         return $this->dataType->name === $this->getDataType() || $this->getDataType() === null;
+    }
+
+    public function shouldActionDisplayOnRow($row)
+    {
+        return true;
     }
 }

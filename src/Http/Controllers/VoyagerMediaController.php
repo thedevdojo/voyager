@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-use League\Flysystem\Plugin\ListWith;
 use TCG\Voyager\Events\MediaFileAdded;
 use TCG\Voyager\Facades\Voyager;
 
@@ -54,13 +53,18 @@ class VoyagerMediaController extends Controller
         $dir = $this->directory.$folder;
 
         $files = [];
-        $storage = Storage::disk($this->filesystem)->addPlugin(new ListWith());
-        $storageItems = $storage->listWith(['mimetype'], $dir);
+        if (class_exists(\League\Flysystem\Plugin\ListWith::class)) {
+            $storage = Storage::disk($this->filesystem)->addPlugin(new \League\Flysystem\Plugin\ListWith());
+            $storageItems = $storage->listWith(['mimetype'], $dir);
+        } else {
+            $storage = Storage::disk($this->filesystem);
+            $storageItems = $storage->listContents($dir)->sortByPath()->toArray();
+        }
 
         foreach ($storageItems as $item) {
             if ($item['type'] == 'dir') {
                 $files[] = [
-                    'name'          => $item['basename'],
+                    'name'          => $item['basename'] ?? basename($item['path']),
                     'type'          => 'folder',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
                     'relative_path' => $item['path'],
@@ -72,18 +76,22 @@ class VoyagerMediaController extends Controller
                     continue;
                 }
                 // Its a thumbnail and thumbnails should be hidden
-                if (Str::endsWith($item['filename'], $thumbnail_names)) {
+                if (Str::endsWith($item['path'], $thumbnail_names)) {
                     $thumbnails[] = $item;
                     continue;
                 }
+                $mime = 'file';
+                if (class_exists(\League\MimeTypeDetection\ExtensionMimeTypeDetector::class)) {
+                    $mime = (new \League\MimeTypeDetection\ExtensionMimeTypeDetector())->detectMimeTypeFromFile($item['path']);
+                }
                 $files[] = [
-                    'name'          => $item['basename'],
-                    'filename'      => $item['filename'],
-                    'type'          => $item['mimetype'] ?? 'file',
+                    'name'          => $item['basename'] ?? basename($item['path']),
+                    'filename'      => $item['filename'] ?? basename($item['path'], '.'.pathinfo($item['path'])['extension']),
+                    'type'          => $item['mimetype'] ?? $mime,
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
                     'relative_path' => $item['path'],
-                    'size'          => $item['size'],
-                    'last_modified' => $item['timestamp'],
+                    'size'          => $item['size'] ?? $item->fileSize(),
+                    'last_modified' => $item['timestamp'] ?? $item->lastModified(),
                     'thumbnails'    => [],
                 ];
             }
@@ -190,20 +198,24 @@ class VoyagerMediaController extends Controller
         $success = false;
         $error = false;
 
-        if (is_array($folderLocation)) {
-            $folderLocation = rtrim(implode('/', $folderLocation), '/');
-        }
-
-        $location = "{$this->directory}/{$folderLocation}";
-
-        if (!Storage::disk($this->filesystem)->exists("{$location}/{$newFilename}")) {
-            if (Storage::disk($this->filesystem)->move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
-                $success = true;
-            } else {
-                $error = __('voyager::media.error_moving');
-            }
+        if (pathinfo($filename)['extension'] !== pathinfo($newFilename)['extension']) {
+            $error = __('voyager::media.error_renaming_ext');
         } else {
-            $error = __('voyager::media.error_may_exist');
+            if (is_array($folderLocation)) {
+                $folderLocation = rtrim(implode('/', $folderLocation), '/');
+            }
+
+            $location = "{$this->directory}/{$folderLocation}";
+
+            if (!Storage::disk($this->filesystem)->exists("{$location}/{$newFilename}")) {
+                if (Storage::disk($this->filesystem)->move("{$location}/{$filename}", "{$location}/{$newFilename}")) {
+                    $success = true;
+                } else {
+                    $error = __('voyager::media.error_moving');
+                }
+            } else {
+                $error = __('voyager::media.error_may_exist');
+            }
         }
 
         return compact('success', 'error');
@@ -220,7 +232,7 @@ class VoyagerMediaController extends Controller
         $absolute_path = Storage::disk($this->filesystem)->path($request->upload_path);
 
         try {
-            $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+            $realPath = Storage::disk($this->filesystem)->path('/');
 
             $allowedMimeTypes = config('voyager.media.allowed_mimetypes', '*');
             if ($allowedMimeTypes != '*' && (is_array($allowedMimeTypes) && !in_array($request->file->getMimeType(), $allowedMimeTypes))) {
@@ -341,7 +353,7 @@ class VoyagerMediaController extends Controller
         $height = $request->get('height');
         $width = $request->get('width');
 
-        $realPath = Storage::disk($this->filesystem)->getDriver()->getAdapter()->getPathPrefix();
+        $realPath = Storage::disk($this->filesystem)->path('/');
         $originImagePath = $request->upload_path.'/'.$request->originImageName;
         $originImagePath = preg_replace('#/+#', '/', $originImagePath);
 

@@ -93,7 +93,7 @@ class AbstractActionTest extends TestCase
                  'id'      => 'delete-5',
              ]));
 
-        $this->assertEquals('class="class1 class2"data-id="5"id="delete-5"', $stub->convertAttributesToHtml());
+        $this->assertEquals('class="class1 class2" data-id="5" id="delete-5"', $stub->convertAttributesToHtml());
     }
 
     /**

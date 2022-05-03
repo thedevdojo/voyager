@@ -1,9 +1,8 @@
-<p align="center"><a href="https://the-control-group.github.io/voyager/" target="_blank"><img width="400" src="https://s3.amazonaws.com/thecontrolgroup/voyager.png"></a></p>
+<p align="center"><a href="https://voyager.devdojo.com" target="_blank"><img width="400" src="https://s3.amazonaws.com/thecontrolgroup/voyager.png"></a></p>
 
 <p align="center"><a href="https://github.com/thedevdojo/wave" target="_blank"><img src="https://cdn.devdojo.com/images/april2021/learnmore-wave.png" height="auto" width="100%"></a></p>
 
 <p align="center">
-<a href="https://github.styleci.io/repos/72069409/"><img src="https://styleci.io/repos/72069409/shield?style=flat" alt="Build Status"></a>
 <a href="https://packagist.org/packages/tcg/voyager"><img src="https://poser.pugx.org/tcg/voyager/downloads.svg?format=flat" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/tcg/voyager"><img src="https://poser.pugx.org/tcg/voyager/v/stable.svg?format=flat" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/tcg/voyager"><img src="https://poser.pugx.org/tcg/voyager/license.svg?format=flat" alt="License"></a>
@@ -93,7 +92,7 @@ This can easily be done by running this command:
 php artisan voyager:admin your@email.com
 ```
 
-If you did not install the dummy data and you wish to create a new admin user you can pass the `--create` flag, like so:
+If you did not install the dummy data and you wish to create a new admin user, you can pass the `--create` flag, like so:
 
 ```bash
 php artisan voyager:admin your@email.com --create

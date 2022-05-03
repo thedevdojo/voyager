@@ -7,7 +7,6 @@ return [
         'title'                 => '連接',
         'documentation'         => '文件',
         'voyager_homepage'      => 'Voyager 官網',
-        'voyager_hooks'         => 'Voyager Hooks',
     ],
     'commands'      => [
         'title'                 => '指令',

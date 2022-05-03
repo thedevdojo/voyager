@@ -146,18 +146,15 @@ class InstallCommand extends Command
         require_once base_path('vendor/autoload.php');
 
         $this->info('Seeding data into the database');
-        $this->call('db:seed', ['--class' => 'VoyagerDatabaseSeeder']);
+        $this->call('db:seed', ['--class' => 'VoyagerDatabaseSeeder', '--force' => $this->option('force')]);
 
         if ($this->option('with-dummy')) {
             $this->info('Migrating dummy tables');
             $this->call('migrate');
 
             $this->info('Seeding dummy data');
-            $this->call('db:seed', ['--class' => 'VoyagerDummyDatabaseSeeder']);
+            $this->call('db:seed', ['--class' => 'VoyagerDummyDatabaseSeeder', '--force' => $this->option('force')]);
         }
-
-        $this->info('Setting up the hooks');
-        $this->call('hook:setup');
 
         $this->info('Adding the storage symlink to your public folder');
         $this->call('storage:link');
