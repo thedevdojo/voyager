@@ -8,6 +8,6 @@ class FileDeleted
 
     public function __construct($path)
     {
-        $this->path;
+        $this->path = $path;
     }
 }

@@ -104,13 +104,12 @@
                     $query = $model::where($options->column, '=', $dataTypeContent->{$options->key})->get();
                 @endphp
 
-                @if(isset($query))
+                @if($query->isNotEmpty())
                     <ul>
                         @foreach($query as $query_res)
                             <li>{{ $query_res->{$options->label} }}</li>
                         @endforeach
                     </ul>
-
                 @else
                     <p>{{ __('voyager::generic.no_results') }}</p>
                 @endif
