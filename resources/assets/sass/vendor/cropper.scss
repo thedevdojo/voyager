@@ -1,0 +1,7 @@
+#cropping-image {
+    margin: 0 auto;
+  }
+  
+  div.cropper-container img {
+    max-width: 100%; /* This rule is very important, please do not ignore this! */
+  }
