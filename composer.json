@@ -1,5 +1,5 @@
 {
-    "name": "tcg/voyager",
+    "name": "lisandrop05/voyager",
     "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
     "keywords": ["laravel", "admin", "panel"],
     "license": "MIT",
@@ -35,20 +35,20 @@
     },
     "autoload": {
         "psr-4": {
-            "TCG\\Voyager\\": "src/"
+            "Lisandrop05\\Voyager\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TCG\\Voyager\\Tests\\": "tests/"
+            "Lisandrop05\\Voyager\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",
     "extra": {
         "laravel": {
             "providers": [
-                "TCG\\Voyager\\VoyagerServiceProvider",
-                "TCG\\Voyager\\Providers\\VoyagerDummyServiceProvider"
+                "Lisandrop05\\Voyager\\VoyagerServiceProvider",
+                "Lisandrop05\\Voyager\\Providers\\VoyagerDummyServiceProvider"
             ]
         }
     },
