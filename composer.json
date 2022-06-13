@@ -35,12 +35,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Lisandrop05\\Voyager\\": "src/"
+            "TGC\\Voyager\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Lisandrop05\\Voyager\\Tests\\": "tests/"
+            "TGC\\Voyager\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "stable",
