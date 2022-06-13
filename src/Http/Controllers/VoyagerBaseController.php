@@ -86,16 +86,30 @@ class VoyagerBaseController extends Controller
                 $search_filter = ($search->filter == 'equals') ? '=' : 'LIKE';
                 $search_value = ($search->filter == 'equals') ? $search->value : '%'.$search->value.'%';
 
+                $isRelation = false;
+                $relationshipIds = [];
+                $sortableColumns = $this->getSortableColumns($dataType->browseRows);
+                $oldchampson = '';
+
                 $searchField = $dataType->name.'.'.$search->key;
-                if ($row = $this->findSearchableRelationshipRow($dataType->rows->where('type', 'relationship'), $search->key)) {
-                    $query->whereIn(
-                        $searchField,
-                        $row->details->model::where($row->details->label, $search_filter, $search_value)->pluck('id')->toArray()
-                    );
-                } else {
-                    if ($dataType->browseRows->pluck('field')->contains($search->key)) {
-                        $query->where($searchField, $search_filter, $search_value);
+
+                foreach ($dataType->browseRows as $key => $row) {
+                    if ($row->type == 'relationship' && isset($row->details) && $row->details->type == 'belongsTo'){
+                        if($search->key == $row->field){
+                            $relationshipIds = DB::table($row->details->table)
+                                ->select($row->details->key, $row->details->label)
+                                ->where($row->details->label, $search_filter, $search_value)
+                                ->pluck($row->details->key)
+                                ->toArray();
+                            $oldchampson = $row->details->column;
+                            $isRelation = true;
+                        }
                     }
+                }
+                if($isRelation) {
+                    $query->whereIn($oldchampson,$relationshipIds);
+                } else {
+                    $query->where($searchField, $search_filter, $search_value);
                 }
             }
 
