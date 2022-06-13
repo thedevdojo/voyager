@@ -47,8 +47,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Lisandrop05\\Voyager\\VoyagerServiceProvider",
-                "Lisandrop05\\Voyager\\Providers\\VoyagerDummyServiceProvider"
+                "TGC\\Voyager\\VoyagerServiceProvider",
+                "TGC\\Voyager\\Providers\\VoyagerDummyServiceProvider"
             ]
         }
     },
