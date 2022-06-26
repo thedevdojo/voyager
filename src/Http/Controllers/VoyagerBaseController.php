@@ -903,8 +903,8 @@ class VoyagerBaseController extends Controller
                 $additional_attributes = $model->additional_attributes ?? [];
 
                 // Apply local scope if it is defined in the relationship-options
-                if (isset($options->scope) && $options->scope != '' && method_exists($model, 'scope'.ucfirst($options->scope))) {
-                    $model = $model->{$options->scope}();
+                if (!empty($dataType->scope) && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+                    $model = $model->{$dataType->scope}();
                 }
 
                 // If search query, use LIKE to filter results depending on field label
