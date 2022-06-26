@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="login-container">
-        <p>{{ __('Reset Password') }}</p>
+        <p>{{ __('voyager::passwords.reset_password') }}</p>
 
         @if (session('status'))
             <div class="alert alert-success" role="alert">

@@ -51,7 +51,7 @@ class PasswordResetNotification extends Notification
         return (new MailMessage)
             ->subject(__('voyager::passwords.reset_notification_subject'))
             ->line(__('voyager::passwords.reset_notification_first_line'))
-            ->greeting(__('abeceder::passwords.reset_greeting', ['firstname' => $notifiable->firstname]))
+            ->greeting(__('voyager::generic.greeting', ['name' => $notifiable->name]))
             ->action(__('voyager::passwords.reset_password'), url(config('app.url') . route('voyager.password.reset', [
                     $this->token,
                     encrypt($notifiable->email)

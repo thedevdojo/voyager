@@ -44,7 +44,7 @@ return [
     'featured'               => 'Featured',
     'field_does_not_exist'   => 'Field does not exist',
     'find_by_place'          => 'Find by Place',
-    'greeting'               => 'Hello :firstname,',
+    'greeting'               => 'Hello :name,',
     'home'                   => 'Home',
     'how_to_use'             => 'How To Use',
     'index'                  => 'Index',
