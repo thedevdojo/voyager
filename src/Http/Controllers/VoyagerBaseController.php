@@ -902,30 +902,32 @@ class VoyagerBaseController extends Controller
 
                 $additional_attributes = $model->additional_attributes ?? [];
 
+                $query = $model::select($dataType->name.'.*');
+
                 // Apply local scope if it is defined in the relationship-options
                 if (!empty($dataType->scope) && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
-                    $model = $model->{$dataType->scope}();
+                    $query->{$dataType->scope}();
                 }
 
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
                     // If we are using additional_attribute as label
                     if (in_array($options->label, $additional_attributes)) {
-                        $relationshipOptions = $model->get();
-                        $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
-                            return stripos($model->{$options->label}, $search) !== false;
+                        $relationshipOptions = $query->get();
+                        $relationshipOptions = $relationshipOptions->filter(function ($query) use ($search, $options) {
+                            return stripos($query->{$options->label}, $search) !== false;
                         });
                         $total_count = $relationshipOptions->count();
                         $relationshipOptions = $relationshipOptions->forPage($page, $on_page);
                     } else {
-                        $total_count = $model->where($options->label, 'LIKE', '%'.$search.'%')->count();
-                        $relationshipOptions = $model->take($on_page)->skip($skip)
+                        $total_count = $query->where($options->label, 'LIKE', '%'.$search.'%')->count();
+                        $relationshipOptions = $query->take($on_page)->skip($skip)
                             ->where($options->label, 'LIKE', '%'.$search.'%')
                             ->get();
                     }
                 } else {
-                    $total_count = $model->count();
-                    $relationshipOptions = $model->take($on_page)->skip($skip)->get();
+                    $total_count = $query->count();
+                    $relationshipOptions = $query->take($on_page)->skip($skip)->get();
                 }
 
                 $results = [];
