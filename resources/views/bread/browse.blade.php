@@ -196,7 +196,7 @@
                                                         @endforeach
                                                     @else
                                                         <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($data->{$row->field}) }}" target="_blank">
-                                                            Download
+                                                            {{ __('voyager::generic.download') }}
                                                         </a>
                                                     @endif
                                                 @elseif($row->type == 'rich_text_box')
