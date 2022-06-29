@@ -110,4 +110,5 @@ return [
     'whoopsie'               => 'Whoopsie!',
     'yes'                    => 'Yes',
     'yes_please'             => 'Yes, Please',
+    'contains'               => 'contains',
 ];
