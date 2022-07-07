@@ -82,7 +82,7 @@ class BasePolicy
         }
 
         if (!self::$datatypes[$model_name]) {
-            throw new \Exception("Unable to find model: " . $model_name);
+            throw new \Exception("Unable to find dataType with model: " . $model_name);
         }
 
         $dataType = self::$datatypes[$model_name];
