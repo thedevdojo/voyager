@@ -4,7 +4,7 @@
         @foreach($options->options as $key => $option)
             <li>
                 <input type="radio" id="option-{{ \Illuminate\Support\Str::slug($row->field, '-') }}-{{ \Illuminate\Support\Str::slug($key, '-') }}"
-                       name="{{ $options->form_field_name ?? $row->field }}"
+                       name="{{ $row->form_field_name ?? $row->field }}"
                        value="{{ $key }}" @if($selected_value == $key) checked @endif>
                 <label for="option-{{ \Illuminate\Support\Str::slug($row->field, '-') }}-{{ \Illuminate\Support\Str::slug($key, '-') }}">{{ $option }}</label>
                 <div class="check"></div>
