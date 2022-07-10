@@ -1,6 +1,6 @@
 <input type="number"
        class="form-control"
-       name="{{ $row->field }}"
+       name="{{ $options->form_field_name ?? $row->field }}"
        type="number"
        @if($row->required == 1) required @endif
        @if(isset($options->min)) min="{{ $options->min }}" @endif
