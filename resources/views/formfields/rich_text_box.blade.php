@@ -1,4 +1,4 @@
-<textarea class="form-control richTextBox" name="{{ $options->form_field_name ?? $row->field }}" id="richtext{{ $row->field }}">
+<textarea class="form-control richTextBox" name="{{ $row->form_field_name ?? $row->field }}" id="richtext{{ $row->field }}">
     {{ old($row->field, $dataTypeContent->{$row->field} ?? '') }}
 </textarea>
 
@@ -6,7 +6,7 @@
     <script>
         $(document).ready(function() {
             var additionalConfig = {
-                selector: 'textarea.richTextBox[name="{{ $options->form_field_name ?? $row->field }}"]',
+                selector: 'textarea.richTextBox[name="{{ $row->form_field_name ?? $row->field }}"]',
             }
 
             $.extend(additionalConfig, {!! json_encode($options->tinymceOptions ?? '{}') !!})

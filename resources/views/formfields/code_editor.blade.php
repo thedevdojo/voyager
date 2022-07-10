@@ -1,2 +1,2 @@
-<div id="{{ $row->field }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_200" name="{{ $options->form_field_name ?? $row->field }}">{{ old($row->field, $dataTypeContent->{$row->field} ?? $options->default ?? '') }}</div>
-<textarea name="{{ $options->form_field_name ?? $row->field }}" id="{{ $row->field }}_textarea" class="hidden">{{ old($row->field, $dataTypeContent->{$row->field} ?? $options->default ?? '') }}</textarea>
+<div id="{{ $row->field }}" data-theme="{{ @$options->theme }}" data-language="{{ @$options->language }}" class="ace_editor min_height_200" name="{{ $row->form_field_name ?? $row->field }}">{{ old($row->field, $dataTypeContent->{$row->field} ?? $options->default ?? '') }}</div>
+<textarea name="{{ $row->form_field_name ?? $row->field }}" id="{{ $row->field }}_textarea" class="hidden">{{ old($row->field, $dataTypeContent->{$row->field} ?? $options->default ?? '') }}</textarea>
