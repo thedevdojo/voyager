@@ -10,10 +10,10 @@
 <?php $class = $options->class ?? "toggleswitch"; ?>
 
 @if(isset($options->on) && isset($options->off))
-    <input type="checkbox" name="{{ $row->form_field_name ?? $row->field }}" class="{{ $class }}"
+    <input type="checkbox" name="{{ $row->field }}" class="{{ $class }}"
         data-on="{{ $options->on }}" {!! $checked ? 'checked="checked"' : '' !!}
         data-off="{{ $options->off }}">
 @else
-    <input type="checkbox" name="{{ $row->form_field_name ?? $row->field }}" class="{{ $class }}"
+    <input type="checkbox" name="{{ $row->field }}" class="{{ $class }}"
         @if($checked) checked @endif>
 @endif

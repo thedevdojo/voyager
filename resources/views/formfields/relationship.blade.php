@@ -2,7 +2,7 @@
 
     @if(class_exists($options->model))
 
-        @php $relationshipField = $row->form_field_name ?? $row->field; @endphp
+        @php $relationshipField = $row->field; @endphp
 
         @if($options->type == 'belongsTo')
 
