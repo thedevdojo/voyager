@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-2">
                                         <select id="filter" name="filter">
-                                            <option value="contains" @if($search->filter == "contains") selected @endif>contains</option>
+                                            <option value="contains" @if($search->filter == "contains") selected @endif>{{ __('voyager::generic.contains') }}</option>
                                             <option value="equals" @if($search->filter == "equals") selected @endif>=</option>
                                         </select>
                                     </div>
@@ -196,7 +196,7 @@
                                                         @endforeach
                                                     @else
                                                         <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($data->{$row->field}) }}" target="_blank">
-                                                            Download
+                                                            {{ __('voyager::generic.download') }}
                                                         </a>
                                                     @endif
                                                 @elseif($row->type == 'rich_text_box')
