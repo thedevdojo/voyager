@@ -197,9 +197,9 @@
                 $_data = {};  // Create new data
 
             if (inpUsr.hasClass('richTextBox')) {
-                var $_mce = tinymce.get(inpUsr.prop('id') || 'richtext'+inpUsr.prop('name'));
+                var _mce = tinymce.get(inpUsr.prop('id') || 'richtext'+inpUsr.prop('name'));
                 if (_mce && _mce.initialized) {
-                    $_val = $_mce.getContent();
+                    $_val = _mce.getContent();
                 }
             }
 
