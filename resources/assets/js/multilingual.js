@@ -197,8 +197,10 @@
                 $_data = {};  // Create new data
 
             if (inpUsr.hasClass('richTextBox')) {
-                var $_mce = tinymce.get('richtext'+inpUsr.prop('name'));
-                $_val = $_mce.getContent();
+                var _mce = tinymce.get(inpUsr.prop('id') || 'richtext'+inpUsr.prop('name'));
+                if (_mce && _mce.initialized) {
+                    $_val = _mce.getContent();
+                }
             }
 
             if (inpUsr.hasClass('easymde')) {
@@ -225,9 +227,8 @@
 
             if (!this.settings.editing) {
                 inpUsr.text(_val);
-
             } else {
-                var _mce = tinymce.get('richtext'+inpUsr.prop('name'));
+                var _mce = tinymce.get(inpUsr.prop('id') || 'richtext'+inpUsr.prop('name'));
                 if (inpUsr.hasClass('richTextBox') && _mce && _mce.initialized) {
                     _mce.setContent(_val);
                 } else {
