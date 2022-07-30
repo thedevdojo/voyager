@@ -15,7 +15,7 @@
         <a class="fileType" target="_blank"
           href="{{ Storage::disk(config('voyager.storage.disk'))->url($dataTypeContent->{$row->field}) }}"
           data-file-name="{{ $dataTypeContent->{$row->field} }}" data-id="{{ $dataTypeContent->getKey() }}">>
-          Download
+            {{ __('voyager::generic.download') }}
         </a>
         <a href="#" class="voyager-x remove-single-file"></a>
       </div>

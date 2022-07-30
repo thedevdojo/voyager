@@ -75,12 +75,17 @@ class BasePolicy
      */
     protected function checkPermission(User $user, $model, $action)
     {
-        if (!isset(self::$datatypes[get_class($model)])) {
+        $model_name = get_class($model);
+        if (!isset(self::$datatypes[$model_name])) {
             $dataType = Voyager::model('DataType');
-            self::$datatypes[get_class($model)] = $dataType->where('model_name', get_class($model))->first();
+            self::$datatypes[$model_name] = $dataType->where('model_name', $model_name)->first();
         }
 
-        $dataType = self::$datatypes[get_class($model)];
+        if (!self::$datatypes[$model_name]) {
+            throw new \Exception("Unable to find dataType with model: " . $model_name);
+        }
+
+        $dataType = self::$datatypes[$model_name];
 
         return $user->hasPermission($action.'_'.$dataType->name);
     }
