@@ -40,7 +40,7 @@ After that go to the BREAD-settings and fill in the Controller Name with your fu
 
 ![](../.gitbook/assets/bread_controller.png)
 
-You can now override all methods from the [VoyagerBaseController](https://github.com/the-control-group/voyager/blob/1.1/src/Http/Controllers/VoyagerBaseController.php)
+You can now override all methods from the [VoyagerBaseController](https://github.com/the-control-group/voyager/blob/1.5/src/Http/Controllers/VoyagerBaseController.php)
 
 ## Overriding Voyagers Controllers
 
