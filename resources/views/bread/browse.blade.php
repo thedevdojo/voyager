@@ -118,7 +118,16 @@
                                                 $data->{$row->field} = $data->{$row->field.'_browse'};
                                             }
                                             @endphp
-                                            <td>
+                                            @if($row->type == 'date' || $row->type == 'timestamp')
+                                                <td data-sort="{{ \Carbon\Carbon::parse($data->{$row->field})->isoFormat("YYYYMMDD") }}">
+                                                    @if ( property_exists($row->details, 'format') && !is_null($data->{$row->field}) )
+                                                        {{ \Carbon\Carbon::parse($data->{$row->field})->isoFormat($row->details->format) }}
+                                                    @else
+                                                        {{ $data->{$row->field} }}
+                                                    @endif
+                                                </td>
+                                            @else
+                                                <td>
                                                 @if (isset($row->details->view_browse))
                                                     @include($row->details->view_browse, ['row' => $row, 'dataType' => $dataType, 'dataTypeContent' => $dataTypeContent, 'content' => $data->{$row->field}, 'view' => 'browse', 'options' => $row->details])
                                                 @elseif (isset($row->details->view))
@@ -161,12 +170,6 @@
 
                                                     {!! $row->details->options->{$data->{$row->field}} ?? '' !!}
 
-                                                @elseif($row->type == 'date' || $row->type == 'timestamp')
-                                                    @if ( property_exists($row->details, 'format') && !is_null($data->{$row->field}) )
-                                                        {{ \Carbon\Carbon::parse($data->{$row->field})->formatLocalized($row->details->format) }}
-                                                    @else
-                                                        {{ $data->{$row->field} }}
-                                                    @endif
                                                 @elseif($row->type == 'checkbox')
                                                     @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                                         @if($data->{$row->field})
@@ -251,6 +254,7 @@
                                                     <span>{{ $data->{$row->field} }}</span>
                                                 @endif
                                             </td>
+                                            @endif
                                         @endforeach
                                         <td class="no-sort no-click bread-actions">
                                             @foreach($actions as $action)
