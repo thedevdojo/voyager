@@ -107,7 +107,7 @@
                 @if($query->isNotEmpty())
                     <ul>
                         @foreach($query as $query_res)
-                            <li>{{ $query_res->{$options->label} }}</li>
+                            <li>{!! $query_res->{$options->label} !!}</li>
                         @endforeach
                     </ul>
                 @else
