@@ -1,4 +1,4 @@
-<ul>
+<ul class="nav navbar-nav">
 
 @php
 
@@ -35,8 +35,8 @@
         }
 
         // Set Icon
-        if(isset($options->icon) && $options->icon == true){
-            $icon = '<i class="' . $item->icon_class . '"></i>';
+        if(!empty($item->icon_class)) {
+            $icon = '<i class="icon '.$item->icon_class.'"></i>';
         }
 
     @endphp
