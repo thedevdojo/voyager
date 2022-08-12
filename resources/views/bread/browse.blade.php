@@ -170,9 +170,9 @@
                                                 @elseif($row->type == 'checkbox')
                                                     @if(property_exists($row->details, 'on') && property_exists($row->details, 'off'))
                                                         @if($data->{$row->field})
-                                                            <span class="label label-info">{{ $row->details->on }}</span>
+                                                            <span class="label label-info @if($row->details->on == 'yes') label-yes @endif">@if($row->details->on == 'yes'){{ __('voyager::generic.yes') }}@else{{ $row->details->on }}@endif</span>
                                                         @else
-                                                            <span class="label label-primary">{{ $row->details->off }}</span>
+                                                            <span class="label label-primary @if($row->details->off == 'no') label-no @endif">@if($row->details->off == 'no'){{ __('voyager::generic.no') }}@else{{ $row->details->off }}@endif</span>
                                                         @endif
                                                     @else
                                                     {{ $data->{$row->field} }}
