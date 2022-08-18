@@ -18,8 +18,8 @@ use TCG\Voyager\Facades\Voyager;
 */
 
 if(
-    config('voyager.dashboard.provide_only_admin_route')
-    && Str::startsWith(Request::getPathInfo(), DIRECTORY_SEPARATOR . config('voyager.dashboard.prefix'))
+    Str::startsWith(Request::getPathInfo(), '/' .config('voyager.dashboard.prefix'))
+    && !Str::startsWith(Request::getPathInfo(), config('voyager.not_provide_on_routs'))
 ) {
     Route::group(['as' => 'voyager.'], function () {
         event(new Routing());

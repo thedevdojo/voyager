@@ -57,13 +57,6 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if (
-            config('voyager.dashboard.provide_only_admin_route')
-            && Str::startsWith(Request::getPathInfo(), DIRECTORY_SEPARATOR . config('voyager.dashboard.prefix'))
-        ) {
-            return;
-        }
-
         $this->app->register(VoyagerEventServiceProvider::class);
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(VoyagerDummyServiceProvider::class);
@@ -129,7 +122,12 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
         }
 
-        $this->loadAuth();
+        if (
+            Str::startsWith(Request::getPathInfo(), '/' .config('voyager.dashboard.prefix'))
+            && !Str::startsWith(Request::getPathInfo(), config('voyager.not_provide_on_routs'))
+        ) {
+            $this->loadAuth();
+        }
 
         $this->registerViewComposers();
 

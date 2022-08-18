@@ -74,11 +74,11 @@ return [
     | Provider
     |--------------------------------------------------------------------------
     |
-    | Register provider only for admin requests
+    | Not Register provider on routs
     |
     */
 
-    'provide_only_admin_route' => true,
+    'not_provide_on_routs' => [],
 
     /*
     |--------------------------------------------------------------------------
