@@ -30,6 +30,7 @@ use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Seed;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
+use Request;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -121,7 +122,12 @@ class VoyagerServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom(realpath(__DIR__.'/../migrations'));
         }
 
-        $this->loadAuth();
+        if (
+            Str::startsWith(Request::getPathInfo(), '/' .config('voyager.dashboard.prefix'))
+            && !Str::startsWith(Request::getPathInfo(), config('voyager.not_provide_on_routs'))
+        ) {
+            $this->loadAuth();
+        }
 
         $this->registerViewComposers();
 
