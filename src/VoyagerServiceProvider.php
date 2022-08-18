@@ -30,6 +30,7 @@ use TCG\Voyager\Providers\VoyagerDummyServiceProvider;
 use TCG\Voyager\Providers\VoyagerEventServiceProvider;
 use TCG\Voyager\Seed;
 use TCG\Voyager\Translator\Collection as TranslatorCollection;
+use Request;
 
 class VoyagerServiceProvider extends ServiceProvider
 {
@@ -56,6 +57,13 @@ class VoyagerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if (
+            config('voyager.dashboard.provide_only_admin_route')
+            && Str::startsWith(Request::getPathInfo(), DIRECTORY_SEPARATOR . config('voyager.dashboard.prefix'))
+        ) {
+            return;
+        }
+
         $this->app->register(VoyagerEventServiceProvider::class);
         $this->app->register(ImageServiceProvider::class);
         $this->app->register(VoyagerDummyServiceProvider::class);
