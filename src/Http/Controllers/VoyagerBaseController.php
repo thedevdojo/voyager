@@ -945,10 +945,14 @@ class VoyagerBaseController extends Controller
 
                 // Sort results
                 if (!empty($options->sort->field)) {
+                    $sort = SORT_REGULAR;
+                    if (!empty($options->sort->flag)) {
+                        $sort = str_replace('"', '', $options->sort->flag);
+                    }
                     if (!empty($options->sort->direction) && strtolower($options->sort->direction) == 'desc') {
-                        $relationshipOptions = $relationshipOptions->sortByDesc($options->sort->field);
+                        $relationshipOptions = $relationshipOptions->sortByDesc($options->sort->field, $sort);
                     } else {
-                        $relationshipOptions = $relationshipOptions->sortBy($options->sort->field);
+                        $relationshipOptions = $relationshipOptions->sortBy($options->sort->field, $sort);
                     }
                 }
 
