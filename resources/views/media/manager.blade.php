@@ -4,26 +4,52 @@
         <ol id="files" class="dd-list">
             <li v-for="file in getSelectedFiles()" class="dd-item" :data-url="file">
                 <div class="file_link selected" aria-hidden="true" data-toggle="tooltip" data-placement="auto" :title="file">
-                    <div class="link_icon">
-                        <template v-if="fileIs(file, 'image')">
-                            <div class="img_icon" :style="imgIcon('{{ Storage::disk(config('voyager.storage.disk'))->url('/') }}'+file)"></div>
-                        </template>
-                        <template v-else-if="fileIs(file, 'video')">
-                            <i class="icon voyager-video"></i>
-                        </template>
-                        <template v-else-if="fileIs(file, 'audio')">
-                            <i class="icon voyager-music"></i>
-                        </template>
-                        <template v-else-if="fileIs(file, 'zip')">
-                            <i class="icon voyager-archive"></i>
-                        </template>
-                        <template v-else-if="fileIs(file, 'folder')">
-                            <i class="icon voyager-folder"></i>
-                        </template>
-                        <template v-else>
-                            <i class="icon voyager-file-text"></i>
-                        </template>
-                    </div>
+                    <template v-if="fileIs(file, 'opendocument.text')">
+                        <div class="link_icon icone_media icone_writer">
+                        </div>
+                    </template>
+                    <template v-else-if="fileIs(file, 'opendocument.spreadsheet')">
+                        <div class="link_icon icone_media icone_calc">
+                        </div>
+                    </template>
+                    <template v-else-if="fileIs(file, 'opendocument.graphics')">
+                        <div class="link_icon icone_media icone_draw">
+                        </div>
+                    </template>
+                    <template v-else>
+                        <div class="link_icon">
+                            <template v-if="fileIs(file, 'image')">
+                                <div class="img_icon" :style="imgIcon('{{ Storage::disk(config('voyager.storage.disk'))->url('/') }}'+file)"></div>
+                            </template>
+                            <template v-else-if="fileIs(file, 'video')">
+                                <i class="icon voyager-video"></i>
+                            </template>
+                            <template v-else-if="fileIs(file, 'audio')">
+                                <i class="icon voyager-music"></i>
+                            </template>
+                            <template v-else-if="fileIs(file, 'pdf')">
+                                <i class="icon icone_pdf mdi mdi-48px mdi-file-pdf"></i>
+                            </template>
+                            <template v-else-if="fileIs(file, 'wordprocessingml.document')">
+                                <i class="icon icone_word mdi mdi-48px mdi-file-word"></i>
+                            </template>
+                            <template v-else-if="fileIs(file, 'presentationml.presentation')">
+                                <i class="icon icone_power_point mdi mdi-48px mdi-file-powerpoint"></i>
+                            </template>
+                            <template v-else-if="fileIs(file, 'spreadsheetml.sheet')">
+                                <i class="icon icone_excel mdi mdi-48px mdi-file-excel"></i>
+                            </template>
+                            <template v-else-if="fileIs(file, 'zip')">
+                                <i class="icon voyager-archive"></i>
+                            </template>
+                            <template v-else-if="fileIs(file, 'folder')">
+                                <i class="icon voyager-folder"></i>
+                            </template>
+                            <template v-else>
+                                <i class="icon voyager-file-text"></i>
+                            </template>
+                        </div>
+                    </template>
                     <div class="details">
                         <div class="folder">
                             <h4>@{{ getFileName(file) }}</h4>
@@ -53,6 +79,14 @@
         </div>
         <button type="button" class="btn btn-default" v-on:click="getFiles()">
             <i class="voyager-refresh"></i>
+        </button>
+        <button type="button" id="sort_asc" class="btn btn-default" v-on:click="getFiles('asc')">
+            <i class="voyager-sort-asc"></i>
+            {{ __('voyager::generic.sort_asc') }}
+        </button>
+        <button type="button" id="sort_desc" class="btn btn-default" v-on:click="getFiles('desc')">
+            <i class="voyager-sort-desc"></i>
+            {{ __('voyager::generic.sort_desc') }}
         </button>
         <div class="btn-group offset-right">
             <button type="button" :disabled="selected_files.length == 0" v-if="allowUpload && hidden_element" class="btn btn-default" v-on:click="addSelectedFiles()">
@@ -95,26 +129,52 @@
                 <ul id="files">
                     <li v-for="(file) in files" v-on:click="selectFile(file, $event)" v-on:dblclick="openFile(file)" v-if="filter(file)">
                         <div :class="'file_link ' + (isFileSelected(file) ? 'selected' : '')">
-                            <div class="link_icon">
-                                <template v-if="fileIs(file, 'image')">
-                                    <div class="img_icon" :style="imgIcon(file.path)"></div>
-                                </template>
-                                <template v-else-if="fileIs(file, 'video')">
-                                    <i class="icon voyager-video"></i>
-                                </template>
-                                <template v-else-if="fileIs(file, 'audio')">
-                                    <i class="icon voyager-music"></i>
-                                </template>
-                                <template v-else-if="fileIs(file, 'zip')">
-                                    <i class="icon voyager-archive"></i>
-                                </template>
-                                <template v-else-if="fileIs(file, 'folder')">
-                                    <i class="icon voyager-folder"></i>
-                                </template>
-                                <template v-else>
-                                    <i class="icon voyager-file-text"></i>
-                                </template>
-                            </div>
+                            <template v-if="fileIs(file, 'opendocument.text')">
+                                <div class="link_icon icone_media icone_writer">
+                                </div>
+                            </template>
+                            <template v-else-if="fileIs(file, 'opendocument.spreadsheet')">
+                                <div class="link_icon icone_media icone_calc">
+                                </div>
+                            </template>
+                            <template v-else-if="fileIs(file, 'opendocument.graphics')">
+                                <div class="link_icon icone_media icone_draw">
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="link_icon">
+                                    <template v-if="fileIs(file, 'image')">
+                                        <div class="img_icon" :style="imgIcon(file.path)"></div>
+                                    </template>
+                                    <template v-else-if="fileIs(file, 'video')">
+                                        <i class="icon voyager-video"></i>
+                                    </template>
+                                    <template v-else-if="fileIs(file, 'audio')">
+                                        <i class="icon voyager-music"></i>
+                                    </template>
+                                    <template v-else-if="fileIs(file, 'pdf')">
+                                        <i class="icon icone_pdf mdi mdi-48px mdi-file-pdf"></i>
+                                    </template>
+                                    <template v-else-if="fileIs(file, 'wordprocessingml.document')">
+                                        <i class="icon icone_word mdi mdi-48px mdi-file-word"></i>
+                                    </template>
+                                    <template v-else-if="fileIs(file, 'presentationml.presentation')">
+                                        <i class="icon icone_power_point mdi mdi-48px mdi-file-powerpoint"></i>
+                                    </template>
+                                    <template v-else-if="fileIs(file, 'spreadsheetml.sheet')">
+                                        <i class="icon icone_excel mdi mdi-48px mdi-file-excel"></i>
+                                    </template>
+                                    <template v-else-if="fileIs(file, 'zip')">
+                                        <i class="icon voyager-archive"></i>
+                                    </template>
+                                    <template v-else-if="fileIs(file, 'folder')">
+                                        <i class="icon voyager-folder"></i>
+                                    </template>
+                                    <template v-else>
+                                        <i class="icon voyager-file-text"></i>
+                                    </template>
+                                </div>
+                            </template>
                             <div class="details">
                                 <div :class="file.type">
                                     <h4>@{{ file.name }}</h4>
@@ -166,6 +226,30 @@
                                     <source :src="selected_file.path" type="audio/mpeg">
                                     {{ __('voyager::media.browser_audio_support') }}
                                 </audio>
+                            </div>
+                            <div v-else-if="fileIs(selected_file, 'wordprocessingml.document')">
+                                <i class="icon icone_word mdi mdi-70px mdi-file-word"></i>
+                            </div>
+                            <div v-else-if="fileIs(selected_file, 'presentationml.presentation')">
+                                <i class="icon icone_power_point mdi mdi-70px mdi-file-powerpoint"></i>
+                            </div>
+                            <div v-else-if="fileIs(selected_file, 'spreadsheetml.sheet')">
+                                <i class="icon icone_excel mdi mdi-70px mdi-file-excel"></i>
+                            </div>
+                            <div v-else-if="fileIs(selected_file, 'opendocument.text')" class="icone_media_details_bg">
+                                <div class="link_icon icone_media_details icone_writer">
+                                </div>
+                            </div>
+                            <div v-else-if="fileIs(selected_file, 'opendocument.spreadsheet')" class="icone_media_details_bg">
+                                <div class="link_icon icone_media_details icone_calc">
+                                </div>
+                            </div>
+                            <div v-else-if="fileIs(selected_file, 'opendocument.graphics')" class="icone_media_details_bg">
+                                <div class="link_icon icone_media_details icone_draw">
+                                </div>
+                            </div>
+                            <div v-else-if="fileIs(selected_file, 'pdf')">
+                                <i class="icon icone_pdf mdi mdi-70px mdi-file-pdf"></i>
                             </div>
                             <div v-else-if="fileIs(selected_file, 'zip')">
                                 <i class="voyager-archive"></i>
@@ -460,10 +544,10 @@
             }
         },
         methods: {
-            getFiles: function() {
+            getFiles: function(sort = null) {
                 var vm = this;
                 vm.is_loading = true;
-                $.post('{{ route('voyager.media.files') }}', { folder: vm.current_folder, _token: '{{ csrf_token() }}', details: vm.details }, function(data) {
+                $.post('{{ route('voyager.media.files') }}', { folder: vm.current_folder, _token: '{{ csrf_token() }}', details: vm.details, sort: sort }, function(data) {
                     vm.files = [];
                     for (var i = 0, file; file = data[i]; i++) {
                         if (vm.filter(file)) {
@@ -474,7 +558,7 @@
                     if (vm.preSelect && data.length > 0) {
                         vm.selected_files.push(data[0]);
                     }
-					vm.is_loading = false;
+                    vm.is_loading = false;
 				});
             },
             selectFile: function(file, e) {
@@ -776,14 +860,7 @@
                     return null;
                 }
                 var date = new Date(date * 1000);
-
-                var month = "0" + (date.getMonth() + 1);
-                var minutes = "0" + date.getMinutes();
-                var seconds = "0" + date.getSeconds();
-
-                var dateFormated = date.getFullYear() + '-' + month.substr(-2) + '-' + date.getDate() + ' ' + date.getHours() + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-
-                return dateFormated;
+                return date.toLocaleString();
             },
             endsWithAny: function(suffixes, string) {
                 return suffixes.some(function (suffix) {
