@@ -84,6 +84,8 @@ return [
     'select_group'           => 'Sélectionner un groupe ou en créer un nouveau',
     'settings'               => 'Paramètres',
     'showing_entries'        => 'Affichage :from à :to de :all entrées|Affichage :from à :to de :all entrées',
+    'sort_asc'               => 'Tri croissant',
+    'sort_desc'              => 'Tri décroissant',
     'submit'                 => 'Soumettre',
     'successfully_added_new' => 'Ajouté avec succès',
     'successfully_deleted'   => 'Supprimé avec succès',
