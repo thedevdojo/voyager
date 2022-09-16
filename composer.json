@@ -1,11 +1,17 @@
 {
-    "name": "jimmythewebexpert/voyager",
+    "name": "tcg/voyager",
     "description": "A Laravel Admin Package for The Control Group to make your life easier and steer your project in the right direction",
+    "keywords": ["laravel", "admin", "panel"],
     "license": "MIT",
+    "homepage": "https://voyager.devdojo.com/",
+    "support": {
+        "issues": "https://github.com/the-control-group/voyager/issues",
+        "source": "https://github.com/the-control-group/voyager"
+    },
     "authors": [
         {
-            "name": "jamal shah",
-            "email": "jimmythewebexpert@gmail.com"
+            "name": "Tony Lea",
+            "email": "tony.lea@thecontrolgroup.com"
         }
     ],
     "require": {
