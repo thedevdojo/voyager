@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^7.1|^8.0",
         "intervention/image": "^7.1.0",
         "illuminate/support": "^6.0|^7.0|^8.0",
         "doctrine/dbal": "^3.4.4",
