@@ -20,7 +20,7 @@
         "illuminate/support": "^6.0|^7.0|^8.0",
         "doctrine/dbal": "^2.5|^3.1",
         "larapack/doctrine-support": "^0.1.4",
-        "laravel/ui": "^1.0",
+        "laravel/ui": "^4.0.2",
         "arrilot/laravel-widgets": "^3.7",
         "league/flysystem": "^1.1|^2.0|^3.0",
         "ext-json": "*"
