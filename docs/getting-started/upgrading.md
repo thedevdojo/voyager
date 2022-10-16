@@ -120,13 +120,25 @@ Please refer to the [Laravel documentation](https://laravel.com/docs/authorizati
 
 The User BREAD now has its own controller. Please update your User BREAD to use `TCG\Voyager\Http\Controllers\VoyagerUserController` as the controller: ![](../.gitbook/assets/upgrade_controller.jpg)
 
+### :warning: New Relationship Attributes
+
+Name of relationship attributes are changed to `{BaseModel}_{RelationshipType}_{RelatedModel}_relationship` from `{RelatedModel}_id` on default BREAD forms. Reconsider your logic If you have custom controller. 
+
+For instance ;
+
+```php
+// Old one
+$request->category_id
+// New one
+$request->new_belongsto_category_relationship 
+```
+
 ### Final Steps
 
 Voyager changed its way on how to load assets.  
 Assets don't get published anymore, instead they are loaded directly from the package.  
 Because of that, you can safely remove everything from your `public/vendor/tcg/voyager` folder.  
 Also you can remove the `assets_path` config-key from `config/voyager.php`.
-
 ## Troubleshooting
 
 Be sure to ask us on our slack channel if you are experiencing any issues and we will try and assist. Thanks.
