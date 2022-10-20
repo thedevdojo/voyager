@@ -10,8 +10,9 @@ var getConfig = function(options) {
         menubar: false,
         selector: 'textarea.richTextBox',
         base_url: $('meta[name="assets-path"]').attr('content')+'?path=js/',
+        skin: 'oxide',
         min_height: 600,
-        resize: 'vertical',
+        resize: true,
         plugins: 'link image code table lists',
         extended_valid_elements : 'input[id|name|value|type|class|style|required|placeholder|autocomplete|onclick]',
         relative_urls: false, // Necessary so uploaded images don't get a relative path but an URL instead.

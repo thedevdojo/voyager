@@ -1,7 +1,6 @@
 @import "_variables";
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 @import "node_modules/animate.css/animate";
-@import "node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch";
 @import "node_modules/datatables/media/css/jquery.dataTables";
 @import "node_modules/datatables-bootstrap3-plugin/media/css/datatables-bootstrap3";
 @import "node_modules/select2/dist/css/select2";
@@ -937,9 +936,6 @@ a:hover {
 
 .checkbox3 label, .radio3 label, .checkbox-inline, .radio-inline {
   font-weight: normal; }
-
-.bootstrap-switch {
-  border-radius: 1px; }
 
 .thumbnail {
   border-radius: 1px;
@@ -3720,14 +3716,6 @@ a.text-action{color:#a3afb7}a.text-action,a.text-action:focus,a.text-action:hove
 .voyager .list-group .list-group-item.list-group-item-danger .badge {
     background-color: #FFF;
     color: #FA2A00;
-}
-
-.voyager .bootstrap-switch {
-    border-color: #EAEAEA;
-}
-
-.voyager .bootstrap-switch .bootstrap-switch-primary {
-    background-color: #353d47;
 }
 
 .voyager .table .active td,

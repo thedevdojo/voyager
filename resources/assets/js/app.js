@@ -15,7 +15,6 @@ require('jquery-match-height');
 require('bootstrap-toggle');
 require('nestable2');
 require('bootstrap');
-require('bootstrap-switch');
 require('select2');
 require('eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker');
 var brace = require('brace');
