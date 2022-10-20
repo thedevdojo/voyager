@@ -1,39 +1,9 @@
-ace.define("ace/snippets/graphqlschema",["require","exports","module"], function(require, exports, module) {
-"use strict";
+ace.define("ace/snippets/graphqlschema.snippets",["require","exports","module"], function(require, exports, module){module.exports = "# Type Snippet\ntrigger type\nsnippet type\n\ttype ${1:type_name} {\n\t\t${2:type_siblings}\n\t}\n\n# Input Snippet\ntrigger input\nsnippet input\n\tinput ${1:input_name} {\n\t\t${2:input_siblings}\n\t}\n\n# Interface Snippet\ntrigger interface\nsnippet interface\n\tinterface ${1:interface_name} {\n\t\t${2:interface_siblings}\n\t}\n\n# Interface Snippet\ntrigger union\nsnippet union\n\tunion ${1:union_name} = ${2:type} | ${3: type}\n\n# Enum Snippet\ntrigger enum\nsnippet enum\n\tenum ${1:enum_name} {\n\t\t${2:enum_siblings}\n\t}\n";
 
-exports.snippetText = "# Type Snippet\n\
-trigger type\n\
-snippet type\n\
-	type ${1:type_name} {\n\
-		${2:type_siblings}\n\
-	}\n\
-\n\
-# Input Snippet\n\
-trigger input\n\
-snippet input\n\
-	input ${1:input_name} {\n\
-		${2:input_siblings}\n\
-	}\n\
-\n\
-# Interface Snippet\n\
-trigger interface\n\
-snippet interface\n\
-	interface ${1:interface_name} {\n\
-		${2:interface_siblings}\n\
-	}\n\
-\n\
-# Interface Snippet\n\
-trigger union\n\
-snippet union\n\
-	union ${1:union_name} = ${2:type} | ${3: type}\n\
-\n\
-# Enum Snippet\n\
-trigger enum\n\
-snippet enum\n\
-	enum ${1:enum_name} {\n\
-		${2:enum_siblings}\n\
-	}\n\
-";
+});
+
+ace.define("ace/snippets/graphqlschema",["require","exports","module","ace/snippets/graphqlschema.snippets"], function(require, exports, module){"use strict";
+exports.snippetText = require("./graphqlschema.snippets");
 exports.scope = "graphqlschema";
 
 });                (function() {

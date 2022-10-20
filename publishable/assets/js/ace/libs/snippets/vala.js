@@ -1,5 +1,4 @@
-ace.define("ace/snippets/vala",["require","exports","module"], function(require, exports, module) {
-"use strict";
+ace.define("ace/snippets/vala",["require","exports","module"], function(require, exports, module){"use strict";
 exports.snippets = [
     {
         "content": "case ${1:condition}:\n\t$0\n\tbreak;\n",

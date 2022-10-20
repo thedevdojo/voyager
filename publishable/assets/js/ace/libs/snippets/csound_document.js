@@ -1,17 +1,9 @@
-ace.define("ace/snippets/csound_document",["require","exports","module"], function(require, exports, module) {
-"use strict";
+ace.define("ace/snippets/csound_document.snippets",["require","exports","module"], function(require, exports, module){module.exports = "# <CsoundSynthesizer>\nsnippet synth\n\t<CsoundSynthesizer>\n\t<CsInstruments>\n\t${1}\n\t</CsInstruments>\n\t<CsScore>\n\te\n\t</CsScore>\n\t</CsoundSynthesizer>\n";
 
-exports.snippetText = "# <CsoundSynthesizer>\n\
-snippet synth\n\
-	<CsoundSynthesizer>\n\
-	<CsInstruments>\n\
-	${1}\n\
-	</CsInstruments>\n\
-	<CsScore>\n\
-	e\n\
-	</CsScore>\n\
-	</CsoundSynthesizer>\n\
-";
+});
+
+ace.define("ace/snippets/csound_document",["require","exports","module","ace/snippets/csound_document.snippets"], function(require, exports, module){"use strict";
+exports.snippetText = require("./csound_document.snippets");
 exports.scope = "csound_document";
 
 });                (function() {
