@@ -1,0 +1,67 @@
+.detail_info p {
+    word-wrap: anywhere;
+}
+
+#files li .file_link {
+    padding: 0rem 0rem 0rem 0rem;
+}
+
+#files li .details h4 {
+    height: 60px;
+    max-height: 60px;
+}
+
+#files li .file_link .details {
+    flex: 4;
+    margin: 0rem 0.5rem 0rem 0rem;
+}
+
+.icone_excel {
+    color: #207245;
+}
+
+.icone_pdf {
+    color: #FF0000;
+}
+
+.icone_power_point {
+    color: #D14424;
+}
+
+.icone_word {
+    color: #2A5598;
+}
+
+.icone_calc {
+    background: url('/img/calc.svg') no-repeat;
+    background-size: 36px;
+}
+
+.icone_draw {
+    background: url('/img/draw.svg') no-repeat;
+    background-size: 36px;
+}
+
+.icone_writer {
+    background: url('/img/writer.svg') no-repeat;
+    background-size: 36px;
+}
+
+.icone_media {
+    height: 36px;
+    position: relative;
+    top: 18px;
+}
+
+.icone_media_details {
+    background-size: 70px;
+    height: 170px;
+    margin: auto;
+    position: relative;
+    top: 50px;
+    width: 70px;
+}
+
+.icone_media_details_bg {
+    background: #F9F9F9;
+}

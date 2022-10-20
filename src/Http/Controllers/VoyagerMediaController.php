@@ -63,7 +63,7 @@ class VoyagerMediaController extends Controller
 
         foreach ($storageItems as $item) {
             if ($item['type'] == 'dir') {
-                $files[] = [
+                $files['dir'][] = [
                     'name'          => $item['basename'] ?? basename($item['path']),
                     'type'          => 'folder',
                     'path'          => Storage::disk($this->filesystem)->url($item['path']),
@@ -84,18 +84,34 @@ class VoyagerMediaController extends Controller
                 if (class_exists(\League\MimeTypeDetection\ExtensionMimeTypeDetector::class)) {
                     $mime = (new \League\MimeTypeDetection\ExtensionMimeTypeDetector())->detectMimeTypeFromFile($item['path']);
                 }
-                $files[] = [
-                    'name'          => $item['basename'] ?? basename($item['path']),
-                    'filename'      => $item['filename'] ?? basename($item['path'], '.'.pathinfo($item['path'])['extension']),
-                    'type'          => $item['mimetype'] ?? $mime,
-                    'path'          => Storage::disk($this->filesystem)->url($item['path']),
-                    'relative_path' => $item['path'],
-                    'size'          => $item['size'] ?? $item->fileSize(),
-                    'last_modified' => $item['timestamp'] ?? $item->lastModified(),
-                    'thumbnails'    => [],
-                ];
+                /* Dans certains cas, le type mime n'existe pas ou vaut null */
+                /* Cela provoque une erreur côté js, on exclut les fichiers concernés */
+                if ((isset($item['mimetype']) && $item['mimetype'] != null) || (isset($mime) && $mime != null)) {
+                    $files['files'][] = [
+                        'name'          => $item['basename'] ?? basename($item['path']),
+                        'filename'      => $item['filename'] ?? basename($item['path'], '.'.pathinfo($item['path'])['extension']),
+                        'type'          => $item['mimetype'] ?? $mime,
+                        'path'          => Storage::disk($this->filesystem)->url($item['path']),
+                        'relative_path' => $item['path'],
+                        'size'          => $item['size'] ?? $item->fileSize(),
+                        'last_modified' => $item['timestamp'] ?? $item->lastModified(),
+                        'thumbnails'    => [],
+                    ];
+                }
             }
         }
+        if (isset($request->sort) && $request->sort == 'desc') {
+            $name = array_column($files['dir'], 'name');
+            array_multisort($name, SORT_DESC, SORT_NATURAL, $files['dir']);
+            $name = array_column($files['files'], 'name');
+            array_multisort($name, SORT_DESC, SORT_NATURAL, $files['files']);
+        } else {
+            $name = array_column($files['dir'], 'name');
+            array_multisort($name, SORT_ASC, SORT_NATURAL, $files['dir']);
+            $name = array_column($files['files'], 'name');
+            array_multisort($name, SORT_ASC, SORT_NATURAL, $files['files']);
+        }
+        $files = array_merge($files['dir'], $files['files']);
 
         foreach ($files as $key => $file) {
             foreach ($thumbnails as $thumbnail) {

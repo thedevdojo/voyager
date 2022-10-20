@@ -87,6 +87,8 @@ return [
     'select_group'           => 'Select Existing Group or Add New',
     'settings'               => 'Settings',
     'showing_entries'        => 'Showing :from to :to of :all entry|Showing :from to :to of :all entries',
+    'sort_asc'               => 'Ascending order',
+    'sort_desc'              => 'Descending sort',
     'submit'                 => 'Submit',
     'successfully_added_new' => 'Successfully Added New',
     'successfully_deleted'   => 'Successfully Deleted',
