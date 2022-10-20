@@ -1,1 +1,330 @@
-ace.define("ace/ext/beautify",["require","exports","module","ace/token_iterator"],(function(e,t,r){"use strict";var a=e("../token_iterator").TokenIterator;function o(e,t){return e.type.lastIndexOf(t+".xml")>-1}t.singletonTags=["area","base","br","col","command","embed","hr","html","img","input","keygen","link","meta","param","source","track","wbr"],t.blockTags=["article","aside","blockquote","body","div","dl","fieldset","footer","form","head","header","html","nav","ol","p","script","section","style","table","tbody","tfoot","thead","ul"],t.beautify=function(e){for(var r,s,n,i=new a(e,0,0),c=i.getCurrentToken(),u=e.getTabString(),l=t.singletonTags,m=t.blockTags,p=!1,f=!1,h=!1,y="",d="",g="",b=0,k=0,$=0,w=0,x=0,v=0,T=0,R=0,O=0,q=!1,C=!1,I=!1,_=!1,j={0:0},B=[],F=!1,S=function(){r&&r.value&&"string.regexp"!==r.type&&(r.value=r.value.replace(/^\s*/,""))},K=function(){for(var e=y.length-1;0!=e&&" "===y[e];)e-=1;y=y.slice(0,e+1)},L=function(){y=y.trimRight(),p=!1};null!==c;){if(R=i.getCurrentTokenRow(),i.$rowTokens,r=i.stepForward(),void 0!==c){if(d=c.value,x=0,I="style"===g||"ace/mode/css"===e.$modeId,o(c,"tag-open")?(C=!0,r&&(_=-1!==m.indexOf(r.value)),"</"===d&&(_&&!p&&O<1&&O++,I&&(O=1),x=1,_=!1)):o(c,"tag-close")?C=!1:o(c,"comment.start")?_=!0:o(c,"comment.end")&&(_=!1),C||O||"paren.rparen"!==c.type||"}"!==c.value.substr(0,1)||O++,R!==s&&(O=R,s&&(O-=s)),O){for(L();O>0;O--)y+="\n";p=!0,o(c,"comment")||c.type.match(/^(comment|string)$/)||(d=d.trimLeft())}if(d){if("keyword"===c.type&&d.match(/^(if|else|elseif|for|foreach|while|switch)$/)?(B[b]=d,S(),h=!0,d.match(/^(else|elseif)$/)&&y.match(/\}[\s]*$/)&&(L(),f=!0)):"paren.lparen"===c.type?(S(),"{"===d.substr(-1)&&(h=!0,q=!1,C||(O=1)),"{"===d.substr(0,1)&&(f=!0,"["!==y.substr(-1)&&"["===y.trimRight().substr(-1)?(L(),f=!1):")"===y.trimRight().substr(-1)?L():K())):"paren.rparen"===c.type?(x=1,"}"===d.substr(0,1)&&("case"===B[b-1]&&x++,"{"===y.trimRight().substr(-1)?L():(f=!0,I&&(O+=2))),"]"===d.substr(0,1)&&"}"!==y.substr(-1)&&"}"===y.trimRight().substr(-1)&&(f=!1,w++,L()),")"===d.substr(0,1)&&"("!==y.substr(-1)&&"("===y.trimRight().substr(-1)&&(f=!1,w++,L()),K()):"keyword.operator"!==c.type&&"keyword"!==c.type||!d.match(/^(=|==|===|!=|!==|&&|\|\||and|or|xor|\+=|.=|>|>=|<|<=|=>)$/)?"punctuation.operator"===c.type&&";"===d?(L(),S(),h=!0,I&&O++):"punctuation.operator"===c.type&&d.match(/^(:|,)$/)?(L(),S(),d.match(/^(,)$/)&&T>0&&0===v?O++:(h=!0,p=!1)):"support.php_tag"!==c.type||"?>"!==d||p?o(c,"attribute-name")&&y.substr(-1).match(/^\s$/)?f=!0:o(c,"attribute-equals")?(K(),S()):o(c,"tag-close")?(K(),"/>"===d&&(f=!0)):"keyword"===c.type&&d.match(/^(case|default)$/)&&F&&(x=1):(L(),f=!0):(L(),S(),f=!0,h=!0),p&&(!c.type.match(/^(comment)$/)||d.substr(0,1).match(/^[/#]$/))&&(!c.type.match(/^(string)$/)||d.substr(0,1).match(/^['"@]$/))){if(w=$,b>k)for(w++,n=b;n>k;n--)j[n]=w;else b<k&&(w=j[b]);for(k=b,$=w,x&&(w-=x),q&&!v&&(w++,q=!1),n=0;n<w;n++)y+=u}if("keyword"===c.type&&d.match(/^(case|default)$/)?!1===F&&(B[b]=d,b++,F=!0):"keyword"===c.type&&d.match(/^(break)$/)&&B[b-1]&&B[b-1].match(/^(case|default)$/)&&(b--,F=!1),"paren.lparen"===c.type&&(v+=(d.match(/\(/g)||[]).length,T+=(d.match(/\{/g)||[]).length,b+=d.length),"keyword"===c.type&&d.match(/^(if|else|elseif|for|while)$/)?(q=!0,v=0):!v&&d.trim()&&"comment"!==c.type&&(q=!1),"paren.rparen"===c.type)for(v-=(d.match(/\)/g)||[]).length,T-=(d.match(/\}/g)||[]).length,n=0;n<d.length;n++)b--,"}"===d.substr(n,1)&&"case"===B[b]&&b--;"text"==c.type&&(d=d.replace(/\s+$/," ")),f&&!p&&(K(),"\n"!==y.substr(-1)&&(y+=" ")),y+=d,h&&(y+=" "),p=!1,f=!1,h=!1,(o(c,"tag-close")&&(_||-1!==m.indexOf(g))||o(c,"doctype")&&">"===d)&&(O=_&&r&&"</"===r.value?-1:1),o(c,"tag-open")&&"</"===d?b--:o(c,"tag-open")&&"<"===d&&-1===l.indexOf(r.value)?b++:o(c,"tag-name")?g=d:o(c,"tag-close")&&"/>"===d&&-1===l.indexOf(g)&&b--,s=R}}c=r}y=y.trim(),e.doc.setValue(y)},t.commands=[{name:"beautify",description:"Format selection (Beautify)",exec:function(e){t.beautify(e.session)},bindKey:"Ctrl-Shift-B"}]})),ace.require(["ace/ext/beautify"],(function(e){"object"==typeof module&&"object"==typeof exports&&module&&(module.exports=e)}));
+ace.define("ace/ext/beautify",["require","exports","module","ace/token_iterator"], function(require, exports, module){// [WIP]
+"use strict";
+var TokenIterator = require("../token_iterator").TokenIterator;
+function is(token, type) {
+    return token.type.lastIndexOf(type + ".xml") > -1;
+}
+exports.singletonTags = ["area", "base", "br", "col", "command", "embed", "hr", "html", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"];
+exports.blockTags = ["article", "aside", "blockquote", "body", "div", "dl", "fieldset", "footer", "form", "head", "header", "html", "nav", "ol", "p", "script", "section", "style", "table", "tbody", "tfoot", "thead", "ul"];
+exports.formatOptions = {
+    lineBreaksAfterCommasInCurlyBlock: true
+};
+exports.beautify = function (session) {
+    var iterator = new TokenIterator(session, 0, 0);
+    var token = iterator.getCurrentToken();
+    var tabString = session.getTabString();
+    var singletonTags = exports.singletonTags;
+    var blockTags = exports.blockTags;
+    var formatOptions = exports.formatOptions || {};
+    var nextToken;
+    var breakBefore = false;
+    var spaceBefore = false;
+    var spaceAfter = false;
+    var code = "";
+    var value = "";
+    var tagName = "";
+    var depth = 0;
+    var lastDepth = 0;
+    var lastIndent = 0;
+    var indent = 0;
+    var unindent = 0;
+    var roundDepth = 0;
+    var curlyDepth = 0;
+    var row;
+    var curRow = 0;
+    var rowsToAdd = 0;
+    var rowTokens = [];
+    var abort = false;
+    var i;
+    var indentNextLine = false;
+    var inTag = false;
+    var inCSS = false;
+    var inBlock = false;
+    var levels = { 0: 0 };
+    var parents = [];
+    var caseBody = false;
+    var trimNext = function () {
+        if (nextToken && nextToken.value && nextToken.type !== 'string.regexp')
+            nextToken.value = nextToken.value.replace(/^\s*/, "");
+    };
+    var trimLine = function () {
+        var end = code.length - 1;
+        while (true) {
+            if (end == 0)
+                break;
+            if (code[end] !== " ")
+                break;
+            end = end - 1;
+        }
+        code = code.slice(0, end + 1);
+    };
+    var trimCode = function () {
+        code = code.trimRight();
+        breakBefore = false;
+    };
+    while (token !== null) {
+        curRow = iterator.getCurrentTokenRow();
+        rowTokens = iterator.$rowTokens;
+        nextToken = iterator.stepForward();
+        if (typeof token !== "undefined") {
+            value = token.value;
+            unindent = 0;
+            inCSS = (tagName === "style" || session.$modeId === "ace/mode/css");
+            if (is(token, "tag-open")) {
+                inTag = true;
+                if (nextToken)
+                    inBlock = (blockTags.indexOf(nextToken.value) !== -1);
+                if (value === "</") {
+                    if (inBlock && !breakBefore && rowsToAdd < 1)
+                        rowsToAdd++;
+                    if (inCSS)
+                        rowsToAdd = 1;
+                    unindent = 1;
+                    inBlock = false;
+                }
+            }
+            else if (is(token, "tag-close")) {
+                inTag = false;
+            }
+            else if (is(token, "comment.start")) {
+                inBlock = true;
+            }
+            else if (is(token, "comment.end")) {
+                inBlock = false;
+            }
+            if (!inTag && !rowsToAdd && token.type === "paren.rparen" && token.value.substr(0, 1) === "}") {
+                rowsToAdd++;
+            }
+            if (curRow !== row) {
+                rowsToAdd = curRow;
+                if (row)
+                    rowsToAdd -= row;
+            }
+            if (rowsToAdd) {
+                trimCode();
+                for (; rowsToAdd > 0; rowsToAdd--)
+                    code += "\n";
+                breakBefore = true;
+                if (!is(token, "comment") && !token.type.match(/^(comment|string)$/))
+                    value = value.trimLeft();
+            }
+            if (value) {
+                if (token.type === "keyword" && value.match(/^(if|else|elseif|for|foreach|while|switch)$/)) {
+                    parents[depth] = value;
+                    trimNext();
+                    spaceAfter = true;
+                    if (value.match(/^(else|elseif)$/)) {
+                        if (code.match(/\}[\s]*$/)) {
+                            trimCode();
+                            spaceBefore = true;
+                        }
+                    }
+                }
+                else if (token.type === "paren.lparen") {
+                    trimNext();
+                    if (value.substr(-1) === "{") {
+                        spaceAfter = true;
+                        indentNextLine = false;
+                        if (!inTag)
+                            rowsToAdd = 1;
+                    }
+                    if (value.substr(0, 1) === "{") {
+                        spaceBefore = true;
+                        if (code.substr(-1) !== '[' && code.trimRight().substr(-1) === '[') {
+                            trimCode();
+                            spaceBefore = false;
+                        }
+                        else if (code.trimRight().substr(-1) === ')') {
+                            trimCode();
+                        }
+                        else {
+                            trimLine();
+                        }
+                    }
+                }
+                else if (token.type === "paren.rparen") {
+                    unindent = 1;
+                    if (value.substr(0, 1) === "}") {
+                        if (parents[depth - 1] === 'case')
+                            unindent++;
+                        if (code.trimRight().substr(-1) === '{') {
+                            trimCode();
+                        }
+                        else {
+                            spaceBefore = true;
+                            if (inCSS)
+                                rowsToAdd += 2;
+                        }
+                    }
+                    if (value.substr(0, 1) === "]") {
+                        if (code.substr(-1) !== '}' && code.trimRight().substr(-1) === '}') {
+                            spaceBefore = false;
+                            indent++;
+                            trimCode();
+                        }
+                    }
+                    if (value.substr(0, 1) === ")") {
+                        if (code.substr(-1) !== '(' && code.trimRight().substr(-1) === '(') {
+                            spaceBefore = false;
+                            indent++;
+                            trimCode();
+                        }
+                    }
+                    trimLine();
+                }
+                else if ((token.type === "keyword.operator" || token.type === "keyword") && value.match(/^(=|==|===|!=|!==|&&|\|\||and|or|xor|\+=|.=|>|>=|<|<=|=>)$/)) {
+                    trimCode();
+                    trimNext();
+                    spaceBefore = true;
+                    spaceAfter = true;
+                }
+                else if (token.type === "punctuation.operator" && value === ';') {
+                    trimCode();
+                    trimNext();
+                    spaceAfter = true;
+                    if (inCSS)
+                        rowsToAdd++;
+                }
+                else if (token.type === "punctuation.operator" && value.match(/^(:|,)$/)) {
+                    trimCode();
+                    trimNext();
+                    if (value.match(/^(,)$/) && curlyDepth > 0 && roundDepth === 0 && formatOptions.lineBreaksAfterCommasInCurlyBlock) {
+                        rowsToAdd++;
+                    }
+                    else {
+                        spaceAfter = true;
+                        breakBefore = false;
+                    }
+                }
+                else if (token.type === "support.php_tag" && value === "?>" && !breakBefore) {
+                    trimCode();
+                    spaceBefore = true;
+                }
+                else if (is(token, "attribute-name") && code.substr(-1).match(/^\s$/)) {
+                    spaceBefore = true;
+                }
+                else if (is(token, "attribute-equals")) {
+                    trimLine();
+                    trimNext();
+                }
+                else if (is(token, "tag-close")) {
+                    trimLine();
+                    if (value === "/>")
+                        spaceBefore = true;
+                }
+                else if (token.type === "keyword" && value.match(/^(case|default)$/)) {
+                    if (caseBody)
+                        unindent = 1;
+                }
+                if (breakBefore && !(token.type.match(/^(comment)$/) && !value.substr(0, 1).match(/^[/#]$/)) && !(token.type.match(/^(string)$/) && !value.substr(0, 1).match(/^['"@]$/))) {
+                    indent = lastIndent;
+                    if (depth > lastDepth) {
+                        indent++;
+                        for (i = depth; i > lastDepth; i--)
+                            levels[i] = indent;
+                    }
+                    else if (depth < lastDepth)
+                        indent = levels[depth];
+                    lastDepth = depth;
+                    lastIndent = indent;
+                    if (unindent)
+                        indent -= unindent;
+                    if (indentNextLine && !roundDepth) {
+                        indent++;
+                        indentNextLine = false;
+                    }
+                    for (i = 0; i < indent; i++)
+                        code += tabString;
+                }
+                if (token.type === "keyword" && value.match(/^(case|default)$/)) {
+                    if (caseBody === false) {
+                        parents[depth] = value;
+                        depth++;
+                        caseBody = true;
+                    }
+                }
+                else if (token.type === "keyword" && value.match(/^(break)$/)) {
+                    if (parents[depth - 1] && parents[depth - 1].match(/^(case|default)$/)) {
+                        depth--;
+                        caseBody = false;
+                    }
+                }
+                if (token.type === "paren.lparen") {
+                    roundDepth += (value.match(/\(/g) || []).length;
+                    curlyDepth += (value.match(/\{/g) || []).length;
+                    depth += value.length;
+                }
+                if (token.type === "keyword" && value.match(/^(if|else|elseif|for|while)$/)) {
+                    indentNextLine = true;
+                    roundDepth = 0;
+                }
+                else if (!roundDepth && value.trim() && token.type !== "comment")
+                    indentNextLine = false;
+                if (token.type === "paren.rparen") {
+                    roundDepth -= (value.match(/\)/g) || []).length;
+                    curlyDepth -= (value.match(/\}/g) || []).length;
+                    for (i = 0; i < value.length; i++) {
+                        depth--;
+                        if (value.substr(i, 1) === '}' && parents[depth] === 'case') {
+                            depth--;
+                        }
+                    }
+                }
+                if (token.type == "text")
+                    value = value.replace(/\s+$/, " ");
+                if (spaceBefore && !breakBefore) {
+                    trimLine();
+                    if (code.substr(-1) !== "\n")
+                        code += " ";
+                }
+                code += value;
+                if (spaceAfter)
+                    code += " ";
+                breakBefore = false;
+                spaceBefore = false;
+                spaceAfter = false;
+                if ((is(token, "tag-close") && (inBlock || blockTags.indexOf(tagName) !== -1)) || (is(token, "doctype") && value === ">")) {
+                    if (inBlock && nextToken && nextToken.value === "</")
+                        rowsToAdd = -1;
+                    else
+                        rowsToAdd = 1;
+                }
+                if (nextToken && singletonTags.indexOf(nextToken.value) === -1) {
+                    if (is(token, "tag-open") && value === "</") {
+                        depth--;
+                    }
+                    else if (is(token, "tag-open") && value === "<") {
+                        depth++;
+                    }
+                    else if (is(token, "tag-close") && value === "/>") {
+                        depth--;
+                    }
+                }
+                if (is(token, "tag-name")) {
+                    tagName = value;
+                }
+                row = curRow;
+            }
+        }
+        token = nextToken;
+    }
+    code = code.trim();
+    session.doc.setValue(code);
+};
+exports.commands = [{
+        name: "beautify",
+        description: "Format selection (Beautify)",
+        exec: function (editor) {
+            exports.beautify(editor.session);
+        },
+        bindKey: "Ctrl-Shift-B"
+    }];
+
+});                (function() {
+                    ace.require(["ace/ext/beautify"], function(m) {
+                        if (typeof module == "object" && typeof exports == "object" && module) {
+                            module.exports = m;
+                        }
+                    });
+                })();
+            

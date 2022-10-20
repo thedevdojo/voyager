@@ -1,1 +1,6664 @@
-ace.define("ace/ext/hardwrap",["require","exports","module","ace/range","ace/editor","ace/config"],(function(e,t,n){"use strict";var r=e("../range").Range;function o(e,t){for(var n=t.column||e.getOption("printMarginColumn"),o=0!=t.allowMerge,i=Math.min(t.startRow,t.endRow),a=Math.max(t.startRow,t.endRow),s=e.session;i<=a;){var c=s.getLine(i);if(c.length>n){if(h=g(c,n,5)){var l=/^\s*/.exec(c)[0];s.replace(new r(i,h.start,i,h.end),"\n"+l)}a++}else if(o&&/\S/.test(c)&&i!=a){var u=s.getLine(i+1);if(u&&/\S/.test(u)){var h,d=c.replace(/\s+$/,""),p=u.replace(/^\s+/,""),f=d+" "+p;if((h=g(f,n,5))&&h.start>d.length||f.length<n){var m=new r(i,d.length,i+1,u.length-p.length);s.replace(m," "),i--,a--}else d.length<c.length&&s.remove(new r(i,d.length,i,c.length))}}i++}function g(e,t,n){if(!(e.length<t)){var r=e.slice(0,t),o=e.slice(t),i=/^(?:(\s+)|(\S+)(\s+))/.exec(o),a=/(?:(\s+)|(\s+)(\S+))$/.exec(r),s=0,c=0;return a&&!a[2]&&(s=t-a[1].length,c=t),i&&!i[2]&&(s||(s=t),c=t+i[1].length),s?{start:s,end:c}:a&&a[2]&&a.index>n?{start:a.index,end:a.index+a[2].length}:i&&i[2]?{start:s=t+i[2].length,end:s+i[3].length}:void 0}}}function i(e){if("insertstring"==e.command.name&&/\S/.test(e.args)){var t=e.editor,n=t.selection.cursor;if(n.column<=t.renderer.$printMarginColumn)return;var r=t.session.$undoManager.$lastDelta;o(t,{startRow:n.row,endRow:n.row,allowMerge:!1}),r!=t.session.$undoManager.$lastDelta&&t.session.markUndoGroup()}}var a=e("../editor").Editor;e("../config").defineOptions(a.prototype,"editor",{hardWrap:{set:function(e){e?this.commands.on("afterExec",i):this.commands.off("afterExec",i)},value:!1}}),t.hardWrap=o})),ace.define("ace/keyboard/vim",["require","exports","module","ace/range","ace/lib/event_emitter","ace/lib/dom","ace/lib/oop","ace/lib/keys","ace/lib/event","ace/search","ace/lib/useragent","ace/search_highlight","ace/commands/multi_select_commands","ace/mode/text","ace/ext/hardwrap","ace/multi_select"],(function(e,t,n){"use strict";var r=e("../range").Range,o=e("../lib/event_emitter").EventEmitter,i=e("../lib/dom"),a=e("../lib/oop"),s=e("../lib/keys"),c=e("../lib/event"),l=e("../search").Search,u=e("../lib/useragent"),h=e("../search_highlight").SearchHighlight,d=e("../commands/multi_select_commands"),p=e("../mode/text").Mode.prototype.tokenRe,f=e("../ext/hardwrap").hardWrap;e("../multi_select");var m=function(e){this.ace=e,this.state={},this.marks={},this.options={},this.$uid=0,this.onChange=this.onChange.bind(this),this.onSelectionChange=this.onSelectionChange.bind(this),this.onBeforeEndOperation=this.onBeforeEndOperation.bind(this),this.ace.on("change",this.onChange),this.ace.on("changeSelection",this.onSelectionChange),this.ace.on("beforeEndOperation",this.onBeforeEndOperation)};function g(e){return{row:e.line,column:e.ch}}function v(e){return new y(e.row,e.column)}m.Pos=function(e,t){if(!(this instanceof y))return new y(e,t);this.line=e,this.ch=t},m.defineOption=function(e,t,n){},m.commands={redo:function(e){e.ace.redo()},undo:function(e){e.ace.undo()},newlineAndIndent:function(e){e.ace.insert("\n")},goLineLeft:function(e){e.ace.selection.moveCursorLineStart()},goLineRight:function(e){e.ace.selection.moveCursorLineEnd()}},m.keyMap={},m.addClass=m.rmClass=function(){},m.e_stop=m.e_preventDefault=c.stopEvent,m.keyName=function(e){var t=s[e.keyCode]||e.key||"";return 1==t.length&&(t=t.toUpperCase()),t=c.getModifierString(e).replace(/(^|-)\w/g,(function(e){return e.toUpperCase()}))+t},m.keyMap.default=function(e){return function(t){var n=t.ace.commands.commandKeyBinding[e.toLowerCase()];return n&&!1!==t.ace.execCommand(n)}},m.lookupKey=function e(t,n,r){n||(n="default"),"string"==typeof n&&(n=m.keyMap[n]);var o="function"==typeof n?n(t):n[t];if(!1===o)return"nothing";if("..."===o)return"multi";if(null!=o&&r(o))return"handled";if(n.fallthrough){if(!Array.isArray(n.fallthrough))return e(t,n.fallthrough,r);for(var i=0;i<n.fallthrough.length;i++){var a=e(t,n.fallthrough[i],r);if(a)return a}}},m.findMatchingTag=function(e,t){},m.signal=function(e,t,n){return e._signal(t,n)},m.on=c.addListener,m.off=c.removeListener,m.isWordChar=function(e){return e<""?/^\w$/.test(e):(p.lastIndex=0,p.test(e))},function(){a.implement(m.prototype,o),this.destroy=function(){this.ace.off("change",this.onChange),this.ace.off("changeSelection",this.onSelectionChange),this.ace.off("beforeEndOperation",this.onBeforeEndOperation),this.removeOverlay()},this.virtualSelectionMode=function(){return this.ace.inVirtualSelectionMode&&this.ace.selection.index},this.onChange=function(e){var t={text:"i"==e.action[0]?e.lines:[]},n=this.curOp=this.curOp||{};n.changeHandlers||(n.changeHandlers=this._eventRegistry.change&&this._eventRegistry.change.slice()),n.lastChange?n.lastChange.next=n.lastChange=t:n.lastChange=n.change=t,this.$updateMarkers(e)},this.onSelectionChange=function(){var e=this.curOp=this.curOp||{};e.cursorActivityHandlers||(e.cursorActivityHandlers=this._eventRegistry.cursorActivity&&this._eventRegistry.cursorActivity.slice()),this.curOp.cursorActivity=!0,this.ace.inMultiSelectMode&&this.ace.keyBinding.removeKeyboardHandler(d.keyboardHandler)},this.operation=function(e,t){if(!t&&this.curOp||t&&this.curOp&&this.curOp.force)return e();if(!t&&this.ace.curOp||this.curOp&&this.onBeforeEndOperation(),!this.ace.curOp){var n=this.ace.prevOp;this.ace.startOperation({command:{name:"vim",scrollIntoView:"cursor"}})}var r=this.curOp=this.curOp||{};this.curOp.force=t;var o=e();return this.ace.curOp&&"vim"==this.ace.curOp.command.name&&(this.state.dialog&&(this.ace.curOp.command.scrollIntoView=!1),this.ace.endOperation(),r.cursorActivity||r.lastChange||!n||(this.ace.prevOp=n)),!t&&this.ace.curOp||this.curOp&&this.onBeforeEndOperation(),o},this.onBeforeEndOperation=function(){var e=this.curOp;e&&(e.change&&this.signal("change",e.change,e),e&&e.cursorActivity&&this.signal("cursorActivity",null,e),this.curOp=null)},this.signal=function(e,t,n){var r=n?n[e+"Handlers"]:(this._eventRegistry||{})[e];if(r){r=r.slice();for(var o=0;o<r.length;o++)r[o](this,t)}},this.firstLine=function(){return 0},this.lastLine=function(){return this.ace.session.getLength()-1},this.lineCount=function(){return this.ace.session.getLength()},this.setCursor=function(e,t){"object"==typeof e&&(t=e.ch,e=e.line);var n=!this.curOp&&!this.ace.inVirtualSelectionMode;this.ace.inVirtualSelectionMode||this.ace.exitMultiSelectMode(),this.ace.session.unfold({row:e,column:t}),this.ace.selection.moveTo(e,t),n&&(this.ace.renderer.scrollCursorIntoView(),this.ace.endOperation())},this.getCursor=function(e){var t=this.ace.selection;return v("anchor"==e?t.isEmpty()?t.lead:t.anchor:"head"!=e&&e?t.getRange()[e]:t.lead)},this.listSelections=function(e){var t=this.ace.multiSelect.rangeList.ranges;return!t.length||this.ace.inVirtualSelectionMode?[{anchor:this.getCursor("anchor"),head:this.getCursor("head")}]:t.map((function(e){return{anchor:this.clipPos(v(e.cursor==e.end?e.start:e.end)),head:this.clipPos(v(e.cursor))}}),this)},this.setSelections=function(e,t){var n=this.ace.multiSelect,o=e.map((function(e){var t=g(e.anchor),n=g(e.head),o=r.comparePoints(t,n)<0?new r.fromPoints(t,n):new r.fromPoints(n,t);return o.cursor=r.comparePoints(o.start,n)?o.end:o.start,o}));if(this.ace.inVirtualSelectionMode)this.ace.selection.fromOrientedRange(o[0]);else{t?o[t]&&o.push(o.splice(t,1)[0]):o=o.reverse(),n.toSingleRange(o[0].clone());for(var i=this.ace.session,a=0;a<o.length;a++){var s=i.$clipRangeToDocument(o[a]);n.addRange(s)}}},this.setSelection=function(e,t,n){var r=this.ace.selection;r.moveTo(e.line,e.ch),r.selectTo(t.line,t.ch),n&&"*mouse"==n.origin&&this.onBeforeEndOperation()},this.somethingSelected=function(e){return!this.ace.selection.isEmpty()},this.clipPos=function(e){return v(this.ace.session.$clipPositionToDocument(e.line,e.ch))},this.foldCode=function(e){this.ace.session.$toggleFoldWidget(e.line,{})},this.markText=function(e){return{clear:function(){},find:function(){}}},this.$updateMarkers=function(e){var t="insert"==e.action,n=e.start,o=e.end,i=(o.row-n.row)*(t?1:-1),a=(o.column-n.column)*(t?1:-1);for(var s in t&&(o=n),this.marks){var c=this.marks[s],l=r.comparePoints(c,n);if(!(l<0)){if(0===l&&t){if(1!=c.bias){c.bias=-1;continue}l=1}var u=t?l:r.comparePoints(c,o);u>0?(c.row+=i,c.column+=c.row==o.row?a:0):!t&&u<=0&&(c.row=n.row,c.column=n.column,0===u&&(c.bias=1))}}};var e=function(e,t,n,r){this.cm=e,this.id=t,this.row=n,this.column=r,e.marks[this.id]=this};e.prototype.clear=function(){delete this.cm.marks[this.id]},e.prototype.find=function(){return v(this)},this.setBookmark=function(t,n){var r=new e(this,this.$uid++,t.line,t.ch);return n&&n.insertLeft||(r.$insertRight=!0),this.marks[r.id]=r,r},this.moveH=function(e,t){if("char"==t){var n=this.ace.selection;n.clearSelection(),n.moveCursorBy(0,e)}},this.findPosV=function(e,t,n,r){if("page"==n){var o=this.ace.renderer.layerConfig;t*=Math.floor(o.height/o.lineHeight),n="line"}if("line"==n){var i=this.ace.session.documentToScreenPosition(e.line,e.ch);return null!=r&&(i.column=r),i.row+=t,i.row=Math.min(Math.max(0,i.row),this.ace.session.getScreenLength()-1),v(this.ace.session.screenToDocumentPosition(i.row,i.column))}},this.charCoords=function(e,t){if("div"==t||!t)return{left:(r=this.ace.session.documentToScreenPosition(e.line,e.ch)).column,top:r.row};if("local"==t){var n=this.ace.renderer,r=this.ace.session.documentToScreenPosition(e.line,e.ch),o=n.layerConfig.lineHeight,i=n.layerConfig.characterWidth,a=o*r.row;return{left:r.column*i,top:a,bottom:a+o}}},this.coordsChar=function(e,t){var n=this.ace.renderer;if("local"==t){var r=Math.max(0,Math.floor(e.top/n.lineHeight)),o=Math.max(0,Math.floor(e.left/n.characterWidth));return v(n.session.screenToDocumentPosition(r,o))}if("div"==t)throw"not implemented"},this.getSearchCursor=function(e,t,n){var r=!1,o=!1;e instanceof RegExp&&!e.global&&(r=!e.ignoreCase,e=e.source,o=!0),"\\n"==e&&(e="\n",o=!1);var i=new l;null==t.ch&&(t.ch=Number.MAX_VALUE);var a={row:t.line,column:t.ch},s=this,c=null;return{findNext:function(){return this.find(!1)},findPrevious:function(){return this.find(!0)},find:function(t){i.setOptions({needle:e,caseSensitive:r,wrap:!1,backwards:t,regExp:o,start:c||a});var n=i.find(s.ace.session);return(c=n)&&[!c.isEmpty()]},from:function(){return c&&v(c.start)},to:function(){return c&&v(c.end)},replace:function(e){c&&(c.end=s.ace.session.doc.replace(c,e))}}},this.scrollTo=function(e,t){var n=this.ace.renderer,r=n.layerConfig,o=r.maxHeight;o-=(n.$size.scrollerHeight-n.lineHeight)*n.$scrollPastEnd,null!=t&&this.ace.session.setScrollTop(Math.max(0,Math.min(t,o))),null!=e&&this.ace.session.setScrollLeft(Math.max(0,Math.min(e,r.width)))},this.scrollInfo=function(){return 0},this.scrollIntoView=function(e,t){if(e){var n=this.ace.renderer,r={top:0,bottom:t};n.scrollCursorIntoView(g(e),2*n.lineHeight/n.$size.scrollerHeight,r)}},this.getLine=function(e){return this.ace.session.getLine(e)},this.getRange=function(e,t){return this.ace.session.getTextRange(new r(e.line,e.ch,t.line,t.ch))},this.replaceRange=function(e,t,n){n||(n=t);var o=new r(t.line,t.ch,n.line,n.ch);return this.ace.session.$clipRangeToDocument(o),this.ace.session.replace(o,e)},this.replaceSelection=this.replaceSelections=function(e){var t=this.ace.selection;if(this.ace.inVirtualSelectionMode)this.ace.session.replace(t.getRange(),e[0]||"");else{t.inVirtualSelectionMode=!0;var n=t.rangeList.ranges;n.length||(n=[this.ace.multiSelect.getRange()]);for(var r=n.length;r--;)this.ace.session.replace(n[r],e[r]||"");t.inVirtualSelectionMode=!1}},this.getSelection=function(){return this.ace.getSelectedText()},this.getSelections=function(){return this.listSelections().map((function(e){return this.getRange(e.anchor,e.head)}),this)},this.getInputField=function(){return this.ace.textInput.getElement()},this.getWrapperElement=function(){return this.ace.container};var t={indentWithTabs:"useSoftTabs",indentUnit:"tabSize",tabSize:"tabSize",firstLineNumber:"firstLineNumber",readOnly:"readOnly"};this.setOption=function(e,n){switch(this.state[e]=n,e){case"indentWithTabs":e=t[e],n=!n;break;case"keyMap":return void(this.state.$keyMap=n);default:e=t[e]}e&&this.ace.setOption(e,n)},this.getOption=function(e){var n,r=t[e];switch(r&&(n=this.ace.getOption(r)),e){case"indentWithTabs":return e=t[e],!n;case"keyMap":return this.state.$keyMap||"vim"}return r?n:this.state[e]},this.toggleOverwrite=function(e){return this.state.overwrite=e,this.ace.setOverwrite(e)},this.addOverlay=function(e){if(!this.$searchHighlight||!this.$searchHighlight.session){var t=new h(null,"ace_highlight-marker","text"),n=this.ace.session.addDynamicMarker(t);t.id=n.id,t.session=this.ace.session,t.destroy=function(e){t.session.off("change",t.updateOnChange),t.session.off("changeEditor",t.destroy),t.session.removeMarker(t.id),t.session=null},t.updateOnChange=function(e){var n=e.start.row;n==e.end.row?t.cache[n]=void 0:t.cache.splice(n,t.cache.length)},t.session.on("changeEditor",t.destroy),t.session.on("change",t.updateOnChange)}var r=new RegExp(e.query.source,"gmi");this.$searchHighlight=e.highlight=t,this.$searchHighlight.setRegexp(r),this.ace.renderer.updateBackMarkers()},this.removeOverlay=function(e){this.$searchHighlight&&this.$searchHighlight.session&&this.$searchHighlight.destroy()},this.getScrollInfo=function(){var e=this.ace.renderer,t=e.layerConfig;return{left:e.scrollLeft,top:e.scrollTop,height:t.maxHeight,width:t.width,clientHeight:t.height,clientWidth:t.width}},this.getValue=function(){return this.ace.getValue()},this.setValue=function(e){return this.ace.setValue(e,-1)},this.getTokenTypeAt=function(e){var t=this.ace.session.getTokenAt(e.line,e.ch);return t&&/comment|string/.test(t.type)?"string":""},this.findMatchingBracket=function(e){var t=this.ace.session.findMatchingBracket(g(e));return{to:t&&v(t)}},this.indentLine=function(e,t){!0===t?this.ace.session.indentRows(e,e,"\t"):!1===t&&this.ace.session.outdentRows(new r(e,0,e,0))},this.indexFromPos=function(e){return this.ace.session.doc.positionToIndex(g(e))},this.posFromIndex=function(e){return v(this.ace.session.doc.indexToPosition(e))},this.focus=function(e){return this.ace.textInput.focus()},this.blur=function(e){return this.ace.blur()},this.defaultTextHeight=function(e){return this.ace.renderer.layerConfig.lineHeight},this.scanForBracket=function(e,t,n,r){var o=r.bracketRegex.source,i=/paren|text|operator|tag/;if(1==t)var a=this.ace.session.$findClosingBracket(o.slice(1,2),g(e),i);else a=this.ace.session.$findOpeningBracket(o.slice(-2,-1),{row:e.line,column:e.ch+1},i);return a&&{pos:v(a)}},this.refresh=function(){return this.ace.resize(!0)},this.getMode=function(){return{name:this.getOption("mode")}},this.execCommand=function(e){return m.commands.hasOwnProperty(e)?m.commands[e](this):"indentAuto"==e?this.ace.execCommand("autoindent"):void console.log(e+" is not implemented")},this.getLineNumber=function(e){return e.row},this.getLineHandle=function(e){return{text:this.ace.session.getLine(e),row:e}}}.call(m.prototype),(m.StringStream=function(e,t){this.pos=this.start=0,this.string=e,this.tabSize=t||8,this.lastColumnPos=this.lastColumnValue=0,this.lineStart=0}).prototype={eol:function(){return this.pos>=this.string.length},sol:function(){return this.pos==this.lineStart},peek:function(){return this.string.charAt(this.pos)||void 0},next:function(){if(this.pos<this.string.length)return this.string.charAt(this.pos++)},eat:function(e){var t=this.string.charAt(this.pos);if("string"==typeof e)var n=t==e;else n=t&&(e.test?e.test(t):e(t));if(n)return++this.pos,t},eatWhile:function(e){for(var t=this.pos;this.eat(e););return this.pos>t},eatSpace:function(){for(var e=this.pos;/[\s\u00a0]/.test(this.string.charAt(this.pos));)++this.pos;return this.pos>e},skipToEnd:function(){this.pos=this.string.length},skipTo:function(e){var t=this.string.indexOf(e,this.pos);if(t>-1)return this.pos=t,!0},backUp:function(e){this.pos-=e},column:function(){throw"not implemented"},indentation:function(){throw"not implemented"},match:function(e,t,n){if("string"!=typeof e){var r=this.string.slice(this.pos).match(e);return r&&r.index>0?null:(r&&!1!==t&&(this.pos+=r[0].length),r)}var o=function(e){return n?e.toLowerCase():e};if(o(this.string.substr(this.pos,e.length))==o(e))return!1!==t&&(this.pos+=e.length),!0},current:function(){return this.string.slice(this.start,this.pos)},hideFirstChars:function(e,t){this.lineStart+=e;try{return t()}finally{this.lineStart-=e}}},m.defineExtension=function(e,t){m.prototype[e]=t},i.importCssString(".normal-mode .ace_cursor{    border: none;    background-color: rgba(255,0,0,0.5);}.normal-mode .ace_hidden-cursors .ace_cursor{  background-color: transparent;  border: 1px solid red;  opacity: 0.7}.ace_dialog {  position: absolute;  left: 0; right: 0;  background: inherit;  z-index: 15;  padding: .1em .8em;  overflow: hidden;  color: inherit;}.ace_dialog-top {  border-bottom: 1px solid #444;  top: 0;}.ace_dialog-bottom {  border-top: 1px solid #444;  bottom: 0;}.ace_dialog input {  border: none;  outline: none;  background: transparent;  width: 20em;  color: inherit;  font-family: monospace;}","vimMode",!1),function(){function e(e,t,n){var r;return(r=e.ace.container.appendChild(document.createElement("div"))).className=n?"ace_dialog ace_dialog-bottom":"ace_dialog ace_dialog-top","string"==typeof t?r.innerHTML=t:r.appendChild(t),r}function t(e,t){e.state.currentNotificationClose&&e.state.currentNotificationClose(),e.state.currentNotificationClose=t}m.defineExtension("openDialog",(function(n,r,o){if(!this.virtualSelectionMode()){o||(o={}),t(this,null);var i=e(this,n,o.bottom),a=!1,s=this;this.state.dialog=i;var c,l=i.getElementsByTagName("input")[0];return l?(o.value&&(l.value=o.value,!1!==o.selectValueOnOpen&&l.select()),o.onInput&&m.on(l,"input",(function(e){o.onInput(e,l.value,u)})),o.onKeyUp&&m.on(l,"keyup",(function(e){o.onKeyUp(e,l.value,u)})),m.on(l,"keydown",(function(e){o&&o.onKeyDown&&o.onKeyDown(e,l.value,u)||(13==e.keyCode&&r(l.value),(27==e.keyCode||!1!==o.closeOnEnter&&13==e.keyCode)&&(m.e_stop(e),u()))})),!1!==o.closeOnBlur&&m.on(l,"blur",u),l.focus()):(c=i.getElementsByTagName("button")[0])&&(m.on(c,"click",(function(){u(),s.focus()})),!1!==o.closeOnBlur&&m.on(c,"blur",u),c.focus()),u}function u(e){if("string"==typeof e)l.value=e;else{if(a)return;if(e&&"blur"==e.type&&document.activeElement===l)return;s.state.dialog==i&&(s.state.dialog=null,s.focus()),a=!0,i.remove(),o.onClose&&o.onClose(i);var t=s;t.state.vim&&(t.state.vim.status=null,t.ace._signal("changeStatus"),t.ace.renderer.$loop.schedule(t.ace.renderer.CHANGE_CURSOR))}}})),m.defineExtension("openNotification",(function(n,r){if(!this.virtualSelectionMode()){t(this,c);var o,i=e(this,n,r&&r.bottom),a=!1,s=r&&void 0!==r.duration?r.duration:5e3;return m.on(i,"click",(function(e){m.e_preventDefault(e),c()})),s&&(o=setTimeout(c,s)),c}function c(){a||(a=!0,clearTimeout(o),i.remove())}}))}();var y=m.Pos;function C(e,t){var n=e.state.vim;if(!n||n.insertMode)return t.head;var r=n.sel.head;return r?n.visualBlock&&t.head.line!=r.line?void 0:t.from()!=t.anchor||t.empty()||t.head.line!=r.line||t.head.ch==r.ch?t.head:new y(t.head.line,t.head.ch-1):t.head}var k=[{keys:"<Left>",type:"keyToKey",toKeys:"h"},{keys:"<Right>",type:"keyToKey",toKeys:"l"},{keys:"<Up>",type:"keyToKey",toKeys:"k"},{keys:"<Down>",type:"keyToKey",toKeys:"j"},{keys:"g<Up>",type:"keyToKey",toKeys:"gk"},{keys:"g<Down>",type:"keyToKey",toKeys:"gj"},{keys:"<Space>",type:"keyToKey",toKeys:"l"},{keys:"<BS>",type:"keyToKey",toKeys:"h",context:"normal"},{keys:"<Del>",type:"keyToKey",toKeys:"x",context:"normal"},{keys:"<C-Space>",type:"keyToKey",toKeys:"W"},{keys:"<C-BS>",type:"keyToKey",toKeys:"B",context:"normal"},{keys:"<S-Space>",type:"keyToKey",toKeys:"w"},{keys:"<S-BS>",type:"keyToKey",toKeys:"b",context:"normal"},{keys:"<C-n>",type:"keyToKey",toKeys:"j"},{keys:"<C-p>",type:"keyToKey",toKeys:"k"},{keys:"<C-[>",type:"keyToKey",toKeys:"<Esc>"},{keys:"<C-c>",type:"keyToKey",toKeys:"<Esc>"},{keys:"<C-[>",type:"keyToKey",toKeys:"<Esc>",context:"insert"},{keys:"<C-c>",type:"keyToKey",toKeys:"<Esc>",context:"insert"},{keys:"<C-Esc>",type:"keyToKey",toKeys:"<Esc>"},{keys:"<C-Esc>",type:"keyToKey",toKeys:"<Esc>",context:"insert"},{keys:"s",type:"keyToKey",toKeys:"cl",context:"normal"},{keys:"s",type:"keyToKey",toKeys:"c",context:"visual"},{keys:"S",type:"keyToKey",toKeys:"cc",context:"normal"},{keys:"S",type:"keyToKey",toKeys:"VdO",context:"visual"},{keys:"<Home>",type:"keyToKey",toKeys:"0"},{keys:"<End>",type:"keyToKey",toKeys:"$"},{keys:"<PageUp>",type:"keyToKey",toKeys:"<C-b>"},{keys:"<PageDown>",type:"keyToKey",toKeys:"<C-f>"},{keys:"<CR>",type:"keyToKey",toKeys:"j^",context:"normal"},{keys:"<Ins>",type:"keyToKey",toKeys:"i",context:"normal"},{keys:"<Ins>",type:"action",action:"toggleOverwrite",context:"insert"},{keys:"H",type:"motion",motion:"moveToTopLine",motionArgs:{linewise:!0,toJumplist:!0}},{keys:"M",type:"motion",motion:"moveToMiddleLine",motionArgs:{linewise:!0,toJumplist:!0}},{keys:"L",type:"motion",motion:"moveToBottomLine",motionArgs:{linewise:!0,toJumplist:!0}},{keys:"h",type:"motion",motion:"moveByCharacters",motionArgs:{forward:!1}},{keys:"l",type:"motion",motion:"moveByCharacters",motionArgs:{forward:!0}},{keys:"j",type:"motion",motion:"moveByLines",motionArgs:{forward:!0,linewise:!0}},{keys:"k",type:"motion",motion:"moveByLines",motionArgs:{forward:!1,linewise:!0}},{keys:"gj",type:"motion",motion:"moveByDisplayLines",motionArgs:{forward:!0}},{keys:"gk",type:"motion",motion:"moveByDisplayLines",motionArgs:{forward:!1}},{keys:"w",type:"motion",motion:"moveByWords",motionArgs:{forward:!0,wordEnd:!1}},{keys:"W",type:"motion",motion:"moveByWords",motionArgs:{forward:!0,wordEnd:!1,bigWord:!0}},{keys:"e",type:"motion",motion:"moveByWords",motionArgs:{forward:!0,wordEnd:!0,inclusive:!0}},{keys:"E",type:"motion",motion:"moveByWords",motionArgs:{forward:!0,wordEnd:!0,bigWord:!0,inclusive:!0}},{keys:"b",type:"motion",motion:"moveByWords",motionArgs:{forward:!1,wordEnd:!1}},{keys:"B",type:"motion",motion:"moveByWords",motionArgs:{forward:!1,wordEnd:!1,bigWord:!0}},{keys:"ge",type:"motion",motion:"moveByWords",motionArgs:{forward:!1,wordEnd:!0,inclusive:!0}},{keys:"gE",type:"motion",motion:"moveByWords",motionArgs:{forward:!1,wordEnd:!0,bigWord:!0,inclusive:!0}},{keys:"{",type:"motion",motion:"moveByParagraph",motionArgs:{forward:!1,toJumplist:!0}},{keys:"}",type:"motion",motion:"moveByParagraph",motionArgs:{forward:!0,toJumplist:!0}},{keys:"(",type:"motion",motion:"moveBySentence",motionArgs:{forward:!1}},{keys:")",type:"motion",motion:"moveBySentence",motionArgs:{forward:!0}},{keys:"<C-f>",type:"motion",motion:"moveByPage",motionArgs:{forward:!0}},{keys:"<C-b>",type:"motion",motion:"moveByPage",motionArgs:{forward:!1}},{keys:"<C-d>",type:"motion",motion:"moveByScroll",motionArgs:{forward:!0,explicitRepeat:!0}},{keys:"<C-u>",type:"motion",motion:"moveByScroll",motionArgs:{forward:!1,explicitRepeat:!0}},{keys:"gg",type:"motion",motion:"moveToLineOrEdgeOfDocument",motionArgs:{forward:!1,explicitRepeat:!0,linewise:!0,toJumplist:!0}},{keys:"G",type:"motion",motion:"moveToLineOrEdgeOfDocument",motionArgs:{forward:!0,explicitRepeat:!0,linewise:!0,toJumplist:!0}},{keys:"g$",type:"motion",motion:"moveToEndOfDisplayLine"},{keys:"g^",type:"motion",motion:"moveToStartOfDisplayLine"},{keys:"g0",type:"motion",motion:"moveToStartOfDisplayLine"},{keys:"0",type:"motion",motion:"moveToStartOfLine"},{keys:"^",type:"motion",motion:"moveToFirstNonWhiteSpaceCharacter"},{keys:"+",type:"motion",motion:"moveByLines",motionArgs:{forward:!0,toFirstChar:!0}},{keys:"-",type:"motion",motion:"moveByLines",motionArgs:{forward:!1,toFirstChar:!0}},{keys:"_",type:"motion",motion:"moveByLines",motionArgs:{forward:!0,toFirstChar:!0,repeatOffset:-1}},{keys:"$",type:"motion",motion:"moveToEol",motionArgs:{inclusive:!0}},{keys:"%",type:"motion",motion:"moveToMatchedSymbol",motionArgs:{inclusive:!0,toJumplist:!0}},{keys:"f<character>",type:"motion",motion:"moveToCharacter",motionArgs:{forward:!0,inclusive:!0}},{keys:"F<character>",type:"motion",motion:"moveToCharacter",motionArgs:{forward:!1}},{keys:"t<character>",type:"motion",motion:"moveTillCharacter",motionArgs:{forward:!0,inclusive:!0}},{keys:"T<character>",type:"motion",motion:"moveTillCharacter",motionArgs:{forward:!1}},{keys:";",type:"motion",motion:"repeatLastCharacterSearch",motionArgs:{forward:!0}},{keys:",",type:"motion",motion:"repeatLastCharacterSearch",motionArgs:{forward:!1}},{keys:"'<character>",type:"motion",motion:"goToMark",motionArgs:{toJumplist:!0,linewise:!0}},{keys:"`<character>",type:"motion",motion:"goToMark",motionArgs:{toJumplist:!0}},{keys:"]`",type:"motion",motion:"jumpToMark",motionArgs:{forward:!0}},{keys:"[`",type:"motion",motion:"jumpToMark",motionArgs:{forward:!1}},{keys:"]'",type:"motion",motion:"jumpToMark",motionArgs:{forward:!0,linewise:!0}},{keys:"['",type:"motion",motion:"jumpToMark",motionArgs:{forward:!1,linewise:!0}},{keys:"]p",type:"action",action:"paste",isEdit:!0,actionArgs:{after:!0,isEdit:!0,matchIndent:!0}},{keys:"[p",type:"action",action:"paste",isEdit:!0,actionArgs:{after:!1,isEdit:!0,matchIndent:!0}},{keys:"]<character>",type:"motion",motion:"moveToSymbol",motionArgs:{forward:!0,toJumplist:!0}},{keys:"[<character>",type:"motion",motion:"moveToSymbol",motionArgs:{forward:!1,toJumplist:!0}},{keys:"|",type:"motion",motion:"moveToColumn"},{keys:"o",type:"motion",motion:"moveToOtherHighlightedEnd",context:"visual"},{keys:"O",type:"motion",motion:"moveToOtherHighlightedEnd",motionArgs:{sameLine:!0},context:"visual"},{keys:"d",type:"operator",operator:"delete"},{keys:"y",type:"operator",operator:"yank"},{keys:"c",type:"operator",operator:"change"},{keys:"=",type:"operator",operator:"indentAuto"},{keys:">",type:"operator",operator:"indent",operatorArgs:{indentRight:!0}},{keys:"<",type:"operator",operator:"indent",operatorArgs:{indentRight:!1}},{keys:"g~",type:"operator",operator:"changeCase"},{keys:"gu",type:"operator",operator:"changeCase",operatorArgs:{toLower:!0},isEdit:!0},{keys:"gU",type:"operator",operator:"changeCase",operatorArgs:{toLower:!1},isEdit:!0},{keys:"n",type:"motion",motion:"findNext",motionArgs:{forward:!0,toJumplist:!0}},{keys:"N",type:"motion",motion:"findNext",motionArgs:{forward:!1,toJumplist:!0}},{keys:"gn",type:"motion",motion:"findAndSelectNextInclusive",motionArgs:{forward:!0}},{keys:"gN",type:"motion",motion:"findAndSelectNextInclusive",motionArgs:{forward:!1}},{keys:"x",type:"operatorMotion",operator:"delete",motion:"moveByCharacters",motionArgs:{forward:!0},operatorMotionArgs:{visualLine:!1}},{keys:"X",type:"operatorMotion",operator:"delete",motion:"moveByCharacters",motionArgs:{forward:!1},operatorMotionArgs:{visualLine:!0}},{keys:"D",type:"operatorMotion",operator:"delete",motion:"moveToEol",motionArgs:{inclusive:!0},context:"normal"},{keys:"D",type:"operator",operator:"delete",operatorArgs:{linewise:!0},context:"visual"},{keys:"Y",type:"operatorMotion",operator:"yank",motion:"expandToLine",motionArgs:{linewise:!0},context:"normal"},{keys:"Y",type:"operator",operator:"yank",operatorArgs:{linewise:!0},context:"visual"},{keys:"C",type:"operatorMotion",operator:"change",motion:"moveToEol",motionArgs:{inclusive:!0},context:"normal"},{keys:"C",type:"operator",operator:"change",operatorArgs:{linewise:!0},context:"visual"},{keys:"~",type:"operatorMotion",operator:"changeCase",motion:"moveByCharacters",motionArgs:{forward:!0},operatorArgs:{shouldMoveCursor:!0},context:"normal"},{keys:"~",type:"operator",operator:"changeCase",context:"visual"},{keys:"<C-w>",type:"operatorMotion",operator:"delete",motion:"moveByWords",motionArgs:{forward:!1,wordEnd:!1},context:"insert"},{keys:"<C-w>",type:"idle",context:"normal"},{keys:"<C-i>",type:"action",action:"jumpListWalk",actionArgs:{forward:!0}},{keys:"<C-o>",type:"action",action:"jumpListWalk",actionArgs:{forward:!1}},{keys:"<C-e>",type:"action",action:"scroll",actionArgs:{forward:!0,linewise:!0}},{keys:"<C-y>",type:"action",action:"scroll",actionArgs:{forward:!1,linewise:!0}},{keys:"a",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{insertAt:"charAfter"},context:"normal"},{keys:"A",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{insertAt:"eol"},context:"normal"},{keys:"A",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{insertAt:"endOfSelectedArea"},context:"visual"},{keys:"i",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{insertAt:"inplace"},context:"normal"},{keys:"gi",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{insertAt:"lastEdit"},context:"normal"},{keys:"I",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{insertAt:"firstNonBlank"},context:"normal"},{keys:"gI",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{insertAt:"bol"},context:"normal"},{keys:"I",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{insertAt:"startOfSelectedArea"},context:"visual"},{keys:"o",type:"action",action:"newLineAndEnterInsertMode",isEdit:!0,interlaceInsertRepeat:!0,actionArgs:{after:!0},context:"normal"},{keys:"O",type:"action",action:"newLineAndEnterInsertMode",isEdit:!0,interlaceInsertRepeat:!0,actionArgs:{after:!1},context:"normal"},{keys:"v",type:"action",action:"toggleVisualMode"},{keys:"V",type:"action",action:"toggleVisualMode",actionArgs:{linewise:!0}},{keys:"<C-v>",type:"action",action:"toggleVisualMode",actionArgs:{blockwise:!0}},{keys:"<C-q>",type:"action",action:"toggleVisualMode",actionArgs:{blockwise:!0}},{keys:"gv",type:"action",action:"reselectLastSelection"},{keys:"J",type:"action",action:"joinLines",isEdit:!0},{keys:"gJ",type:"action",action:"joinLines",actionArgs:{keepSpaces:!0},isEdit:!0},{keys:"p",type:"action",action:"paste",isEdit:!0,actionArgs:{after:!0,isEdit:!0}},{keys:"P",type:"action",action:"paste",isEdit:!0,actionArgs:{after:!1,isEdit:!0}},{keys:"r<character>",type:"action",action:"replace",isEdit:!0},{keys:"@<character>",type:"action",action:"replayMacro"},{keys:"q<character>",type:"action",action:"enterMacroRecordMode"},{keys:"R",type:"action",action:"enterInsertMode",isEdit:!0,actionArgs:{replace:!0},context:"normal"},{keys:"R",type:"operator",operator:"change",operatorArgs:{linewise:!0,fullLine:!0},context:"visual",exitVisualBlock:!0},{keys:"u",type:"action",action:"undo",context:"normal"},{keys:"u",type:"operator",operator:"changeCase",operatorArgs:{toLower:!0},context:"visual",isEdit:!0},{keys:"U",type:"operator",operator:"changeCase",operatorArgs:{toLower:!1},context:"visual",isEdit:!0},{keys:"<C-r>",type:"action",action:"redo"},{keys:"m<character>",type:"action",action:"setMark"},{keys:'"<character>',type:"action",action:"setRegister"},{keys:"zz",type:"action",action:"scrollToCursor",actionArgs:{position:"center"}},{keys:"z.",type:"action",action:"scrollToCursor",actionArgs:{position:"center"},motion:"moveToFirstNonWhiteSpaceCharacter"},{keys:"zt",type:"action",action:"scrollToCursor",actionArgs:{position:"top"}},{keys:"z<CR>",type:"action",action:"scrollToCursor",actionArgs:{position:"top"},motion:"moveToFirstNonWhiteSpaceCharacter"},{keys:"z-",type:"action",action:"scrollToCursor",actionArgs:{position:"bottom"}},{keys:"zb",type:"action",action:"scrollToCursor",actionArgs:{position:"bottom"},motion:"moveToFirstNonWhiteSpaceCharacter"},{keys:".",type:"action",action:"repeatLastEdit"},{keys:"<C-a>",type:"action",action:"incrementNumberToken",isEdit:!0,actionArgs:{increase:!0,backtrack:!1}},{keys:"<C-x>",type:"action",action:"incrementNumberToken",isEdit:!0,actionArgs:{increase:!1,backtrack:!1}},{keys:"<C-t>",type:"action",action:"indent",actionArgs:{indentRight:!0},context:"insert"},{keys:"<C-d>",type:"action",action:"indent",actionArgs:{indentRight:!1},context:"insert"},{keys:"a<character>",type:"motion",motion:"textObjectManipulation"},{keys:"i<character>",type:"motion",motion:"textObjectManipulation",motionArgs:{textObjectInner:!0}},{keys:"/",type:"search",searchArgs:{forward:!0,querySrc:"prompt",toJumplist:!0}},{keys:"?",type:"search",searchArgs:{forward:!1,querySrc:"prompt",toJumplist:!0}},{keys:"*",type:"search",searchArgs:{forward:!0,querySrc:"wordUnderCursor",wholeWordOnly:!0,toJumplist:!0}},{keys:"#",type:"search",searchArgs:{forward:!1,querySrc:"wordUnderCursor",wholeWordOnly:!0,toJumplist:!0}},{keys:"g*",type:"search",searchArgs:{forward:!0,querySrc:"wordUnderCursor",toJumplist:!0}},{keys:"g#",type:"search",searchArgs:{forward:!1,querySrc:"wordUnderCursor",toJumplist:!0}},{keys:":",type:"ex"}],w=k.length,x=[{name:"colorscheme",shortName:"colo"},{name:"map"},{name:"imap",shortName:"im"},{name:"nmap",shortName:"nm"},{name:"vmap",shortName:"vm"},{name:"unmap"},{name:"write",shortName:"w"},{name:"undo",shortName:"u"},{name:"redo",shortName:"red"},{name:"set",shortName:"se"},{name:"setlocal",shortName:"setl"},{name:"setglobal",shortName:"setg"},{name:"sort",shortName:"sor"},{name:"substitute",shortName:"s",possiblyAsync:!0},{name:"nohlsearch",shortName:"noh"},{name:"yank",shortName:"y"},{name:"delmarks",shortName:"delm"},{name:"registers",shortName:"reg",excludeFromCommandHistory:!0},{name:"vglobal",shortName:"v"},{name:"global",shortName:"g"}],S=function(){return re};function M(e,t){this==m.keyMap.vim&&(e.options.$customCursor=null,m.rmClass(e.getWrapperElement(),"cm-fat-cursor")),t&&t.attach==A||function(e){e.setOption("disableInput",!1),e.off("cursorActivity",vt),m.off(e.getInputField(),"paste",T(e)),e.state.vim=null}(e)}function A(e,t){this==m.keyMap.vim&&(e.curOp&&(e.curOp.selectionChanged=!0),e.options.$customCursor=C,m.addClass(e.getWrapperElement(),"cm-fat-cursor")),t&&t.attach==A||function(e){e.setOption("disableInput",!0),e.setOption("showCursorWhenSelecting",!1),m.signal(e,"vim-mode-change",{mode:"normal"}),e.on("cursorActivity",vt),te(e),m.on(e.getInputField(),"paste",T(e))}(e)}function b(e,t){if(t){if(this[e])return this[e];var n=function(e){if("'"==e.charAt(0))return e.charAt(1);var t=e.split(/-(?!$)/),n=t[t.length-1];if(1==t.length&&1==t[0].length)return!1;if(2==t.length&&"Shift"==t[0]&&1==n.length)return!1;for(var r=!1,o=0;o<t.length;o++){var i=t[o];i in L?t[o]=L[i]:r=!0,i in O&&(t[o]=O[i])}if(!r)return!1;j(n)&&(t[t.length-1]=n.toLowerCase());return"<"+t.join("-")+">"}(e);if(!n)return!1;var r=re.findKey(t,n);return"function"==typeof r&&m.signal(t,"vim-keypress",n),r}}m.defineOption("vimMode",!1,(function(e,t,n){t&&"vim"!=e.getOption("keyMap")?e.setOption("keyMap","vim"):!t&&n!=m.Init&&/^vim/.test(e.getOption("keyMap"))&&e.setOption("keyMap","default")}));var L={Shift:"S",Ctrl:"C",Alt:"A",Cmd:"D",Mod:"A",CapsLock:""},O={Enter:"CR",Backspace:"BS",Delete:"Del",Insert:"Ins"};function T(e){var t=e.state.vim;return t.onPasteFn||(t.onPasteFn=function(){t.insertMode||(e.setCursor(ge(e.getCursor(),0,1)),pe.enterInsertMode(e,{},t))}),t.onPasteFn}var E=/[\d]/,R=[m.isWordChar,function(e){return e&&!m.isWordChar(e)&&!/\s/.test(e)}],B=[function(e){return/\S/.test(e)}];function I(e,t){for(var n=[],r=e;r<e+t;r++)n.push(String.fromCharCode(r));return n}var K,N=I(65,26),P=I(97,26),_=I(48,10),H=[].concat(N,P,_,["<",">"]),$=[].concat(N,P,_,["-",'"',".",":","_","/"]);try{K=new RegExp("^[\\p{Lu}]$","u")}catch(e){K=/^[A-Z]$/}function V(e,t){return t>=e.firstLine()&&t<=e.lastLine()}function D(e){return/^[a-z]$/.test(e)}function j(e){return K.test(e)}function W(e){return/^\s*$/.test(e)}function F(e){return-1!=".?!".indexOf(e)}function U(e,t){for(var n=0;n<t.length;n++)if(t[n]==e)return!0;return!1}var z={};function J(e,t,n,r,o){if(void 0===t&&!o)throw Error("defaultValue is required unless callback is provided");if(n||(n="string"),z[e]={type:n,defaultValue:t,callback:o},r)for(var i=0;i<r.length;i++)z[r[i]]=z[e];t&&q(e,t)}function q(e,t,n,r){var o=z[e],i=(r=r||{}).scope;if(!o)return new Error("Unknown option: "+e);if("boolean"==o.type){if(t&&!0!==t)return new Error("Invalid argument: "+e+"="+t);!1!==t&&(t=!0)}o.callback?("local"!==i&&o.callback(t,void 0),"global"!==i&&n&&o.callback(t,n)):("local"!==i&&(o.value="boolean"==o.type?!!t:t),"global"!==i&&n&&(n.state.vim.options[e]={value:t}))}function Q(e,t,n){var r=z[e],o=(n=n||{}).scope;if(!r)return new Error("Unknown option: "+e);if(r.callback){var i=t&&r.callback(void 0,t);return"global"!==o&&void 0!==i?i:"local"!==o?r.callback():void 0}return((i="global"!==o&&t&&t.state.vim.options[e])||"local"!==o&&r||{}).value}J("filetype",void 0,"string",["ft"],(function(e,t){if(void 0!==t){if(void 0===e)return"null"==(n=t.getOption("mode"))?"":n;var n=""==e?"null":e;t.setOption("mode",n)}}));var G,X,Z=function(){var e=100,t=-1,n=0,r=0,o=new Array(e);function i(i,a){(t+=a)>n?t=n:t<r&&(t=r);var s=o[(e+t)%e];if(s&&!s.find()){var c,l=a>0?1:-1,u=i.getCursor();do{if((s=o[(e+(t+=l))%e])&&(c=s.find())&&!ke(u,c))break}while(t<n&&t>r)}return s}return{cachedCursor:void 0,add:function(i,a,s){var c=o[t%e];function l(n){var r=++t%e,a=o[r];a&&a.clear(),o[r]=i.setBookmark(n)}if(c){var u=c.find();u&&!ke(u,a)&&l(a)}else l(a);l(s),n=t,(r=t-e+1)<0&&(r=0)},find:function(e,n){var r=t,o=i(e,n);return t=r,o&&o.find()},move:i}},Y=function(e){return e?{changes:e.changes,expectCursorActivityForChange:e.expectCursorActivityForChange}:{changes:[],expectCursorActivityForChange:!1}};function ee(){this.latestRegister=void 0,this.isPlaying=!1,this.isRecording=!1,this.replaySearchQueries=[],this.onRecordingDone=void 0,this.lastInsertModeChanges=Y()}function te(e){return e.state.vim||(e.state.vim={inputState:new oe,lastEditInputState:void 0,lastEditActionCommand:void 0,lastHPos:-1,lastHSPos:-1,lastMotion:null,marks:{},insertMode:!1,insertModeRepeat:void 0,visualMode:!1,visualLine:!1,visualBlock:!1,lastSelection:null,lastPastedText:null,sel:{},options:{}}),e.state.vim}function ne(){for(var e in G={searchQuery:null,searchIsReversed:!1,lastSubstituteReplacePart:void 0,jumpList:Z(),macroModeState:new ee,lastCharacterSearch:{increment:0,forward:!0,selectedCharacter:""},registerController:new se({}),searchHistoryController:new ce,exCommandHistoryController:new ce},z){var t=z[e];t.value=t.defaultValue}}ee.prototype={exitMacroRecordMode:function(){var e=G.macroModeState;e.onRecordingDone&&e.onRecordingDone(),e.onRecordingDone=void 0,e.isRecording=!1},enterMacroRecordMode:function(e,t){var n=G.registerController.getRegister(t);n&&(n.clear(),this.latestRegister=t,e.openDialog&&(this.onRecordingDone=e.openDialog(document.createTextNode("(recording)["+t+"]"),null,{bottom:!0})),this.isRecording=!0)}};var re={buildKeyMap:function(){},getRegisterController:function(){return G.registerController},resetVimGlobalState_:ne,getVimGlobalState_:function(){return G},maybeInitVimState_:te,suppressErrorLogging:!1,InsertModeKey:Ct,map:function(e,t,n){dt.map(e,t,n)},unmap:function(e,t){return dt.unmap(e,t)},noremap:function(e,t,n){function r(e){return e?[e]:["normal","insert","visual"]}for(var o=r(n),i=k.length,a=i-w;a<i&&o.length;a++){var s=k[a];if(!(s.keys!=t||n&&s.context&&s.context!==n||"ex"===s.type.substr(0,2)||"key"===s.type.substr(0,3))){var c={};for(var l in s)c[l]=s[l];c.keys=e,n&&!c.context&&(c.context=n),this._mapCommand(c);var u=r(s.context);o=o.filter((function(e){return-1===u.indexOf(e)}))}}},mapclear:function(e){var t=k.length,n=w,r=k.slice(0,t-n);if(k=k.slice(t-n),e)for(var o=r.length-1;o>=0;o--){var i=r[o];if(e!==i.context)if(i.context)this._mapCommand(i);else{var a=["normal","insert","visual"];for(var s in a)if(a[s]!==e){var c={};for(var l in i)c[l]=i[l];c.context=a[s],this._mapCommand(c)}}}},setOption:q,getOption:Q,defineOption:J,defineEx:function(e,t,n){if(t){if(0!==e.indexOf(t))throw new Error('(Vim.defineEx) "'+t+'" is not a prefix of "'+e+'", command not registered')}else t=e;ht[e]=n,dt.commandMap_[t]={name:e,shortName:t,type:"api"}},handleKey:function(e,t,n){var r=this.findKey(e,t,n);if("function"==typeof r)return r()},findKey:function(e,t,n){var r,o=te(e);function i(){var r=G.macroModeState;if(r.isRecording){if("q"==t)return r.exitMacroRecordMode(),ie(e),!0;"mapping"!=n&&function(e,t){if(e.isPlaying)return;var n=e.latestRegister,r=G.registerController.getRegister(n);r&&r.pushText(t)}(r,t)}}function a(){if("<Esc>"==t)return ie(e),o.visualMode?Ie(e):o.insertMode&&pt(e),!0}return!1===(r=o.insertMode?function(){if(a())return!0;for(var n=o.inputState.keyBuffer=o.inputState.keyBuffer+t,r=1==t.length,i=le.matchCommand(n,k,o.inputState,"insert");n.length>1&&"full"!=i.type;){n=o.inputState.keyBuffer=n.slice(1);var s=le.matchCommand(n,k,o.inputState,"insert");"none"!=s.type&&(i=s)}if("none"==i.type)return ie(e),!1;if("partial"==i.type)return X&&window.clearTimeout(X),X=window.setTimeout((function(){o.insertMode&&o.inputState.keyBuffer&&ie(e)}),Q("insertModeEscKeysTimeout")),!r;if(X&&window.clearTimeout(X),r){for(var c=e.listSelections(),l=0;l<c.length;l++){var u=c[l].head;e.replaceRange("",ge(u,0,-(n.length-1)),u,"+input")}G.macroModeState.lastInsertModeChanges.changes.pop()}return ie(e),i.command}():function(){if(i()||a())return!0;var n=o.inputState.keyBuffer=o.inputState.keyBuffer+t;if(/^[1-9]\d*$/.test(n))return!0;if(!(c=/^(\d*)(.*)$/.exec(n)))return ie(e),!1;var r=o.visualMode?"visual":"normal",s=c[2]||c[1];o.inputState.operatorShortcut&&o.inputState.operatorShortcut.slice(-1)==s&&(s=o.inputState.operatorShortcut);var c,l=le.matchCommand(s,k,o.inputState,r);return"none"==l.type?(ie(e),!1):"partial"==l.type||("clear"==l.type?(ie(e),!0):(o.inputState.keyBuffer="",(c=/^(\d*)(.*)$/.exec(n))[1]&&"0"!=c[1]&&o.inputState.pushRepeatDigit(c[1]),l.command))}())?void 0:!0===r?function(){return!0}:function(){if(!r.operator&&!r.isEdit||!e.getOption("readOnly"))return e.operation((function(){e.curOp.isVimOp=!0;try{"keyToKey"==r.type?function(n){for(var r;n;)r=/<\w+-.+?>|<\w+>|./.exec(n),t=r[0],n=n.substring(r.index+t.length),re.handleKey(e,t,"mapping")}(r.toKeys):le.processCommand(e,o,r)}catch(t){throw e.state.vim=void 0,te(e),re.suppressErrorLogging||console.log(t),t}return!0}))}},handleEx:function(e,t){dt.processCommand(e,t)},defineMotion:function(e,t){ue[e]=t},defineAction:function(e,t){pe[e]=t},defineOperator:function(e,t){de[e]=t},mapCommand:function(e,t,n,r,o){var i={keys:e,type:t};for(var a in i[t]=n,i[t+"Args"]=r,o)i[a]=o[a];ft(i)},_mapCommand:ft,defineRegister:function(e,t){var n=G.registerController.registers;if(!e||1!=e.length)throw Error("Register name must be 1 character");n[e]=t,$.push(e)},exitVisualMode:Ie,exitInsertMode:pt};function oe(){this.prefixRepeat=[],this.motionRepeat=[],this.operator=null,this.operatorArgs=null,this.motion=null,this.motionArgs=null,this.keyBuffer=[],this.registerName=null}function ie(e,t){e.state.vim.inputState=new oe,m.signal(e,"vim-command-done",t)}function ae(e,t,n){this.clear(),this.keyBuffer=[e||""],this.insertModeChanges=[],this.searchQueries=[],this.linewise=!!t,this.blockwise=!!n}function se(e){this.registers=e,this.unnamedRegister=e['"']=new ae,e["."]=new ae,e[":"]=new ae,e["/"]=new ae}function ce(){this.historyBuffer=[],this.iterator=0,this.initialPrefix=null}oe.prototype.pushRepeatDigit=function(e){this.operator?this.motionRepeat=this.motionRepeat.concat(e):this.prefixRepeat=this.prefixRepeat.concat(e)},oe.prototype.getRepeat=function(){var e=0;return(this.prefixRepeat.length>0||this.motionRepeat.length>0)&&(e=1,this.prefixRepeat.length>0&&(e*=parseInt(this.prefixRepeat.join(""),10)),this.motionRepeat.length>0&&(e*=parseInt(this.motionRepeat.join(""),10))),e},ae.prototype={setText:function(e,t,n){this.keyBuffer=[e||""],this.linewise=!!t,this.blockwise=!!n},pushText:function(e,t){t&&(this.linewise||this.keyBuffer.push("\n"),this.linewise=!0),this.keyBuffer.push(e)},pushInsertModeChanges:function(e){this.insertModeChanges.push(Y(e))},pushSearchQuery:function(e){this.searchQueries.push(e)},clear:function(){this.keyBuffer=[],this.insertModeChanges=[],this.searchQueries=[],this.linewise=!1},toString:function(){return this.keyBuffer.join("")}},se.prototype={pushText:function(e,t,n,r,o){if("_"!==e){r&&"\n"!==n.charAt(n.length-1)&&(n+="\n");var i=this.isValidRegister(e)?this.getRegister(e):null;if(i){j(e)?i.pushText(n,r):i.setText(n,r,o),this.unnamedRegister.setText(i.toString(),r)}else{switch(t){case"yank":this.registers[0]=new ae(n,r,o);break;case"delete":case"change":-1==n.indexOf("\n")?this.registers["-"]=new ae(n,r):(this.shiftNumericRegisters_(),this.registers[1]=new ae(n,r))}this.unnamedRegister.setText(n,r,o)}}},getRegister:function(e){return this.isValidRegister(e)?(e=e.toLowerCase(),this.registers[e]||(this.registers[e]=new ae),this.registers[e]):this.unnamedRegister},isValidRegister:function(e){return e&&U(e,$)},shiftNumericRegisters_:function(){for(var e=9;e>=2;e--)this.registers[e]=this.getRegister(""+(e-1))}},ce.prototype={nextMatch:function(e,t){var n=this.historyBuffer,r=t?-1:1;null===this.initialPrefix&&(this.initialPrefix=e);for(var o=this.iterator+r;t?o>=0:o<n.length;o+=r)for(var i=n[o],a=0;a<=i.length;a++)if(this.initialPrefix==i.substring(0,a))return this.iterator=o,i;return o>=n.length?(this.iterator=n.length,this.initialPrefix):o<0?e:void 0},pushInput:function(e){var t=this.historyBuffer.indexOf(e);t>-1&&this.historyBuffer.splice(t,1),e.length&&this.historyBuffer.push(e)},reset:function(){this.initialPrefix=null,this.iterator=this.historyBuffer.length}};var le={matchCommand:function(e,t,n,r){var o,i=function(e,t,n,r){for(var o,i=[],a=[],s=0;s<t.length;s++){var c=t[s];"insert"==n&&"insert"!=c.context||c.context&&c.context!=n||r.operator&&"action"==c.type||!(o=ve(e,c.keys))||("partial"==o&&i.push(c),"full"==o&&a.push(c))}return{partial:i.length&&i,full:a.length&&a}}(e,t,r,n);if(!i.full&&!i.partial)return{type:"none"};if(!i.full&&i.partial)return{type:"partial"};for(var a=0;a<i.full.length;a++){var s=i.full[a];o||(o=s)}if("<character>"==o.keys.slice(-11)){var c=function(e){var t=/^.*(<[^>]+>)$/.exec(e),n=t?t[1]:e.slice(-1);if(n.length>1)switch(n){case"<CR>":n="\n";break;case"<Space>":n=" ";break;default:n=""}return n}(e);if(!c||c.length>1)return{type:"clear"};n.selectedCharacter=c}return{type:"full",command:o}},processCommand:function(e,t,n){switch(t.inputState.repeatOverride=n.repeatOverride,n.type){case"motion":this.processMotion(e,t,n);break;case"operator":this.processOperator(e,t,n);break;case"operatorMotion":this.processOperatorMotion(e,t,n);break;case"action":this.processAction(e,t,n);break;case"search":this.processSearch(e,t,n);break;case"ex":case"keyToEx":this.processEx(e,t,n)}},processMotion:function(e,t,n){t.inputState.motion=n.motion,t.inputState.motionArgs=me(n.motionArgs),this.evalInput(e,t)},processOperator:function(e,t,n){var r=t.inputState;if(r.operator){if(r.operator==n.operator)return r.motion="expandToLine",r.motionArgs={linewise:!0},void this.evalInput(e,t);ie(e)}r.operator=n.operator,r.operatorArgs=me(n.operatorArgs),n.keys.length>1&&(r.operatorShortcut=n.keys),n.exitVisualBlock&&(t.visualBlock=!1,Re(e)),t.visualMode&&this.evalInput(e,t)},processOperatorMotion:function(e,t,n){var r=t.visualMode,o=me(n.operatorMotionArgs);o&&r&&o.visualLine&&(t.visualLine=!0),this.processOperator(e,t,n),r||this.processMotion(e,t,n)},processAction:function(e,t,n){var r=t.inputState,o=r.getRepeat(),i=!!o,a=me(n.actionArgs)||{};r.selectedCharacter&&(a.selectedCharacter=r.selectedCharacter),n.operator&&this.processOperator(e,t,n),n.motion&&this.processMotion(e,t,n),(n.motion||n.operator)&&this.evalInput(e,t),a.repeat=o||1,a.repeatIsExplicit=i,a.registerName=r.registerName,ie(e),t.lastMotion=null,n.isEdit&&this.recordLastEdit(t,r,n),pe[n.action](e,a,t)},processSearch:function(e,t,n){if(e.getSearchCursor){var r=n.searchArgs.forward,o=n.searchArgs.wholeWordOnly;Je(e).setReversed(!r);var i=r?"/":"?",a=Je(e).getQuery(),s=e.getScrollInfo();switch(n.searchArgs.querySrc){case"prompt":var c=G.macroModeState;if(c.isPlaying)d(h=c.replaySearchQueries.shift(),!0,!1);else tt(e,{onClose:function(e){d(e,!0,!0);var t=G.macroModeState;t.isRecording&&function(e,t){if(!e.isPlaying){var n=e.latestRegister,r=G.registerController.getRegister(n);r&&r.pushSearchQuery&&r.pushSearchQuery(t)}}(t,e)},prefix:i,desc:"(JavaScript regexp)",onKeyUp:function(t,n,o){var i,a,c,l=m.keyName(t);"Up"==l||"Down"==l?(i="Up"==l,a=t.target?t.target.selectionEnd:0,o(n=G.searchHistoryController.nextMatch(n,i)||""),a&&t.target&&(t.target.selectionEnd=t.target.selectionStart=Math.min(a,t.target.value.length))):"Left"!=l&&"Right"!=l&&"Ctrl"!=l&&"Alt"!=l&&"Shift"!=l&&G.searchHistoryController.reset();try{c=nt(e,n,!0,!0)}catch(t){}c?e.scrollIntoView(ot(e,!r,c),30):(it(e),e.scrollTo(s.left,s.top))},onKeyDown:function(t,n,r){var o=m.keyName(t);"Esc"==o||"Ctrl-C"==o||"Ctrl-["==o||"Backspace"==o&&""==n?(G.searchHistoryController.pushInput(n),G.searchHistoryController.reset(),nt(e,a),it(e),e.scrollTo(s.left,s.top),m.e_stop(t),ie(e),r(),e.focus()):"Up"==o||"Down"==o?m.e_stop(t):"Ctrl-U"==o&&(m.e_stop(t),r(""))}});break;case"wordUnderCursor":var l=Ne(e,!1,!0,!1,!0),u=!0;if(l||(l=Ne(e,!1,!0,!1,!1),u=!1),!l)return;var h=e.getLine(l.start.line).substring(l.start.ch,l.end.ch);h=u&&o?"\\b"+h+"\\b":h.replace(/([.?*+$\[\]\/\\(){}|\-])/g,"\\$1"),G.jumpList.cachedCursor=e.getCursor(),e.setCursor(l.start),d(h,!0,!1)}}function d(r,o,i){G.searchHistoryController.pushInput(r),G.searchHistoryController.reset();try{nt(e,r,o,i)}catch(t){return et(e,"Invalid regex: "+r),void ie(e)}le.processMotion(e,t,{type:"motion",motion:"findNext",motionArgs:{forward:!0,toJumplist:n.searchArgs.toJumplist}})}},processEx:function(e,t,n){function r(t){G.exCommandHistoryController.pushInput(t),G.exCommandHistoryController.reset(),dt.processCommand(e,t)}function o(t,n,r){var o,i,a=m.keyName(t);("Esc"==a||"Ctrl-C"==a||"Ctrl-["==a||"Backspace"==a&&""==n)&&(G.exCommandHistoryController.pushInput(n),G.exCommandHistoryController.reset(),m.e_stop(t),ie(e),r(),e.focus()),"Up"==a||"Down"==a?(m.e_stop(t),o="Up"==a,i=t.target?t.target.selectionEnd:0,r(n=G.exCommandHistoryController.nextMatch(n,o)||""),i&&t.target&&(t.target.selectionEnd=t.target.selectionStart=Math.min(i,t.target.value.length))):"Ctrl-U"==a?(m.e_stop(t),r("")):"Left"!=a&&"Right"!=a&&"Ctrl"!=a&&"Alt"!=a&&"Shift"!=a&&G.exCommandHistoryController.reset()}"keyToEx"==n.type?dt.processCommand(e,n.exArgs.input):t.visualMode?tt(e,{onClose:r,prefix:":",value:"'<,'>",onKeyDown:o,selectValueOnOpen:!1}):tt(e,{onClose:r,prefix:":",onKeyDown:o})},evalInput:function(e,t){var n,r,o,i=t.inputState,a=i.motion,s=i.motionArgs||{},c=i.operator,l=i.operatorArgs||{},u=i.registerName,h=t.sel,d=Ce(t.visualMode?fe(e,h.head):e.getCursor("head")),p=Ce(t.visualMode?fe(e,h.anchor):e.getCursor("anchor")),f=Ce(d),m=Ce(p);if(c&&this.recordLastEdit(t,i),(o=void 0!==i.repeatOverride?i.repeatOverride:i.getRepeat())>0&&s.explicitRepeat?s.repeatIsExplicit=!0:(s.noRepeat||!s.explicitRepeat&&0===o)&&(o=1,s.repeatIsExplicit=!1),i.selectedCharacter&&(s.selectedCharacter=l.selectedCharacter=i.selectedCharacter),s.repeat=o,ie(e),a){var g=ue[a](e,d,s,t,i);if(t.lastMotion=ue[a],!g)return;if(s.toJumplist){c||null==e.ace.curOp||(e.ace.curOp.command.scrollIntoView="center-animate");var v=G.jumpList,C=v.cachedCursor;C?(Pe(e,C,g),delete v.cachedCursor):Pe(e,d,g)}g instanceof Array?(r=g[0],n=g[1]):n=g,n||(n=Ce(d)),t.visualMode?(t.visualBlock&&n.ch===1/0||(n=fe(e,n)),r&&(r=fe(e,r)),r=r||m,h.anchor=r,h.head=n,Re(e),We(e,t,"<",we(r,n)?r:n),We(e,t,">",we(r,n)?n:r)):c||(n=fe(e,n),e.setCursor(n.line,n.ch))}if(c){if(l.lastSel){r=m;var k=l.lastSel,w=Math.abs(k.head.line-k.anchor.line),x=Math.abs(k.head.ch-k.anchor.ch);n=k.visualLine?new y(m.line+w,m.ch):k.visualBlock?new y(m.line+w,m.ch+x):k.head.line==k.anchor.line?new y(m.line,m.ch+x):new y(m.line+w,m.ch),t.visualMode=!0,t.visualLine=k.visualLine,t.visualBlock=k.visualBlock,h=t.sel={anchor:r,head:n},Re(e)}else t.visualMode&&(l.lastSel={anchor:Ce(h.anchor),head:Ce(h.head),visualBlock:t.visualBlock,visualLine:t.visualLine});var S,M,A,b,L;if(t.visualMode){if(S=xe(h.head,h.anchor),M=Se(h.head,h.anchor),A=t.visualLine||l.linewise,L=Be(e,{anchor:S,head:M},b=t.visualBlock?"block":A?"line":"char"),A){var O=L.ranges;if("block"==b)for(var T=0;T<O.length;T++)O[T].head.ch=Ae(e,O[T].head.line);else"line"==b&&(O[0].head=new y(O[0].head.line+1,0))}}else{if(S=Ce(r||m),we(M=Ce(n||f),S)){var E=S;S=M,M=E}(A=s.linewise||l.linewise)?function(e,t,n){t.ch=0,n.ch=0,n.line++}(0,S,M):s.forward&&function(e,t,n){var r=e.getRange(t,n);if(/\n\s*$/.test(r)){var o=r.split("\n");o.pop();for(var i=o.pop();o.length>0&&i&&W(i);i=o.pop())n.line--,n.ch=0;i?(n.line--,n.ch=Ae(e,n.line)):n.ch=0}}(e,S,M),L=Be(e,{anchor:S,head:M},b="char",!s.inclusive||A)}e.setSelections(L.ranges,L.primary),t.lastMotion=null,l.repeat=o,l.registerName=u,l.linewise=A;var R=de[c](e,l,L.ranges,m,n);t.visualMode&&Ie(e,null!=R),R&&e.setCursor(R)}},recordLastEdit:function(e,t,n){var r=G.macroModeState;r.isPlaying||(e.lastEditInputState=t,e.lastEditActionCommand=n,r.lastInsertModeChanges.changes=[],r.lastInsertModeChanges.expectCursorActivityForChange=!1,r.lastInsertModeChanges.visualBlock=e.visualBlock?e.sel.head.line-e.sel.anchor.line:0)}},ue={moveToTopLine:function(e,t,n){var r=st(e).top+n.repeat-1;return new y(r,Ke(e.getLine(r)))},moveToMiddleLine:function(e){var t=st(e),n=Math.floor(.5*(t.top+t.bottom));return new y(n,Ke(e.getLine(n)))},moveToBottomLine:function(e,t,n){var r=st(e).bottom-n.repeat+1;return new y(r,Ke(e.getLine(r)))},expandToLine:function(e,t,n){return new y(t.line+n.repeat-1,1/0)},findNext:function(e,t,n){var r=Je(e),o=r.getQuery();if(o){var i=!n.forward;return i=r.isReversed()?!i:i,rt(e,o),ot(e,i,o,n.repeat)}},findAndSelectNextInclusive:function(e,t,n,r,o){var i=Je(e),a=i.getQuery();if(a){var s=!n.forward,c=function(e,t,n,r,o){void 0===r&&(r=1);return e.operation((function(){var i=e.getCursor(),a=e.getSearchCursor(n,i),s=a.find(!t);!o.visualMode&&s&&ke(a.from(),i)&&a.find(!t);for(var c=0;c<r;c++)if(!(s=a.find(t))&&!(a=e.getSearchCursor(n,t?new y(e.lastLine()):new y(e.firstLine(),0))).find(t))return;return[a.from(),a.to()]}))}(e,s=i.isReversed()?!s:s,a,n.repeat,r);if(c){if(o.operator)return c;var l=c[0],u=new y(c[1].line,c[1].ch-1);if(r.visualMode){(r.visualLine||r.visualBlock)&&(r.visualLine=!1,r.visualBlock=!1,m.signal(e,"vim-mode-change",{mode:"visual",subMode:""}));var h=r.sel.anchor;if(h)return i.isReversed()?n.forward?[h,l]:[h,u]:n.forward?[h,u]:[h,l]}else r.visualMode=!0,r.visualLine=!1,r.visualBlock=!1,m.signal(e,"vim-mode-change",{mode:"visual",subMode:""});return s?[u,l]:[l,u]}}},goToMark:function(e,t,n,r){var o=ct(e,r,n.selectedCharacter);return o?n.linewise?{line:o.line,ch:Ke(e.getLine(o.line))}:o:null},moveToOtherHighlightedEnd:function(e,t,n,r){if(r.visualBlock&&n.sameLine){var o=r.sel;return[fe(e,new y(o.anchor.line,o.head.ch)),fe(e,new y(o.head.line,o.anchor.ch))]}return[r.sel.head,r.sel.anchor]},jumpToMark:function(e,t,n,r){for(var o=t,i=0;i<n.repeat;i++){var a=o;for(var s in r.marks)if(D(s)){var c=r.marks[s].find();if(!((n.forward?we(c,a):we(a,c))||n.linewise&&c.line==a.line)){var l=ke(a,o),u=n.forward?Me(a,c,o):Me(o,c,a);(l||u)&&(o=c)}}}return n.linewise&&(o=new y(o.line,Ke(e.getLine(o.line)))),o},moveByCharacters:function(e,t,n){var r=t,o=n.repeat,i=n.forward?r.ch+o:r.ch-o;return new y(r.line,i)},moveByLines:function(e,t,n,r){var o=t,i=o.ch;switch(r.lastMotion){case this.moveByLines:case this.moveByDisplayLines:case this.moveByScroll:case this.moveToColumn:case this.moveToEol:i=r.lastHPos;break;default:r.lastHPos=i}var a=n.repeat+(n.repeatOffset||0),s=n.forward?o.line+a:o.line-a,c=e.firstLine(),l=e.lastLine();if(s<c&&o.line==c)return this.moveToStartOfLine(e,t,n,r);if(s>l&&o.line==l)return De(e,t,n,r,!0);var u=e.ace.session.getFoldLine(s);return u&&(n.forward?s>u.start.row&&(s=u.end.row+1):s=u.start.row),n.toFirstChar&&(i=Ke(e.getLine(s)),r.lastHPos=i),r.lastHSPos=e.charCoords(new y(s,i),"div").left,new y(s,i)},moveByDisplayLines:function(e,t,n,r){var o=t;switch(r.lastMotion){case this.moveByDisplayLines:case this.moveByScroll:case this.moveByLines:case this.moveToColumn:case this.moveToEol:break;default:r.lastHSPos=e.charCoords(o,"div").left}var i=n.repeat;if((s=e.findPosV(o,n.forward?i:-i,"line",r.lastHSPos)).hitSide)if(n.forward)var a={top:e.charCoords(s,"div").top+8,left:r.lastHSPos},s=e.coordsChar(a,"div");else{var c=e.charCoords(new y(e.firstLine(),0),"div");c.left=r.lastHSPos,s=e.coordsChar(c,"div")}return r.lastHPos=s.ch,s},moveByPage:function(e,t,n){var r=t,o=n.repeat;return e.findPosV(r,n.forward?o:-o,"page")},moveByParagraph:function(e,t,n){var r=n.forward?1:-1;return Ue(e,t,n.repeat,r)},moveBySentence:function(e,t,n){var r=n.forward?1:-1;return function(e,t,n,r){function o(e,t){if(t.pos+t.dir<0||t.pos+t.dir>=t.line.length){if(t.ln+=t.dir,!V(e,t.ln))return t.line=null,t.ln=null,void(t.pos=null);t.line=e.getLine(t.ln),t.pos=t.dir>0?0:t.line.length-1}else t.pos+=t.dir}function i(e,t,n,r){var i=""===(l=e.getLine(t)),a={line:l,ln:t,pos:n,dir:r},s={ln:a.ln,pos:a.pos},c=""===a.line;for(o(e,a);null!==a.line;){if(s.ln=a.ln,s.pos=a.pos,""===a.line&&!c)return{ln:a.ln,pos:a.pos};if(i&&""!==a.line&&!W(a.line[a.pos]))return{ln:a.ln,pos:a.pos};!F(a.line[a.pos])||i||a.pos!==a.line.length-1&&!W(a.line[a.pos+1])||(i=!0),o(e,a)}var l=e.getLine(s.ln);s.pos=0;for(var u=l.length-1;u>=0;--u)if(!W(l[u])){s.pos=u;break}return s}function a(e,t,n,r){var i={line:c=e.getLine(t),ln:t,pos:n,dir:r},a={ln:i.ln,pos:null},s=""===i.line;for(o(e,i);null!==i.line;){if(""===i.line&&!s)return null!==a.pos?a:{ln:i.ln,pos:i.pos};if(F(i.line[i.pos])&&null!==a.pos&&(i.ln!==a.ln||i.pos+1!==a.pos))return a;""===i.line||W(i.line[i.pos])||(s=!1,a={ln:i.ln,pos:i.pos}),o(e,i)}var c=e.getLine(a.ln);a.pos=0;for(var l=0;l<c.length;++l)if(!W(c[l])){a.pos=l;break}return a}var s={ln:t.line,pos:t.ch};for(;n>0;)s=r<0?a(e,s.ln,s.pos,r):i(e,s.ln,s.pos,r),n--;return new y(s.ln,s.pos)}(e,t,n.repeat,r)},moveByScroll:function(e,t,n,r){var o=e.getScrollInfo(),i=null,a=n.repeat;a||(a=o.clientHeight/(2*e.defaultTextHeight()));var s=e.charCoords(t,"local");if(n.repeat=a,!(i=ue.moveByDisplayLines(e,t,n,r)))return null;var c=e.charCoords(i,"local");return e.scrollTo(null,o.top+c.top-s.top),i},moveByWords:function(e,t,n){return function(e,t,n,r,o,i){var a=Ce(t),s=[];(r&&!o||!r&&o)&&n++;for(var c=!(r&&o),l=0;l<n;l++){var u=Ve(e,t,r,i,c);if(!u){var h=Ae(e,e.lastLine());s.push(r?{line:e.lastLine(),from:h,to:h}:{line:0,from:0,to:0});break}s.push(u),t=new y(u.line,r?u.to-1:u.from)}var d=s.length!=n,p=s[0],f=s.pop();return r&&!o?(d||p.from==a.ch&&p.line==a.line||(f=s.pop()),new y(f.line,f.from)):r&&o?new y(f.line,f.to-1):!r&&o?(d||p.to==a.ch&&p.line==a.line||(f=s.pop()),new y(f.line,f.to)):new y(f.line,f.from)}(e,t,n.repeat,!!n.forward,!!n.wordEnd,!!n.bigWord)},moveTillCharacter:function(e,t,n){var r=je(e,n.repeat,n.forward,n.selectedCharacter),o=n.forward?-1:1;return _e(o,n),r?(r.ch+=o,r):null},moveToCharacter:function(e,t,n){var r=n.repeat;return _e(0,n),je(e,r,n.forward,n.selectedCharacter)||t},moveToSymbol:function(e,t,n){return function(e,t,n,r){var o=Ce(e.getCursor()),i=n?1:-1,a=n?e.lineCount():-1,s=o.ch,c=o.line,l=e.getLine(c),u={lineText:l,nextCh:l.charAt(s),lastCh:null,index:s,symb:r,reverseSymb:(n?{")":"(","}":"{"}:{"(":")","{":"}"})[r],forward:n,depth:0,curMoveThrough:!1},h=He[r];if(!h)return o;var d=$e[h].init,p=$e[h].isComplete;d&&d(u);for(;c!==a&&t;){if(u.index+=i,u.nextCh=u.lineText.charAt(u.index),!u.nextCh){if(c+=i,u.lineText=e.getLine(c)||"",i>0)u.index=0;else{var f=u.lineText.length;u.index=f>0?f-1:0}u.nextCh=u.lineText.charAt(u.index)}p(u)&&(o.line=c,o.ch=u.index,t--)}if(u.nextCh||u.curMoveThrough)return new y(c,u.index);return o}(e,n.repeat,n.forward,n.selectedCharacter)||t},moveToColumn:function(e,t,n,r){var o=n.repeat;return r.lastHPos=o-1,r.lastHSPos=e.charCoords(t,"div").left,function(e,t){var n=e.getCursor().line;return fe(e,new y(n,t-1))}(e,o)},moveToEol:function(e,t,n,r){return De(e,t,n,r,!1)},moveToFirstNonWhiteSpaceCharacter:function(e,t){var n=t;return new y(n.line,Ke(e.getLine(n.line)))},moveToMatchedSymbol:function(e,t){for(var n,r=t,o=r.line,i=r.ch,a=e.getLine(o);i<a.length;i++)if((n=a.charAt(i))&&-1!="()[]{}".indexOf(n)){var s=e.getTokenTypeAt(new y(o,i+1));if("string"!==s&&"comment"!==s)break}if(i<a.length){var c=/[<>]/.test(a[i])?/[(){}[\]<>]/:/[(){}[\]]/;return e.findMatchingBracket(new y(o,i+1),{bracketRegex:c}).to}return r},moveToStartOfLine:function(e,t){return new y(t.line,0)},moveToLineOrEdgeOfDocument:function(e,t,n){var r=n.forward?e.lastLine():e.firstLine();return n.repeatIsExplicit&&(r=n.repeat-e.getOption("firstLineNumber")),new y(r,Ke(e.getLine(r)))},moveToStartOfDisplayLine:function(e){return e.execCommand("goLineLeft"),e.getCursor()},moveToEndOfDisplayLine:function(e){e.execCommand("goLineRight");var t=e.getCursor();return"before"==t.sticky&&t.ch--,t},textObjectManipulation:function(e,t,n,r){var o=n.selectedCharacter;"b"==o?o="(":"B"==o&&(o="{");var i,a=!n.textObjectInner;if({"(":")",")":"(","{":"}","}":"{","[":"]","]":"[","<":">",">":"<"}[o])i=function(e,t,n,r){var o,i,a=t,s={"(":/[()]/,")":/[()]/,"[":/[[\]]/,"]":/[[\]]/,"{":/[{}]/,"}":/[{}]/,"<":/[<>]/,">":/[<>]/}[n],c={"(":"(",")":"(","[":"[","]":"[","{":"{","}":"{","<":"<",">":"<"}[n],l=e.getLine(a.line).charAt(a.ch)===c?1:0;if(o=e.scanForBracket(new y(a.line,a.ch+l),-1,void 0,{bracketRegex:s}),i=e.scanForBracket(new y(a.line,a.ch+l),1,void 0,{bracketRegex:s}),!o||!i)return{start:a,end:a};if(o=o.pos,i=i.pos,o.line==i.line&&o.ch>i.ch||o.line>i.line){var u=o;o=i,i=u}r?i.ch+=1:o.ch+=1;return{start:o,end:i}}(e,t,o,a);else if({"'":!0,'"':!0,"`":!0}[o])i=function(e,t,n,r){var o,i,a,s,c=Ce(t),l=e.getLine(c.line).split(""),u=l.indexOf(n);c.ch<u?c.ch=u:u<c.ch&&l[c.ch]==n&&(i=c.ch,--c.ch);if(l[c.ch]!=n||i)for(a=c.ch;a>-1&&!o;a--)l[a]==n&&(o=a+1);else o=c.ch+1;if(o&&!i)for(a=o,s=l.length;a<s&&!i;a++)l[a]==n&&(i=a);if(!o||!i)return{start:c,end:c};r&&(--o,++i);return{start:new y(c.line,o),end:new y(c.line,i)}}(e,t,o,a);else if("W"===o)i=Ne(e,a,!0,!0);else if("w"===o)i=Ne(e,a,!0,!1);else if("p"===o)if(i=Ue(e,t,n.repeat,0,a),n.linewise=!0,r.visualMode)r.visualLine||(r.visualLine=!0);else{var s=r.inputState.operatorArgs;s&&(s.linewise=!0),i.end.line--}else{if("t"!==o)return null;i=function(e,t,n){var r=t;if(!m.findMatchingTag||!m.findEnclosingTag)return{start:r,end:r};var o=m.findMatchingTag(e,t)||m.findEnclosingTag(e,t);if(!o||!o.open||!o.close)return{start:r,end:r};if(n)return{start:o.open.from,end:o.close.to};return{start:o.open.to,end:o.close.from}}(e,t,a)}return e.state.vim.visualMode?function(e,t,n){var r,o=e.state.vim.sel,i=o.head,a=o.anchor;we(n,t)&&(r=n,n=t,t=r);we(i,a)?(i=xe(t,i),a=Se(a,n)):(a=xe(t,a),-1==(i=ge(i=Se(i,n),0,-1)).ch&&i.line!=e.firstLine()&&(i=new y(i.line-1,Ae(e,i.line-1))));return[a,i]}(e,i.start,i.end):[i.start,i.end]},repeatLastCharacterSearch:function(e,t,n){var r=G.lastCharacterSearch,o=n.repeat,i=n.forward===r.forward,a=(r.increment?1:0)*(i?-1:1);e.moveH(-a,"char"),n.inclusive=!!i;var s=je(e,o,i,r.selectedCharacter);return s?(s.ch+=a,s):(e.moveH(a,"char"),t)}};function he(e,t){for(var n=[],r=0;r<t;r++)n.push(e);return n}var de={change:function(e,t,n){var r,o,i=e.state.vim,a=n[0].anchor,s=n[0].head;if(i.visualMode)if(t.fullLine)s.ch=Number.MAX_VALUE,s.line--,e.setSelection(a,s),o=e.getSelection(),e.replaceSelection(""),r=a;else{o=e.getSelection();var c=he("",n.length);e.replaceSelections(c),r=xe(n[0].head,n[0].anchor)}else{o=e.getRange(a,s);var l=i.lastEditInputState||{};if("moveByWords"==l.motion&&!W(o)){var u=/\s+$/.exec(o);u&&l.motionArgs&&l.motionArgs.forward&&(s=ge(s,0,-u[0].length),o=o.slice(0,-u[0].length))}var h=new y(a.line-1,Number.MAX_VALUE),d=e.firstLine()==e.lastLine();s.line>e.lastLine()&&t.linewise&&!d?e.replaceRange("",h,s):e.replaceRange("",a,s),t.linewise&&(d||(e.setCursor(h),m.commands.newlineAndIndent(e)),a.ch=Number.MAX_VALUE),r=a}G.registerController.pushText(t.registerName,"change",o,t.linewise,n.length>1),pe.enterInsertMode(e,{head:r},e.state.vim)},delete:function(e,t,n){var r,o,i=e.state.vim;if(i.visualBlock){o=e.getSelection();var a=he("",n.length);e.replaceSelections(a),r=xe(n[0].head,n[0].anchor)}else{var s=n[0].anchor,c=n[0].head;t.linewise&&c.line!=e.firstLine()&&s.line==e.lastLine()&&s.line==c.line-1&&(s.line==e.firstLine()?s.ch=0:s=new y(s.line-1,Ae(e,s.line-1))),o=e.getRange(s,c),e.replaceRange("",s,c),r=s,t.linewise&&(r=ue.moveToFirstNonWhiteSpaceCharacter(e,s))}return G.registerController.pushText(t.registerName,"delete",o,t.linewise,i.visualBlock),fe(e,r)},indent:function(e,t,n){var r=e.state.vim,o=n[0].anchor.line,i=r.visualBlock?n[n.length-1].anchor.line:n[0].head.line,a=r.visualMode?t.repeat:1;t.linewise&&i--;for(var s=o;s<=i;s++)for(var c=0;c<a;c++)e.indentLine(s,t.indentRight);return ue.moveToFirstNonWhiteSpaceCharacter(e,n[0].anchor)},indentAuto:function(e,t,n){return n.length>1&&e.setSelection(n[0].anchor,n[n.length-1].head),e.execCommand("indentAuto"),ue.moveToFirstNonWhiteSpaceCharacter(e,n[0].anchor)},changeCase:function(e,t,n,r,o){for(var i=e.getSelections(),a=[],s=t.toLower,c=0;c<i.length;c++){var l=i[c],u="";if(!0===s)u=l.toLowerCase();else if(!1===s)u=l.toUpperCase();else for(var h=0;h<l.length;h++){var d=l.charAt(h);u+=j(d)?d.toLowerCase():d.toUpperCase()}a.push(u)}return e.replaceSelections(a),t.shouldMoveCursor?o:!e.state.vim.visualMode&&t.linewise&&n[0].anchor.line+1==n[0].head.line?ue.moveToFirstNonWhiteSpaceCharacter(e,r):t.linewise?r:xe(n[0].anchor,n[0].head)},yank:function(e,t,n,r){var o=e.state.vim,i=e.getSelection(),a=o.visualMode?xe(o.sel.anchor,o.sel.head,n[0].head,n[0].anchor):r;return G.registerController.pushText(t.registerName,"yank",i,t.linewise,o.visualBlock),a}};var pe={jumpListWalk:function(e,t,n){if(!n.visualMode){var r=t.repeat,o=t.forward,i=G.jumpList.move(e,o?r:-r),a=i?i.find():void 0;a=a||e.getCursor(),e.setCursor(a),e.ace.curOp.command.scrollIntoView="center-animate"}},scroll:function(e,t,n){if(!n.visualMode){var r=t.repeat||1,o=e.defaultTextHeight(),i=e.getScrollInfo().top,a=o*r,s=t.forward?i+a:i-a,c=Ce(e.getCursor()),l=e.charCoords(c,"local");if(t.forward)s>l.top?(c.line+=(s-l.top)/o,c.line=Math.ceil(c.line),e.setCursor(c),l=e.charCoords(c,"local"),e.scrollTo(null,l.top)):e.scrollTo(null,s);else{var u=s+e.getScrollInfo().clientHeight;u<l.bottom?(c.line-=(l.bottom-u)/o,c.line=Math.floor(c.line),e.setCursor(c),l=e.charCoords(c,"local"),e.scrollTo(null,l.bottom-e.getScrollInfo().clientHeight)):e.scrollTo(null,s)}}},scrollToCursor:function(e,t){var n=e.getCursor().line,r=e.charCoords(new y(n,0),"local"),o=e.getScrollInfo().clientHeight,i=r.top,a=r.bottom-i;switch(t.position){case"center":i=i-o/2+a;break;case"bottom":i=i-o+a}e.scrollTo(null,i)},replayMacro:function(e,t,n){var r=t.selectedCharacter,o=t.repeat,i=G.macroModeState;for("@"==r?r=i.latestRegister:i.latestRegister=r;o--;)mt(e,n,i,r)},enterMacroRecordMode:function(e,t){var n=G.macroModeState,r=t.selectedCharacter;G.registerController.isValidRegister(r)&&n.enterMacroRecordMode(e,r)},toggleOverwrite:function(e){e.state.overwrite?(e.toggleOverwrite(!1),e.setOption("keyMap","vim-insert"),m.signal(e,"vim-mode-change",{mode:"insert"})):(e.toggleOverwrite(!0),e.setOption("keyMap","vim-replace"),m.signal(e,"vim-mode-change",{mode:"replace"}))},enterInsertMode:function(e,t,n){if(!e.getOption("readOnly")){n.insertMode=!0,n.insertModeRepeat=t&&t.repeat||1;var r=t?t.insertAt:null,o=n.sel,i=t.head||e.getCursor("head"),a=e.listSelections().length;if("eol"==r)i=new y(i.line,Ae(e,i.line));else if("bol"==r)i=new y(i.line,0);else if("charAfter"==r)i=ge(i,0,1);else if("firstNonBlank"==r)i=ue.moveToFirstNonWhiteSpaceCharacter(e,i);else if("startOfSelectedArea"==r){if(!n.visualMode)return;n.visualBlock?(i=new y(Math.min(o.head.line,o.anchor.line),Math.min(o.head.ch,o.anchor.ch)),a=Math.abs(o.head.line-o.anchor.line)+1):i=o.head.line<o.anchor.line?o.head:new y(o.anchor.line,0)}else if("endOfSelectedArea"==r){if(!n.visualMode)return;n.visualBlock?(i=new y(Math.min(o.head.line,o.anchor.line),Math.max(o.head.ch,o.anchor.ch)+1),a=Math.abs(o.head.line-o.anchor.line)+1):i=o.head.line>=o.anchor.line?ge(o.head,0,1):new y(o.anchor.line,0)}else if("inplace"==r){if(n.visualMode)return}else"lastEdit"==r&&(i=lt(e)||i);e.setOption("disableInput",!1),t&&t.replace?(e.toggleOverwrite(!0),e.setOption("keyMap","vim-replace"),m.signal(e,"vim-mode-change",{mode:"replace"})):(e.toggleOverwrite(!1),e.setOption("keyMap","vim-insert"),m.signal(e,"vim-mode-change",{mode:"insert"})),G.macroModeState.isPlaying||(e.on("change",gt),m.on(e.getInputField(),"keydown",kt)),n.visualMode&&Ie(e),Te(e,i,a)}},toggleVisualMode:function(e,t,n){var r,o=t.repeat,i=e.getCursor();n.visualMode?n.visualLine^t.linewise||n.visualBlock^t.blockwise?(n.visualLine=!!t.linewise,n.visualBlock=!!t.blockwise,m.signal(e,"vim-mode-change",{mode:"visual",subMode:n.visualLine?"linewise":n.visualBlock?"blockwise":""}),Re(e)):Ie(e):(n.visualMode=!0,n.visualLine=!!t.linewise,n.visualBlock=!!t.blockwise,r=fe(e,new y(i.line,i.ch+o-1)),n.sel={anchor:i,head:r},m.signal(e,"vim-mode-change",{mode:"visual",subMode:n.visualLine?"linewise":n.visualBlock?"blockwise":""}),Re(e),We(e,n,"<",xe(i,r)),We(e,n,">",Se(i,r)))},reselectLastSelection:function(e,t,n){var r=n.lastSelection;if(n.visualMode&&Ee(e,n),r){var o=r.anchorMark.find(),i=r.headMark.find();if(!o||!i)return;n.sel={anchor:o,head:i},n.visualMode=!0,n.visualLine=r.visualLine,n.visualBlock=r.visualBlock,Re(e),We(e,n,"<",xe(o,i)),We(e,n,">",Se(o,i)),m.signal(e,"vim-mode-change",{mode:"visual",subMode:n.visualLine?"linewise":n.visualBlock?"blockwise":""})}},joinLines:function(e,t,n){var r,o;if(n.visualMode){if(r=e.getCursor("anchor"),we(o=e.getCursor("head"),r)){var i=o;o=r,r=i}o.ch=Ae(e,o.line)-1}else{var a=Math.max(t.repeat,2);r=e.getCursor(),o=fe(e,new y(r.line+a-1,1/0))}for(var s=0,c=r.line;c<o.line;c++){s=Ae(e,r.line);i=new y(r.line+1,Ae(e,r.line+1));var l=e.getRange(r,i);l=t.keepSpaces?l.replace(/\n\r?/g,""):l.replace(/\n\s*/g," "),e.replaceRange(l,r,i)}var u=new y(r.line,s);n.visualMode&&Ie(e,!1),e.setCursor(u)},newLineAndEnterInsertMode:function(e,t,n){n.insertMode=!0;var r=Ce(e.getCursor());r.line!==e.firstLine()||t.after?(r.line=t.after?r.line:r.line-1,r.ch=Ae(e,r.line),e.setCursor(r),(m.commands.newlineAndIndentContinueComment||m.commands.newlineAndIndent)(e)):(e.replaceRange("\n",new y(e.firstLine(),0)),e.setCursor(e.firstLine(),0));this.enterInsertMode(e,{repeat:t.repeat},n)},paste:function(e,t,n){var r=Ce(e.getCursor()),o=G.registerController.getRegister(t.registerName);if(d=o.toString()){if(t.matchIndent){var i=e.getOption("tabSize"),a=function(e){var t=e.split("\t").length-1,n=e.split(" ").length-1;return t*i+1*n},s=e.getLine(e.getCursor().line),c=a(s.match(/^\s*/)[0]),l=d.replace(/\n$/,""),u=d!==l,h=a(d.match(/^\s*/)[0]),d=l.replace(/^\s*/gm,(function(t){var n=c+(a(t)-h);if(n<0)return"";if(e.getOption("indentWithTabs")){var r=Math.floor(n/i);return Array(r+1).join("\t")}return Array(n+1).join(" ")}));d+=u?"\n":""}if(t.repeat>1)d=Array(t.repeat+1).join(d);var p,f,m=o.linewise,g=o.blockwise;if(g){d=d.split("\n"),m&&d.pop();for(var v=0;v<d.length;v++)d[v]=""==d[v]?" ":d[v];r.ch+=t.after?1:0,r.ch=Math.min(Ae(e,r.line),r.ch)}else m?n.visualMode?d=n.visualLine?d.slice(0,-1):"\n"+d.slice(0,d.length-1)+"\n":t.after?(d="\n"+d.slice(0,d.length-1),r.ch=Ae(e,r.line)):r.ch=0:r.ch+=t.after?1:0;if(n.visualMode){var C;n.lastPastedText=d;var k=function(e,t){var n=t.lastSelection,r=function(){var t=e.listSelections(),n=t[0],r=t[t.length-1];return[we(n.anchor,n.head)?n.anchor:n.head,we(r.anchor,r.head)?r.head:r.anchor]},o=function(){var t=e.getCursor(),r=e.getCursor(),o=n.visualBlock;if(o){var i=o.width,a=o.height;r=new y(t.line+a,t.ch+i);for(var s=[],c=t.line;c<r.line;c++){var l={anchor:new y(c,t.ch),head:new y(c,r.ch)};s.push(l)}e.setSelections(s)}else{var u=n.anchorMark.find(),h=n.headMark.find(),d=h.line-u.line,p=h.ch-u.ch;r={line:r.line+d,ch:d?r.ch:p+r.ch},n.visualLine&&(t=new y(t.line,0),r=new y(r.line,Ae(e,r.line))),e.setSelection(t,r)}return[t,r]};return t.visualMode?r():o()}(e,n),w=k[0],x=k[1],S=e.getSelection(),M=e.listSelections(),A=new Array(M.length).join("1").split("1");n.lastSelection&&(C=n.lastSelection.headMark.find()),G.registerController.unnamedRegister.setText(S),g?(e.replaceSelections(A),x=new y(w.line+d.length-1,w.ch),e.setCursor(w),Oe(e,x),e.replaceSelections(d),p=w):n.visualBlock?(e.replaceSelections(A),e.setCursor(w),e.replaceRange(d,w,w),p=w):(e.replaceRange(d,w,x),p=e.posFromIndex(e.indexFromPos(w)+d.length-1)),C&&(n.lastSelection.headMark=e.setBookmark(C)),m&&(p.ch=0)}else if(g){e.setCursor(r);for(v=0;v<d.length;v++){var b=r.line+v;b>e.lastLine()&&e.replaceRange("\n",new y(b,0)),Ae(e,b)<r.ch&&Le(e,b,r.ch)}e.setCursor(r),Oe(e,new y(r.line+d.length-1,r.ch)),e.replaceSelections(d),p=r}else e.replaceRange(d,r),m&&t.after?p=new y(r.line+1,Ke(e.getLine(r.line+1))):m&&!t.after?p=new y(r.line,Ke(e.getLine(r.line))):!m&&t.after?(f=e.indexFromPos(r),p=e.posFromIndex(f+d.length-1)):(f=e.indexFromPos(r),p=e.posFromIndex(f+d.length));n.visualMode&&Ie(e,!1),e.setCursor(p)}},undo:function(e,t){e.operation((function(){ye(e,m.commands.undo,t.repeat)(),e.setCursor(e.getCursor("anchor"))}))},redo:function(e,t){ye(e,m.commands.redo,t.repeat)()},setRegister:function(e,t,n){n.inputState.registerName=t.selectedCharacter},setMark:function(e,t,n){We(e,n,t.selectedCharacter,e.getCursor())},replace:function(e,t,n){var r,o,i=t.selectedCharacter,a=e.getCursor(),s=e.listSelections();if(n.visualMode)a=e.getCursor("start"),o=e.getCursor("end");else{var c=e.getLine(a.line);(r=a.ch+t.repeat)>c.length&&(r=c.length),o=new y(a.line,r)}if("\n"==i)n.visualMode||e.replaceRange("",a,o),(m.commands.newlineAndIndentContinueComment||m.commands.newlineAndIndent)(e);else{var l=e.getRange(a,o);if(l=l.replace(/[^\n]/g,i),n.visualBlock){var u=new Array(e.getOption("tabSize")+1).join(" ");l=(l=e.getSelection()).replace(/\t/g,u).replace(/[^\n]/g,i).split("\n"),e.replaceSelections(l)}else e.replaceRange(l,a,o);n.visualMode?(a=we(s[0].anchor,s[0].head)?s[0].anchor:s[0].head,e.setCursor(a),Ie(e,!1)):e.setCursor(ge(o,0,-1))}},incrementNumberToken:function(e,t){for(var n,r,o,i,a=e.getCursor(),s=e.getLine(a.line),c=/(-?)(?:(0x)([\da-f]+)|(0b|0|)(\d+))/gi;null!==(n=c.exec(s))&&(o=(r=n.index)+n[0].length,!(a.ch<o)););if((t.backtrack||!(o<=a.ch))&&n){var l=n[2]||n[4],u=n[3]||n[5],h=t.increase?1:-1,d={"0b":2,0:8,"":10,"0x":16}[l.toLowerCase()];i=(parseInt(n[1]+u,d)+h*t.repeat).toString(d);var p=l?new Array(u.length-i.length+1+n[1].length).join("0"):"";i="-"===i.charAt(0)?"-"+l+p+i.substr(1):l+p+i;var f=new y(a.line,r),m=new y(a.line,o);e.replaceRange(i,f,m),e.setCursor(new y(a.line,r+i.length-1))}},repeatLastEdit:function(e,t,n){if(n.lastEditInputState){var r=t.repeat;r&&t.repeatIsExplicit?n.lastEditInputState.repeatOverride=r:r=n.lastEditInputState.repeatOverride||r,wt(e,n,r,!1)}},indent:function(e,t){e.indentLine(e.getCursor().line,t.indentRight)},exitInsertMode:pt};function fe(e,t){var n=e.state.vim,r=n.insertMode||n.visualMode,o=Math.min(Math.max(e.firstLine(),t.line),e.lastLine()),i=Ae(e,o)-1+!!r,a=Math.min(Math.max(0,t.ch),i);return new y(o,a)}function me(e){var t={};for(var n in e)e.hasOwnProperty(n)&&(t[n]=e[n]);return t}function ge(e,t,n){return"object"==typeof t&&(n=t.ch,t=t.line),new y(e.line+t,e.ch+n)}function ve(e,t){if("<character>"==t.slice(-11)){var n=t.length-11,r=e.slice(0,n),o=t.slice(0,n);return r==o&&e.length>n?"full":0==o.indexOf(r)&&"partial"}return e==t?"full":0==t.indexOf(e)&&"partial"}function ye(e,t,n){return function(){for(var r=0;r<n;r++)t(e)}}function Ce(e){return new y(e.line,e.ch)}function ke(e,t){return e.ch==t.ch&&e.line==t.line}function we(e,t){return e.line<t.line||e.line==t.line&&e.ch<t.ch}function xe(e,t){return arguments.length>2&&(t=xe.apply(void 0,Array.prototype.slice.call(arguments,1))),we(e,t)?e:t}function Se(e,t){return arguments.length>2&&(t=Se.apply(void 0,Array.prototype.slice.call(arguments,1))),we(e,t)?t:e}function Me(e,t,n){var r=we(e,t),o=we(t,n);return r&&o}function Ae(e,t){return e.getLine(t).length}function be(e){return e.trim?e.trim():e.replace(/^\s+|\s+$/g,"")}function Le(e,t,n){var r=Ae(e,t),o=new Array(n-r+1).join(" ");e.setCursor(new y(t,r)),e.replaceRange(o,e.getCursor())}function Oe(e,t){var n=[],r=e.listSelections(),o=Ce(e.clipPos(t)),i=!ke(t,o),a=function(e,t,n){for(var r=0;r<e.length;r++){var o="head"!=n&&ke(e[r].anchor,t),i="anchor"!=n&&ke(e[r].head,t);if(o||i)return r}return-1}(r,e.getCursor("head")),s=ke(r[a].head,r[a].anchor),c=r.length-1,l=c-a>a?c:0,u=r[l].anchor,h=Math.min(u.line,o.line),d=Math.max(u.line,o.line),p=u.ch,f=o.ch,m=r[l].head.ch-p,g=f-p;m>0&&g<=0?(p++,i||f--):m<0&&g>=0?(p--,s||f++):m<0&&-1==g&&(p--,f++);for(var v=h;v<=d;v++){var C={anchor:new y(v,p),head:new y(v,f)};n.push(C)}return e.setSelections(n),t.ch=f,u.ch=p,u}function Te(e,t,n){for(var r=[],o=0;o<n;o++){var i=ge(t,o,0);r.push({anchor:i,head:i})}e.setSelections(r,0)}function Ee(e,t){var n=t.sel.anchor,r=t.sel.head;t.lastPastedText&&(r=e.posFromIndex(e.indexFromPos(n)+t.lastPastedText.length),t.lastPastedText=null),t.lastSelection={anchorMark:e.setBookmark(n),headMark:e.setBookmark(r),anchor:Ce(n),head:Ce(r),visualMode:t.visualMode,visualLine:t.visualLine,visualBlock:t.visualBlock}}function Re(e,t,n){var r=e.state.vim,o=Be(e,t=t||r.sel,n=n||r.visualLine?"line":r.visualBlock?"block":"char");e.setSelections(o.ranges,o.primary)}function Be(e,t,n,r){var o=Ce(t.head),i=Ce(t.anchor);if("char"==n){var a=r||we(t.head,t.anchor)?0:1,s=we(t.head,t.anchor)?1:0;return o=ge(t.head,0,a),{ranges:[{anchor:i=ge(t.anchor,0,s),head:o}],primary:0}}if("line"==n){if(we(t.head,t.anchor))o.ch=0,i.ch=Ae(e,i.line);else{i.ch=0;var c=e.lastLine();o.line>c&&(o.line=c),o.ch=Ae(e,o.line)}return{ranges:[{anchor:i,head:o}],primary:0}}if("block"==n){var l=Math.min(i.line,o.line),u=i.ch,h=Math.max(i.line,o.line),d=o.ch;u<d?d+=1:u+=1;for(var p=h-l+1,f=o.line==l?0:p-1,m=[],g=0;g<p;g++)m.push({anchor:new y(l+g,u),head:new y(l+g,d)});return{ranges:m,primary:f}}}function Ie(e,t){var n=e.state.vim;!1!==t&&e.setCursor(fe(e,n.sel.head)),Ee(e,n),n.visualMode=!1,n.visualLine=!1,n.visualBlock=!1,n.insertMode||m.signal(e,"vim-mode-change",{mode:"normal"})}function Ke(e){if(!e)return 0;var t=e.search(/\S/);return-1==t?e.length:t}function Ne(e,t,n,r,o){for(var i=function(e){var t=e.getCursor("head");return 1==e.getSelection().length&&(t=xe(t,e.getCursor("anchor"))),t}(e),a=e.getLine(i.line),s=i.ch,c=o?R[0]:B[0];!c(a.charAt(s));)if(++s>=a.length)return null;r?c=B[0]:(c=R[0])(a.charAt(s))||(c=R[1]);for(var l=s,u=s;c(a.charAt(l))&&l<a.length;)l++;for(;c(a.charAt(u))&&u>=0;)u--;if(u++,t){for(var h=l;/\s/.test(a.charAt(l))&&l<a.length;)l++;if(h==l){for(var d=u;/\s/.test(a.charAt(u-1))&&u>0;)u--;u||(u=d)}}return{start:new y(i.line,u),end:new y(i.line,l)}}function Pe(e,t,n){ke(t,n)||G.jumpList.add(e,t,n)}function _e(e,t){G.lastCharacterSearch.increment=e,G.lastCharacterSearch.forward=t.forward,G.lastCharacterSearch.selectedCharacter=t.selectedCharacter}var He={"(":"bracket",")":"bracket","{":"bracket","}":"bracket","[":"section","]":"section","*":"comment","/":"comment",m:"method",M:"method","#":"preprocess"},$e={bracket:{isComplete:function(e){if(e.nextCh===e.symb){if(e.depth++,e.depth>=1)return!0}else e.nextCh===e.reverseSymb&&e.depth--;return!1}},section:{init:function(e){e.curMoveThrough=!0,e.symb=(e.forward?"]":"[")===e.symb?"{":"}"},isComplete:function(e){return 0===e.index&&e.nextCh===e.symb}},comment:{isComplete:function(e){var t="*"===e.lastCh&&"/"===e.nextCh;return e.lastCh=e.nextCh,t}},method:{init:function(e){e.symb="m"===e.symb?"{":"}",e.reverseSymb="{"===e.symb?"}":"{"},isComplete:function(e){return e.nextCh===e.symb}},preprocess:{init:function(e){e.index=0},isComplete:function(e){if("#"===e.nextCh){var t=e.lineText.match(/^#(\w+)/)[1];if("endif"===t){if(e.forward&&0===e.depth)return!0;e.depth++}else if("if"===t){if(!e.forward&&0===e.depth)return!0;e.depth--}if("else"===t&&0===e.depth)return!0}return!1}}};function Ve(e,t,n,r,o){var i=t.line,a=t.ch,s=e.getLine(i),c=n?1:-1,l=r?B:R;if(o&&""==s){if(i+=c,s=e.getLine(i),!V(e,i))return null;a=n?0:s.length}for(;;){if(o&&""==s)return{from:0,to:0,line:i};for(var u=c>0?s.length:-1,h=u,d=u;a!=u;){for(var p=!1,f=0;f<l.length&&!p;++f)if(l[f](s.charAt(a))){for(h=a;a!=u&&l[f](s.charAt(a));)a+=c;if(p=h!=(d=a),h==t.ch&&i==t.line&&d==h+c)continue;return{from:Math.min(h,d+1),to:Math.max(h,d),line:i}}p||(a+=c)}if(!V(e,i+=c))return null;s=e.getLine(i),a=c>0?0:s.length}}function De(e,t,n,r,o){var i=new y(t.line+n.repeat-1,1/0),a=e.clipPos(i);return a.ch--,o||(r.lastHPos=1/0,r.lastHSPos=e.charCoords(a,"div").left),i}function je(e,t,n,r){for(var o,i=e.getCursor(),a=i.ch,s=0;s<t;s++){if(-1==(o=Fe(a,e.getLine(i.line),r,n,!0)))return null;a=o}return new y(e.getCursor().line,o)}function We(e,t,n,r){U(n,H)&&(t.marks[n]&&t.marks[n].clear(),t.marks[n]=e.setBookmark(r))}function Fe(e,t,n,r,o){var i;return r?-1==(i=t.indexOf(n,e+1))||o||(i-=1):-1==(i=t.lastIndexOf(n,e-1))||o||(i+=1),i}function Ue(e,t,n,r,o){var i,a=t.line,s=e.firstLine(),c=e.lastLine(),l=a;function u(t){return!/\S/.test(e.getLine(t))}function h(e,t,n){return n?u(e)!=u(e+t):!u(e)&&u(e+t)}function d(t){r=r>0?1:-1;var n=e.ace.session.getFoldLine(t);n&&t+r>n.start.row&&t+r<n.end.row&&(r=(r>0?n.end.row:n.start.row)-t)}if(r){for(;s<=l&&l<=c&&n>0;)d(l),h(l,r)&&n--,l+=r;return new y(l,0)}var p=e.state.vim;if(p.visualLine&&h(a,1,!0)){var f=p.sel.anchor;h(f.line,-1,!0)&&(o&&f.line==a||(a+=1))}var m=u(a);for(l=a;l<=c&&n;l++)h(l,1,!0)&&(o&&u(l)==m||n--);for(i=new y(l,0),l>c&&!m?m=!0:o=!1,l=a;l>s&&(o&&u(l)!=m&&l!=a||!h(l,-1,!0));l--);return{start:new y(l,0),end:i}}function ze(){}function Je(e){var t=e.state.vim;return t.searchState_||(t.searchState_=new ze)}function qe(e,t){var n=Qe(e,t)||[];if(!n.length)return[];var r=[];if(0===n[0]){for(var o=0;o<n.length;o++)"number"==typeof n[o]&&r.push(e.substring(n[o]+1,n[o+1]));return r}}function Qe(e,t){t||(t="/");for(var n=!1,r=[],o=0;o<e.length;o++){var i=e.charAt(o);n||i!=t||r.push(o),n=!n&&"\\"==i}return r}J("pcre",!0,"boolean"),ze.prototype={getQuery:function(){return G.query},setQuery:function(e){G.query=e},getOverlay:function(){return this.searchOverlay},setOverlay:function(e){this.searchOverlay=e},isReversed:function(){return G.isReversed},setReversed:function(e){G.isReversed=e},getScrollbarAnnotate:function(){return this.annotate},setScrollbarAnnotate:function(e){this.annotate=e}};var Ge={"\\n":"\n","\\r":"\r","\\t":"\t"};var Xe={"\\/":"/","\\\\":"\\","\\n":"\n","\\r":"\r","\\t":"\t","\\&":"&"};function Ze(e,t,n){if(G.registerController.getRegister("/").setText(e),e instanceof RegExp)return e;var r,o,i=Qe(e,"/");i.length?(r=e.substring(0,i[0]),o=-1!=e.substring(i[0]).indexOf("i")):r=e;return r?(Q("pcre")||(r=function(e){for(var t=!1,n=[],r=-1;r<e.length;r++){var o=e.charAt(r)||"",i=e.charAt(r+1)||"",a=i&&-1!="|(){".indexOf(i);t?("\\"===o&&a||n.push(o),t=!1):"\\"===o?(t=!0,i&&-1!="}".indexOf(i)&&(a=!0),a&&"\\"!==i||n.push(o)):(n.push(o),a&&"\\"!==i&&n.push("\\"))}return n.join("")}(r)),n&&(t=/^[^A-Z]*$/.test(r)),new RegExp(r,t||o?"im":"m")):null}function Ye(e){"string"==typeof e&&(e=document.createElement(e));for(var t,n=1;n<arguments.length;n++)if(t=arguments[n])if("object"!=typeof t&&(t=document.createTextNode(t)),t.nodeType)e.appendChild(t);else for(var r in t)Object.prototype.hasOwnProperty.call(t,r)&&("$"===r[0]?e.style[r.slice(1)]=t[r]:e.setAttribute(r,t[r]));return e}function et(e,t){var n=Ye("span",{$color:"red",$whiteSpace:"pre",class:"cm-vim-message"},t);e.openNotification?e.openNotification(n,{bottom:!0,duration:5e3}):alert(n.innerText)}function tt(e,t){var n,r,o=(n=t.prefix,r=t.desc,Ye(document.createDocumentFragment(),Ye("span",{$fontFamily:"monospace",$whiteSpace:"pre"},n,Ye("input",{type:"text",autocorrect:"off",autocapitalize:"off",spellcheck:"false"})),r&&Ye("span",{$color:"#888"},r)));if(e.openDialog)e.openDialog(o,t.onClose,{onKeyDown:t.onKeyDown,onKeyUp:t.onKeyUp,bottom:!0,selectValueOnOpen:!1,value:t.value});else{var i="";"string"!=typeof t.prefix&&t.prefix&&(i+=t.prefix.textContent),t.desc&&(i+=" "+t.desc),t.onClose(prompt(i,""))}}function nt(e,t,n,r){if(t){var o=Je(e),i=Ze(t,!!n,!!r);if(i)return rt(e,i),function(e,t){if(e instanceof RegExp&&t instanceof RegExp){for(var n=["global","multiline","ignoreCase","source"],r=0;r<n.length;r++){var o=n[r];if(e[o]!==t[o])return!1}return!0}return!1}(i,o.getQuery())||o.setQuery(i),i}}function rt(e,t){var n=Je(e),r=n.getOverlay();r&&t==r.query||(r&&e.removeOverlay(r),r=function(e){if("^"==e.source.charAt(0))var t=!0;return{token:function(n){if(!t||n.sol()){var r=n.match(e,!1);if(r)return 0==r[0].length?(n.next(),"searching"):n.sol()||(n.backUp(1),e.exec(n.next()+r[0]))?(n.match(e),"searching"):(n.next(),null);for(;!n.eol()&&(n.next(),!n.match(e,!1)););}else n.skipToEnd()},query:e}}(t),e.addOverlay(r),e.showMatchesOnScrollbar&&(n.getScrollbarAnnotate()&&n.getScrollbarAnnotate().clear(),n.setScrollbarAnnotate(e.showMatchesOnScrollbar(t))),n.setOverlay(r))}function ot(e,t,n,r){return void 0===r&&(r=1),e.operation((function(){for(var o=e.getCursor(),i=e.getSearchCursor(n,o),a=0;a<r;a++){var s=i.find(t);if(0==a&&s&&ke(i.from(),o)){var c=t?i.from():i.to();(s=i.find(t))&&!s[0]&&ke(i.from(),c)&&e.getLine(c.line).length==c.ch&&(s=i.find(t))}if(!s&&!(i=e.getSearchCursor(n,t?new y(e.lastLine()):new y(e.firstLine(),0))).find(t))return}return i.from()}))}function it(e){var t=Je(e);e.removeOverlay(Je(e).getOverlay()),t.setOverlay(null),t.getScrollbarAnnotate()&&(t.getScrollbarAnnotate().clear(),t.setScrollbarAnnotate(null))}function at(e,t,n){return"number"!=typeof e&&(e=e.line),t instanceof Array?U(e,t):"number"==typeof n?e>=t&&e<=n:e==t}function st(e){var t=e.ace.renderer;return{top:t.getFirstFullyVisibleRow(),bottom:t.getLastFullyVisibleRow()}}function ct(e,t,n){if("'"==n||"`"==n)return G.jumpList.find(e,-1)||new y(0,0);if("."==n)return lt(e);var r=t.marks[n];return r&&r.find()}function lt(e){var t=e.ace.session.$undoManager;if(t&&t.$lastDelta)return v(t.$lastDelta.end)}var ut=function(){this.buildCommandMap_()};ut.prototype={processCommand:function(e,t,n){var r=this;e.operation((function(){e.curOp.isVimOp=!0,r._processCommand(e,t,n)}))},_processCommand:function(e,t,n){var r=e.state.vim,o=G.registerController.getRegister(":"),i=o.toString();r.visualMode&&Ie(e);var a=new m.StringStream(t);o.setText(t);var s,c,l=n||{};l.input=t;try{this.parseInput_(e,a,l)}catch(t){throw et(e,t.toString()),t}if(l.commandName){if(s=this.matchCommand_(l.commandName)){if(c=s.name,s.excludeFromCommandHistory&&o.setText(i),this.parseCommandArgs_(a,l,s),"exToKey"==s.type){for(var u=0;u<s.toKeys.length;u++)re.handleKey(e,s.toKeys[u],"mapping");return}if("exToEx"==s.type)return void this.processCommand(e,s.toInput)}}else void 0!==l.line&&(c="move");if(c)try{ht[c](e,l),s&&s.possiblyAsync||!l.callback||l.callback()}catch(t){throw et(e,t.toString()),t}else et(e,'Not an editor command ":'+t+'"')},parseInput_:function(e,t,n){t.eatWhile(":"),t.eat("%")?(n.line=e.firstLine(),n.lineEnd=e.lastLine()):(n.line=this.parseLineSpec_(e,t),void 0!==n.line&&t.eat(",")&&(n.lineEnd=this.parseLineSpec_(e,t)));var r=t.match(/^(\w+|!!|@@|[!#&*<=>@~])/);return n.commandName=r?r[1]:t.match(/.*/)[0],n},parseLineSpec_:function(e,t){var n=t.match(/^(\d+)/);if(n)return parseInt(n[1],10)-1;switch(t.next()){case".":return this.parseLineSpecOffset_(t,e.getCursor().line);case"$":return this.parseLineSpecOffset_(t,e.lastLine());case"'":var r=t.next(),o=ct(e,e.state.vim,r);if(!o)throw new Error("Mark not set");return this.parseLineSpecOffset_(t,o.line);case"-":case"+":return t.backUp(1),this.parseLineSpecOffset_(t,e.getCursor().line);default:return void t.backUp(1)}},parseLineSpecOffset_:function(e,t){var n=e.match(/^([+-])?(\d+)/);if(n){var r=parseInt(n[2],10);"-"==n[1]?t-=r:t+=r}return t},parseCommandArgs_:function(e,t,n){if(!e.eol()){t.argString=e.match(/.*/)[0];var r=n.argDelimiter||/\s+/,o=be(t.argString).split(r);o.length&&o[0]&&(t.args=o)}},matchCommand_:function(e){for(var t=e.length;t>0;t--){var n=e.substring(0,t);if(this.commandMap_[n]){var r=this.commandMap_[n];if(0===r.name.indexOf(e))return r}}return null},buildCommandMap_:function(){this.commandMap_={};for(var e=0;e<x.length;e++){var t=x[e],n=t.shortName||t.name;this.commandMap_[n]=t}},map:function(e,t,n){if(":"!=e&&":"==e.charAt(0)){if(n)throw Error("Mode not supported for ex mappings");var r=e.substring(1);":"!=t&&":"==t.charAt(0)?this.commandMap_[r]={name:r,type:"exToEx",toInput:t.substring(1),user:!0}:this.commandMap_[r]={name:r,type:"exToKey",toKeys:t,user:!0}}else if(":"!=t&&":"==t.charAt(0)){var o={keys:e,type:"keyToEx",exArgs:{input:t.substring(1)}};n&&(o.context=n),k.unshift(o)}else{o={keys:e,type:"keyToKey",toKeys:t};n&&(o.context=n),k.unshift(o)}},unmap:function(e,t){if(":"!=e&&":"==e.charAt(0)){if(t)throw Error("Mode not supported for ex mappings");var n=e.substring(1);if(this.commandMap_[n]&&this.commandMap_[n].user)return delete this.commandMap_[n],!0}else for(var r=e,o=0;o<k.length;o++)if(r==k[o].keys&&k[o].context===t)return k.splice(o,1),!0}};var ht={colorscheme:function(e,t){!t.args||t.args.length<1?et(e,e.getOption("theme")):e.setOption("theme",t.args[0])},map:function(e,t,n){var r=t.args;!r||r.length<2?e&&et(e,"Invalid mapping: "+t.input):dt.map(r[0],r[1],n)},imap:function(e,t){this.map(e,t,"insert")},nmap:function(e,t){this.map(e,t,"normal")},vmap:function(e,t){this.map(e,t,"visual")},unmap:function(e,t,n){var r=t.args;(!r||r.length<1||!dt.unmap(r[0],n))&&e&&et(e,"No such mapping: "+t.input)},move:function(e,t){le.processCommand(e,e.state.vim,{type:"motion",motion:"moveToLineOrEdgeOfDocument",motionArgs:{forward:!1,explicitRepeat:!0,linewise:!0},repeatOverride:t.line+1})},set:function(e,t){var n=t.args,r=t.setCfg||{};if(!n||n.length<1)e&&et(e,"Invalid mapping: "+t.input);else{var o=n[0].split("="),i=o[0],a=o[1],s=!1;if("?"==i.charAt(i.length-1)){if(a)throw Error("Trailing characters: "+t.argString);i=i.substring(0,i.length-1),s=!0}void 0===a&&"no"==i.substring(0,2)&&(i=i.substring(2),a=!1);var c=z[i]&&"boolean"==z[i].type;if(c&&null==a&&(a=!0),!c&&void 0===a||s){var l=Q(i,e,r);l instanceof Error?et(e,l.message):et(e,!0===l||!1===l?" "+(l?"":"no")+i:"  "+i+"="+l)}else{var u=q(i,a,e,r);u instanceof Error&&et(e,u.message)}}},setlocal:function(e,t){t.setCfg={scope:"local"},this.set(e,t)},setglobal:function(e,t){t.setCfg={scope:"global"},this.set(e,t)},registers:function(e,t){var n=t.args,r=G.registerController.registers,o="----------Registers----------\n\n";if(n){n=n.join("");for(var i=0;i<n.length;i++){if(a=n.charAt(i),G.registerController.isValidRegister(a))o+='"'+a+"    "+(r[a]||new ae).toString()+"\n"}}else for(var a in r){var s=r[a].toString();s.length&&(o+='"'+a+"    "+s+"\n")}et(e,o)},sort:function(e,t){var n,r,o,i,a;var s=function(){if(t.argString){var e=new m.StringStream(t.argString);if(e.eat("!")&&(n=!0),e.eol())return;if(!e.eatSpace())return"Invalid arguments";var s=e.match(/([dinuox]+)?\s*(\/.+\/)?\s*/);if(!s&&!e.eol())return"Invalid arguments";if(s[1]){r=-1!=s[1].indexOf("i"),o=-1!=s[1].indexOf("u");var c=-1!=s[1].indexOf("d")||-1!=s[1].indexOf("n")&&1,l=-1!=s[1].indexOf("x")&&1,u=-1!=s[1].indexOf("o")&&1;if(c+l+u>1)return"Invalid arguments";i=(c?"decimal":l&&"hex")||u&&"octal"}s[2]&&(a=new RegExp(s[2].substr(1,s[2].length-2),r?"i":""))}}();if(s)et(e,s+": "+t.argString);else{var c=t.line||e.firstLine(),l=t.lineEnd||t.line||e.lastLine();if(c!=l){var u=new y(c,0),h=new y(l,Ae(e,l)),d=e.getRange(u,h).split("\n"),p=a||("decimal"==i?/(-?)([\d]+)/:"hex"==i?/(-?)(?:0x)?([0-9a-f]+)/i:"octal"==i?/([0-7]+)/:null),f="decimal"==i?10:"hex"==i?16:"octal"==i?8:null,g=[],v=[];if(i||a)for(var C=0;C<d.length;C++){var k=a?d[C].match(a):null;k&&""!=k[0]?g.push(k):!a&&p.exec(d[C])?g.push(d[C]):v.push(d[C])}else v=d;if(g.sort(a?function(e,t){var o;return n&&(o=e,e=t,t=o),r&&(e[0]=e[0].toLowerCase(),t[0]=t[0].toLowerCase()),e[0]<t[0]?-1:1}:S),a)for(C=0;C<g.length;C++)g[C]=g[C].input;else i||v.sort(S);if(d=n?g.concat(v):v.concat(g),o){var w,x=d;d=[];for(C=0;C<x.length;C++)x[C]!=w&&d.push(x[C]),w=x[C]}e.replaceRange(d.join("\n"),u,h)}}function S(e,t){var o;n&&(o=e,e=t,t=o);r&&(e=e.toLowerCase(),t=t.toLowerCase());var a=i&&p.exec(e),s=i&&p.exec(t);return a?(a=parseInt((a[1]+a[2]).toLowerCase(),f))-(s=parseInt((s[1]+s[2]).toLowerCase(),f)):e<t?-1:1}},vglobal:function(e,t){this.global(e,t)},global:function(e,t){var n=t.argString;if(n){var r,o="v"===t.commandName[0],i=void 0!==t.line?t.line:e.firstLine(),a=t.lineEnd||t.line||e.lastLine(),s=function(e){return qe(e,"/")}(n),c=n;if(s.length&&(c=s[0],r=s.slice(1,s.length).join("/")),c)try{nt(e,c,!0,!0)}catch(t){return void et(e,"Invalid regex: "+c)}for(var l=Je(e).getQuery(),u=[],h=i;h<=a;h++){var d=e.getLineHandle(h);l.test(d.text)!==o&&u.push(r?d:d.text)}if(r){var p=0,f=function(){if(p<u.length){var t=u[p++],n=e.getLineNumber(t);if(null==n)return void f();var o=n+1+r;dt.processCommand(e,o,{callback:f})}};f()}else et(e,u.join("\n"))}else et(e,"Regular Expression missing from global")},substitute:function(e,t){if(!e.getSearchCursor)throw new Error("Search feature not available. Requires searchcursor.js or any other getSearchCursor implementation.");var n,r,o,i,a=t.argString,s=a?qe(a,a[0]):[],c="",l=!1,u=!1;if(s.length)n=s[0],Q("pcre")&&""!==n&&(n=new RegExp(n).source),void 0!==(c=s[1])&&(c=Q("pcre")?function(e){for(var t=new m.StringStream(e),n=[];!t.eol();){for(;t.peek()&&"\\"!=t.peek();)n.push(t.next());var r=!1;for(var o in Xe)if(t.match(o,!0)){r=!0,n.push(Xe[o]);break}r||n.push(t.next())}return n.join("")}(c.replace(/([^\\])&/g,"$1$$&")):function(e){for(var t,n=!1,r=[],o=-1;o<e.length;o++){var i=e.charAt(o)||"",a=e.charAt(o+1)||"";Ge[i+a]?(r.push(Ge[i+a]),o++):n?(r.push(i),n=!1):"\\"===i?(n=!0,t=a,E.test(t)||"$"===a?r.push("$"):"/"!==a&&"\\"!==a&&r.push("\\")):("$"===i&&r.push("$"),r.push(i),"/"===a&&r.push("\\"))}return r.join("")}(c),G.lastSubstituteReplacePart=c),r=s[2]?s[2].split(" "):[];else if(a&&a.length)return void et(e,"Substitutions should be of the form :s/pattern/replace/");if(r&&(o=r[0],i=parseInt(r[1]),o&&(-1!=o.indexOf("c")&&(l=!0),-1!=o.indexOf("g")&&(u=!0),n=Q("pcre")?n+"/"+o:n.replace(/\//g,"\\/")+"/"+o)),n)try{nt(e,n,!0,!0)}catch(t){return void et(e,"Invalid regex: "+n)}if(void 0!==(c=c||G.lastSubstituteReplacePart)){var h=Je(e).getQuery(),d=void 0!==t.line?t.line:e.getCursor().line,p=t.lineEnd||d;d==e.firstLine()&&p==e.lastLine()&&(p=1/0),i&&(p=(d=p)+i-1);var f=fe(e,new y(d,0)),g=e.getSearchCursor(h,f);!function(e,t,n,r,o,i,a,s,c){e.state.vim.exMode=!0;var l,u,h,d=!1;function p(){e.operation((function(){for(;!d;)f(),v();y()}))}function f(){var t=e.getRange(i.from(),i.to()).replace(a,s),n=i.to().line;i.replace(t),u=i.to().line,o+=u-n,h=u<n}function g(){var e=l&&Ce(i.to()),t=i.findNext();return t&&!t[0]&&e&&ke(i.from(),e)&&(t=i.findNext()),t}function v(){for(;g()&&at(i.from(),r,o);)if(n||i.from().line!=u||h)return e.scrollIntoView(i.from(),30),e.setSelection(i.from(),i.to()),l=i.from(),void(d=!1);d=!0}function y(t){if(t&&t(),e.focus(),l){e.setCursor(l);var n=e.state.vim;n.exMode=!1,n.lastHPos=n.lastHSPos=l.ch}c&&c()}function C(t,n,r){switch(m.e_stop(t),m.keyName(t)){case"Y":f(),v();break;case"N":v();break;case"A":var o=c;c=void 0,e.operation(p),c=o;break;case"L":f();case"Q":case"Esc":case"Ctrl-C":case"Ctrl-[":y(r)}return d&&y(r),!0}if(v(),d)return void et(e,"No matches for "+a.source);if(!t)return p(),void(c&&c());tt(e,{prefix:Ye("span","replace with ",Ye("strong",s)," (y/n/a/q/l)"),onKeyDown:C})}(e,l,u,d,p,g,h,c,t.callback)}else et(e,"No previous substitute regular expression")},redo:m.commands.redo,undo:m.commands.undo,write:function(e){m.commands.save?m.commands.save(e):e.save&&e.save()},nohlsearch:function(e){it(e)},yank:function(e){var t=Ce(e.getCursor()).line,n=e.getLine(t);G.registerController.pushText("0","yank",n,!0,!0)},delmarks:function(e,t){if(t.argString&&be(t.argString))for(var n=e.state.vim,r=new m.StringStream(be(t.argString));!r.eol();){r.eatSpace();var o=r.pos;if(!r.match(/[a-zA-Z]/,!1))return void et(e,"Invalid argument: "+t.argString.substring(o));var i=r.next();if(r.match("-",!0)){if(!r.match(/[a-zA-Z]/,!1))return void et(e,"Invalid argument: "+t.argString.substring(o));var a=i,s=r.next();if(!(D(a)&&D(s)||j(a)&&j(s)))return void et(e,"Invalid argument: "+a+"-");var c=a.charCodeAt(0),l=s.charCodeAt(0);if(c>=l)return void et(e,"Invalid argument: "+t.argString.substring(o));for(var u=0;u<=l-c;u++){var h=String.fromCharCode(c+u);delete n.marks[h]}}else delete n.marks[i]}else et(e,"Argument required")}},dt=new ut;function pt(e){var t=e.state.vim,n=G.macroModeState,r=G.registerController.getRegister("."),o=n.isPlaying,i=n.lastInsertModeChanges;o||(e.off("change",gt),m.off(e.getInputField(),"keydown",kt)),!o&&t.insertModeRepeat>1&&(wt(e,t,t.insertModeRepeat-1,!0),t.lastEditInputState.repeatOverride=t.insertModeRepeat),delete t.insertModeRepeat,t.insertMode=!1,e.setCursor(e.getCursor().line,e.getCursor().ch-1),e.setOption("keyMap","vim"),e.setOption("disableInput",!0),e.toggleOverwrite(!1),r.setText(i.changes.join("")),m.signal(e,"vim-mode-change",{mode:"normal"}),n.isRecording&&function(e){if(e.isPlaying)return;var t=e.latestRegister,n=G.registerController.getRegister(t);n&&n.pushInsertModeChanges&&n.pushInsertModeChanges(e.lastInsertModeChanges)}(n)}function ft(e){k.unshift(e)}function mt(e,t,n,r){var o=G.registerController.getRegister(r);if(":"==r)return o.keyBuffer[0]&&dt.processCommand(e,o.keyBuffer[0]),void(n.isPlaying=!1);var i=o.keyBuffer,a=0;n.isPlaying=!0,n.replaySearchQueries=o.searchQueries.slice(0);for(var s=0;s<i.length;s++)for(var c,l,u=i[s];u;)if(l=(c=/<\w+-.+?>|<\w+>|./.exec(u))[0],u=u.substring(c.index+l.length),re.handleKey(e,l,"macro"),t.insertMode){var h=o.insertModeChanges[a++].changes;G.macroModeState.lastInsertModeChanges.changes=h,xt(e,h,1),pt(e)}n.isPlaying=!1}function gt(e,t){var n=G.macroModeState,r=n.lastInsertModeChanges;if(!n.isPlaying)for(;t;){if(r.expectCursorActivityForChange=!0,r.ignoreCount>1)r.ignoreCount--;else if("+input"==t.origin||"paste"==t.origin||void 0===t.origin){var o=e.listSelections().length;o>1&&(r.ignoreCount=o);var i=t.text.join("\n");r.maybeReset&&(r.changes=[],r.maybeReset=!1),i&&(e.state.overwrite&&!/\n/.test(i)?r.changes.push([i]):r.changes.push(i))}t=t.next}}function vt(e){var t=e.state.vim;if(t.insertMode){var n=G.macroModeState;if(n.isPlaying)return;var r=n.lastInsertModeChanges;r.expectCursorActivityForChange?r.expectCursorActivityForChange=!1:r.maybeReset=!0}else e.curOp.isVimOp||yt(e,t)}function yt(e,t,n){var r=e.getCursor("anchor"),o=e.getCursor("head");if(t.visualMode&&!e.somethingSelected()?Ie(e,!1):t.visualMode||t.insertMode||!e.somethingSelected()||(t.visualMode=!0,t.visualLine=!1,m.signal(e,"vim-mode-change",{mode:"visual"})),t.visualMode){var i=we(o,r)?0:-1,a=we(o,r)?-1:0;o=ge(o,0,i),r=ge(r,0,a),t.sel={anchor:r,head:o},We(e,t,"<",xe(o,r)),We(e,t,">",Se(o,r))}else t.insertMode||n||(t.lastHPos=e.getCursor().ch)}function Ct(e){this.keyName=e}function kt(e){var t=G.macroModeState.lastInsertModeChanges,n=m.keyName(e);n&&(-1==n.indexOf("Delete")&&-1==n.indexOf("Backspace")||m.lookupKey(n,"vim-insert",(function(){return t.maybeReset&&(t.changes=[],t.maybeReset=!1),t.changes.push(new Ct(n)),!0})))}function wt(e,t,n,r){var o=G.macroModeState;o.isPlaying=!0;var i=!!t.lastEditActionCommand,a=t.inputState;function s(){i?le.processAction(e,t,t.lastEditActionCommand):le.evalInput(e,t)}function c(n){if(o.lastInsertModeChanges.changes.length>0){n=t.lastEditActionCommand?n:1;var r=o.lastInsertModeChanges;xt(e,r.changes,n)}}if(t.inputState=t.lastEditInputState,i&&t.lastEditActionCommand.interlaceInsertRepeat)for(var l=0;l<n;l++)s(),c(1);else r||s(),c(n);t.inputState=a,t.insertMode&&!r&&pt(e),o.isPlaying=!1}function xt(e,t,n){function r(t){return"string"==typeof t?m.commands[t](e):t(e),!0}var o=e.getCursor("head"),i=G.macroModeState.lastInsertModeChanges.visualBlock;i&&(Te(e,o,i+1),n=e.listSelections().length,e.setCursor(o));for(var a=0;a<n;a++){i&&e.setCursor(ge(o,a,0));for(var s=0;s<t.length;s++){var c=t[s];if(c instanceof Ct)m.lookupKey(c.keyName,"vim-insert",r);else if("string"==typeof c)e.replaceSelection(c);else{var l=e.getCursor(),u=ge(l,0,c[0].length);e.replaceRange(c[0],l,u),e.setCursor(u)}}}i&&e.setCursor(ge(o,0,1))}m.keyMap.vim={attach:A,detach:M,call:b},J("insertModeEscKeysTimeout",200,"number"),m.keyMap["vim-insert"]={fallthrough:["default"],attach:A,detach:M,call:b},m.keyMap["vim-replace"]={Backspace:"goCharLeft",fallthrough:["vim-insert"],attach:A,detach:M,call:b},ne(),m.Vim=S();var St={return:"CR",backspace:"BS",delete:"Del",esc:"Esc",left:"Left",right:"Right",up:"Up",down:"Down",space:"Space",insert:"Ins",home:"Home",end:"End",pageup:"PageUp",pagedown:"PageDown",enter:"CR"};var Mt=(S=m.Vim).handleKey.bind(S);function At(e){var t=new e.constructor;return Object.keys(e).forEach((function(n){var r=e[n];Array.isArray(r)?r=r.slice():r&&"object"==typeof r&&r.constructor!=Object&&(r=At(r)),t[n]=r})),e.sel&&(t.sel={head:e.sel.head&&Ce(e.sel.head),anchor:e.sel.anchor&&Ce(e.sel.anchor)}),t}S.handleKey=function(e,t,n){return e.operation((function(){return Mt(e,t,n)}),!0)},t.CodeMirror=m;var bt=S.maybeInitVimState_;function Lt(e,t){t.off("beforeEndOperation",Lt);var n=t.state.cm.vimCmd;n&&t.execCommand(n.exec?n:n.name,n.args),t.curOp=t.prevOp}t.handler={$id:"ace/keyboard/vim",drawCursor:function(e,t,n,o,a){var s=this.state.vim||{},c=n.characterWidth,l=n.lineHeight,u=t.top,h=t.left;s.insertMode||!(o.cursor?r.comparePoints(o.cursor,o.start)<=0:a.selection.isBackwards()||a.selection.isEmpty())&&h>c&&(h-=c);!s.insertMode&&s.status&&(u+=l/=2),i.translate(e,h,u),i.setStyle(e.style,"width",c+"px"),i.setStyle(e.style,"height",l+"px")},handleKeyboard:function(e,t,n,r,o){var i=e.editor,a=i.state.cm,s=bt(a);if(-1!=r){if(s.insertMode||(-1==t?(n.charCodeAt(0)>255&&e.inputKey&&(n=e.inputKey)&&4==e.inputHash&&(n=n.toUpperCase()),e.inputChar=n):4==t||0==t?e.inputKey==n&&e.inputHash==t&&e.inputChar?(n=e.inputChar,t=-1):(e.inputChar=null,e.inputKey=n,e.inputHash=t):e.inputChar=e.inputKey=null),a.state.overwrite&&s.insertMode&&"backspace"==n&&0==t)return{command:"gotoleft"};if("c"==n&&1==t&&!u.isMac&&i.getCopyText())return i.once("copy",(function(){s.insertMode?i.selection.clearSelection():a.operation((function(){Ie(a)}))})),{command:"null",passEvent:!0};if("esc"==n&&!s.insertMode&&!s.visualMode&&!a.ace.inMultiSelectMode){var c=Je(a).getOverlay();c&&a.removeOverlay(c)}if(-1==t||1&t||0===t&&n.length>1){var l=s.insertMode,h=function(e,t,n){t.length>1&&"n"==t[0]&&(t=t.replace("numpad","")),t=St[t]||t;var r="";return n.ctrlKey&&(r+="C-"),n.altKey&&(r+="A-"),(r||t.length>1)&&n.shiftKey&&(r+="S-"),(r+=t).length>1&&(r="<"+r+">"),r}(0,n,o||{});null==s.status&&(s.status="");var d=function(e,t,n){var r=!1,o=S.maybeInitVimState_(e),i=o.visualBlock||o.wasInVisualBlock,a=e.ace.inMultiSelectMode;if(o.wasInVisualBlock&&!a?o.wasInVisualBlock=!1:a&&o.visualBlock&&(o.wasInVisualBlock=!0),"<Esc>"!=t||o.insertMode||o.visualMode||!a)if(i||!a||e.ace.inVirtualSelectionMode)r=S.handleKey(e,t,n);else{var s=At(o);e.operation((function(){e.ace.forEachSelection((function(){var o=e.ace.selection;e.state.vim.lastHPos=null==o.$desiredColumn?o.lead.column:o.$desiredColumn;var i=e.getCursor("head"),a=e.getCursor("anchor"),c=we(i,a)?0:-1,l=we(i,a)?-1:0;i=ge(i,0,c),a=ge(a,0,l),e.state.vim.sel.head=i,e.state.vim.sel.anchor=a,r=Mt(e,t,n),o.$desiredColumn=-1==e.state.vim.lastHPos?null:e.state.vim.lastHPos,e.virtualSelectionMode()&&(e.state.vim=At(s))})),e.curOp.cursorActivity&&!r&&(e.curOp.cursorActivity=!1)}),!0)}else e.ace.exitMultiSelectMode();return!r||o.visualMode||o.insert||o.visualMode==e.somethingSelected()||yt(e,o,!0),r}(a,h,"user");if(s=bt(a),d&&null!=s.status?s.status+=h:null==s.status&&(s.status=""),a._signal("changeStatus"),!d&&(-1!=t||l))return;return{command:"null",passEvent:!d}}}},attach:function(e){e.state||(e.state={});var t=new m(e);function n(){var n=bt(t).insertMode;t.ace.renderer.setStyle("normal-mode",!n),e.textInput.setCommandMode(!n),e.renderer.$keepTextAreaAtCursor=n,e.renderer.$blockCursor=!n}e.state.cm=t,e.$vimModeHandler=this,m.keyMap.vim.attach(t),bt(t).status=null,t.on("vim-command-done",(function(){t.virtualSelectionMode()||(bt(t).status=null,t.ace._signal("changeStatus"),t.ace.session.markUndoGroup())})),t.on("changeStatus",(function(){t.ace.renderer.updateCursor(),t.ace._signal("changeStatus")})),t.on("vim-mode-change",(function(){t.virtualSelectionMode()||(n(),t._signal("changeStatus"))})),n(),e.renderer.$cursorLayer.drawCursor=this.drawCursor.bind(t)},detach:function(e){var t=e.state.cm;m.keyMap.vim.detach(t),t.destroy(),e.state.cm=null,e.$vimModeHandler=null,e.renderer.$cursorLayer.drawCursor=null,e.renderer.setStyle("normal-mode",!1),e.textInput.setCommandMode(!1),e.renderer.$keepTextAreaAtCursor=!0},getStatusText:function(e){var t=e.state.cm,n=bt(t);if(n.insertMode)return"INSERT";var r="";return n.visualMode&&(r+="VISUAL",n.visualLine&&(r+=" LINE"),n.visualBlock&&(r+=" BLOCK")),n.status&&(r+=(r?" ":"")+n.status),r}},S.defineOption({name:"wrap",set:function(e,t){t&&t.ace.setOption("wrap",e)},type:"boolean"},!1),S.defineEx("write","w",(function(){console.log(":write is not implemented")})),k.push({keys:"zc",type:"action",action:"fold",actionArgs:{open:!1}},{keys:"zC",type:"action",action:"fold",actionArgs:{open:!1,all:!0}},{keys:"zo",type:"action",action:"fold",actionArgs:{open:!0}},{keys:"zO",type:"action",action:"fold",actionArgs:{open:!0,all:!0}},{keys:"za",type:"action",action:"fold",actionArgs:{toggle:!0}},{keys:"zA",type:"action",action:"fold",actionArgs:{toggle:!0,all:!0}},{keys:"zf",type:"action",action:"fold",actionArgs:{open:!0,all:!0}},{keys:"zd",type:"action",action:"fold",actionArgs:{open:!0,all:!0}},{keys:"<C-A-k>",type:"action",action:"aceCommand",actionArgs:{name:"addCursorAbove"}},{keys:"<C-A-j>",type:"action",action:"aceCommand",actionArgs:{name:"addCursorBelow"}},{keys:"<C-A-S-k>",type:"action",action:"aceCommand",actionArgs:{name:"addCursorAboveSkipCurrent"}},{keys:"<C-A-S-j>",type:"action",action:"aceCommand",actionArgs:{name:"addCursorBelowSkipCurrent"}},{keys:"<C-A-h>",type:"action",action:"aceCommand",actionArgs:{name:"selectMoreBefore"}},{keys:"<C-A-l>",type:"action",action:"aceCommand",actionArgs:{name:"selectMoreAfter"}},{keys:"<C-A-S-h>",type:"action",action:"aceCommand",actionArgs:{name:"selectNextBefore"}},{keys:"<C-A-S-l>",type:"action",action:"aceCommand",actionArgs:{name:"selectNextAfter"}}),k.push({keys:"gq",type:"operator",operator:"hardWrap"}),S.defineOperator("hardWrap",(function(e,t,n,r,o){var i=n[0].anchor.line,a=n[0].head.line;return t.linewise&&a--,f(e.ace,{startRow:i,endRow:a}),y(a,0)})),J("textwidth",void 0,"number",["tw"],(function(e,t){if(void 0!==t){if(void 0===e)return t.ace.getOption("printMarginColumn");var n=Math.round(e);n>1&&t.ace.setOption("printMarginColumn",n)}})),pe.aceCommand=function(e,t,n){e.vimCmd=t,e.ace.inVirtualSelectionMode?e.ace.on("beforeEndOperation",Lt):Lt(null,e.ace)},pe.fold=function(e,t,n){e.ace.execCommand(["toggleFoldWidget","toggleFoldWidget","foldOther","unfoldall"][(t.all?2:0)+(t.open?1:0)])},t.handler.defaultKeymap=k,t.handler.actions=pe,t.Vim=S})),ace.require(["ace/keyboard/vim"],(function(e){"object"==typeof module&&"object"==typeof exports&&module&&(module.exports=e)}));
+ace.define("ace/ext/hardwrap",["require","exports","module","ace/range","ace/editor","ace/config"], function(require, exports, module){"use strict";
+var Range = require("../range").Range;
+function hardWrap(editor, options) {
+    var max = options.column || editor.getOption("printMarginColumn");
+    var allowMerge = options.allowMerge != false;
+    var row = Math.min(options.startRow, options.endRow);
+    var endRow = Math.max(options.startRow, options.endRow);
+    var session = editor.session;
+    while (row <= endRow) {
+        var line = session.getLine(row);
+        if (line.length > max) {
+            var space = findSpace(line, max, 5);
+            if (space) {
+                var indentation = /^\s*/.exec(line)[0];
+                session.replace(new Range(row, space.start, row, space.end), "\n" + indentation);
+            }
+            endRow++;
+        }
+        else if (allowMerge && /\S/.test(line) && row != endRow) {
+            var nextLine = session.getLine(row + 1);
+            if (nextLine && /\S/.test(nextLine)) {
+                var trimmedLine = line.replace(/\s+$/, "");
+                var trimmedNextLine = nextLine.replace(/^\s+/, "");
+                var mergedLine = trimmedLine + " " + trimmedNextLine;
+                var space = findSpace(mergedLine, max, 5);
+                if (space && space.start > trimmedLine.length || mergedLine.length < max) {
+                    var replaceRange = new Range(row, trimmedLine.length, row + 1, nextLine.length - trimmedNextLine.length);
+                    session.replace(replaceRange, " ");
+                    row--;
+                    endRow--;
+                }
+                else if (trimmedLine.length < line.length) {
+                    session.remove(new Range(row, trimmedLine.length, row, line.length));
+                }
+            }
+        }
+        row++;
+    }
+    function findSpace(line, max, min) {
+        if (line.length < max)
+            return;
+        var before = line.slice(0, max);
+        var after = line.slice(max);
+        var spaceAfter = /^(?:(\s+)|(\S+)(\s+))/.exec(after);
+        var spaceBefore = /(?:(\s+)|(\s+)(\S+))$/.exec(before);
+        var start = 0;
+        var end = 0;
+        if (spaceBefore && !spaceBefore[2]) {
+            start = max - spaceBefore[1].length;
+            end = max;
+        }
+        if (spaceAfter && !spaceAfter[2]) {
+            if (!start)
+                start = max;
+            end = max + spaceAfter[1].length;
+        }
+        if (start) {
+            return {
+                start: start,
+                end: end
+            };
+        }
+        if (spaceBefore && spaceBefore[2] && spaceBefore.index > min) {
+            return {
+                start: spaceBefore.index,
+                end: spaceBefore.index + spaceBefore[2].length
+            };
+        }
+        if (spaceAfter && spaceAfter[2]) {
+            start = max + spaceAfter[2].length;
+            return {
+                start: start,
+                end: start + spaceAfter[3].length
+            };
+        }
+    }
+}
+function wrapAfterInput(e) {
+    if (e.command.name == "insertstring" && /\S/.test(e.args)) {
+        var editor = e.editor;
+        var cursor = editor.selection.cursor;
+        if (cursor.column <= editor.renderer.$printMarginColumn)
+            return;
+        var lastDelta = editor.session.$undoManager.$lastDelta;
+        hardWrap(editor, {
+            startRow: cursor.row, endRow: cursor.row,
+            allowMerge: false
+        });
+        if (lastDelta != editor.session.$undoManager.$lastDelta)
+            editor.session.markUndoGroup();
+    }
+}
+var Editor = require("../editor").Editor;
+require("../config").defineOptions(Editor.prototype, "editor", {
+    hardWrap: {
+        set: function (val) {
+            if (val) {
+                this.commands.on("afterExec", wrapAfterInput);
+            }
+            else {
+                this.commands.off("afterExec", wrapAfterInput);
+            }
+        },
+        value: false
+    }
+});
+exports.hardWrap = hardWrap;
+
+});
+
+ace.define("ace/keyboard/vim",["require","exports","module","ace/range","ace/lib/event_emitter","ace/lib/dom","ace/lib/oop","ace/lib/keys","ace/lib/event","ace/search","ace/lib/useragent","ace/search_highlight","ace/commands/multi_select_commands","ace/mode/text","ace/ext/hardwrap","ace/multi_select"], function(require, exports, module){// CodeMirror, copyright (c) by Marijn Haverbeke and others
+'use strict';
+function log() {
+    var d = "";
+    function format(p) {
+        if (typeof p != "object")
+            return p + "";
+        if ("line" in p) {
+            return p.line + ":" + p.ch;
+        }
+        if ("anchor" in p) {
+            return format(p.anchor) + "->" + format(p.head);
+        }
+        if (Array.isArray(p))
+            return "[" + p.map(function (x) {
+                return format(x);
+            }) + "]";
+        return JSON.stringify(p);
+    }
+    for (var i = 0; i < arguments.length; i++) {
+        var p = arguments[i];
+        var f = format(p);
+        d += f + "  ";
+    }
+    console.log(d);
+}
+var Range = require("../range").Range;
+var EventEmitter = require("../lib/event_emitter").EventEmitter;
+var domLib = require("../lib/dom");
+var oop = require("../lib/oop");
+var KEYS = require("../lib/keys");
+var event = require("../lib/event");
+var Search = require("../search").Search;
+var useragent = require("../lib/useragent");
+var SearchHighlight = require("../search_highlight").SearchHighlight;
+var multiSelectCommands = require("../commands/multi_select_commands");
+var TextModeTokenRe = require("../mode/text").Mode.prototype.tokenRe;
+var hardWrap = require("../ext/hardwrap").hardWrap;
+require("../multi_select");
+var CodeMirror = function (ace) {
+    this.ace = ace;
+    this.state = {};
+    this.marks = {};
+    this.options = {};
+    this.$uid = 0;
+    this.onChange = this.onChange.bind(this);
+    this.onSelectionChange = this.onSelectionChange.bind(this);
+    this.onBeforeEndOperation = this.onBeforeEndOperation.bind(this);
+    this.ace.on('change', this.onChange);
+    this.ace.on('changeSelection', this.onSelectionChange);
+    this.ace.on('beforeEndOperation', this.onBeforeEndOperation);
+};
+CodeMirror.Pos = function (line, ch) {
+    if (!(this instanceof Pos))
+        return new Pos(line, ch);
+    this.line = line;
+    this.ch = ch;
+};
+CodeMirror.defineOption = function (name, val, setter) { };
+CodeMirror.commands = {
+    redo: function (cm) { cm.ace.redo(); },
+    undo: function (cm) { cm.ace.undo(); },
+    newlineAndIndent: function (cm) { cm.ace.insert("\n"); },
+    goLineLeft: function (cm) { cm.ace.selection.moveCursorLineStart(); },
+    goLineRight: function (cm) { cm.ace.selection.moveCursorLineEnd(); }
+};
+CodeMirror.keyMap = {};
+CodeMirror.addClass = CodeMirror.rmClass = function () { };
+CodeMirror.e_stop = CodeMirror.e_preventDefault = event.stopEvent;
+CodeMirror.keyName = function (e) {
+    var key = (KEYS[e.keyCode] || e.key || "");
+    if (key.length == 1)
+        key = key.toUpperCase();
+    key = event.getModifierString(e).replace(/(^|-)\w/g, function (m) {
+        return m.toUpperCase();
+    }) + key;
+    return key;
+};
+CodeMirror.keyMap['default'] = function (key) {
+    return function (cm) {
+        var cmd = cm.ace.commands.commandKeyBinding[key.toLowerCase()];
+        return cmd && cm.ace.execCommand(cmd) !== false;
+    };
+};
+CodeMirror.lookupKey = function lookupKey(key, map, handle) {
+    if (!map)
+        map = "default";
+    if (typeof map == "string")
+        map = CodeMirror.keyMap[map];
+    var found = typeof map == "function" ? map(key) : map[key];
+    if (found === false)
+        return "nothing";
+    if (found === "...")
+        return "multi";
+    if (found != null && handle(found))
+        return "handled";
+    if (map.fallthrough) {
+        if (!Array.isArray(map.fallthrough))
+            return lookupKey(key, map.fallthrough, handle);
+        for (var i = 0; i < map.fallthrough.length; i++) {
+            var result = lookupKey(key, map.fallthrough[i], handle);
+            if (result)
+                return result;
+        }
+    }
+};
+CodeMirror.findMatchingTag = function (cm, head) {
+    return cm.findMatchingTag(head);
+};
+CodeMirror.findEnclosingTag = function (cm, head) {
+};
+CodeMirror.signal = function (o, name, e) { return o._signal(name, e); };
+CodeMirror.on = event.addListener;
+CodeMirror.off = event.removeListener;
+CodeMirror.isWordChar = function (ch) {
+    if (ch < "\x7f")
+        return /^\w$/.test(ch);
+    TextModeTokenRe.lastIndex = 0;
+    return TextModeTokenRe.test(ch);
+};
+(function () {
+    oop.implement(CodeMirror.prototype, EventEmitter);
+    this.destroy = function () {
+        this.ace.off('change', this.onChange);
+        this.ace.off('changeSelection', this.onSelectionChange);
+        this.ace.off('beforeEndOperation', this.onBeforeEndOperation);
+        this.removeOverlay();
+    };
+    this.virtualSelectionMode = function () {
+        return this.ace.inVirtualSelectionMode && this.ace.selection.index;
+    };
+    this.onChange = function (delta) {
+        var change = { text: delta.action[0] == 'i' ? delta.lines : [] };
+        var curOp = this.curOp = this.curOp || {};
+        if (!curOp.changeHandlers)
+            curOp.changeHandlers = this._eventRegistry["change"] && this._eventRegistry["change"].slice();
+        if (!curOp.lastChange) {
+            curOp.lastChange = curOp.change = change;
+        }
+        else {
+            curOp.lastChange.next = curOp.lastChange = change;
+        }
+        this.$updateMarkers(delta);
+    };
+    this.onSelectionChange = function () {
+        var curOp = this.curOp = this.curOp || {};
+        if (!curOp.cursorActivityHandlers)
+            curOp.cursorActivityHandlers = this._eventRegistry["cursorActivity"] && this._eventRegistry["cursorActivity"].slice();
+        this.curOp.cursorActivity = true;
+        if (this.ace.inMultiSelectMode) {
+            this.ace.keyBinding.removeKeyboardHandler(multiSelectCommands.keyboardHandler);
+        }
+    };
+    this.operation = function (fn, force) {
+        if (!force && this.curOp || force && this.curOp && this.curOp.force) {
+            return fn();
+        }
+        if (force || !this.ace.curOp) {
+            if (this.curOp)
+                this.onBeforeEndOperation();
+        }
+        if (!this.ace.curOp) {
+            var prevOp = this.ace.prevOp;
+            this.ace.startOperation({
+                command: { name: "vim", scrollIntoView: "cursor" }
+            });
+        }
+        var curOp = this.curOp = this.curOp || {};
+        this.curOp.force = force;
+        var result = fn();
+        if (this.ace.curOp && this.ace.curOp.command.name == "vim") {
+            if (this.state.dialog)
+                this.ace.curOp.command.scrollIntoView = false;
+            this.ace.endOperation();
+            if (!curOp.cursorActivity && !curOp.lastChange && prevOp)
+                this.ace.prevOp = prevOp;
+        }
+        if (force || !this.ace.curOp) {
+            if (this.curOp)
+                this.onBeforeEndOperation();
+        }
+        return result;
+    };
+    this.onBeforeEndOperation = function () {
+        var op = this.curOp;
+        if (op) {
+            if (op.change) {
+                this.signal("change", op.change, op);
+            }
+            if (op && op.cursorActivity) {
+                this.signal("cursorActivity", null, op);
+            }
+            this.curOp = null;
+        }
+    };
+    this.signal = function (eventName, e, handlers) {
+        var listeners = handlers ? handlers[eventName + "Handlers"]
+            : (this._eventRegistry || {})[eventName];
+        if (!listeners)
+            return;
+        listeners = listeners.slice();
+        for (var i = 0; i < listeners.length; i++)
+            listeners[i](this, e);
+    };
+    this.firstLine = function () { return 0; };
+    this.lastLine = function () { return this.ace.session.getLength() - 1; };
+    this.lineCount = function () { return this.ace.session.getLength(); };
+    this.setCursor = function (line, ch) {
+        if (typeof line === 'object') {
+            ch = line.ch;
+            line = line.line;
+        }
+        var shouldScroll = !this.curOp && !this.ace.inVirtualSelectionMode;
+        if (!this.ace.inVirtualSelectionMode)
+            this.ace.exitMultiSelectMode();
+        this.ace.session.unfold({ row: line, column: ch });
+        this.ace.selection.moveTo(line, ch);
+        if (shouldScroll) {
+            this.ace.renderer.scrollCursorIntoView();
+            this.ace.endOperation();
+        }
+    };
+    this.getCursor = function (p) {
+        var sel = this.ace.selection;
+        var pos = p == 'anchor' ? (sel.isEmpty() ? sel.lead : sel.anchor) :
+            p == 'head' || !p ? sel.lead : sel.getRange()[p];
+        return toCmPos(pos);
+    };
+    this.listSelections = function (p) {
+        var ranges = this.ace.multiSelect.rangeList.ranges;
+        if (!ranges.length || this.ace.inVirtualSelectionMode)
+            return [{ anchor: this.getCursor('anchor'), head: this.getCursor('head') }];
+        return ranges.map(function (r) {
+            return {
+                anchor: this.clipPos(toCmPos(r.cursor == r.end ? r.start : r.end)),
+                head: this.clipPos(toCmPos(r.cursor))
+            };
+        }, this);
+    };
+    this.setSelections = function (p, primIndex) {
+        var sel = this.ace.multiSelect;
+        var ranges = p.map(function (x) {
+            var anchor = toAcePos(x.anchor);
+            var head = toAcePos(x.head);
+            var r = Range.comparePoints(anchor, head) < 0
+                ? new Range.fromPoints(anchor, head)
+                : new Range.fromPoints(head, anchor);
+            r.cursor = Range.comparePoints(r.start, head) ? r.end : r.start;
+            return r;
+        });
+        if (this.ace.inVirtualSelectionMode) {
+            this.ace.selection.fromOrientedRange(ranges[0]);
+            return;
+        }
+        if (!primIndex) {
+            ranges = ranges.reverse();
+        }
+        else if (ranges[primIndex]) {
+            ranges.push(ranges.splice(primIndex, 1)[0]);
+        }
+        sel.toSingleRange(ranges[0].clone());
+        var session = this.ace.session;
+        for (var i = 0; i < ranges.length; i++) {
+            var range = session.$clipRangeToDocument(ranges[i]); // todo why ace doesn't do this?
+            sel.addRange(range);
+        }
+    };
+    this.setSelection = function (a, h, options) {
+        var sel = this.ace.selection;
+        sel.moveTo(a.line, a.ch);
+        sel.selectTo(h.line, h.ch);
+        if (options && options.origin == '*mouse') {
+            this.onBeforeEndOperation();
+        }
+    };
+    this.somethingSelected = function (p) {
+        return !this.ace.selection.isEmpty();
+    };
+    this.clipPos = function (p) {
+        var pos = this.ace.session.$clipPositionToDocument(p.line, p.ch);
+        return toCmPos(pos);
+    };
+    this.foldCode = function (pos) {
+        this.ace.session.$toggleFoldWidget(pos.line, {});
+    };
+    this.markText = function (cursor) {
+        return { clear: function () { }, find: function () { } };
+    };
+    this.$updateMarkers = function (delta) {
+        var isInsert = delta.action == "insert";
+        var start = delta.start;
+        var end = delta.end;
+        var rowShift = (end.row - start.row) * (isInsert ? 1 : -1);
+        var colShift = (end.column - start.column) * (isInsert ? 1 : -1);
+        if (isInsert)
+            end = start;
+        for (var i in this.marks) {
+            var point = this.marks[i];
+            var cmp = Range.comparePoints(point, start);
+            if (cmp < 0) {
+                continue; // delta starts after the range
+            }
+            if (cmp === 0) {
+                if (isInsert) {
+                    if (point.bias == 1) {
+                        cmp = 1;
+                    }
+                    else {
+                        point.bias = -1;
+                        continue;
+                    }
+                }
+            }
+            var cmp2 = isInsert ? cmp : Range.comparePoints(point, end);
+            if (cmp2 > 0) {
+                point.row += rowShift;
+                point.column += point.row == end.row ? colShift : 0;
+                continue;
+            }
+            if (!isInsert && cmp2 <= 0) {
+                point.row = start.row;
+                point.column = start.column;
+                if (cmp2 === 0)
+                    point.bias = 1;
+            }
+        }
+    };
+    var Marker = function (cm, id, row, column) {
+        this.cm = cm;
+        this.id = id;
+        this.row = row;
+        this.column = column;
+        cm.marks[this.id] = this;
+    };
+    Marker.prototype.clear = function () { delete this.cm.marks[this.id]; };
+    Marker.prototype.find = function () { return toCmPos(this); };
+    this.setBookmark = function (cursor, options) {
+        var bm = new Marker(this, this.$uid++, cursor.line, cursor.ch);
+        if (!options || !options.insertLeft)
+            bm.$insertRight = true;
+        this.marks[bm.id] = bm;
+        return bm;
+    };
+    this.moveH = function (increment, unit) {
+        if (unit == 'char') {
+            var sel = this.ace.selection;
+            sel.clearSelection();
+            sel.moveCursorBy(0, increment);
+        }
+    };
+    this.findPosV = function (start, amount, unit, goalColumn) {
+        if (unit == 'page') {
+            var renderer = this.ace.renderer;
+            var config = renderer.layerConfig;
+            amount = amount * Math.floor(config.height / config.lineHeight);
+            unit = 'line';
+        }
+        if (unit == 'line') {
+            var screenPos = this.ace.session.documentToScreenPosition(start.line, start.ch);
+            if (goalColumn != null)
+                screenPos.column = goalColumn;
+            screenPos.row += amount;
+            screenPos.row = Math.min(Math.max(0, screenPos.row), this.ace.session.getScreenLength() - 1);
+            var pos = this.ace.session.screenToDocumentPosition(screenPos.row, screenPos.column);
+            return toCmPos(pos);
+        }
+        else {
+            debugger;
+        }
+    };
+    this.charCoords = function (pos, mode) {
+        if (mode == 'div' || !mode) {
+            var sc = this.ace.session.documentToScreenPosition(pos.line, pos.ch);
+            return { left: sc.column, top: sc.row };
+        }
+        if (mode == 'local') {
+            var renderer = this.ace.renderer;
+            var sc = this.ace.session.documentToScreenPosition(pos.line, pos.ch);
+            var lh = renderer.layerConfig.lineHeight;
+            var cw = renderer.layerConfig.characterWidth;
+            var top = lh * sc.row;
+            return { left: sc.column * cw, top: top, bottom: top + lh };
+        }
+    };
+    this.coordsChar = function (pos, mode) {
+        var renderer = this.ace.renderer;
+        if (mode == 'local') {
+            var row = Math.max(0, Math.floor(pos.top / renderer.lineHeight));
+            var col = Math.max(0, Math.floor(pos.left / renderer.characterWidth));
+            var ch = renderer.session.screenToDocumentPosition(row, col);
+            return toCmPos(ch);
+        }
+        else if (mode == 'div') {
+            throw "not implemented";
+        }
+    };
+    this.getSearchCursor = function (query, pos, caseFold) {
+        var caseSensitive = false;
+        var isRegexp = false;
+        if (query instanceof RegExp && !query.global) {
+            caseSensitive = !query.ignoreCase;
+            query = query.source;
+            isRegexp = true;
+        }
+        if (query == "\\n") {
+            query = "\n";
+            isRegexp = false;
+        }
+        var search = new Search();
+        if (pos.ch == undefined)
+            pos.ch = Number.MAX_VALUE;
+        var acePos = { row: pos.line, column: pos.ch };
+        var cm = this;
+        var last = null;
+        return {
+            findNext: function () { return this.find(false); },
+            findPrevious: function () { return this.find(true); },
+            find: function (back) {
+                search.setOptions({
+                    needle: query,
+                    caseSensitive: caseSensitive,
+                    wrap: false,
+                    backwards: back,
+                    regExp: isRegexp,
+                    start: last || acePos
+                });
+                var range = search.find(cm.ace.session);
+                last = range;
+                return last && [!last.isEmpty()];
+            },
+            from: function () { return last && toCmPos(last.start); },
+            to: function () { return last && toCmPos(last.end); },
+            replace: function (text) {
+                if (last) {
+                    last.end = cm.ace.session.doc.replace(last, text);
+                }
+            }
+        };
+    };
+    this.scrollTo = function (x, y) {
+        var renderer = this.ace.renderer;
+        var config = renderer.layerConfig;
+        var maxHeight = config.maxHeight;
+        maxHeight -= (renderer.$size.scrollerHeight - renderer.lineHeight) * renderer.$scrollPastEnd;
+        if (y != null)
+            this.ace.session.setScrollTop(Math.max(0, Math.min(y, maxHeight)));
+        if (x != null)
+            this.ace.session.setScrollLeft(Math.max(0, Math.min(x, config.width)));
+    };
+    this.scrollInfo = function () { return 0; };
+    this.scrollIntoView = function (pos, margin) {
+        if (pos) {
+            var renderer = this.ace.renderer;
+            var viewMargin = { "top": 0, "bottom": margin };
+            renderer.scrollCursorIntoView(toAcePos(pos), (renderer.lineHeight * 2) / renderer.$size.scrollerHeight, viewMargin);
+        }
+    };
+    this.getLine = function (row) { return this.ace.session.getLine(row); };
+    this.getRange = function (s, e) {
+        return this.ace.session.getTextRange(new Range(s.line, s.ch, e.line, e.ch));
+    };
+    this.replaceRange = function (text, s, e) {
+        if (!e)
+            e = s;
+        var range = new Range(s.line, s.ch, e.line, e.ch);
+        this.ace.session.$clipRangeToDocument(range);
+        return this.ace.session.replace(range, text);
+    };
+    this.replaceSelection =
+        this.replaceSelections = function (p) {
+            var sel = this.ace.selection;
+            if (this.ace.inVirtualSelectionMode) {
+                this.ace.session.replace(sel.getRange(), p[0] || "");
+                return;
+            }
+            sel.inVirtualSelectionMode = true;
+            var ranges = sel.rangeList.ranges;
+            if (!ranges.length)
+                ranges = [this.ace.multiSelect.getRange()];
+            for (var i = ranges.length; i--;)
+                this.ace.session.replace(ranges[i], p[i] || "");
+            sel.inVirtualSelectionMode = false;
+        };
+    this.getSelection = function () {
+        return this.ace.getSelectedText();
+    };
+    this.getSelections = function () {
+        return this.listSelections().map(function (x) {
+            return this.getRange(x.anchor, x.head);
+        }, this);
+    };
+    this.getInputField = function () {
+        return this.ace.textInput.getElement();
+    };
+    this.getWrapperElement = function () {
+        return this.ace.container;
+    };
+    var optMap = {
+        indentWithTabs: "useSoftTabs",
+        indentUnit: "tabSize",
+        tabSize: "tabSize",
+        firstLineNumber: "firstLineNumber",
+        readOnly: "readOnly"
+    };
+    this.setOption = function (name, val) {
+        this.state[name] = val;
+        switch (name) {
+            case 'indentWithTabs':
+                name = optMap[name];
+                val = !val;
+                break;
+            case 'keyMap':
+                this.state.$keyMap = val;
+                return;
+                break;
+            default:
+                name = optMap[name];
+        }
+        if (name)
+            this.ace.setOption(name, val);
+    };
+    this.getOption = function (name) {
+        var val;
+        var aceOpt = optMap[name];
+        if (aceOpt)
+            val = this.ace.getOption(aceOpt);
+        switch (name) {
+            case 'indentWithTabs':
+                name = optMap[name];
+                return !val;
+            case 'keyMap':
+                return this.state.$keyMap || 'vim';
+        }
+        return aceOpt ? val : this.state[name];
+    };
+    this.toggleOverwrite = function (on) {
+        this.state.overwrite = on;
+        return this.ace.setOverwrite(on);
+    };
+    this.addOverlay = function (o) {
+        if (!this.$searchHighlight || !this.$searchHighlight.session) {
+            var highlight = new SearchHighlight(null, "ace_highlight-marker", "text");
+            var marker = this.ace.session.addDynamicMarker(highlight);
+            highlight.id = marker.id;
+            highlight.session = this.ace.session;
+            highlight.destroy = function (o) {
+                highlight.session.off("change", highlight.updateOnChange);
+                highlight.session.off("changeEditor", highlight.destroy);
+                highlight.session.removeMarker(highlight.id);
+                highlight.session = null;
+            };
+            highlight.updateOnChange = function (delta) {
+                var row = delta.start.row;
+                if (row == delta.end.row)
+                    highlight.cache[row] = undefined;
+                else
+                    highlight.cache.splice(row, highlight.cache.length);
+            };
+            highlight.session.on("changeEditor", highlight.destroy);
+            highlight.session.on("change", highlight.updateOnChange);
+        }
+        var re = new RegExp(o.query.source, "gmi");
+        this.$searchHighlight = o.highlight = highlight;
+        this.$searchHighlight.setRegexp(re);
+        this.ace.renderer.updateBackMarkers();
+    };
+    this.removeOverlay = function (o) {
+        if (this.$searchHighlight && this.$searchHighlight.session) {
+            this.$searchHighlight.destroy();
+        }
+    };
+    this.getScrollInfo = function () {
+        var renderer = this.ace.renderer;
+        var config = renderer.layerConfig;
+        return {
+            left: renderer.scrollLeft,
+            top: renderer.scrollTop,
+            height: config.maxHeight,
+            width: config.width,
+            clientHeight: config.height,
+            clientWidth: config.width
+        };
+    };
+    this.getValue = function () {
+        return this.ace.getValue();
+    };
+    this.setValue = function (v) {
+        return this.ace.setValue(v, -1);
+    };
+    this.getTokenTypeAt = function (pos) {
+        var token = this.ace.session.getTokenAt(pos.line, pos.ch);
+        return token && /comment|string/.test(token.type) ? "string" : "";
+    };
+    this.findMatchingBracket = function (pos) {
+        var m = this.ace.session.findMatchingBracket(toAcePos(pos));
+        return { to: m && toCmPos(m) };
+    };
+    this.findMatchingTag = function (pos) {
+        var m = this.ace.session.getMatchingTags(toAcePos(pos));
+        if (!m)
+            return;
+        return {
+            open: {
+                from: toCmPos(m.openTag.start),
+                to: toCmPos(m.openTag.end)
+            },
+            close: {
+                from: toCmPos(m.closeTag.start),
+                to: toCmPos(m.closeTag.end)
+            }
+        };
+    };
+    this.indentLine = function (line, method) {
+        if (method === true)
+            this.ace.session.indentRows(line, line, "\t");
+        else if (method === false)
+            this.ace.session.outdentRows(new Range(line, 0, line, 0));
+    };
+    this.indexFromPos = function (pos) {
+        return this.ace.session.doc.positionToIndex(toAcePos(pos));
+    };
+    this.posFromIndex = function (index) {
+        return toCmPos(this.ace.session.doc.indexToPosition(index));
+    };
+    this.focus = function (index) {
+        return this.ace.textInput.focus();
+    };
+    this.blur = function (index) {
+        return this.ace.blur();
+    };
+    this.defaultTextHeight = function (index) {
+        return this.ace.renderer.layerConfig.lineHeight;
+    };
+    this.scanForBracket = function (pos, dir, _, options) {
+        var re = options.bracketRegex.source;
+        var tokenRe = /paren|text|operator|tag/;
+        if (dir == 1) {
+            var m = this.ace.session.$findClosingBracket(re.slice(1, 2), toAcePos(pos), tokenRe);
+        }
+        else {
+            var m = this.ace.session.$findOpeningBracket(re.slice(-2, -1), { row: pos.line, column: pos.ch + 1 }, tokenRe);
+        }
+        return m && { pos: toCmPos(m) };
+    };
+    this.refresh = function () {
+        return this.ace.resize(true);
+    };
+    this.getMode = function () {
+        return { name: this.getOption("mode") };
+    };
+    this.execCommand = function (name) {
+        if (CodeMirror.commands.hasOwnProperty(name))
+            return CodeMirror.commands[name](this);
+        if (name == "indentAuto")
+            return this.ace.execCommand("autoindent");
+        console.log(name + " is not implemented");
+    };
+    this.getLineNumber = function (handle) {
+        return handle.row;
+    };
+    this.getLineHandle = function (row) {
+        return { text: this.ace.session.getLine(row), row: row };
+    };
+}).call(CodeMirror.prototype);
+function toAcePos(cmPos) {
+    return { row: cmPos.line, column: cmPos.ch };
+}
+function toCmPos(acePos) {
+    return new Pos(acePos.row, acePos.column);
+}
+var StringStream = CodeMirror.StringStream = function (string, tabSize) {
+    this.pos = this.start = 0;
+    this.string = string;
+    this.tabSize = tabSize || 8;
+    this.lastColumnPos = this.lastColumnValue = 0;
+    this.lineStart = 0;
+};
+StringStream.prototype = {
+    eol: function () { return this.pos >= this.string.length; },
+    sol: function () { return this.pos == this.lineStart; },
+    peek: function () { return this.string.charAt(this.pos) || undefined; },
+    next: function () {
+        if (this.pos < this.string.length)
+            return this.string.charAt(this.pos++);
+    },
+    eat: function (match) {
+        var ch = this.string.charAt(this.pos);
+        if (typeof match == "string")
+            var ok = ch == match;
+        else
+            var ok = ch && (match.test ? match.test(ch) : match(ch));
+        if (ok) {
+            ++this.pos;
+            return ch;
+        }
+    },
+    eatWhile: function (match) {
+        var start = this.pos;
+        while (this.eat(match)) { }
+        return this.pos > start;
+    },
+    eatSpace: function () {
+        var start = this.pos;
+        while (/[\s\u00a0]/.test(this.string.charAt(this.pos)))
+            ++this.pos;
+        return this.pos > start;
+    },
+    skipToEnd: function () { this.pos = this.string.length; },
+    skipTo: function (ch) {
+        var found = this.string.indexOf(ch, this.pos);
+        if (found > -1) {
+            this.pos = found;
+            return true;
+        }
+    },
+    backUp: function (n) { this.pos -= n; },
+    column: function () {
+        throw "not implemented";
+    },
+    indentation: function () {
+        throw "not implemented";
+    },
+    match: function (pattern, consume, caseInsensitive) {
+        if (typeof pattern == "string") {
+            var cased = function (str) { return caseInsensitive ? str.toLowerCase() : str; };
+            var substr = this.string.substr(this.pos, pattern.length);
+            if (cased(substr) == cased(pattern)) {
+                if (consume !== false)
+                    this.pos += pattern.length;
+                return true;
+            }
+        }
+        else {
+            var match = this.string.slice(this.pos).match(pattern);
+            if (match && match.index > 0)
+                return null;
+            if (match && consume !== false)
+                this.pos += match[0].length;
+            return match;
+        }
+    },
+    current: function () { return this.string.slice(this.start, this.pos); },
+    hideFirstChars: function (n, inner) {
+        this.lineStart += n;
+        try {
+            return inner();
+        }
+        finally {
+            this.lineStart -= n;
+        }
+    }
+};
+CodeMirror.defineExtension = function (name, fn) {
+    CodeMirror.prototype[name] = fn;
+};
+domLib.importCssString(".normal-mode .ace_cursor{\n    border: none;\n    background-color: rgba(255,0,0,0.5);\n}\n.normal-mode .ace_hidden-cursors .ace_cursor{\n  background-color: transparent;\n  border: 1px solid red;\n  opacity: 0.7\n}\n.ace_dialog {\n  position: absolute;\n  left: 0; right: 0;\n  background: inherit;\n  z-index: 15;\n  padding: .1em .8em;\n  overflow: hidden;\n  color: inherit;\n}\n.ace_dialog-top {\n  border-bottom: 1px solid #444;\n  top: 0;\n}\n.ace_dialog-bottom {\n  border-top: 1px solid #444;\n  bottom: 0;\n}\n.ace_dialog input {\n  border: none;\n  outline: none;\n  background: transparent;\n  width: 20em;\n  color: inherit;\n  font-family: monospace;\n}", "vimMode", false);
+(function () {
+    function dialogDiv(cm, template, bottom) {
+        var wrap = cm.ace.container;
+        var dialog;
+        dialog = wrap.appendChild(document.createElement("div"));
+        if (bottom)
+            dialog.className = "ace_dialog ace_dialog-bottom";
+        else
+            dialog.className = "ace_dialog ace_dialog-top";
+        if (typeof template == "string") {
+            dialog.innerHTML = template;
+        }
+        else { // Assuming it's a detached DOM element.
+            dialog.appendChild(template);
+        }
+        return dialog;
+    }
+    function closeNotification(cm, newVal) {
+        if (cm.state.currentNotificationClose)
+            cm.state.currentNotificationClose();
+        cm.state.currentNotificationClose = newVal;
+    }
+    CodeMirror.defineExtension("openDialog", function (template, callback, options) {
+        if (this.virtualSelectionMode())
+            return;
+        if (!options)
+            options = {};
+        closeNotification(this, null);
+        var dialog = dialogDiv(this, template, options.bottom);
+        var closed = false, me = this;
+        this.state.dialog = dialog;
+        function close(newVal) {
+            if (typeof newVal == 'string') {
+                inp.value = newVal;
+            }
+            else {
+                if (closed)
+                    return;
+                if (newVal && newVal.type == "blur") {
+                    if (document.activeElement === inp)
+                        return;
+                }
+                if (me.state.dialog == dialog) {
+                    me.state.dialog = null;
+                    me.focus();
+                }
+                closed = true;
+                dialog.remove();
+                if (options.onClose)
+                    options.onClose(dialog);
+                var cm = me;
+                if (cm.state.vim) {
+                    cm.state.vim.status = null;
+                    cm.ace._signal("changeStatus");
+                    cm.ace.renderer.$loop.schedule(cm.ace.renderer.CHANGE_CURSOR);
+                }
+            }
+        }
+        var inp = dialog.getElementsByTagName("input")[0], button;
+        if (inp) {
+            if (options.value) {
+                inp.value = options.value;
+                if (options.selectValueOnOpen !== false)
+                    inp.select();
+            }
+            if (options.onInput)
+                CodeMirror.on(inp, "input", function (e) { options.onInput(e, inp.value, close); });
+            if (options.onKeyUp)
+                CodeMirror.on(inp, "keyup", function (e) { options.onKeyUp(e, inp.value, close); });
+            CodeMirror.on(inp, "keydown", function (e) {
+                if (options && options.onKeyDown && options.onKeyDown(e, inp.value, close)) {
+                    return;
+                }
+                if (e.keyCode == 13)
+                    callback(inp.value);
+                if (e.keyCode == 27 || (options.closeOnEnter !== false && e.keyCode == 13)) {
+                    CodeMirror.e_stop(e);
+                    close();
+                }
+            });
+            if (options.closeOnBlur !== false)
+                CodeMirror.on(inp, "blur", close);
+            inp.focus();
+        }
+        else if (button = dialog.getElementsByTagName("button")[0]) {
+            CodeMirror.on(button, "click", function () {
+                close();
+                me.focus();
+            });
+            if (options.closeOnBlur !== false)
+                CodeMirror.on(button, "blur", close);
+            button.focus();
+        }
+        return close;
+    });
+    CodeMirror.defineExtension("openNotification", function (template, options) {
+        if (this.virtualSelectionMode())
+            return;
+        closeNotification(this, close);
+        var dialog = dialogDiv(this, template, options && options.bottom);
+        var closed = false, doneTimer;
+        var duration = options && typeof options.duration !== "undefined" ? options.duration : 5000;
+        function close() {
+            if (closed)
+                return;
+            closed = true;
+            clearTimeout(doneTimer);
+            dialog.remove();
+        }
+        CodeMirror.on(dialog, 'click', function (e) {
+            CodeMirror.e_preventDefault(e);
+            close();
+        });
+        if (duration)
+            doneTimer = setTimeout(close, duration);
+        return close;
+    });
+})();
+var Pos = CodeMirror.Pos;
+function transformCursor(cm, range) {
+    var vim = cm.state.vim;
+    if (!vim || vim.insertMode)
+        return range.head;
+    var head = vim.sel.head;
+    if (!head)
+        return range.head;
+    if (vim.visualBlock) {
+        if (range.head.line != head.line) {
+            return;
+        }
+    }
+    if (range.from() == range.anchor && !range.empty()) {
+        if (range.head.line == head.line && range.head.ch != head.ch)
+            return new Pos(range.head.line, range.head.ch - 1);
+    }
+    return range.head;
+}
+function updateSelectionForSurrogateCharacters(cm, curStart, curEnd) {
+    if (curStart.line === curEnd.line && curStart.ch >= curEnd.ch - 1) {
+        var text = cm.getLine(curStart.line);
+        var charCode = text.charCodeAt(curStart.ch);
+        if (0xD800 <= charCode && charCode <= 0xD8FF) {
+            curEnd.ch += 1;
+        }
+    }
+    return { start: curStart, end: curEnd };
+}
+var defaultKeymap = [
+    { keys: '<Left>', type: 'keyToKey', toKeys: 'h' },
+    { keys: '<Right>', type: 'keyToKey', toKeys: 'l' },
+    { keys: '<Up>', type: 'keyToKey', toKeys: 'k' },
+    { keys: '<Down>', type: 'keyToKey', toKeys: 'j' },
+    { keys: 'g<Up>', type: 'keyToKey', toKeys: 'gk' },
+    { keys: 'g<Down>', type: 'keyToKey', toKeys: 'gj' },
+    { keys: '<Space>', type: 'keyToKey', toKeys: 'l' },
+    { keys: '<BS>', type: 'keyToKey', toKeys: 'h', context: 'normal' },
+    { keys: '<Del>', type: 'keyToKey', toKeys: 'x', context: 'normal' },
+    { keys: '<C-Space>', type: 'keyToKey', toKeys: 'W' },
+    { keys: '<C-BS>', type: 'keyToKey', toKeys: 'B', context: 'normal' },
+    { keys: '<S-Space>', type: 'keyToKey', toKeys: 'w' },
+    { keys: '<S-BS>', type: 'keyToKey', toKeys: 'b', context: 'normal' },
+    { keys: '<C-n>', type: 'keyToKey', toKeys: 'j' },
+    { keys: '<C-p>', type: 'keyToKey', toKeys: 'k' },
+    { keys: '<C-[>', type: 'keyToKey', toKeys: '<Esc>' },
+    { keys: '<C-c>', type: 'keyToKey', toKeys: '<Esc>' },
+    { keys: '<C-[>', type: 'keyToKey', toKeys: '<Esc>', context: 'insert' },
+    { keys: '<C-c>', type: 'keyToKey', toKeys: '<Esc>', context: 'insert' },
+    { keys: '<C-Esc>', type: 'keyToKey', toKeys: '<Esc>' },
+    { keys: '<C-Esc>', type: 'keyToKey', toKeys: '<Esc>', context: 'insert' },
+    { keys: 's', type: 'keyToKey', toKeys: 'cl', context: 'normal' },
+    { keys: 's', type: 'keyToKey', toKeys: 'c', context: 'visual' },
+    { keys: 'S', type: 'keyToKey', toKeys: 'cc', context: 'normal' },
+    { keys: 'S', type: 'keyToKey', toKeys: 'VdO', context: 'visual' },
+    { keys: '<Home>', type: 'keyToKey', toKeys: '0' },
+    { keys: '<End>', type: 'keyToKey', toKeys: '$' },
+    { keys: '<PageUp>', type: 'keyToKey', toKeys: '<C-b>' },
+    { keys: '<PageDown>', type: 'keyToKey', toKeys: '<C-f>' },
+    { keys: '<CR>', type: 'keyToKey', toKeys: 'j^', context: 'normal' },
+    { keys: '<Ins>', type: 'keyToKey', toKeys: 'i', context: 'normal' },
+    { keys: '<Ins>', type: 'action', action: 'toggleOverwrite', context: 'insert' },
+    { keys: 'H', type: 'motion', motion: 'moveToTopLine', motionArgs: { linewise: true, toJumplist: true } },
+    { keys: 'M', type: 'motion', motion: 'moveToMiddleLine', motionArgs: { linewise: true, toJumplist: true } },
+    { keys: 'L', type: 'motion', motion: 'moveToBottomLine', motionArgs: { linewise: true, toJumplist: true } },
+    { keys: 'h', type: 'motion', motion: 'moveByCharacters', motionArgs: { forward: false } },
+    { keys: 'l', type: 'motion', motion: 'moveByCharacters', motionArgs: { forward: true } },
+    { keys: 'j', type: 'motion', motion: 'moveByLines', motionArgs: { forward: true, linewise: true } },
+    { keys: 'k', type: 'motion', motion: 'moveByLines', motionArgs: { forward: false, linewise: true } },
+    { keys: 'gj', type: 'motion', motion: 'moveByDisplayLines', motionArgs: { forward: true } },
+    { keys: 'gk', type: 'motion', motion: 'moveByDisplayLines', motionArgs: { forward: false } },
+    { keys: 'w', type: 'motion', motion: 'moveByWords', motionArgs: { forward: true, wordEnd: false } },
+    { keys: 'W', type: 'motion', motion: 'moveByWords', motionArgs: { forward: true, wordEnd: false, bigWord: true } },
+    { keys: 'e', type: 'motion', motion: 'moveByWords', motionArgs: { forward: true, wordEnd: true, inclusive: true } },
+    { keys: 'E', type: 'motion', motion: 'moveByWords', motionArgs: { forward: true, wordEnd: true, bigWord: true, inclusive: true } },
+    { keys: 'b', type: 'motion', motion: 'moveByWords', motionArgs: { forward: false, wordEnd: false } },
+    { keys: 'B', type: 'motion', motion: 'moveByWords', motionArgs: { forward: false, wordEnd: false, bigWord: true } },
+    { keys: 'ge', type: 'motion', motion: 'moveByWords', motionArgs: { forward: false, wordEnd: true, inclusive: true } },
+    { keys: 'gE', type: 'motion', motion: 'moveByWords', motionArgs: { forward: false, wordEnd: true, bigWord: true, inclusive: true } },
+    { keys: '{', type: 'motion', motion: 'moveByParagraph', motionArgs: { forward: false, toJumplist: true } },
+    { keys: '}', type: 'motion', motion: 'moveByParagraph', motionArgs: { forward: true, toJumplist: true } },
+    { keys: '(', type: 'motion', motion: 'moveBySentence', motionArgs: { forward: false } },
+    { keys: ')', type: 'motion', motion: 'moveBySentence', motionArgs: { forward: true } },
+    { keys: '<C-f>', type: 'motion', motion: 'moveByPage', motionArgs: { forward: true } },
+    { keys: '<C-b>', type: 'motion', motion: 'moveByPage', motionArgs: { forward: false } },
+    { keys: '<C-d>', type: 'motion', motion: 'moveByScroll', motionArgs: { forward: true, explicitRepeat: true } },
+    { keys: '<C-u>', type: 'motion', motion: 'moveByScroll', motionArgs: { forward: false, explicitRepeat: true } },
+    { keys: 'gg', type: 'motion', motion: 'moveToLineOrEdgeOfDocument', motionArgs: { forward: false, explicitRepeat: true, linewise: true, toJumplist: true } },
+    { keys: 'G', type: 'motion', motion: 'moveToLineOrEdgeOfDocument', motionArgs: { forward: true, explicitRepeat: true, linewise: true, toJumplist: true } },
+    { keys: "g$", type: "motion", motion: "moveToEndOfDisplayLine" },
+    { keys: "g^", type: "motion", motion: "moveToStartOfDisplayLine" },
+    { keys: "g0", type: "motion", motion: "moveToStartOfDisplayLine" },
+    { keys: '0', type: 'motion', motion: 'moveToStartOfLine' },
+    { keys: '^', type: 'motion', motion: 'moveToFirstNonWhiteSpaceCharacter' },
+    { keys: '+', type: 'motion', motion: 'moveByLines', motionArgs: { forward: true, toFirstChar: true } },
+    { keys: '-', type: 'motion', motion: 'moveByLines', motionArgs: { forward: false, toFirstChar: true } },
+    { keys: '_', type: 'motion', motion: 'moveByLines', motionArgs: { forward: true, toFirstChar: true, repeatOffset: -1 } },
+    { keys: '$', type: 'motion', motion: 'moveToEol', motionArgs: { inclusive: true } },
+    { keys: '%', type: 'motion', motion: 'moveToMatchedSymbol', motionArgs: { inclusive: true, toJumplist: true } },
+    { keys: 'f<character>', type: 'motion', motion: 'moveToCharacter', motionArgs: { forward: true, inclusive: true } },
+    { keys: 'F<character>', type: 'motion', motion: 'moveToCharacter', motionArgs: { forward: false } },
+    { keys: 't<character>', type: 'motion', motion: 'moveTillCharacter', motionArgs: { forward: true, inclusive: true } },
+    { keys: 'T<character>', type: 'motion', motion: 'moveTillCharacter', motionArgs: { forward: false } },
+    { keys: ';', type: 'motion', motion: 'repeatLastCharacterSearch', motionArgs: { forward: true } },
+    { keys: ',', type: 'motion', motion: 'repeatLastCharacterSearch', motionArgs: { forward: false } },
+    { keys: '\'<character>', type: 'motion', motion: 'goToMark', motionArgs: { toJumplist: true, linewise: true } },
+    { keys: '`<character>', type: 'motion', motion: 'goToMark', motionArgs: { toJumplist: true } },
+    { keys: ']`', type: 'motion', motion: 'jumpToMark', motionArgs: { forward: true } },
+    { keys: '[`', type: 'motion', motion: 'jumpToMark', motionArgs: { forward: false } },
+    { keys: ']\'', type: 'motion', motion: 'jumpToMark', motionArgs: { forward: true, linewise: true } },
+    { keys: '[\'', type: 'motion', motion: 'jumpToMark', motionArgs: { forward: false, linewise: true } },
+    { keys: ']p', type: 'action', action: 'paste', isEdit: true, actionArgs: { after: true, isEdit: true, matchIndent: true } },
+    { keys: '[p', type: 'action', action: 'paste', isEdit: true, actionArgs: { after: false, isEdit: true, matchIndent: true } },
+    { keys: ']<character>', type: 'motion', motion: 'moveToSymbol', motionArgs: { forward: true, toJumplist: true } },
+    { keys: '[<character>', type: 'motion', motion: 'moveToSymbol', motionArgs: { forward: false, toJumplist: true } },
+    { keys: '|', type: 'motion', motion: 'moveToColumn' },
+    { keys: 'o', type: 'motion', motion: 'moveToOtherHighlightedEnd', context: 'visual' },
+    { keys: 'O', type: 'motion', motion: 'moveToOtherHighlightedEnd', motionArgs: { sameLine: true }, context: 'visual' },
+    { keys: 'd', type: 'operator', operator: 'delete' },
+    { keys: 'y', type: 'operator', operator: 'yank' },
+    { keys: 'c', type: 'operator', operator: 'change' },
+    { keys: '=', type: 'operator', operator: 'indentAuto' },
+    { keys: '>', type: 'operator', operator: 'indent', operatorArgs: { indentRight: true } },
+    { keys: '<', type: 'operator', operator: 'indent', operatorArgs: { indentRight: false } },
+    { keys: 'g~', type: 'operator', operator: 'changeCase' },
+    { keys: 'gu', type: 'operator', operator: 'changeCase', operatorArgs: { toLower: true }, isEdit: true },
+    { keys: 'gU', type: 'operator', operator: 'changeCase', operatorArgs: { toLower: false }, isEdit: true },
+    { keys: 'n', type: 'motion', motion: 'findNext', motionArgs: { forward: true, toJumplist: true } },
+    { keys: 'N', type: 'motion', motion: 'findNext', motionArgs: { forward: false, toJumplist: true } },
+    { keys: 'gn', type: 'motion', motion: 'findAndSelectNextInclusive', motionArgs: { forward: true } },
+    { keys: 'gN', type: 'motion', motion: 'findAndSelectNextInclusive', motionArgs: { forward: false } },
+    { keys: 'x', type: 'operatorMotion', operator: 'delete', motion: 'moveByCharacters', motionArgs: { forward: true }, operatorMotionArgs: { visualLine: false } },
+    { keys: 'X', type: 'operatorMotion', operator: 'delete', motion: 'moveByCharacters', motionArgs: { forward: false }, operatorMotionArgs: { visualLine: true } },
+    { keys: 'D', type: 'operatorMotion', operator: 'delete', motion: 'moveToEol', motionArgs: { inclusive: true }, context: 'normal' },
+    { keys: 'D', type: 'operator', operator: 'delete', operatorArgs: { linewise: true }, context: 'visual' },
+    { keys: 'Y', type: 'operatorMotion', operator: 'yank', motion: 'expandToLine', motionArgs: { linewise: true }, context: 'normal' },
+    { keys: 'Y', type: 'operator', operator: 'yank', operatorArgs: { linewise: true }, context: 'visual' },
+    { keys: 'C', type: 'operatorMotion', operator: 'change', motion: 'moveToEol', motionArgs: { inclusive: true }, context: 'normal' },
+    { keys: 'C', type: 'operator', operator: 'change', operatorArgs: { linewise: true }, context: 'visual' },
+    { keys: '~', type: 'operatorMotion', operator: 'changeCase', motion: 'moveByCharacters', motionArgs: { forward: true }, operatorArgs: { shouldMoveCursor: true }, context: 'normal' },
+    { keys: '~', type: 'operator', operator: 'changeCase', context: 'visual' },
+    { keys: '<C-u>', type: 'operatorMotion', operator: 'delete', motion: 'moveToStartOfLine', context: 'insert' },
+    { keys: '<C-w>', type: 'operatorMotion', operator: 'delete', motion: 'moveByWords', motionArgs: { forward: false, wordEnd: false }, context: 'insert' },
+    { keys: '<C-w>', type: 'idle', context: 'normal' },
+    { keys: '<C-i>', type: 'action', action: 'jumpListWalk', actionArgs: { forward: true } },
+    { keys: '<C-o>', type: 'action', action: 'jumpListWalk', actionArgs: { forward: false } },
+    { keys: '<C-e>', type: 'action', action: 'scroll', actionArgs: { forward: true, linewise: true } },
+    { keys: '<C-y>', type: 'action', action: 'scroll', actionArgs: { forward: false, linewise: true } },
+    { keys: 'a', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'charAfter' }, context: 'normal' },
+    { keys: 'A', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'eol' }, context: 'normal' },
+    { keys: 'A', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'endOfSelectedArea' }, context: 'visual' },
+    { keys: 'i', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'inplace' }, context: 'normal' },
+    { keys: 'gi', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'lastEdit' }, context: 'normal' },
+    { keys: 'I', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'firstNonBlank' }, context: 'normal' },
+    { keys: 'gI', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'bol' }, context: 'normal' },
+    { keys: 'I', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { insertAt: 'startOfSelectedArea' }, context: 'visual' },
+    { keys: 'o', type: 'action', action: 'newLineAndEnterInsertMode', isEdit: true, interlaceInsertRepeat: true, actionArgs: { after: true }, context: 'normal' },
+    { keys: 'O', type: 'action', action: 'newLineAndEnterInsertMode', isEdit: true, interlaceInsertRepeat: true, actionArgs: { after: false }, context: 'normal' },
+    { keys: 'v', type: 'action', action: 'toggleVisualMode' },
+    { keys: 'V', type: 'action', action: 'toggleVisualMode', actionArgs: { linewise: true } },
+    { keys: '<C-v>', type: 'action', action: 'toggleVisualMode', actionArgs: { blockwise: true } },
+    { keys: '<C-q>', type: 'action', action: 'toggleVisualMode', actionArgs: { blockwise: true } },
+    { keys: 'gv', type: 'action', action: 'reselectLastSelection' },
+    { keys: 'J', type: 'action', action: 'joinLines', isEdit: true },
+    { keys: 'gJ', type: 'action', action: 'joinLines', actionArgs: { keepSpaces: true }, isEdit: true },
+    { keys: 'p', type: 'action', action: 'paste', isEdit: true, actionArgs: { after: true, isEdit: true } },
+    { keys: 'P', type: 'action', action: 'paste', isEdit: true, actionArgs: { after: false, isEdit: true } },
+    { keys: 'r<character>', type: 'action', action: 'replace', isEdit: true },
+    { keys: '@<character>', type: 'action', action: 'replayMacro' },
+    { keys: 'q<character>', type: 'action', action: 'enterMacroRecordMode' },
+    { keys: 'R', type: 'action', action: 'enterInsertMode', isEdit: true, actionArgs: { replace: true }, context: 'normal' },
+    { keys: 'R', type: 'operator', operator: 'change', operatorArgs: { linewise: true, fullLine: true }, context: 'visual', exitVisualBlock: true },
+    { keys: 'u', type: 'action', action: 'undo', context: 'normal' },
+    { keys: 'u', type: 'operator', operator: 'changeCase', operatorArgs: { toLower: true }, context: 'visual', isEdit: true },
+    { keys: 'U', type: 'operator', operator: 'changeCase', operatorArgs: { toLower: false }, context: 'visual', isEdit: true },
+    { keys: '<C-r>', type: 'action', action: 'redo' },
+    { keys: 'm<character>', type: 'action', action: 'setMark' },
+    { keys: '"<character>', type: 'action', action: 'setRegister' },
+    { keys: 'zz', type: 'action', action: 'scrollToCursor', actionArgs: { position: 'center' } },
+    { keys: 'z.', type: 'action', action: 'scrollToCursor', actionArgs: { position: 'center' }, motion: 'moveToFirstNonWhiteSpaceCharacter' },
+    { keys: 'zt', type: 'action', action: 'scrollToCursor', actionArgs: { position: 'top' } },
+    { keys: 'z<CR>', type: 'action', action: 'scrollToCursor', actionArgs: { position: 'top' }, motion: 'moveToFirstNonWhiteSpaceCharacter' },
+    { keys: 'zb', type: 'action', action: 'scrollToCursor', actionArgs: { position: 'bottom' } },
+    { keys: 'z-', type: 'action', action: 'scrollToCursor', actionArgs: { position: 'bottom' }, motion: 'moveToFirstNonWhiteSpaceCharacter' },
+    { keys: '.', type: 'action', action: 'repeatLastEdit' },
+    { keys: '<C-a>', type: 'action', action: 'incrementNumberToken', isEdit: true, actionArgs: { increase: true, backtrack: false } },
+    { keys: '<C-x>', type: 'action', action: 'incrementNumberToken', isEdit: true, actionArgs: { increase: false, backtrack: false } },
+    { keys: '<C-t>', type: 'action', action: 'indent', actionArgs: { indentRight: true }, context: 'insert' },
+    { keys: '<C-d>', type: 'action', action: 'indent', actionArgs: { indentRight: false }, context: 'insert' },
+    { keys: 'a<character>', type: 'motion', motion: 'textObjectManipulation' },
+    { keys: 'i<character>', type: 'motion', motion: 'textObjectManipulation', motionArgs: { textObjectInner: true } },
+    { keys: '/', type: 'search', searchArgs: { forward: true, querySrc: 'prompt', toJumplist: true } },
+    { keys: '?', type: 'search', searchArgs: { forward: false, querySrc: 'prompt', toJumplist: true } },
+    { keys: '*', type: 'search', searchArgs: { forward: true, querySrc: 'wordUnderCursor', wholeWordOnly: true, toJumplist: true } },
+    { keys: '#', type: 'search', searchArgs: { forward: false, querySrc: 'wordUnderCursor', wholeWordOnly: true, toJumplist: true } },
+    { keys: 'g*', type: 'search', searchArgs: { forward: true, querySrc: 'wordUnderCursor', toJumplist: true } },
+    { keys: 'g#', type: 'search', searchArgs: { forward: false, querySrc: 'wordUnderCursor', toJumplist: true } },
+    { keys: ':', type: 'ex' }
+];
+var defaultKeymapLength = defaultKeymap.length;
+var defaultExCommandMap = [
+    { name: 'colorscheme', shortName: 'colo' },
+    { name: 'map' },
+    { name: 'imap', shortName: 'im' },
+    { name: 'nmap', shortName: 'nm' },
+    { name: 'vmap', shortName: 'vm' },
+    { name: 'unmap' },
+    { name: 'write', shortName: 'w' },
+    { name: 'undo', shortName: 'u' },
+    { name: 'redo', shortName: 'red' },
+    { name: 'set', shortName: 'se' },
+    { name: 'setlocal', shortName: 'setl' },
+    { name: 'setglobal', shortName: 'setg' },
+    { name: 'sort', shortName: 'sor' },
+    { name: 'substitute', shortName: 's', possiblyAsync: true },
+    { name: 'nohlsearch', shortName: 'noh' },
+    { name: 'yank', shortName: 'y' },
+    { name: 'delmarks', shortName: 'delm' },
+    { name: 'registers', shortName: 'reg', excludeFromCommandHistory: true },
+    { name: 'vglobal', shortName: 'v' },
+    { name: 'global', shortName: 'g' }
+];
+function enterVimMode(cm) {
+    cm.setOption('disableInput', true);
+    cm.setOption('showCursorWhenSelecting', false);
+    CodeMirror.signal(cm, "vim-mode-change", { mode: "normal" });
+    cm.on('cursorActivity', onCursorActivity);
+    maybeInitVimState(cm);
+    CodeMirror.on(cm.getInputField(), 'paste', getOnPasteFn(cm));
+}
+function leaveVimMode(cm) {
+    cm.setOption('disableInput', false);
+    cm.off('cursorActivity', onCursorActivity);
+    CodeMirror.off(cm.getInputField(), 'paste', getOnPasteFn(cm));
+    cm.state.vim = null;
+    if (highlightTimeout)
+        clearTimeout(highlightTimeout);
+}
+function detachVimMap(cm, next) {
+    if (this == CodeMirror.keyMap.vim) {
+        cm.options.$customCursor = null;
+        CodeMirror.rmClass(cm.getWrapperElement(), "cm-fat-cursor");
+    }
+    if (!next || next.attach != attachVimMap)
+        leaveVimMode(cm);
+}
+function attachVimMap(cm, prev) {
+    if (this == CodeMirror.keyMap.vim) {
+        if (cm.curOp)
+            cm.curOp.selectionChanged = true;
+        cm.options.$customCursor = transformCursor;
+        CodeMirror.addClass(cm.getWrapperElement(), "cm-fat-cursor");
+    }
+    if (!prev || prev.attach != attachVimMap)
+        enterVimMode(cm);
+}
+CodeMirror.defineOption('vimMode', false, function (cm, val, prev) {
+    if (val && cm.getOption("keyMap") != "vim")
+        cm.setOption("keyMap", "vim");
+    else if (!val && prev != CodeMirror.Init && /^vim/.test(cm.getOption("keyMap")))
+        cm.setOption("keyMap", "default");
+});
+function cmKey(key, cm) {
+    if (!cm) {
+        return undefined;
+    }
+    if (this[key]) {
+        return this[key];
+    }
+    var vimKey = cmKeyToVimKey(key);
+    if (!vimKey) {
+        return false;
+    }
+    var cmd = vimApi.findKey(cm, vimKey);
+    if (typeof cmd == 'function') {
+        CodeMirror.signal(cm, 'vim-keypress', vimKey);
+    }
+    return cmd;
+}
+var modifiers = { Shift: 'S', Ctrl: 'C', Alt: 'A', Cmd: 'D', Mod: 'A', CapsLock: '' };
+var specialKeys = { Enter: 'CR', Backspace: 'BS', Delete: 'Del', Insert: 'Ins' };
+function cmKeyToVimKey(key) {
+    if (key.charAt(0) == '\'') {
+        return key.charAt(1);
+    }
+    var pieces = key.split(/-(?!$)/);
+    var lastPiece = pieces[pieces.length - 1];
+    if (pieces.length == 1 && pieces[0].length == 1) {
+        return false;
+    }
+    else if (pieces.length == 2 && pieces[0] == 'Shift' && lastPiece.length == 1) {
+        return false;
+    }
+    var hasCharacter = false;
+    for (var i = 0; i < pieces.length; i++) {
+        var piece = pieces[i];
+        if (piece in modifiers) {
+            pieces[i] = modifiers[piece];
+        }
+        else {
+            hasCharacter = true;
+        }
+        if (piece in specialKeys) {
+            pieces[i] = specialKeys[piece];
+        }
+    }
+    if (!hasCharacter) {
+        return false;
+    }
+    if (isUpperCase(lastPiece)) {
+        pieces[pieces.length - 1] = lastPiece.toLowerCase();
+    }
+    return '<' + pieces.join('-') + '>';
+}
+function getOnPasteFn(cm) {
+    var vim = cm.state.vim;
+    if (!vim.onPasteFn) {
+        vim.onPasteFn = function () {
+            if (!vim.insertMode) {
+                cm.setCursor(offsetCursor(cm.getCursor(), 0, 1));
+                actions.enterInsertMode(cm, {}, vim);
+            }
+        };
+    }
+    return vim.onPasteFn;
+}
+var numberRegex = /[\d]/;
+var wordCharTest = [CodeMirror.isWordChar, function (ch) {
+        return ch && !CodeMirror.isWordChar(ch) && !/\s/.test(ch);
+    }], bigWordCharTest = [function (ch) {
+        return /\S/.test(ch);
+    }];
+function makeKeyRange(start, size) {
+    var keys = [];
+    for (var i = start; i < start + size; i++) {
+        keys.push(String.fromCharCode(i));
+    }
+    return keys;
+}
+var upperCaseAlphabet = makeKeyRange(65, 26);
+var lowerCaseAlphabet = makeKeyRange(97, 26);
+var numbers = makeKeyRange(48, 10);
+var validMarks = [].concat(upperCaseAlphabet, lowerCaseAlphabet, numbers, ['<', '>']);
+var validRegisters = [].concat(upperCaseAlphabet, lowerCaseAlphabet, numbers, ['-', '"', '.', ':', '_', '/', '+']);
+var upperCaseChars;
+try {
+    upperCaseChars = new RegExp("^[\\p{Lu}]$", "u");
+}
+catch (_) {
+    upperCaseChars = /^[A-Z]$/;
+}
+function isLine(cm, line) {
+    return line >= cm.firstLine() && line <= cm.lastLine();
+}
+function isLowerCase(k) {
+    return (/^[a-z]$/).test(k);
+}
+function isMatchableSymbol(k) {
+    return '()[]{}'.indexOf(k) != -1;
+}
+function isNumber(k) {
+    return numberRegex.test(k);
+}
+function isUpperCase(k) {
+    return upperCaseChars.test(k);
+}
+function isWhiteSpaceString(k) {
+    return (/^\s*$/).test(k);
+}
+function isEndOfSentenceSymbol(k) {
+    return '.?!'.indexOf(k) != -1;
+}
+function inArray(val, arr) {
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] == val) {
+            return true;
+        }
+    }
+    return false;
+}
+var options = {};
+function defineOption(name, defaultValue, type, aliases, callback) {
+    if (defaultValue === undefined && !callback) {
+        throw Error('defaultValue is required unless callback is provided');
+    }
+    if (!type) {
+        type = 'string';
+    }
+    options[name] = {
+        type: type,
+        defaultValue: defaultValue,
+        callback: callback
+    };
+    if (aliases) {
+        for (var i = 0; i < aliases.length; i++) {
+            options[aliases[i]] = options[name];
+        }
+    }
+    if (defaultValue) {
+        setOption(name, defaultValue);
+    }
+}
+function setOption(name, value, cm, cfg) {
+    var option = options[name];
+    cfg = cfg || {};
+    var scope = cfg.scope;
+    if (!option) {
+        return new Error('Unknown option: ' + name);
+    }
+    if (option.type == 'boolean') {
+        if (value && value !== true) {
+            return new Error('Invalid argument: ' + name + '=' + value);
+        }
+        else if (value !== false) {
+            value = true;
+        }
+    }
+    if (option.callback) {
+        if (scope !== 'local') {
+            option.callback(value, undefined);
+        }
+        if (scope !== 'global' && cm) {
+            option.callback(value, cm);
+        }
+    }
+    else {
+        if (scope !== 'local') {
+            option.value = option.type == 'boolean' ? !!value : value;
+        }
+        if (scope !== 'global' && cm) {
+            cm.state.vim.options[name] = { value: value };
+        }
+    }
+}
+function getOption(name, cm, cfg) {
+    var option = options[name];
+    cfg = cfg || {};
+    var scope = cfg.scope;
+    if (!option) {
+        return new Error('Unknown option: ' + name);
+    }
+    if (option.callback) {
+        var local = cm && option.callback(undefined, cm);
+        if (scope !== 'global' && local !== undefined) {
+            return local;
+        }
+        if (scope !== 'local') {
+            return option.callback();
+        }
+        return;
+    }
+    else {
+        var local = (scope !== 'global') && (cm && cm.state.vim.options[name]);
+        return (local || (scope !== 'local') && option || {}).value;
+    }
+}
+defineOption('filetype', undefined, 'string', ['ft'], function (name, cm) {
+    if (cm === undefined) {
+        return;
+    }
+    if (name === undefined) {
+        var mode = cm.getOption('mode');
+        return mode == 'null' ? '' : mode;
+    }
+    else {
+        var mode = name == '' ? 'null' : name;
+        cm.setOption('mode', mode);
+    }
+});
+var createCircularJumpList = function () {
+    var size = 100;
+    var pointer = -1;
+    var head = 0;
+    var tail = 0;
+    var buffer = new Array(size);
+    function add(cm, oldCur, newCur) {
+        var current = pointer % size;
+        var curMark = buffer[current];
+        function useNextSlot(cursor) {
+            var next = ++pointer % size;
+            var trashMark = buffer[next];
+            if (trashMark) {
+                trashMark.clear();
+            }
+            buffer[next] = cm.setBookmark(cursor);
+        }
+        if (curMark) {
+            var markPos = curMark.find();
+            if (markPos && !cursorEqual(markPos, oldCur)) {
+                useNextSlot(oldCur);
+            }
+        }
+        else {
+            useNextSlot(oldCur);
+        }
+        useNextSlot(newCur);
+        head = pointer;
+        tail = pointer - size + 1;
+        if (tail < 0) {
+            tail = 0;
+        }
+    }
+    function move(cm, offset) {
+        pointer += offset;
+        if (pointer > head) {
+            pointer = head;
+        }
+        else if (pointer < tail) {
+            pointer = tail;
+        }
+        var mark = buffer[(size + pointer) % size];
+        if (mark && !mark.find()) {
+            var inc = offset > 0 ? 1 : -1;
+            var newCur;
+            var oldCur = cm.getCursor();
+            do {
+                pointer += inc;
+                mark = buffer[(size + pointer) % size];
+                if (mark &&
+                    (newCur = mark.find()) &&
+                    !cursorEqual(oldCur, newCur)) {
+                    break;
+                }
+            } while (pointer < head && pointer > tail);
+        }
+        return mark;
+    }
+    function find(cm, offset) {
+        var oldPointer = pointer;
+        var mark = move(cm, offset);
+        pointer = oldPointer;
+        return mark && mark.find();
+    }
+    return {
+        cachedCursor: undefined,
+        add: add,
+        find: find,
+        move: move
+    };
+};
+var createInsertModeChanges = function (c) {
+    if (c) {
+        return {
+            changes: c.changes,
+            expectCursorActivityForChange: c.expectCursorActivityForChange
+        };
+    }
+    return {
+        changes: [],
+        expectCursorActivityForChange: false
+    };
+};
+function MacroModeState() {
+    this.latestRegister = undefined;
+    this.isPlaying = false;
+    this.isRecording = false;
+    this.replaySearchQueries = [];
+    this.onRecordingDone = undefined;
+    this.lastInsertModeChanges = createInsertModeChanges();
+}
+MacroModeState.prototype = {
+    exitMacroRecordMode: function () {
+        var macroModeState = vimGlobalState.macroModeState;
+        if (macroModeState.onRecordingDone) {
+            macroModeState.onRecordingDone(); // close dialog
+        }
+        macroModeState.onRecordingDone = undefined;
+        macroModeState.isRecording = false;
+    },
+    enterMacroRecordMode: function (cm, registerName) {
+        var register = vimGlobalState.registerController.getRegister(registerName);
+        if (register) {
+            register.clear();
+            this.latestRegister = registerName;
+            if (cm.openDialog) {
+                var template = dom('span', { class: 'cm-vim-message' }, 'recording @' + registerName);
+                this.onRecordingDone = cm.openDialog(template, null, { bottom: true });
+            }
+            this.isRecording = true;
+        }
+    }
+};
+function maybeInitVimState(cm) {
+    if (!cm.state.vim) {
+        cm.state.vim = {
+            inputState: new InputState(),
+            lastEditInputState: undefined,
+            lastEditActionCommand: undefined,
+            lastHPos: -1,
+            lastHSPos: -1,
+            lastMotion: null,
+            marks: {},
+            insertMode: false,
+            insertModeRepeat: undefined,
+            visualMode: false,
+            visualLine: false,
+            visualBlock: false,
+            lastSelection: null,
+            lastPastedText: null,
+            sel: {},
+            options: {}
+        };
+    }
+    return cm.state.vim;
+}
+var vimGlobalState;
+function resetVimGlobalState() {
+    vimGlobalState = {
+        searchQuery: null,
+        searchIsReversed: false,
+        lastSubstituteReplacePart: undefined,
+        jumpList: createCircularJumpList(),
+        macroModeState: new MacroModeState,
+        lastCharacterSearch: { increment: 0, forward: true, selectedCharacter: '' },
+        registerController: new RegisterController({}),
+        searchHistoryController: new HistoryController(),
+        exCommandHistoryController: new HistoryController()
+    };
+    for (var optionName in options) {
+        var option = options[optionName];
+        option.value = option.defaultValue;
+    }
+}
+var lastInsertModeKeyTimer;
+var vimApi = {
+    enterVimMode: enterVimMode,
+    leaveVimMode: leaveVimMode,
+    buildKeyMap: function () {
+    },
+    getRegisterController: function () {
+        return vimGlobalState.registerController;
+    },
+    resetVimGlobalState_: resetVimGlobalState,
+    getVimGlobalState_: function () {
+        return vimGlobalState;
+    },
+    maybeInitVimState_: maybeInitVimState,
+    suppressErrorLogging: false,
+    InsertModeKey: InsertModeKey,
+    map: function (lhs, rhs, ctx) {
+        exCommandDispatcher.map(lhs, rhs, ctx);
+    },
+    unmap: function (lhs, ctx) {
+        return exCommandDispatcher.unmap(lhs, ctx);
+    },
+    noremap: function (lhs, rhs, ctx) {
+        function toCtxArray(ctx) {
+            return ctx ? [ctx] : ['normal', 'insert', 'visual'];
+        }
+        var ctxsToMap = toCtxArray(ctx);
+        var actualLength = defaultKeymap.length, origLength = defaultKeymapLength;
+        for (var i = actualLength - origLength; i < actualLength && ctxsToMap.length; i++) {
+            var mapping = defaultKeymap[i];
+            if (mapping.keys == rhs &&
+                (!ctx || !mapping.context || mapping.context === ctx) &&
+                mapping.type.substr(0, 2) !== 'ex' &&
+                mapping.type.substr(0, 3) !== 'key') {
+                var newMapping = {};
+                for (var key in mapping) {
+                    newMapping[key] = mapping[key];
+                }
+                newMapping.keys = lhs;
+                if (ctx && !newMapping.context) {
+                    newMapping.context = ctx;
+                }
+                this._mapCommand(newMapping);
+                var mappedCtxs = toCtxArray(mapping.context);
+                ctxsToMap = ctxsToMap.filter(function (el) { return mappedCtxs.indexOf(el) === -1; });
+            }
+        }
+    },
+    mapclear: function (ctx) {
+        var actualLength = defaultKeymap.length, origLength = defaultKeymapLength;
+        var userKeymap = defaultKeymap.slice(0, actualLength - origLength);
+        defaultKeymap = defaultKeymap.slice(actualLength - origLength);
+        if (ctx) {
+            for (var i = userKeymap.length - 1; i >= 0; i--) {
+                var mapping = userKeymap[i];
+                if (ctx !== mapping.context) {
+                    if (mapping.context) {
+                        this._mapCommand(mapping);
+                    }
+                    else {
+                        var contexts = ['normal', 'insert', 'visual'];
+                        for (var j in contexts) {
+                            if (contexts[j] !== ctx) {
+                                var newMapping = {};
+                                for (var key in mapping) {
+                                    newMapping[key] = mapping[key];
+                                }
+                                newMapping.context = contexts[j];
+                                this._mapCommand(newMapping);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    setOption: setOption,
+    getOption: getOption,
+    defineOption: defineOption,
+    defineEx: function (name, prefix, func) {
+        if (!prefix) {
+            prefix = name;
+        }
+        else if (name.indexOf(prefix) !== 0) {
+            throw new Error('(Vim.defineEx) "' + prefix + '" is not a prefix of "' + name + '", command not registered');
+        }
+        exCommands[name] = func;
+        exCommandDispatcher.commandMap_[prefix] = { name: name, shortName: prefix, type: 'api' };
+    },
+    handleKey: function (cm, key, origin) {
+        var command = this.findKey(cm, key, origin);
+        if (typeof command === 'function') {
+            return command();
+        }
+    },
+    multiSelectHandleKey: multiSelectHandleKey,
+    findKey: function (cm, key, origin) {
+        var vim = maybeInitVimState(cm);
+        function handleMacroRecording() {
+            var macroModeState = vimGlobalState.macroModeState;
+            if (macroModeState.isRecording) {
+                if (key == 'q') {
+                    macroModeState.exitMacroRecordMode();
+                    clearInputState(cm);
+                    return true;
+                }
+                if (origin != 'mapping') {
+                    logKey(macroModeState, key);
+                }
+            }
+        }
+        function handleEsc() {
+            if (key == '<Esc>') {
+                if (vim.visualMode) {
+                    exitVisualMode(cm);
+                }
+                else if (vim.insertMode) {
+                    exitInsertMode(cm);
+                }
+                else {
+                    return;
+                }
+                clearInputState(cm);
+                return true;
+            }
+        }
+        function doKeyToKey(keys) {
+            var match;
+            while (keys) {
+                match = (/<\w+-.+?>|<\w+>|./).exec(keys);
+                key = match[0];
+                keys = keys.substring(match.index + key.length);
+                vimApi.handleKey(cm, key, 'mapping');
+            }
+        }
+        function handleKeyInsertMode() {
+            if (handleEsc()) {
+                return true;
+            }
+            var keys = vim.inputState.keyBuffer = vim.inputState.keyBuffer + key;
+            var keysAreChars = key.length == 1;
+            var match = commandDispatcher.matchCommand(keys, defaultKeymap, vim.inputState, 'insert');
+            while (keys.length > 1 && match.type != 'full') {
+                var keys = vim.inputState.keyBuffer = keys.slice(1);
+                var thisMatch = commandDispatcher.matchCommand(keys, defaultKeymap, vim.inputState, 'insert');
+                if (thisMatch.type != 'none') {
+                    match = thisMatch;
+                }
+            }
+            if (match.type == 'none') {
+                clearInputState(cm);
+                return false;
+            }
+            else if (match.type == 'partial') {
+                if (lastInsertModeKeyTimer) {
+                    window.clearTimeout(lastInsertModeKeyTimer);
+                }
+                lastInsertModeKeyTimer = window.setTimeout(function () { if (vim.insertMode && vim.inputState.keyBuffer) {
+                    clearInputState(cm);
+                } }, getOption('insertModeEscKeysTimeout'));
+                return !keysAreChars;
+            }
+            if (lastInsertModeKeyTimer) {
+                window.clearTimeout(lastInsertModeKeyTimer);
+            }
+            if (keysAreChars) {
+                var selections = cm.listSelections();
+                for (var i = 0; i < selections.length; i++) {
+                    var here = selections[i].head;
+                    cm.replaceRange('', offsetCursor(here, 0, -(keys.length - 1)), here, '+input');
+                }
+                vimGlobalState.macroModeState.lastInsertModeChanges.changes.pop();
+            }
+            clearInputState(cm);
+            return match.command;
+        }
+        function handleKeyNonInsertMode() {
+            if (handleMacroRecording() || handleEsc()) {
+                return true;
+            }
+            var keys = vim.inputState.keyBuffer = vim.inputState.keyBuffer + key;
+            if (/^[1-9]\d*$/.test(keys)) {
+                return true;
+            }
+            var keysMatcher = /^(\d*)(.*)$/.exec(keys);
+            if (!keysMatcher) {
+                clearInputState(cm);
+                return false;
+            }
+            var context = vim.visualMode ? 'visual' :
+                'normal';
+            var mainKey = keysMatcher[2] || keysMatcher[1];
+            if (vim.inputState.operatorShortcut && vim.inputState.operatorShortcut.slice(-1) == mainKey) {
+                mainKey = vim.inputState.operatorShortcut;
+            }
+            var match = commandDispatcher.matchCommand(mainKey, defaultKeymap, vim.inputState, context);
+            if (match.type == 'none') {
+                clearInputState(cm);
+                return false;
+            }
+            else if (match.type == 'partial') {
+                return true;
+            }
+            else if (match.type == 'clear') {
+                clearInputState(cm);
+                return true;
+            }
+            vim.inputState.keyBuffer = '';
+            keysMatcher = /^(\d*)(.*)$/.exec(keys);
+            if (keysMatcher[1] && keysMatcher[1] != '0') {
+                vim.inputState.pushRepeatDigit(keysMatcher[1]);
+            }
+            return match.command;
+        }
+        var command;
+        if (vim.insertMode) {
+            command = handleKeyInsertMode();
+        }
+        else {
+            command = handleKeyNonInsertMode();
+        }
+        if (command === false) {
+            return undefined; //ace_patch
+        }
+        else if (command === true) {
+            return function () { return true; };
+        }
+        else {
+            return function () {
+                if ((command.operator || command.isEdit) && cm.getOption('readOnly'))
+                    return; // ace_patch
+                return cm.operation(function () {
+                    cm.curOp.isVimOp = true;
+                    try {
+                        if (command.type == 'keyToKey') {
+                            doKeyToKey(command.toKeys);
+                        }
+                        else {
+                            commandDispatcher.processCommand(cm, vim, command);
+                        }
+                    }
+                    catch (e) {
+                        cm.state.vim = undefined;
+                        maybeInitVimState(cm);
+                        if (!vimApi.suppressErrorLogging) {
+                            console['log'](e);
+                        }
+                        throw e;
+                    }
+                    return true;
+                });
+            };
+        }
+    },
+    handleEx: function (cm, input) {
+        exCommandDispatcher.processCommand(cm, input);
+    },
+    defineMotion: defineMotion,
+    defineAction: defineAction,
+    defineOperator: defineOperator,
+    mapCommand: mapCommand,
+    _mapCommand: _mapCommand,
+    defineRegister: defineRegister,
+    exitVisualMode: exitVisualMode,
+    exitInsertMode: exitInsertMode
+};
+function InputState() {
+    this.prefixRepeat = [];
+    this.motionRepeat = [];
+    this.operator = null;
+    this.operatorArgs = null;
+    this.motion = null;
+    this.motionArgs = null;
+    this.keyBuffer = []; // For matching multi-key commands.
+    this.registerName = null; // Defaults to the unnamed register.
+}
+InputState.prototype.pushRepeatDigit = function (n) {
+    if (!this.operator) {
+        this.prefixRepeat = this.prefixRepeat.concat(n);
+    }
+    else {
+        this.motionRepeat = this.motionRepeat.concat(n);
+    }
+};
+InputState.prototype.getRepeat = function () {
+    var repeat = 0;
+    if (this.prefixRepeat.length > 0 || this.motionRepeat.length > 0) {
+        repeat = 1;
+        if (this.prefixRepeat.length > 0) {
+            repeat *= parseInt(this.prefixRepeat.join(''), 10);
+        }
+        if (this.motionRepeat.length > 0) {
+            repeat *= parseInt(this.motionRepeat.join(''), 10);
+        }
+    }
+    return repeat;
+};
+function clearInputState(cm, reason) {
+    cm.state.vim.inputState = new InputState();
+    CodeMirror.signal(cm, 'vim-command-done', reason);
+}
+function Register(text, linewise, blockwise) {
+    this.clear();
+    this.keyBuffer = [text || ''];
+    this.insertModeChanges = [];
+    this.searchQueries = [];
+    this.linewise = !!linewise;
+    this.blockwise = !!blockwise;
+}
+Register.prototype = {
+    setText: function (text, linewise, blockwise) {
+        this.keyBuffer = [text || ''];
+        this.linewise = !!linewise;
+        this.blockwise = !!blockwise;
+    },
+    pushText: function (text, linewise) {
+        if (linewise) {
+            if (!this.linewise) {
+                this.keyBuffer.push('\n');
+            }
+            this.linewise = true;
+        }
+        this.keyBuffer.push(text);
+    },
+    pushInsertModeChanges: function (changes) {
+        this.insertModeChanges.push(createInsertModeChanges(changes));
+    },
+    pushSearchQuery: function (query) {
+        this.searchQueries.push(query);
+    },
+    clear: function () {
+        this.keyBuffer = [];
+        this.insertModeChanges = [];
+        this.searchQueries = [];
+        this.linewise = false;
+    },
+    toString: function () {
+        return this.keyBuffer.join('');
+    }
+};
+function defineRegister(name, register) {
+    var registers = vimGlobalState.registerController.registers;
+    if (!name || name.length != 1) {
+        throw Error('Register name must be 1 character');
+    }
+    registers[name] = register;
+    validRegisters.push(name);
+}
+function RegisterController(registers) {
+    this.registers = registers;
+    this.unnamedRegister = registers['"'] = new Register();
+    registers['.'] = new Register();
+    registers[':'] = new Register();
+    registers['/'] = new Register();
+    registers['+'] = new Register();
+}
+RegisterController.prototype = {
+    pushText: function (registerName, operator, text, linewise, blockwise) {
+        if (registerName === '_')
+            return;
+        if (linewise && text.charAt(text.length - 1) !== '\n') {
+            text += '\n';
+        }
+        var register = this.isValidRegister(registerName) ?
+            this.getRegister(registerName) : null;
+        if (!register) {
+            switch (operator) {
+                case 'yank':
+                    this.registers['0'] = new Register(text, linewise, blockwise);
+                    break;
+                case 'delete':
+                case 'change':
+                    if (text.indexOf('\n') == -1) {
+                        this.registers['-'] = new Register(text, linewise);
+                    }
+                    else {
+                        this.shiftNumericRegisters_();
+                        this.registers['1'] = new Register(text, linewise);
+                    }
+                    break;
+            }
+            this.unnamedRegister.setText(text, linewise, blockwise);
+            return;
+        }
+        var append = isUpperCase(registerName);
+        if (append) {
+            register.pushText(text, linewise);
+        }
+        else {
+            register.setText(text, linewise, blockwise);
+        }
+        if (registerName === '+') {
+            navigator.clipboard.writeText(text);
+        }
+        this.unnamedRegister.setText(register.toString(), linewise);
+    },
+    getRegister: function (name) {
+        if (!this.isValidRegister(name)) {
+            return this.unnamedRegister;
+        }
+        name = name.toLowerCase();
+        if (!this.registers[name]) {
+            this.registers[name] = new Register();
+        }
+        return this.registers[name];
+    },
+    isValidRegister: function (name) {
+        return name && inArray(name, validRegisters);
+    },
+    shiftNumericRegisters_: function () {
+        for (var i = 9; i >= 2; i--) {
+            this.registers[i] = this.getRegister('' + (i - 1));
+        }
+    }
+};
+function HistoryController() {
+    this.historyBuffer = [];
+    this.iterator = 0;
+    this.initialPrefix = null;
+}
+HistoryController.prototype = {
+    nextMatch: function (input, up) {
+        var historyBuffer = this.historyBuffer;
+        var dir = up ? -1 : 1;
+        if (this.initialPrefix === null)
+            this.initialPrefix = input;
+        for (var i = this.iterator + dir; up ? i >= 0 : i < historyBuffer.length; i += dir) {
+            var element = historyBuffer[i];
+            for (var j = 0; j <= element.length; j++) {
+                if (this.initialPrefix == element.substring(0, j)) {
+                    this.iterator = i;
+                    return element;
+                }
+            }
+        }
+        if (i >= historyBuffer.length) {
+            this.iterator = historyBuffer.length;
+            return this.initialPrefix;
+        }
+        if (i < 0)
+            return input;
+    },
+    pushInput: function (input) {
+        var index = this.historyBuffer.indexOf(input);
+        if (index > -1)
+            this.historyBuffer.splice(index, 1);
+        if (input.length)
+            this.historyBuffer.push(input);
+    },
+    reset: function () {
+        this.initialPrefix = null;
+        this.iterator = this.historyBuffer.length;
+    }
+};
+var commandDispatcher = {
+    matchCommand: function (keys, keyMap, inputState, context) {
+        var matches = commandMatches(keys, keyMap, context, inputState);
+        if (!matches.full && !matches.partial) {
+            return { type: 'none' };
+        }
+        else if (!matches.full && matches.partial) {
+            return { type: 'partial' };
+        }
+        var bestMatch;
+        for (var i = 0; i < matches.full.length; i++) {
+            var match = matches.full[i];
+            if (!bestMatch) {
+                bestMatch = match;
+            }
+        }
+        if (bestMatch.keys.slice(-11) == '<character>') {
+            var character = lastChar(keys);
+            if (!character || character.length > 1)
+                return { type: 'clear' };
+            inputState.selectedCharacter = character;
+        }
+        return { type: 'full', command: bestMatch };
+    },
+    processCommand: function (cm, vim, command) {
+        vim.inputState.repeatOverride = command.repeatOverride;
+        switch (command.type) {
+            case 'motion':
+                this.processMotion(cm, vim, command);
+                break;
+            case 'operator':
+                this.processOperator(cm, vim, command);
+                break;
+            case 'operatorMotion':
+                this.processOperatorMotion(cm, vim, command);
+                break;
+            case 'action':
+                this.processAction(cm, vim, command);
+                break;
+            case 'search':
+                this.processSearch(cm, vim, command);
+                break;
+            case 'ex':
+            case 'keyToEx':
+                this.processEx(cm, vim, command);
+                break;
+            default:
+                break;
+        }
+    },
+    processMotion: function (cm, vim, command) {
+        vim.inputState.motion = command.motion;
+        vim.inputState.motionArgs = copyArgs(command.motionArgs);
+        this.evalInput(cm, vim);
+    },
+    processOperator: function (cm, vim, command) {
+        var inputState = vim.inputState;
+        if (inputState.operator) {
+            if (inputState.operator == command.operator) {
+                inputState.motion = 'expandToLine';
+                inputState.motionArgs = { linewise: true };
+                this.evalInput(cm, vim);
+                return;
+            }
+            else {
+                clearInputState(cm);
+            }
+        }
+        inputState.operator = command.operator;
+        inputState.operatorArgs = copyArgs(command.operatorArgs);
+        if (command.keys.length > 1) {
+            inputState.operatorShortcut = command.keys;
+        }
+        if (command.exitVisualBlock) {
+            vim.visualBlock = false;
+            updateCmSelection(cm);
+        }
+        if (vim.visualMode) {
+            this.evalInput(cm, vim);
+        }
+    },
+    processOperatorMotion: function (cm, vim, command) {
+        var visualMode = vim.visualMode;
+        var operatorMotionArgs = copyArgs(command.operatorMotionArgs);
+        if (operatorMotionArgs) {
+            if (visualMode && operatorMotionArgs.visualLine) {
+                vim.visualLine = true;
+            }
+        }
+        this.processOperator(cm, vim, command);
+        if (!visualMode) {
+            this.processMotion(cm, vim, command);
+        }
+    },
+    processAction: function (cm, vim, command) {
+        var inputState = vim.inputState;
+        var repeat = inputState.getRepeat();
+        var repeatIsExplicit = !!repeat;
+        var actionArgs = copyArgs(command.actionArgs) || {};
+        if (inputState.selectedCharacter) {
+            actionArgs.selectedCharacter = inputState.selectedCharacter;
+        }
+        if (command.operator) {
+            this.processOperator(cm, vim, command);
+        }
+        if (command.motion) {
+            this.processMotion(cm, vim, command);
+        }
+        if (command.motion || command.operator) {
+            this.evalInput(cm, vim);
+        }
+        actionArgs.repeat = repeat || 1;
+        actionArgs.repeatIsExplicit = repeatIsExplicit;
+        actionArgs.registerName = inputState.registerName;
+        clearInputState(cm);
+        vim.lastMotion = null;
+        if (command.isEdit) {
+            this.recordLastEdit(vim, inputState, command);
+        }
+        actions[command.action](cm, actionArgs, vim);
+    },
+    processSearch: function (cm, vim, command) {
+        if (!cm.getSearchCursor) {
+            return;
+        }
+        var forward = command.searchArgs.forward;
+        var wholeWordOnly = command.searchArgs.wholeWordOnly;
+        getSearchState(cm).setReversed(!forward);
+        var promptPrefix = (forward) ? '/' : '?';
+        var originalQuery = getSearchState(cm).getQuery();
+        var originalScrollPos = cm.getScrollInfo();
+        function handleQuery(query, ignoreCase, smartCase) {
+            vimGlobalState.searchHistoryController.pushInput(query);
+            vimGlobalState.searchHistoryController.reset();
+            try {
+                updateSearchQuery(cm, query, ignoreCase, smartCase);
+            }
+            catch (e) {
+                showConfirm(cm, 'Invalid regex: ' + query);
+                clearInputState(cm);
+                return;
+            }
+            commandDispatcher.processMotion(cm, vim, {
+                type: 'motion',
+                motion: 'findNext',
+                motionArgs: { forward: true, toJumplist: command.searchArgs.toJumplist }
+            });
+        }
+        function onPromptClose(query) {
+            handleQuery(query, true /** ignoreCase */, true /** smartCase */);
+            var macroModeState = vimGlobalState.macroModeState;
+            if (macroModeState.isRecording) {
+                logSearchQuery(macroModeState, query);
+            }
+        }
+        function onPromptKeyUp(e, query, close) {
+            var keyName = CodeMirror.keyName(e), up, offset;
+            if (keyName == 'Up' || keyName == 'Down') {
+                up = keyName == 'Up' ? true : false;
+                offset = e.target ? e.target.selectionEnd : 0;
+                query = vimGlobalState.searchHistoryController.nextMatch(query, up) || '';
+                close(query);
+                if (offset && e.target)
+                    e.target.selectionEnd = e.target.selectionStart = Math.min(offset, e.target.value.length);
+            }
+            else {
+                if (keyName != 'Left' && keyName != 'Right' && keyName != 'Ctrl' && keyName != 'Alt' && keyName != 'Shift')
+                    vimGlobalState.searchHistoryController.reset();
+            }
+            var parsedQuery;
+            try {
+                parsedQuery = updateSearchQuery(cm, query, true /** ignoreCase */, true /** smartCase */);
+            }
+            catch (e) {
+            }
+            if (parsedQuery) {
+                cm.scrollIntoView(findNext(cm, !forward, parsedQuery), 30);
+            }
+            else {
+                clearSearchHighlight(cm);
+                cm.scrollTo(originalScrollPos.left, originalScrollPos.top);
+            }
+        }
+        function onPromptKeyDown(e, query, close) {
+            var keyName = CodeMirror.keyName(e);
+            if (keyName == 'Esc' || keyName == 'Ctrl-C' || keyName == 'Ctrl-[' ||
+                (keyName == 'Backspace' && query == '')) {
+                vimGlobalState.searchHistoryController.pushInput(query);
+                vimGlobalState.searchHistoryController.reset();
+                updateSearchQuery(cm, originalQuery);
+                clearSearchHighlight(cm);
+                cm.scrollTo(originalScrollPos.left, originalScrollPos.top);
+                CodeMirror.e_stop(e);
+                clearInputState(cm);
+                close();
+                cm.focus();
+            }
+            else if (keyName == 'Up' || keyName == 'Down') {
+                CodeMirror.e_stop(e);
+            }
+            else if (keyName == 'Ctrl-U') {
+                CodeMirror.e_stop(e);
+                close('');
+            }
+        }
+        switch (command.searchArgs.querySrc) {
+            case 'prompt':
+                var macroModeState = vimGlobalState.macroModeState;
+                if (macroModeState.isPlaying) {
+                    var query = macroModeState.replaySearchQueries.shift();
+                    handleQuery(query, true /** ignoreCase */, false /** smartCase */);
+                }
+                else {
+                    showPrompt(cm, {
+                        onClose: onPromptClose,
+                        prefix: promptPrefix,
+                        desc: '(JavaScript regexp)',
+                        onKeyUp: onPromptKeyUp,
+                        onKeyDown: onPromptKeyDown
+                    });
+                }
+                break;
+            case 'wordUnderCursor':
+                var word = expandWordUnderCursor(cm, false /** inclusive */, true /** forward */, false /** bigWord */, true /** noSymbol */);
+                var isKeyword = true;
+                if (!word) {
+                    word = expandWordUnderCursor(cm, false /** inclusive */, true /** forward */, false /** bigWord */, false /** noSymbol */);
+                    isKeyword = false;
+                }
+                if (!word) {
+                    return;
+                }
+                var query = cm.getLine(word.start.line).substring(word.start.ch, word.end.ch);
+                if (isKeyword && wholeWordOnly) {
+                    query = '\\b' + query + '\\b';
+                }
+                else {
+                    query = escapeRegex(query);
+                }
+                vimGlobalState.jumpList.cachedCursor = cm.getCursor();
+                cm.setCursor(word.start);
+                handleQuery(query, true /** ignoreCase */, false /** smartCase */);
+                break;
+        }
+    },
+    processEx: function (cm, vim, command) {
+        function onPromptClose(input) {
+            vimGlobalState.exCommandHistoryController.pushInput(input);
+            vimGlobalState.exCommandHistoryController.reset();
+            exCommandDispatcher.processCommand(cm, input);
+            if (cm.state.vim)
+                clearInputState(cm);
+        }
+        function onPromptKeyDown(e, input, close) {
+            var keyName = CodeMirror.keyName(e), up, offset;
+            if (keyName == 'Esc' || keyName == 'Ctrl-C' || keyName == 'Ctrl-[' ||
+                (keyName == 'Backspace' && input == '')) {
+                vimGlobalState.exCommandHistoryController.pushInput(input);
+                vimGlobalState.exCommandHistoryController.reset();
+                CodeMirror.e_stop(e);
+                clearInputState(cm);
+                close();
+                cm.focus();
+            }
+            if (keyName == 'Up' || keyName == 'Down') {
+                CodeMirror.e_stop(e);
+                up = keyName == 'Up' ? true : false;
+                offset = e.target ? e.target.selectionEnd : 0;
+                input = vimGlobalState.exCommandHistoryController.nextMatch(input, up) || '';
+                close(input);
+                if (offset && e.target)
+                    e.target.selectionEnd = e.target.selectionStart = Math.min(offset, e.target.value.length);
+            }
+            else if (keyName == 'Ctrl-U') {
+                CodeMirror.e_stop(e);
+                close('');
+            }
+            else {
+                if (keyName != 'Left' && keyName != 'Right' && keyName != 'Ctrl' && keyName != 'Alt' && keyName != 'Shift')
+                    vimGlobalState.exCommandHistoryController.reset();
+            }
+        }
+        if (command.type == 'keyToEx') {
+            exCommandDispatcher.processCommand(cm, command.exArgs.input);
+        }
+        else {
+            if (vim.visualMode) {
+                showPrompt(cm, { onClose: onPromptClose, prefix: ':', value: '\'<,\'>',
+                    onKeyDown: onPromptKeyDown, selectValueOnOpen: false });
+            }
+            else {
+                showPrompt(cm, { onClose: onPromptClose, prefix: ':',
+                    onKeyDown: onPromptKeyDown });
+            }
+        }
+    },
+    evalInput: function (cm, vim) {
+        var inputState = vim.inputState;
+        var motion = inputState.motion;
+        var motionArgs = inputState.motionArgs || {};
+        var operator = inputState.operator;
+        var operatorArgs = inputState.operatorArgs || {};
+        var registerName = inputState.registerName;
+        var sel = vim.sel;
+        var origHead = copyCursor(vim.visualMode ? clipCursorToContent(cm, sel.head) : cm.getCursor('head'));
+        var origAnchor = copyCursor(vim.visualMode ? clipCursorToContent(cm, sel.anchor) : cm.getCursor('anchor'));
+        var oldHead = copyCursor(origHead);
+        var oldAnchor = copyCursor(origAnchor);
+        var newHead, newAnchor;
+        var repeat;
+        if (operator) {
+            this.recordLastEdit(vim, inputState);
+        }
+        if (inputState.repeatOverride !== undefined) {
+            repeat = inputState.repeatOverride;
+        }
+        else {
+            repeat = inputState.getRepeat();
+        }
+        if (repeat > 0 && motionArgs.explicitRepeat) {
+            motionArgs.repeatIsExplicit = true;
+        }
+        else if (motionArgs.noRepeat ||
+            (!motionArgs.explicitRepeat && repeat === 0)) {
+            repeat = 1;
+            motionArgs.repeatIsExplicit = false;
+        }
+        if (inputState.selectedCharacter) {
+            motionArgs.selectedCharacter = operatorArgs.selectedCharacter =
+                inputState.selectedCharacter;
+        }
+        motionArgs.repeat = repeat;
+        clearInputState(cm);
+        if (motion) {
+            var motionResult = motions[motion](cm, origHead, motionArgs, vim, inputState);
+            vim.lastMotion = motions[motion];
+            if (!motionResult) {
+                return;
+            }
+            if (motionArgs.toJumplist) {
+                if (!operator && cm.ace.curOp != null)
+                    cm.ace.curOp.command.scrollIntoView = "center-animate"; // ace_patch
+                var jumpList = vimGlobalState.jumpList;
+                var cachedCursor = jumpList.cachedCursor;
+                if (cachedCursor) {
+                    recordJumpPosition(cm, cachedCursor, motionResult);
+                    delete jumpList.cachedCursor;
+                }
+                else {
+                    recordJumpPosition(cm, origHead, motionResult);
+                }
+            }
+            if (motionResult instanceof Array) {
+                newAnchor = motionResult[0];
+                newHead = motionResult[1];
+            }
+            else {
+                newHead = motionResult;
+            }
+            if (!newHead) {
+                newHead = copyCursor(origHead);
+            }
+            if (vim.visualMode) {
+                if (!(vim.visualBlock && newHead.ch === Infinity)) {
+                    newHead = clipCursorToContent(cm, newHead, oldHead);
+                }
+                if (newAnchor) {
+                    newAnchor = clipCursorToContent(cm, newAnchor);
+                }
+                newAnchor = newAnchor || oldAnchor;
+                sel.anchor = newAnchor;
+                sel.head = newHead;
+                updateCmSelection(cm);
+                updateMark(cm, vim, '<', cursorIsBefore(newAnchor, newHead) ? newAnchor
+                    : newHead);
+                updateMark(cm, vim, '>', cursorIsBefore(newAnchor, newHead) ? newHead
+                    : newAnchor);
+            }
+            else if (!operator) {
+                newHead = clipCursorToContent(cm, newHead, oldHead);
+                cm.setCursor(newHead.line, newHead.ch);
+            }
+        }
+        if (operator) {
+            if (operatorArgs.lastSel) {
+                newAnchor = oldAnchor;
+                var lastSel = operatorArgs.lastSel;
+                var lineOffset = Math.abs(lastSel.head.line - lastSel.anchor.line);
+                var chOffset = Math.abs(lastSel.head.ch - lastSel.anchor.ch);
+                if (lastSel.visualLine) {
+                    newHead = new Pos(oldAnchor.line + lineOffset, oldAnchor.ch);
+                }
+                else if (lastSel.visualBlock) {
+                    newHead = new Pos(oldAnchor.line + lineOffset, oldAnchor.ch + chOffset);
+                }
+                else if (lastSel.head.line == lastSel.anchor.line) {
+                    newHead = new Pos(oldAnchor.line, oldAnchor.ch + chOffset);
+                }
+                else {
+                    newHead = new Pos(oldAnchor.line + lineOffset, oldAnchor.ch);
+                }
+                vim.visualMode = true;
+                vim.visualLine = lastSel.visualLine;
+                vim.visualBlock = lastSel.visualBlock;
+                sel = vim.sel = {
+                    anchor: newAnchor,
+                    head: newHead
+                };
+                updateCmSelection(cm);
+            }
+            else if (vim.visualMode) {
+                operatorArgs.lastSel = {
+                    anchor: copyCursor(sel.anchor),
+                    head: copyCursor(sel.head),
+                    visualBlock: vim.visualBlock,
+                    visualLine: vim.visualLine
+                };
+            }
+            var curStart, curEnd, linewise, mode;
+            var cmSel;
+            if (vim.visualMode) {
+                curStart = cursorMin(sel.head, sel.anchor);
+                curEnd = cursorMax(sel.head, sel.anchor);
+                linewise = vim.visualLine || operatorArgs.linewise;
+                mode = vim.visualBlock ? 'block' :
+                    linewise ? 'line' :
+                        'char';
+                var newPositions = updateSelectionForSurrogateCharacters(cm, curStart, curEnd);
+                cmSel = makeCmSelection(cm, {
+                    anchor: newPositions.start,
+                    head: newPositions.end
+                }, mode);
+                if (linewise) {
+                    var ranges = cmSel.ranges;
+                    if (mode == 'block') {
+                        for (var i = 0; i < ranges.length; i++) {
+                            ranges[i].head.ch = lineLength(cm, ranges[i].head.line);
+                        }
+                    }
+                    else if (mode == 'line') {
+                        ranges[0].head = new Pos(ranges[0].head.line + 1, 0);
+                    }
+                }
+            }
+            else {
+                curStart = copyCursor(newAnchor || oldAnchor);
+                curEnd = copyCursor(newHead || oldHead);
+                if (cursorIsBefore(curEnd, curStart)) {
+                    var tmp = curStart;
+                    curStart = curEnd;
+                    curEnd = tmp;
+                }
+                linewise = motionArgs.linewise || operatorArgs.linewise;
+                if (linewise) {
+                    expandSelectionToLine(cm, curStart, curEnd);
+                }
+                else if (motionArgs.forward) {
+                    clipToLine(cm, curStart, curEnd);
+                }
+                mode = 'char';
+                var exclusive = !motionArgs.inclusive || linewise;
+                var newPositions = updateSelectionForSurrogateCharacters(cm, curStart, curEnd);
+                cmSel = makeCmSelection(cm, {
+                    anchor: newPositions.start,
+                    head: newPositions.end
+                }, mode, exclusive);
+            }
+            cm.setSelections(cmSel.ranges, cmSel.primary);
+            vim.lastMotion = null;
+            operatorArgs.repeat = repeat; // For indent in visual mode.
+            operatorArgs.registerName = registerName;
+            operatorArgs.linewise = linewise;
+            var operatorMoveTo = operators[operator](cm, operatorArgs, cmSel.ranges, oldAnchor, newHead);
+            if (vim.visualMode) {
+                exitVisualMode(cm, operatorMoveTo != null);
+            }
+            if (operatorMoveTo) {
+                cm.setCursor(operatorMoveTo);
+            }
+        }
+    },
+    recordLastEdit: function (vim, inputState, actionCommand) {
+        var macroModeState = vimGlobalState.macroModeState;
+        if (macroModeState.isPlaying) {
+            return;
+        }
+        vim.lastEditInputState = inputState;
+        vim.lastEditActionCommand = actionCommand;
+        macroModeState.lastInsertModeChanges.changes = [];
+        macroModeState.lastInsertModeChanges.expectCursorActivityForChange = false;
+        macroModeState.lastInsertModeChanges.visualBlock = vim.visualBlock ? vim.sel.head.line - vim.sel.anchor.line : 0;
+    }
+};
+var motions = {
+    moveToTopLine: function (cm, _head, motionArgs) {
+        var line = getUserVisibleLines(cm).top + motionArgs.repeat - 1;
+        return new Pos(line, findFirstNonWhiteSpaceCharacter(cm.getLine(line)));
+    },
+    moveToMiddleLine: function (cm) {
+        var range = getUserVisibleLines(cm);
+        var line = Math.floor((range.top + range.bottom) * 0.5);
+        return new Pos(line, findFirstNonWhiteSpaceCharacter(cm.getLine(line)));
+    },
+    moveToBottomLine: function (cm, _head, motionArgs) {
+        var line = getUserVisibleLines(cm).bottom - motionArgs.repeat + 1;
+        return new Pos(line, findFirstNonWhiteSpaceCharacter(cm.getLine(line)));
+    },
+    expandToLine: function (_cm, head, motionArgs) {
+        var cur = head;
+        return new Pos(cur.line + motionArgs.repeat - 1, Infinity);
+    },
+    findNext: function (cm, _head, motionArgs) {
+        var state = getSearchState(cm);
+        var query = state.getQuery();
+        if (!query) {
+            return;
+        }
+        var prev = !motionArgs.forward;
+        prev = (state.isReversed()) ? !prev : prev;
+        highlightSearchMatches(cm, query);
+        return findNext(cm, prev /** prev */, query, motionArgs.repeat);
+    },
+    findAndSelectNextInclusive: function (cm, _head, motionArgs, vim, prevInputState) {
+        var state = getSearchState(cm);
+        var query = state.getQuery();
+        if (!query) {
+            return;
+        }
+        var prev = !motionArgs.forward;
+        prev = (state.isReversed()) ? !prev : prev;
+        var next = findNextFromAndToInclusive(cm, prev, query, motionArgs.repeat, vim);
+        if (!next) {
+            return;
+        }
+        if (prevInputState.operator) {
+            return next;
+        }
+        var from = next[0];
+        var to = new Pos(next[1].line, next[1].ch - 1);
+        if (vim.visualMode) {
+            if (vim.visualLine || vim.visualBlock) {
+                vim.visualLine = false;
+                vim.visualBlock = false;
+                CodeMirror.signal(cm, "vim-mode-change", { mode: "visual", subMode: "" });
+            }
+            var anchor = vim.sel.anchor;
+            if (anchor) {
+                if (state.isReversed()) {
+                    if (motionArgs.forward) {
+                        return [anchor, from];
+                    }
+                    return [anchor, to];
+                }
+                else {
+                    if (motionArgs.forward) {
+                        return [anchor, to];
+                    }
+                    return [anchor, from];
+                }
+            }
+        }
+        else {
+            vim.visualMode = true;
+            vim.visualLine = false;
+            vim.visualBlock = false;
+            CodeMirror.signal(cm, "vim-mode-change", { mode: "visual", subMode: "" });
+        }
+        return prev ? [to, from] : [from, to];
+    },
+    goToMark: function (cm, _head, motionArgs, vim) {
+        var pos = getMarkPos(cm, vim, motionArgs.selectedCharacter);
+        if (pos) {
+            return motionArgs.linewise ? { line: pos.line, ch: findFirstNonWhiteSpaceCharacter(cm.getLine(pos.line)) } : pos;
+        }
+        return null;
+    },
+    moveToOtherHighlightedEnd: function (cm, _head, motionArgs, vim) {
+        if (vim.visualBlock && motionArgs.sameLine) {
+            var sel = vim.sel;
+            return [
+                clipCursorToContent(cm, new Pos(sel.anchor.line, sel.head.ch)),
+                clipCursorToContent(cm, new Pos(sel.head.line, sel.anchor.ch))
+            ];
+        }
+        else {
+            return ([vim.sel.head, vim.sel.anchor]);
+        }
+    },
+    jumpToMark: function (cm, head, motionArgs, vim) {
+        var best = head;
+        for (var i = 0; i < motionArgs.repeat; i++) {
+            var cursor = best;
+            for (var key in vim.marks) {
+                if (!isLowerCase(key)) {
+                    continue;
+                }
+                var mark = vim.marks[key].find();
+                var isWrongDirection = (motionArgs.forward) ?
+                    cursorIsBefore(mark, cursor) : cursorIsBefore(cursor, mark);
+                if (isWrongDirection) {
+                    continue;
+                }
+                if (motionArgs.linewise && (mark.line == cursor.line)) {
+                    continue;
+                }
+                var equal = cursorEqual(cursor, best);
+                var between = (motionArgs.forward) ?
+                    cursorIsBetween(cursor, mark, best) :
+                    cursorIsBetween(best, mark, cursor);
+                if (equal || between) {
+                    best = mark;
+                }
+            }
+        }
+        if (motionArgs.linewise) {
+            best = new Pos(best.line, findFirstNonWhiteSpaceCharacter(cm.getLine(best.line)));
+        }
+        return best;
+    },
+    moveByCharacters: function (_cm, head, motionArgs) {
+        var cur = head;
+        var repeat = motionArgs.repeat;
+        var ch = motionArgs.forward ? cur.ch + repeat : cur.ch - repeat;
+        return new Pos(cur.line, ch);
+    },
+    moveByLines: function (cm, head, motionArgs, vim) {
+        var cur = head;
+        var endCh = cur.ch;
+        switch (vim.lastMotion) {
+            case this.moveByLines:
+            case this.moveByDisplayLines:
+            case this.moveByScroll:
+            case this.moveToColumn:
+            case this.moveToEol:
+                endCh = vim.lastHPos;
+                break;
+            default:
+                vim.lastHPos = endCh;
+        }
+        var repeat = motionArgs.repeat + (motionArgs.repeatOffset || 0);
+        var line = motionArgs.forward ? cur.line + repeat : cur.line - repeat;
+        var first = cm.firstLine();
+        var last = cm.lastLine();
+        if (line < first && cur.line == first) {
+            return this.moveToStartOfLine(cm, head, motionArgs, vim);
+        }
+        else if (line > last && cur.line == last) {
+            return moveToEol(cm, head, motionArgs, vim, true);
+        }
+        var fold = cm.ace.session.getFoldLine(line);
+        if (fold) {
+            if (motionArgs.forward) {
+                if (line > fold.start.row)
+                    line = fold.end.row + 1;
+            }
+            else {
+                line = fold.start.row;
+            }
+        }
+        if (motionArgs.toFirstChar) {
+            endCh = findFirstNonWhiteSpaceCharacter(cm.getLine(line));
+            vim.lastHPos = endCh;
+        }
+        vim.lastHSPos = cm.charCoords(new Pos(line, endCh), 'div').left;
+        return new Pos(line, endCh);
+    },
+    moveByDisplayLines: function (cm, head, motionArgs, vim) {
+        var cur = head;
+        switch (vim.lastMotion) {
+            case this.moveByDisplayLines:
+            case this.moveByScroll:
+            case this.moveByLines:
+            case this.moveToColumn:
+            case this.moveToEol:
+                break;
+            default:
+                vim.lastHSPos = cm.charCoords(cur, 'div').left;
+        }
+        var repeat = motionArgs.repeat;
+        var res = cm.findPosV(cur, (motionArgs.forward ? repeat : -repeat), 'line', vim.lastHSPos);
+        if (res.hitSide) {
+            if (motionArgs.forward) {
+                var lastCharCoords = cm.charCoords(res, 'div');
+                var goalCoords = { top: lastCharCoords.top + 8, left: vim.lastHSPos };
+                var res = cm.coordsChar(goalCoords, 'div');
+            }
+            else {
+                var resCoords = cm.charCoords(new Pos(cm.firstLine(), 0), 'div');
+                resCoords.left = vim.lastHSPos;
+                res = cm.coordsChar(resCoords, 'div');
+            }
+        }
+        vim.lastHPos = res.ch;
+        return res;
+    },
+    moveByPage: function (cm, head, motionArgs) {
+        var curStart = head;
+        var repeat = motionArgs.repeat;
+        return cm.findPosV(curStart, (motionArgs.forward ? repeat : -repeat), 'page');
+    },
+    moveByParagraph: function (cm, head, motionArgs) {
+        var dir = motionArgs.forward ? 1 : -1;
+        return findParagraph(cm, head, motionArgs.repeat, dir);
+    },
+    moveBySentence: function (cm, head, motionArgs) {
+        var dir = motionArgs.forward ? 1 : -1;
+        return findSentence(cm, head, motionArgs.repeat, dir);
+    },
+    moveByScroll: function (cm, head, motionArgs, vim) {
+        var scrollbox = cm.getScrollInfo();
+        var curEnd = null;
+        var repeat = motionArgs.repeat;
+        if (!repeat) {
+            repeat = scrollbox.clientHeight / (2 * cm.defaultTextHeight());
+        }
+        var orig = cm.charCoords(head, 'local');
+        motionArgs.repeat = repeat;
+        curEnd = motions.moveByDisplayLines(cm, head, motionArgs, vim);
+        if (!curEnd) {
+            return null;
+        }
+        var dest = cm.charCoords(curEnd, 'local');
+        cm.scrollTo(null, scrollbox.top + dest.top - orig.top);
+        return curEnd;
+    },
+    moveByWords: function (cm, head, motionArgs) {
+        return moveToWord(cm, head, motionArgs.repeat, !!motionArgs.forward, !!motionArgs.wordEnd, !!motionArgs.bigWord);
+    },
+    moveTillCharacter: function (cm, _head, motionArgs) {
+        var repeat = motionArgs.repeat;
+        var curEnd = moveToCharacter(cm, repeat, motionArgs.forward, motionArgs.selectedCharacter);
+        var increment = motionArgs.forward ? -1 : 1;
+        recordLastCharacterSearch(increment, motionArgs);
+        if (!curEnd)
+            return null;
+        curEnd.ch += increment;
+        return curEnd;
+    },
+    moveToCharacter: function (cm, head, motionArgs) {
+        var repeat = motionArgs.repeat;
+        recordLastCharacterSearch(0, motionArgs);
+        return moveToCharacter(cm, repeat, motionArgs.forward, motionArgs.selectedCharacter) || head;
+    },
+    moveToSymbol: function (cm, head, motionArgs) {
+        var repeat = motionArgs.repeat;
+        return findSymbol(cm, repeat, motionArgs.forward, motionArgs.selectedCharacter) || head;
+    },
+    moveToColumn: function (cm, head, motionArgs, vim) {
+        var repeat = motionArgs.repeat;
+        vim.lastHPos = repeat - 1;
+        vim.lastHSPos = cm.charCoords(head, 'div').left;
+        return moveToColumn(cm, repeat);
+    },
+    moveToEol: function (cm, head, motionArgs, vim) {
+        return moveToEol(cm, head, motionArgs, vim, false);
+    },
+    moveToFirstNonWhiteSpaceCharacter: function (cm, head) {
+        var cursor = head;
+        return new Pos(cursor.line, findFirstNonWhiteSpaceCharacter(cm.getLine(cursor.line)));
+    },
+    moveToMatchedSymbol: function (cm, head) {
+        var cursor = head;
+        var line = cursor.line;
+        var ch = cursor.ch;
+        var lineText = cm.getLine(line);
+        var symbol;
+        for (; ch < lineText.length; ch++) {
+            symbol = lineText.charAt(ch);
+            if (symbol && isMatchableSymbol(symbol)) {
+                var style = cm.getTokenTypeAt(new Pos(line, ch + 1));
+                if (style !== "string" && style !== "comment") {
+                    break;
+                }
+            }
+        }
+        if (ch < lineText.length) {
+            var re = /[<>]/.test(lineText[ch]) ? /[(){}[\]<>]/ : /[(){}[\]]/; //ace_patch?
+            var matched = cm.findMatchingBracket(new Pos(line, ch + 1), { bracketRegex: re });
+            return matched.to;
+        }
+        else {
+            return cursor;
+        }
+    },
+    moveToStartOfLine: function (_cm, head) {
+        return new Pos(head.line, 0);
+    },
+    moveToLineOrEdgeOfDocument: function (cm, _head, motionArgs) {
+        var lineNum = motionArgs.forward ? cm.lastLine() : cm.firstLine();
+        if (motionArgs.repeatIsExplicit) {
+            lineNum = motionArgs.repeat - cm.getOption('firstLineNumber');
+        }
+        return new Pos(lineNum, findFirstNonWhiteSpaceCharacter(cm.getLine(lineNum)));
+    },
+    moveToStartOfDisplayLine: function (cm) {
+        cm.execCommand("goLineLeft");
+        return cm.getCursor();
+    },
+    moveToEndOfDisplayLine: function (cm) {
+        cm.execCommand("goLineRight");
+        var head = cm.getCursor();
+        if (head.sticky == "before")
+            head.ch--;
+        return head;
+    },
+    textObjectManipulation: function (cm, head, motionArgs, vim) {
+        var mirroredPairs = { '(': ')', ')': '(',
+            '{': '}', '}': '{',
+            '[': ']', ']': '[',
+            '<': '>', '>': '<' };
+        var selfPaired = { '\'': true, '"': true, '`': true };
+        var character = motionArgs.selectedCharacter;
+        if (character == 'b') {
+            character = '(';
+        }
+        else if (character == 'B') {
+            character = '{';
+        }
+        var inclusive = !motionArgs.textObjectInner;
+        var tmp;
+        if (mirroredPairs[character]) {
+            tmp = selectCompanionObject(cm, head, character, inclusive);
+        }
+        else if (selfPaired[character]) {
+            tmp = findBeginningAndEnd(cm, head, character, inclusive);
+        }
+        else if (character === 'W') {
+            tmp = expandWordUnderCursor(cm, inclusive, true /** forward */, true /** bigWord */);
+        }
+        else if (character === 'w') {
+            tmp = expandWordUnderCursor(cm, inclusive, true /** forward */, false /** bigWord */);
+        }
+        else if (character === 'p') {
+            tmp = findParagraph(cm, head, motionArgs.repeat, 0, inclusive);
+            motionArgs.linewise = true;
+            if (vim.visualMode) {
+                if (!vim.visualLine) {
+                    vim.visualLine = true;
+                }
+            }
+            else {
+                var operatorArgs = vim.inputState.operatorArgs;
+                if (operatorArgs) {
+                    operatorArgs.linewise = true;
+                }
+                tmp.end.line--;
+            }
+        }
+        else if (character === 't') {
+            tmp = expandTagUnderCursor(cm, head, inclusive);
+        }
+        else if (character === 's') {
+            var content = cm.getLine(head.line);
+            if (head.ch > 0 && isEndOfSentenceSymbol(content[head.ch])) {
+                head.ch -= 1;
+            }
+            var end = getSentence(cm, head, motionArgs.repeat, 1, inclusive);
+            var start = getSentence(cm, head, motionArgs.repeat, -1, inclusive);
+            if (isWhiteSpaceString(cm.getLine(start.line)[start.ch])
+                && isWhiteSpaceString(cm.getLine(end.line)[end.ch - 1])) {
+                start = { line: start.line, ch: start.ch + 1 };
+            }
+            tmp = { start: start, end: end };
+        }
+        else {
+            return null;
+        }
+        if (!cm.state.vim.visualMode) {
+            return [tmp.start, tmp.end];
+        }
+        else {
+            return expandSelection(cm, tmp.start, tmp.end);
+        }
+    },
+    repeatLastCharacterSearch: function (cm, head, motionArgs) {
+        var lastSearch = vimGlobalState.lastCharacterSearch;
+        var repeat = motionArgs.repeat;
+        var forward = motionArgs.forward === lastSearch.forward;
+        var increment = (lastSearch.increment ? 1 : 0) * (forward ? -1 : 1);
+        cm.moveH(-increment, 'char');
+        motionArgs.inclusive = forward ? true : false;
+        var curEnd = moveToCharacter(cm, repeat, forward, lastSearch.selectedCharacter);
+        if (!curEnd) {
+            cm.moveH(increment, 'char');
+            return head;
+        }
+        curEnd.ch += increment;
+        return curEnd;
+    }
+};
+function defineMotion(name, fn) {
+    motions[name] = fn;
+}
+function fillArray(val, times) {
+    var arr = [];
+    for (var i = 0; i < times; i++) {
+        arr.push(val);
+    }
+    return arr;
+}
+var operators = {
+    change: function (cm, args, ranges) {
+        var finalHead, text;
+        var vim = cm.state.vim;
+        var anchor = ranges[0].anchor, head = ranges[0].head;
+        if (!vim.visualMode) {
+            text = cm.getRange(anchor, head);
+            var lastState = vim.lastEditInputState || {};
+            if (lastState.motion == "moveByWords" && !isWhiteSpaceString(text)) {
+                var match = (/\s+$/).exec(text);
+                if (match && lastState.motionArgs && lastState.motionArgs.forward) {
+                    head = offsetCursor(head, 0, -match[0].length);
+                    text = text.slice(0, -match[0].length);
+                }
+            }
+            var prevLineEnd = new Pos(anchor.line - 1, Number.MAX_VALUE);
+            var wasLastLine = cm.firstLine() == cm.lastLine();
+            if (head.line > cm.lastLine() && args.linewise && !wasLastLine) {
+                cm.replaceRange('', prevLineEnd, head);
+            }
+            else {
+                cm.replaceRange('', anchor, head);
+            }
+            if (args.linewise) {
+                if (!wasLastLine) {
+                    cm.setCursor(prevLineEnd);
+                    CodeMirror.commands.newlineAndIndent(cm);
+                }
+                anchor.ch = Number.MAX_VALUE;
+            }
+            finalHead = anchor;
+        }
+        else if (args.fullLine) {
+            head.ch = Number.MAX_VALUE;
+            head.line--;
+            cm.setSelection(anchor, head);
+            text = cm.getSelection();
+            cm.replaceSelection("");
+            finalHead = anchor;
+        }
+        else {
+            text = cm.getSelection();
+            var replacement = fillArray('', ranges.length);
+            cm.replaceSelections(replacement);
+            finalHead = cursorMin(ranges[0].head, ranges[0].anchor);
+        }
+        vimGlobalState.registerController.pushText(args.registerName, 'change', text, args.linewise, ranges.length > 1);
+        actions.enterInsertMode(cm, { head: finalHead }, cm.state.vim);
+    },
+    'delete': function (cm, args, ranges) {
+        var finalHead, text;
+        var vim = cm.state.vim;
+        if (!vim.visualBlock) {
+            var anchor = ranges[0].anchor, head = ranges[0].head;
+            if (args.linewise &&
+                head.line != cm.firstLine() &&
+                anchor.line == cm.lastLine() &&
+                anchor.line == head.line - 1) {
+                if (anchor.line == cm.firstLine()) {
+                    anchor.ch = 0;
+                }
+                else {
+                    anchor = new Pos(anchor.line - 1, lineLength(cm, anchor.line - 1));
+                }
+            }
+            text = cm.getRange(anchor, head);
+            cm.replaceRange('', anchor, head);
+            finalHead = anchor;
+            if (args.linewise) {
+                finalHead = motions.moveToFirstNonWhiteSpaceCharacter(cm, anchor);
+            }
+        }
+        else {
+            text = cm.getSelection();
+            var replacement = fillArray('', ranges.length);
+            cm.replaceSelections(replacement);
+            finalHead = cursorMin(ranges[0].head, ranges[0].anchor);
+        }
+        vimGlobalState.registerController.pushText(args.registerName, 'delete', text, args.linewise, vim.visualBlock);
+        return clipCursorToContent(cm, finalHead);
+    },
+    indent: function (cm, args, ranges) {
+        var vim = cm.state.vim;
+        if (cm.indentMore) {
+            var repeat = (vim.visualMode) ? args.repeat : 1;
+            for (var j = 0; j < repeat; j++) {
+                if (args.indentRight)
+                    cm.indentMore();
+                else
+                    cm.indentLess();
+            }
+        }
+        else {
+            var startLine = ranges[0].anchor.line;
+            var endLine = vim.visualBlock ?
+                ranges[ranges.length - 1].anchor.line :
+                ranges[0].head.line;
+            var repeat = (vim.visualMode) ? args.repeat : 1;
+            if (args.linewise) {
+                endLine--;
+            }
+            for (var i = startLine; i <= endLine; i++) {
+                for (var j = 0; j < repeat; j++) {
+                    cm.indentLine(i, args.indentRight);
+                }
+            }
+        }
+        return motions.moveToFirstNonWhiteSpaceCharacter(cm, ranges[0].anchor);
+    },
+    indentAuto: function (cm, _args, ranges) {
+        if (ranges.length > 1) { // ace_patch
+            cm.setSelection(ranges[0].anchor, ranges[ranges.length - 1].head);
+        }
+        cm.execCommand("indentAuto");
+        return motions.moveToFirstNonWhiteSpaceCharacter(cm, ranges[0].anchor);
+    },
+    changeCase: function (cm, args, ranges, oldAnchor, newHead) {
+        var selections = cm.getSelections();
+        var swapped = [];
+        var toLower = args.toLower;
+        for (var j = 0; j < selections.length; j++) {
+            var toSwap = selections[j];
+            var text = '';
+            if (toLower === true) {
+                text = toSwap.toLowerCase();
+            }
+            else if (toLower === false) {
+                text = toSwap.toUpperCase();
+            }
+            else {
+                for (var i = 0; i < toSwap.length; i++) {
+                    var character = toSwap.charAt(i);
+                    text += isUpperCase(character) ? character.toLowerCase() :
+                        character.toUpperCase();
+                }
+            }
+            swapped.push(text);
+        }
+        cm.replaceSelections(swapped);
+        if (args.shouldMoveCursor) {
+            return newHead;
+        }
+        else if (!cm.state.vim.visualMode && args.linewise && ranges[0].anchor.line + 1 == ranges[0].head.line) {
+            return motions.moveToFirstNonWhiteSpaceCharacter(cm, oldAnchor);
+        }
+        else if (args.linewise) {
+            return oldAnchor;
+        }
+        else {
+            return cursorMin(ranges[0].anchor, ranges[0].head);
+        }
+    },
+    yank: function (cm, args, ranges, oldAnchor) {
+        var vim = cm.state.vim;
+        var text = cm.getSelection();
+        var endPos = vim.visualMode
+            ? cursorMin(vim.sel.anchor, vim.sel.head, ranges[0].head, ranges[0].anchor)
+            : oldAnchor;
+        vimGlobalState.registerController.pushText(args.registerName, 'yank', text, args.linewise, vim.visualBlock);
+        return endPos;
+    }
+};
+function defineOperator(name, fn) {
+    operators[name] = fn;
+}
+var actions = {
+    jumpListWalk: function (cm, actionArgs, vim) {
+        if (vim.visualMode) {
+            return;
+        }
+        var repeat = actionArgs.repeat;
+        var forward = actionArgs.forward;
+        var jumpList = vimGlobalState.jumpList;
+        var mark = jumpList.move(cm, forward ? repeat : -repeat);
+        var markPos = mark ? mark.find() : undefined;
+        markPos = markPos ? markPos : cm.getCursor();
+        cm.setCursor(markPos);
+        cm.ace.curOp.command.scrollIntoView = "center-animate"; // ace_patch
+    },
+    scroll: function (cm, actionArgs, vim) {
+        if (vim.visualMode) {
+            return;
+        }
+        var repeat = actionArgs.repeat || 1;
+        var lineHeight = cm.defaultTextHeight();
+        var top = cm.getScrollInfo().top;
+        var delta = lineHeight * repeat;
+        var newPos = actionArgs.forward ? top + delta : top - delta;
+        var cursor = copyCursor(cm.getCursor());
+        var cursorCoords = cm.charCoords(cursor, 'local');
+        if (actionArgs.forward) {
+            if (newPos > cursorCoords.top) {
+                cursor.line += (newPos - cursorCoords.top) / lineHeight;
+                cursor.line = Math.ceil(cursor.line);
+                cm.setCursor(cursor);
+                cursorCoords = cm.charCoords(cursor, 'local');
+                cm.scrollTo(null, cursorCoords.top);
+            }
+            else {
+                cm.scrollTo(null, newPos);
+            }
+        }
+        else {
+            var newBottom = newPos + cm.getScrollInfo().clientHeight;
+            if (newBottom < cursorCoords.bottom) {
+                cursor.line -= (cursorCoords.bottom - newBottom) / lineHeight;
+                cursor.line = Math.floor(cursor.line);
+                cm.setCursor(cursor);
+                cursorCoords = cm.charCoords(cursor, 'local');
+                cm.scrollTo(null, cursorCoords.bottom - cm.getScrollInfo().clientHeight);
+            }
+            else {
+                cm.scrollTo(null, newPos);
+            }
+        }
+    },
+    scrollToCursor: function (cm, actionArgs) {
+        var lineNum = cm.getCursor().line;
+        var charCoords = cm.charCoords(new Pos(lineNum, 0), 'local');
+        var height = cm.getScrollInfo().clientHeight;
+        var y = charCoords.top;
+        switch (actionArgs.position) {
+            case 'center':
+                y = charCoords.bottom - height / 2;
+                break;
+            case 'bottom':
+                var lineLastCharPos = new Pos(lineNum, cm.getLine(lineNum).length - 1);
+                var lineLastCharCoords = cm.charCoords(lineLastCharPos, 'local');
+                var lineHeight = lineLastCharCoords.bottom - y;
+                y = y - height + lineHeight;
+                break;
+        }
+        cm.scrollTo(null, y);
+    },
+    replayMacro: function (cm, actionArgs, vim) {
+        var registerName = actionArgs.selectedCharacter;
+        var repeat = actionArgs.repeat;
+        var macroModeState = vimGlobalState.macroModeState;
+        if (registerName == '@') {
+            registerName = macroModeState.latestRegister;
+        }
+        else {
+            macroModeState.latestRegister = registerName;
+        }
+        while (repeat--) {
+            executeMacroRegister(cm, vim, macroModeState, registerName);
+        }
+    },
+    enterMacroRecordMode: function (cm, actionArgs) {
+        var macroModeState = vimGlobalState.macroModeState;
+        var registerName = actionArgs.selectedCharacter;
+        if (vimGlobalState.registerController.isValidRegister(registerName)) {
+            macroModeState.enterMacroRecordMode(cm, registerName);
+        }
+    },
+    toggleOverwrite: function (cm) {
+        if (!cm.state.overwrite) {
+            cm.toggleOverwrite(true);
+            cm.setOption('keyMap', 'vim-replace');
+            CodeMirror.signal(cm, "vim-mode-change", { mode: "replace" });
+        }
+        else {
+            cm.toggleOverwrite(false);
+            cm.setOption('keyMap', 'vim-insert');
+            CodeMirror.signal(cm, "vim-mode-change", { mode: "insert" });
+        }
+    },
+    enterInsertMode: function (cm, actionArgs, vim) {
+        if (cm.getOption('readOnly')) {
+            return;
+        }
+        vim.insertMode = true;
+        vim.insertModeRepeat = actionArgs && actionArgs.repeat || 1;
+        var insertAt = (actionArgs) ? actionArgs.insertAt : null;
+        var sel = vim.sel;
+        var head = actionArgs.head || cm.getCursor('head');
+        var height = cm.listSelections().length;
+        if (insertAt == 'eol') {
+            head = new Pos(head.line, lineLength(cm, head.line));
+        }
+        else if (insertAt == 'bol') {
+            head = new Pos(head.line, 0);
+        }
+        else if (insertAt == 'charAfter') {
+            var newPosition = updateSelectionForSurrogateCharacters(cm, head, offsetCursor(head, 0, 1));
+            head = newPosition.end;
+        }
+        else if (insertAt == 'firstNonBlank') {
+            var newPosition = updateSelectionForSurrogateCharacters(cm, head, motions.moveToFirstNonWhiteSpaceCharacter(cm, head));
+            head = newPosition.end;
+        }
+        else if (insertAt == 'startOfSelectedArea') {
+            if (!vim.visualMode)
+                return;
+            if (!vim.visualBlock) {
+                if (sel.head.line < sel.anchor.line) {
+                    head = sel.head;
+                }
+                else {
+                    head = new Pos(sel.anchor.line, 0);
+                }
+            }
+            else {
+                head = new Pos(Math.min(sel.head.line, sel.anchor.line), Math.min(sel.head.ch, sel.anchor.ch));
+                height = Math.abs(sel.head.line - sel.anchor.line) + 1;
+            }
+        }
+        else if (insertAt == 'endOfSelectedArea') {
+            if (!vim.visualMode)
+                return;
+            if (!vim.visualBlock) {
+                if (sel.head.line >= sel.anchor.line) {
+                    head = offsetCursor(sel.head, 0, 1);
+                }
+                else {
+                    head = new Pos(sel.anchor.line, 0);
+                }
+            }
+            else {
+                head = new Pos(Math.min(sel.head.line, sel.anchor.line), Math.max(sel.head.ch, sel.anchor.ch) + 1);
+                height = Math.abs(sel.head.line - sel.anchor.line) + 1;
+            }
+        }
+        else if (insertAt == 'inplace') {
+            if (vim.visualMode) {
+                return;
+            }
+        }
+        else if (insertAt == 'lastEdit') {
+            head = getLastEditPos(cm) || head;
+        }
+        cm.setOption('disableInput', false);
+        if (actionArgs && actionArgs.replace) {
+            cm.toggleOverwrite(true);
+            cm.setOption('keyMap', 'vim-replace');
+            CodeMirror.signal(cm, "vim-mode-change", { mode: "replace" });
+        }
+        else {
+            cm.toggleOverwrite(false);
+            cm.setOption('keyMap', 'vim-insert');
+            CodeMirror.signal(cm, "vim-mode-change", { mode: "insert" });
+        }
+        if (!vimGlobalState.macroModeState.isPlaying) {
+            cm.on('change', onChange);
+            CodeMirror.on(cm.getInputField(), 'keydown', onKeyEventTargetKeyDown);
+        }
+        if (vim.visualMode) {
+            exitVisualMode(cm);
+        }
+        selectForInsert(cm, head, height);
+    },
+    toggleVisualMode: function (cm, actionArgs, vim) {
+        var repeat = actionArgs.repeat;
+        var anchor = cm.getCursor();
+        var head;
+        if (!vim.visualMode) {
+            vim.visualMode = true;
+            vim.visualLine = !!actionArgs.linewise;
+            vim.visualBlock = !!actionArgs.blockwise;
+            head = clipCursorToContent(cm, new Pos(anchor.line, anchor.ch + repeat - 1));
+            var newPosition = updateSelectionForSurrogateCharacters(cm, anchor, head);
+            vim.sel = {
+                anchor: newPosition.start,
+                head: newPosition.end
+            };
+            CodeMirror.signal(cm, "vim-mode-change", { mode: "visual", subMode: vim.visualLine ? "linewise" : vim.visualBlock ? "blockwise" : "" });
+            updateCmSelection(cm);
+            updateMark(cm, vim, '<', cursorMin(anchor, head));
+            updateMark(cm, vim, '>', cursorMax(anchor, head));
+        }
+        else if (vim.visualLine ^ actionArgs.linewise ||
+            vim.visualBlock ^ actionArgs.blockwise) {
+            vim.visualLine = !!actionArgs.linewise;
+            vim.visualBlock = !!actionArgs.blockwise;
+            CodeMirror.signal(cm, "vim-mode-change", { mode: "visual", subMode: vim.visualLine ? "linewise" : vim.visualBlock ? "blockwise" : "" });
+            updateCmSelection(cm);
+        }
+        else {
+            exitVisualMode(cm);
+        }
+    },
+    reselectLastSelection: function (cm, _actionArgs, vim) {
+        var lastSelection = vim.lastSelection;
+        if (vim.visualMode) {
+            updateLastSelection(cm, vim);
+        }
+        if (lastSelection) {
+            var anchor = lastSelection.anchorMark.find();
+            var head = lastSelection.headMark.find();
+            if (!anchor || !head) {
+                return;
+            }
+            vim.sel = {
+                anchor: anchor,
+                head: head
+            };
+            vim.visualMode = true;
+            vim.visualLine = lastSelection.visualLine;
+            vim.visualBlock = lastSelection.visualBlock;
+            updateCmSelection(cm);
+            updateMark(cm, vim, '<', cursorMin(anchor, head));
+            updateMark(cm, vim, '>', cursorMax(anchor, head));
+            CodeMirror.signal(cm, 'vim-mode-change', {
+                mode: 'visual',
+                subMode: vim.visualLine ? 'linewise' :
+                    vim.visualBlock ? 'blockwise' : ''
+            });
+        }
+    },
+    joinLines: function (cm, actionArgs, vim) {
+        var curStart, curEnd;
+        if (vim.visualMode) {
+            curStart = cm.getCursor('anchor');
+            curEnd = cm.getCursor('head');
+            if (cursorIsBefore(curEnd, curStart)) {
+                var tmp = curEnd;
+                curEnd = curStart;
+                curStart = tmp;
+            }
+            curEnd.ch = lineLength(cm, curEnd.line) - 1;
+        }
+        else {
+            var repeat = Math.max(actionArgs.repeat, 2);
+            curStart = cm.getCursor();
+            curEnd = clipCursorToContent(cm, new Pos(curStart.line + repeat - 1, Infinity));
+        }
+        var finalCh = 0;
+        for (var i = curStart.line; i < curEnd.line; i++) {
+            finalCh = lineLength(cm, curStart.line);
+            var text = '';
+            var nextStartCh = 0;
+            if (!actionArgs.keepSpaces) {
+                var nextLine = cm.getLine(curStart.line + 1);
+                nextStartCh = nextLine.search(/\S/);
+                if (nextStartCh == -1) {
+                    nextStartCh = nextLine.length;
+                }
+                else {
+                    text = " ";
+                }
+            }
+            cm.replaceRange(text, new Pos(curStart.line, finalCh), new Pos(curStart.line + 1, nextStartCh));
+        }
+        var curFinalPos = clipCursorToContent(cm, new Pos(curStart.line, finalCh));
+        if (vim.visualMode) {
+            exitVisualMode(cm, false);
+        }
+        cm.setCursor(curFinalPos);
+    },
+    newLineAndEnterInsertMode: function (cm, actionArgs, vim) {
+        vim.insertMode = true;
+        var insertAt = copyCursor(cm.getCursor());
+        if (insertAt.line === cm.firstLine() && !actionArgs.after) {
+            cm.replaceRange('\n', new Pos(cm.firstLine(), 0));
+            cm.setCursor(cm.firstLine(), 0);
+        }
+        else {
+            insertAt.line = (actionArgs.after) ? insertAt.line :
+                insertAt.line - 1;
+            insertAt.ch = lineLength(cm, insertAt.line);
+            cm.setCursor(insertAt);
+            var newlineFn = CodeMirror.commands.newlineAndIndentContinueComment ||
+                CodeMirror.commands.newlineAndIndent;
+            newlineFn(cm);
+        }
+        this.enterInsertMode(cm, { repeat: actionArgs.repeat }, vim);
+    },
+    paste: function (cm, actionArgs, vim) {
+        var _this = this;
+        var register = vimGlobalState.registerController.getRegister(actionArgs.registerName);
+        if (actionArgs.registerName === '+') {
+            navigator.clipboard.readText().then(function (value) {
+                _this.continuePaste(cm, actionArgs, vim, value, register);
+            });
+        }
+        else {
+            var text = register.toString();
+            this.continuePaste(cm, actionArgs, vim, text, register);
+        }
+    },
+    continuePaste: function (cm, actionArgs, vim, text, register) {
+        var cur = copyCursor(cm.getCursor());
+        if (!text) {
+            return;
+        }
+        if (actionArgs.matchIndent) {
+            var tabSize = cm.getOption("tabSize");
+            var whitespaceLength = function (str) {
+                var tabs = (str.split("\t").length - 1);
+                var spaces = (str.split(" ").length - 1);
+                return tabs * tabSize + spaces * 1;
+            };
+            var currentLine = cm.getLine(cm.getCursor().line);
+            var indent = whitespaceLength(currentLine.match(/^\s*/)[0]);
+            var chompedText = text.replace(/\n$/, '');
+            var wasChomped = text !== chompedText;
+            var firstIndent = whitespaceLength(text.match(/^\s*/)[0]);
+            var text = chompedText.replace(/^\s*/gm, function (wspace) {
+                var newIndent = indent + (whitespaceLength(wspace) - firstIndent);
+                if (newIndent < 0) {
+                    return "";
+                }
+                else if (cm.getOption("indentWithTabs")) {
+                    var quotient = Math.floor(newIndent / tabSize);
+                    return Array(quotient + 1).join('\t');
+                }
+                else {
+                    return Array(newIndent + 1).join(' ');
+                }
+            });
+            text += wasChomped ? "\n" : "";
+        }
+        if (actionArgs.repeat > 1) {
+            var text = Array(actionArgs.repeat + 1).join(text);
+        }
+        var linewise = register.linewise;
+        var blockwise = register.blockwise;
+        if (blockwise) {
+            text = text.split('\n');
+            if (linewise) {
+                text.pop();
+            }
+            for (var i = 0; i < text.length; i++) {
+                text[i] = (text[i] == '') ? ' ' : text[i];
+            }
+            cur.ch += actionArgs.after ? 1 : 0;
+            cur.ch = Math.min(lineLength(cm, cur.line), cur.ch);
+        }
+        else if (linewise) {
+            if (vim.visualMode) {
+                text = vim.visualLine ? text.slice(0, -1) : '\n' + text.slice(0, text.length - 1) + '\n';
+            }
+            else if (actionArgs.after) {
+                text = '\n' + text.slice(0, text.length - 1);
+                cur.ch = lineLength(cm, cur.line);
+            }
+            else {
+                cur.ch = 0;
+            }
+        }
+        else {
+            cur.ch += actionArgs.after ? 1 : 0;
+        }
+        var curPosFinal;
+        var idx;
+        if (vim.visualMode) {
+            vim.lastPastedText = text;
+            var lastSelectionCurEnd;
+            var selectedArea = getSelectedAreaRange(cm, vim);
+            var selectionStart = selectedArea[0];
+            var selectionEnd = selectedArea[1];
+            var selectedText = cm.getSelection();
+            var selections = cm.listSelections();
+            var emptyStrings = new Array(selections.length).join('1').split('1');
+            if (vim.lastSelection) {
+                lastSelectionCurEnd = vim.lastSelection.headMark.find();
+            }
+            vimGlobalState.registerController.unnamedRegister.setText(selectedText);
+            if (blockwise) {
+                cm.replaceSelections(emptyStrings);
+                selectionEnd = new Pos(selectionStart.line + text.length - 1, selectionStart.ch);
+                cm.setCursor(selectionStart);
+                selectBlock(cm, selectionEnd);
+                cm.replaceSelections(text);
+                curPosFinal = selectionStart;
+            }
+            else if (vim.visualBlock) {
+                cm.replaceSelections(emptyStrings);
+                cm.setCursor(selectionStart);
+                cm.replaceRange(text, selectionStart, selectionStart);
+                curPosFinal = selectionStart;
+            }
+            else {
+                cm.replaceRange(text, selectionStart, selectionEnd);
+                curPosFinal = cm.posFromIndex(cm.indexFromPos(selectionStart) + text.length - 1);
+            }
+            if (lastSelectionCurEnd) {
+                vim.lastSelection.headMark = cm.setBookmark(lastSelectionCurEnd);
+            }
+            if (linewise) {
+                curPosFinal.ch = 0;
+            }
+        }
+        else {
+            if (blockwise) {
+                cm.setCursor(cur);
+                for (var i = 0; i < text.length; i++) {
+                    var line = cur.line + i;
+                    if (line > cm.lastLine()) {
+                        cm.replaceRange('\n', new Pos(line, 0));
+                    }
+                    var lastCh = lineLength(cm, line);
+                    if (lastCh < cur.ch) {
+                        extendLineToColumn(cm, line, cur.ch);
+                    }
+                }
+                cm.setCursor(cur);
+                selectBlock(cm, new Pos(cur.line + text.length - 1, cur.ch));
+                cm.replaceSelections(text);
+                curPosFinal = cur;
+            }
+            else {
+                cm.replaceRange(text, cur);
+                if (linewise && actionArgs.after) {
+                    curPosFinal = new Pos(cur.line + 1, findFirstNonWhiteSpaceCharacter(cm.getLine(cur.line + 1)));
+                }
+                else if (linewise && !actionArgs.after) {
+                    curPosFinal = new Pos(cur.line, findFirstNonWhiteSpaceCharacter(cm.getLine(cur.line)));
+                }
+                else if (!linewise && actionArgs.after) {
+                    idx = cm.indexFromPos(cur);
+                    curPosFinal = cm.posFromIndex(idx + text.length - 1);
+                }
+                else {
+                    idx = cm.indexFromPos(cur);
+                    curPosFinal = cm.posFromIndex(idx + text.length);
+                }
+            }
+        }
+        if (vim.visualMode) {
+            exitVisualMode(cm, false);
+        }
+        cm.setCursor(curPosFinal);
+    },
+    undo: function (cm, actionArgs) {
+        cm.operation(function () {
+            repeatFn(cm, CodeMirror.commands.undo, actionArgs.repeat)();
+            cm.setCursor(clipCursorToContent(cm, cm.getCursor('start')));
+        });
+    },
+    redo: function (cm, actionArgs) {
+        repeatFn(cm, CodeMirror.commands.redo, actionArgs.repeat)();
+    },
+    setRegister: function (_cm, actionArgs, vim) {
+        vim.inputState.registerName = actionArgs.selectedCharacter;
+    },
+    setMark: function (cm, actionArgs, vim) {
+        var markName = actionArgs.selectedCharacter;
+        updateMark(cm, vim, markName, cm.getCursor());
+    },
+    replace: function (cm, actionArgs, vim) {
+        var replaceWith = actionArgs.selectedCharacter;
+        var curStart = cm.getCursor();
+        var replaceTo;
+        var curEnd;
+        var selections = cm.listSelections();
+        if (vim.visualMode) {
+            curStart = cm.getCursor('start');
+            curEnd = cm.getCursor('end');
+        }
+        else {
+            var line = cm.getLine(curStart.line);
+            replaceTo = curStart.ch + actionArgs.repeat;
+            if (replaceTo > line.length) {
+                replaceTo = line.length;
+            }
+            curEnd = new Pos(curStart.line, replaceTo);
+        }
+        var newPositions = updateSelectionForSurrogateCharacters(cm, curStart, curEnd);
+        curStart = newPositions.start;
+        curEnd = newPositions.end;
+        if (replaceWith == '\n') {
+            if (!vim.visualMode)
+                cm.replaceRange('', curStart, curEnd);
+            (CodeMirror.commands.newlineAndIndentContinueComment || CodeMirror.commands.newlineAndIndent)(cm);
+        }
+        else {
+            var replaceWithStr = cm.getRange(curStart, curEnd);
+            replaceWithStr = replaceWithStr.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, replaceWith);
+            replaceWithStr = replaceWithStr.replace(/[^\n]/g, replaceWith);
+            if (vim.visualBlock) {
+                var spaces = new Array(cm.getOption("tabSize") + 1).join(' ');
+                replaceWithStr = cm.getSelection();
+                replaceWithStr = replaceWithStr.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, replaceWith);
+                replaceWithStr = replaceWithStr.replace(/\t/g, spaces).replace(/[^\n]/g, replaceWith).split('\n');
+                cm.replaceSelections(replaceWithStr);
+            }
+            else {
+                cm.replaceRange(replaceWithStr, curStart, curEnd);
+            }
+            if (vim.visualMode) {
+                curStart = cursorIsBefore(selections[0].anchor, selections[0].head) ?
+                    selections[0].anchor : selections[0].head;
+                cm.setCursor(curStart);
+                exitVisualMode(cm, false);
+            }
+            else {
+                cm.setCursor(offsetCursor(curEnd, 0, -1));
+            }
+        }
+    },
+    incrementNumberToken: function (cm, actionArgs) {
+        var cur = cm.getCursor();
+        var lineStr = cm.getLine(cur.line);
+        var re = /(-?)(?:(0x)([\da-f]+)|(0b|0|)(\d+))/gi;
+        var match;
+        var start;
+        var end;
+        var numberStr;
+        while ((match = re.exec(lineStr)) !== null) {
+            start = match.index;
+            end = start + match[0].length;
+            if (cur.ch < end)
+                break;
+        }
+        if (!actionArgs.backtrack && (end <= cur.ch))
+            return;
+        if (match) {
+            var baseStr = match[2] || match[4];
+            var digits = match[3] || match[5];
+            var increment = actionArgs.increase ? 1 : -1;
+            var base = { '0b': 2, '0': 8, '': 10, '0x': 16 }[baseStr.toLowerCase()];
+            var number = parseInt(match[1] + digits, base) + (increment * actionArgs.repeat);
+            numberStr = number.toString(base);
+            var zeroPadding = baseStr ? new Array(digits.length - numberStr.length + 1 + match[1].length).join('0') : '';
+            if (numberStr.charAt(0) === '-') {
+                numberStr = '-' + baseStr + zeroPadding + numberStr.substr(1);
+            }
+            else {
+                numberStr = baseStr + zeroPadding + numberStr;
+            }
+            var from = new Pos(cur.line, start);
+            var to = new Pos(cur.line, end);
+            cm.replaceRange(numberStr, from, to);
+        }
+        else {
+            return;
+        }
+        cm.setCursor(new Pos(cur.line, start + numberStr.length - 1));
+    },
+    repeatLastEdit: function (cm, actionArgs, vim) {
+        var lastEditInputState = vim.lastEditInputState;
+        if (!lastEditInputState) {
+            return;
+        }
+        var repeat = actionArgs.repeat;
+        if (repeat && actionArgs.repeatIsExplicit) {
+            vim.lastEditInputState.repeatOverride = repeat;
+        }
+        else {
+            repeat = vim.lastEditInputState.repeatOverride || repeat;
+        }
+        repeatLastEdit(cm, vim, repeat, false /** repeatForInsert */);
+    },
+    indent: function (cm, actionArgs) {
+        cm.indentLine(cm.getCursor().line, actionArgs.indentRight);
+    },
+    exitInsertMode: exitInsertMode
+};
+function defineAction(name, fn) {
+    actions[name] = fn;
+}
+function clipCursorToContent(cm, cur, oldCur) {
+    var vim = cm.state.vim;
+    var includeLineBreak = vim.insertMode || vim.visualMode;
+    var line = Math.min(Math.max(cm.firstLine(), cur.line), cm.lastLine());
+    var text = cm.getLine(line);
+    var maxCh = text.length - 1 + !!includeLineBreak;
+    var ch = Math.min(Math.max(0, cur.ch), maxCh);
+    var charCode = text.charCodeAt(ch);
+    if (0xDC00 < charCode && charCode < 0xDFFF) {
+        var direction = 1;
+        if (oldCur && oldCur.line == line) {
+            if (oldCur.ch > ch) {
+                direction = -1;
+            }
+        }
+        ch += direction;
+        if (ch > maxCh)
+            ch -= 2;
+    }
+    return new Pos(line, ch);
+}
+function copyArgs(args) {
+    var ret = {};
+    for (var prop in args) {
+        if (args.hasOwnProperty(prop)) {
+            ret[prop] = args[prop];
+        }
+    }
+    return ret;
+}
+function offsetCursor(cur, offsetLine, offsetCh) {
+    if (typeof offsetLine === 'object') {
+        offsetCh = offsetLine.ch;
+        offsetLine = offsetLine.line;
+    }
+    return new Pos(cur.line + offsetLine, cur.ch + offsetCh);
+}
+function commandMatches(keys, keyMap, context, inputState) {
+    var match, partial = [], full = [];
+    for (var i = 0; i < keyMap.length; i++) {
+        var command = keyMap[i];
+        if (context == 'insert' && command.context != 'insert' ||
+            command.context && command.context != context ||
+            inputState.operator && command.type == 'action' ||
+            !(match = commandMatch(keys, command.keys))) {
+            continue;
+        }
+        if (match == 'partial') {
+            partial.push(command);
+        }
+        if (match == 'full') {
+            full.push(command);
+        }
+    }
+    return {
+        partial: partial.length && partial,
+        full: full.length && full
+    };
+}
+function commandMatch(pressed, mapped) {
+    if (mapped.slice(-11) == '<character>') {
+        var prefixLen = mapped.length - 11;
+        var pressedPrefix = pressed.slice(0, prefixLen);
+        var mappedPrefix = mapped.slice(0, prefixLen);
+        return pressedPrefix == mappedPrefix && pressed.length > prefixLen ? 'full' :
+            mappedPrefix.indexOf(pressedPrefix) == 0 ? 'partial' : false;
+    }
+    else {
+        return pressed == mapped ? 'full' :
+            mapped.indexOf(pressed) == 0 ? 'partial' : false;
+    }
+}
+function lastChar(keys) {
+    var match = /^.*(<[^>]+>)$/.exec(keys);
+    var selectedCharacter = match ? match[1] : keys.slice(-1);
+    if (selectedCharacter.length > 1) {
+        switch (selectedCharacter) {
+            case '<CR>':
+                selectedCharacter = '\n';
+                break;
+            case '<Space>':
+                selectedCharacter = ' ';
+                break;
+            default:
+                selectedCharacter = '';
+                break;
+        }
+    }
+    return selectedCharacter;
+}
+function repeatFn(cm, fn, repeat) {
+    return function () {
+        for (var i = 0; i < repeat; i++) {
+            fn(cm);
+        }
+    };
+}
+function copyCursor(cur) {
+    return new Pos(cur.line, cur.ch);
+}
+function cursorEqual(cur1, cur2) {
+    return cur1.ch == cur2.ch && cur1.line == cur2.line;
+}
+function cursorIsBefore(cur1, cur2) {
+    if (cur1.line < cur2.line) {
+        return true;
+    }
+    if (cur1.line == cur2.line && cur1.ch < cur2.ch) {
+        return true;
+    }
+    return false;
+}
+function cursorMin(cur1, cur2) {
+    if (arguments.length > 2) {
+        cur2 = cursorMin.apply(undefined, Array.prototype.slice.call(arguments, 1));
+    }
+    return cursorIsBefore(cur1, cur2) ? cur1 : cur2;
+}
+function cursorMax(cur1, cur2) {
+    if (arguments.length > 2) {
+        cur2 = cursorMax.apply(undefined, Array.prototype.slice.call(arguments, 1));
+    }
+    return cursorIsBefore(cur1, cur2) ? cur2 : cur1;
+}
+function cursorIsBetween(cur1, cur2, cur3) {
+    var cur1before2 = cursorIsBefore(cur1, cur2);
+    var cur2before3 = cursorIsBefore(cur2, cur3);
+    return cur1before2 && cur2before3;
+}
+function lineLength(cm, lineNum) {
+    return cm.getLine(lineNum).length;
+}
+function trim(s) {
+    if (s.trim) {
+        return s.trim();
+    }
+    return s.replace(/^\s+|\s+$/g, '');
+}
+function escapeRegex(s) {
+    return s.replace(/([.?*+$\[\]\/\\(){}|\-])/g, '\\$1');
+}
+function extendLineToColumn(cm, lineNum, column) {
+    var endCh = lineLength(cm, lineNum);
+    var spaces = new Array(column - endCh + 1).join(' ');
+    cm.setCursor(new Pos(lineNum, endCh));
+    cm.replaceRange(spaces, cm.getCursor());
+}
+function selectBlock(cm, selectionEnd) {
+    var selections = [], ranges = cm.listSelections();
+    var head = copyCursor(cm.clipPos(selectionEnd));
+    var isClipped = !cursorEqual(selectionEnd, head);
+    var curHead = cm.getCursor('head');
+    var primIndex = getIndex(ranges, curHead);
+    var wasClipped = cursorEqual(ranges[primIndex].head, ranges[primIndex].anchor);
+    var max = ranges.length - 1;
+    var index = max - primIndex > primIndex ? max : 0;
+    var base = ranges[index].anchor;
+    var firstLine = Math.min(base.line, head.line);
+    var lastLine = Math.max(base.line, head.line);
+    var baseCh = base.ch, headCh = head.ch;
+    var dir = ranges[index].head.ch - baseCh;
+    var newDir = headCh - baseCh;
+    if (dir > 0 && newDir <= 0) {
+        baseCh++;
+        if (!isClipped) {
+            headCh--;
+        }
+    }
+    else if (dir < 0 && newDir >= 0) {
+        baseCh--;
+        if (!wasClipped) {
+            headCh++;
+        }
+    }
+    else if (dir < 0 && newDir == -1) {
+        baseCh--;
+        headCh++;
+    }
+    for (var line = firstLine; line <= lastLine; line++) {
+        var range = { anchor: new Pos(line, baseCh), head: new Pos(line, headCh) };
+        selections.push(range);
+    }
+    cm.setSelections(selections);
+    selectionEnd.ch = headCh;
+    base.ch = baseCh;
+    return base;
+}
+function selectForInsert(cm, head, height) {
+    var sel = [];
+    for (var i = 0; i < height; i++) {
+        var lineHead = offsetCursor(head, i, 0);
+        sel.push({ anchor: lineHead, head: lineHead });
+    }
+    cm.setSelections(sel, 0);
+}
+function getIndex(ranges, cursor, end) {
+    for (var i = 0; i < ranges.length; i++) {
+        var atAnchor = end != 'head' && cursorEqual(ranges[i].anchor, cursor);
+        var atHead = end != 'anchor' && cursorEqual(ranges[i].head, cursor);
+        if (atAnchor || atHead) {
+            return i;
+        }
+    }
+    return -1;
+}
+function getSelectedAreaRange(cm, vim) {
+    var lastSelection = vim.lastSelection;
+    var getCurrentSelectedAreaRange = function () {
+        var selections = cm.listSelections();
+        var start = selections[0];
+        var end = selections[selections.length - 1];
+        var selectionStart = cursorIsBefore(start.anchor, start.head) ? start.anchor : start.head;
+        var selectionEnd = cursorIsBefore(end.anchor, end.head) ? end.head : end.anchor;
+        return [selectionStart, selectionEnd];
+    };
+    var getLastSelectedAreaRange = function () {
+        var selectionStart = cm.getCursor();
+        var selectionEnd = cm.getCursor();
+        var block = lastSelection.visualBlock;
+        if (block) {
+            var width = block.width;
+            var height = block.height;
+            selectionEnd = new Pos(selectionStart.line + height, selectionStart.ch + width);
+            var selections = [];
+            for (var i = selectionStart.line; i < selectionEnd.line; i++) {
+                var anchor = new Pos(i, selectionStart.ch);
+                var head = new Pos(i, selectionEnd.ch);
+                var range = { anchor: anchor, head: head };
+                selections.push(range);
+            }
+            cm.setSelections(selections);
+        }
+        else {
+            var start = lastSelection.anchorMark.find();
+            var end = lastSelection.headMark.find();
+            var line = end.line - start.line;
+            var ch = end.ch - start.ch;
+            selectionEnd = { line: selectionEnd.line + line, ch: line ? selectionEnd.ch : ch + selectionEnd.ch };
+            if (lastSelection.visualLine) {
+                selectionStart = new Pos(selectionStart.line, 0);
+                selectionEnd = new Pos(selectionEnd.line, lineLength(cm, selectionEnd.line));
+            }
+            cm.setSelection(selectionStart, selectionEnd);
+        }
+        return [selectionStart, selectionEnd];
+    };
+    if (!vim.visualMode) {
+        return getLastSelectedAreaRange();
+    }
+    else {
+        return getCurrentSelectedAreaRange();
+    }
+}
+function updateLastSelection(cm, vim) {
+    var anchor = vim.sel.anchor;
+    var head = vim.sel.head;
+    if (vim.lastPastedText) {
+        head = cm.posFromIndex(cm.indexFromPos(anchor) + vim.lastPastedText.length);
+        vim.lastPastedText = null;
+    }
+    vim.lastSelection = { 'anchorMark': cm.setBookmark(anchor),
+        'headMark': cm.setBookmark(head),
+        'anchor': copyCursor(anchor),
+        'head': copyCursor(head),
+        'visualMode': vim.visualMode,
+        'visualLine': vim.visualLine,
+        'visualBlock': vim.visualBlock };
+}
+function expandSelection(cm, start, end) {
+    var sel = cm.state.vim.sel;
+    var head = sel.head;
+    var anchor = sel.anchor;
+    var tmp;
+    if (cursorIsBefore(end, start)) {
+        tmp = end;
+        end = start;
+        start = tmp;
+    }
+    if (cursorIsBefore(head, anchor)) {
+        head = cursorMin(start, head);
+        anchor = cursorMax(anchor, end);
+    }
+    else {
+        anchor = cursorMin(start, anchor);
+        head = cursorMax(head, end);
+        head = offsetCursor(head, 0, -1);
+        if (head.ch == -1 && head.line != cm.firstLine()) {
+            head = new Pos(head.line - 1, lineLength(cm, head.line - 1));
+        }
+    }
+    return [anchor, head];
+}
+function updateCmSelection(cm, sel, mode) {
+    var vim = cm.state.vim;
+    sel = sel || vim.sel;
+    var mode = mode ||
+        vim.visualLine ? 'line' : vim.visualBlock ? 'block' : 'char';
+    var cmSel = makeCmSelection(cm, sel, mode);
+    cm.setSelections(cmSel.ranges, cmSel.primary);
+}
+function makeCmSelection(cm, sel, mode, exclusive) {
+    var head = copyCursor(sel.head);
+    var anchor = copyCursor(sel.anchor);
+    if (mode == 'char') {
+        var headOffset = !exclusive && !cursorIsBefore(sel.head, sel.anchor) ? 1 : 0;
+        var anchorOffset = cursorIsBefore(sel.head, sel.anchor) ? 1 : 0;
+        head = offsetCursor(sel.head, 0, headOffset);
+        anchor = offsetCursor(sel.anchor, 0, anchorOffset);
+        return {
+            ranges: [{ anchor: anchor, head: head }],
+            primary: 0
+        };
+    }
+    else if (mode == 'line') {
+        if (!cursorIsBefore(sel.head, sel.anchor)) {
+            anchor.ch = 0;
+            var lastLine = cm.lastLine();
+            if (head.line > lastLine) {
+                head.line = lastLine;
+            }
+            head.ch = lineLength(cm, head.line);
+        }
+        else {
+            head.ch = 0;
+            anchor.ch = lineLength(cm, anchor.line);
+        }
+        return {
+            ranges: [{ anchor: anchor, head: head }],
+            primary: 0
+        };
+    }
+    else if (mode == 'block') {
+        var top = Math.min(anchor.line, head.line), fromCh = anchor.ch, bottom = Math.max(anchor.line, head.line), toCh = head.ch;
+        if (fromCh < toCh) {
+            toCh += 1;
+        }
+        else {
+            fromCh += 1;
+        }
+        ;
+        var height = bottom - top + 1;
+        var primary = head.line == top ? 0 : height - 1;
+        var ranges = [];
+        for (var i = 0; i < height; i++) {
+            ranges.push({
+                anchor: new Pos(top + i, fromCh),
+                head: new Pos(top + i, toCh)
+            });
+        }
+        return {
+            ranges: ranges,
+            primary: primary
+        };
+    }
+}
+function getHead(cm) {
+    var cur = cm.getCursor('head');
+    if (cm.getSelection().length == 1) {
+        cur = cursorMin(cur, cm.getCursor('anchor'));
+    }
+    return cur;
+}
+function exitVisualMode(cm, moveHead) {
+    var vim = cm.state.vim;
+    if (moveHead !== false) {
+        cm.setCursor(clipCursorToContent(cm, vim.sel.head));
+    }
+    updateLastSelection(cm, vim);
+    vim.visualMode = false;
+    vim.visualLine = false;
+    vim.visualBlock = false;
+    if (!vim.insertMode)
+        CodeMirror.signal(cm, "vim-mode-change", { mode: "normal" });
+}
+function clipToLine(cm, curStart, curEnd) {
+    var selection = cm.getRange(curStart, curEnd);
+    if (/\n\s*$/.test(selection)) {
+        var lines = selection.split('\n');
+        lines.pop();
+        var line;
+        for (var line = lines.pop(); lines.length > 0 && line && isWhiteSpaceString(line); line = lines.pop()) {
+            curEnd.line--;
+            curEnd.ch = 0;
+        }
+        if (line) {
+            curEnd.line--;
+            curEnd.ch = lineLength(cm, curEnd.line);
+        }
+        else {
+            curEnd.ch = 0;
+        }
+    }
+}
+function expandSelectionToLine(_cm, curStart, curEnd) {
+    curStart.ch = 0;
+    curEnd.ch = 0;
+    curEnd.line++;
+}
+function findFirstNonWhiteSpaceCharacter(text) {
+    if (!text) {
+        return 0;
+    }
+    var firstNonWS = text.search(/\S/);
+    return firstNonWS == -1 ? text.length : firstNonWS;
+}
+function expandWordUnderCursor(cm, inclusive, _forward, bigWord, noSymbol) {
+    var cur = getHead(cm);
+    var line = cm.getLine(cur.line);
+    var idx = cur.ch;
+    var test = noSymbol ? wordCharTest[0] : bigWordCharTest[0];
+    while (!test(line.charAt(idx))) {
+        idx++;
+        if (idx >= line.length) {
+            return null;
+        }
+    }
+    if (bigWord) {
+        test = bigWordCharTest[0];
+    }
+    else {
+        test = wordCharTest[0];
+        if (!test(line.charAt(idx))) {
+            test = wordCharTest[1];
+        }
+    }
+    var end = idx, start = idx;
+    while (test(line.charAt(end)) && end < line.length) {
+        end++;
+    }
+    while (test(line.charAt(start)) && start >= 0) {
+        start--;
+    }
+    start++;
+    if (inclusive) {
+        var wordEnd = end;
+        while (/\s/.test(line.charAt(end)) && end < line.length) {
+            end++;
+        }
+        if (wordEnd == end) {
+            var wordStart = start;
+            while (/\s/.test(line.charAt(start - 1)) && start > 0) {
+                start--;
+            }
+            if (!start) {
+                start = wordStart;
+            }
+        }
+    }
+    return { start: new Pos(cur.line, start), end: new Pos(cur.line, end) };
+}
+function expandTagUnderCursor(cm, head, inclusive) {
+    var cur = head;
+    if (!CodeMirror.findMatchingTag || !CodeMirror.findEnclosingTag) {
+        return { start: cur, end: cur };
+    }
+    var tags = CodeMirror.findMatchingTag(cm, head) || CodeMirror.findEnclosingTag(cm, head);
+    if (!tags || !tags.open || !tags.close) {
+        return { start: cur, end: cur };
+    }
+    if (inclusive) {
+        return { start: tags.open.from, end: tags.close.to };
+    }
+    return { start: tags.open.to, end: tags.close.from };
+}
+function recordJumpPosition(cm, oldCur, newCur) {
+    if (!cursorEqual(oldCur, newCur)) {
+        vimGlobalState.jumpList.add(cm, oldCur, newCur);
+    }
+}
+function recordLastCharacterSearch(increment, args) {
+    vimGlobalState.lastCharacterSearch.increment = increment;
+    vimGlobalState.lastCharacterSearch.forward = args.forward;
+    vimGlobalState.lastCharacterSearch.selectedCharacter = args.selectedCharacter;
+}
+var symbolToMode = {
+    '(': 'bracket', ')': 'bracket', '{': 'bracket', '}': 'bracket',
+    '[': 'section', ']': 'section',
+    '*': 'comment', '/': 'comment',
+    'm': 'method', 'M': 'method',
+    '#': 'preprocess'
+};
+var findSymbolModes = {
+    bracket: {
+        isComplete: function (state) {
+            if (state.nextCh === state.symb) {
+                state.depth++;
+                if (state.depth >= 1)
+                    return true;
+            }
+            else if (state.nextCh === state.reverseSymb) {
+                state.depth--;
+            }
+            return false;
+        }
+    },
+    section: {
+        init: function (state) {
+            state.curMoveThrough = true;
+            state.symb = (state.forward ? ']' : '[') === state.symb ? '{' : '}';
+        },
+        isComplete: function (state) {
+            return state.index === 0 && state.nextCh === state.symb;
+        }
+    },
+    comment: {
+        isComplete: function (state) {
+            var found = state.lastCh === '*' && state.nextCh === '/';
+            state.lastCh = state.nextCh;
+            return found;
+        }
+    },
+    method: {
+        init: function (state) {
+            state.symb = (state.symb === 'm' ? '{' : '}');
+            state.reverseSymb = state.symb === '{' ? '}' : '{';
+        },
+        isComplete: function (state) {
+            if (state.nextCh === state.symb)
+                return true;
+            return false;
+        }
+    },
+    preprocess: {
+        init: function (state) {
+            state.index = 0;
+        },
+        isComplete: function (state) {
+            if (state.nextCh === '#') {
+                var token = state.lineText.match(/^#(\w+)/)[1];
+                if (token === 'endif') {
+                    if (state.forward && state.depth === 0) {
+                        return true;
+                    }
+                    state.depth++;
+                }
+                else if (token === 'if') {
+                    if (!state.forward && state.depth === 0) {
+                        return true;
+                    }
+                    state.depth--;
+                }
+                if (token === 'else' && state.depth === 0)
+                    return true;
+            }
+            return false;
+        }
+    }
+};
+function findSymbol(cm, repeat, forward, symb) {
+    var cur = copyCursor(cm.getCursor());
+    var increment = forward ? 1 : -1;
+    var endLine = forward ? cm.lineCount() : -1;
+    var curCh = cur.ch;
+    var line = cur.line;
+    var lineText = cm.getLine(line);
+    var state = {
+        lineText: lineText,
+        nextCh: lineText.charAt(curCh),
+        lastCh: null,
+        index: curCh,
+        symb: symb,
+        reverseSymb: (forward ? { ')': '(', '}': '{' } : { '(': ')', '{': '}' })[symb],
+        forward: forward,
+        depth: 0,
+        curMoveThrough: false
+    };
+    var mode = symbolToMode[symb];
+    if (!mode)
+        return cur;
+    var init = findSymbolModes[mode].init;
+    var isComplete = findSymbolModes[mode].isComplete;
+    if (init) {
+        init(state);
+    }
+    while (line !== endLine && repeat) {
+        state.index += increment;
+        state.nextCh = state.lineText.charAt(state.index);
+        if (!state.nextCh) {
+            line += increment;
+            state.lineText = cm.getLine(line) || '';
+            if (increment > 0) {
+                state.index = 0;
+            }
+            else {
+                var lineLen = state.lineText.length;
+                state.index = (lineLen > 0) ? (lineLen - 1) : 0;
+            }
+            state.nextCh = state.lineText.charAt(state.index);
+        }
+        if (isComplete(state)) {
+            cur.line = line;
+            cur.ch = state.index;
+            repeat--;
+        }
+    }
+    if (state.nextCh || state.curMoveThrough) {
+        return new Pos(line, state.index);
+    }
+    return cur;
+}
+function findWord(cm, cur, forward, bigWord, emptyLineIsWord) {
+    var lineNum = cur.line;
+    var pos = cur.ch;
+    var line = cm.getLine(lineNum);
+    var dir = forward ? 1 : -1;
+    var charTests = bigWord ? bigWordCharTest : wordCharTest;
+    if (emptyLineIsWord && line == '') {
+        lineNum += dir;
+        line = cm.getLine(lineNum);
+        if (!isLine(cm, lineNum)) {
+            return null;
+        }
+        pos = (forward) ? 0 : line.length;
+    }
+    while (true) {
+        if (emptyLineIsWord && line == '') {
+            return { from: 0, to: 0, line: lineNum };
+        }
+        var stop = (dir > 0) ? line.length : -1;
+        var wordStart = stop, wordEnd = stop;
+        while (pos != stop) {
+            var foundWord = false;
+            for (var i = 0; i < charTests.length && !foundWord; ++i) {
+                if (charTests[i](line.charAt(pos))) {
+                    wordStart = pos;
+                    while (pos != stop && charTests[i](line.charAt(pos))) {
+                        pos += dir;
+                    }
+                    wordEnd = pos;
+                    foundWord = wordStart != wordEnd;
+                    if (wordStart == cur.ch && lineNum == cur.line &&
+                        wordEnd == wordStart + dir) {
+                        continue;
+                    }
+                    else {
+                        return {
+                            from: Math.min(wordStart, wordEnd + 1),
+                            to: Math.max(wordStart, wordEnd),
+                            line: lineNum
+                        };
+                    }
+                }
+            }
+            if (!foundWord) {
+                pos += dir;
+            }
+        }
+        lineNum += dir;
+        if (!isLine(cm, lineNum)) {
+            return null;
+        }
+        line = cm.getLine(lineNum);
+        pos = (dir > 0) ? 0 : line.length;
+    }
+}
+function moveToWord(cm, cur, repeat, forward, wordEnd, bigWord) {
+    var curStart = copyCursor(cur);
+    var words = [];
+    if (forward && !wordEnd || !forward && wordEnd) {
+        repeat++;
+    }
+    var emptyLineIsWord = !(forward && wordEnd);
+    for (var i = 0; i < repeat; i++) {
+        var word = findWord(cm, cur, forward, bigWord, emptyLineIsWord);
+        if (!word) {
+            var eodCh = lineLength(cm, cm.lastLine());
+            words.push(forward
+                ? { line: cm.lastLine(), from: eodCh, to: eodCh }
+                : { line: 0, from: 0, to: 0 });
+            break;
+        }
+        words.push(word);
+        cur = new Pos(word.line, forward ? (word.to - 1) : word.from);
+    }
+    var shortCircuit = words.length != repeat;
+    var firstWord = words[0];
+    var lastWord = words.pop();
+    if (forward && !wordEnd) {
+        if (!shortCircuit && (firstWord.from != curStart.ch || firstWord.line != curStart.line)) {
+            lastWord = words.pop();
+        }
+        return new Pos(lastWord.line, lastWord.from);
+    }
+    else if (forward && wordEnd) {
+        return new Pos(lastWord.line, lastWord.to - 1);
+    }
+    else if (!forward && wordEnd) {
+        if (!shortCircuit && (firstWord.to != curStart.ch || firstWord.line != curStart.line)) {
+            lastWord = words.pop();
+        }
+        return new Pos(lastWord.line, lastWord.to);
+    }
+    else {
+        return new Pos(lastWord.line, lastWord.from);
+    }
+}
+function moveToEol(cm, head, motionArgs, vim, keepHPos) {
+    var cur = head;
+    var retval = new Pos(cur.line + motionArgs.repeat - 1, Infinity);
+    var end = cm.clipPos(retval);
+    end.ch--;
+    if (!keepHPos) {
+        vim.lastHPos = Infinity;
+        vim.lastHSPos = cm.charCoords(end, 'div').left;
+    }
+    return retval;
+}
+function moveToCharacter(cm, repeat, forward, character) {
+    var cur = cm.getCursor();
+    var start = cur.ch;
+    var idx;
+    for (var i = 0; i < repeat; i++) {
+        var line = cm.getLine(cur.line);
+        idx = charIdxInLine(start, line, character, forward, true);
+        if (idx == -1) {
+            return null;
+        }
+        start = idx;
+    }
+    return new Pos(cm.getCursor().line, idx);
+}
+function moveToColumn(cm, repeat) {
+    var line = cm.getCursor().line;
+    return clipCursorToContent(cm, new Pos(line, repeat - 1));
+}
+function updateMark(cm, vim, markName, pos) {
+    if (!inArray(markName, validMarks)) {
+        return;
+    }
+    if (vim.marks[markName]) {
+        vim.marks[markName].clear();
+    }
+    vim.marks[markName] = cm.setBookmark(pos);
+}
+function charIdxInLine(start, line, character, forward, includeChar) {
+    var idx;
+    if (forward) {
+        idx = line.indexOf(character, start + 1);
+        if (idx != -1 && !includeChar) {
+            idx -= 1;
+        }
+    }
+    else {
+        idx = line.lastIndexOf(character, start - 1);
+        if (idx != -1 && !includeChar) {
+            idx += 1;
+        }
+    }
+    return idx;
+}
+function findParagraph(cm, head, repeat, dir, inclusive) {
+    var line = head.line;
+    var min = cm.firstLine();
+    var max = cm.lastLine();
+    var start, end, i = line;
+    function isEmpty(i) { return !/\S/.test(cm.getLine(i)); } // ace_patch
+    function isBoundary(i, dir, any) {
+        if (any) {
+            return isEmpty(i) != isEmpty(i + dir);
+        }
+        return !isEmpty(i) && isEmpty(i + dir);
+    }
+    function skipFold(i) {
+        dir = dir > 0 ? 1 : -1;
+        var foldLine = cm.ace.session.getFoldLine(i);
+        if (foldLine) {
+            if (i + dir > foldLine.start.row && i + dir < foldLine.end.row)
+                dir = (dir > 0 ? foldLine.end.row : foldLine.start.row) - i;
+        }
+    }
+    if (dir) {
+        while (min <= i && i <= max && repeat > 0) {
+            skipFold(i);
+            if (isBoundary(i, dir)) {
+                repeat--;
+            }
+            i += dir;
+        }
+        return new Pos(i, 0);
+    }
+    var vim = cm.state.vim;
+    if (vim.visualLine && isBoundary(line, 1, true)) {
+        var anchor = vim.sel.anchor;
+        if (isBoundary(anchor.line, -1, true)) {
+            if (!inclusive || anchor.line != line) {
+                line += 1;
+            }
+        }
+    }
+    var startState = isEmpty(line);
+    for (i = line; i <= max && repeat; i++) {
+        if (isBoundary(i, 1, true)) {
+            if (!inclusive || isEmpty(i) != startState) {
+                repeat--;
+            }
+        }
+    }
+    end = new Pos(i, 0);
+    if (i > max && !startState) {
+        startState = true;
+    }
+    else {
+        inclusive = false;
+    }
+    for (i = line; i > min; i--) {
+        if (!inclusive || isEmpty(i) == startState || i == line) {
+            if (isBoundary(i, -1, true)) {
+                break;
+            }
+        }
+    }
+    start = new Pos(i, 0);
+    return { start: start, end: end };
+}
+function getSentence(cm, cur, repeat, dir, inclusive /*includes whitespace*/) {
+    function nextChar(curr) {
+        if (curr.pos + curr.dir < 0 || curr.pos + curr.dir >= curr.line.length) {
+            curr.line = null;
+        }
+        else {
+            curr.pos += curr.dir;
+        }
+    }
+    function forward(cm, ln, pos, dir) {
+        var line = cm.getLine(ln);
+        var curr = {
+            line: line,
+            ln: ln,
+            pos: pos,
+            dir: dir,
+        };
+        if (curr.line === "") {
+            return { ln: curr.ln, pos: curr.pos };
+        }
+        var lastSentencePos = curr.pos;
+        nextChar(curr);
+        while (curr.line !== null) {
+            lastSentencePos = curr.pos;
+            if (isEndOfSentenceSymbol(curr.line[curr.pos])) {
+                if (!inclusive) {
+                    return { ln: curr.ln, pos: curr.pos + 1 };
+                }
+                else {
+                    nextChar(curr);
+                    while (curr.line !== null) {
+                        if (isWhiteSpaceString(curr.line[curr.pos])) {
+                            lastSentencePos = curr.pos;
+                            nextChar(curr);
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                    return { ln: curr.ln, pos: lastSentencePos + 1 };
+                }
+            }
+            nextChar(curr);
+        }
+        return { ln: curr.ln, pos: lastSentencePos + 1 };
+    }
+    function reverse(cm, ln, pos, dir) {
+        var line = cm.getLine(ln);
+        var curr = {
+            line: line,
+            ln: ln,
+            pos: pos,
+            dir: dir,
+        };
+        if (curr.line === "") {
+            return { ln: curr.ln, pos: curr.pos };
+        }
+        var lastSentencePos = curr.pos;
+        nextChar(curr);
+        while (curr.line !== null) {
+            if (!isWhiteSpaceString(curr.line[curr.pos]) && !isEndOfSentenceSymbol(curr.line[curr.pos])) {
+                lastSentencePos = curr.pos;
+            }
+            else if (isEndOfSentenceSymbol(curr.line[curr.pos])) {
+                if (!inclusive) {
+                    return { ln: curr.ln, pos: lastSentencePos };
+                }
+                else {
+                    if (isWhiteSpaceString(curr.line[curr.pos + 1])) {
+                        return { ln: curr.ln, pos: curr.pos + 1 };
+                    }
+                    else {
+                        return { ln: curr.ln, pos: lastSentencePos };
+                    }
+                }
+            }
+            nextChar(curr);
+        }
+        curr.line = line;
+        if (inclusive && isWhiteSpaceString(curr.line[curr.pos])) {
+            return { ln: curr.ln, pos: curr.pos };
+        }
+        else {
+            return { ln: curr.ln, pos: lastSentencePos };
+        }
+    }
+    var curr_index = {
+        ln: cur.line,
+        pos: cur.ch,
+    };
+    while (repeat > 0) {
+        if (dir < 0) {
+            curr_index = reverse(cm, curr_index.ln, curr_index.pos, dir);
+        }
+        else {
+            curr_index = forward(cm, curr_index.ln, curr_index.pos, dir);
+        }
+        repeat--;
+    }
+    return new Pos(curr_index.ln, curr_index.pos);
+}
+function findSentence(cm, cur, repeat, dir) {
+    function nextChar(cm, idx) {
+        if (idx.pos + idx.dir < 0 || idx.pos + idx.dir >= idx.line.length) {
+            idx.ln += idx.dir;
+            if (!isLine(cm, idx.ln)) {
+                idx.line = null;
+                idx.ln = null;
+                idx.pos = null;
+                return;
+            }
+            idx.line = cm.getLine(idx.ln);
+            idx.pos = (idx.dir > 0) ? 0 : idx.line.length - 1;
+        }
+        else {
+            idx.pos += idx.dir;
+        }
+    }
+    function forward(cm, ln, pos, dir) {
+        var line = cm.getLine(ln);
+        var stop = (line === "");
+        var curr = {
+            line: line,
+            ln: ln,
+            pos: pos,
+            dir: dir,
+        };
+        var last_valid = {
+            ln: curr.ln,
+            pos: curr.pos,
+        };
+        var skip_empty_lines = (curr.line === "");
+        nextChar(cm, curr);
+        while (curr.line !== null) {
+            last_valid.ln = curr.ln;
+            last_valid.pos = curr.pos;
+            if (curr.line === "" && !skip_empty_lines) {
+                return { ln: curr.ln, pos: curr.pos, };
+            }
+            else if (stop && curr.line !== "" && !isWhiteSpaceString(curr.line[curr.pos])) {
+                return { ln: curr.ln, pos: curr.pos, };
+            }
+            else if (isEndOfSentenceSymbol(curr.line[curr.pos])
+                && !stop
+                && (curr.pos === curr.line.length - 1
+                    || isWhiteSpaceString(curr.line[curr.pos + 1]))) {
+                stop = true;
+            }
+            nextChar(cm, curr);
+        }
+        var line = cm.getLine(last_valid.ln);
+        last_valid.pos = 0;
+        for (var i = line.length - 1; i >= 0; --i) {
+            if (!isWhiteSpaceString(line[i])) {
+                last_valid.pos = i;
+                break;
+            }
+        }
+        return last_valid;
+    }
+    function reverse(cm, ln, pos, dir) {
+        var line = cm.getLine(ln);
+        var curr = {
+            line: line,
+            ln: ln,
+            pos: pos,
+            dir: dir,
+        };
+        var last_valid = {
+            ln: curr.ln,
+            pos: null,
+        };
+        var skip_empty_lines = (curr.line === "");
+        nextChar(cm, curr);
+        while (curr.line !== null) {
+            if (curr.line === "" && !skip_empty_lines) {
+                if (last_valid.pos !== null) {
+                    return last_valid;
+                }
+                else {
+                    return { ln: curr.ln, pos: curr.pos };
+                }
+            }
+            else if (isEndOfSentenceSymbol(curr.line[curr.pos])
+                && last_valid.pos !== null
+                && !(curr.ln === last_valid.ln && curr.pos + 1 === last_valid.pos)) {
+                return last_valid;
+            }
+            else if (curr.line !== "" && !isWhiteSpaceString(curr.line[curr.pos])) {
+                skip_empty_lines = false;
+                last_valid = { ln: curr.ln, pos: curr.pos };
+            }
+            nextChar(cm, curr);
+        }
+        var line = cm.getLine(last_valid.ln);
+        last_valid.pos = 0;
+        for (var i = 0; i < line.length; ++i) {
+            if (!isWhiteSpaceString(line[i])) {
+                last_valid.pos = i;
+                break;
+            }
+        }
+        return last_valid;
+    }
+    var curr_index = {
+        ln: cur.line,
+        pos: cur.ch,
+    };
+    while (repeat > 0) {
+        if (dir < 0) {
+            curr_index = reverse(cm, curr_index.ln, curr_index.pos, dir);
+        }
+        else {
+            curr_index = forward(cm, curr_index.ln, curr_index.pos, dir);
+        }
+        repeat--;
+    }
+    return new Pos(curr_index.ln, curr_index.pos);
+}
+function selectCompanionObject(cm, head, symb, inclusive) {
+    var cur = head, start, end;
+    var bracketRegexp = ({
+        '(': /[()]/, ')': /[()]/,
+        '[': /[[\]]/, ']': /[[\]]/,
+        '{': /[{}]/, '}': /[{}]/,
+        '<': /[<>]/, '>': /[<>]/
+    })[symb];
+    var openSym = ({
+        '(': '(', ')': '(',
+        '[': '[', ']': '[',
+        '{': '{', '}': '{',
+        '<': '<', '>': '<'
+    })[symb];
+    var curChar = cm.getLine(cur.line).charAt(cur.ch);
+    var offset = curChar === openSym ? 1 : 0;
+    start = cm.scanForBracket(new Pos(cur.line, cur.ch + offset), -1, undefined, { 'bracketRegex': bracketRegexp });
+    end = cm.scanForBracket(new Pos(cur.line, cur.ch + offset), 1, undefined, { 'bracketRegex': bracketRegexp });
+    if (!start || !end) {
+        return { start: cur, end: cur };
+    }
+    start = start.pos;
+    end = end.pos;
+    if ((start.line == end.line && start.ch > end.ch)
+        || (start.line > end.line)) {
+        var tmp = start;
+        start = end;
+        end = tmp;
+    }
+    if (inclusive) {
+        end.ch += 1;
+    }
+    else {
+        start.ch += 1;
+    }
+    return { start: start, end: end };
+}
+function findBeginningAndEnd(cm, head, symb, inclusive) {
+    var cur = copyCursor(head);
+    var line = cm.getLine(cur.line);
+    var chars = line.split('');
+    var start, end, i, len;
+    var firstIndex = chars.indexOf(symb);
+    if (cur.ch < firstIndex) {
+        cur.ch = firstIndex;
+    }
+    else if (firstIndex < cur.ch && chars[cur.ch] == symb) {
+        end = cur.ch; // assign end to the current cursor
+        --cur.ch; // make sure to look backwards
+    }
+    if (chars[cur.ch] == symb && !end) {
+        start = cur.ch + 1; // assign start to ahead of the cursor
+    }
+    else {
+        for (i = cur.ch; i > -1 && !start; i--) {
+            if (chars[i] == symb) {
+                start = i + 1;
+            }
+        }
+    }
+    if (start && !end) {
+        for (i = start, len = chars.length; i < len && !end; i++) {
+            if (chars[i] == symb) {
+                end = i;
+            }
+        }
+    }
+    if (!start || !end) {
+        return { start: cur, end: cur };
+    }
+    if (inclusive) {
+        --start;
+        ++end;
+    }
+    return {
+        start: new Pos(cur.line, start),
+        end: new Pos(cur.line, end)
+    };
+}
+defineOption('pcre', true, 'boolean');
+function SearchState() { }
+SearchState.prototype = {
+    getQuery: function () {
+        return vimGlobalState.query;
+    },
+    setQuery: function (query) {
+        vimGlobalState.query = query;
+    },
+    getOverlay: function () {
+        return this.searchOverlay;
+    },
+    setOverlay: function (overlay) {
+        this.searchOverlay = overlay;
+    },
+    isReversed: function () {
+        return vimGlobalState.isReversed;
+    },
+    setReversed: function (reversed) {
+        vimGlobalState.isReversed = reversed;
+    },
+    getScrollbarAnnotate: function () {
+        return this.annotate;
+    },
+    setScrollbarAnnotate: function (annotate) {
+        this.annotate = annotate;
+    }
+};
+function getSearchState(cm) {
+    var vim = cm.state.vim;
+    return vim.searchState_ || (vim.searchState_ = new SearchState());
+}
+function splitBySlash(argString) {
+    return splitBySeparator(argString, '/');
+}
+function findUnescapedSlashes(argString) {
+    return findUnescapedSeparators(argString, '/');
+}
+function splitBySeparator(argString, separator) {
+    var slashes = findUnescapedSeparators(argString, separator) || [];
+    if (!slashes.length)
+        return [];
+    var tokens = [];
+    if (slashes[0] !== 0)
+        return;
+    for (var i = 0; i < slashes.length; i++) {
+        if (typeof slashes[i] == 'number')
+            tokens.push(argString.substring(slashes[i] + 1, slashes[i + 1]));
+    }
+    return tokens;
+}
+function findUnescapedSeparators(str, separator) {
+    if (!separator)
+        separator = '/';
+    var escapeNextChar = false;
+    var slashes = [];
+    for (var i = 0; i < str.length; i++) {
+        var c = str.charAt(i);
+        if (!escapeNextChar && c == separator) {
+            slashes.push(i);
+        }
+        escapeNextChar = !escapeNextChar && (c == '\\');
+    }
+    return slashes;
+}
+function translateRegex(str) {
+    var specials = '|(){';
+    var unescape = '}';
+    var escapeNextChar = false;
+    var out = [];
+    for (var i = -1; i < str.length; i++) {
+        var c = str.charAt(i) || '';
+        var n = str.charAt(i + 1) || '';
+        var specialComesNext = (n && specials.indexOf(n) != -1);
+        if (escapeNextChar) {
+            if (c !== '\\' || !specialComesNext) {
+                out.push(c);
+            }
+            escapeNextChar = false;
+        }
+        else {
+            if (c === '\\') {
+                escapeNextChar = true;
+                if (n && unescape.indexOf(n) != -1) {
+                    specialComesNext = true;
+                }
+                if (!specialComesNext || n === '\\') {
+                    out.push(c);
+                }
+            }
+            else {
+                out.push(c);
+                if (specialComesNext && n !== '\\') {
+                    out.push('\\');
+                }
+            }
+        }
+    }
+    return out.join('');
+}
+var charUnescapes = { '\\n': '\n', '\\r': '\r', '\\t': '\t' };
+function translateRegexReplace(str) {
+    var escapeNextChar = false;
+    var out = [];
+    for (var i = -1; i < str.length; i++) {
+        var c = str.charAt(i) || '';
+        var n = str.charAt(i + 1) || '';
+        if (charUnescapes[c + n]) {
+            out.push(charUnescapes[c + n]);
+            i++;
+        }
+        else if (escapeNextChar) {
+            out.push(c);
+            escapeNextChar = false;
+        }
+        else {
+            if (c === '\\') {
+                escapeNextChar = true;
+                if ((isNumber(n) || n === '$')) {
+                    out.push('$');
+                }
+                else if (n !== '/' && n !== '\\') {
+                    out.push('\\');
+                }
+            }
+            else {
+                if (c === '$') {
+                    out.push('$');
+                }
+                out.push(c);
+                if (n === '/') {
+                    out.push('\\');
+                }
+            }
+        }
+    }
+    return out.join('');
+}
+var unescapes = { '\\/': '/', '\\\\': '\\', '\\n': '\n', '\\r': '\r', '\\t': '\t', '\\&': '&' };
+function unescapeRegexReplace(str) {
+    var stream = new CodeMirror.StringStream(str);
+    var output = [];
+    while (!stream.eol()) {
+        while (stream.peek() && stream.peek() != '\\') {
+            output.push(stream.next());
+        }
+        var matched = false;
+        for (var matcher in unescapes) {
+            if (stream.match(matcher, true)) {
+                matched = true;
+                output.push(unescapes[matcher]);
+                break;
+            }
+        }
+        if (!matched) {
+            output.push(stream.next());
+        }
+    }
+    return output.join('');
+}
+function parseQuery(query, ignoreCase, smartCase) {
+    var lastSearchRegister = vimGlobalState.registerController.getRegister('/');
+    lastSearchRegister.setText(query);
+    if (query instanceof RegExp) {
+        return query;
+    }
+    var slashes = findUnescapedSlashes(query);
+    var regexPart;
+    var forceIgnoreCase;
+    if (!slashes.length) {
+        regexPart = query;
+    }
+    else {
+        regexPart = query.substring(0, slashes[0]);
+        var flagsPart = query.substring(slashes[0]);
+        forceIgnoreCase = (flagsPart.indexOf('i') != -1);
+    }
+    if (!regexPart) {
+        return null;
+    }
+    if (!getOption('pcre')) {
+        regexPart = translateRegex(regexPart);
+    }
+    if (smartCase) {
+        ignoreCase = (/^[^A-Z]*$/).test(regexPart);
+    }
+    var regexp = new RegExp(regexPart, (ignoreCase || forceIgnoreCase) ? 'im' : 'm');
+    return regexp;
+}
+function dom(n) {
+    if (typeof n === 'string')
+        n = document.createElement(n);
+    for (var a, i = 1; i < arguments.length; i++) {
+        if (!(a = arguments[i]))
+            continue;
+        if (typeof a !== 'object')
+            a = document.createTextNode(a);
+        if (a.nodeType)
+            n.appendChild(a);
+        else
+            for (var key in a) {
+                if (!Object.prototype.hasOwnProperty.call(a, key))
+                    continue;
+                if (key[0] === '$')
+                    n.style[key.slice(1)] = a[key];
+                else
+                    n.setAttribute(key, a[key]);
+            }
+    }
+    return n;
+}
+function showConfirm(cm, template) {
+    var pre = dom('div', { $color: 'red', $whiteSpace: 'pre', class: 'cm-vim-message' }, template);
+    if (cm.openNotification) {
+        cm.openNotification(pre, { bottom: true, duration: 5000 });
+    }
+    else {
+        alert(pre.innerText);
+    }
+}
+function makePrompt(prefix, desc) {
+    return dom(document.createDocumentFragment(), dom('span', { $fontFamily: 'monospace', $whiteSpace: 'pre' }, prefix, dom('input', { type: 'text', autocorrect: 'off',
+        autocapitalize: 'off', spellcheck: 'false' })), desc && dom('span', { $color: '#888' }, desc));
+}
+function showPrompt(cm, options) {
+    var template = makePrompt(options.prefix, options.desc);
+    if (cm.openDialog) {
+        cm.openDialog(template, options.onClose, {
+            onKeyDown: options.onKeyDown, onKeyUp: options.onKeyUp,
+            bottom: true, selectValueOnOpen: false, value: options.value
+        });
+    }
+    else {
+        var shortText = '';
+        if (typeof options.prefix != "string" && options.prefix)
+            shortText += options.prefix.textContent;
+        if (options.desc)
+            shortText += " " + options.desc;
+        options.onClose(prompt(shortText, ''));
+    }
+}
+function regexEqual(r1, r2) {
+    if (r1 instanceof RegExp && r2 instanceof RegExp) {
+        var props = ['global', 'multiline', 'ignoreCase', 'source'];
+        for (var i = 0; i < props.length; i++) {
+            var prop = props[i];
+            if (r1[prop] !== r2[prop]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+function updateSearchQuery(cm, rawQuery, ignoreCase, smartCase) {
+    if (!rawQuery) {
+        return;
+    }
+    var state = getSearchState(cm);
+    var query = parseQuery(rawQuery, !!ignoreCase, !!smartCase);
+    if (!query) {
+        return;
+    }
+    highlightSearchMatches(cm, query);
+    if (regexEqual(query, state.getQuery())) {
+        return query;
+    }
+    state.setQuery(query);
+    return query;
+}
+function searchOverlay(query) {
+    if (query.source.charAt(0) == '^') {
+        var matchSol = true;
+    }
+    return {
+        token: function (stream) {
+            if (matchSol && !stream.sol()) {
+                stream.skipToEnd();
+                return;
+            }
+            var match = stream.match(query, false);
+            if (match) {
+                if (match[0].length == 0) {
+                    stream.next();
+                    return 'searching';
+                }
+                if (!stream.sol()) {
+                    stream.backUp(1);
+                    if (!query.exec(stream.next() + match[0])) {
+                        stream.next();
+                        return null;
+                    }
+                }
+                stream.match(query);
+                return 'searching';
+            }
+            while (!stream.eol()) {
+                stream.next();
+                if (stream.match(query, false))
+                    break;
+            }
+        },
+        query: query
+    };
+}
+var highlightTimeout = 0;
+function highlightSearchMatches(cm, query) {
+    clearTimeout(highlightTimeout);
+    highlightTimeout = setTimeout(function () {
+        if (!cm.state.vim)
+            return;
+        var searchState = getSearchState(cm);
+        var overlay = searchState.getOverlay();
+        if (!overlay || query != overlay.query) {
+            if (overlay) {
+                cm.removeOverlay(overlay);
+            }
+            overlay = searchOverlay(query);
+            cm.addOverlay(overlay);
+            if (cm.showMatchesOnScrollbar) {
+                if (searchState.getScrollbarAnnotate()) {
+                    searchState.getScrollbarAnnotate().clear();
+                }
+                searchState.setScrollbarAnnotate(cm.showMatchesOnScrollbar(query));
+            }
+            searchState.setOverlay(overlay);
+        }
+    }, 50);
+}
+function findNext(cm, prev, query, repeat) {
+    if (repeat === undefined) {
+        repeat = 1;
+    }
+    return cm.operation(function () {
+        var pos = cm.getCursor();
+        var cursor = cm.getSearchCursor(query, pos);
+        for (var i = 0; i < repeat; i++) {
+            var found = cursor.find(prev);
+            if (i == 0 && found && cursorEqual(cursor.from(), pos)) {
+                var lastEndPos = prev ? cursor.from() : cursor.to();
+                found = cursor.find(prev);
+                if (found && !found[0] && cursorEqual(cursor.from(), lastEndPos)) {
+                    if (cm.getLine(lastEndPos.line).length == lastEndPos.ch)
+                        found = cursor.find(prev);
+                }
+            }
+            if (!found) {
+                cursor = cm.getSearchCursor(query, (prev) ? new Pos(cm.lastLine()) : new Pos(cm.firstLine(), 0));
+                if (!cursor.find(prev)) {
+                    return;
+                }
+            }
+        }
+        return cursor.from();
+    });
+}
+function findNextFromAndToInclusive(cm, prev, query, repeat, vim) {
+    if (repeat === undefined) {
+        repeat = 1;
+    }
+    return cm.operation(function () {
+        var pos = cm.getCursor();
+        var cursor = cm.getSearchCursor(query, pos);
+        var found = cursor.find(!prev);
+        if (!vim.visualMode && found && cursorEqual(cursor.from(), pos)) {
+            cursor.find(!prev);
+        }
+        for (var i = 0; i < repeat; i++) {
+            found = cursor.find(prev);
+            if (!found) {
+                cursor = cm.getSearchCursor(query, (prev) ? new Pos(cm.lastLine()) : new Pos(cm.firstLine(), 0));
+                if (!cursor.find(prev)) {
+                    return;
+                }
+            }
+        }
+        return [cursor.from(), cursor.to()];
+    });
+}
+function clearSearchHighlight(cm) {
+    var state = getSearchState(cm);
+    cm.removeOverlay(getSearchState(cm).getOverlay());
+    state.setOverlay(null);
+    if (state.getScrollbarAnnotate()) {
+        state.getScrollbarAnnotate().clear();
+        state.setScrollbarAnnotate(null);
+    }
+}
+function isInRange(pos, start, end) {
+    if (typeof pos != 'number') {
+        pos = pos.line;
+    }
+    if (start instanceof Array) {
+        return inArray(pos, start);
+    }
+    else {
+        if (typeof end == 'number') {
+            return (pos >= start && pos <= end);
+        }
+        else {
+            return pos == start;
+        }
+    }
+}
+function getUserVisibleLines(cm) {
+    var renderer = cm.ace.renderer;
+    return {
+        top: renderer.getFirstFullyVisibleRow(),
+        bottom: renderer.getLastFullyVisibleRow()
+    };
+}
+function getMarkPos(cm, vim, markName) {
+    if (markName == '\'' || markName == '`') {
+        return vimGlobalState.jumpList.find(cm, -1) || new Pos(0, 0);
+    }
+    else if (markName == '.') {
+        return getLastEditPos(cm);
+    }
+    var mark = vim.marks[markName];
+    return mark && mark.find();
+}
+function getLastEditPos(cm) {
+    var undoManager = cm.ace.session.$undoManager;
+    if (undoManager && undoManager.$lastDelta)
+        return toCmPos(undoManager.$lastDelta.end);
+}
+var ExCommandDispatcher = function () {
+    this.buildCommandMap_();
+};
+ExCommandDispatcher.prototype = {
+    processCommand: function (cm, input, opt_params) {
+        var that = this;
+        cm.operation(function () {
+            cm.curOp.isVimOp = true;
+            that._processCommand(cm, input, opt_params);
+        });
+    },
+    _processCommand: function (cm, input, opt_params) {
+        var vim = cm.state.vim;
+        var commandHistoryRegister = vimGlobalState.registerController.getRegister(':');
+        var previousCommand = commandHistoryRegister.toString();
+        if (vim.visualMode) {
+            exitVisualMode(cm);
+        }
+        var inputStream = new CodeMirror.StringStream(input);
+        commandHistoryRegister.setText(input);
+        var params = opt_params || {};
+        params.input = input;
+        try {
+            this.parseInput_(cm, inputStream, params);
+        }
+        catch (e) {
+            showConfirm(cm, e.toString());
+            throw e;
+        }
+        var command;
+        var commandName;
+        if (!params.commandName) {
+            if (params.line !== undefined) {
+                commandName = 'move';
+            }
+        }
+        else {
+            command = this.matchCommand_(params.commandName);
+            if (command) {
+                commandName = command.name;
+                if (command.excludeFromCommandHistory) {
+                    commandHistoryRegister.setText(previousCommand);
+                }
+                this.parseCommandArgs_(inputStream, params, command);
+                if (command.type == 'exToKey') {
+                    for (var i = 0; i < command.toKeys.length; i++) {
+                        vimApi.handleKey(cm, command.toKeys[i], 'mapping');
+                    }
+                    return;
+                }
+                else if (command.type == 'exToEx') {
+                    this.processCommand(cm, command.toInput);
+                    return;
+                }
+            }
+        }
+        if (!commandName) {
+            showConfirm(cm, 'Not an editor command ":' + input + '"');
+            return;
+        }
+        try {
+            exCommands[commandName](cm, params);
+            if ((!command || !command.possiblyAsync) && params.callback) {
+                params.callback();
+            }
+        }
+        catch (e) {
+            showConfirm(cm, e.toString());
+            throw e;
+        }
+    },
+    parseInput_: function (cm, inputStream, result) {
+        inputStream.eatWhile(':');
+        if (inputStream.eat('%')) {
+            result.line = cm.firstLine();
+            result.lineEnd = cm.lastLine();
+        }
+        else {
+            result.line = this.parseLineSpec_(cm, inputStream);
+            if (result.line !== undefined && inputStream.eat(',')) {
+                result.lineEnd = this.parseLineSpec_(cm, inputStream);
+            }
+        }
+        var commandMatch = inputStream.match(/^(\w+|!!|@@|[!#&*<=>@~])/);
+        if (commandMatch) {
+            result.commandName = commandMatch[1];
+        }
+        else {
+            result.commandName = inputStream.match(/.*/)[0];
+        }
+        return result;
+    },
+    parseLineSpec_: function (cm, inputStream) {
+        var numberMatch = inputStream.match(/^(\d+)/);
+        if (numberMatch) {
+            return parseInt(numberMatch[1], 10) - 1;
+        }
+        switch (inputStream.next()) {
+            case '.':
+                return this.parseLineSpecOffset_(inputStream, cm.getCursor().line);
+            case '$':
+                return this.parseLineSpecOffset_(inputStream, cm.lastLine());
+            case '\'':
+                var markName = inputStream.next();
+                var markPos = getMarkPos(cm, cm.state.vim, markName);
+                if (!markPos)
+                    throw new Error('Mark not set');
+                return this.parseLineSpecOffset_(inputStream, markPos.line);
+            case '-':
+            case '+':
+                inputStream.backUp(1);
+                return this.parseLineSpecOffset_(inputStream, cm.getCursor().line);
+            default:
+                inputStream.backUp(1);
+                return undefined;
+        }
+    },
+    parseLineSpecOffset_: function (inputStream, line) {
+        var offsetMatch = inputStream.match(/^([+-])?(\d+)/);
+        if (offsetMatch) {
+            var offset = parseInt(offsetMatch[2], 10);
+            if (offsetMatch[1] == "-") {
+                line -= offset;
+            }
+            else {
+                line += offset;
+            }
+        }
+        return line;
+    },
+    parseCommandArgs_: function (inputStream, params, command) {
+        if (inputStream.eol()) {
+            return;
+        }
+        params.argString = inputStream.match(/.*/)[0];
+        var delim = command.argDelimiter || /\s+/;
+        var args = trim(params.argString).split(delim);
+        if (args.length && args[0]) {
+            params.args = args;
+        }
+    },
+    matchCommand_: function (commandName) {
+        for (var i = commandName.length; i > 0; i--) {
+            var prefix = commandName.substring(0, i);
+            if (this.commandMap_[prefix]) {
+                var command = this.commandMap_[prefix];
+                if (command.name.indexOf(commandName) === 0) {
+                    return command;
+                }
+            }
+        }
+        return null;
+    },
+    buildCommandMap_: function () {
+        this.commandMap_ = {};
+        for (var i = 0; i < defaultExCommandMap.length; i++) {
+            var command = defaultExCommandMap[i];
+            var key = command.shortName || command.name;
+            this.commandMap_[key] = command;
+        }
+    },
+    map: function (lhs, rhs, ctx) {
+        if (lhs != ':' && lhs.charAt(0) == ':') {
+            if (ctx) {
+                throw Error('Mode not supported for ex mappings');
+            }
+            var commandName = lhs.substring(1);
+            if (rhs != ':' && rhs.charAt(0) == ':') {
+                this.commandMap_[commandName] = {
+                    name: commandName,
+                    type: 'exToEx',
+                    toInput: rhs.substring(1),
+                    user: true
+                };
+            }
+            else {
+                this.commandMap_[commandName] = {
+                    name: commandName,
+                    type: 'exToKey',
+                    toKeys: rhs,
+                    user: true
+                };
+            }
+        }
+        else {
+            if (rhs != ':' && rhs.charAt(0) == ':') {
+                var mapping = {
+                    keys: lhs,
+                    type: 'keyToEx',
+                    exArgs: { input: rhs.substring(1) }
+                };
+                if (ctx) {
+                    mapping.context = ctx;
+                }
+                defaultKeymap.unshift(mapping);
+            }
+            else {
+                var mapping = {
+                    keys: lhs,
+                    type: 'keyToKey',
+                    toKeys: rhs
+                };
+                if (ctx) {
+                    mapping.context = ctx;
+                }
+                defaultKeymap.unshift(mapping);
+            }
+        }
+    },
+    unmap: function (lhs, ctx) {
+        if (lhs != ':' && lhs.charAt(0) == ':') {
+            if (ctx) {
+                throw Error('Mode not supported for ex mappings');
+            }
+            var commandName = lhs.substring(1);
+            if (this.commandMap_[commandName] && this.commandMap_[commandName].user) {
+                delete this.commandMap_[commandName];
+                return true;
+            }
+        }
+        else {
+            var keys = lhs;
+            for (var i = 0; i < defaultKeymap.length; i++) {
+                if (keys == defaultKeymap[i].keys
+                    && defaultKeymap[i].context === ctx) {
+                    defaultKeymap.splice(i, 1);
+                    return true;
+                }
+            }
+        }
+    }
+};
+var exCommands = {
+    colorscheme: function (cm, params) {
+        if (!params.args || params.args.length < 1) {
+            showConfirm(cm, cm.getOption('theme'));
+            return;
+        }
+        cm.setOption('theme', params.args[0]);
+    },
+    map: function (cm, params, ctx) {
+        var mapArgs = params.args;
+        if (!mapArgs || mapArgs.length < 2) {
+            if (cm) {
+                showConfirm(cm, 'Invalid mapping: ' + params.input);
+            }
+            return;
+        }
+        exCommandDispatcher.map(mapArgs[0], mapArgs[1], ctx);
+    },
+    imap: function (cm, params) { this.map(cm, params, 'insert'); },
+    nmap: function (cm, params) { this.map(cm, params, 'normal'); },
+    vmap: function (cm, params) { this.map(cm, params, 'visual'); },
+    unmap: function (cm, params, ctx) {
+        var mapArgs = params.args;
+        if (!mapArgs || mapArgs.length < 1 || !exCommandDispatcher.unmap(mapArgs[0], ctx)) {
+            if (cm) {
+                showConfirm(cm, 'No such mapping: ' + params.input);
+            }
+        }
+    },
+    move: function (cm, params) {
+        commandDispatcher.processCommand(cm, cm.state.vim, {
+            type: 'motion',
+            motion: 'moveToLineOrEdgeOfDocument',
+            motionArgs: { forward: false, explicitRepeat: true,
+                linewise: true },
+            repeatOverride: params.line + 1
+        });
+    },
+    set: function (cm, params) {
+        var setArgs = params.args;
+        var setCfg = params.setCfg || {};
+        if (!setArgs || setArgs.length < 1) {
+            if (cm) {
+                showConfirm(cm, 'Invalid mapping: ' + params.input);
+            }
+            return;
+        }
+        var expr = setArgs[0].split('=');
+        var optionName = expr[0];
+        var value = expr[1];
+        var forceGet = false;
+        if (optionName.charAt(optionName.length - 1) == '?') {
+            if (value) {
+                throw Error('Trailing characters: ' + params.argString);
+            }
+            optionName = optionName.substring(0, optionName.length - 1);
+            forceGet = true;
+        }
+        if (value === undefined && optionName.substring(0, 2) == 'no') {
+            optionName = optionName.substring(2);
+            value = false;
+        }
+        var optionIsBoolean = options[optionName] && options[optionName].type == 'boolean';
+        if (optionIsBoolean && value == undefined) {
+            value = true;
+        }
+        if (!optionIsBoolean && value === undefined || forceGet) {
+            var oldValue = getOption(optionName, cm, setCfg);
+            if (oldValue instanceof Error) {
+                showConfirm(cm, oldValue.message);
+            }
+            else if (oldValue === true || oldValue === false) {
+                showConfirm(cm, ' ' + (oldValue ? '' : 'no') + optionName);
+            }
+            else {
+                showConfirm(cm, '  ' + optionName + '=' + oldValue);
+            }
+        }
+        else {
+            var setOptionReturn = setOption(optionName, value, cm, setCfg);
+            if (setOptionReturn instanceof Error) {
+                showConfirm(cm, setOptionReturn.message);
+            }
+        }
+    },
+    setlocal: function (cm, params) {
+        params.setCfg = { scope: 'local' };
+        this.set(cm, params);
+    },
+    setglobal: function (cm, params) {
+        params.setCfg = { scope: 'global' };
+        this.set(cm, params);
+    },
+    registers: function (cm, params) {
+        var regArgs = params.args;
+        var registers = vimGlobalState.registerController.registers;
+        var regInfo = '----------Registers----------\n\n';
+        if (!regArgs) {
+            for (var registerName in registers) {
+                var text = registers[registerName].toString();
+                if (text.length) {
+                    regInfo += '"' + registerName + '    ' + text + '\n';
+                }
+            }
+        }
+        else {
+            var registerName;
+            regArgs = regArgs.join('');
+            for (var i = 0; i < regArgs.length; i++) {
+                registerName = regArgs.charAt(i);
+                if (!vimGlobalState.registerController.isValidRegister(registerName)) {
+                    continue;
+                }
+                var register = registers[registerName] || new Register();
+                regInfo += '"' + registerName + '    ' + register.toString() + '\n';
+            }
+        }
+        showConfirm(cm, regInfo);
+    },
+    sort: function (cm, params) {
+        var reverse, ignoreCase, unique, number, pattern;
+        function parseArgs() {
+            if (params.argString) {
+                var args = new CodeMirror.StringStream(params.argString);
+                if (args.eat('!')) {
+                    reverse = true;
+                }
+                if (args.eol()) {
+                    return;
+                }
+                if (!args.eatSpace()) {
+                    return 'Invalid arguments';
+                }
+                var opts = args.match(/([dinuox]+)?\s*(\/.+\/)?\s*/);
+                if (!opts && !args.eol()) {
+                    return 'Invalid arguments';
+                }
+                if (opts[1]) {
+                    ignoreCase = opts[1].indexOf('i') != -1;
+                    unique = opts[1].indexOf('u') != -1;
+                    var decimal = opts[1].indexOf('d') != -1 || opts[1].indexOf('n') != -1 && 1;
+                    var hex = opts[1].indexOf('x') != -1 && 1;
+                    var octal = opts[1].indexOf('o') != -1 && 1;
+                    if (decimal + hex + octal > 1) {
+                        return 'Invalid arguments';
+                    }
+                    number = decimal && 'decimal' || hex && 'hex' || octal && 'octal';
+                }
+                if (opts[2]) {
+                    pattern = new RegExp(opts[2].substr(1, opts[2].length - 2), ignoreCase ? 'i' : '');
+                }
+            }
+        }
+        var err = parseArgs();
+        if (err) {
+            showConfirm(cm, err + ': ' + params.argString);
+            return;
+        }
+        var lineStart = params.line || cm.firstLine();
+        var lineEnd = params.lineEnd || params.line || cm.lastLine();
+        if (lineStart == lineEnd) {
+            return;
+        }
+        var curStart = new Pos(lineStart, 0);
+        var curEnd = new Pos(lineEnd, lineLength(cm, lineEnd));
+        var text = cm.getRange(curStart, curEnd).split('\n');
+        var numberRegex = pattern ? pattern :
+            (number == 'decimal') ? /(-?)([\d]+)/ :
+                (number == 'hex') ? /(-?)(?:0x)?([0-9a-f]+)/i :
+                    (number == 'octal') ? /([0-7]+)/ : null;
+        var radix = (number == 'decimal') ? 10 : (number == 'hex') ? 16 : (number == 'octal') ? 8 : null;
+        var numPart = [], textPart = [];
+        if (number || pattern) {
+            for (var i = 0; i < text.length; i++) {
+                var matchPart = pattern ? text[i].match(pattern) : null;
+                if (matchPart && matchPart[0] != '') {
+                    numPart.push(matchPart);
+                }
+                else if (!pattern && numberRegex.exec(text[i])) {
+                    numPart.push(text[i]);
+                }
+                else {
+                    textPart.push(text[i]);
+                }
+            }
+        }
+        else {
+            textPart = text;
+        }
+        function compareFn(a, b) {
+            if (reverse) {
+                var tmp;
+                tmp = a;
+                a = b;
+                b = tmp;
+            }
+            if (ignoreCase) {
+                a = a.toLowerCase();
+                b = b.toLowerCase();
+            }
+            var anum = number && numberRegex.exec(a);
+            var bnum = number && numberRegex.exec(b);
+            if (!anum) {
+                return a < b ? -1 : 1;
+            }
+            anum = parseInt((anum[1] + anum[2]).toLowerCase(), radix);
+            bnum = parseInt((bnum[1] + bnum[2]).toLowerCase(), radix);
+            return anum - bnum;
+        }
+        function comparePatternFn(a, b) {
+            if (reverse) {
+                var tmp;
+                tmp = a;
+                a = b;
+                b = tmp;
+            }
+            if (ignoreCase) {
+                a[0] = a[0].toLowerCase();
+                b[0] = b[0].toLowerCase();
+            }
+            return (a[0] < b[0]) ? -1 : 1;
+        }
+        numPart.sort(pattern ? comparePatternFn : compareFn);
+        if (pattern) {
+            for (var i = 0; i < numPart.length; i++) {
+                numPart[i] = numPart[i].input;
+            }
+        }
+        else if (!number) {
+            textPart.sort(compareFn);
+        }
+        text = (!reverse) ? textPart.concat(numPart) : numPart.concat(textPart);
+        if (unique) { // Remove duplicate lines
+            var textOld = text;
+            var lastLine;
+            text = [];
+            for (var i = 0; i < textOld.length; i++) {
+                if (textOld[i] != lastLine) {
+                    text.push(textOld[i]);
+                }
+                lastLine = textOld[i];
+            }
+        }
+        cm.replaceRange(text.join('\n'), curStart, curEnd);
+    },
+    vglobal: function (cm, params) {
+        this.global(cm, params);
+    },
+    global: function (cm, params) {
+        var argString = params.argString;
+        if (!argString) {
+            showConfirm(cm, 'Regular Expression missing from global');
+            return;
+        }
+        var inverted = params.commandName[0] === 'v';
+        var lineStart = (params.line !== undefined) ? params.line : cm.firstLine();
+        var lineEnd = params.lineEnd || params.line || cm.lastLine();
+        var tokens = splitBySlash(argString);
+        var regexPart = argString, cmd;
+        if (tokens.length) {
+            regexPart = tokens[0];
+            cmd = tokens.slice(1, tokens.length).join('/');
+        }
+        if (regexPart) {
+            try {
+                updateSearchQuery(cm, regexPart, true /** ignoreCase */, true /** smartCase */);
+            }
+            catch (e) {
+                showConfirm(cm, 'Invalid regex: ' + regexPart);
+                return;
+            }
+        }
+        var query = getSearchState(cm).getQuery();
+        var matchedLines = [];
+        for (var i = lineStart; i <= lineEnd; i++) {
+            var line = cm.getLineHandle(i);
+            var matched = query.test(line.text);
+            if (matched !== inverted) {
+                matchedLines.push(cmd ? line : line.text);
+            }
+        }
+        if (!cmd) {
+            showConfirm(cm, matchedLines.join('\n'));
+            return;
+        }
+        var index = 0;
+        var nextCommand = function () {
+            if (index < matchedLines.length) {
+                var line = matchedLines[index++];
+                var lineNum = cm.getLineNumber(line);
+                if (lineNum == null) {
+                    nextCommand();
+                    return;
+                }
+                var command = (lineNum + 1) + cmd;
+                exCommandDispatcher.processCommand(cm, command, {
+                    callback: nextCommand
+                });
+            }
+        };
+        nextCommand();
+    },
+    substitute: function (cm, params) {
+        if (!cm.getSearchCursor) {
+            throw new Error('Search feature not available. Requires searchcursor.js or ' +
+                'any other getSearchCursor implementation.');
+        }
+        var argString = params.argString;
+        var tokens = argString ? splitBySeparator(argString, argString[0]) : [];
+        var regexPart, replacePart = '', trailing, flagsPart, count;
+        var confirm = false; // Whether to confirm each replace.
+        var global = false; // True to replace all instances on a line, false to replace only 1.
+        if (tokens.length) {
+            regexPart = tokens[0];
+            if (getOption('pcre') && regexPart !== '') {
+                regexPart = new RegExp(regexPart).source; //normalize not escaped characters
+            }
+            replacePart = tokens[1];
+            if (replacePart !== undefined) {
+                if (getOption('pcre')) {
+                    replacePart = unescapeRegexReplace(replacePart.replace(/([^\\])&/g, "$1$$&"));
+                }
+                else {
+                    replacePart = translateRegexReplace(replacePart);
+                }
+                vimGlobalState.lastSubstituteReplacePart = replacePart;
+            }
+            trailing = tokens[2] ? tokens[2].split(' ') : [];
+        }
+        else {
+            if (argString && argString.length) {
+                showConfirm(cm, 'Substitutions should be of the form ' +
+                    ':s/pattern/replace/');
+                return;
+            }
+        }
+        if (trailing) {
+            flagsPart = trailing[0];
+            count = parseInt(trailing[1]);
+            if (flagsPart) {
+                if (flagsPart.indexOf('c') != -1) {
+                    confirm = true;
+                }
+                if (flagsPart.indexOf('g') != -1) {
+                    global = true;
+                }
+                if (getOption('pcre')) {
+                    regexPart = regexPart + '/' + flagsPart;
+                }
+                else {
+                    regexPart = regexPart.replace(/\//g, "\\/") + '/' + flagsPart;
+                }
+            }
+        }
+        if (regexPart) {
+            try {
+                updateSearchQuery(cm, regexPart, true /** ignoreCase */, true /** smartCase */);
+            }
+            catch (e) {
+                showConfirm(cm, 'Invalid regex: ' + regexPart);
+                return;
+            }
+        }
+        replacePart = replacePart || vimGlobalState.lastSubstituteReplacePart;
+        if (replacePart === undefined) {
+            showConfirm(cm, 'No previous substitute regular expression');
+            return;
+        }
+        var state = getSearchState(cm);
+        var query = state.getQuery();
+        var lineStart = (params.line !== undefined) ? params.line : cm.getCursor().line;
+        var lineEnd = params.lineEnd || lineStart;
+        if (lineStart == cm.firstLine() && lineEnd == cm.lastLine()) {
+            lineEnd = Infinity;
+        }
+        if (count) {
+            lineStart = lineEnd;
+            lineEnd = lineStart + count - 1;
+        }
+        var startPos = clipCursorToContent(cm, new Pos(lineStart, 0));
+        var cursor = cm.getSearchCursor(query, startPos);
+        doReplace(cm, confirm, global, lineStart, lineEnd, cursor, query, replacePart, params.callback);
+    },
+    redo: CodeMirror.commands.redo,
+    undo: CodeMirror.commands.undo,
+    write: function (cm) {
+        if (CodeMirror.commands.save) {
+            CodeMirror.commands.save(cm);
+        }
+        else if (cm.save) {
+            cm.save();
+        }
+    },
+    nohlsearch: function (cm) {
+        clearSearchHighlight(cm);
+    },
+    yank: function (cm) {
+        var cur = copyCursor(cm.getCursor());
+        var line = cur.line;
+        var lineText = cm.getLine(line);
+        vimGlobalState.registerController.pushText('0', 'yank', lineText, true, true);
+    },
+    delmarks: function (cm, params) {
+        if (!params.argString || !trim(params.argString)) {
+            showConfirm(cm, 'Argument required');
+            return;
+        }
+        var state = cm.state.vim;
+        var stream = new CodeMirror.StringStream(trim(params.argString));
+        while (!stream.eol()) {
+            stream.eatSpace();
+            var count = stream.pos;
+            if (!stream.match(/[a-zA-Z]/, false)) {
+                showConfirm(cm, 'Invalid argument: ' + params.argString.substring(count));
+                return;
+            }
+            var sym = stream.next();
+            if (stream.match('-', true)) {
+                if (!stream.match(/[a-zA-Z]/, false)) {
+                    showConfirm(cm, 'Invalid argument: ' + params.argString.substring(count));
+                    return;
+                }
+                var startMark = sym;
+                var finishMark = stream.next();
+                if (isLowerCase(startMark) && isLowerCase(finishMark) ||
+                    isUpperCase(startMark) && isUpperCase(finishMark)) {
+                    var start = startMark.charCodeAt(0);
+                    var finish = finishMark.charCodeAt(0);
+                    if (start >= finish) {
+                        showConfirm(cm, 'Invalid argument: ' + params.argString.substring(count));
+                        return;
+                    }
+                    for (var j = 0; j <= finish - start; j++) {
+                        var mark = String.fromCharCode(start + j);
+                        delete state.marks[mark];
+                    }
+                }
+                else {
+                    showConfirm(cm, 'Invalid argument: ' + startMark + '-');
+                    return;
+                }
+            }
+            else {
+                delete state.marks[sym];
+            }
+        }
+    }
+};
+var exCommandDispatcher = new ExCommandDispatcher();
+function doReplace(cm, confirm, global, lineStart, lineEnd, searchCursor, query, replaceWith, callback) {
+    cm.state.vim.exMode = true;
+    var done = false;
+    var lastPos, modifiedLineNumber, joined;
+    function replaceAll() {
+        cm.operation(function () {
+            while (!done) {
+                replace();
+                next();
+            }
+            stop();
+        });
+    }
+    function replace() {
+        var text = cm.getRange(searchCursor.from(), searchCursor.to());
+        var newText = text.replace(query, replaceWith);
+        var unmodifiedLineNumber = searchCursor.to().line;
+        searchCursor.replace(newText);
+        modifiedLineNumber = searchCursor.to().line;
+        lineEnd += modifiedLineNumber - unmodifiedLineNumber;
+        joined = modifiedLineNumber < unmodifiedLineNumber;
+    }
+    function findNextValidMatch() {
+        var lastMatchTo = lastPos && copyCursor(searchCursor.to());
+        var match = searchCursor.findNext();
+        if (match && !match[0] && lastMatchTo && cursorEqual(searchCursor.from(), lastMatchTo)) {
+            match = searchCursor.findNext();
+        }
+        return match;
+    }
+    function next() {
+        while (findNextValidMatch() &&
+            isInRange(searchCursor.from(), lineStart, lineEnd)) {
+            if (!global && searchCursor.from().line == modifiedLineNumber && !joined) {
+                continue;
+            }
+            cm.scrollIntoView(searchCursor.from(), 30);
+            cm.setSelection(searchCursor.from(), searchCursor.to());
+            lastPos = searchCursor.from();
+            done = false;
+            return;
+        }
+        done = true;
+    }
+    function stop(close) {
+        if (close) {
+            close();
+        }
+        cm.focus();
+        if (lastPos) {
+            cm.setCursor(lastPos);
+            var vim = cm.state.vim;
+            vim.exMode = false;
+            vim.lastHPos = vim.lastHSPos = lastPos.ch;
+        }
+        if (callback) {
+            callback();
+        }
+    }
+    function onPromptKeyDown(e, _value, close) {
+        CodeMirror.e_stop(e);
+        var keyName = CodeMirror.keyName(e);
+        switch (keyName) {
+            case 'Y':
+                replace();
+                next();
+                break;
+            case 'N':
+                next();
+                break;
+            case 'A':
+                var savedCallback = callback;
+                callback = undefined;
+                cm.operation(replaceAll);
+                callback = savedCallback;
+                break;
+            case 'L':
+                replace();
+            case 'Q':
+            case 'Esc':
+            case 'Ctrl-C':
+            case 'Ctrl-[':
+                stop(close);
+                break;
+        }
+        if (done) {
+            stop(close);
+        }
+        return true;
+    }
+    next();
+    if (done) {
+        showConfirm(cm, 'No matches for ' + query.source);
+        return;
+    }
+    if (!confirm) {
+        replaceAll();
+        if (callback) {
+            callback();
+        }
+        return;
+    }
+    showPrompt(cm, {
+        prefix: dom('span', 'replace with ', dom('strong', replaceWith), ' (y/n/a/q/l)'),
+        onKeyDown: onPromptKeyDown
+    });
+}
+CodeMirror.keyMap.vim = {
+    attach: attachVimMap,
+    detach: detachVimMap,
+    call: cmKey
+};
+function exitInsertMode(cm) {
+    var vim = cm.state.vim;
+    var macroModeState = vimGlobalState.macroModeState;
+    var insertModeChangeRegister = vimGlobalState.registerController.getRegister('.');
+    var isPlaying = macroModeState.isPlaying;
+    var lastChange = macroModeState.lastInsertModeChanges;
+    if (!isPlaying) {
+        cm.off('change', onChange);
+        CodeMirror.off(cm.getInputField(), 'keydown', onKeyEventTargetKeyDown);
+    }
+    if (!isPlaying && vim.insertModeRepeat > 1) {
+        repeatLastEdit(cm, vim, vim.insertModeRepeat - 1, true /** repeatForInsert */);
+        vim.lastEditInputState.repeatOverride = vim.insertModeRepeat;
+    }
+    delete vim.insertModeRepeat;
+    vim.insertMode = false;
+    cm.setCursor(cm.getCursor().line, cm.getCursor().ch - 1);
+    cm.setOption('keyMap', 'vim');
+    cm.setOption('disableInput', true);
+    cm.toggleOverwrite(false); // exit replace mode if we were in it.
+    insertModeChangeRegister.setText(lastChange.changes.join(''));
+    CodeMirror.signal(cm, "vim-mode-change", { mode: "normal" });
+    if (macroModeState.isRecording) {
+        logInsertModeChange(macroModeState);
+    }
+}
+function _mapCommand(command) {
+    defaultKeymap.unshift(command);
+}
+function mapCommand(keys, type, name, args, extra) {
+    var command = { keys: keys, type: type };
+    command[type] = name;
+    command[type + "Args"] = args;
+    for (var key in extra)
+        command[key] = extra[key];
+    _mapCommand(command);
+}
+defineOption('insertModeEscKeysTimeout', 200, 'number');
+CodeMirror.keyMap['vim-insert'] = {
+    fallthrough: ['default'],
+    attach: attachVimMap,
+    detach: detachVimMap,
+    call: cmKey
+};
+CodeMirror.keyMap['vim-replace'] = {
+    'Backspace': 'goCharLeft',
+    fallthrough: ['vim-insert'],
+    attach: attachVimMap,
+    detach: detachVimMap,
+    call: cmKey
+};
+function executeMacroRegister(cm, vim, macroModeState, registerName) {
+    var register = vimGlobalState.registerController.getRegister(registerName);
+    if (registerName == ':') {
+        if (register.keyBuffer[0]) {
+            exCommandDispatcher.processCommand(cm, register.keyBuffer[0]);
+        }
+        macroModeState.isPlaying = false;
+        return;
+    }
+    var keyBuffer = register.keyBuffer;
+    var imc = 0;
+    macroModeState.isPlaying = true;
+    macroModeState.replaySearchQueries = register.searchQueries.slice(0);
+    for (var i = 0; i < keyBuffer.length; i++) {
+        var text = keyBuffer[i];
+        var match, key;
+        while (text) {
+            match = (/<\w+-.+?>|<\w+>|./).exec(text);
+            key = match[0];
+            text = text.substring(match.index + key.length);
+            vimApi.handleKey(cm, key, 'macro');
+            if (vim.insertMode) {
+                var changes = register.insertModeChanges[imc++].changes;
+                vimGlobalState.macroModeState.lastInsertModeChanges.changes =
+                    changes;
+                repeatInsertModeChanges(cm, changes, 1);
+                exitInsertMode(cm);
+            }
+        }
+    }
+    macroModeState.isPlaying = false;
+}
+function logKey(macroModeState, key) {
+    if (macroModeState.isPlaying) {
+        return;
+    }
+    var registerName = macroModeState.latestRegister;
+    var register = vimGlobalState.registerController.getRegister(registerName);
+    if (register) {
+        register.pushText(key);
+    }
+}
+function logInsertModeChange(macroModeState) {
+    if (macroModeState.isPlaying) {
+        return;
+    }
+    var registerName = macroModeState.latestRegister;
+    var register = vimGlobalState.registerController.getRegister(registerName);
+    if (register && register.pushInsertModeChanges) {
+        register.pushInsertModeChanges(macroModeState.lastInsertModeChanges);
+    }
+}
+function logSearchQuery(macroModeState, query) {
+    if (macroModeState.isPlaying) {
+        return;
+    }
+    var registerName = macroModeState.latestRegister;
+    var register = vimGlobalState.registerController.getRegister(registerName);
+    if (register && register.pushSearchQuery) {
+        register.pushSearchQuery(query);
+    }
+}
+function onChange(cm, changeObj) {
+    var macroModeState = vimGlobalState.macroModeState;
+    var lastChange = macroModeState.lastInsertModeChanges;
+    if (!macroModeState.isPlaying) {
+        while (changeObj) {
+            lastChange.expectCursorActivityForChange = true;
+            if (lastChange.ignoreCount > 1) {
+                lastChange.ignoreCount--;
+            }
+            else if (changeObj.origin == '+input' || changeObj.origin == 'paste'
+                || changeObj.origin === undefined /* only in testing */) {
+                var selectionCount = cm.listSelections().length;
+                if (selectionCount > 1)
+                    lastChange.ignoreCount = selectionCount;
+                var text = changeObj.text.join('\n');
+                if (lastChange.maybeReset) {
+                    lastChange.changes = [];
+                    lastChange.maybeReset = false;
+                }
+                if (text) {
+                    if (cm.state.overwrite && !/\n/.test(text)) {
+                        lastChange.changes.push([text]);
+                    }
+                    else {
+                        lastChange.changes.push(text);
+                    }
+                }
+            }
+            changeObj = changeObj.next;
+        }
+    }
+}
+function onCursorActivity(cm) {
+    var vim = cm.state.vim;
+    if (vim.insertMode) {
+        var macroModeState = vimGlobalState.macroModeState;
+        if (macroModeState.isPlaying) {
+            return;
+        }
+        var lastChange = macroModeState.lastInsertModeChanges;
+        if (lastChange.expectCursorActivityForChange) {
+            lastChange.expectCursorActivityForChange = false;
+        }
+        else {
+            lastChange.maybeReset = true;
+        }
+    }
+    else if (!cm.curOp.isVimOp) {
+        handleExternalSelection(cm, vim);
+    }
+}
+function handleExternalSelection(cm, vim, keepHPos) {
+    var anchor = cm.getCursor('anchor');
+    var head = cm.getCursor('head');
+    if (vim.visualMode && !cm.somethingSelected()) {
+        exitVisualMode(cm, false);
+    }
+    else if (!vim.visualMode && !vim.insertMode && cm.somethingSelected()) {
+        vim.visualMode = true;
+        vim.visualLine = false;
+        CodeMirror.signal(cm, "vim-mode-change", { mode: "visual" });
+    }
+    if (vim.visualMode) {
+        var headOffset = !cursorIsBefore(head, anchor) ? -1 : 0;
+        var anchorOffset = cursorIsBefore(head, anchor) ? -1 : 0;
+        head = offsetCursor(head, 0, headOffset);
+        anchor = offsetCursor(anchor, 0, anchorOffset);
+        vim.sel = {
+            anchor: anchor,
+            head: head
+        };
+        updateMark(cm, vim, '<', cursorMin(head, anchor));
+        updateMark(cm, vim, '>', cursorMax(head, anchor));
+    }
+    else if (!vim.insertMode && !keepHPos) {
+        vim.lastHPos = cm.getCursor().ch;
+    }
+}
+function InsertModeKey(keyName) {
+    this.keyName = keyName;
+}
+function onKeyEventTargetKeyDown(e) {
+    var macroModeState = vimGlobalState.macroModeState;
+    var lastChange = macroModeState.lastInsertModeChanges;
+    var keyName = CodeMirror.keyName(e);
+    if (!keyName) {
+        return;
+    }
+    function onKeyFound() {
+        if (lastChange.maybeReset) {
+            lastChange.changes = [];
+            lastChange.maybeReset = false;
+        }
+        lastChange.changes.push(new InsertModeKey(keyName));
+        return true;
+    }
+    if (keyName.indexOf('Delete') != -1 || keyName.indexOf('Backspace') != -1) {
+        CodeMirror.lookupKey(keyName, 'vim-insert', onKeyFound);
+    }
+}
+function repeatLastEdit(cm, vim, repeat, repeatForInsert) {
+    var macroModeState = vimGlobalState.macroModeState;
+    macroModeState.isPlaying = true;
+    var isAction = !!vim.lastEditActionCommand;
+    var cachedInputState = vim.inputState;
+    function repeatCommand() {
+        if (isAction) {
+            commandDispatcher.processAction(cm, vim, vim.lastEditActionCommand);
+        }
+        else {
+            commandDispatcher.evalInput(cm, vim);
+        }
+    }
+    function repeatInsert(repeat) {
+        if (macroModeState.lastInsertModeChanges.changes.length > 0) {
+            repeat = !vim.lastEditActionCommand ? 1 : repeat;
+            var changeObject = macroModeState.lastInsertModeChanges;
+            repeatInsertModeChanges(cm, changeObject.changes, repeat);
+        }
+    }
+    vim.inputState = vim.lastEditInputState;
+    if (isAction && vim.lastEditActionCommand.interlaceInsertRepeat) {
+        for (var i = 0; i < repeat; i++) {
+            repeatCommand();
+            repeatInsert(1);
+        }
+    }
+    else {
+        if (!repeatForInsert) {
+            repeatCommand();
+        }
+        repeatInsert(repeat);
+    }
+    vim.inputState = cachedInputState;
+    if (vim.insertMode && !repeatForInsert) {
+        exitInsertMode(cm);
+    }
+    macroModeState.isPlaying = false;
+}
+function repeatInsertModeChanges(cm, changes, repeat) {
+    function keyHandler(binding) {
+        if (typeof binding == 'string') {
+            CodeMirror.commands[binding](cm);
+        }
+        else {
+            binding(cm);
+        }
+        return true;
+    }
+    var head = cm.getCursor('head');
+    var visualBlock = vimGlobalState.macroModeState.lastInsertModeChanges.visualBlock;
+    if (visualBlock) {
+        selectForInsert(cm, head, visualBlock + 1);
+        repeat = cm.listSelections().length;
+        cm.setCursor(head);
+    }
+    for (var i = 0; i < repeat; i++) {
+        if (visualBlock) {
+            cm.setCursor(offsetCursor(head, i, 0));
+        }
+        for (var j = 0; j < changes.length; j++) {
+            var change = changes[j];
+            if (change instanceof InsertModeKey) {
+                CodeMirror.lookupKey(change.keyName, 'vim-insert', keyHandler);
+            }
+            else if (typeof change == "string") {
+                cm.replaceSelection(change);
+            }
+            else {
+                var start = cm.getCursor();
+                var end = offsetCursor(start, 0, change[0].length);
+                cm.replaceRange(change[0], start, end);
+                cm.setCursor(end);
+            }
+        }
+    }
+    if (visualBlock) {
+        cm.setCursor(offsetCursor(head, 0, 1));
+    }
+}
+resetVimGlobalState();
+CodeMirror.Vim = vimApi;
+var specialKey = { 'return': 'CR', backspace: 'BS', 'delete': 'Del', esc: 'Esc',
+    left: 'Left', right: 'Right', up: 'Up', down: 'Down', space: 'Space', insert: 'Ins',
+    home: 'Home', end: 'End', pageup: 'PageUp', pagedown: 'PageDown', enter: 'CR'
+};
+function lookupKey(hashId, key, e) {
+    if (key.length > 1 && key[0] == "n") {
+        key = key.replace("numpad", "");
+    }
+    key = specialKey[key] || key;
+    var name = '';
+    if (e.ctrlKey) {
+        name += 'C-';
+    }
+    if (e.altKey) {
+        name += 'A-';
+    }
+    if ((name || key.length > 1) && e.shiftKey) {
+        name += 'S-';
+    }
+    name += key;
+    if (name.length > 1) {
+        name = '<' + name + '>';
+    }
+    return name;
+}
+var handleKey = vimApi.handleKey.bind(vimApi);
+vimApi.handleKey = function (cm, key, origin) {
+    return cm.operation(function () {
+        return handleKey(cm, key, origin);
+    }, true);
+};
+function cloneVimState(state) {
+    var n = new state.constructor();
+    Object.keys(state).forEach(function (key) {
+        var o = state[key];
+        if (Array.isArray(o))
+            o = o.slice();
+        else if (o && typeof o == "object" && o.constructor != Object)
+            o = cloneVimState(o);
+        n[key] = o;
+    });
+    if (state.sel) {
+        n.sel = {
+            head: state.sel.head && copyCursor(state.sel.head),
+            anchor: state.sel.anchor && copyCursor(state.sel.anchor)
+        };
+    }
+    return n;
+}
+function multiSelectHandleKey(cm, key, origin) {
+    var isHandled = false;
+    var vim = vimApi.maybeInitVimState_(cm);
+    var visualBlock = vim.visualBlock || vim.wasInVisualBlock;
+    var wasMultiselect = cm.ace.inMultiSelectMode;
+    if (vim.wasInVisualBlock && !wasMultiselect) {
+        vim.wasInVisualBlock = false;
+    }
+    else if (wasMultiselect && vim.visualBlock) {
+        vim.wasInVisualBlock = true;
+    }
+    if (key == '<Esc>' && !vim.insertMode && !vim.visualMode && wasMultiselect) {
+        cm.ace.exitMultiSelectMode();
+    }
+    else if (visualBlock || !wasMultiselect || cm.ace.inVirtualSelectionMode) {
+        isHandled = vimApi.handleKey(cm, key, origin);
+    }
+    else {
+        var old = cloneVimState(vim);
+        cm.operation(function () {
+            cm.ace.forEachSelection(function () {
+                var sel = cm.ace.selection;
+                cm.state.vim.lastHPos = sel.$desiredColumn == null ? sel.lead.column : sel.$desiredColumn;
+                var head = cm.getCursor("head");
+                var anchor = cm.getCursor("anchor");
+                var headOffset = !cursorIsBefore(head, anchor) ? -1 : 0;
+                var anchorOffset = cursorIsBefore(head, anchor) ? -1 : 0;
+                head = offsetCursor(head, 0, headOffset);
+                anchor = offsetCursor(anchor, 0, anchorOffset);
+                cm.state.vim.sel.head = head;
+                cm.state.vim.sel.anchor = anchor;
+                isHandled = handleKey(cm, key, origin);
+                sel.$desiredColumn = cm.state.vim.lastHPos == -1 ? null : cm.state.vim.lastHPos;
+                if (cm.virtualSelectionMode()) {
+                    cm.state.vim = cloneVimState(old);
+                }
+            });
+            if (cm.curOp.cursorActivity && !isHandled)
+                cm.curOp.cursorActivity = false;
+        }, true);
+    }
+    if (isHandled && !vim.visualMode && !vim.insert && vim.visualMode != cm.somethingSelected()) {
+        handleExternalSelection(cm, vim, true);
+    }
+    return isHandled;
+}
+exports.CodeMirror = CodeMirror;
+var getVim = vimApi.maybeInitVimState_;
+exports.handler = {
+    $id: "ace/keyboard/vim",
+    drawCursor: function (element, pixelPos, config, sel, session) {
+        var vim = this.state.vim || {};
+        var w = config.characterWidth;
+        var h = config.lineHeight;
+        var top = pixelPos.top;
+        var left = pixelPos.left;
+        if (!vim.insertMode) {
+            var isbackwards = !sel.cursor
+                ? session.selection.isBackwards() || session.selection.isEmpty()
+                : Range.comparePoints(sel.cursor, sel.start) <= 0;
+            if (!isbackwards && left > w)
+                left -= w;
+        }
+        if (!vim.insertMode && vim.status) {
+            h = h / 2;
+            top += h;
+        }
+        domLib.translate(element, left, top);
+        domLib.setStyle(element.style, "width", w + "px");
+        domLib.setStyle(element.style, "height", h + "px");
+    },
+    handleKeyboard: function (data, hashId, key, keyCode, e) {
+        var editor = data.editor;
+        var cm = editor.state.cm;
+        var vim = getVim(cm);
+        if (keyCode == -1)
+            return;
+        if (!vim.insertMode) {
+            if (hashId == -1) {
+                if (key.charCodeAt(0) > 0xFF) {
+                    if (data.inputKey) {
+                        key = data.inputKey;
+                        if (key && data.inputHash == 4)
+                            key = key.toUpperCase();
+                    }
+                }
+                data.inputChar = key;
+            }
+            else if (hashId == 4 || hashId == 0) {
+                if (data.inputKey == key && data.inputHash == hashId && data.inputChar) {
+                    key = data.inputChar;
+                    hashId = -1;
+                }
+                else {
+                    data.inputChar = null;
+                    data.inputKey = key;
+                    data.inputHash = hashId;
+                }
+            }
+            else {
+                data.inputChar = data.inputKey = null;
+            }
+        }
+        if (cm.state.overwrite && vim.insertMode && key == "backspace" && hashId == 0) {
+            return { command: "gotoleft" };
+        }
+        if (key == "c" && hashId == 1) { // key == "ctrl-c"
+            if (!useragent.isMac && editor.getCopyText()) {
+                editor.once("copy", function () {
+                    if (vim.insertMode)
+                        editor.selection.clearSelection();
+                    else
+                        cm.operation(function () { exitVisualMode(cm); });
+                });
+                return { command: "null", passEvent: true };
+            }
+        }
+        if (key == "esc" && !vim.insertMode && !vim.visualMode && !cm.ace.inMultiSelectMode) {
+            var searchState = getSearchState(cm);
+            var overlay = searchState.getOverlay();
+            if (overlay)
+                cm.removeOverlay(overlay);
+        }
+        if (hashId == -1 || hashId & 1 || hashId === 0 && key.length > 1) {
+            var insertMode = vim.insertMode;
+            var name = lookupKey(hashId, key, e || {});
+            if (vim.status == null)
+                vim.status = "";
+            var isHandled = multiSelectHandleKey(cm, name, 'user');
+            vim = getVim(cm); // may be changed by multiSelectHandleKey
+            if (isHandled && vim.status != null)
+                vim.status += name;
+            else if (vim.status == null)
+                vim.status = "";
+            cm._signal("changeStatus");
+            if (!isHandled && (hashId != -1 || insertMode))
+                return;
+            return { command: "null", passEvent: !isHandled };
+        }
+    },
+    attach: function (editor) {
+        if (!editor.state)
+            editor.state = {};
+        var cm = new CodeMirror(editor);
+        editor.state.cm = cm;
+        editor.$vimModeHandler = this;
+        CodeMirror.keyMap.vim.attach(cm);
+        getVim(cm).status = null;
+        cm.on('vim-command-done', function () {
+            if (cm.virtualSelectionMode())
+                return;
+            getVim(cm).status = null;
+            cm.ace._signal("changeStatus");
+            cm.ace.session.markUndoGroup();
+        });
+        cm.on("changeStatus", function () {
+            cm.ace.renderer.updateCursor();
+            cm.ace._signal("changeStatus");
+        });
+        cm.on("vim-mode-change", function () {
+            if (cm.virtualSelectionMode())
+                return;
+            updateInputMode();
+            cm._signal("changeStatus");
+        });
+        function updateInputMode() {
+            var isIntsert = getVim(cm).insertMode;
+            cm.ace.renderer.setStyle("normal-mode", !isIntsert);
+            editor.textInput.setCommandMode(!isIntsert);
+            editor.renderer.$keepTextAreaAtCursor = isIntsert;
+            editor.renderer.$blockCursor = !isIntsert;
+        }
+        updateInputMode();
+        editor.renderer.$cursorLayer.drawCursor = this.drawCursor.bind(cm);
+    },
+    detach: function (editor) {
+        var cm = editor.state.cm;
+        CodeMirror.keyMap.vim.detach(cm);
+        cm.destroy();
+        editor.state.cm = null;
+        editor.$vimModeHandler = null;
+        editor.renderer.$cursorLayer.drawCursor = null;
+        editor.renderer.setStyle("normal-mode", false);
+        editor.textInput.setCommandMode(false);
+        editor.renderer.$keepTextAreaAtCursor = true;
+    },
+    getStatusText: function (editor) {
+        var cm = editor.state.cm;
+        var vim = getVim(cm);
+        if (vim.insertMode)
+            return "INSERT";
+        var status = "";
+        if (vim.visualMode) {
+            status += "VISUAL";
+            if (vim.visualLine)
+                status += " LINE";
+            if (vim.visualBlock)
+                status += " BLOCK";
+        }
+        if (vim.status)
+            status += (status ? " " : "") + vim.status;
+        return status;
+    }
+};
+vimApi.defineOption({
+    name: "wrap",
+    set: function (value, cm) {
+        if (cm) {
+            cm.ace.setOption("wrap", value);
+        }
+    },
+    type: "boolean"
+}, false);
+vimApi.defineEx('write', 'w', function () {
+    console.log(':write is not implemented');
+});
+defaultKeymap.push({ keys: 'zc', type: 'action', action: 'fold', actionArgs: { open: false } }, { keys: 'zC', type: 'action', action: 'fold', actionArgs: { open: false, all: true } }, { keys: 'zo', type: 'action', action: 'fold', actionArgs: { open: true } }, { keys: 'zO', type: 'action', action: 'fold', actionArgs: { open: true, all: true } }, { keys: 'za', type: 'action', action: 'fold', actionArgs: { toggle: true } }, { keys: 'zA', type: 'action', action: 'fold', actionArgs: { toggle: true, all: true } }, { keys: 'zf', type: 'action', action: 'fold', actionArgs: { open: true, all: true } }, { keys: 'zd', type: 'action', action: 'fold', actionArgs: { open: true, all: true } }, { keys: '<C-A-k>', type: 'action', action: 'aceCommand', actionArgs: { name: "addCursorAbove" } }, { keys: '<C-A-j>', type: 'action', action: 'aceCommand', actionArgs: { name: "addCursorBelow" } }, { keys: '<C-A-S-k>', type: 'action', action: 'aceCommand', actionArgs: { name: "addCursorAboveSkipCurrent" } }, { keys: '<C-A-S-j>', type: 'action', action: 'aceCommand', actionArgs: { name: "addCursorBelowSkipCurrent" } }, { keys: '<C-A-h>', type: 'action', action: 'aceCommand', actionArgs: { name: "selectMoreBefore" } }, { keys: '<C-A-l>', type: 'action', action: 'aceCommand', actionArgs: { name: "selectMoreAfter" } }, { keys: '<C-A-S-h>', type: 'action', action: 'aceCommand', actionArgs: { name: "selectNextBefore" } }, { keys: '<C-A-S-l>', type: 'action', action: 'aceCommand', actionArgs: { name: "selectNextAfter" } });
+defaultKeymap.push({
+    keys: 'gq',
+    type: 'operator',
+    operator: 'hardWrap'
+});
+vimApi.defineOperator("hardWrap", function (cm, operatorArgs, ranges, oldAnchor, newHead) {
+    var anchor = ranges[0].anchor.line;
+    var head = ranges[0].head.line;
+    if (operatorArgs.linewise)
+        head--;
+    hardWrap(cm.ace, { startRow: anchor, endRow: head });
+    return Pos(head, 0);
+});
+defineOption('textwidth', undefined, 'number', ['tw'], function (width, cm) {
+    if (cm === undefined) {
+        return;
+    }
+    if (width === undefined) {
+        var value = cm.ace.getOption('printMarginColumn');
+        return value;
+    }
+    else {
+        var column = Math.round(width);
+        if (column > 1) {
+            cm.ace.setOption('printMarginColumn', column);
+        }
+    }
+});
+actions.aceCommand = function (cm, actionArgs, vim) {
+    cm.vimCmd = actionArgs;
+    if (cm.ace.inVirtualSelectionMode)
+        cm.ace.on("beforeEndOperation", delayedExecAceCommand);
+    else
+        delayedExecAceCommand(null, cm.ace);
+};
+function delayedExecAceCommand(op, ace) {
+    ace.off("beforeEndOperation", delayedExecAceCommand);
+    var cmd = ace.state.cm.vimCmd;
+    if (cmd) {
+        ace.execCommand(cmd.exec ? cmd : cmd.name, cmd.args);
+    }
+    ace.curOp = ace.prevOp;
+}
+actions.fold = function (cm, actionArgs, vim) {
+    cm.ace.execCommand(['toggleFoldWidget', 'toggleFoldWidget', 'foldOther', 'unfoldall'
+    ][(actionArgs.all ? 2 : 0) + (actionArgs.open ? 1 : 0)]);
+};
+exports.handler.defaultKeymap = defaultKeymap;
+exports.handler.actions = actions;
+exports.Vim = vimApi;
+
+});                (function() {
+                    ace.require(["ace/keyboard/vim"], function(m) {
+                        if (typeof module == "object" && typeof exports == "object" && module) {
+                            module.exports = m;
+                        }
+                    });
+                })();
+            
