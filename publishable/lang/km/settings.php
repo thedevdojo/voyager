@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'usage_help'           => 'អ្នកអាចប្រើប្រាស់កម្មវិធីនេះដើម្បីបង្ហាញទិន្នន័យនៅលើទំព័រនេះទេ។',
+    'save'                 => 'រក្សាទុកការកំណត់',
+    'new'                  => 'បន្ថែមការកំណត់',
+    'help_name'            => 'ឈ្មោះការកំណត់ ឧ៖ Admin Title',
+    'help_key'             => 'ពាក្យគន្លឺះការកំណត់ ឧ៖ admin_title',
+    'help_option'          => '(ជាជម្រើស ជម្រើសដូចគ្នានឹងទម្រង់បែបបទដែលត្រូវគ្នាអនុវត្ត)',
+    'add_new'              => 'បន្ថែមការកំណត់',
+    'delete_question'      => 'តើអ្នកប្រាកដជាចង់លុបការកំណត់:settingនេះ?',
+    'delete_confirm'       => 'បាទ/ចាស, លុបការកំណត់',
+    'successfully_created' => 'បានបង្កើតដោយជោគជ័យ',
+    'successfully_saved'   => 'បានរក្សាទុកដោយជោគជ័យ',
+    'successfully_deleted' => 'បានលុបដោយជោគជ័យ',
+    'already_at_top'       => 'នេះគឺនៅកំពូលនៃបញ្ជីរួចហើយ',
+    'already_at_bottom'    => 'នេះគឺនៅខាងក្រោមបញ្ជីរួចហើយ',
+    'key_already_exists'   => 'ពាក្យគន្លឺះ:keyមានរួចហើយ',
+    'moved_order_up'       => 'ផ្លាស់ទីការកំណត់:nameទៅលើ',
+    'moved_order_down'     => 'ផ្លាស់ទីការកំណត់:nameទៅក្រោម',
+    'successfully_removed' => 'បានយក:nameចេញដោយជោគជ័យ',
+    'group_general'        => 'ទូទៅ',
+    'group_admin'          => 'អភិបាល',
+    'group_site'           => 'គេហទំព័រ',
+    'group'                => 'ក្រុម',
+    'help_group'           => 'ដាក់ក្រុមការកំណត់នេះទៅ',
+];
