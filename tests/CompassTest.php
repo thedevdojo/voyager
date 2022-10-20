@@ -66,7 +66,7 @@ class CompassTest extends TestCase
             'command' => 'make:model',
             'args'    => 'TestModel',
         ]);
-        $this->assertStringContainsString('Model created successfully.', $response->response->content());
+        $this->assertStringContainsString('created successfully.', $response->response->content());
     }
 
     public function testCannotExecuteUnknownCommand()
