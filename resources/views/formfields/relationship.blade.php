@@ -83,7 +83,7 @@
                     @if(empty($selected_values))
                         <p>{{ __('voyager::generic.no_results') }}</p>
                     @else
-                        <p>{{ $string_values }}</p>
+                        <p>{!! $string_values !!}</p>
                     @endif
                 @else
                     @if(empty($selected_values))
@@ -91,7 +91,7 @@
                     @else
                         <ul>
                             @foreach($selected_values as $selected_value)
-                                <li>{{ $selected_value }}</li>
+                                <li>{!! $selected_value !!}</li>
                             @endforeach
                         </ul>
                     @endif
@@ -107,7 +107,7 @@
                 @if($query->isNotEmpty())
                     <ul>
                         @foreach($query as $query_res)
-                            <li>{{ $query_res->{$options->label} }}</li>
+                            <li>{!! $query_res->{$options->label} !!}</li>
                         @endforeach
                     </ul>
                 @else
