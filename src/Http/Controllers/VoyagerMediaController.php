@@ -267,7 +267,7 @@ class VoyagerMediaController extends Controller
                 'image/bmp',
                 'image/svg+xml',
             ];
-            if (in_array($request->file->getMimeType(), $imageMimeTypes)) {
+            if (in_array($request->file->getMimeType(), $imageMimeTypes) && config('voyager.media.use_intervention')) {
                 $content = Storage::disk($this->filesystem)->get($file);
                 $image = Image::make($content);
 
@@ -279,7 +279,6 @@ class VoyagerMediaController extends Controller
                     if (property_exists($details, 'thumbnails') && is_array($details->thumbnails)) {
                         foreach ($details->thumbnails as $thumbnail_data) {
                             $type = $thumbnail_data->type ?? 'fit';
-                            $thumbnail = Image::make(clone $image);
                             if ($type == 'fit') {
                                 $thumbnail = $thumbnail->fit(
                                     $thumbnail_data->width,
