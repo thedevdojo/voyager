@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'additional_fields'=> 'Додаткові поля',
     'category'         => 'Категорія повідомлення',
     'content'          => 'Текст повідомлення',
     'details'          => 'Властивості',

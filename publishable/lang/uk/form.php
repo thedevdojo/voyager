@@ -12,4 +12,5 @@ return [
     'type_selectdropdown'          => 'Випадаючий список',
     'type_textarea'                => 'Текстове поле',
     'type_textbox'                 => 'Поле вводу',
+    'type_markdowneditor'          => 'Редактор розмітки',
 ];
