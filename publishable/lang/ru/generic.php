@@ -107,4 +107,5 @@ return [
     'whoopsie'               => 'Ой!',
     'yes'                    => 'Да',
     'yes_please'             => 'Да, пожалуйста',
+    'contains'               => 'Содержит',
 ];
