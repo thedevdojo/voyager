@@ -84,11 +84,11 @@ class VoyagerController extends Controller
         try {
             if (class_exists(\League\Flysystem\Util::class)) {
                 // Flysystem 1.x
-                $path = dirname(__DIR__, 3).'/publishable/assets/'.\League\Flysystem\Util::normalizeRelativePath(urldecode($request->path));
+                $path = base_path() . '/vendor/tcg/voyager/publishable/assets/'.\League\Flysystem\Util::normalizeRelativePath(urldecode($request->path));
             } elseif (class_exists(\League\Flysystem\WhitespacePathNormalizer::class)) {
                 // Flysystem >= 2.x
                 $normalizer = new \League\Flysystem\WhitespacePathNormalizer();
-                $path = dirname(__DIR__, 3).'/publishable/assets/'. $normalizer->normalizePath(urldecode($request->path));
+                $path = base_path() . '/vendor/tcg/voyager/publishable/assets/'. $normalizer->normalizePath(urldecode($request->path));
             }
             
         } catch (\LogicException $e) {
