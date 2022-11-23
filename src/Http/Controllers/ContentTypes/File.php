@@ -44,6 +44,9 @@ class File extends BaseType
      */
     protected function generatePath()
     {
+        if (isset($this->options->custom_path)) {
+            return $this->options->custom_path.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
+        }
         return $this->slug.DIRECTORY_SEPARATOR.date('FY').DIRECTORY_SEPARATOR;
     }
 
