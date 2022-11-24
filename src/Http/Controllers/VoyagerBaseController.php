@@ -913,25 +913,38 @@ class VoyagerBaseController extends Controller
                     $model = $model->{$options->scope}();
                 }
 
+                // Sort results
+                $sortBy = 'id';
+                $sortOrder = 'asc';
+                if (!empty($options->sort->field)) {
+                    $sortBy = $options->sort->field;
+
+                    if (!empty($options->sort->direction) && strtolower($options->sort->direction) == 'desc') {
+                        $sortOrder = 'desc';
+                    }
+                }
+
                 // If search query, use LIKE to filter results depending on field label
                 if ($search) {
                     // If we are using additional_attribute as label
                     if (in_array($options->label, $additional_attributes)) {
-                        $relationshipOptions = $model->get();
+                        $relationshipOptions = $model->orderBy($sortBy, $sortOrder)->get();
                         $relationshipOptions = $relationshipOptions->filter(function ($model) use ($search, $options) {
                             return stripos($model->{$options->label}, $search) !== false;
                         });
                         $total_count = $relationshipOptions->count();
                         $relationshipOptions = $relationshipOptions->forPage($page, $on_page);
                     } else {
-                        $total_count = $model->where($options->label, 'LIKE', '%'.$search.'%')->count();
-                        $relationshipOptions = $model->take($on_page)->skip($skip)
-                            ->where($options->label, 'LIKE', '%'.$search.'%')
+                        $total_count = $model->where($options->label, 'LIKE', '%' . $search . '%')->count();
+                        $relationshipOptions = $model->orderBy($sortBy, $sortOrder)
+                            ->where($options->label, 'LIKE', '%' . $search . '%')
+                            ->take($on_page)->skip($skip)
                             ->get();
                     }
                 } else {
                     $total_count = $model->count();
-                    $relationshipOptions = $model->take($on_page)->skip($skip)->get();
+                    $relationshipOptions = $model->orderBy($sortBy, $sortOrder)
+                        ->take($on_page)->skip($skip)->get();
                 }
 
                 $results = [];
@@ -941,15 +954,6 @@ class VoyagerBaseController extends Controller
                         'id'   => '',
                         'text' => __('voyager::generic.none'),
                     ];
-                }
-
-                // Sort results
-                if (!empty($options->sort->field)) {
-                    if (!empty($options->sort->direction) && strtolower($options->sort->direction) == 'desc') {
-                        $relationshipOptions = $relationshipOptions->sortByDesc($options->sort->field);
-                    } else {
-                        $relationshipOptions = $relationshipOptions->sortBy($options->sort->field);
-                    }
                 }
 
                 foreach ($relationshipOptions as $relationshipOption) {
