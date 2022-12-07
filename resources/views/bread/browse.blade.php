@@ -243,6 +243,8 @@
                                                         @else
                                                             {{ $data->{$row->field} }}
                                                         @endif
+                                                    @elseif ($data->{$row->field} == null)
+                                                        &nbsp;
                                                     @else
                                                         {{ trans_choice('voyager::media.files', 0) }}
                                                     @endif
