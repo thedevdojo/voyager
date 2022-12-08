@@ -201,7 +201,7 @@
                                                     @endif
                                                 @elseif($row->type == 'rich_text_box')
                                                     @include('voyager::multilingual.input-hidden-bread-browse')
-                                                    <div>{{ mb_strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? mb_substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') }}</div>
+                                                    <div>{!! mb_strlen( strip_tags($data->{$row->field}, '<b><i><u>') ) > 200 ? mb_substr(strip_tags($data->{$row->field}, '<b><i><u>'), 0, 200) . ' ...' : strip_tags($data->{$row->field}, '<b><i><u>') !!}</div>
                                                 @elseif($row->type == 'coordinates')
                                                     @include('voyager::partials.coordinates-static-image')
                                                 @elseif($row->type == 'multiple_images')
