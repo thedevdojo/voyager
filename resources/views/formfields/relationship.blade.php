@@ -2,16 +2,23 @@
 
     @if(class_exists($options->model))
 
-        @php $relationshipField = $row->field; @endphp
+        @php
+            $relationshipField = $row->field;
+
+            $relationshipData = (isset($data)) ? $data : $dataTypeContent;
+            $model = app($options->model);
+            $query = $model::where($options->key, '=', old($options->column, $relationshipData->{$options->column}));
+            if ($model && in_array(\Illuminate\Database\Eloquent\SoftDeletes::class, class_uses_recursive($model))) {
+                $query->withTrashed();
+            }
+        @endphp
 
         @if($options->type == 'belongsTo')
 
             @if(isset($view) && ($view == 'browse' || $view == 'read'))
 
                 @php
-                    $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-                    $model = app($options->model);
-                    $query = $model::where($options->key,$relationshipData->{$options->column})->first();
+                    $query = $query->first();
                 @endphp
 
                 @if(isset($query))
@@ -31,8 +38,7 @@
                     @if($row->required == 1) required @endif
                 >
                     @php
-                        $model = app($options->model);
-                        $query = $model::where($options->key, old($options->column, $dataTypeContent->{$options->column}))->get();
+                        $query = $query->get();
                     @endphp
 
                     @if(!$row->required)
@@ -49,11 +55,7 @@
         @elseif($options->type == 'hasOne')
 
             @php
-                $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-
-                $model = app($options->model);
-                $query = $model::where($options->column, '=', $relationshipData->{$options->key})->first();
-
+                $query = $query->first();
             @endphp
 
             @if(isset($query))
@@ -67,10 +69,7 @@
             @if(isset($view) && ($view == 'browse' || $view == 'read'))
 
                 @php
-                    $relationshipData = (isset($data)) ? $data : $dataTypeContent;
-                    $model = app($options->model);
-
-                    $selected_values = $model::where($options->column, '=', $relationshipData->{$options->key})->get()->map(function ($item, $key) use ($options) {
+                    $selected_values = $query->get()->map(function ($item, $key) use ($options) {
                         return $item->{$options->label};
                     })->all();
                 @endphp
@@ -100,8 +99,7 @@
             @else
 
                 @php
-                    $model = app($options->model);
-                    $query = $model::where($options->column, '=', $dataTypeContent->{$options->key})->get();
+                    $query = $query->get();
                 @endphp
 
                 @if($query->isNotEmpty())
