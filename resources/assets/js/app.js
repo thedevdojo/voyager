@@ -135,20 +135,17 @@ $(document).ready(function () {
         "dom": '<"top"fl<"clear">>rt<"bottom"ip<"clear">>'
     });
 
-    $(".side-menu .nav .dropdown").on('show.bs.collapse', function () {
-        return $(".side-menu .nav .dropdown .collapse").collapse('hide');
+    $(".side-menu .nav .dropdown").on("show.bs.collapse", function (e) {
+        return $(".side-menu .nav .dropdown .collapse").collapse("hide");
     });
 
-    $('.panel-collapse').on('hide.bs.collapse', function(e) {
-        var target = $(e.target);
-        if (!target.is('a')) {
-            target = target.parent();
+    $(".panel-collapse").on("hide.bs.collapse", function (e) {
+        let $target = $(e.target);
+        if ($target.parent('.collapse[aria-expanded="true"]').length ||
+            $target.find('.collapse[aria-expanded="false"]').length) {
+            e.stopPropagation();
+            e.preventDefault();
         }
-        if (!target.hasClass('collapsed')) {
-            return;
-        }
-        e.stopPropagation();
-        e.preventDefault();
     });
 
     $(document).on('click', '.panel-heading a.panel-action[data-toggle="panel-collapse"]', function (e) {
