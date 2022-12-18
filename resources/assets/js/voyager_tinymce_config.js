@@ -52,7 +52,7 @@ var getConfig = function(options) {
                 input.click();
             }
         },
-        toolbar: 'styleselect | bold italic underline | forecolor backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | link image table | code',
+        toolbar: 'styles | bold italic underline | forecolor backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | link image table | code',
         image_caption: true,
         image_title: true,
         init_instance_callback: function (editor) {
