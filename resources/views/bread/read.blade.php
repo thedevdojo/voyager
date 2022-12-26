@@ -112,7 +112,9 @@
                                 @include('voyager::partials.coordinates')
                             @elseif($row->type == 'rich_text_box')
                                 @include('voyager::multilingual.input-hidden-bread-read')
-                                {!! $dataTypeContent->{$row->field} !!}
+                                @include('voyager::formfields.rich_text_box', [
+                                    'view' => 'read',
+                                ])
                             @elseif($row->type == 'file')
                                 @if(json_decode($dataTypeContent->{$row->field}))
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $file)

@@ -9,7 +9,12 @@
                 selector: 'textarea.richTextBox[name="{{ $row->field }}"]',
             }
 
-            $.extend(additionalConfig, {!! json_encode($options->tinymceOptions ?? (object)[]) !!})
+            if ("{{ $view ?? null }}" === 'read') {
+                additionalConfig.toolbar = false
+                additionalConfig.readonly = true
+            }
+
+            $.extend(additionalConfig, {!! json_encode($options->tinymceOptions ?? (object) []) !!})
 
             tinymce.init(window.voyagerTinyMCE.getConfig(additionalConfig));
         });
