@@ -223,7 +223,14 @@
                                                     @if ($files)
                                                         @if (property_exists($row->details, 'show_as_images') && $row->details->show_as_images)
                                                             @foreach (array_slice($files, 0, 3) as $file)
-                                                            <img src="@if( !filter_var($file, FILTER_VALIDATE_URL)){{ Voyager::image( $file ) }}@else{{ $file }}@endif" style="width:50px">
+                                                                {{ Storage::disk(config('voyager.storage.disk'))->path('').$file }}
+                                                                @if (in_array(mime_content_type(Storage::disk(config('voyager.storage.disk'))->path('').$file), ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/vnd.microsoft.icon', 'image/tiff', 'image/svg+xml']))
+                                                                    <img src="@if( !filter_var($file, FILTER_VALIDATE_URL)){{ Voyager::image( $file ) }}@else{{ $file }}@endif" style="width:50px">
+                                                                @else
+                                                                    <a href="{{ Storage::disk(config('voyager.storage.disk'))->url('').$file ?: '' }}" target="_blank">
+                                                                        {{ __('voyager::generic.download') }}
+                                                                    </a>
+                                                                @endif
                                                             @endforeach
                                                         @else
                                                             <ul>
@@ -239,7 +246,15 @@
                                                         {{ trans_choice('voyager::media.files', 0) }}
                                                     @elseif ($data->{$row->field} != '')
                                                         @if (property_exists($row->details, 'show_as_images') && $row->details->show_as_images)
-                                                            <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:50px">
+															@if (file_exists(Storage::disk(config('voyager.storage.disk'))->path('').$data->{$row->field}))
+                                                                @if (in_array(mime_content_type(Storage::disk(config('voyager.storage.disk'))->path('').$data->{$row->field}), ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/vnd.microsoft.icon', 'image/tiff', 'image/svg+xml']))
+                                                                    <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:50px">
+                                                                @else
+                                                                    <a href="{{ Storage::disk(config('voyager.storage.disk'))->url('').$data->{$row->field} ?: '' }}" target="_blank">
+                                                                        {{ __('voyager::generic.download') }}
+                                                                    </a>
+                                                                @endif
+                                                            @endif
                                                         @else
                                                             {{ $data->{$row->field} }}
                                                         @endif

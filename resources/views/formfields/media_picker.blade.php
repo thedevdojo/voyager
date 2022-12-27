@@ -22,7 +22,16 @@
                 :element="'input[name=&quot;{{ $row->field }}&quot;]'"
                 :details="{{ json_encode($options ?? []) }}"
             ></media-manager>
-            <input type="hidden" :value="{{ $content }}" name="{{ $row->field }}">
+			@php
+				$path = substr($content, 1, strlen($content)-1);
+				$path = substr($path, 0, strlen($path)-1);
+				$path = Storage::disk(config('voyager.storage.disk'))->path('').$path;
+			@endphp
+			@if (file_exists($path))
+				<input type="hidden" :value="{{ $content }}" name="{{ $row->field }}">
+			@else
+				<input type="hidden" :value="''" name="{{ $row->field }}">
+			@endif
         </div>
     </div>
 </div>

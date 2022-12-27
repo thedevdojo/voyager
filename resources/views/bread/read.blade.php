@@ -66,6 +66,17 @@
                                     <img class="img-responsive"
                                          src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}">
                                 @endif
+                            @elseif($row->type == "media_picker")
+                                @if (file_exists(Storage::disk(config('voyager.storage.disk'))->path('').$dataTypeContent->{$row->field}))
+                                    @if (in_array(mime_content_type(Storage::disk(config('voyager.storage.disk'))->path('').$dataTypeContent->{$row->field}), ['image/png', 'image/jpeg', 'image/gif', 'image/bmp', 'image/vnd.microsoft.icon', 'image/tiff', 'image/svg+xml']))
+                                        <img class="img-responsive"
+                                            src="{{ filter_var($dataTypeContent->{$row->field}, FILTER_VALIDATE_URL) ? $dataTypeContent->{$row->field} : Voyager::image($dataTypeContent->{$row->field}) }}" />
+                                    @else
+                                        <a href="{{ Storage::disk(config('voyager.storage.disk'))->url('').$dataTypeContent->{$row->field} ?: '' }}">
+                                            {{ __('voyager::generic.download') }}
+                                        </a>
+                                    @endif
+                                @endif
                             @elseif($row->type == 'relationship')
                                  @include('voyager::formfields.relationship', ['view' => 'read', 'options' => $row->details])
                             @elseif($row->type == 'select_dropdown' && property_exists($row->details, 'options') &&
@@ -116,13 +127,13 @@
                             @elseif($row->type == 'file')
                                 @if(json_decode($dataTypeContent->{$row->field}))
                                     @foreach(json_decode($dataTypeContent->{$row->field}) as $file)
-                                        <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) ?: '' }}">
+                                        <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($file->download_link) ?: '' }}" target="_blank">
                                             {{ $file->original_name ?: '' }}
                                         </a>
                                         <br/>
                                     @endforeach
                                 @elseif($dataTypeContent->{$row->field})
-                                    <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($row->field) ?: '' }}">
+                                    <a href="{{ Storage::disk(config('voyager.storage.disk'))->url($row->field) ?: '' }}" target="_blank">
                                         {{ __('voyager::generic.download') }}
                                     </a>
                                 @endif
