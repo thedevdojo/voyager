@@ -254,5 +254,7 @@ return [
                 'height'=> 500
            ],
        ]*/
+       // Show directories first and then files
+       'show_directory_first' => true,
     ],
 ];
